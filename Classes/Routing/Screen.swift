@@ -205,7 +205,7 @@ indirect enum Screen {
     )
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
-    case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case transactionOptions(account: Account, delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler

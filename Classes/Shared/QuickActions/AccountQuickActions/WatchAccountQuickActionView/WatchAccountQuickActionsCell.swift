@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountQuickActionsCell.swift
+//   WatchAccountQuickActionsCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountQuickActionsCell:
-    CollectionCell<AccountQuickActionsView>,
+final class WatchAccountQuickActionsCell:
+    CollectionCell<WatchAccountQuickActionsView>,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (0, 24, 36, 24)
     }
 
-    static let theme = AccountQuickActionsViewTheme()
-
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            contextView.isSwapBadgeVisible = isSwapBadgeVisible
-        }
-    }
+    static let theme = WatchAccountQuickActionsViewTheme()
 
     override init(
         frame: CGRect
@@ -39,12 +33,12 @@ final class AccountQuickActionsCell:
         super.init(frame: frame)
 
         contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-        
+
         contextView.customize(Self.theme)
     }
 
     class func calculatePreferredSize(
-        for theme: AccountQuickActionsViewTheme,
+        for theme: WatchAccountQuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width

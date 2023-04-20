@@ -126,7 +126,7 @@
 "title-no-auth" = "No Auth";
 "title-rekeyed-to" = "REKEYED TO";
 "title-rekeyed" = "Rekeyed";
-"title-copy-address--capitalized-sentence" = "Copy address";
+"title-copy-address-capitalized-sentence" = "Copy address";
 "title-show-address-capitalized-sentence" = "Show address";
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
 

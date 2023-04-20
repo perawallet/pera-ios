@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WatchAccountPortfolioCell.swift
+//   CopyAddressTransactionOptionListItemButtonViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class WatchAccountPortfolioCell:
-    CollectionCell<WatchAccountPortfolioView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (36, 24, 36, 24)
-    }
+struct CopyAddressTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    static let theme = WatchAccountPortfolioViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-        contextView.customize(Self.theme)
+    init(_ account: Account) {
+        icon = "icon-transaction-option-list-copy-address"
+        title = Self.getTitle("title-copy-address-capitalized-sentence".localized)
+        subtitle = Self.getSubtitle(account.address.shortAddressDisplay)
     }
 }
