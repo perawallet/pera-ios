@@ -418,6 +418,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         analytics.track(.showQRCopy(account: account))
         copyToClipboardController.copyAddress(account)
     }
+
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
+        /// <todo> Undo Rekey
+    }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
 //        let viewModel = RekeyToLedgerInstructionsViewModel(accountHandle.value.requiresLedgerConnection())

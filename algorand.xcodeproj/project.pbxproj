@@ -4274,6 +4274,9 @@
 		D41BB532295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41BB531295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift */; };
 		D41BB533295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41BB531295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift */; };
 		D41BB534295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41BB531295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift */; };
+		D41D81A629ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D81A529ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift */; };
+		D41D81A729ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D81A529ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift */; };
+		D41D81A829ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D81A529ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift */; };
 		D41E83D7291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41E83D6291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift */; };
 		D41E83D8291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41E83D6291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift */; };
 		D41E83D9291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41E83D6291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift */; };
@@ -8583,6 +8586,7 @@
 		D419AF9F28D0A3A300673C39 /* AccountSelectionListLoadingAccountItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionListLoadingAccountItemViewTheme.swift; sourceTree = "<group>"; };
 		D419AFA528D0B47800673C39 /* AccountSelectionListNoContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionListNoContentCell.swift; sourceTree = "<group>"; };
 		D41BB531295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewSwitchableFlowLayout.swift; sourceTree = "<group>"; };
+		D41D81A529ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		D41E83D6291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchAccountAdditionAPIDataController.swift; sourceTree = "<group>"; };
 		D41F4EF12892D11700B59559 /* OptOutAssetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetScreen.swift; sourceTree = "<group>"; };
 		D41F4EF52892D13E00B59559 /* OptOutAssetScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetScreenTheme.swift; sourceTree = "<group>"; };
@@ -20764,6 +20768,7 @@
 				F0E72183284F6A3600865419 /* QuickActions */,
 				17F8BF6828A4F7CC00992F91 /* RekeyAccountInformationListActionViewModel.swift */,
 				2B6B423427BEC5A00036BF9E /* RekeyAccountListItemButtonViewModel.swift */,
+				D41D81A529ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift */,
 				2B7CAD5F29ACF01400A507EF /* RekeyToStandardAccountListItemButtonViewModel.swift */,
 				F0431F14287577280004CB7E /* RemoteCurrency.swift */,
 				F045BE64287384920069056B /* RemoteCurrencyValue.swift */,
@@ -23746,6 +23751,7 @@
 				17BD4EE82292F1260003E49A /* ChoosePasswordView.swift in Sources */,
 				F055912C297A103700BB5698 /* AccountAssetListLoadingViewTheme.swift in Sources */,
 				2B8CD58E2906FAEB004A81B9 /* SwapErrorViewTheme.swift in Sources */,
+				D41D81A829ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */,
 				2BC635E22886FE7C00507AEA /* PrimaryTitleViewTheme.swift in Sources */,
 				D4DCD68529D6F90C007CA6B8 /* RekeyLedgerToLedgerAccountFutureTransactionsSignInstructionViewModel.swift in Sources */,
 				F096087C27962EF800CFBB90 /* TabBarButtonItem.swift in Sources */,
@@ -25317,6 +25323,7 @@
 				F096C0FA28C63B2A00E5E576 /* AssetActionConfirmationLoadingView.swift in Sources */,
 				2BB8483D27E90B9A004F2E39 /* CollectibleMediaErrorViewTheme.swift in Sources */,
 				2B262712284D667C00ADE371 /* AssetConfigTransactionItemDraftComposer.swift in Sources */,
+				D41D81A729ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */,
 				F045BE5A28737A3D0069056B /* CurrencyProvider.swift in Sources */,
 				D4CC28BA2875A0A90082E038 /* InnerTransactionListLayout.swift in Sources */,
 				F0261A9D27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */,
@@ -28330,6 +28337,7 @@
 				2B08851B288EC5F10030D9CA /* AssetQuickActionViewModel.swift in Sources */,
 				F03451EA28B2822B009467A0 /* OptInAssetListItemCell.swift in Sources */,
 				2BE09A6928F60A680059EEF0 /* SwapSummaryPriceImpactItemViewModel.swift in Sources */,
+				D41D81A629ED76CA0018110F /* UndoRekeyListItemButtonViewModel.swift in Sources */,
 				D4979466287D8891004FBF8E /* AppCallAssetPreviewViewWithImage.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				95AF1C8727B13F2D001AB131 /* TransactionHistoryLoadingItemViewTheme.swift in Sources */,
