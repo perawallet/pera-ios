@@ -1510,9 +1510,9 @@
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
 
 // MARK: Rekeyed Account selection List
-"rekeyed-account-selection-list-header-title-singular" = "1 rekeyed account found";
+"rekeyed-account-selection-list-header-title-singular" = "Rekeyed account found";
 "rekeyed-account-selection-list-header-title-plural" = "%@ rekeyed accounts found";
-"rekeyed-account-selection-list-header-body-singular" = "You have 1 rekeyed account. This means that you can sign the transactions of the rekeyed account with the account you just added.\nSelect the rekeyed accounts you want to add to your wallet:";
+"rekeyed-account-selection-list-header-body-singular" = "A rekeyed account is attached to this account address. This means you can sign the transactions of the rekeyed account with the account you just added.";
 "rekeyed-account-selection-list-header-body-plural" = "You have %@ rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\nSelect the rekeyed accounts you want to add to your wallet:";
 "rekeyed-account-selection-list-primary-action-title" = "Choose accounts to add";
 "rekeyed-account-selection-list-primary-action-title-singular" = "Add rekeyed account";
