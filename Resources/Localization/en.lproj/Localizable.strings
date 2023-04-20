@@ -1508,16 +1508,16 @@
 "rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
 
-// MARK: Replace Previous Rekey Confirmation
-"replace-previous-rekey-confirmation-title" = "Your previous rekey will be replaced";
+// MARK: Overwrite Rekey Confirmation
+"overwrite-rekey-confirmation-title" = "Your previous rekey will be replaced";
 
-// MARK: Undone Previous Rekey Confirmation
-"undone-previous-rekey-confirmation-title" = "Your previous rekey will be undone";
+// MARK: Undo Rekey Confirmation
+"undo-rekey-confirmation-title" = "Your previous rekey will be undone";
 
-// MARK: Replace/Undone Previous Rekey Confirmation
-"replace-undone-previous-rekey-confirmation-body" = "%@ will no longer be authorized to sign transactions for %@. Ensure you understand the implications of this before continuing. Learn more";
-"replace-undone-previous-rekey-confirmation-body-highlighted-text" = "Learn more";
+// MARK: Overwrite/Undo Rekey Confirmation
+"overwrite-undo-rekey-confirmation-body" = "%@ will no longer be authorized to sign transactions for %@. Ensure you understand the implications of this before continuing. Learn more";
+"overwrite-undo-rekey-confirmation-body-highlighted-text" = "Learn more";
 
-// MARK: Undone Previous Rekey Undone Success Result
-"undone-previous-rekey-success-result-title" = "Rekey successfully undone";
-"undone-previous-rekey-success-result-body" = "The account %@ has been reverted to its original state";
+// MARK: Undo Rekey Success Result
+"undo-rekey-success-result-title" = "Rekey successfully undone";
+"undo-rekey-success-result-body" = "The account %@ has been reverted to its original state";

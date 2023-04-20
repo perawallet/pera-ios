@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-final class UISheet {
+class UISheet {
     let image: Image?
     let title: TextProvider?
     let body: TextProvider?

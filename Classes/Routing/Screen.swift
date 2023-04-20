@@ -358,17 +358,15 @@ indirect enum Screen {
     case ledgerToLedgerRekeyedAccountInformation(from: Account, to: Account)
     case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
-    case undonePreviousRekeyConfirmation(
+    case undoRekeyConfirmation(
         sourceAccount: Account,
         authAccount: Account,
-        confirmCompletion: () -> Void,
-        cancelCompletion: () -> Void
+        eventHandler: UndoRekeyConfirmationSheet.EventHandler
     )
-    case replacePreviousRekeyConfirmation(
+    case overwriteRekeyConfirmation(
         sourceAccount: Account,
         authAccount: Account,
-        confirmCompletion: () -> Void,
-        cancelCompletion: () -> Void
+        eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
     )
 }
 

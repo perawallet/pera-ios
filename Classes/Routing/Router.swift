@@ -1775,160 +1775,26 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case let .undonePreviousRekeyConfirmation(sourceAccount, authAccount, confirmCompletion, cancelCompletion):
-            let uiSheet = makeUISheet()
+        case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = UndoRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             )
-
-            func makeUISheet() -> UISheet {
-                let title =
-                    "undone-previous-rekey-confirmation-title"
-                        .localized
-                        .bodyLargeMedium(alignment: .center)
-                let body = makeBody()
-
-                let uiSheet = UISheet(
-                    image: "icon-info-red",
-                    title: title,
-                    body: body
-                )
-
-                let confirmAction = makeConfirmAction()
-                uiSheet.addAction(confirmAction)
-
-                let cancelAction = makeCancelAction()
-                uiSheet.addAction(cancelAction)
-
-                return uiSheet
-            }
-
-            func makeBody() -> TextProvider {
-                /// <todo>
-                /// Handle "Learn More" hyperlink
-                /// Handle same sourceAccountName & authAccountName. range(of:) only returns the first occurrence.
-                let sourceAccountName = sourceAccount.primaryDisplayName
-                let authAccountName =  authAccount.primaryDisplayName
-                let text = "replace-undone-previous-rekey-confirmation-body".localized(
-                    params: authAccountName, sourceAccountName
-                )
-                let attributedBody = NSMutableAttributedString(
-                    attributedString: text.bodyRegular(alignment: .center)
-                )
-
-                let highlightedTexts = [
-                    sourceAccountName,
-                    authAccountName
-                ]
-                let highlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
-
-                let body = attributedBody.string as NSString
-                
-                highlightedTexts.forEach { text in
-                    let range = body.range(of: text)
-
-                    attributedBody.addAttributes(
-                        highlightedTextAttributes.asSystemAttributes(),
-                        range: range
-                    )
-                }
-
-                return attributedBody
-            }
-
-            func makeConfirmAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-confirm".localized,
-                    style: .default,
-                    handler: confirmCompletion
-                )
-            }
-
-            func makeCancelAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-cancel".localized,
-                    style: .cancel,
-                    handler: cancelCompletion
-                )
-            }
-        case let .replacePreviousRekeyConfirmation(sourceAccount, authAccount, confirmCompletion, cancelCompletion):
-            let uiSheet = makeUISheet()
+        case let .overwriteRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = OverwriteRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             )
-
-            func makeUISheet() -> UISheet {
-                let title =
-                    "replace-previous-rekey-confirmation-title"
-                        .localized
-                        .bodyLargeMedium(alignment: .center)
-                let body = makeBody()
-
-                let uiSheet = UISheet(
-                    image: "icon-info-red",
-                    title: title,
-                    body: body
-                )
-
-                let confirmAction = makeConfirmAction()
-                uiSheet.addAction(confirmAction)
-
-                let cancelAction = makeCancelAction()
-                uiSheet.addAction(cancelAction)
-
-                return uiSheet
-            }
-
-            func makeBody() -> TextProvider {
-                /// <todo>
-                /// Handle "Learn More" hyperlink, Update on UISheet has not merged yet.
-                /// Handle same sourceAccountName & authAccountName. range(of:) only returns the first occurrence.
-                let sourceAccountName = sourceAccount.primaryDisplayName
-                let authAccountName =  authAccount.primaryDisplayName
-                let text = "replace-undone-previous-rekey-confirmation-body".localized(
-                    params: authAccountName, sourceAccountName
-                )
-                let attributedBody = NSMutableAttributedString(
-                    attributedString: text.bodyRegular(alignment: .center)
-                )
-
-                let highlightedTexts = [
-                    sourceAccountName,
-                    authAccountName
-                ]
-                let highlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
-
-                let body = attributedBody.string as NSString
-
-                highlightedTexts.forEach { text in
-                    let range = body.range(of: text)
-
-                    attributedBody.addAttributes(
-                        highlightedTextAttributes.asSystemAttributes(),
-                        range: range
-                    )
-                }
-
-                return attributedBody
-            }
-
-            func makeConfirmAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-confirm".localized,
-                    style: .default,
-                    handler: confirmCompletion
-                )
-            }
-
-            func makeCancelAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-cancel".localized,
-                    style: .cancel,
-                    handler: cancelCompletion
-                )
-            }
         }
 
         return viewController as? T
