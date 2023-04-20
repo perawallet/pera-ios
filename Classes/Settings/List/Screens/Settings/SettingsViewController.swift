@@ -39,6 +39,7 @@ final class SettingsViewController: BaseViewController, NotificationObserver {
     private lazy var settingsView = SettingsView()
 
     private lazy var dataSource = SettingsDataSource(
+        sharedDataController: sharedDataController,
         walletConnector: walletConnector,
         session: session
     )
@@ -147,6 +148,26 @@ extension SettingsViewController {
             }
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? SettingsLoadingCell {
+            loadingCell.startAnimating()
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? SettingsLoadingCell {
+            loadingCell.stopAnimating()
+        }
+    }
     
     private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
@@ -160,6 +181,8 @@ extension SettingsViewController {
             open(.notificationFilter, by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
+        case .secureBackupLoading:
+            break
         }
     }
     
@@ -205,6 +228,10 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView
     ) {
         presentLogoutAlert()
+    }
+
+    func settingsDataSourceDidReloadAccounts(_ settingsDataSource: SettingsDataSource) {
+        self.settingsView.collectionView.reloadData()
     }
     
     private func presentLogoutAlert() {

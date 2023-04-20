@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,54 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsDetailViewTheme.swift
+//   SettingsLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct SettingsDetailViewTheme: LayoutSheet, StyleSheet {
+struct SettingsLoadingViewTheme: LoadingViewTheme {
     let backgroundColor: Color
     let title: PrimaryTitleViewTheme
-    let detail: ImageStyle
-    
+
     let imageSize: LayoutSize
     let titleOffset: LayoutMetric
     let titleInset: LayoutMetric
     let horizontalInset: LayoutMetric
-    
+
+    var loadingIndicator: ImageStyle
+
     init(_ family: LayoutFamily) {
+        self.loadingIndicator = [
+            .image("List/Accessories/loading".templateImage),
+            .tintColor(Colors.Discover.main)
+        ]
         self.backgroundColor = Colors.Defaults.background
         self.title = SettingsTitleViewTheme(family)
-        self.detail = [
-            .image("icon-list-arrow")
-        ]
-        
         self.imageSize = (24, 24)
         self.titleOffset = 16
         self.titleInset = 9
         self.horizontalInset = 24
-    }
-}
-
-struct SettingsTitleViewTheme: PrimaryTitleViewTheme {
-    let primaryTitle: TextStyle
-    let primaryTitleAccessory: ImageStyle
-    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
-    let secondaryTitle: TextStyle
-    let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.primaryTitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.main)
-        ]
-        self.primaryTitleAccessory = []
-        self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
-        self.secondaryTitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayLighter)
-        ]
-        self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }
 }

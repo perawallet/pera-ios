@@ -121,8 +121,8 @@ extension AlgorandSecureBackupAccountListLocalDataController {
                 .sortedAccounts()
                 .filter {
                     let isWatchAccount = $0.value.isWatchAccount()
-                    let requiresLedgerConnection = $0.value.requiresLedgerConnection()
-                    return !isWatchAccount && !requiresLedgerConnection
+                    let isRekeyedToAnyAccount = $0.value.isRekeyedToAnyAccount()
+                    return !isWatchAccount && !isRekeyedToAnyAccount
                 }.map {
                     $0.value
                 }
