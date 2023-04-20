@@ -124,6 +124,7 @@
 "title-no-auth" = "No Auth";
 "title-rekeyed-to" = "REKEYED TO";
 "title-rekeyed" = "Rekeyed";
+"title-yes-continue" = "Yes, continue";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -378,8 +379,7 @@
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
 "options-remove-account" = "Remove Account";
-"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
-"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+"options-remove-account-explanation" = "You are about to remove your account. Are you sure you want to proceed?";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
 "options-mute-notification" = "Mute Notifications";
@@ -1500,5 +1500,7 @@
 "rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
 
-// MARK: Remove Account
-"remove-account-has-rekeyed-accounts-info-message" = "There are accounts rekeyed to this account. If you remove this account, you will no longer be able to sign transactions or control these rekeyed accounts.";
+// MARK: Have you backed up your account
+"have-you-backed-up-your-account-info-title" = "Have you backed up your account?";
+"have-you-backed-up-your-account-info-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access this account and its funds will be lost forever.";
+"backed-up-your-account-cancel-action" = "No, keep account";

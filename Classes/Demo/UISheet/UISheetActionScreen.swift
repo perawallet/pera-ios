@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-class UISheetActionScreen:
+final class UISheetActionScreen:
     MacaroonUIKit.ScrollScreen,
     BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {

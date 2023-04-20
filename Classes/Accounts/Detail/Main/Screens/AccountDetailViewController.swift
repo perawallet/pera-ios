@@ -589,22 +589,21 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
 extension AccountDetailViewController {
     private func presentRemoveAccountConfirmation() {
-        let confirmCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true) {
-                self.eventHandler?(.didRemove)
+        let eventHandler: RemoveAccountSheet.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didRemoveAccount:
+                self.dismiss(animated: true) {
+                    self.eventHandler?(.didRemove)
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
             }
         }
-        let cancelCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true)
-        }
-
         transitionToRemoveAccountConfirmation.perform(
             .removeAccount(
                 account: accountHandle.value,
-                confirmCompletion: confirmCompletion,
-                cancelCompletion: cancelCompletion
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )

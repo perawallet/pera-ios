@@ -1066,21 +1066,21 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
     }
 
     private func presentRemoveAccountConfirmation(_ account: Account) {
-        let confirmCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true) {
-                self.dataController.reload()
+        let eventHandler: RemoveAccountSheet.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didRemoveAccount:
+                self.dismiss(animated: true) {
+                    self.dataController.reload()
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
             }
-        }
-        let cancelCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true)
         }
         transitionToRemoveAccountConfirmation.perform(
             .removeAccount(
                 account: account,
-                confirmCompletion: confirmCompletion,
-                cancelCompletion: cancelCompletion
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )

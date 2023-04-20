@@ -1775,83 +1775,19 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case let .removeAccount(account, confirmCompletion, cancelCompletion):
-            let uiSheet = makeUISheet()
+        case let .removeAccount(account, eventHandler):
+            let sharedDataController = appConfiguration.sharedDataController
+            let walletConnector = appConfiguration.walletConnector
+            let uiSheet = RemoveAccountSheet(
+                account: account,
+                sharedDataController: sharedDataController,
+                walletConnector: walletConnector,
+                eventHandler: eventHandler
+            )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             )
-
-            func makeUISheet() -> UISheet {
-                let title =
-                    "options-remove-account"
-                        .localized
-                        .bodyLargeMedium(alignment: .center)
-                let body = makeBody()
-                let info = makeInfo()
-
-                let uiSheet = UISheet(
-                    image: "icon-trash-red",
-                    title: title,
-                    body: body,
-                    info: info
-                )
-
-                let confirmAction = makeConfirmAction()
-                uiSheet.addAction(confirmAction)
-
-                let cancelAction = makeCancelAction()
-                uiSheet.addAction(cancelAction)
-
-                return uiSheet
-            }
-
-            func makeBody() -> TextProvider {
-                let aBody =
-                    account.isWatchAccount()
-                    ? "options-remove-watch-account-explanation".localized
-                    : "options-remove-main-account-explanation".localized
-
-                return aBody.bodyRegular(alignment: .center)
-            }
-
-            func makeInfo() -> TextProvider? {
-                let sharedDataController = appConfiguration.sharedDataController
-                let hasAnyRekeyedAccounts =
-                    sharedDataController.rekeyedAccounts(of: account).isNonEmpty
-
-                guard hasAnyRekeyedAccounts else {
-                    return nil
-                }
-
-                let anInfo = "remove-account-has-rekeyed-accounts-info-message".localized
-                return anInfo.footnoteMedium()
-            }
-
-            func makeConfirmAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-remove".localized,
-                    style: .default
-                ) { [weak self] in
-                    guard let self else { return }
-
-                    let sharedDataController = self.appConfiguration.sharedDataController
-                    sharedDataController.resetPollingAfterRemoving(account)
-
-                    let walletConnector = self.appConfiguration.walletConnector
-                    walletConnector.updateSessionsWithRemovingAccount(account)
-
-                    confirmCompletion()
-                }
-            }
-
-            func makeCancelAction() -> UISheetAction {
-                return UISheetAction(
-                    title: "title-keep".localized,
-                    style: .cancel,
-                    handler: cancelCompletion
-                )
-            }
         }
 
         return viewController as? T

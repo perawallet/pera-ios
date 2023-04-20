@@ -360,8 +360,7 @@ indirect enum Screen {
     case anyToNoAuthRekeyedAccountInformation(account: Account)
     case removeAccount(
         account: Account,
-        confirmCompletion: () -> Void,
-        cancelCompletion: () -> Void
+        eventHandler: RemoveAccountSheet.EventHandler
     )
 }
 

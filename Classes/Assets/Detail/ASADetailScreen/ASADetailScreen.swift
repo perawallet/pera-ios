@@ -340,21 +340,21 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        let confirmCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true) {
-                self.eventHandler?(.didRemoveAccount)
+        let eventHandler: RemoveAccountSheet.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didRemoveAccount:
+                self.dismiss(animated: true) {
+                    self.eventHandler?(.didRemoveAccount)
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
             }
-        }
-        let cancelCompletion = {
-            [unowned self] in
-            self.dismiss(animated: true)
         }
         transitionToConfirmToDeleteAccount.perform(
             .removeAccount(
                 account: dataController.account,
-                confirmCompletion: confirmCompletion,
-                cancelCompletion: cancelCompletion
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )
