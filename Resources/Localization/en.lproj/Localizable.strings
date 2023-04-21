@@ -394,6 +394,8 @@
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
 "options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
+"remove-auth-account-rekeyed-account-error-title" = "You can’t remove this account before removing its 1 rekeyed account";
+"remove-auth-account-rekeyed-accounts-error-title" = "You can’t remove this account before removing its %@ rekeyed accounts";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -1509,9 +1511,9 @@
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
 
 // MARK: Have you backed up your account
-"have-you-backed-up-your-account-info-title" = "Have you backed up your account?";
-"have-you-backed-up-your-account-info-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access this account and its funds will be lost forever.";
-"backed-up-your-account-cancel-action" = "No, keep account";
+"back-up-before-removing-account-warning-title" = "Have you backed up your account?";
+"back-up-before-removing-account-warning-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access this account and its funds will be lost forever.";
+"back-up-before-removing-account-warning-cancel-action" = "No, keep account";
 
 // MARK: Previous Rekey Replace Confirmation
 "previous-rekey-replace-confirmation-title" = "Your previous rekey will be replaced";

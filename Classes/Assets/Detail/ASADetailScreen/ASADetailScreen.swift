@@ -52,9 +52,13 @@ final class ASADetailScreen:
 
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
+    private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!
+    )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
@@ -344,24 +348,17 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        let eventHandler: RemoveAccountSheet.EventHandler = {
-            [unowned self] event in
+        removeAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
             switch event {
             case .didRemoveAccount:
-                self.dismiss(animated: true) {
-                    self.eventHandler?(.didRemoveAccount)
-                }
-            case .didCancel:
-                self.dismiss(animated: true)
+                self.eventHandler?(.didRemoveAccount)
             }
         }
-        transitionToConfirmToDeleteAccount.perform(
-            .removeAccount(
-                account: dataController.account,
-                eventHandler: eventHandler
-            ),
-            by: .presentWithoutNavigationController
-        )
+
+        let account = dataController.account
+        removeAccountFlowCoordinator.launch(account)
     }
 
     private func navigateToViewPassphrase() {

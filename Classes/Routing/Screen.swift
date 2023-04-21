@@ -358,6 +358,7 @@ indirect enum Screen {
     case ledgerToLedgerRekeyedAccountInformation(from: Account, to: Account)
     case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
+    case backUpBeforeRemovingAccountWarning(eventHandler: BackUpBeforeRemovingAccountWarningSheet.EventHandler)
     case removeAccount(
         account: Account,
         eventHandler: RemoveAccountSheet.EventHandler

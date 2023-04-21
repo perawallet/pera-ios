@@ -1775,6 +1775,14 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case let .backUpBeforeRemovingAccountWarning(eventHandler):
+            let uiSheet = BackUpBeforeRemovingAccountWarningSheet(
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
         case let .removeAccount(account, eventHandler):
             let sharedDataController = appConfiguration.sharedDataController
             let walletConnector = appConfiguration.walletConnector
