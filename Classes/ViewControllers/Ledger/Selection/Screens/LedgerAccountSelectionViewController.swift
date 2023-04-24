@@ -47,6 +47,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
 
     private lazy var dataSource = LedgerAccountSelectionDataSource(
         api: api!,
+        analytics: analytics,
         sharedDataController: sharedDataController,
         accounts: accounts,
         rekeyingAccount: accountSetupFlow.rekeyingAccount,
@@ -129,10 +130,23 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
               let account = dataSource.account(at: indexPath.item) else {
             return
         }
+
+        let authAccount: Account?
+
+        if account.isRekeyed() {
+            authAccount = dataSource.getAuthAccount(of: account)
+        } else {
+            authAccount = account
+        }
+
+        guard let authAccount else {
+            return
+        }
         
         open(
             .ledgerAccountDetail(
                 account: account,
+                authAccount: authAccount,
                 ledgerIndex: dataSource.ledgerAccountIndex(for: account.address),
                 rekeyedAccounts: dataSource.rekeyedAccounts(for: account.address)
             ),

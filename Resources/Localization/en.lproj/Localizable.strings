@@ -131,6 +131,7 @@
 "title-copy-address--capitalized-sentence" = "Copy address";
 "title-show-address-capitalized-sentence" = "Show address";
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
+"title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1513,7 +1514,7 @@
 "rekeyed-account-selection-list-header-title-singular" = "Rekeyed account found";
 "rekeyed-account-selection-list-header-title-plural" = "%@ rekeyed accounts found";
 "rekeyed-account-selection-list-header-body-singular" = "A rekeyed account is attached to this account address. This means you can sign the transactions of the rekeyed account with the account you just added.";
-"rekeyed-account-selection-list-header-body-plural" = "You have %@ rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\nSelect the rekeyed accounts you want to add to your wallet:";
+"rekeyed-account-selection-list-header-body-plural" = "You have %@ rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:";
 "rekeyed-account-selection-list-primary-action-title" = "Choose accounts to add";
 "rekeyed-account-selection-list-primary-action-title-singular" = "Add rekeyed account";
 "rekeyed-account-selection-list-primary-action-title-plural" = "Add rekeyed accounts";

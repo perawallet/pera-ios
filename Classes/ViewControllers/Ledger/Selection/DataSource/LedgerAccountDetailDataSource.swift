@@ -31,6 +31,7 @@ final class LedgerAccountDetailDataSource: NSObject {
     private let sharedDataController: SharedDataController
     private let loadingController: LoadingController?
     private let account: Account
+    private let authAccount: Account
     private let rekeyedAccounts: [Account]
 
     init(
@@ -38,12 +39,14 @@ final class LedgerAccountDetailDataSource: NSObject {
         sharedDataController: SharedDataController,
         loadingController: LoadingController?,
         account: Account,
+        authAccount: Account,
         rekeyedAccounts: [Account]
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
         self.loadingController = loadingController
         self.account = account
+        self.authAccount = authAccount
         self.rekeyedAccounts = rekeyedAccounts
         super.init()
     }
@@ -127,7 +130,7 @@ extension LedgerAccountDetailDataSource {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
 
         if account.isRekeyed() {
-            let viewModel = AccountListItemViewModel(account)
+            let viewModel = AccountListItemViewModel(authAccount)
             cell.bindData(viewModel)
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]

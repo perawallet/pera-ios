@@ -447,6 +447,18 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                     rekeyedAccounts: rekeyedAccounts
                 )
             case .failure:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-failed-to-fetch-rekeyed-accounts".localized,
+                    message: ""
+                )
+                
+                self.analytics.record(
+                    .recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed(
+                        accountAddress: account.address,
+                        network: self.api!.network
+                    )
+                )
+
                 self.openAccountNameSetup(account)
             }
         }
@@ -485,7 +497,8 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         }
         open(
             .rekeyedAccountSelectionList(
-                accounts: rekeyedAccounts,
+                authAccount: Account(localAccount: account),
+                rekeyedAccounts: rekeyedAccounts,
                 eventHandler: eventHandler
             ),
             by: .push

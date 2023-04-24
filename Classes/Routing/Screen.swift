@@ -116,7 +116,7 @@ indirect enum Screen {
         flow: AccountSetupFlow,
         address: String? = nil
     )
-    case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
+    case ledgerAccountDetail(account: Account, authAccount: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
@@ -359,7 +359,8 @@ indirect enum Screen {
     case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
     case rekeyedAccountSelectionList(
-        accounts: [Account],
+        authAccount: Account,
+        rekeyedAccounts: [Account],
         eventHandler: RekeyedAccountSelectionListScreen.EventHandler
     )
 }

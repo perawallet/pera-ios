@@ -23,6 +23,8 @@ protocol RekeyedAccountSelectionListDataController: AnyObject {
 
     var eventHandler: ((RekeyedAccountSelectionListDataControllerEvent) -> Void)? { get set }
 
+    var authAccount: Account { get }
+
     var hasSingleAccount: Bool { get }
     var isPrimaryActionEnabled: Bool { get }
 
@@ -44,6 +46,7 @@ enum RekeyedAccountSelectionListSectionIdentifier:
 
 enum RekeyedAccountSelectionListItemIdentifier: Hashable {
     case account(RekeyedAccountSelectionListAccountCellItemIdentifier)
+    case accountLoading
 }
 
 struct RekeyedAccountSelectionListAccountCellItemIdentifier:

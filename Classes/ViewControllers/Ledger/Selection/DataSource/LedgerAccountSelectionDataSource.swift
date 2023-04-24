@@ -32,6 +32,7 @@ final class LedgerAccountSelectionDataSource:
     private let accountsFetchGroup = DispatchGroup()
     
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
     private let sharedDataController: SharedDataController
     private var accounts = [Account]()
     private let ledgerAccounts: [Account]
@@ -47,12 +48,14 @@ final class LedgerAccountSelectionDataSource:
     
     init(
         api: ALGAPI,
+        analytics: ALGAnalytics,
         sharedDataController: SharedDataController,
         accounts: [Account],
         rekeyingAccount: Account?,
         isMultiSelect: Bool
     ) {
         self.api = api
+        self.analytics = analytics
         self.sharedDataController = sharedDataController
         self.ledgerAccounts = accounts
         self.rekeyingAccount = rekeyingAccount
@@ -121,6 +124,13 @@ extension LedgerAccountSelectionDataSource {
                     }
                 }
             case .failure:
+                self.analytics.record(
+                    .ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed(
+                        accountAddress: account.address,
+                        network: self.api.network
+                    )
+                )
+
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
             }
             
@@ -130,6 +140,10 @@ extension LedgerAccountSelectionDataSource {
 
     private func authenticatedAccountOnTheSameLedgerDevice(_ rekeyedAccount: Account) -> Account? {
         return ledgerAccounts.first { $0.address == rekeyedAccount.address }
+    }
+
+    func getAuthAccount(of account: Account) -> Account? {
+        return ledgerAccounts.first(matching: (\.address, account.authAddress))
     }
 }
 

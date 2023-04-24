@@ -41,6 +41,12 @@ final class RekeyedAccountSelectionListDataSource:
                 )
                 cell.bindData(item.viewModel)
                 return cell
+            case .accountLoading:
+                let cell = collectionView.dequeue(
+                    RekeyedAccountSelectionListAccountLoadingCell.self,
+                    at: indexPath
+                )
+                return cell
             }
         }
 
@@ -62,7 +68,13 @@ final class RekeyedAccountSelectionListDataSource:
             return header
         }
 
-        collectionView.register(RekeyedAccountSelectionAccountCell.self)
+        [
+            RekeyedAccountSelectionListAccountLoadingCell.self,
+            RekeyedAccountSelectionAccountCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
+
         collectionView.register(header: RekeyedAccountSelectionListHeader.self)
     }
 }

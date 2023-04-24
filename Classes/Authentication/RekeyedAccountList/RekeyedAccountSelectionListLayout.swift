@@ -97,6 +97,12 @@ extension RekeyedAccountSelectionListLayout {
                 sizeForAccountItem: item,
                 atSection: indexPath.section
             )
+        case .accountLoading:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingItemAt: indexPath
+            )
         }
     }
 }
@@ -123,6 +129,21 @@ extension RekeyedAccountSelectionListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
 
         return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            for: listView,
+            forSectionAt: indexPath.section
+        )
+        return RekeyedAccountSelectionListAccountLoadingCell.calculatePreferredSize(
+            for: RekeyedAccountSelectionListAccountLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
     }
 
     private func listView(
