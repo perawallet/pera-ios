@@ -1,4 +1,4 @@
-// Copyright 2023 Pera Wallet, LDA
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetOptInListErrorViewModel.swift
+//
+//   AssetAdditionNoContentViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AssetOptInListErrorViewModel: ViewModel {
+struct OptInAssetListNotFoundViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
+    private(set) var title: EditText?
+    private(set) var body: EditText?
 
-    init(error: AssetListErrorItem) {
+    init() {
         bindIcon()
-        bindTitle(error: error)
-        bindBody(error: error)
+        bindTitle()
+        bindBody()
     }
 }
 
-extension AssetOptInListErrorViewModel {
+extension OptInAssetListNotFoundViewModel {
     mutating func bindIcon() {
-        icon = "icon-info-square".templateImage
+        icon = nil
     }
 
-    mutating func bindTitle(error: AssetListErrorItem) {
-        title = error.title?.bodyMedium(alignment: .center)
+    mutating func bindTitle() {
+        title = .attributedString(
+            "asset-not-found-title"
+                .localized
+                .bodyLargeMedium(
+                    alignment: .center
+                )
+        )
     }
 
-    mutating func bindBody(error: AssetListErrorItem) {
-        body = error.body?.footnoteRegular(alignment: .center)
+    mutating func bindBody() {
+        body = nil
     }
 }

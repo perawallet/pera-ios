@@ -12,18 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetOptInListNextErrorCell.swift
+//   OptInAssetListLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class AssetOptInListNextErrorCell:
-    CollectionCell<AssetOptInListNextErrorView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = AssetOptInListNextErrorViewTheme()
-    
-    override func getContextView() -> AssetOptInListNextErrorView {
-        return AssetOptInListNextErrorView(Self.theme)
+struct OptInAssetListLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var asset: ManageAssetListItemLoadingViewTheme
+    var assetHeight: CGFloat
+    var assetSeparator: Separator
+    var numberOfAssets: Int
+
+    init(_ family: LayoutFamily) {
+        self.asset = ManageAssetListItemLoadingViewTheme(family)
+        self.assetHeight = 80
+        self.assetSeparator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        self.numberOfAssets = 3
     }
 }

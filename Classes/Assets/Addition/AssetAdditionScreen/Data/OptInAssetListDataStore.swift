@@ -12,21 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetOptInListNextErrorViewModel.swift
+//   OptInAssetListDataStore.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct AssetOptInListNextErrorViewModel: ViewModel {
-    private(set) var body: TextProvider?
-    
-    init(error: AssetListErrorItem) {
-        bindBody(error: error)
-    }
+protocol OptInAssetListDataStore {
+    subscript (assetID: AssetID) -> AssetDecoration? { get }
 }
 
-extension AssetOptInListNextErrorViewModel {
-    mutating func bindBody(error: AssetListErrorItem) {
-        body = error.body?.footnoteRegular(alignment: .center)
-    }
+protocol OptInAssetListMutableDataStore {
+    subscript (assetID: AssetID) -> AssetDecoration? { get set }
+
+    func dump()
 }

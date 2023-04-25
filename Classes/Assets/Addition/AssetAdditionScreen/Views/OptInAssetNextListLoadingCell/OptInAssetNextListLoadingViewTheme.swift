@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   OptInAssetNextListLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+struct OptInAssetNextListLoadingViewTheme: LoadingViewTheme {
+    var loadingIndicator: ImageStyle
 
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.loadingIndicator = [
+            .image("List/Accessories/loading".templateImage),
+            .tintColor(Colors.Button.Primary.background)
+        ]
     }
 }

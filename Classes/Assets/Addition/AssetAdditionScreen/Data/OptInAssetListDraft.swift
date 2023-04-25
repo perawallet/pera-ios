@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetListViewTheme.swift
+//   OptInAssetListDraft.swift
 
-import MacaroonUIKit
+import Foundation
+import MagpieCore
 
-struct AssetListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
+struct OptInAssetListDraft: Equatable {
+    var query: String?
+    var cursor: String?
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.cellSpacing = 0
+    var hasMore: Bool {
+        return cursor != nil
+    }
+
+    init(query: OptInAssetListQuery?) {
+        self.query = query?.keyword
+        self.cursor = nil
     }
 }

@@ -12,15 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetOptInListErrorCell.swift
+//   OptInAssetListQuery.swift
 
 import Foundation
-import MacaroonUIKit
 
-final class AssetOptInListErrorCell: CollectionCell<AssetOptInListErrorView>, ViewModelBindable, UIInteractable {
-    static let theme = AssetOptInListErrorViewTheme()
-    
-    override func getContextView() -> AssetOptInListErrorView {
-        return AssetOptInListErrorView(Self.theme)
-    }
+struct OptInAssetListQuery {
+    var keyword: String?
 }
