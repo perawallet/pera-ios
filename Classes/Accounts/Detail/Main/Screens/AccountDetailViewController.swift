@@ -27,9 +27,13 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToPassphraseDisplay = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToTransactionOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToManagementOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRemoveAccountConfirmation = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = createAssetListScreen()
     private lazy var collectibleListScreen = createCollectibleListScreen()
@@ -178,7 +182,7 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
-                self.modalTransition.perform(
+                self.transitionToManagementOptions.perform(
                     .managementOptions(
                         managementType: isWatchAccount ? .watchAccountAssets : .assets,
                         delegate: self
@@ -339,8 +343,11 @@ extension AccountDetailViewController {
     }
 
     private func presentOptionsScreen() {
-        modalTransition.perform(
-            .options(account: self.accountHandle.value, delegate: self),
+        transitionToOptions.perform(
+            .options(
+                account: accountHandle.value,
+                delegate: self
+            ),
             by: .presentWithoutNavigationController
         )
     }
@@ -398,7 +405,7 @@ extension AccountDetailViewController {
     private func openAccountActionsMenu() {
         view.endEditing(true)
 
-        self.modalTransition.perform(
+        transitionToTransactionOptions.perform(
             .transactionOptions(delegate: self),
             by: .presentWithoutNavigationController
         )
@@ -561,7 +568,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
-        modalTransition.perform(
+        transitionToPassphraseDisplay.perform(
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
@@ -580,36 +587,30 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        displayRemoveAccountAlert()
+        presentRemoveAccountConfirmation()
     }
+}
 
-    private func displayRemoveAccountAlert() {
-        let account = accountHandle.value
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                account.isWatchAccount()
-                ? "options-remove-watch-account-explanation".localized
-                : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount()
+extension AccountDetailViewController {
+    private func presentRemoveAccountConfirmation() {
+        let eventHandler: RemoveAccountSheet.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didRemoveAccount:
+                self.dismiss(animated: true) {
+                    self.eventHandler?(.didRemove)
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
             }
-        )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
+        }
+        transitionToRemoveAccountConfirmation.perform(
+            .removeAccount(
+                account: accountHandle.value,
+                eventHandler: eventHandler
+            ),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(accountHandle.value)
-        walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
-        eventHandler?(.didRemove)
     }
 }
 

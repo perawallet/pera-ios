@@ -26,7 +26,10 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
     var notificationObservations: [NSObjectProtocol] = []
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToPassphraseDisplay = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToInvalidAccount = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToPortfolioCalculationInfo = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRemoveAccountConfirmation = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
@@ -426,7 +429,7 @@ extension HomeViewController {
                 }
             }
 
-            self.modalTransition.perform(
+            self.transitionToPortfolioCalculationInfo.perform(
                 .portfolioCalculationInfo(
                     result: self.totalPortfolioValue,
                     eventHandler: eventHandler
@@ -701,7 +704,7 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func presentOptions(for accountHandle: AccountHandle) {
-        modalTransition.perform(
+        transitionToInvalidAccount.perform(
             .invalidAccount(
                 account: accountHandle,
                 uiInteractionsHandler: linkInvalidAccountOptionsUIInteractions(
@@ -1033,7 +1036,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             }
 
             let account = accountHandle.value
-            self.presentRemoveAccountAlert(account)
+            self.presentRemoveAccountConfirmation(account)
         }
 
         return uiInteractions
@@ -1056,30 +1059,29 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
     }
 
     private func presentPassphraseView(_ accountHandle: AccountHandle) {
-        modalTransition.perform(
+        transitionToPassphraseDisplay.perform(
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
     }
 
-    private func presentRemoveAccountAlert(_ account: Account) {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                account.isWatchAccount()
-                ? "options-remove-watch-account-explanation".localized
-                : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount(account)
+    private func presentRemoveAccountConfirmation(_ account: Account) {
+        let eventHandler: RemoveAccountSheet.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didRemoveAccount:
+                self.dismiss(animated: true) {
+                    self.dataController.reload()
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
             }
-        )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
+        }
+        transitionToRemoveAccountConfirmation.perform(
+            .removeAccount(
+                account: account,
+                eventHandler: eventHandler
+            ),
             by: .presentWithoutNavigationController
         )
     }
@@ -1098,10 +1100,6 @@ extension HomeViewController {
         }
 
         return dataController[item.address]
-    }
-    
-    private func removeAccount(_ account: Account) {
-        dataController.removeAccount(account)
     }
 }
 

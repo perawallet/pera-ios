@@ -5922,6 +5922,9 @@
 		D4D9EDD72701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */; };
 		D4D9EDD82701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */; };
 		D4D9EDD92701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */; };
+		D4DADADE29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
+		D4DADADF29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
+		D4DADAE029F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
 		D4DC267728AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
 		D4DC267828AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
 		D4DC267928AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
@@ -9126,6 +9129,7 @@
 		D4D9E669299C13330043AD19 /* BidaliFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliFlowCoordinator.swift; sourceTree = "<group>"; };
 		D4D9E66D299CC4DD0043AD19 /* BuyWithTransakOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyWithTransakOptionViewModel.swift; sourceTree = "<group>"; };
 		D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationStatusViewTheme.swift; sourceTree = "<group>"; };
+		D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountSheet.swift; sourceTree = "<group>"; };
 		D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreenWithFillingImageTheme.swift; sourceTree = "<group>"; };
 		D4DC269628B145160068152E /* TransactionOptionsScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOptionsScreenTheme.swift; sourceTree = "<group>"; };
 		D4DC26AE28B3A22E0068152E /* ASAAboutScreenASAIDSecondaryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAAboutScreenASAIDSecondaryListItem.swift; sourceTree = "<group>"; };
@@ -12613,6 +12617,7 @@
 				D46B2F5029C9EE0E00CC2395 /* AccountInformation */,
 				2B80C52127720A9800BB071E /* Assets */,
 				2B80C52327720AA500BB071E /* Collectibles */,
+				D4DADADC29F19AE7002836BE /* RemoveAccount */,
 				2B80C52427720AAE00BB071E /* Main */,
 				2B80C52227720A9F00BB071E /* Transactions */,
 			);
@@ -19789,6 +19794,14 @@
 			path = Sell;
 			sourceTree = "<group>";
 		};
+		D4DADADC29F19AE7002836BE /* RemoveAccount */ = {
+			isa = PBXGroup;
+			children = (
+				D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */,
+			);
+			path = RemoveAccount;
+			sourceTree = "<group>";
+		};
 		D4DCD6DE29D74F07007CA6B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -23312,6 +23325,7 @@
 				17C933102946FD56000EE03D /* DiscoverAssetBuyEvent.swift in Sources */,
 				2B88F50C27E2ADBE00E6E296 /* CollectibleMediaImagePreviewView.swift in Sources */,
 				2B9FDE9328A4F9C300C8117D /* AssetVerificationInfoViewModel.swift in Sources */,
+				D4DADAE029F19AFF002836BE /* RemoveAccountSheet.swift in Sources */,
 				D4F4C8D929D1AB720069FB94 /* LedgerToLedgerRekeyedAccountInformationScreenTheme.swift in Sources */,
 				D47C4AB32791BEA90012D7A6 /* NoInternetConnectionViewModel.swift in Sources */,
 				95C0BD1927F2220A00FF010D /* Session+Announcement.swift in Sources */,
@@ -24605,6 +24619,7 @@
 				2B0F61CF24EC129D00DA22A6 /* AssetAdditionDraft.swift in Sources */,
 				2B97787429943AA500F88C7C /* NavigationPrimaryTitleItemViewTheme.swift in Sources */,
 				2B2AACD1250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
+				D4DADADF29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */,
 				F0C72831283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */,
 				2B0F61D124EC129D00DA22A6 /* Reusable.swift in Sources */,
 				D4D3AE7E284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */,
@@ -27896,6 +27911,7 @@
 				17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */,
 				2BCE8F93284A43BD00C6FD6C /* ManagementOptionsViewController.swift in Sources */,
 				2B71CBA429000E7200B1E1A0 /* ConfirmSwapAmountOutInputViewModel.swift in Sources */,
+				D4DADADE29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */,
 				2BB93BC525BEF34F001F1D6C /* RemoveAssetTransactionDataBuilder.swift in Sources */,
 				2B2DF29028103499008BC52D /* CurrencySelectionListLayout.swift in Sources */,
 				D4F4C8ED29D1B3120069FB94 /* StandardToStandardRekeyedAccountInformationScreen.swift in Sources */,
