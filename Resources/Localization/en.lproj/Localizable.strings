@@ -1512,7 +1512,7 @@
 
 // MARK: Have you backed up your account
 "back-up-before-removing-account-warning-title" = "Have you backed up your account?";
-"back-up-before-removing-account-warning-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access this account and its funds will be lost forever.";
+"back-up-before-removing-account-warning-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access to this account and its funds will be lost forever.";
 "back-up-before-removing-account-warning-cancel-action" = "No, keep account";
 
 // MARK: Previous Rekey Replace Confirmation
