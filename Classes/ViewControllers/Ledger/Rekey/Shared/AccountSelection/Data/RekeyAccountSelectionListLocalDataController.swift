@@ -86,6 +86,13 @@ extension RekeyAccountSelectionListLocalDataController {
 
             let filteredAccounts = sortedAccounts.filter {
                 let rawAccount = $0.value
+
+                /// <note>
+                /// We're not displaying the same account in this list, we've a different flow for undoing the rekey.
+                if rawAccount.isSameAccount(with: self.account) {
+                    return false
+                }
+
                 let isRekeyingRestricted = self.isRekeyingRestricted(to: rawAccount)
                 return !isRekeyingRestricted
             }
