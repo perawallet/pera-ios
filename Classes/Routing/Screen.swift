@@ -358,6 +358,20 @@ indirect enum Screen {
     case ledgerToLedgerRekeyedAccountInformation(from: Account, to: Account)
     case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
+    case undoRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: UndoRekeyConfirmationSheet.EventHandler
+    )
+    case overwriteRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
+    )
+    case removeAccount(
+        account: Account,
+        eventHandler: RemoveAccountSheet.EventHandler
+    )
 }
 
 extension Screen {

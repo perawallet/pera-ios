@@ -141,8 +141,8 @@ extension StandardToStandardRekeyedAccountInformationScreen {
         }
 
         accountTypeInformationView.startObserving(event: .performHyperlinkAction) {
-//            [unowned let] in
-            /// <todo> Open "Learn more"
+            [unowned self] in
+            self.open(AlgorandWeb.rekey.link)
         }
 
         bindAccountTypeInformation()

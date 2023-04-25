@@ -30,6 +30,8 @@ final class UISheetActionScreen:
     private lazy var imageView = ImageView()
     private lazy var titleView = Label()
     private lazy var bodyView = Label()
+    private lazy var infoIconView = UIImageView()
+    private lazy var infoMessageView = UILabel()
     private lazy var actionsContextView = MacaroonUIKit.VStackView()
 
     private let sheet: UISheet
@@ -89,6 +91,10 @@ extension UISheetActionScreen {
         addImage()
         addTitle()
         addBody()
+
+        if sheet.info != nil {
+            addInfo()
+        }
     }
 
     private func addImage() {
@@ -130,10 +136,41 @@ extension UISheetActionScreen {
             $0.top == titleView.snp.bottom
             $0.leading == 0
             $0.trailing == 0
-            $0.bottom == 0
+            $0.bottom.equalToSuperview().priority(.medium)
         }
         
         sheet.body?.load(in: bodyView)
+    }
+
+    private func addInfo() {
+        addInfoIcon()
+        addInfoMessage()
+    }
+
+    private func addInfoIcon() {
+        infoIconView.customizeAppearance(theme.infoIcon)
+
+        contextView.addSubview(infoIconView)
+        infoIconView.fitToIntrinsicSize()
+        infoIconView.snp.makeConstraints {
+            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInfo
+            $0.leading == 0
+        }
+    }
+
+    private func addInfoMessage() {
+        infoMessageView.customizeAppearance(theme.infoMessage)
+
+        contextView.addSubview(infoMessageView)
+        infoMessageView.snp.makeConstraints {
+            $0.height >= infoIconView
+            $0.top == infoIconView
+            $0.leading == infoIconView.snp.trailing + theme.spacingBetweeenInfoIconAndInfoMessage
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        sheet.info?.load(in: infoMessageView)
     }
 
     private func addActionsContext() {

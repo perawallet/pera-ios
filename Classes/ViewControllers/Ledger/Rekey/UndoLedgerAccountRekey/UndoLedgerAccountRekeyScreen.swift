@@ -209,8 +209,8 @@ extension UndoLedgerAccountRekeyScreen {
             to: text,
             attributes: attributes
         ) {
-            // [unowned self] in
-            /// <todo> Open "Learn more"
+            [unowned self] in
+            self.open(AlgorandWeb.rekey.link)
         }
     }
 

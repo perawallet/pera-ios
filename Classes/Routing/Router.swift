@@ -1778,6 +1778,39 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = UndoRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
+        case let .overwriteRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = OverwriteRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
+        case let .removeAccount(account, eventHandler):
+            let sharedDataController = appConfiguration.sharedDataController
+            let walletConnector = appConfiguration.walletConnector
+            let uiSheet = RemoveAccountSheet(
+                account: account,
+                sharedDataController: sharedDataController,
+                walletConnector: walletConnector,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
         }
 
         return viewController as? T
