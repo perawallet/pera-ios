@@ -1795,6 +1795,19 @@ class Router:
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             )
+        case let .removeAccount(account, eventHandler):
+            let sharedDataController = appConfiguration.sharedDataController
+            let walletConnector = appConfiguration.walletConnector
+            let uiSheet = RemoveAccountSheet(
+                account: account,
+                sharedDataController: sharedDataController,
+                walletConnector: walletConnector,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
         }
 
         return viewController as? T

@@ -368,6 +368,10 @@ indirect enum Screen {
         authAccount: Account,
         eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
     )
+    case removeAccount(
+        account: Account,
+        eventHandler: RemoveAccountSheet.EventHandler
+    )
 }
 
 extension Screen {
