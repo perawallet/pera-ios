@@ -1204,8 +1204,11 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .transactionOptions(let delegate):
-            let aViewController = TransactionOptionsScreen(configuration: configuration)
+        case .transactionOptions(let account, let delegate):
+            let aViewController = TransactionOptionsScreen(
+                account: account,
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
         case .qrScanOptions(let address, let eventHandler):

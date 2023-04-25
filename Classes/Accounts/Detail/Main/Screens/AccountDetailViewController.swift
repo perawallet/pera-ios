@@ -189,6 +189,10 @@ extension AccountDetailViewController {
                     ),
                     by: .present
                 )
+            case .copyAddress:
+                self.copyAddress()
+            case .showAddress:
+                self.openShowAddress()
             case .addAsset:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
@@ -219,52 +223,60 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController: TransactionOptionsScreenDelegate {
-    func transactionOptionsScreenDidAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapCopyAddress(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
+            [unowned self] in
+            self.copyAddress()
+        }
+    }
 
+    func transactionOptionsScreenDidTapShowAddress(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [unowned self] in
+            self.openShowAddress()
+        }
+    }
+
+    func transactionOptionsScreenDidTapAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [unowned self] in
             self.openAddAssetScreen()
         }
     }
 
-    func transactionOptionsScreenDidBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.openBuySellOptions()
+            [unowned self] in
+            self.openBuySellOptions()
         }
     }
 
-    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else { return }
-            
+            [unowned self] in
             self.analytics.track(.recordAccountDetailScreen(type: .swap))
             self.swapAssetFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.sendTransactionFlowCoordinator.launch()
+            [unowned self] in
+            self.sendTransactionFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.receiveTransactionFlowCoordinator.launch()
+            [unowned self] in
+            self.receiveTransactionFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.presentOptionsScreen()
+            [unowned self] in
+            self.presentOptionsScreen()
         }
     }
 }
@@ -395,8 +407,13 @@ extension AccountDetailViewController {
     @objc
     private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
-            copyToClipboardController.copyAddress(accountHandle.value)
+            copyAddress()
         }
+    }
+
+    private func copyAddress() {
+        let account = accountHandle.value
+        copyToClipboardController.copyAddress(account)
     }
 }
 
@@ -406,7 +423,10 @@ extension AccountDetailViewController {
         view.endEditing(true)
 
         transitionToTransactionOptions.perform(
-            .transactionOptions(delegate: self),
+           .transactionOptions(
+                account: accountHandle.value,
+                delegate: self
+            ),
             by: .presentWithoutNavigationController
         )
     }
@@ -416,7 +436,8 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
         analytics.track(.showQRCopy(account: account))
-        copyToClipboardController.copyAddress(account)
+
+        copyAddress()
     }
 
     func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
@@ -522,6 +543,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        openShowAddress()
+    }
+
+    private func openShowAddress() {
         let account = accountHandle.value
         let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
