@@ -139,10 +139,6 @@ final class AlgorandSecureBackupImportBackupScreen:
         addFileView()
         addPasteAction()
         addNextAction()
-    }
-
-    override func bindData() {
-        super.bindData()
 
         bindFile(for: .empty)
     }
@@ -300,7 +296,7 @@ extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
             do {
                 fileName = try AlgorandSecureBackup(url: url).fileName
             } catch {
-                bindFile(for: .uploadFailed(.cipherSuiteInvalid))
+                bindFile(for: .uploadFailed(.cipherSuiteUnknown))
                 return
             }
 
@@ -334,7 +330,7 @@ extension AlgorandSecureBackupImportBackupScreen {
         case .unsupportedVersion:
             title = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
             message = ""
-        case .cipherSuiteUnknown, .cipherSuiteInvalid:
+        case .cipherSuiteUnknown:
             title = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
             message = ""
         case .jsonSerialization:
@@ -342,6 +338,9 @@ extension AlgorandSecureBackupImportBackupScreen {
             message = ""
         case .unauthorized:
             title = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+            message = ""
+        case .keyNotFound(let key):
+            title = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(key)
             message = ""
         }
 

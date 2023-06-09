@@ -140,8 +140,8 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
             restoredAccounts
                 .filter {
                     let isWatchAccount = $0.isWatchAccount()
-                    let requiresLedgerConnection = $0.requiresLedgerConnection()
-                    return !isWatchAccount && !requiresLedgerConnection
+                    let isRekeyedToAnyAccount = $0.isRekeyedToAnyAccount()
+                    return !isWatchAccount && !isRekeyedToAnyAccount
                 }
 
         addAccountItems(&snapshot, accounts: accounts)

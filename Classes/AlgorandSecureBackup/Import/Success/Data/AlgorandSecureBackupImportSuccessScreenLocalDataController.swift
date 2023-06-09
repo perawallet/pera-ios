@@ -73,7 +73,7 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
             return Account(localAccount: accountInformation)
         }
 
-        let filteredAccounts = accounts.compactMap { account in
+        let filteredAccounts = selectedAccounts.compactMap { account in
             return accountsDictionary[account.address]
         }
 

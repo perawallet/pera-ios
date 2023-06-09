@@ -18,6 +18,7 @@ import Foundation
 
 final class BackupValidator {
     private let supportedVersion: String = "1.0"
+    private let supportedSuite: String = "HMAC-SHA256:sodium_secretbox_easy"
 
     func validate(invalidatedString: String?) -> BackupValidation {
         guard let invalidatedString, !invalidatedString.isEmptyOrBlank else {
@@ -32,16 +33,24 @@ final class BackupValidator {
             return .failure(.jsonSerialization)
         }
 
+        if secureBackup.version == nil {
+            return .failure(.keyNotFound(SecureBackup.CodingKeys.version.rawValue))
+        }
+
+        if secureBackup.suite == nil {
+            return .failure(.keyNotFound(SecureBackup.CodingKeys.suite.rawValue))
+        }
+
+        if secureBackup.cipherText == nil {
+            return .failure(.keyNotFound(SecureBackup.CodingKeys.cipherText.rawValue))
+        }
+
         guard secureBackup.version == supportedVersion else {
             return .failure(.unsupportedVersion)
         }
 
-        guard !secureBackup.suite.isNilOrEmpty else {
+        guard secureBackup.suite == supportedSuite else {
             return .failure(.cipherSuiteUnknown)
-        }
-
-        guard secureBackup.cipherText != nil else {
-            return .failure(.cipherSuiteInvalid)
         }
 
         return .success(secureBackup)
@@ -59,6 +68,6 @@ enum BackupValidationError: Error {
     case jsonSerialization
     case unsupportedVersion
     case cipherSuiteUnknown
-    case cipherSuiteInvalid
     case unauthorized
+    case keyNotFound(String)
 }

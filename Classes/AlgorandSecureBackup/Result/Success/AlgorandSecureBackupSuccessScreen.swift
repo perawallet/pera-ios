@@ -72,7 +72,7 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
 
         let closeButtonItem = ALGBarButtonItem(kind: .close(nil)) { [weak self] in
             guard let self else { return }
-            self.eventHandler?(.complete, self)
+            self.performDone()
         }
 
         hidesCloseBarButtonItem = true

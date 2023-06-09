@@ -42,12 +42,15 @@ extension AlgorandSecureBackupFlowCoordinator {
     }
 
     private func openInstructions(by transition: Screen.Transition.Open) {
-        let screen: Screen = .algorandSecureBackupInstructions { [weak self] event, screen in
+        presentingScreen.open(makeInstructionScreen(), by: transition)
+        self.launchTransition = transition
+    }
+
+    private func makeInstructionScreen() -> Screen {
+        .algorandSecureBackupInstructions { [weak self] event, screen in
             guard let self else { return }
             self.openPasswordScreenIfNeeded(from: screen)
         }
-        presentingScreen.open(screen, by: transition)
-        self.launchTransition = transition
     }
 
     private func openPasswordScreenIfNeeded(from viewController: UIViewController) {
@@ -135,7 +138,27 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
     ) {
         guard isConfirmed else { return }
 
-        choosePasswordViewController.open(makeAccountSelection(), by: .set)
+        choosePasswordViewController.open(makeAccountSelection(), by: .push)
+        removePasswordViewController(in: choosePasswordViewController.navigationController)
+    }
+
+    private func removePasswordViewController(
+        in navigationController: UINavigationController?
+    ) {
+        guard let navigationController else {
+            return
+        }
+
+        var viewControllers = navigationController.viewControllers
+
+        for (index, viewController) in viewControllers.enumerated() {
+            if viewController is ChoosePasswordViewController {
+                viewControllers.remove(at: index)
+                break
+            }
+        }
+
+        navigationController.setViewControllers(viewControllers, animated: false)
     }
 }
 

@@ -56,6 +56,7 @@ final class AlgorandSecureBackupFileView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: AlgorandSecureBackupFileViewModel?) {
+        updateIconPosition(viewModel)
 
         if let style = viewModel?.imageStyle {
             iconView.customizeAppearance(style)
@@ -87,6 +88,16 @@ final class AlgorandSecureBackupFileView:
             actionView.customizeAppearance(style)
         } else {
             actionView.customizeAppearance(NoStyleSheet())
+        }
+    }
+
+    private func updateIconPosition(_ viewModel: AlgorandSecureBackupFileViewModel?) {
+        let theme = AlgorandSecureBackupFileViewTheme()
+        let isEmptyState = viewModel?.isEmptyState ?? true
+
+        iconBackgroundView.snp.updateConstraints { make in
+            let topInset = isEmptyState ? theme.iconTopInset : theme.iconAlignedTopInset
+            make.top == topInset
         }
     }
 }

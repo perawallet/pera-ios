@@ -37,18 +37,23 @@ final class SettingsDataSource: NSObject {
     private(set) lazy var supportSettings: [SupportSettings] = [
         .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer
     ]
-    
+
+    private let sharedDataController: SharedDataController
     private let walletConnector: WalletConnector
     private var session: Session?
     
     init(
+        sharedDataController: SharedDataController,
         walletConnector: WalletConnector,
         session: Session?
     ) {
+        self.sharedDataController = sharedDataController
         self.walletConnector = walletConnector
         
         super.init()
         self.session = session
+
+        sharedDataController.add(self)
     }
 }
 
@@ -57,8 +62,8 @@ extension SettingsDataSource {
         self.accountSettings = createAccountSettings()
     }
 
-    private func createAccountSettings() -> [AccountSettings] {
-        let secureBackupSettings = createSecureBackupSettings()
+    private func createAccountSettings(_ accounts: [Account]? = nil) -> [AccountSettings] {
+        let secureBackupSettings = createSecureBackupSettings(accounts)
 
         return [
             secureBackupSettings,
@@ -69,15 +74,19 @@ extension SettingsDataSource {
         ]
     }
 
-    private func createSecureBackupSettings() -> AccountSettings {
-        let accounts = session?.authenticatedUser?.accounts ?? []
+    private func createSecureBackupSettings(_ accounts: [Account]? = nil) -> AccountSettings {
+        guard let accounts else {
+            return .secureBackupLoading
+        }
+
+        let filteredAccounts = accounts.filter {
+            let isWatchAccount = $0.isWatchAccount()
+            let isRekeyedToAnyAccount = $0.isRekeyedToAnyAccount()
+            return !isWatchAccount && !isRekeyedToAnyAccount
+        }
 
         var numberOfAccountsNotBackedUp = 0
-        for account in accounts {
-            guard account.type == .standard else {
-                continue
-            }
-
+        for account in filteredAccounts {
             if session?.backups[account.address] == nil {
                 numberOfAccountsNotBackedUp = numberOfAccountsNotBackedUp.advanced(by: 1)
             }
@@ -109,7 +118,12 @@ extension SettingsDataSource: UICollectionViewDataSource {
             switch section {
             case .account:
                 if let setting = accountSettings[safe: indexPath.item] {
-                    return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+                    switch setting {
+                    case .secureBackupLoading:
+                        return setSettingsLoadingCell(from: setting, in: collectionView, at: indexPath)
+                    default:
+                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+                    }
                 }
             case .appPreferences:
                 if let setting = appPreferenceSettings[safe: indexPath.item] {
@@ -137,6 +151,16 @@ extension SettingsDataSource: UICollectionViewDataSource {
         cell.bindData(SettingsDetailViewModel(settingsItem: setting))
         return cell
     }
+
+    private func setSettingsLoadingCell(
+        from setting: Settings,
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> SettingsLoadingCell {
+        let cell = collectionView.dequeue(SettingsLoadingCell.self, at: indexPath)
+        cell.bindData(SettingsDetailViewModel(settingsItem: setting))
+        return cell
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -158,6 +182,25 @@ extension SettingsDataSource: UICollectionViewDataSource {
     }
 }
 
+extension SettingsDataSource: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        let accounts: [Account]
+
+        switch event {
+        case .didFinishRunning:
+            accounts = sharedDataController.sortedAccounts().map { $0.value }
+        default:
+            return
+        }
+
+        self.accountSettings = createAccountSettings(accounts)
+        self.delegate?.settingsDataSourceDidReloadAccounts(self)
+    }
+}
+
 extension SettingsDataSource: SettingsFooterSupplementaryViewDelegate {
     func settingsFooterSupplementaryViewDidTapLogoutButton(_ settingsFooterSupplementaryView: SettingsFooterSupplementaryView) {
         delegate?.settingsDataSourceDidTapLogout(self, settingsFooterSupplementaryView)
@@ -169,4 +212,5 @@ protocol SettingsDataSourceDelegate: AnyObject {
         _ settingsDataSource: SettingsDataSource,
         _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView
     )
+    func settingsDataSourceDidReloadAccounts(_ settingsDataSource: SettingsDataSource)
 }
