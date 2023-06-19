@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   UndoStandardAccountRekeyScreenTheme.swift
+//   UndoAnyAccountRekeyScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct UndoStandardAccountRekeyScreenTheme:
+struct UndoAnyAccountRekeyScreenTheme:
     LayoutSheet,
     StyleSheet {
     var background: ViewStyle

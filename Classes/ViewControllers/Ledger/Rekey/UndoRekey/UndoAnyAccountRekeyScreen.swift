@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   UndoLedgerAccountRekeyScreen.swift
+//   UndoAnyAccountRekeyScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class UndoLedgerAccountRekeyScreen: ScrollScreen {
+final class UndoAnyAccountRekeyScreen: ScrollScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
@@ -28,7 +28,7 @@ final class UndoLedgerAccountRekeyScreen: ScrollScreen {
     private lazy var informationContentView = MacaroonUIKit.VStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    private let theme: UndoLedgerAccountRekeyScreenTheme
+    private let theme: UndoAnyAccountRekeyScreenTheme
 
     private let sourceAccount: Account
     private let authAccount: Account
@@ -38,7 +38,7 @@ final class UndoLedgerAccountRekeyScreen: ScrollScreen {
         sourceAccount: Account,
         authAccount: Account,
         newAuthAccount: Account,
-        theme: UndoLedgerAccountRekeyScreenTheme = .init()
+        theme: UndoAnyAccountRekeyScreenTheme = .init()
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
@@ -73,7 +73,7 @@ final class UndoLedgerAccountRekeyScreen: ScrollScreen {
     }
 }
 
-extension UndoLedgerAccountRekeyScreen {
+extension UndoAnyAccountRekeyScreen {
     private func addUI() {
         addBackground()
         addTitle()
@@ -161,7 +161,7 @@ extension UndoLedgerAccountRekeyScreen {
     }
 }
 
-extension UndoLedgerAccountRekeyScreen {
+extension UndoAnyAccountRekeyScreen {
     private func addCurrentlyRekeyed() {
         let view = SecondaryListItemView()
         let theme = RekeyConfirmationInformationItemCommonTheme()
@@ -184,7 +184,7 @@ extension UndoLedgerAccountRekeyScreen {
     }
 }
 
-extension UndoLedgerAccountRekeyScreen {
+extension UndoAnyAccountRekeyScreen {
     private func bindTitle() {
         titleView.attributedText =
             "title-undo-rekey-capitalized-sentence"
@@ -227,14 +227,14 @@ extension UndoLedgerAccountRekeyScreen {
     }
 }
 
-extension UndoLedgerAccountRekeyScreen {
+extension UndoAnyAccountRekeyScreen {
     @objc
     private func performPrimaryAction() {
         eventHandler?(.performPrimaryAction)
     }
 }
 
-extension UndoLedgerAccountRekeyScreen {
+extension UndoAnyAccountRekeyScreen {
     enum Event {
         case performPrimaryAction
     }
