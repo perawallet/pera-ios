@@ -201,7 +201,7 @@ extension RekeyConfirmationScreen {
         let aText: String
 
         if authAccount != nil {
-            aText = "rekeyed-to-any-account-confirmation-body".localized
+            aText = "rekey-rekeyed-to-any-account-confirmation-body".localized
         } else {
             aText = "rekey-any-to-any-account-confirmation-body".localized
         }
@@ -211,7 +211,7 @@ extension RekeyConfirmationScreen {
         let aHighlightedText: String
 
         if authAccount != nil {
-            aHighlightedText = "rekeyed-to-any-account-confirmation-body-highlighted-text".localized
+            aHighlightedText = "rekey-rekeyed-to-any-account-confirmation-body-highlighted-text".localized
         } else {
             aHighlightedText = "rekey-any-to-any-account-confirmation-body-highlighted-text".localized
         }
