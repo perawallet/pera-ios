@@ -268,6 +268,10 @@ extension BaseViewController {
     var launchController: AppLaunchController {
         return configuration.launchController
     }
+    
+    var peraConnect: PeraConnect {
+        return configuration.peraConnect
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

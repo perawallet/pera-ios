@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WalletConnectorV2.swift
+//   WalletConnectV2Protocol.swift
 
 import Combine
 import Foundation
@@ -20,7 +20,8 @@ import WalletConnectNetworking
 import WalletConnectPairing
 import Web3Wallet
 
-final class WalletConnectorV2 {
+final class WalletConnectV2Protocol: WalletConnectProtocol {
+    var eventHandler: ((WalletConnectV2Event) -> Void)?
     
     private var signAPI: SignClient {
         return Sign.instance
@@ -30,7 +31,8 @@ final class WalletConnectorV2 {
         return Pair.instance
     }
     
-    private lazy var sessionValidator = WalletConnectV2SessionValidator()
+    private(set) var sessionValidator: WalletConnectSessionValidator
+    
     private var publishers = [AnyCancellable]()
     
     /// Account address that is used for the test connection/transaction.
@@ -57,10 +59,11 @@ final class WalletConnectorV2 {
     
     init(api: ALGAPI) {
         self.api = api
+        self.sessionValidator = WalletConnectV2SessionValidator()
     }
 }
 
-extension WalletConnectorV2 {
+extension WalletConnectV2Protocol {
     func setup() {
         Networking.configure(
             projectId: projectID,
@@ -73,7 +76,7 @@ extension WalletConnectorV2 {
     }
 }
 
-extension WalletConnectorV2 {
+extension WalletConnectV2Protocol {
     func pair(with topic: String) {
         guard let uri = WalletConnectURI(string: topic) else { return }
         
@@ -88,12 +91,12 @@ extension WalletConnectorV2 {
         }
     }
     
-    func isValidSession(_ uri: String) -> Bool {
+    func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         return sessionValidator.isValidSession(uri)
     }
 }
 
-extension WalletConnectorV2 {
+extension WalletConnectV2Protocol {
     func getSessions() -> [WalletConnectSign.Session] {
         return signAPI.getSessions()
     }
@@ -165,7 +168,7 @@ extension WalletConnectorV2 {
     }
 }
 
-extension WalletConnectorV2 {
+extension WalletConnectV2Protocol {
     private func approveTransactionRequest(
         _ request: Request,
         response: AnyCodable
@@ -207,7 +210,7 @@ extension WalletConnectorV2 {
     }
 }
 
-extension WalletConnectorV2 {
+extension WalletConnectV2Protocol {
     private func setupEvents() {
         handleSessionEvents()
         handleSessionProposalEvents()
@@ -234,7 +237,9 @@ extension WalletConnectorV2 {
                 [weak self] sessionProposal in
                 guard let self else { return }
                 
-                var sessionNamespaces = [String: SessionNamespace]()
+                self.eventHandler?(.session(sessionProposal))
+                
+                /* var sessionNamespaces = [String: SessionNamespace]()
                 sessionProposal.requiredNamespaces.forEach {
                     let caip2Namespace = $0.key
                     let proposalNamespace = $0.value
@@ -258,12 +263,16 @@ extension WalletConnectorV2 {
                 self.approveSession(
                     sessionProposal.id,
                     namespaces: sessionNamespaces
-                )
+                ) */
                 
             }.store(in: &publishers)
     }
     
     private func handleSessionDeletionEvents() {
+        // sessionSettlePublisher
+        // sessionUpdatePublisher
+        // sessionExtendPublisher
+        // pingResponsePublisher
         signAPI
             .sessionDeletePublisher
             .receive(on: DispatchQueue.main)
@@ -282,17 +291,23 @@ extension WalletConnectorV2 {
                 [weak self] request in
                 guard let self else { return }
                 
-                guard let params2 = try? request.params.get([[WCTransaction]].self) else { return }
-                
-                guard let unparsedTransactionDetail = params2.first?.first?.unparsedTransactionDetail else { return }
+                if let transactionRequests = try? request.params.get([[WCTransaction]].self) {
+                    self.eventHandler?(.transactionRequest(transactionRequests))
+                }
+                /* guard let unparsedTransactionDetail = params2.first?.first?.unparsedTransactionDetail else { return }
 
                 var error: NSError?
                 
                 if let signature = self.api.session.privateData(for: self.accountAddress) {
                     let signedTransaction = self.algorandSDK.sign(signature, with: unparsedTransactionDetail, error: &error)
                     self.approveTransactionRequest(request, response: AnyCodable([signedTransaction]))
-                }
+                } */
                 
             }.store(in: &publishers)
     }
+}
+
+enum WalletConnectV2Event {
+    case session(WalletConnectSign.Session.Proposal)
+    case transactionRequest([[WCTransaction]])
 }

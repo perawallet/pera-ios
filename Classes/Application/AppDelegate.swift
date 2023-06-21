@@ -71,7 +71,8 @@ class AppDelegate:
         toastPresentationController: toastPresentationController,
         lastSeenNotificationController: lastSeenNotificationController,
         analytics: analytics,
-        launchController: appLaunchController
+        launchController: appLaunchController,
+        peraConnect: peraConnect
     )
 
     private lazy var appLaunchController = createAppLaunchController()
@@ -88,6 +89,7 @@ class AppDelegate:
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
     private lazy var analytics = createAnalytics()
+    private lazy var peraConnect = createPeraConnect()
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
@@ -110,7 +112,7 @@ class AppDelegate:
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
     
-    private lazy var walletConnectorV2 = WalletConnectorV2(api: appConfiguration.api)
+    private lazy var walletConnectV2Protocol = WalletConnectV2Protocol(api: appConfiguration.api)
     
     func application(
         _ application: UIApplication,
@@ -127,7 +129,7 @@ class AppDelegate:
 
         launch(with: launchOptions)
         
-        walletConnectorV2.setup()
+        walletConnectV2Protocol.setup()
 
         return true
     }
@@ -552,6 +554,10 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
+    private func createPeraConnect() -> PeraConnect {
+        return ALGPeraConnect()
+    }
+    
     private func createAppLaunchController() -> AppLaunchController {
         return ALGAppLaunchController(
             session: session,

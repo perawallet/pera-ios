@@ -46,7 +46,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         $0.showsConnectedAppsButton = self.isShowingConnectedAppsButton
     }
 
-    private lazy var walletConnectorV2 = WalletConnectorV2(api: api!)
+    private lazy var walletConnectV2Protocol = WalletConnectV2Protocol(api: api!)
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -298,8 +298,32 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-            if walletConnectorV2.isValidSession(qrString) {
-                walletConnectorV2.pair(with: qrString)
+            if walletConnectV2Protocol.isValidSession(qrString) {
+                if !canReadWCSession {
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "qr-scan-invalid-wc-screen-error".localized
+                    )
+                    captureSession = nil
+                    closeScreen()
+                    return
+                }
+                
+                walletConnectV2Protocol.pair(with: qrString)
+                startWCConnectionTimer()
+                
+                walletConnectV2Protocol.eventHandler = {
+                    [weak self] event in
+                    guard let self = self else { return }
+                    
+                    switch event {
+                    case .session(let sessionProposal):
+                        self.stopWCConnectionTimer()
+                        break
+                    default: break
+                    }
+                    
+                }
                 return
             } else if walletConnector.isValidSession(qrString) {
                 if !canReadWCSession {
