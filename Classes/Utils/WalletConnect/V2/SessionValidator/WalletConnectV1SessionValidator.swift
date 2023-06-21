@@ -17,17 +17,17 @@
 import Foundation
 
 struct WalletConnectV1SessionValidator: WalletConnectSessionValidator {
-    func isValidSession(_ uri: String) -> Bool {
+    func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         return hasValidPrefix(uri) && hasValidSessionParams(uri)
     }
 }
 
 extension WalletConnectV1SessionValidator {
-    private func hasValidPrefix(_ uri: String) -> Bool {
+    private func hasValidPrefix(_ uri: WalletConnectSessionText) -> Bool {
         return uri.hasPrefix(sessionPrefix)
     }
     
-    private func hasValidSessionParams(_ uri: String) -> Bool {
+    private func hasValidSessionParams(_ uri: WalletConnectSessionText) -> Bool {
         return WalletConnectURL(uri) != nil
     }
 }

@@ -17,7 +17,7 @@
 import Foundation
 
 struct WalletConnectV2SessionValidator: WalletConnectSessionValidator {
-    func isValidSession(_ uri: String) -> Bool {
+    func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         if !uri.hasPrefix(sessionPrefix) {
             return false
         }
@@ -34,7 +34,7 @@ struct WalletConnectV2SessionValidator: WalletConnectSessionValidator {
 }
 
 extension WalletConnectV2SessionValidator {
-    private func formatSessionURIIfNeeded(_ uri: String) -> String {
+    private func formatSessionURIIfNeeded(_ uri: WalletConnectSessionText) -> String {
         let properURIString: String
         if uri.starts(with: "") {
             properURIString = uri

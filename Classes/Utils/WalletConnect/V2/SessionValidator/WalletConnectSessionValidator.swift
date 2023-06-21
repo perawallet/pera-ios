@@ -19,7 +19,7 @@ import Foundation
 protocol WalletConnectSessionValidator {
     var sessionPrefix: String { get }
     
-    func isValidSession(_ uri: String) -> Bool
+    func isValidSession(_ uri: WalletConnectSessionText) -> Bool
 }
 
 extension WalletConnectSessionValidator {
@@ -27,3 +27,5 @@ extension WalletConnectSessionValidator {
         return "wc:"
     }
 }
+
+typealias WalletConnectSessionText = String
