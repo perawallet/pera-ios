@@ -3458,9 +3458,9 @@
 		2BEEBF7D299AA5B000DDD988 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */; };
 		2BEEBF7F299AA5B000DDD988 /* Web3Wallet in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7E299AA5B000DDD988 /* Web3Wallet */; };
 		2BEEBF82299AB81700DDD988 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF81299AB81700DDD988 /* Starscream */; };
-		2BEEBF84299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
-		2BEEBF85299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
-		2BEEBF86299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
+		2BEEBF84299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
+		2BEEBF85299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
+		2BEEBF86299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
 		2BEEBF8929A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
 		2BEEBF8A29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
 		2BEEBF8B29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
@@ -8020,7 +8020,7 @@
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
 		2BEE062023E8572E004EBD6F /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
 		2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalyticsParameterRegulator.swift; sourceTree = "<group>"; };
-		2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorV2.swift; sourceTree = "<group>"; };
+		2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectV2Protocol.swift; sourceTree = "<group>"; };
 		2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectV2SessionValidator.swift; sourceTree = "<group>"; };
 		2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSocketFactory.swift; sourceTree = "<group>"; };
 		2BEEBF9129A3B40400DDD988 /* WalletConnectSessionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSessionValidator.swift; sourceTree = "<group>"; };
@@ -15770,7 +15770,7 @@
 				2BEEBF9029A3B3F300DDD988 /* SessionValidator */,
 				2B18432229DF786000264152 /* WalletConnectCoordinator */,
 				2B18431D29DE6D5200264152 /* WalletConnector */,
-				2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */,
+				2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */,
 				2B18432B29DF78BC00264152 /* WalletConnectProtocolResolver */,
 			);
 			path = V2;
@@ -21621,7 +21621,7 @@
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				F0B0A5FB291E18580021EF8D /* InAppBrowserLoadingView.swift in Sources */,
 				2B4334A627C44C3200A3D9D6 /* Asset.swift in Sources */,
-				2BEEBF86299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
+				2BEEBF86299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */,
 				1773312029659152006E66F1 /* WebImportInstructionScreenTheme.swift in Sources */,
 				D444EE8E2946B670008AD374 /* AssetFilterOptions.swift in Sources */,
 				D48D11D5274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
@@ -23515,7 +23515,7 @@
 				D49D77E22789FE9D001FD5F6 /* FloatingActionItemButtonTheme.swift in Sources */,
 				953DEE24279EF63700D76957 /* WCAlgosTransactionViewTheme.swift in Sources */,
 				F08708F72790877300BEE5C2 /* HomeDataController.swift in Sources */,
-				2BEEBF85299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
+				2BEEBF85299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */,
 				2B0F61B224EC129D00DA22A6 /* QRCreationDraft.swift in Sources */,
 				9568ADE127C7827300668053 /* MoonPayDraft.swift in Sources */,
 				2B69A9D128617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
@@ -25999,7 +25999,7 @@
 				D4999E0028919B1D00C7E05C /* TransactionFeeSecondaryListItemViewModel.swift in Sources */,
 				2B18432429DF787C00264152 /* WalletConnectCoordinator.swift in Sources */,
 				2B3088E127FF48510010AE49 /* ManagementItemWithSecondaryActionCell.swift in Sources */,
-				2BEEBF84299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
+				2BEEBF84299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */,
 				2BB98FBA2979452300262D63 /* WCTransactionRequestSDKErrorEvent.swift in Sources */,
 				D4F72B6628E3938600907287 /* InsufficientAlgoBalanceDraft.swift in Sources */,
 				2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */,
