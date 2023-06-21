@@ -28,6 +28,7 @@ final class ViewControllerConfiguration {
     let lastSeenNotificationController: LastSeenNotificationController?
     let analytics: ALGAnalytics
     let launchController: AppLaunchController
+    let peraConnect: PeraConnect
     
     init(
         api: ALGAPI?,
@@ -39,7 +40,8 @@ final class ViewControllerConfiguration {
         toastPresentationController: ToastPresentationController?,
         lastSeenNotificationController: LastSeenNotificationController?,
         analytics: ALGAnalytics,
-        launchController: AppLaunchController
+        launchController: AppLaunchController,
+        peraConnect: PeraConnect
     ) {
         self.api = api
         self.session = session
@@ -51,5 +53,6 @@ final class ViewControllerConfiguration {
         self.lastSeenNotificationController = lastSeenNotificationController
         self.analytics = analytics
         self.launchController = launchController
+        self.peraConnect = peraConnect
     }
 }
