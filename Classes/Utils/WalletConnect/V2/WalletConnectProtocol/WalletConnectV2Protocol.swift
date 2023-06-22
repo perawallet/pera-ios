@@ -103,7 +103,7 @@ extension WalletConnectV2Protocol {
     
     private func approveSession(
         _ proposalId: String,
-        namespaces: [String: SessionNamespace]
+        namespaces: SessionNamespaces
     ) {
         print("[WC2] - Approve Session: \(proposalId)")
         
@@ -151,7 +151,7 @@ extension WalletConnectV2Protocol {
     
     private func updateSession(
         _ session: WalletConnectSign.Session,
-        namespaces: [String: SessionNamespace]
+        namespaces: SessionNamespaces
     ) {
         print("[WC2] - Update Session: \(session.topic)")
         
@@ -215,6 +215,10 @@ extension WalletConnectV2Protocol {
         handleSessionEvents()
         handleSessionProposalEvents()
         handleSessionDeletionEvents()
+        handleSessionSettleEvents()
+        handleSessionUpdateEvents()
+        handleSessionExtensionEvents()
+        handlePingEvents()
         handleTransactionRequestEvents()
     }
     
@@ -223,9 +227,10 @@ extension WalletConnectV2Protocol {
             .sessionsPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                [weak self] sessionProposal in
+                [weak self] sessions in
                 guard let self else { return }
                 
+                self.eventHandler?(.sessions(sessions))
             }.store(in: &publishers)
     }
     
@@ -237,49 +242,82 @@ extension WalletConnectV2Protocol {
                 [weak self] sessionProposal in
                 guard let self else { return }
                 
-                self.eventHandler?(.session(sessionProposal))
-                
-                /* var sessionNamespaces = [String: SessionNamespace]()
-                sessionProposal.requiredNamespaces.forEach {
-                    let caip2Namespace = $0.key
-                    let proposalNamespace = $0.value
-                    guard let chains = proposalNamespace.chains else { return }
-                    let accounts = Set(
-                        chains.compactMap { chain in
-                            WalletConnectUtils.Account(
-                                "\(chain.absoluteString):\(self.accountAddress)"
-                            )
-                        }
-                    )
-
-                    let sessionNamespace = SessionNamespace(
-                        accounts: accounts,
-                        methods: proposalNamespace.methods,
-                        events: proposalNamespace.events
-                    )
-                    sessionNamespaces[caip2Namespace] = sessionNamespace
-                }
-                
-                self.approveSession(
-                    sessionProposal.id,
-                    namespaces: sessionNamespaces
-                ) */
-                
+                self.eventHandler?(.proposeSession(sessionProposal))
             }.store(in: &publishers)
     }
     
     private func handleSessionDeletionEvents() {
-        // sessionSettlePublisher
-        // sessionUpdatePublisher
-        // sessionExtendPublisher
-        // pingResponsePublisher
         signAPI
             .sessionDeletePublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                [weak self] _ in
+                [weak self] topic, reason in
                 guard let self else { return }
                 
+                self.eventHandler?(
+                    .deleteSession(
+                        topic: topic,
+                        reason: reason
+                    )
+                )
+            }.store(in: &publishers)
+    }
+    
+    private func handleSessionSettleEvents() {
+        signAPI
+            .sessionSettlePublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] session in
+                guard let self else { return }
+            
+                self.eventHandler?(.settleSession(session))
+            }.store(in: &publishers)
+    }
+    
+    private func handleSessionUpdateEvents() {
+        signAPI
+            .sessionUpdatePublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] topic, namespaces in
+                guard let self else { return }
+                
+                self.eventHandler?(
+                    .updateSession(
+                        topic: topic,
+                        namespaces: namespaces
+                    )
+                )
+            }.store(in: &publishers)
+    }
+    
+    private func handleSessionExtensionEvents() {
+        signAPI
+            .sessionExtendPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] topic, date in
+                guard let self else { return }
+            
+                self.eventHandler?(
+                    .extendSession(
+                        topic: topic,
+                        date: date
+                    )
+                )
+            }.store(in: &publishers)
+    }
+    
+    private func handlePingEvents() {
+        signAPI
+            .pingResponsePublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] ping in
+                guard let self else { return }
+                
+                self.eventHandler?(.ping(ping))
             }.store(in: &publishers)
     }
     
@@ -291,23 +329,29 @@ extension WalletConnectV2Protocol {
                 [weak self] request in
                 guard let self else { return }
                 
-                if let transactionRequests = try? request.params.get([[WCTransaction]].self) {
-                    self.eventHandler?(.transactionRequest(transactionRequests))
-                }
-                /* guard let unparsedTransactionDetail = params2.first?.first?.unparsedTransactionDetail else { return }
-
-                var error: NSError?
-                
-                if let signature = self.api.session.privateData(for: self.accountAddress) {
-                    let signedTransaction = self.algorandSDK.sign(signature, with: unparsedTransactionDetail, error: &error)
-                    self.approveTransactionRequest(request, response: AnyCodable([signedTransaction]))
-                } */
-                
+                self.eventHandler?(.transactionRequest(request))
             }.store(in: &publishers)
     }
 }
 
 enum WalletConnectV2Event {
-    case session(WalletConnectSign.Session.Proposal)
-    case transactionRequest([[WCTransaction]])
+    case sessions([WalletConnectSign.Session])
+    case proposeSession(WalletConnectSign.Session.Proposal)
+    case deleteSession(
+        topic: WalletConnectTopic,
+        reason: Reason
+    )
+    case settleSession(WalletConnectSign.Session)
+    case updateSession(
+        topic: WalletConnectTopic,
+        namespaces: SessionNamespaces
+    )
+    case extendSession(
+        topic: WalletConnectTopic,
+        date: Date
+    )
+    case ping(String)
+    case transactionRequest(WalletConnectSign.Request)
 }
+
+typealias SessionNamespaces = [String: SessionNamespace]
