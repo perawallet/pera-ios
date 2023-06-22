@@ -41,12 +41,12 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
     }
 
     private let analytics: ALGAnalytics
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
 
     init(
         _ sharedDataController: SharedDataController,
         analytics: ALGAnalytics,
-        walletConnector: WalletConnector
+        walletConnector: WalletConnectV1Protocol
     ) {
         self.sharedDataController = sharedDataController
         self.analytics = analytics
@@ -249,8 +249,8 @@ extension WCSessionListLocalDataController {
 
 extension WCSessionListLocalDataController {
     func walletConnector(
-        _ walletConnector: WalletConnector,
-        didFailWith error: WalletConnector.WCError
+        _ walletConnector: WalletConnectV1Protocol,
+        didFailWith error: WalletConnectV1Protocol.WCError
     ) {
         switch error {
         case .failedToDisconnectInactiveSession(let session):
@@ -273,7 +273,7 @@ extension WCSessionListLocalDataController {
     }
 
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didDisconnectFrom session: WCSession
     ) {
         analytics.track(

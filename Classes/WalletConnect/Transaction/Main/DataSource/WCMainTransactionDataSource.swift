@@ -28,7 +28,7 @@ class WCMainTransactionDataSource: NSObject {
         return totalTransactionCount == transactions.count
     }
 
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     private(set) var transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
@@ -41,7 +41,7 @@ class WCMainTransactionDataSource: NSObject {
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController

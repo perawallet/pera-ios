@@ -39,14 +39,14 @@ final class ALGAppLaunchController:
     private let sharedDataController: SharedDataController
     private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     
     init(
         session: Session,
         api: ALGAPI,
         sharedDataController: SharedDataController,
         authChecker: AppAuthChecker,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session

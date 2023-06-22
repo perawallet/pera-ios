@@ -17,7 +17,7 @@
 final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
     private(set) var currentWalletConnectProtocol: WalletConnectProtocol?
     
-    private lazy var walletConnectV1Protocol = WalletConnector(
+    private lazy var walletConnectV1Protocol = WalletConnectV1Protocol(
         api: api,
         pushToken: pushToken,
         analytics: analytics

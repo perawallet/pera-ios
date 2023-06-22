@@ -747,9 +747,9 @@
 		2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
 		2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
 		2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
-		2B02A2EC266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
-		2B02A2ED266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
-		2B02A2EE266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
+		2B02A2EC266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnectV1Protocol.swift */; };
+		2B02A2ED266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnectV1Protocol.swift */; };
+		2B02A2EE266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnectV1Protocol.swift */; };
 		2B0322DD269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */; };
 		2B0322DE269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */; };
 		2B0322DF269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */; };
@@ -7073,7 +7073,7 @@
 		2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionListLayout.swift; sourceTree = "<group>"; };
 		2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionDataSource.swift; sourceTree = "<group>"; };
 		2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverOptionsViewController.swift; sourceTree = "<group>"; };
-		2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnector.swift; sourceTree = "<group>"; };
+		2B02A2EB266CE07E002DD8AB /* WalletConnectV1Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectV1Protocol.swift; sourceTree = "<group>"; };
 		2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B0322E1269F1DE900C9B2F5 /* WCMainTransactionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionLayout.swift; sourceTree = "<group>"; };
 		2B0322E6269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionDataSource.swift; sourceTree = "<group>"; };
@@ -10080,7 +10080,6 @@
 				2B68A23B26A82F5C0076BD82 /* Present */,
 				2B68A24026A872370076BD82 /* Transaction */,
 				2BEEBF8729A0139800DDD988 /* V2 */,
-				2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */,
 				178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */,
 			);
 			path = WalletConnect;
@@ -10311,12 +10310,14 @@
 			path = PeraConnect;
 			sourceTree = "<group>";
 		};
-		2B18431D29DE6D5200264152 /* WalletConnector */ = {
+		2B18431D29DE6D5200264152 /* WalletConnectProtocol */ = {
 			isa = PBXGroup;
 			children = (
 				2B18431E29DE6D6C00264152 /* WalletConnectProtocol.swift */,
+				2B02A2EB266CE07E002DD8AB /* WalletConnectV1Protocol.swift */,
+				2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */,
 			);
-			path = WalletConnector;
+			path = WalletConnectProtocol;
 			sourceTree = "<group>";
 		};
 		2B18432229DF786000264152 /* WalletConnectCoordinator */ = {
@@ -15769,8 +15770,7 @@
 				2B18431429DE6D1800264152 /* PeraConnect */,
 				2BEEBF9029A3B3F300DDD988 /* SessionValidator */,
 				2B18432229DF786000264152 /* WalletConnectCoordinator */,
-				2B18431D29DE6D5200264152 /* WalletConnector */,
-				2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */,
+				2B18431D29DE6D5200264152 /* WalletConnectProtocol */,
 				2B18432B29DF78BC00264152 /* WalletConnectProtocolResolver */,
 			);
 			path = V2;
@@ -22169,7 +22169,7 @@
 				D4979470287D89EF004FBF8E /* AppCallAssetPreviewWithImageViewModel.swift in Sources */,
 				2B69B2222902C593008BF750 /* SelectAssetListItemViewModel.swift in Sources */,
 				2B03D6B125C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
-				2B02A2EE266CE07E002DD8AB /* WalletConnector.swift in Sources */,
+				2B02A2EE266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */,
 				2BCBAAA9273BF3CA00B3A746 /* LedgerPairWarningView.swift in Sources */,
 				17BD4E962292F1260003E49A /* PasswordInputView.swift in Sources */,
 				D499D28827C7DA7B00641FF5 /* CollectibleGridItemLoadingViewTheme.swift in Sources */,
@@ -24291,7 +24291,7 @@
 				2B8CD5892906D39A004A81B9 /* SwapQuickActionsViewTheme.swift in Sources */,
 				2B03D6B025C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
 				2B9FDEAF28A54F3700C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift in Sources */,
-				2B02A2ED266CE07E002DD8AB /* WalletConnector.swift in Sources */,
+				2B02A2ED266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */,
 				17D0FA3328EC28DE0061B55D /* ExportAccountDraft.swift in Sources */,
 				D4AEC3BF27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */,
 				17D0FA3628EC28DE0061B55D /* ExportAccountListAccountHeaderItemState.swift in Sources */,
@@ -26536,7 +26536,7 @@
 				2B03D6AF25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
 				2B71CB6F28FDD6EB00B1E1A0 /* SwapAssetAmountInViewModel.swift in Sources */,
 				F096087E2796B7B500CFBB90 /* TransactionOptionsView.swift in Sources */,
-				2B02A2EC266CE07E002DD8AB /* WalletConnector.swift in Sources */,
+				2B02A2EC266CE07E002DD8AB /* WalletConnectV1Protocol.swift in Sources */,
 				D478AA9A28AB80AB001958C8 /* SwapIntroductionScreenTheme.swift in Sources */,
 				2B69B2202902C593008BF750 /* SelectAssetListItemViewModel.swift in Sources */,
 				2B69AAD228BE26FD00A8D65D /* AssetAmountInputViewModel.swift in Sources */,

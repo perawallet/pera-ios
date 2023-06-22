@@ -80,7 +80,7 @@ class AppDelegate:
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnector(
+    private lazy var walletConnector = WalletConnectV1Protocol(
         api: api,
         pushToken: pushNotificationController.token,
         analytics: analytics
@@ -370,10 +370,10 @@ extension AppDelegate {
             router.launch(deeplink: screen)
         case .walletConnectSessionRequest(let preferences):
             NotificationCenter.default.post(
-                name: WalletConnector.didReceiveSessionRequestNotification,
+                name: WalletConnectV1Protocol.didReceiveSessionRequestNotification,
                 object: nil,
                 userInfo: [
-                    WalletConnector.sessionRequestPreferencesKey: preferences
+                    WalletConnectV1Protocol.sessionRequestPreferencesKey: preferences
                 ]
             )
         case .bottomWarning(let configurator):

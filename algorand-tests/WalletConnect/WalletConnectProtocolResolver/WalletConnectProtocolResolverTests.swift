@@ -44,7 +44,7 @@ final class WalletConnectProtocolResolverTests: XCTestCase {
     
     func test_getWalletConnectProtocol_fromVersion_v1_success() {
         let wcProtocol = walletConnectProtocolResolver.getWalletConnectProtocol(from: .v1)
-        XCTAssertTrue(wcProtocol is WalletConnector)
+        XCTAssertTrue(wcProtocol is WalletConnectV1Protocol)
     }
     
     
@@ -60,6 +60,6 @@ final class WalletConnectProtocolResolverTests: XCTestCase {
 
     func test_getWalletConnectProtocol_fromVersion_v2_failure() {
         let wcProtocol = walletConnectProtocolResolver.getWalletConnectProtocol(from: .v2)
-        XCTAssertFalse(wcProtocol is WalletConnector)
+        XCTAssertFalse(wcProtocol is WalletConnectV1Protocol)
     }
 }

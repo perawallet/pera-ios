@@ -20,11 +20,11 @@ import UIKit
 final class WCSessionShortListDataSource: NSObject {
     weak var delegate: WCSessionShortListDataSourceDelegate?
 
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
 
     private var sessions: [WCSession]
 
-    init(walletConnector: WalletConnector) {
+    init(walletConnector: WalletConnectV1Protocol) {
         self.walletConnector = walletConnector
         self.sessions = walletConnector.allWalletConnectSessions
         super.init()

@@ -9,14 +9,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//   WalletConnector.swift
+//   WalletConnectV1Protocol.swift
 
 import Foundation
 import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
-class WalletConnector:
+class WalletConnectV1Protocol:
     WalletConnectProtocol,
     ServerDelegate {
     static var didReceiveSessionRequestNotification: Notification.Name {
@@ -56,7 +56,7 @@ class WalletConnector:
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         return sessionValidator.isValidSession(uri)
     }
@@ -82,7 +82,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     // Register the actions that WalletConnect is able to handle.
     private func register(for handler: WalletConnectRequestHandler) {
         register(handler)
@@ -213,7 +213,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     private func addToSavedSessions(_ session: WCSession) {
         sessionSource.addWalletConnectSession(session)
     }
@@ -248,7 +248,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     func server(
         _ server: WalletConnectServer,
         shouldStart session: WalletConnectSession,
@@ -327,7 +327,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     private func subscribeForNotificationsIfNeeded(_ session: WCSession) {
         if session.isSubscribed {
             return
@@ -378,7 +378,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     func register(_ handler: WalletConnectRequestHandler) {
         walletConnectServer.register(handler: handler)
     }
@@ -412,7 +412,7 @@ extension WalletConnector {
     }
 }
 
-extension WalletConnector {
+extension WalletConnectV1Protocol {
     enum WCError {
         case failedToConnect(url: WalletConnectURL)
         case failedToCreateSession(qr: String)
@@ -423,50 +423,50 @@ extension WalletConnector {
 
 protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didConnectTo session: WCSession
     )
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didDisconnectFrom session: WCSession
     )
     func walletConnector(
-        _ walletConnector: WalletConnector,
-        didFailWith error: WalletConnector.WCError
+        _ walletConnector: WalletConnectV1Protocol,
+        didFailWith error: WalletConnectV1Protocol.WCError
     )
-    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector)
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnectV1Protocol)
 }
 
 extension WalletConnectorDelegate {
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) { }
 
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didConnectTo session: WCSession
     ) { }
 
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didDisconnectFrom session: WCSession
     ) { }
 
     func walletConnector(
-        _ walletConnector: WalletConnector,
-        didFailWith error: WalletConnector.WCError
+        _ walletConnector: WalletConnectV1Protocol,
+        didFailWith error: WalletConnectV1Protocol.WCError
     ) { }
     
-    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) { }
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnectV1Protocol) { }
 }
 
 enum WalletConnectMethod: String {

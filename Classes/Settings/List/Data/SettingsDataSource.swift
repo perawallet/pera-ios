@@ -40,11 +40,11 @@ final class SettingsDataSource: NSObject {
         .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer
     ]
     
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     private var session: Session?
     
     init(
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         session: Session?
     ) {
         self.walletConnector = walletConnector

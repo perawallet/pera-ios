@@ -345,7 +345,7 @@ extension RootViewController {
 }
 
 extension RootViewController {
-    private var walletConnector: WalletConnector {
+    private var walletConnector: WalletConnectV1Protocol {
         return appConfiguration.walletConnector
     }
 }

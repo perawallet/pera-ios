@@ -21,11 +21,11 @@ import UIKit
 
 final class DeepLinkParser {
     private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     
     init(
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector
+        walletConnector: WalletConnectV1Protocol
     ) {
         self.sharedDataController = sharedDataController
         self.walletConnector = walletConnector

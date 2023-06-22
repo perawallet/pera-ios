@@ -317,7 +317,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     guard let self = self else { return }
                     
                     switch event {
-                    case .session(let sessionProposal):
+                    case .proposeSession(let sessionProposal):
                         self.stopWCConnectionTimer()
                         break
                     default: break
@@ -380,7 +380,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
 extension QRScannerViewController: WalletConnectorDelegate {
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
@@ -469,14 +469,14 @@ extension QRScannerViewController: WalletConnectorDelegate {
         }
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+    func walletConnector(_ walletConnector: WalletConnectV1Protocol, didConnectTo session: WCSession) {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self, session: session)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
         walletConnector.clearExpiredSessionsIfNeeded()
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
+    func walletConnector(_ walletConnector: WalletConnectV1Protocol, didFailWith error: WalletConnectV1Protocol.WCError) {
         switch error {
         case .failedToConnect,
                 .failedToCreateSession:
@@ -498,7 +498,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
         }
     }
     
-    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnectV1Protocol) {
         delegate?.qrScannerViewControllerDidExceededMaximumWCSessionLimit(self)
     }
 

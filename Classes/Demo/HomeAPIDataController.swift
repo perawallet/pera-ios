@@ -27,7 +27,7 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
 
     private var visibleAnnouncement: Announcement?
 
@@ -42,7 +42,7 @@ final class HomeAPIDataController:
         sharedDataController: SharedDataController,
         session: Session,
         announcementDataController: AnnouncementAPIDataController,
-        walletConnector: WalletConnector
+        walletConnector: WalletConnectV1Protocol
     ) {
         self.sharedDataController = sharedDataController
         self.session = session

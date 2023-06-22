@@ -1717,7 +1717,7 @@ extension Router {
 
 extension Router {
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
@@ -1802,7 +1802,7 @@ extension Router {
     }
 
     func walletConnector(
-        _ walletConnector: WalletConnector,
+        _ walletConnector: WalletConnectV1Protocol,
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
@@ -1838,11 +1838,11 @@ extension Router {
 
 extension Router {
     private func startObservingNotifications() {
-        observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
+        observe(notification: WalletConnectV1Protocol.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
 
-            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
+            let preferencesKey = WalletConnectV1Protocol.sessionRequestPreferencesKey
             let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
 
             guard let preferences else {

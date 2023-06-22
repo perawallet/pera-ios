@@ -21,7 +21,7 @@ final class AppConfiguration {
     let api: ALGAPI
     let session: Session
     let sharedDataController: SharedDataController
-    let walletConnector: WalletConnector
+    let walletConnector: WalletConnectV1Protocol
     let loadingController: LoadingController
     let bannerController: BannerController
     let toastPresentationController: ToastPresentationController
@@ -34,7 +34,7 @@ final class AppConfiguration {
         api: ALGAPI,
         session: Session,
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         loadingController: LoadingController,
         bannerController: BannerController,
         toastPresentationController: ToastPresentationController,
