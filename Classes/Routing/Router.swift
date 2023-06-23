@@ -1740,6 +1740,14 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case .watchAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = WatchAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
         case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
             let uiSheet = UndoRekeyConfirmationSheet(
                 sourceAccount: sourceAccount,
