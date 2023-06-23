@@ -1503,6 +1503,7 @@
 "any-to-no-auth-rekeyed-account-type-description-highlighted-text" = "Learn more";
 "no-record-of-original-account-type-footnote" = "* No record of original account type found";
 "watch-account-type-description" = "This account was not added to your wallet with its keys. It is read-only and cannot interact with other accounts or authorize transactions.";
+"watch-account-type-description-highlighted-text" = "Learn  more";
 
 // MARK: Rekey Account Selection List
 "rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
