@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   LedgerToLedgerRekeyedAccountInformationScreen.swift
+//   RekeyedAccountInformationScreen.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-final class LedgerToLedgerRekeyedAccountInformationScreen:
+final class RekeyedAccountInformationScreen:
     MacaroonUIKit.ScrollScreen,
     BottomSheetScrollPresentable {
     typealias EventHandler = (Event) -> Void
@@ -40,7 +40,7 @@ final class LedgerToLedgerRekeyedAccountInformationScreen:
     private let authAccount: Account
     private let copyToClipboardController: CopyToClipboardController
 
-    private lazy var theme = LedgerToLedgerRekeyedAccountInformationScreenTheme()
+    private lazy var theme = RekeyedAccountInformationScreenTheme()
 
     init(
         sourceAccount: Account,
@@ -65,7 +65,7 @@ final class LedgerToLedgerRekeyedAccountInformationScreen:
     }
 }
 
-extension LedgerToLedgerRekeyedAccountInformationScreen {
+extension RekeyedAccountInformationScreen {
     private func addContext() {
         contentView.addSubview(contextView)
 
@@ -167,7 +167,7 @@ extension LedgerToLedgerRekeyedAccountInformationScreen {
     }
 }
 
-extension LedgerToLedgerRekeyedAccountInformationScreen {
+extension RekeyedAccountInformationScreen {
     private func makeRekeyToLedgerAccountItem() -> AccountInformationOptionItem {
         return AccountInformationOptionItem(viewModel: .rekeyToLedger) {
             [unowned self] in
@@ -183,7 +183,7 @@ extension LedgerToLedgerRekeyedAccountInformationScreen {
     }
 }
 
-extension LedgerToLedgerRekeyedAccountInformationScreen {
+extension RekeyedAccountInformationScreen {
     private func bindTitle() {
         titleView.attributedText =
             "title-rekeyed-account-capitalized-sentence"
@@ -200,12 +200,12 @@ extension LedgerToLedgerRekeyedAccountInformationScreen {
     }
 
     private func bindAccountTypeInformation() {
-        let viewModel = LedgerToLedgerRekeyedAccountTypeInformationViewModel()
+        let viewModel = RekeyedAccountTypeInformationViewModel(sourceAccount: sourceAccount)
         accountTypeInformationView.bindData(viewModel)
     }
 }
 
-extension LedgerToLedgerRekeyedAccountInformationScreen {
+extension RekeyedAccountInformationScreen {
     enum Event {
         case performRekeyToLedger
         case performRekeyToStandard

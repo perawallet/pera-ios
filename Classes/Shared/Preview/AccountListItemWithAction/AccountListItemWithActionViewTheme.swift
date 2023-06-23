@@ -27,6 +27,6 @@ struct AccountListItemWithActionViewTheme:
     init(_ family: LayoutFamily) {
         self.contextPaddings = (16, 16, 16, 16)
         self.content = AccountListItemViewTheme(family)
-        self.spacingBetweenContentAndAction = 8
+        self.spacingBetweenContentAndAction = 16
     }
 }

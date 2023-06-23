@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StandardToLedgerRekeyedAccountInformationScreenTheme.swift
+//   RekeyedAccountInformationScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct StandardToLedgerRekeyedAccountInformationScreenTheme:
+struct RekeyedAccountInformationScreenTheme:
     LayoutSheet,
     StyleSheet {
     var contextEdgeInsets: LayoutPaddings
