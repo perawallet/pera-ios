@@ -5396,6 +5396,9 @@
 		D4A241E227D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
 		D4A241E327D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
 		D4A241E427D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
+		D4A28A1C2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A28A1B2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift */; };
+		D4A28A1D2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A28A1B2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift */; };
+		D4A28A1E2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A28A1B2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift */; };
 		D4A2C06B27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */; };
 		D4A2C06C27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */; };
 		D4A2C06D27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */; };
@@ -8886,6 +8889,7 @@
 		D4A0DEAD28980EC200CE3895 /* AssetStatisticsSectionTotalSupplyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetStatisticsSectionTotalSupplyViewModel.swift; sourceTree = "<group>"; };
 		D4A0DEB128980ED100CE3895 /* AssetStatisticsSectionPriceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetStatisticsSectionPriceViewModel.swift; sourceTree = "<group>"; };
 		D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		D4A28A1B2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationBodyViewModel.swift; sourceTree = "<group>"; };
 		D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4A2E48628A11B120053B654 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D4A2E48A28A124440053B654 /* WCSessionListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListDataController.swift; sourceTree = "<group>"; };
@@ -18013,6 +18017,7 @@
 		D42AE44429DC26AD0087BEEF /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
+				D4A28A1A2A45912D008F2AAD /* Views */,
 				D4BB81562A4031E6006E2CFE /* RekeyConfirmationScreenTheme.swift */,
 				D4BB815A2A4031F8006E2CFE /* RekeyConfirmationScreen.swift */,
 			);
@@ -19011,6 +19016,14 @@
 				D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */,
 			);
 			path = AssetAboutSection;
+			sourceTree = "<group>";
+		};
+		D4A28A1A2A45912D008F2AAD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D4A28A1B2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D4A2E48528A11AF60053B654 /* Effects */ = {
@@ -21463,6 +21476,7 @@
 				D4C3BD45278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */,
 				F08708DA278C6BFA00BEE5C2 /* BlockEvent.swift in Sources */,
 				D4023E3629A6C6B500DFB5E8 /* MoonPayAccountSelectionListAccountListItemCell.swift in Sources */,
+				D4A28A1E2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */,
 				1736FBA128AD2D31002BB713 /* TapNFTReceiveEvent.swift in Sources */,
 				2B288ADE269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B0F635824ED21C200DA22A6 /* LedgerAccountSelectionViewController.swift in Sources */,
@@ -23920,6 +23934,7 @@
 				D40ADD9329452252004C74E3 /* AccountCollectibleListFilterSelectionViewControllerTheme.swift in Sources */,
 				2B0F617624EC129D00DA22A6 /* ViewControllerConfiguration.swift in Sources */,
 				2BD36DB9267CCB7100C57728 /* WCAssetAdditionTransactionView.swift in Sources */,
+				D4A28A1D2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */,
 				F0600E3428A46F9A0043B834 /* ALGAnalyticsMetadata.swift in Sources */,
 				F03A836928C9765A00443A2B /* ASADiscoveryScreen.swift in Sources */,
 				2B0F617724EC129D00DA22A6 /* SettingsDetailCell.swift in Sources */,
@@ -26003,6 +26018,7 @@
 				F0772B54275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */,
 				17AEC56929752AB6002B3B23 /* WebImportSuccessScreen.swift in Sources */,
 				2BF90F6B25FBAAEE0033F348 /* VStackView.swift in Sources */,
+				D4A28A1C2A45913D008F2AAD /* RekeyConfirmationBodyViewModel.swift in Sources */,
 				D4588AE8294293EE0012C12C /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				2BB8483727E90B75004F2E39 /* CollectibleMediaErrorView.swift in Sources */,
 				F095DE4528C83AEF00BDD8AA /* String+Image.swift in Sources */,

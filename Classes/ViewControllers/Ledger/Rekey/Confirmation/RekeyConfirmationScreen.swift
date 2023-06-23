@@ -136,7 +136,8 @@ extension RekeyConfirmationScreen {
             $0.trailing == theme.informationContentEdgeInsets.trailing
         }
 
-        if authAccount != nil {
+        let hasAuthAccount = authAccount != nil
+        if hasAuthAccount {
             addCurrentlyRekeyed()
         }
 
@@ -192,45 +193,36 @@ extension RekeyConfirmationScreen {
 extension RekeyConfirmationScreen {
     private func bindTitle() {
         titleView.attributedText =
-        "ledger-rekey-confirm-title"
-            .localized
-            .titleMedium()
+            "ledger-rekey-confirm-title"
+                .localized
+                .titleMedium()
     }
 
     private func bindBody() {
-        let aText: String
+        let viewModel = RekeyConfirmationBodyViewModel(authAccount: authAccount)
 
-        if authAccount != nil {
-            aText = "rekey-rekeyed-to-any-account-confirmation-body".localized
-        } else {
-            aText = "rekey-any-to-any-account-confirmation-body".localized
+        guard let text = viewModel.text else {
+            bodyView.text = nil
+            bodyView.attributedText = nil
+            return
         }
 
-        let text = aText.bodyRegular()
+        if let highlightedText = viewModel.highlightedText {
+            let hyperlink: ALGActiveType = .word(highlightedText.text)
+            bodyView.attachHyperlink(
+                hyperlink,
+                to: text,
+                attributes: highlightedText.attributes
+            ) {
+                [unowned self] in
+                self.open(AlgorandWeb.rekey.link)
+            }
 
-        let aHighlightedText: String
-
-        if authAccount != nil {
-            aHighlightedText = "rekey-rekeyed-to-any-account-confirmation-body-highlighted-text".localized
-        } else {
-            aHighlightedText = "rekey-any-to-any-account-confirmation-body-highlighted-text".localized
+            return
         }
 
-        let hyperlink: ALGActiveType = .word(aHighlightedText)
-
-        var attributes = Typography.bodyMediumAttributes()
-        attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
-
-        bodyView.attachHyperlink(
-            hyperlink,
-            to: text,
-            attributes: attributes
-        ) {
-            [unowned self] in
-            self.open(AlgorandWeb.rekey.link)
-        }
+        text.load(in: bodyView)
     }
-    
 
     private func bindSummary() {
         let viewModel = RekeySummaryInfoViewModel(
