@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyStandardToLedgerAccountConfirmationScreen.swift
+//   RekeyConfirmationScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class RekeyStandardToLedgerAccountConfirmationScreen: ScrollScreen {
+final class RekeyConfirmationScreen: ScrollScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
@@ -28,18 +28,21 @@ final class RekeyStandardToLedgerAccountConfirmationScreen: ScrollScreen {
     private lazy var informationContentView = MacaroonUIKit.VStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    private let theme: RekeyStandardToLedgerAccountConfirmationScreenTheme
+    private let theme: RekeyConfirmationScreenTheme
 
     private let sourceAccount: Account
-    private let authAccount: Account
+    private let authAccount: Account?
+    private let newAuthAccount: Account
 
     init(
         sourceAccount: Account,
-        authAccount: Account,
-        theme: RekeyStandardToLedgerAccountConfirmationScreenTheme = .init()
+        authAccount: Account? = nil,
+        newAuthAccount: Account,
+        theme: RekeyConfirmationScreenTheme = .init()
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
+        self.newAuthAccount = newAuthAccount
         self.theme = theme
         super.init()
     }
@@ -70,7 +73,7 @@ final class RekeyStandardToLedgerAccountConfirmationScreen: ScrollScreen {
     }
 }
 
-extension RekeyStandardToLedgerAccountConfirmationScreen {
+extension RekeyConfirmationScreen {
     private func addUI() {
         addBackground()
         addTitle()
@@ -133,6 +136,10 @@ extension RekeyStandardToLedgerAccountConfirmationScreen {
             $0.trailing == theme.informationContentEdgeInsets.trailing
         }
 
+        if authAccount != nil {
+            addCurrentlyRekeyed()
+        }
+
         addTransactionFee()
     }
 
@@ -157,11 +164,22 @@ extension RekeyStandardToLedgerAccountConfirmationScreen {
     }
 }
 
-extension RekeyStandardToLedgerAccountConfirmationScreen {
+extension RekeyConfirmationScreen {
+    private func addCurrentlyRekeyed() {
+        guard let authAccount else { return }
+
+        let view = SecondaryListItemView()
+        let theme = RekeyConfirmationInformationItemCommonTheme()
+        view.customize(theme)
+        informationContentView.addArrangedSubview(view)
+
+        let viewModel = CurrentlyRekeyedAccountInformationItemViewModel(account: authAccount)
+        view.bindData(viewModel)
+    }
+
     private func addTransactionFee() {
         let view = SecondaryListItemView()
-        var theme = TransactionFeeSecondaryListItemViewTheme()
-        theme.contentEdgeInsets = (0, 0, 0 ,0)
+        let theme = RekeyConfirmationInformationItemCommonTheme()
         view.customize(theme)
         informationContentView.addArrangedSubview(view)
 
@@ -171,22 +189,34 @@ extension RekeyStandardToLedgerAccountConfirmationScreen {
     }
 }
 
-extension RekeyStandardToLedgerAccountConfirmationScreen {
+extension RekeyConfirmationScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "ledger-rekey-confirm-title"
-                .localized
-                .titleMedium()
+        "ledger-rekey-confirm-title"
+            .localized
+            .titleMedium()
     }
 
     private func bindBody() {
-        let text =
-            "rekey-any-to-any-account-confirmation-body"
-                .localized
-                .bodyRegular()
+        let aText: String
 
-        let hyperlink: ALGActiveType =
-            .word("rekey-any-to-any-account-confirmation-body-highlighted-text".localized)
+        if authAccount != nil {
+            aText = "rekeyed-to-any-account-confirmation-body".localized
+        } else {
+            aText = "rekey-any-to-any-account-confirmation-body".localized
+        }
+
+        let text = aText.bodyRegular()
+
+        let aHighlightedText: String
+
+        if authAccount != nil {
+            aHighlightedText = "rekeyed-to-any-account-confirmation-body-highlighted-text".localized
+        } else {
+            aHighlightedText = "rekey-any-to-any-account-confirmation-body-highlighted-text".localized
+        }
+
+        let hyperlink: ALGActiveType = .word(aHighlightedText)
 
         var attributes = Typography.bodyMediumAttributes()
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
@@ -200,11 +230,12 @@ extension RekeyStandardToLedgerAccountConfirmationScreen {
             self.open(AlgorandWeb.rekey.link)
         }
     }
+    
 
     private func bindSummary() {
         let viewModel = RekeySummaryInfoViewModel(
             sourceAccount: sourceAccount,
-            authAccount: authAccount
+            authAccount: newAuthAccount
         )
         summaryView.bindData(viewModel)
     }
@@ -214,14 +245,14 @@ extension RekeyStandardToLedgerAccountConfirmationScreen {
     }
 }
 
-extension RekeyStandardToLedgerAccountConfirmationScreen {
+extension RekeyConfirmationScreen {
     @objc
     private func performPrimaryAction() {
         eventHandler?(.performPrimaryAction)
     }
 }
 
-extension RekeyStandardToLedgerAccountConfirmationScreen {
+extension RekeyConfirmationScreen {
     enum Event {
         case performPrimaryAction
     }

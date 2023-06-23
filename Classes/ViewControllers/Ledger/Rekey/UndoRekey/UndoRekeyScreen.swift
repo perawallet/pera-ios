@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyLedgerToLedgerAccountConfirmationScreen.swift
+//   UndoRekeyScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class RekeyLedgerToLedgerAccountConfirmationScreen: ScrollScreen {
+final class UndoRekeyScreen: ScrollScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
@@ -28,18 +28,21 @@ final class RekeyLedgerToLedgerAccountConfirmationScreen: ScrollScreen {
     private lazy var informationContentView = MacaroonUIKit.VStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    private let theme: RekeyLedgerToLedgerAccountConfirmationScreenTheme
+    private let theme: UndoRekeyScreenTheme
 
     private let sourceAccount: Account
     private let authAccount: Account
+    private let newAuthAccount: Account
 
     init(
         sourceAccount: Account,
         authAccount: Account,
-        theme: RekeyLedgerToLedgerAccountConfirmationScreenTheme = .init()
+        newAuthAccount: Account,
+        theme: UndoRekeyScreenTheme = .init()
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
+        self.newAuthAccount = newAuthAccount
         self.theme = theme
         super.init()
     }
@@ -70,7 +73,7 @@ final class RekeyLedgerToLedgerAccountConfirmationScreen: ScrollScreen {
     }
 }
 
-extension RekeyLedgerToLedgerAccountConfirmationScreen {
+extension UndoRekeyScreen {
     private func addUI() {
         addBackground()
         addTitle()
@@ -133,6 +136,7 @@ extension RekeyLedgerToLedgerAccountConfirmationScreen {
             $0.trailing == theme.informationContentEdgeInsets.trailing
         }
 
+        addCurrentlyRekeyed()
         addTransactionFee()
     }
 
@@ -157,11 +161,20 @@ extension RekeyLedgerToLedgerAccountConfirmationScreen {
     }
 }
 
-extension RekeyLedgerToLedgerAccountConfirmationScreen {
+extension UndoRekeyScreen {
+    private func addCurrentlyRekeyed() {
+        let view = SecondaryListItemView()
+        let theme = RekeyConfirmationInformationItemCommonTheme()
+        view.customize(theme)
+        informationContentView.addArrangedSubview(view)
+
+        let viewModel = CurrentlyRekeyedAccountInformationItemViewModel(account: authAccount)
+        view.bindData(viewModel)
+    }
+
     private func addTransactionFee() {
         let view = SecondaryListItemView()
-        var theme = TransactionFeeSecondaryListItemViewTheme()
-        theme.contentEdgeInsets = (0, 0, 0 ,0)
+        let theme = RekeyConfirmationInformationItemCommonTheme()
         view.customize(theme)
         informationContentView.addArrangedSubview(view)
 
@@ -171,22 +184,22 @@ extension RekeyLedgerToLedgerAccountConfirmationScreen {
     }
 }
 
-extension RekeyLedgerToLedgerAccountConfirmationScreen {
+extension UndoRekeyScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "ledger-rekey-confirm-title"
+            "title-undo-rekey-capitalized-sentence"
                 .localized
                 .titleMedium()
     }
 
     private func bindBody() {
         let text =
-            "rekey-any-to-any-account-confirmation-body"
+            "undo-any-account-rekey-body"
                 .localized
                 .bodyRegular()
 
         let hyperlink: ALGActiveType =
-            .word("rekey-any-to-any-account-confirmation-body-highlighted-text".localized)
+            .word("undo-any-account-rekey-body-highlighted-text".localized)
 
         var attributes = Typography.bodyMediumAttributes()
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
@@ -202,26 +215,26 @@ extension RekeyLedgerToLedgerAccountConfirmationScreen {
     }
 
     private func bindSummary() {
-        let viewModel = RekeySummaryInfoViewModel(
+        let viewModel = UndoRekeyInfoViewModel(
             sourceAccount: sourceAccount,
-            authAccount: authAccount
+            authAccount: newAuthAccount
         )
         summaryView.bindData(viewModel)
     }
 
     private func bindPrimaryAction() {
-        primaryActionView.editTitle = .string("title-confirm".localized)
+        primaryActionView.editTitle = .string("title-continue".localized)
     }
 }
 
-extension RekeyLedgerToLedgerAccountConfirmationScreen {
+extension UndoRekeyScreen {
     @objc
     private func performPrimaryAction() {
         eventHandler?(.performPrimaryAction)
     }
 }
 
-extension RekeyLedgerToLedgerAccountConfirmationScreen {
+extension UndoRekeyScreen {
     enum Event {
         case performPrimaryAction
     }

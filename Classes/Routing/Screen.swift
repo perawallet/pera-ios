@@ -93,18 +93,13 @@ indirect enum Screen {
     case rekeyLedgerToStandardAccountInstructions
     case rekeyedToLedgerAccountInstructions
     case rekeyedToStandardAccountInstructions
-    case rekeyStandardToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyStandardToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyLedgerToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyLedgerToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyedToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
-    case rekeyedToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
-    case undoAnyAccountRekey(sourceAccount: Account, authAccount: Account)
+    case rekeyConfirmation(sourceAccount: Account, authAccount: Account? = nil, newAuthAccount: Account)
+    case undoRekey(sourceAccount: Account, authAccount: Account)
     case rekeyAccountSelection(
         eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
         account: Account
     )
-    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
+    case rekeyConfirmationOld(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
