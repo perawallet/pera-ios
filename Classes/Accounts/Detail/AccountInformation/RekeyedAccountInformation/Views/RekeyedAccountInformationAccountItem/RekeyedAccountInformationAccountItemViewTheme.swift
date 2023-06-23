@@ -30,7 +30,6 @@ struct RekeyedAccountInformationAccountItemViewTheme:
 
     init(_ family: LayoutFamily) {
         self.accountItem = AccountListItemWithActionViewTheme(family)
-
         self.accountItemMinHeight = 80
         self.dividerLine = [ .backgroundColor(Colors.Layer.grayLighter) ]
         self.dividerLineMinWidth = 40

@@ -1696,38 +1696,11 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case .standardToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
+        case .rekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
-            viewController = StandardToStandardRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .standardToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = StandardToLedgerRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .ledgerToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = LedgerToLedgerRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .ledgerToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = LedgerToStandardRekeyedAccountInformationScreen(
+            viewController = RekeyedAccountInformationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
