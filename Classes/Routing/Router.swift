@@ -785,14 +785,8 @@ class Router:
                 authAccount: authAccount,
                 newAuthAccount: newAuthAccount
             )
-        case let .undoStandardAccountRekey(sourceAccount, authAccount):
-            viewController = UndoStandardAccountRekeyScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                newAuthAccount: sourceAccount
-            )
-        case let .undoLedgerAccountRekey(sourceAccount, authAccount):
-            viewController = UndoLedgerAccountRekeyScreen(
+        case let .undoAnyAccountRekey(sourceAccount, authAccount):
+            viewController = UndoAnyAccountRekeyScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 newAuthAccount: sourceAccount

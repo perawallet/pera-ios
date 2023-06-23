@@ -99,8 +99,7 @@ indirect enum Screen {
     case rekeyLedgerToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
     case rekeyedToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
     case rekeyedToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
-    case undoStandardAccountRekey(sourceAccount: Account, authAccount: Account)
-    case undoLedgerAccountRekey(sourceAccount: Account, authAccount: Account)
+    case undoAnyAccountRekey(sourceAccount: Account, authAccount: Account)
     case rekeyAccountSelection(
         eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
         account: Account
