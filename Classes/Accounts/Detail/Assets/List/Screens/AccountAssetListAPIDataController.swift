@@ -344,7 +344,7 @@ extension AccountAssetListAPIDataController {
     }
 
     private func makeItemsForWatchAccountQuickActions() -> [AccountAssetsItem] {
-        return []
+        return [ .watchAccountQuickActions ]
     }
 
     private func makeItemsForNormalAccountQuickActions() -> [AccountAssetsItem] {

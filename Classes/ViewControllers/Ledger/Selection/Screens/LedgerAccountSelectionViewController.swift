@@ -172,7 +172,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         }
 
         open(
-            .rekeyConfirmation(
+            .rekeyConfirmationOld(
                 account: rekeyedAccount,
                 ledgerDetail: account.ledgerDetail,
                 newAuthAddress: account.address

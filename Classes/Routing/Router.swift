@@ -741,58 +741,20 @@ class Router:
             viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
-        case .rekeyStandardToStandardAccountInstructions:
-            viewController = RekeyStandardToStandardAccountInstructionsScreen()
-        case .rekeyStandardToLedgerAccountInstructions:
-            viewController = RekeyStandardToLedgerAccountInstructionsScreen()
-        case .rekeyLedgerToLedgerAccountInstructions:
-            viewController = RekeyLedgerToLedgerAccountInstructionsScreen()
-        case .rekeyLedgerToStandardAccountInstructions:
-            viewController = RekeyLedgerToStandardAccountInstructionsScreen()
-        case .rekeyedToLedgerAccountInstructions:
-            viewController = RekeyedToStandardAccountInstructionsScreen()
-        case .rekeyedToStandardAccountInstructions:
-            viewController = RekeyedToStandardAccountInstructionsScreen()
-        case let .rekeyStandardToStandardAccountConfirmation(sourceAccount, authAccount):
-            viewController = RekeyStandardToStandardAccountConfirmationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount
-            )
-        case let .rekeyStandardToLedgerAccountConfirmation(sourceAccount, authAccount):
-            viewController = RekeyStandardToLedgerAccountConfirmationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount
-            )
-        case let .rekeyLedgerToLedgerAccountConfirmation(sourceAccount, authAccount):
-            viewController = RekeyLedgerToLedgerAccountConfirmationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount
-            )
-        case let .rekeyLedgerToStandardAccountConfirmation(sourceAccount, authAccount):
-            viewController = RekeyLedgerToStandardAccountConfirmationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount
-            )
-        case let .rekeyedToLedgerAccountConfirmation(sourceAccount, authAccount, newAuthAccount):
-            viewController = RekeyedToLedgerAccountConfirmationScreen(
+        case let .rekeyToLedgerAccountInstructions(sourceAccount):
+            let draft = RekeyToLedgerAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(draft: draft)
+        case let .rekeyToStandardAccountInstructions(sourceAccount):
+            let draft = RekeyToStandardAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(draft: draft)
+        case let .rekeyConfirmation(sourceAccount, authAccount, newAuthAccount):
+            viewController = RekeyConfirmationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 newAuthAccount: newAuthAccount
             )
-        case let .rekeyedToStandardAccountConfirmation(sourceAccount, authAccount, newAuthAccount):
-            viewController = RekeyedToStandardAccountConfirmationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                newAuthAccount: newAuthAccount
-            )
-        case let .undoStandardAccountRekey(sourceAccount, authAccount):
-            viewController = UndoStandardAccountRekeyScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                newAuthAccount: sourceAccount
-            )
-        case let .undoLedgerAccountRekey(sourceAccount, authAccount):
-            viewController = UndoLedgerAccountRekeyScreen(
+        case let .undoRekey(sourceAccount, authAccount):
+            viewController = UndoRekeyScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 newAuthAccount: sourceAccount
@@ -842,7 +804,7 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
+        case let .rekeyConfirmationOld(account, ledgerDetail, newAuthAddress): /// <todo> Remove after applying new rekey confirmation screen.
             viewController = RekeyConfirmationViewController(
                 account: account,
                 ledger: ledgerDetail,
@@ -1204,8 +1166,11 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .transactionOptions(let delegate):
-            let aViewController = TransactionOptionsScreen(configuration: configuration)
+        case .transactionOptions(let account, let delegate):
+            let aViewController = TransactionOptionsScreen(
+                account: account,
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
         case .qrScanOptions(let address, let eventHandler):
@@ -1731,38 +1696,11 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case .standardToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
+        case .rekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
-            viewController = StandardToStandardRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .standardToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = StandardToLedgerRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .ledgerToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = LedgerToLedgerRekeyedAccountInformationScreen(
-                sourceAccount: sourceAccount,
-                authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
-            )
-        case .ledgerToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            viewController = LedgerToStandardRekeyedAccountInformationScreen(
+            viewController = RekeyedAccountInformationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
@@ -1774,6 +1712,34 @@ class Router:
             viewController = AnyToNoAuthRekeyedAccountInformationScreen(
                 account: account,
                 copyToClipboardController: copyToClipboardController
+            )
+        case .watchAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = WatchAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = UndoRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
+        case let .overwriteRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = OverwriteRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
             )
         case let .backUpBeforeRemovingAccountWarning(eventHandler):
             let uiSheet = BackUpBeforeRemovingAccountWarningSheet(

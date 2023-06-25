@@ -164,6 +164,7 @@ enum AlgorandWeb: String {
     case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
     case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
     case tinymanSwap = "http://perawallet.app/support/swap/"
+    case rekey = "https://perawallet.app/rekey"
 
     var presentation: String {
         switch self {
