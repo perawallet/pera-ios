@@ -34,7 +34,7 @@ final class RemoveAuthAccountAuthorizationValidator: RemoveAccountAuthorizationV
 
         let hasAnyRekeyedAccounts = rekeyedAccounts.isNonEmpty
         if hasAnyRekeyedAccounts {
-            let error = RemoveAuthAccountAuthorizationError(rekeyedAccounts)
+            let error = RemoveAuthAccountAuthorizationError(rekeyedAccounts: rekeyedAccounts)
             return .denied(error)
         }
 
@@ -49,7 +49,7 @@ final class RemoveAuthAccountAuthorizationValidator: RemoveAccountAuthorizationV
 struct RemoveAuthAccountAuthorizationError: RemoveAccountErrorDisplayable {
     private(set) var message: String
 
-    init(_ rekeyedAccounts: [AccountHandle]) {
+    init(rekeyedAccounts: [AccountHandle]) {
         message =
             rekeyedAccounts.isSingular
             ? "remove-auth-account-rekeyed-account-error-title".localized

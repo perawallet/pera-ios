@@ -44,7 +44,11 @@ final class RemoveAccountSheet: UISheet {
                 .localized
                 .bodyRegular(alignment: .center)
 
-        super.init(image: "icon-trash-red", title: title, body: body)
+        super.init(
+            image: "icon-trash-red",
+            title: title,
+            body: body
+        )
 
         let confirmAction = makeConfirmAction()
         addAction(confirmAction)

@@ -33,7 +33,11 @@ final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
                 .localized
                 .bodyRegular(alignment: .center)
 
-        super.init(image: "icon-info-red", title: title, body: body)
+        super.init(
+            image: "icon-info-red",
+            title: title,
+            body: body
+        )
 
         let confirmAction = makeConfirmAction()
         addAction(confirmAction)
