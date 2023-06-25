@@ -35,22 +35,15 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
     
     private var publishers = [AnyCancellable]()
     
-    /// Account address that is used for the test connection/transaction.
-    private let accountAddress = "Z4M6DE4KEDC5SRSWCVR5YR6PPIOTAIZL32VAYWGN5QGRCVRYUQWUBNUVUA"
-    
     /// Project id is from a mock app that I created.
     private let projectID = "06274a21f488344abb80fc50223631f8"
     
     /// Metadata that is directly copied from WalletConnect v1.
     private let appMetadata = AppMetadata(
-        name: "Pera Wallet",
-        description: "Pera Wallet: Simply the best Algorand wallet.",
-        url: "https://perawallet.app/",
-        icons: [
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-192.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-512.png"
-        ]
+        name: ALGAppTarget.current.walletConnectConfig.meta.name,
+        description: ALGAppTarget.current.walletConnectConfig.meta.description,
+        url: ALGAppTarget.current.walletConnectConfig.meta.url.absoluteString,
+        icons: ALGAppTarget.current.walletConnectConfig.meta.icons.map { $0.absoluteString }
     )
     
     private let algorandSDK = AlgorandSDK()
@@ -77,10 +70,8 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    func pair(with topic: String) {
-        guard let uri = WalletConnectURI(string: topic) else { return }
-        
-        print("[WC2] - Pairing to: \(uri)")
+    func connect(with preferences: WalletConnectSessionCreationPreferences) {
+        guard let uri = WalletConnectURI(string: preferences.session) else { return }
         
         Task {
             do {
@@ -97,11 +88,11 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    func getSessions() -> [WalletConnectSign.Session] {
+    func getSessions() -> [WalletConnectV2Session] {
         return signAPI.getSessions()
     }
     
-    private func approveSession(
+    func approveSession(
         _ proposalId: String,
         namespaces: SessionNamespaces
     ) {
@@ -119,10 +110,10 @@ extension WalletConnectV2Protocol {
         }
     }
 
-    private func rejectSession(
+    func rejectSession(
         _ proposalId: String,
-        reason: RejectionReason
-    ) async {
+        reason: WalletConnectV2SessionRejectionReason
+    ) {
         print("[WC2] - Reject Session: \(proposalId)")
         
         Task {
@@ -137,7 +128,7 @@ extension WalletConnectV2Protocol {
         }
     }
     
-    private func extendSession(_ session: WalletConnectSign.Session) {
+    func extendSession(_ session: WalletConnectV2Session) {
         print("[WC2] - Extend Session: \(session.topic)")
         
         Task {
@@ -149,8 +140,8 @@ extension WalletConnectV2Protocol {
         }
     }
     
-    private func updateSession(
-        _ session: WalletConnectSign.Session,
+    func updateSession(
+        _ session: WalletConnectV2Session,
         namespaces: SessionNamespaces
     ) {
         print("[WC2] - Update Session: \(session.topic)")
@@ -169,9 +160,9 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    private func approveTransactionRequest(
-        _ request: Request,
-        response: AnyCodable
+    func approveTransactionRequest(
+        _ request: WalletConnectV2Request,
+        response: WalletConnectV2CodableResult
     ) {
         print("[WC2] - Approve Request")
         
@@ -188,7 +179,7 @@ extension WalletConnectV2Protocol {
         }
     }
 
-    private func rejectTransactionRequest(_ request: Request) {
+    func rejectTransactionRequest(_ request: WalletConnectV2Request) {
         print("[WC2] - Reject Request")
 
         Task {
@@ -239,7 +230,7 @@ extension WalletConnectV2Protocol {
             .sessionProposalPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                [weak self] sessionProposal in
+                [weak self] sessionProposal, context in
                 guard let self else { return }
                 
                 self.eventHandler?(.proposeSession(sessionProposal))
@@ -326,7 +317,7 @@ extension WalletConnectV2Protocol {
             .sessionRequestPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                [weak self] request in
+                [weak self] request, context in
                 guard let self else { return }
                 
                 self.eventHandler?(.transactionRequest(request))
@@ -335,13 +326,13 @@ extension WalletConnectV2Protocol {
 }
 
 enum WalletConnectV2Event {
-    case sessions([WalletConnectSign.Session])
-    case proposeSession(WalletConnectSign.Session.Proposal)
+    case sessions([WalletConnectV2Session])
+    case proposeSession(WalletConnectV2SessionProposal)
     case deleteSession(
         topic: WalletConnectTopic,
-        reason: Reason
+        reason: WalletConnectV2Reason
     )
-    case settleSession(WalletConnectSign.Session)
+    case settleSession(WalletConnectV2Session)
     case updateSession(
         topic: WalletConnectTopic,
         namespaces: SessionNamespaces
@@ -351,7 +342,13 @@ enum WalletConnectV2Event {
         date: Date
     )
     case ping(String)
-    case transactionRequest(WalletConnectSign.Request)
+    case transactionRequest(WalletConnectV2Request)
 }
 
 typealias SessionNamespaces = [String: SessionNamespace]
+typealias WalletConnectV2SessionProposal = WalletConnectSign.Session.Proposal
+typealias WalletConnectV2SessionRejectionReason = RejectionReason
+typealias WalletConnectV2Session = WalletConnectSign.Session
+typealias WalletConnectV2Request = WalletConnectSign.Request
+typealias WalletConnectV2CodableResult = AnyCodable
+typealias WalletConnectV2Reason = Reason

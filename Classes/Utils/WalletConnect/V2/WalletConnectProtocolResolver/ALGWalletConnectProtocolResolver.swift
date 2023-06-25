@@ -16,14 +16,9 @@
 
 final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
     private(set) var currentWalletConnectProtocol: WalletConnectProtocol?
-    
-    private lazy var walletConnectV1Protocol = WalletConnectV1Protocol(
-        api: api,
-        pushToken: pushToken,
-        analytics: analytics
-    )
-    
-    private lazy var walletConnectV2Protocol = WalletConnectV2Protocol(api: api)
+    private(set) var currentWalletConnectProtocolID: WalletConnectProtocolID?
+    private(set) var walletConnectV1Protocol: WalletConnectV1Protocol
+    private(set) var walletConnectV2Protocol: WalletConnectV2Protocol
     
     private let api: ALGAPI
     private let analytics: ALGAnalytics
@@ -37,31 +32,55 @@ final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
         self.api = api
         self.analytics = analytics
         self.pushToken = pushToken
+        
+        self.walletConnectV1Protocol = WalletConnectV1Protocol(
+            api: api,
+            pushToken: pushToken,
+            analytics: analytics
+        )
+        self.walletConnectV2Protocol = WalletConnectV2Protocol(api: api)
     }
     
     func getWalletConnectProtocol(from session: WalletConnectSessionText) -> WalletConnectProtocol? {
         if walletConnectV1Protocol.isValidSession(session) {
-            currentWalletConnectProtocol = walletConnectV1Protocol
+            setCurrentWalletConnectProtocolAsV1()
             return walletConnectV1Protocol
         }
         
         if walletConnectV2Protocol.isValidSession(session) {
-            currentWalletConnectProtocol = walletConnectV2Protocol
+            setCurrentWalletConnectProtocolAsV2()
             return walletConnectV2Protocol
         }
         
-        currentWalletConnectProtocol = nil
+        resetCurrentWalletConnectProtocol()
         return nil
     }
     
     func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol? {
         switch id {
         case .v1:
-            currentWalletConnectProtocol = walletConnectV1Protocol
+            setCurrentWalletConnectProtocolAsV1()
         case .v2:
-            currentWalletConnectProtocol = walletConnectV2Protocol
+            setCurrentWalletConnectProtocolAsV2()
         }
         
         return currentWalletConnectProtocol
+    }
+}
+
+extension ALGWalletConnectProtocolResolver {
+    private func setCurrentWalletConnectProtocolAsV1() {
+        currentWalletConnectProtocol = walletConnectV1Protocol
+        currentWalletConnectProtocolID = .v1
+    }
+    
+    private func setCurrentWalletConnectProtocolAsV2() {
+        currentWalletConnectProtocol = walletConnectV2Protocol
+        currentWalletConnectProtocolID = .v2
+    }
+    
+    private func resetCurrentWalletConnectProtocol() {
+        currentWalletConnectProtocol = nil
+        currentWalletConnectProtocolID = nil
     }
 }

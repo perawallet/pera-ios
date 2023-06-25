@@ -1719,7 +1719,7 @@ extension Router {
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectorPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let bannerController = appConfiguration.bannerController
@@ -1843,7 +1843,7 @@ extension Router {
             guard let self = self else { return }
 
             let preferencesKey = WalletConnectV1Protocol.sessionRequestPreferencesKey
-            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectSessionCreationPreferences
 
             guard let preferences else {
                 return

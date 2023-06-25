@@ -17,14 +17,52 @@
 import Foundation
 
 protocol WalletConnectCoordinator {
+    typealias EventHandler = (WalletConnectCoordinatorEvent) -> Void
+
+    var eventHandler: EventHandler? { get set }
     var walletConnectProtocolResolver: WalletConnectProtocolResolver { get }
     
-    func connect()
-    func reconnect()
-    func disconnect()
-    func approveSession()
-    func rejectSession()
-    func updateSession()
-    func approveRequest()
-    func rejectRequest()
+    func isValidSession(session: WalletConnectSessionText) -> Bool
+    
+    func getSessions()
+    
+    func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
+    func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
+    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams)
+    func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
+    func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
+    func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)
+    func extendSessionConnection(_ params: WalletConnectExtendSessionConnectionParams)
+    
+    func approveTransactionRequest(_ params: WalletConnectApproveTransactionRequestParams)
+    func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams)
+}
+
+enum WalletConnectCoordinatorEvent {
+    case shouldStartV1(
+        session: WalletConnectSession,
+        preferences: WalletConnectSessionCreationPreferences?,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
+    case didConnectToV1(WCSession)
+    case didDisconnectFromV1(WCSession)
+    case didFailToConnectV1(WalletConnectV1Protocol.WCError)
+    case didExceedMaximumSessionFromV1
+    case sessionsV2([WalletConnectV2Session])
+    case proposeSessionV2(WalletConnectV2SessionProposal)
+    case deleteSessionV2(
+        topic: WalletConnectTopic,
+        reason: WalletConnectV2Reason
+    )
+    case settleSessionV2(WalletConnectV2Session)
+    case updateSessionV2(
+        topic: WalletConnectTopic,
+        namespaces: SessionNamespaces
+    )
+    case extendSessionV2(
+        topic: WalletConnectTopic,
+        date: Date
+    )
+    case pingV2(String)
+    case transactionRequestV2(WalletConnectV2Request)
 }

@@ -85,6 +85,12 @@ class AppDelegate:
         pushToken: pushNotificationController.token,
         analytics: analytics
     )
+    private lazy var walletConnectProtocolResolver = ALGWalletConnectProtocolResolver(
+        api: api,
+        analytics: analytics,
+        pushToken: pushNotificationController.token
+    )
+    private lazy var walletConnectCoordinator = ALGWalletConnectCoordinator(walletConnectProtocolResolver: walletConnectProtocolResolver)
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
@@ -555,7 +561,7 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func createPeraConnect() -> PeraConnect {
-        return ALGPeraConnect()
+        return ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
     }
     
     private func createAppLaunchController() -> AppLaunchController {

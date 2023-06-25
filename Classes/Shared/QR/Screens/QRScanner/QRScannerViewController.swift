@@ -45,8 +45,6 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         $0.cancelMode = self.canGoBack() ? .pop : .dismiss
         $0.showsConnectedAppsButton = self.isShowingConnectedAppsButton
     }
-
-    private lazy var walletConnectV2Protocol = WalletConnectV2Protocol(api: api!)
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -297,8 +295,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             }
 
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-
-            if walletConnectV2Protocol.isValidSession(qrString) {
+            
+            if peraConnect.isValidSession(qrString) {
                 if !canReadWCSession {
                     bannerController?.presentErrorBanner(
                         title: "title-error".localized,
@@ -309,38 +307,16 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     return
                 }
                 
-                walletConnectV2Protocol.pair(with: qrString)
+                let preferences = WalletConnectSessionCreationPreferences(session: qrString)
+                
+                peraConnect.connectToSession(with: preferences)
                 startWCConnectionTimer()
                 
-                walletConnectV2Protocol.eventHandler = {
+                peraConnect.eventHandler = {
                     [weak self] event in
                     guard let self = self else { return }
-                    
-                    switch event {
-                    case .proposeSession(let sessionProposal):
-                        self.stopWCConnectionTimer()
-                        break
-                    default: break
-                    }
-                    
                 }
                 return
-            } else if walletConnector.isValidSession(qrString) {
-                if !canReadWCSession {
-                    bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "qr-scan-invalid-wc-screen-error".localized
-                    )
-                    captureSession = nil
-                    closeScreen()
-                    return
-                }
-
-                let preferences = WalletConnectorPreferences(session: qrString)
-
-                walletConnector.delegate = self
-                walletConnector.connect(with: preferences)
-                startWCConnectionTimer()
             } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen()
@@ -382,7 +358,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectorPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         stopWCConnectionTimer()

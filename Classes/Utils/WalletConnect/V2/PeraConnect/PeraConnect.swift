@@ -17,5 +17,25 @@
 import Foundation
 
 protocol PeraConnect {
+    typealias EventHandler = (PeraConnectEvent) -> Void
+
+    var eventHandler: EventHandler? { get set }    
+    var walletConnectCoordinator: WalletConnectCoordinator { get }
     
+    func isValidSession(_ session: WalletConnectSessionText) -> Bool
+    
+    func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
+    func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
+    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams)
+    func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
+    func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
+    func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)
+    func extendSessionConnection(_ params: WalletConnectExtendSessionConnectionParams)
+
+    func approveTransactionRequest(_ params: WalletConnectApproveTransactionRequestParams)
+    func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams)
+}
+
+enum PeraConnectEvent {
+
 }

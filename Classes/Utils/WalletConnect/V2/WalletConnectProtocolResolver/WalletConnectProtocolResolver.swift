@@ -18,6 +18,10 @@ import Foundation
 
 protocol WalletConnectProtocolResolver {
     var currentWalletConnectProtocol: WalletConnectProtocol? { get }
+    var currentWalletConnectProtocolID: WalletConnectProtocolID? { get }
+    
+    var walletConnectV1Protocol: WalletConnectV1Protocol { get }
+    var walletConnectV2Protocol: WalletConnectV2Protocol { get }
     
     func getWalletConnectProtocol(from session: WalletConnectSessionText) -> WalletConnectProtocol?
     func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol?

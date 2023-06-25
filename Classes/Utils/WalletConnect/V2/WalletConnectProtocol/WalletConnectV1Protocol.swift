@@ -33,6 +33,7 @@ class WalletConnectV1Protocol:
     private lazy var sessionSource = WalletConnectSessionSource()
     private(set) var sessionValidator: WalletConnectSessionValidator
 
+    var eventHandler: ((WalletConnectV1Event) -> Void)?
     weak var delegate: WalletConnectorDelegate?
     
     var isRegisteredToTheTransactionRequests = false
@@ -42,7 +43,7 @@ class WalletConnectV1Protocol:
     private let analytics: ALGAnalytics
 
     private var ongoingConnections: [String: Bool] = [:]
-    private var preferences: WalletConnectorPreferences?
+    private var preferences: WalletConnectSessionCreationPreferences?
 
     init(
         api: ALGAPI,
@@ -90,12 +91,19 @@ extension WalletConnectV1Protocol {
 
     /// <note>:
     /// `preferences` value repsents user preferences for specific wallet connection
-    func connect(with preferences: WalletConnectorPreferences) {
+    func connect(with preferences: WalletConnectSessionCreationPreferences) {
         self.preferences = preferences
 
         let session = preferences.session
 
         guard let url = WalletConnectURL(session) else {
+            eventHandler?(
+                .didFail(
+                    .failedToCreateSession(
+                        qr: session
+                    )
+                )
+            )
             delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
             return
         }
@@ -111,6 +119,13 @@ extension WalletConnectV1Protocol {
             try connect(to: url)
         } catch {
             ongoingConnections.removeValue(forKey: key)
+            eventHandler?(
+                .didFail(
+                    .failedToConnect(
+                        url: url
+                    )
+                )
+            )
             delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
@@ -187,8 +202,22 @@ extension WalletConnectV1Protocol {
             try disconnect(from: session.sessionBridgeValue)
             removeFromSessions(session)
         } catch WalletConnectSwift.WalletConnect.WalletConnectError.tryingToDisconnectInactiveSession {
+            eventHandler?(
+                .didFail(
+                    .failedToDisconnectInactiveSession(
+                        session: session
+                    )
+                )
+            )
             delegate?.walletConnector(self, didFailWith: .failedToDisconnectInactiveSession(session: session))
         } catch {
+            eventHandler?(
+                .didFail(
+                    .failedToDisconnect(
+                        session: session
+                    )
+                )
+            )
             delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
     }
@@ -255,6 +284,13 @@ extension WalletConnectV1Protocol {
         completion: @escaping (WalletConnectSession.WalletInfo) -> Void
     ) {
         // Get user approval or rejection for the session
+        eventHandler?(
+            .shouldStart(
+                session: session,
+                preferences: preferences,
+                completion: completion
+            )
+        )
         delegate?.walletConnector(self, shouldStart: session, with: preferences, then: completion)
     }
 
@@ -280,6 +316,7 @@ extension WalletConnectV1Protocol {
             
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
+            self.eventHandler?(.didConnect(connectedSession))
             self.delegate?.walletConnector(self, didConnectTo: connectedSession)
         }
     }
@@ -295,6 +332,7 @@ extension WalletConnectV1Protocol {
 
             let wcSession = session.toWCSession()
             self.removeFromSessions(wcSession)
+            self.eventHandler?(.didDisconnect(wcSession))
             self.delegate?.walletConnector(self, didDisconnectFrom: wcSession)
         }
     }
@@ -305,6 +343,13 @@ extension WalletConnectV1Protocol {
     ) {
         let key = url.absoluteString
         ongoingConnections.removeValue(forKey: key)
+        eventHandler?(
+            .didFail(
+                .failedToConnect(
+                    url: url
+                )
+            )
+        )
         delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
     }
 
@@ -374,6 +419,7 @@ extension WalletConnectV1Protocol {
             disconnectFromSessionSilently(session)
         }
         
+        eventHandler?(.didExceedMaximumSession)
         delegate?.walletConnectorDidExceededMaximumSessionLimit(self)
     }
 }
@@ -421,11 +467,23 @@ extension WalletConnectV1Protocol {
     }
 }
 
+enum WalletConnectV1Event {
+    case shouldStart(
+        session: WalletConnectSession,
+        preferences: WalletConnectSessionCreationPreferences?,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
+    case didConnect(WCSession)
+    case didDisconnect(WCSession)
+    case didFail(WalletConnectV1Protocol.WCError)
+    case didExceedMaximumSession
+}
+
 protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectorPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
     func walletConnector(
@@ -447,7 +505,7 @@ extension WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectorPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) { }
 

@@ -392,7 +392,7 @@ extension ALGAppLaunchController {
         case .none:
             return nil
         case .success(let session):
-            let preferences = WalletConnectorPreferences(
+            let preferences = WalletConnectSessionCreationPreferences(
                 session: session,
                 prefersConnectionApproval: prefersConnectionApproval
             )

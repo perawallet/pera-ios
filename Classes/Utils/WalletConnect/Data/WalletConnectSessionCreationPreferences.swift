@@ -12,19 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WalletConnectorPreferences.swift
+//   WalletConnectSessionCreationPreferences.swift
 
 import Foundation
 
-struct WalletConnectorPreferences {
-    let session: String
+struct WalletConnectSessionCreationPreferences {
+    let session: WalletConnectSessionText
     let prefersConnectionApproval: Bool
 
-    init(session: String) {
+    init(
+        session: WalletConnectSessionText
+    ) {
         self.session = session
         self.prefersConnectionApproval = true
     }
-    init(session: String, prefersConnectionApproval: Bool) {
+    
+    init(
+        session: WalletConnectSessionText,
+        prefersConnectionApproval: Bool
+    ) {
         self.session = session
         self.prefersConnectionApproval = prefersConnectionApproval
     }
