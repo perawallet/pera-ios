@@ -33,7 +33,6 @@ final class AccountDetailViewController: PageContainer {
     private lazy var transitionToManagementOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToRemoveAccountConfirmation = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = createAssetListScreen()
     private lazy var collectibleListScreen = createCollectibleListScreen()
@@ -43,6 +42,11 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
+    private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!
+    )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var transakFlowCoordinator = TransakFlowCoordinator(
@@ -612,30 +616,17 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        presentRemoveAccountConfirmation()
-    }
-}
-
-extension AccountDetailViewController {
-    private func presentRemoveAccountConfirmation() {
-        let eventHandler: RemoveAccountSheet.EventHandler = {
-            [unowned self] event in
+        removeAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
             switch event {
             case .didRemoveAccount:
-                self.dismiss(animated: true) {
-                    self.eventHandler?(.didRemove)
-                }
-            case .didCancel:
-                self.dismiss(animated: true)
+                self.eventHandler?(.didRemove)
             }
         }
-        transitionToRemoveAccountConfirmation.perform(
-            .removeAccount(
-                account: accountHandle.value,
-                eventHandler: eventHandler
-            ),
-            by: .presentWithoutNavigationController
-        )
+
+        let account = accountHandle.value
+        removeAccountFlowCoordinator.launch(account)
     }
 }
 

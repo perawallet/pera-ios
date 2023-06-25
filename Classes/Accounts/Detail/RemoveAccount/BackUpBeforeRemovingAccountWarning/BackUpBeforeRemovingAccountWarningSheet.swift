@@ -12,40 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RemoveAccountSheet.swift
+//   BackUpBeforeRemovingAccountWarningSheet.swift
 
 import Foundation
 
-final class RemoveAccountSheet: UISheet {
+final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
     typealias EventHandler = (Event) -> Void
 
-    private let account: Account
-    private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnector
     private let eventHandler: EventHandler
 
-    init(
-        account: Account,
-        sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
-        eventHandler: @escaping EventHandler
-    ) {
-        self.account = account
-        self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
+    init(eventHandler: @escaping EventHandler) {
         self.eventHandler = eventHandler
 
         let title =
-            "options-remove-account"
+            "back-up-before-removing-account-warning-title"
                 .localized
                 .bodyLargeMedium(alignment: .center)
         let body =
-            "options-remove-account-explanation"
+            "back-up-before-removing-account-warning-body"
                 .localized
                 .bodyRegular(alignment: .center)
 
         super.init(
-            image: "icon-trash-red",
+            image: "icon-info-red",
             title: title,
             body: body
         )
@@ -58,26 +47,20 @@ final class RemoveAccountSheet: UISheet {
     }
 }
 
-extension RemoveAccountSheet {
+extension BackUpBeforeRemovingAccountWarningSheet {
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-remove".localized,
+            title: "title-yes-continue".localized,
             style: .default
         ) {
             [unowned self] in
-            self.removeAccount()
-            self.eventHandler(.didRemoveAccount)
+            self.eventHandler(.didConfirm)
         }
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(account)
-        walletConnector.updateSessionsWithRemovingAccount(account)
     }
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-keep".localized,
+            title: "back-up-before-removing-account-warning-cancel-action".localized,
             style: .cancel
         ) {
             [unowned self] in
@@ -86,9 +69,9 @@ extension RemoveAccountSheet {
     }
 }
 
-extension RemoveAccountSheet {
+extension BackUpBeforeRemovingAccountWarningSheet {
     enum Event {
-        case didRemoveAccount
+        case didConfirm
         case didCancel
     }
 }

@@ -356,6 +356,7 @@ indirect enum Screen {
         authAccount: Account,
         eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
     )
+    case backUpBeforeRemovingAccountWarning(eventHandler: BackUpBeforeRemovingAccountWarningSheet.EventHandler)
     case removeAccount(
         account: Account,
         eventHandler: RemoveAccountSheet.EventHandler
