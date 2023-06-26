@@ -87,25 +87,15 @@ indirect enum Screen {
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
-    case rekeyStandardToStandardAccountInstructions
-    case rekeyStandardToLedgerAccountInstructions
-    case rekeyLedgerToLedgerAccountInstructions
-    case rekeyLedgerToStandardAccountInstructions
-    case rekeyedToLedgerAccountInstructions
-    case rekeyedToStandardAccountInstructions
-    case rekeyStandardToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyStandardToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyLedgerToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyLedgerToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
-    case rekeyedToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
-    case rekeyedToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
-    case undoStandardAccountRekey(sourceAccount: Account, authAccount: Account)
-    case undoLedgerAccountRekey(sourceAccount: Account, authAccount: Account)
+    case rekeyToStandardAccountInstructions(sourceAccount: Account)
+    case rekeyToLedgerAccountInstructions(sourceAccount: Account)
+    case rekeyConfirmation(sourceAccount: Account, authAccount: Account? = nil, newAuthAccount: Account)
+    case undoRekey(sourceAccount: Account, authAccount: Account)
     case rekeyAccountSelection(
         eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
         account: Account
     )
-    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
+    case rekeyConfirmationOld(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
@@ -205,7 +195,7 @@ indirect enum Screen {
     )
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
-    case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case transactionOptions(account: Account, delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
@@ -353,15 +343,28 @@ indirect enum Screen {
     case standardAccountInformation(account: Account)
     case ledgerAccountInformation(account: Account)
     case noAuthAccountInformation(account: Account)
-    case standardToStandardRekeyedAccountInformation(from: Account, to: Account)
-    case standardToLedgerRekeyedAccountInformation(from: Account, to: Account)
-    case ledgerToLedgerRekeyedAccountInformation(from: Account, to: Account)
-    case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
+    case rekeyedAccountInformation(sourceAccount: Account, authAccount: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
     case rekeyedAccountSelectionList(
         authAccount: Account,
         rekeyedAccounts: [Account],
         eventHandler: RekeyedAccountSelectionListScreen.EventHandler
+    )
+    case watchAccountInformation(account: Account)
+    case undoRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: UndoRekeyConfirmationSheet.EventHandler
+    )
+    case overwriteRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
+    )
+    case backUpBeforeRemovingAccountWarning(eventHandler: BackUpBeforeRemovingAccountWarningSheet.EventHandler)
+    case removeAccount(
+        account: Account,
+        eventHandler: RemoveAccountSheet.EventHandler
     )
 }
 

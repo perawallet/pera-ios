@@ -27,7 +27,10 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToPassphraseDisplay = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToTransactionOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToManagementOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
@@ -39,6 +42,11 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
+    private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!
+    )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var transakFlowCoordinator = TransakFlowCoordinator(
@@ -178,13 +186,17 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
-                self.modalTransition.perform(
+                self.transitionToManagementOptions.perform(
                     .managementOptions(
                         managementType: isWatchAccount ? .watchAccountAssets : .assets,
                         delegate: self
                     ),
                     by: .present
                 )
+            case .copyAddress:
+                self.copyAddress()
+            case .showAddress:
+                self.openShowAddress()
             case .addAsset:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
@@ -215,52 +227,60 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController: TransactionOptionsScreenDelegate {
-    func transactionOptionsScreenDidAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapCopyAddress(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
+            [unowned self] in
+            self.copyAddress()
+        }
+    }
 
+    func transactionOptionsScreenDidTapShowAddress(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [unowned self] in
+            self.openShowAddress()
+        }
+    }
+
+    func transactionOptionsScreenDidTapAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [unowned self] in
             self.openAddAssetScreen()
         }
     }
 
-    func transactionOptionsScreenDidBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.openBuySellOptions()
+            [unowned self] in
+            self.openBuySellOptions()
         }
     }
 
-    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else { return }
-            
+            [unowned self] in
             self.analytics.track(.recordAccountDetailScreen(type: .swap))
             self.swapAssetFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.sendTransactionFlowCoordinator.launch()
+            [unowned self] in
+            self.sendTransactionFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.receiveTransactionFlowCoordinator.launch()
+            [unowned self] in
+            self.receiveTransactionFlowCoordinator.launch()
         }
     }
 
-    func transactionOptionsScreenDidMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidTapMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            self?.presentOptionsScreen()
+            [unowned self] in
+            self.presentOptionsScreen()
         }
     }
 }
@@ -339,8 +359,11 @@ extension AccountDetailViewController {
     }
 
     private func presentOptionsScreen() {
-        modalTransition.perform(
-            .options(account: self.accountHandle.value, delegate: self),
+        transitionToOptions.perform(
+            .options(
+                account: accountHandle.value,
+                delegate: self
+            ),
             by: .presentWithoutNavigationController
         )
     }
@@ -388,8 +411,13 @@ extension AccountDetailViewController {
     @objc
     private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
-            copyToClipboardController.copyAddress(accountHandle.value)
+            copyAddress()
         }
+    }
+
+    private func copyAddress() {
+        let account = accountHandle.value
+        copyToClipboardController.copyAddress(account)
     }
 }
 
@@ -398,8 +426,11 @@ extension AccountDetailViewController {
     private func openAccountActionsMenu() {
         view.endEditing(true)
 
-        self.modalTransition.perform(
-            .transactionOptions(delegate: self),
+        transitionToTransactionOptions.perform(
+           .transactionOptions(
+                account: accountHandle.value,
+                delegate: self
+            ),
             by: .presentWithoutNavigationController
         )
     }
@@ -409,7 +440,12 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
         analytics.track(.showQRCopy(account: account))
-        copyToClipboardController.copyAddress(account)
+
+        copyAddress()
+    }
+
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
+        /// <todo> Undo Rekey
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
@@ -511,6 +547,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        openShowAddress()
+    }
+
+    private func openShowAddress() {
         let account = accountHandle.value
         let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
@@ -557,7 +597,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
-        modalTransition.perform(
+        transitionToPassphraseDisplay.perform(
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
@@ -576,36 +616,17 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        displayRemoveAccountAlert()
-    }
-
-    private func displayRemoveAccountAlert() {
-        let account = accountHandle.value
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                account.isWatchAccount()
-                ? "options-remove-watch-account-explanation".localized
-                : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount()
+        removeAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didRemoveAccount:
+                self.eventHandler?(.didRemove)
             }
-        )
+        }
 
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(accountHandle.value)
-        walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
-        eventHandler?(.didRemove)
+        let account = accountHandle.value
+        removeAccountFlowCoordinator.launch(account)
     }
 }
 

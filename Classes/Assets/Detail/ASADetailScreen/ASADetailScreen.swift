@@ -52,9 +52,13 @@ final class ASADetailScreen:
 
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
+    private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!
+    )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
@@ -195,6 +199,10 @@ extension ASADetailScreen {
             screen,
             by: .present
         )
+    }
+
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
+        /// <todo> Undo Rekey
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
@@ -340,31 +348,17 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                dataController.account.isWatchAccount()
-                    ? "options-remove-watch-account-explanation".localized
-                    : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount()
+        removeAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didRemoveAccount:
+                self.eventHandler?(.didRemoveAccount)
             }
-        )
+        }
 
-        transitionToConfirmToDeleteAccount.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(dataController.account)
-        walletConnector.updateSessionsWithRemovingAccount(dataController.account)
-        eventHandler?(.didRemoveAccount)
+        let account = dataController.account
+        removeAccountFlowCoordinator.launch(account)
     }
 
     private func navigateToViewPassphrase() {
