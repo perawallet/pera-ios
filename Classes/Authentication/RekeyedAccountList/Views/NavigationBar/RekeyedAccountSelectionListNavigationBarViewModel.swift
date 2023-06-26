@@ -17,12 +17,12 @@
 import Foundation
 import MacaroonUIKit
 
-struct RekeyedAccountSelectionListNavigationBarViewModel {
+struct RekeyedAccountSelectionListNavigationBarViewModel: ViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
     private(set) var body: TextProvider?
 
-    init(_ accounts: [Account]) {
+    init(accounts: [Account]) {
         bindIcon()
         bindTitle(accounts)
     }

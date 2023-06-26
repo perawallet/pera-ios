@@ -19,16 +19,9 @@ import MacaroonUIKit
 import UIKit
 
 final class LedgerAccountCellView:
-    View,
-    TripleShadowDrawable,
+    TripleShadowView,
     ViewModelBindable,
     ListReusable {
-    var thirdShadow: MacaroonUIKit.Shadow?
-    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
-
-    var secondShadow: MacaroonUIKit.Shadow?
-    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
-
     weak var delegate: LedgerAccountViewDelegate?
 
     private var theme: LedgerAccountCellViewTheme?
@@ -37,31 +30,14 @@ final class LedgerAccountCellView:
     private lazy var accountItemView = AccountListItemView()
     private lazy var infoButton = UIButton()
 
+    var isSelected: Bool = false {
+        didSet { updateUIForSelection(isSelected) }
+    }
+
     override func preferredUserInterfaceStyleDidChange() {
         super.preferredUserInterfaceStyleDidChange()
 
-        drawAppearance(
-            secondShadow: secondShadow
-        )
-        drawAppearance(
-            thirdShadow: thirdShadow
-        )
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if let secondShadow = secondShadow {
-            updateOnLayoutSubviews(
-                secondShadow: secondShadow
-            )
-        }
-
-        if let thirdShadow = thirdShadow {
-            updateOnLayoutSubviews(
-                thirdShadow: thirdShadow
-            )
-        }
+        updateUIWhenUserInterfaceStyleDidChange()
     }
 
     func customize(_ theme: LedgerAccountCellViewTheme) {
@@ -76,10 +52,6 @@ final class LedgerAccountCellView:
         addInfo(theme)
         addAccountItem(theme)
     }
-
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     static func calculatePreferredSize(
         _ viewModel: LedgerAccountViewModel?,
@@ -162,14 +134,37 @@ extension LedgerAccountCellView {
 }
 
 extension LedgerAccountCellView {
-    func didSelectCell(_ selected: Bool) {
+    private func updateUIWhenUserInterfaceStyleDidChange() {
+        updateBorderWhenUserInterfaceStyleDidChange()
+    }
+
+    private func updateBorderWhenUserInterfaceStyleDidChange() {
+        updateBorderForSelection(isSelected)
+    }
+}
+
+extension LedgerAccountCellView {
+    private func updateUIForSelection(_ isSelected: Bool) {
+        updateBorderForSelection(isSelected)
+        updateCheckboxForSelection(isSelected)
+    }
+
+    private func updateBorderForSelection(_ isSelected: Bool) {
         guard let theme else { return }
 
-        if selected {
+        if isSelected {
             draw(border: theme.selectedStateBorder)
-            checkboxImageView.customizeAppearance(theme.selectedStateCheckbox)
         } else {
             eraseBorder()
+        }
+    }
+
+    private func updateCheckboxForSelection(_ isSelected: Bool) {
+        guard let theme else { return }
+
+        if isSelected {
+            checkboxImageView.customizeAppearance(theme.selectedStateCheckbox)
+        } else {
             checkboxImageView.customizeAppearance(theme.unselectedStateCheckbox)
         }
     }

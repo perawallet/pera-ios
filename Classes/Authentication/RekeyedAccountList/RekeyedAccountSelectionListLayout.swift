@@ -97,6 +97,12 @@ extension RekeyedAccountSelectionListLayout {
                 sizeForAccountItem: item,
                 atSection: indexPath.section
             )
+        case .accountLoading:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingItemAt: indexPath
+            )
         }
     }
 }
@@ -128,10 +134,35 @@ extension RekeyedAccountSelectionListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let sizeCacheIdentifier = RekeyedAccountSelectionListAccountLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            for: listView,
+            forSectionAt: indexPath.section
+        )
+        let newSize = RekeyedAccountSelectionListAccountLoadingCell.calculatePreferredSize(
+            for: RekeyedAccountSelectionListAccountLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
         sizeForAccountItem item: RekeyedAccountSelectionListAccountCellItemIdentifier,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = RekeyedAccountSelectionAccountCell.reuseIdentifier
+        let sizeCacheIdentifier = RekeyedAccountSelectionListAccountCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -141,9 +172,9 @@ extension RekeyedAccountSelectionListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = RekeyedAccountSelectionAccountCell.calculatePreferredSize(
+        let newSize = RekeyedAccountSelectionListAccountCell.calculatePreferredSize(
             item.viewModel,
-            for: RekeyedAccountSelectionAccountCell.theme.context,
+            for: RekeyedAccountSelectionListAccountCell.theme.context,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

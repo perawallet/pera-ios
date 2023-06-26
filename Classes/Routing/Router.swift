@@ -890,9 +890,10 @@ class Router:
                 dataController:dataController,
                 configuration: configuration
             )
-        case let .ledgerAccountDetail(account, index, rekeyedAccounts):
+        case let .ledgerAccountDetail(account, authAccount, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
+                authAccount: authAccount,
                 ledgerIndex: index,
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
@@ -1775,9 +1776,10 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case .rekeyedAccountSelectionList(let accounts, let eventHandler):
+        case let .rekeyedAccountSelectionList(authAccount, rekeyedAccounts, eventHandler):
             let dataController = RekeyedAccountSelectionListLocalDataController(
-                rekeyedAccounts: accounts,
+                authAccount: authAccount,
+                rekeyedAccounts: rekeyedAccounts,
                 sharedDataController: appConfiguration.sharedDataController
             )
             let screen = RekeyedAccountSelectionListScreen(

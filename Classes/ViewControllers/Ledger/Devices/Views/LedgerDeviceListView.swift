@@ -44,6 +44,12 @@ final class LedgerDeviceListView: View {
         customize(theme)
     }
 
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+
+        updateImageWhenUserInterfaceStyleDidChange()
+    }
+
     func customize(_ theme: LedgerDeviceListViewTheme) {
         addVerticalStackView(theme)
         addDevicesCollectionView(theme)
@@ -71,10 +77,10 @@ extension LedgerDeviceListView {
     }
 
     private func addImageView(_ theme: LedgerDeviceListViewTheme) {
-        imageView.setAnimation(theme.lottie)
-
         verticalStackView.addArrangedSubview(imageView)
         verticalStackView.setCustomSpacing(theme.titleLabelTopPadding, after: imageView)
+
+        bindImage()
     }
 
     private func addTitleLabel(_ theme: LedgerDeviceListViewTheme) {
@@ -107,6 +113,23 @@ extension LedgerDeviceListView {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(theme.indicatorViewTopPadding)
         }
+    }
+}
+
+extension LedgerDeviceListView {
+    private func updateImageWhenUserInterfaceStyleDidChange() {
+        bindImage()
+        startAnimatingImageView()
+    }
+}
+
+extension LedgerDeviceListView {
+    private func bindImage() {
+        let animation =
+            traitCollection.userInterfaceStyle == .dark
+            ? theme.imageDark
+            : theme.imageLight
+        imageView.setAnimation(animation)
     }
 }
 

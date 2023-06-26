@@ -230,12 +230,7 @@ extension LedgerAccountVerificationViewController {
         } else {
             user = User(accounts: [localAccount])
         }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
+        
         api?.session.authenticatedUser = user
     }
 

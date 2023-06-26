@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyedAccountSelectionListAccountItemAccessory.swift
-
+//   RekeyedAccountSelectionListAccountLoadingViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-enum RekeyedAccountSelectionListAccountItemAccessory {
-    case selected
-    case unselected
-}
+struct RekeyedAccountSelectionListAccountLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var account: RekeyedAccountSelectionListAccountLoadingItemViewTheme
+    var accountHeight: LayoutMetric
+    var spacingBetweenItems: LayoutMetric
+    var numberOfAccounts: Int
 
-extension RekeyedAccountSelectionListAccountItemAccessory {
-    mutating func toggle() {
-        self = self == .selected ? .unselected : .selected
+    init(_ family: LayoutFamily) {
+        self.account = RekeyedAccountSelectionListAccountLoadingItemViewTheme(family)
+        self.accountHeight = 79
+        self.spacingBetweenItems = 16
+        self.numberOfAccounts = 3
     }
 }

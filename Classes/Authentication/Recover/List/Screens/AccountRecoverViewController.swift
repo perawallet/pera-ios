@@ -433,13 +433,14 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
 
             switch response {
             case let .success(response):
-                let rekeyedAccounts = response.accounts.filter {
-                    return $0.authAddress != $0.address
-                }
+                let rekeyedAccounts: [Account] = response.accounts.compactMap { rekeyedAccount in
+                    guard rekeyedAccount.authAddress != rekeyedAccount.address else {
+                        return nil
+                    }
 
-                rekeyedAccounts.forEach { rekeyedAccount in
                     rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
                     rekeyedAccount.type = .rekeyed
+                    return rekeyedAccount
                 }
 
                 self.openRekeyedAccountSelectionListIfPossible(
@@ -447,6 +448,18 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                     rekeyedAccounts: rekeyedAccounts
                 )
             case .failure:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-failed-to-fetch-rekeyed-accounts".localized,
+                    message: ""
+                )
+                
+                self.analytics.record(
+                    .recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed(
+                        accountAddress: account.address,
+                        network: self.api!.network
+                    )
+                )
+
                 self.openAccountNameSetup(account)
             }
         }
@@ -485,7 +498,8 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         }
         open(
             .rekeyedAccountSelectionList(
-                accounts: rekeyedAccounts,
+                authAccount: Account(localAccount: account),
+                rekeyedAccounts: rekeyedAccounts,
                 eventHandler: eventHandler
             ),
             by: .push

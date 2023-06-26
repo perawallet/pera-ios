@@ -111,11 +111,6 @@ class AccountRecoverDataController: NSObject {
             user = User(accounts: [account])
         }
 
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
         session.authenticatedUser = user
     }
 }

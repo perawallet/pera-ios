@@ -85,7 +85,7 @@ final class RekeyedAccountSelectionListScreen:
         navigationBarLargeTitleView.customize(theme)
 
         let accounts = dataController.getAccounts()
-        let viewModel = RekeyedAccountSelectionListNavigationBarViewModel(accounts)
+        let viewModel = RekeyedAccountSelectionListNavigationBarViewModel(accounts: accounts)
         navigationBarLargeTitleView.bindData(viewModel)
         navigationBarLargeTitleController.title = viewModel.title?.string
     }
@@ -103,7 +103,7 @@ final class RekeyedAccountSelectionListScreen:
             case .didUpdate(let snapshot):
                 self.listDataSource.apply(
                     snapshot,
-                    animatingDifferences: false
+                    animatingDifferences: self.isViewAppeared
                 )
                 self.togglePrimaryActionStateIfNeeded()
                 self.selectAllAccountsIfNeeded()
@@ -111,6 +111,18 @@ final class RekeyedAccountSelectionListScreen:
         }
 
         dataController.load()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     override func viewDidLayoutSubviews() {
@@ -259,7 +271,9 @@ extension RekeyedAccountSelectionListScreen {
     @objc
     private func performPrimaryAction() {
         let selectedAccounts = dataController.getSelectedAccounts()
-        selectedAccounts.forEach(addAccount)
+        addAccounts(selectedAccounts)
+
+        pushNotificationController.sendDeviceDetails()
 
         eventHandler?(.performPrimaryAction, self)
     }
@@ -271,35 +285,49 @@ extension RekeyedAccountSelectionListScreen {
 }
 
 extension RekeyedAccountSelectionListScreen {
-    private func addAccount(_ account: Account) {
-        let account = AccountInformation(
-            address: account.address,
-            name: account.address,
-            type: .rekeyed,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
-        )
-        let user: User
+    private func addAccounts(_ accounts: [Account]) {
+        guard let user = session?.authenticatedUser else { return }
 
-        if let authenticatedUser = session?.authenticatedUser {
-            user = authenticatedUser
+        accounts.forEach { account in
+            let account = AccountInformation(
+                address: account.address,
+                name: account.address,
+                type: .rekeyed,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            )
 
-            if authenticatedUser.account(address: account.address) != nil {
+            if user.account(address: account.address) != nil {
                 user.updateAccount(account)
             } else {
                 user.addAccount(account)
             }
 
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            user = User(accounts: [account])
+            analytics.track(.registerAccount(registrationType: .rekeyed))
         }
 
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
         session?.authenticatedUser = user
+    }
+}
+
+extension RekeyedAccountSelectionListScreen {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
+        if isViewFirstAppeared { return }
+
+        for cell in listView.visibleCells {
+            if let accountLoadingCell = cell as? RekeyedAccountSelectionListAccountLoadingCell {
+                startAnimatingListLoadingIfNeeded(accountLoadingCell)
+                return
+            }
+        }
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let accountLoadingCell = cell as? RekeyedAccountSelectionListAccountLoadingCell {
+                stopAnimatingListLoadingIfNeeded(accountLoadingCell)
+                return
+            }
+        }
     }
 }
 
@@ -355,6 +383,7 @@ extension RekeyedAccountSelectionListScreen {
             toggleAccountSelection(at: indexPath)
 
             togglePrimaryActionStateIfNeeded()
+        default: break
         }
     }
 
@@ -368,12 +397,38 @@ extension RekeyedAccountSelectionListScreen {
         }
 
         switch itemIdentifier {
+        case .accountLoading:
+            self.collectionView(
+                collectionView,
+                willDisplay: cell as! RekeyedAccountSelectionListAccountLoadingCell,
+                forItemAt: indexPath
+            )
         case .account:
             self.collectionView(
                 collectionView,
-                willDisplay: cell as! RekeyedAccountSelectionAccountCell,
+                willDisplay: cell as! RekeyedAccountSelectionListAccountCell,
                 forItemAt: indexPath
             )
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .accountLoading:
+            self.collectionView(
+                collectionView,
+                didEndDisplaying: cell as! RekeyedAccountSelectionListAccountLoadingCell,
+                forItemAt: indexPath
+            )
+        default: break
         }
     }
 }
@@ -381,7 +436,7 @@ extension RekeyedAccountSelectionListScreen {
 extension RekeyedAccountSelectionListScreen {
     private func collectionView(
         _ collectionView: UICollectionView,
-        willDisplay cell: RekeyedAccountSelectionAccountCell,
+        willDisplay cell: RekeyedAccountSelectionListAccountCell,
         forItemAt indexPath: IndexPath
     ) {
         cell.startObserving(event: .info) {
@@ -411,11 +466,38 @@ extension RekeyedAccountSelectionListScreen {
         open(
             .ledgerAccountDetail(
                 account: account,
+                authAccount: dataController.authAccount,
                 ledgerIndex: nil,
                 rekeyedAccounts: nil
             ),
             by: .present
         )
+    }
+}
+
+extension RekeyedAccountSelectionListScreen {
+    private func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: RekeyedAccountSelectionListAccountLoadingCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        startAnimatingListLoadingIfNeeded(cell)
+    }
+
+    private func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: RekeyedAccountSelectionListAccountLoadingCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        stopAnimatingListLoadingIfNeeded(cell)
+    }
+
+    private func startAnimatingListLoadingIfNeeded(_ cell: RekeyedAccountSelectionListAccountLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: RekeyedAccountSelectionListAccountLoadingCell?) {
+        cell?.stopAnimating()
     }
 }
 
@@ -430,14 +512,14 @@ extension RekeyedAccountSelectionListScreen {
     private func selectAccount(
         at indexPath: IndexPath
     ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         cell.accessory = .selected
     }
 
     private func unselectAccount(
         at indexPath: IndexPath
     ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         cell.accessory = .unselected
     }
 
@@ -448,7 +530,7 @@ extension RekeyedAccountSelectionListScreen {
             return
         }
 
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         let index = indexPath.row
         let isSelected = cell.accessory == .selected
 
@@ -491,7 +573,7 @@ extension RekeyedAccountSelectionListScreen {
 extension RekeyedAccountSelectionListScreen {
     private func makeListHeader() -> RekeyedAccountSelectionListHeaderViewModel {
         let accounts = dataController.getAccounts()
-        return .init(accounts)
+        return .init(accounts: accounts)
     }
 }
 

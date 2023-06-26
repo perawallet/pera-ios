@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct RekeyedAccountSelectionListHeaderViewModel: ViewModel {
     private(set) var title: TextProvider?
 
-    init(_ accounts: [Account]) {
+    init(accounts: [Account]) {
         bindTitle(accounts)
     }
 }
