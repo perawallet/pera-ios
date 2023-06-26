@@ -35,6 +35,7 @@
 "title-copy" = "Copy";
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
+"title-skip-for-now" = "Skip for now";
 "title-learn-more" = "Learn More";
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
@@ -126,10 +127,12 @@
 "title-no-auth" = "No Auth";
 "title-rekeyed-to" = "REKEYED TO";
 "title-rekeyed" = "Rekeyed";
+"title-account-details" = "Account details";
 "title-copy-address-capitalized-sentence" = "Copy address";
 "title-yes-continue" = "Yes, continue";
 "title-show-address-capitalized-sentence" = "Show address";
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
+"title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -738,7 +741,6 @@
 "title-plus-account-singular-count" = "Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
-"ledger-account-detail-title" = "Account details";
 "ledger-account-detail-assets" = "Assets";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
@@ -1510,6 +1512,15 @@
 // MARK: Rekey Account Selection List
 "rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
+
+// MARK: Rekeyed Account selection List
+"rekeyed-account-selection-list-header-title-singular" = "Rekeyed account found";
+"rekeyed-account-selection-list-header-title-plural" = "%@ rekeyed accounts found";
+"rekeyed-account-selection-list-header-body-singular" = "A rekeyed account is attached to this account address. This means you can sign the transactions of the rekeyed account with the account you just added.";
+"rekeyed-account-selection-list-header-body-plural" = "You have %@ rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:";
+"rekeyed-account-selection-list-primary-action-title" = "Choose accounts to add";
+"rekeyed-account-selection-list-primary-action-title-singular" = "Add rekeyed account";
+"rekeyed-account-selection-list-primary-action-title-plural" = "Add rekeyed accounts";
 
 // MARK: Overwrite Rekey Confirmation
 "overwrite-rekey-confirmation-title" = "Your previous rekey will be replaced";

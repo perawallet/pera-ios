@@ -63,6 +63,6 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         let buttonHeight: LayoutMetric = 52
         let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
         self.linearGradientHeight = bottomInset + buttonHeight + additionalLinearGradientHeightForButtonTop
-        self.listContentInset = (10, 0, linearGradientHeight + 4, 0)
+        self.listContentInset = (10, 0, linearGradientHeight + 16, 0)
     }
 }

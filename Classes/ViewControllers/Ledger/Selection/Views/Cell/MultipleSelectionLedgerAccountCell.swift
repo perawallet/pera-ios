@@ -19,7 +19,7 @@ import UIKit
 final class MultipleSelectionLedgerAccountCell: LedgerAccountCell {
     override var isSelected: Bool {
         didSet {
-            contextView.didSelectCell(isSelected)
+            contextView.isSelected = isSelected
         }
     }
 

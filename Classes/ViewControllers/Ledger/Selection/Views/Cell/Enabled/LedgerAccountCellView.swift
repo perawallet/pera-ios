@@ -18,13 +18,10 @@
 import MacaroonUIKit
 import UIKit
 
-final class LedgerAccountCellView: View, TripleShadowDrawable {
-    var thirdShadow: MacaroonUIKit.Shadow?
-    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
-
-    var secondShadow: MacaroonUIKit.Shadow?
-    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
-
+final class LedgerAccountCellView:
+    TripleShadowView,
+    ViewModelBindable,
+    ListReusable {
     weak var delegate: LedgerAccountViewDelegate?
 
     private var theme: LedgerAccountCellViewTheme?
@@ -33,31 +30,14 @@ final class LedgerAccountCellView: View, TripleShadowDrawable {
     private lazy var accountItemView = AccountListItemView()
     private lazy var infoButton = UIButton()
 
+    var isSelected: Bool = false {
+        didSet { updateUIForSelection(isSelected) }
+    }
+
     override func preferredUserInterfaceStyleDidChange() {
         super.preferredUserInterfaceStyleDidChange()
 
-        drawAppearance(
-            secondShadow: secondShadow
-        )
-        drawAppearance(
-            thirdShadow: thirdShadow
-        )
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if let secondShadow = secondShadow {
-            updateOnLayoutSubviews(
-                secondShadow: secondShadow
-            )
-        }
-
-        if let thirdShadow = thirdShadow {
-            updateOnLayoutSubviews(
-                thirdShadow: thirdShadow
-            )
-        }
+        updateUIWhenUserInterfaceStyleDidChange()
     }
 
     func customize(_ theme: LedgerAccountCellViewTheme) {
@@ -73,9 +53,35 @@ final class LedgerAccountCellView: View, TripleShadowDrawable {
         addAccountItem(theme)
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    static func calculatePreferredSize(
+        _ viewModel: LedgerAccountViewModel?,
+        for theme: LedgerAccountCellViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+        let accountItemWidth =
+            width -
+            theme.horizontalInset -
+            theme.checkboxIconSize.w -
+            theme.horizontalInset -
+            theme.infoIconSize.w -
+            theme.horizontalInset
+        let maxAccountItemSize = CGSize(width: accountItemWidth, height: .greatestFiniteMagnitude)
+        let accountItemSize = AccountListItemView.calculatePreferredSize(
+            viewModel?.accountItem,
+            for: theme.accountItem,
+            fittingIn: maxAccountItemSize
+        )
+        let preferredHeight =
+            theme.verticalInset +
+            accountItemSize.height +
+            theme.verticalInset
+        return CGSize((width, min(preferredHeight, size.height)))
+    }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func bindData(_ viewModel: LedgerAccountViewModel?) {
+        accountItemView.bindData(viewModel?.accountItem)
+    }
 }
 
 extension LedgerAccountCellView {
@@ -127,21 +133,38 @@ extension LedgerAccountCellView {
     }
 }
 
-extension LedgerAccountCellView: ViewModelBindable {
-    func bindData(_ viewModel: LedgerAccountViewModel?) {
-        accountItemView.bindData(viewModel?.accountItem)
+extension LedgerAccountCellView {
+    private func updateUIWhenUserInterfaceStyleDidChange() {
+        updateBorderWhenUserInterfaceStyleDidChange()
+    }
+
+    private func updateBorderWhenUserInterfaceStyleDidChange() {
+        updateBorderForSelection(isSelected)
     }
 }
 
 extension LedgerAccountCellView {
-    func didSelectCell(_ selected: Bool) {
+    private func updateUIForSelection(_ isSelected: Bool) {
+        updateBorderForSelection(isSelected)
+        updateCheckboxForSelection(isSelected)
+    }
+
+    private func updateBorderForSelection(_ isSelected: Bool) {
         guard let theme else { return }
 
-        if selected {
+        if isSelected {
             draw(border: theme.selectedStateBorder)
-            checkboxImageView.customizeAppearance(theme.selectedStateCheckbox)
         } else {
             eraseBorder()
+        }
+    }
+
+    private func updateCheckboxForSelection(_ isSelected: Bool) {
+        guard let theme else { return }
+
+        if isSelected {
+            checkboxImageView.customizeAppearance(theme.selectedStateCheckbox)
+        } else {
             checkboxImageView.customizeAppearance(theme.unselectedStateCheckbox)
         }
     }

@@ -852,9 +852,10 @@ class Router:
                 dataController:dataController,
                 configuration: configuration
             )
-        case let .ledgerAccountDetail(account, index, rekeyedAccounts):
+        case let .ledgerAccountDetail(account, authAccount, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
+                authAccount: authAccount,
                 ledgerIndex: index,
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
@@ -1713,6 +1714,18 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case let .rekeyedAccountSelectionList(authAccount, rekeyedAccounts, eventHandler):
+            let dataController = RekeyedAccountSelectionListLocalDataController(
+                authAccount: authAccount,
+                rekeyedAccounts: rekeyedAccounts,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = RekeyedAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         case .watchAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

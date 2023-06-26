@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
+/// <todo> Handle bindings properly when account type is implemented.
 struct RekeyedAccountTypeInformationViewModel: AccountTypeInformationViewModel {
     private(set) var title: TextProvider?
     private(set) var typeIcon: Image?

@@ -20,13 +20,12 @@ import MacaroonUIKit
 import UIKit
 
 struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
+    let imageLight: String
+    let imageDark: String
     let title: TextStyle
     let description: TextStyle
     let backgroundColor: Color
     let indicator: ImageStyle
-
-    let lottie: String
-
     let collectionViewMinimumLineSpacing: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let verticalStackViewSpacing: LayoutMetric
@@ -37,6 +36,8 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.imageLight = "light-ledger"
+        self.imageDark = "dark-ledger"
         self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textOverflow(FittingText()),
@@ -58,8 +59,6 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
                 .contentMode(.scaleAspectFill)
             ]
         }
-
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <todo>:  Should be handled also on view.
 
         self.collectionViewMinimumLineSpacing = 20
         self.verticalStackViewTopPadding = 40
