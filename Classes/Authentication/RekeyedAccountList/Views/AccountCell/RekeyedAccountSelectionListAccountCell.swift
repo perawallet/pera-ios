@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyedAccountSelectionAccountCell.swift
+//   RekeyedAccountSelectionListAccountCell.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class RekeyedAccountSelectionAccountCell:
+final class RekeyedAccountSelectionListAccountCell:
     CollectionCell<LedgerAccountCellView>,
     ViewModelBindable,
     LedgerAccountViewDelegate,
@@ -42,7 +42,7 @@ final class RekeyedAccountSelectionAccountCell:
     }
 }
 
-extension RekeyedAccountSelectionAccountCell {
+extension RekeyedAccountSelectionListAccountCell {
     private func updateAccessoryIfNeeded(old: RekeyedAccountSelectionListAccountItemAccessory) {
         if accessory != old {
             updateAccessory()
@@ -51,24 +51,24 @@ extension RekeyedAccountSelectionAccountCell {
 
     private func updateAccessory() {
         let isSelected = accessory == .selected
-        contextView.didSelectCell(isSelected)
+        contextView.isSelected = isSelected
     }
 }
 
-extension RekeyedAccountSelectionAccountCell {
+extension RekeyedAccountSelectionListAccountCell {
     func ledgerAccountViewDidOpenMoreInfo(_ ledgerAccountView: LedgerAccountCellView) {
         publishInfoAction()
     }
 }
 
-extension RekeyedAccountSelectionAccountCell {
+extension RekeyedAccountSelectionListAccountCell {
     private func publishInfoAction() {
         let infoInteraction = uiInteractions[.info]
         infoInteraction?.publish()
     }
 }
 
-extension RekeyedAccountSelectionAccountCell {
+extension RekeyedAccountSelectionListAccountCell {
     enum Event {
         case info
     }

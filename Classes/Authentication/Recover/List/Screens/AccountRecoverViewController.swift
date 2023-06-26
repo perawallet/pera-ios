@@ -433,13 +433,14 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
 
             switch response {
             case let .success(response):
-                let rekeyedAccounts = response.accounts.filter {
-                    return $0.authAddress != $0.address
-                }
+                let rekeyedAccounts: [Account] = response.accounts.compactMap { rekeyedAccount in
+                    guard rekeyedAccount.authAddress != rekeyedAccount.address else {
+                        return nil
+                    }
 
-                rekeyedAccounts.forEach { rekeyedAccount in
                     rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
                     rekeyedAccount.type = .rekeyed
+                    return rekeyedAccount
                 }
 
                 self.openRekeyedAccountSelectionListIfPossible(

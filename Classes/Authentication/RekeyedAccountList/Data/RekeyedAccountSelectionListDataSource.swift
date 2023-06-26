@@ -36,7 +36,7 @@ final class RekeyedAccountSelectionListDataSource:
             switch itemIdentifier {
             case .account(let item):
                 let cell = collectionView.dequeue(
-                    RekeyedAccountSelectionAccountCell.self,
+                    RekeyedAccountSelectionListAccountCell.self,
                     at: indexPath
                 )
                 cell.bindData(item.viewModel)
@@ -70,7 +70,7 @@ final class RekeyedAccountSelectionListDataSource:
 
         [
             RekeyedAccountSelectionListAccountLoadingCell.self,
-            RekeyedAccountSelectionAccountCell.self
+            RekeyedAccountSelectionListAccountCell.self
         ].forEach {
             collectionView.register($0)
         }

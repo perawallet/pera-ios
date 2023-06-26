@@ -136,14 +136,24 @@ extension RekeyedAccountSelectionListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForLoadingItemAt indexPath: IndexPath
     ) -> CGSize {
+        let sizeCacheIdentifier = RekeyedAccountSelectionListAccountLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
         let width = calculateContentWidth(
             for: listView,
             forSectionAt: indexPath.section
         )
-        return RekeyedAccountSelectionListAccountLoadingCell.calculatePreferredSize(
+        let newSize = RekeyedAccountSelectionListAccountLoadingCell.calculatePreferredSize(
             for: RekeyedAccountSelectionListAccountLoadingCell.theme,
             fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
         )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
     }
 
     private func listView(
@@ -152,7 +162,7 @@ extension RekeyedAccountSelectionListLayout {
         sizeForAccountItem item: RekeyedAccountSelectionListAccountCellItemIdentifier,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = RekeyedAccountSelectionAccountCell.reuseIdentifier
+        let sizeCacheIdentifier = RekeyedAccountSelectionListAccountCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -162,9 +172,9 @@ extension RekeyedAccountSelectionListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = RekeyedAccountSelectionAccountCell.calculatePreferredSize(
+        let newSize = RekeyedAccountSelectionListAccountCell.calculatePreferredSize(
             item.viewModel,
-            for: RekeyedAccountSelectionAccountCell.theme.context,
+            for: RekeyedAccountSelectionListAccountCell.theme.context,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

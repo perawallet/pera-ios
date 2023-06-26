@@ -85,7 +85,7 @@ final class RekeyedAccountSelectionListScreen:
         navigationBarLargeTitleView.customize(theme)
 
         let accounts = dataController.getAccounts()
-        let viewModel = RekeyedAccountSelectionListNavigationBarViewModel(accounts)
+        let viewModel = RekeyedAccountSelectionListNavigationBarViewModel(accounts: accounts)
         navigationBarLargeTitleView.bindData(viewModel)
         navigationBarLargeTitleController.title = viewModel.title?.string
     }
@@ -406,7 +406,7 @@ extension RekeyedAccountSelectionListScreen {
         case .account:
             self.collectionView(
                 collectionView,
-                willDisplay: cell as! RekeyedAccountSelectionAccountCell,
+                willDisplay: cell as! RekeyedAccountSelectionListAccountCell,
                 forItemAt: indexPath
             )
         }
@@ -436,7 +436,7 @@ extension RekeyedAccountSelectionListScreen {
 extension RekeyedAccountSelectionListScreen {
     private func collectionView(
         _ collectionView: UICollectionView,
-        willDisplay cell: RekeyedAccountSelectionAccountCell,
+        willDisplay cell: RekeyedAccountSelectionListAccountCell,
         forItemAt indexPath: IndexPath
     ) {
         cell.startObserving(event: .info) {
@@ -486,10 +486,10 @@ extension RekeyedAccountSelectionListScreen {
 
     private func collectionView(
         _ collectionView: UICollectionView,
-        dindEndDisplaying cell: RekeyedAccountSelectionListAccountLoadingCell,
+        didEndDisplaying cell: RekeyedAccountSelectionListAccountLoadingCell,
         forItemAt indexPath: IndexPath
     ) {
-        startAnimatingListLoadingIfNeeded(cell)
+        stopAnimatingListLoadingIfNeeded(cell)
     }
 
     private func startAnimatingListLoadingIfNeeded(_ cell: RekeyedAccountSelectionListAccountLoadingCell?) {
@@ -512,14 +512,14 @@ extension RekeyedAccountSelectionListScreen {
     private func selectAccount(
         at indexPath: IndexPath
     ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         cell.accessory = .selected
     }
 
     private func unselectAccount(
         at indexPath: IndexPath
     ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         cell.accessory = .unselected
     }
 
@@ -530,7 +530,7 @@ extension RekeyedAccountSelectionListScreen {
             return
         }
 
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionAccountCell
+        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
         let index = indexPath.row
         let isSelected = cell.accessory == .selected
 
@@ -573,7 +573,7 @@ extension RekeyedAccountSelectionListScreen {
 extension RekeyedAccountSelectionListScreen {
     private func makeListHeader() -> RekeyedAccountSelectionListHeaderViewModel {
         let accounts = dataController.getAccounts()
-        return .init(accounts)
+        return .init(accounts: accounts)
     }
 }
 
