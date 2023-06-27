@@ -4176,6 +4176,12 @@
 		D4133D712885890D003EFB4F /* UISheetActionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4133D702885890D003EFB4F /* UISheetActionScreenTheme.swift */; };
 		D4133D722885890D003EFB4F /* UISheetActionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4133D702885890D003EFB4F /* UISheetActionScreenTheme.swift */; };
 		D4133D732885890D003EFB4F /* UISheetActionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4133D702885890D003EFB4F /* UISheetActionScreenTheme.swift */; };
+		D414083529F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
+		D414083629F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
+		D414083729F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
+		D414083929F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
+		D414083A29F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
+		D414083B29F1A47D0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
 		D414083E29F1C53D0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083D29F1C53D0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift */; };
 		D414083F29F1CB8B0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083D29F1C53D0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift */; };
 		D414084029F1CB8B0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083D29F1C53D0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift */; };
@@ -4188,12 +4194,6 @@
 		D414085729F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414085629F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift */; };
 		D414085829F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414085629F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift */; };
 		D414085929F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414085629F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift */; };
-		D414083529F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
-		D414083629F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
-		D414083729F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */; };
-		D414083929F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
-		D414083A29F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
-		D414083B29F1A47D0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */; };
 		D4142AE327E8CE9100AFF4BE /* SendCollectibleDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */; };
 		D4142AE427E8CE9100AFF4BE /* SendCollectibleDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */; };
 		D4142AE527E8CE9100AFF4BE /* SendCollectibleDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */; };
@@ -8542,12 +8542,12 @@
 		D4133D6428856DEF003EFB4F /* UISheetActionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetActionScreen.swift; sourceTree = "<group>"; };
 		D4133D6C28857F5E003EFB4F /* UISheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheet.swift; sourceTree = "<group>"; };
 		D4133D702885890D003EFB4F /* UISheetActionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetActionScreenTheme.swift; sourceTree = "<group>"; };
+		D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyConfirmationSheet.swift; sourceTree = "<group>"; };
+		D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverwriteRekeyConfirmationSheet.swift; sourceTree = "<group>"; };
 		D414083D29F1C53D0088CE68 /* BackUpBeforeRemovingAccountWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpBeforeRemovingAccountWarningSheet.swift; sourceTree = "<group>"; };
 		D414084129F1CD110088CE68 /* RemoveAccountFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountFlowCoordinator.swift; sourceTree = "<group>"; };
 		D414085229F312410088CE68 /* RemoveAccountAuthorizationValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountAuthorizationValidator.swift; sourceTree = "<group>"; };
 		D414085629F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAuthAccountAuthorizationValidator.swift; sourceTree = "<group>"; };
-		D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyConfirmationSheet.swift; sourceTree = "<group>"; };
-		D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverwriteRekeyConfirmationSheet.swift; sourceTree = "<group>"; };
 		D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleDraft.swift; sourceTree = "<group>"; };
 		D414CE0C2931715F002B7035 /* CollectibleCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleCollection.swift; sourceTree = "<group>"; };
 		D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesViewController.swift; sourceTree = "<group>"; };
@@ -17818,6 +17818,22 @@
 			path = UISheet;
 			sourceTree = "<group>";
 		};
+		D414083229F1A24D0088CE68 /* UndoRekeyConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */,
+			);
+			path = UndoRekeyConfirmation;
+			sourceTree = "<group>";
+		};
+		D414083329F1A25A0088CE68 /* OverwriteRekeyConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */,
+			);
+			path = OverwriteRekeyConfirmation;
+			sourceTree = "<group>";
+		};
 		D414083C29F1C49A0088CE68 /* BackUpBeforeRemovingAccountWarning */ = {
 			isa = PBXGroup;
 			children = (
@@ -17833,22 +17849,6 @@
 				D414085629F312E30088CE68 /* RemoveAuthAccountAuthorizationValidator.swift */,
 			);
 			path = Validator;
-			sourceTree = "<group>";
-		};
-		D414083229F1A24D0088CE68 /* UndoRekeyConfirmation */ = {
-			isa = PBXGroup;
-			children = (
-				D414083429F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift */,
-			);
-			path = UndoRekeyConfirmation;
-			sourceTree = "<group>";
-		};
-		D414083329F1A25A0088CE68 /* OverwriteRekeyConfirmation */ = {
-			isa = PBXGroup;
-			children = (
-				D414083829F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift */,
-			);
-			path = OverwriteRekeyConfirmation;
 			sourceTree = "<group>";
 		};
 		D4150DD527C4F78D0064F736 /* Collectibles */ = {
@@ -18137,9 +18137,9 @@
 		D42AE44429DC26AD0087BEEF /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
-				D4A28A1A2A45912D008F2AAD /* Views */,
-				D4BB81562A4031E6006E2CFE /* RekeyConfirmationScreenTheme.swift */,
 				D4BB815A2A4031F8006E2CFE /* RekeyConfirmationScreen.swift */,
+				D4BB81562A4031E6006E2CFE /* RekeyConfirmationScreenTheme.swift */,
+				D4A28A1A2A45912D008F2AAD /* Views */,
 			);
 			path = Confirmation;
 			sourceTree = "<group>";
@@ -19398,6 +19398,15 @@
 			path = TransactionStatusInformationView;
 			sourceTree = "<group>";
 		};
+		D4B7EB8D2A40274B008AB697 /* UndoRekey */ = {
+			isa = PBXGroup;
+			children = (
+				D4B7EB8E2A402770008AB697 /* UndoRekeyScreen.swift */,
+				D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */,
+			);
+			path = UndoRekey;
+			sourceTree = "<group>";
+		};
 		D4B93D4629E57E6E0095875C /* RekeyedAccountList */ = {
 			isa = PBXGroup;
 			children = (
@@ -19439,15 +19448,6 @@
 				D422EFC029E8C988001B7502 /* RekeyedAccountSelectionListHeaderViewModel.swift */,
 			);
 			path = Header;
-			sourceTree = "<group>";
-		};
-		D4B7EB8D2A40274B008AB697 /* UndoRekey */ = {
-			isa = PBXGroup;
-			children = (
-				D4B7EB8E2A402770008AB697 /* UndoRekeyScreen.swift */,
-				D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */,
-			);
-			path = UndoRekey;
 			sourceTree = "<group>";
 		};
 		D4BADD88277C8F280078FACB /* TransactionAmountView */ = {
@@ -24474,7 +24474,6 @@
 				D41F4F0C2892E24600B59559 /* TransferAssetBalanceDraft.swift in Sources */,
 				D478F4092922855100D1C858 /* WatchAccountAdditionDataController.swift in Sources */,
 				D4B93D6F29E626120095875C /* RekeyedAccountSelectionListHeaderTheme.swift in Sources */,
-				D42AE43029DC225D0087BEEF /* RekeyLedgerToLedgerAccountConfirmationScreenTheme.swift in Sources */,
 				F0C54302291DF06900596A0A /* DiscoverSearchNextListLoadingViewTheme.swift in Sources */,
 				D4DCD6D029D74BB0007CA6B8 /* WebImportGoToPeraWebWalletInstructionItemViewModel.swift in Sources */,
 				2B68A23526A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift in Sources */,
@@ -25397,7 +25396,6 @@
 				2B0F629124EC129D00DA22A6 /* PassphraseDisplayViewController.swift in Sources */,
 				2B9FDEAB28A52C3700C8117D /* GroupedListItemButtonViewModel.swift in Sources */,
 				D422EFC629E92084001B7502 /* RekeyedAccountSelectionListAccountCellTheme.swift in Sources */,
-				D4DCD68029D6F76B007CA6B8 /* RekeyLedgerToStandardAccountInstructionsScreenTheme.swift in Sources */,
 				D4CF682E28C8E8890007A727 /* InfoBoxHeaderView.swift in Sources */,
 				D45D769D299FBD4C0081735E /* TransakAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				D4F068A226EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
@@ -27746,7 +27744,6 @@
 				D479D0FC26D4FB1F00110E04 /* BannerViewModel.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
 				2BD6AB7826EA3702001C4257 /* ALGAPIInterceptor.swift in Sources */,
-				D42AE42F29DC225D0087BEEF /* RekeyLedgerToLedgerAccountConfirmationScreenTheme.swift in Sources */,
 				D4A5336B29F71E1E00CBC1A9 /* RekeyedAccountSelectionListAccountLoadingItemViewTheme.swift in Sources */,
 				2B7E585D25866DA400731C97 /* SingleSelectionLedgerAccountCell.swift in Sources */,
 				2B7E585D25866DA400731C97 /* SingleSelectionLedgerAccountCell.swift in Sources */,

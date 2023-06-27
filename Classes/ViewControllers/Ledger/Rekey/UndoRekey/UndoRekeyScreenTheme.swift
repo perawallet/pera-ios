@@ -22,9 +22,7 @@ struct UndoRekeyScreenTheme:
     LayoutSheet,
     StyleSheet {
     var background: ViewStyle
-    var title: TextStyle
-    var titleTopInset: LayoutMetric
-    var titleHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
+    var navigationBarEdgeInset: LayoutPaddings
     var spacingBetweenTitleAndBody: LayoutMetric
     var body: TextStyle
     var bodyHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
@@ -41,15 +39,7 @@ struct UndoRekeyScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.title = [
-            .textColor(Colors.Text.main),
-            .textOverflow(FittingText())
-        ]
-        self.titleTopInset = 12
-        self.titleHorizontalEdgeInsets = .init(
-            leading: 24,
-            trailing: 24
-        )
+        self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
         self.spacingBetweenTitleAndBody = 16
         self.body = [
             .textColor(Colors.Text.gray),
