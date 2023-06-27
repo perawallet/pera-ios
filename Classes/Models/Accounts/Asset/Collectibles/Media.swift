@@ -63,3 +63,9 @@ extension Media {
         }
     }
 }
+
+extension Media {
+    var isGIF: Bool {
+        return mediaExtension.isGIF
+    }
+}

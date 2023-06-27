@@ -1089,9 +1089,10 @@ class Router:
             ]
 
             viewController = activityController
-        case .image3DCard(let image):
+        case .image3DCard(let image, let isGIF):
             viewController = Collectible3DImageViewController(
                 image: image,
+                isGIF: isGIF,
                 configuration: configuration
             )
         case .video3DCard(let image, let url):

@@ -182,7 +182,7 @@ indirect enum Screen {
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
-    case image3DCard(image: UIImage)
+    case image3DCard(image: UIImage, isGIF: Bool)
     case video3DCard(
         image: UIImage?,
         url: URL

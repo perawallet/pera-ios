@@ -206,3 +206,9 @@ enum MediaExtension:
         self = foundCase ?? .other(rawValue)
     }
 }
+
+extension MediaExtension {
+    var isGIF: Bool {
+        return self == .gif
+    }
+}
