@@ -73,25 +73,15 @@ final class AssetDecoration: ALGEntityModel {
         }
 
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
-        self.projectURL = apiModel.projectURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
-        self.explorerURL = apiModel.explorerURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.projectURL = apiModel.projectURL.toURL()
+        self.explorerURL = apiModel.explorerURL.toURL()
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
         self.verificationTier = apiModel.verificationTier ?? .unverified
-        self.logoURL = apiModel.logo
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.logoURL = apiModel.logo.toURL()
         self.description = apiModel.description
-        self.discordURL = apiModel.discordURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
-        self.telegramURL = apiModel.telegramURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.discordURL = apiModel.discordURL.toURL()
+        self.telegramURL = apiModel.telegramURL.toURL()
         self.twitterURL = apiModel.twitterUsername
             .unwrapNonEmptyString()
             .unwrap(URL.twitterURL(username:))

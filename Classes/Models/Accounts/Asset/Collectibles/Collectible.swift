@@ -33,9 +33,7 @@ final class Collectible: ALGEntityModel {
     ) {
         self.standard = apiModel.standard
         self.mediaType = apiModel.mediaType
-        self.thumbnailImage = apiModel.primaryImage
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.thumbnailImage = apiModel.primaryImage.toURL()
         self.title = apiModel.title
         self.collection = apiModel.collection
         self.media = apiModel.media.unwrapMap(Media.init)

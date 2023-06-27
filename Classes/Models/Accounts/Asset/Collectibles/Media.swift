@@ -26,12 +26,8 @@ final class Media: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         self.type = apiModel.type
-        self.previewURL = apiModel.previewURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
-        self.downloadURL = apiModel.downloadURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.previewURL = apiModel.previewURL.toURL()
+        self.downloadURL = apiModel.downloadURL.toURL()
         self.mediaExtension = apiModel.mediaExtension ?? .init()
     }
 
