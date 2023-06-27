@@ -48,7 +48,7 @@ extension DeepLinkParser {
     func resolveNotificationAction(
         for notification: AlgorandNotification
     ) -> NotificationAction? {
-        guard let url = notification.detail?.url else {
+        guard let url = notification.detail?.url.toURL() else {
             return nil
         }
 
@@ -179,7 +179,7 @@ extension DeepLinkParser {
     private func makeTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
 
@@ -214,7 +214,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }
@@ -292,7 +292,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionRequestScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }

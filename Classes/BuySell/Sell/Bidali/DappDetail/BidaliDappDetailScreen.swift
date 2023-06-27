@@ -237,7 +237,7 @@ extension BidaliDappDetailScreen {
     }
 
     private func openOpenURLRequest(_ request: BidaliOpenURLRequest) {
-        guard let url = request.url else {
+        guard let url = request.url.toURL() else {
             presentGenericErrorBanner()
             return
         }
