@@ -18,11 +18,24 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class RekeyConfirmationScreen: ScrollScreen {
+final class RekeyConfirmationScreen:
+    ScrollScreen,
+    NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
-    private lazy var titleView = UILabel()
+    var navigationBarScrollView: UIScrollView {
+        return scrollView
+    }
+
+    var isNavigationBarAppeared: Bool {
+        return isViewAppeared
+    }
+
+    private(set) lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
+    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
+    private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
+
     private lazy var bodyView = ALGActiveLabel()
     private lazy var summaryView = RekeyInfoView()
     private lazy var informationContentView = MacaroonUIKit.VStackView()
@@ -47,16 +60,27 @@ final class RekeyConfirmationScreen: ScrollScreen {
         super.init()
     }
 
+    deinit {
+        navigationBarLargeTitleController.deactivate()
+    }
+
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode = .never
+        navigationBarLargeTitleController.title = "ledger-rekey-confirm-title".localized
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addUI()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        navigationBarLargeTitleController.activate()
     }
 
     override func addFooter() {
@@ -71,12 +95,26 @@ final class RekeyConfirmationScreen: ScrollScreen {
 
         footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
+
+    /// <mark>
+    /// UIScrollViewDelegate
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        navigationBarLargeTitleController.scrollViewWillEndDragging(
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset,
+            contentOffsetDeltaYBelowLargeTitle: 0
+        )
+    }
 }
 
 extension RekeyConfirmationScreen {
     private func addUI() {
         addBackground()
-        addTitle()
+        addNavigationBarLargeTitle()
         addBody()
         addSummary()
         addInformationContent()
@@ -87,17 +125,11 @@ extension RekeyConfirmationScreen {
         view.customizeAppearance(theme.background)
     }
 
-    private func addTitle() {
-        titleView.customizeAppearance(theme.title)
-
-        contentView.addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.top == theme.titleTopInset
-            $0.leading == theme.titleHorizontalEdgeInsets.leading
-            $0.trailing == theme.titleHorizontalEdgeInsets.trailing
+    private func addNavigationBarLargeTitle() {
+        contentView.addSubview( navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(theme.navigationBarEdgeInset)
         }
-
-        bindTitle()
     }
 
     private func addBody() {
@@ -105,7 +137,7 @@ extension RekeyConfirmationScreen {
 
         contentView.addSubview(bodyView)
         bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndBody
+            $0.top == navigationBarLargeTitleView.snp.bottom + theme.spacingBetweenTitleAndBody
             $0.leading == theme.bodyHorizontalEdgeInsets.leading
             $0.trailing == theme.bodyHorizontalEdgeInsets.trailing
         }
@@ -191,13 +223,6 @@ extension RekeyConfirmationScreen {
 }
 
 extension RekeyConfirmationScreen {
-    private func bindTitle() {
-        titleView.attributedText =
-            "ledger-rekey-confirm-title"
-                .localized
-                .titleMedium()
-    }
-
     private func bindBody() {
         let viewModel = RekeyConfirmationBodyViewModel(authAccount: authAccount)
 
