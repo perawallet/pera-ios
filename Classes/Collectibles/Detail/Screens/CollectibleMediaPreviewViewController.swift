@@ -432,7 +432,8 @@ extension CollectibleMediaPreviewViewController {
                let image = cell.contextView.currentImage {
                 open(
                     .image3DCard(
-                        image: image
+                        image: image,
+                        isGIF: media.isGIF
                     ),
                     by: .presentWithoutNavigationController
                 )
