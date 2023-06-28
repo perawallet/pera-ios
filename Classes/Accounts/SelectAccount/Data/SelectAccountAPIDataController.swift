@@ -47,7 +47,6 @@ final class SelectAccountAPIDataController:
     deinit {
         sharedDataController.remove(self)
     }
-
 }
 
 extension SelectAccountAPIDataController {
@@ -128,39 +127,30 @@ extension SelectAccountAPIDataController {
                     return
                 }
 
-                let cellItem: SelectAccountListViewItem
-                
-                if self.transactionAction == .buyAlgo {
-                    let account = accountHandle.value
-                    let algoAccount = CustomAccountListItem(
-                        AlgoAccountViewModel(
-                            account,
-                            currencyFormatter: currencyFormatter
-                        ),
-                        address: account.address
-                    )
-                    
-                    cellItem = .account(AccountListItemViewModel(algoAccount), accountHandle)
-                } else {
-                    let accountPortfolioItem = AccountPortfolioItem(
-                        accountValue: accountHandle,
-                        currency: currency,
-                        currencyFormatter: currencyFormatter
-                    )
-                    let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
+                let item = AccountPortfolioItem(
+                    accountValue: accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let viewModel = AccountListItemViewModel(item)
+                let listItem = SelectAccountListViewItem.account(viewModel, accountHandle)
 
-                    cellItem = .account(accountListItemViewModel, accountHandle)
-                }
-                
                 accounts.append(accountHandle)
-                accountItems.append(cellItem)
+                accountItems.append(listItem)
             }
 
             var snapshot = Snapshot()
-
-            snapshot.appendSections([.accounts])
-
-            if !accounts.isEmpty {
+            
+            if accounts.isEmpty {
+                snapshot.appendSections([.empty])
+                snapshot.appendItems(
+                    [.empty(.noContent(
+                        SelectAccountNoContentViewModel(self.transactionAction))
+                    )],
+                    toSection: .empty
+                )
+            } else {
+                snapshot.appendSections([.accounts])
                 snapshot.appendItems(
                     accountItems,
                     toSection: .accounts
@@ -176,7 +166,9 @@ extension SelectAccountAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.empty(.noContent)],
+                [.empty(.noContent(
+                    SelectAccountNoContentViewModel(self.transactionAction))
+                )],
                 toSection: .empty
             )
             return snapshot

@@ -20,7 +20,7 @@ struct NoteSizeValidator {
     private let maxSize = 1024
 
     func validate(byteArray: [UInt8]) -> Validation {
-        guard byteArray.isEmpty else {
+        guard !byteArray.isEmpty else {
             return .success
         }
         

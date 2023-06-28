@@ -54,7 +54,7 @@
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-retry-later" = "Please try later.";
 "title-press-hold-copy-address" = "Press and hold to copy address";
-"title-buy-algo" = "Buy ALGO";
+"title-buy-sell" = "Buy / Sell";
 "title-sort" = "Sort";
 "title-alphabetically-a-to-z" = "Alphabetically A to Z";
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
@@ -86,6 +86,7 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-go-home" = "Go to Home";
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
@@ -97,6 +98,8 @@
 "title-to" = "To";
 "title-try-again" = "Try Again";
 "filter" = "Filter";
+"title-choose-account-to-proceed-with" = "Choose an account to proceed with";
+"opt-in-to-usdc" = "Opt-in to USDC";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -109,6 +112,8 @@
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
+"account-type-selection-import-web" = "Import from Pera Web";
+"account-type-selection-import-web-detail" = "I want to import Algorand accounts from Pera Web";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
@@ -285,6 +290,7 @@
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-title-singular" = "Your account don't contain this asset";
 "asset-support-your-add-message" = "Please opt-in to this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
@@ -596,6 +602,7 @@
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 "ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
+"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
@@ -644,6 +651,10 @@
 "rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
 "rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
 "ledger-rekey-confirm-title" = "Confirm Rekeying";
@@ -665,7 +676,7 @@
 "ledger-account-selection-verify" = "Verify Selected Account";
 "ledger-account-selection-verify-plural" = "Verify Selected Accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
-"ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
 "ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
@@ -733,6 +744,8 @@
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
 "tutorial-description-ledger-connected" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
@@ -992,6 +1005,8 @@
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
+"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
@@ -1109,9 +1124,9 @@
 
 // MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
-"moonpay-introduction-title"="Buy ALGO with Moonpay";
-"moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
-"moonpay-introduction-security"="Secured by";
+"moonpay-introduction-title" = "Buy ALGO with MoonPay";
+"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-security" = "Secured by";
 "moonpay-transaction-completed-title" = "Your Algos are on their way!";
 "moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
 "moonpay-transaction-pending-title" = "Your Algos are on their way!";
@@ -1129,6 +1144,7 @@
 "story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
 
 //MARK: QuickActions
+"quick-actions-buy-sell-title" = "Buy / Sell";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";
@@ -1137,7 +1153,7 @@
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
-"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
@@ -1310,8 +1326,8 @@ FAQ section.";
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nDo not proceed if you did not initiate this request.";
-"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web!\nDo not proceed if you did not initiate this request.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web!";
 "web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
 "web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
 "web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
@@ -1326,9 +1342,34 @@ FAQ section.";
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
 "web-export-result-title-singular" = "Account exported successfully!";
-"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
-"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+"web-export-result-body" = "You can now use these accounts on Pera Web.";
+"web-export-result-body-singular" = "You can now use this account on Pera Web.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+// MARK: Web Import
+"web-import-instruction-start-button-title" = "Start";
+"web-import-instruction-title" = "Get your QR ready on Pera Web";
+"web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
+"web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
+"web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
+"web-import-instruction-fourth-message" = "Tap Start to scan the QR";
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
+"web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+"web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
+
+"backup-operation-loading-body" = "Importing your accounts";
+
+"web-import-error-action" = "Go to Home";
+
+"web-import-success-header-title" = "Accounts imported";
+"web-import-success-header-singular-title" = "Account imported";
+"web-import-success-header-body" = "%@ accounts were imported from Pera Web";
+"web-import-success-header-singular-body" = "%@ account was imported from Pera Web";
+"web-import-success-unimported-title" = "Unimported Accounts";
+"web-import-success-unimported-singular-title" = "Unimported Account";
+"web-import-success-unimported-body" = "%@ accounts were not imported because they were previously imported.";
+"web-import-success-unimported-singular-body" = "%@ account was not imported because it was previously imported.";
+"web-import-success-button-title" = "Explore Pera Mobile";
 
 // MARK: Minimum Balance
 "minimum-balance-title" = "Minimum balance";
@@ -1348,4 +1389,42 @@ FAQ section.";
 "discover-error-fallback-body" = "We can't get that information right now.";
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "You cannot have more than 100 favourites.";
+
+// MARK: Buy / Sell Options
+"buy-sell-options-buy-header-title" = "Buy crypto";
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+"buy-sell-options-sell-header-title" = "Sell crypto";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
+
+// MARK: Buy Gift Cards with Crypto Alert Item
+"buy-gift-cards-with-crypto-alert-title" = "Buy gift cards with Crypto";
+"buy-gift-cards-with-crypto-alert-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";
+
+// MARK: Bidali Introduction
+"bidali-introduction-navigation-title" = "Buy gift cards with Bidali";
+"bidali-introduction-title" = "Buy gift cards with Crypto";
+"bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"bidali-introduction-action-title" = "Buy gift cards";
+"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
+
+// MARK:  Sardine Introduction
+"sardine-introduction-navigation-title" = "Buy ALGO with Sardine";
+"sardine-introduction-title" = "Buy ALGO";
+"sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
+"sardine-introduction-action-title" = "Buy ALGO with Sardine";
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
+
+// MARK:  Transak Introduction
+"transak-introduction-navigation-title" = "Buy USDC with Transak";
+"transak-introduction-title" = "Buy USDC";
+"transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
+"transak-introduction-action-title" = "Buy USDC with Transak";
+"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";

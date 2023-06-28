@@ -17,12 +17,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class AccountSelectionListScreen<DataController: AccountSelectionListDataController>:
+class AccountSelectionListScreen<DataController: AccountSelectionListDataController>:
     BaseViewController,
     NavigationBarLargeTitleConfigurable,
-    SwapAssetFlowCoordinatorObserver,
     TransactionControllerDelegate,
-    TransactionSignChecking,
     UICollectionViewDelegateFlowLayout  {
     var navigationBarScrollView: UIScrollView {
         return listView
@@ -36,9 +34,22 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
 
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+
     private lazy var transactionController = createTransactionController()
     private lazy var currencyFormatter = CurrencyFormatter()
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
 
     private var selectedAccount: Account?
@@ -64,7 +75,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         dataController: DataController,
         listLayout: AccountSelectionListLayout,
         listDataSource: DataSource,
-        swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
         theme: AccountSelectionListScreenTheme,
         eventHandler: @escaping EventHandler,
         configuration: ViewControllerConfiguration
@@ -74,7 +84,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         self.dataController = dataController
         self.listLayout = listLayout
         self.listDataSource = listDataSource
-        self.swapAssetFlowCoordinator = swapAssetFlowCoordinator
         self.eventHandler = eventHandler
         self.theme = theme
 
@@ -83,7 +92,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
 
     deinit {
         navigationBarLargeTitleController.deactivate()
-        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func viewDidLoad() {
@@ -105,18 +113,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         }
 
         dataController.load()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        swapAssetFlowCoordinator?.add(self)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func setListeners() {
@@ -263,17 +259,6 @@ extension AccountSelectionListScreen {
 }
 
 extension AccountSelectionListScreen {
-    func swapAssetFlowCoordinator(
-        _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
-        didPublish event: SwapAssetFlowCoordinatorEvent
-    ) {
-        switch event {
-        case .didApproveOptInToAsset(let asset):
-            self.continueToOptInAsset(asset: asset)
-        default: break
-        }
-    }
-
     private func createTransactionController() -> TransactionController {
         return TransactionController(
             api: api!,
@@ -283,15 +268,14 @@ extension AccountSelectionListScreen {
         )
     }
 
-    private func continueToOptInAsset(
+    func continueToOptInAsset(
         asset: AssetDecoration
     ) {
-        guard var account = selectedAccount else { return }
+        guard let account = selectedAccount else { return }
 
+        if !transactionController.canSignTransaction(for: account) { return }
+        
         loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        if !canSignTransaction(for: &account) { return }
-
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(
             account: account,
@@ -309,6 +293,8 @@ extension AccountSelectionListScreen {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
         if account.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -318,16 +304,9 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = getAssetID(from: transactionController),
-           let selectedAccount {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: selectedAccount
-            )
-        }
+        loadingController?.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -344,16 +323,9 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = getAssetID(from: transactionController),
-           let selectedAccount {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: selectedAccount
-            )
-        }
+        loadingController?.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -414,19 +386,9 @@ extension AccountSelectionListScreen {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -436,40 +398,130 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
         loadingController?.stopLoading()
-        ledgerApprovalViewController?.dismissScreen()
     }
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        loadingController?.stopLoading()
+    }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController),
+           let selectedAccount {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: selectedAccount
+            )
+        }
+    }
 
     private func getAssetID(
         from transactionController: TransactionController
     ) -> AssetID? {
         return transactionController.assetTransactionDraft?.assetIndex
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

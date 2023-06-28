@@ -21,6 +21,17 @@ enum AccountSetupFlow: Equatable {
     case initializeAccount(mode: AccountSetupMode)
     case addNewAccount(mode: AccountSetupMode)
     case none
+    
+    var rekeyingAccount: Account? {
+        switch self {
+        case .addNewAccount(let mode):
+            switch mode {
+            case .rekey(let account): return account
+            default: return nil
+            }
+        default: return nil
+        }
+    }
 }
 
 enum AccountSetupMode: Equatable {
@@ -36,8 +47,9 @@ enum AccountAdditionType {
     case none
 }
 
-enum RecoverType {
+enum RecoverType: Equatable {
     case passphrase
     case ledger
+    case importFromWeb
     case none
 }

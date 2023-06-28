@@ -31,6 +31,8 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+
     private var currentVerificationStatusView: LedgerAccountVerificationStatusView?
     private var currentVerificationAccount: Account?
     private var isVerificationCompleted = false {
@@ -128,6 +130,7 @@ extension LedgerAccountVerificationViewController {
         currentVerificationAccount = account
         setVerificationLedgerDetail(for: account)
         ledgerAccountVerificationOperation.delegate = self
+        ledgerAccountVerificationOperation.startScan()
     }
 
     private func setAddButtonHidden(_ isHidden: Bool) {
@@ -138,10 +141,37 @@ extension LedgerAccountVerificationViewController {
 extension LedgerAccountVerificationViewController {
     @objc
     private func addVerifiedAccounts() {
-        saveVerifiedAccounts()
-        
-        print("deneme xx \(accountSetupFlow)")
+        let verifiedAccounts = dataController.getVerifiedAccounts()
 
+        if verifiedAccounts.isEmpty {
+            openFailureScreen()
+            return
+        }
+
+        saveVerifiedAccounts()
+
+        openSuccessScreen()
+    }
+
+    private func openFailureScreen() {
+        let controller = open(
+            .tutorial(
+                flow: .none,
+                tutorial: .failedToImportLedgerAccounts
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
+            [weak self] _ in
+            self?.launchHome()
+        }
+    }
+
+    private func openSuccessScreen() {
         let controller = open(
             .tutorial(
                 flow: .none,
@@ -153,18 +183,16 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        
         controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchMain {
+            self.launchHome {
                 [weak self] in
                 guard let self = self else { return }
-                
-                self.launchBuyAlgo()
+
+                self.launchBuyAlgoWithMoonPay()
             }
         }
-        
         controller?.uiHandlers.didTapSecondaryActionButton = { _ in
-            self.launchMain()
+            self.launchHome()
         }
     }
 
@@ -229,12 +257,12 @@ extension LedgerAccountVerificationViewController {
         }
     }
 
-    private func launchHome() {
+    private func launchHome(completion: (() -> Void)? = nil) {
         switch self.accountSetupFlow {
         case .initializeAccount:
-            launchMain()
+            launchMain(completion: completion)
         case .addNewAccount:
-            closeScreen(by: .dismiss, animated: true)
+            closeScreen(by: .dismiss, animated: true, onCompletion: completion)
         case .none:
             break
         }
@@ -269,15 +297,23 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
             return
         case .cancelled:
             break
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
                 message: message
             )
         case .ledgerConnectionWarning:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,

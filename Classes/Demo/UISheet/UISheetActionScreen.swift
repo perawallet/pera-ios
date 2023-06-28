@@ -25,6 +25,10 @@ final class UISheetActionScreen:
     var modalHeight: ModalHeight {
         return .compressed
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
 
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = ImageView()
@@ -36,13 +40,18 @@ final class UISheetActionScreen:
     private let theme: UISheetActionScreenTheme
 
     private var uiInteractions: [TargetActionInteraction] = []
+    
+    var api: ALGAPI?
 
     init(
         sheet: UISheet,
-        theme: UISheetActionScreenTheme
+        theme: UISheetActionScreenTheme,
+        api: ALGAPI?
     ) {
         self.sheet = sheet
         self.theme = theme
+        self.api = api
+        
         super.init()
     }
 
