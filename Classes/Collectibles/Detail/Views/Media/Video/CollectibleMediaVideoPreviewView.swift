@@ -39,6 +39,13 @@ final class CollectibleMediaVideoPreviewView:
 
     private var playerStateObserver: NSKeyValueObservation?
 
+    private var isPlaying: Bool {
+        guard let player = currentPlayer else {
+            return false
+        }
+        return player.rate > 0
+    }
+
     var currentPlayer: AVPlayer? {
         return videoPlayerView.player
     }
@@ -158,9 +165,7 @@ extension CollectibleMediaVideoPreviewView {
             self.isReadyForDisplay = playerLayer.isReadyForDisplay
         }
 
-        let videoPlayer = AVPlayer(url: url)
-        videoPlayer.playImmediately(atRate: 1)
-        videoPlayerView.player = videoPlayer
+        videoPlayerView.player = AVPlayer(url: url)
 
         addObservers()
 
@@ -188,10 +193,18 @@ extension CollectibleMediaVideoPreviewView {
 
 extension CollectibleMediaVideoPreviewView {
     func playVideo() {
+        if isPlaying {
+            return
+        }
+
         videoPlayerView.player?.play()
     }
 
     func stopVideo() {
+        if !isPlaying {
+            return
+        }
+
         videoPlayerView.player?.pause()
     }
 }
