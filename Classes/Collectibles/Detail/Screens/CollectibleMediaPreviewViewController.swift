@@ -313,7 +313,10 @@ extension CollectibleMediaPreviewViewController {
                     return
                 }
 
-                self.open3DCardForImage(image: image)
+                self.open3DCardForImage(
+                    image: image,
+                    rendersContinuously: media.isGIF
+                )
             }
             cell.handlers.didTapFullScreenAction = {
                 [weak self, weak cell] in
@@ -445,10 +448,14 @@ extension CollectibleMediaPreviewViewController {
     }
     
     private func open3DCardForImage(
-        image: UIImage
+        image: UIImage,
+        rendersContinuously: Bool
     ) {
         open(
-            .image3DCard(image: image),
+            .image3DCard(
+                image: image,
+                rendersContinuously: rendersContinuously
+            ),
             by: .presentWithoutNavigationController
         )
     }

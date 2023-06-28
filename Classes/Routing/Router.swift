@@ -1090,10 +1090,10 @@ class Router:
             ]
 
             viewController = activityController
-        case .image3DCard(let image, let isGIF):
+        case .image3DCard(let image, let rendersContinuously):
             viewController = Collectible3DImageViewController(
                 image: image,
-                isGIF: isGIF,
+                rendersContinuously: rendersContinuously,
                 configuration: configuration
             )
         case .video3DCard(let image, let url):
