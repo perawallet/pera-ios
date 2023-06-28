@@ -55,7 +55,6 @@ extension OverwriteRekeyConfirmationSheet {
     ) -> TextProvider {
         /// <todo>
         /// Handle "Learn More" hyperlink, Update on UISheet has not merged yet.
-        /// Handle same sourceAccountName & authAccountName. range(of:) only returns the first occurrence.
         let sourceAccountName = sourceAccount.primaryDisplayName
         let authAccountName =  authAccount.primaryDisplayName
         let text = "overwrite-undo-rekey-confirmation-body".localized(
