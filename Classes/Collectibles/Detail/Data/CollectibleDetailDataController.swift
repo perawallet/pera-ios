@@ -24,7 +24,7 @@ protocol CollectibleDetailDataController: AnyObject {
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)? { get set }
 
     func load()
-    func retry()
+    func reloadAfterOptInStatusUpdates()
 
     func hasOptedIn() -> OptInStatus
     func hasOptedOut() -> OptOutStatus
@@ -159,6 +159,8 @@ enum CollectibleDetailDataControllerEvent {
 
 enum AccountCollectibleStatus {
     case notOptedIn
+    case optingOut /// Waiting for syncing
+    case optingIn /// Waiting for syncing
     case optedIn
     case owned
 }

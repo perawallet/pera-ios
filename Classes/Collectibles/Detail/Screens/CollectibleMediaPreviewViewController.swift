@@ -44,15 +44,9 @@ final class CollectibleMediaPreviewViewController:
         collectionView.alwaysBounceVertical = false
         collectionView.decelerationRate = .fast
         collectionView.backgroundColor = .clear
-        collectionView.register(
-            CollectibleMediaImagePreviewCell.self
-        )
-        collectionView.register(
-            CollectibleMediaVideoPreviewCell.self
-        )
-        collectionView.register(
-            CollectibleMediaAudioPreviewCell.self
-        )
+        collectionView.register(CollectibleMediaImagePreviewCell.self)
+        collectionView.register(CollectibleMediaVideoPreviewCell.self)
+        collectionView.register(CollectibleMediaAudioPreviewCell.self)
         return collectionView
     }()
 
@@ -60,23 +54,16 @@ final class CollectibleMediaPreviewViewController:
     private lazy var videoTransitionDelegate = VideoTransitionDelegate()
     private lazy var audioTransitionDelegate = AudioTransitionDelegate()
 
-    private lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-        pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = Colors.Text.grayLighter.uiColor
-        pageControl.currentPageIndicatorTintColor = Colors.Text.gray.uiColor
-        return pageControl
-    }()
+    private lazy var pageControl = UIPageControl()
 
     private var selectedIndex = 0 {
         didSet {
             pageControl.currentPage = selectedIndex
-            selectedMedia = asset.media[safe: selectedIndex]
+
+            let selectedMedia = asset.media[safe: selectedIndex]
             eventHandler?(.didScrollToMedia(selectedMedia))
         }
     }
-
-    private var selectedMedia: Media?
 
     private var isPageControlSizeUpdated = false
 
@@ -125,7 +112,7 @@ final class CollectibleMediaPreviewViewController:
         var preferredHeight: CGFloat = mediaHeight.float()
 
         if asset.media.count > 1 {
-            let pageControlHeight: CGFloat = 26
+            let pageControlHeight: CGFloat = Self.theme.pageControlHeight
             preferredHeight += pageControlHeight
         }
 
@@ -175,18 +162,38 @@ final class CollectibleMediaPreviewViewController:
             isPageControlSizeUpdated = true
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        let visibleCells = listView.visibleCells
 
-        for visibleCell in visibleCells {
-            if let videoCell = visibleCell as? CollectibleMediaVideoPreviewCell {
-                videoCell.stopVideo()
-            } else if let audioCell = visibleCell as? CollectibleMediaAudioPreviewCell {
-                audioCell.stopAudio()
-            }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        playVideoIfNeededWhenViewDidAppear()
+    }
+
+    override func viewDidAppearAfterInteractiveDismiss() {
+        super.viewDidAppearAfterInteractiveDismiss()
+
+        playVideoIfNeededWhenViewDidAppear()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        stopVideoIfNeededWhenViewDidDisappear()
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    private func playVideoIfNeededWhenViewDidAppear() {
+        if let videoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
+            videoPreviewCell.playVideo()
+            return
+        }
+    }
+
+    private func stopVideoIfNeededWhenViewDidDisappear() {
+        if let videoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
+            videoPreviewCell.stopVideo()
+            return
         }
     }
 }
@@ -195,21 +202,25 @@ extension CollectibleMediaPreviewViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
+            $0.top == 0
             $0.leading == 0
             $0.trailing == 0
-            $0.top == 0
         }
     }
 
     private func addPageControl() {
-        view.addSubview(pageControl)
+        let theme = Self.theme
 
+        pageControl.pageIndicatorTintColor = theme.pageIndicatorTintColor.uiColor
+        pageControl.currentPageIndicatorTintColor = theme.currentPageIndicatorTintColor.uiColor
+
+        view.addSubview(pageControl)
         pageControl.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top == listView.snp.bottom
             $0.leading.trailing
                 .lessThanOrEqualToSuperview()
-                .inset(Self.theme.horizontalInset)
+                .inset(theme.horizontalInset)
             $0.bottom == 0
         }
 
@@ -345,7 +356,10 @@ extension CollectibleMediaPreviewViewController {
                     return
                 }
 
-                self.open3DCardForImage(image: image)
+                self.open3DCardForImage(
+                    image: image,
+                    rendersContinuously: media.isGIF
+                )
             }
             cell.handlers.didTapFullScreenAction = {
                 [weak self, weak cell] in
@@ -369,22 +383,25 @@ extension CollectibleMediaPreviewViewController {
             guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
                 return
             }
-            
-            cell.playVideo()
 
             cell.startObserving(event: .perform3DModeAction) {
                 [weak self] in
                 guard let self else {
                     return
                 }
-                
+
                 guard let mediaURL = media.downloadURL else {
                     return
                 }
+
+                cell.stopVideo()
                 
                 self.open3DCardForVideo(
                     url: mediaURL,
-                    cell: cell
+                    didDismiss: {
+                        [weak cell] in
+                        cell?.playVideo()
+                    }
                 )
             }
             cell.startObserving(event: .performFullScreenAction) {
@@ -479,64 +496,30 @@ extension CollectibleMediaPreviewViewController {
         )
     }
     
-    private func openFullScreenAudioPreview(
-        with player: AVPlayer,
-        didDismiss: @escaping (() -> Void)
-    ) {
-        audioTransitionDelegate.didFinishDismissalTransition = didDismiss
-        
-        let draft = CollectibleFullScreenAudioDraft(player: player)
-        
-        open(
-            .collectibleFullScreenAudio(draft: draft),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: audioTransitionDelegate
-            )
-        )
-    }
-    
-    private func open3DCardForAudio(
-        url: URL,
-        cell: CollectibleMediaAudioPreviewCell
-    ) {
-        cell.stopAudio()
-        
-        let screen = open(
-            .audio3DCard(
-                image: thumbnailImage,
-                url: url
-            ),
-            by: .presentWithoutNavigationController
-        ) as? Collectible3DAudioViewController
-        
-        screen?.eventHandler = {
-            [weak screen] event in
-            
-            switch event {
-            case .didClose:
-                screen?.dismissScreen()
-                cell.playAudio()
-            }
-        }
-    }
-
     private func open3DCardForImage(
-        image: UIImage
+        image: UIImage,
+        rendersContinuously: Bool
     ) {
         open(
-            .image3DCard(image: image),
+            .image3DCard(
+                image: image,
+                rendersContinuously: rendersContinuously
+            ),
             by: .presentWithoutNavigationController
         )
     }
     
     private func open3DCardForVideo(
         url: URL,
-        cell: CollectibleMediaVideoPreviewCell
+        didDismiss: @escaping (() -> Void)
     ) {
-        cell.stopVideo()
-        
+        if listView.isDragging ||
+           listView.isDecelerating ||
+           listView.isTracking {
+            return
+        }
+    }
+
         let screen = open(
             .video3DCard(
                 image: thumbnailImage,
@@ -544,16 +527,14 @@ extension CollectibleMediaPreviewViewController {
             ),
             by: .presentWithoutNavigationController
         ) as? Collectible3DVideoViewController
-        
         screen?.eventHandler = {
             [weak screen] event in
-            
             switch event {
             case .didClose:
                 screen?.dismissScreen()
-                cell.playVideo()
+                didDismiss()
             }
-        }
+        screen?.presentationController?.delegate = self
     }
 
     func scrollViewWillEndDragging(
@@ -561,14 +542,12 @@ extension CollectibleMediaPreviewViewController {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        let pageWidth =
         listView.bounds.width -
         Self.theme.horizontalInset * 2 +
         Self.theme.cellSpacing
 
         var newPage = CGFloat(selectedIndex)
 
-        if velocity.x == 0 {
             newPage = floor((targetContentOffset.pointee.x - pageWidth / 2) / pageWidth) + 1.0
         } else {
             newPage = CGFloat(velocity.x > 0 ? selectedIndex + 1 : selectedIndex - 1)
@@ -591,6 +570,35 @@ extension CollectibleMediaPreviewViewController {
             x: newPage * pageWidth,
             y: targetContentOffset.pointee.y
         )
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        performActionsWhenScrollDidFinish()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            return
+        }
+
+        performActionsWhenScrollDidFinish()
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        performActionsWhenScrollDidFinish()
+    }
+
+    private func performActionsWhenScrollDidFinish() {
+        for visibleCell in listView.visibleCells {
+            if let visibleCell = visibleCell as? CollectibleMediaVideoPreviewCell,
+               currentVisibleCell != visibleCell {
+                visibleCell.stopVideo()
+            }
+        }
+
+        if let currentVisibleVideoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
+            currentVisibleVideoPreviewCell.playVideo()
+        }
     }
 }
 

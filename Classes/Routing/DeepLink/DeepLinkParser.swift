@@ -48,7 +48,7 @@ extension DeepLinkParser {
     func resolveNotificationAction(
         for notification: AlgorandNotification
     ) -> NotificationAction? {
-        guard let url = notification.detail?.url else {
+        guard let url = notification.detail?.url.toURL() else {
             return nil
         }
 
@@ -179,7 +179,7 @@ extension DeepLinkParser {
     private func makeTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
 
@@ -214,7 +214,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }
@@ -292,7 +292,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionRequestScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }
@@ -515,14 +515,14 @@ extension DeepLinkParser {
         return .success(.wcMainTransactionScreen(draft: draft))
     }
     
-    func discoverBuyAlgo(
-        draft: BuyAlgoDraft
+    func discoverBuyAlgoWithMoonPay(
+        draft: MoonPayDraft
     ) -> Result? {
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        return .success(.buyAlgo(draft: draft))
+        return .success(.buyAlgoWithMoonPay(draft: draft))
     }
 }
 
@@ -559,7 +559,7 @@ extension DeepLinkParser {
             shouldFilterAccount: ((Account) -> Bool)? = nil
         )
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
-        case buyAlgo(draft: BuyAlgoDraft)
+        case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
     }
     

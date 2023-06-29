@@ -246,7 +246,7 @@ extension SharedAPIDataController {
             assetID: assetID,
             for: account
         )
-        let hasAlreadyOptedIn = account[assetID] != nil
+        let hasAlreadyOptedIn = account.isOptedIn(to: assetID)
 
         switch (hasPendingOptedIn, hasAlreadyOptedIn) {
         case (true, false): return .pending
@@ -272,6 +272,14 @@ extension SharedAPIDataController {
         case (false, true): return .optedOut
         case (false, false): return .rejected
         }
+    }
+}
+
+extension SharedAPIDataController {
+    func rekeyedAccounts(
+        of account: Account
+    ) -> [AccountHandle] {
+        return accountCollection.rekeyedAccounts(of: account.address)
     }
 }
 

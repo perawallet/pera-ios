@@ -46,7 +46,10 @@ final class OptionsViewController:
         theme: OptionsViewControllerTheme = .init()
     ) {
         self.account = account
-        self.optionGroup = OptionGroup.makeOptionGroup(for: account)
+        self.optionGroup = OptionGroup.makeOptionGroup(
+            for: account,
+            session: configuration.session!
+        )
         self.theme = theme
         
         super.init(configuration: configuration)
@@ -142,10 +145,16 @@ extension OptionsViewController {
                     #selector(showQRCode),
                     to: stackView
                 )
-            case .rekey:
+            case .rekeyToLedger:
                 addButton(
-                    RekeyAccountListItemButtonViewModel(),
-                    #selector(rekeyAccount),
+                    RekeyToLedgerAccountListItemButtonViewModel(),
+                    #selector(rekeyToLedgerAccount),
+                    to: stackView
+                )
+            case .rekeyToStandardAccount:
+                addButton(
+                    RekeyToStandardAccountListItemButtonViewModel(),
+                    #selector(rekeyToStandardAccount),
                     to: stackView
                 )
             case .rekeyInformation:
@@ -212,12 +221,22 @@ extension OptionsViewController {
     }
     
     @objc
-    private func rekeyAccount() {
+    private func rekeyToLedgerAccount() {
         closeScreen(by: .dismiss) {
             [weak self] in
             guard let self = self else { return }
             
-            self.delegate?.optionsViewControllerDidOpenRekeying(self)
+            self.delegate?.optionsViewControllerDidOpenRekeyingToLedger(self)
+        }
+    }
+    
+    @objc
+    private func rekeyToStandardAccount() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidOpenRekeyingToStandardAccount(self)
         }
     }
     
@@ -338,20 +357,28 @@ extension OptionsViewController {
         let secondaryOptions: [Option]
 
         static func makeOptionGroup(
-            for account: Account
+            for account: Account,
+            session: Session
         ) -> OptionGroup {
             return account.isWatchAccount()
             ? makeOptionGroup(forWatchAccount: account)
-            : makeOptionGroup(forNonWatchAccount: account)
+            : makeOptionGroup(
+                forNonWatchAccount: account,
+                session: session
+            )
         }
 
         private static func makeOptionGroup(
             forWatchAccount account: Account
         ) -> OptionGroup {
-            let primaryOptions: [Option] = [
+            var primaryOptions: [Option] = [
                 .copyAddress,
                 .showAddress
             ]
+            
+            if account.isRekeyed() {
+                primaryOptions.append(.rekeyInformation)
+            }
 
             let secondaryOptions: [Option] = [
                 .renameAccount,
@@ -365,7 +392,8 @@ extension OptionsViewController {
         }
 
         private static func makeOptionGroup(
-            forNonWatchAccount account: Account
+            forNonWatchAccount account: Account,
+            session: Session
         ) -> OptionGroup {
             var primaryOptions: [Option] = []
 
@@ -375,12 +403,13 @@ extension OptionsViewController {
             if account.isRekeyed() {
                 primaryOptions.append(.rekeyInformation)
             }
-
-            if !account.requiresLedgerConnection() {
+            
+            if session.hasPrivateData(for: account.address) {
                 primaryOptions.append(.viewPassphrase)
             }
 
-            primaryOptions.append(.rekey)
+            primaryOptions.append(.rekeyToLedger)
+            primaryOptions.append(.rekeyToStandardAccount)
 
             let secondaryOptions: [Option] = [
                 .renameAccount,
@@ -398,7 +427,8 @@ extension OptionsViewController {
     enum Option {
         case copyAddress
         case showAddress
-        case rekey
+        case rekeyToLedger
+        case rekeyToStandardAccount
         case rekeyInformation
         case viewPassphrase
         case muteNotifications
@@ -414,7 +444,10 @@ protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidShowQR(
         _ optionsViewController: OptionsViewController
     )
-    func optionsViewControllerDidOpenRekeying(
+    func optionsViewControllerDidOpenRekeyingToLedger(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidViewPassphrase(

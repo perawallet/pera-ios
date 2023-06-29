@@ -27,22 +27,22 @@ extension URL {
         }
     }
 
-    func extractBuyAlgoParamsFromMoonPay() -> BuyAlgoParams? {
+    func extractMoonPayParams() -> MoonPayParams? {
         guard let address = host else {
             return nil
         }
 
         guard
-            let transactionStatusRaw = queryParameters?[BuyAlgoParams.Keys.transactionStatus.rawValue],
-            let transactionStatus = BuyAlgoParams.TransactionStatus(rawValue: transactionStatusRaw),
-            let transactionId = queryParameters?[BuyAlgoParams.Keys.transactionId.rawValue]
+            let transactionStatusRaw = queryParameters?[MoonPayParams.Keys.transactionStatus.rawValue],
+            let transactionStatus = MoonPayParams.TransactionStatus(rawValue: transactionStatusRaw),
+            let transactionId = queryParameters?[MoonPayParams.Keys.transactionId.rawValue]
         else {
             return nil
         }
 
-        let amount = queryParameters?[BuyAlgoParams.Keys.amount.rawValue]
+        let amount = queryParameters?[MoonPayParams.Keys.amount.rawValue]
 
-        return BuyAlgoParams(
+        return MoonPayParams(
             address: address,
             amount: amount,
             transactionStatus: transactionStatus,
@@ -50,12 +50,11 @@ extension URL {
         )
     }
 
-    func appendQueryParameters(_ newItems: [URLQueryItem]) -> URL? {
-        var components = URLComponents(string: self.absoluteString)
-        var params = components?.queryItems ?? [URLQueryItem]()
-        params += newItems
-        components?.queryItems = params
-
+    func appendingQueryParameters(_ params: [String: String]) -> URL? {
+        var components = URLComponents(string: absoluteString)
+        var queryItems = components?.queryItems ?? []
+        queryItems += params.map(URLQueryItem.init)
+        components?.queryItems = queryItems
         return components?.url
     }
 }

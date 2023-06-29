@@ -46,7 +46,8 @@ class Router:
 
     /// <todo>
     /// Change after refactoring routing
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     
     init(
         rootViewController: RootViewController,
@@ -329,10 +330,10 @@ class Router:
                 animated: true
             )
             
-        case .buyAlgo(let draft):
-            self.route(
-                to: .buyAlgoHome(transactionDraft: draft, delegate: self),
-                from: self.findVisibleScreen(over: self.rootViewController),
+        case .buyAlgoWithMoonPay(let draft):
+            route(
+                to: .moonPayIntroduction(draft: draft, delegate: self),
+                from: findVisibleScreen(over: self.rootViewController),
                 by: .present
             )
         case .accountSelect(let asset):
@@ -692,7 +693,11 @@ class Router:
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(dataController):
-            viewController = ManageAssetsViewController(
+            let query = ManageAssetListQuery(
+                sortingBy: appConfiguration.sharedDataController.selectedAccountAssetSortingAlgorithm
+            )
+            viewController = ManageAssetListViewController(
+                query: query,
                 dataController: dataController,
                 configuration: configuration
             )
@@ -722,8 +727,6 @@ class Router:
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .ledgerApproval(mode, deviceName):
-            viewController = LedgerApprovalViewController(mode: mode, deviceName: deviceName, configuration: configuration)
         case let .tutorialSteps(step):
             viewController = TutorialStepsViewController(
                 step: step,
@@ -742,13 +745,15 @@ class Router:
             viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
-        case let .rekeyInstruction(account):
-            viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
-        case let .rekeyConfirmation(account, ledgerDetail, ledgerAddress):
+        case let .rekeyInstruction(viewModel, eventHandler):
+            let aViewController = RekeyInstructionsViewController(viewModel: viewModel, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
                 ledger: ledgerDetail,
-                ledgerAddress: ledgerAddress,
+                newAuthAddress: newAuthAddress,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):
@@ -777,8 +782,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -958,7 +962,7 @@ class Router:
             viewController = aViewController
         case .transactionResult:
             let resultScreen = TransactionResultScreen(configuration: configuration)
-            resultScreen.isModalInPresentation = false
+            resultScreen.isModalInPresentation = true
             viewController = resultScreen
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
@@ -986,7 +990,7 @@ class Router:
                 currencyFormatter: currencyFormatter
             )
         case .asaVerificationInfo(let eventHandler):
-            let aViewController = AsaVerificationInfoScreen()
+            let aViewController = AsaVerificationInfoScreen(api: configuration.api)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
@@ -997,11 +1001,11 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .collectiblesFilterSelection(uiInteractions):
-            let aViewController = CollectiblesFilterSelectionViewController()
+            let aViewController = CollectiblesFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .accountCollectibleListFilterSelection(uiInteractions):
-            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            let aViewController = AccountCollectibleListFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
@@ -1092,9 +1096,10 @@ class Router:
                 url: url,
                 configuration: configuration
             )
-        case .image3DCard(let image):
+        case .image3DCard(let image, let rendersContinuously):
             viewController = Collectible3DImageViewController(
                 image: image,
+                rendersContinuously: rendersContinuously,
                 configuration: configuration
             )
         case .video3DCard(let image, let url):
@@ -1118,15 +1123,6 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .buyAlgoHome(let draft, let delegate):
-            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
-                draft: draft,
-                configuration: configuration
-            )
-            buyAlgoHomeScreen.delegate = delegate
-            viewController = buyAlgoHomeScreen
-        case let .buyAlgoTransaction(buyAlgoParams):
-            viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -1142,7 +1138,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case let .assetsFilterSelection(uiInteractions):
-            let aViewController = AssetsFilterSelectionViewController()
+            let aViewController = AssetsFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
@@ -1204,7 +1200,7 @@ class Router:
             dataSource.registerSupportedCells(listView)
             dataSource.registerSupportedSupplementaryViews(listView)
 
-            viewController = AccountSelectionListScreen(
+            viewController = SwapAccountSelectionListScreen(
                 navigationBarTitle: "title-select-account".localized,
                 listView: listView,
                 dataController: dataController,
@@ -1218,11 +1214,13 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .swapSignWithLedgerProcess(let transactionSigner, let draft, let eventHandler):
+        case .ledgerConnection(let eventHandler):
+            viewController = LedgerConnectionScreen(eventHandler: eventHandler)
+        case .signWithLedgerProcess(let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
-                transactionSigner: transactionSigner,
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .loading(let viewModel, let theme):
             viewController = LoadingScreen(
@@ -1246,12 +1244,18 @@ class Router:
             viewController = SwapSummaryScreen(
                 swapController: swapController,
                 theme: theme,
-                configuration: configuration
+                api: configuration.api
             )
         case .alert(let alert):
-            viewController = AlertScreen(alert: alert)
+            viewController = AlertScreen(
+                alert: alert,
+                api: configuration.api
+            )
         case .swapIntroduction(let draft, let eventHandler):
-            let aViewController = SwapIntroductionScreen(draft: draft)
+            let aViewController = SwapIntroductionScreen(
+                draft: draft,
+                api: configuration.api
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .optInAsset(let draft, let eventHandler):
@@ -1261,7 +1265,8 @@ class Router:
             viewController = OptInAssetScreen(
                 draft: draft,
                 copyToClipboardController: copyToClipboardController,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .optOutAsset(let draft, let theme, let eventHandler):
             viewController = OptOutAssetScreen(
@@ -1270,7 +1275,8 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .transferAssetBalance(let draft, let theme, let eventHandler):
             viewController = TransferAssetBalanceScreen(
@@ -1279,17 +1285,20 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .sheetAction(let sheet, let theme):
             viewController = UISheetActionScreen(
                 sheet: sheet,
-                theme: theme
+                theme: theme,
+                api: configuration.api
             )
         case .insufficientAlgoBalance(let draft, let eventHandler):
             viewController = InsufficientAlgoBalanceScreen(
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
@@ -1303,7 +1312,8 @@ class Router:
             viewController = screen
         case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
             let screen = ExportAccountsDomainConfirmationScreen(
-                theme: .init(hasSingularAccount: hasSingularAccount, .current)
+                theme: .init(hasSingularAccount: hasSingularAccount, .current),
+                api: configuration.api
             )
             screen.eventHandler = eventHandler
             viewController = screen
@@ -1384,6 +1394,254 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .discoverGeneric(let params):
+            viewController = DiscoverGenericScreen(
+                params: params,
+                configuration: configuration
+            )
+        case .importAccountIntroduction(let eventHandler):
+            let screen = WebImportInstructionScreen(api: configuration.api)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountQRScanner(let eventHandler):
+            let screen = ImportQRScannerScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .importAccount(backupParameters, eventHandler):
+            let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountError(let error, let eventHandler):
+            let screen = WebImportErrorScreen(
+                error: error,
+                api: configuration.api
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
+            let dataController = WebImportSuccessScreenLocalDataController(
+                importedAccounts: importedAccounts,
+                unimportedAccounts: unimportedAccounts
+            )
+            let screen = WebImportSuccessScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .buySellOptions(let eventHandler):
+            let screen = BuySellOptionsScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .bidaliIntroduction:
+            viewController = BidaliIntroductionScreen(api: configuration.api)
+        case .bidaliDappDetail(let account):
+            viewController = BidaliDappDetailScreen(
+                account: account,
+                config: BidaliConfig(network: configuration.api!.network),
+                configuration: configuration
+            )
+        case .bidaliAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = BidaliAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = BidaliAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = BidaliAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<BidaliAccountSelectionListSectionIdentifier, BidaliAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: BidaliAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .moonPayIntroduction(let draft, let delegate):
+            let aViewController = MoonPayIntroductionScreen(
+                draft: draft,
+                api: configuration.api!,
+                target: ALGAppTarget.current,
+                analytics: configuration.analytics,
+                loadingController: configuration.loadingController!
+            )
+            aViewController.delegate = delegate
+            viewController = aViewController
+        case .moonPayAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = MoonPayAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = MoonPayAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = MoonPayAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<MoonPayAccountSelectionListSectionIdentifier, MoonPayAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: MoonPayAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case let .moonPayTransaction(moonPayParams):
+            viewController = MoonPayTransactionViewController(
+                moonPayParams: moonPayParams,
+                configuration: configuration
+            )
+        case .sardineIntroduction:
+            viewController = SardineIntroductionScreen(api: configuration.api)
+        case .sardineAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = SardineAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = SardineAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = SardineAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<SardineAccountSelectionListSectionIdentifier, SardineAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: SardineAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .sardineDappDetail(let account):
+            let config = SardineConfig(account: account, network: configuration.api!.network)
+            let dappParameters = DiscoverDappParamaters(config)
+            let aViewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
+                configuration: configuration
+            )
+            aViewController.allowsPullToRefresh = false
+            viewController = aViewController
+        case .transakIntroduction:
+            viewController = TransakIntroductionScreen(api: configuration.api)
+        case .transakAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = TransakAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = TransakAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = TransakAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<TransakAccountSelectionListSectionIdentifier, TransakAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: TransakAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .transakDappDetail(let account):
+            let config = TransakConfig(account: account, network: configuration.api!.network)
+            let dappParameters = DiscoverDappParamaters(config)
+            let aViewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
+                configuration: configuration
+            )
+            aViewController.allowsPullToRefresh = false
+            viewController = aViewController
         }
 
         return viewController as? T
@@ -1470,6 +1728,10 @@ extension Router {
               !account.isWatchAccount() else {
             return
         }
+        
+        if !transactionController.canSignTransaction(for: account) { return }
+
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
 
         let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
@@ -1485,6 +1747,8 @@ extension Router {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
         if account.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -1573,8 +1837,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1584,6 +1846,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
@@ -1816,10 +2079,8 @@ extension Router {
         visibleScreen.dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            guard !account.isWatchAccount() else {
-                return
-            }
+            
+            if !self.transactionController.canSignTransaction(for: account) { return }
 
             let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
             let request = OptInBlockchainRequest(account: account, asset: asset)
@@ -1837,6 +2098,8 @@ extension Router {
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
@@ -1850,27 +2113,30 @@ extension Router {
 }
 
 
-extension Router: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+extension Router: MoonPayIntroductionScreenDelegate {
+    func moonPayIntroductionScreen(
+        _ screen: MoonPayIntroductionScreen,
+        didCompletedTransaction params: MoonPayParams
+    ) {
         screen.dismissScreen(animated: true) {
-            self.displayAlgoTransactionScreen(for: params)
+            self.displayMoonPayTransactionScreen(for: params)
         }
     }
-    
-    private func displayAlgoTransactionScreen(for params: BuyAlgoParams) {
+
+    private func displayMoonPayTransactionScreen(for params: MoonPayParams) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-        
+
         ongoingTransitions.append(transition)
-        
+
         transition.perform(
-            .buyAlgoTransaction(buyAlgoParams: params),
+            .moonPayTransaction(moonPayParams: params),
             by: .presentWithoutNavigationController
         )
+    }
+
+    func moonPayIntroductionScreenDidFailedTransaction(_ screen: MoonPayIntroductionScreen) {
+        screen.dismissScreen()
     }
 }
 
@@ -1881,16 +2147,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -1904,16 +2163,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -1965,22 +2217,11 @@ extension Router {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let visibleScreen = findVisibleScreen(over: rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
 
-            ongoingTransitions.append(transition)
-
-            transition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -1990,34 +2231,37 @@ extension Router {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ongoingTransitions.append(ledgerApprovalTransition)
-
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.appConfiguration.loadingController.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
+        appConfiguration.loadingController.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(
+        _ transactionController: TransactionController
+    ) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        appConfiguration.loadingController.stopLoading()
     }
 
     func transactionController(
@@ -2032,4 +2276,125 @@ extension Router {
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController),
+           let account = getAccount(from: transactionController) {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func getAccount(
+        from transactionController: TransactionController
+    ) -> Account? {
+        return transactionController.assetTransactionDraft?.from
+    }
+}
+
+extension Router {
+    private func openLedgerConnection() {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        ongoingTransitions.append(transition)
+    }
+}
+
+extension Router {
+    private func openLedgerConnectionIssues() {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        ongoingTransitions.append(transition)
+    }
+}
+
+extension Router {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        ongoingTransitions.append(ledgerApprovalTransition)
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = ledgerApprovalTransition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
 }
