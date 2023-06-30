@@ -184,10 +184,6 @@ indirect enum Screen {
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
-    case audio3DCard(
-        image: UIImage?,
-        url: URL
-    )
     case image3DCard(
         image: UIImage,
         rendersContinuously: Bool
@@ -196,7 +192,6 @@ indirect enum Screen {
         image: UIImage?,
         url: URL
     )
-    case collectibleFullScreenAudio(draft: CollectibleFullScreenAudioDraft)
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)

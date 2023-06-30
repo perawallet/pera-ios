@@ -22,19 +22,21 @@ import UIKit
 final class CollectibleMediaAudioPreviewView:
     View,
     ViewModelBindable,
-    ListReusable,
-    UIInteractable {
-    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .perform3DModeAction: TargetActionInteraction(),
-        .performFullScreenAction: TargetActionInteraction()
-    ]
-    
+    ListReusable {
     private lazy var placeholderView = URLImagePlaceholderView()
     private(set) lazy var audioPlayerView = AudioPlayerView()
+    private lazy var audioPlayingStateView = UIImageView()
     private lazy var overlayView = UIImageView()
-    private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
-    private lazy var fullScreenActionView = MacaroonUIKit.Button()
-    
+
+    private var timeObserver: Any?
+
+    private var isPlaying: Bool {
+        guard let player = currentPlayer else {
+            return false
+        }
+        return player.rate > 0
+    }
+
     var currentPlayer: AVPlayer? {
         return audioPlayerView.player
     }
@@ -42,9 +44,8 @@ final class CollectibleMediaAudioPreviewView:
     func customize(_ theme: CollectibleMediaAudioPreviewViewTheme) {
         addPlaceholderView(theme)
         addAudioPlayerView(theme)
+        addAudioPlayingStateView(theme)
         addOverlayView(theme)
-        add3DModeAction(theme)
-        addFullScreenAction(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -76,6 +77,17 @@ extension CollectibleMediaAudioPreviewView {
         audioPlayerView.snp.makeConstraints {
             $0.setPaddings()
         }
+
+        audioPlayerView.isHidden = true
+    }
+
+    private func addAudioPlayingStateView(_ theme: CollectibleMediaAudioPreviewViewTheme) {
+        audioPlayingStateView.customizeAppearance(theme.audioPlayingState)
+
+        audioPlayerView.addSubview(audioPlayingStateView)
+        audioPlayingStateView.snp.makeConstraints {
+            $0.setPaddings()
+        }
     }
     
     private func addOverlayView(_ theme: CollectibleMediaAudioPreviewViewTheme) {
@@ -84,58 +96,26 @@ extension CollectibleMediaAudioPreviewView {
             $0.setPaddings()
         }
     }
-    
-    private func add3DModeAction(_ theme: CollectibleMediaAudioPreviewViewTheme) {
-        threeDModeActionView.customizeAppearance(theme.threeDAction)
-        
-        addSubview(threeDModeActionView)
-        threeDModeActionView.contentEdgeInsets = UIEdgeInsets(theme.threeDActionContentEdgeInsets)
-        threeDModeActionView.snp.makeConstraints {
-            $0.leading == theme.threeDActionPaddings.leading
-            $0.bottom == theme.threeDActionPaddings.bottom
-        }
-        
-        startPublishing(
-            event: .perform3DModeAction,
-            for: threeDModeActionView
-        )
-    }
-    
-    private func addFullScreenAction(_ theme: CollectibleMediaAudioPreviewViewTheme) {
-        fullScreenActionView.customizeAppearance(theme.fullScreenAction)
-        
-        addSubview(fullScreenActionView)
-        fullScreenActionView.snp.makeConstraints {
-            $0.trailing == theme.fullScreenBadgePaddings.trailing
-            $0.bottom == theme.fullScreenBadgePaddings.bottom
-        }
-        
-        startPublishing(
-            event: .performFullScreenAction,
-            for: fullScreenActionView
-        )
-    }
 }
 
 extension CollectibleMediaAudioPreviewView {
     func bindData(_ viewModel: CollectibleMediaAudioPreviewViewModel?) {
-        placeholderView.placeholder = viewModel?.placeholder
-        
-        guard let viewModel,
-              let url = viewModel.url else {
+        guard let viewModel else {
             prepareForReuse()
             return
         }
-        
-        let audioPlayer = AVPlayer(url: url)
-        audioPlayer.playImmediately(atRate: 1)
-        audioPlayerView.player = audioPlayer
+
+        placeholderView.placeholder = viewModel.placeholder
+
+        overlayView.image = viewModel.overlayImage
+
+        guard let url = viewModel.url else {
+            return
+        }
+
+        audioPlayerView.player = AVPlayer(url: url)
         
         addObservers()
-        
-        overlayView.image = viewModel.overlayImage
-        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
-        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
     
     class func calculatePreferredSize(
@@ -145,6 +125,34 @@ extension CollectibleMediaAudioPreviewView {
     ) -> CGSize {
         return CGSize((size.width, size.height))
     }
+
+    private func makeTimeObserver() -> Any? {
+        guard let player = currentPlayer else {
+            return nil
+        }
+
+        let interval = CMTime(
+            seconds: 0.5,
+            preferredTimescale: CMTimeScale(NSEC_PER_SEC)
+        )
+        let observer = player.addPeriodicTimeObserver(
+            forInterval: interval,
+            queue: .main
+        ) { [weak self, weak player] _ in
+            guard let self = self,
+                  let player = player,
+                  let currentItem = player.currentItem,
+                  currentItem.currentTime().seconds <= currentItem.duration.seconds else {
+                return
+            }
+
+            removeTimeObserverIfNeeded()
+
+            updateUIForPlayingState(isPlaying: true)
+        }
+
+        return observer
+    }
 }
 
 extension CollectibleMediaAudioPreviewView {
@@ -152,28 +160,42 @@ extension CollectibleMediaAudioPreviewView {
         removeObservers()
         stopAudio()
         audioPlayerView.player = nil
+        audioPlayerView.isHidden = true
         placeholderView.prepareForReuse()
+        placeholderView.isHidden = false
         overlayView.image = nil
-        threeDModeActionView.isHidden = false
-        fullScreenActionView.isHidden = false
     }
 }
 
 extension CollectibleMediaAudioPreviewView {
     @objc
     private func playerItemDidReachEnd() {
-        audioPlayerView.player?.seek(to: .zero)
-        audioPlayerView.player?.play()
+        currentPlayer?.seek(to: .zero)
+        currentPlayer?.play()
     }
 }
 
 extension CollectibleMediaAudioPreviewView {
     func playAudio() {
-        audioPlayerView.player?.play()
+        if isPlaying {
+            return
+        }
+
+        timeObserver = makeTimeObserver()
+
+        currentPlayer?.play()
     }
 
     func stopAudio() {
-        audioPlayerView.player?.pause()
+        if !isPlaying {
+            return
+        }
+
+        currentPlayer?.pause()
+
+        removeTimeObserverIfNeeded()
+
+        updateUIForPlayingState(isPlaying: false)
     }
 }
 
@@ -193,12 +215,27 @@ extension CollectibleMediaAudioPreviewView {
             name: .AVPlayerItemDidPlayToEndTime,
             object: nil
         )
+
+        removeTimeObserverIfNeeded()
+    }
+
+    private func removeTimeObserverIfNeeded() {
+        if let timeObserver {
+            currentPlayer?.removeTimeObserver(timeObserver)
+            self.timeObserver = nil
+        }
     }
 }
 
 extension CollectibleMediaAudioPreviewView {
-    enum Event {
-        case performFullScreenAction
-        case perform3DModeAction
+    private func updateUIForPlayingState(isPlaying: Bool) {
+        let fromView = isPlaying ? placeholderView : audioPlayerView
+        let toView = isPlaying ? audioPlayerView : placeholderView
+        UIView.transition(
+            from: fromView,
+            to: toView,
+            duration: 0.3,
+            options: [.transitionCrossDissolve, .showHideTransitionViews, .allowUserInteraction]
+        )
     }
 }

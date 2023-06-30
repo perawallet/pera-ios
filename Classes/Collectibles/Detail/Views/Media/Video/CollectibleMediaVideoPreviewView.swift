@@ -35,7 +35,6 @@ final class CollectibleMediaVideoPreviewView:
     private lazy var overlayView = UIImageView()
     private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var fullScreenActionView = MacaroonUIKit.Button()
-    private(set) var isReadyForDisplay = false
 
     private var playerStateObserver: NSKeyValueObservation?
 
@@ -97,6 +96,8 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.snp.makeConstraints {
             $0.setPaddings()
         }
+
+        videoPlayerView.isHidden = true
     }
 
     private func addOverlayView(
@@ -124,6 +125,8 @@ extension CollectibleMediaVideoPreviewView {
             event: .perform3DModeAction,
             for: threeDModeActionView
         )
+
+        threeDModeActionView.isHidden = true
     }
 
     private func addFullScreenAction(
@@ -141,6 +144,8 @@ extension CollectibleMediaVideoPreviewView {
             event: .performFullScreenAction,
             for: fullScreenActionView
         )
+
+        fullScreenActionView.isHidden = true
     }
 }
 
@@ -148,30 +153,22 @@ extension CollectibleMediaVideoPreviewView {
     func bindData(
         _ viewModel: CollectibleMediaVideoPreviewViewModel?
     ) {
-        placeholderView.placeholder = viewModel?.placeholder
-
-        guard let viewModel = viewModel,
-              let url = viewModel.url else {
+        guard let viewModel = viewModel else {
+            prepareForReuse()
             return
         }
 
-        playerStateObserver = videoPlayerView.playerLayer?.observe(
-            \.isReadyForDisplay,
-             options:  [.new]
-        ) {
-            [weak self] (playerLayer, change) in
-            guard let self = self else { return }
-            self.placeholderView.isHidden = playerLayer.isReadyForDisplay
-            self.isReadyForDisplay = playerLayer.isReadyForDisplay
+        placeholderView.placeholder = viewModel.placeholder
+
+        overlayView.image = viewModel.overlayImage
+
+        guard let url = viewModel.url else {
+            return
         }
 
         videoPlayerView.player = AVPlayer(url: url)
 
-        addObservers()
-
-        overlayView.image = viewModel.overlayImage
-        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
-        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
+        addObservers(viewModel: viewModel)
     }
 
     class func calculatePreferredSize(
@@ -212,24 +209,27 @@ extension CollectibleMediaVideoPreviewView {
 extension CollectibleMediaVideoPreviewView {
     func prepareForReuse() {
         removeObservers()
-        playerStateObserver?.invalidate()
         stopVideo()
         videoPlayerView.player = nil
+        videoPlayerView.isHidden = true
+        placeholderView.isHidden = false
         placeholderView.prepareForReuse()
         overlayView.image = nil
-        threeDModeActionView.isHidden = false
-        fullScreenActionView.isHidden = false
+        threeDModeActionView.isHidden = true
+        fullScreenActionView.isHidden = true
     }
 }
 
 extension CollectibleMediaVideoPreviewView {
-    private func addObservers() {
+    private func addObservers(viewModel: CollectibleMediaVideoPreviewViewModel) {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(playerItemDidReachEnd),
             name: .AVPlayerItemDidPlayToEndTime,
             object: videoPlayerView.player?.currentItem
         )
+
+        playerStateObserver = makePlayerStateObserver(viewModel: viewModel)
     }
 
     private func removeObservers() {
@@ -237,6 +237,46 @@ extension CollectibleMediaVideoPreviewView {
             self,
             name: .AVPlayerItemDidPlayToEndTime,
             object: nil
+        )
+
+        playerStateObserver?.invalidate()
+        playerStateObserver = nil
+    }
+}
+
+extension CollectibleMediaVideoPreviewView {
+    private func makePlayerStateObserver(viewModel: CollectibleMediaVideoPreviewViewModel) -> NSKeyValueObservation? {
+        videoPlayerView.playerLayer?.observe(
+            \.isReadyForDisplay,
+             options:  [.new]
+        ) {
+            [weak self] (playerLayer, change) in
+            guard let self = self else { return }
+
+            guard playerLayer.isReadyForDisplay else {
+                updateUIForDisplayState(isReady: true)
+                self.threeDModeActionView.isHidden = true
+                self.fullScreenActionView.isHidden = true
+                return
+            }
+
+            updateUIForDisplayState(isReady: true)
+
+            self.threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
+            self.fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
+        }
+    }
+}
+
+extension CollectibleMediaVideoPreviewView {
+    private func updateUIForDisplayState(isReady: Bool) {
+        let fromView = isReady ? placeholderView : videoPlayerView
+        let toView = isReady ? videoPlayerView : placeholderView
+        UIView.transition(
+            from: fromView,
+            to: toView,
+            duration: 0.3,
+            options: [.transitionCrossDissolve, .showHideTransitionViews, .allowUserInteraction]
         )
     }
 }

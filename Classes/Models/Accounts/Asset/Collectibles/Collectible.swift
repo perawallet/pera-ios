@@ -122,8 +122,13 @@ enum MediaType:
     init?(
         rawValue: String
     ) {
-        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .unknown(rawValue)
+        switch rawValue {
+        case Self.audio.rawValue: self = .audio
+        case Self.image.rawValue: self = .image
+        case Self.video.rawValue: self = .video
+        case Self.mixed.rawValue: self = .mixed
+        default: self = .unknown(rawValue)
+        }
     }
 
     var isSupported: Bool {

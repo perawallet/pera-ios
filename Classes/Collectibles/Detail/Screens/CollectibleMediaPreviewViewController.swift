@@ -52,7 +52,6 @@ final class CollectibleMediaPreviewViewController:
 
     private lazy var imageTransitionDelegate = ImageTransitionDelegate()
     private lazy var videoTransitionDelegate = VideoTransitionDelegate()
-    private lazy var audioTransitionDelegate = AudioTransitionDelegate()
 
     private lazy var pageControl = UIPageControl()
 
@@ -121,12 +120,14 @@ final class CollectibleMediaPreviewViewController:
 
     override func prepareLayout() {
         super.prepareLayout()
+
         addListView()
         addPageControl()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
+
         listView.delegate = self
         listView.dataSource = dataSource
 
@@ -166,33 +167,33 @@ final class CollectibleMediaPreviewViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        playVideoIfNeededWhenViewDidAppear()
+        playMediaIfNeededWhenViewDidAppear()
     }
 
     override func viewDidAppearAfterInteractiveDismiss() {
         super.viewDidAppearAfterInteractiveDismiss()
 
-        playVideoIfNeededWhenViewDidAppear()
+        playMediaIfNeededWhenViewDidAppear()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        stopVideoIfNeededWhenViewDidDisappear()
+        stopMediaIfNeededWhenViewDidDisappear()
     }
 }
 
 extension CollectibleMediaPreviewViewController {
-    private func playVideoIfNeededWhenViewDidAppear() {
-        if let videoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
-            videoPreviewCell.playVideo()
+    private func playMediaIfNeededWhenViewDidAppear() {
+        if let playableMediaPreviewCell = currentVisibleCell as? CollectiblePlayableMediaPreviewCell {
+            playableMediaPreviewCell.play()
             return
         }
     }
 
-    private func stopVideoIfNeededWhenViewDidDisappear() {
-        if let videoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
-            videoPreviewCell.stopVideo()
+    private func stopMediaIfNeededWhenViewDidDisappear() {
+        if let playableMediaPreviewCell = currentVisibleCell as? CollectiblePlayableMediaPreviewCell {
+            playableMediaPreviewCell.stop()
             return
         }
     }
@@ -277,8 +278,8 @@ extension CollectibleMediaPreviewViewController {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let width =
-        collectionView.bounds.width -
-        Self.theme.horizontalInset * 2
+            collectionView.bounds.width -
+            Self.theme.horizontalInset * 2
         return CGSize(width: width.float(), height: width.float())
     }
 
@@ -292,47 +293,6 @@ extension CollectibleMediaPreviewViewController {
         }
 
         switch media.type {
-        case .audio:
-            guard let cell = cell as? CollectibleMediaAudioPreviewCell else {
-                return
-            }
-            
-            cell.playAudio()
-            
-            cell.startObserving(event: .perform3DModeAction) {
-                [weak self] in
-                guard let self else { return }
-                
-                guard let mediaURL = media.downloadURL else {
-                    return
-                }
-                
-                self.open3DCardForAudio(
-                    url: mediaURL,
-                    cell: cell
-                )
-            }
-            cell.startObserving(event: .performFullScreenAction) {
-                [weak self, weak cell] in
-                guard let self,
-                      let cell else { return }
-                                
-                let player = cell.contextView.currentPlayer
-                
-                guard let player = player else {
-                    return
-                }
-                                
-                cell.stopAudio()
-                
-                self.openFullScreenAudioPreview(
-                    with: player,
-                    didDismiss: {
-                        [weak cell] in
-                        cell?.playAudio()
-                    }
-                )
-            }
         case .image:
             guard let cell = cell as? CollectibleMediaImagePreviewCell else {
                 return
@@ -347,8 +307,9 @@ extension CollectibleMediaPreviewViewController {
                 self.existingImages = [indexPath.item: image]
             }
             cell.handlers.didTap3DModeAction = {
-                [weak self] in
-                guard let self = self else {
+                [weak self, weak cell] in
+                guard let self,
+                      let cell else {
                     return
                 }
                 
@@ -385,8 +346,9 @@ extension CollectibleMediaPreviewViewController {
             }
 
             cell.startObserving(event: .perform3DModeAction) {
-                [weak self] in
-                guard let self else {
+                [weak self, weak cell] in
+                guard let self,
+                      let cell else {
                     return
                 }
 
@@ -394,13 +356,13 @@ extension CollectibleMediaPreviewViewController {
                     return
                 }
 
-                cell.stopVideo()
+                cell.stop()
                 
                 self.open3DCardForVideo(
                     url: mediaURL,
                     didDismiss: {
                         [weak cell] in
-                        cell?.playVideo()
+                        cell?.play()
                     }
                 )
             }
@@ -413,18 +375,17 @@ extension CollectibleMediaPreviewViewController {
                 
                 let player = cell.contextView.currentPlayer
 
-                guard cell.isReadyForDisplay,
-                      let player = player else {
+                guard let player = player else {
                     return
                 }
 
-                cell.stopVideo()
+                cell.stop()
 
                 self.openFullScreenVideoPreview(
                     with: player,
                     didDismiss: {
                         [weak cell] in
-                        cell?.playVideo()
+                        cell?.play()
                     }
                 )
             }
@@ -448,13 +409,13 @@ extension CollectibleMediaPreviewViewController {
                 return
             }
             
-            cell.stopAudio()
+            cell.stop()
         case .video:
             guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
                 return
             }
 
-            cell.stopVideo()
+            cell.stop()
         default:
             break
         }
@@ -478,6 +439,19 @@ extension CollectibleMediaPreviewViewController {
         )
     }
 
+    private func open3DCardForImage(
+        image: UIImage,
+        rendersContinuously: Bool
+    ) {
+        open(
+            .image3DCard(
+                image: image,
+                rendersContinuously: rendersContinuously
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
     private func openFullScreenVideoPreview(
         with player: AVPlayer,
         didDismiss: @escaping (() -> Void)
@@ -496,19 +470,6 @@ extension CollectibleMediaPreviewViewController {
         )
     }
     
-    private func open3DCardForImage(
-        image: UIImage,
-        rendersContinuously: Bool
-    ) {
-        open(
-            .image3DCard(
-                image: image,
-                rendersContinuously: rendersContinuously
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-    
     private func open3DCardForVideo(
         url: URL,
         didDismiss: @escaping (() -> Void)
@@ -518,7 +479,6 @@ extension CollectibleMediaPreviewViewController {
            listView.isTracking {
             return
         }
-    }
 
         let screen = open(
             .video3DCard(
@@ -534,6 +494,7 @@ extension CollectibleMediaPreviewViewController {
                 screen?.dismissScreen()
                 didDismiss()
             }
+        }
         screen?.presentationController?.delegate = self
     }
 
@@ -542,15 +503,18 @@ extension CollectibleMediaPreviewViewController {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        listView.bounds.width -
-        Self.theme.horizontalInset * 2 +
-        Self.theme.cellSpacing
+        let pageWidth =
+            listView.bounds.width -
+            Self.theme.horizontalInset * 2 +
+            Self.theme.cellSpacing
 
         var newPage = CGFloat(selectedIndex)
 
+        if velocity.x == 0 {
             newPage = floor((targetContentOffset.pointee.x - pageWidth / 2) / pageWidth) + 1.0
         } else {
             newPage = CGFloat(velocity.x > 0 ? selectedIndex + 1 : selectedIndex - 1)
+
             if newPage < 0 {
                 return
             }
@@ -590,14 +554,15 @@ extension CollectibleMediaPreviewViewController {
 
     private func performActionsWhenScrollDidFinish() {
         for visibleCell in listView.visibleCells {
-            if let visibleCell = visibleCell as? CollectibleMediaVideoPreviewCell,
-               currentVisibleCell != visibleCell {
-                visibleCell.stopVideo()
+            if let playableMediaPreviewCell = visibleCell as? CollectiblePlayableMediaPreviewCell,
+               currentVisibleCell != playableMediaPreviewCell {
+                playableMediaPreviewCell.stop()
             }
         }
 
-        if let currentVisibleVideoPreviewCell = currentVisibleCell as? CollectibleMediaVideoPreviewCell {
-            currentVisibleVideoPreviewCell.playVideo()
+        if let playableMediaPreviewCell = currentVisibleCell as? CollectiblePlayableMediaPreviewCell {
+            playableMediaPreviewCell.play()
+            return
         }
     }
 }

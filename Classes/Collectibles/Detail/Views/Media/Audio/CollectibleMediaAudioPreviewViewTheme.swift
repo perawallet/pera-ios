@@ -22,54 +22,24 @@ struct CollectibleMediaAudioPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
-    
-    let threeDAction: ButtonStyle
-    let threeDActionContentEdgeInsets: LayoutPaddings
-    let threeDActionPaddings: LayoutPaddings
-    
-    let fullScreenAction: ButtonStyle
-    let fullScreenBadgePaddings: LayoutPaddings
-    
+    let audioPlayingState: ImageStyle
     let corner: Corner
     
     init(_ family: LayoutFamily) {
-        self.placeholder = PlaceholerViewTheme()
-        
-        self.threeDAction = [
-            .icon([
-                .normal("icon-3d"),
-                .highlighted("icon-3d")
-            ]),
-            .backgroundImage([
-                .normal("icon-3d-bg"),
-                .highlighted("icon-3d-bg")
-            ]),
-            .titleColor([
-                .normal(Colors.Text.white)
-            ]),
-            .title("collectible-detail-tap-3D".localized.footnoteMedium()),
+        self.placeholder =  PlaceholderViewTheme()
+        self.audioPlayingState = [
+            .image("audio-playing-state-icon"),
+            .contentMode(.center),
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
-        self.threeDActionContentEdgeInsets = (4, 8, 4, 8)
-        self.threeDActionPaddings = (.noMetric, 16, 16, .noMetric)
-
-        
-        self.fullScreenAction = [
-            .icon([
-                .normal("icon-full-screen"),
-                .highlighted("icon-full-screen")
-            ])
-        ]
-        self.fullScreenBadgePaddings = (.noMetric, .noMetric, 16, 16)
-        
         self.corner = Corner(radius: 12)
     }
 }
 
 extension CollectibleMediaAudioPreviewViewTheme {
-    struct PlaceholerViewTheme:
+    struct PlaceholderViewTheme:
         URLImagePlaceholderViewLayoutSheet,
         URLImagePlaceholderViewStyleSheet {
-
         var textPaddings: LayoutPaddings
         var background: ViewStyle
         var image: ImageStyle

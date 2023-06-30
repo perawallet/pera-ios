@@ -1090,12 +1090,6 @@ class Router:
             ]
 
             viewController = activityController
-        case .audio3DCard(let image, let url):
-            viewController = Collectible3DAudioViewController(
-                image: image,
-                url: url,
-                configuration: configuration
-            )
         case .image3DCard(let image, let rendersContinuously):
             viewController = Collectible3DImageViewController(
                 image: image,
@@ -1106,11 +1100,6 @@ class Router:
             viewController = Collectible3DVideoViewController(
                 image: image,
                 url: url,
-                configuration: configuration
-            )
-        case .collectibleFullScreenAudio(let draft):
-            viewController = CollectibleFullScreenAudioViewController(
-                draft: draft,
                 configuration: configuration
             )
         case .collectibleFullScreenImage(let draft):

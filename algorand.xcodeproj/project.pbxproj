@@ -1387,15 +1387,6 @@
 		2B384DC229A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
 		2B384DC329A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
 		2B384DC429A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
-		2B384DC729A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC629A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift */; };
-		2B384DC829A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC629A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift */; };
-		2B384DC929A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC629A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift */; };
-		2B384DCB29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DCA29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift */; };
-		2B384DCC29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DCA29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift */; };
-		2B384DCD29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DCA29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift */; };
-		2B384DD329A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DD229A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift */; };
-		2B384DD429A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DD229A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift */; };
-		2B384DD529A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DD229A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -7229,9 +7220,6 @@
 		2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewModel.swift; sourceTree = "<group>"; };
 		2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectible3DAudioViewController.swift; sourceTree = "<group>"; };
-		2B384DC629A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenAudioDraft.swift; sourceTree = "<group>"; };
-		2B384DCA29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenAudioViewController.swift; sourceTree = "<group>"; };
-		2B384DD229A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectibleMediaPreviewViewController+AudioTransition.swift"; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* InstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemView.swift; sourceTree = "<group>"; };
@@ -10605,16 +10593,6 @@
 				2B384DAD29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift */,
 				2B384DB129A8F15C006BD6BD /* CollectibleMediaAudioPreviewViewTheme.swift */,
 				2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */,
-			);
-			path = Audio;
-			sourceTree = "<group>";
-		};
-		2B384DC529A8FAE4006BD6BD /* Audio */ = {
-			isa = PBXGroup;
-			children = (
-				2B384DC629A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift */,
-				2B384DCA29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift */,
-				2B384DD229A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -18061,7 +18039,6 @@
 		D452F75B2832D1EB00439221 /* FullScreen */ = {
 			isa = PBXGroup;
 			children = (
-				2B384DC529A8FAE4006BD6BD /* Audio */,
 				D495FB612834F61500BD273C /* FullScreenContentViewController.swift */,
 				D4FDA57A28258EC500BFB778 /* FullScreenContentViewControllerTheme.swift */,
 				D4411CFB2835270A00080911 /* Image */,
@@ -21597,7 +21574,6 @@
 				17BD4E532292F1260003E49A /* TransactionHistoryCell.swift in Sources */,
 				2B698234278C61B5008EC669 /* TransactionsListLayout.swift in Sources */,
 				2BD36DF426810E0600C57728 /* TitledInformation.swift in Sources */,
-				2B384DC929A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */,
 				F063BE7A290BF7BF00AEAEF7 /* EditSwapSlippageScreenTheme.swift in Sources */,
 				2BB64BDD240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
 				95189D872779CC7300094107 /* SendTransactionPreviewScreen.swift in Sources */,
@@ -22421,8 +22397,7 @@
 				D4027BFE299D368100F59F15 /* TransakIntroductionScreenTheme.swift in Sources */,
 				2BB350BF2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				2B0AD8212757D99600F83660 /* AccountPortfolioView.swift in Sources */,
-				2B384DCD29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */,
-				2B5A277F27F6DBEB006C469B /* ManageAssetsListLayout.swift in Sources */,
+				2B5A277F27F6DBEB006C469B /* ManageAssetListLayout.swift in Sources */,
 				2B5A277F27F6DBEB006C469B /* ManageAssetListLayout.swift in Sources */,
 				D40D5EB3287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				2BD36DFE2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
@@ -22492,7 +22467,6 @@
 				2B2DF29228103499008BC52D /* CurrencySelectionListLayout.swift in Sources */,
 				D48281CA27A0680A004412D5 /* LedgerPairWarningViewTheme.swift in Sources */,
 				D4C51B4427CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift in Sources */,
-				2B384DD529A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */,
 				17D0FA5528EC28DE0061B55D /* ExportAccountListItemCellTheme.swift in Sources */,
 				F022D1DB2760AAFC00D786CD /* BlockCycle.swift in Sources */,
 				2BC63652288FDC4D00507AEA /* AssetVerificationTierInfoBoxViewModel.swift in Sources */,
@@ -23552,7 +23526,6 @@
 				D407A66628441B390011C299 /* SortAccountListOrderTitleViewModel.swift in Sources */,
 				D4A2E48C28A124440053B654 /* WCSessionListDataController.swift in Sources */,
 				D4018CF527E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
-				D419005C273FBA0E00F7829D /* ManageAssetsViewTheme.swift in Sources */,
 				2B384DAF29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift in Sources */,
 				2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */,
 				2B99D45C28EC96C500323C11 /* SwapConfirmPriceInfoViewModel.swift in Sources */,
@@ -23798,7 +23771,6 @@
 				D40E8822294C621300B46054 /* CollectibleDetailAccountInformationViewModel.swift in Sources */,
 				F0B0A5FA291E18580021EF8D /* InAppBrowserLoadingView.swift in Sources */,
 				D401FCAF28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift in Sources */,
-				2B384DCC29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */,
 				95189D862779CC7300094107 /* SendTransactionPreviewScreen.swift in Sources */,
 				F011FCF52859399A00E42EA2 /* HomeAccountCell.swift in Sources */,
 				D477A74A27FB8CB700E2D790 /* CollectibleListViewControllerTheme.swift in Sources */,
@@ -24166,8 +24138,7 @@
 				2BC6360D28899F9E00507AEA /* AssetNameViewTheme.swift in Sources */,
 				D4A241E327D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */,
 				2B8CD5A62908A542004A81B9 /* ParsedSwapTransaction.swift in Sources */,
-				95CA71FD27CD5D7800424626 /* BuyAlgoSignDraft.swift in Sources */,
-				2B384DC829A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */,
+				95CA71FD27CD5D7800424626 /* MoonPaySignDraft.swift in Sources */,
 				95CA71FD27CD5D7800424626 /* MoonPaySignDraft.swift in Sources */,
 				2BF6583C290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */,
 				2B0F624F24EC129D00DA22A6 /* QRScannerOverlayView.swift in Sources */,
@@ -24548,7 +24519,6 @@
 				F06FF4DF27E8A82A0047A20E /* ALGAppTarget.swift in Sources */,
 				17AEC55D2970683F002B3B23 /* WebImportErrorViewModel.swift in Sources */,
 				2B5F6F9E2768EC0300C9B780 /* SingleGrayTitleHeaderSuplementaryView.swift in Sources */,
-				2B384DD429A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */,
 				F063BE75290BF7BA00AEAEF7 /* EditSwapSlippageScreen.swift in Sources */,
 				2B80C544277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				F045BE46286C91D40069056B /* NumberRounder.swift in Sources */,
@@ -25997,7 +25967,6 @@
 				2BB64BDC240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
 				2B57D8EF25587F4F006E6FCE /* TapReceiveAssetInDetailEvent.swift in Sources */,
 				955B617127848188005A5C7E /* WCScrollOverlayFragment.swift in Sources */,
-				2B384DC729A8FAEE006BD6BD /* CollectibleFullScreenAudioDraft.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
 				D45D7680299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */,
 				D4588AD9294293ED0012C12C /* ReceiverAccountSelectionPreviewCell.swift in Sources */,
@@ -26818,7 +26787,6 @@
 				2B0E00B52788199900D6B2E2 /* SecuritySettingsViewTheme.swift in Sources */,
 				D479D11126D51C4F00110E04 /* BannerViewTheme.swift in Sources */,
 				D43A0C192790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
-				2B384DCB29A8FB12006BD6BD /* CollectibleFullScreenAudioViewController.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B119E8A296EE94300FE6962 /* JSONModel+Extensions.swift in Sources */,
 				D4027BFC299D368100F59F15 /* TransakIntroductionScreenTheme.swift in Sources */,
@@ -26890,8 +26858,6 @@
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2B4FD1FE27C63F740097AB65 /* MoonPayTransactionViewTheme.swift in Sources */,
 				D4155E8D276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
-				2B384DD329A8FC6F006BD6BD /* CollectibleMediaPreviewViewController+AudioTransition.swift in Sources */,
-				2B233B4527C452A000D16B82 /* BuyAlgoHomeView.swift in Sources */,
 				17924436288FDF470075F36F /* NotificationStatus.swift in Sources */,
 				95189D852779CC7300094107 /* SendTransactionPreviewScreen.swift in Sources */,
 				2B79A140231580AC00766021 /* TransactionController.swift in Sources */,

@@ -52,6 +52,7 @@ extension CollectibleMediaVideoPreviewViewModel {
         _ media: Media
     ) {
         if media.type != .video {
+            self.url = nil
             return
         }
 

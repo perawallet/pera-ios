@@ -22,9 +22,7 @@ struct CollectibleMediaAudioPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
     private(set) var overlayImage: UIImage?
-    private(set) var is3DModeActionHidden: Bool = false
-    private(set) var isFullScreenActionHidden: Bool = false
-    
+
     init(
         asset: CollectibleAsset,
         accountCollectibleStatus: AccountCollectibleStatus,
@@ -33,8 +31,6 @@ struct CollectibleMediaAudioPreviewViewModel: ViewModel {
         bindPlaceholder(asset)
         bindURL(media)
         bindOverlayImage(asset, accountCollectibleStatus)
-        bindIs3DActionHidden(asset)
-        bindIsFullScreenBadgeHidden(asset)
     }
 }
 
@@ -59,19 +55,14 @@ extension CollectibleMediaAudioPreviewViewModel {
         _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
         switch accountCollectibleStatus {
-        case .notOptedIn, .owned:
-            self.overlayImage = nil
+        case .notOptedIn,
+             .optingOut,
+             .optingIn,
+             .owned:
+            overlayImage = nil
         case .optedIn:
-            self.overlayImage = "overlay-bg".uiImage
+            overlayImage = "overlay-bg".uiImage
         }
-    }
-    
-    private mutating func bindIs3DActionHidden(_ asset: CollectibleAsset) {
-        self.is3DModeActionHidden = !asset.mediaType.isSupported
-    }
-    
-    private mutating func bindIsFullScreenBadgeHidden(_ asset: CollectibleAsset) {
-        self.isFullScreenActionHidden = !asset.mediaType.isSupported
     }
 }
 

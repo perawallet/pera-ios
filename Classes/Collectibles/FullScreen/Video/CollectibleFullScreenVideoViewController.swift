@@ -23,21 +23,25 @@ final class CollectibleFullScreenVideoViewController:
    
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addVideo()
     }
    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         player.play()
     }
    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         player.pause()
     }
    
     override func bindData() {
         super.bindData()
+
         videoPlayerView.player = player
     }
 }

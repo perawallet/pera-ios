@@ -15,12 +15,18 @@
 //   CollectibleMediaAudioPreviewCell.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
+
+protocol CollectiblePlayableMediaPreviewCell: UICollectionViewCell {
+    func play()
+    func stop()
+}
 
 final class CollectibleMediaAudioPreviewCell:
     CollectionCell<CollectibleMediaAudioPreviewView>,
     ViewModelBindable,
-    UIInteractable {
+    CollectiblePlayableMediaPreviewCell {
     static let theme = CollectibleMediaAudioPreviewViewTheme()
     
     override init(
@@ -32,11 +38,11 @@ final class CollectibleMediaAudioPreviewCell:
 }
 
 extension CollectibleMediaAudioPreviewCell {
-    func playAudio() {
+    func play() {
         contextView.playAudio()
     }
     
-    func stopAudio() {
+    func stop() {
         contextView.stopAudio()
     }
 }
