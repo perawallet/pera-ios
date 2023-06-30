@@ -1384,9 +1384,6 @@
 		2B384DBE29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
 		2B384DBF29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
 		2B384DC029A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
-		2B384DC229A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
-		2B384DC329A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
-		2B384DC429A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -5616,6 +5613,9 @@
 		D4C601DC2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C601DB2843813100CDF6CB /* SortAccountListLocalDataController.swift */; };
 		D4C601DD2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C601DB2843813100CDF6CB /* SortAccountListLocalDataController.swift */; };
 		D4C601DE2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C601DB2843813100CDF6CB /* SortAccountListLocalDataController.swift */; };
+		D4C64C282A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64C272A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift */; };
+		D4C64C292A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64C272A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift */; };
+		D4C64C2A2A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64C272A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift */; };
 		D4C68D7D277DAF0F0019C882 /* TransactionFilterViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C68D7C277DAF0F0019C882 /* TransactionFilterViewTheme.swift */; };
 		D4C68D7E277DAF0F0019C882 /* TransactionFilterViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C68D7C277DAF0F0019C882 /* TransactionFilterViewTheme.swift */; };
 		D4C68D7F277DAF0F0019C882 /* TransactionFilterViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C68D7C277DAF0F0019C882 /* TransactionFilterViewTheme.swift */; };
@@ -7219,7 +7219,6 @@
 		2B384DB129A8F15C006BD6BD /* CollectibleMediaAudioPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewTheme.swift; sourceTree = "<group>"; };
 		2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewModel.swift; sourceTree = "<group>"; };
 		2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
-		2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectible3DAudioViewController.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* InstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemView.swift; sourceTree = "<group>"; };
@@ -8742,6 +8741,7 @@
 		D4C601D32843705D00CDF6CB /* SortAccountListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListDataSource.swift; sourceTree = "<group>"; };
 		D4C601D72843727E00CDF6CB /* SortAccountListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListLayout.swift; sourceTree = "<group>"; };
 		D4C601DB2843813100CDF6CB /* SortAccountListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListLocalDataController.swift; sourceTree = "<group>"; };
+		D4C64C272A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblePlayableMediaPreviewCell.swift; sourceTree = "<group>"; };
 		D4C68D7C277DAF0F0019C882 /* TransactionFilterViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFilterViewTheme.swift; sourceTree = "<group>"; };
 		D4C68D80277DB2F90019C882 /* TransactionFilterViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionFilterViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4C68D84277DBF6C0019C882 /* TransactionFilterOptionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFilterOptionViewTheme.swift; sourceTree = "<group>"; };
@@ -12066,10 +12066,11 @@
 		2B7A1F4A27DD26B60010F52E /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				2B384DA429A8F073006BD6BD /* Audio */,
 				2B7A1F4F27DD26D40010F52E /* CollectibleMediaPreviewCell.swift */,
+				2B384DA429A8F073006BD6BD /* Audio */,
 				2B98E48127EB6225000FA690 /* Error */,
 				2B98E48227EB622B000FA690 /* Image */,
+				D4C64C262A50383900011065 /* Shared */,
 				2B98E48327EB6230000FA690 /* Video */,
 			);
 			path = Media;
@@ -14719,7 +14720,6 @@
 				2BAD6CAE27F88CAA0016E869 /* Collectible3DImageViewController.swift */,
 				2BAD6CB227F88CDF0016E869 /* Collectible3DVideoViewController.swift */,
 				2BAD6CBA27F907D00016E869 /* Collectible3DViewerTheme.swift */,
-				2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */,
 			);
 			path = 3DCard;
 			sourceTree = "<group>";
@@ -18847,6 +18847,14 @@
 			path = AssetImage;
 			sourceTree = "<group>";
 		};
+		D4C64C262A50383900011065 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D4C64C272A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		D4C75BCB272E8BE1002BAA66 /* SearchInputView */ = {
 			isa = PBXGroup;
 			children = (
@@ -21351,7 +21359,6 @@
 				D419433F273570630055EC70 /* AssetListViewDataSource.swift in Sources */,
 				2B6B3F002774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
 				F045BE3F286B9BD70069056B /* CurrencyFormattingListItemContextHandler.swift in Sources */,
-				2B384DC429A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				D40D9C232964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift in Sources */,
 				F065169B2905E5D700ECE763 /* SwapAmountPercentageInputViewModel.swift in Sources */,
 				F0E9B3D129C3F49400AADED1 /* BidaliOpenURLParameters.swift in Sources */,
@@ -22583,6 +22590,7 @@
 				2B80C53727720F5300BB071E /* AccountCollectibleListViewController.swift in Sources */,
 				2BC63656288FDC6F00507AEA /* InfoBoxViewStyle.swift in Sources */,
 				17BD4ED52292F1260003E49A /* NumpadView.swift in Sources */,
+				D4C64C2A2A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */,
 				D4372B3728D4970C0057532B /* ALGProgress.swift in Sources */,
 				2B343CFE259D176D001EA8C8 /* AccountNameSwitchView.swift in Sources */,
 				2B9E2F4926F0DDB8003D824A /* WCAssetConfigTransactionItemView.swift in Sources */,
@@ -24512,7 +24520,6 @@
 				2B6B422A27BEA3A50036BF9E /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				2BB93BD625BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				D45564B029432A9A00A4F28C /* AssetFilterItemViewTheme.swift in Sources */,
-				2B384DC329A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				2B83D05426C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				F08A68E9292458B50039B085 /* DiscoverErrorViewTheme.swift in Sources */,
 				F034523828B3946B009467A0 /* ASADiscoveryScreenDataController.swift in Sources */,
@@ -24935,6 +24942,7 @@
 				D45D76A6299FBDC10081735E /* TransakAccountSelectionListHeaderTheme.swift in Sources */,
 				2B69AB3728BFCF6100A8D65D /* SwapQuoteDraft.swift in Sources */,
 				D48D11D82742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
+				D4C64C292A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */,
 				D4BCAD4B28B5188E0052DD74 /* TransferAssetBalanceNameViewModel.swift in Sources */,
 				95BB6BF727A14C0100F2A2F1 /* WCTransactionFullDappDetailViewController+Theme.swift in Sources */,
 				D4588AEF294293EE0012C12C /* AccountClipboardViewModel.swift in Sources */,
@@ -25742,7 +25750,6 @@
 				F010638A28AC71A000AB6873 /* ASADetailScreenTheme.swift in Sources */,
 				2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				2BC1827423D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
-				2B384DC229A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				F045BE3D286B9BD70069056B /* CurrencyFormattingListItemContextHandler.swift in Sources */,
 				F0DB41A32794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				D4588ACD294293ED0012C12C /* NameServiceAPIStatus.swift in Sources */,
@@ -27133,6 +27140,7 @@
 				D4D56453298AA57200570610 /* BidaliDappDetailScreen.swift in Sources */,
 				95BB6BF627A14C0100F2A2F1 /* WCTransactionFullDappDetailViewController+Theme.swift in Sources */,
 				2B98E48A27EB6273000FA690 /* CollectibleMediaVideoPreviewView.swift in Sources */,
+				D4C64C282A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */,
 				F096086F2795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
 				95004BB427BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */,
 				D48D11D72742878A000061CE /* TitledToggleViewTheme.swift in Sources */,

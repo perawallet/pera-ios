@@ -243,14 +243,15 @@ enum MediaExtension:
         .ass, .au, .gif, .jpg, .jpeg,
         .loas, .mid, .midi, .mp2, .mp3,
         .mp4, .opus, .png, .ra, .threeGp,
-        .threeGpp, .threeG2, .threeGpp2, .snd, .wav, .webp,
+        .threeGpp, .threeG2, .threeGpp2, .snd, .wav,
+        .webp
     ]
 
     init() {
         self = .other("")
     }
 
-    init?( rawValue: String) {
+    init?(rawValue: String) {
         switch rawValue {
         case Self.aac.rawValue: self = .aac
         case Self.adts.rawValue: self = .adts

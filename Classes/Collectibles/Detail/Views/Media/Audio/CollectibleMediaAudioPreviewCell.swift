@@ -15,13 +15,7 @@
 //   CollectibleMediaAudioPreviewCell.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
-
-protocol CollectiblePlayableMediaPreviewCell: UICollectionViewCell {
-    func play()
-    func stop()
-}
 
 final class CollectibleMediaAudioPreviewCell:
     CollectionCell<CollectibleMediaAudioPreviewView>,

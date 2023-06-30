@@ -246,7 +246,7 @@ extension CollectibleMediaVideoPreviewView {
 
 extension CollectibleMediaVideoPreviewView {
     private func makePlayerStateObserver(viewModel: CollectibleMediaVideoPreviewViewModel) -> NSKeyValueObservation? {
-        videoPlayerView.playerLayer?.observe(
+        let observer = videoPlayerView.playerLayer?.observe(
             \.isReadyForDisplay,
              options:  [.new]
         ) {
@@ -254,7 +254,8 @@ extension CollectibleMediaVideoPreviewView {
             guard let self = self else { return }
 
             guard playerLayer.isReadyForDisplay else {
-                updateUIForDisplayState(isReady: true)
+                updateUIForDisplayState(isReady: false)
+
                 self.threeDModeActionView.isHidden = true
                 self.fullScreenActionView.isHidden = true
                 return
@@ -265,6 +266,7 @@ extension CollectibleMediaVideoPreviewView {
             self.threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
             self.fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
         }
+        return observer
     }
 }
 
