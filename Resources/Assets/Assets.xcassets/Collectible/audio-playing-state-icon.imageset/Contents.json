@@ -3,6 +3,16 @@
     {
       "filename" : "audio-playing-state-icon.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "audio-playing-state-icon-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
