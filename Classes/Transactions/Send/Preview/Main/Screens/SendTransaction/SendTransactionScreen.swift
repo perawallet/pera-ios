@@ -445,13 +445,9 @@ extension SendTransactionScreen {
 }
 
 // MARK: - Actions
-extension SendTransactionScreen: TransactionSignChecking {
+extension SendTransactionScreen {
     @objc
     private func didTapNext() {
-        if !canSignTransaction(for: &draft.from) {
-            return
-        }
-
         let validation = validate(value: amount)
 
         switch validation {
@@ -803,6 +799,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                     self.eventHandler?(.didCompleteTransaction)
                 case .didEditNote(let note):
                     self.didEditNote(note: note)
+                default: break
                 }
             }
         }
@@ -970,7 +967,7 @@ extension SendTransactionScreen {
     private func openOptInInformation() {
         let uiSheet = UISheet(
             title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
-            body: "collectible-opt-in-info-description".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "collectible-opt-in-info-description".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(

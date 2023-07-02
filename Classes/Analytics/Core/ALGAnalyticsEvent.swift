@@ -18,7 +18,9 @@ import Foundation
 import MacaroonVendors
 import UIKit
 
-protocol ALGAnalyticsEvent: AnalyticsEvent
+protocol ALGAnalyticsEvent:
+    AnalyticsEvent,
+    ALGAnalyticsParameterRegulator
 where
     Self.Name == ALGAnalyticsEventName,
     Self.Metadata == ALGAnalyticsMetadata {}
@@ -32,7 +34,7 @@ enum ALGAnalyticsEventName:
     String,
     AnalyticsEventName {
     case addAsset
-    case buyAlgoFromMoonpayCompleted
+    case buyAlgoFromMoonPayCompleted
     case changeAssetDetail
     case changeCurrency
     case changeLanguage
@@ -76,7 +78,7 @@ enum ALGAnalyticsEventName:
     case tapBuyAlgoInAccountDetail
     case tapBuyAlgoInBottomsheet
     case tapBuyAlgoInHome
-    case tapBuyAlgoInMoonpay
+    case tapBuyAlgoInMoonPay
     case tapBuyAlgoTab
     case tapCollectiblesInAccountDetail
     case tapConfirmSwap
@@ -100,6 +102,11 @@ enum ALGAnalyticsEventName:
     case wcSessionRejected
     case wcTransactionConfirmed
     case wcTransactionDeclined
+    case wcTransactionRequestDidAppear
+    case wcTransactionRequestDidLoad
+    case wcTransactionRequestReceived
+    case wcTransactionRequestSDKError
+    case wcTransactionRequestValidated
 }
 
 extension ALGAnalyticsEventName {
@@ -122,6 +129,10 @@ extension ALGAnalyticsEventName {
         case .swapBannerTry: rawName = "banner_swap_tryswap"
         case .tapBuyAlgoInBottomsheet: rawName = "bottommenu_algo_buy_tap"
         case .changeCurrency: rawName = "currency_change"
+        case .discoverDappDetail: rawName = "discover_dapps_visit_pages"
+        case .discoverSearch: rawName = "discover_markets_search"
+        case .discoverAssetBuy: rawName = "discover_token_detail_buy"
+        case .discoverAssetSell: rawName = "discover_token_detail_sell"
         case .tapGovernanceBanner: rawName = "homescr_visitgovernance"
         case .tapDownloadTransactionInHistory: rawName = "historyscr_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
@@ -132,8 +143,8 @@ extension ALGAnalyticsEventName {
         case .qrConnectedInHome: rawName = "homescr_qr_scan_connected"
         case .changeLanguage: rawName = "language_change"
         case .tapAlgoPriceMenu: rawName = "nftscr_nft_receive"
-        case .tapBuyAlgoInMoonpay: rawName = "moonpayscr_algo_buy_tap"
-        case .buyAlgoFromMoonpayCompleted: rawName = "moonpaycom_algo_buy_completed"
+        case .tapBuyAlgoInMoonPay: rawName = "moonpayscr_algo_buy_tap"
+        case .buyAlgoFromMoonPayCompleted: rawName = "moonpaycom_algo_buy_completed"
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .onboardCreateAccountNew: rawName = "onb_createacc_recover"
@@ -173,10 +184,11 @@ extension ALGAnalyticsEventName {
         case .wcSessionRejected: rawName = "wc_session_rejected"
         case .wcTransactionConfirmed: rawName = "wc_transaction_confirmed"
         case .wcTransactionDeclined: rawName = "wc_transaction_declined"
-        case .discoverSearch: rawName = "discover_markets_search"
-        case .discoverAssetBuy: rawName = "discover_token_detail_buy"
-        case .discoverAssetSell: rawName = "discover_token_detail_sell"
-        case .discoverDappDetail: rawName = "discover_dapps_visit_pages"
+        case .wcTransactionRequestDidAppear: rawName = "wc_transaction_request_DidAppear"
+        case .wcTransactionRequestDidLoad: rawName = "wc_transaction_request_DidLoad"
+        case .wcTransactionRequestReceived: rawName = "wc_transaction_request_Received"
+        case .wcTransactionRequestSDKError: rawName = "wc_transaction_request_SDKError"
+        case .wcTransactionRequestValidated: rawName = "wc_transaction_request_Validated"
         }
 
         let isTestnet = UIApplication.shared.appConfiguration?.api.isTestNet ?? false

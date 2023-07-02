@@ -70,7 +70,7 @@ extension ASADetailProfileViewModel {
         let placeholderImage = placeholderText?.toPlaceholderImage(size: size)
         let placeholderAsset = AssetImageSource(asset: placeholderImage)
         let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
-        icon = PNGImageSource(url: url, shape: .circle, placeholder: placeholder)
+        icon = DefaultURLImageSource(url: url, shape: .circle, placeholder: placeholder)
     }
 
     mutating func bindName(asset: Asset) {
@@ -213,7 +213,7 @@ extension ASADetailProfileViewModel {
 
     mutating func bindSecondaryValue(text: String?) {
         if let text = text.unwrapNonEmptyString() {
-            secondaryValue = "≈ \(text)".bodyMedium()
+            secondaryValue = text.bodyMedium()
         } else {
             secondaryValue = nil
         }

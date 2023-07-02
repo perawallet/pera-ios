@@ -19,9 +19,8 @@ import Foundation
 import MagpieExceptions
 import MagpieHipo
 import UIKit
-import UserNotifications
 
-class PushNotificationController: NSObject {
+final class PushNotificationController {
     var token: String? {
         return deviceRegistrationController.token
     }
@@ -31,23 +30,19 @@ class PushNotificationController: NSObject {
         session: session,
         api: api
     )
-    private lazy var currencyFormatter = CurrencyFormatter()
-    
+
     private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
-    private let bannerController: BannerController?
-    
+
     init(
         target: ALGAppTarget,
         session: Session,
-        api: ALGAPI,
-        bannerController: BannerController?
+        api: ALGAPI
     ) {
         self.target = target
         self.session = session
         self.api = api
-        self.bannerController = bannerController
     }
 }
 
@@ -68,28 +63,6 @@ extension PushNotificationController {
         deviceRegistrationController.sendDeviceDetails(completion: handler)
     }
     
-    private func updateDevice(
-        with id: String,
-        for user: User,
-        completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
-    ) {
-        deviceRegistrationController.updateDevice(
-            with: id,
-            for: user,
-            completion: handler
-        )
-    }
-    
-    private func registerDevice(
-        for user: User,
-        completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
-    ) {
-        deviceRegistrationController.registerDevice(
-            for: user,
-            completion: handler
-        )
-    }
-    
     func unregisterDevice(
         from network: ALGAPI.Network
     ) {
@@ -100,23 +73,5 @@ extension PushNotificationController {
         completion handler: @escaping BoolHandler
     ) {
         deviceRegistrationController.revokeDevice(completion: handler)
-    }
-}
-
-// MARK: Foreground
-
-extension PushNotificationController {
-    func present(
-        notification: AlgorandNotification,
-        action handler: EmptyHandler? = nil
-    ) {
-        guard let alert = notification.alert else {
-            return
-        }
-
-        bannerController?.presentNotification(
-            alert,
-            handler
-        )
     }
 }

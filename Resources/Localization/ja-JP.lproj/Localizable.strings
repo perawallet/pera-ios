@@ -26,7 +26,7 @@
 "account-name-setup-placeholder" = "アカウント名";
 
 /* (No Comment) */
-"account-not-found" = "Account not found";
+"account-not-found" = "アカウントが見つかりません";
 
 /* (No Comment) */
 "account-options-add-account-title" = "アカウントの追加";
@@ -47,13 +47,19 @@
 "account-select-header-matched-accounts-title" = "一致したアカウント";
 
 /* (No Comment) */
-"account-select-header-search-title" = "ウォレットアドレスの検索または入力";
+"account-select-header-search-title" = "アカウントアドレスまたは略称";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "別のアカウント名をお試しください";
 
 /* (No Comment) */
 "account-select-search-empty-title" = "アカウントが見つかりません";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "続けるには、スタンダード（Ledgerではない）アカウントを追加してください。";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "スタンダードアカウントが見つかりません";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "アカウントを作成したい";
@@ -66,6 +72,12 @@
 
 /* (No Comment) */
 "account-type-selection-create-detail" = "Algorandアカウントの新規作成、またはウォッチアカウントの追加";
+
+/* (No Comment) */
+"account-type-selection-import-web" = "Pera Webからインポート";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "Pera WebからAlgorandアカウントをインポートしたい";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledgerデバイスのペアリング";
@@ -113,7 +125,7 @@
 "accounts-title" = "アカウント";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "NFTs";
+"accounts-title-collectibles" = "NFT";
 
 /* (No Comment) */
 "accounts-title-history" = "履歴";
@@ -239,25 +251,28 @@
 "asset-copy-id" = "IDをコピー";
 
 /* (No Comment) */
+"asset-creator-opt-out-error-message" = "クリエイターアカウントは、自分が作成した資産をオプトアウトすることはできません。";
+
+/* (No Comment) */
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-detail-markets-title" = "Markets";
+"asset-detail-markets-title" = "市場";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFT資産は、アカウントの資産リストに表示されます";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+"asset-filter-selection-display-collectible-assets-filter-title" = "資産リストのNFTを表示する";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
+"asset-filter-selection-toggle-description" = "残高のない資産を表示 / 非表示にできます";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+"asset-filter-selection-toggle-title" = "残高のない資産を非表示にする";
 
 /* (No Comment) */
-"asset-filter-title" = "Filter Assets";
+"asset-filter-title" = "資産のフィルタリング";
 
 /* (No Comment) */
 "asset-id-copied-title" = "IDがクリップボードにコピーされました";
@@ -287,7 +302,7 @@
 "asset-opt-out-successful-message" = "%@がアカウントから正常に削除されました。";
 
 /* (No Comment) */
-"asset-opt-out-title" = "Asset Opt-out";
+"asset-opt-out-title" = "資産のオプトアウト";
 
 /* (No Comment) */
 "asset-quick-action-button-add" = "資産を追加する";
@@ -352,6 +367,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "この資産はアカウントに含まれていません";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "この資産はアカウントに存在しません";
+
 /* MARK: Asset */
 "asset-title" = "資産";
 
@@ -372,6 +390,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QRを表示";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "アカウントのインポート";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "ギフトカードを購入する";
+
+/* (No Comment) */
+"bidali-introduction-body" = "Algo、USDC、USDtの残高を使って、世界中の数多くのブランドからギフトカードやモバイルトップアップを購入することができます！";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "Bidaliでギフトカードを購入する";
+
+/* (No Comment) */
+"bidali-introduction-title" = "仮想通貨でギフトを購入する";
+
+/* (No Comment) */
+"bidali-not-available-description" = "TestNetでは購入できません。Bidaliをご利用になるには、設定からMainNetに切り替えてください。";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetoothエラー";
@@ -426,6 +462,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "サポートされていないデバイス";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "Algo、USDC、USDtの残高を使って、世界中の数多くのブランドからギフトカードやモバイルトップアップを購入することができます。";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "ギフトカードを購入する";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "仮想通貨でギフトを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Apple Pay、クレジットカード、銀行振込を利用可能です";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "MoonPayでALGOを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "米国の銀行口座でInstant ACHを使用する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "Algo、USDC、USDt残高を使用可能です";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Bidaliでギフトカードを購入する";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "仮想通貨の購入";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "クレジットカードや150カ国以上での銀行振込を使用可能";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "TransakでのUSDCの購入";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "仮想通貨の売却";
 
 /* (No Comment) */
 "chart-no-data-text" = "価格APIは現在利用できません、改めてご確認ください。";
@@ -491,7 +566,7 @@
 "collectible-detail-algo-explorer" = "Show on Algoexplorerで表示する";
 
 /* (No Comment) */
-"collectible-detail-creator-account" = "Creator Account";
+"collectible-detail-creator-account" = "クリエイターアカウント";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "制作者名";
@@ -536,19 +611,19 @@
 "collectible-detail-show-on" = "表示方法";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D mode";
+"collectible-detail-tap-3D" = "3Dモード";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "トランザクションを見る";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "自分のアカウントだけでなく、ウォッチアカウントのNFTも表示されます。";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "ウォッチアカウントのNFTを表示する";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter NFTs";
+"collectible-filter-selection-title" = "NFTの絞り込み";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "オプトインしているが、所有していないNFTの表示/非表示が可能です";
@@ -599,7 +674,7 @@
 "collectible-send-action" = "転送";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Algorandウォレットアドレスを貼り付けてください";
+"collectible-send-input-placeholder" = "アカウントアドレス";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "NFTを送信する";
@@ -629,7 +704,7 @@
 "collectibles-empty-secondary-action-title" = "隠されたNFTを表示 (%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "NFTs";
+"collectibles-empty-title" = "NFT";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "NFTの検索";
@@ -731,7 +806,7 @@
 "discover-error-fallback-body" = "現在、その情報を取得できません。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "お気に入りは50個を超えることはできません。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "任意のASAを検索する";
@@ -800,7 +875,7 @@
 "feedback-title-note" = "メモ";
 
 /* (No Comment) */
-"filter" = "Filter";
+"filter" = "フィルター";
 
 /* (No Comment) */
 "governance-banner-action" = "始める";
@@ -902,6 +977,9 @@
 "ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Ledgerで引き続き認証できます。認証をキャンセルする場合は、Ledgerから行ってください。";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Ledgerデバイス%@でトランザクションを確認して署名してください。";
 
 /* MARK: Ledger Approval */
@@ -953,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、%@を接続してください。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "このアカウントは再キー化されました。パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。";
+"ledger-rekey-error-not-found" = "署名するアカウントがウォレットに無いアカウントで再キー化されたか、設定が間違っています。認証アカウントがウォレットに追加されていることをご確認ください。Ledgerアカウントをお使いの場合は、正しく接続されていることをご確認ください。";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "再キー化を完了する";
@@ -1106,10 +1184,10 @@
 "min-balance-title" = "必要な最小残高";
 
 /* (No Comment) */
-"minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
+"minimum-balance-description" = "最小残高とは、アカウントに保管しなければならないAlgoの最低額です。アカウントでスマートコントラクト、ASA、NFTをオプトインするたびに増加します。";
 
 /* MARK: Minimum Balance */
-"minimum-balance-title" = "Minimum balance";
+"minimum-balance-title" = "最小残高";
 
 /* MARK: MoonPay */
 "moonpay-buy-button-title" = "ALGOを購入する";
@@ -1229,10 +1307,10 @@
 "notification-filter-show-title" = "プッシュ通知";
 
 /* (No Comment) */
-"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
+"notifications-account-not-found-description" = "このアカウントに対してアクションを起こすことはできません。このアカウントはこのデバイスから削除されました。";
 
 /* (No Comment) */
-"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-title" = "アカウントを削除しました";
 
 /* (No Comment) */
 "notifications-asset-not-found-description" = "この特定の資産に関する履歴はありません。";
@@ -1250,10 +1328,10 @@
 "notifications-title" = "通知";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-trying-to-opt-in-for-watch-account-description" = "このアカウントはオプトインできません。このアカウントは読み取り専用のウォッチアカウントです。";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-opt-in-for-watch-account-title" = "オプトインは許可されていません";
 
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
@@ -1274,16 +1352,19 @@
 "number-abbreviation-trillion" = "T";
 
 /* MARK: Ongoing opt-in/opt-out Alert */
-"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+"ongoing-opt-in-request-description" = "この資産に対して%@によって進行中のオプトイン要求があります。このアカウントでこの資産に対して何らかのアクションを起こす前に、進行中のオプトイン要求が終了するのをお待ちください。";
 
 /* (No Comment) */
-"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
+"ongoing-opt-out-request-description" = "この資産に対して%@によって進行中のオプトアウト要求があります。このアカウントでこの資産に対して何らかのアクションを起こす前に、進行中のオプトアウト要求が終了するのをお待ちください。";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "NFTをオプトインするには、最低トランザクション手数料の発生するトランザクションを送信する必要があります。これはお客様の取引履歴に表示されます。";
 
 /* MARK: Opt-in Asset */
 "opt-in-title-adding-nft" = "NFTをオプトインする";
+
+/* (No Comment) */
+"opt-in-to-usdc" = "USDCのオプトイン";
 
 /* (No Comment) */
 "options-auth-account" = "Authアカウントアドレス";
@@ -1298,7 +1379,7 @@
 "options-manage-assets" = "資産の管理";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage NFTs";
+"options-manage-collectibles" = "NFTの管理";
 
 /* (No Comment) */
 "options-mute-notification" = "通知のミュート";
@@ -1307,10 +1388,16 @@
 "options-passphrase" = "パスフレーズ";
 
 /* (No Comment) */
-"options-rekey" = "アカウントの再キー化";
+"options-rekey-ledger" = "Ledger Accountへの再キー化";
+
+/* (No Comment) */
+"options-rekey-standard" = "標準アカウントへの再キー化";
 
 /* (No Comment) */
 "options-remove-account" = "アカウントの削除";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "再キー化された%@を削除する前に、このアカウントを削除することはできません";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "メインアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
@@ -1546,8 +1633,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "アドレス";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "ALGOを購入する";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "購入 / 売却";
 
 /* (No Comment) */
 "quick-actions-more-title" = "さらに詳しく";
@@ -1618,6 +1708,18 @@
 /* (No Comment) */
 "rekey-instruction-second-standard" = "このアカウントのパスフレーズは、このアカウントでは機能しなくなります";
 
+/* (No Comment) */
+"rekey-instruction-soft-first" = "今後のトランザクションは、委任されたアカウントによってのみ署名できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "このアカウントでは、トランザクションに署名することはできなくなります。";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "署名を別のアカウントに委任することで、アカウントを保護できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "アカウントの公開鍵、残高、設定は変更されません。";
+
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "プロセスの開始";
 
@@ -1662,6 +1764,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "リワード";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"sardine-introduction-body" = "Instant ACH送金を使用したAlgoの即時決済を低料金で行えます。Sardineは、180か国以上の地元銀行でのカード決済、Apple PayやGPayにも対応しています。";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"sardine-introduction-title" = "ALGOを購入する";
+
+/* (No Comment) */
+"sardine-not-available-description" = "TestNetでは購入できません。Sardineをご利用になるには、設定からMainNetに切り替えてください。";
 
 /* (No Comment) */
 "screenshot-description" = "リカバリーパスフレーズをスクリーンショットでバックアップしないでください。パスフレーズを含む画像があると、セキュリティ上のリスクとなります。";
@@ -1787,7 +1904,7 @@
 "send-transaction-max-same-account-error" = "最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。";
 
 /* (No Comment) */
-"send-transaction-preview-button" = "Confirm transfer";
+"send-transaction-preview-button" = "転送の確認";
 
 /* (No Comment) */
 "send-transaction-preview-current-balance" = "現在の残高";
@@ -1868,13 +1985,13 @@
 "settings-notification-disabled-go-settings-text" = "通知を無効にしました。 このオプションを有効にするには設定に移動してください。";
 
 /* (No Comment) */
-"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+"settings-notification-disabled-go-settings-title" = "通知が無効になりました";
 
 /* (No Comment) */
 "settings-notification-enabled-go-settings-text" = "通知を有効にしました。 このオプションを無効にするには設定に移動してください。";
 
 /* (No Comment) */
-"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
+"settings-notification-enabled-go-settings-title" = "通知が有効になりました";
 
 /* (No Comment) */
 "settings-rate-modal-description" = "ご利用体験はいかがでしたか？";
@@ -2198,16 +2315,19 @@
 "title-asset-id" = "資産ID";
 
 /* (No Comment) */
-"title-buy-algo" = "ALGOを購入する";
+"title-buy-sell" = "購入 / 売却";
 
 /* (No Comment) */
 "title-cancel" = "キャンセル";
 
 /* (No Comment) */
+"title-choose-account-to-proceed-with" = "手続きを行うアカウントを選択してください";
+
+/* (No Comment) */
 "title-close" = "閉じる";
 
 /* (No Comment) */
-"title-collectibles" = "NFTs";
+"title-collectibles" = "NFT";
 
 /* (No Comment) */
 "title-confirm" = "確認";
@@ -2276,6 +2396,9 @@
 "title-generic-response-description" = "一部の資産を取得できませんでした。もう一度お試しください。";
 
 /* (No Comment) */
+"title-go-home" = "ホームに移動";
+
+/* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
 
 /* (No Comment) */
@@ -2306,7 +2429,7 @@
 "title-later" = "後で";
 
 /* (No Comment) */
-"title-launch-ios-settings" = "Launch iOS Settings";
+"title-launch-ios-settings" = "iOSの設定を起動する";
 
 /* (No Comment) */
 "title-learn-more" = "さらに詳しく";
@@ -2660,7 +2783,7 @@
 "transaction-option-list-add-asset-title" = "資産の追加";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "クレジットカードまたは銀行振込で暗号通貨を購入する";
+"transaction-option-list-buy-sell-subtitle" = "仮想通貨売買に関するすべてのオプションを見る";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "その他のアクションを表示する";
@@ -2714,6 +2837,21 @@
 "transaction-tutorial-title" = "トランザクションのヒント";
 
 /* (No Comment) */
+"transak-introduction-action-title" = "TransakでUSDCを購入する";
+
+/* (No Comment) */
+"transak-introduction-body" = "Transak は、800以上のアプリで法定通貨と仮想通貨の交換をサポートします。 150か国以上でクレジットカード、デビットカード、銀行振込を利用可能です。";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "TransakでUSDCを購入する";
+
+/* (No Comment) */
+"transak-introduction-title" = "USDCを購入する";
+
+/* (No Comment) */
+"transak-not-available-description" = "TestNetでは購入できません。Transakをご利用になるには、設定からMainNetに切り替えてください。";
+
+/* (No Comment) */
 "tutorial-action-title-ledger" = "うまく作動していますか？";
 
 /* (No Comment) */
@@ -2721,6 +2859,9 @@
 
 /* (No Comment) */
 "tutorial-description-back-up" = "パスフレーズのバックアップを作成することで、アカウントを回復できます。パスフレーズ無しでは、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失ってしまいます！";
+
+/* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "認証手順を完了していないため、アカウントをインポートできませんでした。もう一度やり直してください。";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Ledgerのロックが解除され、Bluetoothが有効になっていることを確認してください";
@@ -2771,6 +2912,9 @@
 "tutorial-title-back-up" = "アカウントのパスフレーズのバックアップを作成する";
 
 /* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "アカウントがインポートされていません";
+
+/* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledgerが正常に接続されました";
 
 /* (No Comment) */
@@ -2786,10 +2930,10 @@
 "url-copied" = "URLがクリップボードにコピーされました";
 
 /* (No Comment) */
-"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+"user-account-limit-error-message" = "ウォレットにはすでに50以上のアカウントがあるようです。アプリのパフォーマンスをスムーズに保つため、現在50以上のアカウントはサポートしていません。別のアカウントを追加するには、まず既存のアカウントを削除してください。";
 
 /* MARK: User Account Limit Error */
-"user-account-limit-error-title" = "Too Many Accounts!";
+"user-account-limit-error-title" = "アカウントが多すぎます";
 
 /* (No Comment) */
 "verification-info-body" = "Pera WalletのAlgorand Standard Asset (ASA) Verification Programは、ASA作成者が資産の所有者であることを検証することで、自動的に認証を受けることができるようにするものです。\nASA認証の主な目的は、ASAが関連性のないプロジェクトと提携し、そのトークンとして機能することを防ぐことです。\nASA認証によって、プロジェクトを推奨するものではありません。AlgorandとPeraのどちらも、認証プロセスを利用してプロジェクトを支持することはありません。";
@@ -2858,13 +3002,13 @@
 "wallet-connect-group-transaction-header-title" = "グループID: %@";
 
 /* (No Comment) */
-"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
+"wallet-connect-no-account-for-transaction" = "WalletConnectのリクエストは、以下のエラーにより失敗しました:\n\n%@\n\nリクエストを開始したdAppに戻り、再度お試しください。";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Rawトランザクション";
 
 /* (No Comment) */
-"wallet-connect-select-accounts" = "Select Accounts";
+"wallet-connect-select-accounts" = "アカウントの選択";
 
 /* (No Comment) */
 "wallet-connect-session-connected" = "接続済み";
@@ -2901,6 +3045,15 @@
 
 /* (No Comment) */
 "wallet-connect-session-invalid-qr-message" = "WalletConnectでセッションを作成できませんでした。有効なQRでお試しください。";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "セッション数が51になると、最も古いセッションが自動的に切断されます。";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "セッションは50に制限されています";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "WalletConnectセッションの最大数を超えました。最も古いセッションは自動的に切断されました。";
 
 /* (No Comment) */
 "wallet-connect-session-list-empty" = "まだどのアプリも接続していません。";
@@ -2984,6 +3137,9 @@
 "wallet-connect-transaction-error-rejected-user" = "トランザクションリクエストが拒否されました：ユーザーがトランザクションリクエストを拒否しました。";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "有効な WalletConnect セッションが見つかりません。ウォレットを dApp に再接続してみてください。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています";
 
 /* (No Comment) */
@@ -3038,10 +3194,10 @@
 "wallet-connect-transaction-request-count-singular" = "トランザクションリクエスト(1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "このトランザクションは将来的に送信されます。確認後、接続されたアプリケーションは、自由にこれらのトランザクションを送信することができます。このプロセスは元に戻すことができないため、トランザクションの内容を慎重に確認してください。";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "将来のトランザクションが検出されました";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "アプリケーションコール";
@@ -3234,4 +3390,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "アカウントは正常にエクスポートされました！";
+
+/* (No Comment) */
+"web-import-error-action" = "ホームに移動";
+
+/* (No Comment) */
+"web-import-error-body" = "アカウントをインポートできませんでした。後でもう一度やり直してください。";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "アプリケーションがQRコード形式 (バージョン: %@) を認識しません。両方のデバイスが最新バージョンのPeraを使用していることをご確認ください。";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "デスクトップの “web.perawallet.app” に移動します";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "開始 をタップしてQRコードをスキャンします";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "設定 > アカウントの移行 に移動します";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "開始";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "Pera Mobileにインポートするアカウントを選択し、QRコードを生成します";
+
+/* (No Comment) */
+"web-import-instruction-title" = "Pera WebでQRコードを準備する";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "Pera WebでQRコードを読み取る";
+
+/* (No Comment) */
+"web-import-success-button-title" = "Pera Mobileについて調べる";
+
+/* (No Comment) */
+"web-import-success-header-body" = "%@アカウントはPera Webからインポートされました";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "%@アカウントはPera Webからインポートされました";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "インポートされたアカウント";
+
+/* (No Comment) */
+"web-import-success-header-title" = "インポートされたアカウント";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "%@アカウントは以前にインポートされたため、インポートされませんでした。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "%@アカウントは以前にインポートされたため、インポートされませんでした。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "インポートしていないアカウント";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "インポートしていないアカウント";
 
