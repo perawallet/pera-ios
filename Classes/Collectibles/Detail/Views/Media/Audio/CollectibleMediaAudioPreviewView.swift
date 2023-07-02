@@ -28,7 +28,7 @@ final class CollectibleMediaAudioPreviewView:
     private lazy var audioPlayingStateView = UIImageView()
     private lazy var overlayView = UIImageView()
 
-    private var timeObserver: Any?
+    private var playerTimeObserver: Any?
 
     private var isPlaying: Bool {
         guard let player = currentPlayer else {
@@ -125,8 +125,50 @@ extension CollectibleMediaAudioPreviewView {
     ) -> CGSize {
         return CGSize((size.width, size.height))
     }
+}
 
-    private func makeTimeObserver() -> Any? {
+extension CollectibleMediaAudioPreviewView {
+    func prepareForReuse() {
+        removeObservers()
+        stopAudio()
+        audioPlayerView.player = nil
+        audioPlayerView.isHidden = true
+        placeholderView.prepareForReuse()
+        placeholderView.isHidden = false
+        overlayView.image = nil
+    }
+}
+
+extension CollectibleMediaAudioPreviewView {
+    func playAudio() {
+        if isPlaying {
+            return
+        }
+
+        addPlayerTimeObserver()
+
+        currentPlayer?.play()
+    }
+
+    func stopAudio() {
+        if !isPlaying {
+            return
+        }
+
+        currentPlayer?.pause()
+
+        removeTimeObserverIfNeeded()
+
+        updateUIForPlayingState(isPlaying: false)
+    }
+}
+
+extension CollectibleMediaAudioPreviewView {
+    private func addPlayerTimeObserver() {
+        playerTimeObserver = makePlayerTimeObserver()
+    }
+
+    private func makePlayerTimeObserver() -> Any? {
         guard let player = currentPlayer else {
             return nil
         }
@@ -156,78 +198,6 @@ extension CollectibleMediaAudioPreviewView {
 }
 
 extension CollectibleMediaAudioPreviewView {
-    func prepareForReuse() {
-        removeObservers()
-        stopAudio()
-        audioPlayerView.player = nil
-        audioPlayerView.isHidden = true
-        placeholderView.prepareForReuse()
-        placeholderView.isHidden = false
-        overlayView.image = nil
-    }
-}
-
-extension CollectibleMediaAudioPreviewView {
-    @objc
-    private func playerItemDidReachEnd() {
-        currentPlayer?.seek(to: .zero)
-        currentPlayer?.play()
-    }
-}
-
-extension CollectibleMediaAudioPreviewView {
-    func playAudio() {
-        if isPlaying {
-            return
-        }
-
-        timeObserver = makeTimeObserver()
-
-        currentPlayer?.play()
-    }
-
-    func stopAudio() {
-        if !isPlaying {
-            return
-        }
-
-        currentPlayer?.pause()
-
-        removeTimeObserverIfNeeded()
-
-        updateUIForPlayingState(isPlaying: false)
-    }
-}
-
-extension CollectibleMediaAudioPreviewView {
-    private func addObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(playerItemDidReachEnd),
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: audioPlayerView.player?.currentItem
-        )
-    }
-    
-    private func removeObservers() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: nil
-        )
-
-        removeTimeObserverIfNeeded()
-    }
-
-    private func removeTimeObserverIfNeeded() {
-        if let timeObserver {
-            currentPlayer?.removeTimeObserver(timeObserver)
-            self.timeObserver = nil
-        }
-    }
-}
-
-extension CollectibleMediaAudioPreviewView {
     private func updateUIForPlayingState(isPlaying: Bool) {
         let fromView = isPlaying ? placeholderView : audioPlayerView
         let toView = isPlaying ? audioPlayerView : placeholderView
@@ -237,5 +207,48 @@ extension CollectibleMediaAudioPreviewView {
             duration: 0.3,
             options: [.transitionCrossDissolve, .showHideTransitionViews, .allowUserInteraction]
         )
+    }
+}
+
+extension CollectibleMediaAudioPreviewView {
+    private func addObservers() {
+        addPlayerItemDidPlayToEndTimeObserver()
+    }
+
+    private func addPlayerItemDidPlayToEndTimeObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerItemDidReachEnd),
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: audioPlayerView.player?.currentItem
+        )
+    }
+    
+    private func removeObservers() {
+        removePlayerItemDidPlayToEndTimeObserver()
+        removeTimeObserverIfNeeded()
+    }
+
+    private func removePlayerItemDidPlayToEndTimeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: nil
+        )
+    }
+
+    private func removeTimeObserverIfNeeded() {
+        if let playerTimeObserver {
+            self.currentPlayer?.removeTimeObserver(playerTimeObserver)
+            self.playerTimeObserver = nil
+        }
+    }
+}
+
+extension CollectibleMediaAudioPreviewView {
+    @objc
+    private func playerItemDidReachEnd() {
+        currentPlayer?.seek(to: .zero)
+        currentPlayer?.play()
     }
 }

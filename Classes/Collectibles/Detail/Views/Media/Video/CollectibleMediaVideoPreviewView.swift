@@ -36,7 +36,7 @@ final class CollectibleMediaVideoPreviewView:
     private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var fullScreenActionView = MacaroonUIKit.Button()
 
-    private var playerStateObserver: NSKeyValueObservation?
+    private var playerLayerIsReadyForDisplayDisplayObserver: NSKeyValueObservation?
 
     private var isPlaying: Bool {
         guard let player = currentPlayer else {
@@ -222,64 +222,82 @@ extension CollectibleMediaVideoPreviewView {
 
 extension CollectibleMediaVideoPreviewView {
     private func addObservers(viewModel: CollectibleMediaVideoPreviewViewModel) {
+        addPlayerItemDidPlayToEndTimeObserver()
+        addPlayerLayerIsReadyForDisplayDisplayObserver(viewModel: viewModel)
+    }
+
+    private func addPlayerItemDidPlayToEndTimeObserver() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(playerItemDidReachEnd),
             name: .AVPlayerItemDidPlayToEndTime,
             object: videoPlayerView.player?.currentItem
         )
+    }
 
-        playerStateObserver = makePlayerStateObserver(viewModel: viewModel)
+    private func addPlayerLayerIsReadyForDisplayDisplayObserver(
+        viewModel: CollectibleMediaVideoPreviewViewModel
+    ) {
+        playerLayerIsReadyForDisplayDisplayObserver = makePlayerLayerIsReadyForDisplayDisplayObserver(viewModel: viewModel)
     }
 
     private func removeObservers() {
+        removePlayerItemDidPlayToEndTimeObserver()
+        removePlayerLayerIsReadyForDisplayDisplayObserver()
+    }
+
+    private func removePlayerItemDidPlayToEndTimeObserver() {
         NotificationCenter.default.removeObserver(
             self,
             name: .AVPlayerItemDidPlayToEndTime,
             object: nil
         )
+    }
 
-        playerStateObserver?.invalidate()
-        playerStateObserver = nil
+    private func removePlayerLayerIsReadyForDisplayDisplayObserver() {
+        playerLayerIsReadyForDisplayDisplayObserver?.invalidate()
+        playerLayerIsReadyForDisplayDisplayObserver = nil
     }
 }
 
 extension CollectibleMediaVideoPreviewView {
-    private func makePlayerStateObserver(viewModel: CollectibleMediaVideoPreviewViewModel) -> NSKeyValueObservation? {
+    private func makePlayerLayerIsReadyForDisplayDisplayObserver(
+        viewModel: CollectibleMediaVideoPreviewViewModel
+    ) -> NSKeyValueObservation? {
         let observer = videoPlayerView.playerLayer?.observe(
             \.isReadyForDisplay,
              options:  [.new]
         ) {
             [weak self] (playerLayer, change) in
-            guard let self = self else { return }
-
-            guard playerLayer.isReadyForDisplay else {
-                updateUIForDisplayState(isReady: false)
-
-                self.threeDModeActionView.isHidden = true
-                self.fullScreenActionView.isHidden = true
+            guard let self else {
                 return
             }
 
-            updateUIForDisplayState(isReady: true)
+            guard playerLayer.isReadyForDisplay else {
+                return
+            }
 
-            self.threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
-            self.fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
+            self.removePlayerLayerIsReadyForDisplayDisplayObserver()
+
+            self.updateUIWhenPlayerLayerIsReadyForDisplay(viewModel: viewModel)
         }
         return observer
     }
 }
 
 extension CollectibleMediaVideoPreviewView {
-    private func updateUIForDisplayState(isReady: Bool) {
-        let fromView = isReady ? placeholderView : videoPlayerView
-        let toView = isReady ? videoPlayerView : placeholderView
+    private func updateUIWhenPlayerLayerIsReadyForDisplay(
+        viewModel: CollectibleMediaVideoPreviewViewModel
+    ) {
         UIView.transition(
-            from: fromView,
-            to: toView,
+            from: placeholderView,
+            to: videoPlayerView,
             duration: 0.3,
             options: [.transitionCrossDissolve, .showHideTransitionViews, .allowUserInteraction]
         )
+
+        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
+        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
 }
 

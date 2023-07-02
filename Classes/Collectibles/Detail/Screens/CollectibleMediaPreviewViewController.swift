@@ -16,14 +16,18 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import AVFoundation
 
 final class CollectibleMediaPreviewViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
     static let theme = Theme()
 
     var eventHandler: ((Event) -> Void)?
+
+    var notificationObservations: [NSObjectProtocol] = []
 
     private typealias Index = Int
     private var existingImages: [Index: UIImage?]?
@@ -96,6 +100,10 @@ final class CollectibleMediaPreviewViewController:
         super.init(configuration: configuration)
     }
 
+    deinit {
+        stopObservingNotifications()
+    }
+
     class func calculatePreferredSize(
         _ asset: CollectibleAsset?,
         fittingIn size: CGSize
@@ -140,6 +148,22 @@ final class CollectibleMediaPreviewViewController:
             action: #selector(didTapPageControl),
             for: .valueChanged
         )
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        observeWhenApplicationDidEnterBackground {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.stopMediaIfNeededWhenViewDidDisappear()
+        }
+
+        observeWhenApplicationDidBecomeActive {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.playMediaIfNeededWhenViewDidAppear()
+        }
     }
 
     override func viewDidLoad() {
@@ -474,9 +498,7 @@ extension CollectibleMediaPreviewViewController {
         url: URL,
         didDismiss: @escaping (() -> Void)
     ) {
-        if listView.isDragging ||
-           listView.isDecelerating ||
-           listView.isTracking {
+        if isScrolling {
             return
         }
 
@@ -574,6 +596,16 @@ extension CollectibleMediaPreviewViewController {
         }
 
         return listView.cellForItem(at: currentItem)
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    var isScrolling: Bool {
+        return
+            listView.isDragging ||
+            listView.isDecelerating ||
+            listView.isTracking
+
     }
 }
 
