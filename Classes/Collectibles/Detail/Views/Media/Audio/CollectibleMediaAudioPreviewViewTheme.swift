@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,45 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaVideoPreviewViewTheme.swift
+//   CollectibleMediaAudioPreviewViewTheme.swift
 
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 
-struct CollectibleMediaVideoPreviewViewTheme:
+struct CollectibleMediaAudioPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
-    let threeDAction: ButtonStyle
-    let threeDActionContentEdgeInsets: LayoutPaddings
-    let threeDModeActionPaddings: LayoutPaddings
-    let fullScreenAction: ButtonStyle
-    let fullScreenBadgePaddings: LayoutPaddings
+    let audioPlayingState: ImageStyle
     let corner: Corner
-
-    init(
-        _ family: LayoutFamily
-    ) {
-        placeholder = PlaceholderViewTheme()
-        threeDAction = [
-            .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
-            .backgroundImage([.normal("icon-3d-bg"), .highlighted("icon-3d-bg")]),
-            .titleColor([ .normal(Colors.Text.white) ]),
-            .title("collectible-detail-tap-3D".localized.footnoteMedium()),
+    
+    init(_ family: LayoutFamily) {
+        self.placeholder =  PlaceholderViewTheme()
+        self.audioPlayingState = [
+            .image("audio-playing-state-icon"),
+            .contentMode(.center),
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
-        threeDActionContentEdgeInsets = (4, 8, 4, 8)
-        threeDModeActionPaddings = (.noMetric, 16, 16, .noMetric)
-
-        fullScreenAction = [
-            .icon([ .normal("icon-full-screen"), .highlighted("icon-full-screen")])
-        ]
-        fullScreenBadgePaddings = (.noMetric, .noMetric, 16, 16)
-        corner = Corner(radius: 12)
+        self.corner = Corner(radius: 12)
     }
 }
 
-extension CollectibleMediaVideoPreviewViewTheme {
+extension CollectibleMediaAudioPreviewViewTheme {
     struct PlaceholderViewTheme:
         URLImagePlaceholderViewLayoutSheet,
         URLImagePlaceholderViewStyleSheet {

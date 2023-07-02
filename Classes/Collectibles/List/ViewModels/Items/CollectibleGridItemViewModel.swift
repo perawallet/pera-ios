@@ -237,6 +237,8 @@ extension CollectibleGridItemViewModel {
         _ asset: CollectibleAsset
     ) -> UIImage? {
         switch asset.mediaType {
+        case .audio:
+            return "badge-audio".uiImage
         case .video:
             return "badge-video".uiImage
         case .mixed:

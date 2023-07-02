@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaVideoPreviewCell.swift
+//   CollectibleMediaAudioPreviewCell.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class CollectibleMediaVideoPreviewCell:
-    CollectionCell<CollectibleMediaVideoPreviewView>,
+final class CollectibleMediaAudioPreviewCell:
+    CollectionCell<CollectibleMediaAudioPreviewView>,
     ViewModelBindable,
-    UIInteractable,
     CollectiblePlayableMediaPreviewCell {
-    static let theme = CollectibleMediaVideoPreviewViewTheme()
-
+    static let theme = CollectibleMediaAudioPreviewViewTheme()
+    
     override init(
         frame: CGRect
     ) {
@@ -33,12 +31,12 @@ final class CollectibleMediaVideoPreviewCell:
     }
 }
 
-extension CollectibleMediaVideoPreviewCell {
+extension CollectibleMediaAudioPreviewCell {
     func play() {
-        contextView.playVideo()
+        contextView.playAudio()
     }
-
+    
     func stop() {
-        contextView.stopVideo()
+        contextView.stopAudio()
     }
 }

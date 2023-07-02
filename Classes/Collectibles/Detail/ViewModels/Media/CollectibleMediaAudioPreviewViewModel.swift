@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaVideoPreviewViewModel.swift
+//   CollectibleMediaAudioPreviewViewModel.swift
 
-import Foundation
-import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import UIKit
 
-struct CollectibleMediaVideoPreviewViewModel: ViewModel {
+struct CollectibleMediaAudioPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
     private(set) var overlayImage: UIImage?
-    private(set) var is3DModeActionHidden: Bool = false
-    private(set) var isFullScreenActionHidden: Bool = false
 
     init(
         asset: CollectibleAsset,
@@ -34,31 +31,25 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
         bindPlaceholder(asset)
         bindURL(media)
         bindOverlayImage(asset, accountCollectibleStatus)
-        bindIs3DActionHidden(asset)
-        bindIsFullScreenBadgeHidden(asset)
     }
 }
 
-extension CollectibleMediaVideoPreviewViewModel {
-    private mutating func bindPlaceholder(
-        _ asset: CollectibleAsset
-    ) {
+extension CollectibleMediaAudioPreviewViewModel {
+    private mutating func bindPlaceholder(_ asset: CollectibleAsset) {
         let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
-
+        
         self.placeholder = getPlaceholder(placeholder)
     }
-
-    private mutating func bindURL(
-        _ media: Media
-    ) {
-        if media.type != .video {
+    
+    private mutating func bindURL(_ media: Media) {
+        if media.type != .audio {
             self.url = nil
             return
         }
-
-        url = media.downloadURL
+        
+        self.url = media.downloadURL
     }
-
+    
     private mutating func bindOverlayImage(
         _ asset: CollectibleAsset,
         _ accountCollectibleStatus: AccountCollectibleStatus
@@ -73,31 +64,17 @@ extension CollectibleMediaVideoPreviewViewModel {
             overlayImage = "overlay-bg".uiImage
         }
     }
-
-    private mutating func bindIs3DActionHidden(
-        _ asset: CollectibleAsset
-    ) {
-        is3DModeActionHidden = !asset.mediaType.isSupported
-    }
-
-    private mutating func bindIsFullScreenBadgeHidden(
-        _ asset: CollectibleAsset
-    ) {
-        isFullScreenActionHidden = !asset.mediaType.isSupported
-    }
 }
 
-extension CollectibleMediaVideoPreviewViewModel {
-    private func getPlaceholder(
-        _ aPlaceholder: String
-    ) -> ImagePlaceholder {
+extension CollectibleMediaAudioPreviewViewModel {
+    private func getPlaceholder(_ aPlaceholder: String) -> ImagePlaceholder {
         let placeholderText: EditText = .attributedString(
             aPlaceholder
                 .bodyLargeRegular(
                     alignment: .center
                 )
         )
-
+        
         return ImagePlaceholder(
             image: nil,
             text: placeholderText

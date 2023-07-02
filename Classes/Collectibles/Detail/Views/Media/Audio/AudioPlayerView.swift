@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,37 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   VideoPlayerView.swift
+//   AudioPlayerView.swift
 
-import UIKit
-import MacaroonUIKit
-import AVKit
 import AVFoundation
+import Foundation
+import MacaroonUIKit
 
-final class VideoPlayerView: View {
+final class AudioPlayerView: View {
     override static var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
-    
+
     var playerLayer: AVPlayerLayer? {
         return layer as? AVPlayerLayer
     }
-
+    
     var player: AVPlayer? {
         get {
             return playerLayer?.player
         }
-
+        
         set {
             playerLayer?.player = newValue
         }
     }
-
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
-
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
