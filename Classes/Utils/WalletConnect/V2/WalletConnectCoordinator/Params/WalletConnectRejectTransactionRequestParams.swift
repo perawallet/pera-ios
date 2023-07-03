@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol WalletConnectRejectTransactionRequestParams {
+protocol WalletConnectRejectTransactionRequestParams: WalletConnectParams {
     var v1Request: WalletConnectRequest? { get }
     var error: WCTransactionErrorResponse? { get }
     var v2Request: WalletConnectV2Request? { get }
@@ -26,10 +26,12 @@ struct WalletConnectV1RejectTransactionRequestParams: WalletConnectRejectTransac
     var v1Request: WalletConnectRequest?
     var error: WCTransactionErrorResponse?
     let v2Request: WalletConnectV2Request? = nil
+    let currentProtocolID: WalletConnectProtocolID = .v1
 }
 
 struct WalletConnectV2RejectTransactionRequestParams: WalletConnectRejectTransactionRequestParams {
     let v1Request: WalletConnectRequest? = nil
     let error: WCTransactionErrorResponse? = nil
     var v2Request: WalletConnectV2Request?
+    let currentProtocolID: WalletConnectProtocolID = .v2
 }

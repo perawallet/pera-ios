@@ -315,6 +315,19 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 peraConnect.eventHandler = {
                     [weak self] event in
                     guard let self = self else { return }
+                    
+                    switch event {
+                    case .shouldStartV1(let session, let preferences, let completion):
+                        shouldStartPeraConnect(
+                            session: session,
+                            with: preferences,
+                            then: completion
+                        )
+                    case .proposeSessionV2(let proposal):
+                        break
+                    default:
+                        break
+                    }
                 }
                 return
             } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
@@ -355,9 +368,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 }
 
 extension QRScannerViewController: WalletConnectorDelegate {
-    func walletConnector(
-        _ walletConnector: WalletConnectV1Protocol,
-        shouldStart session: WalletConnectSession,
+    private func shouldStartPeraConnect(
+        session: WalletConnectSession,
         with preferences: WalletConnectSessionCreationPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {

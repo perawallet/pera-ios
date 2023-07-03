@@ -37,31 +37,52 @@ extension ALGPeraConnect {
             
             switch event {
             case .shouldStartV1(let session, let preferences, let completion):
-                break
+                sendEvent(
+                    .shouldStartV1(
+                        session: session,
+                        preferences: preferences,
+                        completion: completion
+                    )
+                )
             case .didConnectToV1(let session):
-                break
+                sendEvent(.didConnectToV1(session))
             case .didDisconnectFromV1(let session):
-                break
+                sendEvent(.didDisconnectFromV1(session))
             case .didFailToConnectV1(let error):
-                break
+                sendEvent(.didFailToConnectV1(error))
             case .didExceedMaximumSessionFromV1:
-                break
+                sendEvent(.didExceedMaximumSessionFromV1)
             case .sessionsV2(let sessions):
-                break
+                sendEvent(.sessionsV2(sessions))
             case .proposeSessionV2(let proposal):
-                break
+                sendEvent(.proposeSessionV2(proposal))
             case .deleteSessionV2(let topic, let reason):
-                break
+                sendEvent(
+                    .deleteSessionV2(
+                        topic: topic,
+                        reason: reason
+                    )
+                )
             case .settleSessionV2(let session):
-                break
+                sendEvent(.settleSessionV2(session))
             case .updateSessionV2(let topic, let namespaces):
-                break
+                sendEvent(
+                    .updateSessionV2(
+                        topic: topic,
+                        namespaces: namespaces
+                    )
+                )
             case .extendSessionV2(let topic, let date):
-                break
+                sendEvent(
+                    .extendSessionV2(
+                        topic: topic,
+                        date: date
+                    )
+                )
             case .pingV2(let ping):
-                break
+                sendEvent(.pingV2(ping))
             case .transactionRequestV2(let request):
-                break
+                sendEvent(.transactionRequestV2(request))
             }
         }
     }
@@ -112,5 +133,11 @@ extension ALGPeraConnect {
     
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams) {
         walletConnectCoordinator.rejectTransactionRequest(params)
+    }
+}
+
+extension ALGPeraConnect {
+    private func sendEvent(_ event: PeraConnectEvent) {
+        eventHandler?(event)
     }
 }

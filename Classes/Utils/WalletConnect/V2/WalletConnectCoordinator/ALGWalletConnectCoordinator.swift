@@ -135,26 +135,19 @@ extension ALGWalletConnectCoordinator {
     }
     
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams) {
-        guard let currentProtocol = currentProtocol(from: ""),
-              let session = params.session else {
-            return
-        }
+        guard let session = params.session else { return }
         
         try? walletConnectV1Protocol.reconnect(to: session)
     }
     
     func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams) {
-        guard let currentProtocol = currentProtocol(from: "") else { return }
+        guard let session = params.session else { return }
         
-        if let walletConnectV1Protocol = currentProtocol as? WalletConnectV1Protocol,
-           let session = params.session {
-            walletConnectV1Protocol.disconnectFromSession(session)
-            return
-        }
+        walletConnectV1Protocol.disconnectFromSession(session)
     }
     
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams) {
-        guard let currentProtocol = currentProtocol(from: "") else { return }
+        let currentProtocol = currentProtocol(from: params)
         
         if let walletConnectV1Protocol = currentProtocol as? WalletConnectV1Protocol,
            let session = params.v1Session,
@@ -213,7 +206,7 @@ extension ALGWalletConnectCoordinator {
 
 extension ALGWalletConnectCoordinator {
     func approveTransactionRequest(_ params: WalletConnectApproveTransactionRequestParams) {
-        guard let currentProtocol = currentProtocol(from: "") else { return }
+        let currentProtocol = currentProtocol(from: params)
         
         if let walletConnectV1Protocol = currentProtocol as? WalletConnectV1Protocol,
            let v1Request = params.v1Request,
@@ -238,7 +231,7 @@ extension ALGWalletConnectCoordinator {
     }
     
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams) {
-        guard let currentProtocol = currentProtocol(from: "") else { return }
+        let currentProtocol = currentProtocol(from: params)
         
         if let walletConnectV1Protocol = currentProtocol as? WalletConnectV1Protocol,
            let v1Request = params.v1Request,
@@ -262,6 +255,10 @@ extension ALGWalletConnectCoordinator {
 extension ALGWalletConnectCoordinator {
     func currentProtocol(from sessionText: WalletConnectSessionText) -> WalletConnectProtocol? {
         return walletConnectProtocolResolver.getWalletConnectProtocol(from: sessionText)
+    }
+    
+    func currentProtocol(from params: WalletConnectParams) -> WalletConnectProtocol {
+        return walletConnectProtocolResolver.getWalletConnectProtocol(from: params.currentProtocolID)
     }
     
     func currentProtocolID() -> WalletConnectProtocolID? {

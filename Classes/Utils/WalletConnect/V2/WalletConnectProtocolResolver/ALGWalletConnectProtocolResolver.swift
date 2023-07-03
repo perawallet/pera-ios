@@ -56,15 +56,15 @@ final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
         return nil
     }
     
-    func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol? {
+    func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol {
         switch id {
         case .v1:
             setCurrentWalletConnectProtocolAsV1()
+            return walletConnectV1Protocol
         case .v2:
             setCurrentWalletConnectProtocolAsV2()
+            return walletConnectV2Protocol
         }
-        
-        return currentWalletConnectProtocol
     }
 }
 

@@ -16,7 +16,11 @@
 
 import Foundation
 
-protocol WalletConnectUpdateSessionConnectionParams {
+protocol WalletConnectParams {
+    var currentProtocolID: WalletConnectProtocolID { get }
+}
+
+protocol WalletConnectUpdateSessionConnectionParams: WalletConnectParams {
     var v1Session: WalletConnectSession? { get }
     var newWalletInfo: WalletConnectSessionWalletInfo? { get }
     var v2Session: WalletConnectV2Session? { get }
@@ -28,6 +32,7 @@ struct WalletConnectV1UpdateSessionConnectionParams: WalletConnectUpdateSessionC
     var newWalletInfo: WalletConnectSessionWalletInfo?
     let v2Session: WalletConnectV2Session? = nil
     let namespaces: SessionNamespaces? = nil
+    let currentProtocolID: WalletConnectProtocolID = .v1
 }
 
 struct WalletConnectV2UpdateSessionConnectionParams: WalletConnectUpdateSessionConnectionParams {
@@ -35,4 +40,5 @@ struct WalletConnectV2UpdateSessionConnectionParams: WalletConnectUpdateSessionC
     let newWalletInfo: WalletConnectSessionWalletInfo? = nil
     var v2Session: WalletConnectV2Session?
     var namespaces: SessionNamespaces?
+    let currentProtocolID: WalletConnectProtocolID = .v1
 }

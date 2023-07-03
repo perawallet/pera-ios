@@ -36,6 +36,31 @@ protocol PeraConnect {
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams)
 }
 
-enum PeraConnectEvent {
-
+enum PeraConnectEvent {    
+    case shouldStartV1(
+        session: WalletConnectSession,
+        preferences: WalletConnectSessionCreationPreferences?,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
+    case didConnectToV1(WCSession)
+    case didDisconnectFromV1(WCSession)
+    case didFailToConnectV1(WalletConnectV1Protocol.WCError)
+    case didExceedMaximumSessionFromV1
+    case sessionsV2([WalletConnectV2Session])
+    case proposeSessionV2(WalletConnectV2SessionProposal)
+    case deleteSessionV2(
+        topic: WalletConnectTopic,
+        reason: WalletConnectV2Reason
+    )
+    case settleSessionV2(WalletConnectV2Session)
+    case updateSessionV2(
+        topic: WalletConnectTopic,
+        namespaces: SessionNamespaces
+    )
+    case extendSessionV2(
+        topic: WalletConnectTopic,
+        date: Date
+    )
+    case pingV2(String)
+    case transactionRequestV2(WalletConnectV2Request)
 }

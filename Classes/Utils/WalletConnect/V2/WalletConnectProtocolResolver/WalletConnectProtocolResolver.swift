@@ -24,7 +24,7 @@ protocol WalletConnectProtocolResolver {
     var walletConnectV2Protocol: WalletConnectV2Protocol { get }
     
     func getWalletConnectProtocol(from session: WalletConnectSessionText) -> WalletConnectProtocol?
-    func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol?
+    func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol
 }
 
 enum WalletConnectProtocolID {

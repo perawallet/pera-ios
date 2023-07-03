@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol WalletConnectApproveTransactionRequestParams {
+protocol WalletConnectApproveTransactionRequestParams: WalletConnectParams {
     var v1Request: WalletConnectRequest? { get }
     var signature: [Data?]? { get }
     var v2Request: WalletConnectV2Request? { get }
@@ -28,6 +28,7 @@ struct WalletConnectV1ApproveTransactionRequestParams: WalletConnectApproveTrans
     var signature: [Data?]?
     let v2Request: WalletConnectV2Request? = nil
     let response: WalletConnectV2CodableResult? = nil
+    let currentProtocolID: WalletConnectProtocolID = .v1
 }
 
 struct WalletConnectV2ApproveTransactionRequestParams: WalletConnectApproveTransactionRequestParams {
@@ -35,4 +36,5 @@ struct WalletConnectV2ApproveTransactionRequestParams: WalletConnectApproveTrans
     let signature: [Data?]? = nil
     var v2Request: WalletConnectV2Request?
     var response: WalletConnectV2CodableResult?
+    let currentProtocolID: WalletConnectProtocolID = .v2
 }
