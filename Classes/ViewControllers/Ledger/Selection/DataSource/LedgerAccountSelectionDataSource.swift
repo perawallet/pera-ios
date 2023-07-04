@@ -60,7 +60,6 @@ extension LedgerAccountSelectionDataSource {
     func loadData() {
         for account in ledgerAccounts {
             account.type = .ledger
-            account.assets = account.nonDeletedAssets()
             
             if hasOngoingRekeying {
                 filterAvailableAccountsForRekeying(account)
@@ -98,7 +97,6 @@ extension LedgerAccountSelectionDataSource {
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
                 self.rekeyedAccounts[account.address] = rekeyedAccounts
                 rekeyedAccounts.forEach { rekeyedAccount in
-                    rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
                     rekeyedAccount.type = .rekeyed
 
                     /// <note> If a rekeyed account is already in the ledger accounts on the same ledger device, it should not be added to the list again.

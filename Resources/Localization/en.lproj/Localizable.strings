@@ -100,6 +100,7 @@
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 "opt-in-to-usdc" = "Opt-in to USDC";
+"title-deleted-with-parantheses" = "(Deleted)";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";

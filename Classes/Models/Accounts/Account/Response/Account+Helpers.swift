@@ -87,10 +87,6 @@ extension Account {
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
     }
-    
-    func removeDeletedAssets() {
-        assets = nonDeletedAssets()
-    }
 }
 
 extension Account {
@@ -179,10 +175,6 @@ extension Account {
             return rekeyDetail?[authAddress]
         }
         return ledgerDetail
-    }
-
-    func nonDeletedAssets() -> [ALGAsset]? {
-        return assets?.filter { !($0.isDeleted ?? true) }
     }
 
     /// <todo> This will be moved to a single place when the tickets on v5.4.2 is handled.
