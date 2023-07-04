@@ -28,67 +28,67 @@ final class AccountAuthorizationDeterminer {
 }
 
 extension AccountAuthorizationDeterminer {
-    func determineAccountAuthorization(of acc: Account) -> AccountAuthorization {
-        if acc.isWatchAccount() {
+    func determineAccountAuthorization(of account: Account) -> AccountAuthorization {
+        if account.isWatchAccount() {
             return .watch
         }
 
-        if acc.hasAuthAccount() {
-            return determineAccountAuthorizationForRekeyedAccount(acc)
+        if account.hasAuthAccount() {
+            return determineAccountAuthorizationForRekeyedAccount(account)
         }
 
-        if acc.hasLedgerDetail() {
+        if account.hasLedgerDetail() {
             return .ledger
         }
 
-        let isStandard = session.hasPrivateData(for: acc.address)
+        let isStandard = session.hasPrivateData(for: account.address)
         if isStandard {
             return .standard
         }
 
-        return .unknown
+        return .noAuthInLocal
     }
 }
 
 extension AccountAuthorizationDeterminer {
-    private func determineAccountAuthorizationForRekeyedAccount(_ acc: Account) -> AccountAuthorization {
-        if isRekeyedToLedgerAccountInLocal(acc) {
-            return determineAccountAuthorizationForRekeyedToLedgerAccount(acc)
+    private func determineAccountAuthorizationForRekeyedAccount(_ account: Account) -> AccountAuthorization {
+        if isRekeyedToLedgerAccountInLocal(account) {
+            return determineAccountAuthorizationForRekeyedToLedgerAccount(account)
         }
 
-        if isRekeyedToStandardAccountInLocal(acc) {
-            return determineAccountAuthorizationForRekeyedToStandardAccount(acc)
+        if isRekeyedToStandardAccountInLocal(account) {
+            return determineAccountAuthorizationForRekeyedToStandardAccount(account)
         }
 
         return .noAuthInLocal
     }
 
-    private func determineAccountAuthorizationForRekeyedToStandardAccount(_ acc: Account) -> AccountAuthorization {
-        let hasPrivateData = session.hasPrivateData(for: acc.address)
-        if hasPrivateData { return .standardToStandardRekeyed }
-
-        let hasLedgerDetail = acc.hasLedgerDetail()
-        if hasLedgerDetail { return .ledgerToStandardRekeyed }
-
-        return .unknownToStandardRekeyed
-    }
-
-    private func determineAccountAuthorizationForRekeyedToLedgerAccount(_ acc: Account) -> AccountAuthorization {
-        let hasPrivateData = session.hasPrivateData(for: acc.address)
+    private func determineAccountAuthorizationForRekeyedToLedgerAccount(_ account: Account) -> AccountAuthorization {
+        let hasPrivateData = session.hasPrivateData(for: account.address)
         if hasPrivateData { return .standardToLedgerRekeyed }
 
-        let hasLedgerDetail = acc.hasLedgerDetail()
+        let hasLedgerDetail = account.hasLedgerDetail()
         if hasLedgerDetail { return .ledgerToLedgerRekeyed }
 
         return .unknownToLedgerRekeyed
     }
+
+    private func determineAccountAuthorizationForRekeyedToStandardAccount(_ account: Account) -> AccountAuthorization {
+        let hasPrivateData = session.hasPrivateData(for: account.address)
+        if hasPrivateData { return .standardToStandardRekeyed }
+
+        let hasLedgerDetail = account.hasLedgerDetail()
+        if hasLedgerDetail { return .ledgerToStandardRekeyed }
+
+        return .unknownToStandardRekeyed
+    }
     
-    private func isRekeyedToLedgerAccountInLocal(_ acc: Account) -> Bool {
-        return acc.rekeyDetail?[safe: acc.authAddress] != nil
+    private func isRekeyedToLedgerAccountInLocal(_ account: Account) -> Bool {
+        return account.rekeyDetail?[safe: account.authAddress] != nil
     }
 
-    private func isRekeyedToStandardAccountInLocal(_ acc: Account) -> Bool {
-        guard let authAddress = acc.authAddress else { return false }
+    private func isRekeyedToStandardAccountInLocal(_ account: Account) -> Bool {
+        guard let authAddress = account.authAddress else { return false }
         guard let authAccount = sharedDataController.accountCollection[authAddress] else { return false }
 
         return session.hasPrivateData(for: authAccount.value.address)

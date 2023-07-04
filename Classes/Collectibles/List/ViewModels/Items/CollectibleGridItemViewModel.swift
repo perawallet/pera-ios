@@ -241,7 +241,6 @@ extension CollectibleGridItemViewModel {
         return .attributedString(text)
     }
 
-
     private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
         guard isAssetDestroyed else {
             return nil
