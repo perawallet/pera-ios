@@ -27,7 +27,7 @@ final class CollectibleAsset: Asset {
     private(set) var totalSupply: Decimal?
     private(set) var decimalAmount: Decimal
     private(set) var isFrozen: Bool?
-    private(set) var isDeleted: Bool?
+    private(set) var isDestroyed: Bool
     private(set) var optedInAtRound: UInt64?
     private(set) var creator: AssetCreator?
     private(set) var name: String?
@@ -92,7 +92,7 @@ final class CollectibleAsset: Asset {
     ) {
         self.id = asset.id
         self.isFrozen = asset.isFrozen
-        self.isDeleted = asset.isDeleted
+        self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = asset.optedInAtRound
         self.creator = decoration.creator
         self.name = decoration.name
@@ -135,7 +135,7 @@ final class CollectibleAsset: Asset {
     init(decoration: AssetDecoration) {
         self.id = decoration.id
         self.isFrozen = nil
-        self.isDeleted = nil
+        self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = nil
         self.creator = decoration.creator
         self.name = decoration.name
@@ -173,7 +173,7 @@ extension CollectibleAsset {
         if id != asset.id { return }
 
         isFrozen = asset.isFrozen ?? isFrozen
-        isDeleted = asset.isDeleted ?? isDeleted
+        isDestroyed = asset.isDestroyed
         optedInAtRound = asset.optedInAtRound ?? optedInAtRound
         creator = asset.creator ?? creator
         name = asset.naming.name ?? name
@@ -201,7 +201,7 @@ extension CollectibleAsset {
         if id != asset.id { return }
 
         isFrozen = asset.isFrozen ?? isFrozen
-        isDeleted = asset.isDeleted ?? isDeleted
+        isDestroyed = asset.isDestroyed
         optedInAtRound = asset.optedInAtRound ?? optedInAtRound
         creator = asset.creator ?? creator
         name = asset.naming.name ?? name
@@ -245,7 +245,7 @@ extension CollectibleAsset: Comparable {
         return lhs.id == rhs.id &&
             lhs.amount == rhs.amount &&
             lhs.isFrozen == rhs.isFrozen &&
-            lhs.isDeleted == rhs.isDeleted &&
+            lhs.isDestroyed == rhs.isDestroyed &&
             lhs.name == rhs.name &&
             lhs.unitName == rhs.unitName &&
             lhs.decimals == rhs.decimals &&

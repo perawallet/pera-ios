@@ -254,7 +254,7 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if currentAccountCollectibleStatus == .optedIn {
+        if currentAccountCollectibleStatus == .optedIn && !asset.isDestroyed {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(

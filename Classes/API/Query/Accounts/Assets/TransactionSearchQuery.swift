@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AssetFetchQuery.swift
+//   TransactionSearchQuery.swift
 
 import MagpieCore
 
-struct AssetSearchQuery: ObjectQuery {
-    var query: String?
-    var cursor: String?
-    var type: AssetType?
-    
+struct TransactionSearchQuery: ObjectQuery {
+    let id: String?
+
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
-        params.append(.init(.paginator, "cursor"))
-
-        if let cursor = cursor {
-            params.append(.init(.cursor, cursor))
+        if let id = id {
+            params.append(.init(.transactionDetailID, id))
         }
-        
-        if let query = query {
-            params.append(.init(.query, query))
-        }
-
-        if let type = type {
-            let hasCollectible = type == .collectible ? true : false
-            params.append(.init(.hasCollectible, hasCollectible))
-        }
-
         return params
     }
 }

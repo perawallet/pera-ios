@@ -120,8 +120,6 @@ extension ContactDetailViewController {
                     return
                 }
 
-                accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
-
                 let account = accountWrapper.account
                 self.contactAccount = account
                 
