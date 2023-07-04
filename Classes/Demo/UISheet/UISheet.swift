@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-final class UISheet {
+class UISheet {
     typealias SubtitleTextProvider = UISheetBodyTextProvider
     typealias HighlightedText = UISheetBodyTextProvider.HighlightedText
 

@@ -30,7 +30,7 @@ final class OverwriteRekeyConfirmationSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "undo-rekey-confirmation-title"
+            "overwrite-rekey-confirmation-title"
                 .localized
                 .bodyLargeMedium(alignment: .center)
         let body = Self.makeBody(
@@ -52,9 +52,7 @@ extension OverwriteRekeyConfirmationSheet {
     private static func makeBody(
         sourceAccount: Account,
         authAccount: Account
-    ) -> TextProvider {
-        /// <todo>
-        /// Handle "Learn More" hyperlink, Update on UISheet has not merged yet.
+    ) -> UISheetBodyTextProvider {
         let sourceAccountName = sourceAccount.primaryDisplayName
         let authAccountName =  authAccount.primaryDisplayName
         let text = "overwrite-undo-rekey-confirmation-body".localized(
@@ -81,7 +79,21 @@ extension OverwriteRekeyConfirmationSheet {
             )
         }
 
-        return attributedBody
+        let bodyHighlightedText = "overwrite-undo-rekey-confirmation-body-highlighted-text".localized
+
+        var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
+        bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
+
+        let uiSheetBodyHighlightedText = UISheet.HighlightedText(
+            text: bodyHighlightedText,
+            attributes: bodyHighlightedTextAttributes
+        )
+        let uiSheetBody = UISheetBodyTextProvider(
+            text: attributedBody,
+            highlightedText: uiSheetBodyHighlightedText
+        )
+
+        return uiSheetBody
     }
 
     private func makeConfirmAction() -> UISheetAction {

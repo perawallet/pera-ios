@@ -747,21 +747,29 @@ class Router:
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyToLedgerAccountInstructions(sourceAccount):
             let draft = RekeyToLedgerAccountInstructionsDraft(sourceAccount: sourceAccount)
-            viewController = RekeyInstructionsScreen(draft: draft)
+            viewController = RekeyInstructionsScreen(
+                draft: draft,
+                api: configuration.api
+            )
         case let .rekeyToStandardAccountInstructions(sourceAccount):
             let draft = RekeyToStandardAccountInstructionsDraft(sourceAccount: sourceAccount)
-            viewController = RekeyInstructionsScreen(draft: draft)
+            viewController = RekeyInstructionsScreen(
+                draft: draft,
+                api: configuration.api
+            )
         case let .rekeyConfirmation(sourceAccount, authAccount, newAuthAccount):
             viewController = RekeyConfirmationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
-                newAuthAccount: newAuthAccount
+                newAuthAccount: newAuthAccount,
+                api: configuration.api
             )
         case let .undoRekey(sourceAccount, authAccount):
             viewController = UndoRekeyScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
-                newAuthAccount: sourceAccount
+                newAuthAccount: sourceAccount,
+                api: configuration.api
             )
         case let .rekeyAccountSelection(eventHandler, account):
             var theme = AccountSelectionListScreenTheme()
@@ -1763,7 +1771,8 @@ class Router:
             )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
-                theme: UISheetActionScreenImageTheme()
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
             )
         case let .overwriteRekeyConfirmation(sourceAccount, authAccount, eventHandler):
             let uiSheet = OverwriteRekeyConfirmationSheet(
@@ -1773,7 +1782,8 @@ class Router:
             )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
-                theme: UISheetActionScreenImageTheme()
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
             )
         case let .backUpBeforeRemovingAccountWarning(eventHandler):
             let uiSheet = BackUpBeforeRemovingAccountWarningSheet(
@@ -1781,7 +1791,8 @@ class Router:
             )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
-                theme: UISheetActionScreenImageTheme()
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
             )
         case let .removeAccount(account, eventHandler):
             let sharedDataController = appConfiguration.sharedDataController
@@ -1794,7 +1805,8 @@ class Router:
             )
             viewController = UISheetActionScreen(
                 sheet: uiSheet,
-                theme: UISheetActionScreenImageTheme()
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
             )
         }
 

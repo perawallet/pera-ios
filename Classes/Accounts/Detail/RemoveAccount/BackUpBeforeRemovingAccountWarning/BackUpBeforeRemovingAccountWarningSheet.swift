@@ -36,7 +36,7 @@ final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
         super.init(
             image: "icon-info-red",
             title: title,
-            body: body
+            body: UISheetBodyTextProvider(text: body)
         )
 
         let confirmAction = makeConfirmAction()

@@ -34,11 +34,12 @@ final class RekeyInstructionsScreen: ScrollScreen {
 
     init(
         draft: RekeyInstructionsDraft,
-        theme: RekeyInstructionsScreenTheme = .init()
+        theme: RekeyInstructionsScreenTheme = .init(),
+        api: ALGAPI?
     ) {
         self.draft = draft
         self.theme = theme
-        super.init()
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

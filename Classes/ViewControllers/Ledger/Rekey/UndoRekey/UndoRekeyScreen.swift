@@ -51,13 +51,14 @@ final class UndoRekeyScreen:
         sourceAccount: Account,
         authAccount: Account,
         newAuthAccount: Account,
-        theme: UndoRekeyScreenTheme = .init()
+        theme: UndoRekeyScreenTheme = .init(),
+        api: ALGAPI?
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
         self.newAuthAccount = newAuthAccount
         self.theme = theme
-        super.init()
+        super.init(api: api)
     }
 
     deinit {

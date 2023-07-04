@@ -51,13 +51,14 @@ final class RekeyConfirmationScreen:
         sourceAccount: Account,
         authAccount: Account? = nil,
         newAuthAccount: Account,
-        theme: RekeyConfirmationScreenTheme = .init()
+        theme: RekeyConfirmationScreenTheme = .init(),
+        api: ALGAPI?
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
         self.newAuthAccount = newAuthAccount
         self.theme = theme
-        super.init()
+        super.init(api: api)
     }
 
     deinit {

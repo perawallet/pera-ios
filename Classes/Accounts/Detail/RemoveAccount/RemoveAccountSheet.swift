@@ -47,7 +47,7 @@ final class RemoveAccountSheet: UISheet {
         super.init(
             image: "icon-trash-red",
             title: title,
-            body: body
+            body: UISheetBodyTextProvider(text: body)
         )
 
         let confirmAction = makeConfirmAction()

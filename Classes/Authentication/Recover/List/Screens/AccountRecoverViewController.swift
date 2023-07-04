@@ -439,7 +439,6 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                         return nil
                     }
 
-                    rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
                     rekeyedAccount.type = .rekeyed
                     return rekeyedAccount
                 }
