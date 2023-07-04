@@ -397,7 +397,6 @@
 "options-manage-assets" = "Manage Assets";
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 "remove-auth-account-rekeyed-account-error-title" = "You can’t remove this account before removing its 1 rekeyed account";
 "remove-auth-account-rekeyed-accounts-error-title" = "You can’t remove this account before removing its %@ rekeyed accounts";
 
