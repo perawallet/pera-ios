@@ -17,18 +17,23 @@
 import Foundation
 import MacaroonUIKit
 
-class UISheet {
+final class UISheet {
+    typealias SubtitleTextProvider = UISheetBodyTextProvider
+    typealias HighlightedText = UISheetBodyTextProvider.HighlightedText
+
     let image: Image?
     let title: TextProvider?
-    let body: TextProvider?
+    let body: SubtitleTextProvider?
     let info: TextProvider?
+
+    var bodyHyperlinkHandler: (() -> Void)?
 
     private(set) var actions: [UISheetAction] = []
 
     init(
         image: Image? = nil,
         title: TextProvider? = nil,
-        body: TextProvider? = nil,
+        body: UISheetBodyTextProvider? = nil,
         info: TextProvider? = nil
     ) {
         self.image = image
@@ -41,5 +46,15 @@ class UISheet {
         _ action: UISheetAction
     ) {
         actions.append(action)
+    }
+}
+
+struct UISheetBodyTextProvider {
+    var text: TextProvider
+    var highlightedText: HighlightedText? = nil
+
+    struct HighlightedText {
+        let text: String
+        let attributes: TextAttributeGroup
     }
 }

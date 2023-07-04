@@ -175,7 +175,7 @@ extension LedgerAccountVerificationViewController {
         let controller = open(
             .tutorial(
                 flow: .none,
-                tutorial: .ledgerSuccessfullyConnected
+                tutorial: .ledgerSuccessfullyConnected(flow: accountSetupFlow)
             ),
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -183,9 +183,16 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
-            [weak self] _ in
-            self?.launchHome()
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            self.launchHome {
+                [weak self] in
+                guard let self = self else { return }
+
+                self.launchBuyAlgoWithMoonPay()
+            }
+        }
+        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+            self.launchHome()
         }
     }
 
@@ -245,12 +252,12 @@ extension LedgerAccountVerificationViewController {
         }
     }
 
-    private func launchHome() {
+    private func launchHome(completion: (() -> Void)? = nil) {
         switch self.accountSetupFlow {
         case .initializeAccount:
-            launchMain()
+            launchMain(completion: completion)
         case .addNewAccount:
-            closeScreen(by: .dismiss, animated: true)
+            closeScreen(by: .dismiss, animated: true, onCompletion: completion)
         case .none:
             break
         }

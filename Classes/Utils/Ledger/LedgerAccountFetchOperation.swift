@@ -116,7 +116,6 @@ extension LedgerAccountFetchOperation {
                 }
 
                 if accountWrapper.account.isCreated {
-                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     accountWrapper.account.ledgerDetail = self.composeLedgerDetail()
                     self.ledgerAccounts.append(accountWrapper.account)
                     self.startOperation()

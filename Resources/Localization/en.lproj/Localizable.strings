@@ -133,6 +133,7 @@
 "title-show-address-capitalized-sentence" = "Show address";
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
 "title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
+"title-deleted-with-parantheses" = "(Deleted)";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -225,8 +226,8 @@
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
 "recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
-"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nThe Watch Account has been added successfully.";
-"recover-from-seed-verify-pop-up-description-watch-account-add" = "The Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-title" = "Account is Verified!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
@@ -266,7 +267,7 @@
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions";
-"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for the selected period";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
@@ -760,7 +761,6 @@
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
-"tutorial-title-ledger-connected" = "Ledger successfully connected";
 
 "tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
@@ -772,7 +772,7 @@
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
-"tutorial-description-ledger-connected" = "Welcome to Pera Wallet! Your account is\nready to use";
+"tutorial-description-ledger-connected" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
 "tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
 
@@ -1285,10 +1285,19 @@
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 "swap-price-impact-warning-message" = "Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-greater-than-10-warning-message" = "Caution! Price impact is greater than 10%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-greater-than-15-warning-message" = "This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works here.";
+"swap-price-impact-greater-than-15-warning-message-highlighted-text" = "here";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
 "swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
+/// MARK: Swap High Price Impact Warning
+"swap-high-price-impact-warning-title" = "High Price impact detected!";
+"swap-high-price-impact-warning-body" = "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\nTo learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s
+FAQ section.";
+"swap-high-price-impact-warning-body-highlighted-text" = "FAQ section";
 
 /// MARK: Swap Slippage
 "swap-slippage-title" = "Slippage Tolerance";

@@ -26,9 +26,14 @@ final class SignWithLedgerProcessScreen:
         return .compressed
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
+    
     var isProgressFinished: Bool {
         return progress.isFinished
     }
+    var api: ALGAPI?
 
     private lazy var progressView = UIProgressView()
     private lazy var contextView = MacaroonUIKit.BaseView()
@@ -53,10 +58,13 @@ final class SignWithLedgerProcessScreen:
 
     init(
         draft: SignWithLedgerProcessDraft,
-        eventHandler: @escaping EventHandler
+        eventHandler: @escaping EventHandler,
+        api: ALGAPI?
     ) {
         self.draft = draft
         self.eventHandler = eventHandler
+        self.api = api
+        
         super.init()
     }
 

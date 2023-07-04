@@ -524,7 +524,7 @@ extension SendCollectibleViewController {
     private func openOptInInformation() {
         let uiSheet = UISheet(
             title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
-            body: "collectible-opt-in-info-description".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "collectible-opt-in-info-description".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(

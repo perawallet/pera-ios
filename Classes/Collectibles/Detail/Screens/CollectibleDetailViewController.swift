@@ -173,7 +173,7 @@ final class CollectibleDetailViewController:
                     actionHandler: {
                         [unowned self] in
                         self.bottomBannerController.dismissError()
-                        self.dataController.retry()
+                        self.dataController.load()
                     }
                 )
             }
@@ -773,6 +773,7 @@ extension CollectibleDetailViewController {
             switch quickAction {
             case .optIn:
                 removeQuickAction()
+                dataController.reloadAfterOptInStatusUpdates()
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didAddCollectible,
@@ -782,6 +783,7 @@ extension CollectibleDetailViewController {
                 eventHandler?(.didOptInToAsset)
             case .optOut:
                 removeQuickAction()
+                dataController.reloadAfterOptInStatusUpdates()
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didRemoveCollectible,

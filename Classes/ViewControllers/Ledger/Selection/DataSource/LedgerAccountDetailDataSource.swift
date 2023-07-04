@@ -171,7 +171,7 @@ extension LedgerAccountDetailDataSource {
         }
 
         api.fetchAssetDetails(
-            AssetFetchQuery(ids: assetsToBeFetched),
+            AssetFetchQuery(ids: assetsToBeFetched, includeDeleted: true),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] assetResponse in

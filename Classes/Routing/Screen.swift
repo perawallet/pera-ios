@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//  Screen.swifta
+//  Screen.swift
 
 import UIKit
 
@@ -68,7 +68,7 @@ indirect enum Screen {
         dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
-    case removeAsset(dataController: ManageAssetsListDataController)
+    case removeAsset(dataController: ManageAssetListDataController)
     case managementOptions(
         managementType: ManagementOptionsViewController.ManagementType,
         delegate: ManagementOptionsViewControllerDelegate
@@ -188,7 +188,10 @@ indirect enum Screen {
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
-    case image3DCard(image: UIImage)
+    case image3DCard(
+        image: UIImage,
+        rendersContinuously: Bool
+    )
     case video3DCard(
         image: UIImage?,
         url: URL

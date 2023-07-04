@@ -12,49 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListDataController.swift
+//   ManageAssetListDataController.swift
 
 import Foundation
 import UIKit
 
-protocol ManageAssetsListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetSearchSection, ManageAssetSearchItem>
-
-    var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)? { get set }
+protocol ManageAssetListDataController: AnyObject {
+    var eventHandler: ((ManageAssetListDataControllerEvent) -> Void)? { get set }
 
     var account: Account { get }
-    var dataSource: ManageAssetsListDataSource? { get set }
 
-    func search(for query: String)
-    func resetSearch()
-    func hasOptedOut(
-        _ asset: Asset
-    ) -> OptOutStatus
+    func load(query: ManageAssetListQuery?)
+    func hasOptedOut(_ asset: Asset) -> OptOutStatus
 }
 
-enum ManageAssetsListDataControllerEvent {
-    case didUpdate(ManageAssetsListDataController.Snapshot)
-}
-
-enum ManageAssetSearchSection:
+enum ManageAssetListSection:
     Int,
     Hashable {
     case assets
     case empty
 }
 
-enum ManageAssetSearchItem: Hashable {
+enum ManageAssetListItem: Hashable {
     case asset(OptOutAssetListItem)
     case collectibleAsset(OptOutCollectibleAssetListItem)
-    case empty(AssetListSearchNoContentViewModel)
+    case empty(ManageAssetListEmptyItem)
+    case assetLoading
 }
 
-extension ManageAssetSearchItem {
+enum ManageAssetListEmptyItem: Hashable {
+    case noContent
+    case noContentSearch
+}
+
+extension ManageAssetListItem {
     var asset: Asset? {
         switch self {
         case .asset(let item): return item.model
         case .collectibleAsset(let item): return item.model
         case .empty: return nil
+        case .assetLoading: return nil
         }
     }
+}
+
+enum ManageAssetListDataControllerEvent {
+    case didUpdate(ManageAssetListUpdates)
+}
+
+struct ManageAssetListUpdates {
+    let snapshot: Snapshot
+}
+
+extension ManageAssetListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetListSection, ManageAssetListItem>
 }

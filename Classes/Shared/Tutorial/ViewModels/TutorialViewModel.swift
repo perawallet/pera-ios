@@ -92,7 +92,7 @@ extension TutorialViewModel {
         case .recoverWithLedger:
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
-            title = "tutorial-title-ledger-connected".localized
+            title = "recover-from-seed-verify-pop-up-title".localized
         case .failedToImportLedgerAccounts:
             title = "tutorial-title-failed-to-import-ledger-accounts".localized
         case .accountSuccessfullyRekeyed:
@@ -124,8 +124,8 @@ extension TutorialViewModel {
             bindAccountSetupFlowDescription(flow)
         case .recoverWithLedger:
             description = "tutorial-description-ledger".localized
-        case .ledgerSuccessfullyConnected:
-            description = "tutorial-description-ledger-connected".localized
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowDescription(flow)
         case .failedToImportLedgerAccounts:
             description = "tutorial-description-failed-to-import-ledger-accounts".localized
         case .accountSuccessfullyRekeyed(let accountName):
@@ -157,8 +157,8 @@ extension TutorialViewModel {
             bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
-        case .ledgerSuccessfullyConnected:
-            primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowPrimaryButton(flow)
         case .failedToImportLedgerAccounts:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
@@ -189,7 +189,8 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
         case .accountVerified(let flow):
             bindAccountSetupFlowSecondaryButton(flow)
-            
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowSecondaryButton(flow)
         default:
             break
         }
@@ -244,6 +245,8 @@ extension TutorialViewModel {
     private func bindButtonsStyle(_ tutorial: Tutorial, theme: TutorialViewTheme) {
         switch tutorial {
         case .accountVerified(let flow):
+            bindAccountSetupFlowButtonsTheme(flow, theme: theme)
+        case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowButtonsTheme(flow, theme: theme)
         default:
             return
