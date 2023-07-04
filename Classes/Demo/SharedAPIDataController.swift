@@ -72,6 +72,11 @@ final class SharedAPIDataController:
         session: session,
         api: api
     )
+
+    private lazy var accountAuthorizationDeterminer = AccountAuthorizationDeterminer(
+        session: session,
+        sharedDataController: self
+    )
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -451,6 +456,8 @@ extension SharedAPIDataController {
     private func blockProcessorDidFinish() {
         accountCollection = nextAccountCollection
         nextAccountCollection = []
+
+        setAccountsAuthorizationWhenBlockProcessorDidFinish()
         
         $isFirstPollingRoundCompleted.mutate { $0 = true }
 
@@ -543,5 +550,18 @@ extension SharedAPIDataController {
         case running
         case suspended
         case completed /// Waiting for the next polling cycle to be running
+    }
+}
+
+extension SharedAPIDataController {
+    private func setAccountsAuthorizationWhenBlockProcessorDidFinish() {
+        accountCollection.forEach { accountHandle in
+            let aRawAccount = accountHandle.value
+            aRawAccount.authorization = determineAccountAuthorization(of: aRawAccount)
+        }
+    }
+
+    func determineAccountAuthorization(of account: Account) -> AccountAuthorization {
+        accountAuthorizationDeterminer.determineAccountAuthorization(of: account)
     }
 }

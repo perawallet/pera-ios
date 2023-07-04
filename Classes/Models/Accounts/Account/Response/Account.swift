@@ -25,6 +25,7 @@ final class Account: ALGEntityModel {
     
     let address: String
     var amountWithoutRewards: UInt64
+    var authorization: AccountAuthorization
     var rewardsBase: UInt64?
     var round: UInt64?
     var signatureType: SignatureType?
@@ -74,6 +75,7 @@ final class Account: ALGEntityModel {
     ) {
         address = apiModel.address
         amountWithoutRewards = apiModel.amountWithoutPendingRewards
+        authorization = .unknown
         rewardsBase = apiModel.rewardBase
         round = apiModel.round
         signatureType = apiModel.sigType
@@ -108,6 +110,7 @@ final class Account: ALGEntityModel {
     ) {
         self.address = address
         self.amountWithoutRewards = 0
+        self.authorization = .unknown
         self.pendingRewards = 0
         self.status = .offline
         self.name = name
@@ -125,6 +128,7 @@ final class Account: ALGEntityModel {
     ) {
         self.address = localAccount.address
         self.amountWithoutRewards = 0
+        self.authorization = .unknown
         self.pendingRewards = 0
         self.status = .offline
         self.name = localAccount.name
@@ -470,4 +474,23 @@ extension Account {
 
         return self[assetID]
     }
+}
+
+enum AccountAuthorization {
+    case standard
+    case ledger
+    case watch
+
+    case standardToLedgerRekeyed
+    case standardToStandardRekeyed
+
+    case ledgerToLedgerRekeyed
+    case ledgerToStandardRekeyed
+
+    case unknownToLedgerRekeyed
+    case unknownToStandardRekeyed
+
+    case noAuthInLocal
+
+    case unknown /// <note> Undetermined or indeterminable authorization state.
 }
