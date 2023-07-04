@@ -40,6 +40,11 @@ final class UndoRekeyConfirmationSheet: UISheet {
 
         super.init(image: "icon-info-red", title: title, body: body)
 
+        self.bodyHyperlinkHandler = {
+            [unowned self] in
+            self.eventHandler(.didTapLearnMore)
+        }
+
         let confirmAction = makeConfirmAction()
         addAction(confirmAction)
 
@@ -121,5 +126,6 @@ extension UndoRekeyConfirmationSheet {
     enum Event {
         case didConfirm
         case didCancel
+        case didTapLearnMore
     }
 }
