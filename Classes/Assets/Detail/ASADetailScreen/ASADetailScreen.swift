@@ -705,7 +705,7 @@ extension ASADetailScreen {
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
 
-            self.navigateToBuyAlgo()
+            self.navigateToBuyAlgoIfPossible()
         }
         quickActionsView.startObserving(event: .swap) {
             [unowned self, unowned quickActionsView] in
@@ -715,12 +715,12 @@ extension ASADetailScreen {
                 quickActionsView.bindData(viewModel)
             }
 
-            self.navigateToSwapAsset()
+            self.navigateToSwapAssetIfPossible()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
 
-            self.navigateToSendTransaction()
+            self.navigateToSendTransactionIfPossible()
         }
         quickActionsView.startObserving(event: .receive) {
             [unowned self] in
@@ -1170,18 +1170,36 @@ extension ASADetailScreen {
 }
 
 extension ASADetailScreen {
-    private func navigateToBuyAlgo() {
+    private func navigateToBuyAlgoIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+        
         let draft = MoonPayDraft()
         draft.address = dataController.account.address
         moonPayFlowCoordinator.launch(draft: draft)
     }
 
-    private func navigateToSwapAsset() {
+    private func navigateToSwapAssetIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         analytics.track(.tapSwapInAlgoDetail())
         swapAssetFlowCoordinator.launch()
     }
 
-    private func navigateToSendTransaction() {
+    private func navigateToSendTransactionIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         sendTransactionFlowCoordinator.launch()
         analytics.track(.tapSendInDetail(account: dataController.account))
     }
@@ -1189,6 +1207,15 @@ extension ASADetailScreen {
     private func navigateToReceiveTransaction() {
         receiveTransactionFlowCoordinator.launch()
         analytics.track(.tapReceiveAssetInDetail(account: dataController.account))
+    }
+}
+
+extension ASADetailScreen {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-availabe-for-account-type".localized,
+            message: ""
+        )
     }
 }
 

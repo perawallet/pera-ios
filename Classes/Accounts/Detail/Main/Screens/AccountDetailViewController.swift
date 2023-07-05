@@ -184,15 +184,8 @@ extension AccountDetailViewController {
                 self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
-                self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
-                self.transitionToManagementOptions.perform(
-                    .managementOptions(
-                        managementType: isWatchAccount ? .watchAccountAssets : .assets,
-                        delegate: self
-                    ),
-                    by: .present
-                )
+                self.openAssetManagementOptions(isWatchAccount: isWatchAccount)
             case .copyAddress:
                 self.copyAddress()
             case .showAddress:
@@ -201,20 +194,19 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
-                self.openAddAssetScreen()
+                self.openAddAssetScreenIfPossible()
             case .buySell:
                 self.assetListScreen.endEditing()
 
-                self.openBuySellOptions()
+                self.openBuySellOptionsIfPossible()
             case .swap:
                 self.assetListScreen.endEditing()
-                self.analytics.track(.recordAccountDetailScreen(type: .swap))
 
-                self.swapAssetFlowCoordinator.launch()
+                self.openSwapAssetIfPossible()
             case .send:
                 self.assetListScreen.endEditing()
 
-                self.sendTransactionFlowCoordinator.launch()
+                self.openSendTransactionIfPossible()
             case .more:
                 self.assetListScreen.endEditing()
 
@@ -244,29 +236,28 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidTapAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [unowned self] in
-            self.openAddAssetScreen()
+            self.openAddAssetScreenIfPossible()
         }
     }
 
     func transactionOptionsScreenDidTapBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [unowned self] in
-            self.openBuySellOptions()
+            self.openBuySellOptionsIfPossible()
         }
     }
 
     func transactionOptionsScreenDidTapSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [unowned self] in
-            self.analytics.track(.recordAccountDetailScreen(type: .swap))
-            self.swapAssetFlowCoordinator.launch()
+            self.openSwapAssetIfPossible()
         }
     }
 
     func transactionOptionsScreenDidTapSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [unowned self] in
-            self.sendTransactionFlowCoordinator.launch()
+            self.openSendTransactionIfPossible()
         }
     }
 
@@ -286,7 +277,27 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
 }
 
 extension AccountDetailViewController {
-    private func openBuySellOptions() {
+    private func openAssetManagementOptions(isWatchAccount: Bool) {
+        analytics.track(.recordAccountDetailScreen(type: .manageAssets))
+
+        transitionToManagementOptions.perform(
+            .managementOptions(
+                managementType: isWatchAccount ? .watchAccountAssets : .assets,
+                delegate: self
+            ),
+            by: .present
+        )
+    }
+}
+
+extension AccountDetailViewController {
+    private func openBuySellOptionsIfPossible() {
+        let aRawAccount = accountHandle.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
@@ -345,6 +356,40 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController {
+    private func openSwapAssetIfPossible() {
+        let aRawAccount = accountHandle.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
+        analytics.track(.recordAccountDetailScreen(type: .swap))
+        swapAssetFlowCoordinator.launch()
+    }
+}
+
+extension AccountDetailViewController {
+    private func openSendTransactionIfPossible() {
+        let aRawAccount = accountHandle.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
+        sendTransactionFlowCoordinator.launch()
+    }
+}
+
+extension AccountDetailViewController {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-availabe-for-account-type".localized,
+            message: ""
+        )
+    }
+}
+
+extension AccountDetailViewController {
     private func addNavigationActions() {
         let account = accountHandle.value
         let optionsBarButtonItem = ALGBarButtonItem(kind: .account(account)) {
@@ -368,7 +413,13 @@ extension AccountDetailViewController {
         )
     }
 
-    private func openAddAssetScreen() {
+    private func openAddAssetScreenIfPossible() {
+        let aRawAccount = accountHandle.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         let controller = open(
             .addAsset(
                 account: accountHandle.value
@@ -715,6 +766,12 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
+        let aRawAccount = accountHandle.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         let dataController = ManageAssetListLocalDataController(
             account: accountHandle.value,
             sharedDataController: sharedDataController
