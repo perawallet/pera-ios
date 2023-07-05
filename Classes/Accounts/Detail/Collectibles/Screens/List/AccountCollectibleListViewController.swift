@@ -175,9 +175,24 @@ extension AccountCollectibleListViewController {
     private func openReceiveCollectible() {
         view.endEditing(true)
 
+        let aRawAccount = account.value
+        if aRawAccount.authorization.isNoAuthInLocal {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         open(
             .receiveCollectibleAssetList(account: account),
             by: .present
+        )
+    }
+}
+
+extension AccountCollectibleListViewController {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-availabe-for-account-type".localized,
+            message: ""
         )
     }
 }
