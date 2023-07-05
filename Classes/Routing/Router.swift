@@ -319,17 +319,36 @@ class Router:
             )
 
         case .wcMainTransactionScreen(let draft):
-            route(
-                to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
-                from: findVisibleScreen(over: rootViewController),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                ),
-                animated: true
-            )
-            
+            let task = {
+                [weak self] in
+                guard let self else { return }
+
+                route(
+                    to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
+                    from: findVisibleScreen(over: rootViewController),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    ),
+                    animated: true
+                )
+            }
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Transaction screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            let delay = 0.3
+            let time: DispatchTime = .now() + delay
+            let queue: DispatchQueue = .main
+            queue.asyncAfter(deadline: time) {
+                task()
+            }
         case .buyAlgoWithMoonPay(let draft):
             route(
                 to: .moonPayIntroduction(draft: draft, delegate: self),
