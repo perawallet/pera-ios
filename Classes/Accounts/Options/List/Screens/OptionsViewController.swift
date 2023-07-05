@@ -480,23 +480,28 @@ extension OptionsViewController {
             }
 
             var secondaryOptions: [Option] = []
+            var tertiaryOptions: [Option] = []
 
-            /// <todo>
-            /// Complete here when account type is refactored:
-            /// If account is in no auth state, there shouldn't be
-            /// `undoRekey`, `rekeyToLedger`, `rekeyToStandardAccount` options.
-            if account.isRekeyed() {
-                secondaryOptions.append(.undoRekey)
+            if account.authorization.isNoAuthInLocal {
+                secondaryOptions = [
+                    .renameAccount,
+                    .muteNotifications,
+                    .removeAccount
+                ]
+            } else {
+                if account.authorization.isRekeyed {
+                    secondaryOptions.append(.undoRekey)
+                }
+
+                secondaryOptions.append(.rekeyToLedger)
+                secondaryOptions.append(.rekeyToStandardAccount)
+
+                tertiaryOptions = [
+                    .renameAccount,
+                    .muteNotifications,
+                    .removeAccount
+                ]
             }
-
-            secondaryOptions.append(.rekeyToLedger)
-            secondaryOptions.append(.rekeyToStandardAccount)
-
-            let tertiaryOptions: [Option] = [
-                .renameAccount,
-                .muteNotifications,
-                .removeAccount
-            ]
 
             return OptionGroup(
                 primaryOptions: primaryOptions,

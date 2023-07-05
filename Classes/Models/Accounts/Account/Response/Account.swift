@@ -494,3 +494,59 @@ enum AccountAuthorization {
 
     case unknown /// <note> Undetermined or indeterminable authorization state.
 }
+
+extension AccountAuthorization {
+    var isStandard: Bool {
+        return self == .standard
+    }
+
+    var isLedger: Bool {
+        return self == .ledger
+    }
+
+    var isWatch: Bool {
+        return self == .watch
+    }
+
+    var isStandardToLedgerRekeyed: Bool {
+        return self == .standardToLedgerRekeyed
+    }
+
+    var isStandardToStandardRekeyed: Bool {
+        return self == .standardToStandardRekeyed
+    }
+
+    var isLedgerToLedgerRekeyed: Bool {
+        return self == .ledgerToLedgerRekeyed
+    }
+
+    var isLedgerToStandardRekeyed: Bool {
+        return self == .ledgerToStandardRekeyed
+    }
+
+    var isUnknownToLedgerRekeyed: Bool {
+        return self == .unknownToLedgerRekeyed
+    }
+
+    var isUnknownToStandardRekeyed: Bool {
+        return self == .unknownToStandardRekeyed
+    }
+
+    var isNoAuthInLocal: Bool {
+        return self == .noAuthInLocal
+    }
+
+    var isUnknown: Bool {
+        return self == .unknown
+    }
+
+    var isRekeyed: Bool {
+        return
+            isStandardToLedgerRekeyed ||
+            isStandardToStandardRekeyed ||
+            isLedgerToLedgerRekeyed ||
+            isLedgerToStandardRekeyed ||
+            isUnknownToLedgerRekeyed ||
+            isUnknownToStandardRekeyed
+    }
+}
