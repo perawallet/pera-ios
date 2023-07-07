@@ -214,7 +214,7 @@ extension LedgerAccountVerificationViewController {
 
     private func updateLocalAccount(_ localAccount: AccountInformation, with account: Account) {
         var localAccount = localAccount
-        localAccount.type = account.type
+        localAccount.isWatchAccount = false
         setupLedgerDetails(of: &localAccount, from: account)
 
         api?.session.authenticatedUser?.updateAccount(localAccount)
@@ -224,7 +224,7 @@ extension LedgerAccountVerificationViewController {
         var localAccount = AccountInformation(
             address: account.address,
             name: account.address.shortAddressDisplay,
-            type: account.type,
+            isWatchAccount: false,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         setupLedgerDetails(of: &localAccount, from: account)

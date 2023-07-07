@@ -45,7 +45,7 @@ final class ASADetailScreenAPIDataController:
 
         lazy var defaultConfiguration = ASADetailScreenConfiguration(
             shouldDisplayAccountActionsBarButtonItem: true,
-            shouldDisplayQuickActions: !account.isWatchAccount()
+            shouldDisplayQuickActions: !account.authorization.isWatch
         )
         self.configuration = configuration ?? defaultConfiguration
     }

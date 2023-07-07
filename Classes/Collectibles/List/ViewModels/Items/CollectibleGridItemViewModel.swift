@@ -158,7 +158,7 @@ extension CollectibleGridItemViewModel {
         let account = item.account
         let asset = item.asset
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             bottomLeftBadge = "badge-eye".uiImage
             bottomLeftBadgeCanvas = "badge-bg".uiImage
             return

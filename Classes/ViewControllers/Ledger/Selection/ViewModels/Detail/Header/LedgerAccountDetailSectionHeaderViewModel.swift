@@ -33,7 +33,10 @@ extension LedgerAccountDetailSectionHeaderViewModel {
         case .assets:
             headerTitle = "ledger-account-detail-assets".localized
         case .rekeyedAccounts:
-            headerTitle = account.isRekeyed() ? "ledger-account-detail-can-signed".localized : "ledger-account-detail-can-sign".localized
+            headerTitle =
+                account.authorization.isRekeyed
+                ? "ledger-account-detail-can-signed".localized
+                : "ledger-account-detail-can-sign".localized
         }
     }
 }

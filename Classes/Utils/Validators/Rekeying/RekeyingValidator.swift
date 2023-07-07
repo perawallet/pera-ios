@@ -56,7 +56,7 @@ extension RekeyingValidator {
     }
 
     private func validateRekeyingForUndo(_ acc: Account) -> RekeyingValidation {
-        return acc.isRekeyed() ? .success : .failure(.invalid)
+        return acc.authorization.isRekeyed ? .success : .failure(.invalid)
     }
 
     private func validateRekeyingForTxnSignature(_ acc: Account) -> RekeyingValidation {
@@ -77,7 +77,7 @@ extension RekeyingValidator {
         from srcAcc: Account,
         to authAcc: Account
     ) -> Bool {
-        return authAcc.isRekeyed()
+        return authAcc.authorization.isRekeyed
     }
 }
 

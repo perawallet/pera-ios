@@ -193,7 +193,7 @@ extension ContactDetailViewController {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self.contactAccount = Account(address: address, type: .standard)
+                    self.contactAccount = Account(address: address)
                     self.loadingController?.stopLoading()
 
                     guard let account = self.contactAccount else { return }

@@ -383,7 +383,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func presentActionsNotAvailableForAccountBanner() {
         bannerController?.presentErrorBanner(
-            title: "action-not-availabe-for-account-type".localized,
+            title: "action-not-available-for-account-type".localized,
             message: ""
         )
     }

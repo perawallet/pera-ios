@@ -175,7 +175,7 @@ extension BidaliDappDetailScreen {
 
         let draft = makeSendTransactionDraft(
             from: account.value,
-            to: Account(address: address, type: .standard),
+            to: Account(address: address),
             asset: asset,
             amount: amount,
             extraId: extraId

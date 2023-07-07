@@ -105,7 +105,7 @@ extension InvalidAccountOptionsViewController {
     }
     
     private func addViewPassphraseButton() {
-        guard !account.value.isWatchAccount() else {
+        guard !account.value.authorization.isWatch else {
             return
         }
 

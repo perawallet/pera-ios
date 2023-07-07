@@ -16,25 +16,31 @@
 
 final class AccountAuthorizationDeterminer {
     private unowned let session: Session
-    private unowned let sharedDataController: SharedDataController
 
-    init(
-        session: Session,
-        sharedDataController: SharedDataController
-    ) {
+    init(session: Session) {
         self.session = session
-        self.sharedDataController = sharedDataController
     }
 }
 
 extension AccountAuthorizationDeterminer {
-    func determineAccountAuthorization(of account: Account) -> AccountAuthorization {
-        if account.isWatchAccount() {
+    func determineAccountAuthorization(
+        of account: Account,
+        with accountCollection: AccountCollection
+    ) -> AccountAuthorization {
+        if account.isWatchAccount {
             return .watch
         }
 
+        if let accountHandle = accountCollection[account.address],
+           !accountHandle.isAvailable {
+            return .unknown
+        }
+
         if account.hasAuthAccount() {
-            return determineAccountAuthorizationForRekeyedAccount(account)
+            return determineAccountAuthorizationForRekeyedAccount(
+                account: account,
+                accountCollection: accountCollection
+            )
         }
 
         if account.hasLedgerDetail() {
@@ -46,21 +52,28 @@ extension AccountAuthorizationDeterminer {
             return .standard
         }
 
-        return .noAuthInLocal
+        return .noAuthInLocal(isRekeyed: false)
     }
 }
 
 extension AccountAuthorizationDeterminer {
-    private func determineAccountAuthorizationForRekeyedAccount(_ account: Account) -> AccountAuthorization {
+    private func determineAccountAuthorizationForRekeyedAccount(
+        account: Account,
+        accountCollection: AccountCollection
+    ) -> AccountAuthorization {
         if isRekeyedToLedgerAccountInLocal(account) {
             return determineAccountAuthorizationForRekeyedToLedgerAccount(account)
         }
 
-        if isRekeyedToStandardAccountInLocal(account) {
+        let isRekeyedToStandardAccountInLocal = isRekeyedToStandardAccountInLocal(
+            account: account,
+            accountCollection: accountCollection
+        )
+        if isRekeyedToStandardAccountInLocal {
             return determineAccountAuthorizationForRekeyedToStandardAccount(account)
         }
 
-        return .noAuthInLocal
+        return .noAuthInLocal(isRekeyed: true)
     }
 
     private func determineAccountAuthorizationForRekeyedToLedgerAccount(_ account: Account) -> AccountAuthorization {
@@ -87,9 +100,12 @@ extension AccountAuthorizationDeterminer {
         return account.rekeyDetail?[safe: account.authAddress] != nil
     }
 
-    private func isRekeyedToStandardAccountInLocal(_ account: Account) -> Bool {
+    private func isRekeyedToStandardAccountInLocal(
+        account: Account,
+        accountCollection: AccountCollection
+    ) -> Bool {
         guard let authAddress = account.authAddress else { return false }
-        guard let authAccount = sharedDataController.accountCollection[authAddress] else { return false }
+        guard let authAccount = accountCollection[authAddress] else { return false }
 
         return session.hasPrivateData(for: authAccount.value.address)
     }

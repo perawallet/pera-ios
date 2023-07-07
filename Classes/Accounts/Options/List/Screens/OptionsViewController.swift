@@ -430,7 +430,7 @@ extension OptionsViewController {
             for account: Account,
             session: Session
         ) -> OptionGroup {
-            return account.isWatchAccount()
+            return account.authorization.isWatch
             ? makeOptionGroup(forWatchAccount: account)
             : makeOptionGroup(
                 forNonWatchAccount: account,
@@ -446,7 +446,7 @@ extension OptionsViewController {
                 .showAddress
             ]
             
-            if account.isRekeyed() {
+            if account.hasAuthAccount() {
                 primaryOptions.append(.rekeyInformation)
             }
 
@@ -471,7 +471,7 @@ extension OptionsViewController {
             primaryOptions.append(.copyAddress)
             primaryOptions.append(.showAddress)
 
-            if account.isRekeyed() {
+            if account.hasAuthAccount() {
                 primaryOptions.append(.rekeyInformation)
             }
             

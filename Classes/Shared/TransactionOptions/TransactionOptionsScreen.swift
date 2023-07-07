@@ -62,7 +62,7 @@ extension TransactionOptionsScreen {
 
 extension TransactionOptionsScreen {
     private func makeActions() -> [TransactionOptionListAction] {
-        return account.isWatchAccount()
+        return account.authorization.isWatch
         ? makeActionsForWatchAccount()
         : makeActionsForNonWatchAccount()
     }

@@ -127,7 +127,7 @@ extension DeepLinkParser {
 
         let rawAccount = account.value
 
-        let isWatchAccount = rawAccount.isWatchAccount()
+        let isWatchAccount = rawAccount.authorization.isWatch
 
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
@@ -320,7 +320,7 @@ extension DeepLinkParser {
 
         let rawAccount = account.value
 
-        let isWatchAccount = rawAccount.isWatchAccount()
+        let isWatchAccount = rawAccount.authorization.isWatch
 
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
@@ -429,7 +429,7 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
-        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.isWatchAccount() }
+        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.authorization.isWatch }
 
         let hasAsset = nonWatchAccounts.contains { account in
             return account.value.containsAsset(assetId)

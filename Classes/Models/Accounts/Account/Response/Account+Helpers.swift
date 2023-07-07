@@ -21,12 +21,6 @@ import MagpieCore
 import MacaroonUtils
 
 extension Account {
-    func mnemonics() -> [String] {
-        return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: self.address) ?? []
-    }
-}
-
-extension Account {
     func isSameAccount(with otherAcc: Account) -> Bool {
         return isSameAccount(with: otherAcc.address)
     }
@@ -78,15 +72,6 @@ extension Account {
     private var isThereAnyAppExtraPages: Bool {
         return appsTotalExtraPages.unwrap(or: 0) > 0
     }
-
-    func update(from localAccount: AccountInformation) {
-        name = localAccount.name
-        type = localAccount.type
-        ledgerDetail = localAccount.ledgerDetail
-        receivesNotification = localAccount.receivesNotification
-        rekeyDetail = localAccount.rekeyDetail
-        preferredOrder = localAccount.preferredOrder
-    }
 }
 
 extension Account {
@@ -99,67 +84,15 @@ extension Account {
     }
 
     func hasAuthAccount() -> Bool {
-        return authAddress != nil
+        return authAddress != nil && authAddress != address
     }
     
     func hasLedgerDetail() -> Bool {
         return ledgerDetail != nil
     }
     
-    func isWatchAccount() -> Bool {
-        return type == .watch
-    }
-    
-    func isLedger() -> Bool {
-        if isWatchAccount() {
-            return false
-        }
-        
-        if let authAddress = authAddress {
-            return address == authAddress
-        }
-        
-        return type == .ledger
-    }
-    
-    func isRekeyed() -> Bool {
-        if isWatchAccount() {
-            return false
-        }
-        
-        if let authAddress = authAddress {
-            return authAddress != address
-        }
-        
-        return false
-    }
-    
     func requiresLedgerConnection() -> Bool {
-        return isLedger() || isRekeyedToLedger()
-    }
-    
-    func isRekeyedToLedger() -> Bool {
-        if !isRekeyed() {
-            return false
-        }
-        
-        guard let authAddress else {
-            return false
-        }
-        
-        return rekeyDetail?[authAddress] != nil
-    }
-    
-    /// <note>
-    /// We cannot be sure whether an account is rekeyed to a Ledger device. It can be rekeyed to a standard account as well.
-    /// If an account is rekeyed and we don't know the related rekey details, we can suspect that it might be rekeyed to a standard account
-    /// or not recovered from the ledger device.
-    func isRekeyedToAnyAccount() -> Bool {
-        if !isRekeyed() {
-            return false
-        }
-        
-        return !isRekeyedToLedger()
+        return authorization.isLedger || authorization.isRekeyedToLedger
     }
     
     func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {
@@ -202,60 +135,56 @@ extension Account {
 }
 
 extension Account {
-    func update(with account: Account) {
-        algo.amount = account.algo.amount
-        status = account.status
-        rewards = account.rewards
-        pendingRewards = account.pendingRewards
-        participation = account.participation
-        createdAssets = account.createdAssets
-        assets = account.assets
-        type = account.type
-        ledgerDetail = account.ledgerDetail
-        amountWithoutRewards = account.amountWithoutRewards
-        rewardsBase = account.rewardsBase
-        round = account.round
-        signatureType = account.signatureType
-        authAddress = account.authAddress
-        rekeyDetail = account.rekeyDetail
-        receivesNotification = account.receivesNotification
-        createdRound = account.createdRound
-        closedRound = account.closedRound
-        isDeleted = account.isDeleted
-        appsLocalState = account.appsLocalState
-        appsTotalExtraPages = account.appsTotalExtraPages
-        appsTotalSchema = account.appsTotalSchema
-        preferredOrder = account.preferredOrder
-
-        if let updatedName = account.name {
-            name = updatedName
-        }
-    }
-
     var typeTitle: String? {
-        if isWatchAccount() {
+        if authorization.isStandard {
+            return nil
+        }
+
+        if authorization.isWatch {
             return "title-watch-account".localized
         }
-        if isRekeyed() {
-            return "title-rekeyed-account".localized
-        }
-        if isLedger() {
+
+        if authorization.isLedger {
             return "title-ledger-account".localized
         }
+
+        if authorization.isRekeyed {
+            return "title-rekeyed-account".localized
+        }
+
+        if authorization.isNoAuthInLocal {
+            return "title-no-auth".localized
+        }
+
         return nil
     }
     
     var typeImage: UIImage {
-        if isWatchAccount() {
+        if authorization.isStandard {
+            return "icon-standard-account".uiImage
+        }
+
+        if authorization.isWatch {
             return "icon-watch-account".uiImage
         }
-        if isRekeyed() {
-            return "icon-rekeyed-account".uiImage
-        }
-        if isLedger() {
+
+        if authorization.isLedger {
             return "icon-ledger-account".uiImage
         }
-        return "icon-standard-account".uiImage
+
+        if authorization.isRekeyedToStandard {
+            return "icon-any-to-standard-rekeyed-account".uiImage
+        }
+
+        if authorization.isRekeyedToLedger {
+            return "icon-any-to-ledger-rekeyed-account".uiImage
+        }
+
+        if authorization.isNoAuthInLocal {
+            return "icon-no-auth-account".uiImage
+        }
+
+        return "icon-unknown-account".uiImage
     }
 
     func isOptedIn(to asset: AssetID) -> Bool {
