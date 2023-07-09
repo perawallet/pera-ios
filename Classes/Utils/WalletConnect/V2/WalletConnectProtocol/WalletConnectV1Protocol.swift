@@ -209,6 +209,8 @@ extension WalletConnectV1Protocol {
                     )
                 )
             )
+
+            removeFromSessions(session)
             delegate?.walletConnector(self, didFailWith: .failedToDisconnectInactiveSession(session: session))
         } catch {
             eventHandler?(

@@ -29,6 +29,12 @@ class WCMainTransactionDataSource: NSObject {
     }
 
     private let walletConnector: WalletConnectV1Protocol
+    lazy var totalTransactionCountToSign: Int = {
+        return transactions
+            .filter(\.hasSignerAccount)
+            .count
+    }()
+
     private(set) var transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
