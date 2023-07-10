@@ -21,8 +21,7 @@ indirect enum Screen {
     case asaDetail(
         account: Account,
         asset: Asset,
-        configuration: ASADetailScreenConfiguration? = nil,
-        eventHandler: ASADetailScreen.EventHandler
+        configuration: ASADetailScreenConfiguration? = nil
     )
     case asaDiscovery(
         account: Account?,
@@ -90,12 +89,13 @@ indirect enum Screen {
     case rekeyToStandardAccountInstructions(sourceAccount: Account)
     case rekeyToLedgerAccountInstructions(sourceAccount: Account)
     case rekeyConfirmation(sourceAccount: Account, authAccount: Account? = nil, newAuthAccount: Account)
+    case rekeySuccess(sourceAccount: Account, eventHandler: RekeySuccessScreen.EventHandler)
     case undoRekey(sourceAccount: Account, authAccount: Account)
+    case undoRekeySuccess(sourceAccount: Account, eventHandler: UndoRekeySuccessScreen.EventHandler)
     case rekeyAccountSelection(
         eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
         account: Account
     )
-    case rekeyConfirmationOld(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
@@ -343,6 +343,7 @@ indirect enum Screen {
     )
     case transakDappDetail(account: AccountHandle)
     case standardAccountInformation(account: Account)
+    case watchAccountInformation(account: Account)
     case ledgerAccountInformation(account: Account)
     case noAuthAccountInformation(account: Account)
     case rekeyedAccountInformation(sourceAccount: Account, authAccount: Account)
@@ -352,7 +353,6 @@ indirect enum Screen {
         rekeyedAccounts: [Account],
         eventHandler: RekeyedAccountSelectionListScreen.EventHandler
     )
-    case watchAccountInformation(account: Account)
     case undoRekeyConfirmation(
         sourceAccount: Account,
         authAccount: Account,

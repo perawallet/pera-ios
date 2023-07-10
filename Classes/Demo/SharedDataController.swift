@@ -84,6 +84,9 @@ protocol SharedDataController: AnyObject {
     func rekeyedAccounts(
         of account: Account
     ) -> [AccountHandle]
+    func authAccount(
+        of account: Account
+    ) -> AccountHandle?
 
     func determineAccountAuthorization(
         of account: Account

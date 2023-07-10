@@ -244,19 +244,11 @@ class Router:
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
-            let visibleScreen = findVisibleScreen(over: rootViewController)
             let screen = Screen.asaDetail(
                 account: account,
                 asset: asset
-            ) { [weak visibleScreen] event in
-                switch event {
-                case .didRemoveAccount:
-                    visibleScreen?.dismiss(animated: true)
-                case .didRenameAccount:
-                    break
-                }
-            }
-
+            )
+            let visibleScreen = findVisibleScreen(over: rootViewController)
             route(
                 to: screen,
                 from: visibleScreen,
@@ -520,7 +512,7 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let account, let asset, let screenConfiguration, let eventHandler):
+        case .asaDetail(let account, let asset, let screenConfiguration):
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
@@ -537,8 +529,6 @@ class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-
             viewController = aViewController
         case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
             let dataController =
@@ -762,15 +752,39 @@ class Router:
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 newAuthAccount: newAuthAccount,
-                api: configuration.api
+                api: configuration.api!,
+                session: configuration.session!,
+                sharedDataController: configuration.sharedDataController,
+                bannerController: configuration.bannerController!,
+                loadingController: configuration.loadingController!,
+                analytics: configuration.analytics
             )
+        case let .rekeySuccess(sourceAccount, eventHandler):
+            let aViewController = RekeySuccessScreen(
+                sourceAccount: sourceAccount,
+                api: configuration.api!
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .undoRekey(sourceAccount, authAccount):
             viewController = UndoRekeyScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
                 newAuthAccount: sourceAccount,
-                api: configuration.api
+                api: configuration.api!,
+                session: configuration.session!,
+                sharedDataController: configuration.sharedDataController,
+                bannerController: configuration.bannerController!,
+                loadingController: configuration.loadingController!,
+                analytics: configuration.analytics
             )
+        case let .undoRekeySuccess(sourceAccount, eventHandler):
+            let aViewController = UndoRekeySuccessScreen(
+                sourceAccount: sourceAccount,
+                api: configuration.api!
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .rekeyAccountSelection(eventHandler, account):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
@@ -814,13 +828,6 @@ class Router:
                 listDataSource: diffableDataSource,
                 theme: theme,
                 eventHandler: eventHandler,
-                configuration: configuration
-            )
-        case let .rekeyConfirmationOld(account, ledgerDetail, newAuthAddress): /// <todo> Remove after applying new rekey confirmation screen.
-            viewController = RekeyConfirmationViewController(
-                account: account,
-                ledger: ledgerDetail,
-                newAuthAddress: newAuthAddress,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):

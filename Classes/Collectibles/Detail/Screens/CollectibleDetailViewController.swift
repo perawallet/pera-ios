@@ -666,20 +666,15 @@ extension CollectibleDetailViewController {
     }
 
     private func openASADetail() {
+        let configuration = ASADetailScreenConfiguration(
+            shouldDisplayAccountActionsBarButtonItem: false,
+            shouldDisplayQuickActions: false
+        )
         let screen = Screen.asaDetail(
             account: account,
             asset: asset,
-            configuration: ASADetailScreenConfiguration(
-                shouldDisplayAccountActionsBarButtonItem: false,
-                shouldDisplayQuickActions: false
-            )
-        ) { event in
-            switch event {
-            case .didRemoveAccount: break
-            case .didRenameAccount: break
-            }
-        }
-
+            configuration: configuration
+        )
         open(
             screen,
             by: .push

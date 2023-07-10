@@ -20,7 +20,8 @@ import UIKit
 
 final class UndoRekeyScreen:
     ScrollScreen,
-    NavigationBarLargeTitleConfigurable {
+    NavigationBarLargeTitleConfigurable,
+    TransactionControllerDelegate {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
@@ -41,8 +42,38 @@ final class UndoRekeyScreen:
     private lazy var informationContentView = MacaroonUIKit.VStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    private let theme: UndoRekeyScreenTheme
+    private lazy var transitionToUndoRekeyConfirmation = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+
+    private lazy var transactionController: TransactionController = {
+        return TransactionController(
+            api: api!,
+            sharedDataController: sharedDataController,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+    }()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let theme: UndoRekeyScreenTheme
+    private let session: Session
+    private let sharedDataController: SharedDataController
+    private let bannerController: BannerController
+    private let loadingController: LoadingController
+    private let analytics: ALGAnalytics
+    
     private let sourceAccount: Account
     private let authAccount: Account
     private let newAuthAccount: Account
@@ -52,12 +83,22 @@ final class UndoRekeyScreen:
         authAccount: Account,
         newAuthAccount: Account,
         theme: UndoRekeyScreenTheme = .init(),
-        api: ALGAPI?
+        api: ALGAPI,
+        session: Session,
+        sharedDataController: SharedDataController,
+        bannerController: BannerController,
+        loadingController: LoadingController,
+        analytics: ALGAnalytics
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
         self.newAuthAccount = newAuthAccount
         self.theme = theme
+        self.session = session
+        self.sharedDataController = sharedDataController
+        self.bannerController = bannerController
+        self.loadingController = loadingController
+        self.analytics = analytics
         super.init(api: api)
     }
 
@@ -82,6 +123,8 @@ final class UndoRekeyScreen:
         super.linkInteractors()
 
         navigationBarLargeTitleController.activate()
+
+        transactionController.delegate = self
     }
 
     override func addFooter() {
@@ -256,12 +299,281 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     @objc
     private func performPrimaryAction() {
-        eventHandler?(.performPrimaryAction)
+        openUndoRekeyConfirmationScreen()
+    }
+
+    private func openUndoRekeyConfirmationScreen() {
+        let eventHandler: UndoRekeyConfirmationSheet.EventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didConfirm:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    performUndoRekeying()
+                }
+            case .didCancel:
+                self.dismiss(animated: true)
+            case .didTapLearnMore:
+                let visibleScreen = findVisibleScreen()
+                visibleScreen.open(AlgorandWeb.rekey.link)
+            }
+        }
+        transitionToUndoRekeyConfirmation.perform(
+            .undoRekeyConfirmation(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
 extension UndoRekeyScreen {
+    private func performUndoRekeying() {
+        if !transactionController.canSignTransaction(for: sourceAccount) { return }
+
+        loadingController.startLoadingWithMessage("title-loading".localized)
+
+        let rekeyTransactionDraft = RekeyTransactionSendDraft(
+            account: sourceAccount,
+            rekeyedTo: newAuthAccount.address
+        )
+
+        transactionController.setTransactionDraft(rekeyTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
+
+        if sourceAccount.requiresLedgerConnection() {
+            openLedgerConnection()
+
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+    }
+}
+
+extension UndoRekeyScreen {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController.stopLoading()
+
+        analytics.track(.rekeyAccount())
+        saveRekeyedAccountDetails()
+
+        eventHandler?(.didUndoRekey)
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController.stopLoading()
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.asAFError?.errorDescription ?? error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController.stopLoading()
+
+        switch error {
+        case let .network(apiError):
+            bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+        default:
+            bannerController.presentErrorBanner(title: "title-error".localized, message: error.debugDescription)
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
+        }
+    }
+
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        loadingController.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+    }
+}
+
+extension UndoRekeyScreen {
+    private func saveRekeyedAccountDetails() {
+        guard let localAccount = session.accountInformation(from: sourceAccount.address),
+              let ledgerDetail = newAuthAccount.ledgerDetail else {
+            return
+        }
+
+        let isRekeyed = !sourceAccount.isSameAccount(with: newAuthAccount.address)
+        if isRekeyed {
+            localAccount.addRekeyDetail(
+                ledgerDetail,
+                for: newAuthAccount.address
+            )
+        }
+
+        saveAccount(localAccount)
+    }
+
+    private func saveAccount(_ localAccount: AccountInformation) {
+        session.authenticatedUser?.updateAccount(localAccount)
+    }
+}
+
+extension UndoRekeyScreen {
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
+            bannerController.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
+                )
+            )
+        case .invalidAddress:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController.presentErrorBanner(
+                title: "title-error".localized, message: error.debugDescription
+            )
+        case .ledgerConnection:
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
+
+                self.openLedgerConnectionIssues()
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension UndoRekeyScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension UndoRekeyScreen {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension UndoRekeyScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension UndoRekeyScreen {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) {}
+
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {}
+
+    func transactionControllerDidRejectedLedgerOperation(_ transactionController: TransactionController) {}
+}
+
+extension UndoRekeyScreen {
     enum Event {
-        case performPrimaryAction
+        case didUndoRekey
     }
 }

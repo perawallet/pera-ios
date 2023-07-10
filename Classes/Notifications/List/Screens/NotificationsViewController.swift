@@ -300,21 +300,7 @@ extension NotificationsViewController {
         let screen = Screen.asaDetail(
             account: account,
             asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didRemoveAccount:
-                self.dataController.reload()
-                self.navigationController?.popToViewController(
-                    self,
-                    animated: true
-                )
-            case .didRenameAccount:
-                self.dataController.reload()
-            }
-        }
-
+        )
         open(
             screen,
             by: .push

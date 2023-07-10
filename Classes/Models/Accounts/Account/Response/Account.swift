@@ -620,6 +620,7 @@ extension AccountAuthorization {
         return self == .unknown
     }
 
+    /// <note> `isRekeyedToNoAuthInLocal` is not included in this check.
     var isRekeyed: Bool {
         return
             isStandardToLedgerRekeyed ||

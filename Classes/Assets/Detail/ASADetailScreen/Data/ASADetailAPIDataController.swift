@@ -23,7 +23,11 @@ final class ASADetailScreenAPIDataController:
     var eventHandler: EventHandler?
 
     private(set) var configuration: ASADetailScreenConfiguration
-    private(set) var account: Account
+
+    private(set) var account: Account {
+        didSet { publishEventWhenAccountDidUpdate(oldAccount: oldValue) }
+    }
+
     private(set) var asset: Asset
 
     private var assetDetail: AssetDecoration?
@@ -145,5 +149,11 @@ extension ASADetailScreenAPIDataController {
         return
             newAsset.decimalAmount != asset.decimalAmount ||
             newAsset.usdValue != asset.usdValue
+    }
+}
+
+extension ASADetailScreenAPIDataController {
+    private func publishEventWhenAccountDidUpdate(oldAccount: Account) {
+        eventHandler?(.didUpdateAccount(old: oldAccount))
     }
 }

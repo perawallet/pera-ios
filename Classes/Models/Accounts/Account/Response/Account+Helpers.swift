@@ -132,6 +132,22 @@ extension Account {
 
         return minBalance
     }
+
+    func isOptedIn(to asset: AssetID) -> Bool {
+        return self[asset] != nil || asset == algo.id
+    }
+
+    func isOwner(of asset: AssetID) -> Bool {
+        if let ownedAsset = self[asset] {
+            return ownedAsset.amount > 0
+        }
+
+        return false
+    }
+
+    func isCreator(of asset: Asset) -> Bool {
+        return self.address == asset.creator?.address
+    }
 }
 
 extension Account {
@@ -185,21 +201,5 @@ extension Account {
         }
 
         return "icon-unknown-account".uiImage
-    }
-
-    func isOptedIn(to asset: AssetID) -> Bool {
-        return self[asset] != nil || asset == algo.id
-    }
-
-    func isOwner(of asset: AssetID) -> Bool {
-        if let ownedAsset = self[asset] {
-            return ownedAsset.amount > 0
-        }
-
-        return false
-    }
-    
-    func isCreator(of asset: Asset) -> Bool {
-        return self.address == asset.creator?.address
     }
 }

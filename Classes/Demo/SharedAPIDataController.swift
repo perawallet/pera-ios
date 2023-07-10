@@ -283,6 +283,15 @@ extension SharedAPIDataController {
     ) -> [AccountHandle] {
         return accountCollection.rekeyedAccounts(of: account.address)
     }
+
+    func authAccount(
+        of account: Account
+    ) -> AccountHandle? {
+        guard let authAddress = account.authAddress else {
+            return nil
+        }
+        return accountCollection[authAddress]
+    }
 }
 
 extension SharedAPIDataController {
