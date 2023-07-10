@@ -304,7 +304,7 @@ indirect enum Screen {
     case discoverAssetDetail(DiscoverAssetParameters)
     case discoverDappDetail(
         DiscoverDappParamaters,
-        eventHandler: DiscoverDappDetailScreen.EventHandler?
+        eventHandler: DiscoverExternalInAppBrowserScreen.EventHandler?
     )
     case discoverGeneric(DiscoverGenericParameters)
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
@@ -336,6 +336,7 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
     )
     case transakDappDetail(account: AccountHandle)
+    case externalInAppBrowser(destination: DiscoverExternalDestination)
 }
 
 extension Screen {
