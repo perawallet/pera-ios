@@ -167,7 +167,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         case let .addNewAccount(mode):
             switch mode {
             case let .rekey(rekeyedAccount):
-                openRekeyConfirmation(for: rekeyedAccount)
+                openRekeyConfirmationScreen(for: rekeyedAccount)
             default:
                 openAccountVerification()
             }
@@ -178,21 +178,61 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         }
     }
 
-    private func openRekeyConfirmation(for rekeyedAccount: Account) {
+    private func openRekeyConfirmationScreen(for rekeyedAccount: Account) {
         guard let selectedIndex = ledgerAccountSelectionView.selectedIndexes.first,
               let account = dataSource.account(at: selectedIndex.item),
               !isMultiSelect else {
             return
         }
 
-        open(
-            .rekeyConfirmationOld(
-                account: rekeyedAccount,
-                ledgerDetail: account.ledgerDetail,
-                newAuthAddress: account.address
+        let authAccount = sharedDataController.authAccount(of: rekeyedAccount)
+        let screen = open(
+            .rekeyConfirmation(
+                sourceAccount: rekeyedAccount,
+                authAccount: authAccount?.value,
+                newAuthAccount: account
             ),
             by: .push
-        )
+        ) as? RekeyConfirmationScreen
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let self,
+                  let screen else {
+                return
+            }
+
+            switch event {
+            case .didRekey:
+                self.openRekeySuccessScreen(
+                    sourceAccount: rekeyedAccount,
+                    screen: screen
+                )
+            }
+        }
+    }
+
+    private func openRekeySuccessScreen(
+        sourceAccount: Account,
+        screen: UIViewController
+    ) {
+        let eventHandler: RekeySuccessScreen.EventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .performPrimaryAction:
+                self.dismissScreen()
+            case .performCloseAction:
+                self.dismissScreen()
+            }
+        }
+        let rekeySuccessScreen = screen.open(
+            .rekeySuccess(
+                sourceAccount: sourceAccount,
+                eventHandler: eventHandler
+            ),
+            by: .push
+        ) as? RekeySuccessScreen
+        rekeySuccessScreen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     private func openAccountVerification() {

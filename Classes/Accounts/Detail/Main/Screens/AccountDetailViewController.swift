@@ -75,8 +75,23 @@ final class AccountDetailViewController: PageContainer {
         account: accountHandle.value
     )
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(
+        presentingScreen: self
+    )
+    private lazy var undoRekeyFlowCoordinator = UndoRekeyFlowCoordinator(
         presentingScreen: self,
-        account: accountHandle.value
+        sharedDataController: sharedDataController
+    )
+    private lazy var rekeyToStandardAccountFlowCoordinator = RekeyToStandardAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var rekeyToLedgerAccountFlowCoordinator = RekeyToLedgerAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var accountInformationFlowCoordinator = AccountInformationFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
     )
 
     private lazy var localAuthenticator = LocalAuthenticator()
@@ -88,7 +103,9 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var navigationTitleView = AccountNameTitleView()
 
-    private var accountHandle: AccountHandle
+    private var accountHandle: AccountHandle {
+        didSet { updateNavigationItemsIfNeededWhenAccountDidUpdate(old: oldValue)  }
+    }
 
     private let dataController: AccountDetailDataController
 
@@ -177,11 +194,6 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
-            case .didRenameAccount:
-                self.bindNavigationTitle()
-                self.eventHandler?(.didEdit)
-            case .didRemoveAccount:
-                self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
 
@@ -264,7 +276,7 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidTapReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [unowned self] in
-            self.receiveTransactionFlowCoordinator.launch()
+            self.receiveTransactionFlowCoordinator.launch(accountHandle.value)
         }
     }
 
@@ -394,13 +406,26 @@ extension AccountDetailViewController {
         let account = accountHandle.value
         let optionsBarButtonItem = ALGBarButtonItem(kind: .account(account)) {
             [unowned self] in
-
             self.endEditing()
-
-            self.presentOptionsScreen()
+            self.openAccountInformationScreen()
         }
 
         rightBarButtonItems = [ optionsBarButtonItem ]
+    }
+
+    private func openAccountInformationScreen() {
+        let sourceAccount = accountHandle.value
+        accountInformationFlowCoordinator.launch(sourceAccount)
+    }
+
+    private func updateNavigationItemsIfNeededWhenAccountDidUpdate(old: AccountHandle) {
+        if old.value.authorization == accountHandle.value.authorization {
+            return
+        }
+
+        addNavigationActions()
+        bindNavigationTitle()
+        setNeedsRightBarButtonItemsUpdate()
     }
 
     private func presentOptionsScreen() {
@@ -496,97 +521,19 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
-        /// <todo> Undo Rekey
+        let sourceAccount = accountHandle.value
+        undoRekeyFlowCoordinator.launch(sourceAccount)
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-//        let viewModel = RekeyToLedgerInstructionsViewModel(accountHandle.value.requiresLedgerConnection())
-//        openRekeyInstructions(viewModel: viewModel) {
-//            [weak self] in
-//            guard let self else { return }
-//
-//            self.open(
-//                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
-//                by: .customPresent(
-//                    presentationStyle: .fullScreen,
-//                    transitionStyle: nil,
-//                    transitioningDelegate: nil
-//                )
-//            )
-//        }
+        let sourceAccount = accountHandle.value
+        rekeyToLedgerAccountFlowCoordinator.launch(sourceAccount)
     }
 
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-//        let viewModel = RekeyToStandardAccountInstructionsViewModel()
-//        openRekeyInstructions(viewModel: viewModel) {
-//            [weak self] in
-//            guard let self else { return }
-//            self.openSelectAccountForRekeyingToStandardAccount()
-//        }
+        let sourceAccount = accountHandle.value
+        rekeyToStandardAccountFlowCoordinator.launch(sourceAccount)
     }
-//
-//    private func openRekeyInstructions(
-//        viewModel: RekeyToAnyAccountInstructionsViewModel,
-//        rekeyHandler: @escaping () -> Void
-//    ) {
-//        let eventHandler: RekeyInstructionsViewController.EventHandler = {
-//            event in
-//
-//            switch event {
-//            case .performRekey:
-//                rekeyHandler()
-//            }
-//        }
-//
-//        open(
-//            .rekeyInstruction(
-//                viewModel: viewModel,
-//                eventHandler: eventHandler
-//            ),
-//            by: .customPresent(
-//                presentationStyle: .fullScreen,
-//                transitionStyle: nil,
-//                transitioningDelegate: nil
-//            )
-//        )
-//    }
-
-//    private func openSelectAccountForRekeyingToStandardAccount() {
-//        let draft = SelectAccountDraft(
-//            transactionAction: .rekeyToStandardAccount,
-//            requiresAssetSelection: false
-//        )
-//
-//        let accountFilters: (Account) -> Bool = {
-//            [weak self] account in
-//            guard let self else { return false }
-//
-//            return self.isRekeyingRestricted(to: account)
-//        }
-//
-//        let screen: Screen = .accountSelection(
-//            draft: draft,
-//            delegate: self,
-//            shouldFilterAccount: accountFilters
-//        )
-//
-//        open(
-//            screen,
-//            by: .present
-//        )
-//    }
-    
-//    private func isRekeyingRestricted(to account: Account) -> Bool {
-//        let validation = rekeyingValidator.validateRekeying(
-//            from: accountHandle.value,
-//            to: account
-//        )
-//
-//        /// <note>
-//        /// Rekeying a standard account to ledger account should not be handled from this flow.
-//        /// So, the ledger accounts are filtered separately.
-//        return validation.isFailure || account.hasLedgerDetail()
-//    }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
         guard let authAddress = accountHandle.value.authAddress else {
@@ -817,33 +764,6 @@ extension AccountDetailViewController {
         )
     }
 }
-
-//extension AccountDetailViewController {
-//    func selectAccountViewController(
-//        _ selectAccountViewController: SelectAccountViewController,
-//        didSelect account: Account,
-//        for draft: SelectAccountDraft
-//    ) {
-//        switch draft.transactionAction {
-//        case .rekeyToStandardAccount:
-//            selectAccountViewController.dismissScreen {
-//                [weak self] in
-//                guard let self else { return }
-//
-//                self.open(
-//                    .rekeyConfirmation(
-//                        account: self.accountHandle.value,
-//                        ledgerDetail: nil,
-//                        newAuthAddress: account.address
-//                    ),
-//                    by: .present
-//                )
-//            }
-//
-//        default: break
-//        }
-//    }
-//}
 
 extension AccountDetailViewController {
     struct AssetListPageBarItem: PageBarItem {

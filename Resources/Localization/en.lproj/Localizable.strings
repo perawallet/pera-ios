@@ -693,11 +693,9 @@
 "ledger-rekey-transaction-title" = "Rekeying transaction";
 "ledger-rekey-ledger-old" = "Old Ledger";
 "ledger-rekey-ledger-passphrase" = "Passphrase";
-"ledger-rekey-ledger-new" = "New Ledger";
-"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account successfully\nrekeyed";
-"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
+"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed.";
 
 // MARK: Ledger Account Selection
 "ledger-account-selection-title-singular" = "%d account found";
@@ -1548,4 +1546,4 @@ FAQ section.";
 
 // MARK: Undo Rekey Success Result
 "undo-rekey-success-result-title" = "Rekey successfully undone";
-"undo-rekey-success-result-body" = "The account %@ has been reverted to its original state";
+"undo-rekey-success-result-body" = "The account %@ has been reverted to its original state.";

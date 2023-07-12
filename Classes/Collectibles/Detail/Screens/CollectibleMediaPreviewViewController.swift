@@ -155,14 +155,12 @@ final class CollectibleMediaPreviewViewController:
 
         observeWhenApplicationDidEnterBackground {
             [weak self] _ in
-            guard let self = self else { return }
-            self.stopMediaIfNeededWhenViewDidDisappear()
+            self?.stopMediaIfNeeded()
         }
 
         observeWhenApplicationDidBecomeActive {
             [weak self] _ in
-            guard let self = self else { return }
-            self.playMediaIfNeededWhenViewDidAppear()
+            self?.playMediaIfNeeded()
         }
     }
 
@@ -209,13 +207,21 @@ final class CollectibleMediaPreviewViewController:
 
 extension CollectibleMediaPreviewViewController {
     private func playMediaIfNeededWhenViewDidAppear() {
+        playMediaIfNeeded()
+    }
+
+    private func stopMediaIfNeededWhenViewDidDisappear() {
+        stopMediaIfNeeded()
+    }
+
+    private func playMediaIfNeeded() {
         if let playableMediaPreviewCell = currentVisibleCell as? CollectiblePlayableMediaPreviewCell {
             playableMediaPreviewCell.play()
             return
         }
     }
 
-    private func stopMediaIfNeededWhenViewDidDisappear() {
+    private func stopMediaIfNeeded() {
         if let playableMediaPreviewCell = currentVisibleCell as? CollectiblePlayableMediaPreviewCell {
             playableMediaPreviewCell.stop()
             return

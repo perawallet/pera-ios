@@ -71,7 +71,8 @@ extension UndoRekeyConfirmationSheet {
             sourceAccountName,
             authAccountName
         ]
-        let highlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
+        var highlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
+        highlightedTextAttributes.insert(.textColor(Colors.Text.gray))
 
         let body = attributedBody.string as NSString
 

@@ -634,14 +634,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 let screen = Screen.asaDetail(
                     account: dataController.account.value,
                     asset: item.asset
-                ) { [weak self] event in
-                    guard let self = self else { return }
-
-                    switch event {
-                    case .didRenameAccount: self.eventHandler?(.didRenameAccount)
-                    case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
-                    }
-                }
+                )
                 open(
                     screen,
                     by: .push
@@ -963,8 +956,6 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
-        case didRenameAccount
-        case didRemoveAccount
         case manageAssets(isWatchAccount: Bool)
         case copyAddress
         case showAddress
