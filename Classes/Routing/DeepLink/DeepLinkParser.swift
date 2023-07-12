@@ -376,7 +376,7 @@ extension DeepLinkParser {
     }
 
     private func makeExternalBrowserScreen(for notification: AlgorandNotification) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         return makeExternalBrowserScreen(from: url)
     }
 
