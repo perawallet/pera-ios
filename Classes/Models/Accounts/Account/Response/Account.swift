@@ -561,7 +561,7 @@ enum AccountAuthorization: RawRepresentable {
     case standard
     case ledger
     case watch
-    case noAuthInLocal /// <note> Missing private data
+    case noAuthInLocal /// <note> Missing private data and not rekeyed
 
     case standardToLedgerRekeyed
     case standardToStandardRekeyed
