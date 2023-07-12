@@ -61,7 +61,11 @@ extension AccountAuthorizationDeterminer {
         account: Account,
         accountCollection: AccountCollection
     ) -> AccountAuthorization {
-        if isRekeyedToLedgerAccountInLocal(account) {
+        let isRekeyedToLedgerAccountInLocal = isRekeyedToLedgerAccountInLocal(
+            account: account,
+            accountCollection: accountCollection
+        )
+        if isRekeyedToLedgerAccountInLocal {
             return determineAccountAuthorizationForRekeyedToLedgerAccount(account)
         }
 
@@ -106,28 +110,36 @@ extension AccountAuthorizationDeterminer {
         return .unknownToNoAuthInLocalRekeyed
     }
     
-    private func isRekeyedToLedgerAccountInLocal(_ account: Account) -> Bool {
-        updateLedgerDetailOfRekeyedAccountIfNeeded(account)
+    private func isRekeyedToLedgerAccountInLocal(
+        account: Account,
+        accountCollection: AccountCollection
+    ) -> Bool {
+        updateLedgerDetailOfRekeyedAccountIfNeeded(
+            account: account,
+            accountCollection: accountCollection
+        )
 
         let hasRekeyDetail = account.rekeyDetail?[safe: account.authAddress] != nil
         return hasRekeyDetail
     }
 
-    private func updateLedgerDetailOfRekeyedAccountIfNeeded(_ account: Account) {
-        /// <todo> Should we add this there?
-//        guard let authAddress = account.authAddress,
-//              let authAccount = sharedDataController.accountCollection[authAddress],
-//              let ledgerDetail = authAccount.value.ledgerDetail,
-//              account.rekeyDetail?[safe: authAddress] == nil else {
-//            return
-//
-//        }
-//
-//        account.addRekeyDetail(
-//            ledgerDetail,
-//            for: authAddress
-//        )
-//        session.authenticatedUser?.updateLocalAccount(account)
+    private func updateLedgerDetailOfRekeyedAccountIfNeeded(
+        account: Account,
+        accountCollection: AccountCollection
+    ) {
+        guard let authAddress = account.authAddress,
+              let authAccount = accountCollection[authAddress],
+              let ledgerDetail = authAccount.value.ledgerDetail,
+              account.rekeyDetail?[safe: authAddress] == nil else {
+            return
+
+        }
+
+        account.addRekeyDetail(
+            ledgerDetail,
+            for: authAddress
+        )
+        session.authenticatedUser?.updateLocalAccount(account)
     }
 
     private func isRekeyedToStandardAccountInLocal(
