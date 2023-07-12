@@ -921,7 +921,7 @@ extension ScanQRFlowCoordinator {
     private func findCachedAsset(
         for id: AssetID
     ) -> Asset? {
-        for account in sharedDataController.accountCollection where !account.value.authorization.isWatch {
+        for account in sharedDataController.accountCollection where account.value.authorization.isAuthorized {
             if let asset = account.value[id] {
                 return asset
             }

@@ -525,13 +525,16 @@ enum AccountAuthorization: RawRepresentable {
         case .standard: return "standard"
         case .ledger: return "ledger"
         case .watch: return "watch"
+        case .noAuthInLocal: return "noAuthInLocal"
         case .standardToLedgerRekeyed: return "standardToLedgerRekeyed"
         case .standardToStandardRekeyed: return "standardToStandardRekeyed"
+        case .standardToNoAuthInLocalRekeyed: return "standardToNoAuthInLocalRekeyed"
         case .ledgerToLedgerRekeyed: return "ledgerToLedgerRekeyed"
         case .ledgerToStandardRekeyed: return "ledgerToStandardRekeyed"
+        case .ledgerToNoAuthInLocalRekeyed: return "ledgerToNoAuthInLocalRekeyed"
         case .unknownToLedgerRekeyed: return "unknownToLedgerRekeyed"
         case .unknownToStandardRekeyed: return "unknownToStandardRekeyed"
-        case .noAuthInLocal(let isRekeyed): return isRekeyed ? "rekeyedToNoAuthInLocal" :  "noAuthInLocal"
+        case .unknownToNoAuthInLocalRekeyed: return "unknownToNoAuthInLocalRekeyed"
         case .unknown: return "unknown"
         }
     }
@@ -543,12 +546,14 @@ enum AccountAuthorization: RawRepresentable {
         case Self.watch.rawValue: self = .watch
         case Self.standardToLedgerRekeyed.rawValue: self = .standardToLedgerRekeyed
         case Self.standardToStandardRekeyed.rawValue: self = .standardToStandardRekeyed
+        case Self.standardToNoAuthInLocalRekeyed.rawValue: self = .standardToNoAuthInLocalRekeyed
         case Self.ledgerToLedgerRekeyed.rawValue: self = .ledgerToLedgerRekeyed
         case Self.ledgerToStandardRekeyed.rawValue: self = .ledgerToStandardRekeyed
+        case Self.ledgerToNoAuthInLocalRekeyed.rawValue: self = .ledgerToNoAuthInLocalRekeyed
         case Self.unknownToLedgerRekeyed.rawValue: self = .unknownToLedgerRekeyed
         case Self.unknownToStandardRekeyed.rawValue: self = .unknownToStandardRekeyed
-        case Self.noAuthInLocal(isRekeyed: false).rawValue: self = .noAuthInLocal(isRekeyed: false)
-        case Self.noAuthInLocal(isRekeyed: true).rawValue: self = .noAuthInLocal(isRekeyed: true)
+        case Self.unknownToNoAuthInLocalRekeyed.rawValue: self = .unknownToNoAuthInLocalRekeyed
+        case Self.noAuthInLocal.rawValue: self = .noAuthInLocal
         default: self = .unknown
         }
     }
@@ -556,17 +561,19 @@ enum AccountAuthorization: RawRepresentable {
     case standard
     case ledger
     case watch
+    case noAuthInLocal /// <note> Missing private data and not rekeyed
 
     case standardToLedgerRekeyed
     case standardToStandardRekeyed
+    case standardToNoAuthInLocalRekeyed
 
     case ledgerToLedgerRekeyed
     case ledgerToStandardRekeyed
+    case ledgerToNoAuthInLocalRekeyed
 
     case unknownToLedgerRekeyed
     case unknownToStandardRekeyed
-
-    case noAuthInLocal(isRekeyed: Bool)
+    case unknownToNoAuthInLocalRekeyed
 
     case unknown /// <note> Undetermined or indeterminable authorization state.
 }
@@ -584,12 +591,24 @@ extension AccountAuthorization {
         return self == .watch
     }
 
+    var isNoAuthInLocal: Bool {
+        return self == .noAuthInLocal
+    }
+
+    var isUnknown: Bool {
+        return self == .unknown
+    }
+
     var isStandardToLedgerRekeyed: Bool {
         return self == .standardToLedgerRekeyed
     }
 
     var isStandardToStandardRekeyed: Bool {
         return self == .standardToStandardRekeyed
+    }
+
+    var isStandardToNoAuthInLocalRekeyed: Bool {
+        return self == .standardToNoAuthInLocalRekeyed
     }
 
     var isLedgerToLedgerRekeyed: Bool {
@@ -600,6 +619,10 @@ extension AccountAuthorization {
         return self == .ledgerToStandardRekeyed
     }
 
+    var isLedgerToNoAuthInLocalRekeyed: Bool {
+        return self == .ledgerToNoAuthInLocalRekeyed
+    }
+
     var isUnknownToLedgerRekeyed: Bool {
         return self == .unknownToLedgerRekeyed
     }
@@ -608,19 +631,21 @@ extension AccountAuthorization {
         return self == .unknownToStandardRekeyed
     }
 
-    var isNoAuthInLocal: Bool {
-        if case .noAuthInLocal = self {
-            return true
-        }
-
-        return false
+    var isUnknownToNoAuthInLocalRekeyed: Bool {
+        return self == .unknownToNoAuthInLocalRekeyed
     }
 
-    var isUnknown: Bool {
-        return self == .unknown
+    /// <note> Missing private data (missing private data) or rekeyed to account that is not in local
+    var isNoAuth: Bool {
+        return isNoAuthInLocal || isRekeyedToNoAuthInLocal
+    }
+
+    var isAuthorized: Bool {
+        return !isWatch && !isNoAuth && !isUnknown
     }
 
     /// <note> `isRekeyedToNoAuthInLocal` is not included in this check.
+    /// Rekeyed account authorization means, we've the auth account or auth ledger detail in the app, If you want to check auth address nullity, check auth address.
     var isRekeyed: Bool {
         return
             isStandardToLedgerRekeyed ||
@@ -646,10 +671,9 @@ extension AccountAuthorization {
     }
 
     var isRekeyedToNoAuthInLocal: Bool {
-        if case .noAuthInLocal(let isRekeyed) = self {
-            return isRekeyed
-        }
-
-        return false
+       return
+            isStandardToNoAuthInLocalRekeyed ||
+            isLedgerToNoAuthInLocalRekeyed ||
+            isUnknownToNoAuthInLocalRekeyed
     }
 }

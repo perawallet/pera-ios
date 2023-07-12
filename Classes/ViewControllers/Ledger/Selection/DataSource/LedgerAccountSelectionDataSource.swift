@@ -89,7 +89,12 @@ extension LedgerAccountSelectionDataSource {
             from: rekeyingAccount,
             to: account
         )
-        if validation.isSuccess {
+
+        /// <note>
+        /// We're not displaying the same account in this list, we've a different flow for undoing the rekey.
+        let isNotSameAccount = !account.isSameAccount(with: rekeyingAccount)
+
+        if validation.isSuccess && isNotSameAccount {
             accounts.append(account)
         }
     }

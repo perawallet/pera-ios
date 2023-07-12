@@ -91,11 +91,11 @@ extension WCConnectionAccountListLocalDataController {
     private func addAccountItems(
         _ snapshot: inout Snapshot
     ) {
+        let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
         let accounts: [Account] = self.sharedDataController
             .sortedAccounts()
-            .filter {
-                return !$0.value.authorization.isWatch
-            }.map {
+            .filter(filterAlgorithm.getFormula)
+            .map {
                 $0.value
             }
         

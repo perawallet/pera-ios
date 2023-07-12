@@ -384,7 +384,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
         let accounts = self.sharedDataController.accountCollection
 
-        guard accounts.contains(where: { !$0.value.authorization.isWatch }) else {
+        guard accounts.contains(where: { $0.value.authorization.isAuthorized }) else {
             asyncMain { [weak self] in
                 guard let self = self else {
                     return

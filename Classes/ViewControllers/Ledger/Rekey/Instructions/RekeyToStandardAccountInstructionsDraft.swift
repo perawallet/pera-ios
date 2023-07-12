@@ -128,7 +128,7 @@ extension RekeyToStandardAccountInstructionsDraft {
         }
 
         if authorization.isRekeyed {
-            return Self.makeRekeyRekeyedAccountToStandardAccountInstructions()
+            return Self.makeRekeyRekeyedAccountToStandardAccountInstructions(sourceAccount)
         }
 
         preconditionFailure("Unexpected account type in the flow")
@@ -151,12 +151,18 @@ extension RekeyToStandardAccountInstructionsDraft {
         ]
     }
 
-    private static func makeRekeyRekeyedAccountToStandardAccountInstructions() -> [InstructionItemViewModel] {
-        return [
+    private static func makeRekeyRekeyedAccountToStandardAccountInstructions(_ sourceAccount: Account) -> [InstructionItemViewModel] {
+        var instructions: [InstructionItemViewModel] = [
             RekeyRekeyedToStandardAccountFutureTransactionsSignInstructionViewModel(order: 1),
             RekeyRekeyedToAnyAccountContinueUnableToSignInstructionViewModel(order: 2),
             RekeyAnyAccountToAnyAccountNoConfigurationChangeInstructionViewModel(order: 3),
-            RekeyAnyAccountToAnyAccountOpenBluetoothInstructionViewModel(order: 4)
         ]
+
+        if sourceAccount.authorization.isRekeyedToLedger {
+            let bluetoothInstruction = RekeyAnyAccountToAnyAccountOpenBluetoothInstructionViewModel(order: 4)
+            instructions.append(bluetoothInstruction)
+        }
+
+        return instructions
     }
 }

@@ -44,14 +44,6 @@ extension RekeyingValidator {
             return validateRekeyingForUndo(srcAcc)
         }
 
-        let isChainRekeying = self.isChainRekeying(
-            from: srcAcc,
-            to: authAcc
-        )
-        if isChainRekeying {
-            return .failure(.invalid)
-        }
-
         return validateRekeyingForTxnSignature(srcAcc)
     }
 
@@ -71,13 +63,6 @@ extension RekeyingValidator {
         to authAcc: Account
     ) -> Bool {
         return srcAcc.isSameAccount(with: authAcc)
-    }
-
-    private func isChainRekeying(
-        from srcAcc: Account,
-        to authAcc: Account
-    ) -> Bool {
-        return authAcc.authorization.isRekeyed
     }
 }
 

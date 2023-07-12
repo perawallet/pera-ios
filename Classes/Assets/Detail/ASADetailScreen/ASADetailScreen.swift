@@ -952,7 +952,7 @@ extension ASADetailScreen {
 extension ASADetailScreen {
     private func navigateToBuyAlgoIfPossible() {
         let account = dataController.account
-        if account.authorization.isNoAuthInLocal {
+        if account.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -964,7 +964,7 @@ extension ASADetailScreen {
 
     private func navigateToSwapAssetIfPossible() {
         let account = dataController.account
-        if account.authorization.isNoAuthInLocal {
+        if account.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -975,7 +975,7 @@ extension ASADetailScreen {
 
     private func navigateToSendTransactionIfPossible() {
         let account = dataController.account
-        if account.authorization.isNoAuthInLocal {
+        if account.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }

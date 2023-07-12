@@ -31,7 +31,7 @@ struct UndoRekeySuccessScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contextPaddings = (28, 24, 28, 24)
+        self.contextPaddings = (68, 24, 28, 24)
         self.result = UndoRekeySuccessResultViewTheme(family)
         self.primaryAction = [
             .title("title-done".localized),

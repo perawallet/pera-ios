@@ -28,7 +28,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            if authorization.isNoAuthInLocal {
+            if authorization.isNoAuth {
                 return Colors.Helpers.negativeLighter.uiColor
             }
 
@@ -51,7 +51,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            if authorization.isRekeyed || authorization.isNoAuthInLocal {
+            if authorization.isRekeyed || authorization.isNoAuth {
                 return Corner(radius: 8)
             }
 
@@ -118,7 +118,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 )
             }
 
-            if authorization.isNoAuthInLocal {
+            if authorization.isNoAuth {
                 return BarButtonItemTitleContent(
                     text: "title-no-auth".localized,
                     textColor: Colors.Helpers.negative.uiColor,
@@ -238,7 +238,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 )
             }
 
-            if authorization.isNoAuthInLocal {
+            if authorization.isNoAuth {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Helpers.negative.uiColor
@@ -357,7 +357,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            if authorization.isRekeyed || authorization.isNoAuthInLocal {
+            if authorization.isRekeyed || authorization.isNoAuth {
                 let spacing = 4 / 2.0
                 let contentInsets = UIEdgeInsets((6, spacing + 6, 6, spacing + 8))
                 let titleInsets = UIEdgeInsets((0, spacing, 0, -spacing))

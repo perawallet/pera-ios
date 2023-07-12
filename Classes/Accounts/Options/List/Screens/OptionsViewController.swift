@@ -482,7 +482,7 @@ extension OptionsViewController {
             var secondaryOptions: [Option] = []
             var tertiaryOptions: [Option] = []
 
-            if account.authorization.isNoAuthInLocal {
+            if account.authorization.isNoAuth {
                 secondaryOptions = [
                     .renameAccount,
                     .muteNotifications,

@@ -124,9 +124,8 @@ extension ExportAccountListLocalDataController {
             sharedDataController
                 .sortedAccounts()
                 .filter {
-                    let isWatchAccount = $0.value.authorization.isWatch
-                    let requiresLedgerConnection = $0.value.requiresLedgerConnection()
-                    return !isWatchAccount && !requiresLedgerConnection
+                    let isStandardAccount = $0.value.authorization.isStandard // <todo> Ask to the Android team, should we include standard to any rekeyed accs, no auth accs?
+                    return isStandardAccount
                 }.map {
                     $0.value
                 }

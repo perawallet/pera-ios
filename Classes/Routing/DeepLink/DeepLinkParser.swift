@@ -20,11 +20,14 @@ import MacaroonUtils
 import UIKit
 
 final class DeepLinkParser {
+    private let api: ALGAPI
     private let sharedDataController: SharedDataController
     
     init(
+        api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
+        self.api = api
         self.sharedDataController = sharedDataController
     }
 }
@@ -40,6 +43,8 @@ extension DeepLinkParser {
             return makeAssetTransactionRequestScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
+        case .inAppBrowser:
+            return makeExternalBrowserScreen(for: notification)
         default:
             return nil
         }
@@ -65,6 +70,8 @@ extension DeepLinkParser {
             return makeAssetOptInScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
+        case .inAppBrowser:
+            return makeExternalBrowserScreen(for: notification)
         default:
             return nil
         }
@@ -131,6 +138,11 @@ extension DeepLinkParser {
 
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
+        }
+
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
@@ -321,9 +333,13 @@ extension DeepLinkParser {
         let rawAccount = account.value
 
         let isWatchAccount = rawAccount.authorization.isWatch
-
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
+        }
+
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
@@ -352,6 +368,27 @@ extension DeepLinkParser {
             cancelTitle: "title-cancel".localized
         )
         return .success(.assetActionConfirmation(draft: draft))
+    }
+
+    private func makeExternalBrowserScreen(for notificationMessage: NotificationMessage) -> Result? {
+        let url = notificationMessage.url
+        return makeExternalBrowserScreen(from: url)
+    }
+
+    private func makeExternalBrowserScreen(for notification: AlgorandNotification) -> Result? {
+        let url = notification.detail?.url.toURL()
+        return makeExternalBrowserScreen(from: url)
+    }
+
+    private func makeExternalBrowserScreen(from url: URL?) -> Result? {
+        let params = url?.queryParameters
+        guard let redirectedUrlString = params?["url"],
+              let redirectedURL = URL(string: redirectedUrlString) else {
+            return nil
+        }
+
+        let destination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
+        return .success(.externalInAppBrowser(destination: destination))
     }
 }
 
@@ -429,9 +466,9 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
-        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.authorization.isWatch }
+        let authorizedAccounts = sharedDataController.accountCollection.filter { $0.value.authorization.isAuthorized }
 
-        let hasAsset = nonWatchAccounts.contains { account in
+        let hasAsset = authorizedAccounts.contains { account in
             return account.value.containsAsset(assetId)
         }
 
@@ -561,6 +598,7 @@ extension DeepLinkParser {
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
         case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
+        case externalInAppBrowser(destination: DiscoverExternalDestination)
     }
     
     enum Error:
@@ -569,6 +607,7 @@ extension DeepLinkParser {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
         case tryingToOptInForWatchAccount
+        case tryingToOptInForNoAuthInLocalAccount
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
@@ -584,6 +623,9 @@ extension DeepLinkParser {
             case .tryingToOptInForWatchAccount:
                 title = "notifications-trying-to-opt-in-for-watch-account-title".localized
                 description = "notifications-trying-to-opt-in-for-watch-account-description".localized
+            case .tryingToOptInForNoAuthInLocalAccount: 
+                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
+                description = "action-not-available-for-account-type".localized
             case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                 title = "title-error".localized
                 description = "ongoing-opt-in-request-description".localized(params: accountName)
@@ -617,6 +659,8 @@ extension DeepLinkParser {
                 return true
             case (.tryingToOptInForWatchAccount, .tryingToOptInForWatchAccount):
                 return true
+            case (.tryingToOptInForNoAuthInLocalAccount, .tryingToOptInForNoAuthInLocalAccount):
+                return true
             case (.tryingToActForAssetWithPendingOptInRequest(let accountName1), .tryingToActForAssetWithPendingOptInRequest(let accountName2)):
                 return accountName1 == accountName2
             case (.tryingToActForAssetWithPendingOptOutRequest(let accountName1), .tryingToActForAssetWithPendingOptOutRequest(let accountName2)):
@@ -636,5 +680,6 @@ extension DeepLinkParser {
     enum NotificationAction: String {
         case assetOptIn = "asset/opt-in"
         case assetTransactions = "asset/transactions"
+        case inAppBrowser = "in-app-browser"
     }
 }

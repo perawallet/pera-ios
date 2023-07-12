@@ -430,17 +430,8 @@ extension UndoRekeyScreen {
 
 extension UndoRekeyScreen {
     private func saveRekeyedAccountDetails() {
-        guard let localAccount = session.accountInformation(from: sourceAccount.address),
-              let ledgerDetail = newAuthAccount.ledgerDetail else {
+        guard let localAccount = session.accountInformation(from: sourceAccount.address) else {
             return
-        }
-
-        let isRekeyed = !sourceAccount.isSameAccount(with: newAuthAccount.address)
-        if isRekeyed {
-            localAccount.addRekeyDetail(
-                ledgerDetail,
-                for: newAuthAccount.address
-            )
         }
 
         saveAccount(localAccount)

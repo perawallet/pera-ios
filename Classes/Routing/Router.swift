@@ -311,17 +311,36 @@ class Router:
             )
 
         case .wcMainTransactionScreen(let draft):
-            route(
-                to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
-                from: findVisibleScreen(over: rootViewController),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                ),
-                animated: true
-            )
-            
+            let task = {
+                [weak self] in
+                guard let self else { return }
+
+                route(
+                    to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
+                    from: findVisibleScreen(over: rootViewController),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    ),
+                    animated: true
+                )
+            }
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Transaction screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            let delay = 0.3
+            let time: DispatchTime = .now() + delay
+            let queue: DispatchQueue = .main
+            queue.asyncAfter(deadline: time) {
+                task()
+            }
         case .buyAlgoWithMoonPay(let draft):
             route(
                 to: .moonPayIntroduction(draft: draft, delegate: self),
@@ -338,6 +357,12 @@ class Router:
 
             route(
                 to: .accountSelection(draft: accountSelectDraft, delegate: self),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .externalInAppBrowser(let destination):
+            route(
+                to: .externalInAppBrowser(destination: destination),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -1646,9 +1671,11 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1698,9 +1725,11 @@ class Router:
             )
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1811,6 +1840,11 @@ class Router:
                 theme: UISheetActionScreenImageTheme(),
                 api: configuration.api
             )
+        case .externalInAppBrowser(let destination):
+            viewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
+                configuration: configuration
+            )
         }
 
         return viewController as? T
@@ -1894,7 +1928,7 @@ extension Router {
         let draft = assetActionConfirmationViewController.draft
 
         guard let account = draft.account,
-              !account.authorization.isWatch else {
+              account.authorization.isAuthorized else {
             return
         }
         
@@ -1952,11 +1986,12 @@ extension Router {
         
         let sharedDataController = appConfiguration.sharedDataController
 
-        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            !$0.value.authorization.isWatch
+
+        let hasAuthorizedAccount = sharedDataController.accountCollection.contains {
+            $0.value.authorization.isAuthorized
         }
 
-        if !hasNonWatchAccount {
+        if !hasAuthorizedAccount {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,

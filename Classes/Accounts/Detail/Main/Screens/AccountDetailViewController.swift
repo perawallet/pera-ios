@@ -305,7 +305,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func openBuySellOptionsIfPossible() {
         let aRawAccount = accountHandle.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -370,7 +370,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func openSwapAssetIfPossible() {
         let aRawAccount = accountHandle.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -383,7 +383,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func openSendTransactionIfPossible() {
         let aRawAccount = accountHandle.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -440,7 +440,7 @@ extension AccountDetailViewController {
 
     private func openAddAssetScreenIfPossible() {
         let aRawAccount = accountHandle.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }
@@ -714,7 +714,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
         let aRawAccount = accountHandle.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }

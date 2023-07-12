@@ -323,6 +323,14 @@ extension AccountListItemViewModel {
 }
 
 extension AccountListItemViewModel {
+    mutating func bindIcon(
+        _ icon: Image?
+    ) {
+        self.icon = icon?.uiImage
+    }
+}
+
+extension AccountListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {

@@ -573,18 +573,8 @@ extension HomeViewController {
 
     private func triggerBannerCTA(item: AnnouncementViewModel) {
         if let url = item.ctaUrl {
-            let title = item.title
-            let dappDetail = DiscoverDappParamaters(
-                name: title,
-                url: url.absoluteString,
-                favorites: nil
-            )
-
             self.open(
-                .discoverDappDetail(
-                    dappDetail,
-                    eventHandler: nil
-                ),
+                .externalInAppBrowser(destination: .url(url)),
                 by: .push
             )
         }
