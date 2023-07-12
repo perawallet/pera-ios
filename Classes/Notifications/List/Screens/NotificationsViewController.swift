@@ -32,7 +32,10 @@ final class NotificationsViewController: BaseViewController {
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
+    private lazy var deeplinkParser = DeepLinkParser(
+        api: api!,
+        sharedDataController: sharedDataController
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +98,8 @@ final class NotificationsViewController: BaseViewController {
                         account: account,
                         asset: asset
                     )
+                case let .externalInAppBrowser(destination):
+                    self.openExternalLink(destination: destination)
                 default:
                     break
                 }
@@ -330,6 +335,12 @@ extension NotificationsViewController {
             screen,
             by: .push
         )
+    }
+
+    private func openExternalLink(
+        destination: DiscoverExternalDestination
+    ) {
+        open(.externalInAppBrowser(destination: destination), by: .push)
     }
 }
 

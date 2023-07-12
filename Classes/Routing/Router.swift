@@ -360,6 +360,12 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
+        case .externalInAppBrowser(let destination):
+            route(
+                to: .externalInAppBrowser(destination: destination),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
     }
     
@@ -1665,9 +1671,11 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1717,9 +1725,11 @@ class Router:
             )
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1829,6 +1839,11 @@ class Router:
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme(),
                 api: configuration.api
+            )
+        case .externalInAppBrowser(let destination):
+            viewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
+                configuration: configuration
             )
         }
 

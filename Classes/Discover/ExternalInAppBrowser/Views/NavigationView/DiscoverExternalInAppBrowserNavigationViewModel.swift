@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappDetailNavigationViewModel.swift
+//   DiscoverExternalInAppBrowserNavigationViewModel.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 import WebKit
 
-struct DiscoverDappDetailNavigationViewModel: ViewModel {
+struct DiscoverExternalInAppBrowserNavigationViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var subtitle: TextProvider?
 
@@ -36,7 +36,7 @@ struct DiscoverDappDetailNavigationViewModel: ViewModel {
     }
 }
 
-extension DiscoverDappDetailNavigationViewModel {
+extension DiscoverExternalInAppBrowserNavigationViewModel {
     mutating func bind(_ model: WKBackForwardListItem, title: String?) {
         bindTitle(model, title: title)
         bindSubtitle(model)
@@ -53,7 +53,7 @@ extension DiscoverDappDetailNavigationViewModel {
     }
 }
 
-extension DiscoverDappDetailNavigationViewModel {
+extension DiscoverExternalInAppBrowserNavigationViewModel {
     mutating func bindTitle(_ item: WKBackForwardListItem, title: String?) {
         let title = title ?? item.title
 
@@ -89,7 +89,7 @@ extension DiscoverDappDetailNavigationViewModel {
     }
 
     mutating func bindSubtitle(_ item: DiscoverDappParamaters) {
-        let subtitle = URL(string: item.url)?.presentationString
+        let subtitle = item.url.presentationString
 
         self.subtitle = subtitle?.captionMedium(
             alignment: .center,

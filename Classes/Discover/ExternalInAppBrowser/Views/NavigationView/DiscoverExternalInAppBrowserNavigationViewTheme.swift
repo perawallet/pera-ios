@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappDetailNavigationViewTheme.swift
+//   DiscoverExternalInAppBrowserNavigationViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct DiscoverDappDetailNavigationViewTheme:
+struct DiscoverExternalInAppBrowserNavigationViewTheme:
     LayoutSheet,
     StyleSheet {
     var title: TextStyle
