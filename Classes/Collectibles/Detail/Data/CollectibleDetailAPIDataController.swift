@@ -258,7 +258,7 @@ extension CollectibleDetailAPIDataController {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+                        .notOwner(isWatchAccount: account.authorization.isWatch)
                     )
                 )
             )
@@ -286,7 +286,7 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             return
         }
 

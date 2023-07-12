@@ -169,7 +169,7 @@ extension PassphraseVerifyViewController {
         let account = AccountInformation(
             address: address,
             name: address.shortAddressDisplay,
-            type: .standard,
+            isWatchAccount: false,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         session?.savePrivate(tempPrivateKey, for: account.address)

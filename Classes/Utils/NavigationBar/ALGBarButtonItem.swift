@@ -26,16 +26,21 @@ struct ALGBarButtonItem: BarButtonItem {
     var backgroundColor: UIColor? {
         switch kind {
         case .account(let account):
-            let backgroundColor: UIColor?
-            /// <todo>: Handle all types properly.
-            switch account.type {
-            case .rekeyed:
-                backgroundColor = Colors.Helpers.negativeLighter.uiColor
-            default:
-                backgroundColor = nil
+            let authorization = account.authorization
+
+            if authorization.isNoAuthInLocal {
+                return Colors.Helpers.negativeLighter.uiColor
             }
 
-            return backgroundColor
+            if authorization.isRekeyedToLedger {
+                return Colors.Wallet.wallet3.uiColor
+            }
+
+            if authorization.isRekeyedToStandard {
+                return Colors.Wallet.wallet4.uiColor
+            }
+
+            return nil
         default:
             return nil
         }
@@ -44,16 +49,13 @@ struct ALGBarButtonItem: BarButtonItem {
     var corner: Corner? {
         switch kind {
         case .account(let account):
-            let corner: Corner?
-            /// <todo>: Handle all types properly.
-            switch account.type {
-            case .rekeyed:
-                corner = Corner(radius: 8)
-            default:
-                corner = nil
+            let authorization = account.authorization
+
+            if authorization.isRekeyed || authorization.isNoAuthInLocal {
+                return Corner(radius: 8)
             }
 
-            return corner
+            return nil
         default:
             return nil
         }
@@ -98,20 +100,33 @@ struct ALGBarButtonItem: BarButtonItem {
                 font: UIFont.font(withWeight: .medium(size: 16.0))
             )
         case .account(let account):
-            let titleContent: BarButtonItemTitleContent?
-            /// <todo>: Handle all types properly.
-            switch account.type {
-            case .rekeyed:
-                titleContent = BarButtonItemTitleContent(
+            let authorization = account.authorization
+
+            if authorization.isRekeyedToLedger {
+                return BarButtonItemTitleContent(
                     text: "title-rekeyed".localized,
-                    textColor: Colors.Text.main.uiColor,
+                    textColor: Colors.Wallet.wallet3Icon.uiColor,
                     font: Typography.captionMedium()
                 )
-            default:
-                titleContent = nil
             }
 
-            return titleContent
+            if authorization.isRekeyedToStandard {
+                return BarButtonItemTitleContent(
+                    text: "title-rekeyed".localized,
+                    textColor: Colors.Wallet.wallet4Icon.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+
+            if authorization.isNoAuthInLocal {
+                return BarButtonItemTitleContent(
+                    text: "title-no-auth".localized,
+                    textColor: Colors.Helpers.negative.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+
+            return nil
         default:
             return nil
         }
@@ -207,16 +222,30 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .account(let account):
-            let image: UIImage
-            /// <todo>: Handle all types properly.
-            switch account.type {
-            case .rekeyed:
-                image = "icon-shield-16".uiImage
-            default:
-                image = account.typeImage
+            let authorization = account.authorization
+
+            if authorization.isRekeyedToLedger {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Wallet.wallet3Icon.uiColor
+                )
             }
 
-            return ImageContent(normal: image)
+            if authorization.isRekeyedToStandard {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Wallet.wallet4Icon.uiColor
+                )
+            }
+
+            if authorization.isNoAuthInLocal {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Helpers.negative.uiColor
+                )
+            }
+
+            return ImageContent(normal: account.typeImage)
         case .discoverHome:
             if let icon = img("icon-homepage") {
                 let disabledIcon = img("icon-homepage-disabled")
@@ -326,26 +355,23 @@ struct ALGBarButtonItem: BarButtonItem {
         case .search:
             return .explicit(CGSize(width: 40, height: 40))
         case .account(let account):
-            let size: ALGBarButtonItem.Size
-            /// <todo>: Handle all types properly.
-            switch account.type {
-            case .rekeyed:
+            let authorization = account.authorization
+
+            if authorization.isRekeyed || authorization.isNoAuthInLocal {
                 let spacing = 4 / 2.0
                 let contentInsets = UIEdgeInsets((6, spacing + 6, 6, spacing + 8))
                 let titleInsets = UIEdgeInsets((0, spacing, 0, -spacing))
                 let imageInsets = UIEdgeInsets((0, -spacing, 0, spacing))
-                size = .compressed(
+                return .compressed(
                     BarButtonCompressedSizeInsets(
                         contentInsets: contentInsets,
                         titleInsets: titleInsets,
                         imageInsets: imageInsets
                     )
                 )
-            default:
-                size = .explicit(CGSize(width: 28, height: 28))
             }
 
-            return size
+            return .explicit(CGSize(width: 28, height: 28))
         case .discoverHome:
             return .explicit(CGSize(width: 40, height: 40))
         case .discoverNext:

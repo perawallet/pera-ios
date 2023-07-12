@@ -73,10 +73,7 @@ final class SharedAPIDataController:
         api: api
     )
 
-    private lazy var accountAuthorizationDeterminer = AccountAuthorizationDeterminer(
-        session: session,
-        sharedDataController: self
-    )
+    private lazy var accountAuthorizationDeterminer = AccountAuthorizationDeterminer(session: session)
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -454,11 +451,11 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFinish() {
+        setAccountsAuthorizationWhenBlockProcessorDidFinish()
+
         accountCollection = nextAccountCollection
         nextAccountCollection = []
 
-        setAccountsAuthorizationWhenBlockProcessorDidFinish()
-        
         $isFirstPollingRoundCompleted.mutate { $0 = true }
 
         blockchainUpdatesMonitor.removeCompletedUpdates()
@@ -555,13 +552,16 @@ extension SharedAPIDataController {
 
 extension SharedAPIDataController {
     private func setAccountsAuthorizationWhenBlockProcessorDidFinish() {
-        accountCollection.forEach { accountHandle in
+        nextAccountCollection.forEach { accountHandle in
             let aRawAccount = accountHandle.value
             aRawAccount.authorization = determineAccountAuthorization(of: aRawAccount)
         }
     }
 
     func determineAccountAuthorization(of account: Account) -> AccountAuthorization {
-        accountAuthorizationDeterminer.determineAccountAuthorization(of: account)
+        accountAuthorizationDeterminer.determineAccountAuthorization(
+            of: account,
+            with: nextAccountCollection
+        )
     }
 }

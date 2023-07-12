@@ -45,12 +45,21 @@ extension RekeyToLedgerAccountInstructionsDraft {
     private static func makeImage(
         sourceAccount: Account
     ) -> Image {
-        switch sourceAccount.type {
-        case .standard: return "rekey-from-standard-account-illustration"
-        case .ledger: return "rekey-from-ledger-account-illustration"
-        case .rekeyed: return "rekey-from-rekeyed-account-illustration"
-        case .watch: preconditionFailure("Watch account case is not possible")
+        let authorization = sourceAccount.authorization
+
+        if authorization.isStandard {
+            return "rekey-from-standard-account-illustration"
         }
+
+        if authorization.isLedger {
+            return "rekey-from-ledger-account-illustration"
+        }
+
+        if authorization.isRekeyed {
+            return "rekey-from-rekeyed-account-illustration"
+        }
+
+        preconditionFailure("Unexpected account type in the flow")
     }
 }
 
@@ -68,12 +77,21 @@ extension RekeyToLedgerAccountInstructionsDraft {
     private static func makeBody(
         sourceAccount: Account
     ) -> RekeyInstructionsBodyTextProvider {
-        switch sourceAccount.type {
-        case .standard: return Self.makeRekeyStandardAccountToLedgerAccountBody()
-        case .ledger: return Self.makeRekeyLedgerAccountToLedgerAccountInstructions()
-        case .rekeyed: return Self.makeRekeyRekeyedAccountToLedgerAccountInstructions()
-        case .watch: preconditionFailure("Watch account case is not possible")
+        let authorization = sourceAccount.authorization
+
+        if authorization.isStandard {
+            return Self.makeRekeyStandardAccountToLedgerAccountBody()
         }
+
+        if authorization.isLedger {
+            return Self.makeRekeyLedgerAccountToLedgerAccountInstructions()
+        }
+
+        if authorization.isRekeyed {
+            return Self.makeRekeyRekeyedAccountToLedgerAccountInstructions()
+        }
+
+        preconditionFailure("Unexpected account type in the flow")
     }
 
     private static func makeRekeyStandardAccountToLedgerAccountBody() -> RekeyInstructionsBodyTextProvider {
@@ -99,12 +117,21 @@ extension RekeyToLedgerAccountInstructionsDraft {
     private static func makeInstructions(
         sourceAccount: Account
     ) -> [InstructionItemViewModel] {
-        switch sourceAccount.type {
-        case .standard: return Self.makeRekeyStandardAccountToLedgerAccountInstructions()
-        case .ledger: return Self.makeRekeyLedgerAccountToLedgerAccountInstructions()
-        case .rekeyed: return Self.makeRekeyRekeyedAccountToLedgerAccountInstructions()
-        case .watch: preconditionFailure("Watch account case is not possible")
+        let authorization = sourceAccount.authorization
+
+        if authorization.isStandard {
+            return Self.makeRekeyStandardAccountToLedgerAccountInstructions()
         }
+
+        if authorization.isLedger {
+            return Self.makeRekeyLedgerAccountToLedgerAccountInstructions()
+        }
+
+        if authorization.isRekeyed {
+            return Self.makeRekeyRekeyedAccountToLedgerAccountInstructions()
+        }
+
+        preconditionFailure("Unexpected account type in the flow")
     }
 
     private static func makeRekeyStandardAccountToLedgerAccountInstructions() -> [InstructionItemViewModel] {

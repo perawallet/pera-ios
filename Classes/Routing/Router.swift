@@ -295,7 +295,7 @@ class Router:
 
             let transactionDraft = SendTransactionDraft(
                 from: Account(),
-                toAccount: Account(address: draft.toAccount, type: .standard),
+                toAccount: Account(address: draft.toAccount),
                 amount: draft.amount,
                 transactionMode: draft.transactionMode,
                 note: draft.note,
@@ -976,10 +976,6 @@ class Router:
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
-        case let .accountListOptions(accountType, eventHandler):
-            let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .sortAccountList(dataController, eventHandler):
             let aViewController  = SortAccountListViewController(
                 dataController: dataController,
@@ -1891,7 +1887,7 @@ extension Router {
         let draft = assetActionConfirmationViewController.draft
 
         guard let account = draft.account,
-              !account.isWatchAccount() else {
+              !account.authorization.isWatch else {
             return
         }
         
@@ -1950,7 +1946,7 @@ extension Router {
         let sharedDataController = appConfiguration.sharedDataController
 
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            !$0.value.isWatchAccount()
+            !$0.value.authorization.isWatch
         }
 
         if !hasNonWatchAccount {

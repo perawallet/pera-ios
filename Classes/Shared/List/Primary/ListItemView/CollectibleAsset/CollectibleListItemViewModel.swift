@@ -90,7 +90,7 @@ extension CollectibleListItemViewModel {
         let account = item.account
         let asset = item.asset
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             iconBottomRightBadge = "circle-badge-eye".uiImage
 
             if !asset.isOwned {

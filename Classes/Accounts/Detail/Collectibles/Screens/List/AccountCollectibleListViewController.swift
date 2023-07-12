@@ -70,7 +70,7 @@ final class AccountCollectibleListViewController: BaseViewController {
         super.prepareLayout()
         add(collectibleListScreen)
 
-        if !account.value.isWatchAccount() {
+        if !account.value.authorization.isWatch {
             addOptInAction()
             updateSafeAreaWhenOptInActionWasAdded()
         }
@@ -94,7 +94,7 @@ extension AccountCollectibleListViewController {
 
             switch event {
             case .didTapReceive:
-                if self.account.value.isWatchAccount() {
+                if self.account.value.authorization.isWatch {
                     return
                 }
 
@@ -191,7 +191,7 @@ extension AccountCollectibleListViewController {
 extension AccountCollectibleListViewController {
     private func presentActionsNotAvailableForAccountBanner() {
         bannerController?.presentErrorBanner(
-            title: "action-not-availabe-for-account-type".localized,
+            title: "action-not-available-for-account-type".localized,
             message: ""
         )
     }

@@ -31,7 +31,7 @@ struct TransactionSignatureValidator {
 
 extension TransactionSignatureValidator {
     func validateTxnSignature(_ acc: Account) -> TransactionSignatureValidation {
-        if acc.isWatchAccount() {
+        if acc.authorization.isWatch {
             return .failure(.invalidAccountType)
         }
 
@@ -39,7 +39,7 @@ extension TransactionSignatureValidator {
             return validateTxnSignatureForRekeyedAccount(acc)
         }
 
-        if acc.isLedger() {
+        if acc.authorization.isLedger {
             return validateTxnSignatureForLedgerAccount(acc)
         }
 

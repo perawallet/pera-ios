@@ -26,7 +26,7 @@ final class RemoveAuthAccountAuthorizationValidator: RemoveAccountAuthorizationV
     }
 
     func validate(_ account: Account) -> RemoveAccountAuthorizationResult {
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             return validateNextIfPossible(account)
         }
 

@@ -125,7 +125,8 @@ extension LedgerAccountFetchOperation {
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     if self.isInitialAccount {
-                        let account = Account(address: address, type: .ledger)
+                        let account = Account(address: address)
+                        account.authorization = .ledger
                         account.ledgerDetail = self.composeLedgerDetail()
                         self.ledgerAccounts.append(account)
                     }

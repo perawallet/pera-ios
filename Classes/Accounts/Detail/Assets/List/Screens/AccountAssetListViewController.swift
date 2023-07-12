@@ -341,7 +341,7 @@ extension AccountAssetListViewController {
         }
 
         let additionalBottomPaddingForHeroBackground =
-            dataController.account.value.isWatchAccount()
+            dataController.account.value.authorization.isWatch
             ? WatchAccountQuickActionsCell.contextPaddings.bottom
             : AccountQuickActionsCell.contextPaddings.bottom
         let adjustedPositionY = positionY - additionalBottomPaddingForHeroBackground

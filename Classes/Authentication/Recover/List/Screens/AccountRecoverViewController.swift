@@ -439,7 +439,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                         return nil
                     }
 
-                    rekeyedAccount.type = .rekeyed
+                    rekeyedAccount.authorization = .unknownToStandardRekeyed
                     return rekeyedAccount
                 }
 
@@ -496,9 +496,12 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                 self.openAccountNameSetup(account)
             }
         }
+
+        let authAccount = Account(localAccount: account)
+        authAccount.authorization = .standard
         open(
             .rekeyedAccountSelectionList(
-                authAccount: Account(localAccount: account),
+                authAccount: authAccount,
                 rekeyedAccounts: rekeyedAccounts,
                 eventHandler: eventHandler
             ),

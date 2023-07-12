@@ -162,7 +162,7 @@ extension HomeAPIDataController {
             
             snapshot.appendSections([.portfolio])
 
-            let nonWatchAccounts = accounts.filter { !$0.value.isWatchAccount() }
+            let nonWatchAccounts = accounts.filter { !$0.value.authorization.isWatch }
             let totalPortfolioItem = TotalPortfolioItem(
                 accountValues: nonWatchAccounts,
                 currency: currency,

@@ -133,7 +133,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 
         let authAccount: Account?
 
-        if account.isRekeyed() {
+        if account.authorization.isRekeyed {
             authAccount = dataSource.getAuthAccount(of: account)
         } else {
             authAccount = account

@@ -292,7 +292,7 @@ extension RekeyedAccountSelectionListScreen {
             let account = AccountInformation(
                 address: account.address,
                 name: account.address,
-                type: .rekeyed,
+                isWatchAccount: false,
                 preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
             )
 

@@ -68,7 +68,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
         switch sections[section] {
         case .ledgerAccount: return 1
         case .assets: return assetListItems.count
-        case .rekeyedAccounts: return account.isRekeyed() ? 1 : rekeyedAccounts.count
+        case .rekeyedAccounts: return account.authorization.isRekeyed ? 1 : rekeyedAccounts.count
         }
     }
 
@@ -129,7 +129,7 @@ extension LedgerAccountDetailDataSource {
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
 
-        if account.isRekeyed() {
+        if account.authorization.isRekeyed {
             let viewModel = AccountListItemViewModel(authAccount)
             cell.bindData(viewModel)
         } else {

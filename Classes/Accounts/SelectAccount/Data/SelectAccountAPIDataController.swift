@@ -97,7 +97,8 @@ extension SelectAccountAPIDataController {
 
     private func deliverContentSnapshot() {
         let filteredAccounts = sharedDataController.sortedAccounts().filter {
-            $0.value.type != .watch
+            let isWatchAccount = $0.value.authorization.isWatch
+            return !isWatchAccount
         }
 
         if filteredAccounts.isEmpty {
@@ -116,8 +117,7 @@ extension SelectAccountAPIDataController {
             let currencyFormatter = self.currencyFormatter
 
             self.sharedDataController.sortedAccounts().forEach { accountHandle in
-                let isWatchAccount = accountHandle.value.type == .watch
-                
+                let isWatchAccount = accountHandle.value.authorization.isWatch
                 if isWatchAccount {
                     return
                 }

@@ -283,10 +283,7 @@ extension SendCollectibleViewController {
                 )
             case .failure(let error, _):
                 if error.isHttpNotFound {
-                    self.draft.toAccount = Account(
-                        address: receiverAddress,
-                        type: .standard
-                    )
+                    self.draft.toAccount = Account(address: receiverAddress)
 
                     self.openAskReceiverToOptIn()
                     return

@@ -17,7 +17,6 @@
 import Foundation
 import MacaroonUIKit
 
-/// <todo> Handle bindings properly when account type is implemented.
 struct RekeyedAccountTypeInformationViewModel: AccountTypeInformationViewModel {
     private(set) var title: TextProvider?
     private(set) var typeIcon: Image?
@@ -45,10 +44,23 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func bindTypeIcon(_ sourceAccount: Account) {
         let icon: Image?
 
-        switch sourceAccount.type {
-        case .rekeyed:
+        let authorization = sourceAccount.authorization
+
+        if authorization.isLedgerToLedgerRekeyed {
             icon = makeLedgerAccountToLedgerAccountRekeyedAccountTypeIcon()
-        default:
+        } else if authorization.isLedgerToStandardRekeyed {
+            icon = makeLedgerAccountToStandardAccountRekeyedAccountTypeIcon()
+        } else if authorization.isStandardToLedgerRekeyed {
+            icon = makeStandardAccountToLedgerAccountRekeyedAccountTypeIcon()
+        } else if authorization.isStandardToStandardRekeyed {
+            icon = makeStandardAccountToStandardAccountRekeyedAccountTypeIcon()
+        } else if authorization.isUnknownToLedgerRekeyed {
+            icon = makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon()
+        } else if authorization.isUnknownToLedgerRekeyed {
+            icon = makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon()
+        } else if authorization.isUnknownToStandardRekeyed {
+            icon = makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon()
+        } else {
             icon = nil
         }
 
@@ -58,10 +70,21 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func bindTypeTitle(_ sourceAccount: Account) {
         let title: TextProvider?
 
-        switch sourceAccount.type {
-        case .rekeyed:
+        let authorization = sourceAccount.authorization
+
+        if authorization.isLedgerToLedgerRekeyed {
             title = makeLedgerAccountToLedgerAccountRekeyedAccountTypeTitle()
-        default:
+        } else if authorization.isLedgerToStandardRekeyed {
+            title = makeLedgerAccountToStandardAccountRekeyedAccountTypeTitle()
+        } else if authorization.isStandardToLedgerRekeyed {
+            title = makeStandardAccountToLedgerAccountRekeyedAccountTypeTitle()
+        } else if authorization.isStandardToStandardRekeyed {
+            title = makeStandardAccountToStandardAccountRekeyedAccountTypeTitle()
+        } else if authorization.isUnknownToLedgerRekeyed {
+            title = makeUnknownAccountToLedgerAccountRekeyedAccountTypeTitle()
+        } else if authorization.isUnknownToStandardRekeyed {
+            title = makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle()
+        } else {
             title = nil
         }
 
@@ -71,10 +94,13 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func bindTypeFootnote(_ sourceAccount: Account) {
         let footnote: TextProvider?
 
-        switch sourceAccount.type {
-        case .rekeyed:
+        let authorization = sourceAccount.authorization
+
+        if authorization.isUnknownToLedgerRekeyed {
             footnote = makeUnknownAccountToLedgerAccountRekeyedAccountTypeFootnote()
-        default:
+        } else if authorization.isUnknownToStandardRekeyed {
+            footnote = makeUnknownAccountToStandardAccountRekeyedAccountTypeFootnote()
+        } else {
             footnote = nil
         }
 
@@ -84,10 +110,21 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func bindTypeDescription(_ sourceAccount: Account) {
         let description: TypeDescriptionTextProvider?
 
-        switch sourceAccount.type {
-        case .rekeyed:
+        let authorization = sourceAccount.authorization
+
+        if authorization.isLedgerToLedgerRekeyed {
             description = makeLedgerAccountToLedgerAccountRekeyedAccountTypeDescription()
-        default:
+        } else if authorization.isLedgerToStandardRekeyed {
+            description = makeLedgerAccountToStandardAccountRekeyedAccountTypeDescription()
+        } else if authorization.isStandardToLedgerRekeyed {
+            description = makeStandardAccountToLedgerAccountRekeyedAccountTypeDescription()
+        } else if authorization.isStandardToStandardRekeyed {
+            description = makeStandardAccountToStandardAccountRekeyedAccountTypeDescription()
+        } else if authorization.isUnknownToLedgerRekeyed {
+            description = makeUnknownAccountToLedgerAccountRekeyedAccountTypeDescription()
+        } else if authorization.isUnknownToStandardRekeyed {
+            description = makeUnknownAccountToStandardAccountRekeyedAccountTypeDescription()
+        } else {
             description = nil
         }
 

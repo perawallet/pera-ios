@@ -1178,7 +1178,7 @@
 "quick-actions-receive-title" = "Receive";
 "quick-actions-more-title" = "More";
 
-"action-not-availabe-for-account-type" = "This action is not available for this account type";
+"action-not-available-for-account-type" = "This action is not available for this account type";
 
 // MARK: Transaction Options
 "transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
