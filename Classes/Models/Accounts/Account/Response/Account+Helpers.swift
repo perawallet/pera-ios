@@ -83,8 +83,12 @@ extension Account {
         return authAddress ?? address
     }
 
+    var isRekeyedToSelf: Bool {
+        return authAddress == address
+    }
+
     func hasAuthAccount() -> Bool {
-        return authAddress != nil && authAddress != address
+        return authAddress != nil && !isRekeyedToSelf
     }
     
     func hasLedgerDetail() -> Bool {
@@ -168,11 +172,41 @@ extension Account {
             return "title-rekeyed-account".localized
         }
 
-        if authorization.isNoAuthInLocal {
+        if authorization.isNoAuth {
             return "title-no-auth".localized
         }
 
         return nil
+    }
+
+    /// <note> `underlyingTypeImage` should be used when we want to display the underlying type instead of general types. For instance, the Standard to Ledger rekeyed account's general type is `standardToLedgerRekeyed`  but its underlying type is `standard`
+    var underlyingTypeImage: UIImage {
+        if authorization.isStandard ||
+           authorization.isStandardToStandardRekeyed ||
+           authorization.isStandardToLedgerRekeyed ||
+           authorization.isStandardToNoAuthInLocalRekeyed {
+            return "icon-standard-account".uiImage
+        }
+
+        if authorization.isLedger ||
+           authorization.isLedgerToLedgerRekeyed ||
+           authorization.isLedgerToStandardRekeyed ||
+           authorization.isLedgerToNoAuthInLocalRekeyed {
+            return "icon-ledger-account".uiImage
+        }
+
+        if authorization.isUnknown ||
+           authorization.isUnknownToLedgerRekeyed ||
+           authorization.isUnknownToStandardRekeyed ||
+           authorization.isUnknownToNoAuthInLocalRekeyed {
+            return "icon-unknown-account".uiImage
+        }
+
+        if authorization.isWatch {
+            return "icon-watch-account".uiImage
+        }
+
+        return "icon-no-auth-account".uiImage
     }
     
     var typeImage: UIImage {
@@ -196,7 +230,7 @@ extension Account {
             return "icon-any-to-ledger-rekeyed-account".uiImage
         }
 
-        if authorization.isNoAuthInLocal {
+        if authorization.isNoAuth {
             return "icon-no-auth-account".uiImage
         }
 

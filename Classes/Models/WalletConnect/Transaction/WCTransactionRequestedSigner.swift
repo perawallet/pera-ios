@@ -69,11 +69,11 @@ final class WCTransactionRequestedSigner {
         on session: Session
     ) -> Account? {
         guard let account = accountCollection.account(for: address),
-              !account.authorization.isWatch else {
+              account.authorization.isAuthorized else {
             return nil
         }
         
-        if account.authorization.isLedger && account.ledgerDetail != nil {
+        if account.authorization.isLedger {
             return account
         }
         

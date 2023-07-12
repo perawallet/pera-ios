@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountSelectionListScreenTheme.swift
+//   AuthorizedAccountListFilterAlgorithm.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct AccountSelectionListScreenTheme:
-    LayoutSheet,
-    StyleSheet {
-    var background: ViewStyle
-    var navigationBarEdgeInsets: LayoutMargins
-    var listContentTopInset: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.navigationBarEdgeInsets = (8, 24, .noMetric, 24)
-        self.listContentTopInset = .zero
+struct AuthorizedAccountListFilterAlgorithm: AccountListFilterAlgorithm {
+    func getFormula(_ account: AccountHandle) -> Bool {
+        let authorization = account.value.authorization
+        return authorization.isAuthorized
     }
 }

@@ -64,7 +64,7 @@ extension AccountInformationFlowCoordinator {
             return
         }
 
-        if authorization.isNoAuthInLocal {
+        if authorization.isNoAuth {
             openAccountInformationForNoAuthInLocal(sourceAccount)
             return
         }

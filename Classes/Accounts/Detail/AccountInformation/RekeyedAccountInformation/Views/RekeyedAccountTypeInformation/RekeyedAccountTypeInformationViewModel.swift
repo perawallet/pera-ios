@@ -56,8 +56,6 @@ extension RekeyedAccountTypeInformationViewModel {
             icon = makeStandardAccountToStandardAccountRekeyedAccountTypeIcon()
         } else if authorization.isUnknownToLedgerRekeyed {
             icon = makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon()
-        } else if authorization.isUnknownToLedgerRekeyed {
-            icon = makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon()
         } else if authorization.isUnknownToStandardRekeyed {
             icon = makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon()
         } else {
@@ -202,7 +200,7 @@ extension RekeyedAccountTypeInformationViewModel {
 
 extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-ledger-rekeyed-account".uiImage
+        return "icon-any-to-standard-rekeyed-account".uiImage
     }
 
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {

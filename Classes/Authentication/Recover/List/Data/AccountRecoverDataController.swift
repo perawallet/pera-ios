@@ -69,10 +69,9 @@ class AccountRecoverDataController: NSObject {
             // If the recovered account is rekeyed or watch account in the app, save the passphrase.
             // Convert the account type to standard account if it's a watch account since the account has the passphrase now.
 
-            /// <todo> Ask this check, is it correct?
             let isRekeyed = sameAccount.authorization.isRekeyed
             let isWatch = sameAccount.authorization.isWatch
-            let isNoAuth = sameAccount.authorization.isNoAuthInLocal
+            let isNoAuth = sameAccount.authorization.isNoAuth
             if isRekeyed || isWatch || isNoAuth {
                 return AccountInformation(
                     address: address,

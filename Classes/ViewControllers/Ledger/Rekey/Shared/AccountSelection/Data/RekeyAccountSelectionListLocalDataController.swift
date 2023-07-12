@@ -87,6 +87,10 @@ extension RekeyAccountSelectionListLocalDataController {
             let filteredAccounts = sortedAccounts.filter {
                 let rawAccount = $0.value
 
+                if !rawAccount.authorization.isAuthorized {
+                    return false
+                }
+
                 /// <note>
                 /// We're not displaying the same account in this list, we've a different flow for undoing the rekey.
                 if rawAccount.isSameAccount(with: self.account) {
@@ -275,6 +279,6 @@ extension RekeyAccountSelectionListLocalDataController {
         /// <note>
         /// Rekeying a standard account to ledger account should not be handled from this flow.
         /// So, the ledger accounts are filtered separately.
-        return validation.isFailure || account.hasLedgerDetail()
+        return validation.isFailure || account.authorization.isLedger
     }
 }

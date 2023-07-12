@@ -102,6 +102,8 @@ final class NotificationsViewController: BaseViewController {
                 switch error {
                 case .tryingToOptInForWatchAccount:
                     self.presentTryingToActForWatchAccountError()
+                case .tryingToOptInForNoAuthInLocalAccount:
+                    self.presentTryingToActForNoAuthInLocalAccountError()
                 case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                     self.presentTryingToActForAssetWithPendingOptInRequestError(accountName: accountName)
                 case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
@@ -336,6 +338,13 @@ extension NotificationsViewController {
         bannerController?.presentErrorBanner(
             title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
             message: "notifications-trying-to-opt-in-for-watch-account-description".localized
+        )
+    }
+
+    private func presentTryingToActForNoAuthInLocalAccountError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
+            message: "action-not-available-for-account-type".localized
         )
     }
 

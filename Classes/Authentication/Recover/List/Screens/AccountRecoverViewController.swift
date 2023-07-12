@@ -434,7 +434,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
             switch response {
             case let .success(response):
                 let rekeyedAccounts: [Account] = response.accounts.compactMap { rekeyedAccount in
-                    let isRekeyedToSelf = rekeyedAccount.authAddress == rekeyedAccount.address
+                    let isRekeyedToSelf = rekeyedAccount.isRekeyedToSelf
                     if isRekeyedToSelf {
                         return nil
                     }

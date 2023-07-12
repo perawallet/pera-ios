@@ -176,7 +176,7 @@ extension AccountCollectibleListViewController {
         view.endEditing(true)
 
         let aRawAccount = account.value
-        if aRawAccount.authorization.isNoAuthInLocal {
+        if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
             return
         }

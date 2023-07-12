@@ -87,6 +87,10 @@ final class SelectAccountViewController: BaseViewController {
                 return
             }
 
+            guard accountHandle.isAvailable else {
+                return
+            }
+
             self.delegate?.selectAccountViewController(
                 self,
                 didSelect: accountHandle.value,

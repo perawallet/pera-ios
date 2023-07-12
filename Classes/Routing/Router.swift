@@ -1913,7 +1913,7 @@ extension Router {
         let draft = assetActionConfirmationViewController.draft
 
         guard let account = draft.account,
-              !account.authorization.isWatch else {
+              account.authorization.isAuthorized else {
             return
         }
         
@@ -1971,11 +1971,12 @@ extension Router {
         
         let sharedDataController = appConfiguration.sharedDataController
 
-        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            !$0.value.authorization.isWatch
+
+        let hasAuthorizedAccount = sharedDataController.accountCollection.contains {
+            $0.value.authorization.isAuthorized
         }
 
-        if !hasNonWatchAccount {
+        if !hasAuthorizedAccount {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,

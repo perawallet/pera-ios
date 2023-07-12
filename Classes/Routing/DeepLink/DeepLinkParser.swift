@@ -133,6 +133,11 @@ extension DeepLinkParser {
             return .failure(.tryingToOptInForWatchAccount)
         }
 
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
+        }
+
         if rawAccount.containsAsset(assetID) {
             let asset = sharedDataController.assetDetailCollection[assetID]!
             return .success(.asaDiscoveryWithOptOutAction(account: rawAccount, asset: asset))
@@ -321,9 +326,13 @@ extension DeepLinkParser {
         let rawAccount = account.value
 
         let isWatchAccount = rawAccount.authorization.isWatch
-
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
+        }
+
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
@@ -429,9 +438,9 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
-        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.authorization.isWatch }
+        let authorizedAccounts = sharedDataController.accountCollection.filter { $0.value.authorization.isAuthorized }
 
-        let hasAsset = nonWatchAccounts.contains { account in
+        let hasAsset = authorizedAccounts.contains { account in
             return account.value.containsAsset(assetId)
         }
 
@@ -569,6 +578,7 @@ extension DeepLinkParser {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
         case tryingToOptInForWatchAccount
+        case tryingToOptInForNoAuthInLocalAccount
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
@@ -584,6 +594,9 @@ extension DeepLinkParser {
             case .tryingToOptInForWatchAccount:
                 title = "notifications-trying-to-opt-in-for-watch-account-title".localized
                 description = "notifications-trying-to-opt-in-for-watch-account-description".localized
+            case .tryingToOptInForNoAuthInLocalAccount: 
+                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
+                description = "action-not-available-for-account-type".localized
             case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                 title = "title-error".localized
                 description = "ongoing-opt-in-request-description".localized(params: accountName)
@@ -616,6 +629,8 @@ extension DeepLinkParser {
             case (.waitingForAssetsToBeAvailable, .waitingForAssetsToBeAvailable):
                 return true
             case (.tryingToOptInForWatchAccount, .tryingToOptInForWatchAccount):
+                return true
+            case (.tryingToOptInForNoAuthInLocalAccount, .tryingToOptInForNoAuthInLocalAccount):
                 return true
             case (.tryingToActForAssetWithPendingOptInRequest(let accountName1), .tryingToActForAssetWithPendingOptInRequest(let accountName2)):
                 return accountName1 == accountName2

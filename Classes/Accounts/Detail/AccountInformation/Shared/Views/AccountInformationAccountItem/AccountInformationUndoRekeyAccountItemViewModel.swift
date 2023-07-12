@@ -30,7 +30,9 @@ struct AccountInformationUndoRekeyAccountItemViewModel: AccountListItemWithActio
 
 extension AccountInformationUndoRekeyAccountItemViewModel {
     private mutating func bindContent(_ account: Account) {
-        content = AccountListItemViewModel(account)
+        var viewModel = AccountListItemViewModel(account)
+        viewModel.bindIcon(account.underlyingTypeImage)
+        content = viewModel
     }
 
     private mutating func bindAccessory() {

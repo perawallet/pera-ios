@@ -31,7 +31,7 @@ struct RekeySuccessScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contextPaddings = (28, 24, 28, 24)
+        self.contextPaddings = (68, 24, 28, 24)
         self.result = RekeySuccessResultViewTheme(family)
         self.primaryAction = [
             .title("title-done".localized),
