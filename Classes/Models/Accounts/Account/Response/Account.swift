@@ -635,7 +635,7 @@ extension AccountAuthorization {
         return self == .unknownToNoAuthInLocalRekeyed
     }
 
-    /// <note> Missing private data (missing private data) or rekeyed to account that is not in local
+    /// <note> Missing private data or rekeyed to account that is not in local
     var isNoAuth: Bool {
         return isNoAuthInLocal || isRekeyedToNoAuthInLocal
     }
