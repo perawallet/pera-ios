@@ -45,6 +45,8 @@ extension UndoRekeyInfoViewModel {
     }
 
     private mutating func bindAuthAccountItem(_ authAccount: Account) {
-        authAccountItem = AccountListItemViewModel(authAccount)
+        var viewModel = AccountListItemViewModel(authAccount)
+        viewModel.bindIcon(authAccount.underlyingTypeImage)
+        authAccountItem = viewModel
     }
 }
