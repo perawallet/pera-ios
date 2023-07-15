@@ -1714,6 +1714,12 @@
 		2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAA2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAB2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
+		2B612E0529AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
+		2B612E0629AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
+		2B612E0729AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
+		2B612E0929AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
+		2B612E0A29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
+		2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
 		2B61CF572A48D194004E229A /* WalletConnectApproveTransactionRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF562A48D194004E229A /* WalletConnectApproveTransactionRequestParams.swift */; };
 		2B61CF582A48D198004E229A /* WalletConnectApproveTransactionRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF562A48D194004E229A /* WalletConnectApproveTransactionRequestParams.swift */; };
 		2B61CF592A48D199004E229A /* WalletConnectApproveTransactionRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF562A48D194004E229A /* WalletConnectApproveTransactionRequestParams.swift */; };
@@ -1738,12 +1744,6 @@
 		2B61CF732A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF722A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift */; };
 		2B61CF742A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF722A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift */; };
 		2B61CF752A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61CF722A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift */; };
-		2B612E0529AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
-		2B612E0629AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
-		2B612E0729AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
-		2B612E0929AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
-		2B612E0A29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
-		2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
 		2B648615276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
 		2B648616276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
 		2B648617276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
@@ -7378,6 +7378,8 @@
 		2B5F6FA02768EC8600C9B780 /* SingleGrayTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderView.swift; sourceTree = "<group>"; };
 		2B5F6FA42768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewTheme.swift; sourceTree = "<group>"; };
 		2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewModel.swift; sourceTree = "<group>"; };
+		2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToAnyAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
+		2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToStandardAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
 		2B61CF562A48D194004E229A /* WalletConnectApproveTransactionRequestParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectApproveTransactionRequestParams.swift; sourceTree = "<group>"; };
 		2B61CF5A2A48D1B3004E229A /* WalletConnectRejectTransactionRequestParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectRejectTransactionRequestParams.swift; sourceTree = "<group>"; };
 		2B61CF5E2A48D269004E229A /* WalletConnectApproveSessionConnectionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectApproveSessionConnectionParams.swift; sourceTree = "<group>"; };
@@ -7386,8 +7388,6 @@
 		2B61CF6A2A48D45B004E229A /* WalletConnectRejectSessionConnectionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectRejectSessionConnectionParams.swift; sourceTree = "<group>"; };
 		2B61CF6E2A48D471004E229A /* WalletConnectExtendSessionConnectionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectExtendSessionConnectionParams.swift; sourceTree = "<group>"; };
 		2B61CF722A48D47E004E229A /* WalletConnectUpdateSessionConnectionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectUpdateSessionConnectionParams.swift; sourceTree = "<group>"; };
-		2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToAnyAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
-		2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToStandardAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
 		2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
@@ -27646,7 +27646,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27674,7 +27674,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27702,7 +27702,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27732,7 +27732,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27761,7 +27761,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27790,7 +27790,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27942,7 +27942,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27971,7 +27971,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -28127,7 +28127,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
