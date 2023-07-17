@@ -370,6 +370,7 @@ indirect enum Screen {
     )
     case externalInAppBrowser(destination: DiscoverExternalDestination)
     case extendWCSessionValidity(eventHandler: ExtendWCSessionValiditySheet.EventHandler)
+    case wcAdvancedPermissionsInfo(eventHandler: WCAdvancedPermissionsInfoSheet.EventHandler)
 }
 
 extension Screen {

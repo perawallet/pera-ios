@@ -1552,3 +1552,7 @@ FAQ section.";
 // MARK: Extend WC Session Validity
 "extend-wc-session-validity-title" = "Extend validity to %@";
 "extend-wc-session-validity-body" = "You can extend the expiration date of this session by 1 more week, but not beyond %@.";
+
+// MARK: WC Advanced Permissions Info
+"wc-advanced-permissions-info-title" = "WalletConnect Advanced Permissions";
+"wc-advanced-permissions-info-body" = "WalletConnect is a communications protocol for web3, enabling wallets and dApps to securely connect and interact. With each new version, WalletConnect introduces new ways to handle, sign and/or display transaction requests coming from third party projects.";
