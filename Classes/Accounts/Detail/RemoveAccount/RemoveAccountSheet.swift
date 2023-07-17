@@ -21,13 +21,13 @@ final class RemoveAccountSheet: UISheet {
 
     private let account: Account
     private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     private let eventHandler: EventHandler
 
     init(
         account: Account,
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         eventHandler: @escaping EventHandler
     ) {
         self.account = account
