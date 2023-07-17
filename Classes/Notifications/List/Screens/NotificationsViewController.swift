@@ -33,6 +33,7 @@ final class NotificationsViewController: BaseViewController {
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var deeplinkParser = DeepLinkParser(
+        api: api!,
         sharedDataController: sharedDataController,
         walletConnector: walletConnector
     )
@@ -98,6 +99,8 @@ final class NotificationsViewController: BaseViewController {
                         account: account,
                         asset: asset
                     )
+                case let .externalInAppBrowser(destination):
+                    self.openExternalLink(destination: destination)
                 default:
                     break
                 }
@@ -105,6 +108,8 @@ final class NotificationsViewController: BaseViewController {
                 switch error {
                 case .tryingToOptInForWatchAccount:
                     self.presentTryingToActForWatchAccountError()
+                case .tryingToOptInForNoAuthInLocalAccount:
+                    self.presentTryingToActForNoAuthInLocalAccountError()
                 case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                     self.presentTryingToActForAssetWithPendingOptInRequestError(accountName: accountName)
                 case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
@@ -303,21 +308,7 @@ extension NotificationsViewController {
         let screen = Screen.asaDetail(
             account: account,
             asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didRemoveAccount:
-                self.dataController.reload()
-                self.navigationController?.popToViewController(
-                    self,
-                    animated: true
-                )
-            case .didRenameAccount:
-                self.dataController.reload()
-            }
-        }
-
+        )
         open(
             screen,
             by: .push
@@ -346,6 +337,12 @@ extension NotificationsViewController {
             by: .push
         )
     }
+
+    private func openExternalLink(
+        destination: DiscoverExternalDestination
+    ) {
+        open(.externalInAppBrowser(destination: destination), by: .push)
+    }
 }
 
 extension NotificationsViewController {
@@ -353,6 +350,13 @@ extension NotificationsViewController {
         bannerController?.presentErrorBanner(
             title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
             message: "notifications-trying-to-opt-in-for-watch-account-description".localized
+        )
+    }
+
+    private func presentTryingToActForNoAuthInLocalAccountError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
+            message: "action-not-available-for-account-type".localized
         )
     }
 

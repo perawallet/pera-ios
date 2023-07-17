@@ -99,11 +99,11 @@ extension AccountListItemViewModel {
             return
         }
 
-        if let mameServiceAccountListItem = model as? NameServiceAccountListItem {
-            address = mameServiceAccountListItem.address
+        if let nameServiceAccountListItem = model as? NameServiceAccountListItem {
+            address = nameServiceAccountListItem.address
 
-            bindIcon(mameServiceAccountListItem)
-            bindTitle(mameServiceAccountListItem)
+            bindIcon(nameServiceAccountListItem)
+            bindTitle(nameServiceAccountListItem)
         }
     }
 }
@@ -319,6 +319,14 @@ extension AccountListItemViewModel {
             primaryTitle: nameServiceAccountListItem.title,
             secondaryTitle: nameServiceAccountListItem.subtitle
         )
+    }
+}
+
+extension AccountListItemViewModel {
+    mutating func bindIcon(
+        _ icon: Image?
+    ) {
+        self.icon = icon?.uiImage
     }
 }
 
