@@ -134,6 +134,7 @@
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
 "title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
 "title-deleted-with-parantheses" = "(Deleted)";
+"title-extend" = "Extend";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1547,3 +1548,7 @@ FAQ section.";
 // MARK: Undo Rekey Success Result
 "undo-rekey-success-result-title" = "Rekey successfully undone";
 "undo-rekey-success-result-body" = "The account %@ has been reverted to its original state.";
+
+// MARK: Extend WC Session Validity
+"extend-wc-session-validity-title" = "Extend validity to %@";
+"extend-wc-session-validity-body" = "You can extend the expiration date of this session by 1 more week, but not beyond %@.";

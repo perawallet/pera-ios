@@ -1845,6 +1845,15 @@ class Router:
                 destination: destination,
                 configuration: configuration
             )
+        case let .extendWCSessionValidity(eventHandler):
+            let uiSheet = ExtendWCSessionValiditySheet(
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
         }
 
         return viewController as? T

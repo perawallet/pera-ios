@@ -369,6 +369,7 @@ indirect enum Screen {
         eventHandler: RemoveAccountSheet.EventHandler
     )
     case externalInAppBrowser(destination: DiscoverExternalDestination)
+    case extendWCSessionValidity(eventHandler: ExtendWCSessionValiditySheet.EventHandler)
 }
 
 extension Screen {
