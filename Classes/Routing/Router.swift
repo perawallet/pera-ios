@@ -1854,6 +1854,13 @@ class Router:
                 theme: UISheetActionScreenImageTheme(),
                 api: configuration.api
             )
+        case let .wcAdvancedPermissionsInfo(eventHandler):
+            let uiSheet = WCAdvancedPermissionsInfoSheet(eventHandler: eventHandler)
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenCommonTheme(),
+                api: configuration.api
+            )
         }
 
         return viewController as? T
