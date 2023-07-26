@@ -114,7 +114,7 @@ extension UndoRekeyConfirmationSheet {
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-keep".localized,
+            title: "title-cancel".localized,
             style: .cancel
         ) {
             [unowned self] in

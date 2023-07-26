@@ -100,7 +100,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
-        let viewModel = AccountListItemViewModel(account)
+        let viewModel = makeAccountListItemViewModel(account)
         cell.bindData(viewModel)
         return cell
     }
@@ -130,15 +130,31 @@ extension LedgerAccountDetailDataSource {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
 
         if account.authorization.isRekeyed {
-            let viewModel = AccountListItemViewModel(authAccount)
+            let viewModel = makeAccountListItemViewModel(authAccount)
             cell.bindData(viewModel)
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
-            let viewModel = AccountListItemViewModel(rekeyedAccount)
+            let viewModel = makeAccountListItemViewModel(rekeyedAccount)
             cell.bindData(viewModel)
         }
 
         return cell
+    }
+}
+
+extension LedgerAccountDetailDataSource {
+    private func makeAccountListItemViewModel(_ account: Account) -> AccountListItemViewModel {
+        let currency = sharedDataController.currency
+        let accountValue = AccountHandle(
+            account: account,
+            status: .ready
+        )
+        let item = AccountPortfolioItem(
+            accountValue: accountValue,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        return AccountListItemViewModel(item)
     }
 }
 
