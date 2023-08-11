@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   WCV1SessionBadgeViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
+struct WCV1SessionBadgeViewModel: ViewModel {
+    private(set) var badge: TextProvider?
+    private(set) var info: TextProvider?
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+    init() {
+        bindBadge()
+        bindInfo()
+    }
+}
 
-        contextView.customize(Self.theme)
+extension WCV1SessionBadgeViewModel {
+    private mutating func bindBadge() {
+        badge = "WCV1".captionMedium()
+    }
+
+    private mutating func bindInfo() {
+        info =
+            "wc-session-wcv1-info"
+                .localized
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

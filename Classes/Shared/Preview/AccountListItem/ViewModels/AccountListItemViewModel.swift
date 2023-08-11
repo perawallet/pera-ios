@@ -105,6 +105,16 @@ extension AccountListItemViewModel {
             bindIcon(nameServiceAccountListItem)
             bindTitle(nameServiceAccountListItem)
         }
+
+        if let wcSessionDetailConnectedAccountItem = model as? WCSessionDetailConnectedAccountItem {
+            address = wcSessionDetailConnectedAccountItem.account.value.address
+
+            bindIcon(wcSessionDetailConnectedAccountItem)
+            bindTitle(wcSessionDetailConnectedAccountItem)
+            bindPrimaryAccessory(wcSessionDetailConnectedAccountItem)
+            bindSecondaryAccessory(wcSessionDetailConnectedAccountItem)
+            bindAccessoryIcon(wcSessionDetailConnectedAccountItem)
+        }
     }
 }
 
@@ -324,6 +334,60 @@ extension AccountListItemViewModel {
 
 extension AccountListItemViewModel {
     mutating func bindIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindIcon(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindTitle(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindTitle(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindPrimaryAccessory(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        primaryAccessory = getMainnetAccessory()
+    }
+
+    mutating func bindSecondaryAccessory(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        secondaryAccessory = getTestnetAccessory()
+    }
+
+    private func getMainnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Helpers.positive))
+
+        let text =  "• MAINNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private func getTestnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Other.Global.yellow600))
+
+        let text =  "• TESTNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private mutating func bindAccessoryIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindAccessoryIcon(isValid: wcSessionDetailConnectedAccountItem.account.isAvailable)
+    }
+}
+
+extension AccountListItemViewModel {
+    mutating func bindIcon(
         _ icon: Image?
     ) {
         self.icon = icon?.uiImage
@@ -437,4 +501,8 @@ struct NameServiceAccountListItem {
         self.title = title
         self.subtitle = subtitle
     }
+}
+
+struct WCSessionDetailConnectedAccountItem {
+    let account: AccountHandle
 }

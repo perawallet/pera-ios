@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   WCSessionAdvancedPermissionsHeaderViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
+struct WCSessionAdvancedPermissionsHeaderViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    let title: TextStyle
+    let spacingBetweenTitleAndInfoAction: LayoutMetric
+    let infoAction: ButtonStyle
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.title = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
+        self.spacingBetweenTitleAndInfoAction = 8
+        self.infoAction = [
+            .icon([ .normal("icon-info-20") ])
+        ]
     }
 }
