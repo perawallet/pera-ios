@@ -53,7 +53,7 @@ extension DeepLinkParser {
     func resolveNotificationAction(
         for notification: AlgorandNotification
     ) -> NotificationAction? {
-        guard let url = notification.detail?.url else {
+        guard let url = notification.detail?.url.toURL() else {
             return nil
         }
 
@@ -134,10 +134,15 @@ extension DeepLinkParser {
 
         let rawAccount = account.value
 
-        let isWatchAccount = rawAccount.isWatchAccount()
+        let isWatchAccount = rawAccount.authorization.isWatch
 
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
+        }
+
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
@@ -186,7 +191,7 @@ extension DeepLinkParser {
     private func makeTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
 
@@ -221,7 +226,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }
@@ -299,7 +304,7 @@ extension DeepLinkParser {
     private func makeAssetTransactionRequestScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
         let assetID = params?["asset"].unwrap { AssetID($0) }
@@ -327,10 +332,14 @@ extension DeepLinkParser {
 
         let rawAccount = account.value
 
-        let isWatchAccount = rawAccount.isWatchAccount()
-
+        let isWatchAccount = rawAccount.authorization.isWatch
         if isWatchAccount {
             return .failure(.tryingToOptInForWatchAccount)
+        }
+
+        let isNoAuthAccount = rawAccount.authorization.isNoAuth
+        if isNoAuthAccount {
+            return .failure(.tryingToOptInForNoAuthInLocalAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
@@ -367,7 +376,7 @@ extension DeepLinkParser {
     }
 
     private func makeExternalBrowserScreen(for notification: AlgorandNotification) -> Result? {
-        let url = notification.detail?.url
+        let url = notification.detail?.url.toURL()
         return makeExternalBrowserScreen(from: url)
     }
 
@@ -457,9 +466,9 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
-        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.isWatchAccount() }
+        let authorizedAccounts = sharedDataController.accountCollection.filter { $0.value.authorization.isAuthorized }
 
-        let hasAsset = nonWatchAccounts.contains { account in
+        let hasAsset = authorizedAccounts.contains { account in
             return account.value.containsAsset(assetId)
         }
 
@@ -598,6 +607,7 @@ extension DeepLinkParser {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
         case tryingToOptInForWatchAccount
+        case tryingToOptInForNoAuthInLocalAccount
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
@@ -613,6 +623,9 @@ extension DeepLinkParser {
             case .tryingToOptInForWatchAccount:
                 title = "notifications-trying-to-opt-in-for-watch-account-title".localized
                 description = "notifications-trying-to-opt-in-for-watch-account-description".localized
+            case .tryingToOptInForNoAuthInLocalAccount: 
+                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
+                description = "action-not-available-for-account-type".localized
             case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                 title = "title-error".localized
                 description = "ongoing-opt-in-request-description".localized(params: accountName)
@@ -645,6 +658,8 @@ extension DeepLinkParser {
             case (.waitingForAssetsToBeAvailable, .waitingForAssetsToBeAvailable):
                 return true
             case (.tryingToOptInForWatchAccount, .tryingToOptInForWatchAccount):
+                return true
+            case (.tryingToOptInForNoAuthInLocalAccount, .tryingToOptInForNoAuthInLocalAccount):
                 return true
             case (.tryingToActForAssetWithPendingOptInRequest(let accountName1), .tryingToActForAssetWithPendingOptInRequest(let accountName2)):
                 return accountName1 == accountName2

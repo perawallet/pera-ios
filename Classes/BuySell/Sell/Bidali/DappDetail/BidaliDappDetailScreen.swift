@@ -171,7 +171,7 @@ extension BidaliDappDetailScreen {
 
         let draft = makeSendTransactionDraft(
             from: account.value,
-            to: Account(address: address, type: .standard),
+            to: Account(address: address),
             asset: asset,
             amount: amount,
             extraId: extraId
@@ -233,7 +233,7 @@ extension BidaliDappDetailScreen {
     }
 
     private func openOpenURLRequest(_ request: BidaliOpenURLRequest) {
-        guard let url = request.url else {
+        guard let url = request.url.toURL() else {
             presentGenericErrorBanner()
             return
         }
