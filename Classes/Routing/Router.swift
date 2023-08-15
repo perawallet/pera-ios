@@ -2018,24 +2018,23 @@ extension Router {
             ) as? WCConnectionScreen
             
             screen?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
+                [weak self, weak screen] event in
+                guard let self,
+                      let screen else {
+                    return
+                }
                 
                 switch event {
                 case .performCancel:
-                    screen?.dismissScreen()
+                    screen.dismissScreen()
                 case .performConnect:
-                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
-                        screen?.dismissScreen()
-                        return
-                    }
-                    
-                    screen?.dismissScreen {
+                    screen.dismissScreen {
                         [weak self] in
                         guard let self = self else { return }
 
                         if !shouldShowConnectionApproval { return }
 
+                        let dappName = screen.walletConnectSession.dAppInfo.peerMeta.name
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }

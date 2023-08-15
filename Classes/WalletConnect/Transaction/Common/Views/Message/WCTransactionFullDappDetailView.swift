@@ -25,8 +25,8 @@ final class WCTransactionFullDappDetailView: View {
     private lazy var imageView = UIImageView()
     private lazy var descriptionLabel = UILabel()
     private lazy var verticalStackView = UIStackView()
-    private lazy var primaryActionButton = Button()
-    private lazy var secondaryActionButton = Button()
+    private lazy var primaryActionButton = MacaroonUIKit.Button()
+    private lazy var secondaryActionButton = MacaroonUIKit.Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -99,7 +99,8 @@ extension WCTransactionFullDappDetailView {
     }
 
     private func addPrimaryActionButton(_ theme: WCTransactionFullDappDetailViewTheme) {
-        primaryActionButton.customize(theme.mainButtonTheme)
+        primaryActionButton.customizeAppearance(theme.primaryAction)
+        primaryActionButton.contentEdgeInsets = UIEdgeInsets(theme.primaryActionEdgeInsets)
 
         primaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(primaryActionButton)
@@ -111,7 +112,7 @@ extension WCTransactionFullDappDetailView {
         titleLabel.text = configurator?.title
         descriptionLabel.text = configurator?.description
         imageView.load(from: configurator?.image)
-        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
+        primaryActionButton.setTitle(configurator?.primaryActionButtonTitle, for: .normal)
     }
 }
 

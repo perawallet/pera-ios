@@ -23,8 +23,8 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let description: TextStyle
-    let mainButtonTheme: ButtonTheme
-
+    let primaryAction: ButtonStyle
+    let primaryActionEdgeInsets: LayoutPaddings
     let verticalInset: LayoutMetric
     let buttonInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -50,9 +50,17 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .text("screenshot-description".localized)
         ]
-
-        self.mainButtonTheme = ButtonPrimaryTheme()
-
+        self.primaryAction = [
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
+                .disabled("components/buttons/primary/bg-disabled")
+            ])
+        ]
+        self.primaryActionEdgeInsets = (16, 8, 16, 8)
         self.buttonInset = 16
         self.verticalInset = 32
         self.horizontalInset = 24
