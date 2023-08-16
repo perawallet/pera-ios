@@ -16756,8 +16756,8 @@
 			isa = PBXGroup;
 			children = (
 				955B616B2783508B005A5C7E /* WCMainTransactionScreen.swift */,
-				D4CBB90A2A8C0D7D003471D6 /* WCTransactionType.swift */,
 				955B6178278483F5005A5C7E /* WCMainTransactionScreen+Theme.swift */,
+				D4CBB90A2A8C0D7D003471D6 /* WCTransactionType.swift */,
 				955B61852784A9F9005A5C7E /* SingleRequest */,
 				95FD4C0327941B2F00BF29BE /* UnsignedRequest */,
 			);
