@@ -75,7 +75,9 @@ extension JSONDisplayViewController {
 
     private func copyJSON() {
         let jsonText = viewModel.jsonText
-        copyToClipboardController.copySome(jsonText.someString)
+        if let jsonText {
+            copyToClipboardController.copyText(jsonText)
+        }
     }
 }
 

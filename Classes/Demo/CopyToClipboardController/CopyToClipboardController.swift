@@ -124,14 +124,14 @@ extension CopyToClipboardController {
         return copy(item)
     }
 
-    func copySome(
-        _ someString: String
+    func copyText(
+        _ someText: String
     ) {
         let interaction = CopyToClipboardInteraction(
             title: "title-copied-to-clipboard".localized,
             body: nil
         )
-        let item = ClipboardItem(copy: someString, interaction: interaction)
+        let item = ClipboardItem(copy: someText, interaction: interaction)
         return copy(item)
     }
 }
