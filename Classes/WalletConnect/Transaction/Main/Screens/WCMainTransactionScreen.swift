@@ -175,16 +175,22 @@ extension WCMainTransactionScreen {
                 with: dataSource.groupedTransactions
             )
 
+            /// <note>:
+            /// Enter 2 times for `getAssetDetailsIfNeeded` & `getTransactionParams`.
+            initialDataLoadingDispatchGroup.enter()
+            initialDataLoadingDispatchGroup.enter()
+
             getAssetDetailsIfNeeded()
             getTransactionParams()
-        }
 
-        initialDataLoadingDispatchGroup.notify(queue: .main) {
-            [weak self] in
-            guard let self else { return }
-            stopLoading()
+            initialDataLoadingDispatchGroup.notify(queue: .main) {
+                [weak self] in
+                guard let self else { return }
 
-            presentInitialWarningAlertIfNeeded()
+                stopLoading()
+
+                presentInitialWarningAlertIfNeeded()
+            }
         }
     }
 }
@@ -217,9 +223,8 @@ extension WCMainTransactionScreen {
 
 extension WCMainTransactionScreen {
     private func bindDappInfo() {
-        guard let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url)) else {
-            return
-        }
+        let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url))
+        guard let wcSession else { return }
 
         let viewModel = WCTransactionDappMessageViewModel(
             session: wcSession,
@@ -244,9 +249,9 @@ extension WCMainTransactionScreen {
 
     private func addDappInfo() {
         view.addSubview(dappMessageView)
-        dappMessageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(theme.dappViewLeadingInset)
-            make.top.safeEqualToTop(of: self).offset(theme.dappViewTopInset)
+        dappMessageView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.dappViewLeadingInset)
+            $0.top.safeEqualToTop(of: self).offset(theme.dappViewTopInset)
         }
 
         bindDappInfo()
@@ -266,9 +271,9 @@ extension WCMainTransactionScreen {
             )
 
             view.addSubview(fragmentView)
-            fragmentView.snp.makeConstraints { make in
-                make.top.equalToSuperview().inset(theme.fragmentTopInset)
-                make.leading.trailing.bottom.equalToSuperview()
+            fragmentView.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(theme.fragmentTopInset)
+                $0.leading.trailing.bottom.equalToSuperview()
             }
         }
     }
@@ -315,20 +320,29 @@ extension WCMainTransactionScreen {
 
 extension WCMainTransactionScreen {
     private func confirmTransaction() {
-        let containsFutureTransaction = transactions.contains {
-            guard let transactionParams else {
-                return false
+        startLoading()
+
+        asyncBackground(qos: .userInitiated) {
+            [weak self] in
+            guard let self else { return }
+
+            let containsFutureTransaction = transactions.contains {
+                guard let transactionParams = self.transactionParams else {
+                    return false
+                }
+
+                return $0.isFutureTransaction(with: transactionParams)
             }
 
-            return $0.isFutureTransaction(with: transactionParams)
-        }
+            stopLoading()
 
-        if containsFutureTransaction {
-            presentSigningFutureTransactionAlert()
-            return
-        }
+            if containsFutureTransaction {
+                presentSigningFutureTransactionAlert()
+                return
+            }
 
-        confirmSigning()
+            confirmSigning()
+        }
     }
 
     private func presentSigningFutureTransactionAlert() {
@@ -339,14 +353,23 @@ extension WCMainTransactionScreen {
             primaryActionButtonTitle: "title-accept".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in
-                self?.confirmSigning()
+                asyncBackground(qos: .userInitiated) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.confirmSigning()
+                }
             }
         )
 
-        transitionToSigningFutureTransaction.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
+        asyncMain {
+            [weak self] in
+            guard let self else { return }
+
+            transitionToSigningFutureTransaction.perform(
+                .bottomWarning(configurator: configurator),
+                by: .presentWithoutNavigationController
+            )
+        }
     }
 
     private func presentInitialWarningAlertIfNeeded() {
@@ -471,12 +494,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         dismissSignWithLedgerProcessScreen()
 
         if transactions.count != signedTransactions.count {
-            asyncMain {
-                [weak self] in
-                guard let self else { return }
-
-                rejectSigning(reason: .invalidInput(.unsignable))
-            }
+            rejectSigning(reason: .invalidInput(.unsignable))
             return
         }
 
@@ -560,7 +578,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         let isDisconnectNeeded = transactions.allSatisfy {
             $0.requestedSigner.account?.requiresLedgerConnection() ?? false
         }
-
         if isDisconnectNeeded {
             wcTransactionSigner.disonnectFromLedger()
         }
@@ -693,26 +710,36 @@ extension WCMainTransactionScreen {
             }
         }
 
-        ledgerConnectionScreen = transitionToLedgerConnection.perform(
-            .ledgerConnection(eventHandler: eventHandler),
-            by: .presentWithoutNavigationController
-        )
+        asyncMain {
+            [weak self] in
+            guard let self else { return }
+
+            ledgerConnectionScreen = transitionToLedgerConnection.perform(
+                .ledgerConnection(eventHandler: eventHandler),
+                by: .presentWithoutNavigationController
+            )
+        }
     }
 }
 
 extension WCMainTransactionScreen {
     private func openLedgerConnectionIssues() {
-        transitionToLedgerConnectionIssuesWarning.perform(
-            .bottomWarning(
-                configurator: BottomWarningViewConfigurator(
-                    image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
-                )
-            ),
-            by: .presentWithoutNavigationController
-        )
+        asyncMain {
+            [weak self] in
+            guard let self else { return }
+
+            transitionToLedgerConnectionIssuesWarning.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        }
     }
 }
 
@@ -737,13 +764,18 @@ extension WCMainTransactionScreen {
             }
         }
 
-        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
-            .signWithLedgerProcess(
-                draft: draft,
-                eventHandler: eventHandler
-            ),
-            by: .present
-        ) as? SignWithLedgerProcessScreen
+        asyncMain {
+            [weak self] in
+            guard let self else { return }
+
+            signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+                .signWithLedgerProcess(
+                    draft: draft,
+                    eventHandler: eventHandler
+                ),
+                by: .present
+            ) as? SignWithLedgerProcessScreen
+        }
     }
 }
 
@@ -821,6 +853,7 @@ extension WCMainTransactionScreen {
         asyncMain {
             [weak self] in
             guard let self else { return }
+
             transitionToRejectionReason.perform(
                 .bottomWarning(configurator: configurator),
                 by: .presentWithoutNavigationController
@@ -845,43 +878,6 @@ extension WCMainTransactionScreen {
 extension WCMainTransactionScreen: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         rejectSigning(reason: error)
-    }
-}
-
-extension WCMainTransactionScreen {
-    private func getTransactionParams() {
-        initialDataLoadingDispatchGroup.enter()
-
-        sharedDataController.getTransactionParams {
-            [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success(let params):
-                self.transactionParams = params
-            case .failure:
-                break
-            }
-
-            self.rejectIfTheNetworkIsInvalid()
-
-            self.initialDataLoadingDispatchGroup.leave()
-        }
-    }
-
-    private func rejectIfTheNetworkIsInvalid() {
-        if !hasValidNetwork(for: transactions) {
-            rejectSigning(reason: .unauthorized(.nodeMismatch))
-            return
-        }
-    }
-
-    private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
-        guard let transactionParams else {
-            return false
-        }
-
-        return transactions.contains { $0.isInTheSameNetwork(with: transactionParams) }
     }
 }
 
@@ -920,6 +916,7 @@ extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
         asyncMain {
             [weak self] in
             guard let self else { return }
+
             transitionToFailedGroupingTransactions.perform(
                 .bottomWarning(configurator: configurator),
                 by: .presentWithoutNavigationController
@@ -929,11 +926,49 @@ extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
 }
 
 extension WCMainTransactionScreen {
-    private func getAssetDetailsIfNeeded() {
-        initialDataLoadingDispatchGroup.enter()
+    private func getTransactionParams() {
+        sharedDataController.getTransactionParams {
+            [weak self] result in
+            guard let self else { return }
 
-        let queue = DispatchQueue.global(qos: .userInitiated)
-        queue.async {
+            switch result {
+            case .success(let params):
+                self.transactionParams = params
+            case .failure:
+                break
+            }
+
+            asyncBackground(qos: .userInitiated) {
+                [weak self] in
+                guard let self else { return }
+
+                self.rejectIfTheNetworkIsInvalid()
+
+                self.initialDataLoadingDispatchGroup.leave()
+            }
+        }
+    }
+
+    private func rejectIfTheNetworkIsInvalid() {
+        if !hasValidNetwork(for: transactions) {
+            rejectSigning(reason: .unauthorized(.nodeMismatch))
+            return
+        }
+    }
+
+    private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
+        guard let transactionParams else {
+            return false
+        }
+
+        return transactions.contains { $0.isInTheSameNetwork(with: transactionParams) }
+    }
+}
+
+
+extension WCMainTransactionScreen {
+    private func getAssetDetailsIfNeeded() {
+        asyncBackground(qos: .userInitiated) {
             [weak self] in
             guard let self else { return }
 
@@ -943,11 +978,7 @@ extension WCMainTransactionScreen {
                     continue
                 }
 
-                let isAssetCreation = transactionDetail.isAssetCreationTransaction
-                let isAssetTransfer = transactionDetail.isAssetTransaction
-                let isAssetConfig = transactionDetail.isAssetConfigTransaction
-                let isValidAssetTransaction = !isAssetCreation && (isAssetTransfer || isAssetConfig)
-
+                let isValidAssetTransaction = isValidAssetTransaction(transactionDetail)
                 if isValidAssetTransaction {
                     guard let assetID = transactionDetail.currentAssetId else {
                         rejectSigning(reason: .invalidInput(.asset))
@@ -982,6 +1013,13 @@ extension WCMainTransactionScreen {
                 initialDataLoadingDispatchGroup.leave()
             }
         }
+    }
+
+    private func isValidAssetTransaction(_ transactionDetail: WCTransactionDetail) -> Bool {
+        let isAssetCreation = transactionDetail.isAssetCreationTransaction
+        let isAssetTransfer = transactionDetail.isAssetTransaction
+        let isAssetConfig = transactionDetail.isAssetConfigTransaction
+        return !isAssetCreation && (isAssetTransfer || isAssetConfig)
     }
 
     private func publishAssetDetailFetchedNotification() {
