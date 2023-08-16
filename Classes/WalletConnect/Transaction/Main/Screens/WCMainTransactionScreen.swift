@@ -63,6 +63,11 @@ final class WCMainTransactionScreen:
 
     private lazy var wcTransactionSigner = createTransactionSigner()
     private lazy var transactionSignQueue = DispatchQueue.global(qos: .userInitiated)
+
+    private lazy var initialDataLoadingQueue = DispatchQueue(
+        label: "wcMainTransactionScreen.initialDataLoadingQueue",
+        qos: .userInitiated
+    )
     private lazy var initialDataLoadingDispatchGroup = DispatchGroup()
 
     private var ledgerConnectionScreen: LedgerConnectionScreen?
@@ -140,8 +145,6 @@ final class WCMainTransactionScreen:
 
             loadInitialData()
 
-            presentInitialWarningAlertIfNeeded() // Bunu test et
-
             isViewLayoutLoaded = true
         }
     }
@@ -163,18 +166,25 @@ extension WCMainTransactionScreen {
     private func loadInitialData() {
         startLoading()
 
-        validateTransactions(
-            transactions,
-            with: dataSource.groupedTransactions
-        )
+        initialDataLoadingQueue.async {
+            [weak self] in
+            guard let self else { return }
 
-        getAssetDetailsIfNeeded()
-        getTransactionParams()
+            validateTransactions(
+                transactions,
+                with: dataSource.groupedTransactions
+            )
+
+            getAssetDetailsIfNeeded()
+            getTransactionParams()
+        }
 
         initialDataLoadingDispatchGroup.notify(queue: .main) {
             [weak self] in
             guard let self else { return }
             stopLoading()
+
+            presentInitialWarningAlertIfNeeded()
         }
     }
 }
@@ -340,6 +350,8 @@ extension WCMainTransactionScreen {
     }
 
     private func presentInitialWarningAlertIfNeeded() {
+        if isRejected { return }
+
         let oneTimeDisplayStorage = OneTimeDisplayStorage()
 
         if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
@@ -844,8 +856,6 @@ extension WCMainTransactionScreen {
             [weak self] result in
             guard let self else { return }
 
-            initialDataLoadingDispatchGroup.leave()
-
             switch result {
             case .success(let params):
                 self.transactionParams = params
@@ -854,6 +864,8 @@ extension WCMainTransactionScreen {
             }
 
             self.rejectIfTheNetworkIsInvalid()
+
+            self.initialDataLoadingDispatchGroup.leave()
         }
     }
 
@@ -961,13 +973,13 @@ extension WCMainTransactionScreen {
                 [weak self] isSuccess in
                 guard let self else { return }
 
-                initialDataLoadingDispatchGroup.leave()
-
                 if isSuccess {
                     publishAssetDetailFetchedNotification()
                 } else {
-                    self.rejectSigning(reason: .invalidInput(.unableToFetchAsset))
+                    rejectSigning(reason: .invalidInput(.unableToFetchAsset))
                 }
+
+                initialDataLoadingDispatchGroup.leave()
             }
         }
     }
