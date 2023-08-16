@@ -21,6 +21,9 @@ import UIKit
 
 struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let image: URLImageViewStyleLayoutSheet
+    let imageSize: LayoutSize
+    let imageCorner: Corner
     let title: TextStyle
     let description: TextStyle
     let primaryAction: ButtonStyle
@@ -36,6 +39,9 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
+        self.image = URLImageViewNoStyleLayoutSheet(family)
+        self.imageSize = (48, 48)
+        self.imageCorner = Corner(radius: 24)
         self.title = [
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),

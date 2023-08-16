@@ -97,6 +97,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"title-copied-to-clipboard" = "Copied to clipboard";
 "account-not-found" = "Account not found";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
@@ -969,7 +970,6 @@
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
-"wallet-connect-transaction-dapp-show-more" = "Read More";
 
 "wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
 "wallet-connect-transaction-title-app-call" = "Application Call";

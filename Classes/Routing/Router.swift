@@ -1003,7 +1003,15 @@ class Router:
                 configuration: configuration
             )
         case let .jsonDisplay(jsonData, title):
-            viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = JSONDisplayViewController(
+                jsonData: jsonData,
+                title: title,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
