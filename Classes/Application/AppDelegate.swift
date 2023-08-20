@@ -582,7 +582,7 @@ extension AppDelegate {
             api: api,
             sharedDataController: sharedDataController,
             authChecker: ALGAppAuthChecker(session: session),
-            walletConnector: walletConnector,
+            peraConnect: peraConnect,
             uiHandler: self
         )
     }

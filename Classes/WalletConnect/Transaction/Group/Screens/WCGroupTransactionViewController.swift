@@ -24,7 +24,6 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var dataSource = WCGroupTransactionDataSource(
         sharedDataController: sharedDataController,
         transactions: transactions,
-        walletConnector: walletConnector,
         currencyFormatter: currencyFormatter
     )
 

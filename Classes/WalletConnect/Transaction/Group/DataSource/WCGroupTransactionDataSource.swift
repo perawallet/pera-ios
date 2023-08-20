@@ -22,18 +22,15 @@ class WCGroupTransactionDataSource: NSObject {
 
     private let sharedDataController: SharedDataController
     private let transactions: [WCTransaction]
-    private let walletConnector: WalletConnectV1Protocol
     private let currencyFormatter: CurrencyFormatter
 
     init(
         sharedDataController: SharedDataController,
         transactions: [WCTransaction],
-        walletConnector: WalletConnectV1Protocol,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
         self.transactions = transactions
-        self.walletConnector = walletConnector
         self.currencyFormatter = currencyFormatter
 
         super.init()

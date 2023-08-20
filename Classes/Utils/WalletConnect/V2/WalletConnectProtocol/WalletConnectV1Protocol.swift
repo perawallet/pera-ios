@@ -21,7 +21,7 @@ class WalletConnectV1Protocol:
     ServerDelegate {
     static var didReceiveSessionRequestNotification: Notification.Name {
         return .init(
-            rawValue: "com.algorand.algorand.notification.walletConnector.didReceiveSessionRequest"
+            rawValue: "com.algorand.algorand.notification.walletConnectV1Protocol.didReceiveSessionRequest"
         )
     }
     

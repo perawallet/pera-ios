@@ -39,16 +39,12 @@ final class SettingsDataSource: NSObject {
     private(set) lazy var supportSettings: [SupportSettings] = [
         .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer
     ]
-    
-    private let walletConnector: WalletConnectV1Protocol
+
     private var session: Session?
     
     init(
-        walletConnector: WalletConnectV1Protocol,
         session: Session?
     ) {
-        self.walletConnector = walletConnector
-        
         super.init()
         self.session = session
     }

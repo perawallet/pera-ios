@@ -22,16 +22,16 @@ import UIKit
 final class DeepLinkParser {
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnectV1Protocol
+    private let peraConnect: PeraConnect
     
     init(
         api: ALGAPI,
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnectV1Protocol
+        peraConnect: PeraConnect
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
+        self.peraConnect = peraConnect
     }
 }
 
@@ -544,7 +544,7 @@ extension DeepLinkParser {
         }
         
         return
-            walletConnector.isValidSession(maybeWalletConnectSessionKey) ?
+            peraConnect.isValidSession(maybeWalletConnectSessionKey) ?
             .success(maybeWalletConnectSessionKey) :
             nil
     }

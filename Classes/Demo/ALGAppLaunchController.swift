@@ -39,14 +39,14 @@ final class ALGAppLaunchController:
     private let sharedDataController: SharedDataController
     private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
-    private let walletConnector: WalletConnectV1Protocol
+    private let peraConnect: PeraConnect
     
     init(
         session: Session,
         api: ALGAPI,
         sharedDataController: SharedDataController,
         authChecker: AppAuthChecker,
-        walletConnector: WalletConnectV1Protocol,
+        peraConnect: PeraConnect,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session
@@ -55,10 +55,10 @@ final class ALGAppLaunchController:
         self.deeplinkParser = DeepLinkParser(
             api: api,
             sharedDataController: sharedDataController,
-            walletConnector: walletConnector
+            peraConnect: peraConnect
         )
         self.authChecker = authChecker
-        self.walletConnector = walletConnector
+        self.peraConnect = peraConnect
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -229,7 +229,7 @@ extension ALGAppLaunchController {
     ) {
         switch event {
         case .didFinishRunning:
-            walletConnector.configureTransactionsIfNeeded()
+            peraConnect.configureIfNeeded()
             resumePendingDeeplink()
         default: break
         }

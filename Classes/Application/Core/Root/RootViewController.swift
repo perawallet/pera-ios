@@ -103,8 +103,7 @@ extension RootViewController {
             dataController: HomeAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
-                announcementDataController: announcementAPIDataController,
-                walletConnector: walletConnector
+                announcementDataController: announcementAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
