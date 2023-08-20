@@ -24,6 +24,8 @@ protocol WalletConnectCoordinator {
     
     func isValidSession(session: WalletConnectSessionText) -> Bool
     
+    func configureIfNeeded()
+    
     func getSessions()
     
     func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
@@ -65,4 +67,5 @@ enum WalletConnectCoordinatorEvent {
     )
     case pingV2(String)
     case transactionRequestV2(WalletConnectV2Request)
+    case failure(Error)
 }

@@ -102,6 +102,8 @@ extension ALGWalletConnectCoordinator {
                 sendEvent(.pingV2(ping))
             case .transactionRequest(let request):
                 sendEvent(.transactionRequestV2(request))
+            case .failure(let error):
+                sendEvent(.failure(error))
             }
         }
     }
@@ -114,6 +116,10 @@ extension ALGWalletConnectCoordinator {
 extension ALGWalletConnectCoordinator {
     func isValidSession(session: WalletConnectSessionText) -> Bool {
         return walletConnectV1Protocol.isValidSession(session) || walletConnectV2Protocol.isValidSession(session)
+    }
+    
+    func configureIfNeeded() {
+        walletConnectV1Protocol.configureTransactionsIfNeeded()
     }
     
     func getSessions() {

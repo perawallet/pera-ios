@@ -83,6 +83,8 @@ extension ALGPeraConnect {
                 sendEvent(.pingV2(ping))
             case .transactionRequestV2(let request):
                 sendEvent(.transactionRequestV2(request))
+            case .failure(let error):
+                sendEvent(.failure(error))
             }
         }
     }
@@ -91,6 +93,10 @@ extension ALGPeraConnect {
 extension ALGPeraConnect {
     func isValidSession(_ session: WalletConnectSessionText) -> Bool {
         walletConnectCoordinator.isValidSession(session: session)
+    }
+    
+    func configureIfNeeded() {
+        walletConnectCoordinator.configureIfNeeded()
     }
 }
 

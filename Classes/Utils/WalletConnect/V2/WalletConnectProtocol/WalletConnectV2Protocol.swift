@@ -72,11 +72,13 @@ extension WalletConnectV2Protocol {
 extension WalletConnectV2Protocol {
     func connect(with preferences: WalletConnectSessionCreationPreferences) {
         guard let uri = WalletConnectURI(string: preferences.session) else { return }
-        
+
         Task {
             do {
+                try pairAPI.cleanup()
                 try await pairAPI.pair(uri: uri)
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Pairing connect error: \(error)")
             }
         }
@@ -105,6 +107,7 @@ extension WalletConnectV2Protocol {
                     namespaces: namespaces
                 )
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Approve Session error: \(error)")
             }
         }
@@ -123,6 +126,7 @@ extension WalletConnectV2Protocol {
                     reason: reason
                 )
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Reject Session error: \(error)")
             }
         }
@@ -135,6 +139,7 @@ extension WalletConnectV2Protocol {
             do {
                 try await signAPI.extend(topic: session.topic)
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Extend Session error: \(error)")
             }
         }
@@ -153,6 +158,7 @@ extension WalletConnectV2Protocol {
                     namespaces: namespaces
                 )
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Update Session error: \(error)")
             }
         }
@@ -174,6 +180,7 @@ extension WalletConnectV2Protocol {
                     response: .response(response)
                 )
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Approve Request Error: \(error.localizedDescription)")
             }
         }
@@ -195,6 +202,7 @@ extension WalletConnectV2Protocol {
                     )
                 )
             } catch {
+                self.eventHandler?(.failure(error))
                 print("[WC2] - Reject Request Error: \(error.localizedDescription)")
             }
         }
@@ -343,12 +351,15 @@ enum WalletConnectV2Event {
     )
     case ping(String)
     case transactionRequest(WalletConnectV2Request)
+    case failure(Error)
 }
 
 typealias SessionNamespaces = [String: SessionNamespace]
+typealias WalletConnectV2SessionNamespace = SessionNamespace
 typealias WalletConnectV2SessionProposal = WalletConnectSign.Session.Proposal
 typealias WalletConnectV2SessionRejectionReason = RejectionReason
 typealias WalletConnectV2Session = WalletConnectSign.Session
 typealias WalletConnectV2Request = WalletConnectSign.Request
 typealias WalletConnectV2CodableResult = AnyCodable
 typealias WalletConnectV2Reason = Reason
+typealias WalletConnectV2Account = WalletConnectUtils.Account

@@ -24,6 +24,8 @@ protocol PeraConnect {
     
     func isValidSession(_ session: WalletConnectSessionText) -> Bool
     
+    func configureIfNeeded()
+    
     func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
     func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams)
@@ -63,4 +65,5 @@ enum PeraConnectEvent {
     )
     case pingV2(String)
     case transactionRequestV2(WalletConnectV2Request)
+    case failure(Error)
 }
