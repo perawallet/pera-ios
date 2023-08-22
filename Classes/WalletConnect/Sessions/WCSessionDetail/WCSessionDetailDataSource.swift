@@ -29,7 +29,7 @@ WCSessionDetail.ItemIdentifier
         let profileCellRegistration = Self.makeWCSessionProfileCellRegistration()
         let wcV1BadgeCellRegistration = Self.makeWCSessionWCV1SessionBadgeCellRegistration()
         let infoCellRegistration = Self.makeWCSessionInfoCellRegistration()
-        let connectedAccountRegistration = Self.makeWCSessionConnectedAccountCellRegistration()
+        let connectedAccountCellRegistration = Self.makeWCSessionConnectedAccountCellRegistration()
         let advancedPermissionHeaderRegistration = Self.makeAdvancedPermissionHeaderRegistration()
         let advancedPermissionCellRegistration = Self.makeWCSessionAdvancedPermissionCellRegistration()
 
@@ -76,7 +76,7 @@ WCSessionDetail.ItemIdentifier
                 }
 
                 let cell = collectionView.dequeueConfiguredReusableCell(
-                    using: connectedAccountRegistration,
+                    using: connectedAccountCellRegistration,
                     for: indexPath,
                     item: item
                 )

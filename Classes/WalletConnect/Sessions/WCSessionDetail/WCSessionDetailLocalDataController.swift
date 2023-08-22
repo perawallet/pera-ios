@@ -20,7 +20,7 @@ import MagpieCore
 import MagpieHipo
 
 final class WCSessionDetailLocalDataController: WCSessionDetailDataController {
-    var eventHandler: ((WCSessionDetailDataControllerEvent) -> Void)?
+    var eventHandler: EventHandler?
 
     private lazy var updatesQueue = makeUpdatesQueue()
 
@@ -32,7 +32,7 @@ final class WCSessionDetailLocalDataController: WCSessionDetailDataController {
 
     private(set) var sessionConnectedAccountsHeaderViewModel: WCSessionConnectedAccountsHeaderViewModel?
 
-    private(set) var connectedAccountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
+    private var connectedAccountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
 
     subscript(address: PublicKey) -> AccountListItemViewModel? {
         return findViewModel(forAddress:  address)

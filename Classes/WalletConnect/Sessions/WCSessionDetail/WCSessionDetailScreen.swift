@@ -540,9 +540,15 @@ extension WCSessionDetailScreen {
     }
 
     private func handleFailedSessionPing() {
-        resetSessionStatusUIAfterDelay()
-
         updateSessionStatusUI(.failed)
+
+        resetSessionStatusUIAfterDelay()
+    }
+
+    private func handleActiveSessionPing() {
+        updateSessionStatusUI(.active)
+
+        resetSessionStatusUIAfterDelay()
     }
 
     private func pauseSessionPingRepeater() {

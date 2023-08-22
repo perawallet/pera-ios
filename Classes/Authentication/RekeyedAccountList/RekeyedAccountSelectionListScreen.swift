@@ -508,21 +508,7 @@ extension RekeyedAccountSelectionListScreen {
             togglePrimaryActionStateIfNeeded()
         }
     }
-
-    private func selectAccount(
-        at indexPath: IndexPath
-    ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
-        cell.accessory = .selected
-    }
-
-    private func unselectAccount(
-        at indexPath: IndexPath
-    ) {
-        let cell = listView.cellForItem(at: indexPath) as! RekeyedAccountSelectionListAccountCell
-        cell.accessory = .unselected
-    }
-
+    
     private func toggleAccountSelection(
         at indexPath: IndexPath
     ) {
