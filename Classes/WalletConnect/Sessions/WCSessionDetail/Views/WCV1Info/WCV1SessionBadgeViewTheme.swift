@@ -21,11 +21,11 @@ import UIKit
 struct WCV1SessionBadgeViewTheme:
     StyleSheet,
     LayoutSheet {
-    var badge: TextStyle
-    var badgeCorner: Corner
-    var badgeContentEdgeInsets: LayoutPaddings
-    var spacingBetweenBadgeAndInfo: LayoutMetric
-    var info: TextStyle
+    let badge: TextStyle
+    let badgeCorner: Corner
+    let badgeContentEdgeInsets: LayoutPaddings
+    let spacingBetweenBadgeAndInfo: LayoutMetric
+    let info: TextStyle
 
     init(_ family: LayoutFamily) {
         self.badge = [

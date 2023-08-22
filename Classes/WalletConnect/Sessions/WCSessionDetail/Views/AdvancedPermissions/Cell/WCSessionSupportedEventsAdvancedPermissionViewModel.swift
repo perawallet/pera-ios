@@ -18,9 +18,9 @@ import Foundation
 import MacaroonUIKit
 
 struct WCSessionSupportedEventsAdvancedPermissionViewModel: PrimaryTitleViewModel {
-    var primaryTitle: TextProvider?
-    var primaryTitleAccessory: Image?
-    var secondaryTitle: TextProvider?
+    private(set) var primaryTitle: TextProvider?
+    private(set) var primaryTitleAccessory: Image?
+    private(set) var secondaryTitle: TextProvider?
 
     init() {
         bindPrimaryTitle()
@@ -29,14 +29,14 @@ struct WCSessionSupportedEventsAdvancedPermissionViewModel: PrimaryTitleViewMode
 }
 
 extension WCSessionSupportedEventsAdvancedPermissionViewModel {
-    mutating func bindPrimaryTitle() {
+    private mutating func bindPrimaryTitle() {
         primaryTitle =
             "wc-session-supported-events"
                 .localized
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindSecondaryTitle() {
+    private mutating func bindSecondaryTitle() {
         secondaryTitle =
             "accountsChanged"
                 .localized

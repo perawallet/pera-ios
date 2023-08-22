@@ -18,8 +18,8 @@ import Foundation
 import MacaroonUIKit
 
 struct WCSessionConnectionDateSecondaryListItemViewModel: SecondaryListItemViewModel {
-    var title: TextProvider?
-    var accessory: SecondaryListItemValueViewModel?
+    private(set) var title: TextProvider?
+    private(set) var accessory: SecondaryListItemValueViewModel?
 
     init() {
         bindTitle()
@@ -41,8 +41,8 @@ extension WCSessionConnectionDateSecondaryListItemViewModel {
 }
 
 fileprivate struct WCSessionConnectionDateSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
-    var icon: ImageStyle?
-    var title: TextProvider?
+    private(set) var icon: ImageStyle?
+    private(set) var title: TextProvider?
 
     init() {
         bindTitle()

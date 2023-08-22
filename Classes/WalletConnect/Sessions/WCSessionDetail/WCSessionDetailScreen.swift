@@ -504,7 +504,7 @@ extension WCSessionDetailScreen {
             totalUnitCount: 3,
             currentUnitCount: 1
         )
-        let status = WCSessionStatus.pinging(dotCount: progress.currentUnitCount)
+        let status = WCSessionStatus.pinging(progress: progress)
         updateSessionStatusUI(status)
 
         startSessionPingRepeater(with: progress)
@@ -529,7 +529,7 @@ extension WCSessionDetailScreen {
             return
         }
 
-        let status = WCSessionStatus.pinging(dotCount: progress.currentUnitCount)
+        let status = WCSessionStatus.pinging(progress: progress)
         updateSessionStatusUI(status)
 
         progress()

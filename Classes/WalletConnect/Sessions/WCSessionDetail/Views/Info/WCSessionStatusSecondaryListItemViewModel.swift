@@ -18,9 +18,9 @@ import Foundation
 import MacaroonUIKit
 
 struct WCSessionStatusSecondaryListItemViewModel: SecondaryListItemViewModel {
-    var title: TextProvider?
-    var accessory: SecondaryListItemValueViewModel?
-    var isInteractable: Bool = true
+    private(set) var title: TextProvider?
+    private(set) var accessory: SecondaryListItemValueViewModel?
+    private(set) var isInteractable: Bool = true
 
     init(_ status: WCSessionStatus) {
         bindTitle()
@@ -44,8 +44,8 @@ extension WCSessionStatusSecondaryListItemViewModel {
 }
 
 fileprivate struct WCSessionStatusSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
-    var icon: ImageStyle?
-    var title: TextProvider?
+    private(set) var icon: ImageStyle?
+    private(set) var title: TextProvider?
 
     init(_ status: WCSessionStatus) {
         bindTitle(status)
@@ -58,9 +58,9 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
         case .idle:
             icon = nil
             title = getIdleTitle()
-        case .pinging(let dotCount):
+        case .pinging(let progress):
             icon = nil
-            title = getPingingTitle(dotCount)
+            title = getPingingTitle(progress)
         case .active:
             icon = getActiveIcon()
             title = getActiveTitle()
@@ -77,8 +77,8 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
         return aTitle.attributed(attributes)
     }
 
-    private func getPingingTitle(_ dotCount: Int) -> TextProvider {
-        let dotText = String(repeating: ".", count: dotCount)
+    private func getPingingTitle(_ progress: ALGProgress) -> TextProvider {
+        let dotText = String(repeating: ".", count: progress.currentUnitCount)
         let text = "tite-pinging".localized  + dotText
 
         var attributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
@@ -118,7 +118,7 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
 }
 
 extension WCSessionStatusSecondaryListItemValueViewModel {
-    mutating func bindPingingTitle(_ dotCount: Int) {
-        title = getPingingTitle(dotCount)
+    mutating func bindPingingTitle(_ progress: ALGProgress) {
+        title = getPingingTitle(progress)
     }
 }

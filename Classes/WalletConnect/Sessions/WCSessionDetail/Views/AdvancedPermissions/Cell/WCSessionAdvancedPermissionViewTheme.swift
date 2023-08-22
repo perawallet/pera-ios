@@ -19,11 +19,11 @@ import UIKit
 import MacaroonUIKit
 
 struct WCSessionAdvancedPermissionViewTheme: PrimaryTitleViewTheme {
-    var primaryTitle: TextStyle
-    var primaryTitleAccessory: ImageStyle
-    var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
-    var secondaryTitle: TextStyle
-    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
+    let primaryTitle: TextStyle
+    let primaryTitleAccessory: ImageStyle
+    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    let secondaryTitle: TextStyle
+    let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.primaryTitle = [
