@@ -118,7 +118,7 @@ extension WCSessionItemViewModel {
             .textColor(Colors.Helpers.positive),
             .textAlignment(.center),
             .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
+            .backgroundColor(Colors.Helpers.positiveLighter.uiColor.withAlphaComponent(0.5))
         ]
     }
 
@@ -135,7 +135,7 @@ extension WCSessionItemViewModel {
             .textColor(Colors.Helpers.negative),
             .textAlignment(.center),
             .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.negative.uiColor.withAlphaComponent(0.1))
+            .backgroundColor(Colors.Helpers.negativeLighter.uiColor.withAlphaComponent(0.5))
         ]
     }
 }
