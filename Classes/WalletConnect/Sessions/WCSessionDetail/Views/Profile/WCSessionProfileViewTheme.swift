@@ -22,14 +22,14 @@ import UIKit
 struct WCSessionProfileViewTheme:
     LayoutSheet,
     StyleSheet {
-    var icon: URLImageViewStyleSheet & URLImageViewLayoutSheet
-    var iconSize: LayoutSize
-    var spacingBetweenIconAndTitle: LayoutMetric
-    var title: TextStyle
-    var spacingBetweenTitleAndLink: LayoutMetric
-    var link: TextStyle
-    var spacingBetweenLinkAndDescription: LayoutMetric
-    var description: TextStyle
+    let icon: URLImageViewStyleSheet & URLImageViewLayoutSheet
+    let iconSize: LayoutSize
+    let spacingBetweenIconAndTitle: LayoutMetric
+    let title: TextStyle
+    let spacingBetweenTitleAndLink: LayoutMetric
+    let link: TextStyle
+    let spacingBetweenLinkAndDescription: LayoutMetric
+    let description: TextStyle
 
     init(_ family: LayoutFamily) {
         self.icon = URLImageViewAssetTheme(family)

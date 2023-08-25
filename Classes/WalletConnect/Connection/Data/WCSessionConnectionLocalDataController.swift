@@ -36,14 +36,8 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
 
     private var sessionEventsRequestedPermissionViewModel: WCSessionEventsRequestedPermissionViewModel?
     private var sessionNetworkRequestedPermissionViewModel: WCSessionNetworkRequestedPermissionViewModel?
-    subscript(requestedPermission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
-        return findViewModel(forRequestedPermission: requestedPermission)
-    }
 
     private(set) var accountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
-    subscript(accountAddress: PublicKey) -> AccountListItemViewModel? {
-        return findViewModel(forAddress: accountAddress)
-    }
 
     private let walletConnectSession: WalletConnectSession
     private let sharedDataController: SharedDataController
@@ -54,6 +48,14 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
     ) {
         self.walletConnectSession = walletConnectSession
         self.sharedDataController = sharedDataController
+    }
+
+    subscript(requestedPermission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
+        return findViewModel(forRequestedPermission: requestedPermission)
+    }
+
+    subscript(accountAddress: PublicKey) -> AccountListItemViewModel? {
+        return findViewModel(forAddress: accountAddress)
     }
 }
 

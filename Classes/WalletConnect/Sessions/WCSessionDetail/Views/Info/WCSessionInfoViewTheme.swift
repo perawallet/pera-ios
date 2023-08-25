@@ -22,13 +22,13 @@ import UIKit
 struct WCSessionInfoViewTheme:
     LayoutSheet,
     StyleSheet {
-    var firstShadow: MacaroonUIKit.Shadow
-    var secondShadow: MacaroonUIKit.Shadow
-    var thirdShadow: MacaroonUIKit.Shadow
-    var contextEdgeInsets: LayoutPaddings
-    var spacingBetweenItems: LayoutMetric
-    var item: SecondaryListItemViewTheme
-    var itemMinHeight: LayoutMetric
+    let firstShadow: MacaroonUIKit.Shadow
+    let secondShadow: MacaroonUIKit.Shadow
+    let thirdShadow: MacaroonUIKit.Shadow
+    let contextEdgeInsets: LayoutPaddings
+    let spacingBetweenItems: LayoutMetric
+    let item: SecondaryListItemViewTheme
+    let itemMinHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.firstShadow = MacaroonUIKit.Shadow(
@@ -69,12 +69,12 @@ struct WCSessionInfoViewTheme:
 }
 
 struct WCSessionInfoItemTheme: SecondaryListItemViewTheme {
-    var contentEdgeInsets: LayoutPaddings
-    var title: TextStyle
-    var titleMinWidthRatio: LayoutMetric
-    var titleMaxWidthRatio: LayoutMetric
-    var minimumSpacingBetweenTitleAndAccessory: LayoutMetric
-    var accessory: SecondaryListItemValueViewTheme
+    let contentEdgeInsets: LayoutPaddings
+    let title: TextStyle
+    let titleMinWidthRatio: LayoutMetric
+    let titleMaxWidthRatio: LayoutMetric
+    let minimumSpacingBetweenTitleAndAccessory: LayoutMetric
+    let accessory: SecondaryListItemValueViewTheme
 
     init(
         _ family: LayoutFamily

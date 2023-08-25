@@ -29,14 +29,14 @@ struct WCSessionSupportedMethodsAdvancedPermissionViewModel: PrimaryTitleViewMod
 }
 
 extension WCSessionSupportedMethodsAdvancedPermissionViewModel {
-    mutating func bindPrimaryTitle() {
+    private mutating func bindPrimaryTitle() {
         primaryTitle =
             "wc-session-supported-methods"
                 .localized
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindSecondaryTitle() {
+    private  mutating func bindSecondaryTitle() {
         secondaryTitle =
             "algo_signTxn"
                 .localized

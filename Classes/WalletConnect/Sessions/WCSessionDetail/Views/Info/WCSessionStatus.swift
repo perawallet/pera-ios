@@ -16,16 +16,20 @@
 
 import Foundation
 
-enum WCSessionStatus: Hashable {
+enum WCSessionStatus {
     case idle
-    case pinging(dotCount: Int)
+    case pinging(progress: ALGProgress)
     case active
     case failed
 }
 
 extension WCSessionStatus {
     var isIdle: Bool {
-        return self == .idle
+        if case .idle = self {
+            return true
+        }
+
+        return false
     }
 
     var isPinging: Bool {

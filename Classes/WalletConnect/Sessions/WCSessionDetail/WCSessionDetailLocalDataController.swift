@@ -34,23 +34,23 @@ final class WCSessionDetailLocalDataController: WCSessionDetailDataController {
 
     private var connectedAccountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
 
-    subscript(address: PublicKey) -> AccountListItemViewModel? {
-        return findViewModel(forAddress:  address)
-    }
-
     private(set) var sessionAdvancedPermissionsHeaderViewModel: WCSessionAdvancedPermissionsHeaderViewModel?
 
     private var wcSessionSupportedMethodsAdvancedPermissionViewModel: WCSessionSupportedMethodsAdvancedPermissionViewModel?
     private var wcSessionSupportedEventsAdvancedPermissionViewModel: WCSessionSupportedEventsAdvancedPermissionViewModel?
 
-    subscript(permission: AdvancedPermission) -> PrimaryTitleViewModel? {
-        return findViewModel(forPermission: permission)
-    }
-
     private let sharedDataController: SharedDataController
 
     init(sharedDataController: SharedDataController) {
         self.sharedDataController = sharedDataController
+    }
+
+    subscript(address: PublicKey) -> AccountListItemViewModel? {
+        return findViewModel(forAddress:  address)
+    }
+
+    subscript(permission: AdvancedPermission) -> PrimaryTitleViewModel? {
+        return findViewModel(forPermission: permission)
     }
 }
 

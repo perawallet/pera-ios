@@ -20,13 +20,13 @@ import MacaroonUIKit
 struct WCSessionDetailScreenTheme:
     LayoutSheet,
     StyleSheet {
-    var background: ViewStyle
-    var spacingBetweenListAndPrimaryAction: LayoutMetric
-    var primaryAction: ButtonStyle
-    var secondaryAction: ButtonStyle
-    var actionEdgeInsets: LayoutPaddings
-    var actionMargins: LayoutMargins
-    var spacingBetweenActions: LayoutMetric
+    let background: ViewStyle
+    let spacingBetweenListAndPrimaryAction: LayoutMetric
+    let primaryAction: ButtonStyle
+    let secondaryAction: ButtonStyle
+    let actionEdgeInsets: LayoutPaddings
+    let actionMargins: LayoutMargins
+    let spacingBetweenActions: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [

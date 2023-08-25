@@ -20,8 +20,8 @@ import MacaroonUIKit
 struct WCSessionConnectedAccountsHeaderTheme:
     StyleSheet,
     LayoutSheet {
-    var context: TextStyle
-    var contextEdgeInsets: LayoutPaddings
+    let context: TextStyle
+    let contextEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.context = [
