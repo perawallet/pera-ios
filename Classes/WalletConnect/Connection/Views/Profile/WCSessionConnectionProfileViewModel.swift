@@ -79,7 +79,7 @@ extension WCSessionConnectionProfileViewModel {
         ]
         let isApproved = session.dAppInfo.approved ?? false
         if isApproved {
-            let icon = "WalletConnect/dapp-approved"
+            let icon = "icon-trusted"
             attributes.append(.icon([ .normal(icon), .highlighted(icon) ]))
         }
 

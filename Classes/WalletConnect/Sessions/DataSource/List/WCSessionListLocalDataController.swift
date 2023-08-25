@@ -122,8 +122,8 @@ extension WCSessionListLocalDataController {
     private func makeSessionItem(_ session: WCSession) -> WCSessionListItem {
         let viewModel = WCSessionItemViewModel(
             peermeta: session.peerMeta,
-            sessionDate: session.date,
-            accountList: getSessionAccountsFromLocal(session)
+            sessionDate: session.date
+//            accountList: getSessionAccountsFromLocal(session)
         )
 
         let item: WCSessionListItem = .session(
@@ -202,8 +202,8 @@ extension WCSessionListLocalDataController {
             
             let viewModel = WCSessionItemViewModel(
                 peermeta: session.peerMeta,
-                sessionDate: session.date,
-                accountList: self.getSessionAccountsFromLocal(session)
+                sessionDate: session.date
+//                accountList: self.getSessionAccountsFromLocal(session)
             )
 
             let item: WCSessionListItem = .session(

@@ -853,7 +853,8 @@
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-disconnected" = "Disconnected";
 "wallet-connect-session-disconnected-successfully-message" = "Session disconnected successfully";
-"wallet-connect-session-expires-on-date" = "Expires on %@";
+"wallet-connect-v2-session-expires-on-date" = "Expires on %@";
+"wallet-connect-session-connected-on-date" = "Connected on %@";
 "wallet-connect-session-connected-with-account" = "Connected with %@";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
