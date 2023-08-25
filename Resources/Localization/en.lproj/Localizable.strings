@@ -1571,3 +1571,8 @@ FAQ section.";
 "wc-session-supported-events" = "Supported events";
 "wc-session-extend-validty" = "Extend session validity";
 "wc-session-wcv1-info" = "This session is using WalletConnect V1";
+
+/// MARK: WC Session Connection
+"wc-session-connection-network" = "Network";
+"wc-session-connection-wc-events" = "WalletConnect events";
+"wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";

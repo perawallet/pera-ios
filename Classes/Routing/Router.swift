@@ -927,10 +927,11 @@ class Router:
                 configuration: configuration
             )
         case let .wcConnection(walletConnectSession, completion):
-            let dataController = WCConnectionAccountListLocalDataController(
+            let dataController = WCSessionConnectionLocalDataController(
+                walletConnectSession: walletConnectSession,
                 sharedDataController: appConfiguration.sharedDataController
             )
-            let screen = WCConnectionScreen(
+            let screen = WCSessionConnectionScreen(
                 walletConnectSession: walletConnectSession,
                 walletConnectSessionConnectionCompletionHandler: completion,
                 dataController: dataController,
@@ -2014,7 +2015,6 @@ extension Router {
         
         let sharedDataController = appConfiguration.sharedDataController
 
-
         let hasAuthorizedAccount = sharedDataController.accountCollection.contains {
             $0.value.authorization.isAuthorized
         }
@@ -2035,7 +2035,10 @@ extension Router {
             guard let self = self else { return }
             
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+            let transition = BottomSheetTransition(
+                presentingViewController: visibleScreen,
+                interactable: false
+            )
             
             let screen = transition.perform(
                 .wcConnection(
@@ -2043,7 +2046,7 @@ extension Router {
                     completion: completion
                 ),
                 by: .present
-            ) as? WCConnectionScreen
+            ) as? WCSessionConnectionScreen
             
             screen?.eventHandler = {
                 [weak self] event in
@@ -2053,17 +2056,13 @@ extension Router {
                 case .performCancel:
                     screen?.dismissScreen()
                 case .performConnect:
-                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
-                        screen?.dismissScreen()
-                        return
-                    }
-                    
                     screen?.dismissScreen {
                         [weak self] in
                         guard let self = self else { return }
 
                         if !shouldShowConnectionApproval { return }
 
+                        let dappName = session.dAppInfo.peerMeta.name
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }

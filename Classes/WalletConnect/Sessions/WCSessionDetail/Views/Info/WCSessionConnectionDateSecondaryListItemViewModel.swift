@@ -40,7 +40,7 @@ extension WCSessionConnectionDateSecondaryListItemViewModel {
     }
 }
 
-struct WCSessionConnectionDateSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
+fileprivate struct WCSessionConnectionDateSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
     var icon: ImageStyle?
     var title: TextProvider?
 

@@ -43,7 +43,7 @@ extension WCSessionStatusSecondaryListItemViewModel {
     }
 }
 
-struct WCSessionStatusSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
+fileprivate struct WCSessionStatusSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
     var icon: ImageStyle?
     var title: TextProvider?
 
