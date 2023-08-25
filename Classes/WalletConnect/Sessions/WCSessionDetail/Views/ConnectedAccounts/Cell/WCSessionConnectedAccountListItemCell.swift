@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   WCSessionConnectedAccountListItemCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
+final class WCSessionConnectedAccountListItemCell:
+    CollectionCell<AccountListItemView>,
+    ViewModelBindable {
+    override static var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+    static let theme = AccountListItemViewTheme()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
         contextView.customize(Self.theme)
     }

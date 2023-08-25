@@ -1861,6 +1861,18 @@ class Router:
                 theme: UISheetActionScreenCommonTheme(),
                 api: configuration.api
             )
+        case .wcSessionDetail:
+            let dataController = WCSessionDetailLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = WCSessionDetailScreen(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

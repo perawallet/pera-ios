@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   WCSessionConnectedAccountsHeaderTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
+struct WCSessionConnectedAccountsHeaderTheme:
+    StyleSheet,
+    LayoutSheet {
+    var context: TextStyle
+    var contextEdgeInsets: LayoutPaddings
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.context = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
+        self.contextEdgeInsets = (0, 24, 0, 24)
     }
 }

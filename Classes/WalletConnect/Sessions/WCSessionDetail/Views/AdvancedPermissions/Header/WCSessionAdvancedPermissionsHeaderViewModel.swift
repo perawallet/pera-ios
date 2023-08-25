@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   WCSessionAdvancedPermissionsHeaderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = NoContentWithActionViewCommonTheme()
+struct WCSessionAdvancedPermissionsHeaderViewModel: ViewModel {
+    private(set) var title: TextProvider?
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+    init() {
+        bindTitle()
+    }
+}
 
-        contextView.customize(Self.theme)
+extension WCSessionAdvancedPermissionsHeaderViewModel {
+    private mutating func bindTitle() {
+        title =
+            "wc-session-advanced-permissions"
+                .localized
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }
