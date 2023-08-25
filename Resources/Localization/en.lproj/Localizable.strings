@@ -851,12 +851,17 @@
 "wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
 "wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
 "wallet-connect-session-connected" = "Connected";
+"wallet-connect-session-disconnected" = "Disconnected";
+"wallet-connect-session-disconnected-successfully-message" = "Session disconnected successfully";
+"wallet-connect-session-expires-on-date" = "Expires on %@";
 "wallet-connect-session-connected-with-account" = "Connected with %@";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
-"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
+"wallet-connect-session-connection-approved-title" = "You are connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
+"wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@";
+"wallet-connect-v2-session-connection-approved-description" = "Its validity will be automatically extended, whenever used, until %@. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to %@ to complete your operation.";
 "wallet-connect-select-accounts" = "Select Accounts";
 "wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
 "wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
@@ -954,6 +959,7 @@
 
 "wc-transaction-request-signed-warning-title" = "Your transaction is being processed!";
 "wc-transaction-request-signed-warning-message" = "The transaction has been signed and sent to %@. Please visit %@ for the remaining process.";
+"wc-transaction-request-signed-warning-info" = "This WalletConnect session is approaching its maximal validity, which cannot be extended beyond: %@\n\nAfter this date, the session will be automatically disconnected and you'll have to reconnect again.";
 
 "wallet-connect-session-timeout-message" = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
 

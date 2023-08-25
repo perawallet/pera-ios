@@ -1874,8 +1874,36 @@ class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-        }
+        case let .wcSessionConnectionSuccessful(walletConnectSession, eventHandler):
+            let uiSheet = WCSessionConnectionSuccessfulSheet(
+                walletConnectSession: walletConnectSession,
+                eventHandler: eventHandler
+            )
+            var theme = UISheetActionScreenImageTheme()
+            theme.spacingBetweenTitleAndBody = 12
+            theme.infoIcon = []
+            theme.spacingBetweeenInfoIconAndInfoMessage = 0
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: theme,
+                api: configuration.api
+            )
+        case let .wcTransactionSignSuccessful(wcSession, eventHandler):
+            let uiSheet = WCTransactionSignSuccessfulSheet(
+                wcSession: wcSession,
+                eventHandler: eventHandler
+            )
+            var theme = UISheetActionScreenImageTheme()
+            theme.spacingBetweenTitleAndBody = 12
+            theme.infoIcon = []
+            theme.spacingBetweeenInfoIconAndInfoMessage = 0
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: theme,
+                api: configuration.api
+            )
 
+        }
         return viewController as? T
     }
     // swiftlint:enable function_body_length
@@ -2062,8 +2090,7 @@ extension Router {
 
                         if !shouldShowConnectionApproval { return }
 
-                        let dappName = session.dAppInfo.peerMeta.name
-                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                        self.openWCSessionConnectionSuccessful(session)
                     }
                 }
             }
@@ -2082,27 +2109,26 @@ extension Router {
 }
 
 extension Router {
-    private func presentWCSessionsApprovedModal(
-        dAppName: String
-    ) {
-        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+    private func openWCSessionConnectionSuccessful(_ walletConnectSession: WalletConnectSession) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
+        let eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler = {
+            [weak visibleScreen] event in
+            guard let visibleScreen else { return }
+            switch event {
+            case .didClose:
+                visibleScreen.presentedViewController?.dismiss(animated: true)
+            }
+        }
         transition.perform(
-            .bottomWarning(
-                configurator:
-                    BottomWarningViewConfigurator(
-                        image: "icon-approval-check".uiImage,
-                        title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: .plain(
-                            "wallet-connect-session-connection-approved-description".localized(dAppName)
-                        ),
-                        secondaryActionButtonTitle: "title-close".localized
-                    )
+            .wcSessionConnectionSuccessful(
+                walletConnectSession: walletConnectSession,
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )
-        
+
         ongoingTransitions.append(transition)
     }
 }

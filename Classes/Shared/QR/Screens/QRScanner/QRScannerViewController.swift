@@ -57,13 +57,14 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     private lazy var cameraResetHandler: EmptyHandler = {
         if self.captureSession?.isRunning == false {
             self.captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.startRunning()
             }
         }
     }
 
     private let canReadWCSession: Bool
-    private var dAppName: String? = nil
     private var wcConnectionRepeater: Repeater?
 
     private lazy var isShowingConnectedAppsButton: Bool = {
@@ -138,6 +139,8 @@ extension QRScannerViewController {
     private func enableCapturingIfNeeded() {
         if self.captureSession?.isRunning == false && UIApplication.shared.authStatus == .ready {
             self.captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.startRunning()
             }
         }
@@ -146,6 +149,8 @@ extension QRScannerViewController {
     private func disableCapturingIfNeeded() {
         if captureSession?.isRunning == true {
             captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.stopRunning()
             }
         }
@@ -159,15 +164,22 @@ extension QRScannerViewController {
             setupPreviewLayer()
             setupOverlayViewLayout()
         } else {
-            AVCaptureDevice.requestAccess(for: .video) { granted in
+            AVCaptureDevice.requestAccess(for: .video) {
+                [weak self] granted in
+                guard let self else { return }
+
                 if granted {
                     DispatchQueue.main.async {
+                        [weak self] in
+                        guard let self else { return }
                         self.setupCaptureSession()
                         self.setupPreviewLayer()
                         self.setupOverlayViewLayout()
                     }
                 } else {
                     DispatchQueue.main.async {
+                        [weak self] in
+                        guard let self else { return }
                         self.presentDisabledCameraAlert()
                         self.setupOverlayViewLayout()
                     }
@@ -255,6 +267,8 @@ extension QRScannerViewController {
         view.layer.addSublayer(previewLayer)
 
         captureSessionQueue.async {
+            [weak captureSession] in
+            guard let captureSession else { return }
             captureSession.startRunning()
         }
     }
@@ -285,6 +299,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         from connection: AVCaptureConnection
     ) {
         captureSessionQueue.async {
+            [weak self] in
+            guard let self else { return }
             self.captureSession?.stopRunning()
         }
 
@@ -424,8 +440,6 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
         let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
 
-        dAppName = session.dAppInfo.peerMeta.name
-
         asyncMain { [weak self] in
             guard let self = self else {
                 return
@@ -454,7 +468,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
                         if !shouldShowConnectionApproval { return }
 
-                        self.presentWCSessionsApprovedModal()
+                        self.openWCSessionConnectionSuccessful(session)
                     }
                 }
             }
@@ -545,31 +559,35 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 }
 
-
 extension QRScannerViewController {
     private func resetUIForScanning() {
         captureSessionQueue.async {
+            [weak self] in
+            guard let self else { return }
             self.captureSession?.startRunning()
         }
     }
+}
 
-    private func presentWCSessionsApprovedModal() {
-        guard let dAppName = dAppName else { return }
+extension QRScannerViewController {
+    private func openWCSessionConnectionSuccessful(_ walletConnectSession: WalletConnectSession) {
+        let eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler = {
+            [weak self] event in
+            guard let self else { return }
 
+            switch event {
+            case .didClose:
+                presentedViewController?.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.closeScreen()
+                }
+            }
+        }
         wcConnectionModalTransition.perform(
-            .bottomWarning(
-                configurator:
-                    BottomWarningViewConfigurator(
-                        image: "icon-check-positive".uiImage,
-                        title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: .plain(
-                            "wallet-connect-session-connection-approved-description".localized(dAppName)
-                        ),
-                        secondaryActionButtonTitle: "title-close".localized,
-                        secondaryAction: { [weak self] in
-                            self?.closeScreen()
-                        }
-                    )
+            .wcSessionConnectionSuccessful(
+                walletConnectSession: walletConnectSession,
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )
