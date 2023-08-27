@@ -212,14 +212,14 @@ extension WCSessionListViewController {
         _ cell: WCSessionItemCell,
         session: WCSession
     ) {
-        cell.startObserving(event: .performOptions) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-            
-            self.openDisconnectSessionMenu(for: session)
-        }
+//        cell.startObserving(event: .performOptions) {
+//            [weak self] in
+//            guard let self = self else {
+//                return
+//            }
+//            
+//            self.openDisconnectSessionMenu(for: session)
+//        }
     }
 
     private func openDisconnectSessionMenu(for session: WCSession) {

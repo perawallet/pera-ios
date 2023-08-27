@@ -57,7 +57,7 @@ class RootViewController: UIViewController {
     )
     
     private var sessionsForOngoingWCTransactionRequests: [String: WCSession] = [:]
-    private var wcTransactionSuccessTransition: BottomSheetTransition?
+    private var transitionToWCTransactionSignSuccessful: BottomSheetTransition?
 
     let target: ALGAppTarget
     let appConfiguration: AppConfiguration
@@ -244,15 +244,14 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         didSigned request: WalletConnectRequest,
         in session: WCSession?
     ) {
-        guard let wcSession = session else { return }
+        guard let session else { return }
         
-        clearOngoingWCTransactionRequest(for: wcSession)
+        clearOngoingWCTransactionRequest(for: session)
         
         wcMainTransactionScreen.dismissScreen {
             [weak self] in
-            guard let self = self else { return }
-
-            self.presentWCTransactionSuccessMessage(for: wcSession)
+            guard let self else { return }
+            self.openWCTransactionSignSuccessful(session)
         }
     }
     
@@ -265,25 +264,27 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         sessionsForOngoingWCTransactionRequests[session.urlMeta.topic] = nil
     }
 
-    private func presentWCTransactionSuccessMessage(for session: WCSession) {
-        let dappName = session.peerMeta.name
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-approval-check".uiImage,
-            title: "wc-transaction-request-signed-warning-title".localized,
-            description: .plain(
-                "wc-transaction-request-signed-warning-message".localized(dappName, dappName)
-            ),
-            primaryActionButtonTitle: nil,
-            secondaryActionButtonTitle: "title-close".localized
-        )
-        let transition = BottomSheetTransition(presentingViewController: findVisibleScreen())
+    private func openWCTransactionSignSuccessful(_ session: WCSession) {
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
+        let eventHandler: WCTransactionSignSuccessfulSheet.EventHandler = {
+            [weak visibleScreen] event in
+            guard let visibleScreen else { return }
+            switch event {
+            case .didClose:
+                visibleScreen.presentedViewController?.dismiss(animated: true)
+            }
+        }
         transition.perform(
-            .bottomWarning(configurator: configurator),
+            .wcTransactionSignSuccessful(
+                wcSession: session,
+                eventHandler: eventHandler
+            ),
             by: .presentWithoutNavigationController
         )
 
-        self.wcTransactionSuccessTransition = transition
+        transitionToWCTransactionSignSuccessful = transition
     }
 }
 

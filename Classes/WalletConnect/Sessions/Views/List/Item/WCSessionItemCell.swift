@@ -21,8 +21,7 @@ import UIKit
 
 final class WCSessionItemCell:
     CollectionCell<WCSessionItemView>,
-    ViewModelBindable,
-    UIInteractable {
+    ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return (20, 24, 20, 24)
     }
@@ -35,5 +34,12 @@ final class WCSessionItemCell:
         super.init(frame: frame)
 
         contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 24))
+        )
+        separatorStyle = .single(separator)
     }
 }

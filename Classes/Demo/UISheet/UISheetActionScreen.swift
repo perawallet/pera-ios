@@ -191,7 +191,7 @@ extension UISheetActionScreen {
         contextView.addSubview(infoMessageView)
         infoMessageView.snp.makeConstraints {
             $0.height >= infoIconView
-            $0.top == infoIconView
+            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInfo
             $0.leading == infoIconView.snp.trailing + theme.spacingBetweeenInfoIconAndInfoMessage
             $0.bottom == 0
             $0.trailing == 0
