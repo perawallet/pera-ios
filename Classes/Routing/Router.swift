@@ -926,13 +926,12 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnection(walletConnectSession, completion):
+        case let .wcConnection(draft):
             let dataController = WCConnectionAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController
             )
             let screen = WCConnectionScreen(
-                walletConnectSession: walletConnectSession,
-                walletConnectSessionConnectionCompletionHandler: completion,
+                draft: draft,
                 dataController: dataController,
                 configuration: configuration
             )
@@ -2032,12 +2031,10 @@ extension Router {
             
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+            let draft = WCConnectionSessionDraft(session: session)
             
             let screen = transition.perform(
-                .wcConnection(
-                    walletConnectSession: session,
-                    completion: completion
-                ),
+                .wcConnection(draft: draft),
                 by: .present
             ) as? WCConnectionScreen
             
@@ -2057,8 +2054,8 @@ extension Router {
                         guard let self = self else { return }
 
                         if !shouldShowConnectionApproval { return }
-
-                        let dappName = screen.walletConnectSession.dAppInfo.peerMeta.name
+                        
+                        let dappName = screen.draft.dappName
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }

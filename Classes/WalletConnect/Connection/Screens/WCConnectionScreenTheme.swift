@@ -119,7 +119,7 @@ extension WCConnectionScreenTheme {
     private func calculateTopViewHeight(_ viewController: WCConnectionScreen) -> LayoutMetric{
         let topViewHeight = viewController.contextView.calculateTopViewHeight(
             WCConnectionViewModel(
-                session: viewController.walletConnectSession,
+                draft: viewController.draft,
                 hasSingleAccount: viewController.dataController.hasSingleAccount
             ),
             for: WCConnectionViewTheme()

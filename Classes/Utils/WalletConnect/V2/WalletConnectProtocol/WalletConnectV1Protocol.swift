@@ -427,6 +427,10 @@ extension WalletConnectV1Protocol {
 }
 
 extension WalletConnectV1Protocol {
+    func listenEvents() {
+        
+    }
+
     func register(_ handler: WalletConnectRequestHandler) {
         walletConnectServer.register(handler: handler)
     }

@@ -33,7 +33,7 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
     
     private(set) var sessionValidator: WalletConnectSessionValidator
     
-    private var publishers = [AnyCancellable]()
+    private var publishers = Set<AnyCancellable>()
     
     /// Project id is from a mock app that I created.
     private let projectID = "06274a21f488344abb80fc50223631f8"
@@ -64,8 +64,6 @@ extension WalletConnectV2Protocol {
         )
         
         Pair.configure(metadata: appMetadata)
-        
-        setupEvents()
     }
 }
 
@@ -75,7 +73,6 @@ extension WalletConnectV2Protocol {
 
         Task {
             do {
-                try pairAPI.cleanup()
                 try await pairAPI.pair(uri: uri)
             } catch {
                 self.eventHandler?(.failure(error))
@@ -210,7 +207,7 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    private func setupEvents() {
+    func listenEvents() {
         handleSessionEvents()
         handleSessionProposalEvents()
         handleSessionDeletionEvents()

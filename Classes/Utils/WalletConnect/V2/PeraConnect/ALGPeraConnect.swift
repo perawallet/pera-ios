@@ -18,20 +18,22 @@ import Foundation
 
 final class ALGPeraConnect: PeraConnect {
     var eventHandler: EventHandler?
+    
+    var coordinatorEventHandler: ((WalletConnectCoordinatorEvent) -> Void)?
+    
     private(set) var walletConnectCoordinator: WalletConnectCoordinator
     
     init(
         walletConnectCoordinator: WalletConnectCoordinator
     ) {
         self.walletConnectCoordinator = walletConnectCoordinator
-        
         setWalletConnectCoordinatorEvents()
     }
 }
 
 extension ALGPeraConnect {
     private func setWalletConnectCoordinatorEvents() {
-        walletConnectCoordinator.eventHandler = {
+        coordinatorEventHandler = {
             [weak self] event in
             guard let self = self else { return }
             
@@ -87,6 +89,8 @@ extension ALGPeraConnect {
                 sendEvent(.failure(error))
             }
         }
+        
+        walletConnectCoordinator.eventHandler = coordinatorEventHandler
     }
 }
 

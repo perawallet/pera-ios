@@ -32,6 +32,8 @@ final class WCConnectionScreen:
     
     private lazy var theme = WCConnectionScreenTheme()
     
+    let draft: WCConnectionSessionDraft
+    
     private(set) lazy var contextView = WCConnectionView()
     private(set) lazy var bottomContainerView = EffectView()
     private lazy var actionsStackView = UIStackView()
@@ -41,19 +43,14 @@ final class WCConnectionScreen:
     private lazy var listLayout = WCConnectionAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = WCConnectionAccountListDataSource(contextView.accountListView)
 
-    private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
-
-    let walletConnectSession: WalletConnectSession
     let dataController: WCConnectionAccountListDataController
 
     init(
-        walletConnectSession: WalletConnectSession,
-        walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
+        draft: WCConnectionSessionDraft,
         dataController: WCConnectionAccountListDataController,
         configuration: ViewControllerConfiguration
     ) {
-        self.walletConnectSession = walletConnectSession
-        self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
+        self.draft = draft
         self.dataController = dataController
 
         super.init(configuration: configuration)
@@ -177,8 +174,8 @@ extension WCConnectionScreen {
 extension WCConnectionScreen {
     private func bindUIData() {
         let viewModel = WCConnectionViewModel(
-            session: walletConnectSession,
-            hasSingleAccount: dataController.hasSingleAccount
+            draft: self.draft,
+            hasSingleAccount: self.dataController.hasSingleAccount
         )
         contextView.bindData(viewModel)
         
@@ -186,7 +183,7 @@ extension WCConnectionScreen {
         
         contextView.startObserving(event: .openUrl) {
             [unowned self] in
-            self.open(walletConnectSession.dAppInfo.peerMeta.url)
+            self.open(draft.dappURL)
         }
     }
     
@@ -284,21 +281,9 @@ extension WCConnectionScreen: UICollectionViewDelegateFlowLayout {
 extension WCConnectionScreen {
     @objc
     private func performCancel() {
-        analytics.track(
-            .wcSessionRejected(
-                topic: walletConnectSession.url.topic,
-                dappName: walletConnectSession.dAppInfo.peerMeta.name,
-                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString
-            )
-        )
-
         DispatchQueue.main.async {
             [weak self] in
             guard let self else { return }
-
-            self.walletConnectSessionConnectionCompletionHandler(
-                self.walletConnectSession.getDeclinedWalletConnectionInfo(on: self.api!.network)
-            )
             self.eventHandler?(.performCancel)
         }
     }
@@ -306,28 +291,11 @@ extension WCConnectionScreen {
     @objc
     private func performConnect() {
         let selectedAccountAddresses = dataController.getSelectedAccountsAddresses()
-                
-        analytics.track(
-            .wcSessionApproved(
-                topic: walletConnectSession.url.topic,
-                dappName: walletConnectSession.dAppInfo.peerMeta.name,
-                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
-                address: selectedAccountAddresses.joined(separator: ","),
-                totalAccount: selectedAccountAddresses.count
-            )
-        )
-        
+
         DispatchQueue.main.async {
             [weak self] in
             guard let self else { return }
-
-            self.walletConnectSessionConnectionCompletionHandler(
-                self.walletConnectSession.getApprovedWalletConnectionInfo(
-                    for: selectedAccountAddresses,
-                    on: self.api!.network
-                )
-            )
-            self.eventHandler?(.performConnect)
+            self.eventHandler?(.performConnect(accounts: selectedAccountAddresses))
         }
     }
 }
@@ -335,6 +303,6 @@ extension WCConnectionScreen {
 extension WCConnectionScreen {
     enum Event {
         case performCancel
-        case performConnect
+        case performConnect(accounts: [PublicKey])
     }
 }

@@ -24,6 +24,8 @@ protocol WalletConnectCoordinator {
     
     func isValidSession(session: WalletConnectSessionText) -> Bool
     
+    func listenEvents()
+    
     func configureIfNeeded()
     
     func getSessions()

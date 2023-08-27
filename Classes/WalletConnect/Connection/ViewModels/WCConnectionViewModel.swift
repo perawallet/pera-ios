@@ -26,21 +26,21 @@ final class WCConnectionViewModel: ViewModel {
     private(set) var subtitle: String?
     
     init(
-        session: WalletConnectSession,
+        draft: WCConnectionSessionDraft,
         hasSingleAccount: Bool
     ) {
-        bindImage(session)
-        bindDescription(session)
-        bindUrlState(session)
-        bindUrlString(session)
+        bindImage(draft)
+        bindDescription(draft)
+        bindUrlState(draft)
+        bindUrlString(draft)
         bindListHeader(hasSingleAccount)
     }
 }
 
 extension WCConnectionViewModel {
-    private func bindImage(_ session: WalletConnectSession) {
+    private func bindImage(_ draft: WCConnectionSessionDraft) {
         self.image = DefaultURLImageSource(
-            url: session.dAppInfo.peerMeta.icons.first,
+            url: draft.image,
             color: nil,
             size: .resize(
                 CGSize(width: 72, height: 72),
@@ -52,8 +52,8 @@ extension WCConnectionViewModel {
         )
     }
     
-    private func bindDescription(_ session: WalletConnectSession) {
-        let dappName = session.dAppInfo.peerMeta.name
+    private func bindDescription(_ draft: WCConnectionSessionDraft) {
+        let dappName = draft.dappName
         let fullText = "wallet-connect-session-connection-description".localized(dappName)
         let attributedFullText = NSMutableAttributedString(string: fullText)
         
@@ -67,8 +67,8 @@ extension WCConnectionViewModel {
         self.title = attributedFullText
     }
     
-    private func bindUrlString(_ session: WalletConnectSession) {
-        self.urlString = session.dAppInfo.peerMeta.url.presentationString
+    private func bindUrlString(_ draft: WCConnectionSessionDraft) {
+        self.urlString = draft.dappURL.presentationString
     }
     
     private func bindListHeader(_ hasSingleAccount: Bool) {
@@ -77,8 +77,8 @@ extension WCConnectionViewModel {
             : "wallet-connect-select-accounts".localized.uppercased()
     }
     
-    private func bindUrlState(_ session: WalletConnectSession) {
-        if session.dAppInfo.approved ?? false {
+    private func bindUrlState(_ draft: WCConnectionSessionDraft) {
+        if draft.isApproved {
             self.actionIcon = img("WalletConnect/dapp-approved")
         }
     }

@@ -20,6 +20,8 @@ final class ALGWalletConnectCoordinator: WalletConnectCoordinator {
     var eventHandler: EventHandler?
     let walletConnectProtocolResolver: WalletConnectProtocolResolver
     
+    var v2ProtocolEventHandler: ((WalletConnectV2Event) -> Void)?
+    
     var walletConnectV1Protocol: WalletConnectV1Protocol {
         return walletConnectProtocolResolver.walletConnectV1Protocol
     }
@@ -66,7 +68,7 @@ extension ALGWalletConnectCoordinator {
     }
     
     private func setWalletConnectV2ProtocolEvents() {
-        walletConnectV2Protocol.eventHandler = {
+        v2ProtocolEventHandler = {
             [weak self] event in
             guard let self else { return }
             
@@ -106,10 +108,16 @@ extension ALGWalletConnectCoordinator {
                 sendEvent(.failure(error))
             }
         }
+        
+        walletConnectV2Protocol.eventHandler = v2ProtocolEventHandler
     }
     
     func configure() {
         
+    }
+    
+    func listenEvents() {
+        walletConnectV2Protocol.listenEvents()
     }
 }
 
