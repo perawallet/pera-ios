@@ -511,7 +511,7 @@ extension QRScannerViewController {
 
                             if !shouldShowConnectionApproval { return }
 
-                            self.presentWCSessionsApprovedModal()
+                            self.openWCSessionConnectionSuccessful(draft)
                         }
                     }
                 }
@@ -645,7 +645,7 @@ extension QRScannerViewController {
             let wcConnectionScreen = self.wcConnectionModalTransition.perform(
                 .wcConnection(draft: draft),
                 by: .present
-            ) as? WCConnectionScreen
+            ) as? WCSessionConnectionScreen
            
             wcConnectionScreen?.eventHandler = {
                 [weak self] event in
@@ -719,7 +719,7 @@ extension QRScannerViewController {
                         guard let self else { return }
 
                         if !shouldShowConnectionApproval { return }
-                        self.presentWCSessionsApprovedModal()
+                        self.openWCSessionConnectionSuccessful(draft)
                     }
                 }
             }
@@ -748,7 +748,7 @@ extension QRScannerViewController {
 }
 
 extension QRScannerViewController {
-    private func openWCSessionConnectionSuccessful(_ walletConnectSession: WalletConnectSession) {
+    private func openWCSessionConnectionSuccessful(_ draft: WCConnectionSessionDraft) {
         let eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler = {
             [weak self] event in
             guard let self else { return }
@@ -764,7 +764,7 @@ extension QRScannerViewController {
         }
         wcConnectionModalTransition.perform(
             .wcSessionConnectionSuccessful(
-                walletConnectSession: walletConnectSession,
+                draft: draft,
                 eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController

@@ -927,10 +927,11 @@ class Router:
                 configuration: configuration
             )
         case let .wcConnection(draft):
-            let dataController = WCConnectionAccountListLocalDataController(
+            let dataController = WCSessionConnectionLocalDataController(
+                draft: draft,
                 sharedDataController: appConfiguration.sharedDataController
             )
-            let screen = WCConnectionScreen(
+            let screen = WCSessionConnectionScreen(
                 draft: draft,
                 dataController: dataController,
                 configuration: configuration
@@ -1880,9 +1881,9 @@ class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-        case let .wcSessionConnectionSuccessful(walletConnectSession, eventHandler):
+        case let .wcSessionConnectionSuccessful(draft, eventHandler):
             let uiSheet = WCSessionConnectionSuccessfulSheet(
-                walletConnectSession: walletConnectSession,
+                draft: draft,
                 eventHandler: eventHandler
             )
             var theme = UISheetActionScreenImageTheme()
@@ -2097,8 +2098,7 @@ extension Router {
 
                         if !shouldShowConnectionApproval { return }
                         
-                        let dappName = screen.draft.dappName
-                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                        self.openWCSessionConnectionSuccessful(screen.draft)
                     }
                 }
             }
@@ -2117,7 +2117,7 @@ extension Router {
 }
 
 extension Router {
-    private func openWCSessionConnectionSuccessful(_ walletConnectSession: WalletConnectSession) {
+    private func openWCSessionConnectionSuccessful(_ draft: WCConnectionSessionDraft) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
@@ -2131,7 +2131,7 @@ extension Router {
         }
         transition.perform(
             .wcSessionConnectionSuccessful(
-                walletConnectSession: walletConnectSession,
+                draft: draft,
                 eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController

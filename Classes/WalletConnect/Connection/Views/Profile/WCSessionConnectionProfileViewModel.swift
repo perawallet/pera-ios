@@ -23,15 +23,15 @@ struct WCSessionConnectionProfileViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var link: ButtonStyle?
 
-    init(_ session: WalletConnectSession) {
-        bindIcon(session)
-        bindTitle(session)
-        bindLink(session)
+    init(_ draft: WCConnectionSessionDraft) {
+        bindIcon(draft)
+        bindTitle(draft)
+        bindLink(draft)
     }
 }
 
 extension WCSessionConnectionProfileViewModel {
-    private mutating func bindIcon(_ session: WalletConnectSession) {
+    private mutating func bindIcon(_ draft: WCConnectionSessionDraft) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
@@ -44,15 +44,15 @@ extension WCSessionConnectionProfileViewModel {
 
         let imageSize = CGSize(width: 72, height: 72)
         icon = DefaultURLImageSource(
-            url: session.dAppInfo.peerMeta.icons.first,
+            url: draft.image,
             size: .resize(imageSize, .aspectFit),
             shape: .circle,
             placeholder: placeholder
         )
     }
 
-    private mutating func bindTitle(_ session: WalletConnectSession) {
-        let dAppName = session.dAppInfo.peerMeta.name
+    private mutating func bindTitle(_ draft: WCConnectionSessionDraft) {
+        let dAppName = draft.dappName
         let dAppNameAttributes = Typography.bodyLargeMediumAttributes(alignment: .center)
 
         let aTitle =
@@ -66,8 +66,8 @@ extension WCSessionConnectionProfileViewModel {
         title = aTitle
     }
 
-    private mutating func bindLink(_ session: WalletConnectSession) {
-        guard let link = session.dAppInfo.peerMeta.url.presentationString else {
+    private mutating func bindLink(_ draft: WCConnectionSessionDraft) {
+        guard let link = draft.dappURL.presentationString else {
             self.link = nil
             return
         }
@@ -77,7 +77,7 @@ extension WCSessionConnectionProfileViewModel {
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Helpers.positive)])
         ]
-        let isApproved = session.dAppInfo.approved ?? false
+        let isApproved = draft.isApproved
         if isApproved {
             let icon = "icon-trusted"
             attributes.append(.icon([ .normal(icon), .highlighted(icon) ]))

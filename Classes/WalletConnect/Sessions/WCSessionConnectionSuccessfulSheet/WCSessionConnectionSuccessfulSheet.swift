@@ -24,14 +24,14 @@ final class WCSessionConnectionSuccessfulSheet: UISheet {
     private let eventHandler: EventHandler
 
     init(
-        walletConnectSession: WalletConnectSession,
+        draft: WCConnectionSessionDraft,
         eventHandler: @escaping EventHandler
     ) {
         self.eventHandler = eventHandler
 
-        let title = Self.makeTitle(walletConnectSession)
-        let body = Self.makeBody(walletConnectSession)
-        let info = Self.makeInfo(walletConnectSession)
+        let title = Self.makeTitle(draft)
+        let body = Self.makeBody(draft)
+        let info = Self.makeInfo(draft)
 
         super.init(
             image: "icon-approval-check",
@@ -46,16 +46,16 @@ final class WCSessionConnectionSuccessfulSheet: UISheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeTitle(_ walletConnectSession: WalletConnectSession) -> TextProvider {
-        return Self.makeTitleForWCv2(walletConnectSession) /// <todo> For mocking purposes
+    private static func makeTitle(_ draft: WCConnectionSessionDraft) -> TextProvider {
+        return Self.makeTitleForWCv2(draft) /// <todo> For mocking purposes
     }
 
-    private static func makeBody(_ walletConnectSession: WalletConnectSession) -> UISheetBodyTextProvider {
-        return Self.makeBodyForWCv2(walletConnectSession) /// <todo> For mocking purposes
+    private static func makeBody(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
+        return Self.makeBodyForWCv2(draft) /// <todo> For mocking purposes
     }
 
-    private static func makeInfo(_ walletConnectSession: WalletConnectSession) -> TextProvider? {
-        return makeInfoForWCv2(walletConnectSession) /// <todo> For mocking purposes
+    private static func makeInfo(_ draft: WCConnectionSessionDraft) -> TextProvider? {
+        return makeInfoForWCv2(draft) /// <todo> For mocking purposes
     }
 
     private func makeCloseAction() -> UISheetAction {
@@ -70,8 +70,8 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeTitleForWCv1(_ walletConnectSession: WalletConnectSession) -> TextProvider {
-        let dAppName = walletConnectSession.dAppInfo.peerMeta.name
+    private static func makeTitleForWCv1(_ draft: WCConnectionSessionDraft) -> TextProvider {
+        let dAppName = draft.dappName
         let aTitle =
             "wallet-connect-session-connection-approved-title"
                 .localized(dAppName)
@@ -79,8 +79,8 @@ extension WCSessionConnectionSuccessfulSheet {
         return aTitle
     }
 
-    private static func makeTitleForWCv2(_ walletConnectSession: WalletConnectSession) -> TextProvider {
-        let dAppName = walletConnectSession.dAppInfo.peerMeta.name
+    private static func makeTitleForWCv2(_ draft: WCConnectionSessionDraft) -> TextProvider {
+        let dAppName = draft.dappName
         let aTitle =
             "wallet-connect-session-connection-approved-title"
                 .localized(dAppName)
@@ -90,15 +90,15 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeBodyForWCv1(_ walletConnectSession: WalletConnectSession) -> UISheetBodyTextProvider {
-        let dAppName = walletConnectSession.dAppInfo.peerMeta.name
+    private static func makeBodyForWCv1(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
+        let dAppName = draft.dappName
         let aBody = "wallet-connect-session-connection-approved-description"
             .localized(dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
 
-    private static func makeBodyForWCv2(_ walletConnectSession: WalletConnectSession) -> UISheetBodyTextProvider {
+    private static func makeBodyForWCv2(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
         var textAttributes = Typography.bodyRegularAttributes(alignment: .center)
         textAttributes.insert(.textColor(Colors.Text.gray))
 
@@ -122,9 +122,9 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeInfoForWCv2(_ walletConnectSession: WalletConnectSession) -> TextProvider {
+    private static func makeInfoForWCv2(_ draft: WCConnectionSessionDraft) -> TextProvider {
         let extendedDate = "May 8, 2023"
-        let dAppName = walletConnectSession.dAppInfo.peerMeta.name
+        let dAppName = draft.dappName
 
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))

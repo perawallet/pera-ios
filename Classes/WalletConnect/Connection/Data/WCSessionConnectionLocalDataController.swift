@@ -39,14 +39,14 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
 
     private(set) var accountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
 
-    private let walletConnectSession: WalletConnectSession
+    private let draft: WCConnectionSessionDraft
     private let sharedDataController: SharedDataController
 
     init(
-        walletConnectSession: WalletConnectSession,
+        draft: WCConnectionSessionDraft,
         sharedDataController: SharedDataController
     ) {
-        self.walletConnectSession = walletConnectSession
+        self.draft = draft
         self.sharedDataController = sharedDataController
     }
 
@@ -122,7 +122,7 @@ extension WCSessionConnectionLocalDataController {
     }
 
     private func makeItemsForProfile() -> [ItemIdentifier] {
-        sessionProfileViewModel = WCSessionConnectionProfileViewModel(walletConnectSession)
+        sessionProfileViewModel = WCSessionConnectionProfileViewModel(draft)
         return [ .profile ]
     }
 }

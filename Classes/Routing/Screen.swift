@@ -370,7 +370,7 @@ indirect enum Screen {
     case wcAdvancedPermissionsInfo(eventHandler: WCAdvancedPermissionsInfoSheet.EventHandler)
     case wcSessionDetail
     case wcSessionConnectionSuccessful(
-        walletConnectSession: WalletConnectSession,
+        draft: WCConnectionSessionDraft,
         eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler
     )
     case wcTransactionSignSuccessful(

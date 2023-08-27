@@ -33,6 +33,8 @@ final class WCSessionConnectionScreen:
         return theme.calculateModalHeightAsBottomSheet(self)
     }
     
+    let draft: WCConnectionSessionDraft
+    
     private lazy var theme = WCSessionConnectionScreenTheme()
 
     private lazy var loadingView = InAppBrowserLoadingView()
@@ -58,18 +60,14 @@ final class WCSessionConnectionScreen:
     private var isViewLayoutLoaded = false
     private var isAdditionalSafeAreaInsetsFinalized = false
 
-    private let walletConnectSession: WalletConnectSession
-    private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
     private let dataController: WCSessionConnectionDataController
 
     init(
-        walletConnectSession: WalletConnectSession,
-        walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
+        draft: WCConnectionSessionDraft,
         dataController: WCSessionConnectionDataController,
         configuration: ViewControllerConfiguration
     ) {
-        self.walletConnectSession = walletConnectSession
-        self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
+        self.draft = draft
         self.dataController = dataController
         super.init(configuration: configuration)
 
@@ -306,38 +304,11 @@ extension WCSessionConnectionScreen {
     @objc
     private func performPrimaryAction() {
         let selectedAccountAddresses = dataController.getSelectedAccounts().map(\.address)
-        analytics.track(
-            .wcSessionApproved(
-                topic: walletConnectSession.url.topic,
-                dappName: walletConnectSession.dAppInfo.peerMeta.name,
-                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
-                address: selectedAccountAddresses.joined(separator: ","),
-                totalAccount: selectedAccountAddresses.count
-            )
-        )
-
-        walletConnectSessionConnectionCompletionHandler(
-            walletConnectSession.getApprovedWalletConnectionInfo(
-                for: selectedAccountAddresses,
-                on: api!.network
-            )
-        )
-        eventHandler?(.performConnect)
+        eventHandler?(.performConnect(accounts: selectedAccountAddresses))
     }
 
     @objc
     private func performSecondaryAction() {
-        analytics.track(
-            .wcSessionRejected(
-                topic: walletConnectSession.url.topic,
-                dappName: walletConnectSession.dAppInfo.peerMeta.name,
-                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString
-            )
-        )
-
-        walletConnectSessionConnectionCompletionHandler(
-            walletConnectSession.getDeclinedWalletConnectionInfo(on: api!.network)
-        )
         eventHandler?(.performCancel)
     }
 }
@@ -426,7 +397,7 @@ extension WCSessionConnectionScreen {
         let profileCell = cell as? WCSessionConnectionProfileCell
         profileCell?.startObserving(event: .didTapLink) {
             [unowned self] in
-            let link = walletConnectSession.dAppInfo.peerMeta.url
+            let link = draft.dappURL
             open(link)
         }
     }
@@ -492,6 +463,6 @@ extension WCSessionConnectionScreen {
 extension WCSessionConnectionScreen {
     enum Event {
         case performCancel
-        case performConnect
+        case performConnect(accounts: [PublicKey])
     }
 }
