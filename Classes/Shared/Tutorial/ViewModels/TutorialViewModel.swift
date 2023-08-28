@@ -56,7 +56,7 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected, .accountSuccessfullyRekeyed:
+        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected:
             image = img("check")
         case .failedToImportLedgerAccounts:
             image = img("icon-error-close")
@@ -95,8 +95,6 @@ extension TutorialViewModel {
             title = "recover-from-seed-verify-pop-up-title".localized
         case .failedToImportLedgerAccounts:
             title = "tutorial-title-failed-to-import-ledger-accounts".localized
-        case .accountSuccessfullyRekeyed:
-            title = "ledger-rekey-success-title".localized
         case .collectibleTransferConfirmed:
             title = "collectible-transfer-confirmed-title".localized
         }
@@ -128,8 +126,6 @@ extension TutorialViewModel {
             bindAccountSetupFlowDescription(flow)
         case .failedToImportLedgerAccounts:
             description = "tutorial-description-failed-to-import-ledger-accounts".localized
-        case .accountSuccessfullyRekeyed(let accountName):
-            description = "ledger-rekey-success-message".localized(params: accountName)
         case .collectibleTransferConfirmed:
             description = "collectible-transfer-confirmed-description".localized
         }
@@ -161,8 +157,6 @@ extension TutorialViewModel {
             bindAccountSetupFlowPrimaryButton(flow)
         case .failedToImportLedgerAccounts:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
-        case .accountSuccessfullyRekeyed:
-            primaryActionButtonTitle = "title-go-home".localized
         case .collectibleTransferConfirmed:
             primaryActionButtonTitle = "collectible-transfer-confirmed-action-title".localized
         }

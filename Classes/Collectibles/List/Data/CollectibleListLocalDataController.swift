@@ -68,7 +68,7 @@ final class CollectibleListLocalDataController:
         self.galleryAccount = galleryAccount
         self.sharedDataController = sharedDataController
 
-        self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+        self.isWatchAccount = galleryAccount.singleAccount?.value.authorization.isWatch ?? false
 
         self.startObservingCollectibleAssetActions()
     }

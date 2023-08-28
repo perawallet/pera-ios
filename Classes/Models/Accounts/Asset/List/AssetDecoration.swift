@@ -40,6 +40,7 @@ final class AssetDecoration: ALGEntityModel {
     let twitterURL: URL?
     let algoPriceChangePercentage: Decimal
     let isAvailableOnDiscover: Bool
+    let isDestroyed: Bool
 
     var state: AssetState = .ready
 
@@ -73,26 +74,21 @@ final class AssetDecoration: ALGEntityModel {
         }
 
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
-        self.projectURL = apiModel.projectURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
-        self.explorerURL = apiModel.explorerURL
+        self.projectURL = apiModel.projectURL.toURL()
+        self.explorerURL = apiModel.explorerURL.toURL()
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
         self.verificationTier = apiModel.verificationTier ?? .unverified
-        self.logoURL = apiModel.logo
+        self.logoURL = apiModel.logo.toURL()
         self.description = apiModel.description
-        self.discordURL = apiModel.discordURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
-        self.telegramURL = apiModel.telegramURL
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)
+        self.discordURL = apiModel.discordURL.toURL()
+        self.telegramURL = apiModel.telegramURL.toURL()
         self.twitterURL = apiModel.twitterUsername
             .unwrapNonEmptyString()
             .unwrap(URL.twitterURL(username:))
         self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage ?? 0
         self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
+        self.isDestroyed = apiModel.isDestroyed ?? false
     }
     
     init(assetDetail: AssetDetail) {
@@ -116,6 +112,7 @@ final class AssetDecoration: ALGEntityModel {
         self.twitterURL = nil
         self.algoPriceChangePercentage = 0
         self.isAvailableOnDiscover = false
+        self.isDestroyed = false
     }
 
     init(asset: Asset) {
@@ -139,6 +136,7 @@ final class AssetDecoration: ALGEntityModel {
         self.twitterURL = asset.twitterURL
         self.algoPriceChangePercentage = asset.algoPriceChangePercentage
         self.isAvailableOnDiscover = asset.isAvailableOnDiscover
+        self.isDestroyed = asset.isDestroyed
     }
 
     func encode() -> APIModel {
@@ -152,17 +150,18 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.totalSupply = totalSupply
         apiModel.creator = creator?.encode()
         apiModel.projectURL = projectURL?.absoluteString
-        apiModel.explorerURL = explorerURL
+        apiModel.explorerURL = explorerURL?.absoluteString
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
         apiModel.verificationTier = verificationTier
-        apiModel.logo = logoURL
+        apiModel.logo = logoURL?.absoluteString
         apiModel.description = description
         apiModel.discordURL = discordURL?.absoluteString
         apiModel.telegramURL = telegramURL?.absoluteString
         apiModel.twitterUsername = twitterURL?.pathComponents.last
         apiModel.algoPriceChangePercentage = algoPriceChangePercentage
         apiModel.isAvailableOnDiscover = isAvailableOnDiscover
+        apiModel.isDestroyed = isDestroyed
         return apiModel
     }
 }
@@ -176,19 +175,20 @@ extension AssetDecoration {
         var usdValue: String?
         var creator: AssetCreator.APIModel?
         var projectURL: String?
-        var explorerURL: URL?
+        var explorerURL: String?
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
         var totalSupply: Decimal?
         var verificationTier: AssetVerificationTier?
-        var logo: URL?
+        var logo: String?
         var description: String?
         var discordURL: String?
         var telegramURL: String?
         var twitterUsername: String?
         var algoPriceChangePercentage: Decimal?
         var isAvailableOnDiscover: Bool?
+        var isDestroyed: Bool?
 
         init() {
             self.assetId = 0
@@ -216,6 +216,7 @@ extension AssetDecoration {
             case twitterUsername = "twitter_username"
             case algoPriceChangePercentage = "last_24_hours_algo_price_change_percentage"
             case isAvailableOnDiscover = "available_on_discover_mobile"
+            case isDestroyed = "is_deleted"
         }
     }
 }

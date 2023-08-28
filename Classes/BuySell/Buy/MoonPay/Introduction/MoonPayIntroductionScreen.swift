@@ -412,7 +412,7 @@ extension MoonPayIntroductionScreen {
 
             switch response {
             case .success(let response):
-                self.open(response.url)
+                self.open(response.url.toURL())
             case .failure:
                 break
             }

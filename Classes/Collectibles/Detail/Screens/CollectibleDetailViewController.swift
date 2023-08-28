@@ -335,7 +335,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.openOptOutAsset()
+            self.openOptOutAssetIfPossible()
         }
     }
 
@@ -585,7 +585,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.openOptOutAsset()
+            self.openOptOutAssetIfPossible()
         }
     }
 
@@ -666,20 +666,15 @@ extension CollectibleDetailViewController {
     }
 
     private func openASADetail() {
+        let configuration = ASADetailScreenConfiguration(
+            shouldDisplayAccountActionsBarButtonItem: false,
+            shouldDisplayQuickActions: false
+        )
         let screen = Screen.asaDetail(
             account: account,
             asset: asset,
-            configuration: ASADetailScreenConfiguration(
-                shouldDisplayAccountActionsBarButtonItem: false,
-                shouldDisplayQuickActions: false
-            )
-        ) { event in
-            switch event {
-            case .didRemoveAccount: break
-            case .didRenameAccount: break
-            }
-        }
-
+            configuration: configuration
+        )
         open(
             screen,
             by: .push
@@ -688,7 +683,12 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
-    private func openOptOutAsset() {
+    private func openOptOutAssetIfPossible() {
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         let draft = OptOutAssetDraft(
             account: account,
             asset: asset
@@ -721,6 +721,15 @@ extension CollectibleDetailViewController {
 
     private func cancelOptOutAsset() {
         dismiss(animated: true)
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-available-for-account-type".localized,
+            message: ""
+        )
     }
 }
 

@@ -47,6 +47,10 @@ final class SignWithLedgerProcessScreen:
 
     private lazy var progress = ALGProgress(totalUnitCount: draft.totalTransactionCount)
 
+    private var isProgressViewVisible: Bool {
+        return !progress.isSingular
+    }
+
     private let draft: SignWithLedgerProcessDraft
 
     typealias EventHandler = (Event) -> Void
@@ -68,6 +72,7 @@ final class SignWithLedgerProcessScreen:
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode =  .never
+        navigationBarController.isNavigationBarHidden = !isProgressViewVisible
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -85,7 +90,7 @@ final class SignWithLedgerProcessScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        addProgress()
+        addProgressIfPossible()
         addContext()
     }
 
@@ -112,7 +117,9 @@ extension SignWithLedgerProcessScreen {
 }
 
 extension SignWithLedgerProcessScreen {
-    private func addProgress() {
+    private func addProgressIfPossible() {
+        guard isProgressViewVisible else { return }
+
         progressView.progressViewStyle = .bar
         progressView.progressTintColor = theme.progressTintColor.uiColor
         progressView.trackTintColor = theme.trackTintColor.uiColor

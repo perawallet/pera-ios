@@ -17,13 +17,14 @@
 import Foundation
 import MacaroonUIKit
 
-final class UISheet {
+class UISheet {
     typealias SubtitleTextProvider = UISheetBodyTextProvider
     typealias HighlightedText = UISheetBodyTextProvider.HighlightedText
 
     let image: Image?
     let title: TextProvider?
     let body: SubtitleTextProvider?
+    let info: TextProvider?
 
     var bodyHyperlinkHandler: (() -> Void)?
 
@@ -32,11 +33,13 @@ final class UISheet {
     init(
         image: Image? = nil,
         title: TextProvider? = nil,
-        body: UISheetBodyTextProvider? = nil
+        body: UISheetBodyTextProvider? = nil,
+        info: TextProvider? = nil
     ) {
         self.image = image
         self.title = title
         self.body = body
+        self.info = info
     }
 
     func addAction(

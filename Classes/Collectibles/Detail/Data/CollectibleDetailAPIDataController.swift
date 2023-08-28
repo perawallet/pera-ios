@@ -254,11 +254,11 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if currentAccountCollectibleStatus == .optedIn {
+        if currentAccountCollectibleStatus == .optedIn && !asset.isDestroyed {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+                        .notOwner(isWatchAccount: account.authorization.isWatch)
                     )
                 )
             )
@@ -286,7 +286,7 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             return
         }
 
