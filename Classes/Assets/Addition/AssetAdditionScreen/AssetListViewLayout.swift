@@ -199,7 +199,7 @@ extension AssetListViewLayout {
             listView,
             forSectionAt: indexPath.section
         )
-        return .init(width: width, height: 120)
+        return .init(width: width, height: 174)
     }
 
     private func listView(
