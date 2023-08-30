@@ -22,9 +22,9 @@ struct WCSessionSupportedEventsAdvancedPermissionViewModel: PrimaryTitleViewMode
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
-    init() {
+    init(_ events: Set<WCSessionSupportedEvent>) {
         bindPrimaryTitle()
-        bindSecondaryTitle()
+        bindSecondaryTitle(events)
     }
 }
 
@@ -36,10 +36,8 @@ extension WCSessionSupportedEventsAdvancedPermissionViewModel {
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindSecondaryTitle() {
-        secondaryTitle =
-            "accountsChanged"
-                .localized
-                .bodyRegular(lineBreakMode: .byTruncatingTail)
+    private mutating func bindSecondaryTitle(_ events: Set<WCSessionSupportedEvent>) {
+        let aTitle: String = events.map(\.rawValue).joined(separator: ", ")
+        secondaryTitle = aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

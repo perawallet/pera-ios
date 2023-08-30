@@ -20,13 +20,13 @@ import UIKit
 final class WCSessionShortListDataSource: NSObject {
     weak var delegate: WCSessionShortListDataSourceDelegate?
 
-    private let walletConnector: WalletConnectV1Protocol
+    private let walletConnectCoordinator: WalletConnectCoordinator
 
-    private var sessions: [WCSession]
+    private var sessions: [WCSessionDraft]
 
-    init(walletConnector: WalletConnectV1Protocol) {
-        self.walletConnector = walletConnector
-        self.sessions = walletConnector.allWalletConnectSessions
+    init(walletConnectCoordinator: WalletConnectCoordinator) {
+        self.walletConnectCoordinator = walletConnectCoordinator
+        self.sessions = walletConnectCoordinator.getSessions()
         super.init()
     }
 }
@@ -40,7 +40,8 @@ extension WCSessionShortListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(WCSessionShortListItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionShortListItemViewModel(session))
+            let viewModel = WCSessionShortListItemViewModel(session)
+            cell.bindData(viewModel)
         }
 
         cell.delegate = self
@@ -49,15 +50,25 @@ extension WCSessionShortListDataSource: UICollectionViewDataSource {
 }
 
 extension WCSessionShortListDataSource {
-    func session(at index: Int) -> WCSession? {
+    func session(at index: Int) -> WCSessionDraft? {
         return sessions[safe: index]
     }
 
-    func disconnectFromSession(_ session: WCSession) {
-        walletConnector.disconnectFromSession(session)
+    func disconnectFromSession(_ session: WCSessionDraft) {
+        if let wcV1Session = session.wcV1Session {
+            let params = WalletConnectV1SessionDisconnectionParams(session: wcV1Session)
+            walletConnectCoordinator.disconnectFromSession(params)
+            return
+        }
+
+        if let wcV2Session = session.wcV2Session {
+            let params = WalletConnectV2SessionDisconnectionParams(session: wcV2Session)
+            walletConnectCoordinator.disconnectFromSession(params)
+            return
+        }
     }
 
-    func updateSessions(_ updatedSessions: [WCSession]) {
+    func updateSessions(_ updatedSessions: [WCSessionDraft]) {
         sessions = updatedSessions
     }
 }

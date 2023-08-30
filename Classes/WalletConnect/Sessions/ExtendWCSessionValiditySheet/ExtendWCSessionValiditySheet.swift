@@ -23,12 +23,13 @@ final class ExtendWCSessionValiditySheet: UISheet {
     private let eventHandler: EventHandler
 
     init(
+        wcV2Session: WalletConnectV2Session,
         eventHandler: @escaping EventHandler
     ) {
         self.eventHandler = eventHandler
 
-        let title = Self.makeTitle()
-        let body = Self.makeBody()
+        let title = Self.makeTitle(wcV2Session)
+        let body = Self.makeBody(wcV2Session)
 
         super.init(
             image: "img-extend-time",
@@ -45,19 +46,34 @@ final class ExtendWCSessionValiditySheet: UISheet {
 }
 
 extension ExtendWCSessionValiditySheet {
-    private static func makeTitle() -> TextProvider {
-        let toDate = "17.07.2023"
+    private static func makeTitle(_ wcV2Session: WalletConnectV2Session) -> TextProvider? {
+        let expiryDate = wcV2Session.expiryDate
+        let maxExpiryDate = expiryDate.addingTimeInterval(TimeInterval(WalletConnectV2Session.defaultTimeToLive))
+        guard expiryDate <= maxExpiryDate else {
+            return nil
+        }
+
+        let dateFormat = "MMM d, yyyy"
+        let formattedDate = maxExpiryDate.toFormat(dateFormat)
+
         let aTitle =
             "extend-wc-session-validity-title"
-                .localized(params: toDate)
+                .localized(params: formattedDate)
                 .bodyLargeMedium(alignment: .center)
         return aTitle
     }
 
-    private static func makeBody() -> UISheetBodyTextProvider {
-        let maxExtendableToDate = "27.07.2023"
+    private static func makeBody(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider? {
+        let expiryDate = wcV2Session.expiryDate
+        let maxExpiryDate = expiryDate.addingTimeInterval(TimeInterval(WalletConnectV2Session.defaultTimeToLive))
+        guard expiryDate <= maxExpiryDate else {
+            return nil
+        }
 
-        let text = "extend-wc-session-validity-body".localized(params: maxExtendableToDate)
+        let dateFormat = "MMM d, yyyy"
+        let formattedDate = maxExpiryDate.toFormat(dateFormat)
+
+        let text = "extend-wc-session-validity-body".localized(params: formattedDate)
 
         let attributedBody = text.bodyRegular(alignment: .center)
 
@@ -65,7 +81,7 @@ extension ExtendWCSessionValiditySheet {
         highlightedTextAttributes.insert(.textColor(Colors.Text.gray))
 
         let aBody = attributedBody.addAttributes(
-            to: maxExtendableToDate,
+            to: formattedDate,
             newAttributes: highlightedTextAttributes
         )
 

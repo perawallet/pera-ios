@@ -60,7 +60,13 @@ extension ALGWalletConnectCoordinator {
             case .didDisconnect(let session):
                 sendEvent(.didDisconnectFromV1(session))
             case .didFail(let error):
-                sendEvent(.didFailToConnectV1(error))
+                switch error {
+                case .failedToDisconnect(let session),
+                     .failedToDisconnectInactiveSession(let session):
+                    sendEvent(.didDisconnectFromV1Fail(session: session, error: error))
+                default:
+                    sendEvent(.didFailToConnectV1(error))
+                }
             case .didExceedMaximumSession:
                 sendEvent(.didExceedMaximumSessionFromV1)
             }
@@ -68,7 +74,7 @@ extension ALGWalletConnectCoordinator {
     }
     
     private func setWalletConnectV2ProtocolEvents() {
-        v2ProtocolEventHandler = {
+        walletConnectV2Protocol.eventHandler = {
             [weak self] event in
             guard let self else { return }
             
@@ -77,6 +83,10 @@ extension ALGWalletConnectCoordinator {
                 sendEvent(.sessionsV2(sessions))
             case .proposeSession(let proposal):
                 sendEvent(.proposeSessionV2(proposal))
+            case .didDisconnectSession(let session):
+                sendEvent(.didDisconnectFromV2(session))
+            case .didDisconnectSessionFail(let session, let error):
+                sendEvent(.didDisconnectFromV2Fail(session: session, error: error))
             case .deleteSession(let topic, let reason):
                 sendEvent(
                     .deleteSessionV2(
@@ -100,28 +110,24 @@ extension ALGWalletConnectCoordinator {
                         date: date
                     )
                 )
-            case .ping(let ping):
+            case .pingSession(let ping):
                 sendEvent(.pingV2(ping))
+            case .didPingSessionFail(let session, let error):
+                sendEvent(.didPingV2SessionFail(session: session, error: error))
             case .transactionRequest(let request):
                 sendEvent(.transactionRequestV2(request))
             case .failure(let error):
                 sendEvent(.failure(error))
             }
         }
-        
-        walletConnectV2Protocol.eventHandler = v2ProtocolEventHandler
-    }
-    
-    func configure() {
-        
-    }
-    
-    func listenEvents() {
-        walletConnectV2Protocol.listenEvents()
     }
 }
 
 extension ALGWalletConnectCoordinator {
+    func setup() {
+        walletConnectV2Protocol.setup()
+    }
+
     func isValidSession(session: WalletConnectSessionText) -> Bool {
         return walletConnectV1Protocol.isValidSession(session) || walletConnectV2Protocol.isValidSession(session)
     }
@@ -130,8 +136,10 @@ extension ALGWalletConnectCoordinator {
         walletConnectV1Protocol.configureTransactionsIfNeeded()
     }
     
-    func getSessions() {
-        
+    func getSessions() -> [WCSessionDraft] {
+        let wcV1Sessions = walletConnectV1Protocol.allWalletConnectSessions.map(WCSessionDraft.init)
+        let wcV2Sessions = walletConnectV2Protocol.getSessions().map(WCSessionDraft.init)
+        return wcV1Sessions + wcV2Sessions
     }
 }
 
@@ -144,8 +152,10 @@ extension ALGWalletConnectCoordinator {
             return
         }
         
-        guard let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol else { return }
-        walletConnectV2Protocol.connect(with: preferences)
+        if let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol {
+            walletConnectV2Protocol.connect(with: preferences)
+            return
+        }
     }
     
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams) {
@@ -153,11 +163,24 @@ extension ALGWalletConnectCoordinator {
         
         try? walletConnectV1Protocol.reconnect(to: session)
     }
-    
-    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams) {
-        guard let session = params.session else { return }
-        
-        walletConnectV1Protocol.disconnectFromSession(session)
+
+    func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams) {
+        let session = params.session
+
+        if let wcV1Session = session as? WCSession {
+            walletConnectV1Protocol.disconnectFromSession(wcV1Session)
+            return
+        }
+
+        if let wcV2Session = session as? WalletConnectV2Session {
+            walletConnectV2Protocol.disconnectFromSession(wcV2Session)
+            return
+        }
+    }
+
+    func disconnectFromAllSessions() {
+        walletConnectV1Protocol.disconnectFromAllSessions()
+        walletConnectV2Protocol.disconnectFromAllSessions()
     }
     
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams) {
@@ -173,16 +196,15 @@ extension ALGWalletConnectCoordinator {
             return
         }
 
-        guard let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
+        if let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
               let session = params.v2Session,
-              let namespaces = params.namespaces else {
+              let namespaces = params.namespaces {
+            walletConnectV2Protocol.updateSession(
+                session,
+                namespaces: namespaces
+            )
             return
         }
-        
-        walletConnectV2Protocol.updateSession(
-            session,
-            namespaces: namespaces
-        )
     }
     
     func extendSessionConnection(_ params: WalletConnectExtendSessionConnectionParams) {
@@ -232,16 +254,15 @@ extension ALGWalletConnectCoordinator {
             return
         }
 
-        guard let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
+        if let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
               let v2Request = params.v2Request,
-              let response = params.response else {
+              let response = params.response {
+            walletConnectV2Protocol.approveTransactionRequest(
+                v2Request,
+                response: response
+            )
             return
         }
-        
-        walletConnectV2Protocol.approveTransactionRequest(
-            v2Request,
-            response: response
-        )
     }
     
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams) {
@@ -257,12 +278,11 @@ extension ALGWalletConnectCoordinator {
             return
         }
 
-        guard let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
-              let request = params.v2Request else {
+        if let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
+           let request = params.v2Request {
+            walletConnectV2Protocol.rejectTransactionRequest(request)
             return
         }
-        
-        walletConnectV2Protocol.rejectTransactionRequest(request)
     }
 }
 

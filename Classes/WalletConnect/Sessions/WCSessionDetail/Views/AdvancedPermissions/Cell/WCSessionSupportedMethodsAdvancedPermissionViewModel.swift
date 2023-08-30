@@ -22,9 +22,9 @@ struct WCSessionSupportedMethodsAdvancedPermissionViewModel: PrimaryTitleViewMod
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
-    init() {
+    init(_ methods: Set<WCSessionSupportedMethod>) {
         bindPrimaryTitle()
-        bindSecondaryTitle()
+        bindSecondaryTitle(methods)
     }
 }
 
@@ -36,10 +36,8 @@ extension WCSessionSupportedMethodsAdvancedPermissionViewModel {
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private  mutating func bindSecondaryTitle() {
-        secondaryTitle =
-            "algo_signTxn"
-                .localized
-                .bodyRegular(lineBreakMode: .byTruncatingTail)
+    private mutating func bindSecondaryTitle(_ methods: Set<WCSessionSupportedMethod>) {
+        let aTitle: String = methods.map(\.rawValue).joined(separator: ", ")
+        secondaryTitle = aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

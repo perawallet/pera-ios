@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
 
 struct WCSessionProfileViewModel: ViewModel {
     private(set) var icon: ImageSource?
@@ -23,34 +24,95 @@ struct WCSessionProfileViewModel: ViewModel {
     private(set) var link: TextProvider?
     private(set) var description: TextProvider?
 
-    init() {
-        bindIcon()
-        bindTitle()
-        bindLink()
-        bindDescription()
+    init(_ draft: WCSessionDraft) {
+        if let wcV1Session = draft.wcV1Session {
+            bindIcon(wcV1Session)
+            bindTitle(wcV1Session)
+            bindLink(wcV1Session)
+            bindDescription(wcV1Session)
+            return
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            bindIcon(wcV2Session)
+            bindTitle(wcV2Session)
+            bindLink(wcV2Session)
+            bindDescription(wcV2Session)
+            return
+        }
     }
 }
 
 extension WCSessionProfileViewModel {
-    private mutating func bindIcon() {
-        icon = "icon-wallet".uiImage
+    private mutating func bindIcon(_ wcV1Session: WCSession) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+
+        let imageSize = CGSize(width: 72, height: 72)
+        icon = DefaultURLImageSource(
+            url: wcV1Session.peerMeta.icons.first,
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
+        )
     }
 
-    private mutating func bindTitle() {
-        title =
-            "AlgoVerify"
-                .bodyLargeMedium(lineBreakMode: .byTruncatingTail)
+    private mutating func bindTitle(_ wcV1Session: WCSession) {
+        title = wcV1Session.peerMeta.name.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindLink() {
-        link =
-            "www.algoverify.me"
-                .footnoteMedium(lineBreakMode: .byTruncatingTail)
+    private mutating func bindLink(_ wcV1Session: WCSession) {
+        self.link = wcV1Session.peerMeta.url.presentationString?.footnoteMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindDescription() {
-        description =
-            "AlgoVerify is a verification system for Algorand projects."
-                .footnoteRegular()
+    private mutating func bindDescription(_ wcV1Session: WCSession) {
+        description = wcV1Session.peerMeta.description?.footnoteRegular()
+    }
+}
+
+
+extension WCSessionProfileViewModel {
+    private mutating func bindIcon(_ wcV2Session: WalletConnectV2Session) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+        let imageSize = CGSize(width: 72, height: 72)
+        icon = DefaultURLImageSource(
+            url: wcV2Session.peer.icons.first.unwrap(URL.init),
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
+        )
+    }
+
+    private mutating func bindTitle(_ wcV2Session: WalletConnectV2Session) {
+        title = wcV2Session.peer.name.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    private mutating func bindLink(_ wcV2Session: WalletConnectV2Session) {
+        let url = URL(string: wcV2Session.peer.url)
+        guard let link = url?.presentationString else {
+            self.link = nil
+            return
+        }
+
+        self.link = link.footnoteMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    private mutating func bindDescription(_ wcV2Session: WalletConnectV2Session) {
+        description = wcV2Session.peer.description.footnoteRegular()
     }
 }

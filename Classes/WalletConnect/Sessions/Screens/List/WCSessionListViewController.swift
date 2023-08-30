@@ -22,7 +22,6 @@ import MacaroonUIKit
 final class WCSessionListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = WCSessionListLayout.build()
         let collectionView =
@@ -92,8 +91,7 @@ final class WCSessionListViewController:
                 )
 
                 self.showDisconnectAllActionIfNeeded()
-            case .didStartDisconnectingFromSession,
-                 .didStartDisconnectingFromSessions:
+            case .didStartDisconnectingFromSessions:
                 self.startLoading()
             case .didDisconnectFromSessions:
                 self.stopLoading()
@@ -111,7 +109,7 @@ final class WCSessionListViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        walletConnector.delegate = dataController
+        dataController.startObservingEvents()
     }
 
     override func viewDidLayoutSubviews() {
@@ -188,6 +186,49 @@ extension WCSessionListViewController {
 extension WCSessionListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .session(let item):
+            let draft = item.session
+            let screen = open(
+                .wcSessionDetail(draft: draft),
+                by: .push
+            ) as? WCSessionDetailScreen
+            screen?.eventHandler = {
+                [weak self, weak screen] event in
+                guard
+                    let self,
+                    let screen
+                else {
+                    return
+                }
+                switch event {
+                case .didDisconnect:
+                    let snapshot = listDataSource.snapshot()
+                    dataController.removeSessionItemFromList(
+                        snapshot,
+                        draft: item.session
+                    )
+
+                    screen.popScreen()
+
+                    self.bannerController?.presentSuccessBanner(
+                        title: "wallet-connect-session-disconnected-successfully-message".localized
+                    )
+                }
+            }
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
@@ -198,65 +239,9 @@ extension WCSessionListViewController {
         switch itemIdentifier {
         case .empty:
             linkInteractors(cell as! NoContentWithActionCell)
-        case .session(let item):
-            linkInteractors(
-                cell as! WCSessionItemCell,
-                session: item.session
-            )
+        default:
+            break
         }
-    }
-}
-
-extension WCSessionListViewController {
-    private func linkInteractors(
-        _ cell: WCSessionItemCell,
-        session: WCSession
-    ) {
-//        cell.startObserving(event: .performOptions) {
-//            [weak self] in
-//            guard let self = self else {
-//                return
-//            }
-//            
-//            self.openDisconnectSessionMenu(for: session)
-//        }
-    }
-
-    private func openDisconnectSessionMenu(for session: WCSession) {
-        let actionSheet = UIAlertController(
-            title: nil,
-            message: "wallet-connect-session-disconnect-message".localized(params: session.peerMeta.name),
-            preferredStyle: .actionSheet
-        )
-        
-        let disconnectAction = UIAlertAction(
-            title: "title-disconnect".localized,
-            style: .destructive
-        ) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-
-            let snapshot = self.listDataSource.snapshot()
-
-            self.dataController.disconnectSession(
-                snapshot,
-                session: session
-            )
-        }
-
-        let cancelAction = UIAlertAction(
-            title: "title-cancel".localized,
-            style: .cancel
-        )
-        
-        actionSheet.addAction(disconnectAction)
-        actionSheet.addAction(cancelAction)
-
-        present(
-            actionSheet,
-            animated: true
-        )
     }
 }
 
@@ -289,10 +274,22 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
         session: WCSession
     ) {
         let snapshot = listDataSource.snapshot()
-
+        let draft = WCSessionDraft(wcV1Session: session)
         dataController.addSessionItem(
             snapshot,
-            session: session
+            draft: draft
+        )
+    }
+
+    func qrScannerViewControllerDidApproveWCConnection(
+        _ controller: QRScannerViewController,
+        session: WalletConnectV2Session
+    ) {
+        let snapshot = listDataSource.snapshot()
+        let draft = WCSessionDraft(wcV2Session: session)
+        dataController.addSessionItem(
+            snapshot,
+            draft: draft
         )
     }
 
@@ -407,7 +404,6 @@ extension WCSessionListViewController {
             }
 
             let snapshot = self.listDataSource.snapshot()
-
             self.dataController.disconnectAllSessions(snapshot)
         }
 

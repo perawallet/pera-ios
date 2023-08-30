@@ -28,7 +28,7 @@ final class ViewControllerConfiguration {
     let lastSeenNotificationController: LastSeenNotificationController?
     let analytics: ALGAnalytics
     let launchController: AppLaunchController
-    var peraConnect: PeraConnect
+    let peraConnect: PeraConnect
     
     init(
         api: ALGAPI?,

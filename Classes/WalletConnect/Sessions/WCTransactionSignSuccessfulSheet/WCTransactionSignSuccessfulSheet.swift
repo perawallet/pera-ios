@@ -24,14 +24,18 @@ final class WCTransactionSignSuccessfulSheet: UISheet {
     private let eventHandler: EventHandler
 
     init(
-        wcSession: WCSession,
+        draft: WCSessionDraft,
+        pairExpiryDate: Date?,
         eventHandler: @escaping EventHandler
     ) {
         self.eventHandler = eventHandler
 
-        let title = Self.makeTitle()
-        let body = Self.makeBody(wcSession)
-        let info = Self.makeInfo(wcSession)
+        let title = Self.makeTitle(draft)
+        let body = Self.makeBody(draft)
+        let info = Self.makeInfo(
+            draft: draft,
+            pairExpiryDate: pairExpiryDate
+        )
 
         super.init(
             image: "icon-info-orange",
@@ -46,16 +50,41 @@ final class WCTransactionSignSuccessfulSheet: UISheet {
 }
 
 extension WCTransactionSignSuccessfulSheet {
-    private static func makeTitle() -> TextProvider {
-        return Self.makeTitleForWCv2() /// <todo> For mocking purposes
+    private static func makeTitle(_ draft: WCSessionDraft) -> TextProvider? {
+        return
+            "wc-transaction-request-signed-warning-title"
+                .localized
+                .bodyLargeMedium(alignment: .center)
     }
 
-    private static func makeBody(_ wcSession: WCSession) -> UISheetBodyTextProvider {
-        return Self.makeBodyForWCv2(wcSession) /// <todo> For mocking purposes
+    private static func makeBody(_ draft: WCSessionDraft) -> UISheetBodyTextProvider? {
+        if let wcV1Session = draft.wcV1Session {
+            return Self.makeBodyForWCv1(wcV1Session)
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return Self.makeBodyForWCv2(wcV2Session)
+        }
+
+        return nil
     }
 
-    private static func makeInfo(_ wcSession: WCSession) -> TextProvider? {
-        return makeInfoForWCv2(wcSession) /// <todo> For mocking purposes
+    private static func makeInfo(
+        draft: WCSessionDraft,
+        pairExpiryDate: Date?
+    ) -> TextProvider? {
+        if draft.isWCv1Session {
+            return nil
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return Self.makeInfoForWCv2(
+                wcV2Session: wcV2Session,
+                pairExpiryDate: pairExpiryDate
+            )
+        }
+
+        return nil
     }
 
     private func makeCloseAction() -> UISheetAction {
@@ -70,32 +99,16 @@ extension WCTransactionSignSuccessfulSheet {
 }
 
 extension WCTransactionSignSuccessfulSheet {
-    private static func makeTitleForWCv1() -> TextProvider {
-        return
-            "wc-transaction-request-signed-warning-title"
-                .localized
-                .bodyLargeMedium(alignment: .center)
-    }
-
-    private static func makeTitleForWCv2() -> TextProvider {
-        return
-            "wc-transaction-request-signed-warning-title"
-                .localized
-                .bodyLargeMedium(alignment: .center)
-    }
-}
-
-extension WCTransactionSignSuccessfulSheet {
-    private static func makeBodyForWCv1(_ wcSession: WCSession) -> UISheetBodyTextProvider {
-        let dAppName = wcSession.peerMeta.name
+    private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
+        let dAppName = wcV1Session.peerMeta.name
         let aBody = "wc-transaction-request-signed-warning-message"
             .localized(dAppName, dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
 
-    private static func makeBodyForWCv2(_ wcSession: WCSession) -> UISheetBodyTextProvider {
-        let dAppName = wcSession.peerMeta.name
+    private static func makeBodyForWCv2(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider {
+        let dAppName = wcV2Session.peer.name
         let aBody = "wc-transaction-request-signed-warning-message"
             .localized(dAppName, dAppName)
             .bodyRegular(alignment: .left)
@@ -104,19 +117,33 @@ extension WCTransactionSignSuccessfulSheet {
 }
 
 extension WCTransactionSignSuccessfulSheet {
-    private static func makeInfoForWCv2(_ wcSession: WCSession) -> TextProvider {
-        let maxExtendableToDate = "Apr 15, 2023, 14:20 PM"
+    private static func makeInfoForWCv2(
+        wcV2Session: WalletConnectV2Session,
+        pairExpiryDate: Date?
+    ) -> TextProvider? {
+        guard let pairExpiryDate else {
+            return nil
+        }
+
+        let expiryDate = wcV2Session.expiryDate
+        let extendedDate = expiryDate.addingTimeInterval(TimeInterval(WalletConnectV2Session.defaultTimeToLive))
+        guard extendedDate > pairExpiryDate else {
+            return nil
+        }
+
+        let dateFormat = "MMM d, yyyy"
+        let formattedDate = pairExpiryDate.toFormat(dateFormat)
 
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))
         let text =
             "wc-transaction-request-signed-warning-info"
-                .localized(params: maxExtendableToDate)
+                .localized(params: formattedDate)
                 .attributed(textAttributes)
 
         let maxExtendableToDateAttributes = Typography.footnoteMediumAttributes(alignment: .left)
         let aInfo = text.addAttributes(
-            to: maxExtendableToDate,
+            to: formattedDate,
             newAttributes: maxExtendableToDateAttributes
         )
         return aInfo

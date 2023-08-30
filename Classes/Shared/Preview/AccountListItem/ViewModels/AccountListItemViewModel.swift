@@ -117,8 +117,7 @@ extension AccountListItemViewModel {
 
             bindIcon(wcSessionDetailConnectedAccountItem)
             bindTitle(wcSessionDetailConnectedAccountItem)
-            bindPrimaryAccessory(wcSessionDetailConnectedAccountItem)
-            bindSecondaryAccessory(wcSessionDetailConnectedAccountItem)
+            bindAccessory(wcSessionDetailConnectedAccountItem)
             bindAccessoryIcon(wcSessionDetailConnectedAccountItem)
         }
     }
@@ -351,16 +350,52 @@ extension AccountListItemViewModel {
         bindTitle(wcSessionDetailConnectedAccountItem.account.value)
     }
 
-    mutating func bindPrimaryAccessory(
+    mutating func bindAccessory(
         _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
     ) {
-        primaryAccessory = getMainnetAccessory()
+        let sessionDraft = wcSessionDetailConnectedAccountItem.session
+
+        var networkForPrimaryAccessory: ALGAPI.Network?
+        var networkForSecondaryAccessory: ALGAPI.Network?
+
+        if let wcV1Session = sessionDraft.wcV1Session {
+            let chaindID = wcV1Session.walletMeta?.chainId
+            networkForPrimaryAccessory = ALGAPI.Network(chainID: chaindID)
+            networkForSecondaryAccessory = nil
+        }
+
+        if let wcV2Session = sessionDraft.wcV2Session {
+            let networks = wcV2Session.accounts.compactMap { account in
+                if account.address == wcSessionDetailConnectedAccountItem.account.value.address {
+                    let chainReference = account.reference
+                    return ALGAPI.Network(chainReference: chainReference)
+                }
+
+                return nil
+            }
+
+            if networks.isNonEmpty {
+                if networks.isSingular {
+                    let network = networks.first!
+                    networkForPrimaryAccessory = network
+                    networkForSecondaryAccessory = nil
+                } else {
+                    networkForPrimaryAccessory = .mainnet
+                    networkForSecondaryAccessory = .testnet
+                }
+            }
+        }
+
+        primaryAccessory = getAccessory(for: networkForPrimaryAccessory)
+        secondaryAccessory = getAccessory(for: networkForSecondaryAccessory)
     }
 
-    mutating func bindSecondaryAccessory(
-        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
-    ) {
-        secondaryAccessory = getTestnetAccessory()
+    private func getAccessory(for network: ALGAPI.Network?) ->  EditText? {
+        switch network {
+        case .mainnet: return getMainnetAccessory()
+        case .testnet: return getTestnetAccessory()
+        default: return nil
+        }
     }
 
     private func getMainnetAccessory() -> EditText {
@@ -513,4 +548,5 @@ struct NameServiceAccountListItem {
 
 struct WCSessionDetailConnectedAccountItem {
     let account: AccountHandle
+    let session: WCSessionDraft
 }

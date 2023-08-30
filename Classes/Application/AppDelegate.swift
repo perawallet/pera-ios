@@ -35,91 +35,32 @@ class AppDelegate:
     static var shared: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "algorand")
-        container.loadPersistentStores { storeDescription, error in
-            if var url = storeDescription.url {
-                var resourceValues = URLResourceValues()
-                resourceValues.isExcludedFromBackup = true
-                
-                do {
-                    try url.setResourceValues(resourceValues)
-                } catch {
-                }
-            }
-            
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        
-        return container
-    }()
 
     var window: UIWindow?
-    
+
     var notificationObservations: [NSObjectProtocol] = []
-    
-    private(set) lazy var appConfiguration = AppConfiguration(
-        api: api,
-        session: session,
-        sharedDataController: sharedDataController,
-        walletConnector: walletConnector,
-        loadingController: loadingController,
-        bannerController: bannerController,
-        toastPresentationController: toastPresentationController,
-        lastSeenNotificationController: lastSeenNotificationController,
-        analytics: analytics,
-        launchController: appLaunchController,
-        peraConnect: peraConnect
-    )
+
+    private(set) lazy var persistentContainer = createPersistentContainer()
+    private(set) lazy var appConfiguration = createAppConfiguration()
 
     private lazy var appLaunchController = createAppLaunchController()
-
-    private lazy var session = Session()
-    private lazy var api = ALGAPI(session: session)
+    private lazy var session = createSession()
+    private lazy var api = createAPI()
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnectV1Protocol(
-        api: api,
-        pushToken: pushNotificationController.token,
-        analytics: analytics
-    )
-    private lazy var walletConnectProtocolResolver = ALGWalletConnectProtocolResolver(
-        api: api,
-        analytics: analytics,
-        pushToken: pushNotificationController.token
-    )
-    private lazy var walletConnectCoordinator = ALGWalletConnectCoordinator(walletConnectProtocolResolver: walletConnectProtocolResolver)
-    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
-    private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
-    private lazy var bannerController = BannerController(presentingView: window!)
+    private lazy var walletConnectCoordinator = createWalletConnectCoordinator()
+    private lazy var loadingController = createLoadingController()
+    private lazy var toastPresentationController = createToastPresentationController()
+    private lazy var bannerController = createBannerController()
     private lazy var analytics = createAnalytics()
     private lazy var peraConnect = createPeraConnect()
-    
-    private lazy var router =
-        Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
-    
-    private lazy var rootViewController = RootViewController(
-        target: ALGAppTarget.current,
-        appConfiguration: appConfiguration,
-        launchController: appLaunchController
-    )
+    private lazy var router = createRouter()
+    private lazy var rootViewController = createRootViewController()
+    private lazy var pushNotificationController = createPushNotificationController()
+    private lazy var lastSeenNotificationController = createLastSeenNotificationController()
 
-    private lazy var pushNotificationController = PushNotificationController(
-        target: ALGAppTarget.current,
-        session: session,
-        api: api
-    )
-    private lazy var lastSeenNotificationController = LastSeenNotificationController(
-        api: api
-    )
-    
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
-    
-    private lazy var walletConnectV2Protocol = WalletConnectV2Protocol(api: appConfiguration.api)
-    
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -135,7 +76,7 @@ class AppDelegate:
 
         launch(with: launchOptions)
         
-        walletConnectV2Protocol.setup()
+        walletConnectCoordinator.setup()
 
         return true
     }
@@ -144,12 +85,6 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         removeBlurOnWindow()
-        
-        NotificationCenter.default.post(
-            name: .ApplicationWillEnterForeground,
-            object: self,
-            userInfo: nil
-        )
 
         lastSeenNotificationController.checkStatus()
     }
@@ -175,6 +110,7 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         appLaunchController.enterBackground()
+
         showBlurOnWindow()
     }
 
@@ -182,6 +118,7 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         saveContext()
+
         appLaunchController.terminate()
     }
 
@@ -216,7 +153,6 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-
         if let moonPayParams = url.extractMoonPayParams() {
             NotificationCenter.default.post(
                 name: .didRedirectFromMoonPay,
@@ -305,6 +241,7 @@ extension AppDelegate {
         } else {
             src = nil
         }
+
         appLaunchController.launch(deeplinkWithSource: src)
     }
     
@@ -572,8 +509,42 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func createPeraConnect() -> PeraConnect {
-        return ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
+    private func createPersistentContainer() -> NSPersistentContainer {
+        let container = NSPersistentContainer(name: "algorand")
+        container.loadPersistentStores { storeDescription, error in
+            if var url = storeDescription.url {
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = true
+
+                do {
+                    try url.setResourceValues(resourceValues)
+                } catch {
+                }
+            }
+
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+
+        return container
+    }
+
+    private func createAppConfiguration() -> AppConfiguration {
+        let walletConnector = walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV1Protocol
+        return AppConfiguration(
+            api: api,
+            session: session,
+            sharedDataController: sharedDataController,
+            walletConnector: walletConnector,
+            loadingController: loadingController,
+            bannerController: bannerController,
+            toastPresentationController: toastPresentationController,
+            lastSeenNotificationController: lastSeenNotificationController,
+            analytics: analytics,
+            launchController: appLaunchController,
+            peraConnect: peraConnect
+        )
     }
     
     private func createAppLaunchController() -> AppLaunchController {
@@ -587,6 +558,14 @@ extension AppDelegate {
         )
     }
 
+    private func createSession() -> Session {
+        return Session()
+    }
+
+    private func createAPI() -> ALGAPI {
+        return ALGAPI(session: session)
+    }
+
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         let sharedDataController = SharedAPIDataController(
@@ -595,21 +574,63 @@ extension AppDelegate {
             session: session,
             api: api
         )
-
         sharedDataController.add(self)
-
         return sharedDataController
     }
 
-    private func createAnalytics() -> ALGAnalytics {
-        return ALGAnalyticsCoordinator(providers: [
-            FirebaseAnalyticsProvider()
-        ])
+    private func createWalletConnectCoordinator() -> WalletConnectCoordinator {
+        let resolver = ALGWalletConnectProtocolResolver(
+            api: api,
+            analytics: analytics,
+            pushToken: pushNotificationController.token
+        )
+        return ALGWalletConnectCoordinator(walletConnectProtocolResolver: resolver)
     }
-}
 
-extension AppDelegate {
-    private enum Constants {
-        static let sessionInvalidateTime = 60
+    private func createLoadingController() -> LoadingController {
+        return BlockingLoadingController(presentingView: window!)
+    }
+
+    private func createToastPresentationController() -> ToastPresentationController {
+        return ToastPresentationController(presentingView: window!)
+    }
+
+    private func createBannerController() -> BannerController {
+        return BannerController(presentingView: window!)
+    }
+
+    private func createAnalytics() -> ALGAnalytics {
+        return ALGAnalyticsCoordinator(providers: [ FirebaseAnalyticsProvider() ])
+    }
+
+    private func createPeraConnect() -> PeraConnect {
+        return ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
+    }
+
+    private func createRouter() -> Router {
+        return Router(
+            rootViewController: rootViewController,
+            appConfiguration: appConfiguration
+        )
+    }
+
+    private func createRootViewController() -> RootViewController {
+        return RootViewController(
+            target: ALGAppTarget.current,
+            appConfiguration: appConfiguration,
+            launchController: appLaunchController
+        )
+    }
+
+    private func createPushNotificationController() -> PushNotificationController {
+        return PushNotificationController(
+            target: ALGAppTarget.current,
+            session: session,
+            api: api
+        )
+    }
+
+    private func createLastSeenNotificationController() -> LastSeenNotificationController {
+        return LastSeenNotificationController(api: api)
     }
 }

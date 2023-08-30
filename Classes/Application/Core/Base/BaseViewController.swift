@@ -270,12 +270,7 @@ extension BaseViewController {
     }
     
     var peraConnect: PeraConnect {
-        get {
-            return configuration.peraConnect
-        }
-        set {
-            configuration.peraConnect = newValue
-        }
+        return configuration.peraConnect
     }
 }
 

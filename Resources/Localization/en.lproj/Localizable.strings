@@ -849,11 +849,11 @@
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
-"wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
-"wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
+"wallet-connect-session-disconnect-all-action" = "Delete All Sessions";
+"wallet-connect-session-disconnect-all-message" = "Would you like to delete all sessions?";
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-disconnected" = "Disconnected";
-"wallet-connect-session-disconnected-successfully-message" = "Session disconnected successfully";
+"wallet-connect-session-disconnected-successfully-message" = "Session deleted successfully";
 "wallet-connect-v2-session-expires-on-date" = "Expires on %@";
 "wallet-connect-session-connected-on-date" = "Connected on %@";
 "wallet-connect-session-connected-with-account" = "Connected with %@";
@@ -862,7 +862,7 @@
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
 "wallet-connect-session-connection-approved-title" = "You are connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
-"wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@";
+"wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@.";
 "wallet-connect-v2-session-connection-approved-description" = "Its validity will be automatically extended, whenever used, until %@. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to %@ to complete your operation.";
 "wallet-connect-select-accounts" = "Select Accounts";
 "wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
@@ -1581,4 +1581,5 @@ FAQ section.";
 /// MARK: WC Session Connection
 "wc-session-connection-network" = "Network";
 "wc-session-connection-wc-events" = "WalletConnect events";
+"wc-session-connection-wc-methods" = "WalletConnect methods";
 "wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";

@@ -319,7 +319,7 @@ extension WalletConnectV1Protocol {
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
             self.eventHandler?(.didConnect(connectedSession))
-            self.delegate?.walletConnector(self, didConnectTo: connectedSession)
+            self.delegate?.walletConnector(self, didConnectTo: connectedSession, with: preferences)
         }
     }
 
@@ -427,10 +427,6 @@ extension WalletConnectV1Protocol {
 }
 
 extension WalletConnectV1Protocol {
-    func listenEvents() {
-        
-    }
-
     func register(_ handler: WalletConnectRequestHandler) {
         walletConnectServer.register(handler: handler)
     }
@@ -494,7 +490,8 @@ protocol WalletConnectorDelegate: AnyObject {
     )
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
-        didConnectTo session: WCSession
+        didConnectTo session: WCSession,
+        with preferences: WalletConnectSessionCreationPreferences?
     )
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
@@ -517,7 +514,8 @@ extension WalletConnectorDelegate {
 
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
-        didConnectTo session: WCSession
+        didConnectTo session: WCSession,
+        with preferences: WalletConnectSessionCreationPreferences?
     ) { }
 
     func walletConnector(

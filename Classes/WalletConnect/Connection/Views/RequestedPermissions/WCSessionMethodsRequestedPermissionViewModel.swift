@@ -12,46 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCSessionEventsRequestedPermissionViewModel.swift
+//   WCSessionMethodsRequestedPermissionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct WCSessionEventsRequestedPermissionViewModel: SecondaryListItemViewModel {
+struct WCSessionMethodsRequestedPermissionViewModel: SecondaryListItemViewModel {
     private(set) var title: TextProvider?
     private(set) var accessory: SecondaryListItemValueViewModel?
 
-    init(_ events: Set<WCSessionSupportedEvent>) {
+    init(_ events: Set<WCSessionSupportedMethod>) {
         bindTitle()
         bindAccessory(events)
     }
 }
 
-extension WCSessionEventsRequestedPermissionViewModel {
+extension WCSessionMethodsRequestedPermissionViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-connection-wc-events"
+            "wc-session-connection-wc-methods"
                 .localized
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindAccessory(_ events: Set<WCSessionSupportedEvent>) {
-        accessory = WCSessionEventsRequestedPermissionValueViewModel(events)
+    private mutating func bindAccessory(_ events: Set<WCSessionSupportedMethod>) {
+        accessory = WCSessionMethodsRequestedPermissionValueViewModel(events)
     }
 }
 
-fileprivate struct WCSessionEventsRequestedPermissionValueViewModel: SecondaryListItemValueViewModel {
+fileprivate struct WCSessionMethodsRequestedPermissionValueViewModel: SecondaryListItemValueViewModel {
     private(set) var icon: ImageStyle?
     private(set) var title: TextProvider?
 
-    init(_ events: Set<WCSessionSupportedEvent>) {
+    init(_ events: Set<WCSessionSupportedMethod>) {
         bindTitle(events)
     }
 }
 
-extension WCSessionEventsRequestedPermissionValueViewModel {
-    private mutating func bindTitle(_ events: Set<WCSessionSupportedEvent>) {
-        let aTitle: String = events.map(\.rawValue).joined(separator: ", ")
+extension WCSessionMethodsRequestedPermissionValueViewModel {
+    private mutating func bindTitle(_ methods: Set<WCSessionSupportedMethod>) {
+        let aTitle: String = methods.map(\.rawValue).joined(separator: ", ")
         title = aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

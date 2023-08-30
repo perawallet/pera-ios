@@ -23,7 +23,7 @@ struct WCSessionConnectionProfileViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var link: ButtonStyle?
 
-    init(_ draft: WCConnectionSessionDraft) {
+    init(_ draft: WCSessionConnectionDraft) {
         bindIcon(draft)
         bindTitle(draft)
         bindLink(draft)
@@ -31,7 +31,7 @@ struct WCSessionConnectionProfileViewModel: ViewModel {
 }
 
 extension WCSessionConnectionProfileViewModel {
-    private mutating func bindIcon(_ draft: WCConnectionSessionDraft) {
+    private mutating func bindIcon(_ draft: WCSessionConnectionDraft) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
@@ -51,7 +51,7 @@ extension WCSessionConnectionProfileViewModel {
         )
     }
 
-    private mutating func bindTitle(_ draft: WCConnectionSessionDraft) {
+    private mutating func bindTitle(_ draft: WCSessionConnectionDraft) {
         let dAppName = draft.dappName
         let dAppNameAttributes = Typography.bodyLargeMediumAttributes(alignment: .center)
 
@@ -66,8 +66,8 @@ extension WCSessionConnectionProfileViewModel {
         title = aTitle
     }
 
-    private mutating func bindLink(_ draft: WCConnectionSessionDraft) {
-        guard let link = draft.dappURL.presentationString else {
+    private mutating func bindLink(_ draft: WCSessionConnectionDraft) {
+        guard let link = draft.dappURL?.presentationString else {
             self.link = nil
             return
         }

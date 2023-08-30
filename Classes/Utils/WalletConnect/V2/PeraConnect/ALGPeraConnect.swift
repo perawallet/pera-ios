@@ -33,7 +33,7 @@ final class ALGPeraConnect: PeraConnect {
 
 extension ALGPeraConnect {
     private func setWalletConnectCoordinatorEvents() {
-        coordinatorEventHandler = {
+        walletConnectCoordinator.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
             
@@ -50,6 +50,8 @@ extension ALGPeraConnect {
                 sendEvent(.didConnectToV1(session))
             case .didDisconnectFromV1(let session):
                 sendEvent(.didDisconnectFromV1(session))
+            case .didDisconnectFromV1Fail(let session, let error):
+                sendEvent(.didDisconnectFromV1Fail(session: session, error: error))
             case .didFailToConnectV1(let error):
                 sendEvent(.didFailToConnectV1(error))
             case .didExceedMaximumSessionFromV1:
@@ -74,6 +76,10 @@ extension ALGPeraConnect {
                         namespaces: namespaces
                     )
                 )
+            case .didDisconnectFromV2(let session):
+                sendEvent(.didDisconnectFromV2(session))
+            case .didDisconnectFromV2Fail(let session, let error):
+                sendEvent(.didDisconnectFromV2Fail(session: session, error: error))
             case .extendSessionV2(let topic, let date):
                 sendEvent(
                     .extendSessionV2(
@@ -83,14 +89,14 @@ extension ALGPeraConnect {
                 )
             case .pingV2(let ping):
                 sendEvent(.pingV2(ping))
+            case .didPingV2SessionFail(let session, let error):
+                sendEvent(.didPingV2SessionFail(session: session, error: error))
             case .transactionRequestV2(let request):
                 sendEvent(.transactionRequestV2(request))
             case .failure(let error):
                 sendEvent(.failure(error))
             }
         }
-        
-        walletConnectCoordinator.eventHandler = coordinatorEventHandler
     }
 }
 
@@ -113,8 +119,12 @@ extension ALGPeraConnect {
         walletConnectCoordinator.reconnectToSession(params)
     }
     
-    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams) {
+    func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams) {
         walletConnectCoordinator.disconnectFromSession(params)
+    }
+
+    func disconnectFromAllSessions() {
+        walletConnectCoordinator.disconnectFromAllSessions()
     }
     
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams) {

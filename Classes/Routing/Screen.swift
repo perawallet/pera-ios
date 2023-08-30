@@ -114,7 +114,7 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnection(draft: WCConnectionSessionDraft)
+    case wcConnection(draft: WCSessionConnectionDraft)
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
@@ -366,15 +366,18 @@ indirect enum Screen {
         eventHandler: RemoveAccountSheet.EventHandler
     )
     case externalInAppBrowser(destination: DiscoverExternalDestination)
-    case extendWCSessionValidity(eventHandler: ExtendWCSessionValiditySheet.EventHandler)
+    case extendWCSessionValidity(
+        wcV2Session: WalletConnectV2Session,
+        eventHandler: ExtendWCSessionValiditySheet.EventHandler
+    )
     case wcAdvancedPermissionsInfo(eventHandler: WCAdvancedPermissionsInfoSheet.EventHandler)
-    case wcSessionDetail
+    case wcSessionDetail(draft: WCSessionDraft)
     case wcSessionConnectionSuccessful(
-        draft: WCConnectionSessionDraft,
+        draft: WCSessionDraft,
         eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler
     )
     case wcTransactionSignSuccessful(
-        wcSession: WCSession,
+        draft: WCSessionDraft,
         eventHandler: WCTransactionSignSuccessfulSheet.EventHandler
     )
 }

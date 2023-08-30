@@ -276,9 +276,11 @@ extension RootViewController: WCMainTransactionScreenDelegate {
                 visibleScreen.presentedViewController?.dismiss(animated: true)
             }
         }
+
+        let draft = WCSessionDraft(wcV1Session: session)
         transition.perform(
             .wcTransactionSignSuccessful(
-                wcSession: session,
+                draft: draft,
                 eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController

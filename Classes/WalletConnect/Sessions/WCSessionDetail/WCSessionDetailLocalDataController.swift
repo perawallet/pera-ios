@@ -40,16 +40,21 @@ final class WCSessionDetailLocalDataController: WCSessionDetailDataController {
     private var wcSessionSupportedEventsAdvancedPermissionViewModel: WCSessionSupportedEventsAdvancedPermissionViewModel?
 
     private let sharedDataController: SharedDataController
+    private let draft: WCSessionDraft
 
-    init(sharedDataController: SharedDataController) {
+    init(
+        sharedDataController: SharedDataController,
+        draft: WCSessionDraft
+    ) {
         self.sharedDataController = sharedDataController
+        self.draft = draft
     }
 
     subscript(address: PublicKey) -> AccountListItemViewModel? {
         return findViewModel(forAddress:  address)
     }
 
-    subscript(permission: AdvancedPermission) -> PrimaryTitleViewModel? {
+    subscript(permission: WCSessionDetailAdvancedPermission) -> PrimaryTitleViewModel? {
         return findViewModel(forPermission: permission)
     }
 }
@@ -70,8 +75,26 @@ extension WCSessionDetailLocalDataController {
 }
 
 extension WCSessionDetailLocalDataController {
+    func getSessionDraft() -> WCSessionDraft {
+        return draft
+    }
+
+    func getDappURL() -> URL? {
+        if let wcV1Session = draft.wcV1Session {
+            return wcV1Session.peerMeta.url
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return URL(string: wcV2Session.peer.url)
+        }
+
+        return nil
+    }
+}
+
+extension WCSessionDetailLocalDataController {
     var isPrimaryActionEnabled: Bool {
-        return false /// <todo> Remove mock data.
+        return true /// <todo> Remove mock data.
     }
 }
 
@@ -93,14 +116,14 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForProfile() -> [ItemIdentifier] {
-        sessionProfileViewModel = WCSessionProfileViewModel()
+        sessionProfileViewModel = WCSessionProfileViewModel(draft)
         return [ .profile ]
     }
 }
 
 extension WCSessionDetailLocalDataController {
     private func deliverUpdatesForWCV1BadgeIfNeeded() {
-        /// <todo> Add check for wc v1 session
+        guard draft.isWCv1Session else {  return }
 
         var snapshot = SectionSnapshot()
         appendItemsForWCV1Badge(into: &snapshot)
@@ -141,7 +164,7 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForConnectionInfo() -> [ItemIdentifier] {
-        sessionInfoViewModel = WCSessionInfoViewModel()
+        sessionInfoViewModel = WCSessionInfoViewModel(draft)
         return [ .connectionInfo ]
     }
 }
@@ -152,6 +175,8 @@ extension WCSessionDetailLocalDataController {
 
         var snapshot = SectionSnapshot()
         appendItemsForConnectedAccounts(into: &snapshot)
+
+        guard snapshot.items.isNonEmpty else { return }
 
         let update = SectionSnapshotUpdate(
             snapshot: snapshot,
@@ -166,8 +191,53 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForConnectedAccounts() -> [ItemIdentifier] {
-        let accounts = sharedDataController.sortedAccounts() /// <todo> For mocking purposes
+        let accounts = getConnectedAccounts()
         return accounts.map { .connectedAccount(makeItem(for: $0)) }
+    }
+
+    private func getConnectedAccounts() -> [AccountHandle] {
+        var accounts: [AccountHandle] = []
+
+        if let wcV1Session = draft.wcV1Session {
+            accounts = getConnectedAccountsForWCv1(wcV1Session)
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            accounts = getConnectedAccountsForWCv1(wcV2Session)
+        }
+
+        return accounts
+    }
+
+    private func getConnectedAccountsForWCv1(_ wcV1Session: WCSession) -> [AccountHandle] {
+        let sessionAccounts = wcV1Session.walletMeta?.accounts
+        let localAccounts: [AccountHandle] = sessionAccounts?.compactMap {
+            let account = sharedDataController.accountCollection[$0]
+            return account
+        } ?? []
+
+        let sortedAccounts = sharedDataController.selectedAccountSortingAlgorithm.unwrap { accountSortingAlgorithm in
+            localAccounts.sorted(by: accountSortingAlgorithm.getFormula)
+        }
+       return sortedAccounts ?? localAccounts
+    }
+
+    private func getConnectedAccountsForWCv1(_ wcV2Session: WalletConnectV2Session) -> [AccountHandle] {
+        var sessionAccounts = Set<String>()
+        let localAccounts = wcV2Session.accounts.compactMap {
+            let address = $0.address
+            if sessionAccounts.insert(address).inserted {
+                let localAccount = sharedDataController.accountCollection[address]
+                return localAccount
+            }
+
+            return nil
+        }
+
+        let sortedAccounts = sharedDataController.selectedAccountSortingAlgorithm.unwrap { accountSortingAlgorithm in
+            localAccounts.sorted(by: accountSortingAlgorithm.getFormula)
+        }
+        return sortedAccounts ?? localAccounts
     }
 
     private func makeItem(for account: AccountHandle) -> WCSessionDetail.ConnectedAccountItem {
@@ -178,8 +248,12 @@ extension WCSessionDetailLocalDataController {
 
 extension WCSessionDetailLocalDataController {
     private func deliverUpdatesForAdvancedPermissions() {
+        guard draft.isWCv2Session else { return }
+
         var snapshot = SectionSnapshot()
         appendItemsForAdvancedPermissions(into: &snapshot)
+
+        guard snapshot.items.isNonEmpty else { return }
 
         let update = SectionSnapshotUpdate(
             snapshot: snapshot,
@@ -189,10 +263,13 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func appendItemsForAdvancedPermissions(into snapshot: inout SectionSnapshot) {
+        let cellItems = makeItemsForAdvancedPermissionCells()
+
+        guard cellItems.isNonEmpty else { return }
+
         let headerItem = makeItemsForAdvancedPermissionHeader()
         snapshot.append([headerItem])
 
-        let cellItems = makeItemsForAdvancedPermissionCells()
         snapshot.append(
             cellItems,
             to: headerItem
@@ -205,12 +282,28 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForAdvancedPermissionCells() -> [ItemIdentifier] {
-        let permissions: [AdvancedPermission] = [ .supportedMethods, .supportedEvents] /// <todo> For mocking purposes
+        var permissions: [WCSessionDetailAdvancedPermission] = []
+
+        let requiredNamespaces = draft.wcV2Session?.requiredNamespaces["algorand"]
+
+        let supportedMethods = requiredNamespaces?.methods ?? []
+        if !supportedMethods.isEmpty {
+            wcSessionSupportedMethodsAdvancedPermissionViewModel = .init(supportedMethods)
+
+            permissions.append(.supportedMethods)
+        }
+
+        let supportedEvents = requiredNamespaces?.events ?? []
+        if !supportedEvents.isEmpty {
+            wcSessionSupportedEventsAdvancedPermissionViewModel = .init(supportedEvents)
+
+            permissions.append(.supportedEvents)
+        }
+
         return permissions.map { .advancedPermission(makeItem(for: $0)) }
     }
 
-    private func makeItem(for permission: AdvancedPermission) -> WCSessionDetail.AdvancedPermissionItem {
-        saveToCache(permission)
+    private func makeItem(for permission: WCSessionDetailAdvancedPermission) -> WCSessionDetail.AdvancedPermissionItem {
         return .cell(.init(permission: permission))
     }
 }
@@ -236,25 +329,19 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func saveToCache(_ connectedAccount: AccountHandle) {
-        let item = WCSessionDetailConnectedAccountItem(account: connectedAccount)
+        let item = WCSessionDetailConnectedAccountItem(
+            account: connectedAccount,
+            session: draft
+        )
         connectedAccountListItemViewModelsCache[connectedAccount.value.address] = AccountListItemViewModel(item)
     }
 }
 
 extension WCSessionDetailLocalDataController {
-    private func findViewModel(forPermission permission: AdvancedPermission) -> PrimaryTitleViewModel? {
+    private func findViewModel(forPermission permission: WCSessionDetailAdvancedPermission) -> PrimaryTitleViewModel? {
         switch permission {
         case .supportedMethods: return wcSessionSupportedMethodsAdvancedPermissionViewModel
         case .supportedEvents: return wcSessionSupportedEventsAdvancedPermissionViewModel
-        }
-    }
-
-    private func saveToCache(_ permission: AdvancedPermission) {
-        switch permission {
-        case .supportedMethods:
-            wcSessionSupportedMethodsAdvancedPermissionViewModel = .init()
-        case .supportedEvents:
-            wcSessionSupportedEventsAdvancedPermissionViewModel = .init()
         }
     }
 }

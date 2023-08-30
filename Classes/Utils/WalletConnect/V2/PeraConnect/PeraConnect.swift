@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol PeraConnect {
+protocol PeraConnect: AnyObject {
     typealias EventHandler = (PeraConnectEvent) -> Void
 
     var eventHandler: EventHandler? { get set }    
@@ -28,7 +28,8 @@ protocol PeraConnect {
     
     func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
-    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams)
+    func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams)
+    func disconnectFromAllSessions()
     func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
     func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)
@@ -46,6 +47,15 @@ enum PeraConnectEvent {
     )
     case didConnectToV1(WCSession)
     case didDisconnectFromV1(WCSession)
+    case didDisconnectFromV1Fail(
+        session: WCSession,
+        error: WalletConnectV1Protocol.WCError
+    )
+    case didDisconnectFromV2(WalletConnectV2Session)
+    case didDisconnectFromV2Fail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case didFailToConnectV1(WalletConnectV1Protocol.WCError)
     case didExceedMaximumSessionFromV1
     case sessionsV2([WalletConnectV2Session])
@@ -63,7 +73,11 @@ enum PeraConnectEvent {
         topic: WalletConnectTopic,
         date: Date
     )
-    case pingV2(String)
+    case pingV2(WalletConnectTopic)
+    case didPingV2SessionFail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case transactionRequestV2(WalletConnectV2Request)
     case failure(Error)
 }
