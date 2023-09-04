@@ -152,13 +152,20 @@ extension CollectibleDescriptionView: ActiveLabelDelegate {
     func didSelect(_ text: String, type: ActiveType) {
         if type != .url { return }
 
-        delegate?.collectibleDescriptionViewDidTapURLString(self, urlString: text)
+        guard
+            let decodedURLString = text.removingPercentEncoding,
+            let urlComponents = URLComponents(string: decodedURLString),
+            let url = urlComponents.url
+        else {
+            return
+        }
+
+        delegate?.collectibleDescriptionViewDidTapURL(self, url: url)
     }
 }
 
 protocol CollectibleDescriptionViewDelegate: AnyObject {
     func collectibleDescriptionViewDidTapURL(_ view: CollectibleDescriptionView, url: URL)
-    func collectibleDescriptionViewDidTapURLString(_ view: CollectibleDescriptionView, urlString: String)
     func collectibleDescriptionViewDidShowMore(_ view: CollectibleDescriptionView)
     func collectibleDescriptionViewDidShowLess(_ view: CollectibleDescriptionView)
 }
