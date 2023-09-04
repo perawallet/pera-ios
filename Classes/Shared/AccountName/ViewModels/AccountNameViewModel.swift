@@ -20,24 +20,20 @@ import MacaroonUIKit
 import MacaroonURLImage
 
 final class AccountNameViewModel {
-    private(set) var accountType: AccountType
     private(set) var image: ImageSource?
     private(set) var name: String?
     
     init(account: Account, hasImage: Bool = true) {
-        accountType = account.type
         bindImage(from: account, with: hasImage)
         bindName(from: account, with: hasImage)
     }
 
     init(contact: Contact, hasImage: Bool = true) {
-        accountType = .standard
         bindImage(from: contact, with: hasImage)
         bindName(from: contact, with: hasImage)
     }
 
     init(nameService: NameService) {
-        accountType = .standard
         bindName(from: nameService)
         bindImage(from: nameService)
     }
@@ -92,6 +88,6 @@ extension AccountNameViewModel {
     }
 
     private func bindImage(from nameService: NameService) {
-        image = PNGImageSource(url: URL(string: nameService.service.logo))
+        image = DefaultURLImageSource(url: URL(string: nameService.service.logo))
     }
 }

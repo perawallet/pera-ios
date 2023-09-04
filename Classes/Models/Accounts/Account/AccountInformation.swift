@@ -24,22 +24,28 @@ typealias RekeyDetail = [PublicKey: LedgerDetail]
 final class AccountInformation: Codable {
     let address: String
     var name: String
-    var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
-
-    var isOrderred: Bool {
-        return preferredOrder != Self.invalidOrder
-    }
     
     static let invalidOrder = -1
+
+    var isWatchAccount: Bool {
+        get {
+            return type == .watch
+        }
+        set {
+            type = newValue ? .watch : .standard
+        }
+    }
+
+    private var type: AccountType
     
     init(
         address: String,
         name: String,
-        type: AccountType,
+        isWatchAccount: Bool,
         ledgerDetail: LedgerDetail? = nil,
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
@@ -47,7 +53,7 @@ final class AccountInformation: Codable {
     ) {
         self.address = address
         self.name = name
-        self.type = type
+        self.type = isWatchAccount ? .watch : .standard
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
@@ -71,17 +77,6 @@ extension AccountInformation {
         self.name = name
     }
     
-    func mnemonics() -> [String]? {
-        if type == .watch || type == .ledger || type == .rekeyed {
-            return nil
-        }
-        return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: address)
-    }
-    
-    func encoded() -> Data? {
-        return try? JSONEncoder().encode(self)
-    }
-    
     func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {
         if rekeyDetail != nil {
             self.rekeyDetail?[address] = ledgerDetail
@@ -100,6 +95,17 @@ extension AccountInformation {
 }
 
 extension AccountInformation {
+    enum AccountType:
+        String,
+        Codable {
+        case standard = "standard"
+        case watch = "watch"
+        case ledger = "ledger"
+        case rekeyed = "rekeyed"
+    }
+}
+
+extension AccountInformation {
     enum CodingKeys: String, CodingKey {
         case address = "address"
         case name = "name"
@@ -111,15 +117,12 @@ extension AccountInformation {
     }
 }
 
-extension AccountInformation: Equatable {
+extension AccountInformation: Hashable {
     static func == (lhs: AccountInformation, rhs: AccountInformation) -> Bool {
         return lhs.address == rhs.address
     }
-}
 
-enum AccountType: String, Codable {
-    case standard = "standard"
-    case watch = "watch"
-    case ledger = "ledger"
-    case rekeyed = "rekeyed"
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
 }

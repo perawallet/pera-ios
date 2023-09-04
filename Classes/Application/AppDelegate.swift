@@ -101,8 +101,7 @@ class AppDelegate:
     private lazy var pushNotificationController = PushNotificationController(
         target: ALGAppTarget.current,
         session: session,
-        api: api,
-        bannerController: bannerController
+        api: api
     )
     private lazy var lastSeenNotificationController = LastSeenNotificationController(
         api: api
@@ -206,13 +205,19 @@ class AppDelegate:
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
 
-        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+        if let moonPayParams = url.extractMoonPayParams() {
             NotificationCenter.default.post(
                 name: .didRedirectFromMoonPay,
                 object: self,
-                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+                userInfo: [MoonPayParams.notificationObjectKey: moonPayParams]
             )
 
+            return true
+        }
+
+        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+            let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
+            receive(deeplinkWithSource: .externalInAppBrowser(destination))
             return true
         }
 
@@ -272,12 +277,18 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            let deeplinkQR = DeeplinkQR(url: url)
+            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+                let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
 
-            if let qrText = deeplinkQR.qrText() {
-                src = .qrText(qrText)
+                src = .externalInAppBrowser(destination)
             } else {
-                src = nil
+                let deeplinkQR = DeeplinkQR(url: url)
+
+                if let qrText = deeplinkQR.qrText() {
+                    src = .qrText(qrText)
+                } else {
+                    src = nil
+                }
             }
         } else {
             src = nil
@@ -341,7 +352,7 @@ extension AppDelegate {
             )
         case .remoteNotification(let notification, let screen, let error):
             if let error = error {
-                pushNotificationController.present(notification: notification) {
+                present(notification: notification) {
                     [unowned self] in
                     let uiRepresentation = error.uiRepresentation
                     bannerController.presentErrorBanner(
@@ -353,11 +364,11 @@ extension AppDelegate {
             }
 
             guard let someScreen = screen else {
-                pushNotificationController.present(notification: notification)
+                present(notification: notification)
                 return
             }
             
-            pushNotificationController.present(notification: notification) {
+            present(notification: notification) {
                 [unowned self] in
                 self.router.launch(deeplink: someScreen)
             }
@@ -399,21 +410,21 @@ extension AppDelegate {
         if case .didFinishRunning = event {
             let monitor = sharedDataController.blockchainUpdatesMonitor
 
-            let optedInUpdates = monitor.filterOptedInAssetUpdates()
+            let optedInUpdates = monitor.filterOptedInAssetUpdatesForNotification()
             for update in optedInUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
-                monitor.finishMonitoringOptInUpdates(associatedWith: update)
+                monitor.stopMonitoringOptInUpdates(associatedWith: update)
             }
 
-            let optedOutUpdates = monitor.filterOptedOutAssetUpdates()
+            let optedOutUpdates = monitor.filterOptedOutAssetUpdatesForNotification()
             for update in optedOutUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
-                monitor.finishMonitoringOptOutUpdates(associatedWith: update)
+                monitor.stopMonitoringOptOutUpdates(associatedWith: update)
             }
 
-            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdates()
+            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdatesForNotification()
             for update in sentPureCollectibleAssetUpdates {
-                monitor.finishMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
+                monitor.stopMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
             }
         }
     }
@@ -520,6 +531,18 @@ extension AppDelegate {
         let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         pushNotificationController.authorizeDevice(with: pushToken)
     }
+
+    func present(
+        notification: AlgorandNotification,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard let alert = notification.alert else { return }
+
+        bannerController.presentInAppNotification(
+            alert,
+            handler
+        )
+    }
 }
 
 extension AppDelegate {
@@ -543,6 +566,7 @@ extension AppDelegate {
             api: api,
             sharedDataController: sharedDataController,
             authChecker: ALGAppAuthChecker(session: session),
+            walletConnector: walletConnector,
             uiHandler: self
         )
     }

@@ -69,15 +69,15 @@ final class WCTransactionRequestedSigner {
         on session: Session
     ) -> Account? {
         guard let account = accountCollection.account(for: address),
-              !account.isWatchAccount() else {
+              account.authorization.isAuthorized else {
             return nil
         }
         
-        if account.isLedger() && account.ledgerDetail != nil {
+        if account.authorization.isLedger {
             return account
         }
         
-        if account.isRekeyed() {
+        if account.authorization.isRekeyed {
             return findRekeyedAccount(for: account, among: accountCollection)
         }
         
@@ -96,13 +96,15 @@ final class WCTransactionRequestedSigner {
         if account.rekeyDetail?[authAddress] != nil {
             return account
         } else {
-            if let authAccount = accountCollection[authAddress]?.value,
-                let ledgerDetail = authAccount.ledgerDetail {
-                account.addRekeyDetail(ledgerDetail, for: authAddress)
-                return account
+            guard let authAccount = accountCollection[authAddress]?.value else {
+                return nil
             }
-
-            return nil
+            
+            if let ledgerDetail = authAccount.ledgerDetail {
+                account.addRekeyDetail(ledgerDetail, for: authAddress)
+            }
+            
+            return account
         }
     }
 }

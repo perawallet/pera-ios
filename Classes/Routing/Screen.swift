@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//  Screen.swifta
+//  Screen.swift
 
 import UIKit
 
@@ -21,8 +21,7 @@ indirect enum Screen {
     case asaDetail(
         account: Account,
         asset: Asset,
-        configuration: ASADetailScreenConfiguration? = nil,
-        eventHandler: ASADetailScreen.EventHandler
+        configuration: ASADetailScreenConfiguration? = nil
     )
     case asaDiscovery(
         account: Account?,
@@ -68,7 +67,7 @@ indirect enum Screen {
         dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
-    case removeAsset(dataController: ManageAssetsListDataController)
+    case removeAsset(dataController: ManageAssetListDataController)
     case managementOptions(
         managementType: ManagementOptionsViewController.ManagementType,
         delegate: ManagementOptionsViewControllerDelegate
@@ -81,15 +80,22 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
-    case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
     case passphraseDisplay(address: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
-    case rekeyInstruction(account: Account)
-    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
+    case rekeyToStandardAccountInstructions(sourceAccount: Account)
+    case rekeyToLedgerAccountInstructions(sourceAccount: Account)
+    case rekeyConfirmation(sourceAccount: Account, authAccount: Account? = nil, newAuthAccount: Account)
+    case rekeySuccess(sourceAccount: Account, eventHandler: RekeySuccessScreen.EventHandler)
+    case undoRekey(sourceAccount: Account, authAccount: Account)
+    case undoRekeySuccess(sourceAccount: Account, eventHandler: UndoRekeySuccessScreen.EventHandler)
+    case rekeyAccountSelection(
+        eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
+        account: Account
+    )
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
@@ -100,7 +106,7 @@ indirect enum Screen {
         flow: AccountSetupFlow,
         address: String? = nil
     )
-    case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
+    case ledgerAccountDetail(account: Account, authAccount: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
@@ -125,7 +131,6 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case sortAccountList(
         dataController: SortAccountListDataController,
         eventHandler: SortAccountListViewController.EventHandler
@@ -182,19 +187,17 @@ indirect enum Screen {
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
-    case image3DCard(image: UIImage)
+    case image3DCard(
+        image: UIImage,
+        rendersContinuously: Bool
+    )
     case video3DCard(
         image: UIImage?,
         url: URL
     )
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
-    case buyAlgoHome(
-        transactionDraft: BuyAlgoDraft,
-        delegate: BuyAlgoHomeScreenDelegate?
-    )
-    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
-    case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case transactionOptions(account: Account, delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
@@ -217,8 +220,8 @@ indirect enum Screen {
         swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
         eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler
     )
-    case swapSignWithLedgerProcess(
-        transactionSigner: SwapTransactionSigner,
+    case ledgerConnection(eventHandler: LedgerConnectionScreen.EventHandler)
+    case signWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
@@ -307,8 +310,65 @@ indirect enum Screen {
     case discoverAssetDetail(DiscoverAssetParameters)
     case discoverDappDetail(
         DiscoverDappParamaters,
-        eventHandler: DiscoverDappDetailScreen.EventHandler?
+        eventHandler: DiscoverExternalInAppBrowserScreen.EventHandler?
     )
+    case discoverGeneric(DiscoverGenericParameters)
+    case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
+    case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
+    case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
+    case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
+    case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
+    case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
+    case bidaliIntroduction
+    case bidaliDappDetail(account: AccountHandle)
+    case bidaliAccountSelection(
+        eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
+    )
+    case moonPayIntroduction(
+        draft: MoonPayDraft,
+        delegate: MoonPayIntroductionScreenDelegate?
+    )
+    case moonPayAccountSelection(
+        eventHandler: AccountSelectionListScreen<MoonPayAccountSelectionListLocalDataController>.EventHandler
+    )
+    case moonPayTransaction(moonPayParams: MoonPayParams)
+    case sardineIntroduction
+    case sardineAccountSelection(
+        eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
+    )
+    case sardineDappDetail(account: AccountHandle)
+    case transakIntroduction
+    case transakAccountSelection(
+        eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
+    )
+    case transakDappDetail(account: AccountHandle)
+    case standardAccountInformation(account: Account)
+    case watchAccountInformation(account: Account)
+    case ledgerAccountInformation(account: Account)
+    case noAuthAccountInformation(account: Account)
+    case rekeyedAccountInformation(sourceAccount: Account, authAccount: Account)
+    case anyToNoAuthRekeyedAccountInformation(account: Account)
+    case rekeyedAccountSelectionList(
+        authAccount: Account,
+        rekeyedAccounts: [Account],
+        eventHandler: RekeyedAccountSelectionListScreen.EventHandler
+    )
+    case undoRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: UndoRekeyConfirmationSheet.EventHandler
+    )
+    case overwriteRekeyConfirmation(
+        sourceAccount: Account,
+        authAccount: Account,
+        eventHandler: OverwriteRekeyConfirmationSheet.EventHandler
+    )
+    case backUpBeforeRemovingAccountWarning(eventHandler: BackUpBeforeRemovingAccountWarningSheet.EventHandler)
+    case removeAccount(
+        account: Account,
+        eventHandler: RemoveAccountSheet.EventHandler
+    )
+    case externalInAppBrowser(destination: DiscoverExternalDestination)
 }
 
 extension Screen {

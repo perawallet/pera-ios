@@ -56,8 +56,10 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected, .accountSuccessfullyRekeyed:
+        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected:
             image = img("check")
+        case .failedToImportLedgerAccounts:
+            image = img("icon-error-close")
         case .passphraseVerified:
             image = img("shield-check")
         case .recoverWithLedger:
@@ -90,9 +92,9 @@ extension TutorialViewModel {
         case .recoverWithLedger:
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
-            title = "tutorial-title-ledger-connected".localized
-        case .accountSuccessfullyRekeyed:
-            title = "ledger-rekey-success-title".localized
+            title = "recover-from-seed-verify-pop-up-title".localized
+        case .failedToImportLedgerAccounts:
+            title = "tutorial-title-failed-to-import-ledger-accounts".localized
         case .collectibleTransferConfirmed:
             title = "collectible-transfer-confirmed-title".localized
         }
@@ -120,10 +122,10 @@ extension TutorialViewModel {
             bindAccountSetupFlowDescription(flow)
         case .recoverWithLedger:
             description = "tutorial-description-ledger".localized
-        case .ledgerSuccessfullyConnected:
-            description = "tutorial-description-ledger-connected".localized
-        case .accountSuccessfullyRekeyed(let accountName):
-            description = "ledger-rekey-success-message".localized(params: accountName)
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowDescription(flow)
+        case .failedToImportLedgerAccounts:
+            description = "tutorial-description-failed-to-import-ledger-accounts".localized
         case .collectibleTransferConfirmed:
             description = "collectible-transfer-confirmed-description".localized
         }
@@ -151,10 +153,10 @@ extension TutorialViewModel {
             bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
-        case .ledgerSuccessfullyConnected:
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowPrimaryButton(flow)
+        case .failedToImportLedgerAccounts:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
-        case .accountSuccessfullyRekeyed:
-            primaryActionButtonTitle = "title-start-using-pera-wallet".localized
         case .collectibleTransferConfirmed:
             primaryActionButtonTitle = "collectible-transfer-confirmed-action-title".localized
         }
@@ -181,7 +183,8 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
         case .accountVerified(let flow):
             bindAccountSetupFlowSecondaryButton(flow)
-            
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowSecondaryButton(flow)
         default:
             break
         }
@@ -236,6 +239,8 @@ extension TutorialViewModel {
     private func bindButtonsStyle(_ tutorial: Tutorial, theme: TutorialViewTheme) {
         switch tutorial {
         case .accountVerified(let flow):
+            bindAccountSetupFlowButtonsTheme(flow, theme: theme)
+        case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowButtonsTheme(flow, theme: theme)
         default:
             return

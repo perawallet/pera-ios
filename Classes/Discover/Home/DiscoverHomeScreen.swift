@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class DiscoverHomeScreen:
-    PeraInAppBrowserScreen,
+    DiscoverInAppBrowserScreen<DiscoverHomeScriptMessage>,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -41,14 +41,15 @@ final class DiscoverHomeScreen:
     private var isNavigationTitleHidden = true
     private var isViewLayoutLoaded = false
 
-    private var events: [Event] = [.assetDetail, .dAppViewer]
-
     deinit {
         navigationBarLargeTitleController.deactivate()
     }
 
     init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration, discoverURL: .home)
+        super.init(
+            destination: .home,
+            configuration: configuration
+        )
     }
 
     override func configureNavigationBarAppearance() {
@@ -78,10 +79,6 @@ final class DiscoverHomeScreen:
 
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
-
-        events.forEach { event in
-            contentController.add(self, name: event.rawValue)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -94,6 +91,25 @@ final class DiscoverHomeScreen:
         updateUIWhenViewDidLayout()
 
         isViewLayoutLoaded = true
+    }
+
+    /// <mark>
+    /// WKScriptMessageHandler
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name)
+
+        switch inAppMessage {
+        case .none:
+            super.userContentController(
+                userContentController,
+                didReceive: message
+            )
+        case .pushTokenDetailScreen:
+            handleTokenDetailAction(message)
+        }
     }
 }
 
@@ -168,69 +184,17 @@ extension DiscoverHomeScreen {
     }
 }
 
-extension DiscoverHomeScreen: WKScriptMessageHandler {
-    func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8) else {
-            return
-        }
-
-        let jsonDecoder = JSONDecoder()
-
-        if let assetParameters = try? jsonDecoder.decode(DiscoverAssetParameters.self, from: jsonData) {
-            openAssetDetail(assetParameters)
-            return
-        }
-
-        if let dappParameters = try? jsonDecoder.decode(DiscoverDappParamaters.self, from: jsonData) {
-            openDappDetail(dappParameters)
-            return
-        }
+extension DiscoverHomeScreen {
+    private func handleTokenDetailAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
+        guard let params = try? DiscoverAssetParameters.decoded(jsonData) else { return }
+        navigateToAssetDetail(params)
     }
 
-    private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
-        let screen = Screen.discoverDappDetail(dappDetail) {
-            [weak self] event in
-            guard let self = self else { return }
-            
-            switch event {
-            case let .addToFavorites(dappDetails):
-                self.addToFavorites(dappDetails)
-            case let .removeFromFavorites(dappDetails):
-                self.removeFromFavorites(dappDetails)
-            }
-        }
-        
+    private func navigateToAssetDetail(_ params: DiscoverAssetParameters) {
         open(
-            screen,
-            by: .push
-        )
-    }
-    
-    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
-        updateFavorites(dapp: dapp)
-    }
-    
-    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
-        updateFavorites(dapp: dapp)
-    }
-    
-    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
-        guard let dappDetailsString = try? dapp.encodedString() else {
-            return
-        }
-        
-        let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
-        
-        self.webView.evaluateJavaScript(scriptString)
-    }
-
-    private func openAssetDetail(_ assetDetail: DiscoverAssetParameters) {
-        open(
-            .discoverAssetDetail(assetDetail),
+            .discoverAssetDetail(params),
             by: .push
         )
     }
@@ -238,15 +202,16 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
 
 extension DiscoverHomeScreen {
     private func navigateToSearch() {
-        let screen = Screen.discoverSearch { [weak self] event, screen in
-            guard let self else {
-                return
-            }
+        let screen = Screen.discoverSearch {
+            [weak self] event, screen in
+            guard let self else { return }
 
             switch event {
             case .selectAsset(let assetDetail):
                 screen.dismissScreen(animated: true) {
-                    self.openAssetDetail(assetDetail)
+                    [weak self] in
+                    guard let self else { return }
+                    self.navigateToAssetDetail(assetDetail)
                 }
             }
         }
@@ -262,9 +227,8 @@ extension DiscoverHomeScreen {
     }
 }
 
-extension DiscoverHomeScreen {
-    enum Event: String {
-        case assetDetail = "pushTokenDetailScreen"
-        case dAppViewer = "pushDappViewerScreen"
-    }
+enum DiscoverHomeScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case pushTokenDetailScreen
 }

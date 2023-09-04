@@ -52,7 +52,7 @@ final class SelectAssetViewController:
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
-        self.receiverAccount = receiver.unwrap { Account(address: $0, type: .standard) }
+        self.receiverAccount = receiver.unwrap { Account(address: $0) }
         self.theme = theme
 
         super.init(configuration: configuration)
@@ -215,7 +215,7 @@ extension SelectAssetViewController {
                 draft: sendCollectibleDraft
             ),
             by: .customPresent(
-                presentationStyle: .overCurrentContext,
+                presentationStyle: .fullScreen,
                 transitionStyle: .crossDissolve,
                 transitioningDelegate: nil
             ),

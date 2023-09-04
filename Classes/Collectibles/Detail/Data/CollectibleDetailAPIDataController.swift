@@ -85,8 +85,9 @@ extension CollectibleDetailAPIDataController {
         fetchAssetDetails()
     }
 
-    func retry() {
-        fetchAssetDetails()
+    func reloadAfterOptInStatusUpdates() {
+        currentAccountCollectibleStatus = getAccountCollectibleStatus()
+        deliverContentSnapshot()
     }
 
     private func fetchAssetDetails() {
@@ -141,25 +142,39 @@ extension CollectibleDetailAPIDataController {
             for: account
         )
     }
-    
+
     func getAccountCollectibleStatus() -> AccountCollectibleStatus {
-        guard let updatedAccount = sharedDataController.accountCollection[account.address]?.value,
-              let updatedAsset = updatedAccount[asset.id] as? CollectibleAsset else {
-            return .notOptedIn
+        /// <todo>
+        /// These side effects must fixed.
+        if let updatedAccount = sharedDataController.accountCollection[account.address]?.value {
+            account = updatedAccount
         }
-        
-        self.account = updatedAccount
-        self.asset = updatedAsset
-        
+
+        guard let updatedAsset = account[asset.id] else {
+            return hasOptedIn() == .pending ? .optingIn : .notOptedIn
+        }
+
+        /// <note>
+        /// There is a delay to mark an asset as NFT in the backend; thus, it is possible to
+        /// interpret a newly-created NFT as a normal asset.
+        switch updatedAsset {
+        case let updatedCollectibleAsset as CollectibleAsset:
+            asset.update(with: updatedCollectibleAsset)
+        case let updatedStandardAsset as StandardAsset:
+            asset.update(with: updatedStandardAsset)
+        default:
+            break
+        }
+
+        if hasOptedOut() == .pending {
+            return .optingOut
+        }
+
         if asset.isOwned {
             return .owned
         }
-        
-        if hasOptedIn() == .optedIn {
-            return .optedIn
-        }
-        
-        return .notOptedIn
+
+        return .optedIn
     }
     
     func getCurrentAccountCollectibleStatus() -> AccountCollectibleStatus {
@@ -239,11 +254,11 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if currentAccountCollectibleStatus == .optedIn {
+        if currentAccountCollectibleStatus == .optedIn && !asset.isDestroyed {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+                        .notOwner(isWatchAccount: account.authorization.isWatch)
                     )
                 )
             )
@@ -271,7 +286,7 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             return
         }
 

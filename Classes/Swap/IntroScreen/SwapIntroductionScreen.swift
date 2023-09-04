@@ -38,14 +38,16 @@ final class SwapIntroductionScreen: ScrollScreen {
     private let draft: SwapIntroductionDraft
 
     init(
-        draft: SwapIntroductionDraft
+        draft: SwapIntroductionDraft,
+        api: ALGAPI?
     ) {
         self.draft = draft
-        super.init()
+        
+        super.init(api: api)
     }
 
-    override func configureNavigationBar() {
-        navigationBarController.isNavigationBarHidden = true
+    override var shouldShowNavigationBar: Bool {
+        return false
     }
 
     override func viewDidLoad() {
@@ -120,6 +122,7 @@ extension SwapIntroductionScreen {
     private func addIllustrationImage() {
         illustrationImageView.customizeAppearance(theme.illustrationImage)
         illustrationImageView.clipsToBounds = true
+        illustrationImageView.isUserInteractionEnabled = false
 
         view.addSubview(illustrationImageView)
         illustrationImageView.snp.makeConstraints {
@@ -137,6 +140,7 @@ extension SwapIntroductionScreen {
         let backgroundView = UIImageView()
         backgroundView.customizeAppearance(theme.illustrationImageBackground)
         backgroundView.clipsToBounds = true
+        backgroundView.isUserInteractionEnabled = false
 
         view.insertSubview(
             backgroundView,

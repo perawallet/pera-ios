@@ -26,7 +26,6 @@ final class ALGAsset:
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
-    let isDeleted: Bool?
     let optedInAtRound: UInt64?
 
     init() {
@@ -34,7 +33,6 @@ final class ALGAsset:
         self.amount = 0
         self.isFrozen = nil
         self.id = 1
-        self.isDeleted = nil
         self.optedInAtRound = nil
     }
 
@@ -43,7 +41,6 @@ final class ALGAsset:
         self.creator = nil
         self.amount = 0
         self.isFrozen = nil
-        self.isDeleted = nil
         self.optedInAtRound = nil
     }
 
@@ -52,7 +49,6 @@ final class ALGAsset:
         self.creator = asset.creator?.address
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
-        self.isDeleted = asset.isDeleted
         self.optedInAtRound = asset.optedInAtRound
     }
 }
@@ -83,7 +79,22 @@ extension ALGAsset {
         case amount
         case isFrozen = "is-frozen"
         case id = "asset-id"
-        case isDeleted = "deleted"
         case optedInAtRound = "opted-in-at-round"
+    }
+}
+
+extension ALGAsset {
+    static func usdcAssetID(_ network: ALGAPI.Network) -> AssetID {
+        switch network {
+        case .mainnet: return 31566704
+        case .testnet: return 10458941
+        }
+    }
+
+    static func usdtAssetID(_ network: ALGAPI.Network) -> AssetID? {
+        switch network {
+        case .mainnet: return 312769
+        case .testnet: return nil /// In the testnet, we don't have a verified USDt, so we assume there is none for now.
+        }
     }
 }

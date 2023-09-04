@@ -87,6 +87,10 @@ final class SelectAccountViewController: BaseViewController {
                 return
             }
 
+            guard accountHandle.isAvailable else {
+                return
+            }
+
             self.delegate?.selectAccountViewController(
                 self,
                 didSelect: accountHandle.value,
@@ -149,7 +153,6 @@ extension SelectAccountViewController: SharedDataControllerObserver {
 enum TransactionAction: Equatable {
     case send
     case receive
-    case buyAlgo
     case optIn(asset: AssetID)
 }
 

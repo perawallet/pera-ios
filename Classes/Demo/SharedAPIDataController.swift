@@ -72,6 +72,8 @@ final class SharedAPIDataController:
         session: session,
         api: api
     )
+
+    private lazy var accountAuthorizationDeterminer = AccountAuthorizationDeterminer(session: session)
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -246,7 +248,7 @@ extension SharedAPIDataController {
             assetID: assetID,
             for: account
         )
-        let hasAlreadyOptedIn = account[assetID] != nil
+        let hasAlreadyOptedIn = account.isOptedIn(to: assetID)
 
         switch (hasPendingOptedIn, hasAlreadyOptedIn) {
         case (true, false): return .pending
@@ -276,6 +278,23 @@ extension SharedAPIDataController {
 }
 
 extension SharedAPIDataController {
+    func rekeyedAccounts(
+        of account: Account
+    ) -> [AccountHandle] {
+        return accountCollection.rekeyedAccounts(of: account.address)
+    }
+
+    func authAccount(
+        of account: Account
+    ) -> AccountHandle? {
+        guard let authAddress = account.authAddress else {
+            return nil
+        }
+        return accountCollection[authAddress]
+    }
+}
+
+extension SharedAPIDataController {
     func add(
         _ observer: SharedDataControllerObserver
     ) {
@@ -297,8 +316,6 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
-            self.blockchainUpdatesMonitor.removeUnmonitoredUpdates()
-
             return ALGBlockRequest(
                 localAccounts: self.session.authenticatedUser?.accounts ?? [],
                 cachedAccounts: self.accountCollection,
@@ -413,21 +430,21 @@ extension SharedAPIDataController {
         }
 
         for assetID in blockchainUpdates.optedInAssets {
-            blockchainUpdatesMonitor.stopMonitoringOptInUpdates(
+            blockchainUpdatesMonitor.markOptInUpdatesForNotification(
                 forAssetID: assetID,
                 for: account
             )
         }
 
         for assetID in blockchainUpdates.optedOutAssets {
-            blockchainUpdatesMonitor.stopMonitoringOptOutUpdates(
+            blockchainUpdatesMonitor.markOptOutUpdatesForNotification(
                 forAssetID: assetID,
                 for: account
             )
         }
 
         for assetID in blockchainUpdates.sentPureCollectibleAssets {
-            blockchainUpdatesMonitor.stopMonitoringSendPureCollectibleAssetUpdates(
+            blockchainUpdatesMonitor.markSendPureCollectibleAssetUpdatesForNotification(
                 forAssetID: assetID,
                 for: account
             )
@@ -443,10 +460,14 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFinish() {
+        setAccountsAuthorizationWhenBlockProcessorDidFinish()
+
         accountCollection = nextAccountCollection
         nextAccountCollection = []
-        
+
         $isFirstPollingRoundCompleted.mutate { $0 = true }
+
+        blockchainUpdatesMonitor.removeCompletedUpdates()
 
         if status != .running {
             return
@@ -535,5 +556,21 @@ extension SharedAPIDataController {
         case running
         case suspended
         case completed /// Waiting for the next polling cycle to be running
+    }
+}
+
+extension SharedAPIDataController {
+    private func setAccountsAuthorizationWhenBlockProcessorDidFinish() {
+        nextAccountCollection.forEach { accountHandle in
+            let aRawAccount = accountHandle.value
+            aRawAccount.authorization = determineAccountAuthorization(of: aRawAccount)
+        }
+    }
+
+    func determineAccountAuthorization(of account: Account) -> AccountAuthorization {
+        accountAuthorizationDeterminer.determineAccountAuthorization(
+            of: account,
+            with: nextAccountCollection
+        )
     }
 }

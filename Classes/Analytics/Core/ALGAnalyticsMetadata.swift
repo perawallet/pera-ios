@@ -31,6 +31,8 @@ enum ALGAnalyticsMetadataKey:
     case accountAddress = "address"
     case amount
     case assetID = "asset_id"
+    case assetInID = "asset_in"
+    case assetOutID = "asset_out"
     case dappName = "dapp_name"
     case dappURL = "dapp_url"
     case exchangeFeeAsAlgo = "exchange_fee_inalgo"
@@ -52,6 +54,7 @@ enum ALGAnalyticsMetadataKey:
     case peraFeeAsUSD = "pera_fee_inusd"
     case mismatchFoundAccountAddress = "received_address"
     case mismatchExpectedAccountAddress = "requested_address"
+    case network = "network"
     case senderAccountAddress = "sender"
     case signedTransaction = "signed_transaction"
     case swapAddress = "swap_wallet_address"
@@ -64,6 +67,7 @@ enum ALGAnalyticsMetadataKey:
     case accountCreationType = "type"
     case unsignedTransaction = "unsigned_transaction"
     case query = "query"
-    case assetInID = "asset_in"
-    case assetOutID = "asset_out"
+    case wcRequestID = "wc_request_id"
+    case wcRequestURL = "wc_request_url"
+    case wcRequestError = "wc_request_error"
 }

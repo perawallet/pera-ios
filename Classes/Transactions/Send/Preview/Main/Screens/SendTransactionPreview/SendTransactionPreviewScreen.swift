@@ -22,14 +22,30 @@ import MacaroonUIKit
 final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
+   override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+      return .automatic
+   }
+   override var contentSizeBehaviour: BaseScrollViewController.ContentSizeBehaviour {
+      return .intrinsic
+   }
+
    var eventHandler: EventHandler?
    
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
+   private lazy var transitionToLedgerConnection = BottomSheetTransition(
+       presentingViewController: self,
+       interactable: false
+   )
+   private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+   private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+      presentingViewController: self,
+      interactable: false
+   )
 
-   private var ledgerApprovalViewController: LedgerApprovalViewController?
+   private var ledgerConnectionScreen: LedgerConnectionScreen?
+   private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
-   private lazy var nextButtonContainer = UIView()
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
@@ -57,14 +73,17 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       self.draft = draft
       super.init(configuration: configuration)
    }
+   
+   override func didTapDismissBarButton() -> Bool {
+      eventHandler?(.didPerformDismiss)
+      return true
+   }
 
    override func viewDidLayoutSubviews() {
       super.viewDidLayoutSubviews()
 
       if !isLayoutFinalized {
          isLayoutFinalized = true
-
-         addLinearGradient()
       }
    }
 
@@ -107,6 +126,19 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       super.viewDidLoad()
 
       fetchTransactionParams()
+   }
+
+   override func addFooter() {
+      super.addFooter()
+
+      var backgroundGradient = Gradient()
+      backgroundGradient.colors = [
+          Colors.Defaults.background.uiColor.withAlphaComponent(0),
+          Colors.Defaults.background.uiColor
+      ]
+      backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+      footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
    }
 
    private func fetchTransactionParams() {
@@ -234,6 +266,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 extension SendTransactionPreviewScreen {
    @objc
    private func didTapNext() {
+      if !transactionController.canSignTransaction(for: draft.from) { return }
+      
       loadingController?.startLoadingWithMessage("title-loading".localized)
 
       let composedTransacation = composeTransaction()
@@ -244,6 +278,8 @@ extension SendTransactionPreviewScreen {
       transactionController.getTransactionParamsAndComposeTransactionData(for: transactionType)
 
       if draft.from.requiresLedgerConnection() {
+         openLedgerConnection()
+
          transactionController.initializeLedgerTransactionAccount()
          transactionController.startTimer()
       }
@@ -254,7 +290,10 @@ extension SendTransactionPreviewScreen {
    private func addTransactionDetailView() {
       contentView.addSubview(transactionDetailView)
       transactionDetailView.snp.makeConstraints {
-         $0.edges.equalToSuperview()
+         $0.top == 0
+         $0.leading == 0
+         $0.bottom == theme.contentBottomEdgeInset
+         $0.trailing == 0
       }
       
       transactionDetailView.startObserving(event: .performEditNote) {
@@ -280,38 +319,16 @@ extension SendTransactionPreviewScreen {
    }
 
    private func addNextButton() {
-      view.addSubview(nextButtonContainer)
-      nextButtonContainer.snp.makeConstraints {
-         $0.leading.trailing.bottom.equalToSuperview()
-         $0.fitToHeight(theme.linearGradientHeight + view.safeAreaBottom)
-      }
-
       nextButton.customize(theme.nextButtonStyle)
       nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
-      nextButtonContainer.addSubview(nextButton)
-      
+
+      footerView.addSubview(nextButton)
       nextButton.snp.makeConstraints {
-         $0.leading.trailing.equalToSuperview().inset(theme.nextButtonLeadingInset)
-         $0.bottom.equalToSuperview().inset(theme.nextButtonBottomInset + view.safeAreaBottom)
-         $0.height.equalTo(theme.nextButtonHeight)
+         $0.top == theme.nextButtonContentEdgeInsets.top
+         $0.leading == theme.nextButtonContentEdgeInsets.leading
+         $0.bottom == theme.nextButtonContentEdgeInsets.bottom
+         $0.trailing == theme.nextButtonContentEdgeInsets.trailing
       }
-   }
-
-   private func addLinearGradient() {
-      let layer = CAGradientLayer()
-      layer.frame = CGRect(
-         origin: .zero,
-         size: CGSize(
-            width: view.bounds.width,
-            height: theme.linearGradientHeight + view.safeAreaBottom
-         )
-      )
-
-      let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
-      let color1 = Colors.Defaults.background.uiColor.cgColor
-
-      layer.colors = [color0, color1]
-      nextButtonContainer.layer.insertSublayer(layer, at: 0)
    }
 }
 
@@ -419,34 +436,23 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didRequestUserApprovalFrom ledger: String
    ) {
-      let ledgerApprovalTransition = BottomSheetTransition(
-         presentingViewController: self,
-         interactable: false
-      )
-      ledgerApprovalViewController = ledgerApprovalTransition.perform(
-         .ledgerApproval(mode: .approve, deviceName: ledger),
-         by: .present
-      )
+      ledgerConnectionScreen?.dismiss(animated: true) {
+          self.ledgerConnectionScreen = nil
 
-      ledgerApprovalViewController?.eventHandler = {
-         [weak self] event in
-         guard let self = self else { return }
-         switch event {
-         case .didCancel:
-            self.ledgerApprovalViewController?.dismissScreen()
-            self.loadingController?.stopLoading()
-         }
+          self.openSignWithLedgerProcess(
+              transactionController: transactionController,
+              ledgerDeviceName: ledger
+          )
       }
    }
 
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-      ledgerApprovalViewController?.dismissScreen()
-      loadingController?.stopLoading()
-   }
+      ledgerConnectionScreen?.dismissScreen()
+      ledgerConnectionScreen = nil
+      
+      signWithLedgerProcessScreen?.dismissScreen()
+      signWithLedgerProcessScreen = nil
 
-   func transactionControllerDidRejectedLedgerOperation(
-      _ transactionController: TransactionController
-   ) {
       loadingController?.stopLoading()
    }
 }
@@ -477,19 +483,11 @@ extension SendTransactionPreviewScreen {
             message: error.debugDescription
          )
       case .ledgerConnection:
-         let bottomTransition = BottomSheetTransition(presentingViewController: self)
+         ledgerConnectionScreen?.dismiss(animated: true) {
+             self.ledgerConnectionScreen = nil
 
-         bottomTransition.perform(
-            .bottomWarning(
-               configurator: BottomWarningViewConfigurator(
-                  image: "icon-info-green".uiImage,
-                  title: "ledger-pairing-issue-error-title".localized,
-                  description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                  secondaryActionButtonTitle: "title-ok".localized
-               )
-            ),
-            by: .presentWithoutNavigationController
-         )
+             self.openLedgerConnectionIssues()
+         }
       default:
          displaySimpleAlertWith(
             title: "title-error".localized,
@@ -500,8 +498,83 @@ extension SendTransactionPreviewScreen {
 }
 
 extension SendTransactionPreviewScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension SendTransactionPreviewScreen {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension SendTransactionPreviewScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+               transactionController.stopBLEScan()
+               transactionController.stopTimer()
+
+               self.signWithLedgerProcessScreen?.dismissScreen()
+               self.signWithLedgerProcessScreen = nil
+
+               self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didPerformDismiss
       case didEditNote(note: String?)
    }
 }

@@ -70,7 +70,7 @@ final class AccountCollectibleListViewController: BaseViewController {
         super.prepareLayout()
         add(collectibleListScreen)
 
-        if !account.value.isWatchAccount() {
+        if !account.value.authorization.isWatch {
             addOptInAction()
             updateSafeAreaWhenOptInActionWasAdded()
         }
@@ -94,7 +94,7 @@ extension AccountCollectibleListViewController {
 
             switch event {
             case .didTapReceive:
-                if self.account.value.isWatchAccount() {
+                if self.account.value.authorization.isWatch {
                     return
                 }
 
@@ -175,12 +175,25 @@ extension AccountCollectibleListViewController {
     private func openReceiveCollectible() {
         view.endEditing(true)
 
-        let controller = open(
+        let aRawAccount = account.value
+        if aRawAccount.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
+        open(
             .receiveCollectibleAssetList(account: account),
             by: .present
-        ) as? ReceiveCollectibleAssetListViewController
+        )
+    }
+}
 
-        controller?.delegate = self
+extension AccountCollectibleListViewController {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-available-for-account-type".localized,
+            message: ""
+        )
     }
 }
 
@@ -204,14 +217,6 @@ extension AccountCollectibleListViewController {
             .accountCollectibleListFilterSelection(uiInteractions: uiInteractions),
             by: .present
         )
-    }
-}
-
-extension AccountCollectibleListViewController: ReceiveCollectibleAssetListViewControllerDelegate {
-    func receiveCollectibleAssetListViewController(
-        _ controller: ReceiveCollectibleAssetListViewController,
-        didCompleteTransaction account: Account
-    ) {
     }
 }
 

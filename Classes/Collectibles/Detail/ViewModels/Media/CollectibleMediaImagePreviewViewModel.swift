@@ -32,7 +32,10 @@ extension CollectibleMediaImagePreviewViewModel {
         _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
         switch accountCollectibleStatus {
-        case .notOptedIn, .owned:
+        case .notOptedIn,
+             .optingOut,
+             .optingIn,
+             .owned:
             overlayImage = nil
         case .optedIn:
             overlayImage = "overlay-bg".uiImage

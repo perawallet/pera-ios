@@ -21,8 +21,7 @@ import MacaroonURLImage
 final class CollectibleDetailViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    TransactionControllerDelegate,
-    TransactionSignChecking {
+    TransactionControllerDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -50,6 +49,15 @@ final class CollectibleDetailViewController:
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
@@ -58,7 +66,8 @@ final class CollectibleDetailViewController:
         sharedDataController: sharedDataController
     )
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleDetailLayout.build()
@@ -164,7 +173,7 @@ final class CollectibleDetailViewController:
                     actionHandler: {
                         [unowned self] in
                         self.bottomBannerController.dismissError()
-                        self.dataController.retry()
+                        self.dataController.load()
                     }
                 )
             }
@@ -195,8 +204,8 @@ final class CollectibleDetailViewController:
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
     }
@@ -224,6 +233,10 @@ final class CollectibleDetailViewController:
             guard let self = self else { return }
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+            }
         }
 
         collectibleDetailTransactionController.eventHandlers.didStartOptingInToAsset = {
@@ -231,6 +244,10 @@ final class CollectibleDetailViewController:
             guard let self = self else { return }
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+            }
         }
     }
 
@@ -318,7 +335,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.openOptOutAsset()
+            self.openOptOutAssetIfPossible()
         }
     }
 
@@ -518,7 +535,7 @@ extension CollectibleDetailViewController {
                     draft: draft
                 ),
                 by: .customPresent(
-                    presentationStyle: .overCurrentContext,
+                    presentationStyle: .fullScreen,
                     transitionStyle: .crossDissolve,
                     transitioningDelegate: nil
                 ),
@@ -568,7 +585,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.openOptOutAsset()
+            self.openOptOutAssetIfPossible()
         }
     }
 
@@ -649,20 +666,15 @@ extension CollectibleDetailViewController {
     }
 
     private func openASADetail() {
+        let configuration = ASADetailScreenConfiguration(
+            shouldDisplayAccountActionsBarButtonItem: false,
+            shouldDisplayQuickActions: false
+        )
         let screen = Screen.asaDetail(
             account: account,
             asset: asset,
-            configuration: ASADetailScreenConfiguration(
-                shouldDisplayAccountActionsBarButtonItem: false,
-                shouldDisplayQuickActions: false
-            )
-        ) { event in
-            switch event {
-            case .didRemoveAccount: break
-            case .didRenameAccount: break
-            }
-        }
-
+            configuration: configuration
+        )
         open(
             screen,
             by: .push
@@ -671,7 +683,12 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
-    private func openOptOutAsset() {
+    private func openOptOutAssetIfPossible() {
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         let draft = OptOutAssetDraft(
             account: account,
             asset: asset
@@ -708,6 +725,15 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-available-for-account-type".localized,
+            message: ""
+        )
+    }
+}
+
+extension CollectibleDetailViewController {
     private func linkAssetQuickActionViewInteractors() {
         let assetDecoration = AssetDecoration(asset: asset)
         let draft = OptInAssetDraft(
@@ -736,8 +762,6 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if !self.canSignTransaction(for: &self.account) { return }
-
             self.collectibleDetailTransactionController.optInToAsset()
         }
     }
@@ -758,6 +782,7 @@ extension CollectibleDetailViewController {
             switch quickAction {
             case .optIn:
                 removeQuickAction()
+                dataController.reloadAfterOptInStatusUpdates()
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didAddCollectible,
@@ -767,6 +792,7 @@ extension CollectibleDetailViewController {
                 eventHandler?(.didOptInToAsset)
             case .optOut:
                 removeQuickAction()
+                dataController.reloadAfterOptInStatusUpdates()
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didRemoveCollectible,
@@ -790,24 +816,7 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        if let transactionType = transactionController.currentTransactionType {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-
-            switch transactionType {
-            case .assetAddition:
-                monitor.finishMonitoringOptInUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            case .assetRemoval:
-                monitor.finishMonitoringOptOutUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            default:
-                break
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
 
@@ -823,24 +832,7 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        if let transactionType = transactionController.currentTransactionType {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-
-            switch transactionType {
-            case .assetAddition:
-                monitor.finishMonitoringOptInUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            case .assetRemoval:
-                monitor.finishMonitoringOptOutUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            default:
-                break
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
 
@@ -862,40 +854,132 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(
-                mode: .approve,
-                deviceName: ledger
-            ),
-            by: .present
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.loadingController?.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        cancelMonitoringOptInOutUpdates(for: transactionController)
+
+        loadingController?.stopLoading()
     }
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
         loadingController?.stopLoading()
+    }
+
+    private func cancelMonitoringOptInOutUpdates(for transactionController: TransactionController) {
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            switch transactionType {
+            case .assetAddition:
+                monitor.cancelMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.cancelMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInOutUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInOutUpdates(for: transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }
 
@@ -920,19 +1004,9 @@ extension CollectibleDetailViewController {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.openLedgerConnectionIssues()
+            }
         case .optOutFromCreator:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
