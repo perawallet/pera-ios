@@ -1149,9 +1149,9 @@
 		2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
 		2B1ADD7C2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
 		2B1ADD7D2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
-		2B1B3C5F2AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C5E2AA66D950097C9DE /* AlgoSDK.xcframework */; };
-		2B1B3C602AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C5E2AA66D950097C9DE /* AlgoSDK.xcframework */; };
-		2B1B3C612AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C5E2AA66D950097C9DE /* AlgoSDK.xcframework */; };
+		2B1B3C672AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C662AA7B10A0097C9DE /* AlgoSDK.xcframework */; };
+		2B1B3C682AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C662AA7B10A0097C9DE /* AlgoSDK.xcframework */; };
+		2B1B3C692AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1B3C662AA7B10A0097C9DE /* AlgoSDK.xcframework */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536B2328029F00D54029 /* AlgorandNotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */; };
@@ -7493,7 +7493,7 @@
 		2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignature.swift; sourceTree = "<group>"; };
 		2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDeletionDraft.swift; sourceTree = "<group>"; };
 		2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUpdateDraft.swift; sourceTree = "<group>"; };
-		2B1B3C5E2AA66D950097C9DE /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
+		2B1B3C662AA7B10A0097C9DE /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotificationDetail.swift; sourceTree = "<group>"; };
 		2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayIntroductionScreenTheme.swift; sourceTree = "<group>"; };
@@ -9639,7 +9639,7 @@
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
 				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				2B1B3C612AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */,
+				2B1B3C692AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
@@ -9675,7 +9675,7 @@
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				2B1B3C602AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */,
+				2B1B3C682AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
@@ -9711,7 +9711,7 @@
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
 				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				2B1B3C5F2AA66D950097C9DE /* AlgoSDK.xcframework in Frameworks */,
+				2B1B3C672AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
@@ -9924,7 +9924,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B1B3C5E2AA66D950097C9DE /* AlgoSDK.xcframework */,
+				2B1B3C662AA7B10A0097C9DE /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";

@@ -124,6 +124,10 @@ extension AlgorandSDK {
     func isValidAddress(_ address: String) -> Bool {
         return AlgoSdkIsValidAddress(address)
     }
+    
+    func signBytes(data: Data, with privateData: Data, wit error: inout NSError?) -> Data? {
+        return AlgoSdkSignBytes(privateData, data, &error)
+    }
 
     func msgpackToJSON(_ msgpack: Data?, error: inout NSError?) -> String {
         return AlgoSdkTransactionMsgpackToJson(msgpack, &error)
