@@ -32,6 +32,9 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
     let descriptionTopPadding: LayoutMetric
     let description: TextStyle
     let spacingBetweeenDescriptionAndStatus: LayoutMetric
+    let pingingStatus: TextStyle
+    let connectedStatus: TextStyle
+    let disconnectedStatus: TextStyle
     let statusCorner: Corner
     let statusContentEdgeInsets: LayoutPaddings
     let spacingBetweenContentAndDisclosureIcon: LayoutMetric
@@ -66,6 +69,9 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         ]
         self.descriptionTopPadding = 4
         self.spacingBetweeenDescriptionAndStatus = 8
+        self.pingingStatus = Self.getPingingStatus()
+        self.connectedStatus = Self.getConnectedStatus()
+        self.disconnectedStatus = Self.getDisconnectedStatus()
         self.statusCorner = Corner(radius: 13)
         self.statusContentEdgeInsets = (2, 8, 2, 8)
         self.spacingBetweenContentAndDisclosureIcon = 16
@@ -73,6 +79,67 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         self.disclosureIcon = [
             .image("icon-list-arrow"),
             .contentMode(.scaleAspectFit)
+        ]
+    }
+
+    subscript (status: WCSessionStatus) -> TextStyle {
+        switch status {
+        case .active: return connectedStatus
+        case .failed: return disconnectedStatus
+        default: return pingingStatus
+        }
+    }
+}
+
+extension WCSessionItemViewTheme {
+    private static func getPingingStatus() -> TextStyle {
+        let text =
+            "tite-pinging"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
+            .textColor(Colors.Text.gray),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Layer.grayLighter.uiColor)
+        ]
+    }
+
+    private static func getConnectedStatus() -> TextStyle {
+        let text =
+            "wallet-connect-session-connected"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
+            .textColor(Colors.Helpers.positive),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.positiveLighter.uiColor.withAlphaComponent(0.5))
+        ]
+    }
+
+    private static func getDisconnectedStatus() -> TextStyle {
+        let text =
+            "wallet-connect-session-disconnected"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
+            .textColor(Colors.Helpers.negative),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.negativeLighter.uiColor.withAlphaComponent(0.5))
         ]
     }
 }

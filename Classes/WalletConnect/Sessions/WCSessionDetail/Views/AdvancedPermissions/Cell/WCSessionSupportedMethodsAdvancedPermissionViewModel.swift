@@ -37,7 +37,7 @@ extension WCSessionSupportedMethodsAdvancedPermissionViewModel {
     }
 
     private mutating func bindSecondaryTitle(_ methods: Set<WCSessionSupportedMethod>) {
-        let aTitle: String = methods.map(\.rawValue).joined(separator: ", ")
+        let aTitle: String = methods.map(\.rawValue).sorted().joined(separator: ", ")
         secondaryTitle = aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

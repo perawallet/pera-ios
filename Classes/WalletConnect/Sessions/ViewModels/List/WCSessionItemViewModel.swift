@@ -26,7 +26,6 @@ struct WCSessionItemViewModel: ViewModel {
     private(set) var name: TextProvider?
     private(set) var wcV1Badge: TextProvider?
     private(set) var description: TextProvider?
-    private(set) var status: TextStyle?
 
     init(_ draft: WCSessionDraft) {
         if let wcV1Session = draft.wcV1Session {
@@ -34,7 +33,6 @@ struct WCSessionItemViewModel: ViewModel {
             bindName(wcV1Session)
             bindWCv1Badge()
             bindDescription(wcV1Session)
-            bindStatus()
             return
         }
 
@@ -42,7 +40,6 @@ struct WCSessionItemViewModel: ViewModel {
             bindImage(wcV2Session)
             bindName(wcV2Session)
             bindDescription(wcV2Session)
-            bindStatus()
             return
         }
     }
@@ -122,48 +119,5 @@ extension WCSessionItemViewModel {
             "wallet-connect-v2-session-expires-on-date"
                 .localized(validUntilDate)
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
-}
-
-extension WCSessionItemViewModel {
-    private mutating func bindStatus() {
-        /// <todo> For mocking purposes
-       status = getConnectedStatus()
-    }
-}
-
-extension WCSessionItemViewModel {
-    private func getConnectedStatus() -> TextStyle {
-        let text =
-            "wallet-connect-session-connected"
-                .localized
-                .footnoteMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
-        return [
-            .text(text),
-            .textColor(Colors.Helpers.positive),
-            .textAlignment(.center),
-            .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.positiveLighter.uiColor.withAlphaComponent(0.5))
-        ]
-    }
-
-    private func getDisconnectedStatus() -> TextStyle {
-        let text =
-            "wallet-connect-session-disconnected"
-                .localized
-                .footnoteMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
-        return [
-            .text(text),
-            .textColor(Colors.Helpers.negative),
-            .textAlignment(.center),
-            .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.negativeLighter.uiColor.withAlphaComponent(0.5))
-        ]
     }
 }

@@ -20,7 +20,9 @@ import MacaroonUIKit
 import MacaroonUtils
 import MacaroonBottomSheet
 
-final class WCSessionShortListViewController: BaseViewController {
+final class WCSessionShortListViewController:
+    BaseViewController,
+    PeraConnectObserver {
     weak var delegate: WCSessionShortListViewControllerDelegate?
 
     private lazy var theme = Theme()
@@ -30,9 +32,10 @@ final class WCSessionShortListViewController: BaseViewController {
     private lazy var dataSource = WCSessionShortListDataSource(walletConnectCoordinator: peraConnect.walletConnectCoordinator)
     private lazy var layoutBuilder = WCSessionShortListLayout(theme)
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        walletConnector.delegate = self
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        peraConnect.add(self)
     }
 
     override func linkInteractors() {
@@ -40,7 +43,6 @@ final class WCSessionShortListViewController: BaseViewController {
         sessionListView.setCollectionViewDataSource(dataSource)
         sessionListView.setCollectionViewDelegate(layoutBuilder)
         dataSource.delegate = self
-        walletConnector.delegate = self
         sessionListView.delegate = self
     }
 
@@ -77,8 +79,6 @@ extension WCSessionShortListViewController: WCSessionShortListDataSourceDelegate
         displayDisconnectionMenu(for: cell)
     }
 }
-
-extension WCSessionShortListViewController: WalletConnectorDelegate { }
 
 extension WCSessionShortListViewController {
     private func index(of cell: WCSessionShortListItemCell) -> Int? {
@@ -124,7 +124,6 @@ extension WCSessionShortListViewController {
 
             loadingController?.startLoadingWithMessage("title-loading".localized)
 
-            startObservingPeraConnectEvents(session)
             self.dataSource.disconnectFromSession(session)
         }
 
@@ -150,91 +149,78 @@ extension WCSessionShortListViewController {
 }
 
 extension WCSessionShortListViewController {
-    private func startObservingPeraConnectEvents(_ session: WCSessionDraft) {
-        peraConnect.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .didDisconnectFromV1(let aSession):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
 
-            switch event {
-            case .didDisconnectFromV1(let aSession):
-                guard aSession == session.wcV1Session else { return }
-
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    analytics.track(
-                        .wcSessionDisconnected(
-                            dappName: aSession.peerMeta.name,
-                            dappURL: aSession.peerMeta.url.absoluteString,
-                            address: aSession.walletMeta?.accounts?.first
-                        )
+                analytics.track(
+                    .wcSessionDisconnected(
+                        dappName: aSession.peerMeta.name,
+                        dappURL: aSession.peerMeta.url.absoluteString,
+                        address: aSession.walletMeta?.accounts?.first
                     )
+                )
 
-                    loadingController?.stopLoading()
+                loadingController?.stopLoading()
 
+                updateScreenAfterDisconnecting()
+            }
+        case .didDisconnectFromV1Fail(_, let error):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+                loadingController?.stopLoading()
+
+                switch error {
+                case .failedToDisconnectInactiveSession:
                     updateScreenAfterDisconnecting()
-                }
-            case .didDisconnectFromV1Fail(let aSession, let error):
-                guard aSession == session.wcV1Session else { return }
-
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-                    loadingController?.stopLoading()
-
-                    switch error {
-                    case .failedToDisconnectInactiveSession:
-                        updateScreenAfterDisconnecting()
-                    case .failedToDisconnect:
-                        bannerController?.presentErrorBanner(
-                            title: "title-error".localized,
-                            message: "title-generic-error".localized
-                        )
-                    default: break
-                    }
-                }
-            case .didDisconnectFromV2(let aSession):
-                guard aSession.topic == session.wcV2Session?.topic else { return }
-
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    loadingController?.stopLoading()
-
-                    updateScreenAfterDisconnecting()
-                }
-            case .didDisconnectFromV2Fail(let aSession, let error):
-                guard aSession.topic == session.wcV2Session?.topic else { return }
-
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    loadingController?.stopLoading()
-
+                case .failedToDisconnect:
                     bannerController?.presentErrorBanner(
                         title: "title-error".localized,
-                        message: error.localizedDescription
+                        message: "title-generic-error".localized
                     )
+                default: break
                 }
-            case .deleteSessionV2(let topic, _):
-                guard topic == session.wcV2Session?.topic else { return }
-
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    loadingController?.stopLoading()
-
-                    updateScreenAfterDisconnecting()
-                }
-            default:
-                break
             }
-        }
+        case .didDisconnectFromV2:
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
 
+                loadingController?.stopLoading()
+
+                updateScreenAfterDisconnecting()
+            }
+        case .didDisconnectFromV2Fail(_, let error):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.localizedDescription
+                )
+            }
+        case .deleteSessionV2:
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                updateScreenAfterDisconnecting()
+            }
+        default:
+            break
+        }
     }
 }
 

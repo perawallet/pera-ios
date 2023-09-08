@@ -15,10 +15,13 @@
 //   ALGPeraConnect.swift
 
 import Foundation
+import MacaroonUtils
 
-final class ALGPeraConnect: PeraConnect {
-    var eventHandler: EventHandler?
-    
+final class ALGPeraConnect:
+    PeraConnect,
+    WeakPublisher {
+    var observations: [ObjectIdentifier: WeakObservation] = [:]
+
     var coordinatorEventHandler: ((WalletConnectCoordinatorEvent) -> Void)?
     
     private(set) var walletConnectCoordinator: WalletConnectCoordinator
@@ -32,6 +35,45 @@ final class ALGPeraConnect: PeraConnect {
 }
 
 extension ALGPeraConnect {
+    func add(
+        _ observer: PeraConnectObserver
+    ) {
+        let id = ObjectIdentifier(observer as AnyObject)
+        observations[id] = WeakObservation(observer)
+    }
+}
+
+extension ALGPeraConnect {
+    private func publish(
+        _ event: PeraConnectEvent
+    ) {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.notifyObservers {
+                $0.peraConnect(
+                    self,
+                    didPublish: event
+                )
+            }
+        }
+    }
+}
+
+extension ALGPeraConnect {
+    final class WeakObservation: WeakObservable {
+        weak var observer: PeraConnectObserver?
+
+        init(
+            _ observer: PeraConnectObserver
+        ) {
+            self.observer = observer
+        }
+    }
+}
+
+extension ALGPeraConnect {
     private func setWalletConnectCoordinatorEvents() {
         walletConnectCoordinator.eventHandler = {
             [weak self] event in
@@ -39,7 +81,7 @@ extension ALGPeraConnect {
             
             switch event {
             case .shouldStartV1(let session, let preferences, let completion):
-                sendEvent(
+                publish(
                     .shouldStartV1(
                         session: session,
                         preferences: preferences,
@@ -47,54 +89,54 @@ extension ALGPeraConnect {
                     )
                 )
             case .didConnectToV1(let session):
-                sendEvent(.didConnectToV1(session))
+                publish(.didConnectToV1(session))
             case .didDisconnectFromV1(let session):
-                sendEvent(.didDisconnectFromV1(session))
+                publish(.didDisconnectFromV1(session))
             case .didDisconnectFromV1Fail(let session, let error):
-                sendEvent(.didDisconnectFromV1Fail(session: session, error: error))
+                publish(.didDisconnectFromV1Fail(session: session, error: error))
             case .didFailToConnectV1(let error):
-                sendEvent(.didFailToConnectV1(error))
+                publish(.didFailToConnectV1(error))
             case .didExceedMaximumSessionFromV1:
-                sendEvent(.didExceedMaximumSessionFromV1)
+                publish(.didExceedMaximumSessionFromV1)
             case .sessionsV2(let sessions):
-                sendEvent(.sessionsV2(sessions))
+                publish(.sessionsV2(sessions))
             case .proposeSessionV2(let proposal):
-                sendEvent(.proposeSessionV2(proposal))
+                publish(.proposeSessionV2(proposal))
             case .deleteSessionV2(let topic, let reason):
-                sendEvent(
+                publish(
                     .deleteSessionV2(
                         topic: topic,
                         reason: reason
                     )
                 )
             case .settleSessionV2(let session):
-                sendEvent(.settleSessionV2(session))
+                publish(.settleSessionV2(session))
             case .updateSessionV2(let topic, let namespaces):
-                sendEvent(
+                publish(
                     .updateSessionV2(
                         topic: topic,
                         namespaces: namespaces
                     )
                 )
             case .didDisconnectFromV2(let session):
-                sendEvent(.didDisconnectFromV2(session))
+                publish(.didDisconnectFromV2(session))
             case .didDisconnectFromV2Fail(let session, let error):
-                sendEvent(.didDisconnectFromV2Fail(session: session, error: error))
+                publish(.didDisconnectFromV2Fail(session: session, error: error))
             case .extendSessionV2(let topic, let date):
-                sendEvent(
+                publish(
                     .extendSessionV2(
                         topic: topic,
                         date: date
                     )
                 )
             case .pingV2(let ping):
-                sendEvent(.pingV2(ping))
+                publish(.pingV2(ping))
             case .didPingV2SessionFail(let session, let error):
-                sendEvent(.didPingV2SessionFail(session: session, error: error))
+                publish(.didPingV2SessionFail(session: session, error: error))
             case .transactionRequestV2(let request):
-                sendEvent(.transactionRequestV2(request))
+                publish(.transactionRequestV2(request))
             case .failure(let error):
-                sendEvent(.failure(error))
+                publish(.failure(error))
             }
         }
     }
@@ -153,11 +195,5 @@ extension ALGPeraConnect {
     
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams) {
         walletConnectCoordinator.rejectTransactionRequest(params)
-    }
-}
-
-extension ALGPeraConnect {
-    private func sendEvent(_ event: PeraConnectEvent) {
-        eventHandler?(event)
     }
 }

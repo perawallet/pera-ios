@@ -38,9 +38,11 @@ extension WCSessionShortListViewController.Theme {
     private func calculateHeightAsBottomSheet(_ viewController: WCSessionShortListViewController) -> LayoutMetric {
         let sessions = viewController.peraConnect.walletConnectCoordinator.getSessions()
         let numberOfItems = sessions.count
+        let spacingBetweenItems =
+            (numberOfItems - 1).cgFloat *
+            viewController.sessionListView.theme.cellSpacing
         let listContentInset = viewController.sessionListView.collectionView.contentInset
-        let listHeight = listContentInset.top + (CGFloat(numberOfItems) * cellSize.h) + listContentInset.bottom
+        let listHeight = listContentInset.vertical + (CGFloat(numberOfItems) * cellSize.h) + spacingBetweenItems
         return listHeight
-
     }
 }

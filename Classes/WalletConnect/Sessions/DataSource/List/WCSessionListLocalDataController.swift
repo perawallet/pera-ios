@@ -17,30 +17,27 @@
 import Foundation
 import MacaroonUtils
 
-final class WCSessionListLocalDataController: WCSessionListDataController {
+final class WCSessionListLocalDataController:
+    WCSessionListDataController,
+    PeraConnectObserver {
     typealias EventHandler = (WCSessionListDataControllerEvent) -> Void
-
     var eventHandler: EventHandler?
-    
-    private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(
-        label: "pera.queue.wcSessions.updates",
-        qos: .userInitiated
-    )
+    private lazy var snapshotQueue = makeSnapshotQueue()
 
     private var lastSnapshot: Snapshot? = nil
+
+    private var cachedSessionListItems: [WalletConnectTopic: WCSessionListItem] = [:]
     private var disconnectedSessions: Set<WCSessionDraft> = []
 
-    private var cachedSessionListItems: [WCSessionDraft: WCSessionListItem] = [:]
-
-    private var sessions: [WCSessionDraft]
+    private var sessions: [WCSessionDraft] = []
 
     var shouldShowDisconnectAllAction: Bool {
         let sessions = peraConnect.walletConnectCoordinator.getSessions()
         return sessions.count > 1
     }
 
+    private let sharedDataController: SharedDataController
     private let analytics: ALGAnalytics
     private let peraConnect: PeraConnect
 
@@ -52,17 +49,33 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
         self.sharedDataController = sharedDataController
         self.analytics = analytics
         self.peraConnect = peraConnect
-        self.sessions = peraConnect.walletConnectCoordinator.getSessions()
+
+        peraConnect.add(self)
+    }
+
+    subscript(sessionForTopic: WalletConnectTopic) -> WCSessionListItem? {
+        return cachedSessionListItems[sessionForTopic]
     }
 }
 
 extension WCSessionListLocalDataController {
     func load() {
+        reset()
+
+        sessions = peraConnect.walletConnectCoordinator.getSessions()
+
         if sessions.isEmpty {
             deliverNoContentSnapshot()
         } else {
             deliverContentSnapshot()
         }
+    }
+
+    private func reset() {
+        cachedSessionListItems = [:]
+
+        disconnectedSessions = []
+        stopLoadingIfNeeded()
     }
 }
 
@@ -82,33 +95,30 @@ extension WCSessionListLocalDataController {
     private func deliverContentSnapshot() {
         deliverSnapshot {
             [weak self] in
-            guard let self = self else {
-                return nil
-            }
+            guard let self else { return nil }
 
             var snapshot = Snapshot()
-
             snapshot.appendSections([ .sessions ])
-
             self.addSessionItems(&snapshot)
-
             return snapshot
         }
     }
 
     private func addSessionItems(_ snapshot: inout Snapshot) {
-        let sessionItems: [WCSessionListItem] = sessions.map {
+        let items: [WCSessionListItem] = sessions.map {
             let item = makeSessionItem($0)
 
-            if let session = item.session {
-                cachedSessionListItems[session] = item
+            let topic =
+            $0.wcV1Session?.urlMeta.topic ??
+            $0.wcV2Session?.topic
+            if let topic {
+                cachedSessionListItems[topic] = item
             }
 
             return item
         }
-
         snapshot.appendItems(
-            sessionItems,
+            items,
             toSection: .sessions
         )
     }
@@ -123,43 +133,10 @@ extension WCSessionListLocalDataController {
         )
         return item
     }
+}
 
-    private func removeSessionItem(
-        _ snapshot: Snapshot,
-        draft: WCSessionDraft
-    ) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else {
-                return nil
-            }
-
-            self.disconnectedSessions.remove(draft)
-
-            self.stopLoadingIfNeeded()
-
-            let itemToDelete = self.cachedSessionListItems[draft]
-
-            guard let itemToDelete = itemToDelete else {
-                return nil
-            }
-
-            self.cachedSessionListItems.removeValue(forKey: draft)
-
-            if self.cachedSessionListItems.isEmpty {
-                self.deliverNoContentSnapshot()
-                return nil
-            }
-
-            var snapshot = snapshot
-
-            snapshot.deleteItems([ itemToDelete ])
-
-            return snapshot
-        }
-    }
-
-    func removeSessionItemFromList(
+extension WCSessionListLocalDataController {
+    private func addSessionItem(
         _ snapshot: Snapshot,
         draft: WCSessionDraft
     ) {
@@ -167,31 +144,13 @@ extension WCSessionListLocalDataController {
             [weak self] in
             guard let self else { return nil }
 
-            let itemToDelete = self.cachedSessionListItems[draft]
+            let topic =
+                draft.wcV1Session?.urlMeta.topic ??
+                draft.wcV2Session?.topic
+            guard let topic else { return nil }
 
-            self.cachedSessionListItems.removeValue(forKey: draft)
-
-            if self.cachedSessionListItems.isEmpty {
-                self.deliverNoContentSnapshot()
+            if cachedSessionListItems[topic] != nil {
                 return nil
-            }
-
-            guard let itemToDelete else {  return nil  }
-
-            var snapshot = snapshot
-            snapshot.deleteItems([ itemToDelete ])
-            return snapshot
-        }
-    }
-
-    func addSessionItem(
-        _ snapshot: Snapshot,
-        draft: WCSessionDraft
-    ) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
             }
 
             var snapshot = snapshot
@@ -218,14 +177,50 @@ extension WCSessionListLocalDataController {
                 at: 0
             )
 
-            if let session = item.session {
-                self.cachedSessionListItems[session] = item
-            }
+            self.cachedSessionListItems[topic] = item
 
             return snapshot
         }
     }
 
+    private func removeSessionItem(
+        _ snapshot: Snapshot,
+        draft: WCSessionDraft
+    ) {
+        deliverSnapshot {
+            [weak self] in
+            guard let self else { return nil }
+
+            self.disconnectedSessions.remove(draft)
+
+            self.stopLoadingIfNeeded()
+
+            let topic =
+                draft.wcV1Session?.urlMeta.topic ??
+                draft.wcV2Session?.topic
+            guard let topic else { return nil }
+
+            let itemToDelete = self.cachedSessionListItems[topic]
+
+            guard let itemToDelete else { return nil }
+
+            self.cachedSessionListItems.removeValue(forKey: topic)
+
+            if self.cachedSessionListItems.isEmpty {
+                self.deliverNoContentSnapshot()
+                return nil
+            }
+
+            var snapshot = snapshot
+
+            snapshot.deleteItems([ itemToDelete ])
+
+            return snapshot
+        }
+    }
+}
+
+extension WCSessionListLocalDataController {
     private func deliverSnapshot(_ snapshot: @escaping () -> Snapshot?) {
         snapshotQueue.async {
             [weak self] in
@@ -265,96 +260,104 @@ extension WCSessionListLocalDataController {
 }
 
 extension WCSessionListLocalDataController {
-    func startObservingEvents() {
-        startObservingPeraConnectEvents()
-    }
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .didConnectToV1(let session):
+            guard let lastSnapshot else { return }
 
-    private func startObservingPeraConnectEvents() {
-        peraConnect.eventHandler = {
-            [weak self] event in
-            guard let self else { return }
+            let draft = WCSessionDraft(wcV1Session: session)
+            addSessionItem(
+                lastSnapshot,
+                draft: draft
+            )
+        case .settleSessionV2(let session):
+            guard let lastSnapshot else { return }
 
-            switch event {
-            case .didDisconnectFromV1(let session):
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-                    analytics.track(
-                        .wcSessionDisconnected(
-                            dappName: session.peerMeta.name,
-                            dappURL: session.peerMeta.url.absoluteString,
-                            address: session.walletMeta?.accounts?.first
-                        )
-                    )
+            let draft = WCSessionDraft(wcV2Session: session)
+            addSessionItem(
+                lastSnapshot,
+                draft: draft
+            )
+        case .didDisconnectFromV1(let session):
+            guard let lastSnapshot else { return }
 
-                    guard let lastSnapshot else {  return  }
+            analytics.track(
+                .wcSessionDisconnected(
+                    dappName: session.peerMeta.name,
+                    dappURL: session.peerMeta.url.absoluteString,
+                    address: session.walletMeta?.accounts?.first
+                )
+            )
 
-                    let draft = WCSessionDraft(wcV1Session: session)
-                    removeSessionItem(
-                        lastSnapshot,
-                        draft: draft
-                    )
-                }
-            case .didDisconnectFromV1Fail(let session, let error):
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-                    switch error {
-                    case .failedToDisconnectInactiveSession:
-                        guard let lastSnapshot else {  return  }
+            let draft = WCSessionDraft(wcV1Session: session)
+            removeSessionItem(
+                lastSnapshot,
+                draft: draft
+            )
+        case .didDisconnectFromV1Fail(let session, let error):
+            guard let lastSnapshot else { return }
 
-                        let draft = WCSessionDraft(wcV1Session: session)
-                        removeSessionItem(
-                            lastSnapshot,
-                            draft: draft
-                        )
-                    case .failedToDisconnect:
-                        let draft = WCSessionDraft(wcV1Session: session)
-                        disconnectedSessions.remove(draft)
+            switch error {
+            case .failedToDisconnectInactiveSession:
 
-                        stopLoadingIfNeeded()
+                let draft = WCSessionDraft(wcV1Session: session)
+                removeSessionItem(
+                    lastSnapshot,
+                    draft: draft
+                )
+            case .failedToDisconnect:
+                let draft = WCSessionDraft(wcV1Session: session)
+                disconnectedSessions.remove(draft)
 
-                        publish(.didFailDisconnectingFromSession)
-                    default: break
-                    }
-                }
-            case .didDisconnectFromV2(let session):
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    guard let lastSnapshot else { return  }
-
-                    let draft = WCSessionDraft(wcV2Session: session)
-                    removeSessionItem(
-                        lastSnapshot,
-                        draft: draft
-                    )
-                }
-            case .didDisconnectFromV2Fail(let session, _):
-                asyncMain {
-                    [weak self] in
-                    guard let self else { return }
-
-                    let draft = WCSessionDraft(wcV2Session: session)
-                    disconnectedSessions.remove(draft)
-
-                    stopLoadingIfNeeded()
-
-                    publish(.didFailDisconnectingFromSession)
-                }
-            case .sessionsV2:
-                sessions = peraConnect.walletConnectCoordinator.getSessions()
-                cachedSessionListItems = [:]
-
-                disconnectedSessions = []
                 stopLoadingIfNeeded()
 
-                load()
-            default:
-                break
+                publish(.didFailDisconnectingFromSession)
+            default: break
             }
+        case .didDisconnectFromV2(let session):
+            guard let lastSnapshot else { return }
+
+            let draft = WCSessionDraft(wcV2Session: session)
+            removeSessionItem(
+                lastSnapshot,
+                draft: draft
+            )
+        case .didDisconnectFromV2Fail(let session, _):
+            let draft = WCSessionDraft(wcV2Session: session)
+            disconnectedSessions.remove(draft)
+
+            stopLoadingIfNeeded()
+
+            publish(.didFailDisconnectingFromSession)
+        case .deleteSessionV2(let topic, _):
+            guard let lastSnapshot else { return }
+
+            let listItem = cachedSessionListItems[topic]
+            guard let wcV2Session = listItem?.session?.wcV2Session else {
+                return
+            }
+
+            let draft = WCSessionDraft(wcV2Session: wcV2Session)
+            removeSessionItem(
+                lastSnapshot,
+                draft: draft
+            )
+        default:
+            break
         }
+    }
+}
+
+extension WCSessionListLocalDataController {
+    private func makeSnapshotQueue() -> DispatchQueue {
+        let queue = DispatchQueue(
+            label: "pera.queue.wcSessions.updates",
+            qos: .userInitiated
+        )
+        return queue
     }
 }
 
@@ -362,9 +365,10 @@ extension WCSessionListLocalDataController {
     private func publish(_ event: WCSessionListDataControllerEvent) {
         asyncMain {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.eventHandler?(event)
+            self.lastSnapshot = event.snapshot
         }
     }
 }

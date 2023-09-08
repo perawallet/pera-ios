@@ -17,9 +17,6 @@
 import Foundation
 
 protocol PeraConnect: AnyObject {
-    typealias EventHandler = (PeraConnectEvent) -> Void
-
-    var eventHandler: EventHandler? { get set }    
     var walletConnectCoordinator: WalletConnectCoordinator { get }
     
     func isValidSession(_ session: WalletConnectSessionText) -> Bool
@@ -37,6 +34,20 @@ protocol PeraConnect: AnyObject {
 
     func approveTransactionRequest(_ params: WalletConnectApproveTransactionRequestParams)
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams)
+
+    func add(
+        _ observer: PeraConnectObserver
+    )
+    func remove(
+        _ observer: PeraConnectObserver
+    )
+}
+
+protocol PeraConnectObserver: AnyObject {
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    )
 }
 
 enum PeraConnectEvent {    

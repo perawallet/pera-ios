@@ -94,7 +94,8 @@ extension WCSessionDetailLocalDataController {
 
 extension WCSessionDetailLocalDataController {
     var isPrimaryActionEnabled: Bool {
-        return true /// <todo> Remove mock data.
+        /// <note> Session expiry date extendability is disabled for now. Date: 05.09.2023
+        return true
     }
 }
 
@@ -248,8 +249,6 @@ extension WCSessionDetailLocalDataController {
 
 extension WCSessionDetailLocalDataController {
     private func deliverUpdatesForAdvancedPermissions() {
-        guard draft.isWCv2Session else { return }
-
         var snapshot = SectionSnapshot()
         appendItemsForAdvancedPermissions(into: &snapshot)
 
@@ -282,6 +281,32 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForAdvancedPermissionCells() -> [ItemIdentifier] {
+        if draft.isWCv1Session {
+            return makeItemsForWCv1AdvancedPermissionCells()
+        }
+
+        if draft.isWCv1Session {
+            return makeItemsForWCv2AdvancedPermissionCells()
+        }
+
+        return []
+    }
+
+    private func makeItemsForWCv1AdvancedPermissionCells() -> [ItemIdentifier] {
+        var permissions: [WCSessionDetailAdvancedPermission] = []
+
+        let supportedMethods = WCSession.supportedMethods
+        wcSessionSupportedMethodsAdvancedPermissionViewModel = .init(supportedMethods)
+        permissions.append(.supportedMethods)
+
+        let supportedEvents = WCSession.supportedEvents
+        wcSessionSupportedEventsAdvancedPermissionViewModel = .init(supportedEvents)
+        permissions.append(.supportedEvents)
+
+        return permissions.map { .advancedPermission(makeItem(for: $0)) }
+    }
+
+    private func makeItemsForWCv2AdvancedPermissionCells() -> [ItemIdentifier] {
         var permissions: [WCSessionDetailAdvancedPermission] = []
 
         let requiredNamespaces = draft.wcV2Session?.requiredNamespaces["algorand"]

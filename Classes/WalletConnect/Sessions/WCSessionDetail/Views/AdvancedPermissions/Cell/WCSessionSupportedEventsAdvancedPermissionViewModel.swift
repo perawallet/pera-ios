@@ -37,7 +37,7 @@ extension WCSessionSupportedEventsAdvancedPermissionViewModel {
     }
 
     private mutating func bindSecondaryTitle(_ events: Set<WCSessionSupportedEvent>) {
-        let aTitle: String = events.map(\.rawValue).joined(separator: ", ")
+        let aTitle: String = events.map(\.rawValue).sorted().joined(separator: ", ")
         secondaryTitle = aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

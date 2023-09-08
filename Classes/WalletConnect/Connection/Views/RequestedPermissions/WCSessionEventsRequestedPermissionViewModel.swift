@@ -51,7 +51,7 @@ fileprivate struct WCSessionEventsRequestedPermissionValueViewModel: SecondaryLi
 
 extension WCSessionEventsRequestedPermissionValueViewModel {
     private mutating func bindTitle(_ events: Set<WCSessionSupportedEvent>) {
-        let aTitle: String = events.map(\.rawValue).joined(separator: ", ")
+        let aTitle: String = events.map(\.rawValue).sorted().joined(separator: ", ")
         title = aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

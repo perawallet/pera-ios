@@ -427,6 +427,10 @@ extension WalletConnectV1Protocol {
 }
 
 extension WalletConnectV1Protocol {
+    func isConnected(by url: WCURL) -> Bool {
+        return walletConnectServer.isConnected(by: url)
+    }
+
     func register(_ handler: WalletConnectRequestHandler) {
         walletConnectServer.register(handler: handler)
     }

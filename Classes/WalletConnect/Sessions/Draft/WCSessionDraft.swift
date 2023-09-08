@@ -47,7 +47,7 @@ struct WCSessionDraft: Hashable {
         }
 
         if let wcV2Session {
-            hasher.combine(wcV2Session.topic) /// <todo> Is this unique?
+            hasher.combine(wcV2Session.topic)
             return
         }
     }

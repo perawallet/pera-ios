@@ -27,16 +27,7 @@ protocol WCSessionListDataController: AnyObject {
 
     func disconnectAllSessions(_ snapshot: Snapshot)
 
-    func addSessionItem(
-        _ snapshot: Snapshot,
-        draft: WCSessionDraft
-    )
-    func removeSessionItemFromList(
-        _ snapshot: Snapshot,
-        draft: WCSessionDraft
-    )
-
-    func startObservingEvents()
+    subscript(sessionForTopic: WalletConnectTopic) -> WCSessionListItem? { get }
 }
 
 enum WCSessionListSection:

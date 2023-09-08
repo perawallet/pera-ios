@@ -34,8 +34,8 @@ struct WCSessionConnectionDraft {
         dappName =  session.dAppInfo.peerMeta.name
         dappURL = session.dAppInfo.peerMeta.url
         isApproved = session.dAppInfo.approved ?? false
-        supportedMethods = nil
-        supportedEvents = nil
+        supportedMethods = WCSession.supportedMethods
+        supportedEvents = WCSession.supportedEvents
         let chain = ALGAPI.Network(chainID: session.dAppInfo.chainId)
         requestedChains = chain.unwrap { [ $0 ] }
     }
@@ -86,4 +86,14 @@ extension ALGAPI.Network {
             return nil
         }
     }
+}
+
+extension WCSession {
+    static let supportedMethods: Set<WCSessionSupportedMethod> = [
+        "algo_signData",
+        "algo_signTxn"
+    ]
+    static let supportedEvents: Set<WCSessionSupportedEvent> = [
+        "accountChanged"
+    ]
 }

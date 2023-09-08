@@ -22,6 +22,10 @@ import UIKit
 final class WCSessionItemCell:
     CollectionCell<WCSessionItemView>,
     ViewModelBindable {
+    var status: WCSessionStatus = .idle {
+        didSet {  updateUIWhenStatusDidChange() }
+    }
+
     override class var contextPaddings: LayoutPaddings {
         return (20, 24, 20, 24)
     }
@@ -41,5 +45,11 @@ final class WCSessionItemCell:
             position: .bottom((56, 24))
         )
         separatorStyle = .single(separator)
+    }
+}
+
+extension WCSessionItemCell {
+    private func updateUIWhenStatusDidChange() {
+        contextView.updateStatus(status)
     }
 }
