@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -5705,9 +5705,6 @@
 		D4B7EB932A402790008AB697 /* UndoRekeyScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */; };
 		D4B7EB942A402790008AB697 /* UndoRekeyScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */; };
 		D4B7EB952A402790008AB697 /* UndoRekeyScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */; };
-		D4B91D9F27369240009D3963 /* AssetListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */; };
-		D4B91DA027369240009D3963 /* AssetListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */; };
-		D4B91DA127369240009D3963 /* AssetListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */; };
 		D4B91DA32736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */; };
 		D4B91DA42736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */; };
 		D4B91DA52736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */; };
@@ -9132,7 +9129,6 @@
 		D4B6EA65276FAC46005E2D2C /* TransactionStatusViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatusViewTheme.swift; sourceTree = "<group>"; };
 		D4B7EB8E2A402770008AB697 /* UndoRekeyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyScreen.swift; sourceTree = "<group>"; };
 		D4B7EB922A402790008AB697 /* UndoRekeyScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyScreenTheme.swift; sourceTree = "<group>"; };
-		D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListViewTheme.swift; sourceTree = "<group>"; };
 		D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetActionConfirmationViewTheme.swift; sourceTree = "<group>"; };
 		D4B93D4729E57E930095875C /* RekeyedAccountSelectionListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListScreen.swift; sourceTree = "<group>"; };
 		D4B93D4B29E593370095875C /* RekeyedAccountSelectionListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListDataController.swift; sourceTree = "<group>"; };
@@ -22783,7 +22779,6 @@
 				D48FDFCB27CEBA0B00C39FC7 /* ReceiveCollectibleAccountListViewControllerTheme.swift in Sources */,
 				D4F22128270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				2B98E49B27EBC526000FA690 /* VideoPlayerView.swift in Sources */,
-				2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */,
 				F040FE112858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift in Sources */,
 				D48FDFC327CEBA0000C39FC7 /* ReceiveCollectibleAccountListDataController.swift in Sources */,
 				2BA172AA26495B9400A613C4 /* AlgoStatisticsViewController.swift in Sources */,
@@ -28177,7 +28172,7 @@
 				175CE59822955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
 				955B61872784AA13005A5C7E /* WCSingleTransactionRequestView.swift in Sources */,
 				958416F427B3B19A005B1627 /* OptInAssetListNotFoundViewModel.swift in Sources */,
-				958416F427B3B19A005B1627 /* AssetAdditionNoContentViewModel.swift in Sources */,
+				958416F427B3B19A005B1627 /* OptInAssetListNotFoundViewModel.swift in Sources */,
 				D4F4C89929D189640069FB94 /* RekeyedAccountInformationAccountItemView.swift in Sources */,
 				D4A70AFA2878363100FB52B0 /* AssetConfigInnerTransactionPreviewViewModel.swift in Sources */,
 				D4F4C8DC29D1ABAD0069FB94 /* RekeyedAccountTypeInformationViewModel.swift in Sources */,
@@ -28883,7 +28878,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -28911,7 +28906,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -28939,7 +28934,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -28969,7 +28964,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28998,7 +28993,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -29027,7 +29022,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -29179,7 +29174,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -29208,7 +29203,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -29364,7 +29359,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.13.5;
+				MARKETING_VERSION = 99.10.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
