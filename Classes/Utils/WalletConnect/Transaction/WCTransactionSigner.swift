@@ -131,14 +131,23 @@ extension WCTransactionSigner {
 }
 
 extension WCTransactionSigner: LedgerTransactionOperationDelegate {
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
-        guard let account = account,
-              let transaction = transaction,
-              let request = transactionRequest else {
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didReceiveSignature data: Data
+    ) {
+        guard let account,
+              let transaction,
+              let transactionRequest else {
             return
         }
-
-        sign(data, signer: LedgerTransactionSigner(account: account), for: transaction, with: request)
+        
+        let signerAddress = transaction.authAddress ?? account.authAddress
+        sign(
+            data,
+            signer: LedgerTransactionSigner(signerAddress: signerAddress),
+            for: transaction,
+            with: transactionRequest
+        )
     }
 
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
