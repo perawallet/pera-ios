@@ -28,6 +28,7 @@ class WCTransactionSigner {
     private var timer: Timer?
 
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
     private let analytics: ALGAnalytics
 
     private var account: Account?
@@ -36,13 +37,25 @@ class WCTransactionSigner {
 
     init(
         api: ALGAPI,
+        sharedDataController: SharedDataController,
         analytics: ALGAnalytics
     ) {
         self.api = api
+        self.sharedDataController = sharedDataController
         self.analytics = analytics
     }
 
     func signTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
+        if let signerAddress = transaction.authAddress,
+           let account = sharedDataController.accountCollection[signerAddress]?.value {
+            signTransactionForTransactionAuthAddress(
+                transaction,
+                with: transactionRequest,
+                for: account
+            )
+            return
+        }
+
         if account.requiresLedgerConnection() {
             signLedgerTransaction(transaction, with: transactionRequest, for: account)
         } else {
@@ -54,6 +67,36 @@ class WCTransactionSigner {
         ledgerTransactionOperation.disconnectFromCurrentDevice()
         ledgerTransactionOperation.stopScan()
         stopTimer()
+    }
+}
+
+extension WCTransactionSigner {
+    private func signTransactionForTransactionAuthAddress(
+        _ transaction: WCTransaction,
+        with transactionRequest: WalletConnectRequest,
+        for account: Account
+    ) {
+        guard account.authorization.isAuthorized else {
+            return
+        }
+
+        if account.authorization.isLedger {
+            signLedgerTransaction(
+                transaction,
+                with: transactionRequest,
+                for: account
+            )
+            return
+        }
+
+        let signerAddress = account.address
+        guard let signature = api.session.privateData(for: signerAddress) else { return }
+        sign(
+            signature,
+            signer: SDKTransactionSigner(),
+            for: transaction,
+            with: transactionRequest
+        )
     }
 }
 
@@ -98,7 +141,7 @@ extension WCTransactionSigner {
         with request: WalletConnectRequest,
         for account: Account
     ) {
-        let signerAddress = transaction.authAddress ?? account.signerAddress
+        let signerAddress = account.signerAddress
         guard let signature = api.session.privateData(for: signerAddress) else { return }
         
         sign(
@@ -140,8 +183,15 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
               let transactionRequest else {
             return
         }
-        
-        let signerAddress = transaction.authAddress ?? account.authAddress
+
+        let signerAddress: String?
+
+        if transaction.authAddress != nil {
+            signerAddress = nil
+        } else {
+            signerAddress = account.authAddress
+        }
+
         sign(
             data,
             signer: LedgerTransactionSigner(signerAddress: signerAddress),
