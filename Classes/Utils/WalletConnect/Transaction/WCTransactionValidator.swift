@@ -59,7 +59,7 @@ extension WCTransactionValidator {
         }
 
         if !containsTransactionAuthAddressInTheWallet(for: transactions, sharedDataController: sharedDataController) {
-            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
             return
         }
 
