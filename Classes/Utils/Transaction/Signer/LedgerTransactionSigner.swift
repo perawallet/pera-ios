@@ -17,8 +17,7 @@
 
 import Foundation
 
-class LedgerTransactionSigner: TransactionSigner {
-
+final class LedgerTransactionSigner: TransactionSigner {
     private var account: Account
 
     init(account: Account) {
@@ -27,12 +26,6 @@ class LedgerTransactionSigner: TransactionSigner {
     }
 
     override func sign(_ data: Data?, with privateData: Data?) -> Data? {
-        return signTransaction(data, with: privateData)
-    }
-}
-
-extension LedgerTransactionSigner {
-    private func signTransaction(_ data: Data?, with privateData: Data?) -> Data? {
         var transactionError: NSError?
 
         guard let transactionData = data,
@@ -47,7 +40,9 @@ extension LedgerTransactionSigner {
             return signLedgerAccountTransaction(transactionData, with: privateData, transactionError: &transactionError)
         }
     }
+}
 
+extension LedgerTransactionSigner {
     private func signRekeyedAccountTransaction(_ transactionData: Data, with privateData: Data, transactionError: inout NSError?) -> Data? {
         guard let signedTransactionData = algorandSDK.getSignedTransaction(
             with: account.authAddress,

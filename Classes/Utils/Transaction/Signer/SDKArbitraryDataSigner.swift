@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  SDKTransactionSigner.swift
+//   SDKArbitraryDataSigner.swift
 
 import Foundation
 
-final class SDKTransactionSigner: TransactionSigner {
+final class SDKArbitraryDataSigner: TransactionSigner {
     override func sign(
         _ data: Data?,
         with privateData: Data?
     ) -> Data? {
-        var transactionError: NSError?
+        var error: NSError?
 
-        guard let unsignedTransactionData = data,
-              let privateData = privateData,
-              let signedTransactionData = algorandSDK.sign(
-                privateData,
-                with: unsignedTransactionData,
-                error: &transactionError
+        guard let unsignedArbitraryData = data,
+              let privateData,
+              let signedArbitraryData = algorandSDK.signBytes(
+                data: unsignedArbitraryData,
+                with: privateData,
+                with: &error
               ) else {
-            delegate?.transactionSigner(self, didFailedSigning: .inapp(TransactionError.sdkError(error: transactionError)))
+            delegate?.transactionSigner(
+                self,
+                didFailedSigning: .inapp(TransactionError.sdkError(error: error))
+            )
             return nil
         }
 
-        return signedTransactionData
+        return signedArbitraryData
     }
 }

@@ -30,7 +30,7 @@ extension WCTransactionValidator {
         }
 
         if hasInvalidTransactionDetail(among: transactions) {
-             rejectTransactionRequest(with: .invalidInput(.parse))
+             rejectTransactionRequest(with: .invalidInput(.transactionParse))
              return
          }
 
@@ -50,7 +50,7 @@ extension WCTransactionValidator {
         }
 
         if !containsSignerInTheWallet(for: transactionGroups) {
-            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
             return
         }
 

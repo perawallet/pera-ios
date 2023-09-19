@@ -125,7 +125,7 @@ extension AlgorandSDK {
         return AlgoSdkIsValidAddress(address)
     }
     
-    func signBytes(data: Data, with privateData: Data, wit error: inout NSError?) -> Data? {
+    func signBytes(data: Data, with privateData: Data, with error: inout NSError?) -> Data? {
         return AlgoSdkSignBytes(privateData, data, &error)
     }
 

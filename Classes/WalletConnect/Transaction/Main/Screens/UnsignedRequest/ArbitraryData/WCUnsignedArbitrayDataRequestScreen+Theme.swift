@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionSigner.swift
+//   WCUnsignedDataRequestScreen+Theme.swift
 
 import Foundation
-import UIKit
-import MagpieHipo
+import MacaroonUIKit
 
-class TransactionSigner:
-    NSObject,
-    TransactionSignable {
-    weak var delegate: TransactionSignerDelegate?
+extension WCUnsignedArbitrayDataRequestScreen {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
 
-    let algorandSDK = AlgorandSDK()
-
-    func sign(
-        _ data: Data?,
-        with privateData: Data?
-    ) -> Data? {
-        return nil
+        init(_ family: LayoutFamily) {
+            backgroundColor = Colors.Defaults.background
+        }
     }
-}
-
-protocol TransactionSignerDelegate: AnyObject {
-    func transactionSigner(
-        _ transactionSigner: TransactionSigner,
-        didFailedSigning error: HIPTransactionError
-    )
 }
