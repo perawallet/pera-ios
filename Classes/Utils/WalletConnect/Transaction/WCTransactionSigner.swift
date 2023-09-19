@@ -93,10 +93,20 @@ extension WCTransactionSigner {
         timer = nil
     }
 
-    private func signStandardTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest, for account: Account) {
-        if let signature = api.session.privateData(for: account.signerAddress) {
-            sign(signature, signer: SDKTransactionSigner(), for: transaction, with: request)
-        }
+    private func signStandardTransaction(
+        _ transaction: WCTransaction,
+        with request: WalletConnectRequest,
+        for account: Account
+    ) {
+        let signerAddress = transaction.authAddress ?? account.signerAddress
+        guard let signature = api.session.privateData(for: signerAddress) else { return }
+        
+        sign(
+            signature,
+            signer: SDKTransactionSigner(),
+            for: transaction,
+            with: request
+        )
     }
 
     private func sign(
@@ -121,14 +131,23 @@ extension WCTransactionSigner {
 }
 
 extension WCTransactionSigner: LedgerTransactionOperationDelegate {
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
-        guard let account = account,
-              let transaction = transaction,
-              let request = transactionRequest else {
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didReceiveSignature data: Data
+    ) {
+        guard let account,
+              let transaction,
+              let transactionRequest else {
             return
         }
-
-        sign(data, signer: LedgerTransactionSigner(account: account), for: transaction, with: request)
+        
+        let signerAddress = transaction.authAddress ?? account.authAddress
+        sign(
+            data,
+            signer: LedgerTransactionSigner(signerAddress: signerAddress),
+            for: transaction,
+            with: transactionRequest
+        )
     }
 
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
