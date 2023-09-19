@@ -172,7 +172,8 @@ extension WCMainTransactionScreen {
 
             validateTransactions(
                 transactions,
-                with: dataSource.groupedTransactions
+                with: dataSource.groupedTransactions,
+                sharedDataController: sharedDataController
             )
 
             /// <note>:
@@ -311,6 +312,7 @@ extension WCMainTransactionScreen {
     private func createTransactionSigner() -> WCTransactionSigner {
         let signer = WCTransactionSigner(
             api: api!,
+            sharedDataController: sharedDataController,
             analytics: analytics
         )
         signer.delegate = self

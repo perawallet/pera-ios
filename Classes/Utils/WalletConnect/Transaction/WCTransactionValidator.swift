@@ -18,12 +18,21 @@
 import UIKit
 
 protocol WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]])
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+
+    )
     func rejectTransactionRequest(with error: WCTransactionErrorResponse)
 }
 
 extension WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]]) {
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+    ) {
         if !hasValidTransactionCount(for: transactions) {
             rejectTransactionRequest(with: .invalidInput(.transactionCount))
             return
@@ -46,6 +55,11 @@ extension WCTransactionValidator {
 
         if !hasValidSignerAddress(in: transactions) {
             rejectTransactionRequest(with: .invalidInput(.signer))
+            return
+        }
+
+        if !containsTransactionAuthAddressInTheWallet(for: transactions, sharedDataController: sharedDataController) {
+            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
             return
         }
 
@@ -90,6 +104,20 @@ extension WCTransactionValidator {
         for transaction in transactions where transaction.authAddress != nil {
             if !transaction.hasValidAuthAddressForSigner || !transaction.hasValidSignerAddress {
                 return false
+            }
+        }
+
+        return true
+    }
+
+    private func containsTransactionAuthAddressInTheWallet(
+        for transactions: [WCTransaction],
+        sharedDataController: SharedDataController
+    ) -> Bool {
+        for transaction in transactions {
+            if let authAddress = transaction.authAddress {
+                let account = sharedDataController.accountCollection[authAddress]?.value
+                return account?.authorization.isAuthorized ?? false
             }
         }
 
