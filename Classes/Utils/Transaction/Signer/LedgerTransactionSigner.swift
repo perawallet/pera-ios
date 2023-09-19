@@ -17,8 +17,7 @@
 
 import Foundation
 
-class LedgerTransactionSigner: TransactionSigner {
-
+final class LedgerTransactionSigner: TransactionSigner {
     private var signerAddress: PublicKey?
 
     init(
