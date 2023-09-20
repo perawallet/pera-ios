@@ -184,14 +184,7 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
             return
         }
 
-        let signerAddress: String?
-
-        if transaction.authAddress != nil {
-            signerAddress = nil
-        } else {
-            signerAddress = account.authAddress
-        }
-
+        let signerAddress = transaction.authAddress ?? account.authAddress
         sign(
             data,
             signer: LedgerTransactionSigner(signerAddress: signerAddress),
