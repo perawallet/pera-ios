@@ -33,7 +33,20 @@ final class WCArbitraryData:
         chainID = try container.decodeIfPresent(Int.self, forKey: .chaindID)
 
         if let rawData = try container.decodeIfPresent([String: UInt8].self, forKey: .data) {
-            self.data = Data(rawData.values)
+            let sortedKeys = rawData.keys.sorted { key1, key2 in
+                guard let intKey1 = Int(key1),
+                      let intKey2 = Int(key2) else {
+                    return key1 < key2
+                }
+
+                return intKey1 < intKey2
+            }
+
+            var values: [UInt8] = sortedKeys.compactMap {
+                return rawData[$0]
+            }
+
+            self.data = Data(values)
         } else {
             self.data = nil
         }

@@ -36,7 +36,7 @@ final class WCArbitraryDataSigner {
         with wcRequest: WalletConnectRequest,
         for account: Account
     ) {
-        if let signature = api.session.privateData(for: account.signerAddress) {
+        if let signature = api.session.privateData(for: account.address) {
             sign(
                 signature,
                 signer: SDKArbitraryDataSigner(),

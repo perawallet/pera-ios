@@ -114,7 +114,8 @@ extension WCMainArbitraryDataScreen {
 
             validateArbitraryData(
                 data: data,
-                api: api!
+                api: api!,
+                session: session!
             )
 
             stopLoading()
