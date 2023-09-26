@@ -135,6 +135,16 @@ extension WCSingleTransactionView {
         buttonsStackView.addArrangedSubview(view)
     }
 
+    func showTransactionInformationStackView(_ isShown: Bool) {
+        if isShown {
+            transactionInformationStackView.showViewInStack()
+            transactionInformationSeparator.showViewInStack()
+        } else {
+            transactionInformationStackView.hideViewInStack()
+            transactionInformationSeparator.hideViewInStack()
+        }
+    }
+
     func showNoteStackView(_ isShown: Bool) {
         if isShown {
             detailedInformationStackView.showViewInStack()

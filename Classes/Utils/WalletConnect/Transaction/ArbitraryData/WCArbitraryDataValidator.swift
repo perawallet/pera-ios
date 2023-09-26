@@ -73,10 +73,6 @@ extension WCArbitraryDataValidator {
             if !requestedSigner.containsSignerInTheWallet {
                 return false
             }
-
-            if session.privateData(for: requestedSigner.address!) == nil {
-                return false
-            }
         }
 
         return true
@@ -85,7 +81,7 @@ extension WCArbitraryDataValidator {
     private func requiresLedgerSigning(for data: [WCArbitraryData]) -> Bool {
         for datum in data {
             if let signerAccount = datum.requestedSigner.account,
-               signerAccount.requiresLedgerConnection() {
+               signerAccount.hasLedgerDetail() {
                 return true
             }
         }

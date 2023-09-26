@@ -42,7 +42,7 @@ final class WCArbitraryData:
                 return intKey1 < intKey2
             }
 
-            var values: [UInt8] = sortedKeys.compactMap {
+            let values: [UInt8] = sortedKeys.compactMap {
                 return rawData[$0]
             }
 
@@ -89,10 +89,12 @@ extension WCArbitraryData {
         in accountCollection: AccountCollection,
         on session: Session
     ) {
+        guard let signer else { return }
+
         requestedSigner.findSignerAccount(
+            signer: signer,
             in: accountCollection,
-            on: session,
-            signer: .current(address: signer)
+            on: session
         )
     }
 }
