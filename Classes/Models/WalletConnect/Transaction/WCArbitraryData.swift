@@ -31,26 +31,7 @@ final class WCArbitraryData:
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         chainID = try container.decodeIfPresent(Int.self, forKey: .chaindID)
-
-        if let rawData = try container.decodeIfPresent([String: UInt8].self, forKey: .data) {
-            let sortedKeys = rawData.keys.sorted { key1, key2 in
-                guard let intKey1 = Int(key1),
-                      let intKey2 = Int(key2) else {
-                    return key1 < key2
-                }
-
-                return intKey1 < intKey2
-            }
-
-            let values: [UInt8] = sortedKeys.compactMap {
-                return rawData[$0]
-            }
-
-            self.data = Data(values)
-        } else {
-            self.data = nil
-        }
-
+        data = try container.decodeIfPresent(Data.self, forKey: .data)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         signer = try container.decodeIfPresent(String.self, forKey: .signer)
     }
