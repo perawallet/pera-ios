@@ -21,7 +21,6 @@ struct AnnouncementViewModel:
     PairedViewModel,
     Hashable {
     let type: AnnouncementType
-
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var ctaTitle: String?

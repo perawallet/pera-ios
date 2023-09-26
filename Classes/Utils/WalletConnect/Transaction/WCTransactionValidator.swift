@@ -18,19 +18,28 @@
 import UIKit
 
 protocol WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]])
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+
+    )
     func rejectTransactionRequest(with error: WCTransactionErrorResponse)
 }
 
 extension WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]]) {
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+    ) {
         if !hasValidTransactionCount(for: transactions) {
             rejectTransactionRequest(with: .invalidInput(.transactionCount))
             return
         }
 
         if hasInvalidTransactionDetail(among: transactions) {
-             rejectTransactionRequest(with: .invalidInput(.parse))
+             rejectTransactionRequest(with: .invalidInput(.transactionParse))
              return
          }
 
@@ -49,8 +58,13 @@ extension WCTransactionValidator {
             return
         }
 
+        if !containsTransactionAuthAddressInTheWallet(for: transactions, sharedDataController: sharedDataController) {
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
+            return
+        }
+
         if !containsSignerInTheWallet(for: transactionGroups) {
-            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
             return
         }
 
@@ -96,6 +110,20 @@ extension WCTransactionValidator {
         return true
     }
 
+    private func containsTransactionAuthAddressInTheWallet(
+        for transactions: [WCTransaction],
+        sharedDataController: SharedDataController
+    ) -> Bool {
+        for transaction in transactions {
+            if let authAddress = transaction.authAddress {
+                let account = sharedDataController.accountCollection[authAddress]?.value
+                return account?.authorization.isAuthorized ?? false
+            }
+        }
+
+        return true
+    }
+
     private func containsSignerInTheWallet(for transactionGroups: [Int64: [WCTransaction]]) -> Bool {
         for group in transactionGroups {
             /// <note>
@@ -124,6 +152,6 @@ extension WCTransactionValidator {
 
 extension WCTransactionValidator {
     private var supportedTransactionCount: Int {
-        return 64
+        return 1000
     }
 }

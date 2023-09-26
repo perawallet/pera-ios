@@ -72,7 +72,7 @@ extension AccountImportParameters {
         case single
         case unsupported(String)
 
-        typealias RawAccountType = AccountInformation.AccountType
+        typealias RawAccountType = AccountAuthorization
 
         var rawValue: String {
             switch self {

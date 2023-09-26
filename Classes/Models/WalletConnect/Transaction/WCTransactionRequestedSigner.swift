@@ -63,21 +63,41 @@ final class WCTransactionRequestedSigner {
         }
     }
 
+    func findSignerAccount(
+        in accountCollection: AccountCollection,
+        on session: Session,
+        signer: WCTransaction.Signer
+    ) {
+        switch signer {
+        case let .current(address):
+            guard let address else { return }
+
+            self.address = address
+            self.account = findAccount(
+                address,
+                in: accountCollection,
+                on: session
+            )
+        default:
+            break
+        }
+    }
+
     private func findAccount(
         _ address: String,
         in accountCollection: AccountCollection,
         on session: Session
     ) -> Account? {
         guard let account = accountCollection.account(for: address),
-              !account.isWatchAccount() else {
+              account.authorization.isAuthorized else {
             return nil
         }
         
-        if account.isLedger() && account.ledgerDetail != nil {
+        if account.authorization.isLedger {
             return account
         }
-        
-        if account.isRekeyed() {
+
+        if account.authorization.isRekeyed {
             return findRekeyedAccount(for: account, among: accountCollection)
         }
         

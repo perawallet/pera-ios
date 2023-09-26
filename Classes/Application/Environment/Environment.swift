@@ -163,8 +163,10 @@ enum AlgorandWeb: String {
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
     case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
     case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
-    case tinymanSwap = "http://perawallet.app/support/swap/"
     case algorandSecureBackup = "https://perawallet.app/support/asb"
+    case rekey = "https://perawallet.app/support/rekey/"
+    case tinymanSwap = "https://perawallet.app/support/swap/"
+    case tinymanSwapPriceImpact = "https://docs.tinyman.org/faq#what-is-a-price-impact"
 
     var presentation: String {
         switch self {

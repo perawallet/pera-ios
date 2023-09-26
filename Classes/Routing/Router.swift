@@ -245,19 +245,11 @@ class Router:
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
-            let visibleScreen = findVisibleScreen(over: rootViewController)
             let screen = Screen.asaDetail(
                 account: account,
                 asset: asset
-            ) { [weak visibleScreen] event in
-                switch event {
-                case .didRemoveAccount:
-                    visibleScreen?.dismiss(animated: true)
-                case .didRenameAccount:
-                    break
-                }
-            }
-
+            )
+            let visibleScreen = findVisibleScreen(over: rootViewController)
             route(
                 to: screen,
                 from: visibleScreen,
@@ -296,7 +288,7 @@ class Router:
 
             let transactionDraft = SendTransactionDraft(
                 from: Account(),
-                toAccount: Account(address: draft.toAccount, type: .standard),
+                toAccount: Account(address: draft.toAccount),
                 amount: draft.amount,
                 transactionMode: draft.transactionMode,
                 note: draft.note,
@@ -320,17 +312,70 @@ class Router:
             )
 
         case .wcMainTransactionScreen(let draft):
-            route(
-                to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
-                from: findVisibleScreen(over: rootViewController),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                ),
-                animated: true
-            )
-            
+            let task = {
+                [weak self] in
+                guard let self else { return }
+
+                route(
+                    to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
+                    from: findVisibleScreen(over: rootViewController),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    ),
+                    animated: true
+                )
+            }
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Transaction screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            let delay = 0.3
+            let time: DispatchTime = .now() + delay
+            let queue: DispatchQueue = .main
+            queue.asyncAfter(deadline: time) {
+                task()
+            }
+        case .wcMainArbitraryDataScreen(let draft):
+            let task = {
+                [weak self] in
+                guard let self else { return }
+
+                route(
+                    to: .wcMainArbitraryDataScreen(
+                        draft: draft,
+                        delegate: rootViewController
+                    ),
+                    from: findVisibleScreen(over: rootViewController),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    ),
+                    animated: true
+                )
+            }
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Transaction screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            let delay = 0.3
+            let time: DispatchTime = .now() + delay
+            let queue: DispatchQueue = .main
+            queue.asyncAfter(deadline: time) {
+                task()
+            }
         case .buyAlgoWithMoonPay(let draft):
             route(
                 to: .moonPayIntroduction(draft: draft, delegate: self),
@@ -347,6 +392,12 @@ class Router:
 
             route(
                 to: .accountSelection(draft: accountSelectDraft, delegate: self),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .externalInAppBrowser(let destination):
+            route(
+                to: .externalInAppBrowser(destination: destination),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -521,7 +572,7 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let account, let asset, let screenConfiguration, let eventHandler):
+        case .asaDetail(let account, let asset, let screenConfiguration):
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
@@ -538,8 +589,6 @@ class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-
             viewController = aViewController
         case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
             let dataController =
@@ -694,7 +743,11 @@ class Router:
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(dataController):
-            viewController = ManageAssetsViewController(
+            let query = ManageAssetListQuery(
+                sortingBy: appConfiguration.sharedDataController.selectedAccountAssetSortingAlgorithm
+            )
+            viewController = ManageAssetListViewController(
+                query: query,
                 dataController: dataController,
                 configuration: configuration
             )
@@ -742,15 +795,99 @@ class Router:
             viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
-        case let .rekeyInstruction(viewModel, eventHandler):
-            let aViewController = RekeyInstructionsViewController(viewModel: viewModel, configuration: configuration)
+        case let .rekeyToLedgerAccountInstructions(sourceAccount):
+            let draft = RekeyToLedgerAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(
+                draft: draft,
+                api: configuration.api
+            )
+        case let .rekeyToStandardAccountInstructions(sourceAccount):
+            let draft = RekeyToStandardAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(
+                draft: draft,
+                api: configuration.api
+            )
+        case let .rekeyConfirmation(sourceAccount, authAccount, newAuthAccount):
+            viewController = RekeyConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: newAuthAccount,
+                api: configuration.api!,
+                session: configuration.session!,
+                sharedDataController: configuration.sharedDataController,
+                bannerController: configuration.bannerController!,
+                loadingController: configuration.loadingController!,
+                analytics: configuration.analytics
+            )
+        case let .rekeySuccess(sourceAccount, eventHandler):
+            let aViewController = RekeySuccessScreen(
+                sourceAccount: sourceAccount,
+                api: configuration.api!
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
-            viewController = RekeyConfirmationViewController(
-                account: account,
-                ledger: ledgerDetail,
-                newAuthAddress: newAuthAddress,
+        case let .undoRekey(sourceAccount, authAccount):
+            viewController = UndoRekeyScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: sourceAccount,
+                api: configuration.api!,
+                session: configuration.session!,
+                sharedDataController: configuration.sharedDataController,
+                bannerController: configuration.bannerController!,
+                loadingController: configuration.loadingController!,
+                analytics: configuration.analytics
+            )
+        case let .undoRekeySuccess(sourceAccount, eventHandler):
+            let aViewController = UndoRekeySuccessScreen(
+                sourceAccount: sourceAccount,
+                api: configuration.api!
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case let .rekeyAccountSelection(eventHandler, account):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = RekeyAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = RekeyAccountSelectionListLocalDataController(
+                sharedDataController: configuration.sharedDataController,
+                session: configuration.session!,
+                account: account
+            )
+
+            let dataSource = RekeyAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<RekeyAccountSelectionListSectionIdentifier, RekeyAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: RekeyAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):
@@ -794,9 +931,10 @@ class Router:
                 dataController:dataController,
                 configuration: configuration
             )
-        case let .ledgerAccountDetail(account, index, rekeyedAccounts):
+        case let .ledgerAccountDetail(account, authAccount, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
+                authAccount: authAccount,
                 ledgerIndex: index,
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
@@ -900,15 +1038,19 @@ class Router:
                 configuration: configuration
             )
         case let .jsonDisplay(jsonData, title):
-            viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = JSONDisplayViewController(
+                jsonData: jsonData,
+                title: title,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
-        case let .accountListOptions(accountType, eventHandler):
-            let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .sortAccountList(dataController, eventHandler):
             let aViewController  = SortAccountListViewController(
                 dataController: dataController,
@@ -967,9 +1109,25 @@ class Router:
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):
-            let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
+            let aViewController = WCMainTransactionScreen(
+                draft: draft,
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
+        case let .wcMainArbitraryDataScreen(draft, delegate):
+            let aViewController = WCMainArbitraryDataScreen(
+                draft: draft,
+                configuration: configuration
+            )
+            aViewController.delegate = delegate
+            viewController = aViewController
+        case let .wcArbitraryDataScreen(data, wcRequest):
+            viewController = WCArbitraryDataViewController(
+                data: data,
+                wcRequest: wcRequest,
+                configuration: configuration
+            )
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
@@ -987,7 +1145,7 @@ class Router:
                 currencyFormatter: currencyFormatter
             )
         case .asaVerificationInfo(let eventHandler):
-            let aViewController = AsaVerificationInfoScreen()
+            let aViewController = AsaVerificationInfoScreen(api: configuration.api)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
@@ -998,11 +1156,11 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .collectiblesFilterSelection(uiInteractions):
-            let aViewController = CollectiblesFilterSelectionViewController()
+            let aViewController = CollectiblesFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .accountCollectibleListFilterSelection(uiInteractions):
-            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            let aViewController = AccountCollectibleListFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
@@ -1087,9 +1245,10 @@ class Router:
             ]
 
             viewController = activityController
-        case .image3DCard(let image):
+        case .image3DCard(let image, let rendersContinuously):
             viewController = Collectible3DImageViewController(
                 image: image,
+                rendersContinuously: rendersContinuously,
                 configuration: configuration
             )
         case .video3DCard(let image, let url):
@@ -1108,8 +1267,11 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .transactionOptions(let delegate):
-            let aViewController = TransactionOptionsScreen(configuration: configuration)
+        case .transactionOptions(let account, let delegate):
+            let aViewController = TransactionOptionsScreen(
+                account: account,
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
         case .qrScanOptions(let address, let eventHandler):
@@ -1123,7 +1285,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case let .assetsFilterSelection(uiInteractions):
-            let aViewController = AssetsFilterSelectionViewController()
+            let aViewController = AssetsFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
@@ -1204,7 +1366,8 @@ class Router:
         case .signWithLedgerProcess(let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .loading(let viewModel, let theme):
             viewController = LoadingScreen(
@@ -1228,12 +1391,18 @@ class Router:
             viewController = SwapSummaryScreen(
                 swapController: swapController,
                 theme: theme,
-                configuration: configuration
+                api: configuration.api
             )
         case .alert(let alert):
-            viewController = AlertScreen(alert: alert)
+            viewController = AlertScreen(
+                alert: alert,
+                api: configuration.api
+            )
         case .swapIntroduction(let draft, let eventHandler):
-            let aViewController = SwapIntroductionScreen(draft: draft)
+            let aViewController = SwapIntroductionScreen(
+                draft: draft,
+                api: configuration.api
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .optInAsset(let draft, let eventHandler):
@@ -1243,7 +1412,8 @@ class Router:
             viewController = OptInAssetScreen(
                 draft: draft,
                 copyToClipboardController: copyToClipboardController,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .optOutAsset(let draft, let theme, let eventHandler):
             viewController = OptOutAssetScreen(
@@ -1252,7 +1422,8 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .transferAssetBalance(let draft, let theme, let eventHandler):
             viewController = TransferAssetBalanceScreen(
@@ -1261,17 +1432,20 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .sheetAction(let sheet, let theme):
             viewController = UISheetActionScreen(
                 sheet: sheet,
-                theme: theme
+                theme: theme,
+                api: configuration.api
             )
         case .insufficientAlgoBalance(let draft, let eventHandler):
             viewController = InsufficientAlgoBalanceScreen(
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
@@ -1285,7 +1459,8 @@ class Router:
             viewController = screen
         case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
             let screen = ExportAccountsDomainConfirmationScreen(
-                theme: .init(hasSingularAccount: hasSingularAccount, .current)
+                theme: .init(hasSingularAccount: hasSingularAccount, .current),
+                api: configuration.api
             )
             screen.eventHandler = eventHandler
             viewController = screen
@@ -1372,7 +1547,7 @@ class Router:
                 configuration: configuration
             )
         case .importAccountIntroduction(let eventHandler):
-            let screen = WebImportInstructionScreen()
+            let screen = WebImportInstructionScreen(api: configuration.api)
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountQRScanner(let eventHandler):
@@ -1384,7 +1559,10 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountError(let error, let eventHandler):
-            let screen = WebImportErrorScreen(error: error)
+            let screen = WebImportErrorScreen(
+                error: error,
+                api: configuration.api
+            )
             screen.eventHandler = eventHandler
             viewController = screen
         case let .importAccountSuccess(result, eventHandler):
@@ -1472,7 +1650,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .bidaliIntroduction:
-            viewController = BidaliIntroductionScreen()
+            viewController = BidaliIntroductionScreen(api: configuration.api)
         case .bidaliDappDetail(let account):
             viewController = BidaliDappDetailScreen(
                 account: account,
@@ -1577,7 +1755,7 @@ class Router:
                 configuration: configuration
             )
         case .sardineIntroduction:
-            viewController = SardineIntroductionScreen()
+            viewController = SardineIntroductionScreen(api: configuration.api)
         case .sardineAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
@@ -1621,15 +1799,17 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
         case .transakIntroduction:
-            viewController = TransakIntroductionScreen()
+            viewController = TransakIntroductionScreen(api: configuration.api)
         case .transakAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
@@ -1673,13 +1853,126 @@ class Router:
             )
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let url = URL(string: config.url)
+            let destination = DiscoverExternalDestination.url(url)
+
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
+        case .standardAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = StandardAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .ledgerAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = LedgerAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .noAuthAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = NoAuthAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .rekeyedAccountInformation(let sourceAccount, let authAccount):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = RekeyedAccountInformationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .anyToNoAuthRekeyedAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = AnyToNoAuthRekeyedAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case let .rekeyedAccountSelectionList(authAccount, rekeyedAccounts, eventHandler):
+            let dataController = RekeyedAccountSelectionListLocalDataController(
+                authAccount: authAccount,
+                rekeyedAccounts: rekeyedAccounts,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = RekeyedAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .watchAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = WatchAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = UndoRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
+        case let .overwriteRekeyConfirmation(sourceAccount, authAccount, eventHandler):
+            let uiSheet = OverwriteRekeyConfirmationSheet(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
+        case let .backUpBeforeRemovingAccountWarning(eventHandler):
+            let uiSheet = BackUpBeforeRemovingAccountWarningSheet(
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
+        case let .removeAccount(account, eventHandler):
+            let sharedDataController = appConfiguration.sharedDataController
+            let walletConnector = appConfiguration.walletConnector
+            let uiSheet = RemoveAccountSheet(
+                account: account,
+                sharedDataController: sharedDataController,
+                walletConnector: walletConnector,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
+        case .externalInAppBrowser(let destination):
+            viewController = DiscoverExternalInAppBrowserScreen(
+                destination: destination,
+                configuration: configuration
+            )
         }
 
         return viewController as? T
@@ -1763,7 +2056,7 @@ extension Router {
         let draft = assetActionConfirmationViewController.draft
 
         guard let account = draft.account,
-              !account.isWatchAccount() else {
+              account.authorization.isAuthorized else {
             return
         }
         
@@ -1821,11 +2114,12 @@ extension Router {
         
         let sharedDataController = appConfiguration.sharedDataController
 
-        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            !$0.value.isWatchAccount()
+
+        let hasAuthorizedAccount = sharedDataController.accountCollection.contains {
+            $0.value.authorization.isAuthorized
         }
 
-        if !hasNonWatchAccount {
+        if !hasAuthorizedAccount {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,
@@ -1852,24 +2146,23 @@ extension Router {
             ) as? WCConnectionScreen
             
             screen?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
+                [weak self, weak screen] event in
+                guard let self,
+                      let screen else {
+                    return
+                }
                 
                 switch event {
                 case .performCancel:
-                    screen?.dismissScreen()
+                    screen.dismissScreen()
                 case .performConnect:
-                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
-                        screen?.dismissScreen()
-                        return
-                    }
-                    
-                    screen?.dismissScreen {
+                    screen.dismissScreen {
                         [weak self] in
                         guard let self = self else { return }
 
                         if !shouldShowConnectionApproval { return }
 
+                        let dappName = screen.walletConnectSession.dAppInfo.peerMeta.name
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }

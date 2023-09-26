@@ -21,55 +21,39 @@ struct SelectAccountNoContentViewModel:
     NoContentViewModel,
     Hashable {
     private(set) var icon: Image?
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
+    private(set) var title: EditText?
+    private(set) var body: EditText?
 
-    init(_ type: TransactionAction) {
-        bindIcon(type)
-        bindTitle(type)
-        bindBody(type)
+    init() {
+        bindIcon()
+        bindTitle()
+        bindBody()
     }
 }
 
 extension SelectAccountNoContentViewModel {
-    private mutating func bindIcon(_ type: TransactionAction) {
-        if type == .rekeyToStandardAccount {
-            self.icon = nil
-        } else {
-            self.icon = "img-accounts-empty"
-        }
+    private mutating func bindIcon() {
+         icon = "img-accounts-empty"
     }
     
-    private mutating func bindTitle(_ type: TransactionAction) {
-        let titleText: String
-        
-        if type == .rekeyToStandardAccount {
-            titleText = "account-select-soft-rekey-empty-title"
-        } else {
-            titleText = "empty-accounts-title"
-        }
-        
-        self.title = titleText
-            .localized
-            .bodyLargeMedium(
-                alignment: .center
-            )
+    private mutating func bindTitle() {
+        title = .attributedString(
+            "empty-accounts-title"
+                .localized
+                .bodyLargeMedium(
+                    alignment: .center
+                )
+        )
     }
     
-    private mutating func bindBody(_ type: TransactionAction) {
-        let bodyText: String
-        
-        if type == .rekeyToStandardAccount {
-            bodyText = "account-select-soft-rekey-empty-detail"
-        } else {
-            bodyText = "empty-accounts-detail"
-        }
-        
-        self.body = bodyText
-            .localized
-            .bodyRegular(
-                alignment: .center
-            )
+    private mutating func bindBody() {
+        body = .attributedString(
+            "empty-accounts-detail"
+                .localized
+                .bodyRegular(
+                    alignment: .center
+                )
+        )
     }
 }
 

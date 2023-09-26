@@ -146,6 +146,13 @@ extension UIViewController {
     ) -> UIStatusBarStyle {
         switch network {
         case .mainnet:
+            if presentingViewController != nil {
+                let srcViewController = navigationController ?? self
+                if srcViewController.modalPresentationStyle != .fullScreen {
+                    return .lightContent
+                }
+            }
+            
             return isDarkMode ? .lightContent : .default
         case .testnet:
             return .darkContent
