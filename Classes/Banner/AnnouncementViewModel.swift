@@ -59,13 +59,15 @@ struct AnnouncementViewModel:
         title = announcement.title
         subtitle = announcement.subtitle
         ctaTitle = announcement.buttonLabel
-        ctaUrl = announcement.buttonUrl
+        guard let buttonUrl = announcement.buttonUrl else { return }
+        ctaUrl = URL(string: buttonUrl)
     }
 
     private mutating func configureForGeneric(_ announcement: Announcement) {
         title = announcement.title
         subtitle = announcement.subtitle
         ctaTitle = announcement.buttonLabel
-        ctaUrl = announcement.buttonUrl
+        guard let buttonUrl = announcement.buttonUrl else { return }
+        ctaUrl = URL(string: buttonUrl)
     }
 }

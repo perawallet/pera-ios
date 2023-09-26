@@ -58,19 +58,19 @@ extension AlgorandSDK {
 
 extension AlgorandSDK {
     func generateBackupPrivateKey() -> Data? {
-        return AlgoMobileGenerateBackupPrivateKey()
+        return AlgoSdkGenerateBackupPrivateKey()
     }
 
     func generateBackupCipherKey(data: Data) -> Data? {
-        return AlgoMobileGenerateBackupCipherKey("Algorand export 1.0", data)
+        return AlgoSdkGenerateBackupCipherKey("Algorand export 1.0", data)
     }
 
     func backupMnemnoic(fromPrivateKey privateKey: Data, error: inout NSError?) -> String {
-        return AlgoMobileBackupMnemonicFromKey(privateKey, &error)
+        return AlgoSdkBackupMnemonicFromKey(privateKey, &error)
     }
 
     func backupPrivateKey(fromMnemonic mnemonic: String, error: inout NSError?) -> Data? {
-        return AlgoMobileBackupMnemonicToKey(mnemonic, &error)
+        return AlgoSdkBackupMnemonicToKey(mnemonic, &error)
     }
 }
 

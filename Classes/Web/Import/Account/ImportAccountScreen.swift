@@ -205,20 +205,13 @@ extension ImportAccountScreen {
         unimported: [AccountInformation],
         parameters: [AccountImportParameters]
     ) {
-        let importedAccounts = imported.map {
-            let account = Account(localAccount: $0)
-            account.authorization = .standard
-            return account
-        }
-        let unimportedAccounts = unimported.map {
-            let account = Account(localAccount: $0)
-            account.authorization = .standard
-            return account
-        }
         eventHandler?(
             .didCompleteImport(
-                importedAccounts: importedAccounts,
-                unimportedAccounts: unimportedAccounts
+                Result(
+                    importedAccounts: imported.map({.init(localAccount: $0)}),
+                    unimportedAccounts: unimported.map({.init(localAccount: $0)}),
+                    parameters: parameters
+                )
             ),
             self
         )

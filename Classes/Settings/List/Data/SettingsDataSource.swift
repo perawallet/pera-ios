@@ -80,8 +80,8 @@ extension SettingsDataSource {
         }
 
         let filteredAccounts = accounts.filter {
-            let isWatchAccount = $0.isWatchAccount()
-            let isRekeyedToAnyAccount = $0.isRekeyedToAnyAccount()
+            let isWatchAccount = $0.isWatchAccount
+            let isRekeyedToAnyAccount = $0.hasAuthAccount()
             return !isWatchAccount && !isRekeyedToAnyAccount
         }
 

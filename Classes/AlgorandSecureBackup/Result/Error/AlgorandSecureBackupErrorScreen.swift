@@ -29,8 +29,12 @@ final class AlgorandSecureBackupErrorScreen: ScrollScreen {
 
     private let theme: AlgorandSecureBackupErrorScreenTheme
 
-    init(theme: AlgorandSecureBackupErrorScreenTheme = .init()) {
+    init(
+        api: ALGAPI?,
+        theme: AlgorandSecureBackupErrorScreenTheme = .init()
+    ) {
         self.theme = theme
+        super.init(api: api)
     }
 
     override func viewDidLoad() {

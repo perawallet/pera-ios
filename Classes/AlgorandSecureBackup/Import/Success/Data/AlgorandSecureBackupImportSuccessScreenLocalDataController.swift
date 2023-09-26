@@ -67,7 +67,7 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                type: accountParameter.accountType.rawAccountType
+                isWatchAccount: false
             )
 
             return Account(localAccount: accountInformation)
@@ -112,7 +112,7 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                type: accountParameter.accountType.rawAccountType,
+                isWatchAccount: false,
                 preferredOrder: currentPreferredOrder
             )
             transferAccounts.append(
@@ -184,11 +184,6 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
         authenticatedUser.addAccounts(accounts)
 
         pushNotificationController.sendDeviceDetails()
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
 
         session.authenticatedUser = authenticatedUser
     }
