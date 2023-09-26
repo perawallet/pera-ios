@@ -47,6 +47,7 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
         self.backup = backup
         self.bannerController = configuration.bannerController
         self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
+        super.init(api: configuration.api)
     }
 
     override func viewDidLoad() {

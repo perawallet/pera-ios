@@ -139,8 +139,8 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
         let accounts: [Account] =
             restoredAccounts
                 .filter {
-                    let isWatchAccount = $0.isWatchAccount()
-                    let isRekeyedToAnyAccount = $0.isRekeyedToAnyAccount()
+                    let isWatchAccount = $0.isWatchAccount
+                    let isRekeyedToAnyAccount = $0.hasAuthAccount()
                     return !isWatchAccount && !isRekeyedToAnyAccount
                 }
 
