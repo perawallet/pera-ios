@@ -180,7 +180,16 @@ extension ALGWalletConnectCoordinator {
 
     func disconnectFromAllSessions() {
         walletConnectV1Protocol.disconnectFromAllSessions()
+        walletConnectV1Protocol.resetAllSessions()
+
         walletConnectV2Protocol.disconnectFromAllSessions()
+        walletConnectV2Protocol.resetAllSessions()
+    }
+
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        walletConnectV1Protocol.updateSessionsWithRemovingAccount(account)
+
+        walletConnectV2Protocol.updateSessionsWithRemovingAccount(account)
     }
     
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams) {

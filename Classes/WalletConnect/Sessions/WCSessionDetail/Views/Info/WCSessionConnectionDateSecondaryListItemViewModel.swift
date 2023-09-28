@@ -21,9 +21,15 @@ struct WCSessionConnectionDateSecondaryListItemViewModel: SecondaryListItemViewM
     private(set) var title: TextProvider?
     private(set) var accessory: SecondaryListItemValueViewModel?
 
-    init(_ draft: WCSessionDraft) {
+    init(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
         bindTitle()
-        bindAccessory(draft)
+        bindAccessory(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
     }
 }
 
@@ -35,8 +41,14 @@ extension WCSessionConnectionDateSecondaryListItemViewModel {
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindAccessory(_ draft: WCSessionDraft) {
-        accessory = WCSessionConnectionDateSecondaryListItemValueViewModel(draft)
+    private mutating func bindAccessory(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
+        accessory = WCSessionConnectionDateSecondaryListItemValueViewModel(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
     }
 }
 
@@ -44,20 +56,29 @@ fileprivate struct WCSessionConnectionDateSecondaryListItemValueViewModel: Secon
     private(set) var icon: ImageStyle?
     private(set) var title: TextProvider?
 
-    init(_ draft: WCSessionDraft) {
-        bindTitle(draft)
+    init(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
+        bindTitle(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
     }
 }
 
 extension WCSessionConnectionDateSecondaryListItemValueViewModel {
-    private mutating func bindTitle(_ draft: WCSessionDraft) {
+    private mutating func bindTitle(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
         if let wcV1Session = draft.wcV1Session {
             bindTitle(wcV1Session)
             return
         }
 
-        if let wcV2Session = draft.wcV2Session {
-            bindTitle(wcV2Session)
+        if draft.isWCv2Session {
+            bindTitle(wcV2SessionConnectionDate: wcV2SessionConnectionDate)
             return
         }
 
@@ -81,17 +102,21 @@ extension WCSessionConnectionDateSecondaryListItemValueViewModel {
         title = aTitle
     }
 
-    private mutating func bindTitle(_ wcV2Session: WalletConnectV2Session) {
-        /// <todo> WCv2 session connection date?
+    private mutating func bindTitle(wcV2SessionConnectionDate: Date?) {
+        guard let wcV2SessionConnectionDate else {
+            title = nil
+            return
+        }
+
         let dateFormat = "MMM d, yyyy, h:mm a"
-        let formattedDate = wcV2Session.expiryDate.toFormat(dateFormat)
+        let formattedDate = wcV2SessionConnectionDate.toFormat(dateFormat)
         let date = formattedDate.footnoteRegular(lineBreakMode: .byTruncatingTail)
 
         var hourAttributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
         hourAttributes.insert(.textColor(Colors.Text.gray))
 
         let hourFormat = "h:mm a"
-        let hour = wcV2Session.expiryDate.toFormat(hourFormat)
+        let hour = wcV2SessionConnectionDate.toFormat(hourFormat)
         let aTitle = date.addAttributes(
             to: hour,
             newAttributes: hourAttributes

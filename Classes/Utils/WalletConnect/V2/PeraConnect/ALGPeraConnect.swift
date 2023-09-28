@@ -176,6 +176,10 @@ extension ALGPeraConnect {
     func extendSessionConnection(_ params: WalletConnectExtendSessionConnectionParams) {
         walletConnectCoordinator.extendSessionConnection(params)
     }
+
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        walletConnectCoordinator.updateSessionsWithRemovingAccount(account)
+    }
 }
 
 extension ALGPeraConnect {

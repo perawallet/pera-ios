@@ -26,7 +26,25 @@ final class WCSessionShortListDataSource: NSObject {
 
     init(walletConnectCoordinator: WalletConnectCoordinator) {
         self.walletConnectCoordinator = walletConnectCoordinator
-        self.sessions = walletConnectCoordinator.getSessions()
+        let sessions = walletConnectCoordinator.getSessions()
+        let wcV2SessionConnectionDates =
+            walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol.getConnectionDates()
+        let sortedSessionsByDescendingConnectionDate = sessions.sorted { firstSession, secondSession in
+            let firstConnectionDate =
+                firstSession.wcV1Session?.date ??
+                wcV2SessionConnectionDates[firstSession.wcV2Session!.topic]
+            let secondConnectionDate =
+                secondSession.wcV1Session?.date ??
+                wcV2SessionConnectionDates[secondSession.wcV2Session!.topic]
+
+            guard let firstConnectionDate = firstConnectionDate,
+                  let secondConnectionDate = secondConnectionDate else {
+                return false
+            }
+
+            return firstConnectionDate > secondConnectionDate
+        }
+        self.sessions = sortedSessionsByDescendingConnectionDate
         super.init()
     }
 }

@@ -16,7 +16,7 @@ import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
-class WalletConnectV1Protocol:
+final class WalletConnectV1Protocol:
     WalletConnectProtocol,
     ServerDelegate {
     static var didReceiveSessionRequestNotification: Notification.Name {
@@ -261,21 +261,12 @@ extension WalletConnectV1Protocol {
         return sessionSource.getWalletConnectSession(for: topic)
     }
     
-    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
+    private func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
         sessionSource.updateWalletConnectSession(session, with: url)
     }
 
     func resetAllSessions() {
         sessionSource.resetAllSessions()
-    }
-
-    func saveConnectedWCSession(_ session: WCSession) {
-        if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
-            WCSessionHistory.create(
-                entity: WCSessionHistory.entityName,
-                with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            )
-        }
     }
 }
 
@@ -407,7 +398,7 @@ extension WalletConnectV1Protocol {
         }
     }
     
-    /// <note
+    /// <note>
     /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
     func clearExpiredSessionsIfNeeded() {
         let sessionLimit = WalletConnectSessionSource.sessionLimit

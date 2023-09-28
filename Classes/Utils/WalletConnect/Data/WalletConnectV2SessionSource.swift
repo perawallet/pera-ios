@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WalletConnectSessionSource.swift
+//   WalletConnectV2SessionSource.swift
 
 import Foundation
 
-final class WalletConnectSessionSource {
-    static let sessionLimit = 30
-
-    var sessions: [String: WCSession]? {
+final class WalletConnectV2SessionSource {
+    private(set) var sessions: [String: WalletConnectV2SessionEntity]? {
         get {
             return wcSessionList?.wcSessions
         }
@@ -32,13 +29,13 @@ final class WalletConnectSessionSource {
 
             if let wcSession = wcSessionList {
                 wcSession.update(
-                    entity: WCSessionList.entityName,
-                    with: [WCSessionList.DBKeys.sessions.rawValue: sessionData]
+                    entity: WCv2SessionList.entityName,
+                    with: [WCv2SessionList.DBKeys.sessions.rawValue: sessionData]
                 )
             } else {
-                WCSessionList.create(
-                    entity: WCSessionList.entityName,
-                    with: [WCSessionList.DBKeys.sessions.rawValue: sessionData]
+                WCv2SessionList.create(
+                    entity: WCv2SessionList.entityName,
+                    with: [WCv2SessionList.DBKeys.sessions.rawValue: sessionData]
                 )
             }
 
@@ -46,23 +43,23 @@ final class WalletConnectSessionSource {
         }
     }
 
-    private var wcSessionList: WCSessionList? {
+    private var wcSessionList: WCv2SessionList? {
         get {
             if Cache.wcSessionList == nil {
-                guard WCSessionList.hasResult(entity: WCSessionList.entityName) else {
+                guard WCv2SessionList.hasResult(entity: WCv2SessionList.entityName) else {
                     return nil
                 }
 
-                let result = WCSessionList.fetchAllSyncronous(entity: WCSessionList.entityName)
+                let result = WCv2SessionList.fetchAllSyncronous(entity: WCv2SessionList.entityName)
 
                 switch result {
                 case .result(let object):
-                    if let session = object as? WCSessionList {
+                    if let session = object as? WCv2SessionList {
                         Cache.wcSessionList = session
                         return Cache.wcSessionList
                     }
                 case .results(let objects):
-                    if let session = objects.first(where: { $0 is WCSessionList }) as? WCSessionList {
+                    if let session = objects.first(where: { $0 is WCv2SessionList }) as? WCv2SessionList {
                         Cache.wcSessionList = session
                         return Cache.wcSessionList
                     }
@@ -78,47 +75,33 @@ final class WalletConnectSessionSource {
             Cache.wcSessionList = newValue
         }
     }
-}
 
-extension WalletConnectSessionSource {
-    func addWalletConnectSession(_ session: WCSession) {
+    func addWalletConnectSession(_ session: WalletConnectV2Session) {
         if sessions != nil {
-            if sessions?[session.urlMeta.topic] != nil {
-                updateWalletConnectSession(session, with: session.urlMeta)
+            if sessions?[session.topic] != nil {
+                updateWalletConnectSession(session)
             } else {
-                self.sessions?[session.urlMeta.topic] = session
+                self.sessions?[session.topic] = WalletConnectV2SessionEntity(session)
                 syncSessions()
             }
         } else {
-            sessions = [session.urlMeta.topic: session]
+            sessions = [session.topic: WalletConnectV2SessionEntity(session)]
         }
     }
 
-    var allWalletConnectSessions: [WCSession] {
-        if let wcSessions = sessions {
-            return Array(wcSessions.values)
-        }
-
-        return []
-    }
-
-    func getWalletConnectSession(for topic: WalletConnectTopic) -> WCSession? {
-        return sessions?[topic]
-    }
-    
-    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
-        _ = sessions?.updateValue(session, forKey: url.topic)
+    func updateWalletConnectSession(_ session: WalletConnectV2Session) {
+        _ = sessions?.updateValue(WalletConnectV2SessionEntity(session), forKey: session.topic)
         syncSessions()
     }
 
-    func removeWalletConnectSession(with url: WCURLMeta) {
-        _ = sessions?.removeValue(forKey: url.topic)
+    func removeWalletConnectSession(for topic: WalletConnectTopic) {
+        _ = sessions?.removeValue(forKey: topic)
         syncSessions()
     }
 
     func resetAllSessions() {
         wcSessionList = nil
-        WCSessionList.clear(entity: WCSessionList.entityName)
+        WCv2SessionList.clear(entity: WCv2SessionList.entityName)
     }
 
     private func syncSessions() {
@@ -127,8 +110,18 @@ extension WalletConnectSessionSource {
     }
 }
 
-extension WalletConnectSessionSource {
+extension WalletConnectV2SessionSource {
     private enum Cache {
-        static var wcSessionList: WCSessionList?
+        static var wcSessionList: WCv2SessionList?
+    }
+}
+
+struct WalletConnectV2SessionEntity: Codable {
+    let topic: WalletConnectTopic
+    let connectionDate: Date
+
+    init(_ session: WalletConnectV2Session) {
+        topic = session.topic
+        connectionDate = .init()
     }
 }

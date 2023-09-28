@@ -546,7 +546,6 @@ extension QRScannerViewController {
         }
 
         captureSession = nil
-        walletConnector.saveConnectedWCSession(session)
         walletConnector.clearExpiredSessionsIfNeeded()
     }
     

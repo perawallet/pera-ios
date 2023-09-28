@@ -1836,11 +1836,11 @@ class Router:
             )
         case let .removeAccount(account, eventHandler):
             let sharedDataController = appConfiguration.sharedDataController
-            let walletConnector = appConfiguration.walletConnector
+            let peraConnect = appConfiguration.peraConnect
             let uiSheet = RemoveAccountSheet(
                 account: account,
                 sharedDataController: sharedDataController,
-                walletConnector: walletConnector,
+                peraConnect: peraConnect,
                 eventHandler: eventHandler
             )
             viewController = UISheetActionScreen(
@@ -1871,8 +1871,11 @@ class Router:
                 api: configuration.api
             )
         case let .wcSessionDetail(draft):
+            let wcV2Protocol =
+                configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
             let dataController = WCSessionDetailLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController,
+                walletConnectV2Protocol: wcV2Protocol,
                 draft: draft
             )
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2125,7 +2128,6 @@ extension Router {
             openWCSessionConnectionSuccessful(draft)
         }
 
-        walletConnector.saveConnectedWCSession(session)
         walletConnector.clearExpiredSessionsIfNeeded()
     }
 }

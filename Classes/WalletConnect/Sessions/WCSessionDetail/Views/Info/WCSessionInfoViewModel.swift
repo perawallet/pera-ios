@@ -22,8 +22,14 @@ struct WCSessionInfoViewModel: ViewModel {
     private(set) var expirationDate: WCSessionExpirationDateSecondaryListItemViewModel?
     private(set) var sessionStatus: WCSessionStatusSecondaryListItemViewModel?
 
-    init(_ draft: WCSessionDraft) {
-        bindConnectionDate(draft)
+    init(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
+        bindConnectionDate(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
 
         if let wcV2Session = draft.wcV2Session {
             bindExpirationDate(wcV2Session)
@@ -34,8 +40,14 @@ struct WCSessionInfoViewModel: ViewModel {
 }
 
 extension WCSessionInfoViewModel {
-    private mutating func bindConnectionDate(_ draft: WCSessionDraft) {
-        connectionDate = WCSessionConnectionDateSecondaryListItemViewModel(draft)
+    private mutating func bindConnectionDate(
+        draft: WCSessionDraft,
+        wcV2SessionConnectionDate: Date?
+    ) {
+        connectionDate = WCSessionConnectionDateSecondaryListItemViewModel(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
     }
 }
 

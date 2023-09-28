@@ -306,8 +306,7 @@ extension RootViewController {
             if isCompleted {
                 self.appConfiguration.session.reset(includingContacts: true)
 
-                self.walletConnector.disconnectFromAllSessions()
-                self.walletConnector.resetAllSessions()
+                self.appConfiguration.peraConnect.disconnectFromAllSessions()
 
                 self.appConfiguration.sharedDataController.resetPolling()
 
