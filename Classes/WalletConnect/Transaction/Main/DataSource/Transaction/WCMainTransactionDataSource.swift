@@ -51,6 +51,7 @@ class WCMainTransactionDataSource: NSObject {
     private let sharedDataController: SharedDataController
     private let currencyFormatter: CurrencyFormatter
     private let transactions: [WCTransaction]
+    private let walletConnector: WalletConnectV1Protocol
 
     init(
         sharedDataController: SharedDataController,

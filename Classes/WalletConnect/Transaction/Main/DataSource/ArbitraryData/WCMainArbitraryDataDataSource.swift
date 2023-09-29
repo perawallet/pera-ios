@@ -21,14 +21,14 @@ final class WCMainArbitraryDataDataSource: NSObject {
     private let sharedDataController: SharedDataController
     private let data: [WCArbitraryData]
     private(set) var wcRequest: WalletConnectRequest
-    private let walletConnector: WalletConnector
+    private let walletConnector: WalletConnectV1Protocol
     private let currencyFormatter: CurrencyFormatter
 
     init(
         sharedDataController: SharedDataController,
         data: [WCArbitraryData],
         wcRequest: WalletConnectRequest,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
