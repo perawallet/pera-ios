@@ -129,11 +129,15 @@ extension ALGWalletConnectCoordinator {
     }
 
     func isValidSession(session: WalletConnectSessionText) -> Bool {
-        return walletConnectV1Protocol.isValidSession(session) || walletConnectV2Protocol.isValidSession(session)
+        return
+            walletConnectV1Protocol.isValidSession(session) ||
+            walletConnectV2Protocol.isValidSession(session)
     }
     
     func configureIfNeeded() {
         walletConnectV1Protocol.configureTransactionsIfNeeded()
+
+        walletConnectV2Protocol.configureTransactionsIfNeeded()
     }
     
     func getSessions() -> [WCSessionDraft] {

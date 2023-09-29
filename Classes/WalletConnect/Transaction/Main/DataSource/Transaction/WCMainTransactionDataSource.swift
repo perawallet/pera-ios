@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCMainTransactionDataSource: NSObject {
+final class WCMainTransactionDataSource: NSObject {
     weak var delegate: WCMainTransactionDataSourceDelegate?
 
     var hasValidGroupTransaction: Bool {
@@ -45,26 +45,31 @@ class WCMainTransactionDataSource: NSObject {
         }
     }()
 
-    private(set) var transactionRequest: WalletConnectRequest
+    let transactionRequest: WalletConnectRequestDraft
+    let wcSession: WCSessionDraft
     let transactionOption: WCTransactionOption?
+
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
+
     private let sharedDataController: SharedDataController
     private let currencyFormatter: CurrencyFormatter
     private let transactions: [WCTransaction]
-    private let walletConnector: WalletConnectV1Protocol
+    private let peraConnect: PeraConnect
 
     init(
         sharedDataController: SharedDataController,
         transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
+        transactionRequest: WalletConnectRequestDraft,
         transactionOption: WCTransactionOption?,
-        walletConnector: WalletConnectV1Protocol,
+        wcSession: WCSessionDraft,
+        peraConnect: PeraConnect,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
+        self.peraConnect = peraConnect
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
+        self.wcSession = wcSession
         self.currencyFormatter = currencyFormatter
         self.transactions = transactions
 
@@ -103,20 +108,58 @@ class WCMainTransactionDataSource: NSObject {
 
 extension WCMainTransactionDataSource {
     func rejectTransaction(reason: WCTransactionErrorResponse = .rejected(.user)) {
-        walletConnector.rejectTransactionRequest(transactionRequest, with: reason)
+        if let wcV1TransactionRequest = transactionRequest.wcV1Request {
+            let params = WalletConnectV1RejectTransactionRequestParams(
+                v1Request: wcV1TransactionRequest,
+                error: reason
+            )
+            peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        if let wcV2TransactionRequest = transactionRequest.wcV2Request {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: reason,
+                v2Request: wcV2TransactionRequest
+            )
+            peraConnect.rejectTransactionRequest(params)
+            return
+        }
     }
 
     func signTransactionRequest(signature: [Data?]) {
-        walletConnector.signTransactionRequest(transactionRequest, with: signature)
+        if let wcV1TransactionRequest = transactionRequest.wcV1Request {
+            let params = WalletConnectV1ApproveTransactionRequestParams(
+                v1Request: wcV1TransactionRequest,
+                signature: signature
+            )
+            peraConnect.approveTransactionRequest(params)
+            return
+        }
+
+        if let wcV2TransactionRequest = transactionRequest.wcV2Request {
+            let params = WalletConnectV2ApproveTransactionRequestParams(
+                v2Request: wcV2TransactionRequest,
+                response: WalletConnectV2CodableResult(signature)
+            )
+            peraConnect.approveTransactionRequest(params)
+            return
+        }
     }
 }
 
 extension WCMainTransactionDataSource: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return groupedTransactions.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let transactions = transactions(at: indexPath.item) else {
             fatalError("Unexpected index")
         }
@@ -130,7 +173,10 @@ extension WCMainTransactionDataSource: UICollectionViewDataSource {
 }
 
 extension WCMainTransactionDataSource {
-    private func dequeueSingleTransactionCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func dequeueSingleTransactionCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let transaction = transactions(at: indexPath.item)?.first else {
             fatalError("Unexpected index")
         }
@@ -254,7 +300,10 @@ extension WCMainTransactionDataSource {
         return cell
     }
 
-    private func dequeueMultipleTransactionCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func dequeueMultipleTransactionCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCMultipleTransactionItemCell.reusableIdentifier,
             for: indexPath

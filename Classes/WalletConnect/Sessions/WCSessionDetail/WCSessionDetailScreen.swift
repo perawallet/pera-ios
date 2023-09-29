@@ -679,7 +679,9 @@ extension WCSessionDetailScreen {
         let draft = dataController.getSessionDraft()
         guard let wcV2Session = draft.wcV2Session else { return }
 
-        peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol.pingSession(wcV2Session)
+        let wcV2Protocol =
+            peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+        wcV2Protocol.pingSession(wcV2Session)
     }
 
     private func pauseSessionPingRetryRepeater() {

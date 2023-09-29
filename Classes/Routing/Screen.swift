@@ -118,14 +118,46 @@ indirect enum Screen {
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
-    case wcAlgosTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetAdditionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcGroupTransaction(transactions: [WCTransaction], transactionRequest: WalletConnectRequest)
-    case wcAppCall(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetCreationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetReconfigurationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAlgosTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetAdditionTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcGroupTransaction(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAppCall(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetCreationTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetReconfigurationTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetDeletionTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
@@ -158,12 +190,7 @@ indirect enum Screen {
         draft: WalletConnectArbitraryDataSignRequestDraft,
         delegate: WCMainArbitraryDataScreenDelegate
     )
-    case wcArbitraryDataScreen(data: WCArbitraryData, wcRequest: WalletConnectRequest)
-    case wcSingleTransactionScreen(
-        transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
-        transactionOption: WCTransactionOption?
-    )
+    case wcArbitraryDataScreen(data: WCArbitraryData, wcSession: WCSessionDraft)
     case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,

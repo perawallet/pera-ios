@@ -988,52 +988,60 @@ class Router:
                 viewModel,
                 configuration: configuration
             )
-        case let .wcAlgosTransaction(transaction, transactionRequest):
+        case let .wcAlgosTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAlgosTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetTransaction(transaction, transactionRequest):
+        case let .wcAssetTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetAdditionTransaction(transaction, transactionRequest):
+        case let .wcAssetAdditionTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetAdditionTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcGroupTransaction(transactions, transactionRequest):
+        case let .wcGroupTransaction(transactions, transactionRequest, wcSession):
             viewController = WCGroupTransactionViewController(
                 transactions: transactions,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAppCall(transaction, transactionRequest):
+        case let .wcAppCall(transaction, transactionRequest, wcSession):
             viewController = WCAppCallTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetCreationTransaction(transaction, transactionRequest):
+        case let .wcAssetCreationTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetCreationTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetReconfigurationTransaction(transaction, transactionRequest):
+        case let .wcAssetReconfigurationTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetReconfigurationTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetDeletionTransaction(transaction, transactionRequest):
+        case let .wcAssetDeletionTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetDeletionTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
         case let .jsonDisplay(jsonData, title):
@@ -1121,27 +1129,11 @@ class Router:
             )
             aViewController.delegate = delegate
             viewController = aViewController
-        case let .wcArbitraryDataScreen(data, wcRequest):
+        case let .wcArbitraryDataScreen(data, wcSession):
             viewController = WCArbitraryDataViewController(
                 data: data,
-                wcRequest: wcRequest,
+                wcSession: wcSession,
                 configuration: configuration
-            )
-        case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
-            let currencyFormatter = CurrencyFormatter()
-            let dataSource = WCMainTransactionDataSource(
-                sharedDataController: configuration.sharedDataController,
-                transactions: transactions,
-                transactionRequest: transactionRequest,
-                transactionOption: transactionOption,
-                walletConnector: configuration.walletConnector,
-                currencyFormatter: currencyFormatter
-            )
-            dataSource.load()
-            viewController = WCSingleTransactionRequestScreen(
-                dataSource: dataSource,
-                configuration: configuration,
-                currencyFormatter: currencyFormatter
             )
         case .asaVerificationInfo(let eventHandler):
             let aViewController = AsaVerificationInfoScreen(api: configuration.api)

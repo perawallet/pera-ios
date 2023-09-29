@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// <todo> Not used?
 protocol WalletConnectSessionReconnectionParams {
     var session: WalletConnectSession? { get }
 }
