@@ -36,7 +36,7 @@ final class WalletConnectV1Protocol:
     var eventHandler: ((WalletConnectV1Event) -> Void)?
     weak var delegate: WalletConnectorDelegate?
     
-    var isRegisteredToTheTransactionRequests = false
+    var isRegisteredToTheRequests = false
 
     private let api: ALGAPI
     private let pushToken: String?
@@ -63,19 +63,19 @@ extension WalletConnectV1Protocol {
     }
     
     func configureTransactionsIfNeeded() {
-        if isRegisteredToTheTransactionRequests {
+        if isRegisteredToTheRequests {
             return
         }
         
-        isRegisteredToTheTransactionRequests = true
+        isRegisteredToTheRequests = true
         
         clearExpiredSessionsIfNeeded()
-        registerToWCTransactionRequests()
+        registerToWCRequests()
         reconnectToSavedSessionsIfPossible()
     }
     
-    private func registerToWCTransactionRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler(analytics: analytics)
+    private func registerToWCRequests() {
+        let wcRequestHandler = WalletConnectRequestHandler(analytics: analytics)
         if let rootViewController = UIApplication.shared.rootViewController() {
             wcRequestHandler.delegate = rootViewController
         }
@@ -528,6 +528,7 @@ extension WalletConnectorDelegate {
 
 enum WalletConnectMethod: String {
     case transactionSign = "algo_signTxn"
+    case arbitraryDataSign = "algo_signData"
 }
 
 typealias WalletConnectSession = WalletConnectSwift.Session

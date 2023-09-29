@@ -24,7 +24,7 @@ final class NoContentWithActionCell:
     ViewModelBindable,
     UIInteractable {
     static let theme = NoContentWithActionViewCommonTheme()
-
+    
     override init(
         frame: CGRect
     ) {

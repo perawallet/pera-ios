@@ -90,7 +90,7 @@ final class WCMainTransactionScreen:
     private let currencyFormatter: CurrencyFormatter
 
     init(
-        draft: WalletConnectRequestDraft,
+        draft: WalletConnectTransactionSignRequestDraft,
         configuration: ViewControllerConfiguration
     ) {
         self.transactions = draft.transactions
@@ -172,7 +172,8 @@ extension WCMainTransactionScreen {
 
             validateTransactions(
                 transactions,
-                with: dataSource.groupedTransactions
+                with: dataSource.groupedTransactions,
+                sharedDataController: sharedDataController
             )
 
             /// <note>:
@@ -311,6 +312,7 @@ extension WCMainTransactionScreen {
     private func createTransactionSigner() -> WCTransactionSigner {
         let signer = WCTransactionSigner(
             api: api!,
+            sharedDataController: sharedDataController,
             analytics: analytics
         )
         signer.delegate = self
@@ -412,12 +414,20 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         startLoading()
 
         guard let transaction = getFirstSignableTransaction(),
-              let index = transactions.firstIndex(of: transaction) else {
-            rejectSigning(reason: .unauthorized(.signerNotFound))
+              let index = transactions.firstIndex(of: transaction),
+              let signerAccount = transaction.requestedSigner.account else {
+            rejectSigning(reason: .unauthorized(.transactionSignerNotFound))
             return
         }
 
-        let requiresLedgerConnection = transaction.requestedSigner.account?.requiresLedgerConnection() ?? false
+        let requiresLedgerConnection: Bool
+
+        if transaction.authAddress != nil {
+            requiresLedgerConnection = signerAccount.hasLedgerDetail()
+        } else {
+            requiresLedgerConnection = signerAccount.requiresLedgerConnection()
+        }
+
         if requiresLedgerConnection {
             openLedgerConnection()
         }
@@ -479,6 +489,19 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         if let index = transactions.firstIndex(of: transaction),
            let nextTransaction = transactions.nextElement(afterElementAt: index) {
             if let signerAccount = nextTransaction.requestedSigner.account {
+
+                let requiresLedgerConnection: Bool
+
+                if nextTransaction.authAddress != nil {
+                    requiresLedgerConnection = signerAccount.hasLedgerDetail() 
+                } else {
+                    requiresLedgerConnection = signerAccount.requiresLedgerConnection() 
+                }
+
+                if requiresLedgerConnection {
+                    openLedgerConnection()
+                }
+
                 wcTransactionSigner.signTransaction(
                     nextTransaction,
                     with: transactionRequest,
@@ -575,9 +598,21 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     private func disconnectFromTheLedgerIfNeeeded() {
-        let isDisconnectNeeded = transactions.allSatisfy {
-            $0.requestedSigner.account?.requiresLedgerConnection() ?? false
-        }
+        let isDisconnectNeeded =
+            transactions
+                .contains(
+                    where: { transaction in
+                        guard let signerAccount = transaction.requestedSigner.account else {
+                            return false
+                        }
+
+                        if transaction.authAddress != nil {
+                            return signerAccount.hasLedgerDetail()
+                        }
+
+                        return signerAccount.requiresLedgerConnection()
+                    }
+                )
         if isDisconnectNeeded {
             wcTransactionSigner.disonnectFromLedger()
         }
@@ -696,6 +731,10 @@ extension WCMainTransactionScreen {
 
 extension WCMainTransactionScreen {
     private func openLedgerConnection() {
+        if signWithLedgerProcessScreen != nil { return }
+
+        if ledgerConnectionScreen != nil { return }
+
         let eventHandler: LedgerConnectionScreen.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -747,7 +786,7 @@ extension WCMainTransactionScreen {
     private func openSignWithLedgerProcess(ledgerDeviceName: String) {
         let draft = SignWithLedgerProcessDraft(
             ledgerDeviceName: ledgerDeviceName,
-            totalTransactionCount: dataSource.totalTransactionCountToSign
+            totalTransactionCount: dataSource.totalLedgerTransactionCountToSign
         )
 
         let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
@@ -964,7 +1003,6 @@ extension WCMainTransactionScreen {
         return transactions.contains { $0.isInTheSameNetwork(with: transactionParams) }
     }
 }
-
 
 extension WCMainTransactionScreen {
     private func getAssetDetailsIfNeeded() {

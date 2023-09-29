@@ -28,11 +28,21 @@ class WCMainTransactionDataSource: NSObject {
         return totalTransactionCount == transactions.count
     }
 
-    private let walletConnector: WalletConnectV1Protocol
-    lazy var totalTransactionCountToSign: Int = {
-        return transactions
-            .filter(\.hasSignerAccount)
-            .count
+    lazy var totalLedgerTransactionCountToSign: Int = {
+        return transactions.reduce(0) { partialResult, transaction in
+            let account = transaction.requestedSigner.account
+            guard let account else { return partialResult }
+
+            if transaction.authAddress != nil {
+                if account.hasLedgerDetail() {
+                    return partialResult + 1
+                }
+            } else if account.requiresLedgerConnection() {
+                return partialResult + 1
+            }
+
+            return partialResult
+        }
     }()
 
     private(set) var transactionRequest: WalletConnectRequest
