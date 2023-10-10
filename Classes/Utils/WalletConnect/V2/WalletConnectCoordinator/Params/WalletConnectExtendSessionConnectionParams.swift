@@ -16,7 +16,6 @@
 
 import Foundation
 
-/// <todo> Not used?
 protocol WalletConnectExtendSessionConnectionParams {
     var session: WalletConnectV2Session? { get }
 }
