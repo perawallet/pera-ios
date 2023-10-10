@@ -27,7 +27,7 @@ struct WCv2SessionConnectionFailedLog: ALGAnalyticsLog {
         self.name = .walletConnectV2SessionConnectionFailed
         self.metadata = [
             .wcSessionTopic: uri.topic,
-            .wcRequestURL: uri.absoluteString,
+            .wcRequestURL: Self.regulate(uri.absoluteString),
             .wcRequestError: Self.regulate(error.localizedDescription)
         ]
     }
