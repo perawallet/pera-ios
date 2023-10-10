@@ -87,6 +87,10 @@ extension WalletConnectV1Protocol {
 
             try connect(to: url)
         } catch {
+            guard hasOngoingWCConnectionRequest(for: key) else {
+                return
+            }
+
             clearOngoingWCConnectionRequest(for: key)
 
             eventHandler?(
@@ -277,10 +281,6 @@ extension WalletConnectV1Protocol {
             if localSession == nil {
                 self.addToSavedSessions(connectedSession)
             }
-
-            /// <todo>
-            /// Disabled supporting WC push notificataions for now 06.01.2023
-//            self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
             
             let key = session.url.absoluteString
 
@@ -315,6 +315,10 @@ extension WalletConnectV1Protocol {
         didFailToConnect url: WalletConnectURL
     ) {
         let key = url.absoluteString
+        guard hasOngoingWCConnectionRequest(for: key) else {
+            return
+        }
+
         clearOngoingWCConnectionRequest(for: key)
 
         eventHandler?(

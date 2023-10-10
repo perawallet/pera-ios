@@ -359,9 +359,18 @@ extension AccountListItemViewModel {
         var networkForSecondaryAccessory: ALGAPI.Network?
 
         if let wcV1Session = sessionDraft.wcV1Session {
-            let chaindID = wcV1Session.walletMeta?.chainId
-            networkForPrimaryAccessory = ALGAPI.Network(chainID: chaindID)
-            networkForSecondaryAccessory = nil
+            let chainID = wcV1Session.walletMeta?.chainId
+
+            switch chainID {
+            case algorandWalletConnectV1ChainID:
+                networkForPrimaryAccessory = .mainnet
+                networkForSecondaryAccessory = .testnet
+            case algorandWalletConnectV1TestNetChainID:
+                networkForPrimaryAccessory = .testnet
+            case algorandWalletConnectV1MainNetChainID:
+                networkForPrimaryAccessory = .mainnet
+            default: break
+            }
         }
 
         if let wcV2Session = sessionDraft.wcV2Session {

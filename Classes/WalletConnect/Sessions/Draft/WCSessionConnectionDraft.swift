@@ -36,8 +36,18 @@ struct WCSessionConnectionDraft {
         isApproved = session.dAppInfo.approved ?? false
         supportedMethods = WCSession.supportedMethods
         supportedEvents = WCSession.supportedEvents
-        let chain = ALGAPI.Network(chainID: session.dAppInfo.chainId)
-        requestedChains = chain.unwrap { [ $0 ] }
+
+        let chainID = session.dAppInfo.chainId
+        switch chainID {
+        case algorandWalletConnectV1ChainID:
+            requestedChains = [ .mainnet, .testnet ]
+        case algorandWalletConnectV1TestNetChainID:
+            requestedChains = [ .testnet ]
+        case algorandWalletConnectV1MainNetChainID:
+            requestedChains = [ .mainnet ]
+        default:
+            requestedChains = nil
+        }
     }
     
     init(sessionProposal: WalletConnectV2SessionProposal) {
@@ -56,20 +66,6 @@ struct WCSessionConnectionDraft {
 }
 
 extension ALGAPI.Network {
-    /// <note> WC V1
-    init?(chainID: Int?) {
-        switch chainID {
-        case algorandWalletConnectV1ChainID,
-             algorandWalletConnectV1TestNetChainID:
-            self = .testnet
-        case algorandWalletConnectV1ChainID,
-             algorandWalletConnectV1MainNetChainID:
-            self = .mainnet
-        default:
-            return nil
-        }
-    }
-
     /// <note> WC V2
     init?(blockchain: Blockchain) {
         let chainReference = blockchain.reference
