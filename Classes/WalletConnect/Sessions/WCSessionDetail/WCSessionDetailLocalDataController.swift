@@ -318,7 +318,7 @@ extension WCSessionDetailLocalDataController {
     private func makeItemsForWCv2AdvancedPermissionCells() -> [ItemIdentifier] {
         var permissions: [WCSessionDetailAdvancedPermission] = []
 
-        let requiredNamespaces = draft.wcV2Session?.requiredNamespaces["algorand"]
+        let requiredNamespaces = draft.wcV2Session?.requiredNamespaces[WalletConnectNamespaceKey.algorand]
 
         let supportedMethods = requiredNamespaces?.methods ?? []
         if !supportedMethods.isEmpty {

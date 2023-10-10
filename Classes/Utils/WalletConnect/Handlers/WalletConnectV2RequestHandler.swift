@@ -19,10 +19,14 @@ import Foundation
 final class WalletConnectV2RequestHandler {
     weak var delegate: WalletConnectV2RequestHandlerDelegate?
 
+    private let analytics: ALGAnalytics
+
+    init(analytics: ALGAnalytics) {
+        self.analytics = analytics
+    }
+
     func canHandle(request: WalletConnectV2Request) -> Bool {
-        return
-            request.isArbitraryDataSignRequest ||
-            request.isTransactionSignRequest
+        return request.isTransactionSignRequest
     }
 
     func handle(request: WalletConnectV2Request) {
@@ -32,11 +36,6 @@ final class WalletConnectV2RequestHandler {
 
 extension WalletConnectV2RequestHandler {
     private func handleRequest(_ request: WalletConnectV2Request) {
-        if request.isArbitraryDataSignRequest {
-            handleArbitraryDataSignRequest(request)
-            return
-        }
-
         if request.isTransactionSignRequest {
             handleTransactionSignRequest(request)
             return
@@ -45,59 +44,38 @@ extension WalletConnectV2RequestHandler {
 }
 
 extension WalletConnectV2RequestHandler {
-    /// <todo> Arbitrary Data
-    private func handleArbitraryDataSignRequest(_ request: WalletConnectV2Request) {
-        var arbitraryData: [WCArbitraryData] = []
-
-//        for param in 0..<request.parameterCount {
-//            if let data = try? request.parameter(of: WCArbitraryData.self, at: param) {
-//                arbitraryData.append(data)
-//            } else {
-//                DispatchQueue.main.async {
-//                    [weak self] in
-//                    guard let self else { return }
-//                    self.delegate?.walletConnectRequestHandler(self, didInvalidateArbitraryDataRequest: request)
-//                }
-//                return
-//            }
-//        }
-
-        DispatchQueue.main.async {
-            [weak self] in
-            guard let self else { return }
-            delegate?.walletConnectRequestHandler(
-                self,
-                shouldSign: arbitraryData,
-                for: request
-            )
-        }
-    }
-}
-
-extension WalletConnectV2RequestHandler {
     private func handleTransactionSignRequest(_ request: WalletConnectV2Request) {
-        guard let transactions = try? request.params.get([[WCTransaction]].self) else {
-            DispatchQueue.main.async {
-                [weak self] in
-                guard let self else { return }
-                self.delegate?.walletConnectRequestHandler(self, didInvalidateTransactionRequest: request)
-            }
+        analytics.record(
+            .wcTransactionRequestReceived(transactionRequest: request)
+        )
+        analytics.track(
+            .wcTransactionRequestReceived(transactionRequest: request)
+        )
+
+        let params: WCTransactionSignRequestParams
+
+        do {
+            params = try request.params.get(WCTransactionSignRequestParams.self)
+        } catch {
+            delegate?.walletConnectRequestHandler(self, didInvalidateTransactionRequest: request)
             return
         }
 
-        var transactionOption: WCTransactionOption? /// <todo> ???
-//        if request.parameterCount > 1 {
-//            transactionOption = try? request.parameter(of: WCTransactionOption.self, at: 1)
-//        }
+        analytics.record(
+            .wcTransactionRequestValidated(transactionRequest: request)
+        )
+        analytics.track(
+            .wcTransactionRequestValidated(transactionRequest: request)
+        )
 
         DispatchQueue.main.async {
             [weak self] in
             guard let self else { return }
             self.delegate?.walletConnectRequestHandler(
                 self,
-                shouldSign: transactions.flatMap { $0 },
+                shouldSign: params.transactions,
                 for: request,
-                with: transactionOption
+                with: params.transactionOption
             )
         }
     }
@@ -114,23 +92,21 @@ protocol WalletConnectV2RequestHandlerDelegate: AnyObject {
         _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
         didInvalidateTransactionRequest request: WalletConnectV2Request
     )
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        shouldSign arbitraryData: [WCArbitraryData],
-        for request: WalletConnectV2Request
-    )
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        didInvalidateArbitraryDataRequest request: WalletConnectV2Request
-    )
 }
 
 fileprivate extension WalletConnectV2Request {
-    var isArbitraryDataSignRequest: Bool {
-        return method == WalletConnectMethod.arbitraryDataSign.rawValue
-    }
-
     var isTransactionSignRequest: Bool {
         return method == WalletConnectMethod.transactionSign.rawValue
+    }
+}
+
+fileprivate struct WCTransactionSignRequestParams: Codable {
+    let transactions: [WCTransaction]
+    let transactionOption: WCTransactionOption?
+
+    init(from decoder: Decoder) throws {
+        var values = try decoder.unkeyedContainer()
+        self.transactions = try values.decode([WCTransaction].self)
+        self.transactionOption = try? values.decodeIfPresent(WCTransactionOption.self)
     }
 }

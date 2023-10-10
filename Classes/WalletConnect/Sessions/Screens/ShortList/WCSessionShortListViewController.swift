@@ -93,7 +93,7 @@ extension WCSessionShortListViewController {
             return
         }
 
-        var name: String?
+        var name: String = .empty
 
         if let wcV1Session = session.wcV1Session {
             name = wcV1Session.peerMeta.name
@@ -103,7 +103,7 @@ extension WCSessionShortListViewController {
 
         let actionSheet = UIAlertController(
             title: nil,
-            message: "wallet-connect-session-disconnect-message".localized(params: name.someString),
+            message: "wallet-connect-session-disconnect-message".localized(params: name),
             preferredStyle: .actionSheet
         )
 
@@ -112,15 +112,28 @@ extension WCSessionShortListViewController {
                 return
             }
 
+            var dappURL: String = .empty
+            var address: String = .empty
+            var version: WalletConnectProtocolID = .v1
+
             if let wcV1Session = session.wcV1Session {
-                self.analytics.track(
-                    .wcSessionDisconnected(
-                        dappName: wcV1Session.peerMeta.name,
-                        dappURL: wcV1Session.peerMeta.url.absoluteString,
-                        address: wcV1Session.walletMeta?.accounts?.first
-                    )
-                )
+                dappURL = wcV1Session.peerMeta.name
+                address = wcV1Session.walletMeta?.accounts?.first ?? .empty
+                version = .v1
+            } else if let wcV2Session = session.wcV2Session {
+                dappURL = wcV2Session.peer.name
+                address = wcV2Session.accounts.map(\.address).joined(separator: ",")
+                version = .v2
             }
+
+            self.analytics.track(
+                .wcSessionDisconnected(
+                    version: version,
+                    dappName: name,
+                    dappURL: dappURL,
+                    address: address
+                )
+            )
 
             loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -161,6 +174,7 @@ extension WCSessionShortListViewController {
 
                 analytics.track(
                     .wcSessionDisconnected(
+                        version: .v1,
                         dappName: aSession.peerMeta.name,
                         dappURL: aSession.peerMeta.url.absoluteString,
                         address: aSession.walletMeta?.accounts?.first
@@ -171,7 +185,7 @@ extension WCSessionShortListViewController {
 
                 updateScreenAfterDisconnecting()
             }
-        case .didDisconnectFromV1Fail(_, let error):
+        case .didDisconnectFromV1Fail(let session, let error):
             asyncMain {
                 [weak self] in
                 guard let self else { return }
@@ -179,6 +193,15 @@ extension WCSessionShortListViewController {
 
                 switch error {
                 case .failedToDisconnectInactiveSession:
+                    analytics.track(
+                        .wcSessionDisconnected(
+                            version: .v1,
+                            dappName: session.peerMeta.name,
+                            dappURL: session.peerMeta.url.absoluteString,
+                            address: session.walletMeta?.accounts?.first
+                        )
+                    )
+
                     updateScreenAfterDisconnecting()
                 case .failedToDisconnect:
                     bannerController?.presentErrorBanner(
@@ -188,7 +211,16 @@ extension WCSessionShortListViewController {
                 default: break
                 }
             }
-        case .didDisconnectFromV2:
+        case .didDisconnectFromV2(let session):
+            analytics.track(
+                .wcSessionDisconnected(
+                    version: .v2,
+                    dappName: session.peer.name,
+                    dappURL: session.peer.url,
+                    address: session.accounts.map(\.address).joined(separator: ",")
+                )
+            )
+
             asyncMain {
                 [weak self] in
                 guard let self else { return }
@@ -209,7 +241,20 @@ extension WCSessionShortListViewController {
                     message: error.localizedDescription
                 )
             }
-        case .deleteSessionV2:
+        case .deleteSessionV2(let topic, _):
+            let session = dataSource.session(for: topic)
+            let wcV2Session = session?.wcV2Session
+            guard let wcV2Session else { return }
+
+            analytics.track(
+                .wcSessionDisconnected(
+                    version: .v2,
+                    dappName: wcV2Session.peer.name,
+                    dappURL: wcV2Session.peer.url,
+                    address: wcV2Session.accounts.map(\.address).joined(separator: ",")
+                )
+            )
+            
             asyncMain {
                 [weak self] in
                 guard let self else { return }

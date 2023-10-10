@@ -27,7 +27,14 @@ protocol WalletConnectProtocolResolver {
     func getWalletConnectProtocol(from id: WalletConnectProtocolID) -> WalletConnectProtocol
 }
 
-enum WalletConnectProtocolID {
+enum WalletConnectProtocolID: String {
     case v1
     case v2
+    
+    var rawValue: String {
+        switch self {
+        case .v1: return "1"
+        case .v2: return "2"
+        }
+    }
 }

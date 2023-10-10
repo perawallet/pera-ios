@@ -46,7 +46,7 @@ struct WCSessionConnectionDraft {
         dappURL = URL(string: sessionProposal.proposer.url)
         isApproved = false
 
-        let requiredNamespaces = sessionProposal.requiredNamespaces["algorand"]
+        let requiredNamespaces = sessionProposal.requiredNamespaces[WalletConnectNamespaceKey.algorand]
         supportedMethods = requiredNamespaces?.methods
         supportedEvents = requiredNamespaces?.events
 
@@ -59,11 +59,11 @@ extension ALGAPI.Network {
     /// <note> WC V1
     init?(chainID: Int?) {
         switch chainID {
-        case algorandWalletConnectChainID,
-             algorandWalletConnectTestNetChainID:
+        case algorandWalletConnectV1ChainID,
+             algorandWalletConnectV1TestNetChainID:
             self = .testnet
-        case algorandWalletConnectChainID,
-             algorandWalletConnectMainNetChainID:
+        case algorandWalletConnectV1ChainID,
+             algorandWalletConnectV1MainNetChainID:
             self = .mainnet
         default:
             return nil
@@ -78,9 +78,9 @@ extension ALGAPI.Network {
 
     init?(chainReference: String) {
         switch chainReference {
-        case "wGHE2Pwdvd7S12BL5FaOP20EGYesN73k":
+        case algorandWalletConnectV2MainNetChainReference:
             self = .mainnet
-        case "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDe":
+        case algorandWalletConnectV2TestNetChainReference:
             self = .testnet
         default:
             return nil
@@ -90,10 +90,14 @@ extension ALGAPI.Network {
 
 extension WCSession {
     static let supportedMethods: Set<WCSessionSupportedMethod> = [
-        "algo_signData",
-        "algo_signTxn"
+        WalletConnectMethod.arbitraryDataSign.rawValue,
+        WalletConnectMethod.transactionSign.rawValue
     ]
     static let supportedEvents: Set<WCSessionSupportedEvent> = [
-        "accountChanged"
+        WalletConnectEvent.accountsChanged.rawValue
     ]
+}
+
+enum WalletConnectNamespaceKey {
+    static let algorand = "algorand"
 }

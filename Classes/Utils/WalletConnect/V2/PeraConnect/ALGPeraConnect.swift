@@ -20,6 +20,11 @@ import MacaroonUtils
 final class ALGPeraConnect:
     PeraConnect,
     WeakPublisher {
+    static let didReceiveSessionRequestNotification = Notification.Name(
+        rawValue: "com.algorand.algorand.notification.peraConnect.didReceiveSessionRequest"
+    )
+    static let sessionRequestPreferencesKey = "peraConnect.preferences"
+
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     var coordinatorEventHandler: ((WalletConnectCoordinatorEvent) -> Void)?
@@ -30,6 +35,7 @@ final class ALGPeraConnect:
         walletConnectCoordinator: WalletConnectCoordinator
     ) {
         self.walletConnectCoordinator = walletConnectCoordinator
+        
         setWalletConnectCoordinatorEvents()
     }
 }
@@ -74,6 +80,12 @@ extension ALGPeraConnect {
 }
 
 extension ALGPeraConnect {
+    func publishReset() {
+        publish(.performReset)
+    }
+}
+
+extension ALGPeraConnect {
     private func setWalletConnectCoordinatorEvents() {
         walletConnectCoordinator.eventHandler = {
             [weak self] event in
@@ -88,20 +100,35 @@ extension ALGPeraConnect {
                         completion: completion
                     )
                 )
-            case .didConnectToV1(let session):
-                publish(.didConnectToV1(session))
+            case .didConnectToV1(let session, let preferences):
+                publish(
+                    .didConnectToV1(
+                        session: session,
+                        preferences: preferences
+                    )
+                )
             case .didDisconnectFromV1(let session):
                 publish(.didDisconnectFromV1(session))
             case .didDisconnectFromV1Fail(let session, let error):
-                publish(.didDisconnectFromV1Fail(session: session, error: error))
+                publish(
+                    .didDisconnectFromV1Fail(
+                        session: session,
+                        error: error
+                    )
+                )
             case .didFailToConnectV1(let error):
                 publish(.didFailToConnectV1(error))
             case .didExceedMaximumSessionFromV1:
                 publish(.didExceedMaximumSessionFromV1)
             case .sessionsV2(let sessions):
                 publish(.sessionsV2(sessions))
-            case .proposeSessionV2(let proposal):
-                publish(.proposeSessionV2(proposal))
+            case .proposeSessionV2(let proposal, let preferences):
+                publish(
+                    .proposeSessionV2(
+                        proposal: proposal,
+                        preferences: preferences
+                    )
+                )
             case .deleteSessionV2(let topic, let reason):
                 publish(
                     .deleteSessionV2(
@@ -109,8 +136,13 @@ extension ALGPeraConnect {
                         reason: reason
                     )
                 )
-            case .settleSessionV2(let session):
-                publish(.settleSessionV2(session))
+            case .settleSessionV2(let session, let preferences):
+                publish(
+                    .settleSessionV2(
+                        session: session,
+                        preferences: preferences
+                    )
+                )
             case .updateSessionV2(let topic, let namespaces):
                 publish(
                     .updateSessionV2(
@@ -118,10 +150,19 @@ extension ALGPeraConnect {
                         namespaces: namespaces
                     )
                 )
+            case .didCreateV2SessionFail:
+                publish(.didCreateV2SessionFail)
+            case .didConnectV2SessionFail:
+                publish(.didConnectV2SessionFail)
             case .didDisconnectFromV2(let session):
                 publish(.didDisconnectFromV2(session))
             case .didDisconnectFromV2Fail(let session, let error):
-                publish(.didDisconnectFromV2Fail(session: session, error: error))
+                publish(
+                    .didDisconnectFromV2Fail(
+                        session: session,
+                        error: error
+                    )
+                )
             case .extendSessionV2(let topic, let date):
                 publish(
                     .extendSessionV2(
@@ -132,7 +173,12 @@ extension ALGPeraConnect {
             case .pingV2(let ping):
                 publish(.pingV2(ping))
             case .didPingV2SessionFail(let session, let error):
-                publish(.didPingV2SessionFail(session: session, error: error))
+                publish(
+                    .didPingV2SessionFail(
+                        session: session,
+                        error: error
+                    )
+                )
             case .transactionRequestV2(let request):
                 publish(.transactionRequestV2(request))
             case .failure(let error):

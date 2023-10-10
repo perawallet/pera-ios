@@ -31,7 +31,7 @@ struct WalletConnectV1RejectTransactionRequestParams: WalletConnectRejectTransac
 
 struct WalletConnectV2RejectTransactionRequestParams: WalletConnectRejectTransactionRequestParams {
     let v1Request: WalletConnectRequest? = nil
-    var error: WCTransactionErrorResponse? = nil
+    var error: WCTransactionErrorResponse?
     var v2Request: WalletConnectV2Request?
     let currentProtocolID: WalletConnectProtocolID = .v2
 }

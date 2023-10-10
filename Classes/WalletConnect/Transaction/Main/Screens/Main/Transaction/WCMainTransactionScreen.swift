@@ -622,40 +622,48 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
 extension WCMainTransactionScreen {
     private func logScreenWhenViewDidLoad() {
-        guard let wcV1Request = transactionRequest.wcV1Request else { return }
-
         analytics.record(
-            .wcTransactionRequestDidLoad(transactionRequest: wcV1Request)
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
         )
         analytics.track(
-            .wcTransactionRequestDidLoad(transactionRequest: wcV1Request)
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
         )
     }
 
     private func logScreenWhenViewDidAppear() {
-        guard let wcV1Request = transactionRequest.wcV1Request else { return }
-
-        if !isViewFirstAppeared { return }
-
         analytics.record(
-            .wcTransactionRequestDidAppear(transactionRequest: wcV1Request)
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
         )
         analytics.track(
-            .wcTransactionRequestDidAppear(transactionRequest: wcV1Request)
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
         )
     }
 
     private func logAllTransactions() {
-        guard let wcV1Session = wcSession.wcV1Session else { return }
-
         transactions.forEach { transaction in
             if let transactionData = transaction.unparsedTransactionDetail {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
+
+                let dappName =
+                    wcSession.wcV1Session?.peerMeta.name ??
+                    wcSession.wcV2Session?.peer.name
+                let dappURL =
+                    wcSession.wcV1Session?.peerMeta.url.absoluteString ??
+                    wcSession.wcV2Session?.peer.url
+                let version: WalletConnectProtocolID = wcSession.isWCv1Session ? .v1 : .v2
+                guard
+                    let dappName,
+                    let dappURL
+                else {
+                    return
+                }
+
                 analytics.track(
                     .wcTransactionConfirmed(
+                        version: version,
                         transactionID: transactionID,
-                        dappName: wcV1Session.peerMeta.name,
-                        dappURL: wcV1Session.peerMeta.url.absoluteString
+                        dappName: dappName,
+                        dappURL: dappURL
                     )
                 )
             }

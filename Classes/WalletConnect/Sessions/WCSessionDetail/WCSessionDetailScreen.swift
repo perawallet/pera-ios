@@ -519,7 +519,6 @@ extension WCSessionDetailScreen {
             return nil
         }
 
-        // <todo> Should we get it from the data controller?
         return sharedDataController.accountCollection[item.address]
     }
 }
@@ -713,14 +712,6 @@ extension WCSessionDetailScreen {
         case .didDisconnectFromV1(let session):
             let draft = dataController.getSessionDraft()
             guard session == draft.wcV1Session else { return }
-
-            analytics.track(
-                .wcSessionDisconnected(
-                    dappName: session.peerMeta.name,
-                    dappURL: session.peerMeta.url.absoluteString,
-                    address: session.walletMeta?.accounts?.first
-                )
-            )
 
             asyncMain {
                 [weak self] in

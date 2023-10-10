@@ -38,7 +38,7 @@ final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
             pushToken: pushToken,
             analytics: analytics
         )
-        self.walletConnectV2Protocol = WalletConnectV2Protocol(api: api)
+        self.walletConnectV2Protocol = WalletConnectV2Protocol(analytics: analytics)
     }
     
     func getWalletConnectProtocol(from session: WalletConnectSessionText) -> WalletConnectProtocol? {

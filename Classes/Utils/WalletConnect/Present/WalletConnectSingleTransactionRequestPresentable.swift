@@ -47,6 +47,8 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
             if let wcV1Request = request.wcV1Request {
                 let params = WalletConnectV1RejectTransactionRequestParams(v1Request: wcV1Request, error: .unsupported(.unknownTransaction))
                 configuration.peraConnect.rejectTransactionRequest(params)
+                dismissScreen()
+                return
             }
 
             if let wcV2Request = request.wcV2Request {
@@ -55,9 +57,10 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
                     v2Request: wcV2Request
                 )
                 configuration.peraConnect.rejectTransactionRequest(params)
+                dismissScreen()
+                return
             }
 
-            dismissScreen()
             return
         }
 

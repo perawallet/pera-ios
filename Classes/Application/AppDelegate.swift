@@ -325,11 +325,9 @@ extension AppDelegate {
             router.launch(deeplink: screen)
         case .walletConnectSessionRequest(let preferences):
             NotificationCenter.default.post(
-                name: WalletConnectV1Protocol.didReceiveSessionRequestNotification,
+                name: ALGPeraConnect.didReceiveSessionRequestNotification,
                 object: nil,
-                userInfo: [
-                    WalletConnectV1Protocol.sessionRequestPreferencesKey: preferences
-                ]
+                userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
             )
         case .bottomWarning(let configurator):
             router.launchWithBottomWarning(configurator: configurator)
