@@ -73,10 +73,10 @@ final class QRScannerViewController:
         }
     }
     
-    private lazy var isShowingConnectedAppsButton: Bool = {
+    private var isShowingConnectedAppsButton: Bool {
         let sessions = peraConnect.walletConnectCoordinator.getSessions()
         return canReadWCSession && !sessions.isEmpty
-    }()
+    }
 
     private let canReadWCSession: Bool
 
@@ -515,7 +515,10 @@ extension QRScannerViewController: WCSessionShortListViewControllerDelegate {
 
 extension QRScannerViewController {
     private func bindOverlayIfNeeded() {
-        guard isShowingConnectedAppsButton else { return }
+        guard isShowingConnectedAppsButton else {
+            overlayView.bindData(nil)
+            return
+        }
 
         let sessions = peraConnect.walletConnectCoordinator.getSessions()
         let viewModel = QRScannerOverlayViewModel(dAppCount: UInt(sessions.count))
