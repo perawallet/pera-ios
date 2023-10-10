@@ -29,17 +29,9 @@ final class WalletConnectV1Protocol:
     private var preferencesForOngoingConnections: [String: WalletConnectSessionCreationPreferences] = [:]
     private var isRegisteredToTheRequests = false
 
-    private let api: ALGAPI
-    private let pushToken: String?
     private let analytics: ALGAnalytics
 
-    init(
-        api: ALGAPI,
-        pushToken: String?,
-        analytics: ALGAnalytics
-    ) {
-        self.api = api
-        self.pushToken = pushToken
+    init(analytics: ALGAnalytics) {
         self.analytics = analytics
     }
 }
@@ -354,38 +346,6 @@ extension WalletConnectV1Protocol {
 }
 
 extension WalletConnectV1Protocol {
-    private func subscribeForNotificationsIfNeeded(_ session: WCSession) {
-        if session.isSubscribed {
-            return
-        }
-
-        let user = api.session.authenticatedUser
-        let deviceID = user?.getDeviceId(on: api.network)
-
-        let draft = SubscribeToWalletConnectSessionDraft(
-            deviceID: deviceID,
-            wcSession: session,
-            pushToken: pushToken
-        )
-
-        api.subscribeToWalletConnectSession(draft) {
-            [weak self] result in
-            guard let self = self else {
-                return
-            }
-
-            switch result {
-            case .success:
-                session.isSubscribed = true
-                self.addToSavedSessions(session)
-            default:
-                break
-            // The session is already saved before subscription call.
-            // The failure means there is no change. So, it is not needed to handle.
-            }
-        }
-    }
-    
     /// <note>
     /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
     func clearExpiredSessionsIfNeeded() {

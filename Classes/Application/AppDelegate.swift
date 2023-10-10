@@ -461,9 +461,15 @@ extension AppDelegate {
 extension AppDelegate {
     private func showBlurOnWindow() {
         containerBlurView.effect = nil
+    
         UIView.animate(withDuration: 3.0) {
-            self.containerBlurView = VisualEffectViewWithCustomIntensity(effect: UIBlurEffect(style: .light), intensity: 0.25)
+            let view =  VisualEffectViewWithCustomIntensity(
+                effect: UIBlurEffect(style: .light),
+                intensity: 0.25
+            )
+            self.containerBlurView = view
         }
+
         containerBlurView.frame = UIScreen.main.bounds
         window?.addSubview(containerBlurView)
     }
@@ -577,11 +583,7 @@ extension AppDelegate {
     }
 
     private func createWalletConnectCoordinator() -> WalletConnectCoordinator {
-        let resolver = ALGWalletConnectProtocolResolver(
-            api: api,
-            analytics: analytics,
-            pushToken: pushNotificationController.token
-        )
+        let resolver = ALGWalletConnectProtocolResolver(analytics: analytics)
         return ALGWalletConnectCoordinator(walletConnectProtocolResolver: resolver)
     }
 
