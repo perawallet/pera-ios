@@ -83,7 +83,7 @@ extension WCSessionItemViewModel {
         description =
             "wallet-connect-session-connected-on-date"
                 .localized(connectedOnDate)
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+                .footnoteRegular(lineBreakMode: .byWordWrapping)
     }
 }
 
