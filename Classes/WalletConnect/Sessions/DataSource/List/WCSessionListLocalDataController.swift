@@ -107,23 +107,8 @@ extension WCSessionListLocalDataController {
     }
 
     private func addSessionItems(_ snapshot: inout Snapshot) {
-        let sortedSessionsByDescendingConnectionDate = sessions.sorted { firstSession, secondSession in
-            let firstConnectionDate =
-                firstSession.wcV1Session?.date ??
-                wcV2SessionConnectionDates[firstSession.wcV2Session!.topic]
-            let secondConnectionDate =
-                secondSession.wcV1Session?.date ??
-                wcV2SessionConnectionDates[secondSession.wcV2Session!.topic]
-
-            guard let firstConnectionDate = firstConnectionDate,
-                  let secondConnectionDate = secondConnectionDate else {
-                return false
-            }
-
-            return firstConnectionDate > secondConnectionDate
-        }
-
-        let items: [WCSessionListItem] = sortedSessionsByDescendingConnectionDate.map {
+        let sortedSessions = getSortedSessions()
+        let items: [WCSessionListItem] = sortedSessions.map {
             let item = makeSessionItem($0)
 
             let topic =
@@ -139,6 +124,28 @@ extension WCSessionListLocalDataController {
             items,
             toSection: .sessions
         )
+    }
+
+    private func getSortedSessions() -> [WCSessionDraft] {
+        func getConnectionDate(session: WCSessionDraft) -> Date? {
+            if let wcV1SessionDate = session.wcV1Session?.date {
+                return wcV1SessionDate
+            } else if let wcV2SessionTopic = session.wcV2Session?.topic {
+                return wcV2SessionConnectionDates[wcV2SessionTopic]
+            }
+
+            return nil
+        }
+
+        let sortedSessionsByDescendingConnectionDate = sessions.sorted { firstSession, secondSession in
+            guard let firstConnectionDate = getConnectionDate(session: firstSession),
+                  let secondConnectionDate = getConnectionDate(session: secondSession) else {
+                return false
+            }
+
+            return firstConnectionDate > secondConnectionDate
+        }
+        return sortedSessionsByDescendingConnectionDate
     }
 
     private func makeSessionItem(_ draft: WCSessionDraft) -> WCSessionListItem {
@@ -281,7 +288,7 @@ extension WCSessionListLocalDataController {
         didPublish event: PeraConnectEvent
     ) {
         switch event {
-        case .didConnectToV1(let session):
+        case .didConnectToV1(let session, _):
             guard let lastSnapshot else { return }
 
             let draft = WCSessionDraft(wcV1Session: session)
@@ -289,7 +296,7 @@ extension WCSessionListLocalDataController {
                 lastSnapshot,
                 draft: draft
             )
-        case .settleSessionV2(let session):
+        case .settleSessionV2(let session, _):
             guard let lastSnapshot else { return }
 
             let draft = WCSessionDraft(wcV2Session: session)
@@ -302,6 +309,7 @@ extension WCSessionListLocalDataController {
 
             analytics.track(
                 .wcSessionDisconnected(
+                    version: .v1,
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,
                     address: session.walletMeta?.accounts?.first
@@ -318,6 +326,14 @@ extension WCSessionListLocalDataController {
 
             switch error {
             case .failedToDisconnectInactiveSession:
+                analytics.track(
+                    .wcSessionDisconnected(
+                        version: .v1,
+                        dappName: session.peerMeta.name,
+                        dappURL: session.peerMeta.url.absoluteString,
+                        address: session.walletMeta?.accounts?.first
+                    )
+                )
 
                 let draft = WCSessionDraft(wcV1Session: session)
                 removeSessionItem(
@@ -335,6 +351,15 @@ extension WCSessionListLocalDataController {
             }
         case .didDisconnectFromV2(let session):
             guard let lastSnapshot else { return }
+
+            analytics.track(
+                .wcSessionDisconnected(
+                    version: .v2,
+                    dappName: session.peer.name,
+                    dappURL: session.peer.url,
+                    address: session.accounts.map(\.address).joined(separator: ",")
+                )
+            )
 
             let draft = WCSessionDraft(wcV2Session: session)
             removeSessionItem(
@@ -356,11 +381,22 @@ extension WCSessionListLocalDataController {
                 return
             }
 
+            analytics.track(
+                .wcSessionDisconnected(
+                    version: .v2,
+                    dappName: wcV2Session.peer.name,
+                    dappURL: wcV2Session.peer.url,
+                    address: wcV2Session.accounts.map(\.address).joined(separator: ",")
+                )
+            )
+
             let draft = WCSessionDraft(wcV2Session: wcV2Session)
             removeSessionItem(
                 lastSnapshot,
                 draft: draft
             )
+        case .didExceedMaximumSessionFromV1:
+            load()
         default:
             break
         }

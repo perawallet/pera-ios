@@ -21,7 +21,6 @@ protocol WalletConnectApproveSessionConnectionParams {
     var namespaces: SessionNamespaces? { get }
 }
 
-/// <todo> Not used?
 struct WalletConnectV1ApproveSessionConnectionParams: WalletConnectApproveSessionConnectionParams {
     let proposalId: String? = nil
     let namespaces: SessionNamespaces? = nil

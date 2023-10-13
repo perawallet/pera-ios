@@ -20,25 +20,13 @@ final class ALGWalletConnectProtocolResolver: WalletConnectProtocolResolver {
     private(set) var walletConnectV1Protocol: WalletConnectV1Protocol
     private(set) var walletConnectV2Protocol: WalletConnectV2Protocol
     
-    private let api: ALGAPI
     private let analytics: ALGAnalytics
-    private let pushToken: String?
-    
-    init(
-        api: ALGAPI,
-        analytics: ALGAnalytics,
-        pushToken: String?
-    ) {
-        self.api = api
+
+    init(analytics: ALGAnalytics ) {
         self.analytics = analytics
-        self.pushToken = pushToken
-        
-        self.walletConnectV1Protocol = WalletConnectV1Protocol(
-            api: api,
-            pushToken: pushToken,
-            analytics: analytics
-        )
-        self.walletConnectV2Protocol = WalletConnectV2Protocol(api: api)
+
+        self.walletConnectV1Protocol = WalletConnectV1Protocol(analytics: analytics)
+        self.walletConnectV2Protocol = WalletConnectV2Protocol(analytics: analytics)
     }
     
     func getWalletConnectProtocol(from session: WalletConnectSessionText) -> WalletConnectProtocol? {

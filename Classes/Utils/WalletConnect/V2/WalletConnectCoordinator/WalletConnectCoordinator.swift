@@ -50,7 +50,10 @@ enum WalletConnectCoordinatorEvent {
         preferences: WalletConnectSessionCreationPreferences?,
         completion: WalletConnectSessionConnectionCompletionHandler
     )
-    case didConnectToV1(WCSession)
+    case didConnectToV1(
+        session: WCSession,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
     case didFailToConnectV1(WalletConnectV1Protocol.WCError)
     case didDisconnectFromV1(WCSession)
     case didDisconnectFromV1Fail(
@@ -61,7 +64,12 @@ enum WalletConnectCoordinatorEvent {
 
     /// <mark> V2
     case sessionsV2([WalletConnectV2Session])
-    case proposeSessionV2(WalletConnectV2SessionProposal)
+    case proposeSessionV2(
+        proposal: WalletConnectV2SessionProposal,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
+    case didCreateV2SessionFail
+    case didConnectV2SessionFail
     case didDisconnectFromV2(WalletConnectV2Session)
     case didDisconnectFromV2Fail(
         session: WalletConnectV2Session,
@@ -71,7 +79,10 @@ enum WalletConnectCoordinatorEvent {
         topic: WalletConnectTopic,
         reason: WalletConnectV2Reason
     )
-    case settleSessionV2(WalletConnectV2Session)
+    case settleSessionV2(
+        session: WalletConnectV2Session,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
     case updateSessionV2(
         topic: WalletConnectTopic,
         namespaces: SessionNamespaces

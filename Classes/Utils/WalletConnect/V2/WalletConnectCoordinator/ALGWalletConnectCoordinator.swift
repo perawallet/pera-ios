@@ -55,16 +55,27 @@ extension ALGWalletConnectCoordinator {
                         completion: completion
                     )
                 )
-            case .didConnect(let session):
-                sendEvent(.didConnectToV1(session))
+            case .didConnect(let session, let preferences):
+                sendEvent(
+                    .didConnectToV1(
+                        session: session,
+                        preferences: preferences
+                    )
+                )
             case .didDisconnect(let session):
                 sendEvent(.didDisconnectFromV1(session))
             case .didFail(let error):
                 switch error {
                 case .failedToDisconnect(let session),
                      .failedToDisconnectInactiveSession(let session):
-                    sendEvent(.didDisconnectFromV1Fail(session: session, error: error))
-                default:
+                    sendEvent(
+                        .didDisconnectFromV1Fail(
+                            session: session, 
+                            error: error
+                        )
+                    )
+                case .failedToCreateSession,
+                     .failedToConnect:
                     sendEvent(.didFailToConnectV1(error))
                 }
             case .didExceedMaximumSession:
@@ -81,12 +92,26 @@ extension ALGWalletConnectCoordinator {
             switch event {
             case .sessions(let sessions):
                 sendEvent(.sessionsV2(sessions))
-            case .proposeSession(let proposal):
-                sendEvent(.proposeSessionV2(proposal))
+            case .proposeSession(let proposal, let preferences):
+                sendEvent(
+                    .proposeSessionV2(
+                        proposal: proposal,
+                        preferences: preferences
+                    )
+                )
+            case .didCreateSessionFail:
+                sendEvent(.didCreateV2SessionFail)
+            case .didConnectSessionFail:
+                sendEvent(.didConnectV2SessionFail )
             case .didDisconnectSession(let session):
                 sendEvent(.didDisconnectFromV2(session))
             case .didDisconnectSessionFail(let session, let error):
-                sendEvent(.didDisconnectFromV2Fail(session: session, error: error))
+                sendEvent(
+                    .didDisconnectFromV2Fail(
+                        session: session,
+                        error: error
+                    )
+                )
             case .deleteSession(let topic, let reason):
                 sendEvent(
                     .deleteSessionV2(
@@ -94,8 +119,13 @@ extension ALGWalletConnectCoordinator {
                         reason: reason
                     )
                 )
-            case .settleSession(let session):
-                sendEvent(.settleSessionV2(session))
+            case .settleSession(let session, let preferences):
+                sendEvent(
+                    .settleSessionV2(
+                        session: session,
+                        preferences: preferences
+                    )
+                )
             case .updateSession(let topic, let namespaces):
                 sendEvent(
                     .updateSessionV2(
@@ -292,8 +322,12 @@ extension ALGWalletConnectCoordinator {
         }
 
         if let walletConnectV2Protocol = currentProtocol as? WalletConnectV2Protocol,
-           let request = params.v2Request {
-            walletConnectV2Protocol.rejectTransactionRequest(request)
+           let request = params.v2Request,
+           let error = params.error {
+            walletConnectV2Protocol.rejectTransactionRequest(
+                request,
+                with: error
+            )
             return
         }
     }

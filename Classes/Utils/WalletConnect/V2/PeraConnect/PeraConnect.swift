@@ -38,6 +38,8 @@ protocol PeraConnect: AnyObject {
 
     func add(_ observer: PeraConnectObserver)
     func remove(_ observer: PeraConnectObserver)
+
+    func publishReset()
 }
 
 protocol PeraConnectObserver: AnyObject {
@@ -53,7 +55,10 @@ enum PeraConnectEvent {
         preferences: WalletConnectSessionCreationPreferences?,
         completion: WalletConnectSessionConnectionCompletionHandler
     )
-    case didConnectToV1(WCSession)
+    case didConnectToV1(
+        session: WCSession,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
     case didDisconnectFromV1(WCSession)
     case didDisconnectFromV1Fail(
         session: WCSession,
@@ -67,12 +72,20 @@ enum PeraConnectEvent {
     case didFailToConnectV1(WalletConnectV1Protocol.WCError)
     case didExceedMaximumSessionFromV1
     case sessionsV2([WalletConnectV2Session])
-    case proposeSessionV2(WalletConnectV2SessionProposal)
+    case proposeSessionV2(
+        proposal: WalletConnectV2SessionProposal,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
     case deleteSessionV2(
         topic: WalletConnectTopic,
         reason: WalletConnectV2Reason
     )
-    case settleSessionV2(WalletConnectV2Session)
+    case settleSessionV2(
+        session: WalletConnectV2Session,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
+    case didCreateV2SessionFail
+    case didConnectV2SessionFail
     case updateSessionV2(
         topic: WalletConnectTopic,
         namespaces: SessionNamespaces
@@ -88,4 +101,5 @@ enum PeraConnectEvent {
     )
     case transactionRequestV2(WalletConnectV2Request)
     case failure(Error)
+    case performReset
 }

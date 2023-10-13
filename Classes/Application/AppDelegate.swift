@@ -325,11 +325,9 @@ extension AppDelegate {
             router.launch(deeplink: screen)
         case .walletConnectSessionRequest(let preferences):
             NotificationCenter.default.post(
-                name: WalletConnectV1Protocol.didReceiveSessionRequestNotification,
+                name: ALGPeraConnect.didReceiveSessionRequestNotification,
                 object: nil,
-                userInfo: [
-                    WalletConnectV1Protocol.sessionRequestPreferencesKey: preferences
-                ]
+                userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
             )
         case .bottomWarning(let configurator):
             router.launchWithBottomWarning(configurator: configurator)
@@ -463,9 +461,15 @@ extension AppDelegate {
 extension AppDelegate {
     private func showBlurOnWindow() {
         containerBlurView.effect = nil
+    
         UIView.animate(withDuration: 3.0) {
-            self.containerBlurView = VisualEffectViewWithCustomIntensity(effect: UIBlurEffect(style: .light), intensity: 0.25)
+            let view =  VisualEffectViewWithCustomIntensity(
+                effect: UIBlurEffect(style: .light),
+                intensity: 0.25
+            )
+            self.containerBlurView = view
         }
+
         containerBlurView.frame = UIScreen.main.bounds
         window?.addSubview(containerBlurView)
     }
@@ -579,11 +583,7 @@ extension AppDelegate {
     }
 
     private func createWalletConnectCoordinator() -> WalletConnectCoordinator {
-        let resolver = ALGWalletConnectProtocolResolver(
-            api: api,
-            analytics: analytics,
-            pushToken: pushNotificationController.token
-        )
+        let resolver = ALGWalletConnectProtocolResolver(analytics: analytics)
         return ALGWalletConnectCoordinator(walletConnectProtocolResolver: resolver)
     }
 

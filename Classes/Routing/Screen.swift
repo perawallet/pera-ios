@@ -418,8 +418,7 @@ indirect enum Screen {
 }
 
 extension Screen {
-    enum Transition {
-    }
+    enum Transition { }
 }
 
 extension Screen.Transition {

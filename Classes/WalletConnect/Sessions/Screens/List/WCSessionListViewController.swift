@@ -492,10 +492,6 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
             completionHandler?()
         }
     }
-    
-    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController) {
-        dataController.load()
-    }
 }
 
 extension WCSessionListViewController {

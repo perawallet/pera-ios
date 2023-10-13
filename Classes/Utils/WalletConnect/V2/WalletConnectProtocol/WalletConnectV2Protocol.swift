@@ -24,23 +24,23 @@ import UIKit
 final class WalletConnectV2Protocol: WalletConnectProtocol {
     var eventHandler: ((WalletConnectV2Event) -> Void)?
 
+    private(set) var sessionValidator: WalletConnectSessionValidator = WalletConnectV2SessionValidator()
+
     private lazy var sessionSource = WalletConnectV2SessionSource()
 
     private var signAPI: SignClient {
         return Sign.instance
     }
-    
+
     private var pairAPI: PairingInteracting {
         return Pair.instance
     }
 
-    private(set) var sessionValidator: WalletConnectSessionValidator
-    
+    private var preferencesForOngoingConnections: [String: WalletConnectSessionCreationPreferences] = [:]
+
     private var publishers = Set<AnyCancellable>()
-    
-    /// Project id is from a mock app that I created.
-    private let projectID = "06274a21f488344abb80fc50223631f8"
-    
+
+    /// <note>
     /// Metadata that is directly copied from WalletConnect v1.
     private let appMetadata = AppMetadata(
         name: ALGAppTarget.current.walletConnectConfig.meta.name,
@@ -48,19 +48,21 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
         url: ALGAppTarget.current.walletConnectConfig.meta.url.absoluteString,
         icons: ALGAppTarget.current.walletConnectConfig.meta.icons.map { $0.absoluteString }
     )
+
+    private let analytics: ALGAnalytics
     
-    private let algorandSDK = AlgorandSDK()
-    
-    private let api: ALGAPI
-    
-    init(api: ALGAPI) {
-        self.api = api
-        self.sessionValidator = WalletConnectV2SessionValidator()
+    init(analytics: ALGAnalytics) {
+        self.analytics = analytics
     }
 }
 
 extension WalletConnectV2Protocol {
     func setup() {
+        let projectID = Bundle.main.infoDictionary?["WC_V2_PROJECT_ID"] as? String
+        guard let projectID else {
+            preconditionFailure("WC_V2_PROJECT_ID must be set.")
+        }
+
         Networking.configure(
             projectId: projectID,
             socketFactory: DefaultSocketFactory()
@@ -73,6 +75,10 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
+    func getSessions() -> [WalletConnectV2Session] {
+        return signAPI.getSessions()
+    }
+
     func getConnectionDates() -> [WalletConnectTopic: Date] {
         let sessions = sessionSource.sessions?.values
         let connectionDates = sessions?.reduce(into: [WalletConnectTopic: Date]()) { result, session in
@@ -81,76 +87,114 @@ extension WalletConnectV2Protocol {
         return connectionDates ?? [:]
     }
 
-    func updateSessionsWithRemovingAccount(_ account: Account) {
-        let sessions = getSessions()
-        sessions.forEach {
-            let sessionAccounts = $0.accounts
-            guard sessionAccounts.contains(where: { $0.address == account.address }) else {
-                return
-            }
-
-            if sessionAccounts.count == 1 {
-                disconnectFromSession($0)
-                return
-            }
-
-            /// <todo> How to handle this in WC v2?
-//            guard let sessionWalletInfo = $0.sessionBridgeValue.walletInfo else {
-//                return
-//            }
-//
-//            let newAccountsForSession = sessionWalletInfo.accounts.filter { oldSessionAccount in
-//                oldSessionAccount != account.address
-//            }
-//
-//            let newSessionWaletInfo = createNewSessionWalletInfo(
-//                from: sessionWalletInfo,
-//                newAccounts: newAccountsForSession
-//            )
-//
-//            do {
-//                try update(session: $0.sessionBridgeValue, with: newSessionWaletInfo)
-//
-//                let newSession = createNewSession(
-//                    from: $0,
-//                    newSessionWalletInfo: newSessionWaletInfo
-//                )
-//
-//                updateWalletConnectSession(newSession, with: $0.urlMeta)
-//            } catch {}
-        }
+    func getPairing(for topic: String) -> Pairing? {
+        return try? pairAPI.getPairing(for: topic)
     }
 }
 
 extension WalletConnectV2Protocol {
     func connect(with preferences: WalletConnectSessionCreationPreferences) {
-        guard let uri = WalletConnectURI(string: preferences.session) else { return }
+        guard let uri = WalletConnectURI(string: preferences.session) else {
+            eventHandler?(.didCreateSessionFail)
+            return
+        }
+
+        let topic = uri.topic
 
         Task {
             do {
+                addOngoingWCConnectionRequest(preferences, for: topic)
+               
                 try await pairAPI.pair(uri: uri)
             } catch {
-                self.eventHandler?(.failure(error))
+                clearOngoingWCConnectionRequest(for: topic)
+
+                analytics.record(
+                    .wcV2SessionConnectionFailedLog(
+                        uri: uri,
+                        error: error
+                    )
+                )
+
+                self.eventHandler?(.didConnectSessionFail)
+
                 print("[WC2] - Pairing connect error: \(error)")
             }
         }
     }
-    
+
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        let sessions = getSessions()
+        sessions.forEach { session in
+            let sessionAccounts = session.accounts
+            guard sessionAccounts.contains(where: { $0.address == account.address }) else {
+                return
+            }
+
+            let hasOnlySingleAccount = sessionAccounts.allSatisfy { sessionAccount in
+                return sessionAccount.address == account.address
+            }
+            if hasOnlySingleAccount {
+                analytics.track(
+                    .wcSessionDisconnected(
+                        version: .v2,
+                        dappName: session.peer.name,
+                        dappURL: session.peer.url,
+                        address: session.accounts.map(\.address).joined(separator: ",")
+                    )
+                )
+
+                disconnectFromSession(session)
+                return
+            }
+
+            var newSessionNamespaces = SessionNamespaces()
+            session.requiredNamespaces.forEach {
+                let caip2Namespace = $0.key
+                let proposalNamespace = $0.value
+
+                guard let chains = proposalNamespace.chains else { return }
+
+                let accounts = Set(
+                    chains.compactMap { chain in
+                        let accounts: [WalletConnectV2Account] = session.accounts.compactMap { sessionAccount in
+                            if account.address == sessionAccount.address {
+                                return nil
+                            }
+
+                            return WalletConnectV2Account(
+                                "\(chain.absoluteString):\(sessionAccount.address)"
+                            )
+                        }
+                        return accounts
+                    }
+                ).flatMap { $0 }
+
+                let sessionNamespace = WalletConnectV2SessionNamespace(
+                    accounts: Set(accounts),
+                    methods: proposalNamespace.methods,
+                    events: proposalNamespace.events
+                )
+
+                newSessionNamespaces[caip2Namespace] = sessionNamespace
+            }
+
+            updateSession(
+                session,
+                namespaces: newSessionNamespaces
+            )
+        }
+    }
+}
+
+extension WalletConnectV2Protocol {
     func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         return sessionValidator.isValidSession(uri)
     }
-}
-
-extension WalletConnectV2Protocol {
+    
     func configureTransactionsIfNeeded() {
         let rootViewController = UIApplication.shared.rootViewController()
         rootViewController?.startObservingPeraConnectEvents()
-    }
-}
-
-extension WalletConnectV2Protocol {
-    func getSessions() -> [WalletConnectV2Session] {
-        return signAPI.getSessions()
     }
 }
 
@@ -169,6 +213,19 @@ extension WalletConnectV2Protocol {
                 )
             } catch {
                 self.eventHandler?(.failure(error))
+
+                analytics.record(
+                    .wcV2SessionConnectionApprovalFailedLog(
+                        proposalID: proposalId,
+                        error: error
+                    )
+                )
+
+                rejectSession(
+                    proposalId,
+                    reason: .userRejected
+                )
+
                 print("[WC2] - Approve Session error: \(error)")
             }
         }
@@ -188,6 +245,14 @@ extension WalletConnectV2Protocol {
                 )
             } catch {
                 self.eventHandler?(.failure(error))
+
+                analytics.record(
+                    .wcV2SessionConnectionRejectionFailedLog(
+                        proposalID: proposalId,
+                        error: error
+                    )
+                )
+
                 print("[WC2] - Reject Session error: \(error)")
             }
         }
@@ -201,6 +266,7 @@ extension WalletConnectV2Protocol {
                 try await signAPI.extend(topic: session.topic)
             } catch {
                 self.eventHandler?(.failure(error))
+
                 print("[WC2] - Extend Session error: \(error)")
             }
         }
@@ -220,6 +286,14 @@ extension WalletConnectV2Protocol {
                 )
             } catch {
                 self.eventHandler?(.failure(error))
+               
+                analytics.record(
+                    .wcV2SessionUpdateFailedLog(
+                        session: session,
+                        error: error
+                    )
+                )
+
                 print("[WC2] - Update Session error: \(error)")
             }
         }
@@ -231,6 +305,7 @@ extension WalletConnectV2Protocol {
         Task {
             do {
                 try await signAPI.disconnect(topic: session.topic)
+               
                 self.eventHandler?(.didDisconnectSession(session))
 
                 DispatchQueue.main.async {
@@ -238,7 +313,20 @@ extension WalletConnectV2Protocol {
                     self?.sessionSource.removeWalletConnectSession(for: session.topic)
                 }
             } catch {
-                self.eventHandler?(.didDisconnectSessionFail(session: session, error: error))
+                eventHandler?(
+                    .didDisconnectSessionFail(
+                        session: session,
+                        error: error
+                    )
+                )
+
+                analytics.record(
+                    .wcV2SessionDisconnectionFailedLog(
+                        session: session,
+                        error: error
+                    )
+                )
+
                 print("[WC2] - Disconnect Session error: \(error)")
             }
         }
@@ -251,7 +339,13 @@ extension WalletConnectV2Protocol {
             do {
                 try await signAPI.ping(topic: session.topic)
             } catch {
-                self.eventHandler?(.didPingSessionFail(session: session, error: error))
+                self.eventHandler?(
+                    .didPingSessionFail(
+                        session: session,
+                        error: error
+                    )
+                )
+
                 print("[WC2] - Ping Session error: \(error)")
             }
         }
@@ -265,7 +359,9 @@ extension WalletConnectV2Protocol {
     func resetAllSessions() {
         sessionSource.resetAllSessions()
 
-        try? signAPI.cleanup()
+        Task {
+            try? await signAPI.cleanup()
+        }
     }
 }
 
@@ -285,12 +381,28 @@ extension WalletConnectV2Protocol {
                 )
             } catch {
                 self.eventHandler?(.failure(error))
+
+                rejectTransactionRequest(
+                    request,
+                    with: .generic(error)
+                )
+
+                analytics.record(
+                    .wcV2TransactionRequestApprovalFailedLog(
+                        request: request,
+                        error: error
+                    )
+                )
+
                 print("[WC2] - Approve Request Error: \(error.localizedDescription)")
             }
         }
     }
 
-    func rejectTransactionRequest(_ request: WalletConnectV2Request) {
+    func rejectTransactionRequest(
+        _ request: WalletConnectV2Request,
+        with error: WCTransactionErrorResponse
+    ) {
         print("[WC2] - Reject Request")
 
         Task {
@@ -300,13 +412,21 @@ extension WalletConnectV2Protocol {
                     requestId: request.id,
                     response: .error(
                         .init(
-                            code: 0,
-                            message: ""
+                            code: error.rawValue,
+                            message: error.message
                         )
                     )
                 )
             } catch {
-                self.eventHandler?(.failure(error))
+                analytics.record(
+                    .wcV2TransactionRequestRejectionFailedLog(
+                        request: request,
+                        error: error
+                    )
+                )
+
+                eventHandler?(.failure(error))
+
                 print("[WC2] - Reject Request Error: \(error.localizedDescription)")
             }
         }
@@ -346,8 +466,14 @@ extension WalletConnectV2Protocol {
             .sink {
                 [weak self] sessionProposal, context in
                 guard let self else { return }
-                
-                self.eventHandler?(.proposeSession(sessionProposal))
+
+                let preferences = preferencesForOngoingConnections[sessionProposal.pairingTopic]
+                self.eventHandler?(
+                    .proposeSession(
+                        proposal: sessionProposal,
+                        preferences: preferences
+                    )
+                )
             }.store(in: &publishers)
     }
     
@@ -377,8 +503,18 @@ extension WalletConnectV2Protocol {
             .sink {
                 [weak self] session in
                 guard let self else { return }
-            
-                self.eventHandler?(.settleSession(session))
+
+                let topic = session.pairingTopic
+                let preferences = preferencesForOngoingConnections[topic]
+                self.eventHandler?(
+                    .settleSession(
+                        session: session,
+                        preferences: preferences
+                    )
+                )
+
+                clearOngoingWCConnectionRequest(for: topic)
+
                 self.sessionSource.addWalletConnectSession(session)
             }.store(in: &publishers)
     }
@@ -443,14 +579,26 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    func getPairing(for topic: String) -> Pairing? {
-        return try? pairAPI.getPairing(for: topic)
+    private func addOngoingWCConnectionRequest(
+        _ preferences: WalletConnectSessionCreationPreferences,
+        for key: String
+    ) {
+        preferencesForOngoingConnections[key] = preferences
+    }
+
+    private func clearOngoingWCConnectionRequest(for key: String) {
+        preferencesForOngoingConnections[key] = nil
     }
 }
 
 enum WalletConnectV2Event {
     case sessions([WalletConnectV2Session])
-    case proposeSession(WalletConnectV2SessionProposal)
+    case proposeSession(
+        proposal: WalletConnectV2SessionProposal,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
+    case didCreateSessionFail
+    case didConnectSessionFail
     case didDisconnectSession(WalletConnectV2Session)
     case didDisconnectSessionFail(
         session: WalletConnectV2Session,
@@ -460,7 +608,10 @@ enum WalletConnectV2Event {
         topic: WalletConnectTopic,
         reason: WalletConnectV2Reason
     )
-    case settleSession(WalletConnectV2Session)
+    case settleSession(
+        session: WalletConnectV2Session,
+        preferences: WalletConnectSessionCreationPreferences?
+    )
     case updateSession(
         topic: WalletConnectTopic,
         namespaces: SessionNamespaces
@@ -487,3 +638,4 @@ typealias WalletConnectV2Request = WalletConnectSign.Request
 typealias WalletConnectV2CodableResult = AnyCodable
 typealias WalletConnectV2Reason = Reason
 typealias WalletConnectV2Account = WalletConnectUtils.Account
+typealias WalletConnectV2URI = WalletConnectURI

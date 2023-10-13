@@ -25,12 +25,6 @@ final class RootViewController: UIViewController {
         return !mainContainer.items.isEmpty
     }
 
-    private lazy var walletConnectV2RequestHandler: WalletConnectV2RequestHandler = {
-        let handler = WalletConnectV2RequestHandler()
-        handler.delegate = self
-        return handler
-    }()
-
     private(set) var isDisplayingGovernanceBanner = true
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -62,8 +56,15 @@ final class RootViewController: UIViewController {
         api: appConfiguration.api
     )
 
-    typealias HasOngoingRequest = Bool
-    private var sessionsForOngoingWCRequests: [WalletConnectTopic: HasOngoingRequest] = [:]
+    private lazy var walletConnectV2RequestHandler: WalletConnectV2RequestHandler = {
+        let handler = WalletConnectV2RequestHandler(analytics: appConfiguration.analytics)
+        handler.delegate = self
+        return handler
+    }()
+
+    typealias HasOngoingWCRequest = Bool
+    private var sessionsForOngoingWCRequests: [WalletConnectTopic: HasOngoingWCRequest] = [:]
+
     private var transitionToWCTransactionSignSuccessful: BottomSheetTransition?
     private var wcArbitraryDataSuccessTransition: BottomSheetTransition?
 
@@ -271,6 +272,167 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
     }
 }
 
+extension RootViewController: PeraConnectObserver {
+    func startObservingPeraConnectEvents() {
+        appConfiguration.peraConnect.add(self)
+    }
+
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .transactionRequestV2(let request):
+            if walletConnectV2RequestHandler.canHandle(request: request) {
+                walletConnectV2RequestHandler.handle(request: request)
+                return
+            }
+
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unsupportedMethods,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+        default: break
+        }
+    }
+}
+
+extension RootViewController: WalletConnectV2RequestHandlerDelegate {
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
+        shouldSign transactions: [WCTransaction],
+        for request: WalletConnectV2Request,
+        with transactionOption: WCTransactionOption?
+    ) {
+        let wcV2Protocol = 
+            appConfiguration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+
+        let sessions = wcV2Protocol.getSessions()
+        let topic = request.topic
+        guard let session = sessions.first(matching: (\WalletConnectV2Session.topic, topic)) else {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .noSessionForTopic,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let requiredNamespaces = session.requiredNamespaces[WalletConnectNamespaceKey.algorand]
+        guard let requiredNamespaces,
+              request.chainId.namespace == WalletConnectNamespaceKey.algorand else {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unsupportedNamespace,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let authorizedMethods = requiredNamespaces.methods
+        let requestedMethod = request.method
+        guard authorizedMethods.contains(requestedMethod) else {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unauthorizedMethod(requestedMethod),
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let authorizedChains = requiredNamespaces.chains ?? []
+        let requestedChain = request.chainId
+        guard authorizedChains.contains(requestedChain) else {
+            let network = ALGAPI.Network(blockchain: requestedChain)
+            let networkTitle = network.unwrap(\.rawValue.capitalized) ?? requestedChain.reference
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unauthorizedChain(networkTitle),
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let requestedChainReference = requestedChain.reference
+        guard
+            requestedChainReference == algorandWalletConnectV2TestNetChainReference ||
+            requestedChainReference == algorandWalletConnectV2MainNetChainReference
+        else {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unsupportedChains,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let api = appConfiguration.api
+        guard api.network.allowedChainReference == requestedChainReference else {
+            let network = ALGAPI.Network(blockchain: requestedChain)
+
+            let requestedNetworkTitle = network.unwrap(\.rawValue.capitalized) ?? requestedChainReference
+            let expectedNetworkTitle = api.network.rawValue.capitalized
+
+            let error: WCTransactionErrorResponse = .userRejectedChains(
+                requestedNetwork: requestedNetworkTitle,
+                expectedNetwork: expectedNetworkTitle
+            )
+
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.message
+            )
+
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: error,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        let supportedMethods =  WalletConnectMethod.allCases.map(\.rawValue)
+        guard supportedMethods.contains(requestedMethod) else {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .unsupportedMethods,
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        if hasOngoingWCRequest(for: topic) {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: .rejected(.alreadyDisplayed),
+                v2Request: request
+            )
+            appConfiguration.peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        addOngoingWCRequest(for: topic)
+
+        let draft = WalletConnectTransactionSignRequestDraft(
+            request: WalletConnectRequestDraft(wcV2Request: request),
+            transactions: transactions,
+            session: WCSessionDraft(wcV2Session: session)
+        )
+        launchController.receive(deeplinkWithSource: .walletConnectTransactionSignRequest(draft))
+    }
+
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
+        didInvalidateTransactionRequest request: WalletConnectV2Request
+    ) {
+        let params = WalletConnectV2RejectTransactionRequestParams(
+            error: .invalidInput(.transactionParse),
+            v2Request: request
+        )
+        appConfiguration.peraConnect.rejectTransactionRequest(params)
+    }
+}
+
 extension RootViewController: WCMainArbitraryDataScreenDelegate {
     func wcMainArbitraryDataScreen(
         _ wcMainArbitraryDataScreen: WCMainArbitraryDataScreen,
@@ -423,132 +585,6 @@ extension RootViewController {
              self.appConfiguration.loadingController.stopLoading()
              handler(isCompleted)
         }
-    }
-}
-
-extension RootViewController: PeraConnectObserver {
-    func startObservingPeraConnectEvents() {
-        appConfiguration.peraConnect.add(self)
-    }
-
-    func peraConnect(
-        _ peraConnect: PeraConnect,
-        didPublish event: PeraConnectEvent
-    ) {
-        switch event {
-        case .transactionRequestV2(let request):
-            if walletConnectV2RequestHandler.canHandle(request: request) {
-                walletConnectV2RequestHandler.handle(request: request)
-                return
-            }
-
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unsupported(.none),
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-        default: break
-        }
-    }
-}
-
-extension RootViewController: WalletConnectV2RequestHandlerDelegate {
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        shouldSign transactions: [WCTransaction],
-        for request: WalletConnectV2Request,
-        with transactionOption: WCTransactionOption?
-    ) {
-        let topic = request.topic
-
-        let wcV2Protocol = appConfiguration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
-        let sessions = wcV2Protocol.getSessions()
-
-        guard let session = sessions.first(matching: (\WalletConnectV2Session.topic, topic)) else {
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .invalidInput(.session),
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return
-        }
-
-        if hasOngoingWCRequest(for: topic) {
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .rejected(.alreadyDisplayed),
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return
-        }
-
-        addOngoingWCRequest(for: topic)
-
-        let draft = WalletConnectTransactionSignRequestDraft(
-            request: WalletConnectRequestDraft(wcV2Request: request),
-            transactions: transactions,
-            session: WCSessionDraft(wcV2Session: session)
-        )
-        launchController.receive(deeplinkWithSource: .walletConnectTransactionSignRequest(draft))
-    }
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        didInvalidateTransactionRequest request: WalletConnectV2Request
-    ) {
-        let params = WalletConnectV2RejectTransactionRequestParams(
-            error: .invalidInput(.dataParse),
-            v2Request: request
-        )
-        appConfiguration.peraConnect.rejectTransactionRequest(params)
-    }
-
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        shouldSign arbitraryData: [WCArbitraryData],
-        for request: WalletConnectV2Request
-    ) {
-        let topic = request.topic
-
-        let wcV2Protocol = appConfiguration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
-        let sessions = wcV2Protocol.getSessions()
-
-        guard let session = sessions.first(matching: (\WalletConnectV2Session.topic, topic)) else {
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .invalidInput(.session),
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return
-        }
-
-        if hasOngoingWCRequest(for: topic) {
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .rejected(.alreadyDisplayed),
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return
-        }
-
-        addOngoingWCRequest(for: topic)
-
-        let draft = WalletConnectArbitraryDataSignRequestDraft(
-            request: WalletConnectRequestDraft(wcV2Request: request),
-            arbitraryData: arbitraryData,
-            session: WCSessionDraft(wcV2Session: session)
-        )
-        launchController.receive(deeplinkWithSource: .walletConnectArbitraryDataSignRequest(draft))
-    }
-
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
-        didInvalidateArbitraryDataRequest request: WalletConnectV2Request
-    ) {
-        let params = WalletConnectV2RejectTransactionRequestParams(
-            error: .invalidInput(.dataParse),
-            v2Request: request
-        )
-        appConfiguration.peraConnect.rejectTransactionRequest(params)
     }
 }
 

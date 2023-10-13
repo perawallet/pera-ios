@@ -12,18 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WalletConnectExtendSessionConnectionParams.swift
+//   WalletConnectEvent.swift
 
 import Foundation
 
-protocol WalletConnectExtendSessionConnectionParams {
-    var session: WalletConnectV2Session? { get }
-}
-
-struct WalletConnectV1ExtendSessionConnectionParams: WalletConnectExtendSessionConnectionParams {
-    let session: WalletConnectV2Session? = nil
-}
-
-struct WalletConnectV2ExtendSessionConnectionParams: WalletConnectExtendSessionConnectionParams {
-    var session: WalletConnectV2Session?
+enum WalletConnectEvent: String {
+    case accountsChanged = "accountsChanged"
 }

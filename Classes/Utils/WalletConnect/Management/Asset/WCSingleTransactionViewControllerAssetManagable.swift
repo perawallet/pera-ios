@@ -40,6 +40,8 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                     error: .invalidInput(.asset)
                 )
                 configuration.peraConnect.rejectTransactionRequest(params)
+                completion()
+                return
             }
 
             if let wcV2Request = transactionRequest.wcV2Request {
@@ -48,9 +50,9 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                     v2Request: wcV2Request
                 )
                 configuration.peraConnect.rejectTransactionRequest(params)
+                completion()
+                return
             }
-
-            completion()
             return
         }
 
@@ -67,6 +69,8 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                         error: .invalidInput(.unableToFetchAsset)
                     )
                     configuration.peraConnect.rejectTransactionRequest(params)
+                    completion()
+                    return
                 }
 
                 if let wcV2Request = transactionRequest.wcV2Request {
@@ -75,9 +79,9 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                         v2Request: wcV2Request
                     )
                     configuration.peraConnect.rejectTransactionRequest(params)
+                    completion()
+                    return
                 }
-
-                completion()
                 return
             }
 
