@@ -39,9 +39,7 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
     private var preferencesForOngoingConnections: [String: WalletConnectSessionCreationPreferences] = [:]
 
     private var publishers = Set<AnyCancellable>()
-    
-    private let projectID = "d98a4285aff59c9cd463bdd8b7415465"
-    
+
     /// <note>
     /// Metadata that is directly copied from WalletConnect v1.
     private let appMetadata = AppMetadata(
@@ -60,6 +58,11 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
 
 extension WalletConnectV2Protocol {
     func setup() {
+        let projectID = Bundle.main.infoDictionary?["WC_V2_PROJECT_ID"] as? String
+        guard let projectID else {
+            preconditionFailure("WC_V2_PROJECT_ID must be set.")
+        }
+
         Networking.configure(
             projectId: projectID,
             socketFactory: DefaultSocketFactory()
