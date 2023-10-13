@@ -59,7 +59,7 @@ extension WCSessionAdvancedPermissionsHeader {
     private func makeDisclosureAccessory() -> UICellAccessory {
         let accessoryOptions = UICellAccessory.OutlineDisclosureOptions(
             style: .header,
-            tintColor: Colors.Text.gray.uiColor
+            tintColor: Colors.Text.grayLighter.uiColor
         )
         return .outlineDisclosure(options: accessoryOptions)
     }

@@ -24,14 +24,18 @@ final class WCSessionConnectionSuccessfulSheet: UISheet {
     private let eventHandler: EventHandler
 
     init(
-        draft: WCConnectionSessionDraft,
+        draft: WCSessionDraft,
+        pairExpiryDate: Date?,
         eventHandler: @escaping EventHandler
     ) {
         self.eventHandler = eventHandler
 
         let title = Self.makeTitle(draft)
         let body = Self.makeBody(draft)
-        let info = Self.makeInfo(draft)
+        let info = Self.makeInfo(
+            draft: draft,
+            pairExpiryDate: pairExpiryDate
+        )
 
         super.init(
             image: "icon-approval-check",
@@ -46,16 +50,46 @@ final class WCSessionConnectionSuccessfulSheet: UISheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeTitle(_ draft: WCConnectionSessionDraft) -> TextProvider {
-        return Self.makeTitleForWCv2(draft) /// <todo> For mocking purposes
+    private static func makeTitle(_ draft: WCSessionDraft) -> TextProvider? {
+        if let wcV1Session = draft.wcV1Session {
+            return Self.makeTitleForWCv1(wcV1Session)
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return Self.makeTitleForWCv2(wcV2Session)
+        }
+
+        return nil
     }
 
-    private static func makeBody(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
-        return Self.makeBodyForWCv2(draft) /// <todo> For mocking purposes
+    private static func makeBody(_ draft: WCSessionDraft) -> UISheetBodyTextProvider? {
+        if let wcV1Session = draft.wcV1Session {
+            return Self.makeBodyForWCv1(wcV1Session)
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return Self.makeBodyForWCv2(wcV2Session)
+        }
+
+        return nil
     }
 
-    private static func makeInfo(_ draft: WCConnectionSessionDraft) -> TextProvider? {
-        return makeInfoForWCv2(draft) /// <todo> For mocking purposes
+    private static func makeInfo(
+        draft: WCSessionDraft,
+        pairExpiryDate: Date?
+    ) -> TextProvider? {
+        if draft.isWCv1Session {
+            return nil
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            return Self.makeInfoForWCv2(
+                wcV2Session: wcV2Session,
+                pairExpiryDate: pairExpiryDate
+            )
+        }
+
+        return nil
     }
 
     private func makeCloseAction() -> UISheetAction {
@@ -70,8 +104,8 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeTitleForWCv1(_ draft: WCConnectionSessionDraft) -> TextProvider {
-        let dAppName = draft.dappName
+    private static func makeTitleForWCv1(_ wcV1Session: WCSession) -> TextProvider {
+        let dAppName = wcV1Session.peerMeta.name
         let aTitle =
             "wallet-connect-session-connection-approved-title"
                 .localized(dAppName)
@@ -79,8 +113,8 @@ extension WCSessionConnectionSuccessfulSheet {
         return aTitle
     }
 
-    private static func makeTitleForWCv2(_ draft: WCConnectionSessionDraft) -> TextProvider {
-        let dAppName = draft.dappName
+    private static func makeTitleForWCv2(_ wcV2Session: WalletConnectV2Session) -> TextProvider {
+        let dAppName = wcV2Session.peer.name
         let aTitle =
             "wallet-connect-session-connection-approved-title"
                 .localized(dAppName)
@@ -90,19 +124,22 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeBodyForWCv1(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
-        let dAppName = draft.dappName
+    private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
+        let dAppName = wcV1Session.peerMeta.name
         let aBody = "wallet-connect-session-connection-approved-description"
             .localized(dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
 
-    private static func makeBodyForWCv2(_ draft: WCConnectionSessionDraft) -> UISheetBodyTextProvider {
+    private static func makeBodyForWCv2(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider? {
+        let expiryDate = wcV2Session.expiryDate
+
         var textAttributes = Typography.bodyRegularAttributes(alignment: .center)
         textAttributes.insert(.textColor(Colors.Text.gray))
 
-        let validUntilDate = "Apr 15,2023, 2:20 PM"
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let validUntilDate = expiryDate.toFormat(dateFormat)
         let text =
             "wallet-connect-v2-session-valid-until-date"
                 .localized(params: validUntilDate)
@@ -122,20 +159,28 @@ extension WCSessionConnectionSuccessfulSheet {
 }
 
 extension WCSessionConnectionSuccessfulSheet {
-    private static func makeInfoForWCv2(_ draft: WCConnectionSessionDraft) -> TextProvider {
-        let extendedDate = "May 8, 2023"
-        let dAppName = draft.dappName
+    private static func makeInfoForWCv2(
+        wcV2Session: WalletConnectV2Session,
+        pairExpiryDate: Date?
+    ) -> TextProvider? {
+        guard let pairExpiryDate else {
+            return nil
+        }
+
+        let dateFormat = "MMM d, yyyy"
+        let formattedExtendedDate = pairExpiryDate.toFormat(dateFormat)
+        let dAppName = wcV2Session.peer.name
 
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))
         let text =
             "wallet-connect-v2-session-connection-approved-description"
-                .localized(params: extendedDate, dAppName)
+                .localized(params: formattedExtendedDate, dAppName)
                 .attributed(textAttributes)
 
         let extendedDateAttributes = Typography.footnoteMediumAttributes(alignment: .left)
         let aInfo = text.addAttributes(
-            to: extendedDate,
+            to: formattedExtendedDate,
             newAttributes: extendedDateAttributes
         )
         return aInfo

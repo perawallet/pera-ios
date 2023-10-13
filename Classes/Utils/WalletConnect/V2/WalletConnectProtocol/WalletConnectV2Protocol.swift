@@ -64,6 +64,8 @@ extension WalletConnectV2Protocol {
         )
         
         Pair.configure(metadata: appMetadata)
+
+        listenEvents()
     }
 }
 
@@ -90,7 +92,9 @@ extension WalletConnectV2Protocol {
     func getSessions() -> [WalletConnectV2Session] {
         return signAPI.getSessions()
     }
-    
+}
+
+extension WalletConnectV2Protocol {
     func approveSession(
         _ proposalId: String,
         namespaces: SessionNamespaces
@@ -160,6 +164,38 @@ extension WalletConnectV2Protocol {
             }
         }
     }
+
+    func disconnectFromSession(_ session: WalletConnectV2Session) {
+        print("[WC2] - Disconnect Session: \(session.topic)")
+
+        Task {
+            do {
+                try await signAPI.disconnect(topic: session.topic)
+                self.eventHandler?(.didDisconnectSession(session) )
+            } catch {
+                self.eventHandler?(.didDisconnectSessionFail(session: session, error: error))
+                print("[WC2] - Disconnect Session error: \(error)")
+            }
+        }
+    }
+
+    func pingSession(_ session: WalletConnectV2Session) {
+        print("[WC2] - Ping Session: \(session.topic)")
+
+        Task {
+            do {
+                try await signAPI.ping(topic: session.topic)
+            } catch {
+                self.eventHandler?(.didPingSessionFail(session: session, error: error))
+                print("[WC2] - Ping Session error: \(error)")
+            }
+        }
+    }
+
+    func disconnectFromAllSessions() {
+        let sessions = getSessions()
+        sessions.forEach(disconnectFromSession)
+    }
 }
 
 extension WalletConnectV2Protocol {
@@ -207,7 +243,9 @@ extension WalletConnectV2Protocol {
 }
 
 extension WalletConnectV2Protocol {
-    func listenEvents() {
+    private func listenEvents() {
+        publishers = []
+
         handleSessionEvents()
         handleSessionProposalEvents()
         handleSessionDeletionEvents()
@@ -313,7 +351,7 @@ extension WalletConnectV2Protocol {
                 [weak self] ping in
                 guard let self else { return }
                 
-                self.eventHandler?(.ping(ping))
+                self.eventHandler?(.pingSession(ping))
             }.store(in: &publishers)
     }
     
@@ -330,9 +368,20 @@ extension WalletConnectV2Protocol {
     }
 }
 
+extension WalletConnectV2Protocol {
+    func getPairing(for topic: String) -> Pairing? {
+        return try? pairAPI.getPairing(for: topic)
+    }
+}
+
 enum WalletConnectV2Event {
     case sessions([WalletConnectV2Session])
     case proposeSession(WalletConnectV2SessionProposal)
+    case didDisconnectSession(WalletConnectV2Session)
+    case didDisconnectSessionFail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case deleteSession(
         topic: WalletConnectTopic,
         reason: WalletConnectV2Reason
@@ -346,7 +395,11 @@ enum WalletConnectV2Event {
         topic: WalletConnectTopic,
         date: Date
     )
-    case ping(String)
+    case pingSession(WalletConnectTopic)
+    case didPingSessionFail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case transactionRequest(WalletConnectV2Request)
     case failure(Error)
 }

@@ -33,7 +33,7 @@ final class WCSessionConnectionScreen:
         return theme.calculateModalHeightAsBottomSheet(self)
     }
     
-    let draft: WCConnectionSessionDraft
+    let draft: WCSessionConnectionDraft
     
     private lazy var theme = WCSessionConnectionScreenTheme()
 
@@ -63,7 +63,7 @@ final class WCSessionConnectionScreen:
     private let dataController: WCSessionConnectionDataController
 
     init(
-        draft: WCConnectionSessionDraft,
+        draft: WCSessionConnectionDraft,
         dataController: WCSessionConnectionDataController,
         configuration: ViewControllerConfiguration
     ) {
@@ -144,6 +144,7 @@ extension WCSessionConnectionScreen {
         )
 
         loadingView.stopAnimating()
+        loadingView.removeFromSuperview()
     }
 }
 

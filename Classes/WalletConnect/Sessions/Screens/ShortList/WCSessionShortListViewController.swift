@@ -17,21 +17,25 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import MacaroonBottomSheet
 
-final class WCSessionShortListViewController: BaseViewController {
+final class WCSessionShortListViewController:
+    BaseViewController,
+    PeraConnectObserver {
     weak var delegate: WCSessionShortListViewControllerDelegate?
 
     private lazy var theme = Theme()
 
     private(set) lazy var sessionListView = WCSessionShortListView()
 
-    private lazy var dataSource = WCSessionShortListDataSource(walletConnector: walletConnector)
+    private lazy var dataSource = WCSessionShortListDataSource(walletConnectCoordinator: peraConnect.walletConnectCoordinator)
     private lazy var layoutBuilder = WCSessionShortListLayout(theme)
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        walletConnector.delegate = self
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        peraConnect.add(self)
     }
 
     override func linkInteractors() {
@@ -39,7 +43,6 @@ final class WCSessionShortListViewController: BaseViewController {
         sessionListView.setCollectionViewDataSource(dataSource)
         sessionListView.setCollectionViewDelegate(layoutBuilder)
         dataSource.delegate = self
-        walletConnector.delegate = self
         sessionListView.delegate = self
     }
 
@@ -77,8 +80,6 @@ extension WCSessionShortListViewController: WCSessionShortListDataSourceDelegate
     }
 }
 
-extension WCSessionShortListViewController: WalletConnectorDelegate { }
-
 extension WCSessionShortListViewController {
     private func index(of cell: WCSessionShortListItemCell) -> Int? {
         return sessionListView.collectionView.indexPath(for: cell)?.item
@@ -92,9 +93,17 @@ extension WCSessionShortListViewController {
             return
         }
 
+        var name: String?
+
+        if let wcV1Session = session.wcV1Session {
+            name = wcV1Session.peerMeta.name
+        } else if let wcV2Session = session.wcV2Session {
+            name = wcV2Session.peer.name
+        }
+
         let actionSheet = UIAlertController(
             title: nil,
-            message: "wallet-connect-session-disconnect-message".localized(params: session.peerMeta.name),
+            message: "wallet-connect-session-disconnect-message".localized(params: name.someString),
             preferredStyle: .actionSheet
         )
 
@@ -103,21 +112,19 @@ extension WCSessionShortListViewController {
                 return
             }
 
-            self.analytics.track(
-                .wcSessionDisconnected(
-                    dappName: session.peerMeta.name,
-                    dappURL: session.peerMeta.url.absoluteString,
-                    address: session.walletMeta?.accounts?.first
+            if let wcV1Session = session.wcV1Session {
+                self.analytics.track(
+                    .wcSessionDisconnected(
+                        dappName: wcV1Session.peerMeta.name,
+                        dappURL: wcV1Session.peerMeta.url.absoluteString,
+                        address: wcV1Session.walletMeta?.accounts?.first
+                    )
                 )
-            )
-            self.dataSource.disconnectFromSession(session)
-            self.updateScreenAfterDisconnecting(from: session)
-
-            if self.walletConnector.allWalletConnectSessions.isEmpty {
-                self.delegate?.wcSessionShortListViewControllerDidClose(self)
-                self.dismissScreen()
-                return
             }
+
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            self.dataSource.disconnectFromSession(session)
         }
 
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
@@ -127,9 +134,93 @@ extension WCSessionShortListViewController {
         present(actionSheet, animated: true, completion: nil)
     }
 
-    private func updateScreenAfterDisconnecting(from session: WCSession) {
-        dataSource.updateSessions(walletConnector.allWalletConnectSessions)
+    private func updateScreenAfterDisconnecting() {
+        let sessions = peraConnect.walletConnectCoordinator.getSessions()
+        if sessions.isEmpty {
+            delegate?.wcSessionShortListViewControllerDidClose(self)
+            dismissScreen()
+            return
+        }
+
+        dataSource.updateSessions(sessions)
         sessionListView.collectionView.reloadData()
+        performLayoutUpdates()
+    }
+}
+
+extension WCSessionShortListViewController {
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .didDisconnectFromV1(let aSession):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                analytics.track(
+                    .wcSessionDisconnected(
+                        dappName: aSession.peerMeta.name,
+                        dappURL: aSession.peerMeta.url.absoluteString,
+                        address: aSession.walletMeta?.accounts?.first
+                    )
+                )
+
+                loadingController?.stopLoading()
+
+                updateScreenAfterDisconnecting()
+            }
+        case .didDisconnectFromV1Fail(_, let error):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+                loadingController?.stopLoading()
+
+                switch error {
+                case .failedToDisconnectInactiveSession:
+                    updateScreenAfterDisconnecting()
+                case .failedToDisconnect:
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "title-generic-error".localized
+                    )
+                default: break
+                }
+            }
+        case .didDisconnectFromV2:
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                updateScreenAfterDisconnecting()
+            }
+        case .didDisconnectFromV2Fail(_, let error):
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.localizedDescription
+                )
+            }
+        case .deleteSessionV2:
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                updateScreenAfterDisconnecting()
+            }
+        default:
+            break
+        }
     }
 }
 

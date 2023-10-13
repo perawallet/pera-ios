@@ -21,9 +21,9 @@ struct WCSessionNetworkRequestedPermissionViewModel: SecondaryListItemViewModel 
     private(set) var title: TextProvider?
     private(set) var accessory: SecondaryListItemValueViewModel?
 
-    init() {
+    init(_ chains: [ALGAPI.Network]) {
         bindTitle()
-        bindAccessory()
+        bindAccessory(chains)
     }
 }
 
@@ -35,8 +35,8 @@ extension WCSessionNetworkRequestedPermissionViewModel {
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindAccessory() {
-        accessory = WCSessionNetworkRequestedPermissionValueViewModel()
+    private mutating func bindAccessory(_ chains: [ALGAPI.Network]) {
+        accessory = WCSessionNetworkRequestedPermissionValueViewModel(chains)
     }
 }
 
@@ -44,18 +44,30 @@ fileprivate struct WCSessionNetworkRequestedPermissionValueViewModel: SecondaryL
     private(set) var icon: ImageStyle?
     private(set) var title: TextProvider?
 
-    init() {
-        bindTitle()
+    init(_ chains: [ALGAPI.Network]) {
+        bindTitle(chains)
     }
 }
 
 extension WCSessionNetworkRequestedPermissionValueViewModel {
-    private mutating func bindTitle() {
-        /// <todo> For mocking purposes
-        title = getMainnetAccessory()
+    private mutating func bindTitle(_ chains: [ALGAPI.Network]) {
+        var chainAccessories: [NSAttributedString] = []
+
+        if chains.contains(.mainnet) {
+            let accessory = getMainnetAccessory()
+            chainAccessories.append(accessory)
+        }
+
+        if chains.contains(.testnet) {
+            let accessory = getTestnetAccessory()
+            chainAccessories.append(accessory)
+        }
+
+        let separator = "   "
+        title = chainAccessories.compound(separator)
     }
 
-    private func getMainnetAccessory() -> TextProvider {
+    private func getMainnetAccessory() -> NSAttributedString {
         var attributes = Typography.captionBoldAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
@@ -65,7 +77,7 @@ extension WCSessionNetworkRequestedPermissionValueViewModel {
         return "• MAINNET".attributed(attributes)
     }
 
-    private func getTestnetAccessory() -> TextProvider {
+    private func getTestnetAccessory() -> NSAttributedString {
         var attributes = Typography.captionBoldAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail

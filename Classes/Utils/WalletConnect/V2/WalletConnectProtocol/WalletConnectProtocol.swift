@@ -18,5 +18,4 @@ import Foundation
 
 protocol WalletConnectProtocol {
     var sessionValidator: WalletConnectSessionValidator { get }
-    func listenEvents()
 }

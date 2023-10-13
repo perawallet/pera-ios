@@ -20,7 +20,10 @@ import AVFoundation
 import MacaroonUtils
 import MacaroonUIKit
 
-final class QRScannerViewController: BaseViewController, NotificationObserver {
+final class QRScannerViewController:
+    BaseViewController,
+    NotificationObserver,
+    PeraConnectObserver {
     weak var delegate: QRScannerViewControllerDelegate?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -40,7 +43,6 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         presentingViewController: self,
         interactable: false
     )
-    private lazy var transitionToWCConnectionError = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
         [weak self] in
@@ -53,6 +55,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
     private var previewLayer: AVCaptureVideoPreviewLayer?
+    private var walletConnectSessionCreationPreferences: WalletConnectSessionCreationPreferences?
 
     private lazy var cameraResetHandler: EmptyHandler = {
         if self.captureSession?.isRunning == false {
@@ -68,7 +71,8 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     private var wcConnectionRepeater: Repeater?
 
     private lazy var isShowingConnectedAppsButton: Bool = {
-        canReadWCSession && !walletConnector.allWalletConnectSessions.isEmpty
+        let sessions = peraConnect.walletConnectCoordinator.getSessions()
+        return canReadWCSession && !sessions.isEmpty
     }()
 
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
@@ -82,14 +86,16 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = Colors.Defaults.background.uiColor
+
+        peraConnect.add(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         enableCapturingIfNeeded()
-        peraConnect.walletConnectCoordinator.listenEvents()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,6 +106,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
 
     override func prepareLayout() {
         super.prepareLayout()
+
         configureScannerView()
     }
 
@@ -107,9 +114,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         super.bindData()
 
         if isShowingConnectedAppsButton {
-            overlayView.bindData(
-                QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
-            )
+            bindOverlay()
         }
     }
 
@@ -321,38 +326,9 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 }
                 
                 let preferences = WalletConnectSessionCreationPreferences(session: qrString)
-                
+                self.walletConnectSessionCreationPreferences = preferences
                 peraConnect.connectToSession(with: preferences)
                 startWCConnectionTimer()
-                
-                peraConnect.eventHandler = {
-                    [weak self] event in
-                    guard let self = self else { return }
-                    
-                    switch event {
-                    case .shouldStartV1(let session, let preferences, let completion):
-                        shouldStartPeraConnect(
-                            session: session,
-                            with: preferences,
-                            then: completion
-                        )
-                    case .didConnectToV1(let session):
-                        peraConnectDidConnectToV1(session)
-                    case .didFailToConnectV1(let error):
-                        peraConnectDidFailToConnectV1(with: error)
-                    case .didExceedMaximumSessionFromV1:
-                        peraConnectDidExceedMaximumSessionFromV1()
-                    case .proposeSessionV2(let proposal):
-                        proposeSession(
-                            proposal,
-                            with: preferences
-                        )
-                    case .settleSessionV2(let session):
-                        peraConnectDidSettleSessionV2(session)
-                    default:
-                        break
-                    }
-                }
                 return
             } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
                 captureSession = nil
@@ -387,6 +363,54 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                 return
             }
+        }
+    }
+}
+
+extension QRScannerViewController {
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .shouldStartV1(let session, let preferences, let completion):
+            shouldStartPeraConnect(
+                session: session,
+                with: preferences,
+                then: completion
+            )
+        case .didConnectToV1(let session):
+            peraConnectDidConnectToV1(
+                session,
+                with: walletConnectSessionCreationPreferences
+            )
+        case .didFailToConnectV1(let error):
+            peraConnectDidFailToConnectV1(with: error)
+        case .didExceedMaximumSessionFromV1:
+            peraConnectDidExceedMaximumSessionFromV1()
+        case .proposeSessionV2(let proposal):
+            proposeSession(
+                proposal,
+                with: walletConnectSessionCreationPreferences
+            )
+        case .settleSessionV2(let session):
+            peraConnectDidSettleSessionV2(
+                session,
+                with: walletConnectSessionCreationPreferences
+            )
+        case .didDisconnectFromV1:
+            bindOverlay()
+        case .didDisconnectFromV1Fail(_, let error):
+            if case .failedToDisconnectInactiveSession = error {
+                bindOverlay()
+                return
+            }
+        case .didDisconnectFromV2:
+            bindOverlay()
+        case .deleteSessionV2:
+            bindOverlay()
+        default:
+            break
         }
     }
 }
@@ -442,14 +466,12 @@ extension QRScannerViewController {
             return
         }
 
-        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
-
         asyncMain { [weak self] in
             guard let self = self else {
                 return
             }
 
-            let draft = WCConnectionSessionDraft(session: session)
+            let draft = WCSessionConnectionDraft(session: session)
             let wcConnectionScreen = self.wcConnectionModalTransition.perform(
                 .wcConnection(draft: draft),
                 by: .present
@@ -505,25 +527,24 @@ extension QRScannerViewController {
                             )
                         )
                         
-                        wcConnectionScreen.dismiss(animated: true) {
-                            [weak self] in
-                            guard let self else { return }
-
-                            if !shouldShowConnectionApproval { return }
-
-                            self.openWCSessionConnectionSuccessful(draft)
-                        }
+                        wcConnectionScreen.dismiss(animated: true)
                     }
                 }
             }
         }
     }
 
-    func peraConnectDidConnectToV1(_ session: WCSession) {
-        delegate?.qrScannerViewControllerDidApproveWCConnection(
-            self,
-            session: session
-        )
+    func peraConnectDidConnectToV1(
+        _ session: WCSession,
+        with preferences: WalletConnectSessionCreationPreferences?
+    ) {
+
+        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? false
+        if shouldShowConnectionApproval {
+            let draft = WCSessionDraft(wcV1Session: session)
+            openWCSessionConnectionSuccessful(draft)
+        }
+
         captureSession = nil
         walletConnector.saveConnectedWCSession(session)
         walletConnector.clearExpiredSessionsIfNeeded()
@@ -573,7 +594,7 @@ extension QRScannerViewController {
                     }
                 }
 
-                self.openWCConnectionError()
+                self.presentWCConnectionError()
             }
 
             self.stopWCConnectionTimer()
@@ -587,21 +608,10 @@ extension QRScannerViewController {
         wcConnectionRepeater = nil
     }
 
-    private func openWCConnectionError() {
-        transitionToWCConnectionError.perform(
-            .bottomWarning(
-                configurator: BottomWarningViewConfigurator(
-                    image: "icon-info-red".uiImage,
-                    title: "title-failed-connection".localized,
-                    description: .plain("wallet-connect-session-timeout-message".localized),
-                    secondaryActionButtonTitle: "title-close".localized
-                )
-            ),
-            by: .presentWithoutNavigationController,
-            completion: {
-                [weak self] in
-                self?.resetUIForScanning()
-            }
+    private func presentWCConnectionError() {
+        bannerController?.presentErrorBanner(
+            title: "title-failed-connection".localized,
+            message: "wallet-connect-session-timeout-message".localized
         )
     }
 }
@@ -635,8 +645,7 @@ extension QRScannerViewController {
             return
         }
 
-        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
-        let draft = WCConnectionSessionDraft(sessionProposal: sessionProposal)
+        let draft = WCSessionConnectionDraft(sessionProposal: sessionProposal)
 
         asyncMain {
             [weak self] in
@@ -648,9 +657,9 @@ extension QRScannerViewController {
             ) as? WCSessionConnectionScreen
            
             wcConnectionScreen?.eventHandler = {
-                [weak self] event in
+                [weak self, weak wcConnectionScreen] event in
                 guard let self = self else { return }
-               
+
                 switch event {
                 case .performCancel:
                     analytics.track(
@@ -662,7 +671,7 @@ extension QRScannerViewController {
                     )
                     
                     asyncMain {
-                        [weak self] in
+                        [weak self, weak wcConnectionScreen] in
                         guard let self else { return }
                         
                         let params = WalletConnectV2RejectSessionConnectionParams(
@@ -714,24 +723,21 @@ extension QRScannerViewController {
                     let params = WalletConnectV2ApproveSessionConnectionParams(proposalId: sessionProposal.id, namespaces: sessionNamespaces)
                     peraConnect.approveSessionConnection(params)
                     
-                    wcConnectionScreen?.dismiss(animated: true) {
-                        [weak self] in
-                        guard let self else { return }
-
-                        if !shouldShowConnectionApproval { return }
-                        self.openWCSessionConnectionSuccessful(draft)
-                    }
+                    wcConnectionScreen?.dismiss(animated: true)
                 }
             }
         }
     }
     
-    func peraConnectDidSettleSessionV2(_ session: WalletConnectV2Session) {
-        /// <todo> Handle delegate
-        /* delegate?.qrScannerViewControllerDidApproveWCConnection(
-            self,
-            session: session
-        ) */
+    func peraConnectDidSettleSessionV2(
+        _ session: WalletConnectV2Session,
+        with preferences: WalletConnectSessionCreationPreferences?
+    ) {
+        if preferences?.prefersConnectionApproval ?? false {
+            let draft = WCSessionDraft(wcV2Session: session)
+            openWCSessionConnectionSuccessful(draft)
+        }
+
         captureSession = nil
         walletConnector.clearExpiredSessionsIfNeeded()
     }
@@ -748,7 +754,7 @@ extension QRScannerViewController {
 }
 
 extension QRScannerViewController {
-    private func openWCSessionConnectionSuccessful(_ draft: WCConnectionSessionDraft) {
+    private func openWCSessionConnectionSuccessful(_ draft: WCSessionDraft) {
         let eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler = {
             [weak self] event in
             guard let self else { return }
@@ -794,14 +800,20 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
 
 extension QRScannerViewController: WCSessionShortListViewControllerDelegate {
     func wcSessionShortListViewControllerDidClose(_ controller: WCSessionShortListViewController) {
+        bindOverlay()
+    }
+}
+
+extension QRScannerViewController {
+    private func bindOverlay() {
+        let sessions = peraConnect.walletConnectCoordinator.getSessions()
         overlayView.bindData(
-            QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
+            QRScannerOverlayViewModel(dAppCount: UInt(sessions.count))
         )
     }
 }
 
 protocol QRScannerViewControllerDelegate: AnyObject {
-    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController, session: WCSession)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrBackupParameters: QRBackupParameters, completionHandler: EmptyHandler?)
@@ -809,7 +821,6 @@ protocol QRScannerViewControllerDelegate: AnyObject {
 }
 
 extension QRScannerViewControllerDelegate {
-    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController, session: WCSession) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrBackupParameters: QRBackupParameters, completionHandler: EmptyHandler?) {}

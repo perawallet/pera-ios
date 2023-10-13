@@ -47,7 +47,7 @@ struct WCSessionDetailScreenTheme:
             ])
         ]
         self.secondaryAction = [
-            .title("title-disconnect".localized),
+            .title("node-settings-action-delete-title".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)

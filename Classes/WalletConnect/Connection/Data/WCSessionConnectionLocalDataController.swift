@@ -34,16 +34,17 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
         return findViewModel(forSection: sectionForHeader)
     }
 
-    private var sessionEventsRequestedPermissionViewModel: WCSessionEventsRequestedPermissionViewModel?
     private var sessionNetworkRequestedPermissionViewModel: WCSessionNetworkRequestedPermissionViewModel?
+    private var sessionMethodsRequestedPermissionViewModel: WCSessionMethodsRequestedPermissionViewModel?
+    private var sessionEventsRequestedPermissionViewModel: WCSessionEventsRequestedPermissionViewModel?
 
     private(set) var accountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
 
-    private let draft: WCConnectionSessionDraft
+    private let draft: WCSessionConnectionDraft
     private let sharedDataController: SharedDataController
 
     init(
-        draft: WCConnectionSessionDraft,
+        draft: WCSessionConnectionDraft,
         sharedDataController: SharedDataController
     ) {
         self.draft = draft
@@ -129,10 +130,10 @@ extension WCSessionConnectionLocalDataController {
 
 extension WCSessionConnectionLocalDataController {
     private func deliverUpdatesForRequestedPermissions() {
-        sessionRequestedPermissionsHeaderViewModel = .init()
-
         var snapshot = SectionSnapshot()
         appendItemsForAdvancedPermissions(into: &snapshot)
+
+        if snapshot.items.isEmpty { return }
 
         let update = SectionSnapshotUpdate(
             snapshot: snapshot,
@@ -147,7 +148,27 @@ extension WCSessionConnectionLocalDataController {
     }
 
     private func makeItemsForRequestedPermissions() -> [ItemIdentifier] {
-        let permissions: [WCSessionRequestedPermission] = [.network, .events] /// <todo> For mocking purposes
+        var permissions: [WCSessionRequestedPermission] = []
+
+        if let requestedChains = draft.requestedChains,
+           requestedChains.isNonEmpty {
+            permissions.append(.network)
+        }
+
+        if let supportedEvents = draft.supportedEvents,
+           !supportedEvents.isEmpty {
+            permissions.append(.events)
+        }
+
+        if let supportedMethods = draft.supportedMethods,
+           !supportedMethods.isEmpty {
+            permissions.append(.methods)
+        }
+
+        if permissions.isNonEmpty {
+            sessionRequestedPermissionsHeaderViewModel = .init()
+        }
+
         return permissions.map(makeItem(forPermission:))
     }
 
@@ -161,6 +182,8 @@ extension WCSessionConnectionLocalDataController {
     private func deliverUpdatesForAccounts() {
         var snapshot = SectionSnapshot()
         appendItemsForAccounts(into: &snapshot)
+
+        if snapshot.items.isEmpty { return }
 
         let update = SectionSnapshotUpdate(
             snapshot: snapshot,
@@ -223,6 +246,7 @@ extension WCSessionConnectionLocalDataController {
     private func findViewModel(forRequestedPermission permission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
         switch permission {
         case .network: return sessionNetworkRequestedPermissionViewModel
+        case .methods: return sessionMethodsRequestedPermissionViewModel
         case .events: return sessionEventsRequestedPermissionViewModel
         }
     }
@@ -230,9 +254,14 @@ extension WCSessionConnectionLocalDataController {
     private func saveToCache(_ permission: WCSessionRequestedPermission) {
         switch permission {
         case .network:
-            sessionNetworkRequestedPermissionViewModel = .init()
+            let requestedChains = draft.requestedChains!
+            sessionNetworkRequestedPermissionViewModel = .init(requestedChains)
+        case .methods:
+            let supportedMethods = draft.supportedMethods!
+            sessionMethodsRequestedPermissionViewModel = .init(supportedMethods)
         case .events:
-            sessionEventsRequestedPermissionViewModel = .init()
+            let supportedEvents = draft.supportedEvents!
+            sessionEventsRequestedPermissionViewModel = .init(supportedEvents)
         }
     }
 }

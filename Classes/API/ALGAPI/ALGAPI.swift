@@ -80,5 +80,13 @@ extension ALGAPI {
                 ]
             }
         }
+
+        var isMainnet: Bool {
+            return self == .mainnet
+        }
+        
+        var isTestnet: Bool {
+            return self == .testnet
+        }
     }
 }

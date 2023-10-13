@@ -21,22 +21,22 @@ struct WCSessionExpirationDateSecondaryListItemViewModel: SecondaryListItemViewM
     var title: TextProvider?
     var accessory: SecondaryListItemValueViewModel?
 
-    init() {
-        bindTitle()
-        bindAccessory()
+    init(_ wcV2Session: WalletConnectV2Session) {
+        bindTitle(wcV2Session)
+        bindAccessory(wcV2Session)
     }
 }
 
 extension WCSessionExpirationDateSecondaryListItemViewModel {
-    private mutating func bindTitle() {
+    private mutating func bindTitle(_ wcV2Session: WalletConnectV2Session) {
         title =
             "wc-session-expiration-date"
                 .localized
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindAccessory() {
-        accessory = WCSessionExpirationDateSecondaryListItemValueViewModel()
+    private mutating func bindAccessory(_ wcV2Session: WalletConnectV2Session) {
+        accessory = WCSessionExpirationDateSecondaryListItemValueViewModel(wcV2Session)
     }
 }
 
@@ -44,19 +44,22 @@ fileprivate struct WCSessionExpirationDateSecondaryListItemValueViewModel: Secon
     var icon: ImageStyle?
     var title: TextProvider?
 
-    init() {
-        bindTitle()
+    init(_ wcV2Session: WalletConnectV2Session) {
+        bindTitle(wcV2Session)
     }
 }
 
 extension WCSessionExpirationDateSecondaryListItemValueViewModel {
-    private mutating func bindTitle() {
-        let date = "Apr 15, 2023, 14:20 PM".footnoteRegular(lineBreakMode: .byTruncatingTail)
-        let hour = "14:20 PM"
+    private mutating func bindTitle(_ wcV2Session: WalletConnectV2Session) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let formattedDate = wcV2Session.expiryDate.toFormat(dateFormat)
+        let date = formattedDate.footnoteRegular(lineBreakMode: .byTruncatingTail)
 
         var hourAttributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
         hourAttributes.insert(.textColor(Colors.Text.gray))
 
+        let hourFormat = "h:mm a"
+        let hour = wcV2Session.expiryDate.toFormat(hourFormat)
         let aTitle = date.addAttributes(
             to: hour,
             newAttributes: hourAttributes

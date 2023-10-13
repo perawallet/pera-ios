@@ -17,13 +17,14 @@
 import Foundation
 
 protocol WalletConnectSessionDisconnectionParams {
-    var session: WCSession? { get }
+    associatedtype Session
+    var session: Session { get }
 }
 
 struct WalletConnectV1SessionDisconnectionParams: WalletConnectSessionDisconnectionParams {
-    var session: WCSession?
+    let session: WCSession
 }
 
 struct WalletConnectV2SessionDisconnectionParams: WalletConnectSessionDisconnectionParams {
-    let session: WCSession? = nil
+    let session: WalletConnectV2Session
 }

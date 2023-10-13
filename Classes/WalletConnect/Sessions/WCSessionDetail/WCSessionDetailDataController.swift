@@ -29,6 +29,8 @@ protocol WCSessionDetailDataController: AnyObject {
     var isPrimaryActionEnabled: Bool { get }
 
     func load()
+    func getSessionDraft() -> WCSessionDraft
+    func getDappURL() -> URL?
 
     var sessionProfileViewModel: WCSessionProfileViewModel? { get }
     var wcV1SessionBadgeViewModel: WCV1SessionBadgeViewModel? { get }
@@ -38,7 +40,7 @@ protocol WCSessionDetailDataController: AnyObject {
     subscript(connectedAccountAddress: PublicKey) -> AccountListItemViewModel? { get }
 
     var sessionAdvancedPermissionsHeaderViewModel: WCSessionAdvancedPermissionsHeaderViewModel? { get }
-    subscript(permission: AdvancedPermission) -> PrimaryTitleViewModel? { get }
+    subscript(permission: WCSessionDetailAdvancedPermission) -> PrimaryTitleViewModel? { get }
 }
 
 enum WCSessionDetail { }
@@ -81,7 +83,7 @@ extension WCSessionDetail {
     }
 
     struct AdvancedPermissionCellItem: Hashable {
-        let permission: AdvancedPermission
+        let permission: WCSessionDetailAdvancedPermission
     }
 }
 
@@ -91,7 +93,7 @@ enum WCSessionDetailDataControllerEvent {
      case didUpdate(SectionSnapshotUpdate)
  }
 
-enum AdvancedPermission {
+enum WCSessionDetailAdvancedPermission {
     case supportedMethods
     case supportedEvents
 }

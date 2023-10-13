@@ -17,8 +17,13 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 
-final class SettingsViewController: BaseViewController {
+final class SettingsViewController:
+    BaseViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var pushNotificationController = PushNotificationController(
@@ -31,6 +36,10 @@ final class SettingsViewController: BaseViewController {
     private lazy var settingsView = SettingsView()
 
     private lazy var dataSource = SettingsDataSource(session: session)
+
+    deinit {
+        stopObservingNotifications()
+    }
 
     override var prefersLargeTitle: Bool {
         return true
@@ -47,12 +56,11 @@ final class SettingsViewController: BaseViewController {
     }
     
     override func setListeners() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didApplicationEnterForeground),
-            name: .ApplicationWillEnterForeground,
-            object: nil
-        )
+        observeWhenApplicationWillEnterForeground {
+            [weak self] _ in
+            guard let self else { return }
+            settingsView.collectionView.reloadData()
+        }
     }
 
     override func configureAppearance() {
@@ -61,13 +69,6 @@ final class SettingsViewController: BaseViewController {
     
     override func prepareLayout() {
         addSettingsView()
-    }
-}
-
-extension SettingsViewController {
-    @objc
-    private func didApplicationEnterForeground() {
-        settingsView.collectionView.reloadData()
     }
 }
 

@@ -20,7 +20,12 @@ import MacaroonUtils
 
 final class WCSessionDetailScreen:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    PeraConnectObserver {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var theme = WCSessionDetailScreenTheme()
 
     private lazy var listView: UICollectionView = UICollectionView(
@@ -48,6 +53,12 @@ final class WCSessionDetailScreen:
     private var isViewLayoutLoaded = false
     private var isAdditionalSafeAreaInsetsFinalized = false
 
+    private var sessionPingRetryRepeater: Repeater?
+    private var sessionPingRetryCount = 3
+    private var sessionPingRetryInterval: TimeInterval {
+        let interval = sessionPingTimeoutInSeconds / TimeInterval(sessionPingRetryCount)
+        return interval.rounded()
+    }
     private var sessionPingRepeater: Repeater?
     private var sessionPingRepeaterEndDate: Date?
     private let resetCheckStatusDelayAfterPingingResultInSeconds: TimeInterval = 3
@@ -69,14 +80,12 @@ final class WCSessionDetailScreen:
         startObservingDataUpdates()
     }
 
-    deinit {
-        sessionPingRepeater?.invalidate()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addUI()
+
+        startObservingPeraConnectEvents()
     }
 
     override func viewDidLayoutSubviews() {
@@ -115,6 +124,12 @@ extension WCSessionDetailScreen {
 
     private func loadInitialData() {
         dataController.load()
+    }
+}
+
+extension WCSessionDetailScreen {
+    private func startObservingPeraConnectEvents() {
+        peraConnect.add(self)
     }
 }
 
@@ -182,7 +197,13 @@ extension WCSessionDetailScreen {
             $0.bottom == bottom
         }
 
-        addPrimaryAction()
+        /// <note> Session expiry date extendability is disabled for now. Date: 05.09.2023
+//        let draft = dataController.getSessionDraft()
+//        let isWCV2Session = draft.isWCv2Session
+//        if isWCV2Session {
+//            addPrimaryAction()
+//        }
+
         addSecondaryAction()
     }
 
@@ -248,12 +269,32 @@ extension WCSessionDetailScreen {
 
     @objc
     private func performSecondaryAction() {
-        // <todo> Disconnect session
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        let draft = dataController.getSessionDraft()
+        disconnectFromSession(draft)
+    }
+
+    private func disconnectFromSession(_ draft: WCSessionDraft) {
+        if let wcV1Session = draft.wcV1Session {
+            let params = WalletConnectV1SessionDisconnectionParams(session: wcV1Session)
+            peraConnect.disconnectFromSession(params)
+            return
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            let params = WalletConnectV2SessionDisconnectionParams(session: wcV2Session)
+            peraConnect.disconnectFromSession(params)
+            return
+        }
     }
 }
 
 extension WCSessionDetailScreen {
     private func openExtendSessionValidity() {
+        let draft = dataController.getSessionDraft()
+        guard let wcV2Session = draft.wcV2Session else { return }
+
         let eventHandler: ExtendWCSessionValiditySheet.EventHandler = {
             [unowned self] event in
             switch event {
@@ -263,14 +304,18 @@ extension WCSessionDetailScreen {
                 cancelExtendSessionValidity()
             }
         }
+
         transitionToAdvancedPermissionsInfo.perform(
-            .extendWCSessionValidity(eventHandler: eventHandler),
+            .extendWCSessionValidity(
+                wcV2Session: wcV2Session,
+                eventHandler: eventHandler
+            ),
             by: .presentWithoutNavigationController
         )
     }
 
     private func extendSessionValidity() {
-        // <todo> Extend session validity
+        /// <note> Session expiry date extendability is disabled for now. Date: 05.09.2023
     }
 
     private func cancelExtendSessionValidity() {
@@ -333,6 +378,7 @@ extension WCSessionDetailScreen {
             startObservingProfileEvents(cell)
         case .connectionInfo:
             resumeSessionPingRepeaterIfNeeded()
+            resumeSessionPingRetryRepeaterIfNeeded()
 
             startObservingConnectionInfoEvents(cell)
         case .advancedPermission(let item):
@@ -356,6 +402,7 @@ extension WCSessionDetailScreen {
         switch itemIdentifier {
         case .connectionInfo:
             pauseSessionPingRepeater()
+            pauseSessionPingRetryRepeater()
         default:
             break
         }
@@ -421,13 +468,13 @@ extension WCSessionDetailScreen {
         let profileCell = cell as? WCSessionProfileCell
         profileCell?.startObserving(event: .didTapLink) {
             [unowned self] in
-            // <todo> Open link
-            open(AlgorandWeb.algorand.link)
+            let url = dataController.getDappURL()
+            open(url)
         }
         profileCell?.startObserving(event: .didLongPressLink) {
             [unowned self] in
-            // <todo> Copy link
-            if let urlString = AlgorandWeb.algorand.link?.absoluteString {
+            let url = dataController.getDappURL()
+            if let urlString = url?.absoluteString {
                 copyToClipboardController.copyURL(urlString)
             }
         }
@@ -444,6 +491,12 @@ extension WCSessionDetailScreen {
     private func resumeSessionPingRepeaterIfNeeded() {
         if let sessionPingRepeater {
             sessionPingRepeater.resume()
+        }
+    }
+
+    private func resumeSessionPingRetryRepeaterIfNeeded() {
+        if let sessionPingRetryRepeater {
+            sessionPingRetryRepeater.resume()
         }
     }
 
@@ -496,7 +549,8 @@ extension WCSessionDetailScreen {
 extension WCSessionDetailScreen {
     private func performCheckStatus() {
         updateSessionStatusUIWhenUserDidTapCheckStatus()
-        pingSession()
+
+        startSessionPingRetryRepeater()
     }
 
     private func updateSessionStatusUIWhenUserDidTapCheckStatus() {
@@ -540,12 +594,32 @@ extension WCSessionDetailScreen {
     }
 
     private func handleFailedSessionPing() {
+        guard
+            let sessionPingRepeater,
+            sessionPingRepeater.isRunning
+        else {
+            return
+        }
+
+        resetSessionPingRepeater()
+        resetSessionPingRetryTimer()
+
         updateSessionStatusUI(.failed)
 
         resetSessionStatusUIAfterDelay()
     }
 
     private func handleActiveSessionPing() {
+        guard
+            let sessionPingRepeater,
+            sessionPingRepeater.isRunning
+        else {
+            return
+        }
+
+        resetSessionPingRepeater()
+        resetSessionPingRetryTimer()
+
         updateSessionStatusUI(.active)
 
         resetSessionStatusUIAfterDelay()
@@ -577,8 +651,6 @@ extension WCSessionDetailScreen {
     }
 
     private func resetSessionStatusUIAfterDelay() {
-        resetSessionPingRepeater()
-
         let time: DispatchTime = .now() + resetCheckStatusDelayAfterPingingResultInSeconds
         let queue: DispatchQueue = .main
         queue.asyncAfter(deadline: time) {
@@ -588,7 +660,141 @@ extension WCSessionDetailScreen {
         }
     }
 
+    private func startSessionPingRetryRepeater() {
+        sessionPingRetryRepeater = Repeater(intervalInSeconds: sessionPingRetryInterval) {
+            [weak self, weak sessionPingRetryRepeater] in
+            guard let self else { return  }
+
+            if let sessionPingRepeater,
+               sessionPingRepeater.isRunning {
+                pingSession()
+            } else {
+                sessionPingRetryRepeater?.pause()
+            }
+        }
+        sessionPingRetryRepeater?.resume()
+    }
+
     private func pingSession() {
-        /// <todo> Ping session
+        let draft = dataController.getSessionDraft()
+        guard let wcV2Session = draft.wcV2Session else { return }
+
+        peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol.pingSession(wcV2Session)
+    }
+
+    private func pauseSessionPingRetryRepeater() {
+        sessionPingRetryRepeater?.pause()
+    }
+
+    private func resetSessionPingRetryTimer() {
+        pauseSessionPingRetryRepeater()
+        sessionPingRetryRepeater = nil
+    }
+}
+
+extension WCSessionDetailScreen {
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .pingV2(let topic):
+            let draft = dataController.getSessionDraft()
+            guard topic == draft.wcV2Session?.topic else { return }
+
+            handleActiveSessionPing()
+        case .didPingV2SessionFail(let session, _):
+            let draft = dataController.getSessionDraft()
+            guard session.topic == draft.wcV2Session?.topic else { return }
+
+            handleFailedSessionPing()
+        case .didDisconnectFromV1(let session):
+            let draft = dataController.getSessionDraft()
+            guard session == draft.wcV1Session else { return }
+
+            analytics.track(
+                .wcSessionDisconnected(
+                    dappName: session.peerMeta.name,
+                    dappURL: session.peerMeta.url.absoluteString,
+                    address: session.walletMeta?.accounts?.first
+                )
+            )
+
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                eventHandler?(.didDisconnect)
+            }
+        case .didDisconnectFromV1Fail(let session, let error):
+            let draft = dataController.getSessionDraft()
+            guard session == draft.wcV1Session else { return }
+
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                switch error {
+                case .failedToDisconnectInactiveSession:
+                    eventHandler?(.didDisconnect)
+                case .failedToDisconnect:
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "title-generic-error".localized
+                    )
+                default: break
+                }
+            }
+        case .didDisconnectFromV2(let session):
+            let draft = dataController.getSessionDraft()
+            guard session.topic == draft.wcV2Session?.topic else { return }
+
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                eventHandler?(.didDisconnect)
+            }
+        case .didDisconnectFromV2Fail(let session, let error):
+            let draft = dataController.getSessionDraft()
+            guard session.topic == draft.wcV2Session?.topic else { return }
+
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+                loadingController?.stopLoading()
+
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.localizedDescription
+                )
+            }
+        case .deleteSessionV2(let topic, _):
+            let draft = dataController.getSessionDraft()
+            guard topic == draft.wcV2Session?.topic else { return }
+
+            asyncMain {
+                [weak self] in
+                guard let self else { return }
+
+                loadingController?.stopLoading()
+
+                eventHandler?(.didDisconnect)
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension WCSessionDetailScreen {
+    enum Event {
+        case didDisconnect
     }
 }

@@ -26,22 +26,27 @@ struct WCSessionItemViewModel: ViewModel {
     private(set) var name: TextProvider?
     private(set) var wcV1Badge: TextProvider?
     private(set) var description: TextProvider?
-    private(set) var status: TextStyle?
 
-    init(
-        peermeta: WCPeerMeta,
-        sessionDate: Date
-    ) {
-        bindImage(peermeta)
-        bindName(peermeta)
-        bindWCv1Badge()
-        bindDescription(sessionDate)
-        bindStatus()
+    init(_ draft: WCSessionDraft) {
+        if let wcV1Session = draft.wcV1Session {
+            bindImage(wcV1Session)
+            bindName(wcV1Session)
+            bindWCv1Badge()
+            bindDescription(wcV1Session)
+            return
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            bindImage(wcV2Session)
+            bindName(wcV2Session)
+            bindDescription(wcV2Session)
+            return
+        }
     }
 }
 
 extension WCSessionItemViewModel {
-    private mutating func bindImage(_ peerMeta: WCPeerMeta) {
+    private mutating func bindImage(_ wcV1Session: WCSession) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
@@ -54,88 +59,65 @@ extension WCSessionItemViewModel {
 
         let imageSize = CGSize(width: 40, height: 40)
         image = DefaultURLImageSource(
-            url: peerMeta.icons.first,
+            url: wcV1Session.peerMeta.icons.first,
             size: .resize(imageSize, .aspectFit),
             shape: .circle,
             placeholder: placeholder
         )
     }
 
-    private mutating func bindName(_ peerMeta: WCPeerMeta) {
-        name = peerMeta.name.bodyMedium(lineBreakMode: .byTruncatingTail)
+    private mutating func bindName(_ wcV1Session: WCSession) {
+        name = wcV1Session.peerMeta.name.bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindWCv1Badge() {
-        /// <todo> For mocking purposes
         wcV1Badge = "WCV1".footnoteMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
     }
 
-    private mutating func bindDescription(_ sessionDate: Date) {
-        /// <todo> For mocking purposes
-        description = getDescriptionForWCv1()
-    }
-
-    private mutating func bindStatus() {
-        /// <todo> For mocking purposes
-       status = getConnectedStatus()
-    }
-}
-
-extension WCSessionItemViewModel {
-    private func getDescriptionForWCv1() -> TextProvider {
-        /// <todo> For mocking purposes
-        let formattedDate = Date().toFormat("MMMM dd, yyyy - HH:mm")
-        return
+    private mutating func bindDescription(_ wcV1Session: WCSession) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
+        description =
             "wallet-connect-session-connected-on-date"
-                .localized(formattedDate)
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
-
-    private func getDescriptionForWCv2() -> TextProvider {
-        /// <todo> For mocking purposes
-        let formattedDate = Date().toFormat("MMMM dd, yyyy - HH:mm")
-        return
-            "wallet-connect-v2-session-expires-on-date"
-                .localized(formattedDate)
+                .localized(connectedOnDate)
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
 
 extension WCSessionItemViewModel {
-    private func getConnectedStatus() -> TextStyle {
-        let text =
-            "wallet-connect-session-connected"
-                .localized
-                .footnoteMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
-        return [
-            .text(text),
-            .textColor(Colors.Helpers.positive),
-            .textAlignment(.center),
-            .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.positiveLighter.uiColor.withAlphaComponent(0.5))
+    private mutating func bindImage(_ wcV2Session: WalletConnectV2Session) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
         ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+
+        let imageSize = CGSize(width: 40, height: 40)
+        image = DefaultURLImageSource(
+            url: wcV2Session.peer.icons.first.toURL(),
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
+        )
     }
 
-    private func getDisconnectedStatus() -> TextStyle {
-        let text =
-            "wallet-connect-session-disconnected"
-                .localized
-                .footnoteMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
-        return [
-            .text(text),
-            .textColor(Colors.Helpers.negative),
-            .textAlignment(.center),
-            .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.Helpers.negativeLighter.uiColor.withAlphaComponent(0.5))
-        ]
+    private mutating func bindName(_ wcV2Session: WalletConnectV2Session) {
+        name = wcV2Session.peer.name.bodyMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    private mutating func bindDescription(_ wcV2Session: WalletConnectV2Session) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let validUntilDate = wcV2Session.expiryDate.toFormat(dateFormat)
+        description =
+            "wallet-connect-v2-session-expires-on-date"
+                .localized(validUntilDate)
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

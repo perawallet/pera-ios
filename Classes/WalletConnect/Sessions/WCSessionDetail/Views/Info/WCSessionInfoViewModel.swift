@@ -22,20 +22,26 @@ struct WCSessionInfoViewModel: ViewModel {
     private(set) var expirationDate: WCSessionExpirationDateSecondaryListItemViewModel?
     private(set) var sessionStatus: WCSessionStatusSecondaryListItemViewModel?
 
-    init() {
-        bindConnectionDate()
-        bindExpirationDate()
-        bindSessionStatus(.idle)
+    init(_ draft: WCSessionDraft) {
+        bindConnectionDate(draft)
+
+        if let wcV2Session = draft.wcV2Session {
+            bindExpirationDate(wcV2Session)
+            bindSessionStatus(.idle)
+            return
+        }
     }
 }
 
 extension WCSessionInfoViewModel {
-    private mutating func bindConnectionDate() {
-        connectionDate = WCSessionConnectionDateSecondaryListItemViewModel()
+    private mutating func bindConnectionDate(_ draft: WCSessionDraft) {
+        connectionDate = WCSessionConnectionDateSecondaryListItemViewModel(draft)
     }
+}
 
-    private mutating func bindExpirationDate() {
-        expirationDate = WCSessionExpirationDateSecondaryListItemViewModel()
+extension WCSessionInfoViewModel {
+    private mutating func bindExpirationDate(_ wcV2Session: WalletConnectV2Session) {
+        expirationDate = WCSessionExpirationDateSecondaryListItemViewModel(wcV2Session)
     }
 
     mutating func bindSessionStatus(_ status: WCSessionStatus) {

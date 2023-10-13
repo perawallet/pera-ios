@@ -60,12 +60,6 @@ final class WCSessionItemView:
         } else {
             descriptionView.clearText()
         }
-
-        if let status = viewModel?.status {
-            statusView.customizeAppearance(status)
-        } else {
-            statusView.resetAppearance()
-        }
     }
 
     func prepareForReuse() {
@@ -118,7 +112,7 @@ final class WCSessionItemView:
             multiline: true,
             fittingSize: CGSize((descriptionFittingWidth, .greatestFiniteMagnitude))
         ).height ?? .zero
-        let statusSize = viewModel.status?.text?.text.boundingSize(
+        let statusSize = theme.pingingStatus.text?.text.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         ) ?? .zero
@@ -150,6 +144,15 @@ extension WCSessionItemView {
         if let theme {
             imageView.draw(border: theme.imageBorder)
         }
+    }
+}
+
+extension WCSessionItemView {
+    func updateStatus(_ status: WCSessionStatus) {
+        guard let theme else { return }
+
+        let style = theme[status]
+        statusView.customizeAppearance(style)
     }
 }
 

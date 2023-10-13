@@ -939,9 +939,9 @@ class Router:
             viewController = screen
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
-                configuration.sharedDataController,
+                sharedDataController: configuration.sharedDataController,
                 analytics: configuration.analytics,
-                walletConnector: configuration.walletConnector
+                peraConnect: configuration.peraConnect
             )
             viewController = WCSessionListViewController(
                 dataController: dataController,
@@ -1853,8 +1853,9 @@ class Router:
                 destination: destination,
                 configuration: configuration
             )
-        case let .extendWCSessionValidity(eventHandler):
+        case let .extendWCSessionValidity(wcV2Session, eventHandler):
             let uiSheet = ExtendWCSessionValiditySheet(
+                wcV2Session: wcV2Session,
                 eventHandler: eventHandler
             )
             viewController = UISheetActionScreen(
@@ -1869,9 +1870,10 @@ class Router:
                 theme: UISheetActionScreenCommonTheme(),
                 api: configuration.api
             )
-        case .wcSessionDetail:
+        case let .wcSessionDetail(draft):
             let dataController = WCSessionDetailLocalDataController(
-                sharedDataController: appConfiguration.sharedDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                draft: draft
             )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -1882,8 +1884,15 @@ class Router:
                 configuration: configuration
             )
         case let .wcSessionConnectionSuccessful(draft, eventHandler):
+            let pairExpiryDate = draft.wcV2Session.unwrap {
+                let wcV2Protocol =
+                    configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+                let pairing = wcV2Protocol.getPairing(for: $0.topic)
+                return pairing?.expiryDate
+            } /// <todo> Pair expiry date is nil.
             let uiSheet = WCSessionConnectionSuccessfulSheet(
                 draft: draft,
+                pairExpiryDate: pairExpiryDate,
                 eventHandler: eventHandler
             )
             var theme = UISheetActionScreenImageTheme()
@@ -1895,9 +1904,16 @@ class Router:
                 theme: theme,
                 api: configuration.api
             )
-        case let .wcTransactionSignSuccessful(wcSession, eventHandler):
+        case let .wcTransactionSignSuccessful(draft, eventHandler):
+            let pairExpiryDate = draft.wcV2Session.unwrap {
+                let wcV2Protocol =
+                    configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+                let pairing = wcV2Protocol.getPairing(for: $0.topic)
+                return pairing?.expiryDate
+            }
             let uiSheet = WCTransactionSignSuccessfulSheet(
-                wcSession: wcSession,
+                draft: draft,
+                pairExpiryDate: pairExpiryDate,
                 eventHandler: eventHandler
             )
             var theme = UISheetActionScreenImageTheme()
@@ -2064,8 +2080,6 @@ extension Router {
             return
         }
 
-        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
-
         asyncMain { [weak self] in
             guard let self = self else { return }
             
@@ -2074,7 +2088,7 @@ extension Router {
                 presentingViewController: visibleScreen,
                 interactable: false
             )
-            let draft = WCConnectionSessionDraft(session: session)
+            let draft = WCSessionConnectionDraft(session: session)
             
             let screen = transition.perform(
                 .wcConnection(draft: draft),
@@ -2082,9 +2096,8 @@ extension Router {
             ) as? WCSessionConnectionScreen
             
             screen?.eventHandler = {
-                [weak self, weak screen] event in
-                guard let self,
-                      let screen else {
+                [weak screen] event in
+                guard let screen else {
                     return
                 }
                 
@@ -2092,14 +2105,8 @@ extension Router {
                 case .performCancel:
                     screen.dismissScreen()
                 case .performConnect:
-                    screen.dismissScreen {
-                        [weak self] in
-                        guard let self = self else { return }
-
-                        if !shouldShowConnectionApproval { return }
-                        
-                        self.openWCSessionConnectionSuccessful(screen.draft)
-                    }
+                    /// <todo> We are doing nothing?
+                    screen.dismissScreen()
                 }
             }
             
@@ -2109,15 +2116,22 @@ extension Router {
 
     func walletConnector(
         _ walletConnector: WalletConnectV1Protocol,
-        didConnectTo session: WCSession
+        didConnectTo session: WCSession,
+        with preferences: WalletConnectSessionCreationPreferences?
     ) {
+        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? false
+        if shouldShowConnectionApproval {
+            let draft = WCSessionDraft(wcV1Session: session)
+            openWCSessionConnectionSuccessful(draft)
+        }
+
         walletConnector.saveConnectedWCSession(session)
         walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
 extension Router {
-    private func openWCSessionConnectionSuccessful(_ draft: WCConnectionSessionDraft) {
+    private func openWCSessionConnectionSuccessful(_ draft: WCSessionDraft) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 

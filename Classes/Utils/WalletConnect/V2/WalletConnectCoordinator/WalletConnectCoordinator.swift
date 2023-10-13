@@ -23,16 +23,16 @@ protocol WalletConnectCoordinator {
     var walletConnectProtocolResolver: WalletConnectProtocolResolver { get }
     
     func isValidSession(session: WalletConnectSessionText) -> Bool
-    
-    func listenEvents()
-    
+
+    func setup()
     func configureIfNeeded()
     
-    func getSessions()
-    
+    func getSessions() -> [WCSessionDraft]
+
     func connectToSession(with preferences: WalletConnectSessionCreationPreferences)
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
-    func disconnectFromSession(_ params: WalletConnectSessionDisconnectionParams)
+    func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams)
+    func disconnectFromAllSessions()
     func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
     func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)
@@ -43,17 +43,29 @@ protocol WalletConnectCoordinator {
 }
 
 enum WalletConnectCoordinatorEvent {
+    /// <mark> V1
     case shouldStartV1(
         session: WalletConnectSession,
         preferences: WalletConnectSessionCreationPreferences?,
         completion: WalletConnectSessionConnectionCompletionHandler
     )
     case didConnectToV1(WCSession)
-    case didDisconnectFromV1(WCSession)
     case didFailToConnectV1(WalletConnectV1Protocol.WCError)
+    case didDisconnectFromV1(WCSession)
+    case didDisconnectFromV1Fail(
+        session: WCSession,
+        error: WalletConnectV1Protocol.WCError
+    )
     case didExceedMaximumSessionFromV1
+
+    /// <mark> V2
     case sessionsV2([WalletConnectV2Session])
     case proposeSessionV2(WalletConnectV2SessionProposal)
+    case didDisconnectFromV2(WalletConnectV2Session)
+    case didDisconnectFromV2Fail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case deleteSessionV2(
         topic: WalletConnectTopic,
         reason: WalletConnectV2Reason
@@ -67,7 +79,11 @@ enum WalletConnectCoordinatorEvent {
         topic: WalletConnectTopic,
         date: Date
     )
-    case pingV2(String)
+    case pingV2(WalletConnectTopic)
+    case didPingV2SessionFail(
+        session: WalletConnectV2Session,
+        error: Error
+    )
     case transactionRequestV2(WalletConnectV2Request)
     case failure(Error)
 }
