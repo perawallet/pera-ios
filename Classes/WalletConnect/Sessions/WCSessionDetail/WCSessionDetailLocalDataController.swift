@@ -40,13 +40,19 @@ final class WCSessionDetailLocalDataController: WCSessionDetailDataController {
     private var wcSessionSupportedEventsAdvancedPermissionViewModel: WCSessionSupportedEventsAdvancedPermissionViewModel?
 
     private let sharedDataController: SharedDataController
+    private let wcV2SessionConnectionDate: Date?
     private let draft: WCSessionDraft
 
     init(
         sharedDataController: SharedDataController,
+        walletConnectV2Protocol: WalletConnectV2Protocol,
         draft: WCSessionDraft
     ) {
         self.sharedDataController = sharedDataController
+        self.wcV2SessionConnectionDate = draft.wcV2Session.unwrap {
+            let connectionDates = walletConnectV2Protocol.getConnectionDates()
+            return connectionDates[$0.topic]
+        }
         self.draft = draft
     }
 
@@ -165,7 +171,10 @@ extension WCSessionDetailLocalDataController {
     }
 
     private func makeItemsForConnectionInfo() -> [ItemIdentifier] {
-        sessionInfoViewModel = WCSessionInfoViewModel(draft)
+        sessionInfoViewModel = WCSessionInfoViewModel(
+            draft: draft,
+            wcV2SessionConnectionDate: wcV2SessionConnectionDate
+        )
         return [ .connectionInfo ]
     }
 }

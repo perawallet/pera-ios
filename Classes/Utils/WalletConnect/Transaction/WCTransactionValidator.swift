@@ -18,19 +18,27 @@
 import UIKit
 
 protocol WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]])
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+    )
     func rejectTransactionRequest(with error: WCTransactionErrorResponse)
 }
 
 extension WCTransactionValidator {
-    func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]]) {
+    func validateTransactions(
+        _ transactions: [WCTransaction],
+        with transactionGroups: [Int64: [WCTransaction]],
+        sharedDataController: SharedDataController
+    ) {
         if !hasValidTransactionCount(for: transactions) {
             rejectTransactionRequest(with: .invalidInput(.transactionCount))
             return
         }
 
         if hasInvalidTransactionDetail(among: transactions) {
-             rejectTransactionRequest(with: .invalidInput(.parse))
+             rejectTransactionRequest(with: .invalidInput(.transactionParse))
              return
          }
 
@@ -49,8 +57,13 @@ extension WCTransactionValidator {
             return
         }
 
+        if !containsTransactionAuthInTheWallet(for: transactions) {
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
+            return
+        }
+
         if !containsSignerInTheWallet(for: transactionGroups) {
-            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
+            rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
             return
         }
 
@@ -89,6 +102,16 @@ extension WCTransactionValidator {
     private func hasValidSignerAddress(in transactions: [WCTransaction]) -> Bool {
         for transaction in transactions where transaction.authAddress != nil {
             if !transaction.hasValidAuthAddressForSigner || !transaction.hasValidSignerAddress {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private func containsTransactionAuthInTheWallet(for transactions: [WCTransaction]) -> Bool {
+        for transaction in transactions where transaction.authAddress != nil {
+            if !transaction.requestedSigner.containsSignerInTheWallet {
                 return false
             }
         }

@@ -583,7 +583,7 @@ extension WCSessionListViewController {
         )
 
         let disconnectAction = UIAlertAction(
-            title: "title-disconnect".localized,
+            title: "node-settings-action-delete-title".localized,
             style: .destructive
         ) { [weak self] _ in
             guard let self else { return  }

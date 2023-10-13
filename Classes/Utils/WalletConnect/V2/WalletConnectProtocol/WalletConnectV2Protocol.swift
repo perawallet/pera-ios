@@ -22,6 +22,8 @@ import Web3Wallet
 
 final class WalletConnectV2Protocol: WalletConnectProtocol {
     var eventHandler: ((WalletConnectV2Event) -> Void)?
+
+    private lazy var sessionSource = WalletConnectV2SessionSource()
     
     private var signAPI: SignClient {
         return Sign.instance
@@ -30,7 +32,7 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
     private var pairAPI: PairingInteracting {
         return Pair.instance
     }
-    
+
     private(set) var sessionValidator: WalletConnectSessionValidator
     
     private var publishers = Set<AnyCancellable>()
@@ -66,6 +68,56 @@ extension WalletConnectV2Protocol {
         Pair.configure(metadata: appMetadata)
 
         listenEvents()
+    }
+}
+
+extension WalletConnectV2Protocol {
+    func getConnectionDates() -> [WalletConnectTopic: Date] {
+        let sessions = sessionSource.sessions?.values
+        let connectionDates = sessions?.reduce(into: [WalletConnectTopic: Date]()) { result, session in
+            result[session.topic] = session.connectionDate
+        }
+        return connectionDates ?? [:]
+    }
+
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        let sessions = getSessions()
+        sessions.forEach {
+            let sessionAccounts = $0.accounts
+            guard sessionAccounts.contains(where: { $0.address == account.address }) else {
+                return
+            }
+
+            if sessionAccounts.count == 1 {
+                disconnectFromSession($0)
+                return
+            }
+
+            /// <todo> How to handle this in WC v2?
+//            guard let sessionWalletInfo = $0.sessionBridgeValue.walletInfo else {
+//                return
+//            }
+//
+//            let newAccountsForSession = sessionWalletInfo.accounts.filter { oldSessionAccount in
+//                oldSessionAccount != account.address
+//            }
+//
+//            let newSessionWaletInfo = createNewSessionWalletInfo(
+//                from: sessionWalletInfo,
+//                newAccounts: newAccountsForSession
+//            )
+//
+//            do {
+//                try update(session: $0.sessionBridgeValue, with: newSessionWaletInfo)
+//
+//                let newSession = createNewSession(
+//                    from: $0,
+//                    newSessionWalletInfo: newSessionWaletInfo
+//                )
+//
+//                updateWalletConnectSession(newSession, with: $0.urlMeta)
+//            } catch {}
+        }
     }
 }
 
@@ -171,7 +223,12 @@ extension WalletConnectV2Protocol {
         Task {
             do {
                 try await signAPI.disconnect(topic: session.topic)
-                self.eventHandler?(.didDisconnectSession(session) )
+                self.eventHandler?(.didDisconnectSession(session))
+
+                DispatchQueue.main.async {
+                    [weak self] in
+                    self?.sessionSource.removeWalletConnectSession(for: session.topic)
+                }
             } catch {
                 self.eventHandler?(.didDisconnectSessionFail(session: session, error: error))
                 print("[WC2] - Disconnect Session error: \(error)")
@@ -195,6 +252,12 @@ extension WalletConnectV2Protocol {
     func disconnectFromAllSessions() {
         let sessions = getSessions()
         sessions.forEach(disconnectFromSession)
+    }
+
+    func resetAllSessions() {
+        sessionSource.resetAllSessions()
+
+        try? signAPI.cleanup()
     }
 }
 
@@ -294,6 +357,8 @@ extension WalletConnectV2Protocol {
                         reason: reason
                     )
                 )
+
+                self.sessionSource.removeWalletConnectSession(for: topic)
             }.store(in: &publishers)
     }
     
@@ -306,6 +371,7 @@ extension WalletConnectV2Protocol {
                 guard let self else { return }
             
                 self.eventHandler?(.settleSession(session))
+                self.sessionSource.addWalletConnectSession(session)
             }.store(in: &publishers)
     }
     

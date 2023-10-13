@@ -33,6 +33,7 @@ protocol WalletConnectCoordinator {
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
     func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams)
     func disconnectFromAllSessions()
+    func updateSessionsWithRemovingAccount(_ account: Account)
     func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
     func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)

@@ -27,6 +27,7 @@ protocol PeraConnect: AnyObject {
     func reconnectToSession(_ params: WalletConnectSessionReconnectionParams)
     func disconnectFromSession(_ params: any WalletConnectSessionDisconnectionParams)
     func disconnectFromAllSessions()
+    func updateSessionsWithRemovingAccount(_ account: Account)
     func approveSessionConnection(_ params: WalletConnectApproveSessionConnectionParams)
     func rejectSessionConnection(_ params: WalletConnectRejectSessionConnectionParams)
     func updateSessionConnection(_ params: WalletConnectUpdateSessionConnectionParams)
@@ -35,12 +36,8 @@ protocol PeraConnect: AnyObject {
     func approveTransactionRequest(_ params: WalletConnectApproveTransactionRequestParams)
     func rejectTransactionRequest(_ params: WalletConnectRejectTransactionRequestParams)
 
-    func add(
-        _ observer: PeraConnectObserver
-    )
-    func remove(
-        _ observer: PeraConnectObserver
-    )
+    func add(_ observer: PeraConnectObserver)
+    func remove(_ observer: PeraConnectObserver)
 }
 
 protocol PeraConnectObserver: AnyObject {

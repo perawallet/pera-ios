@@ -31,6 +31,7 @@ final class WCSessionListLocalDataController:
     private var disconnectedSessions: Set<WCSessionDraft> = []
 
     private var sessions: [WCSessionDraft] = []
+    private var wcV2SessionConnectionDates: [WalletConnectTopic: Date] = [:]
 
     var shouldShowDisconnectAllAction: Bool {
         let sessions = peraConnect.walletConnectCoordinator.getSessions()
@@ -63,6 +64,7 @@ extension WCSessionListLocalDataController {
         reset()
 
         sessions = peraConnect.walletConnectCoordinator.getSessions()
+        wcV2SessionConnectionDates = peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol.getConnectionDates()
 
         if sessions.isEmpty {
             deliverNoContentSnapshot()
@@ -105,12 +107,28 @@ extension WCSessionListLocalDataController {
     }
 
     private func addSessionItems(_ snapshot: inout Snapshot) {
-        let items: [WCSessionListItem] = sessions.map {
+        let sortedSessionsByDescendingConnectionDate = sessions.sorted { firstSession, secondSession in
+            let firstConnectionDate =
+                firstSession.wcV1Session?.date ??
+                wcV2SessionConnectionDates[firstSession.wcV2Session!.topic]
+            let secondConnectionDate =
+                secondSession.wcV1Session?.date ??
+                wcV2SessionConnectionDates[secondSession.wcV2Session!.topic]
+
+            guard let firstConnectionDate = firstConnectionDate,
+                  let secondConnectionDate = secondConnectionDate else {
+                return false
+            }
+
+            return firstConnectionDate > secondConnectionDate
+        }
+
+        let items: [WCSessionListItem] = sortedSessionsByDescendingConnectionDate.map {
             let item = makeSessionItem($0)
 
             let topic =
-            $0.wcV1Session?.urlMeta.topic ??
-            $0.wcV2Session?.topic
+                $0.wcV1Session?.urlMeta.topic ??
+                $0.wcV2Session?.topic
             if let topic {
                 cachedSessionListItems[topic] = item
             }
@@ -241,8 +259,6 @@ extension WCSessionListLocalDataController {
     func disconnectAllSessions(_ snapshot: Snapshot) {
         publish(.didStartDisconnectingFromSessions)
 
-        lastSnapshot = snapshot
-
         let allSessions = peraConnect.walletConnectCoordinator.getSessions()
 
         disconnectedSessions = Set(allSessions)
@@ -368,7 +384,10 @@ extension WCSessionListLocalDataController {
             guard let self else { return }
 
             self.eventHandler?(event)
-            self.lastSnapshot = event.snapshot
+
+            if let snapshot = event.snapshot {
+                self.lastSnapshot = snapshot
+            }
         }
     }
 }

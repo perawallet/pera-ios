@@ -16,7 +16,7 @@ import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
-class WalletConnectV1Protocol:
+final class WalletConnectV1Protocol:
     WalletConnectProtocol,
     ServerDelegate {
     static var didReceiveSessionRequestNotification: Notification.Name {
@@ -36,7 +36,7 @@ class WalletConnectV1Protocol:
     var eventHandler: ((WalletConnectV1Event) -> Void)?
     weak var delegate: WalletConnectorDelegate?
     
-    var isRegisteredToTheTransactionRequests = false
+    var isRegisteredToTheRequests = false
 
     private let api: ALGAPI
     private let pushToken: String?
@@ -63,19 +63,19 @@ extension WalletConnectV1Protocol {
     }
     
     func configureTransactionsIfNeeded() {
-        if isRegisteredToTheTransactionRequests {
+        if isRegisteredToTheRequests {
             return
         }
         
-        isRegisteredToTheTransactionRequests = true
+        isRegisteredToTheRequests = true
         
         clearExpiredSessionsIfNeeded()
-        registerToWCTransactionRequests()
+        registerToWCRequests()
         reconnectToSavedSessionsIfPossible()
     }
     
-    private func registerToWCTransactionRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler(analytics: analytics)
+    private func registerToWCRequests() {
+        let wcRequestHandler = WalletConnectRequestHandler(analytics: analytics)
         if let rootViewController = UIApplication.shared.rootViewController() {
             wcRequestHandler.delegate = rootViewController
         }
@@ -261,21 +261,12 @@ extension WalletConnectV1Protocol {
         return sessionSource.getWalletConnectSession(for: topic)
     }
     
-    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
+    private func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
         sessionSource.updateWalletConnectSession(session, with: url)
     }
 
     func resetAllSessions() {
         sessionSource.resetAllSessions()
-    }
-
-    func saveConnectedWCSession(_ session: WCSession) {
-        if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
-            WCSessionHistory.create(
-                entity: WCSessionHistory.entityName,
-                with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            )
-        }
     }
 }
 
@@ -407,7 +398,7 @@ extension WalletConnectV1Protocol {
         }
     }
     
-    /// <note
+    /// <note>
     /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
     func clearExpiredSessionsIfNeeded() {
         let sessionLimit = WalletConnectSessionSource.sessionLimit
@@ -537,6 +528,7 @@ extension WalletConnectorDelegate {
 
 enum WalletConnectMethod: String {
     case transactionSign = "algo_signTxn"
+    case arbitraryDataSign = "algo_signData"
 }
 
 typealias WalletConnectSession = WalletConnectSwift.Session
