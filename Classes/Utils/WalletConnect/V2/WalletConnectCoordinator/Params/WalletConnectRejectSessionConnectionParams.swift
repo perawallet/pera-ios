@@ -21,6 +21,7 @@ protocol WalletConnectRejectSessionConnectionParams {
     var reason: WalletConnectV2SessionRejectionReason? { get }
 }
 
+/// <todo> Not used?
 struct WalletConnectV1RejectSessionConnectionParams: WalletConnectRejectSessionConnectionParams {
     let proposalId: String? = nil
     let reason: WalletConnectV2SessionRejectionReason? = nil

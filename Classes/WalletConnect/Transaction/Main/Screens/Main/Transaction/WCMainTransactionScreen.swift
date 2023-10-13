@@ -36,6 +36,10 @@ final class WCMainTransactionScreen:
         return false
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return api!.isTestNet ? .darkContent : .lightContent
+    }
+
     private lazy var theme = Theme()
 
     private lazy var dappMessageView = WCTransactionDappMessageView()
@@ -44,7 +48,8 @@ final class WCMainTransactionScreen:
         presentingViewController: self,
         interactable: false
     )
-    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning =
+        BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
@@ -83,9 +88,9 @@ final class WCMainTransactionScreen:
     private var isViewLayoutLoaded = false
 
     private let transactions: [WCTransaction]
-    private let transactionRequest: WalletConnectRequest
+    private let transactionRequest: WalletConnectRequestDraft
     private let transactionOption: WCTransactionOption?
-    private let wcSession: WCSession?
+    private let wcSession: WCSessionDraft
     private let dataSource: WCMainTransactionDataSource
     private let currencyFormatter: CurrencyFormatter
 
@@ -96,14 +101,15 @@ final class WCMainTransactionScreen:
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: transactionRequest.url.topic)
+        self.wcSession = draft.session
         let currencyFormatter = CurrencyFormatter()
         self.dataSource = WCMainTransactionDataSource(
             sharedDataController: configuration.sharedDataController,
             transactions: transactions,
-            transactionRequest: transactionRequest,
+            transactionRequest: draft.request,
             transactionOption: transactionOption,
-            walletConnector: configuration.walletConnector,
+            wcSession: draft.session,
+            peraConnect: configuration.peraConnect,
             currencyFormatter: currencyFormatter
         )
         self.currencyFormatter = currencyFormatter
@@ -224,12 +230,9 @@ extension WCMainTransactionScreen {
 
 extension WCMainTransactionScreen {
     private func bindDappInfo() {
-        let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url))
-        guard let wcSession else { return }
-
         let viewModel = WCTransactionDappMessageViewModel(
             session: wcSession,
-            imageSize: CGSize(width: 48.0, height: 48.0),
+            imageSize: CGSize(width: 48, height: 48),
             transactionOption: transactionOption,
             transaction: headerTransaction
         )
@@ -457,7 +460,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         if let signerAccount = transaction.requestedSigner.account {
             wcTransactionSigner.signTransaction(
                 transaction,
-                with: dataSource.transactionRequest,
                 for: signerAccount
             )
         } else {
@@ -504,7 +506,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
                 wcTransactionSigner.signTransaction(
                     nextTransaction,
-                    with: transactionRequest,
                     for: signerAccount
                 )
             } else {
@@ -621,35 +622,40 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
 extension WCMainTransactionScreen {
     private func logScreenWhenViewDidLoad() {
+        guard let wcV1Request = transactionRequest.wcV1Request else { return }
+
         analytics.record(
-            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
+            .wcTransactionRequestDidLoad(transactionRequest: wcV1Request)
         )
         analytics.track(
-            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
+            .wcTransactionRequestDidLoad(transactionRequest: wcV1Request)
         )
     }
 
     private func logScreenWhenViewDidAppear() {
+        guard let wcV1Request = transactionRequest.wcV1Request else { return }
+
         if !isViewFirstAppeared { return }
 
         analytics.record(
-            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+            .wcTransactionRequestDidAppear(transactionRequest: wcV1Request)
         )
         analytics.track(
-            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+            .wcTransactionRequestDidAppear(transactionRequest: wcV1Request)
         )
     }
 
     private func logAllTransactions() {
+        guard let wcV1Session = wcSession.wcV1Session else { return }
+
         transactions.forEach { transaction in
-            if let transactionData = transaction.unparsedTransactionDetail,
-               let session = wcSession {
+            if let transactionData = transaction.unparsedTransactionDetail {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
                 analytics.track(
                     .wcTransactionConfirmed(
                         transactionID: transactionID,
-                        dappName: session.peerMeta.name,
-                        dappURL: session.peerMeta.url.absoluteString
+                        dappName: wcV1Session.peerMeta.name,
+                        dappURL: wcV1Session.peerMeta.url.absoluteString
                     )
                 )
             }
@@ -924,8 +930,6 @@ extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
     func wcTransactionDappMessageViewDidTapped(
         _ WCTransactionDappMessageView: WCTransactionDappMessageView
     ) {
-        guard let wcSession else { return }
-
         let configurator = WCTransactionFullDappDetailConfigurator(
             from: wcSession,
             option: transactionOption,
@@ -1194,11 +1198,11 @@ extension WCMainTransactionScreen {
 protocol WCMainTransactionScreenDelegate: AnyObject {
     func wcMainTransactionScreen(
         _ wcMainTransactionScreen: WCMainTransactionScreen,
-        didSigned request: WalletConnectRequest,
-        in session: WCSession?
+        didSigned request: WalletConnectRequestDraft,
+        in session: WCSessionDraft
     )
     func wcMainTransactionScreen(
         _ wcMainTransactionScreen: WCMainTransactionScreen,
-        didRejected request: WalletConnectRequest
+        didRejected request: WalletConnectRequestDraft
     )
 }

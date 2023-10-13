@@ -18,7 +18,6 @@
 import UIKit
 
 class WCSingleTransactionView: BaseView {
-
     private let layout = Layout<LayoutConstants>()
     
     private lazy var mainStackView: VStackView = {

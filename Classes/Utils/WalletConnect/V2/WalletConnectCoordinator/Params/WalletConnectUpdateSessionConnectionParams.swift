@@ -20,6 +20,7 @@ protocol WalletConnectParams {
     var currentProtocolID: WalletConnectProtocolID { get }
 }
 
+/// <todo> Not used?
 protocol WalletConnectUpdateSessionConnectionParams: WalletConnectParams {
     var v1Session: WalletConnectSession? { get }
     var newWalletInfo: WalletConnectSessionWalletInfo? { get }

@@ -19,12 +19,13 @@ import Foundation
 import WalletConnectNetworking
 import WalletConnectPairing
 import Web3Wallet
+import UIKit
 
 final class WalletConnectV2Protocol: WalletConnectProtocol {
     var eventHandler: ((WalletConnectV2Event) -> Void)?
 
     private lazy var sessionSource = WalletConnectV2SessionSource()
-    
+
     private var signAPI: SignClient {
         return Sign.instance
     }
@@ -137,6 +138,13 @@ extension WalletConnectV2Protocol {
     
     func isValidSession(_ uri: WalletConnectSessionText) -> Bool {
         return sessionValidator.isValidSession(uri)
+    }
+}
+
+extension WalletConnectV2Protocol {
+    func configureTransactionsIfNeeded() {
+        let rootViewController = UIApplication.shared.rootViewController()
+        rootViewController?.startObservingPeraConnectEvents()
     }
 }
 
