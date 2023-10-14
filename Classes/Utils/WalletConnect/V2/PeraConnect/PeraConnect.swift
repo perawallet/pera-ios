@@ -38,8 +38,6 @@ protocol PeraConnect: AnyObject {
 
     func add(_ observer: PeraConnectObserver)
     func remove(_ observer: PeraConnectObserver)
-
-    func publishReset()
 }
 
 protocol PeraConnectObserver: AnyObject {
@@ -52,12 +50,12 @@ protocol PeraConnectObserver: AnyObject {
 enum PeraConnectEvent {    
     case shouldStartV1(
         session: WalletConnectSession,
-        preferences: WalletConnectSessionCreationPreferences?,
+        preferences: WalletConnectSessionCreationPreferences,
         completion: WalletConnectSessionConnectionCompletionHandler
     )
     case didConnectToV1(
         session: WCSession,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
     case didDisconnectFromV1(WCSession)
     case didDisconnectFromV1Fail(
@@ -69,12 +67,15 @@ enum PeraConnectEvent {
         session: WalletConnectV2Session,
         error: Error
     )
-    case didFailToConnectV1(WalletConnectV1Protocol.WCError)
+    case didFailToConnectV1(
+        error: WalletConnectV1Protocol.WCError,
+        preferences: WalletConnectSessionCreationPreferences
+    )
     case didExceedMaximumSessionFromV1
     case sessionsV2([WalletConnectV2Session])
     case proposeSessionV2(
         proposal: WalletConnectV2SessionProposal,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
     case deleteSessionV2(
         topic: WalletConnectTopic,
@@ -82,10 +83,10 @@ enum PeraConnectEvent {
     )
     case settleSessionV2(
         session: WalletConnectV2Session,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
-    case didCreateV2SessionFail
-    case didConnectV2SessionFail
+    case didCreateV2SessionFail(WalletConnectSessionCreationPreferences)
+    case didConnectV2SessionFail(WalletConnectSessionCreationPreferences)
     case updateSessionV2(
         topic: WalletConnectTopic,
         namespaces: SessionNamespaces
@@ -101,5 +102,4 @@ enum PeraConnectEvent {
     )
     case transactionRequestV2(WalletConnectV2Request)
     case failure(Error)
-    case performReset
 }

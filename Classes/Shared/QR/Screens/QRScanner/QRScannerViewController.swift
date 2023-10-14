@@ -24,6 +24,13 @@ final class QRScannerViewController:
     BaseViewController,
     NotificationObserver,
     PeraConnectObserver {
+    static var didReset: Notification.Name {
+        return .init(rawValue: "qrScannerViewController.reset")
+    }
+    static var didConnectWCSessionSuccessfully: Notification.Name {
+        return .init(rawValue: "qrScannerViewController.wcSessionConnectionSuccessful")
+    }
+
     weak var delegate: QRScannerViewControllerDelegate?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -94,6 +101,8 @@ final class QRScannerViewController:
         
         wcConnectionRepeater?.invalidate()
         wcConnectionRepeater = nil
+       
+        stopObservingNotifications()
     }
 
     override func viewDidLoad() {
@@ -102,6 +111,33 @@ final class QRScannerViewController:
         view.backgroundColor = Colors.Defaults.background.uiColor
 
         peraConnect.add(self)
+
+        observe(notification: Self.didReset) {
+            [weak self] notification in
+            guard let self else { return }
+            
+            let preferencesKey = ALGPeraConnect.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectSessionCreationPreferences
+            guard let preferences,
+                  hasSameOngoingConnectionRequest(preferences) else {
+                return
+            }
+
+            enableCapturingIfNeeded()
+        }
+        observe(notification: Self.didConnectWCSessionSuccessfully) {
+            [weak self] notification in
+            guard let self else { return }
+          
+            let preferencesKey = ALGPeraConnect.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectSessionCreationPreferences
+            guard let preferences,
+                  hasSameOngoingConnectionRequest(preferences) else {
+                return
+            }
+
+            closeScreen()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -413,8 +449,6 @@ extension QRScannerViewController {
             bindOverlayIfNeeded()
         case .deleteSessionV2:
             bindOverlayIfNeeded()
-        case .performReset:
-            enableCapturingIfNeeded()
         default:
             break
         }
@@ -424,12 +458,10 @@ extension QRScannerViewController {
 extension QRScannerViewController {
     private func shouldStartPeraConnect(
         session: WalletConnectSession,
-        with preferences: WalletConnectSessionCreationPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        if walletConnectSessionCreationPreferences?.session != preferences?.session {
-            return
-        }
+        guard hasSameOngoingConnectionRequest(preferences) else { return  }
 
         stopWCConnectionTimer()
     }
@@ -438,23 +470,28 @@ extension QRScannerViewController {
 extension QRScannerViewController {
     private func proposeSession(
         _ sessionProposal: WalletConnectV2SessionProposal,
-        with preferences: WalletConnectSessionCreationPreferences?
+        with preferences: WalletConnectSessionCreationPreferences
     ) {
-        if walletConnectSessionCreationPreferences?.session != preferences?.session {
-            return
-        }
+        guard hasSameOngoingConnectionRequest(preferences) else { return }
 
         stopWCConnectionTimer()
     }
 }
 
 extension QRScannerViewController {
+    private func hasSameOngoingConnectionRequest(_ preferences: WalletConnectSessionCreationPreferences) -> Bool {
+        return walletConnectSessionCreationPreferences?.session == preferences.session
+    }
+}
+
+extension QRScannerViewController {
     private func startWCConnectionTimer() {
+        /// <note>
         /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
-        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { [weak self] in
-            guard let self = self else {
-                return
-            }
+        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { 
+            [weak self] in
+            guard let self else { return }
+
             asyncMain { [weak self] in
                 guard let self else { return }
 

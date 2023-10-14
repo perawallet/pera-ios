@@ -69,7 +69,8 @@ extension WalletConnectV1Protocol {
             eventHandler?(
                 .didFail(
                     .failedToCreateSession(
-                        qr: session
+                        qr: session,
+                        preferences: preferences
                     )
                 )
             )
@@ -87,16 +88,13 @@ extension WalletConnectV1Protocol {
 
             try connect(to: url)
         } catch {
-            guard hasOngoingWCConnectionRequest(for: key) else {
-                return
-            }
-
             clearOngoingWCConnectionRequest(for: key)
 
             eventHandler?(
                 .didFail(
                     .failedToConnect(
-                        url: url
+                        url: url,
+                        preferences: preferences
                     )
                 )
             )
@@ -257,12 +255,16 @@ extension WalletConnectV1Protocol {
         shouldStart session: WalletConnectSession,
         completion: @escaping (WalletConnectSession.WalletInfo) -> Void
     ) {
+        let key = session.url.absoluteString
+        let preferences = preferencesForOngoingConnections[key]
+        guard let preferences else { return }
+       
         /// <note>
         /// Get user approval or rejection for the session
         eventHandler?(
             .shouldStart(
                 session: session,
-                preferences: preferencesForOngoingConnections[session.url.absoluteString],
+                preferences: preferences,
                 completion: completion
             )
         )
@@ -284,10 +286,13 @@ extension WalletConnectV1Protocol {
             
             let key = session.url.absoluteString
 
+            let preferences = preferencesForOngoingConnections[key]
+            guard let preferences else { return }
+
             self.eventHandler?(
                 .didConnect(
                     session: connectedSession,
-                    preferences: preferencesForOngoingConnections[key]
+                    preferences: preferences
                 )
             )
 
@@ -315,16 +320,16 @@ extension WalletConnectV1Protocol {
         didFailToConnect url: WalletConnectURL
     ) {
         let key = url.absoluteString
-        guard hasOngoingWCConnectionRequest(for: key) else {
-            return
-        }
+        let preferences = preferencesForOngoingConnections[key]
+        guard let preferences else { return }
 
         clearOngoingWCConnectionRequest(for: key)
 
         eventHandler?(
             .didFail(
                 .failedToConnect(
-                    url: url
+                    url: url,
+                    preferences: preferences
                 )
             )
         )
@@ -426,12 +431,12 @@ extension WalletConnectV1Protocol {
 enum WalletConnectV1Event {
     case shouldStart(
         session: WalletConnectSession,
-        preferences: WalletConnectSessionCreationPreferences?,
+        preferences: WalletConnectSessionCreationPreferences,
         completion: WalletConnectSessionConnectionCompletionHandler
     )
     case didConnect(
         session: WCSession,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
     case didDisconnect(WCSession)
     case didFail(WalletConnectV1Protocol.WCError)
@@ -440,8 +445,8 @@ enum WalletConnectV1Event {
 
 extension WalletConnectV1Protocol {
     enum WCError {
-        case failedToConnect(url: WalletConnectURL)
-        case failedToCreateSession(qr: String)
+        case failedToConnect(url: WalletConnectURL, preferences: WalletConnectSessionCreationPreferences)
+        case failedToCreateSession(qr: String, preferences: WalletConnectSessionCreationPreferences)
         case failedToDisconnectInactiveSession(session: WCSession)
         case failedToDisconnect(session: WCSession)
     }

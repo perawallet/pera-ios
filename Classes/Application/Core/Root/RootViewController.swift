@@ -367,31 +367,6 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
             return
         }
 
-        let api = appConfiguration.api
-        guard api.network.allowedChainReference == requestedChainReference else {
-            let network = ALGAPI.Network(blockchain: requestedChain)
-
-            let requestedNetworkTitle = network.unwrap(\.rawValue.capitalized) ?? requestedChainReference
-            let expectedNetworkTitle = api.network.rawValue.capitalized
-
-            let error: WCTransactionErrorResponse = .userRejectedChains(
-                requestedNetwork: requestedNetworkTitle,
-                expectedNetwork: expectedNetworkTitle
-            )
-
-            appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.message
-            )
-
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                error: error,
-                v2Request: request
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return
-        }
-
         let supportedMethods =  WalletConnectMethod.allCases.map(\.rawValue)
         guard supportedMethods.contains(requestedMethod) else {
             let params = WalletConnectV2RejectTransactionRequestParams(

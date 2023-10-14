@@ -95,7 +95,7 @@ extension WalletConnectV2Protocol {
 extension WalletConnectV2Protocol {
     func connect(with preferences: WalletConnectSessionCreationPreferences) {
         guard let uri = WalletConnectURI(string: preferences.session) else {
-            eventHandler?(.didCreateSessionFail)
+            eventHandler?(.didCreateSessionFail(preferences))
             return
         }
 
@@ -116,7 +116,7 @@ extension WalletConnectV2Protocol {
                     )
                 )
 
-                self.eventHandler?(.didConnectSessionFail)
+                self.eventHandler?(.didConnectSessionFail(preferences))
 
                 print("[WC2] - Pairing connect error: \(error)")
             }
@@ -468,6 +468,8 @@ extension WalletConnectV2Protocol {
                 guard let self else { return }
 
                 let preferences = preferencesForOngoingConnections[sessionProposal.pairingTopic]
+                guard let preferences else { return }
+
                 self.eventHandler?(
                     .proposeSession(
                         proposal: sessionProposal,
@@ -506,6 +508,8 @@ extension WalletConnectV2Protocol {
 
                 let topic = session.pairingTopic
                 let preferences = preferencesForOngoingConnections[topic]
+                guard let preferences else { return }
+
                 self.eventHandler?(
                     .settleSession(
                         session: session,
@@ -595,10 +599,10 @@ enum WalletConnectV2Event {
     case sessions([WalletConnectV2Session])
     case proposeSession(
         proposal: WalletConnectV2SessionProposal,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
-    case didCreateSessionFail
-    case didConnectSessionFail
+    case didCreateSessionFail(WalletConnectSessionCreationPreferences)
+    case didConnectSessionFail(WalletConnectSessionCreationPreferences)
     case didDisconnectSession(WalletConnectV2Session)
     case didDisconnectSessionFail(
         session: WalletConnectV2Session,
@@ -610,7 +614,7 @@ enum WalletConnectV2Event {
     )
     case settleSession(
         session: WalletConnectV2Session,
-        preferences: WalletConnectSessionCreationPreferences?
+        preferences: WalletConnectSessionCreationPreferences
     )
     case updateSession(
         topic: WalletConnectTopic,

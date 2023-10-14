@@ -74,9 +74,14 @@ extension ALGWalletConnectCoordinator {
                             error: error
                         )
                     )
-                case .failedToCreateSession,
-                     .failedToConnect:
-                    sendEvent(.didFailToConnectV1(error))
+                case .failedToCreateSession(_, let preferences),
+                     .failedToConnect(_, let preferences):
+                    sendEvent(
+                        .didFailToConnectV1(
+                            error: error,
+                            preferences: preferences
+                        )
+                    )
                 }
             case .didExceedMaximumSession:
                 sendEvent(.didExceedMaximumSessionFromV1)
@@ -99,10 +104,10 @@ extension ALGWalletConnectCoordinator {
                         preferences: preferences
                     )
                 )
-            case .didCreateSessionFail:
-                sendEvent(.didCreateV2SessionFail)
-            case .didConnectSessionFail:
-                sendEvent(.didConnectV2SessionFail )
+            case .didCreateSessionFail(let preferences):
+                sendEvent(.didCreateV2SessionFail(preferences))
+            case .didConnectSessionFail(let preferences):
+                sendEvent(.didConnectV2SessionFail(preferences))
             case .didDisconnectSession(let session):
                 sendEvent(.didDisconnectFromV2(session))
             case .didDisconnectSessionFail(let session, let error):
