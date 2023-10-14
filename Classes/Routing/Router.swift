@@ -2108,6 +2108,24 @@ extension Router {
     }
 }
 
+extension Router {
+    private func publishQRScannerScreenResetNotification(_ preferences: WalletConnectSessionCreationPreferences) {
+        NotificationCenter.default.post(
+            name: QRScannerViewController.didReset,
+            object: nil,
+            userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
+        )
+    }
+
+    private func publishQRScannerWCSessionConnectionSuccessfulNotification(_ preferences: WalletConnectSessionCreationPreferences) {
+        NotificationCenter.default.post(
+            name: QRScannerViewController.didConnectWCSessionSuccessfully,
+            object: nil,
+            userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
+        )
+    }
+}
+
 /// <mark>:  PeraConnectObserver
 extension Router {
     func peraConnect(
@@ -2128,11 +2146,14 @@ extension Router {
                 didConnectTo: session,
                 with: preferences
             )
-        case .didFailToConnectV1(let error):
-            peraConnectDidFailToConnectV1(with: error)
-        case .didCreateV2SessionFail,
-             .didConnectV2SessionFail:
-            peraConnectDidFailToConnectV2()
+        case .didFailToConnectV1(let error, let preferences):
+            peraConnectDidFailToConnectV1(
+                with: error,
+                preferences: preferences
+            )
+        case .didCreateV2SessionFail(let preferences),
+             .didConnectV2SessionFail(let preferences):
+            peraConnectDidFailToConnectV2(preferences)
         case .proposeSessionV2(let proposal, let preferences):
             proposeSession(
                 proposal,
@@ -2153,7 +2174,7 @@ extension Router {
     private func peraConnectShouldStartV1Session(
         _ peraConnect: PeraConnect,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectSessionCreationPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let bannerController = appConfiguration.bannerController
@@ -2171,8 +2192,16 @@ extension Router {
                 )
             )
             
-            asyncMain { [weak bannerController] in
-                bannerController?.presentErrorBanner(
+            asyncMain {
+                [weak bannerController, weak self] in
+                guard
+                    let bannerController,
+                    let self
+                else {
+                    return
+                }
+
+                bannerController.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-transaction-error-node".localized
                 )
@@ -2181,7 +2210,7 @@ extension Router {
                     session.getDeclinedWalletConnectionInfo(on: api.network)
                 )
 
-                peraConnect.publishReset()
+                self.publishQRScannerScreenResetNotification(preferences)
             }
             return
         }
@@ -2199,8 +2228,15 @@ extension Router {
                 )
             )
 
-            asyncMain { [weak bannerController] in
-                bannerController?.presentErrorBanner(
+            asyncMain {
+                [weak bannerController, weak self] in
+                guard
+                    let bannerController,
+                    let self
+                else {
+                    return
+                }
+                bannerController.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-session-error-no-account".localized
                 )
@@ -2209,7 +2245,7 @@ extension Router {
                     session.getDeclinedWalletConnectionInfo(on: api.network)
                 )
 
-                peraConnect.publishReset()
+                self.publishQRScannerScreenResetNotification(preferences)
             }
             return
         }
@@ -2264,7 +2300,7 @@ extension Router {
 
                         screen.dismissScreen()
 
-                        peraConnect.publishReset()
+                        self.publishQRScannerScreenResetNotification(preferences)
                     }
                 case .performConnect(let accounts):
                     self.appConfiguration.analytics.track(
@@ -2296,7 +2332,7 @@ extension Router {
 
                         screen.dismiss(animated: true)
 
-                        peraConnect.publishReset()
+                        self.publishQRScannerScreenResetNotification(preferences)
                     }
                 }
             }
@@ -2305,14 +2341,17 @@ extension Router {
         }
     }
 
-    private func peraConnectDidFailToConnectV1(with error: WalletConnectV1Protocol.WCError) {
+    private func peraConnectDidFailToConnectV1(
+        with error: WalletConnectV1Protocol.WCError,
+        preferences: WalletConnectSessionCreationPreferences
+    ) {
         switch error {
         case .failedToConnect,
              .failedToCreateSession:
             asyncMain { [weak self] in
                 guard let self else { return }
                
-                appConfiguration.peraConnect.publishReset()
+                self.publishQRScannerScreenResetNotification(preferences)
 
                 appConfiguration.bannerController.presentErrorBanner(
                     title: "title-error".localized,
@@ -2327,9 +2366,9 @@ extension Router {
     private func peraConnectDidConnectToV1Session(
         _ peraConnect: PeraConnect,
         didConnectTo session: WCSession,
-        with preferences: WalletConnectSessionCreationPreferences?
+        with preferences: WalletConnectSessionCreationPreferences
     ) {
-        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? false
+        let shouldShowConnectionApproval = preferences.prefersConnectionApproval
         if shouldShowConnectionApproval {
             let draft = WCSessionDraft(wcV1Session: session)
 
@@ -2344,12 +2383,13 @@ extension Router {
             asyncMain(afterDuration: 0.3) {
                 [weak self] in
                 guard let self else { return }
-                self.openWCSessionConnectionSuccessful(draft)
+                self.openWCSessionConnectionSuccessful(
+                    draft: draft,
+                    preferences: preferences
+                )
             }
         }
 
-        peraConnect.publishReset()
-        
         appConfiguration.walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
@@ -2358,7 +2398,7 @@ extension Router {
 extension Router {
     private func proposeSession(
         _ sessionProposal: WalletConnectV2SessionProposal,
-        with preferences: WalletConnectSessionCreationPreferences?
+        with preferences: WalletConnectSessionCreationPreferences
     ) {
         let requiredNamespaces = sessionProposal.requiredNamespaces[WalletConnectNamespaceKey.algorand]
         let requestedChains = requiredNamespaces?.chains ?? []
@@ -2373,7 +2413,7 @@ extension Router {
                 )
             )
 
-            appConfiguration.peraConnect.publishReset()
+            publishQRScannerScreenResetNotification(preferences)
 
             let params = WalletConnectV2RejectSessionConnectionParams(
                 proposalId: sessionProposal.id,
@@ -2418,7 +2458,7 @@ extension Router {
                     message: error.message
                 )
 
-                appConfiguration.peraConnect.publishReset()
+                publishQRScannerScreenResetNotification(preferences)
 
                 let params = WalletConnectV2RejectSessionConnectionParams(
                     proposalId: sessionProposal.id,
@@ -2443,7 +2483,7 @@ extension Router {
                 )
             )
 
-            appConfiguration.peraConnect.publishReset()
+            publishQRScannerScreenResetNotification(preferences)
 
             let params = WalletConnectV2RejectSessionConnectionParams(
                 proposalId: sessionProposal.id,
@@ -2472,7 +2512,7 @@ extension Router {
                     message: "wallet-connect-session-error-no-account".localized
                 )
 
-                appConfiguration.peraConnect.publishReset()
+                publishQRScannerScreenResetNotification(preferences)
 
                 let params = WalletConnectV2RejectSessionConnectionParams(
                     proposalId: sessionProposal.id,
@@ -2523,7 +2563,7 @@ extension Router {
 
                         wcConnectionScreen?.dismissScreen()
 
-                        appConfiguration.peraConnect.publishReset()
+                        publishQRScannerScreenResetNotification(preferences)
                     }
                 case .performConnect(let selectedAccounts):
                     appConfiguration.analytics.track(
@@ -2586,7 +2626,7 @@ extension Router {
 
                     wcConnectionScreen?.dismiss(animated: true)
 
-                    appConfiguration.peraConnect.publishReset()
+                    publishQRScannerScreenResetNotification(preferences)
                 }
 
                 ongoingTransitions.append(transition)
@@ -2596,9 +2636,9 @@ extension Router {
 
     func peraConnectDidSettleSessionV2(
         _ session: WalletConnectV2Session,
-        with preferences: WalletConnectSessionCreationPreferences?
+        with preferences: WalletConnectSessionCreationPreferences
     ) {
-        if preferences?.prefersConnectionApproval ?? false {
+        if preferences.prefersConnectionApproval {
             let draft = WCSessionDraft(wcV2Session: session)
 
             /// <note>
@@ -2612,19 +2652,20 @@ extension Router {
             asyncMain(afterDuration: 0.3) {
                 [weak self] in
                 guard let self else { return }
-                self.openWCSessionConnectionSuccessful(draft)
+                self.openWCSessionConnectionSuccessful(
+                    draft: draft,
+                    preferences: preferences
+                )
             }
         }
-
-        appConfiguration.peraConnect.publishReset()
     }
 
-    private func peraConnectDidFailToConnectV2() {
+    private func peraConnectDidFailToConnectV2(_ preferences: WalletConnectSessionCreationPreferences) {
         asyncMain { [weak self] in
             guard let self else { return }
 
-            appConfiguration.peraConnect.publishReset()
-            
+            publishQRScannerScreenResetNotification(preferences)
+
             appConfiguration.bannerController.presentErrorBanner(
                 title: "title-error".localized,
                 message: "wallet-connect-session-invalid-qr-message".localized
@@ -2634,7 +2675,10 @@ extension Router {
 }
 
 extension Router {
-    private func openWCSessionConnectionSuccessful(_ draft: WCSessionDraft) {
+    private func openWCSessionConnectionSuccessful(
+        draft: WCSessionDraft,
+        preferences: WalletConnectSessionCreationPreferences
+    ) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
@@ -2643,7 +2687,11 @@ extension Router {
             guard let visibleScreen else { return }
             switch event {
             case .didClose:
-                visibleScreen.presentedViewController?.dismiss(animated: true)
+                visibleScreen.presentedViewController?.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    publishQRScannerWCSessionConnectionSuccessfulNotification(preferences)
+                }
             }
         }
         transition.perform(

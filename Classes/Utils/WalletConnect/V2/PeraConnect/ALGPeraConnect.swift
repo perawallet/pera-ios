@@ -80,12 +80,6 @@ extension ALGPeraConnect {
 }
 
 extension ALGPeraConnect {
-    func publishReset() {
-        publish(.performReset)
-    }
-}
-
-extension ALGPeraConnect {
     private func setWalletConnectCoordinatorEvents() {
         walletConnectCoordinator.eventHandler = {
             [weak self] event in
@@ -116,8 +110,13 @@ extension ALGPeraConnect {
                         error: error
                     )
                 )
-            case .didFailToConnectV1(let error):
-                publish(.didFailToConnectV1(error))
+            case .didFailToConnectV1(let error, let preferences):
+                publish(
+                    .didFailToConnectV1(
+                        error: error,
+                        preferences: preferences
+                    )
+                )
             case .didExceedMaximumSessionFromV1:
                 publish(.didExceedMaximumSessionFromV1)
             case .sessionsV2(let sessions):
@@ -150,10 +149,10 @@ extension ALGPeraConnect {
                         namespaces: namespaces
                     )
                 )
-            case .didCreateV2SessionFail:
-                publish(.didCreateV2SessionFail)
-            case .didConnectV2SessionFail:
-                publish(.didConnectV2SessionFail)
+            case .didCreateV2SessionFail(let preferences):
+                publish(.didCreateV2SessionFail(preferences))
+            case .didConnectV2SessionFail(let preferences):
+                publish(.didConnectV2SessionFail(preferences))
             case .didDisconnectFromV2(let session):
                 publish(.didDisconnectFromV2(session))
             case .didDisconnectFromV2Fail(let session, let error):
