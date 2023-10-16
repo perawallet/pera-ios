@@ -294,7 +294,7 @@ extension WCSessionDetailLocalDataController {
             return makeItemsForWCv1AdvancedPermissionCells()
         }
 
-        if draft.isWCv1Session {
+        if draft.isWCv2Session {
             return makeItemsForWCv2AdvancedPermissionCells()
         }
 
