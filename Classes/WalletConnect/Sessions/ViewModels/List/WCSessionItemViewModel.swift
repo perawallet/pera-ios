@@ -118,6 +118,6 @@ extension WCSessionItemViewModel {
         description =
             "wallet-connect-v2-session-expires-on-date"
                 .localized(validUntilDate)
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+                .footnoteRegular(lineBreakMode: .byWordWrapping)
     }
 }
