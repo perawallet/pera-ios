@@ -128,7 +128,7 @@ final class WCSessionItemView:
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 
-    func customizeAppearance( _ styleSheet: StyleSheet ) {}
+    func customizeAppearance( _ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
