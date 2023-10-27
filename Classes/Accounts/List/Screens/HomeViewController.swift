@@ -63,12 +63,6 @@ final class HomeViewController:
     )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
-    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
-        presentingScreen: self,
-        api: api!,
-        session: session!
-    )
-
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,

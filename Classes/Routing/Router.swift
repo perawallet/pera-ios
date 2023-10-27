@@ -1438,33 +1438,6 @@ final class Router:
                 eventHandler: eventHandler,
                 api: configuration.api
             )
-        case .exportAccountList(let eventHandler):
-            let dataController = ExportAccountListLocalDataController(
-                sharedDataController: appConfiguration.sharedDataController
-            )
-            let screen = ExportAccountListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
-            let screen = ExportAccountsDomainConfirmationScreen(
-                theme: .init(hasSingularAccount: hasSingularAccount, .current),
-                api: configuration.api
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
-            let dataController = ExportAccountsConfirmationListLocalDataController(
-                selectedAccounts: selectedAccounts
-            )
-            let screen = ExportAccountsConfirmationListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .selectAsset(let dataController, let coordinator, let title, let theme):
             let aViewController = SelectAssetScreen(
                 dataController: dataController,
@@ -1505,10 +1478,6 @@ final class Router:
             aViewController.eventHandler = eventHandler
 
             viewController = aViewController
-        case .exportAccountsResult(let accounts, let eventHandler):
-            let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .discoverSearch(let eventHandler):
             let screen = DiscoverSearchScreen(
                 dataController: DiscoverSearchAPIDataController(
