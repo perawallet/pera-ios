@@ -39,17 +39,13 @@ final class SettingsDataSource: NSObject {
     ]
 
     private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnector
     private var session: Session?
     
     init(
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
         session: Session?
     ) {
         self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
-        
         super.init()
         self.session = session
 

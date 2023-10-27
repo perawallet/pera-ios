@@ -19,7 +19,9 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 
-final class SettingsViewController: BaseViewController, NotificationObserver {
+final class SettingsViewController:
+    BaseViewController,
+    NotificationObserver {
     var notificationObservations: [NSObjectProtocol] = []
 
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
@@ -40,7 +42,6 @@ final class SettingsViewController: BaseViewController, NotificationObserver {
 
     private lazy var dataSource = SettingsDataSource(
         sharedDataController: sharedDataController,
-        walletConnector: walletConnector,
         session: session
     )
 
@@ -63,21 +64,16 @@ final class SettingsViewController: BaseViewController, NotificationObserver {
     }
     
     override func setListeners() {
-        observe(notification: .ApplicationWillEnterForeground) { [weak self] _ in
-            guard let self else { return }
-            self.settingsView.collectionView.reloadData()
-        }
-
-        observe(notification: .AuthenticatedUserUpdate) { [weak self] _ in
-            guard let self else { return }
-            self.dataSource.updateAccountSettings()
-            self.settingsView.collectionView.reloadData()
-        }
-
         observe(notification: .backupCreated) { [weak self] _ in
             guard let self else { return }
             self.dataSource.updateAccountSettings()
             self.settingsView.collectionView.reloadData()
+        }
+
+        observeWhenApplicationWillEnterForeground {
+            [weak self] _ in
+            guard let self else { return }
+            settingsView.collectionView.reloadData()
         }
     }
 

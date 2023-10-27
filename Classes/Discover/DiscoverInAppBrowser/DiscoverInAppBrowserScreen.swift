@@ -33,13 +33,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private let destination: DiscoverDestination
 
     deinit {
-        /// <note>
-        /// Super deinit handles else condition.
-        if #unavailable(iOS 14) {
-            let messages = DiscoverInAppBrowserScriptMessage.allCases
-            userContentController.removeScriptMessageHandlers(forMessages: messages)
-        }
-
         stopObservingNotifications()
     }
 

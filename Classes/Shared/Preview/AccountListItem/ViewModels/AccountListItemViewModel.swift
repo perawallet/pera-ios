@@ -111,6 +111,15 @@ extension AccountListItemViewModel {
             bindIcon(nameServiceAccountListItem)
             bindTitle(nameServiceAccountListItem)
         }
+
+        if let wcSessionDetailConnectedAccountItem = model as? WCSessionDetailConnectedAccountItem {
+            address = wcSessionDetailConnectedAccountItem.account.value.address
+
+            bindIcon(wcSessionDetailConnectedAccountItem)
+            bindTitle(wcSessionDetailConnectedAccountItem)
+            bindAccessory(wcSessionDetailConnectedAccountItem)
+            bindAccessoryIcon(wcSessionDetailConnectedAccountItem)
+        }
     }
 }
 
@@ -330,6 +339,105 @@ extension AccountListItemViewModel {
 
 extension AccountListItemViewModel {
     mutating func bindIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindIcon(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindTitle(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindTitle(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindAccessory(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        let sessionDraft = wcSessionDetailConnectedAccountItem.session
+
+        var networkForPrimaryAccessory: ALGAPI.Network?
+        var networkForSecondaryAccessory: ALGAPI.Network?
+
+        if let wcV1Session = sessionDraft.wcV1Session {
+            let chainID = wcV1Session.walletMeta?.chainId
+
+            switch chainID {
+            case algorandWalletConnectV1ChainID:
+                networkForPrimaryAccessory = .mainnet
+                networkForSecondaryAccessory = .testnet
+            case algorandWalletConnectV1TestNetChainID:
+                networkForPrimaryAccessory = .testnet
+            case algorandWalletConnectV1MainNetChainID:
+                networkForPrimaryAccessory = .mainnet
+            default: break
+            }
+        }
+
+        if let wcV2Session = sessionDraft.wcV2Session {
+            let networks = wcV2Session.accounts.compactMap { account in
+                if account.address == wcSessionDetailConnectedAccountItem.account.value.address {
+                    let chainReference = account.reference
+                    return ALGAPI.Network(chainReference: chainReference)
+                }
+
+                return nil
+            }
+
+            if networks.isNonEmpty {
+                if networks.isSingular {
+                    let network = networks.first!
+                    networkForPrimaryAccessory = network
+                    networkForSecondaryAccessory = nil
+                } else {
+                    networkForPrimaryAccessory = .mainnet
+                    networkForSecondaryAccessory = .testnet
+                }
+            }
+        }
+
+        primaryAccessory = getAccessory(for: networkForPrimaryAccessory)
+        secondaryAccessory = getAccessory(for: networkForSecondaryAccessory)
+    }
+
+    private func getAccessory(for network: ALGAPI.Network?) ->  EditText? {
+        switch network {
+        case .mainnet: return getMainnetAccessory()
+        case .testnet: return getTestnetAccessory()
+        default: return nil
+        }
+    }
+
+    private func getMainnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Helpers.positive))
+
+        let text =  "• MAINNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private func getTestnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Other.Global.yellow600))
+
+        let text =  "• TESTNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private mutating func bindAccessoryIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindAccessoryIcon(isValid: wcSessionDetailConnectedAccountItem.account.isAvailable)
+    }
+}
+
+extension AccountListItemViewModel {
+    mutating func bindIcon(
         _ icon: Image?
     ) {
         self.icon = icon?.uiImage
@@ -445,4 +553,9 @@ struct NameServiceAccountListItem {
         self.title = title
         self.subtitle = subtitle
     }
+}
+
+struct WCSessionDetailConnectedAccountItem {
+    let account: AccountHandle
+    let session: WCSessionDraft
 }

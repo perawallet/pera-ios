@@ -57,12 +57,14 @@ extension DeeplinkSource {
 /// I think we should move it elsewhere, but let's think about it later when refactoring Wallet
 /// Connect infrastructure.
 struct WalletConnectTransactionSignRequestDraft {
-    let request: WalletConnectRequest
+    let request: WalletConnectRequestDraft
     let transactions: [WCTransaction]
-    let option: WCTransactionOption?
+    var option: WCTransactionOption?
+    let session: WCSessionDraft
 }
 
 struct WalletConnectArbitraryDataSignRequestDraft {
-    let request: WalletConnectRequest
+    let request: WalletConnectRequestDraft
     let arbitraryData: [WCArbitraryData]
+    let session: WCSessionDraft
 }
