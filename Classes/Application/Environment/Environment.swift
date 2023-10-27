@@ -161,7 +161,7 @@ enum AlgorandWeb: String {
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
-    case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
+    case vestigeTermsOfService = "https://about.vestige.fi/disclaimer/terms-of-service"
     case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
     case rekey = "https://perawallet.app/support/rekey/"
     case tinymanSwap = "https://perawallet.app/support/swap/"
