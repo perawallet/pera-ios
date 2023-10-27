@@ -21,8 +21,6 @@ enum QRBackupAction: RawRepresentable, ALGAPIModel {
         switch self {
         case .import:
             return "import"
-        case .export:
-            return "export"
         case .unsupported(let unsupportedValue):
             return unsupportedValue
         }
@@ -32,8 +30,6 @@ enum QRBackupAction: RawRepresentable, ALGAPIModel {
         switch rawValue {
         case "import":
             self = .import
-        case "export":
-            self = .export
         default:
             self = .unsupported(rawValue)
         }
@@ -44,7 +40,6 @@ enum QRBackupAction: RawRepresentable, ALGAPIModel {
     }
 
     case `import`
-    case export
     case unsupported(String)
 }
 
