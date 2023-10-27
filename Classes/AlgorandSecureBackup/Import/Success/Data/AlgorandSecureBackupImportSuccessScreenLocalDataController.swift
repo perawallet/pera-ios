@@ -61,18 +61,6 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
             accountsDictionary[accountParameter.address] = accountParameter
         }
 
-        let accounts = accountImportParameters.map { accountParameter in
-            let accountAddress = accountParameter.address
-
-            let accountInformation = AccountInformation(
-                address: accountAddress,
-                name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                isWatchAccount: false
-            )
-
-            return Account(localAccount: accountInformation)
-        }
-
         let filteredAccounts = selectedAccounts.compactMap { account in
             return accountsDictionary[account.address]
         }
