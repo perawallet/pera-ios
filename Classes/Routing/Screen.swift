@@ -309,17 +309,6 @@ indirect enum Screen {
         draft: InsufficientAlgoBalanceDraft,
         eventHandler: InsufficientAlgoBalanceScreen.EventHandler
     )
-    case exportAccountList(
-        eventHandler: ExportAccountListScreen.EventHandler
-    )
-    case exportAccountsDomainConfirmation(
-        hasSingularAccount: Bool,
-        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
-    )
-    case exportAccountsConfirmationList(
-        selectedAccounts: [Account],
-        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
-    )
     case selectAsset(
         dataController: SelectAssetDataController,
         coordinator: SwapAssetFlowCoordinator?,
@@ -342,10 +331,6 @@ indirect enum Screen {
     case editSwapSlippage(
         dataStore: SwapSlippageTolerancePercentageStore & SwapMutableSlippageTolerancePercentageStore,
         eventHandler: EditSwapSlippageScreen.EventHandler
-    )
-    case exportAccountsResult(
-        accounts: [Account],
-        eventHandler: ExportsAccountsResultScreen.EventHandler
     )
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
