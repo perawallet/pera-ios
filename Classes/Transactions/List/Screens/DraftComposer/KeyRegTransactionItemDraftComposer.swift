@@ -12,22 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionType.swift
+//   KeyRegTransactionItemDraftComposer.swift
 
 import Foundation
 
-enum WCTransactionType {
-    case algos
-    case asset
-    case assetAddition
-    case possibleAssetAddition
-    case appCall
-    case assetConfig(type: AssetConfigType)
-    case keyReg
-}
+struct KeyRegTransactionItemDraftComposer: TransactionListItemDraftComposer {
+    let draft: TransactionListing
 
-enum AssetConfigType {
-    case create
-    case delete
-    case reconfig
+    init(draft: TransactionListing) {
+        self.draft = draft
+    }
+
+    func composeTransactionItemPresentationDraft(from transaction: TransactionItem) -> TransactionViewModelDraft? {
+        let draft = TransactionViewModelDraft(
+            account: draft.accountHandle.value,
+            asset: nil,
+            transaction: transaction,
+            localAccounts: [],
+            localAssets: nil
+        )
+        return draft
+    }
 }

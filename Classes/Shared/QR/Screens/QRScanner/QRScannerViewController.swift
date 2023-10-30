@@ -99,9 +99,7 @@ final class QRScannerViewController:
     deinit {
         captureSession = nil
         
-        wcConnectionRepeater?.invalidate()
-        wcConnectionRepeater = nil
-       
+        stopWCConnectionTimer()
         stopObservingNotifications()
     }
 

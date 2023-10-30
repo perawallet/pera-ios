@@ -12,22 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionType.swift
+//   TransferType.swift
 
 import Foundation
 
-enum WCTransactionType {
-    case algos
-    case asset
-    case assetAddition
-    case possibleAssetAddition
-    case appCall
-    case assetConfig(type: AssetConfigType)
-    case keyReg
-}
-
-enum AssetConfigType {
-    case create
-    case delete
-    case reconfig
+enum TransferType {
+    case sent
+    case received
 }
