@@ -181,6 +181,9 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "local-authentication-no".localized
         case .recoverWithLedger:
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
+        case .backUp,
+             .writePassphrase:
+            secondaryActionButtonTitle = "title-skip-for-now".localized
         case .accountVerified(let flow):
             bindAccountSetupFlowSecondaryButton(flow)
         case .ledgerSuccessfullyConnected(let flow):

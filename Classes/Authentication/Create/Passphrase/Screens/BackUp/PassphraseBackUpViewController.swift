@@ -26,6 +26,12 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private lazy var passphraseBackUpView = PassphraseBackUpView()
     private lazy var theme = Theme()
 
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!
+    )
+
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private let flow: AccountSetupFlow
@@ -41,6 +47,12 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
 
         generatePrivateKey()
         mnemonics = session?.mnemonics(forAccount: address)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        addNavigationBarButtonItems()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -91,6 +103,35 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         passphraseBackUpView.setPassphraseCollectionViewDelegate(self)
         passphraseBackUpView.setPassphraseCollectionViewDataSource(self)
         scrollView.delegate = self
+    }
+}
+
+extension PassphraseBackUpViewController {
+    private func addNavigationBarButtonItems() {
+        rightBarButtonItems = [ makeSkipBarButtonItem() ]
+    }
+
+    private func makeSkipBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .skip) {
+            [unowned self] in
+            guard let account = createAccount() else { return }
+            self.navigateToSetupNameScreen(account)
+        }
+    }
+}
+
+extension PassphraseBackUpViewController {
+    private func navigateToSetupNameScreen(_ account: AccountInformation) {
+        let screen = open(
+            .accountNameSetup(
+                flow: flow,
+                mode: .add(type: .create),
+                accountAddress: account.address
+            ),
+            by: .push 
+        ) as? AccountNameSetupViewController
+        screen?.hidesCloseBarButtonItem = true
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 }
 
@@ -179,6 +220,36 @@ extension PassphraseBackUpViewController {
 }
 
 extension PassphraseBackUpViewController {
+    private func createAccount() -> AccountInformation? {
+        guard
+            let tempPrivateKey = session?.privateData(for: "temp"),
+            let address = session?.address(for: "temp")
+        else {
+            return nil
+        }
+
+        analytics.track(.registerAccount(registrationType: .create))
+
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+        )
+        session?.savePrivate(tempPrivateKey, for: account.address)
+        session?.removePrivateData(for: "temp")
+
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+
+        return account
+    }
+
     private func generatePrivateKey() {
         guard let session = session,
               let privateKey = session.generatePrivateKey() else {

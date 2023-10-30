@@ -23,12 +23,22 @@ final class TutorialViewController: BaseScrollViewController {
     private lazy var tutorialView = TutorialView()
     private lazy var theme = Theme()
 
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!
+    )
+    
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
 
     private let localAuthenticator = LocalAuthenticator()
 
-    init(flow: AccountSetupFlow, tutorial: Tutorial, configuration: ViewControllerConfiguration) {
+    init(
+        flow: AccountSetupFlow,
+        tutorial: Tutorial,
+        configuration: ViewControllerConfiguration
+    ) {
         self.flow = flow
         self.tutorial = tutorial
         super.init(configuration: configuration)
@@ -189,6 +199,22 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
+        case .backUp,
+             .writePassphrase:
+            guard let newAccount = createAccount() else {
+                return
+            }
+
+            let screen = open(
+                .accountNameSetup(
+                    flow: flow,
+                    mode: .add(type: .create),
+                    accountAddress: newAccount.address
+                ),
+                by: .push
+            ) as? AccountNameSetupViewController
+            screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+            screen?.hidesCloseBarButtonItem = true
         case .accountVerified(let flow):
             if case .initializeAccount(mode: .add(type: .watch)) = flow {
                 analytics.track(.onboardWatchAccount(type: .verified))
@@ -315,4 +341,47 @@ enum Tutorial: Equatable {
     case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case failedToImportLedgerAccounts
     case collectibleTransferConfirmed
+}
+
+extension TutorialViewController {
+    private func createAccount() -> AccountInformation? {
+        generatePrivateKey()
+
+        guard 
+            let tempPrivateKey = session?.privateData(for: "temp"),
+            let address = session?.address(for: "temp")
+        else {
+            return nil
+        }
+
+        analytics.track(.registerAccount(registrationType: .create))
+
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+        )
+        session?.savePrivate(tempPrivateKey, for: account.address)
+        session?.removePrivateData(for: "temp")
+
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+
+        return account
+    }
+
+    private func generatePrivateKey() {
+        guard let session = session,
+              let privateKey = session.generatePrivateKey() else {
+            return
+        }
+
+        session.savePrivate(privateKey, for: "temp")
+    }
 }
