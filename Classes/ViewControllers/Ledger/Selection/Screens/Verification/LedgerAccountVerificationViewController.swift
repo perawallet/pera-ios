@@ -225,7 +225,8 @@ extension LedgerAccountVerificationViewController {
             address: account.address,
             name: account.address.shortAddressDisplay,
             isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: true
         )
         setupLedgerDetails(of: &localAccount, from: account)
 

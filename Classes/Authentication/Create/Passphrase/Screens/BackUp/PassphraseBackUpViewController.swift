@@ -234,7 +234,8 @@ extension PassphraseBackUpViewController {
             address: address,
             name: address.shortAddressDisplay,
             isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: false
         )
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")

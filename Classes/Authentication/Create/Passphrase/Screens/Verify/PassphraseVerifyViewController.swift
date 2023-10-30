@@ -170,7 +170,8 @@ extension PassphraseVerifyViewController {
             address: address,
             name: address.shortAddressDisplay,
             isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(), 
+            isBackedUp: true
         )
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")
