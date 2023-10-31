@@ -30,6 +30,7 @@ protocol AccountAssetListDataController: AnyObject {
 enum AccountAssetsSection:
     Int,
     Hashable {
+    case accountNotBackedUpWarning
     case portfolio
     case quickActions
     case assets
@@ -37,6 +38,7 @@ enum AccountAssetsSection:
 }
 
 enum AccountAssetsItem: Hashable {
+    case accountNotBackedUpWarning(AccountNotBackedUpWarningViewModel)
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(WatchAccountPortfolioViewModel)
     case search

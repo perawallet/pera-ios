@@ -419,6 +419,13 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch listSection {
+        case .accountNotBackedUpWarning:
+            let cell = cell as! AccountDetailAccountNotBackedUpWarningCell
+            cell.startObserving(event: .performAction) {
+                [unowned self] in
+                /// <todo>
+                /// Open backup flow.
+            }
         case .portfolio:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return

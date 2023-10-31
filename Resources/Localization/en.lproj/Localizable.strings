@@ -1603,3 +1603,7 @@ FAQ section.";
 "wc-session-connection-wc-events" = "WalletConnect events";
 "wc-session-connection-wc-methods" = "WalletConnect methods";
 "wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";
+
+// MARK: Account Not Backed Up Warning
+"account-not-backed-up-warning-title" = "You need to backup the passphrase";
+"account-not-backed-up-warning-action-title" = "Backup now";

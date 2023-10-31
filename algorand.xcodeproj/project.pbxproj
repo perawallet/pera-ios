@@ -5602,6 +5602,12 @@
 		D499D28E27C7DA8A00641FF5 /* CollectibleGridItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D499D27A27C7BACE00641FF5 /* CollectibleGridItemViewModel.swift */; };
 		D499D28F27C7DA8C00641FF5 /* CollectiblesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */; };
 		D499D29127C7DA8E00641FF5 /* CollectiblesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */; };
+		D49B40E02AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40DF2AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift */; };
+		D49B40E12AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40DF2AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift */; };
+		D49B40E22AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40DF2AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift */; };
+		D49B40E42AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40E32AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift */; };
+		D49B40E52AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40E32AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift */; };
+		D49B40E62AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B40E32AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift */; };
 		D49B4C7B28B634DD00254B6B /* OptOutAssetListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B4C7A28B634DD00254B6B /* OptOutAssetListItemView.swift */; };
 		D49B4C7C28B634DD00254B6B /* OptOutAssetListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B4C7A28B634DD00254B6B /* OptOutAssetListItemView.swift */; };
 		D49B4C7D28B634DD00254B6B /* OptOutAssetListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B4C7A28B634DD00254B6B /* OptOutAssetListItemView.swift */; };
@@ -9308,6 +9314,8 @@
 		D4999E202891A72400C7E05C /* AssetIDSecondaryListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetIDSecondaryListItemViewTheme.swift; sourceTree = "<group>"; };
 		D4999E242891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFeeSecondaryListItemViewTheme.swift; sourceTree = "<group>"; };
 		D499D27A27C7BACE00641FF5 /* CollectibleGridItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGridItemViewModel.swift; sourceTree = "<group>"; };
+		D49B40DF2AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailAccountNotBackedUpWarningCell.swift; sourceTree = "<group>"; };
+		D49B40E32AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNotBackedUpWarningViewModel.swift; sourceTree = "<group>"; };
 		D49B4C7A28B634DD00254B6B /* OptOutAssetListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemView.swift; sourceTree = "<group>"; };
 		D49D2E622A52EB4300CE5384 /* AssetFetchQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFetchQuery.swift; sourceTree = "<group>"; };
 		D49D2E662A52EB7300CE5384 /* TransactionSearchQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSearchQuery.swift; sourceTree = "<group>"; };
@@ -13023,6 +13031,7 @@
 				2B80C542277322BB00BB071E /* AddAssetItemView.swift */,
 				2B80C546277322CB00BB071E /* AddAssetItemViewTheme.swift */,
 				2BB98FB3297692C900262D63 /* AccountAssetListLoadingCell */,
+				D49B40DE2AF031F6008C1883 /* AccountNotBackedUpWarningItem */,
 				2B3088E427FF6A560010AE49 /* AssetTitleItem */,
 				2B3088D727FF31E00010AE49 /* ManagementItem */,
 			);
@@ -19757,6 +19766,15 @@
 			path = DappDetail;
 			sourceTree = "<group>";
 		};
+		D49B40DE2AF031F6008C1883 /* AccountNotBackedUpWarningItem */ = {
+			isa = PBXGroup;
+			children = (
+				D49B40DF2AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift */,
+				D49B40E32AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift */,
+			);
+			path = AccountNotBackedUpWarningItem;
+			sourceTree = "<group>";
+		};
 		D49D2E6A2A54194F00CE5384 /* AssetDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -22594,6 +22612,7 @@
 				2BA172F32649F66A00A613C4 /* UIPanGestureRecognizer+Additions.swift in Sources */,
 				D453A5B72AB0C78E0079A7AB /* WCUnsignedArbitrayDataRequestScreen+Theme.swift in Sources */,
 				D43A0C432790D768007430B9 /* NoContentWithActionViewTheme.swift in Sources */,
+				D49B40E62AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */,
 				F0C542A9291B035300596A0A /* DiscoverSearchAssetListItemViewModel.swift in Sources */,
 				2B288AF12694E74B00BC6FB6 /* WCTransactionOption.swift in Sources */,
 				2BB350E7258A233800A03BAC /* AccountNameViewModel.swift in Sources */,
@@ -23183,6 +23202,7 @@
 				2BA9F014268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift in Sources */,
 				D43A0C1F2790CAAB007430B9 /* LoadingViewCommonTheme.swift in Sources */,
 				2BCBF46927B557E0008814C7 /* MultilineTextInputFieldViewCommonTheme.swift in Sources */,
+				D49B40E22AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */,
 				2BE4D1222594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
 				2B270393263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				17CADC852853A665001D19A8 /* TransactionOptionsScreen.swift in Sources */,
@@ -24960,6 +24980,7 @@
 				D40ADD832944C28D004C74E3 /* DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel.swift in Sources */,
 				2B0F616624EC129D00DA22A6 /* Snapkit+SafeArea.swift in Sources */,
 				D444EE912946BCED008AD374 /* HideAssetsWithNoBalanceInAssetListFilterItemViewModel.swift in Sources */,
+				D49B40E12AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */,
 				D4E34CBD27F7162B00B0C3F4 /* SelectAssetViewControllerListLayout.swift in Sources */,
 				2BA4B4122678D8EF0041586B /* WCSession.swift in Sources */,
 				2BCCEE372996D45500DDD2BA /* NoteSizeValidator.swift in Sources */,
@@ -25828,6 +25849,7 @@
 				F045BE42286B9BE60069056B /* CurrencyFormattingStandaloneContextHandler.swift in Sources */,
 				2B0F622A24EC129D00DA22A6 /* CompleteTransactionEvent.swift in Sources */,
 				D48FDFF427CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift in Sources */,
+				D49B40E52AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */,
 				D48FDFD027CEBA1700C39FC7 /* TitleViewTheme.swift in Sources */,
 				D4176C2626F340590017A4AB /* LedgerAccountViewTheme.swift in Sources */,
 				2B0F622B24EC129D00DA22A6 /* BaseViewController.swift in Sources */,
@@ -27345,6 +27367,7 @@
 				2B18432829DF788800264152 /* ALGWalletConnectCoordinator.swift in Sources */,
 				D41F4F032892E20E00B59559 /* TransferAssetBalanceScreen.swift in Sources */,
 				2B4334B827CEE89600A3D9D6 /* CollectibleListViewController.swift in Sources */,
+				D49B40E02AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */,
 				D411B37426EA1043004FF980 /* AccountListItemView.swift in Sources */,
 				D495FB622834F61500BD273C /* FullScreenContentViewController.swift in Sources */,
 				2B4FD1F627C63F580097AB65 /* MoonPayTransactionViewController.swift in Sources */,
@@ -28213,6 +28236,7 @@
 				D4F22126270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				F01063A128AD7A7A00AB6873 /* ScrollVerticalDirection.swift in Sources */,
 				1773311A2965913A006E66F1 /* WebImportInstructionScreen.swift in Sources */,
+				D49B40E42AF049F1008C1883 /* AccountNotBackedUpWarningViewModel.swift in Sources */,
 				2B99D43D28EC1C2800323C11 /* SwapInfoActionItemViewTheme.swift in Sources */,
 				D4194308273541070055EC70 /* UIViewController+PageBar.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
