@@ -24,11 +24,11 @@ struct AccountListItemViewModel:
     PortfolioViewModel,
     BindableViewModel,
     Hashable {
-
     private(set) var address: String?
     private(set) var authorization: AccountAuthorization?
 
     private(set) var icon: ImageSource?
+    private(set) var iconBottomRightBadge: Image?
     private(set) var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
@@ -129,7 +129,7 @@ extension AccountListItemViewModel {
     ) {
         bindIcon(accountPortfolioItem.accountValue.value)
     }
-    
+
     mutating func bindTitle(
         _ accountPortfolioItem: AccountPortfolioItem
     ) {
@@ -182,6 +182,8 @@ extension AccountListItemViewModel {
         _ account: Account
     ) {
         icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
     
     mutating func bindPrimaryAccessory(
@@ -242,7 +244,11 @@ extension AccountListItemViewModel {
     mutating func bindIcon(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        icon = iconWithShortAddressDraft.account.typeImage
+        let account = iconWithShortAddressDraft.account
+
+        icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
 
     mutating func bindTitle(
@@ -258,7 +264,11 @@ extension AccountListItemViewModel {
     mutating func bindIcon(
         _ accountOrderingDraft: AccountOrderingDraft
     ) {
-        icon = accountOrderingDraft.account.typeImage
+        let account = accountOrderingDraft.account
+        
+        icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
 
     mutating func bindTitle(
@@ -275,6 +285,15 @@ extension AccountListItemViewModel {
 }
 
 extension AccountListItemViewModel {
+    mutating func bindIconBottomRightBadge(_ account: Account) {
+        guard !account.isBackedUp else {
+            iconBottomRightBadge = nil
+            return
+        }
+
+        iconBottomRightBadge = "circle-badge-warning"
+    }
+
     mutating func bindTitle(
         _ account: Account
     ) {
@@ -322,9 +341,9 @@ extension AccountListItemViewModel {
 
 extension AccountListItemViewModel {
     mutating func bindIcon(
-        _ mameServiceAccountListItem: NameServiceAccountListItem
+        _ nameServiceAccountListItem: NameServiceAccountListItem
     ) {
-        icon = mameServiceAccountListItem.icon
+        icon = nameServiceAccountListItem.icon
     }
 
     mutating func bindTitle(
@@ -492,7 +511,7 @@ struct CustomAccountListItem {
     }
 
     /// <todo>
-    /// We should check & remove `AccountNameViewModel` & `AuthAccountNameViewModel`.
+    /// We should check & remove `AccountNameViewModel`.
     init(
         _ viewModel: AccountNameViewModel,
         address: String?
@@ -501,18 +520,6 @@ struct CustomAccountListItem {
 
         icon = viewModel.image
         title = viewModel.name
-        subtitle = nil
-        accessory = nil
-    }
-    
-    init(
-        _ viewModel: AuthAccountNameViewModel,
-        address: String?
-    ) {
-        self.address = address
-
-        icon = viewModel.image
-        title = viewModel.address
         subtitle = nil
         accessory = nil
     }
