@@ -488,7 +488,18 @@ extension HomeViewController {
             self.triggerBannerCTA(item: item)
         }
     }
-    
+
+    private func linkInteractors(
+        _ cell: AccountNotBackedUpWarningCell
+    ) {
+        cell.startObserving(event: .performBackup) {
+            [weak self] in
+            guard let self else { return }
+
+            /// <todo> Open backup flow
+        }
+    }
+
     private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
         for item: AnnouncementViewModel
@@ -772,6 +783,8 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             }
+        case .accountNotBackedUpWarning:
+            linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
             if item.isGeneric {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)

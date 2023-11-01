@@ -38,7 +38,7 @@ enum AccountAssetsSection:
 }
 
 enum AccountAssetsItem: Hashable {
-    case accountNotBackedUpWarning(AccountNotBackedUpWarningViewModel)
+    case accountNotBackedUpWarning(AccountDetailAccountNotBackedUpWarningModel)
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(WatchAccountPortfolioViewModel)
     case search

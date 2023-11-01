@@ -59,7 +59,7 @@ struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
         actionHorizontalPaddings = (0, 24)
         action = [
             .titleColor([.normal(Colors.Button.Primary.text)]),
-            .backgroundColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.12))
+            .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.12))
         ]
         actionCorner = Corner(radius: 4)
         actionContentEdgeInsets = (8, 16, 8, 16)

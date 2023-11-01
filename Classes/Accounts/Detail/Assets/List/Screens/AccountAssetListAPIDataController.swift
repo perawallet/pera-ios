@@ -32,7 +32,7 @@ final class AccountAssetListAPIDataController:
     private lazy var assetAmountFormatter = createAssetAmountFormatter()
     private lazy var minBalanceCalculator = createMinBalanceCalculator()
 
-    private var accountNotBackedUpWarningViewModel: AccountNotBackedUpWarningViewModel?
+    private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
 
     private var nextQuery: AccountAssetListQuery?
     private var lastQuery: AccountAssetListQuery?
@@ -314,7 +314,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func makeItemsForAccountNotBackedUpWarning() -> [AccountAssetsItem] {
-        let viewModel: AccountNotBackedUpWarningViewModel
+        let viewModel: AccountDetailAccountNotBackedUpWarningModel
       
         if let accountNotBackedUpWarningViewModel {
             viewModel = accountNotBackedUpWarningViewModel

@@ -180,13 +180,16 @@ extension HomeAPIDataController {
                 )
             }
 
-            if let visibleAnnouncement = self.visibleAnnouncement {
-                snapshot.appendSections([.announcement])
+            let areAllAccountsBackedup = accounts.allSatisfy(\.value.isBackedUp)
+            appendAccountNotBackedUpItemsIfNeeded(
+                into: &snapshot,
+                areAllAccountsBackedup: areAllAccountsBackedup
+            )
+            appendAnnouncementItemsIfNeeded(
+                into: &snapshot,
+                areAllAccountsBackedup: areAllAccountsBackedup
+            )
 
-                let announcementItem = AnnouncementViewModel(visibleAnnouncement)
-                snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
-            }
-            
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItemIdentifier =
                     .header(ManagementItemViewModel(.account))
@@ -205,7 +208,7 @@ extension HomeAPIDataController {
             return (totalPortfolioItem, snapshot)
         }
     }
-    
+
     private func deliverNoContentUpdates() {
         deliverUpdates {
             var snapshot = Snapshot()
@@ -258,5 +261,41 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         }
 
         self.visibleAnnouncement = announcementToDisplay
+    }
+}
+
+extension HomeAPIDataController {
+    private func appendAnnouncementItemsIfNeeded(
+        into snapshot: inout Snapshot,
+        areAllAccountsBackedup: Bool
+    ) {
+        guard areAllAccountsBackedup else { return }
+
+        guard let visibleAnnouncement else { return  }
+
+        snapshot.appendSections([ .announcement ])
+
+        let viewModel = AnnouncementViewModel(visibleAnnouncement)
+        let items = [ HomeItemIdentifier.announcement(viewModel) ]
+        snapshot.appendItems(
+            items,
+            toSection: .announcement
+        )
+    }
+
+    private func appendAccountNotBackedUpItemsIfNeeded(
+        into snapshot: inout Snapshot,
+        areAllAccountsBackedup: Bool
+    ) {
+        guard !areAllAccountsBackedup else { return }
+
+        snapshot.appendSections([ .accountNotBackedUpWarning ])
+
+        let viewModel = AccountNotBackedUpWarningViewModel()
+        let items = [ HomeItemIdentifier.accountNotBackedUpWarning(viewModel) ]
+        snapshot.appendItems(
+            items,
+            toSection: .accountNotBackedUpWarning
+        )
     }
 }

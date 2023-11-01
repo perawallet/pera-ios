@@ -166,7 +166,7 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountNotBackedUpItem item: AccountNotBackedUpWarningViewModel,
+        sizeForAccountNotBackedUpItem item: AccountDetailAccountNotBackedUpWarningModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = AccountDetailAccountNotBackedUpWarningCell.reuseIdentifier

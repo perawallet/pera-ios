@@ -139,6 +139,7 @@
 "title-extend" = "Extend";
 "title-active" = "Active";
 "tite-pinging" = "Pinging";
+"title-action-required" = "ACTION REQUIRED";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1607,3 +1608,4 @@ FAQ section.";
 // MARK: Account Not Backed Up Warning
 "account-not-backed-up-warning-title" = "You need to backup the passphrase";
 "account-not-backed-up-warning-action-title" = "Backup now";
+"account-not-backed-up-warning-subtitle" = "You need to backup the passphrase of your account";

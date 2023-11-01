@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountNotBackedUpWarningViewModel.swift
+//   AccountDetailAccountNotBackedUpWarningModel.swift
 
 import MacaroonUIKit
 
-struct AccountNotBackedUpWarningViewModel: 
+struct AccountDetailAccountNotBackedUpWarningModel: 
     ActionableBannerViewModel,
     Hashable {
     private(set) var icon: Image?
@@ -31,8 +31,8 @@ struct AccountNotBackedUpWarningViewModel:
     }
 
     static func == (
-        lhs: AccountNotBackedUpWarningViewModel,
-        rhs: AccountNotBackedUpWarningViewModel
+        lhs: AccountDetailAccountNotBackedUpWarningModel,
+        rhs: AccountDetailAccountNotBackedUpWarningModel
     ) -> Bool {
         return lhs.actionTitle == rhs.actionTitle
     }
@@ -42,7 +42,7 @@ struct AccountNotBackedUpWarningViewModel:
     }
 }
 
-extension AccountNotBackedUpWarningViewModel {
+extension AccountDetailAccountNotBackedUpWarningModel {
     private mutating func bindIcon() {
         icon = "icon-info-18".templateImage
     }
