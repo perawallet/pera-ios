@@ -714,6 +714,15 @@ final class Router:
                 ),
                 configuration: configuration
             )
+        case .keyRegTransactionDetail(let account, let transaction):
+            viewController = KeyRegTransactionDetailViewController(
+                account: account,
+                transaction: transaction,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
@@ -1039,6 +1048,13 @@ final class Router:
             )
         case let .wcAssetDeletionTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetDeletionTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                session: wcSession,
+                configuration: configuration
+            )
+        case let .wcKeyRegTransaction(transaction, transactionRequest, wcSession):
+            viewController = WCKeyRegTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
                 session: wcSession,

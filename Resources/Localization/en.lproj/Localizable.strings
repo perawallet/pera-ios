@@ -509,6 +509,7 @@
 
 // MARK: Transaction Detail
 "transaction-detail-title" = "Transaction Detail";
+"transaction-details-title" = "Transaction Details";
 "transaction-detail-status" = "Status";
 "transaction-detail-amount" = "Amount";
 "transaction-detail-reward" = "Reward";
@@ -1609,3 +1610,17 @@ FAQ section.";
 "account-not-backed-up-warning-title" = "You need to backup the passphrase";
 "account-not-backed-up-warning-action-title" = "Backup now";
 "account-not-backed-up-warning-subtitle" = "You need to backup the passphrase of your account";
+
+/// MARK: Key Registration Transactions
+"key-reg-title" = "KeyReg";
+"vote-key-title" = "Vote Key";
+"selection-key-title" = "Selection Key";
+"state-proof-key-title" = "State Proof Key";
+"valid-first-round-title" = "Valid First Round";
+"valid-last-round-title" = "Valid Last Round";
+"vote-key-dilution-title" = "Vote Key Dilution";
+"participation-status-title" = "Participation Status";
+"participating-title" = "Participating";
+"not-participating-title" = "Not Participating";
+"online-title" = "Online";
+"offline-title" = "Offline";

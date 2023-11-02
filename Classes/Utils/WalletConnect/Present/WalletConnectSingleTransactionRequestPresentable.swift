@@ -132,6 +132,15 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
                     by: .push
                 )
             }
+        case .keyReg:
+            open(
+                .wcKeyRegTransaction(
+                    transaction: transaction,
+                    transactionRequest: request,
+                    wcSession: wcSession
+                ),
+                by: .push
+            )
         }
     }
 }

@@ -12,22 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionType.swift
+//   KeyRegInnerTransactionPreviewViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-enum WCTransactionType {
-    case algos
-    case asset
-    case assetAddition
-    case possibleAssetAddition
-    case appCall
-    case assetConfig(type: AssetConfigType)
-    case keyReg
+struct KeyRegInnerTransactionPreviewViewModel:
+    InnerTransactionPreviewViewModel {
+    private(set) var title: EditText?
+    private(set) var amountViewModel: TransactionAmountViewModel?
+
+    init(_ transaction: Transaction) {
+        bindTitle(transaction)
+    }
 }
 
-enum AssetConfigType {
-    case create
-    case delete
-    case reconfig
+extension KeyRegInnerTransactionPreviewViewModel {
+    private mutating func bindTitle(_ transaction: Transaction) {
+        title = Self.getTitle(transaction.sender.shortAddressDisplay)
+    }
 }
