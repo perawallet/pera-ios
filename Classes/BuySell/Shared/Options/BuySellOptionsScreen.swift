@@ -101,7 +101,6 @@ extension BuySellOptionsScreen {
     }
 
     private func addBuyOptions() {
-        addBuyAlgoWithMoonPayOption()
         addBuyWithTransakOption()
     }
 
