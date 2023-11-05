@@ -375,12 +375,6 @@ class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
-        case .buyAlgoWithMoonPay(let draft):
-            route(
-                to: .moonPayIntroduction(draft: draft, delegate: self),
-                from: findVisibleScreen(over: self.rootViewController),
-                by: .present
-            )
         case .accountSelect(let asset):
             launch(tab: .home)
 
