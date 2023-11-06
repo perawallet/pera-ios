@@ -23,5 +23,3 @@ struct BackUpAccountSelectionListHeaderViewModel: ViewModel {
             .localized
             .bodyRegular()
 }
-
-
