@@ -259,7 +259,8 @@ extension LedgerAccountVerificationViewController {
             launchMain(completion: completion)
         case .addNewAccount:
             closeScreen(by: .dismiss, animated: true, onCompletion: completion)
-        case .none:
+        case .backUpAccount,
+             .none:
             break
         }
     }

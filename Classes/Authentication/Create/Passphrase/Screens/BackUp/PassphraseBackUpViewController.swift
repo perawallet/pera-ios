@@ -45,14 +45,17 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         self.address = address
         super.init(configuration: configuration)
 
-        generatePrivateKey()
+        if !flow.isBackUpAccount {
+            generatePrivateKey()
+        }
+
         mnemonics = session?.mnemonics(forAccount: address)
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        addNavigationBarButtonItems()
+        addNavigationBarButtonItemsIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -107,7 +110,9 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
 }
 
 extension PassphraseBackUpViewController {
-    private func addNavigationBarButtonItems() {
+    private func addNavigationBarButtonItemsIfNeeded() {
+        guard !flow.isBackUpAccount else { return }
+
         rightBarButtonItems = [ makeSkipBarButtonItem() ]
     }
 
@@ -172,7 +177,14 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseBackUpViewDidTapActionButton(_ passphraseView: PassphraseBackUpView) {
         analytics.track(.onboardCreateAccountPassphrase(type: .copy))
-        open(.passphraseVerify(flow: flow), by: .push)
+       
+        open(
+            .passphraseVerify(
+                flow: flow,
+                address: address
+            ),
+            by: .push
+        )
     }
 }
 

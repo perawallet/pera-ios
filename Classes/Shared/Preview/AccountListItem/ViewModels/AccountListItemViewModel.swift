@@ -26,6 +26,7 @@ struct AccountListItemViewModel:
     Hashable {
     private(set) var address: String?
     private(set) var authorization: AccountAuthorization?
+    private(set) var isBackedUp: Bool?
 
     private(set) var icon: ImageSource?
     private(set) var iconBottomRightBadge: Image?
@@ -51,6 +52,7 @@ extension AccountListItemViewModel {
             address = accountPortfolioItem.accountValue.value.address
             authorization = accountPortfolioItem.accountValue.value.authorization
             currencyFormatter = accountPortfolioItem.currencyFormatter
+            isBackedUp = accountPortfolioItem.accountValue.value.isBackedUp
 
             bindIcon(accountPortfolioItem)
             bindTitle(accountPortfolioItem)
@@ -114,6 +116,7 @@ extension AccountListItemViewModel {
 
         if let wcSessionDetailConnectedAccountItem = model as? WCSessionDetailConnectedAccountItem {
             address = wcSessionDetailConnectedAccountItem.account.value.address
+            isBackedUp = wcSessionDetailConnectedAccountItem.account.value.isBackedUp
 
             bindIcon(wcSessionDetailConnectedAccountItem)
             bindTitle(wcSessionDetailConnectedAccountItem)
@@ -480,6 +483,7 @@ extension AccountListItemViewModel {
     ) -> Bool {
         return
             lhs.address == rhs.address &&
+            lhs.isBackedUp == rhs.isBackedUp &&
             lhs.authorization == rhs.authorization &&
             lhs.title == rhs.title &&
             lhs.primaryAccessory == rhs.primaryAccessory &&

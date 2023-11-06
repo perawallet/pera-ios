@@ -64,6 +64,7 @@ extension WelcomeViewController {
 
             addSkipBarButtonItem()
         case .addNewAccount,
+             .backUpAccount,
              .none:
             break
         }

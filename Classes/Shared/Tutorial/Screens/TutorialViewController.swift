@@ -152,12 +152,30 @@ extension TutorialViewController {
 extension TutorialViewController: TutorialViewDelegate {
     func tutorialViewDidTapPrimaryActionButton(_ tutorialView: TutorialView) {
         switch tutorial {
-        case .backUp:
+        case .backUp(let flow, let address):
             analytics.track(.onboardCreateAccountPassphrase(type: .understand))
-            open(.tutorial(flow: flow, tutorial: .writePassphrase), by: .push)
-        case .writePassphrase:
+
+            if case .backUpAccount(let needsAccountSelection) = flow,
+               needsAccountSelection {
+                openAccountSelectionForBackingUp()
+                return
+            }
+
+            guard let address else { return }
+            
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .writePassphrase(
+                        flow: flow,
+                        address: address
+                    )
+                ),
+                by: .push
+            )
+        case .writePassphrase(let flow, let address):
             analytics.track(.onboardCreateAccountPassphrase(type: .begin))
-            open(.passphraseView(flow: flow, address: "temp"), by: .push)
+            open(.passphraseView(flow: flow, address: address), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
         case .recoverWithPassphrase:
@@ -171,7 +189,20 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case let .passphraseVerified(account):
             analytics.track(.onboardCreateAccountPassphrase(type: .verify))
-            open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
+
+            if case .backUpAccount = flow {
+                backUpAccount(account)
+                return
+            }
+
+            open(
+                .accountNameSetup(
+                    flow: flow,
+                    mode: .add(type: .create),
+                    accountAddress: account.address
+                ),
+                by: .push
+            )
         case .accountVerified(let flow):
             analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
             routeBuyAlgo(for: flow)
@@ -229,6 +260,54 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapSecondaryActionButton?(self)
         default:
             break
+        }
+    }
+}
+
+extension TutorialViewController {
+    private func openAccountSelectionForBackingUp() {
+        let accountSelectionScreen = Screen.backUpAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let account):
+                open(
+                    .tutorial(
+                        flow: flow,
+                        tutorial: .writePassphrase(
+                            flow: flow,
+                            address: account.value.address
+                        )
+                    ),
+                    by: .push
+                )
+            default: break
+            }
+        }
+
+        open(
+            accountSelectionScreen,
+            by: .push
+        )
+    }
+
+    private func backUpAccount(_ account: AccountInformation) {
+        if let localAccount = session?.accountInformation(from: account.address) {
+            localAccount.isBackedUp = true
+            session?.authenticatedUser?.updateAccount(localAccount)
+        }
+
+        if let cachedAccount = sharedDataController.accountCollection[account.address]?.value {
+            cachedAccount.isBackedUp = true
+
+            NotificationCenter.default.post(
+                name: BackUpAccountFlowCoordinator.didBackupAccount,
+                object: nil,
+                userInfo: [
+                    BackUpAccountFlowCoordinator.didBackUpAccountNotificationAccountKey: cachedAccount
+                ]
+            )
         }
     }
 }
@@ -328,8 +407,8 @@ struct TutorialViewControllerUIHandlers {
 }
 
 enum Tutorial: Equatable {
-    case backUp
-    case writePassphrase
+    case backUp(flow: AccountSetupFlow, address: String?)
+    case writePassphrase(flow: AccountSetupFlow, address: String)
     case watchAccount
     case recoverWithPassphrase
     case passcode

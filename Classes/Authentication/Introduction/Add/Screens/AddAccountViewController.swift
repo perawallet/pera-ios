@@ -83,7 +83,7 @@ extension AddAccountViewController: AddAccountViewDelegate {
         
         switch type {
         case .create:
-            tutorial = .backUp
+            tutorial = .backUp(flow: flow, address: "temp")
             analytics.track(.onboardCreateAccount(type: .new))
         default:
             analytics.track(.onboardCreateAccount(type: .watch))

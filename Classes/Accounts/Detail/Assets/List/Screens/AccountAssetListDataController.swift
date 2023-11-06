@@ -24,6 +24,7 @@ protocol AccountAssetListDataController: AnyObject {
     var account: AccountHandle { get }
 
     func load(query: AccountAssetListQuery?)
+    func reload()
     func reloadIfNeededForPendingAssetRequests()
 }
 
