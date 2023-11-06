@@ -865,8 +865,8 @@
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
-"wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
-"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance. It'll opt-out and remove the %@ asset from your account.";
+"wallet-connect-transaction-warning-close-algos" = "This transaction is sending the full Algo balance.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending the full %@ balance. It'll opt-out and remove the %@ asset from the account.";
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";

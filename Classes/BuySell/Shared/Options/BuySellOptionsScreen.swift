@@ -68,9 +68,6 @@ extension BuySellOptionsScreen {
             $0.trailing == theme.contextPaddings.trailing
         }
 
-        addBuyContextHeader()
-        addBuyContext()
-
         addSellContextHeader()
         addSellContext()
     }
@@ -101,17 +98,7 @@ extension BuySellOptionsScreen {
     }
 
     private func addBuyOptions() {
-        addBuyAlgoWithMoonPayOption()
-        addBuyAlgoWithSardineOption()
         addBuyWithTransakOption()
-    }
-
-    private func addBuyAlgoWithMoonPayOption() {
-        addOption(
-            viewModel: BuyAlgoWithMoonPayOptionViewModel(),
-            selector: #selector(performBuyAlgoWithMoonPay),
-            to: buyContextView
-        )
     }
 
     private func addBuyAlgoWithSardineOption() {
@@ -133,11 +120,6 @@ extension BuySellOptionsScreen {
 
 extension BuySellOptionsScreen {
     @objc
-    private func performBuyAlgoWithMoonPay() {
-        eventHandler?(.performBuyAlgoWithMoonPay)
-    }
-
-    @objc
     private func performBuyAlgoWithSardine() {
         eventHandler?(.performBuyAlgoWithSardine)
     }
@@ -154,7 +136,7 @@ extension BuySellOptionsScreen {
 
         contextView.addSubview(sellContextHeaderView)
         sellContextHeaderView.snp.makeConstraints {
-            $0.top == buyContextView.snp.bottom + theme.spacingBetweenBuyAndSellContext
+            $0.top == 0
             $0.leading == 0
             $0.trailing == 0
         }
@@ -214,7 +196,6 @@ extension BuySellOptionsScreen {
 
  extension BuySellOptionsScreen {
      enum Event {
-         case performBuyAlgoWithMoonPay
          case performBuyAlgoWithSardine
          case performBuyWithTransak
          case performBuyGiftCardsWithBidali

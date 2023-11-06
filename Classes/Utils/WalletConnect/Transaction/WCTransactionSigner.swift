@@ -76,11 +76,7 @@ extension WCTransactionSigner {
         with transactionRequest: WalletConnectRequest,
         for account: Account
     ) {
-        guard account.authorization.isAuthorized else {
-            return
-        }
-
-        if account.authorization.isLedger {
+        if account.hasLedgerDetail() {
             signLedgerTransaction(
                 transaction,
                 with: transactionRequest,
@@ -112,6 +108,7 @@ extension WCTransactionSigner {
         self.transactionRequest = transactionRequest
 
         ledgerTransactionOperation.setTransactionAccount(account)
+        ledgerTransactionOperation.setTransaction(transaction)
         ledgerTransactionOperation.delegate = self
         startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
