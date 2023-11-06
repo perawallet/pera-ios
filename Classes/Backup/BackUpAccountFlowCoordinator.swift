@@ -76,7 +76,11 @@ extension BackUpAccountFlowCoordinator {
             let account = notification.userInfo?[preferencesKey] as? Account
             guard let account else { return }
 
-            self.eventHandler?(.didBackUpAccount(.init(account: account, status: .ready)))
+            let accountHandle = AccountHandle(
+                account: account,
+                status: .ready
+            )
+            self.eventHandler?(.didBackUpAccount(accountHandle))
 
             self.presentingScreen.dismiss(animated: true)
 
