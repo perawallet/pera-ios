@@ -28,7 +28,6 @@ enum DeeplinkSource {
     case walletConnectSessionRequest(URL, prefersConnectionApproval: Bool = true)
     case walletConnectTransactionSignRequest(WalletConnectTransactionSignRequestDraft)
     case walletConnectArbitraryDataSignRequest(WalletConnectArbitraryDataSignRequestDraft)
-    case buyAlgoWithMoonPay(MoonPayDraft)
     case qrText(QRText)
     case externalInAppBrowser(DiscoverExternalDestination)
 
