@@ -46,7 +46,11 @@ final class WalletConnectV2Protocol: WalletConnectProtocol {
         name: ALGAppTarget.current.walletConnectConfig.meta.name,
         description: ALGAppTarget.current.walletConnectConfig.meta.description,
         url: ALGAppTarget.current.walletConnectConfig.meta.url.absoluteString,
-        icons: ALGAppTarget.current.walletConnectConfig.meta.icons.map { $0.absoluteString }
+        icons: ALGAppTarget.current.walletConnectConfig.meta.icons.map { $0.absoluteString },
+        redirect: AppMetadata.Redirect(
+            native: "perawallet://",
+            universal: nil
+        )
     )
 
     private let analytics: ALGAnalytics
