@@ -146,7 +146,7 @@ extension AccountAssetListAPIDataController {
         }
     }
 
-    private func reload() {
+    func reload() {
         let task = AsyncTask {
             [weak self] completionBlock in
             guard let self else { return }

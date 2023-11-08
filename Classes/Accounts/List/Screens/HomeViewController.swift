@@ -46,6 +46,10 @@ final class HomeViewController:
         api: api!
     )
 
+    private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
+        presentingScreen: self,
+        api: api!
+    )
     private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -495,8 +499,7 @@ extension HomeViewController {
         cell.startObserving(event: .performBackup) {
             [weak self] in
             guard let self else { return }
-
-            /// <todo> Open backup flow
+            openBackUpAccount()
         }
     }
 
@@ -583,6 +586,25 @@ extension HomeViewController {
                 by: .push
             )
         }
+    }
+}
+
+extension HomeViewController {
+    private func openBackUpAccount() {
+        backupAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .didBackUpAccount:
+                self.dataController.reload()
+            }
+        }
+
+        let notBackedUpAccounts = sharedDataController.accountCollection.filter {
+            return !$0.value.isBackedUp
+        }
+        backupAccountFlowCoordinator.launch(notBackedUpAccounts)
     }
 }
 
@@ -860,6 +882,8 @@ extension HomeViewController {
                     self,
                     animated: true
                 )
+                self.dataController.reload()
+            case .didBackUp:
                 self.dataController.reload()
             }
         }

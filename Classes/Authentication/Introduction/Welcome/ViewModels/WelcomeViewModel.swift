@@ -39,10 +39,13 @@ extension WelcomeViewModel {
 
     private mutating func bindTitle(_ flow: AccountSetupFlow) {
         switch flow {
-        case .none, .initializeAccount:
+        case .initializeAccount,
+             .none:
             title = "account-welcome-wallet-title".localized
         case .addNewAccount:
             title = "account-welcome-add-account-title".localized
+        case .backUpAccount:
+            title = nil
         }
     }
 

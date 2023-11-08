@@ -30,18 +30,21 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var theme = Theme()
 
     private lazy var dataSource: PassphraseVerifyDataSource = {
-        if let privateKey = session?.privateData(for: "temp") {
+        if let privateKey = session?.privateData(for: address) {
             return PassphraseVerifyDataSource(privateKey: privateKey)
         }
         fatalError("Private key should be set.")
     }()
 
+    private let address: String
     private let flow: AccountSetupFlow
 
     init(
+        address: String,
         flow: AccountSetupFlow,
         configuration: ViewControllerConfiguration
     ) {
+        self.address = address
         self.flow = flow
 
         super.init(configuration: configuration)
@@ -64,11 +67,25 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
                 self.dataSource.resetAndReloadData()
                 return
             }
-                        
+                    
+            if flow.isBackUpAccount {
+                let localAccount = session?.accountInformation(from: address)
+                guard let localAccount else { return }
+
+                self.open(
+                    .tutorial(
+                        flow: self.flow,
+                        tutorial: .passphraseVerified(account: localAccount)
+                    ),
+                    by: .push
+                )
+                return
+            }
+
             guard let account = self.createAccount() else {
                 return
             }
-            
+
             self.open(
                 .tutorial(
                     flow: self.flow,

@@ -622,9 +622,17 @@ final class Router:
                 configuration: configuration
             )
         case let .passphraseView(flow, address):
-            viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
-        case let .passphraseVerify(flow):
-            viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
+            viewController = PassphraseBackUpViewController(
+                flow: flow,
+                address: address,
+                configuration: configuration
+            )
+        case let .passphraseVerify(flow, address):
+            viewController = PassphraseVerifyViewController(
+                address: address,
+                flow: flow,
+                configuration: configuration
+            )
         case let .accountNameSetup(flow, mode, nameServiceName, accountAddress):
             viewController = AccountNameSetupViewController(
                 flow: flow,
@@ -640,7 +648,10 @@ final class Router:
                 configuration: configuration
             )
         case let .qrScanner(canReadWCSession):
-            viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
+            viewController = QRScannerViewController(
+                canReadWCSession: canReadWCSession,
+                configuration: configuration
+            )
         case let .qrGenerator(title, draft, isTrackable):
             let qrCreationController = QRCreationViewController(
                 draft: draft,
@@ -1954,6 +1965,47 @@ final class Router:
                 sheet: uiSheet,
                 theme: theme,
                 api: configuration.api
+            )
+        case let .backUpAccountSelection(eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = BackUpAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = BackUpAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = BackUpAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<BackUpAccountSelectionListSectionIdentifier, BackUpAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: BackUpAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
             )
 
         }

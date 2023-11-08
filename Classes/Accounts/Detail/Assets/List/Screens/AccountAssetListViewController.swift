@@ -176,6 +176,10 @@ final class AccountAssetListViewController:
         observeWhenUserIsOnboardedToSwap()
     }
 
+    func reloadData() {
+        dataController.reload()
+    }
+
     func reloadData(_ filters: AssetFilterOptions?) {
         query.update(withFilters: filters)
         dataController.load(query: query)
@@ -423,8 +427,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             let cell = cell as! AccountDetailAccountNotBackedUpWarningCell
             cell.startObserving(event: .performAction) {
                 [unowned self] in
-                /// <todo>
-                /// Open backup flow.
+               
+                guard !dataController.account.value.isBackedUp else { return }
+
+                dataController.load(query: query)
+
+                eventHandler?(.backUpAccount)
             }
         case .portfolio:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
@@ -963,6 +971,7 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
+        case backUpAccount
         case manageAssets(isWatchAccount: Bool)
         case copyAddress
         case showAddress
