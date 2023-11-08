@@ -1217,6 +1217,8 @@
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
 "transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
+"transaction-option-list-browse-dapps-title" = "Browse dApps";
+"transaction-option-list-browse-dapps-subtitle" = "Use browser to interact with dApps";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";

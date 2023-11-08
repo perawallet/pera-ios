@@ -133,7 +133,16 @@ class Environment {
             return "https://discover-mobile.perawallet.app/"
         }
     }()
-    
+
+    lazy var discoverBrowserURL: String = {
+        switch target {
+        case .staging:
+            return "https://discover-mobile-staging.perawallet.app/main/browser"
+        case .prod:
+            return "https://discover-mobile.perawallet.app/main/browser"
+        }
+    }()
+
     private let target: AppTarget
     
     private init() {

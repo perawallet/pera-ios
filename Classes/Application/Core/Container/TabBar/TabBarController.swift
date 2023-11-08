@@ -69,6 +69,14 @@ final class TabBarController: TabBarContainer {
         self.navigateToQRScanner()
     }
 
+    private lazy var browseDAppsAction = TransactionOptionListAction(
+        viewModel: BrowseDAppsTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self else { return }
+        self.navigateToBrowseDApps()
+    }
+
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
@@ -240,11 +248,12 @@ extension TabBarController {
 
         let aView = TransactionOptionsView(
             actions: [
-                buySellAction,
                 swapAction,
+                buySellAction,
                 sendAction,
                 receiveAction,
-                scanQRCodeAction
+                scanQRCodeAction,
+                browseDAppsAction
             ]
         )
         aView.customize(theme)
@@ -438,6 +447,20 @@ extension TabBarController {
     private func navigateToQRScanner() {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
+    }
+
+    private func navigateToBrowseDApps() {
+        toggleTransactionOptions()
+
+        launchDiscoverWithBrowserTab()
+    }
+
+    private func launchDiscoverWithBrowserTab() {
+        selectedTab = .discover
+
+        let container = selectedScreen as? NavigationContainer
+        let screen = container?.viewControllers.first as? DiscoverHomeScreen
+        screen?.destination = .browser
     }
 }
 

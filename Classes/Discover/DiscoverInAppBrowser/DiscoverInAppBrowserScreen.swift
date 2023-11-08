@@ -30,7 +30,9 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
 
-    private let destination: DiscoverDestination
+    var destination: DiscoverDestination {
+        didSet { loadPeraURL() }
+    }
 
     deinit {
         stopObservingNotifications()
