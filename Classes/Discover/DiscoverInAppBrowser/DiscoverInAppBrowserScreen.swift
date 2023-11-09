@@ -211,6 +211,8 @@ extension DiscoverInAppBrowserScreen {
             guard let self else { return }
 
             switch event {
+            case .goBack:
+                self.popScreen()
             case .addToFavorites(let dappDetails):
                 self.addToFavorites(dappDetails)
             case .removeFromFavorites(let dappDetails):

@@ -204,8 +204,15 @@ extension TutorialViewController: TutorialViewDelegate {
                 by: .push
             )
         case .accountVerified(let flow):
-            analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
-            routeBuyAlgo(for: flow)
+            if case .initializeAccount(mode: .add(type: .watch)) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else {
+                analytics.track(.onboardCreateAccountVerified(type: .start))
+            }
+
+            launchMain()
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .failedToImportLedgerAccounts:
@@ -246,16 +253,6 @@ extension TutorialViewController: TutorialViewDelegate {
             ) as? AccountNameSetupViewController
             screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
             screen?.hidesCloseBarButtonItem = true
-        case .accountVerified(let flow):
-            if case .initializeAccount(mode: .add(type: .watch)) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else {
-                analytics.track(.onboardCreateAccountVerified(type: .start))
-            }
-
-            launchMain()
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapSecondaryActionButton?(self)
         default:
@@ -380,22 +377,6 @@ extension TutorialViewController {
             } else {
                 tutorialViewController.launchMain()
             }
-        }
-    }
-    
-    private func routeBuyAlgo(for flow: AccountSetupFlow) {
-        if case .initializeAccount(mode: .add(type: .watch)) = flow {
-            launchMain()
-            return
-        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
-            launchMain()
-            return
-        }
-        
-        launchMain {
-            [weak self] in
-            guard let self = self else { return }
-            self.launchBuyAlgoWithMoonPay()
         }
     }
 }

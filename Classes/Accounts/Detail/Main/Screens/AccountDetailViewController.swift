@@ -339,12 +339,6 @@ extension AccountDetailViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonPay:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyAlgoWithMoonPay()
-                }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -370,14 +364,6 @@ extension AccountDetailViewController {
             .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func openBuyAlgoWithMoonPay() {
-        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
-
-        let draft = MoonPayDraft()
-        draft.address = accountHandle.value.address
-        moonPayFlowCoordinator.launch(draft: draft)
     }
 
     private func openBuyAlgoWithSardine() {

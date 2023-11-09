@@ -613,12 +613,6 @@ extension HomeViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonPay:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyAlgoWithMoonPay()
-                }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -648,12 +642,6 @@ extension HomeViewController {
 
     private func openBuyAlgoWithSardine() {
         sardineFlowCoordinator.launch()
-    }
-
-    private func openBuyAlgoWithMoonPay() {
-        analytics.track(.recordHomeScreen(type: .buyAlgo))
-
-        moonPayFlowCoordinator.launch()
     }
 
     private func openBuyWithTransak() {

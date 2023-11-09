@@ -183,14 +183,6 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome {
-                [weak self] in
-                guard let self = self else { return }
-
-                self.launchBuyAlgoWithMoonPay()
-            }
-        }
         controller?.uiHandlers.didTapSecondaryActionButton = { _ in
             self.launchHome()
         }

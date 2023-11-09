@@ -384,12 +384,6 @@ extension TabBarController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonPay:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyAlgoWithMoonPay()
-                }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -415,12 +409,6 @@ extension TabBarController {
             .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func openBuyAlgoWithMoonPay() {
-        moonPayFlowCoordinator.launch()
-
-        analytics.track(.moonPay(type: .tapBottomsheetBuy))
     }
 
     private func openBuyAlgoWithSardine() {
