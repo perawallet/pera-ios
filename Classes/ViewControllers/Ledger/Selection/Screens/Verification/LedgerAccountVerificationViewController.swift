@@ -183,7 +183,7 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
             self.launchHome()
         }
     }
