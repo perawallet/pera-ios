@@ -66,6 +66,10 @@ indirect enum Screen {
     case appCallAssetList(
         dataController: AppCallAssetListDataController
     )
+    case keyRegTransactionDetail(
+        account: Account,
+        transaction: Transaction
+    )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetListDataController)
     case managementOptions(
@@ -154,6 +158,11 @@ indirect enum Screen {
         wcSession: WCSessionDraft
     )
     case wcAssetDeletionTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcKeyRegTransaction(
         transaction: WCTransaction,
         transactionRequest: WalletConnectRequestDraft,
         wcSession: WCSessionDraft

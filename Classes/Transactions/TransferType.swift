@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonPayFlowCoordinator.swift
+//   TransferType.swift
 
 import Foundation
-import UIKit
 
-/// <todo>
-/// This should be removed after the routing refactor.
-final class MoonPayFlowCoordinator {
-    private unowned let presentingScreen: UIViewController
-
-    init(
-        presentingScreen: UIViewController
-    ) {
-        self.presentingScreen = presentingScreen
-    }
+enum TransferType {
+    case sent
+    case received
 }

@@ -514,6 +514,7 @@
 
 // MARK: Transaction Detail
 "transaction-detail-title" = "Transaction Detail";
+"transaction-details-title" = "Transaction Details";
 "transaction-detail-status" = "Status";
 "transaction-detail-amount" = "Amount";
 "transaction-detail-reward" = "Reward";
@@ -1710,3 +1711,17 @@ FAQ section.";
 "wc-session-connection-wc-events" = "WalletConnect events";
 "wc-session-connection-wc-methods" = "WalletConnect methods";
 "wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";
+
+/// MARK: Key Registration Transactions
+"key-reg-title" = "KeyReg";
+"vote-key-title" = "Vote Key";
+"selection-key-title" = "Selection Key";
+"state-proof-key-title" = "State Proof Key";
+"valid-first-round-title" = "Valid First Round";
+"valid-last-round-title" = "Valid Last Round";
+"vote-key-dilution-title" = "Vote Key Dilution";
+"participation-status-title" = "Participation Status";
+"participating-title" = "Participating";
+"not-participating-title" = "Not Participating";
+"online-title" = "Online";
+"offline-title" = "Offline";
