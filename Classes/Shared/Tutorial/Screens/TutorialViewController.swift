@@ -254,7 +254,7 @@ extension TutorialViewController: TutorialViewDelegate {
             screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
             screen?.hidesCloseBarButtonItem = true
         case .ledgerSuccessfullyConnected:
-            uiHandlers.didTapSecondaryActionButton?(self)
+            uiHandlers.didTapButtonPrimaryActionButton?(self)
         default:
             break
         }
