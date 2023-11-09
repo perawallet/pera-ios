@@ -181,6 +181,11 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "local-authentication-no".localized
         case .recoverWithLedger:
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
+        case .backUp(let flow, _),
+             .writePassphrase(let flow, _):
+            guard !flow.isBackUpAccount else { return }
+
+            secondaryActionButtonTitle = "title-skip-for-now".localized
         default:
             break
         }
@@ -201,7 +206,9 @@ extension TutorialViewModel {
             switch flow {
             case .initializeAccount:
                 self.description = "recover-from-seed-verify-pop-up-explanation".localized
-            case .addNewAccount, .none:
+            case .addNewAccount,
+                 .backUpAccount,
+                 .none:
                 self.description = "recover-from-seed-verify-pop-up-explanation-already-added".localized
             }
         }
@@ -216,7 +223,9 @@ extension TutorialViewModel {
             switch flow {
             case .initializeAccount:
                 self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
-            case .addNewAccount, .none:
+            case .addNewAccount,
+                 .backUpAccount,
+                 .none:
                 self.primaryActionButtonTitle = "title-continue".localized
             }
         }

@@ -139,6 +139,7 @@
 "title-extend" = "Extend";
 "title-active" = "Active";
 "tite-pinging" = "Pinging";
+"title-action-required" = "ACTION REQUIRED";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1605,6 +1606,11 @@ FAQ section.";
 "wc-session-connection-wc-methods" = "WalletConnect methods";
 "wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";
 
+// MARK: Account Not Backed Up Warning
+"account-not-backed-up-warning-title" = "You need to backup the passphrase";
+"account-not-backed-up-warning-action-title" = "Backup now";
+"account-not-backed-up-warning-subtitle" = "You need to backup the passphrase of your account";
+
 /// MARK: Key Registration Transactions
 "key-reg-title" = "KeyReg";
 "vote-key-title" = "Vote Key";
@@ -1618,3 +1624,6 @@ FAQ section.";
 "not-participating-title" = "Not Participating";
 "online-title" = "Online";
 "offline-title" = "Offline";
+
+/// MARK: Back Up Account Selection
+"back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
