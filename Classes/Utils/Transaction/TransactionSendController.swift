@@ -92,8 +92,7 @@ extension TransactionSendController {
             }
 
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
-
-            api.fetchAccount(
+            api.fetchAccountFromNode(
                 receiverFetchDraft,
                 queue: .main,
                 ignoreResponseOnCancelled: true
@@ -102,12 +101,12 @@ extension TransactionSendController {
 
                 switch accountResponse {
                 case let .success(accountWrapper):
-                    if !accountWrapper.account.isSameAccount(with: receiverAddress) {
+                    if accountWrapper.address != receiverAddress {
                         self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
                         return
                     }
 
-                    if accountWrapper.account.algo.amount == 0 {
+                    if accountWrapper.algo.amount == 0 {
                         self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
                     } else {
                         self.delegate?.transactionSendControllerDidValidate(self)
