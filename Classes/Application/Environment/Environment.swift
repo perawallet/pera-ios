@@ -53,17 +53,13 @@ class Environment {
     
     lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
     lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
-    lazy var testNetAlgoNodeCloudHost = "testnet-api.algonode.cloud"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
-    lazy var testNetAlgoNodeCloudApi = "\(schema)://\(testNetAlgoNodeCloudHost)/v2"
 
     lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
     lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
-    lazy var mainNetAlgoNodeCloudHost = "mainnet-api.algonode.cloud"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
-    lazy var mainNetAlgoNodeCloudApi = "\(schema)://\(mainNetAlgoNodeCloudHost)/v2"
 
     lazy var serverHost: String = {
         switch target {

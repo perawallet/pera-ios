@@ -93,7 +93,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AccountAssetInformation>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algoNodeCloud(network))
+            .base(.algod(network))
             .path(.accountAsset, args: draft.publicKey, String(draft.assetID))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
