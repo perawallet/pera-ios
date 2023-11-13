@@ -39,6 +39,7 @@ extension ALGAPIBase {
     enum Base {
         case algod(ALGAPI.Network)
         case indexer(ALGAPI.Network)
+        case algoNodeCloud(ALGAPI.Network)
         case mobileV1(ALGAPI.Network)
         case mobileV2(ALGAPI.Network)
         case algoExplorer
@@ -46,6 +47,8 @@ extension ALGAPIBase {
         init?(_ base: String, network: ALGAPI.Network) {
             if base.isAlgodApiBase {
                 self = .algod(network)
+            } else if base.isAlgoNodeCloudBase {
+                self = .algoNodeCloud(network)
             } else if base.isIndexerApiBase {
                 self = .indexer(network)
             } else if base.isMobileApiV1Base {
@@ -66,6 +69,12 @@ extension ALGAPIBase {
                     return Environment.current.testNetAlgodApi
                 } else {
                     return Environment.current.mainNetAlgodApi
+                }
+            case let .algoNodeCloud(network):
+                if network == .testnet {
+                    return Environment.current.testNetAlgoNodeCloudApi
+                } else {
+                    return Environment.current.mainNetAlgoNodeCloudApi
                 }
             case let .indexer(network):
                 if network == .testnet {
@@ -95,6 +104,10 @@ extension ALGAPIBase {
 fileprivate extension String {
     var isAlgodApiBase: Bool {
         return self == Environment.current.testNetAlgodApi || self == Environment.current.mainNetAlgodApi
+    }
+
+    var isAlgoNodeCloudBase: Bool {
+        return self == Environment.current.testNetAlgoNodeCloudApi || self == Environment.current.mainNetAlgoNodeCloudApi
     }
 
     var isIndexerApiBase: Bool {

@@ -67,6 +67,8 @@ extension ALGAPIInterceptor {
             setAlgodHeaders(endpoint)
         case .indexer:
             setIndexerHeaders(endpoint)
+        case .algoNodeCloud:
+            break
         case .mobileV1:
             setMobileHeaders(endpoint)
         case .mobileV2:

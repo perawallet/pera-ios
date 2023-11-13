@@ -66,4 +66,21 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+
+    @discardableResult
+    func fetchAccountAssetFromNode(
+        _ draft: AccountAssetFetchDraft,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<AccountAssetInformation>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.algoNodeCloud(network))
+            .path(.accountAsset, args: draft.publicKey, String(draft.assetID))
+            .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .responseDispatcher(queue)
+            .execute()
+    }
 }

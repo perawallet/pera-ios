@@ -101,12 +101,6 @@ extension TransactionSendController {
                 guard let self = self else { return }
 
                 switch accountResponse {
-                case let .failure(error, _):
-                    if error.isHttpNotFound {
-                        self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
-                    } else {
-                        self.delegate?.transactionSendController(self, didFailValidation: .internetConnection)
-                    }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
                         self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
@@ -117,6 +111,12 @@ extension TransactionSendController {
                         self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
                     } else {
                         self.delegate?.transactionSendControllerDidValidate(self)
+                    }
+                case let .failure(error, _):
+                    if error.isHttpNotFound {
+                        self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
+                    } else {
+                        self.delegate?.transactionSendController(self, didFailValidation: .internetConnection)
                     }
                 }
             }
@@ -144,9 +144,11 @@ extension TransactionSendController {
             return
         }
 
-        let draft = AccountFetchDraft(publicKey: address)
-
-        api.fetchAccount(
+        let draft = AccountAssetFetchDraft(
+            publicKey: address,
+            assetID: asset.id
+        )
+        api.fetchAccountAssetFromNode(
             draft,
             queue: .main,
             ignoreResponseOnCancelled: true
@@ -154,25 +156,8 @@ extension TransactionSendController {
             guard let self = self else { return }
 
             switch fetchAccountResponse {
-            case let .success(receiverAccountWrapper):
-                if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
-                    return
-                }
-
-                let receiverAccount = receiverAccountWrapper.account
-
-                if let assets = receiverAccount.assets {
-                    if assets.contains(where: { anAsset -> Bool in
-                        asset.id == anAsset.id
-                    }) {
-                        self.validateAssetTransaction()
-                    } else {
-                        self.delegate?.transactionSendController(self, didFailValidation: .asset(.assetNotSupported(address)))
-                    }
-                } else {
-                    self.delegate?.transactionSendController(self, didFailValidation: .asset(.assetNotSupported(address)))
-                }
+            case .success:
+                self.validateAssetTransaction()
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     self.delegate?.transactionSendController(self, didFailValidation: .asset(.assetNotSupported(address)))
@@ -184,7 +169,7 @@ extension TransactionSendController {
     }
 
     private func validateAssetTransaction() {
-        guard let amount = self.draft.amount,
+        guard let amount = draft.amount,
               let asset = draft.asset else {
             self.delegate?.transactionSendController(self, didFailValidation: .amountNotSpecified)
             return
