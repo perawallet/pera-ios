@@ -6463,6 +6463,9 @@
 		D4E6AF49284CCCB20025518B /* AccountOrderingListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6AF48284CCCB20025518B /* AccountOrderingListItemCell.swift */; };
 		D4E6AF4A284CCCB20025518B /* AccountOrderingListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6AF48284CCCB20025518B /* AccountOrderingListItemCell.swift */; };
 		D4E6AF4B284CCCB20025518B /* AccountOrderingListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6AF48284CCCB20025518B /* AccountOrderingListItemCell.swift */; };
+		D4E7A3052AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7A3042AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift */; };
+		D4E7A3062AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7A3042AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift */; };
+		D4E7A3072AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7A3042AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift */; };
 		D4E7E6CD27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */; };
 		D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */; };
 		D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */; };
@@ -9677,6 +9680,7 @@
 		D4E5E0592A82C06B009B3194 /* WCSessionStatusSecondaryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionStatusSecondaryListItemViewModel.swift; sourceTree = "<group>"; };
 		D4E6301929A610FA00889A81 /* TransakConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransakConfig.swift; sourceTree = "<group>"; };
 		D4E6AF48284CCCB20025518B /* AccountOrderingListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountOrderingListItemCell.swift; sourceTree = "<group>"; };
+		D4E7A3042AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDAppsTransactionOptionListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoContentWithActionViewIllustratedTheme+Collectible.swift"; sourceTree = "<group>"; };
 		D4E9E273298816850008C4D5 /* CollectibleListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListQuery.swift; sourceTree = "<group>"; };
 		D4EAEC9F2846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListTitleSupplementaryHeader.swift; sourceTree = "<group>"; };
@@ -19009,6 +19013,7 @@
 			isa = PBXGroup;
 			children = (
 				D48B033628869532009AF715 /* AddAssetTransactionOptionListActionViewModel.swift */,
+				D4E7A3042AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift */,
 				2BE8798128BD2CBC00A6C682 /* BuySellTransactionOptionListItemButtonViewModel.swift */,
 				D4AB805629F0A305002BCB47 /* CopyAddressTransactionOptionListItemButtonViewModel.swift */,
 				17CADC8A2853DC43001D19A8 /* MoreTransactionOptionListItemButtonViewModel.swift */,
@@ -23072,6 +23077,7 @@
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				D48DBA5427B86EAA00CD35B7 /* TestNetTitleViewTheme.swift in Sources */,
 				95004BBA27BD37DD00AB2D9A /* TransactionSendController.swift in Sources */,
+				D4E7A3072AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */,
 				D4023E3229A6C6A200DFB5E8 /* MoonPayAccountSelectionListHeaderViewModel.swift in Sources */,
 				D45AF6EB2A93AC7B00FA9409 /* WCSessionConnectionHeader.swift in Sources */,
 				D4999E1228919E5A00C7E05C /* OptInAssetDraft.swift in Sources */,
@@ -25256,6 +25262,7 @@
 				95189D7E2778DD6200094107 /* UIPasteboard+Address.swift in Sources */,
 				D49835972A59934200A0FDA1 /* AccountInformationFlowCoordinator.swift in Sources */,
 				2B0F616E24EC129D00DA22A6 /* UIApplication+Additions.swift in Sources */,
+				D4E7A3062AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */,
 				F07F005A2922F64C00901F07 /* InAppBrowserNoContentView.swift in Sources */,
 				2BC636152889BA9E00507AEA /* PrimaryListItemView.swift in Sources */,
 				95CA71F827CD5D0B00424626 /* ALGAPI+MoonPay.swift in Sources */,
@@ -27669,6 +27676,7 @@
 				D4F4C90829D1B9A10069FB94 /* AnyToNoAuthRekeyedAccountTypeInformationViewModel.swift in Sources */,
 				2BB350E5258A233800A03BAC /* AccountNameViewModel.swift in Sources */,
 				F0C64B1F277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */,
+				D4E7A3052AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */,
 				2BC647BD29B89DB500DE5071 /* ManageAssetListItemLoadingViewTheme.swift in Sources */,
 				D40E87ED294B1C2C00B46054 /* CollectibleDetailOptOutActionCellTheme.swift in Sources */,
 				F034522928B39023009467A0 /* ASAProfileViewModel.swift in Sources */,

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionOptionsListAction.swift
+//   BrowseDAppsTransactionOptionListItemButtonViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-final class TransactionOptionListAction {
-    let isEnabled: Bool
-    let viewModel: TransactionOptionListItemButtonViewModel
-    let handler: Handler
+struct BrowseDAppsTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    init(
-        isEnabled: Bool = true,
-        viewModel: TransactionOptionListItemButtonViewModel,
-        handler: @escaping Handler
-    ) {
-        self.isEnabled = isEnabled
-        self.viewModel = viewModel
-        self.handler = handler
+    init() {
+        icon = "icon-transaction-option-list-browse-dapps"
+        title = Self.getTitle("transaction-option-list-browse-dapps-title".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-browse-dapps-subtitle".localized)
     }
-
-    typealias Handler = (ListItemButton) -> Void
 }
