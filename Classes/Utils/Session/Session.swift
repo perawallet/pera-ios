@@ -306,6 +306,7 @@ extension Session {
             try setBiometricPasswordEnabled()
         } catch {
             try removeBiometricPassword()
+            throw error
         }
     }
 
