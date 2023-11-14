@@ -55,12 +55,12 @@ class Environment {
     lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
-    
+
     lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
     lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
-    
+
     lazy var serverHost: String = {
         switch target {
         case .staging:
