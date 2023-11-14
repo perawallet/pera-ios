@@ -98,7 +98,7 @@ extension BackUpAccountFlowCoordinator {
         let needsAccountSelection = address == nil
         presentingScreen.open(
             .tutorial(
-                flow: .addNewAccount(mode: .add(type: .create)),
+                flow: .addNewAccount(mode: .add),
                 tutorial: .backUp(
                     flow: .backUpAccount(needsAccountSelection: needsAccountSelection),
                     address: address

@@ -198,7 +198,7 @@ final class Router:
                     self.route(
                         to: .watchAccountAddition(
                             flow: .addNewAccount(
-                                mode: .add(type: .watch)
+                                mode: .watch
                             ),
                             address: address
                         ),
@@ -605,8 +605,6 @@ final class Router:
             viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
-        case let .addAccount(flow):
-            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .recoverAccount(flow):
             viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow):
