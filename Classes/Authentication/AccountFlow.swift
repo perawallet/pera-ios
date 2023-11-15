@@ -48,20 +48,16 @@ extension AccountSetupFlow {
 }
 
 enum AccountSetupMode: Equatable {
-    case add(type: AccountAdditionType)
+    case add
     case recover(type: RecoverType)
     case rekey(account: Account)
-    case none
-}
-
-enum AccountAdditionType {
-    case create
     case watch
     case none
 }
 
 enum RecoverType: Equatable {
     case passphrase
+    case qr
     case ledger
     case importFromWeb
     case none

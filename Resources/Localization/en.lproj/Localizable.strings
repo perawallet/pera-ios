@@ -143,13 +143,13 @@
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
-"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
-"account-type-selection-watch" = "Add watch account";
-"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
-"account-type-selection-recover" = "I already have an account";
-"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+"account-type-selection-watch" = "Watch an account";
+"account-type-selection-watch-detail" = "Monitor an Algorand account by providing its address";
+"account-type-selection-recover" = "Import an account";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-type-selection-import-web" = "Import from Pera Web";
@@ -157,6 +157,8 @@
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-qr" = "Recover an account with QR code";
+"account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
 "title-arbitrary-data" = "Arbitrary Data";
@@ -165,7 +167,7 @@
 // MARK: Introduction
 
 "introduction-add-account-text" = "I want to create\nan Algorand account";
-"introduction-recover-account-text" = "I already have an account";
+"introduction-recover-account-text" = "Import an account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting

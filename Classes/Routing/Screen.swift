@@ -30,7 +30,6 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
-    case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)

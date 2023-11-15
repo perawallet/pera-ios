@@ -130,7 +130,7 @@ extension PassphraseBackUpViewController {
         let screen = open(
             .accountNameSetup(
                 flow: flow,
-                mode: .add(type: .create),
+                mode: .add,
                 accountAddress: account.address
             ),
             by: .push 

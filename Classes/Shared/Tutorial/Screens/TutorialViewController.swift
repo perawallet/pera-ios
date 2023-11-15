@@ -198,15 +198,15 @@ extension TutorialViewController: TutorialViewDelegate {
             open(
                 .accountNameSetup(
                     flow: flow,
-                    mode: .add(type: .create),
+                    mode: .add,
                     accountAddress: account.address
                 ),
                 by: .push
             )
         case .accountVerified(let flow):
-            if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            if case .initializeAccount(mode: .watch) = flow {
                 analytics.track(.onboardWatchAccount(type: .verified))
-            } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            } else if case .addNewAccount(mode: .watch) = flow {
                 analytics.track(.onboardWatchAccount(type: .verified))
             } else {
                 analytics.track(.onboardCreateAccountVerified(type: .start))
@@ -246,7 +246,7 @@ extension TutorialViewController: TutorialViewDelegate {
             let screen = open(
                 .accountNameSetup(
                     flow: flow,
-                    mode: .add(type: .create),
+                    mode: .add,
                     accountAddress: newAccount.address
                 ),
                 by: .push
