@@ -101,7 +101,8 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
                 isWatchAccount: false,
-                preferredOrder: currentPreferredOrder
+                preferredOrder: currentPreferredOrder,
+                isBackedUp: true
             )
             transferAccounts.append(
                 TransferAccount(

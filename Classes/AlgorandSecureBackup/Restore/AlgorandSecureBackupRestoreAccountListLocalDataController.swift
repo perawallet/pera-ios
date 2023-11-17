@@ -131,7 +131,8 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                isWatchAccount: false
+                isWatchAccount: false, 
+                isBackedUp: true
             )
 
             return Account(localAccount: accountInformation)
