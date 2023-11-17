@@ -18,18 +18,15 @@ import Foundation
 
 final class BackupParameters: ALGAPIModel {
     let accounts: [AccountImportParameters]
-    let deviceID: String?
     let providerName: String?
 
     init() {
         accounts = []
-        deviceID = nil
         providerName = nil
     }
 
-    init(accounts: [AccountImportParameters], deviceID: String?, providerName: String? = nil) {
+    init(accounts: [AccountImportParameters], providerName: String? = nil) {
         self.accounts = accounts
-        self.deviceID = deviceID
         self.providerName = providerName ?? "Pera Wallet"
     }
 
@@ -37,14 +34,12 @@ final class BackupParameters: ALGAPIModel {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let accountsApiModel = try container.decode([AccountImportParameters.APIModel].self, forKey: .accounts)
         accounts = accountsApiModel.map { .init($0) }
-        deviceID = try container.decodeIfPresent(String.self, forKey: .deviceID)
         providerName = try container.decodeIfPresent(String.self, forKey: .providerName)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(accounts.map { $0.encode() }, forKey: .accounts)
-        try container.encodeIfPresent(deviceID, forKey: .deviceID)
         try container.encodeIfPresent(providerName, forKey: .providerName)
     }
 }
@@ -52,7 +47,6 @@ final class BackupParameters: ALGAPIModel {
 extension BackupParameters {
     enum CodingKeys: String, CodingKey {
         case accounts = "accounts"
-        case deviceID = "device_id"
         case providerName = "provider_name"
     }
 }

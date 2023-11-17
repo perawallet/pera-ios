@@ -422,15 +422,13 @@ extension AlgorandSecureBackupMnemonicsScreen {
     private func generateBackup() {
         let algorandSDK = AlgorandSDK()
         guard let privateKey = fetchPrivateKey(),
-              let cipherText = algorandSDK.generateBackupCipherKey(data: privateKey),
-              let network = api?.network,
-              let deviceId = session?.authenticatedUser?.getDeviceId(on: network) else {
+              let cipherText = algorandSDK.generateBackupCipherKey(data: privateKey)else {
             eventHandler?(.backupFailed(.missingData), self)
             return
         }
 
         let cryptor = Cryptor(data: cipherText)
-        let backupParameters = BackupParameters(accounts: getAccountImportParameters(), deviceID: deviceId)
+        let backupParameters = BackupParameters(accounts: getAccountImportParameters())
         do {
             let encryptedData = try cryptor.encrypt(data: backupParameters.encoded())
 
