@@ -320,7 +320,7 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
         if let keyboard = keyboardController.keyboard {
-            footerView.snp.updateConstraints {
+            footerBackgroundView.snp.updateConstraints {
                 $0.bottom == keyboard.height
             }
 
@@ -344,7 +344,7 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
             return scrollView.contentInset.bottom
         }
 
-        footerView.snp.updateConstraints {
+        footerBackgroundView.snp.updateConstraints {
             $0.bottom == 0
         }
 

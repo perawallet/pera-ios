@@ -108,7 +108,7 @@ class BaseScrollViewController: BaseViewController {
         footerView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.bottom == footerBackgroundView.safeAreaBottom
+            $0.bottom == footerBackgroundView.safeAreaLayoutGuide.snp.bottom
             $0.trailing == 0
         }
     }
