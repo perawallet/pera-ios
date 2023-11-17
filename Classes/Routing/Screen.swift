@@ -30,11 +30,10 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
-    case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
-    case passphraseVerify(flow: AccountSetupFlow)
+    case passphraseVerify(flow: AccountSetupFlow, address: String)
     case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
     case accountRecover(
         flow: AccountSetupFlow,
@@ -422,6 +421,9 @@ indirect enum Screen {
     case wcTransactionSignSuccessful(
         draft: WCSessionDraft,
         eventHandler: WCTransactionSignSuccessfulSheet.EventHandler
+    )
+    case backUpAccountSelection(
+        eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
 }
 

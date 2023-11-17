@@ -234,7 +234,8 @@ extension ImportAccountScreen {
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
                 isWatchAccount: accountParameter.accountType.rawAccountType.isWatch,
-                preferredOrder: currentPreferredOrder
+                preferredOrder: currentPreferredOrder,
+                isBackedUp: true
             )
             transferAccounts.append(
                 TransferAccount(

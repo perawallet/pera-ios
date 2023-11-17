@@ -27,6 +27,7 @@ final class RecoverAccountView:
     private lazy var stackView = UIStackView()
     private lazy var recoverWithPassphraseView = AccountTypeView()
     private lazy var importFromSecureBackupView = AccountTypeView()
+    private lazy var recoverWithQRView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
     private lazy var importFromWebView = AccountTypeView()
 
@@ -45,6 +46,12 @@ final class RecoverAccountView:
         recoverWithPassphraseView.addTarget(
             self,
             action: #selector(notifyDelegateToRecoverWithPassphrase),
+            for: .touchUpInside
+        )
+        
+        recoverWithQRView.addTarget(
+            self,
+            action: #selector(notifyDelegateToRecoverWithQR),
             for: .touchUpInside
         )
 
@@ -69,6 +76,7 @@ final class RecoverAccountView:
     func bindData(_ viewModel: RecoverAccountViewModel?) {
         recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
         importFromSecureBackupView.bindData(viewModel?.importFromSecureBackupViewModel)
+        recoverWithQRView.bindData(viewModel?.recoverWithQRViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
         importFromWebView.bindData(viewModel?.importFromWebViewModel)
     }
@@ -78,6 +86,11 @@ extension RecoverAccountView {
     @objc
     private func notifyDelegateToRecoverWithPassphrase() {
         delegate?.recoverAccountView(self, didSelect: .passphrase)
+    }
+    
+    @objc
+    private func notifyDelegateToRecoverWithQR() {
+        delegate?.recoverAccountView(self, didSelect: .qr)
     }
 
     @objc
@@ -123,6 +136,8 @@ extension RecoverAccountView {
         stackView.addArrangedSubview(recoverWithPassphraseView)
         importFromSecureBackupView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(importFromSecureBackupView)
+        recoverWithQRView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(recoverWithQRView)
         recoverWithLedgerView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithLedgerView)
         importFromWebView.customize(theme.accountTypeViewTheme)

@@ -140,16 +140,17 @@
 "title-extend" = "Extend";
 "title-active" = "Active";
 "tite-pinging" = "Pinging";
+"title-action-required" = "ACTION REQUIRED";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
-"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
-"account-type-selection-watch" = "Add watch account";
-"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
-"account-type-selection-recover" = "I already have an account";
-"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+"account-type-selection-watch" = "Watch an account";
+"account-type-selection-watch-detail" = "Monitor an Algorand account by providing its address";
+"account-type-selection-recover" = "Import an account";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-type-selection-import-web" = "Import from Pera Web";
@@ -159,6 +160,8 @@
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
 "account-type-selection-import-secure-backup" = "Algorand Secure Backup";
 "account-type-selection-import-secure-backup-detail" = "I want to restore my accounts using an Algorand Secure Backup file and 12-word key";
+"account-type-selection-qr" = "Recover an account with QR code";
+"account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
 "title-arbitrary-data" = "Arbitrary Data";
@@ -167,7 +170,7 @@
 // MARK: Introduction
 
 "introduction-add-account-text" = "I want to create\nan Algorand account";
-"introduction-recover-account-text" = "I already have an account";
+"introduction-recover-account-text" = "Import an account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
@@ -1223,6 +1226,8 @@
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
 "transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
+"transaction-option-list-browse-dapps-title" = "Browse dApps";
+"transaction-option-list-browse-dapps-subtitle" = "Use browser to interact with dApps";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
@@ -1712,6 +1717,11 @@ FAQ section.";
 "wc-session-connection-wc-methods" = "WalletConnect methods";
 "wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";
 
+// MARK: Account Not Backed Up Warning
+"account-not-backed-up-warning-title" = "You need to backup the passphrase";
+"account-not-backed-up-warning-action-title" = "Backup now";
+"account-not-backed-up-warning-subtitle" = "You need to backup the passphrase of your account";
+
 /// MARK: Key Registration Transactions
 "key-reg-title" = "KeyReg";
 "vote-key-title" = "Vote Key";
@@ -1725,3 +1735,6 @@ FAQ section.";
 "not-participating-title" = "Not Participating";
 "online-title" = "Online";
 "offline-title" = "Offline";
+
+/// MARK: Back Up Account Selection
+"back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";

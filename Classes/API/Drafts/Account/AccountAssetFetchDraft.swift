@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AddAccountViewController+Theme.swift
+//   AccountAssetFetchDraft.swift
 
-import MacaroonUIKit
 import Foundation
 
-extension AddAccountViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let addAccountViewTheme: AddAccountViewTheme
-        let backgroundColor: Color
-
-        init(_ family: LayoutFamily) {
-            addAccountViewTheme = AddAccountViewTheme()
-            backgroundColor = Colors.Defaults.background
-        }
-    }
+struct AccountAssetFetchDraft {
+    let publicKey: PublicKey
+    let assetID: AssetID
 }

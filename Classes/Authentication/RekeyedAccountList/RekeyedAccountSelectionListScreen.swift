@@ -293,7 +293,8 @@ extension RekeyedAccountSelectionListScreen {
                 address: account.address,
                 name: account.address,
                 isWatchAccount: false,
-                preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: true
             )
 
             if user.account(address: account.address) != nil {

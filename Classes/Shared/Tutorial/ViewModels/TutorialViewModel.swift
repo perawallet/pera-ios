@@ -181,6 +181,11 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "local-authentication-no".localized
         case .recoverWithLedger:
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
+        case .backUp(let flow, _),
+             .writePassphrase(let flow, _):
+            guard !flow.isBackUpAccount else { return }
+
+            secondaryActionButtonTitle = "title-skip-for-now".localized
         default:
             break
         }
@@ -193,30 +198,34 @@ extension TutorialViewModel {
     }
     
     private func bindAccountSetupFlowDescription(_ flow: AccountSetupFlow) {
-        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+        if case .initializeAccount(mode: .watch) = flow {
             self.description = "recover-from-seed-verify-pop-up-description-watch-account-initialize".localized
-        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+        } else if case .addNewAccount(mode: .watch) = flow {
             self.description = "recover-from-seed-verify-pop-up-description-watch-account-add".localized
         } else {
             switch flow {
             case .initializeAccount:
                 self.description = "recover-from-seed-verify-pop-up-explanation".localized
-            case .addNewAccount, .none:
+            case .addNewAccount,
+                 .backUpAccount,
+                 .none:
                 self.description = "recover-from-seed-verify-pop-up-explanation-already-added".localized
             }
         }
     }
     
     private func bindAccountSetupFlowPrimaryButton(_ flow: AccountSetupFlow) {
-        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+        if case .initializeAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
-        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+        } else if case .addNewAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-continue".localized
         } else {
             switch flow {
             case .initializeAccount:
                 self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
-            case .addNewAccount, .none:
+            case .addNewAccount,
+                 .backUpAccount,
+                 .none:
                 self.primaryActionButtonTitle = "title-continue".localized
             }
         }
@@ -234,9 +243,9 @@ extension TutorialViewModel {
     }
     
     private func bindAccountSetupFlowButtonsTheme(_ flow: AccountSetupFlow, theme: TutorialViewTheme) {
-        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+        if case .initializeAccount(mode: .watch) = flow {
             return
-        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+        } else if case .addNewAccount(mode: .watch) = flow {
             return
         } else {
             self.primaryActionButtonTheme = theme.mainButtonTheme

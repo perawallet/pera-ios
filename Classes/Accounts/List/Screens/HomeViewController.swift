@@ -46,6 +46,10 @@ final class HomeViewController:
         api: api!
     )
 
+    private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
+        presentingScreen: self,
+        api: api!
+    )
     private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -492,7 +496,17 @@ extension HomeViewController {
             self.triggerBannerCTA(item: item)
         }
     }
-    
+
+    private func linkInteractors(
+        _ cell: AccountNotBackedUpWarningCell
+    ) {
+        cell.startObserving(event: .performBackup) {
+            [weak self] in
+            guard let self else { return }
+            openBackUpAccount()
+        }
+    }
+
     private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
         for item: AnnouncementViewModel
@@ -595,6 +609,25 @@ extension HomeViewController {
                 by: .push
             )
         }
+    }
+}
+
+extension HomeViewController {
+    private func openBackUpAccount() {
+        backupAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .didBackUpAccount:
+                self.dataController.reload()
+            }
+        }
+
+        let notBackedUpAccounts = sharedDataController.accountCollection.filter {
+            return !$0.value.isBackedUp
+        }
+        backupAccountFlowCoordinator.launch(notBackedUpAccounts)
     }
 }
 
@@ -783,6 +816,8 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             }
+        case .accountNotBackedUpWarning:
+            linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
             switch item.type {
             case .governance:
@@ -861,6 +896,8 @@ extension HomeViewController {
                     self,
                     animated: true
                 )
+                self.dataController.reload()
+            case .didBackUp:
                 self.dataController.reload()
             }
         }

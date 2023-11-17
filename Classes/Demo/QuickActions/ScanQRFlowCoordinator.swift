@@ -706,11 +706,7 @@ extension ScanQRFlowCoordinator {
         }
 
         let screen: Screen = .watchAccountAddition(
-            flow: .addNewAccount(
-                mode: .add(
-                    type: .watch
-                )
-            ),
+            flow: .addNewAccount(mode: .watch),
             address: address
         )
 

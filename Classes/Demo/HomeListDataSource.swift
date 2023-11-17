@@ -61,6 +61,13 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     )
                     return cell
                 }
+            case .accountNotBackedUpWarning(let item):
+                let cell = collectionView.dequeue(
+                    AccountNotBackedUpWarningCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
             case .announcement(let item):
                 switch item.type {
                 case .generic, .backup:
@@ -103,6 +110,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             NoContentWithActionCell.self,
             HomePortfolioCell.self,
             HomeQuickActionsCell.self,
+            AccountNotBackedUpWarningCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
             HomeAccountsHeader.self,
