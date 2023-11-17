@@ -157,7 +157,7 @@ extension TutorialViewController: TutorialViewDelegate {
 
             if case .backUpAccount(let needsAccountSelection) = flow,
                needsAccountSelection {
-                openAccountSelectionForBackingUp()
+                openAccountSelectionForBackingUp(flow: flow)
                 return
             }
 
@@ -262,7 +262,7 @@ extension TutorialViewController: TutorialViewDelegate {
 }
 
 extension TutorialViewController {
-    private func openAccountSelectionForBackingUp() {
+    private func openAccountSelectionForBackingUp(flow: AccountSetupFlow) {
         let accountSelectionScreen = Screen.backUpAccountSelection {
             [weak self] event, screen in
             guard let self else { return }
