@@ -138,14 +138,7 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
     ) {
         guard isConfirmed else { return }
 
-        choosePasswordViewController.open(makeAccountSelection(), by: .push)
-        removePasswordViewController(in: choosePasswordViewController.navigationController)
-    }
-
-    private func removePasswordViewController(
-        in navigationController: UINavigationController?
-    ) {
-        guard let navigationController else {
+        guard let navigationController = choosePasswordViewController.navigationController else {
             return
         }
 
@@ -153,6 +146,12 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
 
         for (index, viewController) in viewControllers.enumerated() {
             if viewController is ChoosePasswordViewController {
+                let accountSelectionScreen = viewController.open(
+                    makeAccountSelection(),
+                    by: .push
+                ) as! AlgorandSecureBackupAccountListScreen
+                viewControllers.append(accountSelectionScreen)
+
                 viewControllers.remove(at: index)
                 break
             }

@@ -75,11 +75,7 @@ extension SettingsDataSource {
             return .secureBackupLoading
         }
 
-        let filteredAccounts = accounts.filter {
-            let isWatchAccount = $0.isWatchAccount
-            let isRekeyedToAnyAccount = $0.hasAuthAccount()
-            return !isWatchAccount && !isRekeyedToAnyAccount
-        }
+        let filteredAccounts = accounts.filter(\.authorization.isStandard)
 
         var numberOfAccountsNotBackedUp = 0
         for account in filteredAccounts {

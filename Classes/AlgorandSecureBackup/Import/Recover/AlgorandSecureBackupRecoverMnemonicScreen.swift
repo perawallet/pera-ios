@@ -24,8 +24,14 @@ final class AlgorandSecureBackupRecoverMnemonicScreen:
     BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource {
     typealias EventHandler = (Event, AlgorandSecureBackupRecoverMnemonicScreen) -> Void
-
     var eventHandler: EventHandler?
+
+    override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+       return .automatic
+    }
+    override var contentSizeBehaviour: BaseScrollViewController.ContentSizeBehaviour {
+       return .intrinsic
+    }
 
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
         let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
@@ -66,13 +72,15 @@ final class AlgorandSecureBackupRecoverMnemonicScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        accountRecoverView.currentInputView?.beginEditing()
 
         addUI()
+
+        accountRecoverView.currentInputView?.beginEditing()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
+       
         accountRecoverView.delegate = self
         inputSuggestionsViewController.delegate = self
     }
@@ -294,7 +302,6 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
     }
 }
 
-
 extension AlgorandSecureBackupRecoverMnemonicScreen: InputSuggestionViewControllerDelegate {
     func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String) {
         updateCurrentInputView(with: mnemonic)
@@ -317,15 +324,7 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
                 $0.bottom == keyboard.height
             }
 
-            // TODO: There is a side effect here. It will be replaced in future.
-            let animator = UIViewPropertyAnimator(
-                duration: keyboard.animationDuration,
-                curve: keyboard.animationCurve
-            ) {
-                [unowned self] in
-                view.layoutIfNeeded()
-            }
-            animator.startAnimation()
+            view.layoutIfNeeded()
         }
 
         return spacingBetweenContentAndKeyboard()
@@ -349,15 +348,7 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
             $0.bottom == 0
         }
 
-        // TODO: There is a side effect here. It will be replaced in future.
-        let animator = UIViewPropertyAnimator(
-            duration:  0.25,
-            curve: .easeOut
-        ) {
-            [unowned self] in
-            view.layoutIfNeeded()
-        }
-        animator.startAnimation()
+        view.layoutIfNeeded()
 
         return .zero
     }
@@ -419,7 +410,6 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
         )
     }
 }
-
 
 extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func getEditingRectOfSearchInputField() -> CGRect? {

@@ -243,10 +243,11 @@ extension AlgorandSecureBackupImportBackupScreen {
 
         switch validation {
         case .success(let secureBackup):
-            eventHandler?(.backupSelected(secureBackup), self)
             bannerController?.presentSuccessBanner(
                 title: "algorand-secure-backup-import-backup-clipboard-success-title".localized
             )
+
+            eventHandler?(.backupSelected(secureBackup), self)
         case .failure(let backupValidationError):
             presentErrorBanner(error: backupValidationError)
         }

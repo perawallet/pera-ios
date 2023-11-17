@@ -120,9 +120,8 @@ extension AlgorandSecureBackupAccountListLocalDataController {
             sharedDataController
                 .sortedAccounts()
                 .filter {
-                    let isWatchAccount = $0.value.isWatchAccount
-                    let isRekeyedToAnyAccount = $0.value.hasAuthAccount()
-                    return !isWatchAccount && !isRekeyedToAnyAccount
+                    let isStandardAccount = $0.value.authorization.isStandard
+                    return isStandardAccount
                 }.map {
                     $0.value
                 }
