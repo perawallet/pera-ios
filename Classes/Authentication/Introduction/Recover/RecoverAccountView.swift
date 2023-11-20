@@ -134,14 +134,14 @@ extension RecoverAccountView {
 
         recoverWithPassphraseView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithPassphraseView)
-        importFromSecureBackupView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(importFromSecureBackupView)
         recoverWithQRView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithQRView)
         recoverWithLedgerView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithLedgerView)
         importFromWebView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(importFromWebView)
+        importFromSecureBackupView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importFromSecureBackupView)
     }
 }
 
