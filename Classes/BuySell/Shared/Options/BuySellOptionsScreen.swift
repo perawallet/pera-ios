@@ -68,6 +68,8 @@ extension BuySellOptionsScreen {
             $0.trailing == theme.contextPaddings.trailing
         }
 
+        addBuyContextHeader()
+        addBuyContext()
         addSellContextHeader()
         addSellContext()
     }
@@ -94,11 +96,21 @@ extension BuySellOptionsScreen {
             $0.trailing == 0
         }
 
-        addBuyOptions()
+        addBuyOptionsIfPossible()
     }
 
-    private func addBuyOptions() {
-        addBuyWithTransakOption()
+    private func addBuyOptionsIfPossible() {
+        /// <note> Buy options are temporarily disabled. Date: 20.11.2023
+        addBuyOptionsNotAvailableContent()
+
+        // addBuyWithTransakOption()
+    }
+
+    private func addBuyOptionsNotAvailableContent() {
+        let contentView = UILabel()
+        contentView.customizeAppearance(theme.buyOptionsNotAvailable)
+       
+        buyContextView.addArrangedSubview(contentView)
     }
 
     private func addBuyAlgoWithSardineOption() {
@@ -136,7 +148,7 @@ extension BuySellOptionsScreen {
 
         contextView.addSubview(sellContextHeaderView)
         sellContextHeaderView.snp.makeConstraints {
-            $0.top == 0
+            $0.top == buyContextView.snp.bottom + theme.spacingBetweenBuyAndSellContext
             $0.leading == 0
             $0.trailing == 0
         }
