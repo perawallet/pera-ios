@@ -1460,6 +1460,7 @@ FAQ section.";
 "buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
 "buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
 "buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+"buy-sell-options-buy-not-available-description" = "Buying Algo through Pera Wallet is not available at the moment.";
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
