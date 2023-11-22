@@ -69,6 +69,8 @@ final class TabBarController: TabBarContainer {
         self.navigateToQRScanner()
     }
 
+    private lazy var browseDAppsAction = createBrowseDAppsListAction()
+
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
@@ -240,11 +242,12 @@ extension TabBarController {
 
         let aView = TransactionOptionsView(
             actions: [
-                buySellAction,
                 swapAction,
+                buySellAction,
                 sendAction,
                 receiveAction,
-                scanQRCodeAction
+                scanQRCodeAction,
+                browseDAppsAction
             ]
         )
         aView.customize(theme)
@@ -427,6 +430,20 @@ extension TabBarController {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
     }
+
+    private func navigateToBrowseDApps() {
+        toggleTransactionOptions()
+
+        launchDiscoverWithBrowserTab()
+    }
+
+    private func launchDiscoverWithBrowserTab() {
+        selectedTab = .discover
+
+        let container = selectedScreen as? NavigationContainer
+        let screen = container?.viewControllers.first as? DiscoverHomeScreen
+        screen?.destination = .browser
+    }
 }
 
 extension TabBarController {
@@ -474,19 +491,42 @@ extension TabBarController {
         observe(notification: NodeSettingsViewController.didUpdateNetwork) {
             [unowned self] _ in
             setNeedsDiscoverTabBarItemUpdateIfNeeded()
+            updateBrowseDAppsActionIfNeeded()
         }
     }
 
-    func setNeedsDiscoverTabBarItemUpdateIfNeeded() {
-        /// <note>
-        /// In staging app, the discover tab is always enabled, but in store app, it is enabled only
-        /// on mainnet.
-        let isEnabled = !ALGAppTarget.current.isProduction || !api.isTestNet
+    /// <note>
+    /// In staging app, the discover tab is always enabled, but in store app, it is enabled only
+    /// on mainnet.
+    private var isDiscoverEnabled: Bool {
+        return !ALGAppTarget.current.isProduction || !api.isTestNet
+    }
 
+    func setNeedsDiscoverTabBarItemUpdateIfNeeded() {
         setTabBarItemEnabled(
-            isEnabled,
+            isDiscoverEnabled,
             forItemID: .discover
         )
+    }
+
+    private func updateBrowseDAppsActionIfNeeded() {
+        if browseDAppsAction.isEnabled == isDiscoverEnabled {
+            return
+        }
+
+        browseDAppsAction = createBrowseDAppsListAction()
+        transactionOptionsView = createTransactionOptions()
+    }
+
+    private func createBrowseDAppsListAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            isEnabled: isDiscoverEnabled,
+            viewModel: BrowseDAppsTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self else { return }
+            self.navigateToBrowseDApps()
+        }
     }
 }
 

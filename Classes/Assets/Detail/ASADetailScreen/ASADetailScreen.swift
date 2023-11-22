@@ -469,9 +469,10 @@ extension ASADetailScreen {
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
         }
-        quickActionsView.startObserving(event: .buy) {
-            [unowned self] in
-        }
+        /// <note> Buy action disabled temporarily. 18.11.2023
+//        quickActionsView.startObserving(event: .buy) {
+//            [unowned self] in
+//        }
         quickActionsView.startObserving(event: .swap) {
             [unowned self, unowned quickActionsView] in
 

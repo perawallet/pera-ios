@@ -183,7 +183,7 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
             self.launchHome()
         }
     }
@@ -217,7 +217,8 @@ extension LedgerAccountVerificationViewController {
             address: account.address,
             name: account.address.shortAddressDisplay,
             isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: true
         )
         setupLedgerDetails(of: &localAccount, from: account)
 
@@ -250,7 +251,8 @@ extension LedgerAccountVerificationViewController {
             launchMain(completion: completion)
         case .addNewAccount:
             closeScreen(by: .dismiss, animated: true, onCompletion: completion)
-        case .none:
+        case .backUpAccount,
+             .none:
             break
         }
     }

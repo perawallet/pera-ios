@@ -42,6 +42,10 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
+    private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
+        presentingScreen: self,
+        api: api!
+    )
     private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -194,6 +198,8 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .backUpAccount:
+                openBackUpAccount()
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
 
@@ -285,6 +291,26 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             [unowned self] in
             self.presentOptionsScreen()
         }
+    }
+}
+
+extension AccountDetailViewController {
+    private func openBackUpAccount() {
+        backupAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didBackUpAccount(let account):
+                self.accountHandle = account
+          
+                self.assetListScreen.reloadData()
+
+                self.eventHandler?(.didBackUp)
+            }
+        }
+
+        backupAccountFlowCoordinator.launch(accountHandle)
     }
 }
 
@@ -799,5 +825,6 @@ extension AccountDetailViewController {
     enum Event {
         case didEdit
         case didRemove
+        case didBackUp
     }
 }
