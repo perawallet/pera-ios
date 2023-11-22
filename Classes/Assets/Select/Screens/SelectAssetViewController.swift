@@ -40,7 +40,9 @@ final class SelectAssetViewController:
     )
     private lazy var listLayout =
         SelectAssetViewControllerListLayout(listDataSource: listDataSource)
-    
+
+    private var isViewLayoutLoaded = false
+
     private let account: Account
     private let receiverAccount: Account?
     private let theme: SelectAssetViewControllerTheme
@@ -67,7 +69,17 @@ final class SelectAssetViewController:
         super.viewDidLoad()
 
         addUI()
-        loadData()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if !isViewLayoutLoaded {
+            loadData()
+            isViewLayoutLoaded = true
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
