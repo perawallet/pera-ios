@@ -1905,12 +1905,6 @@
 		2B77FAA5280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
 		2B77FAA6280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
 		2B77FAA7280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
-		2B77FAA9280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
-		2B77FAAA280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
-		2B77FAAB280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
-		2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAAD280D7F900020376D /* KingfisherWebP */; };
-		2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAAF280D7FC90020376D /* KingfisherWebP */; };
-		2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAB1280D7FD30020376D /* KingfisherWebP */; };
 		2B79A13D23147A4900766021 /* PassphraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */; };
 		2B79A13E23147A4900766021 /* PassphraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */; };
 		2B79A140231580AC00766021 /* TransactionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionController.swift */; };
@@ -8087,7 +8081,6 @@
 		2B7747A626026F9B0083EFFA /* InputSuggestionsDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionsDataController.swift; sourceTree = "<group>"; };
 		2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaImagePreviewViewModel.swift; sourceTree = "<group>"; };
 		2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaWebPImagePreviewViewModel.swift; sourceTree = "<group>"; };
-		2B77FAA8280D73E70020376D /* WebPImageSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPImageSource.swift; sourceTree = "<group>"; };
 		2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpViewController.swift; sourceTree = "<group>"; };
 		2B79A13F231580AB00766021 /* TransactionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionController.swift; sourceTree = "<group>"; };
 		2B7A1F1A27DBD1A70010F52E /* CollectibleDetailLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailLoadingView.swift; sourceTree = "<group>"; };
@@ -10024,7 +10017,6 @@
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
 				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B1B3C692AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
-				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
 				2BC1D3FF29703E7B001E4572 /* WalletConnectSwift in Frameworks */,
@@ -10068,7 +10060,6 @@
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B1B3C682AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
-				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
 				2BC1D40129703E8F001E4572 /* WalletConnectSwift in Frameworks */,
@@ -10107,7 +10098,6 @@
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
 				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B1B3C672AA7B10A0097C9DE /* AlgoSDK.xcframework in Frameworks */,
-				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
 				2B8F78D1296D810B0013F7FF /* WalletConnectSwift in Frameworks */,
@@ -12568,14 +12558,6 @@
 				2B77479A26012E670083EFFA /* mnemonics.txt */,
 			);
 			path = Mnemonics;
-			sourceTree = "<group>";
-		};
-		2B77FA88280D58A30020376D /* WebP */ = {
-			isa = PBXGroup;
-			children = (
-				2B77FAA8280D73E70020376D /* WebPImageSource.swift */,
-			);
-			path = WebP;
 			sourceTree = "<group>";
 		};
 		2B7A1EF727DB7A230010F52E /* Screens */ = {
@@ -17372,7 +17354,6 @@
 				1746715B225B6BE600B78641 /* TypeAliases */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
 				2B02A2EA266CE065002DD8AB /* WalletConnect */,
-				2B77FA88280D58A30020376D /* WebP */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -22172,7 +22153,6 @@
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
 				D4A241DF27D2BF1C00641FF0 /* Prism */,
 				D4B33AB027F1E65900523CEA /* ActiveLabel */,
-				2B77FAB1280D7FD30020376D /* KingfisherWebP */,
 				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
 				F0454224287D8C940081C01C /* MacaroonStorySheet */,
 				17D0F8A228EC08130061B55D /* OrderedCollections */,
@@ -22225,7 +22205,6 @@
 				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
 				D4A241DD27D2BF1300641FF0 /* Prism */,
 				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
-				2B77FAAF280D7FC90020376D /* KingfisherWebP */,
 				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
 				F0454222287D8C8D0081C01C /* MacaroonStorySheet */,
 				17D0F8A028EC08080061B55D /* OrderedCollections */,
@@ -22278,7 +22257,6 @@
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
 				D499D27D27C7D40B00641FF5 /* Prism */,
 				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
-				2B77FAAD280D7F900020376D /* KingfisherWebP */,
 				F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */,
 				F0454220287D8C820081C01C /* MacaroonStorySheet */,
 				17D0F89E28EC07D30061B55D /* OrderedCollections */,
@@ -22371,7 +22349,6 @@
 				2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */,
 				D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */,
 				D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */,
-				2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */,
 				2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
 				2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
@@ -24502,7 +24479,6 @@
 				2B14B048286F6E4A005C1396 /* CurrencySelectionLoadingView.swift in Sources */,
 				2BAAF4C128E4A9C000FC59AF /* ConfirmSwapScreenTheme.swift in Sources */,
 				2B98E49627EB6AA8000FA690 /* CollectibleMediaVideoPreviewViewModel.swift in Sources */,
-				2B77FAAB280D73E70020376D /* WebPImageSource.swift in Sources */,
 				2B7E306F267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
 				D40BA5072A81ACF700138BF7 /* WCSessionConnectedAccountsHeader.swift in Sources */,
 				F0FA692D29E7A4D100593F38 /* OptInAssetListQuery.swift in Sources */,
@@ -26371,7 +26347,6 @@
 				2B99D42D28E9DA7700323C11 /* TitleSeparatorViewModel.swift in Sources */,
 				17899E0729A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */,
 				D4F4C8B529D19FD90069FB94 /* NoAuthAccountInformationScreen.swift in Sources */,
-				2B77FAAA280D73E70020376D /* WebPImageSource.swift in Sources */,
 				2BD4E5102855EBF5003D57A4 /* CollectibleSortingAlgorithm.swift in Sources */,
 				D4592908276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
 				D4023E3929A6C6C800DFB5E8 /* MoonPayAccountSelectionListAccountListItemCellTheme.swift in Sources */,
@@ -28780,7 +28755,6 @@
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
 				0467678D2756A65F00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,
 				2BE4D0822593864D005F5764 /* ALGAnalyticsLog.swift in Sources */,
-				2B77FAA9280D73E70020376D /* WebPImageSource.swift in Sources */,
 				17924434288FD0450075F36F /* NotificationStatusFetchDraft.swift in Sources */,
 				D49D31DB2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
 				2B01E2C524EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */,
@@ -29945,7 +29919,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -29958,7 +29932,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -29974,7 +29948,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -29986,7 +29960,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -30002,7 +29976,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30014,7 +29988,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -30031,7 +30005,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30044,7 +30018,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30061,7 +30035,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30073,7 +30047,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30090,7 +30064,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30102,7 +30076,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30241,7 +30215,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30254,7 +30228,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30271,7 +30245,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30283,7 +30257,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30427,7 +30401,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30439,7 +30413,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.10.0;
+				MARKETING_VERSION = 90.2.192;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30559,14 +30533,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.0.0;
-			};
-		};
-		2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/yeatse/KingfisherWebP.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
 			};
 		};
 		2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */ = {
@@ -30784,21 +30750,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
-		};
-		2B77FAAD280D7F900020376D /* KingfisherWebP */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
-			productName = KingfisherWebP;
-		};
-		2B77FAAF280D7FC90020376D /* KingfisherWebP */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
-			productName = KingfisherWebP;
-		};
-		2B77FAB1280D7FD30020376D /* KingfisherWebP */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
-			productName = KingfisherWebP;
 		};
 		2B8F78D0296D810B0013F7FF /* WalletConnectSwift */ = {
 			isa = XCSwiftPackageProductDependency;
