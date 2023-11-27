@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1526,9 +1526,9 @@
 		2B57D8FD25587FDF006E6FCE /* TapSendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* TapSendTabEvent.swift */; };
 		2B57D8FE25587FDF006E6FCE /* TapSendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* TapSendTabEvent.swift */; };
 		2B57D8FF25587FDF006E6FCE /* TapSendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* TapSendTabEvent.swift */; };
-		2B57E45B2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageToleranceStore.swift */; };
-		2B57E45C2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageToleranceStore.swift */; };
-		2B57E45D2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageToleranceStore.swift */; };
+		2B57E45B2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageTolerancePercentage.swift */; };
+		2B57E45C2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageTolerancePercentage.swift */; };
+		2B57E45D2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57E45A2922C51300ED12E6 /* SlippageTolerancePercentage.swift */; };
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
@@ -7924,7 +7924,7 @@
 		2B57D8EE25587F4F006E6FCE /* TapReceiveAssetInDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapReceiveAssetInDetailEvent.swift; sourceTree = "<group>"; };
 		2B57D8F525587FBB006E6FCE /* TapSendInDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapSendInDetailEvent.swift; sourceTree = "<group>"; };
 		2B57D8FC25587FDF006E6FCE /* TapSendTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapSendTabEvent.swift; sourceTree = "<group>"; };
-		2B57E45A2922C51300ED12E6 /* SlippageToleranceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlippageToleranceStore.swift; sourceTree = "<group>"; };
+		2B57E45A2922C51300ED12E6 /* SlippageTolerancePercentage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlippageTolerancePercentage.swift; sourceTree = "<group>"; };
 		2B58CE1827FBB9D500A95BB4 /* ManageAssetListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetListDataController.swift; sourceTree = "<group>"; };
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
@@ -15437,10 +15437,10 @@
 		2BAC072028F9818C005CBB80 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				2B57E45A2922C51300ED12E6 /* SlippageToleranceStore.swift */,
+				2B57E45A2922C51300ED12E6 /* SlippageTolerancePercentage.swift */,
 				2B69AB4128C01D5600A8D65D /* SwapAssetFlowCoordinator.swift */,
-				2BAC072128F98194005CBB80 /* SwapDisplayStore.swift */,
 				2B2BCC272936369400465720 /* SwapAssetFlowDraft.swift */,
+				2BAC072128F98194005CBB80 /* SwapDisplayStore.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -23953,7 +23953,7 @@
 				D444EE9A2946BD58008AD374 /* DisplayCollectibleAssetsInAssetListFilterItemViewModel.swift in Sources */,
 				2B14B03F286F6611005C1396 /* CurrencySelectionItemLoadingView.swift in Sources */,
 				D4F068A726EF212B00C26F43 /* TutorialStepViewModel.swift in Sources */,
-				2B57E45D2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */,
+				2B57E45D2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */,
 				F010638028AC533F00AB6873 /* RightAccessorizedLabel.swift in Sources */,
 				D409C05729E9A8CC00791F57 /* RekeyedAccountSelectionListNavigationBarView.swift in Sources */,
 				D48F4D832AF12BED0098926F /* AccountNotBackedUpWarningViewTheme.swift in Sources */,
@@ -26242,7 +26242,7 @@
 				D442E1BE27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				D40650232A5B436B00B05DBC /* UndoRekeyFlowCoordinator.swift in Sources */,
 				D4CC28C22875A1060082E038 /* InnerTransactionListDataController.swift in Sources */,
-				2B57E45C2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */,
+				2B57E45C2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */,
 				95B0114A2769DB9200B5CA7B /* SendTransactionScreen+Theme.swift in Sources */,
 				2B2F03CF2A92B0D4000A47F2 /* WCSessionConnectionDraft.swift in Sources */,
 				2B698233278C61B5008EC669 /* TransactionsListLayout.swift in Sources */,
@@ -28653,7 +28653,7 @@
 				D4B93D5929E594F10095875C /* RekeyedAccountSelectionListScreenTheme.swift in Sources */,
 				D45D7669299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */,
 				D443A07927E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */,
-				2B57E45B2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */,
+				2B57E45B2922C51300ED12E6 /* SlippageTolerancePercentage.swift in Sources */,
 				2B69A9C0285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */,
 				F063BE8F290C096400AEAEF7 /* EditSwapSlippageToleranceLocalDataProvider.swift in Sources */,
 				F012642F2835A46800380C4E /* ALGDeeplinkConfig.swift in Sources */,
@@ -29919,7 +29919,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -29932,7 +29932,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -29948,7 +29948,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -29960,7 +29960,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -29976,7 +29976,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -29988,7 +29988,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -30005,7 +30005,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30018,7 +30018,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30035,7 +30035,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30047,7 +30047,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30064,7 +30064,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30076,7 +30076,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30215,7 +30215,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30228,7 +30228,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30245,7 +30245,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30257,7 +30257,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30401,7 +30401,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30413,7 +30413,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.2.192;
+				MARKETING_VERSION = 90.2.129;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
