@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   EditSwapSlippageToleranceLocalDataProvider.swift
+//   SlippageTolerancePercentage.swift
 
 import Foundation
 
-final class EditSwapSlippageToleranceLocalDataProvider: EditSwapSlippageDataProvider {
-    private let dataStore: SwapMutableSlippageTolerancePercentageStore
-
-    init(dataStore: SwapMutableSlippageTolerancePercentageStore) {
-        self.dataStore = dataStore
-    }
-}
-
-extension EditSwapSlippageToleranceLocalDataProvider {
-    func saveSlippageTolerancePercentage(_ percentage: SwapSlippageTolerancePercentage?) {
-        dataStore.slippageTolerancePercentage = percentage
-    }
+enum SlippageTolerancePercentage {
+    static let halfPercent: Decimal = 0.5
+    static let onePercent: Decimal = 1
+    static let twoPercent: Decimal = 2
+    static let fivePercent: Decimal = 5
 }
