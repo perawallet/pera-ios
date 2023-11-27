@@ -195,54 +195,22 @@ extension SelectAssetViewController {
 
         let asset = itemIdentifier.asset
 
+        var assetAmount: Decimal?
         if let collectibleAsset = asset as? CollectibleAsset,
            collectibleAsset.isPure {
-            openSendCollectible(collectibleAsset)
-            return
+            assetAmount = 1
         }
 
         let mode: TransactionMode = asset.isAlgo ? .algo : .asset(asset)
         let draft = SendTransactionDraft(
             from: account,
             toAccount: receiverAccount,
+            amount: assetAmount,
             transactionMode: mode
         )
         open(
             .sendTransaction(draft: draft),
             by: .push
         )
-    }
-
-    private func openSendCollectible(
-        _ asset: CollectibleAsset
-    ) {
-        let sendCollectibleDraft = SendCollectibleDraft(
-            fromAccount: account,
-            collectibleAsset: asset,
-            image: nil
-        )
-
-        let controller = open(
-            .sendCollectible(
-                draft: sendCollectibleDraft
-            ),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        ) as? SendCollectibleViewController
-
-        controller?.eventHandler = {
-            [weak controller] event in
-            switch event {
-            case .didCompleteTransaction:
-                controller?.dismissScreen(animated: false) {
-                    [weak self] in
-                    self?.popScreen(animated: false)
-                }
-            }
-        }
     }
 }
