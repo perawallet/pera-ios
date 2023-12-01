@@ -390,11 +390,19 @@ final class Router:
                 by: .present
             )
         case .externalInAppBrowser(let destination):
-            route(
+            let inAppBrowser = route(
                 to: .externalInAppBrowser(destination: destination),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
-            )
+            ) as? DiscoverExternalInAppBrowserScreen
+            inAppBrowser?.eventHandler = {
+                [weak inAppBrowser] event in
+                switch event {
+                case .goBack:
+                    inAppBrowser?.dismiss(animated: true)
+                default: break
+                }
+            }
         }
     }
     
