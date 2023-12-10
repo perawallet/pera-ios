@@ -603,11 +603,19 @@ extension HomeViewController {
     }
 
     private func triggerBannerCTA(item: AnnouncementViewModel) {
-        if let url = item.ctaUrl {
-            self.open(
-                .externalInAppBrowser(destination: .url(url)),
-                by: .push
-            )
+        guard let url = item.ctaUrl else { return }
+
+        let inAppBrowser = open(
+            .externalInAppBrowser(destination: .url(url)),
+            by: .push
+        ) as? DiscoverExternalInAppBrowserScreen
+        inAppBrowser?.eventHandler = {
+            [weak inAppBrowser] event in
+            switch event {
+            case .goBack:
+                inAppBrowser?.popScreen()
+            default: break
+            }
         }
     }
 }
