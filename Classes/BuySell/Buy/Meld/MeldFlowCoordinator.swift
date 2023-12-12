@@ -29,7 +29,7 @@ final class MeldFlowCoordinator {
 
 extension MeldFlowCoordinator {
     /// When an account is not passed to the function, the account selection flow is triggered within the overall flow.
-    func launch(_ account: AccountHandle? = nil) {
+    func launch(_ account: Account? = nil) {
         if let account {
             openDappDetail(
                 with: account,
@@ -52,7 +52,7 @@ extension MeldFlowCoordinator {
             switch event {
             case .didSelect(let account):
                 self.openDappDetail(
-                    with: account,
+                    with: account.value,
                     from: screen,
                     with: .push
                 )
@@ -69,7 +69,7 @@ extension MeldFlowCoordinator {
 
 extension MeldFlowCoordinator {
     private func openDappDetail(
-        with account: AccountHandle,
+        with account: Account,
         from screen: UIViewController,
         with transition: Screen.Transition.Open
     ) {

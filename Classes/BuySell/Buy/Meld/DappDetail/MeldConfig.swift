@@ -19,8 +19,8 @@ import Foundation
 struct MeldConfig {
     let url: String
 
-    init(account: AccountHandle) {
-        let address = account.value.address
+    init(account: Account) {
+        let address = account.address
         self.url = "https://mainnet.staging.api.perawallet.app/v1/onramp-services/meld/redirect-to-fluidmoney/?walletAddress=\(address)"
     }
 }

@@ -43,7 +43,7 @@ final class ASADetailScreen:
         configuration: configuration
     )
 
-    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
             account: dataController.account,
@@ -469,10 +469,10 @@ extension ASADetailScreen {
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
         }
-        /// <note> Buy action disabled temporarily. 18.11.2023
-//        quickActionsView.startObserving(event: .buy) {
-//            [unowned self] in
-//        }
+        quickActionsView.startObserving(event: .buy) {
+            [unowned self] in
+            self.navigateToBuyAlgoIfPossible()
+        }
         quickActionsView.startObserving(event: .swap) {
             [unowned self, unowned quickActionsView] in
 
@@ -949,6 +949,16 @@ extension ASADetailScreen {
 }
 
 extension ASADetailScreen {
+    private func navigateToBuyAlgoIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
+        meldFlowCoordinator.launch(account)
+    }
+
     private func navigateToSwapAssetIfPossible() {
         let account = dataController.account
         if account.authorization.isNoAuth {

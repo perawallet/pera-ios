@@ -374,7 +374,7 @@ indirect enum Screen {
     case meldAccountSelection(
         eventHandler: AccountSelectionListScreen<MeldAccountSelectionListLocalDataController>.EventHandler
     )
-    case meldDappDetail(account: AccountHandle)
+    case meldDappDetail(account: Account)
     case transakIntroduction
     case transakAccountSelection(
         eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler

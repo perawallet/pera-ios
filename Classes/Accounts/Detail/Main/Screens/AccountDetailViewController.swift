@@ -367,7 +367,7 @@ extension AccountDetailViewController {
     }
 
     private func openBuyWithMeld() {
-        meldFlowCoordinator.launch(accountHandle)
+        meldFlowCoordinator.launch(accountHandle.value)
     }
 
     private func openBuyWithTransak() {
