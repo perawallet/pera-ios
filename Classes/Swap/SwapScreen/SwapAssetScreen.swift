@@ -710,7 +710,8 @@ extension SwapAssetScreen {
     ) {
         var balancePercentageValidator = SwapAvailableBalancePercentageValidator(
             account: dataController.account,
-            asset: dataController.userAsset,
+            userAsset: dataController.userAsset,
+            poolAsset: dataController.poolAsset,
             amount: amount,
             api: api!
         )
