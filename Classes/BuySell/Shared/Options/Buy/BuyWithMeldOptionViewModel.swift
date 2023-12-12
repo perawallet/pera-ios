@@ -12,28 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListAccountListItemCell.swift
+//   BuyWithMeldOptionViewModel.swift
 
-import Foundation
-import UIKit
 import MacaroonUIKit
 
-final class SardineAccountSelectionListAccountListItemCell:
-    CollectionCell<AccountListItemView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return theme.contextEdgeInsets
-    }
+struct BuyWithMeldOptionViewModel: ListItemButtonViewModel {
+    var icon: Image?
+    var title: EditText?
+    var subtitle: EditText?
 
-    static let theme = SardineAccountSelectionListAccountListItemCellTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme.context)
-
-        separatorStyle = .single(Self.theme.separator)
+    init() {
+        self.icon = "icon-meld-option"
+        self.title = .attributedString("buy-sell-options-buy-with-meld-option-title".localized.bodyMedium())
+        self.subtitle = .attributedString("buy-sell-options-buy-algo-with-moonpay-option-subtitle".localized.footnoteRegular())
     }
 }
