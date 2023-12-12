@@ -945,7 +945,15 @@ extension SwapAssetScreen {
         didChangeTextIn textField: TextField
     ) {
         guard let input = textField.text else { return }
+        getSwapQuoteIfNeeded(for: input)
+    }
 
+    func getSwapQuoteForCurrentInput() {
+        guard let input = userAssetView.currentAmount else { return }
+        getSwapQuoteIfNeeded(for: input)
+    }
+
+    private func getSwapQuoteIfNeeded(for input: String) {
         if swapAssetInputValidator.isTheInputDecimalSeparator(input) {
             return
         }

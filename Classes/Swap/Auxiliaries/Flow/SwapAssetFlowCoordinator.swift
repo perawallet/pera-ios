@@ -323,7 +323,8 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self = self else { return }
                     
-                    self.goBackToScreen(SwapAssetScreen.self)
+                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+                    screen?.getSwapQuoteForCurrentInput()
                 }
             case .didFailNetwork(let error):
                 guard let quote = swapController.quote else { return }
@@ -365,7 +366,8 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self = self else { return }
 
-                    self.goBackToScreen(SwapAssetScreen.self)
+                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+                    screen?.getSwapQuoteForCurrentInput()
                 }
             case .didCancelTransaction:
                 swapController.clearTransactions()
@@ -559,14 +561,16 @@ extension SwapAssetFlowCoordinator {
         }
     }
 
-    private func goBackToScreen<T: UIViewController>(_ screen: T.Type) {
-        guard var viewControllers = visibleScreen.navigationController?.viewControllers else { return }
+    private func goBackToScreen<T: UIViewController>(_ screen: T.Type) -> T? {
+        guard var viewControllers = visibleScreen.navigationController?.viewControllers else { return nil }
         let lastVC = viewControllers.removeLast()
 
         if !lastVC.isKind(of: screen) {
             visibleScreen.navigationController?.viewControllers = viewControllers
-            goBackToScreen(screen)
+            return goBackToScreen(screen)
         }
+
+        return lastVC as? T
     }
 }
 
