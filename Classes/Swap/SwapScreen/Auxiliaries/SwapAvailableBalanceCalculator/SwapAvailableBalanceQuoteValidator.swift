@@ -61,7 +61,6 @@ extension SwapAvailableBalanceQuoteValidator {
         addMinBalance(to: &amountIn)
         addPaddingForFee(to: &amountIn)
         addPeraFee(to: &amountIn)
-        addAmountInWithSlippage(to: &amountIn)
 
         guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountIn) else {
             publishEvent(.failure(.insufficientAlgoBalance(amountIn)))
@@ -130,14 +129,6 @@ extension SwapAvailableBalanceQuoteValidator {
     ) {
         if let peraFee = quote.peraFee {
             amount += peraFee
-        }
-    }
-
-    private func addAmountInWithSlippage(
-        to amount: inout UInt64
-    ) {
-        if let amountInWithSlippage = quote.amountInWithSlippage {
-            amount += amountInWithSlippage
         }
     }
 
