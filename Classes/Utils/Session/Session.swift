@@ -310,6 +310,20 @@ extension Session {
         }
     }
 
+    func setBiometricPasswordSilently() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            try biometricStorage.set(passwordOnKeychain, key: passwordKey)
+            try setBiometricPasswordEnabled()
+        } catch {
+            try removeBiometricPassword()
+            throw error
+        }
+    }
+
     func checkBiometricPassword() throws {
         guard hasBiometricPassword() else {
             throw LAError.biometricNotSet
