@@ -34,7 +34,7 @@ final class BiometricAuthenticationMigration {
         switch localAuthenticationStatus {
         case .allowed:
             do {
-                try session.setBiometricPasswordEnabled()
+                try session.setBiometricPasswordSilently()
             } catch {
                 return
             }
