@@ -27,7 +27,8 @@ protocol MeldAccountSelectionListItemDataSource: AnyObject {
 
 final class MeldAccountSelectionListLocalDataController:
     AccountSelectionListDataController,
-    MeldAccountSelectionListItemDataSource {
+    MeldAccountSelectionListItemDataSource,
+    SharedDataControllerObserver {
     typealias SectionIdentifierType = MeldAccountSelectionListSectionIdentifier
     typealias ItemIdentifierType = MeldAccountSelectionListItemIdentifier
 
@@ -49,6 +50,8 @@ final class MeldAccountSelectionListLocalDataController:
 
     init(sharedDataController: SharedDataController) {
         self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
     }
 
     subscript(indexPath: IndexPath) -> AccountHandle? {
@@ -59,6 +62,22 @@ final class MeldAccountSelectionListLocalDataController:
         }
 
         return accounts[safe: indexPath.row]
+    }
+
+    deinit {
+        sharedDataController.remove(self)
+    }
+}
+
+extension MeldAccountSelectionListLocalDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning: load()
+        default: break
+        }
     }
 }
 
