@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MeldConfig.swift
+//   MeldDraft.swift
 
 import Foundation
 
-struct MeldConfig {
-    let url: String
+struct MeldDraft {
+    let address: PublicKey?
 
-    init(address: PublicKey) {
-        self.url = "https://mainnet.staging.api.perawallet.app/v1/onramp-services/meld/redirect-to-fluidmoney/?walletAddress=\(address)"
+    init(accounts: [Account]) {
+        self.address = accounts.isSingular ? accounts.first?.address : nil
+    }
+
+    init(address: PublicKey?) {
+        self.address = address
     }
 }

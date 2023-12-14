@@ -49,7 +49,10 @@ final class Router:
     /// Change after refactoring routing
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
-    
+
+    private var meldFlowCoordinator: MeldFlowCoordinator?
+
+
     init(
         rootViewController: RootViewController,
         appConfiguration: AppConfiguration
@@ -376,6 +379,13 @@ final class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
+        case .buyAlgoWithMeld(let draft):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: visibleScreen)
+            self.meldFlowCoordinator = meldFlowCoordinator
+          
+            meldFlowCoordinator.launch(draft)
         case .accountSelect(let asset):
             launch(tab: .home)
 
@@ -1783,8 +1793,8 @@ final class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .meldDappDetail(let account):
-            let config = MeldConfig(account: account)
+        case .meldDappDetail(let address):
+            let config = MeldConfig(address: address)
             let url = URL(string: config.url)
             let destination = DiscoverExternalDestination.url(url)
 

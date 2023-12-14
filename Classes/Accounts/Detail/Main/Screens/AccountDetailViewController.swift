@@ -367,6 +367,8 @@ extension AccountDetailViewController {
     }
 
     private func openBuyWithMeld() {
+        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
+
         meldFlowCoordinator.launch(accountHandle.value)
     }
 

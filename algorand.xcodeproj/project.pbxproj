@@ -4685,6 +4685,9 @@
 		D432865726DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865826DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865926DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
+		D4330DC92B2A49460031FAF6 /* MeldDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4330DC82B2A49450031FAF6 /* MeldDraft.swift */; };
+		D4330DCA2B2A49460031FAF6 /* MeldDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4330DC82B2A49450031FAF6 /* MeldDraft.swift */; };
+		D4330DCB2B2A49460031FAF6 /* MeldDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4330DC82B2A49450031FAF6 /* MeldDraft.swift */; };
 		D435A93928AD2C94006B495A /* AlertScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A93828AD2C94006B495A /* AlertScreen.swift */; };
 		D435A93A28AD2C94006B495A /* AlertScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A93828AD2C94006B495A /* AlertScreen.swift */; };
 		D435A93B28AD2C94006B495A /* AlertScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A93828AD2C94006B495A /* AlertScreen.swift */; };
@@ -9268,6 +9271,7 @@
 		D431505A27EA24710084CA41 /* ALGActiveLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGActiveLabel.swift; sourceTree = "<group>"; };
 		D431505E27EA62DF0084CA41 /* SendCollectibleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewModel.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
+		D4330DC82B2A49450031FAF6 /* MeldDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldDraft.swift; sourceTree = "<group>"; };
 		D435A93828AD2C94006B495A /* AlertScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreen.swift; sourceTree = "<group>"; };
 		D435A93C28AD2D4F006B495A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D435A94028AD2D9F006B495A /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
@@ -18440,6 +18444,7 @@
 		D4027C15299E0E0200F59F15 /* Meld */ = {
 			isa = PBXGroup;
 			children = (
+				D4330DC82B2A49450031FAF6 /* MeldDraft.swift */,
 				D4027C16299E0E1000F59F15 /* MeldFlowCoordinator.swift */,
 				D45D7662299FB0690081735E /* AccountSelection */,
 				D495D3F029A380EE00929635 /* DappDetail */,
@@ -24543,6 +24548,7 @@
 				2B9FDEB028A54F3800C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift in Sources */,
 				17AEC58929754F64002B3B23 /* WebImportSuccessInfoBoxViewModel.swift in Sources */,
 				2B9EEAD8264D33B1007A112D /* ALGAPI+Block.swift in Sources */,
+				D4330DCB2B2A49460031FAF6 /* MeldDraft.swift in Sources */,
 				D4AEC3C027CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */,
 				17BD4E912292F1260003E49A /* ALGAPI+Transaction.swift in Sources */,
 				F0DB4175279440AD00EA437D /* ErrorViewModel.swift in Sources */,
@@ -27979,6 +27985,7 @@
 				D4133D6228856BC5003EFB4F /* UISheetAction.swift in Sources */,
 				2B2AACB4250A7E8C00B8C5C5 /* DeveloperSettingsViewController.swift in Sources */,
 				D4BAABC52770D73900FF3D22 /* TransactionAmountViewTheme.swift in Sources */,
+				D4330DCA2B2A49460031FAF6 /* MeldDraft.swift in Sources */,
 				2B0F630F24EC129D00DA22A6 /* BarButtonItem.swift in Sources */,
 				2BE8798A28BD2CBD00A6C682 /* SendTransactionOptionListItemButtonViewModel.swift in Sources */,
 				2BD95B15291552C1005337E5 /* TapSwapAssetEvent.swift in Sources */,
@@ -29490,6 +29497,7 @@
 				2B56715F24008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				2BAAF4AD28E49C5100FC59AF /* SelectAssetListItemCell.swift in Sources */,
 				2BCBBAF224A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,
+				D4330DC92B2A49460031FAF6 /* MeldDraft.swift in Sources */,
 				D40650302A5B597200B05DBC /* RekeySuccessResultViewModel.swift in Sources */,
 				2BC635DA2886FB4E00507AEA /* PrimaryTitleView.swift in Sources */,
 				2BC647C929B8BFA000DE5071 /* ManageAssetListQuery.swift in Sources */,

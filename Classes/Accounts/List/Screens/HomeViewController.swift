@@ -672,6 +672,8 @@ extension HomeViewController {
     }
 
     private func openBuyWithMeld() {
+        analytics.track(.recordHomeScreen(type: .buyAlgo))
+
         meldFlowCoordinator.launch()
     }
 
