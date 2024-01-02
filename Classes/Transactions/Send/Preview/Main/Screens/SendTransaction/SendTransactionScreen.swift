@@ -392,7 +392,8 @@ extension SendTransactionScreen {
 
     private func addNumpad() {
         numpadView.customize(TransactionNumpadViewTheme())
-        numpadView.deleteButtonIsHidden = self.amount == "0"
+        numpadView.deleteButtonIsHidden = self.amount == "0" || draft.isOptingOut
+        numpadView.isUserInteractionEnabled = !draft.isOptingOut
 
         view.addSubview(numpadView)
         numpadView.snp.makeConstraints { make in
@@ -422,6 +423,8 @@ extension SendTransactionScreen {
 
         stackView.addArrangedSubview(noteButton)
         stackView.addArrangedSubview(maxButton)
+
+        maxButton.isHidden = draft.isOptingOut
     }
 
     private func addLabels() {
