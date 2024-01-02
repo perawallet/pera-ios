@@ -56,7 +56,7 @@ extension AppCallAssetPreviewViewStackViewModel {
 
         self.showMoreActionTitle = .attributedString(
             "title-show-more-assets".localized(
-                params: "\(moreAssetCount)"
+                "\(moreAssetCount)"
             )
             .bodyMedium()
         )

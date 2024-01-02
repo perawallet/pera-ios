@@ -898,7 +898,7 @@ extension SendTransactionScreen {
                 "#\(String(asset.id))"
         }
 
-        let description = "collectible-recipient-opt-in-description".localized(params: title, receiverAddress)
+        let description = "collectible-recipient-opt-in-description".localized(title, receiverAddress)
 
         let configuratorDescription = BottomWarningViewConfigurator.BottomWarningDescription.custom(
             description: (description, [title, receiverAddress]),
