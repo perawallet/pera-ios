@@ -251,7 +251,7 @@ extension TutorialViewController: TutorialViewDelegate {
             screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
             screen?.hidesCloseBarButtonItem = true
         case .ledgerSuccessfullyConnected:
-            uiHandlers.didTapButtonPrimaryActionButton?(self)
+            uiHandlers.didTapSecondaryActionButton?(self)
         case .accountVerified(let flow, _):
             if case .initializeAccount(mode: .watch) = flow {
                 analytics.track(.onboardWatchAccount(type: .verified))
