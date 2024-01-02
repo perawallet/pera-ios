@@ -114,15 +114,9 @@ extension SwapAvailableBalancePercentageValidator {
             return
         }
 
-        if algoBalanceAfterMinBalanceAndPadding == 0 {
-            publishEvent(.validated(algoBalanceAfterMinBalanceAndPadding))
-            return
-        }
-
-        if algoBalanceAfterMinBalanceAndPadding >= amount {
+        if algoBalanceAfterMinBalanceAndPadding >= 0 {
             publishEvent(.validated(amount))
-        } else {
-            publishEvent(.validated(algoBalanceAfterMinBalanceAndPadding))
+            return
         }
     }
 
