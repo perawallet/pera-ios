@@ -168,7 +168,7 @@ final class CollectibleDetailViewController:
             case .didResponseFail(let message):
                 self.bottomBannerController.presentFetchError(
                     title: "title-generic-api-error".localized,
-                    message: "title-error-description".localized(message),
+                    message: "title-error-description".localized(params: message),
                     actionTitle: "title-retry".localized,
                     actionHandler: {
                         [unowned self] in
