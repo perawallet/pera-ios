@@ -52,7 +52,7 @@ final class AccountDetailViewController: PageContainer {
         bannerController: bannerController!
     )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
-    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: self)
     private lazy var transakFlowCoordinator = TransakFlowCoordinator(
         presentingScreen: self,
         api: api!,
@@ -339,11 +339,11 @@ extension AccountDetailViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithSardine:
+            case .performBuyWithMeld:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithSardine()
+                    self.openBuyWithMeld()
                 }
             case .performBuyWithTransak:
                 self.dismiss(animated: true) {
@@ -366,8 +366,10 @@ extension AccountDetailViewController {
         )
     }
 
-    private func openBuyAlgoWithSardine() {
-        sardineFlowCoordinator.launch(accountHandle)
+    private func openBuyWithMeld() {
+        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
+
+        meldFlowCoordinator.launch(accountHandle.value)
     }
 
     private func openBuyWithTransak() {

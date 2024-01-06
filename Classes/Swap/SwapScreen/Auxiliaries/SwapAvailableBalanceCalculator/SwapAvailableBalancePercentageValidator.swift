@@ -114,16 +114,7 @@ extension SwapAvailableBalancePercentageValidator {
             return
         }
 
-        if algoBalanceAfterMinBalanceAndPadding == 0 {
-            publishEvent(.validated(algoBalanceAfterMinBalanceAndPadding))
-            return
-        }
-
-        if algoBalanceAfterMinBalanceAndPadding >= amount {
-            publishEvent(.validated(amount))
-        } else {
-            publishEvent(.validated(algoBalanceAfterMinBalanceAndPadding))
-        }
+        publishEvent(.validated(amount))
     }
 
     private func validateAvailableBalanceForAsset() {

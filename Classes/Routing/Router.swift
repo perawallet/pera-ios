@@ -49,7 +49,10 @@ final class Router:
     /// Change after refactoring routing
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
-    
+
+    private var meldFlowCoordinator: MeldFlowCoordinator?
+
+
     init(
         rootViewController: RootViewController,
         appConfiguration: AppConfiguration
@@ -376,6 +379,13 @@ final class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
+        case .buyAlgoWithMeld(let draft):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: visibleScreen)
+            self.meldFlowCoordinator = meldFlowCoordinator
+          
+            meldFlowCoordinator.launch(draft)
         case .accountSelect(let asset):
             launch(tab: .home)
 
@@ -1742,14 +1752,12 @@ final class Router:
                 moonPayParams: moonPayParams,
                 configuration: configuration
             )
-        case .sardineIntroduction:
-            viewController = SardineIntroductionScreen(api: configuration.api)
-        case .sardineAccountSelection(let eventHandler):
+        case .meldAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
 
             let listView: UICollectionView = {
-                let collectionViewLayout = SardineAccountSelectionListLayout.build()
+                let collectionViewLayout = MeldAccountSelectionListLayout.build()
                 let collectionView = UICollectionView(
                     frame: .zero,
                     collectionViewLayout: collectionViewLayout
@@ -1761,10 +1769,10 @@ final class Router:
                 return collectionView
             }()
 
-            let dataController = SardineAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+            let dataController = MeldAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
 
-            let dataSource = SardineAccountSelectionListDataSource(dataController)
-            let diffableDataSource = UICollectionViewDiffableDataSource<SardineAccountSelectionListSectionIdentifier, SardineAccountSelectionListItemIdentifier>(
+            let dataSource = MeldAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<MeldAccountSelectionListSectionIdentifier, MeldAccountSelectionListItemIdentifier>(
                 collectionView: listView,
                 cellProvider: dataSource.getCellProvider()
             )
@@ -1776,7 +1784,7 @@ final class Router:
                 navigationBarTitle: "title-select-account".localized,
                 listView: listView,
                 dataController: dataController,
-                listLayout: SardineAccountSelectionListLayout(
+                listLayout: MeldAccountSelectionListLayout(
                     dataSource: diffableDataSource,
                     itemDataSource: dataController
                 ),
@@ -1785,8 +1793,8 @@ final class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .sardineDappDetail(let account):
-            let config = SardineConfig(account: account, network: configuration.api!.network)
+        case .meldDappDetail(let address):
+            let config = MeldConfig(address: address)
             let url = URL(string: config.url)
             let destination = DiscoverExternalDestination.url(url)
 

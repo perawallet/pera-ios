@@ -12,28 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListAccountListItemCell.swift
+//   MeldAccountSelectionListAccountListItemCellTheme.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
 
-final class SardineAccountSelectionListAccountListItemCell:
-    CollectionCell<AccountListItemView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return theme.contextEdgeInsets
-    }
+struct MeldAccountSelectionListAccountListItemCellTheme:
+    StyleSheet,
+    LayoutSheet {
+    private(set) var context: AccountListItemViewTheme
+    private(set) var contextEdgeInsets: LayoutPaddings
+    private(set) var separator: Separator
 
-    static let theme = SardineAccountSelectionListAccountListItemCellTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme.context)
-
-        separatorStyle = .single(Self.theme.separator)
+    init(_ family: LayoutFamily) {
+        self.context = AccountListItemViewTheme(family)
+        self.contextEdgeInsets = (14, 24, 14, 24)
+        self.separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 24))
+        )
     }
 }

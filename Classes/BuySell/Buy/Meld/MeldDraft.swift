@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoWithSardineOptionViewModel.swift
+//   MeldDraft.swift
 
-import MacaroonUIKit
+import Foundation
 
-struct BuyAlgoWithSardineOptionViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
+struct MeldDraft {
+    let address: PublicKey?
 
-    init() {
-        self.icon = "icon-sardine-option"
-        self.title = .attributedString("buy-sell-options-buy-algo-with-sardine-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-algo-with-sardine-option-subtitle".localized.footnoteRegular())
+    init(accounts: [Account]) {
+        self.address = accounts.isSingular ? accounts.first?.address : nil
+    }
+
+    init(address: PublicKey?) {
+        self.address = address
     }
 }
