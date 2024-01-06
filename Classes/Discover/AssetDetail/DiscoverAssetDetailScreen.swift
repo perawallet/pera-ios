@@ -30,6 +30,7 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
         presentingScreen: self
     )
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
         presentingScreen: self
     )
 

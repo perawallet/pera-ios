@@ -43,7 +43,10 @@ final class ASADetailScreen:
         configuration: configuration
     )
 
-    private lazy var meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: self)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
             account: dataController.account,

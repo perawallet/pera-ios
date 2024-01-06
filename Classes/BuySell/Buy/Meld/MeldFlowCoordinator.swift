@@ -18,11 +18,14 @@ import Foundation
 import UIKit
 
 final class MeldFlowCoordinator {
+    private let analytics: ALGAnalytics
     private unowned let presentingScreen: UIViewController
 
     init(
+        analytics: ALGAnalytics,
         presentingScreen: UIViewController
     ) {
+        self.analytics = analytics
         self.presentingScreen = presentingScreen
     }
 }
@@ -82,6 +85,7 @@ extension MeldFlowCoordinator {
         from screen: UIViewController,
         with transition: Screen.Transition.Open
     ) {
+        analytics.track(.meld())
         let dAppDetail = screen.open(
             .meldDappDetail(address: accountAddress),
             by: transition
