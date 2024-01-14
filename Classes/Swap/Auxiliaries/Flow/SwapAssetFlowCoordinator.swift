@@ -503,7 +503,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didTapViewDetailAction:
-                self.openAlgoExplorerForSwapTransaction(swapController)
+                self.openPeraExplorerForSwapTransaction(swapController)
             case .didTapDoneAction:
                 self.visibleScreen.dismissScreen()
             case .didTapSummaryAction:
@@ -884,12 +884,12 @@ extension SwapAssetFlowCoordinator {
         transitionToExchangeFeeInfo = transition
     }
 
-    private func openAlgoExplorerForSwapTransaction(
+    private func openPeraExplorerForSwapTransaction(
         _ swapController: SwapController
     ) {
         let transactionGroupID = swapController.parsedTransactions.first { !$0.groupID.isEmpty }?.groupID
         guard let formattedGroupID = transactionGroupID?.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
-              let url = AlgorandWeb.AlgoExplorer.group(
+              let url = AlgorandWeb.PeraExplorer.group(
                 isMainnet: api.network == .mainnet,
                 param: formattedGroupID
               ).link else {

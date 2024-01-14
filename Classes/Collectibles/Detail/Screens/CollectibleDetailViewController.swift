@@ -584,7 +584,7 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didTapAccessory) {
             [unowned self] in
             let creator = self.asset.creator!.address
-            let source = AlgoExplorerExternalSource(
+            let source = PeraExplorerExternalSource(
                 address: creator,
                 network: self.api!.network
             )
