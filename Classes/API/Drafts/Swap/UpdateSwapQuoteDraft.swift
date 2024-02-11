@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   API+Algos.swift
+//   UpdateSwapQuoteDraft.swift
 
 import MagpieCore
-import Foundation
 
-extension ALGAPI {
-    @discardableResult
-    func fetchAlgoPriceHistory(
-        _ draft: FetchAlgoPriceHistoryDraft,
-        onCompleted handler: @escaping (Response.ModelResult<AlgoPriceHistory>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .path(.algoUSDHistory)
-            .method(.get)
-            .ignoreResponseWhenEndpointCancelled(false)
-            .completionHandler(handler)
-            .query(draft)
-            .execute()
+struct UpdateSwapQuoteDraft: JSONObjectBody {
+    let id: Int64
+    let exception: String
+
+    var bodyParams: [APIBodyParam] {
+        let params: [APIBodyParam] = [
+            .init(.exceptionText, exception)
+        ]
+        return params
     }
 }

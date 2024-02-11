@@ -382,7 +382,11 @@ final class Router:
         case .buyAlgoWithMeld(let draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             
-            let meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: visibleScreen)
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(
+                analytics: appConfiguration.analytics,
+                presentingScreen: visibleScreen
+            )
             self.meldFlowCoordinator = meldFlowCoordinator
           
             meldFlowCoordinator.launch(draft)

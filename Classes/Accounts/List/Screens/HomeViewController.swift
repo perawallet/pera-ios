@@ -56,7 +56,10 @@ final class HomeViewController:
         bannerController: bannerController!
     )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
-    private lazy var meldFlowCoordinator = MeldFlowCoordinator(presentingScreen: self)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
     private lazy var transakFlowCoordinator = TransakFlowCoordinator(
         presentingScreen: self,
         api: api!,

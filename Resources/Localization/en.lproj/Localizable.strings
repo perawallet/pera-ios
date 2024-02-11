@@ -536,8 +536,7 @@
 "transaction-detail-close-to" = "Close To";
 "transaction-detail-close-amount" = "Close Amount";
 "transaction-detail-note-copied" = "Note copied to clipboard";
-"transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
-"transaction-id-open-goalseeker" = "Open in GoalSeeker";
+"transaction-id-open-peraexplorer" = "Open in PeraExplorer";
 "transaction-detail-balance" = "Account Balance";
 "transaction-detail-add" = "Add";
 "transaction-detail-completed" = "Completed";
@@ -924,7 +923,7 @@
 "wallet-connect-transaction-group-id" = "Group ID";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+"wallet-connect-transaction-title-explorer" = "PeraExplorer";
 "wallet-connect-transaction-detail-explorer" = "Show Explorer";
 "wallet-connect-transaction-title-auth-address" = "Auth Address";
 "wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
@@ -1132,7 +1131,7 @@
 "collectible-detail-creator-account" = "Creator Account";
 "collectible-detail-properties" = "Properties";
 "collectible-detail-view-transaction" = "View Transaction";
-"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-algo-explorer" = "Show on Peraexplorer";
 "collectible-detail-nft-explorer" = "Show on NFTExplorer";
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
 "collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted-in for it. You can now transfer it to your account.";
@@ -1365,7 +1364,7 @@ FAQ section.";
 // MARK: Swap Success
 "swap-success-title" = "%@ swap completed";
 "swap-success-detail" = "You received %@ in exchange for %@";
-"swap-success-view-explorer" = "View Transaction Detail in AlgoExplorer";
+"swap-success-view-explorer" = "View Transaction Detail in PeraExplorer";
 "swap-success-view-summary" = "View Swap Summary";
 
 // MARK: Swap Summary
