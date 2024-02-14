@@ -61,7 +61,7 @@ struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
 
 extension SwapAvailableBalancePercentageValidator {
     private func validateAvailableBalanceForAlgoAmountIn() {
-        guard let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding() else {
+        guard let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding(includingPadding: true) else {
             publishEvent(.failure(.insufficientAlgoBalance(0)))
             return
         }
@@ -109,7 +109,7 @@ extension SwapAvailableBalancePercentageValidator {
     }
 
     private func validateAvailableBalanceForAlgoAmountOut() {
-        guard let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding() else {
+        if getAlgoBalanceAfterMinBalanceAndPadding(includingPadding: false) == nil {
             publishEvent(.failure(.insufficientAlgoBalance(0)))
             return
         }
@@ -134,7 +134,7 @@ extension SwapAvailableBalancePercentageValidator {
             switch response {
             case .success(let feeResult):
                 if let peraFee = feeResult.fee {
-                    guard let algoBalanceAfterMinBalanceAndPadding = self.getAlgoBalanceAfterMinBalanceAndPadding() else {
+                    guard let algoBalanceAfterMinBalanceAndPadding = self.getAlgoBalanceAfterMinBalanceAndPadding(includingPadding: true) else {
                         self.publishEvent(.failure(.insufficientAlgoBalance(0)))
                         return
                     }
@@ -163,13 +163,17 @@ extension SwapAvailableBalancePercentageValidator {
 }
 
 extension SwapAvailableBalancePercentageValidator {
-    private func getAlgoBalanceAfterMinBalanceAndPadding() -> UInt64? {
+    private func getAlgoBalanceAfterMinBalanceAndPadding(includingPadding: Bool) -> UInt64? {
         let algoBalance = account.algo.amount
         let minBalance = account.calculateMinBalance()
         let algoBalanceAfterMinBalanceResult = algoBalance.subtractingReportingOverflow(minBalance)
 
         if algoBalanceAfterMinBalanceResult.overflow {
             return nil
+        }
+        
+        if !includingPadding {
+            return algoBalanceAfterMinBalanceResult.partialValue
         }
 
         let algoBalanceAfterMinBalanceAndPaddingResult =
