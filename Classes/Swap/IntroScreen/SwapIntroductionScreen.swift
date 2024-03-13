@@ -28,8 +28,6 @@ final class SwapIntroductionScreen: ScrollScreen {
     private lazy var bodyView = Label()
     private lazy var footerContentView = UIView()
     private lazy var providerContent = UIView()
-    private lazy var poweredByTitleView = Label()
-    private lazy var providerView = UIImageView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
     private lazy var termsOfServiceView = ALGActiveLabel()
 
@@ -256,36 +254,6 @@ extension SwapIntroductionScreen {
             $0.leading >= 0
             $0.trailing <= 0
         }
-
-        addPoweredBy()
-        addProvider()
-    }
-
-    private func addPoweredBy() {
-        poweredByTitleView.customizeAppearance(theme.poweredByTitle)
-
-        providerContent.addSubview(poweredByTitleView)
-        poweredByTitleView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-        }
-
-        bindPoweredBy()
-    }
-
-    private func addProvider() {
-        providerContent.addSubview(providerView)
-        providerView.fitToIntrinsicSize()
-        providerView.snp.makeConstraints {
-            $0.top >= 0
-            $0.leading == poweredByTitleView.snp.trailing + theme.poweredByTitleLeadingInset
-            $0.centerY == poweredByTitleView
-            $0.bottom <= 0
-            $0.trailing == 0
-        }
-
-        bindProvider()
     }
 
     private func addPrimaryAction() {
@@ -294,7 +262,7 @@ extension SwapIntroductionScreen {
         footerContentView.addSubview(primaryActionView)
         primaryActionView.contentEdgeInsets = theme.primaryActionContentEdgeInsets
         primaryActionView.snp.makeConstraints {
-            $0.top == providerView.snp.bottom + theme.primaryActionTopInset
+            $0.top == theme.primaryActionTopInset
             $0.leading == 0
             $0.trailing == 0
         }
@@ -341,19 +309,6 @@ extension SwapIntroductionScreen {
         newBadgeView.text =
             "title-new-uppercased"
                 .localized
-    }
-
-    private func bindPoweredBy() {
-        poweredByTitleView.attributedText =
-            "swap-introduction-powered-by-title"
-                .localized
-                .footnoteRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
-    }
-
-    private func bindProvider() {
-        providerView.image = draft.provider.icon.uiImage
     }
 
     private func bindTermsOfService() {
