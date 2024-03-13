@@ -811,7 +811,7 @@
 "title-i-understand" = "I understand";
 
 "empty-accounts-title" = "Create an Account";
-"empty-accounts-detail" = "You need to create an account to start transacting your assets.";
+"empty-accounts-detail" = "You need to create an account to start transacting in the Algorand ecosystem.";
 "empty-accounts-action" = "Create new Account";
 
 "title-dont-ask" = "Don’t ask again";
