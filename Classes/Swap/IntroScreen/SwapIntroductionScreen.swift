@@ -313,7 +313,7 @@ extension SwapIntroductionScreen {
 
     private func bindTermsOfService() {
         let text =
-            "swap-introduction-terms-of-service"
+        "swap-introduction-terms-of-service-hyperlink"
                 .localized
                 .footnoteRegular(alignment: .center)
 
