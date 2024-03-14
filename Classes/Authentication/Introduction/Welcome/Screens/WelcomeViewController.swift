@@ -61,22 +61,12 @@ extension WelcomeViewController {
         switch flow {
         case .initializeAccount:
             hidesCloseBarButtonItem = true
-
-            addSkipBarButtonItem()
+            
         case .addNewAccount,
              .backUpAccount,
              .none:
             break
         }
-    }
-
-    private func addSkipBarButtonItem() {
-        let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
-            self.session?.createUser()
-            self.launchMain()
-        }
-
-        rightBarButtonItems = [skipBarButtonItem]
     }
 }
 
