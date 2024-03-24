@@ -27,6 +27,7 @@ extension ALGAPI {
         includesClosedAccounts: Bool = false,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
+        excludeWithAssests: Bool? = nil,
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)

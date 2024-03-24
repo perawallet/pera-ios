@@ -54,7 +54,13 @@ struct TransactionsQuery: ObjectQuery {
 struct AccountQuery: ObjectQuery {
     let excludesAll: Bool
     let includesAll: Bool
-
+    let excludeWithAssests: Bool? = nil
+    
+    init(excludesAll: Bool, includesAll: Bool, excludeWithAssests: Bool? = nil) {
+        self.excludesAll = excludesAll
+        self.includesAll = includesAll
+    }
+    
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
@@ -63,7 +69,14 @@ struct AccountQuery: ObjectQuery {
         }
 
         let excludeParams = excludesAll ? "all" : "created-assets,created-apps"
-        params.append(.init(.exclude, excludeParams))
+        let excludeParamsWithAssests = excludesAll ? "all" : "created-assets,created-apps,assets"
+
+        if excludeWithAssests == false {
+            params.append(.init(.exclude, excludeParams))
+        } else {
+            params.append(.init(.exclude, excludeParamsWithAssests))
+        }
+        
         return params
     }
 }

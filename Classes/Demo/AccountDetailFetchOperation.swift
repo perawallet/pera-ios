@@ -56,36 +56,82 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         let draft = AccountFetchDraft(publicKey: input.localAccount.address)
 
         ongoingEndpoint =
-            api.fetchAccount(
-                draft,
-                queue: completionQueue,
-                ignoreResponseOnCancelled: false
-            ) { [weak self] result in
-                guard let self = self else { return }
+        api.fetchAccount(
+            draft,
+            queue: completionQueue,
+            ignoreResponseOnCancelled: false,
+            excludeWithAssests: false
+        ) { [weak self] result in
+            guard let self = self else { return }
             
-                self.ongoingEndpoint = nil
-                
-                switch result {
-                case .success(let response):
-                    let account = response.account
-                    account.update(from: self.input.localAccount)
+            self.ongoingEndpoint = nil
+            
+            switch result {
+            case .success(let response):
+                let account = response.account
+                account.update(from: self.input.localAccount)
+                let output = Output(account: account)
+                self.result = .success(output)
+                self.finish()
+            case .failure(let apiError, let apiErrorDetail):
+                if apiError.isHttpNotFound {
+                    let account = Account(localAccount: self.input.localAccount)
                     let output = Output(account: account)
                     self.result = .success(output)
-                case .failure(let apiError, let apiErrorDetail):
-                    if apiError.isHttpNotFound {
-                        let account = Account(localAccount: self.input.localAccount)
-                        let output = Output(account: account)
-                        self.result = .success(output)
-                    } else {
-                        let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                        self.result = .failure(error)
-                    }
+                    self.finish()
+                } else {
+                    checkIfAssetsHasHugeData(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
                 }
-                
-                self.finish()
             }
+        }
     }
-
+    
+    private func checkIfAssetsHasHugeData(draft: AccountFetchDraft, apiError: APIError, apiErrorDetail: NoAPIModel?) {
+        let responseDataDict = apiError.getDictFromResponseData()
+        if let totalAssetsOptedIn = responseDataDict["total-assets-opted-in"] as? Int, totalAssetsOptedIn > 10000 {
+            for _ in 1...5 {
+                self.fetchAccountWithHugeAssets(draft: draft)
+            }
+        } else {
+            let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+            self.result = .failure(error)
+            self.finish()
+        }
+    }
+    
+    private func fetchAccountWithHugeAssets(draft: AccountFetchDraft) {
+        ongoingEndpoint =
+        api.fetchAccount(
+            draft,
+            queue: completionQueue,
+            ignoreResponseOnCancelled: false,
+            excludeWithAssests: true
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.ongoingEndpoint = nil
+            
+            switch result {
+            case .success(let response):
+                let account = response.account
+                account.update(from: self.input.localAccount)
+                let output = Output(account: account)
+                self.result = .success(output)
+            case .failure(let apiError, let apiErrorDetail):
+                if apiError.isHttpNotFound {
+                    let account = Account(localAccount: self.input.localAccount)
+                    let output = Output(account: account)
+                    self.result = .success(output)
+                } else {
+                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    self.result = .failure(error)
+                }
+            }
+            
+            self.finish()
+        }
+    }
+    
     override func finishIfCancelled() -> Bool {
         if !isCancelled {
             return false
