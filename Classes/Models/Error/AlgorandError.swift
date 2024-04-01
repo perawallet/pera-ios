@@ -44,16 +44,15 @@ enum APIErrorType: String {
 }
 
 extension APIError {
-    func getDictFromResponseData() -> [String: Any] {
+    func getDictFromResponseData() -> [String: Any]? {
         do {
             // Convert the JSON data to a dictionary
-            if let jsonData = self.responseData,
-               let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
-               let data = json["data"] as? [String: Any] {
-                return data
-            } else {
-                return [:]
-            }
+            guard let jsonData = self.responseData,
+                  let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
+                  let data = json["data"] as? [String: Any] else {
+                return nil
+            }            
+            return data
         }
     }
 }

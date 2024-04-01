@@ -33,6 +33,7 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
 
     private let api: ALGAPI
     private let completionQueue: DispatchQueue
+    private let totalAssetsMinCount = 10000
     
     init(
         input: Input,
@@ -89,7 +90,7 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
     private func evaluateAssetVolumeAndRespond(draft: AccountFetchDraft, apiError: APIError, apiErrorDetail: NoAPIModel?) {
         
         let responseDataDict = apiError.getDictFromResponseData()
-        if let totalAssetsOptedIn = responseDataDict["total-assets-opted-in"] as? Int, totalAssetsOptedIn > 10000 {
+        if let totalAssetsOptedIn = responseDataDict?["total-assets-opted-in"] as? Int, 
             for _ in 1...5 {
                 self.fetchAccountWithHugeAssets(draft: draft)
             }
