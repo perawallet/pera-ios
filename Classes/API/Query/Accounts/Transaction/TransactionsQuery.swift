@@ -51,30 +51,41 @@ struct TransactionsQuery: ObjectQuery {
     }
 }
 
+struct AccountQueryOptions: OptionSet {
+    let rawValue: Int
+
+    static let includeAll = AccountQueryOptions(rawValue: 1 << 0)
+    static let excludeAll = AccountQueryOptions(rawValue: 1 << 1)
+    static let createdAssets = AccountQueryOptions(rawValue: 1 << 2)
+    static let createdApps = AccountQueryOptions(rawValue: 1 << 3)
+    static let assets = AccountQueryOptions(rawValue: 1 << 4)
+}
+
 struct AccountQuery: ObjectQuery {
-    let excludesAll: Bool
-    let includesAll: Bool
-    let excludeWithAssests: Bool? = nil
     
-    init(excludesAll: Bool, includesAll: Bool, excludeWithAssests: Bool? = nil) {
-        self.excludesAll = excludesAll
-        self.includesAll = includesAll
+    var options: AccountQueryOptions
+    
+    init(options: AccountQueryOptions) {
+        self.options = options
     }
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
-
-        if includesAll {
-            params.append(.init(.includesAll, includesAll))
+        
+        if options.contains(.includeAll) {
+            params.append(.init(.includesAll, true))
         }
-
-        let excludeParams = excludesAll ? "all" : "created-assets,created-apps"
-        let excludeParamsWithAssests = excludesAll ? "all" : "created-assets,created-apps,assets"
-
-        if excludeWithAssests == false {
-            params.append(.init(.exclude, excludeParams))
-        } else {
-            params.append(.init(.exclude, excludeParamsWithAssests))
+        
+        let excludeOptions: [(AccountQueryOptions, String)] = [
+            (.createdAssets, "created-assets"),
+            (.createdApps, "created-apps"),
+            (.assets, "assets")
+        ]
+        
+        let exclusions = options.contains(.excludeAll) ? ["all"] : excludeOptions.filter { options.contains($0.0) }.map { $0.1 }
+        
+        if !exclusions.isEmpty {
+            params.append(.init(.exclude, exclusions.joined(separator: ",")))
         }
         
         return params

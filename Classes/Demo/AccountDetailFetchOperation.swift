@@ -57,12 +57,11 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         
         let draft = AccountFetchDraft(publicKey: input.localAccount.address)
 
-        ongoingEndpoint =
-        api.fetchAccount(
+        ongoingEndpoint = api.fetchAccount(
             draft,
             queue: completionQueue,
             ignoreResponseOnCancelled: false,
-            excludeWithAssests: false
+            queryFilterOptions: [.createdAssets, .createdApps]
         ) { [weak self] result in
             guard let self = self else { return }
             
@@ -92,7 +91,7 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         
         let responseDataDict = apiError.getDictFromResponseData()
         if let totalAssetsOptedIn = responseDataDict?["total-assets-opted-in"] as? Int, 
-            for _ in 1...5 {
+            totalAssetsOptedIn > totalAssetsMinCount {
             for _ in 1...pagingCountForFetchAccount {
                 self.fetchAccountWithHugeAssets(draft: draft)
             }
@@ -104,12 +103,11 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
     }
     
     private func fetchAccountWithHugeAssets(draft: AccountFetchDraft) {
-        ongoingEndpoint =
-        api.fetchAccount(
+        ongoingEndpoint = api.fetchAccount(
             draft,
             queue: completionQueue,
             ignoreResponseOnCancelled: false,
-            excludeWithAssests: true
+            queryFilterOptions: [.createdAssets, .createdApps, .assets]
         ) { [weak self] result in
             guard let self = self else { return }
             
