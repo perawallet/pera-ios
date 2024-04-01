@@ -80,13 +80,14 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                     self.result = .success(output)
                     self.finish()
                 } else {
-                    checkIfAssetsHasHugeData(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    evaluateAssetVolumeAndRespond(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
                 }
             }
         }
     }
-    
-    private func checkIfAssetsHasHugeData(draft: AccountFetchDraft, apiError: APIError, apiErrorDetail: NoAPIModel?) {
+
+    private func evaluateAssetVolumeAndRespond(draft: AccountFetchDraft, apiError: APIError, apiErrorDetail: NoAPIModel?) {
+        
         let responseDataDict = apiError.getDictFromResponseData()
         if let totalAssetsOptedIn = responseDataDict["total-assets-opted-in"] as? Int, totalAssetsOptedIn > 10000 {
             for _ in 1...5 {
