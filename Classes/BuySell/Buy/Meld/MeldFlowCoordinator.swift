@@ -85,18 +85,13 @@ extension MeldFlowCoordinator {
         from screen: UIViewController,
         with transition: Screen.Transition.Open
     ) {
-        analytics.track(.meld())
-        let dAppDetail = screen.open(
-            .meldDappDetail(address: accountAddress),
-            by: transition
-        ) as? DiscoverExternalInAppBrowserScreen
-        dAppDetail?.eventHandler = {
-            [weak dAppDetail] event in
-            switch event {
-            case .goBack:
-                dAppDetail?.dismiss(animated: true)
-            default: break
-            }
+        let config = MeldConfig(address: accountAddress)
+        guard let url = URL(string: config.url) else {
+            return
         }
+
+        analytics.track(.meld())
+        screen.dismissScreen()
+        UIApplication.shared.open(url)
     }
 }
