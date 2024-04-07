@@ -1281,8 +1281,6 @@
 "swap-introduction-title" = "Swap in Pera";
 "swap-introduction-body" = "Pera Wallet provides an easy and fast way to swap assets on blockchain, using decentralized liquidity pools.";
 "swap-introduction-primary-action-title" = "Start Swapping";
-"swap-introduction-powered-by-title" = "Powered by";
-"swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
 /// MARK: Swap Account Selection
 "swap-account-selection-header-description" = "Select an account to make the swap";

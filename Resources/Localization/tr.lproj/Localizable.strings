@@ -2180,13 +2180,7 @@
 "swap-introduction-body" = "Pera Wallet varlıkları takas etmenin kolay ve hızlı bir yolunu sunuyor. Takas işlemi sayesinde bir ASA'yı akıllı sözleşme kullanarak başka bir ASA'ya piyasa fiyatları üzerinden dönüştürebilirsiniz.";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "Destekleyen:";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "Takasa Başlayın";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "Hizmet Koşulları";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "Pera'da Takas Yapın";

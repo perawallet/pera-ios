@@ -2180,13 +2180,7 @@
 "swap-introduction-body" = "A Pera Wallet oferece um modo fácil e rápido para a troca de ativos. O swap permite que um ASA seja trocado por outro utilizando-se de um contrato inteligente a tarifas de mercado.";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "Impulsionado por";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "Iniciar Swap";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "Termos de Serviço";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "Swap em Pera";

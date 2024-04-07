@@ -2183,13 +2183,7 @@
 "swap-introduction-body" = "Pera钱包提供简单快捷的资产交换方式。您可以使用一项ASA与另一项使用智能合约的ASA以市场费用进行交换。";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "提供者为";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "开始交换";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "服务条款";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "在Pera中交换";

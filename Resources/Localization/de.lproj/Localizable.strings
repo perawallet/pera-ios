@@ -2180,13 +2180,7 @@
 "swap-introduction-body" = "Pera Wallet bietet eine einfache und schnelle Möglichkeit, Assets zu tauschen. Der Tausch ermöglicht den Austausch einer ASA gegen ein anderes mit Hilfe eines Smart Contracts zu Marktgebühren.";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "Unterstützt von";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "Tausch beginnen";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "Nutzungsbedingungen";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "In Pera tauschen";

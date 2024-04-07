@@ -2180,13 +2180,7 @@
 "swap-introduction-body" = "Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다. 스왑을 통해 시장 수수료만 내고 스마트 컨트랙트를 사용하여 ASA와 다른 ASA와 교환할 수 있습니다.";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "제공:";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "스왑 시작";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "이용 약관";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "Pera에서 스왑";

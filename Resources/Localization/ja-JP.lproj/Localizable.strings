@@ -2180,13 +2180,7 @@
 "swap-introduction-body" = "Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。スワップでは、スマートコントラクトを利用して、ASAを別のASAと市場価格で交換することができます。";
 
 /* (No Comment) */
-"swap-introduction-powered-by-title" = "Powered by";
-
-/* (No Comment) */
 "swap-introduction-primary-action-title" = "スワップ開始";
-
-/* (No Comment) */
-"swap-introduction-terms-of-service-hyperlink" = "利用規約";
 
 /* / MARK: Swap Introduction */
 "swap-introduction-title" = "Peraでスワップする";
