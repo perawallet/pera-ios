@@ -79,18 +79,19 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                     self.result = .success(output)
                     self.finish()
                 } else {
-                    evaluateAssetVolumeAndRespond(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    refetchTheAccountWithoutTheAssetsIfNeeded(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
                 }
             }
         }
     }
 
-    private func evaluateAssetVolumeAndRespond(draft: AccountFetchDraft, apiError: APIError, apiErrorDetail: NoAPIModel?) {
+    private func refetchTheAccountWithoutTheAssetsIfNeeded(
         
         let responseDataDict = apiError.getDictFromResponseData()
         if let totalAssetsOptedIn = responseDataDict?["total-assets-opted-in"] as? Int, 
     ) {
         let mappedErrorResponse = apiError.getDictFromResponseData()
+        if let totalAssetsOptedIn = mappedErrorResponse?["total-assets-opted-in"] as? Int,
             totalAssetsOptedIn > AccountFetchConfig.totalAssetsMinCount {
             for _ in 1...AccountFetchConfig.pagingCountForFetchAccount {
                 self.fetchAccountWithHugeAssets(draft: draft)
