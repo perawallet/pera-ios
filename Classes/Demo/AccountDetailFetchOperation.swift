@@ -86,9 +86,9 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
     }
 
     private func refetchTheAccountWithoutTheAssetsIfNeeded(
-        
-        let responseDataDict = apiError.getDictFromResponseData()
-        if let totalAssetsOptedIn = responseDataDict?["total-assets-opted-in"] as? Int, 
+        draft: AccountFetchDraft,
+        apiError: APIError,
+        apiErrorDetail: NoAPIModel?
     ) {
         let mappedErrorResponse = apiError.getDictFromResponseData()
         if let totalAssetsOptedIn = mappedErrorResponse?["total-assets-opted-in"] as? Int,
