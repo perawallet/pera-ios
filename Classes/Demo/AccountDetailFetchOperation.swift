@@ -33,8 +33,6 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
 
     private let api: ALGAPI
     private let completionQueue: DispatchQueue
-    private let totalAssetsMinCount = 10000
-    private let pagingCountForFetchAccount = 5
     
     init(
         input: Input,
@@ -91,8 +89,10 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         
         let responseDataDict = apiError.getDictFromResponseData()
         if let totalAssetsOptedIn = responseDataDict?["total-assets-opted-in"] as? Int, 
-            totalAssetsOptedIn > totalAssetsMinCount {
-            for _ in 1...pagingCountForFetchAccount {
+    ) {
+        let mappedErrorResponse = apiError.getDictFromResponseData()
+            totalAssetsOptedIn > AccountFetchConfig.totalAssetsMinCount {
+            for _ in 1...AccountFetchConfig.pagingCountForFetchAccount {
                 self.fetchAccountWithHugeAssets(draft: draft)
             }
         } else {
@@ -165,5 +165,12 @@ extension AccountDetailFetchOperation {
     
     struct Output {
         let account: Account
+    }
+}
+
+extension AccountDetailFetchOperation {
+    enum AccountFetchConfig {
+        static let totalAssetsMinCount = 10000
+        static let pagingCountForFetchAccount = 5
     }
 }
