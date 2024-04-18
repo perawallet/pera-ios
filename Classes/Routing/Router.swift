@@ -2373,12 +2373,42 @@ extension Router {
             guard let self = self else { return }
 
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
-            let transition = BottomSheetTransition(
-                presentingViewController: visibleScreen,
-                interactable: false
-            )
             let draft = WCSessionConnectionDraft(session: session)
+            
+            guard let domain = draft.dappURL?.host else {
+                handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                return
+            }
+            
+            self.appConfiguration.scammerController.checkDomain(domain: domain) { result in
+                switch result {
+                case .success(let isScammer):
+                    if isScammer {
+                        visibleScreen.dismissScreen()
+                        self.appConfiguration.bannerController.presentErrorBanner(
+                            title: "wallet-connect-scammer-domain-title".localized,
+                            message: "wallet-connect-scammer-domain-message".localized
+                        )
+                    } else {
+                        self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                    }
+                case .failure(let failure):
+                    self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                }
+            }
+        }
+    }
 
+    private func handleWalletConnectSession(session: WalletConnectSession, preferences: WalletConnectSessionCreationPreferences, completion: @escaping WalletConnectSessionConnectionCompletionHandler) {
+        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let draft = WCSessionConnectionDraft(session: session)
+        
             let screen = transition.perform(
                 .wcConnection(draft: draft),
                 by: .present

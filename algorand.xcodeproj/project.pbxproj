@@ -3534,6 +3534,18 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
+		8B2A18DB2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */; };
+		8B2A18DC2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */; };
+		8B2A18DD2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */; };
+		8B2A18DF2BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */; };
+		8B2A18E02BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */; };
+		8B2A18E12BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */; };
+		8B8419502BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
+		8B8419512BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
+		8B8419522BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
+		8BAB5CCE2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB5CCD2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift */; };
+		8BAB5CCF2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB5CCD2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift */; };
+		8BAB5CD02BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB5CCD2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift */; };
 		95004BB427BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
 		95004BB527BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
 		95004BB627BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
@@ -8903,6 +8915,10 @@
 		2BFA924729CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
+		8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerControlResult.swift; sourceTree = "<group>"; };
+		8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerControlQuery.swift; sourceTree = "<group>"; };
+		8B84194F2BCD646100A912DF /* ScammerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerController.swift; sourceTree = "<group>"; };
+		8BAB5CCD2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+WalletConnect.swift"; sourceTree = "<group>"; };
 		95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentViewTopAttachedTheme.swift; sourceTree = "<group>"; };
 		95004BB727BD37DD00AB2D9A /* TransactionSendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSendController.swift; sourceTree = "<group>"; };
 		9501BBD62757BD7000E2C3A7 /* SelectAssetViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetViewControllerDataSource.swift; sourceTree = "<group>"; };
@@ -14183,6 +14199,7 @@
 				17AC7281286EF945006919C3 /* NameService */,
 				2B13952C24C605CC002F66D3 /* Notifications */,
 				2B69AB3028BFCF1E00A8D65D /* Swap */,
+				8B4293C62BC55BFD007C63E1 /* WalletConnect */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -14624,6 +14641,7 @@
 		2BA4B40F2678D8CE0041586B /* WalletConnect */ = {
 			isa = PBXGroup;
 			children = (
+				8BAB5CD12BC41B0F00EF3B29 /* ScammerControl */,
 				2B344B15268A0F6C00DA7B25 /* Session */,
 				2B344B14268A0F6600DA7B25 /* Transaction */,
 			);
@@ -17776,6 +17794,7 @@
 				17AC7286286F2142006919C3 /* ALGAPI+NameService.swift */,
 				2BBA1988231FEB080080A6F6 /* ALGAPI+Notification.swift */,
 				173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */,
+				8BAB5CCD2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift */,
 				2BD5A69E26332C300048FA5E /* Algos */,
 				2B69AB0E28BEC19400A8D65D /* ALGAPI+Swap.swift */,
 				2BD6AB6B26EA33E8001C4257 /* Main */,
@@ -18131,6 +18150,30 @@
 				D446A748272ABEC90081D60B /* Rekey */,
 			);
 			path = Animations;
+			sourceTree = "<group>";
+		};
+		8B4293C62BC55BFD007C63E1 /* WalletConnect */ = {
+			isa = PBXGroup;
+			children = (
+				8B4293C72BC55C0A007C63E1 /* ScammerControl */,
+			);
+			path = WalletConnect;
+			sourceTree = "<group>";
+		};
+		8B4293C72BC55C0A007C63E1 /* ScammerControl */ = {
+			isa = PBXGroup;
+			children = (
+				8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */,
+			);
+			path = ScammerControl;
+			sourceTree = "<group>";
+		};
+		8BAB5CD12BC41B0F00EF3B29 /* ScammerControl */ = {
+			isa = PBXGroup;
+			children = (
+				8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */,
+			);
+			path = ScammerControl;
 			sourceTree = "<group>";
 		};
 		95189D7B2778DD4400094107 /* Pasteboard */ = {
@@ -20639,6 +20682,7 @@
 			isa = PBXGroup;
 			children = (
 				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+				8B84194F2BCD646100A912DF /* ScammerController.swift */,
 				2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */,
 				2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */,
 			);
@@ -24269,6 +24313,7 @@
 				2B5F6F862768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D41EF1072AB70ADF0031A14C /* WCArbitraryDataView+Theme.swift in Sources */,
 				2B68F3AD281685E300A7C9C4 /* CollectibleMediaGIFPreviewViewModel.swift in Sources */,
+				8BAB5CD02BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */,
 				F07DAA8B29095FAB00DDBCF2 /* SwapAmountPercentage.swift in Sources */,
 				2BD36E1B2684650400C57728 /* WCGroupTransactionItemCell.swift in Sources */,
 				F0F40F202942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */,
@@ -24568,6 +24613,7 @@
 				179B186F29F169DA000A4341 /* SettingsLoadingView.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
+				8B2A18E12BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */,
 				2BAAF4AF28E49C5100FC59AF /* SelectAssetListItemCell.swift in Sources */,
 				D45D7679299FB2100081735E /* MeldAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				2BCBBAF324A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,
@@ -25189,6 +25235,7 @@
 				2B12633625F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2BA015812636B8A7009EC914 /* LedgerAccountVerificationView.swift in Sources */,
 				9565CF6B27ABE07600A8095C /* AssetListViewDataController.swift in Sources */,
+				8B8419522BCD646100A912DF /* ScammerController.swift in Sources */,
 				17BD4ED92292F1260003E49A /* UIView+SafeArea.swift in Sources */,
 				0467678C2756A65F00C88F21 /* SingleSelectionListView.swift in Sources */,
 				D453A5B32AB0C6C60079A7AB /* WCUnsignedArbitrayDataRequestScreen.swift in Sources */,
@@ -25325,6 +25372,7 @@
 				2BE8799428BD2CBD00A6C682 /* ScanQRCodeTransactionOptionListItemButtonViewModel.swift in Sources */,
 				F0DB415B279382EC00EA437D /* TitleWithAccessoryViewModel.swift in Sources */,
 				2B288AC8268E375D00BC6FB6 /* WCPeerMeta.swift in Sources */,
+				8B2A18DD2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */,
 				D446A747272AB3310081D60B /* ContactDetailViewController+Theme.swift in Sources */,
 				D48D11D92742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
 				2BE936FD24534F5600322C1E /* NumpadButton.swift in Sources */,
@@ -25743,6 +25791,7 @@
 				2B8AE4212968638400B18EE2 /* WCTransactionRequestReceivedLog.swift in Sources */,
 				D4CC28BE2875A0CD0082E038 /* InnerTransactionListDataSource.swift in Sources */,
 				D4023E1E29A6C60D00DFB5E8 /* MoonPayAccountSelectionListDataSource.swift in Sources */,
+				8B2A18DC2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */,
 				D41EE4552A405F6700FD03FD /* RekeyInstructionsScreen.swift in Sources */,
 				2B56B8432505013600AC7B8D /* LedgerAccountSelectionView.swift in Sources */,
 				2BCE8FA0284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
@@ -26813,12 +26862,14 @@
 				D43A0C462790D777007430B9 /* NoContentWithActionViewModel.swift in Sources */,
 				D40BA50A2A81AD0100138BF7 /* WCSessionConnectedAccountListItemCell.swift in Sources */,
 				2B0F623F24EC129D00DA22A6 /* UICollectionView+Additions.swift in Sources */,
+				8B8419512BCD646100A912DF /* ScammerController.swift in Sources */,
 				D4D87E832991328A004F7BF2 /* AlgorandSecureBackupAccountListDataSource.swift in Sources */,
 				958416F127B3A7CD005B1627 /* Sequence+Additions.swift in Sources */,
 				17C93249290CF841000EE03D /* DiscoverSearchAssetCell.swift in Sources */,
 				F03A836D28C9772100443A2B /* CopyAddressListItemButtonViewModel.swift in Sources */,
 				D48F4D862AF131BB0098926F /* AccountNotBackedUpWarningViewModel.swift in Sources */,
 				D459E29027DE547100F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
+				8B2A18E02BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */,
 				2B0F624124EC129D00DA22A6 /* Session.swift in Sources */,
 				17AEC554297044B9002B3B23 /* WebImportErrorScreen.swift in Sources */,
 				2B0F624324EC129D00DA22A6 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
@@ -27057,6 +27108,7 @@
 				D4CC28BA2875A0A90082E038 /* InnerTransactionListLayout.swift in Sources */,
 				F0261A9D27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */,
 				D4588AE3294293EE0012C12C /* SelectContactView.swift in Sources */,
+				8BAB5CCF2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */,
 				2B7CA298290168B6005C3F3F /* TransactionUploadAndWaitOperation.swift in Sources */,
 				D478D93F2B306362008C4A21 /* UpdateSwapQuoteDraft.swift in Sources */,
 				D4919D2E27A15C12001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
@@ -29220,6 +29272,7 @@
 				D41EF1052AB70ADE0031A14C /* WCArbitraryDataView+Theme.swift in Sources */,
 				2BF90F5F25FBAAE70033F348 /* HStackView.swift in Sources */,
 				F0CF6B66285163CA007C30E4 /* AccountAscendingTotalPortfolioValueAlgorithm.swift in Sources */,
+				8BAB5CCE2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */,
 				F018D68C28FE055500FAB199 /* SwapAssetScreenTheme.swift in Sources */,
 				D43A0C392790D738007430B9 /* NoContentWithActionCell.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
@@ -29519,6 +29572,7 @@
 				2B9EF31B25D576A1004BCCC4 /* TutorialViewController.swift in Sources */,
 				95BB6BFA27A1501200F2A2F1 /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
 				D45D766D299FB0EB0081735E /* MeldAccountSelectionListLocalDataController.swift in Sources */,
+				8B2A18DF2BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */,
 				D4023E1D29A6C60D00DFB5E8 /* MoonPayAccountSelectionListDataSource.swift in Sources */,
 				2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				D45D7677299FB2100081735E /* MeldAccountSelectionListAccountListItemCellTheme.swift in Sources */,
@@ -30140,6 +30194,7 @@
 				D411B36D26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
 				F07C3C1A28B44D61003D55BC /* ASAAboutLoadingView.swift in Sources */,
 				D4F068B926EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift in Sources */,
+				8B8419502BCD646100A912DF /* ScammerController.swift in Sources */,
 				D4A2C06B27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift in Sources */,
 				D4150DD027C4D7630064F736 /* CollectibleGalleryGridLoadingViewTheme.swift in Sources */,
 				2B3E226926BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
@@ -30276,6 +30331,7 @@
 				D4C64C282A50384D00011065 /* CollectiblePlayableMediaPreviewCell.swift in Sources */,
 				F096086F2795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
 				2BEEBF9629A3B44B00DDD988 /* WalletConnectV1SessionValidator.swift in Sources */,
+				8B2A18DB2BC04B63001B4AD0 /* ScammerControlResult.swift in Sources */,
 				95004BB427BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */,
 				D48D11D72742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
 				D453A5BD2AB0CAC70079A7AB /* WCSingleArbitraryDataRequestScreen.swift in Sources */,

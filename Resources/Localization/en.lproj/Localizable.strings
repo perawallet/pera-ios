@@ -993,6 +993,9 @@
 
 "wallet-connect-session-timeout-message" = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
 
+"wallet-connect-scammer-domain-title" = " Malicious Website Blocked";
+"wallet-connect-scammer-domain-message" = "You attempted to connect to a malicious website. Pera blocked this connection for your security.";
+
 "wallet-connect-asset-creation-title" = "Asset Creation Request";
 "wallet-connect-asset-name-title" = "Asset Name";
 "wallet-connect-asset-unit-title" = "Unit Name";

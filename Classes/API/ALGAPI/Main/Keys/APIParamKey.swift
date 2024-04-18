@@ -97,4 +97,5 @@ enum APIParamKey: String, CodingKey {
     case query = "q"
     case quote = "quote"
     case walletAddress = "wallet_address"
+    case domain = "domain"
 }
