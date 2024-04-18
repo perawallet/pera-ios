@@ -2392,7 +2392,7 @@ extension Router {
                     } else {
                         self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
                     }
-                case .failure(let failure):
+                case .failure:
                     self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
                 }
             }
@@ -2401,93 +2401,92 @@ extension Router {
 
     private func handleWalletConnectSession(session: WalletConnectSession, preferences: WalletConnectSessionCreationPreferences, completion: @escaping WalletConnectSessionConnectionCompletionHandler) {
         let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
-
+        
         let transition = BottomSheetTransition(
             presentingViewController: visibleScreen,
             interactable: false
         )
-
+        
         let draft = WCSessionConnectionDraft(session: session)
         
-            let screen = transition.perform(
-                .wcConnection(draft: draft),
-                by: .present
-            ) as? WCSessionConnectionScreen
-
-            screen?.eventHandler = {
-                [weak self, weak screen] event in
-                guard
-                    let self,
-                    let screen
-                else {
-                    return
+        let screen = transition.perform(
+            .wcConnection(draft: draft),
+            by: .present
+        ) as? WCSessionConnectionScreen
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard
+                let self,
+                let screen
+            else {
+                return
+            }
+            
+            switch event {
+            case .performCancel:
+                self.appConfiguration.analytics.track(
+                    .wcSessionRejected(
+                        version: .v1,
+                        topic: session.url.topic,
+                        dappName: session.dAppInfo.peerMeta.name,
+                        dappURL: session.dAppInfo.peerMeta.url.absoluteString
+                    )
+                )
+                
+                asyncMain {
+                    [weak self, weak screen] in
+                    guard
+                        let self,
+                        let screen
+                    else {
+                        return
+                    }
+                    
+                    completion(
+                        session.getDeclinedWalletConnectionInfo(on: appConfiguration.api.network)
+                    )
+                    
+                    screen.dismissScreen()
+                    
+                    self.publishQRScannerScreenResetNotification(preferences)
                 }
-
-                switch event {
-                case .performCancel:
-                    self.appConfiguration.analytics.track(
-                        .wcSessionRejected(
-                            version: .v1,
-                            topic: session.url.topic,
-                            dappName: session.dAppInfo.peerMeta.name,
-                            dappURL: session.dAppInfo.peerMeta.url.absoluteString
+            case .performConnect(let accounts):
+                self.appConfiguration.analytics.track(
+                    .wcSessionApproved(
+                        version: .v1,
+                        topic: session.url.topic,
+                        dappName: session.dAppInfo.peerMeta.name,
+                        dappURL: session.dAppInfo.peerMeta.url.absoluteString,
+                        address: accounts.joined(separator: ","),
+                        totalAccount: accounts.count
+                    )
+                )
+                
+                asyncMain {
+                    [weak self, weak screen] in
+                    guard
+                        let self,
+                        let screen
+                    else {
+                        return
+                    }
+                    
+                    completion(
+                        session.getApprovedWalletConnectionInfo(
+                            for: accounts,
+                            on: appConfiguration.api.network
                         )
                     )
-
-                    asyncMain {
-                        [weak self, weak screen] in
-                        guard
-                            let self,
-                            let screen
-                        else {
-                            return
-                        }
-
-                        completion(
-                            session.getDeclinedWalletConnectionInfo(on: appConfiguration.api.network)
-                        )
-
-                        screen.dismissScreen()
-
-                        self.publishQRScannerScreenResetNotification(preferences)
-                    }
-                case .performConnect(let accounts):
-                    self.appConfiguration.analytics.track(
-                        .wcSessionApproved(
-                            version: .v1,
-                            topic: session.url.topic,
-                            dappName: session.dAppInfo.peerMeta.name,
-                            dappURL: session.dAppInfo.peerMeta.url.absoluteString,
-                            address: accounts.joined(separator: ","),
-                            totalAccount: accounts.count
-                        )
-                    )
-
-                    asyncMain {
-                        [weak self, weak screen] in
-                        guard
-                            let self,
-                            let screen
-                        else {
-                            return
-                        }
-
-                        completion(
-                            session.getApprovedWalletConnectionInfo(
-                                for: accounts,
-                                on: appConfiguration.api.network
-                            )
-                        )
-
-                        screen.dismiss(animated: true)
-
-                        self.publishQRScannerScreenResetNotification(preferences)
-                    }
+                    
+                    screen.dismiss(animated: true)
+                    
+                    self.publishQRScannerScreenResetNotification(preferences)
                 }
             }
-
-            self.ongoingTransitions.append(transition)
         }
+        
+        self.ongoingTransitions.append(transition)
     }
 
     private func peraConnectDidFailToConnectV1(
