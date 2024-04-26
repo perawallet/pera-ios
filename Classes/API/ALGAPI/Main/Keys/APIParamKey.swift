@@ -46,6 +46,7 @@ enum APIParamKey: String, CodingKey {
     case cursor = "cursor"
     case lastSeenNotificationId = "last_seen_notification_id"
     case deviceId = "device_id"
+    case domain = "domain"
     case email = "email"
     case encryptedContent = "encrypted_content"
     case exceptionText = "exception_text"
@@ -97,5 +98,4 @@ enum APIParamKey: String, CodingKey {
     case query = "q"
     case quote = "quote"
     case walletAddress = "wallet_address"
-    case domain = "domain"
 }

@@ -17,19 +17,21 @@
 import Foundation
 
 final class ScammerController: NSObject {
-    var api: ALGAPI?
+    let api: ALGAPI?
     
     init(api: ALGAPI?) {
         self.api = api
     }
     
-    func checkDomain(domain: String, completion: @escaping (Result<Bool, String>) -> Void) {
-        api?.checkDomain(domain: domain) { response in
+    func checkDomain(
+        domain: String,
+        completion: @escaping (Result<Bool, String>) -> Void) {
+        api?.checkWCScammerDomain(domain: domain) { response in
             switch response {
             case .success(let scammerControlResult):
-                completion(.success(scammerControlResult.scammer))
+                completion(.success(scammerControlResult.isScammer))
             case .failure(_, let errorDetail):
-                completion(.failure(errorDetail?.message ?? ""))
+                completion(.failure(errorDetail?.message ?? "check-domain-default-error".localized))
             }
         }
     }

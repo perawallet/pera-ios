@@ -2376,11 +2376,16 @@ extension Router {
             let draft = WCSessionConnectionDraft(session: session)
             
             guard let domain = draft.dappURL?.host else {
-                handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                handleWalletConnectSession(
+                    session: session,
+                    preferences: preferences,
+                    completion: completion
+                )
                 return
             }
             
-            self.appConfiguration.scammerController.checkDomain(domain: domain) { result in
+            self.appConfiguration.scammerController.checkDomain(domain: domain) { [weak self] result in
+                guard let self else { return }
                 switch result {
                 case .success(let isScammer):
                     if isScammer {
@@ -2390,16 +2395,28 @@ extension Router {
                             message: "wallet-connect-scammer-domain-message".localized
                         )
                     } else {
-                        self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                        self.handleWalletConnectSession(
+                            session: session,
+                            preferences: preferences,
+                            completion: completion
+                        )
                     }
                 case .failure:
-                    self.handleWalletConnectSession(session: session, preferences: preferences, completion: completion)
+                    self.handleWalletConnectSession(
+                        session: session,
+                        preferences: preferences,
+                        completion: completion
+                    )
                 }
             }
         }
     }
 
-    private func handleWalletConnectSession(session: WalletConnectSession, preferences: WalletConnectSessionCreationPreferences, completion: @escaping WalletConnectSessionConnectionCompletionHandler) {
+    private func handleWalletConnectSession(
+        session: WalletConnectSession,
+        preferences: WalletConnectSessionCreationPreferences,
+        completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
         let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
         
         let transition = BottomSheetTransition(
@@ -2679,109 +2696,152 @@ extension Router {
 
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-            let wcConnectionScreen = transition.perform(
-                .wcConnection(draft: draft),
-                by: .present
-            ) as? WCSessionConnectionScreen
-            wcConnectionScreen?.eventHandler = {
-                [weak self, weak wcConnectionScreen] event in
-                guard let self = self else { return }
-
-                switch event {
-                case .performCancel:
-                    appConfiguration.analytics.track(
-                        .wcSessionRejected(
-                            version: .v2,
-                            topic: sessionProposal.pairingTopic,
-                            dappName: sessionProposal.proposer.name,
-                            dappURL: sessionProposal.proposer.url
-                        )
-                    )
-
-                    asyncMain {
-                        [weak self, weak wcConnectionScreen] in
-                        guard let self else { return }
-
-                        let params = WalletConnectV2RejectSessionConnectionParams(
-                            proposalId: sessionProposal.id,
-                            reason: .userRejected
-                        )
-                        appConfiguration.peraConnect.rejectSessionConnection(params)
-
-                        wcConnectionScreen?.dismissScreen()
-
-                        publishQRScannerScreenResetNotification(preferences)
-                    }
-                case .performConnect(let selectedAccounts):
-                    appConfiguration.analytics.track(
-                        .wcSessionApproved(
-                            version: .v2,
-                            topic: sessionProposal.pairingTopic,
-                            dappName: sessionProposal.proposer.name,
-                            dappURL: sessionProposal.proposer.url,
-                            address: selectedAccounts.joined(separator: ","),
-                            totalAccount: selectedAccounts.count
-                        )
-                    )
-
-                    var sessionNamespaces = SessionNamespaces()
-                    sessionProposal.requiredNamespaces.forEach {
-                        let caip2Namespace = $0.key
-                        guard caip2Namespace == WalletConnectNamespaceKey.algorand else {
-                            return
-                        }
-
-                        let proposalNamespace = $0.value
-
-                        let requestedChains = proposalNamespace.chains
-                        guard let requestedChains else { return }
-                        let chains = requestedChains.filter { allowedChainReference in
-                            return
-                                algorandWalletConnectV2TestNetChainReference == allowedChainReference.reference ||
-                                algorandWalletConnectV2MainNetChainReference == allowedChainReference.reference
-                        }
-
-                        let accounts = Set(
-                            chains.compactMap { chain in
-                                selectedAccounts.compactMap { account in
-                                    return WalletConnectV2Account(
-                                        "\(chain.absoluteString):\(account)"
-                                    )
-                                }
-                            }
-                        ).flatMap { $0 }
-
-                        let supportedMethods = WalletConnectMethod.allCases.map(\.rawValue)
-                        let requestedMethods = proposalNamespace.methods
-                        let methods = requestedMethods.filter {
-                            return supportedMethods.contains($0)
-                        }
-                        let sessionNamespace = WalletConnectV2SessionNamespace(
-                            accounts: Set(accounts),
-                            methods: methods,
-                            events: proposalNamespace.events
-                        )
-
-                        sessionNamespaces[caip2Namespace] = sessionNamespace
-                    }
-
-                    let params = WalletConnectV2ApproveSessionConnectionParams(
-                        proposalId: sessionProposal.id,
-                        namespaces: sessionNamespaces
-                    )
-                    appConfiguration.peraConnect.approveSessionConnection(params)
-
-                    wcConnectionScreen?.dismiss(animated: true)
-
-                    publishQRScannerScreenResetNotification(preferences)
-                }
-
-                ongoingTransitions.append(transition)
+            
+            guard let domain = draft.dappURL?.host else {
+                self.handleWalletConnectV2Session(
+                    sessionProposal: sessionProposal,
+                    preferences: preferences
+                )
+                return
             }
+            
+            self.appConfiguration.scammerController.checkDomain(domain: domain) { 
+                [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success(let isScammer):
+                    if isScammer {
+                        visibleScreen.dismissScreen()
+                        self.appConfiguration.bannerController.presentErrorBanner(
+                            title: "wallet-connect-scammer-domain-title".localized,
+                            message: "wallet-connect-scammer-domain-message".localized
+                        )
+                    } else {
+                        self.handleWalletConnectV2Session(
+                            sessionProposal: sessionProposal,
+                            preferences: preferences
+                        )
+                    }
+                case .failure:
+                    self.handleWalletConnectV2Session(
+                        sessionProposal: sessionProposal,
+                        preferences: preferences
+                    )
+                }
+            }
+
         }
     }
 
+    func handleWalletConnectV2Session(
+        sessionProposal: WalletConnectV2SessionProposal,
+        preferences: WalletConnectSessionCreationPreferences
+    ) {
+        let draft = WCSessionConnectionDraft(sessionProposal: sessionProposal)
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        let wcConnectionScreen = transition.perform(
+            .wcConnection(draft: draft),
+            by: .present
+        ) as? WCSessionConnectionScreen
+        wcConnectionScreen?.eventHandler = {
+            [weak self, weak wcConnectionScreen] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                appConfiguration.analytics.track(
+                    .wcSessionRejected(
+                        version: .v2,
+                        topic: sessionProposal.pairingTopic,
+                        dappName: sessionProposal.proposer.name,
+                        dappURL: sessionProposal.proposer.url
+                    )
+                )
+
+                asyncMain {
+                    [weak self, weak wcConnectionScreen] in
+                    guard let self else { return }
+
+                    let params = WalletConnectV2RejectSessionConnectionParams(
+                        proposalId: sessionProposal.id,
+                        reason: .userRejected
+                    )
+                    appConfiguration.peraConnect.rejectSessionConnection(params)
+
+                    wcConnectionScreen?.dismissScreen()
+
+                    publishQRScannerScreenResetNotification(preferences)
+                }
+            case .performConnect(let selectedAccounts):
+                appConfiguration.analytics.track(
+                    .wcSessionApproved(
+                        version: .v2,
+                        topic: sessionProposal.pairingTopic,
+                        dappName: sessionProposal.proposer.name,
+                        dappURL: sessionProposal.proposer.url,
+                        address: selectedAccounts.joined(separator: ","),
+                        totalAccount: selectedAccounts.count
+                    )
+                )
+
+                var sessionNamespaces = SessionNamespaces()
+                sessionProposal.requiredNamespaces.forEach {
+                    let caip2Namespace = $0.key
+                    guard caip2Namespace == WalletConnectNamespaceKey.algorand else {
+                        return
+                    }
+
+                    let proposalNamespace = $0.value
+
+                    let requestedChains = proposalNamespace.chains
+                    guard let requestedChains else { return }
+                    let chains = requestedChains.filter { allowedChainReference in
+                        return
+                            algorandWalletConnectV2TestNetChainReference == allowedChainReference.reference ||
+                            algorandWalletConnectV2MainNetChainReference == allowedChainReference.reference
+                    }
+
+                    let accounts = Set(
+                        chains.compactMap { chain in
+                            selectedAccounts.compactMap { account in
+                                return WalletConnectV2Account(
+                                    "\(chain.absoluteString):\(account)"
+                                )
+                            }
+                        }
+                    ).flatMap { $0 }
+
+                    let supportedMethods = WalletConnectMethod.allCases.map(\.rawValue)
+                    let requestedMethods = proposalNamespace.methods
+                    let methods = requestedMethods.filter {
+                        return supportedMethods.contains($0)
+                    }
+                    let sessionNamespace = WalletConnectV2SessionNamespace(
+                        accounts: Set(accounts),
+                        methods: methods,
+                        events: proposalNamespace.events
+                    )
+
+                    sessionNamespaces[caip2Namespace] = sessionNamespace
+                }
+
+                let params = WalletConnectV2ApproveSessionConnectionParams(
+                    proposalId: sessionProposal.id,
+                    namespaces: sessionNamespaces
+                )
+                appConfiguration.peraConnect.approveSessionConnection(params)
+
+                wcConnectionScreen?.dismiss(animated: true)
+
+                publishQRScannerScreenResetNotification(preferences)
+            }
+
+            ongoingTransitions.append(transition)
+        }
+    }
+    
     func peraConnectDidSettleSessionV2(
         _ session: WalletConnectV2Session,
         with preferences: WalletConnectSessionCreationPreferences

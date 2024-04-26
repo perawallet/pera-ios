@@ -19,14 +19,14 @@ import MagpieCore
 import MacaroonUtils
 
 final class ScammerControlResult: ALGAPIModel {
-    let scammer: Bool
+    let isScammer: Bool
     
     init() {
-        scammer = false
+        isScammer = false
     }
     
-    init(scammer: Bool) {
-        self.scammer = scammer
+    init(isScammer: Bool) {
+        self.isScammer = isScammer
     }
 }
 
@@ -34,6 +34,6 @@ extension ScammerControlResult {
     private enum CodingKeys:
         String,
         CodingKey {
-        case scammer
+        case isScammer = "scammer"
     }
 }

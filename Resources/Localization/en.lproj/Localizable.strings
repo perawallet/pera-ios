@@ -1730,3 +1730,6 @@ FAQ section.";
 
 /// MARK: Back Up Account Selection
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
+
+/// MARK: Check Domain Scammer Controller
+"check-domain-default-error" = "Your Domain is not valid.";

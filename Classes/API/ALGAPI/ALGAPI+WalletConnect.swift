@@ -21,7 +21,7 @@ import SwiftDate
 
 extension ALGAPI {
     @discardableResult
-    func checkDomain(
+    func checkWCScammerDomain(
         domain: String,
         onCompleted handler: @escaping (Response.Result<ScammerControlResult, IndexerError>) -> Void
     ) -> EndpointOperatable {
