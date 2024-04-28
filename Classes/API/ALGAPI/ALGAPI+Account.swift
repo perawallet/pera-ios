@@ -24,15 +24,17 @@ extension ALGAPI {
     @discardableResult
     func fetchAccount(
         _ draft: AccountFetchDraft,
+        includesClosedAccounts: Bool = false,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
         queryFilterOptions: AccountQueryOptions = [.assets],
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
+        let filterOptions = includesClosedAccounts ? queryFilterOptions.union([.includeAll]) : queryFilterOptions
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
-            .query(AccountQuery(options: queryFilterOptions))
+            .query(AccountQuery(options: filterOptions))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
