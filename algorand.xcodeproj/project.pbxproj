@@ -1150,6 +1150,9 @@
 		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536B2328029F00D54029 /* AlgorandNotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */; };
 		2B1B536C2328029F00D54029 /* AlgorandNotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */; };
+		2B2152422BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
+		2B2152432BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
+		2B2152442BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
 		2B233B4927C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
 		2B233B4A27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
 		2B233B4B27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
@@ -7972,6 +7975,7 @@
 		2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUpdateDraft.swift; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotificationDetail.swift; sourceTree = "<group>"; };
+		2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+WalletConnect.swift"; sourceTree = "<group>"; };
 		2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayIntroductionScreenTheme.swift; sourceTree = "<group>"; };
 		2B233B5027C4784600D16B82 /* MoonPayIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayIntroductionScreen.swift; sourceTree = "<group>"; };
 		2B2359912794D1790006D259 /* TransactionsAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsAPIDataController.swift; sourceTree = "<group>"; };
@@ -14028,6 +14032,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
+				2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -24269,6 +24274,7 @@
 				2B5F6F862768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D41EF1072AB70ADF0031A14C /* WCArbitraryDataView+Theme.swift in Sources */,
 				2B68F3AD281685E300A7C9C4 /* CollectibleMediaGIFPreviewViewModel.swift in Sources */,
+				2B2152442BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				F07DAA8B29095FAB00DDBCF2 /* SwapAmountPercentage.swift in Sources */,
 				2BD36E1B2684650400C57728 /* WCGroupTransactionItemCell.swift in Sources */,
 				F0F40F202942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */,
@@ -25788,6 +25794,7 @@
 				2B262723284E3AA900ADE371 /* AssetTransactionItemViewModel.swift in Sources */,
 				2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B71CB9928FF327800B1E1A0 /* SwapQuoteList.swift in Sources */,
+				2B2152432BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				2B384DAB29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */,
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
 				D40ADD832944C28D004C74E3 /* DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel.swift in Sources */,
@@ -29220,6 +29227,7 @@
 				D41EF1052AB70ADE0031A14C /* WCArbitraryDataView+Theme.swift in Sources */,
 				2BF90F5F25FBAAE70033F348 /* HStackView.swift in Sources */,
 				F0CF6B66285163CA007C30E4 /* AccountAscendingTotalPortfolioValueAlgorithm.swift in Sources */,
+				2B2152422BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				F018D68C28FE055500FAB199 /* SwapAssetScreenTheme.swift in Sources */,
 				D43A0C392790D738007430B9 /* NoContentWithActionCell.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
