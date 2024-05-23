@@ -39,6 +39,7 @@ final class AccountListItemView:
         addIcon(theme)
         addContentAndAccessoryContext(theme)
         addAccessoryIcon(theme)
+        iconView.image = "icon-standard-account".uiImage
     }
 
     func customizeAppearance(

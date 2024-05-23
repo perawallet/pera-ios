@@ -16,6 +16,7 @@
 "title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
+"title-asa" = "%@ Incoming ASAs";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-receive" = "Receive";

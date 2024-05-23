@@ -1096,6 +1096,25 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .incomingAsa(dataController):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = IncomingASAAccountInboxViewController(
+                query: .init(),
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            
+        case let .incomingAsasDetail(draft):
+            let screen = IncomingAsasDetailScreen(
+                draft: draft,
+                configuration: configuration
+            )
+
+            viewController = screen
+            
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate

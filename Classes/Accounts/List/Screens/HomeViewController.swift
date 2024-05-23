@@ -146,7 +146,7 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         configureNotificationBarButton()
-
+        configureASARequestBarButton()
         navigationView.prepareLayout(NoLayoutSheet())
 
         navigationItem.titleView = navigationView
@@ -295,6 +295,25 @@ extension HomeViewController {
         rightBarButtonItems = [notificationBarButtonItem]
         setNeedsNavigationBarAppearanceUpdate()
     }
+    
+    private func configureASARequestBarButton() {
+        // TODO:  get value from api
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaRequests("4")) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            if let account = selectedAccountHandle {
+                let dataController = IncomingASAAccountInboxAPIDataController(account: account, sharedDataController: self.sharedDataController)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.open(.incomingAsa(dataController: dataController), by: .push)
+                }
+            }
+        }
+
+        leftBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
+    }
 }
 
 extension HomeViewController {
@@ -311,11 +330,30 @@ extension HomeViewController {
         updateNavigationBarWhenListDidScroll()
         updateListBackgroundWhenListDidScroll()
     }
-
+    
     private func updateNavigationBarWhenListDidScroll() {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-        navigationView.animateTitleVisible(!headerVisible)
+        navigationView.animateTitleVisible(!headerVisible) { isVisible in
+            if isVisible {
+                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaRequestsSmall) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    if let account = selectedAccountHandle {
+                        let dataController = IncomingASAAccountInboxAPIDataController(account: account, sharedDataController: self.sharedDataController)
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self else { return }
+                            self.open(.incomingAsa(dataController: dataController), by: .push)
+                        }
+                    }
+                }
+                self.leftBarButtonItems = [notificationBarButtonItem]
+                self.setNeedsNavigationBarAppearanceUpdate()
+            } else {
+                self.configureASARequestBarButton()
+            }
+        }
     }
 
     private func addListBackground() {

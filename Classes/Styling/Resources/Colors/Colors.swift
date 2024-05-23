@@ -53,6 +53,7 @@ extension Colors {
         case verifiedIconInline = "ASA/verifiedIconInline"
         case verifiedIconSolidBackground = "ASA/verifiedSolidBackground"
         case verifiedIconSolidInline = "ASA/verifiedSolidInline"
+        case asaBarButton = "ASA/asaBarButton"
     }
 }
 
@@ -176,6 +177,7 @@ extension Colors {
         Color {
         case background = "Defaults/bg"
         case systemElements = "Defaults/systemElements"
+        case black = "Defaults/black"
     }
 }
 
