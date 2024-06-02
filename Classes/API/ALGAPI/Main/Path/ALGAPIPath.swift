@@ -27,6 +27,7 @@ enum ALGAPIPath: String {
     case availableSwapPoolAssets = "/dex-swap/available-assets/"
     case algoUSDHistory = "/price/algo-usd/history"
     case announcements = "/devices/%@/banners/"
+    case asaInboxSendSummary = "/asa-inboxes/summary/send-flow/%@/%@/"
     case assetDetail = "/assets/%@/"
     case assetRequest = "/asset-requests/"
     case assets = "/assets/"
