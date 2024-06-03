@@ -53,13 +53,19 @@ struct AccountListItemViewTheme:
         ]
         self.accessoryIconContentEdgeInsets = (8, 0)
     }
+    
+    mutating  func forceToDark() {
+        var theme = AccountPreviewPrimaryTitleViewTheme()
+        theme.forceToDark()
+        self.title = theme
+    }
 }
 
 fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
-    let primaryTitle: TextStyle
+    var primaryTitle: TextStyle
     let primaryTitleAccessory: ImageStyle
     let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
-    let secondaryTitle: TextStyle
+    var secondaryTitle: TextStyle
     let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -74,5 +80,16 @@ fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
             .textColor(Colors.Text.grayLighter)
         ]
         self.spacingBetweenPrimaryAndSecondaryTitles = 0
+    }
+    
+    mutating func forceToDark() {
+        self.primaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.mainDark)
+        ]
+        self.secondaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayDark)
+        ]
     }
 }

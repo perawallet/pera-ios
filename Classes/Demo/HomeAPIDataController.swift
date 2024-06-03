@@ -15,7 +15,8 @@
 //
 //   AccountsPortfolioAPIDataController.swift
 
-import Foundation
+import UIKit
+import MacaroonUtils
 
 final class HomeAPIDataController:
     HomeDataController,
@@ -27,9 +28,11 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
+    private let incommingASAsAPIDataController: IncommingASAsAPIDataController
 
     private var visibleAnnouncement: Announcement?
-
+    private var incommingASAsRequestList: IncommingASAsRequestList?
+    
     private var lastSnapshot: Snapshot?
 
     private let snapshotQueue = DispatchQueue(
@@ -37,18 +40,24 @@ final class HomeAPIDataController:
         qos: .userInitiated
     )
 
+    
+    private var asasLoadRepeater: Repeater?
+    
     init(
         sharedDataController: SharedDataController,
         session: Session,
-        announcementDataController: AnnouncementAPIDataController
+        announcementDataController: AnnouncementAPIDataController,
+        incommingASAsAPIDataController: IncommingASAsAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
+        self.incommingASAsAPIDataController = incommingASAsAPIDataController
     }
     
     deinit {
         sharedDataController.remove(self)
+        stopASAsLoadTimer()
     }
 
     subscript (address: String?) -> AccountHandle? {
@@ -62,6 +71,7 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
         announcementDataController.delegate = self
+        incommingASAsAPIDataController.delegate = self
     }
     
     func reload() {
@@ -83,6 +93,37 @@ extension HomeAPIDataController {
         }
 
         announcementDataController.hideAnnouncement(visibleAnnouncement)
+    }
+    
+    func fetchIncommingASAsRequests() {
+        asasLoadRepeater = Repeater(intervalInSeconds: 3.0) {
+            [weak self] in
+            guard let self else { return }
+
+            asyncMain { [weak self] in
+                guard let self else { return }
+                
+                let filteredAccounts = sharedDataController.accountCollection.filter {
+                    $0.value.isWatchAccount == false && $0.value.ledgerDetail == nil
+                }
+                let addresses = filteredAccounts.map({$0.value.address})
+//                incommingASAsAPIDataController.fetchRequests(
+//                    addresses: [
+//                        "5M5E33HNTA3BBPQII5F6RG27GP3TI4PSZPY5UBZD3DS32ZPPDZ2OEFVSWM",
+//                        "EVIY2PYYACKGGSL7TGNXOIGZ3U6M4FMOU4VQWS4IPZJTME3VYBOUSNEAKM",
+//                        "HAX7RUHFP2LVIAKEHQ4VMSGNIE3DSYO2WJGIFA36RFNTYNRV5J23IVB4PI"
+//                    ]
+//                )
+                incommingASAsAPIDataController.fetchRequests(addresses: addresses)
+            }
+        }
+        
+        asasLoadRepeater?.resume(immediately: true)
+    }
+    
+    private func stopASAsLoadTimer() {
+        asasLoadRepeater?.invalidate()
+        asasLoadRepeater = nil
     }
 }
 
@@ -212,6 +253,23 @@ extension HomeAPIDataController {
         }
     }
 
+    private func deliverAsasRequestsContentUpdate() {
+//        deliverAsasRequestsUpdate {
+//            [weak self] in
+//            guard let self = self else { return (nil, NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>()) }
+//
+//
+//            return (incommingASAsRequests, snapshot)
+//        }
+        
+        deliverAsasRequestsUpdate { [weak self] in
+//            guard let self else { return (nil as IncommingASAsRequestList?, Snapshot())}
+            guard let self = self else { return nil }
+            var snapshot = Snapshot()
+            return (incommingASAsRequestList, Snapshot())
+        }
+    }
+    
     private func deliverNoContentUpdates() {
         deliverUpdates {
             var snapshot = Snapshot()
@@ -238,6 +296,21 @@ extension HomeAPIDataController {
             self.publish(.didUpdate(updates))
         }
     }
+    
+    private func deliverAsasRequestsUpdate(
+        _ updates: @escaping () -> IncommingASAs?
+    ) {
+        snapshotQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            guard let updates = updates() else {
+                return
+            }
+
+            self.publish(.didUpdateIncommingASAsRequests(updates))
+        }
+    }
 }
 
 extension HomeAPIDataController {
@@ -260,6 +333,19 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         didFetch announcements: [Announcement]
     ) {
         self.visibleAnnouncement = announcements.first
+    }
+}
+
+extension HomeAPIDataController: IncommingASAsAPIDataControllerDelegate {
+    
+    func incommingASAsAPIDataController(_ dataController: IncommingASAsAPIDataController, didFetch incommingASAsRequestList: IncommingASAsRequestList) {
+        self.incommingASAsRequestList = incommingASAsRequestList
+        self.deliverAsasRequestsContentUpdate()
+    }
+    
+    func incommingASAsAPIDataController(_ dataController: IncommingASAsAPIDataController, didFailToFetchRequests error: String) {
+        // TODO:  Handle Error
+        print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 error: \(String(describing: error)) ⬅️")
     }
 }
 

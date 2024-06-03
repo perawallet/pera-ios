@@ -18,13 +18,13 @@ import UIKit
 import MacaroonUIKit
 
 final class IncomingASAAccountInboxListItemCell:
-    CollectionCell<IncomingAsaListItemView>,
+    CollectionCell<IncomingASAListItemView>,
     ViewModelBindable {
     override static var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
-    static let theme = IncomingAsaListItemTheme()
+    static let theme = IncomingASAListItemTheme()
 
     override init(
         frame: CGRect

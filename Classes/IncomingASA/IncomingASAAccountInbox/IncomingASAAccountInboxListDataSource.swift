@@ -18,9 +18,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataSource<IncomingAsaSection, IncomingAsaItem> {
-    lazy var handlers = Handlers()
-
+final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataSource<IncomingASASection, IncomingASAItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -61,13 +59,6 @@ final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataS
                 )
                 cell.bindData(item.viewModel)
                 return cell
-            case let .pendingCollectibleAsset(item):
-                let cell = collectionView.dequeue(
-                    PendingCollectibleAssetListItemCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item.viewModel)
-                return cell
             }
         }
 
@@ -76,22 +67,9 @@ final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataS
             AccountAssetListLoadingCell.self,
             IncomingASAAccountInboxListItemCell.self,
             CollectibleListItemCell.self,
-            PendingCollectibleAssetListItemCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)
         }
-    }
-}
-
-extension IncomingASAAccountInboxListDataSource: AddAssetItemViewDelegate {
-    func addAssetItemViewDidTapAddAsset(_ addAssetItemView: AddAssetItemView) {
-        handlers.didAddAsset?()
-    }
-}
-
-extension IncomingASAAccountInboxListDataSource {
-    struct Handlers {
-        var didAddAsset: EmptyHandler?
     }
 }

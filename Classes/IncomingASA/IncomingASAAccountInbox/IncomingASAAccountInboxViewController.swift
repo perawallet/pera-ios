@@ -23,8 +23,6 @@ import WalletConnectSwift
 
 final class IncomingASAAccountInboxViewController:
     BaseViewController,
-    SearchBarItemCellDelegate,
-    MacaroonForm.KeyboardControllerDataSource,
     NotificationObserver {
     var notificationObservations: [NSObjectProtocol] = []
 
@@ -55,22 +53,17 @@ final class IncomingASAAccountInboxViewController:
     }()
     private lazy var listBackgroundView = UIView()
 
-    private lazy var keyboardController = MacaroonForm.KeyboardController(
-        scrollView: listView,
-        screen: self
-    )
-
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
-    private var query: AccountAssetListQuery
+    private var query: IncommingASAsRequestDetailQuery
 
     private let dataController: IncomingASAAccountInboxDataController
 
     private let copyToClipboardController: CopyToClipboardController
 
     init(
-        query: AccountAssetListQuery,
+        query: IncommingASAsRequestDetailQuery,
         dataController: IncomingASAAccountInboxDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
@@ -80,47 +73,32 @@ final class IncomingASAAccountInboxViewController:
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
-
-        keyboardController.activate()
     }
 
     deinit {
-        keyboardController.deactivate()
-
         stopObservingNotifications()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "Asset Transfer Requests"
+        self.title = "incoming-asa-account-inbox-screen-title"
+            .localized
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
             switch event {
             case .didUpdate(let updates):
-                self.eventHandler?(.didUpdate(self.dataController.account))
+//                self.eventHandler?(.didUpdate(self.dataController.account))
 
                 switch updates.operation {
-                case .customize:
-                    self.listView.scrollToTop(animated: false)
                 case .refresh: break
                 }
-
                 self.listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
-                ) { [weak self] in
-                    guard let self else { return }
-
-//                    if updates.operation == .search {
-//                        self.keyboardController.scrollToEditingRect(
-//                            afterContentDidChange: true,
-//                            animated: false
-//                        )
-//                    }
-                }
+                )
             }
         }
         dataController.load(query: query)
@@ -139,18 +117,13 @@ final class IncomingASAAccountInboxViewController:
 
         startAnimatingLoadingIfNeededWhenViewDidAppear()
 
-        if !isViewFirstAppeared {
-            reloadIfNeededForPendingAssetRequests()
-        }
-
-        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
+//        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
 
     override func viewDidAppearAfterInteractiveDismiss() {
         super.viewDidAppearAfterInteractiveDismiss()
 
         startAnimatingLoadingIfNeededWhenViewDidAppear()
-        reloadIfNeededForPendingAssetRequests()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -177,32 +150,31 @@ final class IncomingASAAccountInboxViewController:
     }
     
     func reloadData() {
-        dataController.reload()
+//        dataController.reload()
     }
 
     func reloadData(_ filters: AssetFilterOptions?) {
-        query.update(withFilters: filters)
-        dataController.load(query: query)
+//        query.update(withFilters: filters)
+//        dataController.load(query: query)
     }
 
     func reloadData(_ order: AccountAssetSortingAlgorithm?) {
-        query.update(withSort: order)
-        dataController.load(query: query)
-    }
-
-    private func reloadIfNeededForPendingAssetRequests() {
-        dataController.reloadIfNeededForPendingAssetRequests()
+//        query.update(withSort: order)
+//        dataController.load(query: query)
     }
 }
 
 extension IncomingASAAccountInboxViewController {
-    // TODO:  Localize
     private func addBarButtons() {
         let infoBarButton = ALGBarButtonItem(kind: .info) {
             [unowned self] in
             let uiSheet = UISheet(
-                title: "Asset Transfer Requests".bodyLargeMedium(),
-                body: UISheetBodyTextProvider(text: "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.".bodyRegular())
+                title: "incoming-asa-account-inbox-screen-info-title"
+                    .localized
+                    .bodyLargeMedium(),
+                body: UISheetBodyTextProvider(text: "incoming-asa-account-inbox-screen-info-description-title"
+                    .localized
+                    .bodyRegular())
             )
 
             let closeAction = UISheetAction(
@@ -223,8 +195,7 @@ extension IncomingASAAccountInboxViewController {
     }
     
     private func bindNavigationItemTitle() {
-        // TODO:  Localize
-        title = "Asset Transfer Requests"
+        title = "incoming-asa-account-inbox-screen-title".localized
     }
 }
 
@@ -238,14 +209,11 @@ extension IncomingASAAccountInboxViewController {
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
-        updateListWhenViewDidLayoutSubviews()
-        updateListBackgroundWhenViewDidLayoutSubviews()
         updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
         updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
-        updateListBackgroundWhenListDidScroll()
         updateAccountActionsMenuActionWhenListDidScroll()
         updateSafeAreaWhenListDidScroll()
     }
@@ -264,25 +232,6 @@ extension IncomingASAAccountInboxViewController {
             $0.leading == 0
             $0.trailing == 0
             $0.bottom == 0
-        }
-    }
-
-    private func updateListBackgroundWhenListDidScroll() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
-    private func updateListBackgroundWhenViewDidLayoutSubviews() {
-        /// <note>
-        /// 250 is a number smaller than the total height of the total portfolio and the quick
-        /// actions menu cells, and big enough to cover the background area when the system
-        /// triggers auto-scrolling to the top because of the applying snapshot (The system just
-        /// does it if the user pulls down the list extending the bounds of the content even if
-        /// there isn't anything to update.)
-        let thresholdHeight: CGFloat = 250
-        let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
-
-        listBackgroundView.snp.updateConstraints {
-            $0.fitToHeight(max(preferredHeight, 0))
         }
     }
 
@@ -307,24 +256,11 @@ extension IncomingASAAccountInboxViewController {
         listView.delegate = self
     }
 
-    private func updateListWhenViewDidLayoutSubviews() {
-        if keyboardController.isKeyboardVisible {
-            return
-        }
-
-        let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
-        listView.setContentInset(bottom: bottom)
-    }
-
     private func updateSafeAreaWhenListDidScroll() {
         updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateSafeAreaWhenViewDidLayoutSubviews() {
-        if keyboardController.isKeyboardVisible {
-            return
-        }
-
         if !canAccessAccountActionsMenu() {
             additionalSafeAreaInsets.bottom = 0
             return
@@ -366,7 +302,7 @@ extension IncomingASAAccountInboxViewController {
     }
 
     private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = keyboardController.isKeyboardVisible || !canAccessAccountActionsMenu()
+        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
     }
 
     @objc
@@ -379,12 +315,13 @@ extension IncomingASAAccountInboxViewController {
             return false
         }
 
-        let additionalBottomPaddingForHeroBackground =
-            dataController.account.value.authorization.isWatch
-            ? WatchAccountQuickActionsCell.contextPaddings.bottom
-            : AccountQuickActionsCell.contextPaddings.bottom
-        let adjustedPositionY = positionY - additionalBottomPaddingForHeroBackground
+//        let additionalBottomPaddingForHeroBackground =
+//            dataController.account.value.authorization.isWatch
+//            ? WatchAccountQuickActionsCell.contextPaddings.bottom
+//            : AccountQuickActionsCell.contextPaddings.bottom
+//        let adjustedPositionY = positionY - additionalBottomPaddingForHeroBackground
 
+        let adjustedPositionY = positionY - AccountQuickActionsCell.contextPaddings.bottom
         let listHeight = listView.bounds.height
         let listContentHeight = listView.contentSize.height
 
@@ -497,80 +434,19 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
 
             switch itemIdentifier {
             case .asset(let item):
-                /// <todo>
-                /// Normally, we should handle account error or asset error here even if it is
-                /// impossible to have an error. Either we should refactor the flow, or we should
-                /// handle the errors.
-//                let screen = Screen.asaDetail(
-//                    account: dataController.account.value,
-//                    asset: item.asset
-//                )
-//                open(
-//                    screen,
-//                    by: .push
-//                )
-                
-                
-                let wcurl = WCURL.init(topic: "", bridgeURL: URL.init(string: "https://www.google.com/")!, key: "")
-                
-                let dap = WalletConnectSwift.Session.DAppInfo.init(peerId: "", peerMeta: WalletConnectSwift.Session.ClientMeta.init(name: "", description: "", icons: [], url: URL.init(string: "https://www.google.com/")!))
-                let session = WalletConnectSession(url: wcurl, dAppInfo: dap, walletInfo: nil)
-                let draft = WCSessionConnectionDraft(session: session)
-                
-                
-//                let screen = transitionToApprovalScreen.perform(
-//                    .incomingAsaApproval(draft: draft),
-//                    by: .presentWithoutNavigationController
-//                ) as? IncomingAsaApprovalScreen
-                
-//                let screen = Screen.incomingAsaApproval(
-//                    draft: draft
-//                )
-//                self.open(
-//                    screen,
-//                    by: .present
-//                )
-                
-                
-                
-//                self.open(
-//                    .incomingAsaApproval( draft: draft),
-//                    by: .customPresent(
-//                        presentationStyle: .fullScreen,
-//                        transitionStyle: nil,
-//                        transitioningDelegate: nil
-//                    )
-//                )
-
                 self.open(
-                    .incomingAsasDetail( draft: draft),
+                    .incomingASAsDetail( draft: item),
                     by: .customPresent(
                         presentationStyle: .fullScreen,
                         transitionStyle: nil,
                         transitioningDelegate: nil
                     )
-                )
-                
+                )                
                 /// NFT
             case .collectibleAsset(let item):
-                let screen = Screen.collectibleDetail(
-                    asset: item.asset,
-                    account: dataController.account.value,
-                    thumbnailImage: nil,
-                    quickAction: nil
-                ) { [weak self] event in
-                    guard let self = self else { return }
+                // TODO:  Handle NFT
+                break
 
-                    switch event {
-                    case .didOptOutAssetFromAccount: self.popScreen()
-                    case .didOptOutFromAssetWithQuickAction: break
-                    case .didOptInToAsset: break
-                    }
-                }
-                open(
-                    screen,
-                    by: .push
-                )
             default:
                 break
             }
@@ -666,44 +542,6 @@ extension IncomingASAAccountInboxViewController {
     }
 }
 
-
-/// <mark>
-/// SearchBarItemCellDelegate
-extension IncomingASAAccountInboxViewController {
-    func searchBarItemCellDidBeginEditing(
-        _ cell: SearchBarItemCell
-    ) {}
-
-    func searchBarItemCellDidEdit(
-        _ cell: SearchBarItemCell
-    ) {
-        /// <note>
-        /// First, the search input field will be scrolled to the top, then we will make adjustments
-        /// to the scroll state after the searched data is loaded.
-        keyboardController.scrollToEditingRect(
-            afterContentDidChange: false,
-            animated: true
-        )
-
-        query.keyword = cell.input
-        dataController.load(query: query)
-    }
-
-    func searchBarItemCellDidTapRightAccessory(
-        _ cell: SearchBarItemCell
-    ) {}
-
-    func searchBarItemCellDidReturn(
-        _ cell: SearchBarItemCell
-    ) {
-        cell.endEditing()
-    }
-
-    func searchBarItemCellDidEndEditing(
-        _ cell: SearchBarItemCell
-    ) {}
-}
-
 extension IncomingASAAccountInboxViewController {
     private func getAsset(
         at indexPath: IndexPath
@@ -712,11 +550,11 @@ extension IncomingASAAccountInboxViewController {
             return nil
         }
 
-        if case IncomingAsaItem.asset(let item) = itemIdentifier {
+        if case IncomingASAItem.asset(let item) = itemIdentifier {
             return item.asset
         }
 
-        if case IncomingAsaItem.collectibleAsset(let item) = itemIdentifier {
+        if case IncomingASAItem.collectibleAsset(let item) = itemIdentifier {
             return item.asset
         }
 
@@ -724,55 +562,8 @@ extension IncomingASAAccountInboxViewController {
     }
 }
 
-/// <mark>
-/// MacaroonForm.KeyboardControllerDataSource
-extension IncomingASAAccountInboxViewController {
-    func keyboardController(
-        _ keyboardController: MacaroonForm.KeyboardController,
-        editingRectIn view: UIView
-    ) -> CGRect? {
-        .zero
-//        return getEditingRectOfSearchInputField()
-    }
-
-    func bottomInsetOverKeyboardWhenKeyboardDidShow(
-        _ keyboardController: MacaroonForm.KeyboardController
-    ) -> LayoutMetric {
-        return 0
-    }
-
-    func bottomInsetUnderKeyboardWhenKeyboardDidShow(
-        _ keyboardController: MacaroonForm.KeyboardController
-    ) -> LayoutMetric {
-        return 0
-    }
-
-    func bottomInsetWhenKeyboardDidHide(
-        _ keyboardController: MacaroonForm.KeyboardController
-    ) -> LayoutMetric {
-        /// <note>
-        /// It doesn't scroll to the bottom during the transition to another screen. When the
-        /// screen is back, it will show the keyboard again anyway.
-        if isViewDisappearing {
-            return listView.contentInset.bottom
-        }
-
-        return 0
-    }
-}
-
 extension IncomingASAAccountInboxViewController {
     enum Event {
-        case didUpdate(AccountHandle)
-        case backUpAccount
-        case manageAssets(isWatchAccount: Bool)
-        case copyAddress
-        case showAddress
-        case addAsset
-        case buySell
-        case swap
-        case send
-        case more
         case transactionOption
     }
 }

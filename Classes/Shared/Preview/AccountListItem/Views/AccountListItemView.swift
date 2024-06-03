@@ -39,7 +39,6 @@ final class AccountListItemView:
         addIcon(theme)
         addContentAndAccessoryContext(theme)
         addAccessoryIcon(theme)
-        iconView.image = "icon-standard-account".uiImage
     }
 
     func customizeAppearance(
@@ -56,8 +55,8 @@ final class AccountListItemView:
         iconView.load(from: viewModel?.icon)
         iconBottomRightBadgeView.image = viewModel?.iconBottomRightBadge?.uiImage
         titleView.bindData(viewModel?.title)
-        primaryAccessoryView.editText = viewModel?.primaryAccessory
-        secondaryAccessoryView.editText = viewModel?.secondaryAccessory
+        primaryAccessoryView.editText = viewModel?.primaryAccessory // ¦38,69
+        secondaryAccessoryView.editText = viewModel?.secondaryAccessory // "$7,25"
         accessoryIconView.image = viewModel?.accessoryIcon
     }
 

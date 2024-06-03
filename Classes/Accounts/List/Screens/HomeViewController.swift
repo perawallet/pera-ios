@@ -127,6 +127,9 @@ final class HomeViewController:
     private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
+    private var asasRequestsCount: Int?
+    private var listWasScrolled = false
+    
     init(
         swapDataStore: SwapDataStore,
         dataController: HomeDataController,
@@ -181,6 +184,13 @@ final class HomeViewController:
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
                 }
+                
+            case .didUpdateIncommingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                if !listWasScrolled {
+                    self.configureASARequestBarButton()
+                }
+                print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 requestsCounts: \(String(describing: asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +))) ⬅️")
             }
         }
         dataController.load()
@@ -217,7 +227,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
-
+        dataController.fetchIncommingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
 
@@ -297,18 +307,17 @@ extension HomeViewController {
     }
     
     private func configureASARequestBarButton() {
-        // TODO:  get value from api
-        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaRequests("4")) { [weak self] in
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount ?? 0)) { [weak self] in
             guard let self = self else {
                 return
             }
-            if let account = selectedAccountHandle {
-                let dataController = IncomingASAAccountInboxAPIDataController(account: account, sharedDataController: self.sharedDataController)
+            if let asasRequestsCount, asasRequestsCount > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    self.open(.incomingAsa(dataController: dataController), by: .push)
+                    self.open(.incomingASA(address: "6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU", requestsCount: asasRequestsCount), by: .push)
                 }
             }
+
         }
 
         leftBarButtonItems = [notificationBarButtonItem]
@@ -336,21 +345,22 @@ extension HomeViewController {
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
         navigationView.animateTitleVisible(!headerVisible) { isVisible in
             if isVisible {
-                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaRequestsSmall) { [weak self] in
+                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(0)) { [weak self] in
                     guard let self = self else {
                         return
                     }
-                    if let account = selectedAccountHandle {
-                        let dataController = IncomingASAAccountInboxAPIDataController(account: account, sharedDataController: self.sharedDataController)
+                    if let asasRequestsCount, asasRequestsCount > 0 {
                         DispatchQueue.main.async { [weak self] in
                             guard let self else { return }
-                            self.open(.incomingAsa(dataController: dataController), by: .push)
+                            self.open(.incomingASA(address: "6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU", requestsCount: asasRequestsCount), by: .push)
                         }
                     }
                 }
                 self.leftBarButtonItems = [notificationBarButtonItem]
                 self.setNeedsNavigationBarAppearanceUpdate()
+                self.listWasScrolled = true
             } else {
+                self.listWasScrolled = false
                 self.configureASARequestBarButton()
             }
         }

@@ -1728,3 +1728,15 @@ FAQ section.";
 
 /// MARK: Back Up Account Selection
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
+
+/// MARK: Incoming ASA Requests
+"incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
+"incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
+"incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
+"incoming-asa-account- inbox-screen-info-description-title" = "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.";
+"incoming-asa-detail-screen-right-button-title" = "Clime";
+"incoming-asa-detail-screen-left-button-title" = "Reject";
+"incoming-asa-detail-screen-info-title" = "Rejecting Requests";
+"incoming-asa-detail-screen-description" = "If you reject this request, the incoming asset will be permanently removed from circulation. It will not be returned to the sender. Instead, you will receive %@ ALGOs upon completion of this irreversible process. Please note that once rejected, the asset cannot be recovered.";
+"incoming-asa-detail-screen-amount-title" = "Amount";
+"incoming-asa-detail-screen-senders-title" = "Senders";

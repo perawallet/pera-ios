@@ -33,6 +33,10 @@ extension String {
         return String(prefix(6)) + "..." + String(suffix(6))
     }
 
+    var shortAddressDisplayWith4Characters: String {
+        return String(prefix(4)) + "..." + String(suffix(4))
+    }
+
     func trimmed() -> String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }

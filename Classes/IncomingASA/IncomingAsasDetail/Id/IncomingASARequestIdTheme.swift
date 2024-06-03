@@ -27,8 +27,15 @@ struct IncomingASARequestIdTheme:
     let spacingBetweenDividerTitleAndLine: LayoutMetric
     let action: ButtonStyle
     let id: TextStyle
+    let idLeftInset: LayoutMetric
+    let idSeperatorPadding: LayoutMetric
+    let idSeperatorTopInset: LayoutMetric
     var primaryActionContentEdgeInsets: LayoutPaddings
-    
+    let copyActionRightInset: LayoutMetric
+    let copyActionBottomInset: LayoutMetric
+    let copyActionHeight: LayoutMetric
+    let copyActionCorner: LayoutMetric
+
     init(_ family: LayoutFamily) {
         self.dividerLine = [ .backgroundColor(Colors.Layer.grayLighter) ]
         self.dividerLineMinWidth = 40
@@ -52,5 +59,12 @@ struct IncomingASARequestIdTheme:
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineText())
         ]
+        self.idLeftInset = 20
+        self.idSeperatorPadding = 20
+        self.idSeperatorTopInset = 16
+        self.copyActionRightInset = 20
+        self.copyActionBottomInset = 53
+        self.copyActionHeight = 32
+        self.copyActionCorner = 15
     }
 }

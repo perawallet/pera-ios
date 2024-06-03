@@ -70,7 +70,7 @@ final class HomePortfolioNavigationView: View {
 
     func animateTitleVisible(
         _ visible: Bool,
-        _ complition: @escaping (Bool) -> ()?
+        _ completion: @escaping (Bool) -> ()?
     ) {
         if visible == isVisible {
             return
@@ -86,10 +86,10 @@ final class HomePortfolioNavigationView: View {
 
         if isVisible {
             showTitleAnimated()
-            complition(true)
+            completion(true)
         } else {
             hideTitleAnimated()
-            complition(false)
+            completion(false)
         }
     }
 

@@ -20,10 +20,11 @@ import MacaroonUtils
 final class IncomingASAAccountInboxAPIDataController:
     IncomingASAAccountInboxDataController,
     SharedDataControllerObserver {
-    var eventHandler: ((IncomingAsaListDataControllerEvent) -> Void)?
+    var eventHandler: ((IncomingASAListDataControllerEvent) -> Void)?
     
-    private(set) var account: AccountHandle
-
+    private(set)var requestsCount: Int
+    private(set)var address: String
+    
     private lazy var asyncLoadingQueue = createAsyncLoadingQueue()
 
     private lazy var currencyFormatter = createCurrencyFormatter()
@@ -31,88 +32,55 @@ final class IncomingASAAccountInboxAPIDataController:
     private lazy var minBalanceCalculator = createMinBalanceCalculator()
 
     private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
-
-    private var nextQuery: AccountAssetListQuery?
-    private var lastQuery: AccountAssetListQuery?
+    
+    private var nextQuery: IncommingASAsRequestDetailQuery?
+    private var lastQuery: IncommingASAsRequestDetailQuery?
     private var lastSnapshot: Snapshot?
 
-    private var canDeliverUpdatesForAssets = false
-
     private let sharedDataController: SharedDataController
+    private let api: ALGAPI
+
+    private var nextCursor: String?
+    private var incommingASAsRequestDetail: IncommingASAsRequestDetailList?
 
     init(
-        account: AccountHandle,
-        sharedDataController: SharedDataController
+        address: String,
+        requestsCount: Int,
+        sharedDataController: SharedDataController,
+        api: ALGAPI
     ) {
-        self.account = account
+        self.address = address
+        self.requestsCount = requestsCount
         self.sharedDataController = sharedDataController
+        self.api = api
     }
 
     deinit {
-        cancelOngoingSearching()
         sharedDataController.remove(self)
     }
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    func load(query: AccountAssetListQuery?) {
-        nextQuery = query
-
-        if canDeliverUpdatesForAssets {
-            loadNext(query: query)
-        } else {
-            loadFirst(query: query)
-        }
-    }
-
-    private func loadNext(query: AccountAssetListQuery?) {
-        if query == lastQuery {
-            nextQuery = nil
-            return
-        }
-
-        if query?.keyword == lastQuery?.keyword {
-            customize(query: query)
-        }
-    }
-
-    private func customize(query: AccountAssetListQuery?) {
-        cancelOngoingSearching()
-        deliverUpdatesForLoading(for: .customize)
-
-        let task = AsyncTask {
-            [weak self] completionBlock in
+    func load(query: IncommingASAsRequestDetailQuery) {
+        api.fetchIncommingASAsRequest(address, with: query) {
+            [weak self] response in
             guard let self else { return }
-
-            defer {
-                completionBlock()
+            
+            switch response {
+            case .success(let requestList):
+                self.incommingASAsRequestDetail = requestList
+                reload()
+            case .failure(let apiError, _):
+                // TODO:  Handle Error Delegate
+                break
             }
-
-            self.deliverUpdatesForContent(
-                when: { query == self.nextQuery },
-                query: query,
-                for: .customize
-            )
         }
-        asyncLoadingQueue.add(task)
-        asyncLoadingQueue.resume()
-    }
-
-    private func loadFirst(query: AccountAssetListQuery?) {
-        deliverUpdatesForLoading(for: .customize)
+        
+        nextQuery = query
 
         lastQuery = query
         nextQuery = nil
         sharedDataController.add(self)
-    }
-
-    func reloadIfNeededForPendingAssetRequests() {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-
-        if monitor.hasAnyPendingOptInRequest(for: account.value) ||
-           monitor.hasAnyPendingOptOutRequest(for: account.value) {
-            reload()
-        }
     }
 
     func reload() {
@@ -132,14 +100,6 @@ extension IncomingASAAccountInboxAPIDataController {
         }
         asyncLoadingQueue.add(task)
     }
-
-    private func cancelOngoingSearching() {
-        cancelOngoingLoading()
-    }
-
-    private func cancelOngoingLoading() {
-        asyncLoadingQueue.cancel()
-    }
 }
 
 extension IncomingASAAccountInboxAPIDataController {
@@ -148,25 +108,12 @@ extension IncomingASAAccountInboxAPIDataController {
         didPublish event: SharedDataControllerEvent
     ) {
         if case .didFinishRunning = event {
-            canDeliverUpdatesForAssets = true
-
-            if let upToDateAccount = sharedDataController.accountCollection[account.value.address] {
-                account = upToDateAccount
-                reload()
-            }
+            reload()
         }
     }
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    private func deliverUpdatesForLoading(for operation: Updates.Operation) {
-//        if lastSnapshot?.itemIdentifiers(inSection: .assets).last == .assetLoading {
-//            return
-//        }
-//
-//        let updates = makeUpdatesForLoading(for: operation)
-//        publish(updates: updates)
-    }
 
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
@@ -176,7 +123,7 @@ extension IncomingASAAccountInboxAPIDataController {
 
     private func deliverUpdatesForContent(
         when condition: () -> Bool,
-        query: AccountAssetListQuery?,
+        query: IncommingASAsRequestDetailQuery?,
         for operation: Updates.Operation
     ) {
         let updates = makeUpdatesForContent(
@@ -192,7 +139,7 @@ extension IncomingASAAccountInboxAPIDataController {
     }
 
     private func makeUpdatesForContent(
-        query: AccountAssetListQuery?,
+        query: IncommingASAsRequestDetailQuery?,
         for operation: Updates.Operation
     ) -> Updates {
         var snapshot = Snapshot()
@@ -217,29 +164,16 @@ extension IncomingASAAccountInboxAPIDataController {
     }
 
     private func appendSectionsForAssets(
-        query: AccountAssetListQuery?,
+        query: IncommingASAsRequestDetailQuery?,
         into snapshot: inout Snapshot
     ) {
-        let assetItems = makeItemsForPendingAssetRequests() + makeItemsForAssets(query: query)
-
+        let assetItems = makeItemsForAssets(assets: incommingASAsRequestDetail?.results ?? [])
+        
         let items = assetItems
         snapshot.appendSections([ .assets ])
         snapshot.appendItems(
             items,
             toSection: .assets
-        )
-
-        if assetItems.isEmpty {
-            appendSectionsForNotFound(into: &snapshot)
-        }
-    }
-
-    private func appendSectionsForNotFound(into snapshot: inout Snapshot) {
-        let items = makeItemsForNotFound()
-        snapshot.appendSections([.empty])
-        snapshot.appendItems(
-            items,
-            toSection: .empty
         )
     }
 }
@@ -247,208 +181,62 @@ extension IncomingASAAccountInboxAPIDataController {
 extension IncomingASAAccountInboxAPIDataController {
 
     
-    private func makeItemForTitle() -> [IncomingAsaItem] {
-        let viewModel = IncomingASAAccountInboxHeaderTitleCellViewModel()
+    private func makeItemForTitle() -> [IncomingASAItem] {
+        let viewModel = IncomingASAAccountInboxHeaderTitleCellViewModel(count: requestsCount)
         return [.title(viewModel)]
     }
 
-    private func makeItemsForPendingAssetRequests() -> [IncomingAsaItem] {
-        return
-            makeItemsForPendingAssetOptInRequests() +
-            makeItemsForPendingAssetOptOutRequests() +
-            makeItemsForPendingAssetSendRequests()
-    }
-
-    private func makeItemsForPendingAssetOptInRequests() -> [IncomingAsaItem] {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-        let updates = monitor.filterPendingOptInAssetUpdates(for: account.value)
-        return updates.map {
-            let update = $0.value
-            if update.isCollectibleAsset {
-                return makeItemForPendingNFTAssetOptInRequest(update)
-            } else {
-                return makeItemForPendingNonNFTAssetOptInRequest(update)
-            }
-        }
-    }
-
-    private func makeItemForPendingNFTAssetOptInRequest(
-        _ update: OptInBlockchainUpdate
-    ) -> IncomingAsaItem {
-//        let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
-//        return .pendingCollectibleAsset(item)
-        .empty(.init(hasBody: false))
-    }
-
-    private func makeItemForPendingNonNFTAssetOptInRequest(
-        _ update: OptInBlockchainUpdate
-    ) -> IncomingAsaItem {
-//        let item = AccountAssetsPendingAssetListItem(update: update)
-//        return .pendingAsset(item)
-        .empty(.init(hasBody: false))
-    }
-
-    private func makeItemsForPendingAssetOptOutRequests() -> [IncomingAsaItem] {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-        let updates = monitor.filterPendingOptOutAssetUpdates(for: account.value)
-        return updates.map {
-            let update = $0.value
-            if update.isCollectibleAsset {
-                return makeItemForPendingNFTAssetOptOutRequest(update)
-            } else {
-                return makeItemForPendingNonNFTAssetOptOutRequest(update)
-            }
-        }
-    }
-
-    private func makeItemForPendingNFTAssetOptOutRequest(
-        _ update: OptOutBlockchainUpdate
-    ) -> IncomingAsaItem {
-//        let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
-//        return .pendingCollectibleAsset(item)
-        .empty(.init(hasBody: false))
-    }
-
-    private func makeItemForPendingNonNFTAssetOptOutRequest(
-        _ update: OptOutBlockchainUpdate
-    ) -> IncomingAsaItem {
-//        let item = AccountAssetsPendingAssetListItem(update: update)
-//        return .pendingAsset(item)
-        .empty(.init(hasBody: false))
-    }
-
-    private func makeItemsForPendingAssetSendRequests() -> [IncomingAsaItem] {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-        let updates = monitor.filterPendingSendPureCollectibleAssetUpdates(for: account.value)
-        return updates.map {
-            let update = $0.value
-            return makeItemForPendingNFTAssetSendRequest(update)
-        }
-    }
-
-    private func makeItemForPendingNFTAssetSendRequest(
-        _ update: SendPureCollectibleAssetBlockchainUpdate
-    ) -> IncomingAsaItem {
-//        let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
-//        return .pendingCollectibleAsset(item)
-        .empty(.init(hasBody: false))
-    }
-
-    private func makeItemsForAssets(query: AccountAssetListQuery?) -> [IncomingAsaItem] {
-        let showsOnlyNonNFTAssets = query?.showsOnlyNonNFTAssets ?? false
-        let assets = showsOnlyNonNFTAssets ? account.value.standardAssets : account.value.allAssets
-
-        var assetItems: [IncomingAsaItem] = assets.someArray.compactMap {
-            asset in
-            if let query, !query.matches(asset) {
-                return nil
-            }
-
-            /// <note>
-            /// Pending asset requests has its own item different from the asset item.
-            if hasAnyPendingAssetRequest(asset) {
-                return nil
-            }
-
-            return makeItemForAsset(asset)
+    private func makeItemsForAssets(assets: [IncommingASAsRequestDetailResult]?) -> [IncomingASAItem] {
+        let standardAssets = assets?.compactMap { item in
+            item.asset.map { StandardAsset(decoration: $0) }
         }
 
-        if let query, query.matchesByKeyword(account.value.algo) {
-            let item = makeItemForAlgoAsset(account.value.algo)
-            assetItems.insert(
-                item,
-                at: 0
-            )
+        var assetItems: [IncomingASAItem] = standardAssets.someArray.enumerated().compactMap {
+            (index,asset) in
+            return makeItemForAsset(asset, senders: assets?[index].senders)
         }
-
-        guard let sortingAlgorithm = query?.sortingAlgorithm else {
-            return assetItems
-        }
-
-        return assetItems.sorted {
-            return sortingAlgorithm.getFormula(
-                asset: $0.asset!,
-                otherAsset: $1.asset!
-            )
-        }
+        return assetItems
     }
 
-    private func makeItemForAsset(_ asset: Asset) -> IncomingAsaItem? {
+    private func makeItemForAsset(_ asset: Asset, senders: Senders?) -> IncomingASAItem? {
         switch asset {
-        case let nonNFTAsset as StandardAsset: return makeItemForNonNFTAsset(nonNFTAsset)
-        case let nftAsset as CollectibleAsset: return makeItemForNFTAsset(nftAsset)
-        case let algoAsset as Algo: return makeItemForAlgoAsset(algoAsset)
+        case let nonNFTAsset as StandardAsset: return makeItemForNonNFTAsset(nonNFTAsset, senders: senders)
+        case let nftAsset as CollectibleAsset: return makeItemForNFTAsset(nftAsset, senders: senders)
+        case let algoAsset as Algo: return makeItemForAlgoAsset(algoAsset, senders: senders)
         default: return nil
         }
     }
 
-    private func makeItemForAlgoAsset(_ algoAsset: Algo) -> IncomingAsaItem {
+    private func makeItemForAlgoAsset(_ algoAsset: Algo, senders: Senders?) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
             asset: algoAsset,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let item = IncomingAsaAssetListItem(item: assetItem)
+        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address)
         return .asset(item)
     }
 
-    private func makeItemForNonNFTAsset(_ asset: StandardAsset) -> IncomingAsaItem {
+    private func makeItemForNonNFTAsset(_ asset: StandardAsset, senders: Senders?) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
             asset: asset,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let item = IncomingAsaAssetListItem(item: assetItem)
+        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address)
         return .asset(item)
     }
 
-    private func makeItemForNFTAsset(_ asset: CollectibleAsset) -> IncomingAsaItem {
+    private func makeItemForNFTAsset(_ asset: CollectibleAsset, senders: Senders?) -> IncomingASAItem {
         let collectibleAssetItem = CollectibleAssetItem(
-            account: account.value,
+            account: Account(),
             asset: asset,
             amountFormatter: assetAmountFormatter
         )
-        let item = IncomingAsaCollectibleAssetListItem(item: collectibleAssetItem)
+        let item = IncomingASACollectibleAssetListItem(item: collectibleAssetItem, senders: senders)
         return .collectibleAsset(item)
-    }
-
-    private func makeItemsForNotFound() -> [IncomingAsaItem] {
-        let viewModel = AssetListSearchNoContentViewModel(hasBody: true)
-        return [ .empty(viewModel) ]
-    }
-}
-
-extension IncomingASAAccountInboxAPIDataController {
-    private func hasAnyPendingAssetRequest(_ asset: Asset) -> Bool {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-
-        let hasOptInRequest = monitor.hasPendingOptInRequest(
-            assetID: asset.id,
-            for: account.value
-        )
-        if hasOptInRequest {
-            return true
-        }
-
-        let hasOptOutRequest = monitor.hasPendingOptOutRequest(
-            assetID: asset.id,
-            for: account.value
-        )
-        if hasOptOutRequest {
-            return true
-        }
-
-        let hasSendRequest = monitor.hasPendingSendPureCollectibleAssetRequest(
-            assetID: asset.id,
-            for: account.value
-        )
-        if hasSendRequest {
-            return true
-        }
-
-        return false
     }
 }
 
@@ -458,7 +246,7 @@ extension IncomingASAAccountInboxAPIDataController {
         publish(event: .didUpdate(updates))
     }
 
-    private func publish(event: IncomingAsaListDataControllerEvent) {
+    private func publish(event: IncomingASAListDataControllerEvent) {
         asyncMain { [weak self] in
             guard let self = self else { return }
             self.eventHandler?(event)
@@ -478,10 +266,6 @@ extension IncomingASAAccountInboxAPIDataController {
         )
     }
 
-    private func createSearchThrottler() -> Throttler {
-        return .init(intervalInSeconds: 0.4)
-    }
-
     private func createCurrencyFormatter() -> CurrencyFormatter {
         return .init()
     }
@@ -496,6 +280,6 @@ extension IncomingASAAccountInboxAPIDataController {
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    typealias Updates = IncomingAsaListUpdates
-    typealias Snapshot = IncomingAsaListUpdates.Snapshot
+    typealias Updates = IncomingASAListUpdates
+    typealias Snapshot = IncomingASAListUpdates.Snapshot
 }

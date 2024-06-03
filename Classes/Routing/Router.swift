@@ -1096,10 +1096,17 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-        case let .incomingAsa(dataController):
+        case let .incomingASA(address, requestsCount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
+            
+            let dataController = IncomingASAAccountInboxAPIDataController(
+                address: address,
+                requestsCount: requestsCount,
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api)
+
             viewController = IncomingASAAccountInboxViewController(
                 query: .init(),
                 dataController: dataController,
@@ -1107,8 +1114,8 @@ final class Router:
                 configuration: configuration
             )
             
-        case let .incomingAsasDetail(draft):
-            let screen = IncomingAsasDetailScreen(
+        case let .incomingASAsDetail(draft):
+            let screen = IncomingASAsDetailScreen(
                 draft: draft,
                 configuration: configuration
             )

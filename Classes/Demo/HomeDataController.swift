@@ -21,7 +21,8 @@ import UIKit
 protocol HomeDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>
     typealias Updates = (totalPortfolioItem: TotalPortfolioItem?, snapshot: Snapshot)
-    
+    typealias IncommingASAs = (incommingASAsRequestList: IncommingASAsRequestList?, snapshot: Snapshot)
+
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
     
     subscript (address: String?) -> AccountHandle? { get }
@@ -30,6 +31,7 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func hideAnnouncement()
+    func fetchIncommingASAsRequests()
 }
 
 enum HomeSectionIdentifier:
@@ -67,10 +69,12 @@ enum HomeAccountItemIdentifier: Hashable {
 
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
+    case didUpdateIncommingASAsRequests(HomeDataController.IncommingASAs)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
+        case .didUpdateIncommingASAsRequests(let incommingASAsRequests): return incommingASAsRequests.snapshot
         }
     }
 }

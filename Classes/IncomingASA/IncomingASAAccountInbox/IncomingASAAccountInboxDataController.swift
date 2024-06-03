@@ -18,16 +18,16 @@ import Foundation
 import UIKit
 
 protocol IncomingASAAccountInboxDataController: AnyObject {
-    var eventHandler: ((IncomingAsaListDataControllerEvent) -> Void)? { get set }
+    var eventHandler: ((IncomingASAListDataControllerEvent) -> Void)? { get set }
 
-    var account: AccountHandle { get }
-
-    func load(query: AccountAssetListQuery?)
+    var requestsCount: Int { get }
+    var address: String { get }
+    
+    func load(query: IncommingASAsRequestDetailQuery)
     func reload()
-    func reloadIfNeededForPendingAssetRequests()
 }
 
-enum IncomingAsaSection:
+enum IncomingASASection:
     Int,
     Hashable {
     case title
@@ -35,16 +35,15 @@ enum IncomingAsaSection:
     case empty
 }
 
-enum IncomingAsaItem: Hashable {
+enum IncomingASAItem: Hashable {
     case title(IncomingASAAccountInboxHeaderTitleCellViewModel)
 //    case assetLoading
-    case asset(IncomingAsaAssetListItem)
-    case collectibleAsset(IncomingAsaCollectibleAssetListItem)
-    case pendingCollectibleAsset(AccountAssetsPendingCollectibleAssetListItem)
+    case asset(IncomingASAListItem)
+    case collectibleAsset(IncomingASACollectibleAssetListItem)
     case empty(AssetListSearchNoContentViewModel)
 }
 
-extension IncomingAsaItem {
+extension IncomingASAItem {
     var asset: Asset? {
         switch self {
         case .asset(let item): return item.asset
@@ -54,13 +53,17 @@ extension IncomingAsaItem {
     }
 }
 
-struct IncomingAsaAssetListItem: Hashable {
+struct IncomingASAListItem: Hashable {
     let asset: Asset
-    let viewModel: IncomingAsaAssetListItemViewModel
-
-    init(item: AssetItem) {
+    let senders: Senders?
+    let viewModel: IncomingASAAssetListItemViewModel
+    let accountAddress: String?
+    
+    init(item: AssetItem, senders: Senders?, accountAddress: String?) {
         self.asset = item.asset
-        self.viewModel = IncomingAsaAssetListItemViewModel(item)
+        self.senders = senders
+        self.viewModel = IncomingASAAssetListItemViewModel(item, senders: senders)
+        self.accountAddress = accountAddress
     }
 
     func hash(into hasher: inout Hasher) {
@@ -72,8 +75,8 @@ struct IncomingAsaAssetListItem: Hashable {
     }
 
     static func == (
-        lhs: IncomingAsaAssetListItem,
-        rhs: IncomingAsaAssetListItem
+        lhs: IncomingASAListItem,
+        rhs: IncomingASAListItem
     ) -> Bool {
         return
             lhs.asset.id == rhs.asset.id &&
@@ -84,12 +87,14 @@ struct IncomingAsaAssetListItem: Hashable {
     }
 }
 
-struct IncomingAsaCollectibleAssetListItem: Hashable {
+struct IncomingASACollectibleAssetListItem: Hashable {
     let asset: CollectibleAsset
+    let senders: Senders?
     let viewModel: CollectibleListItemViewModel
 
-    init(item: CollectibleAssetItem) {
+    init(item: CollectibleAssetItem, senders: Senders?) {
         self.asset = item.asset
+        self.senders = senders
         self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
@@ -101,8 +106,8 @@ struct IncomingAsaCollectibleAssetListItem: Hashable {
     }
 
     static func == (
-        lhs: IncomingAsaCollectibleAssetListItem,
-        rhs: IncomingAsaCollectibleAssetListItem
+        lhs: IncomingASACollectibleAssetListItem,
+        rhs: IncomingASACollectibleAssetListItem
     ) -> Bool {
         return
             lhs.asset.id == rhs.asset.id &&
@@ -112,83 +117,23 @@ struct IncomingAsaCollectibleAssetListItem: Hashable {
     }
 }
 
-struct IncomingAsaPendingCollectibleAssetListItem: Hashable {
-    let viewModel: CollectibleListItemViewModel
-    
-    private let assetID: AssetID
-    
-    init(update: OptInBlockchainUpdate) {
-        self.assetID = update.assetID
-        self.viewModel = CollectibleListItemViewModel(update: update)
-    }
-    
-    init(update: OptOutBlockchainUpdate) {
-        self.assetID = update.assetID
-        self.viewModel = CollectibleListItemViewModel(update: update)
-    }
-    
-    init(update: SendPureCollectibleAssetBlockchainUpdate) {
-        self.assetID = update.assetID
-        self.viewModel = CollectibleListItemViewModel(update: update)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(assetID)
-    }
-
-    static func == (
-        lhs: IncomingAsaPendingCollectibleAssetListItem,
-        rhs: IncomingAsaPendingCollectibleAssetListItem
-    ) -> Bool {
-        return lhs.assetID == rhs.assetID
-    }
+enum IncomingASAListDataControllerEvent {
+    case didUpdate(IncomingASAListUpdates)
 }
 
-struct IncomingAsaPendingAssetListItem: Hashable {
-    let assetID: AssetID
-    let viewModel: AssetListItemViewModel
-
-    init(update: OptInBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = AssetListItemViewModel(update: update)
-   }
-
-    init(update: OptOutBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = AssetListItemViewModel(update: update)
-   }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(assetID)
-    }
-
-    static func == (
-        lhs: IncomingAsaPendingAssetListItem,
-        rhs: IncomingAsaPendingAssetListItem
-    ) -> Bool {
-        return lhs.assetID == rhs.assetID
-    }
-}
-
-enum IncomingAsaListDataControllerEvent {
-    case didUpdate(IncomingAsaListUpdates)
-}
-
-struct IncomingAsaListUpdates {
+struct IncomingASAListUpdates {
     let snapshot: Snapshot
     let operation: Operation
 }
 
-extension IncomingAsaListUpdates {
+extension IncomingASAListUpdates {
     enum Operation {
-        /// Load/Filter/Sort
-        case customize
         /// Reload by the last query
         case refresh
     }
 }
 
-extension IncomingAsaListUpdates {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<IncomingAsaSection, IncomingAsaItem>
+extension IncomingASAListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<IncomingASASection, IncomingASAItem>
     typealias Completion = () -> Void
 }

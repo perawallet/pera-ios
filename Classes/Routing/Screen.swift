@@ -167,10 +167,12 @@ indirect enum Screen {
         wcSession: WCSessionDraft
     )
     case jsonDisplay(jsonData: Data, title: String)
-    case incomingAsa(
-        dataController: IncomingASAAccountInboxDataController
+    case incomingASA(
+        address: String,
+        requestsCount: Int
     )
-    case incomingAsasDetail(draft: WCSessionConnectionDraft)
+
+    case incomingASAsDetail(draft: IncomingASAListItem)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
         dataController: SortAccountListDataController,

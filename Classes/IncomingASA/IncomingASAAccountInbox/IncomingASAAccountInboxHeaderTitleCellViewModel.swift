@@ -24,21 +24,21 @@ struct IncomingASAAccountInboxHeaderTitleCellViewModel:
     private(set) var title: EditText?
     private(set) var titleStyle: TextStyle?
 
-    init() {
-        bind()
+    init(count: Int) {
+        bind(count: count)
     }
 }
 
 extension IncomingASAAccountInboxHeaderTitleCellViewModel {
-    mutating func bind() {
-        bindTitle()
+    mutating func bind(count: Int) {
+        bindTitle(count: count)
         bindTitleStyle()
     }
-    // TODO:  Localize
-    mutating func bindTitle() {
+
+    mutating func bindTitle(count: Int) {
         title = .attributedString(
-            "You have 6 asset transfer requests"
-//                .localized
+            "incoming-asa-account-inbox-header-title-cell"
+                .localized(params: "\(count)")
                 .footnoteRegular()
         )
     }

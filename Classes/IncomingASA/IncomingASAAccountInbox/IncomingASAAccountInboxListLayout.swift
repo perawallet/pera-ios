@@ -18,8 +18,6 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-/// <todo>
-/// Refactor. See `HomeListLayout`
 final class IncomingASAAccountInboxListLayout: NSObject {
     lazy var handlers = Handlers()
     
@@ -85,13 +83,6 @@ extension IncomingASAAccountInboxListLayout {
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForCollectibleAssetCellItem: item.viewModel,
-                atSection: indexPath.section
-            )
-        case let .pendingCollectibleAsset(item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForPendingCollectibleAssetCellItem: item.viewModel,
                 atSection: indexPath.section
             )
         case .empty(let item):
@@ -163,7 +154,7 @@ extension IncomingASAAccountInboxListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: IncomingAsaListItemViewModel,
+        sizeForAssetCellItem item: IncomingASAListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = IncomingASAAccountInboxListItemCell.reuseIdentifier
