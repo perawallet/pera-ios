@@ -30,7 +30,7 @@ struct IncomingASADetailHeaderTheme: StyleSheet, LayoutSheet {
     let dividerLeadingInset: LayoutMetric
     let dividerTopInset: LayoutMetric
     let dividerHeight: LayoutMetric
-    let assetItem: IncomingASAListItemViewTheme
+    let assetItem: IncomingASAItemViewTheme
     let infoIconSize: LayoutSize
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
@@ -49,7 +49,7 @@ struct IncomingASADetailHeaderTheme: StyleSheet, LayoutSheet {
         self.dividerLeadingInset = 48
         self.dividerTopInset = 20
         self.dividerHeight = 1
-        self.assetItem = IncomingASADetailHeaderAssetTheme()
+        self.assetItem = IncomingASAItemViewTheme()
         self.infoIconSize = (24, 24)
         self.horizontalInset = 16
         self.verticalInset = 16

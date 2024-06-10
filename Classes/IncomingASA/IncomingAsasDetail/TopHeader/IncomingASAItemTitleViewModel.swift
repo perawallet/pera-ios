@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncominAsaTitleViewModel.swift
+//   IncomingASAItemTitleViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol IncominASATitleViewModel: ViewModel {
+protocol IncomingASAItemTitleViewModel: ViewModel {
     var primaryTitle: TextProvider? { get }
     var primaryTitleAccessory: Image?  { get }
     var secondaryTitle: TextProvider? { get }
     var secondSecondaryTitle: TextProvider? { get }
 }
 
-extension IncominASATitleViewModel where Self: Hashable {
+extension IncomingASAItemTitleViewModel where Self: Hashable {
     func hash(
         into hasher: inout Hasher
     ) {

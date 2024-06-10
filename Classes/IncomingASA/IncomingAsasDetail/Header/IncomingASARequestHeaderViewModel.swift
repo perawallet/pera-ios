@@ -31,16 +31,66 @@ struct IncomingASARequestHeaderViewModel: ViewModel {
 extension IncomingASARequestHeaderViewModel {
     
     private mutating func bindTitle(_ draft: IncomingASAListItem) {
-        let aTitle =
-        draft.asset.amountWithFraction
-            .stringValue.titleMedium(alignment: .center)
-        title = aTitle
+        let amount = draft.asset.total ?? 0
+        
+        
+        var currencyFormatter = CurrencyFormatter()
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let amountText = currencyFormatter.format(amount.toAlgos)
+
+        title = amountText.someString
+            .titleMedium(alignment: .center)
     }
 
     private mutating func bindSubtitle(_ draft: IncomingASAListItem) {
-        let aTitle = 
+//        let value = draft.asset.usdValue
+//        
+//        
+//        var currencyFormatter = CurrencyFormatter()
+//
+//        currencyFormatter.formattingContext = .standalone()
+//        currencyFormatter.currency = AlgoLocalCurrency()
+//
+//        let amountText = currencyFormatter.format(usdValue.toAlgos)
+//        
+//        CurrencyProvider()
+//        guard let amountUSDValue = value,
+//              let fiatCurrencyValue = currency.fiatValue else {
+//            return getDetailValue(text: "0.00", priceImpact: priceImpact)
+//        }
+        
+        
+        let aTitle =
         (draft.accountAddress?.decimalAmount ?? 0).stringValue
             .bodyRegular(alignment: .center)
         subTitle = aTitle
     }
+    
+    func getDetailValue(
+        text: String?,
+        priceImpact: Decimal?
+    ) -> TextProvider?  {
+        let attributes: TextAttributeGroup
+
+        if let priceImpact,
+           priceImpact > PriceImpactLimit.fivePercent {
+            var someAttributes = Typography.footnoteRegularAttributes()
+            someAttributes.insert(.textColor(Colors.Helpers.negative))
+            attributes = someAttributes
+        } else {
+            var someAttributes = Typography.footnoteRegularAttributes()
+            someAttributes.insert(.textColor(Colors.Text.grayLighter))
+            attributes = someAttributes
+        }
+
+        if let text = text.unwrapNonEmptyString() {
+            return text.attributed(attributes)
+        } else {
+            return nil
+        }
+    }
+
 }

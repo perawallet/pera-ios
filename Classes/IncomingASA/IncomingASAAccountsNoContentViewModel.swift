@@ -12,21 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//   IncomingASAAccountsNoContentViewModel.swift
+
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol IncomingASAListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: URLImageViewStyleLayoutSheet { get }
-    var iconSize: LayoutSize { get }
-    var loadingIndicator: ImageStyle { get }
-    var loadingIndicatorSize: LayoutSize { get }
-    var contentHorizontalPadding: LayoutMetric { get }
-    var contentMinWidthRatio: LayoutMetric { get }
-    var title: IncominASAListTitleViewTheme { get }
-    var primaryValue: TextStyle { get }
-    var secondaryValue: TextStyle { get }
-    var minSpacingBetweenTitleAndValue: LayoutMetric { get }
+struct IncomingASAAccountsNoContentViewModel: NoContentViewModel {
+    private(set) var icon: Image?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
+
+    init() {
+        bindBody()
+    }
+}
+
+extension IncomingASAAccountsNoContentViewModel {
+    private mutating func bindBody() {
+        body =
+        "incoming-asa-accounts-screen-no-content-cell-body"
+                .localized
+                .bodyRegular(
+                    alignment: .center
+                )
+    }
 }

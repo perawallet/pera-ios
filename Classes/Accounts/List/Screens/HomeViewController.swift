@@ -128,6 +128,7 @@ final class HomeViewController:
     private let dataController: HomeDataController
 
     private var asasRequestsCount: Int?
+    private var incommingASAsRequestList: IncommingASAsRequestList?
     private var listWasScrolled = false
     
     init(
@@ -187,6 +188,7 @@ final class HomeViewController:
                 
             case .didUpdateIncommingASAsRequests(let asasReqUpdate):
                 self.asasRequestsCount = asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.incommingASAsRequestList = asasReqUpdate.incommingASAsRequestList
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
@@ -311,13 +313,10 @@ extension HomeViewController {
             guard let self = self else {
                 return
             }
-            if let asasRequestsCount, asasRequestsCount > 0 {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self else { return }
-                    self.open(.incomingASA(address: "6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU", requestsCount: asasRequestsCount), by: .push)
-                }
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.open(.incomingASAAccounts(result: self.incommingASAsRequestList), by: .push)
             }
-
         }
 
         leftBarButtonItems = [notificationBarButtonItem]
@@ -349,11 +348,9 @@ extension HomeViewController {
                     guard let self = self else {
                         return
                     }
-                    if let asasRequestsCount, asasRequestsCount > 0 {
-                        DispatchQueue.main.async { [weak self] in
-                            guard let self else { return }
-                            self.open(.incomingASA(address: "6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU", requestsCount: asasRequestsCount), by: .push)
-                        }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.open(.incomingASAAccounts(result: self.incommingASAsRequestList), by: .push)
                     }
                 }
                 self.leftBarButtonItems = [notificationBarButtonItem]
@@ -961,10 +958,11 @@ extension HomeViewController {
             case .didBackUp:
                 self.dataController.reload()
             }
-        }
-
+        }        
+        let requestCount = self.incommingASAsRequestList?.results
+            .first { $0.address == account.value.address }?.requestCount ?? 0
         open(
-            .accountDetail(accountHandle: account, eventHandler: eventHandler),
+            .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: requestCount),
             by: .push
         )
     }

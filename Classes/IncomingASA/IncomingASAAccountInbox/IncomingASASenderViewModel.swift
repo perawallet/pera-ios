@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct IncomingASASenderViewModel: IncominASATitleViewModel {
+struct IncomingASASenderViewModel: IncominASAListTitleViewModel {
     var primaryTitle: TextProvider?
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?

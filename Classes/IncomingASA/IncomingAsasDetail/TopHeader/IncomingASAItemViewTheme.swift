@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingASADetailHeaderAssetTheme.swift
+//   IncomingASAItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct IncomingASADetailHeaderAssetTheme: IncomingASAListItemViewTheme {
+struct IncomingASAItemViewTheme: StyleSheet, LayoutSheet {
     let icon: URLImageViewStyleLayoutSheet
     let iconSize: LayoutSize
     let loadingIndicator: ImageStyle
     let loadingIndicatorSize: LayoutSize
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
-    let title: IncominASAListTitleViewTheme
+    let title: IncomingASAItemTitleViewTheme
     var primaryValue: TextStyle
     let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
@@ -42,7 +42,7 @@ struct IncomingASADetailHeaderAssetTheme: IncomingASAListItemViewTheme {
         self.loadingIndicatorSize = (16, 16)
         self.contentHorizontalPadding = 16
         self.contentMinWidthRatio = 0.25
-        self.title = IncominASAListTitleViewTheme(family)
+        self.title = IncomingASAItemTitleViewTheme()
         self.primaryValue = [
             .textColor(Colors.Text.mainDark),
             .textOverflow(SingleLineText())

@@ -41,7 +41,7 @@ indirect enum Screen {
     )
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
-    case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
+    case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler, incomingASAsRequestsCount: Int)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case renameAccount(account: Account, delegate: RenameAccountScreenDelegate)
@@ -167,12 +167,16 @@ indirect enum Screen {
         wcSession: WCSessionDraft
     )
     case jsonDisplay(jsonData: Data, title: String)
+    
+    case incomingASAAccounts(
+        result: IncommingASAsRequestList?
+    )
     case incomingASA(
         address: String,
         requestsCount: Int
     )
-
     case incomingASAsDetail(draft: IncomingASAListItem)
+    
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
         dataController: SortAccountListDataController,

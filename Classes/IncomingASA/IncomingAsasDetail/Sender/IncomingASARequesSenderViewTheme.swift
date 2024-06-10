@@ -24,7 +24,6 @@ struct IncomingASARequesSenderViewTheme:
     let sender: TextStyle
     let amount: TextStyle
     var senderBottomInset: LayoutMetric
-    var senderWidth: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.sender = [
@@ -38,6 +37,5 @@ struct IncomingASARequesSenderViewTheme:
             .textColor(Colors.ASATiers.asaBarButton)
         ]
         self.senderBottomInset = 8
-        self.senderWidth = 72
     }
 }

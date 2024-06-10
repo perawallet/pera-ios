@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingASAAccountInboxViewController+Theme.swift
+//   IncomingASAAccountsViewController+Theme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-extension IncomingASAAccountInboxViewController {
+extension IncomingASAAccountsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let accountActionsMenuActionIcon: UIImage

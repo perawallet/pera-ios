@@ -31,8 +31,10 @@ final class IncommingASAsRequestDetailList:
             pagination: apiModel,
             results: apiModel.results.unwrapMap(IncommingASAsRequestDetailResult.init)
         )
-        
+        self.address = apiModel.address
+        self.inboxAddress = apiModel.inboxAddress
     }
+    
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.count = count
@@ -49,11 +51,11 @@ extension IncommingASAsRequestDetailList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
+        var address: String?
+        var inboxAddress: String?
         var count: Int?
         var next: URL?
         var previous: String?
-        var address: String?
-        var inboxAddress: String?
         var results: [IncommingASAsRequestDetailResult.APIModel]?
 
         init() {
@@ -61,6 +63,8 @@ extension IncommingASAsRequestDetailList {
             self.next = nil
             self.previous = nil
             self.results = []
+            self.address = ""
+            self.inboxAddress = ""
         }
         
         private enum CodingKeys:

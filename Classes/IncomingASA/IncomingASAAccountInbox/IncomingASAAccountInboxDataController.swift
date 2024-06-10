@@ -57,13 +57,19 @@ struct IncomingASAListItem: Hashable {
     let asset: Asset
     let senders: Senders?
     let viewModel: IncomingASAAssetListItemViewModel
+    let itemViewModel: IncomingASAItemViewModel
     let accountAddress: String?
+    let algoGainOnClime: UInt64?
+    let algoGainOnReject: UInt64?
     
-    init(item: AssetItem, senders: Senders?, accountAddress: String?) {
+    init(item: AssetItem, senders: Senders?, accountAddress: String?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) {
         self.asset = item.asset
         self.senders = senders
         self.viewModel = IncomingASAAssetListItemViewModel(item, senders: senders)
+        self.itemViewModel = IncomingASAItemViewModel(item, senders: senders)
         self.accountAddress = accountAddress
+        self.algoGainOnClime = algoGainOnClime
+        self.algoGainOnReject = algoGainOnReject
     }
 
     func hash(into hasher: inout Hasher) {

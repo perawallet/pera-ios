@@ -33,7 +33,7 @@ extension IncomingASAsDetailScreen {
             self.backgroundColor = Colors.Defaults.background
             self.spacingBetweenListAndPrimaryAction = 24
             self.primaryAction = [
-                .title("incoming-asa-detail-screen-button-title".localized),
+                .title("incoming-asa-detail-screen-right-button-title".localized),
                 .font(Typography.bodyMedium()),
                 .titleColor([
                     .normal(Colors.Button.Primary.text),

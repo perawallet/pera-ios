@@ -32,6 +32,7 @@ final class IncomingASAsDetailScreen: BaseViewController {
     private lazy var primaryActionView = MacaroonUIKit.Button()
     private lazy var secondaryActionView = MacaroonUIKit.Button()
     private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
+    private lazy var currencyFormatter = CurrencyFormatter()
 
     init(
         draft: IncomingASAListItem,
@@ -77,9 +78,31 @@ extension IncomingASAsDetailScreen {
             $0.edges.equalToSuperview()
         }
         // TODO:  USE API
-        incomingAsasDetailView.bindData(
-            IncomingASAsDetailViewModel(draft: draft, account: configuration.sharedDataController.accountCollection["6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU"/*draft.accountAddress ?? ""*/]?.value)
-        )
+        
+        let currency = self.sharedDataController.currency
+        let currencyFormatter = self.currencyFormatter
+
+        self.sharedDataController.sortedAccounts().forEach { accountHandle in
+            
+            guard accountHandle.value.address == draft.accountAddress else {return}
+            
+//            let isAuthorizedAccount = accountHandle.value.authorization.isAuthorized
+//            if !isAuthorizedAccount {
+//                return
+//            }
+            let item = AccountPortfolioItem(
+                accountValue: accountHandle,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
+
+            incomingAsasDetailView.bindData(
+                IncomingASAsDetailViewModel(draft: draft, account: accountHandle.value, accountPortfolio: item, algoGainOnClime: draft.algoGainOnClime, algoGainOnReject: draft.algoGainOnReject)
+            )
+        }
+//        incomingAsasDetailView.bindData(
+//            IncomingASAsDetailViewModel(draft: draft, account: configuration.sharedDataController.accountCollection["6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU"/*draft.accountAddress ?? ""*/]?.value)
+//        )
     }
 }
 
@@ -168,9 +191,8 @@ extension IncomingASAsDetailScreen {
             title: "incoming-asa-detail-screen-info-title"
                 .localized
                 .bodyLargeMedium(alignment: .center),
-            body: UISheetBodyTextProvider(text: "incoming-asa-detail-screen-description"
-                // TODO:  USE API
-                .localized(params: "\(0.22)")
+            body: UISheetBodyTextProvider(text: "incoming-asa-detail-screen-description_reject"
+                .localized(params: draft.algoGainOnReject?.toAlgos.stringValue ?? "")
                 .bodyRegular(alignment: .center))
         )
 

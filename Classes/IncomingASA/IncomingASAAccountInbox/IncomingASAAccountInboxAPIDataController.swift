@@ -69,6 +69,7 @@ extension IncomingASAAccountInboxAPIDataController {
             switch response {
             case .success(let requestList):
                 self.incommingASAsRequestDetail = requestList
+                requestList.address
                 reload()
             case .failure(let apiError, _):
                 // TODO:  Handle Error Delegate
@@ -193,43 +194,43 @@ extension IncomingASAAccountInboxAPIDataController {
 
         var assetItems: [IncomingASAItem] = standardAssets.someArray.enumerated().compactMap {
             (index,asset) in
-            return makeItemForAsset(asset, senders: assets?[index].senders)
+            return makeItemForAsset(asset, senders: assets?[index].senders, algoGainOnClime: assets?[index].algoGainOnClime, algoGainOnReject: assets?[index].algoGainOnReject)
         }
         return assetItems
     }
 
-    private func makeItemForAsset(_ asset: Asset, senders: Senders?) -> IncomingASAItem? {
+    private func makeItemForAsset(_ asset: Asset, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem? {
         switch asset {
-        case let nonNFTAsset as StandardAsset: return makeItemForNonNFTAsset(nonNFTAsset, senders: senders)
-        case let nftAsset as CollectibleAsset: return makeItemForNFTAsset(nftAsset, senders: senders)
-        case let algoAsset as Algo: return makeItemForAlgoAsset(algoAsset, senders: senders)
+        case let nonNFTAsset as StandardAsset: return makeItemForNonNFTAsset(nonNFTAsset, senders: senders, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
+        case let nftAsset as CollectibleAsset: return makeItemForNFTAsset(nftAsset, senders: senders, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
+        case let algoAsset as Algo: return makeItemForAlgoAsset(algoAsset, senders: senders, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
         default: return nil
         }
     }
 
-    private func makeItemForAlgoAsset(_ algoAsset: Algo, senders: Senders?) -> IncomingASAItem {
+    private func makeItemForAlgoAsset(_ algoAsset: Algo, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
             asset: algoAsset,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address)
+        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
         return .asset(item)
     }
 
-    private func makeItemForNonNFTAsset(_ asset: StandardAsset, senders: Senders?) -> IncomingASAItem {
+    private func makeItemForNonNFTAsset(_ asset: StandardAsset, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
             asset: asset,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address)
+        let item = IncomingASAListItem(item: assetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
         return .asset(item)
     }
 
-    private func makeItemForNFTAsset(_ asset: CollectibleAsset, senders: Senders?) -> IncomingASAItem {
+    private func makeItemForNFTAsset(_ asset: CollectibleAsset, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem {
         let collectibleAssetItem = CollectibleAssetItem(
             account: Account(),
             asset: asset,

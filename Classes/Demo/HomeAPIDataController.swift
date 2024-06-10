@@ -107,13 +107,6 @@ extension HomeAPIDataController {
                     $0.value.isWatchAccount == false && $0.value.ledgerDetail == nil
                 }
                 let addresses = filteredAccounts.map({$0.value.address})
-//                incommingASAsAPIDataController.fetchRequests(
-//                    addresses: [
-//                        "5M5E33HNTA3BBPQII5F6RG27GP3TI4PSZPY5UBZD3DS32ZPPDZ2OEFVSWM",
-//                        "EVIY2PYYACKGGSL7TGNXOIGZ3U6M4FMOU4VQWS4IPZJTME3VYBOUSNEAKM",
-//                        "HAX7RUHFP2LVIAKEHQ4VMSGNIE3DSYO2WJGIFA36RFNTYNRV5J23IVB4PI"
-//                    ]
-//                )
                 incommingASAsAPIDataController.fetchRequests(addresses: addresses)
             }
         }

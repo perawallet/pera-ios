@@ -23,19 +23,27 @@ struct IncomingASAsDetailViewModel: ViewModel {
     private(set) var amount: IncomingASARequestHeaderViewModel?
     private(set) var senders: [IncomingASARequesSenderViewModel]?
     private(set) var accountId: TextProvider?
+    private(set) var algoGainOnClime: UInt64?
+    private(set) var algoGainOnReject: UInt64?
+    
     init(
         draft: IncomingASAListItem,
-        account: Account?
+        account: Account,
+        accountPortfolio: AccountPortfolioItem,
+        algoGainOnClime: UInt64?,
+        algoGainOnReject: UInt64?
     ) {
-        bindAccountAssets(draft, account: account)
+        bindAccountAssets(draft, account: account, accountPortfolio: accountPortfolio)
         bindSenders(draft.senders)
         bindAmount(draft)
+        self.algoGainOnClime = algoGainOnClime
+        self.algoGainOnReject = algoGainOnReject
     }
 }
 
 extension IncomingASAsDetailViewModel {
-    private mutating func bindAccountAssets(_ draft: IncomingASAListItem, account: Account?) {
-        self.accountAssets = IncomingASADetailHeaderViewModel(draft, account: account)
+    private mutating func bindAccountAssets(_ draft: IncomingASAListItem, account: Account, accountPortfolio: AccountPortfolioItem) {
+        self.accountAssets = IncomingASADetailHeaderViewModel(draft, account: account, accountPortfolio: accountPortfolio)
         self.accountId = String(draft.asset.id)
     }
     

@@ -47,11 +47,10 @@ final class IncomingASAAccountInboxViewController:
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = theme.listBackgroundColor.uiColor
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.keyboardDismissMode = .interactive
         return collectionView
     }()
-    private lazy var listBackgroundView = UIView()
 
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
@@ -149,6 +148,11 @@ final class IncomingASAAccountInboxViewController:
         bindNavigationItemTitle()
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+    
     func reloadData() {
 //        dataController.reload()
     }
@@ -201,8 +205,8 @@ extension IncomingASAAccountInboxViewController {
 
 
 extension IncomingASAAccountInboxViewController {
+    
     private func addUI() {
-        addListBackground()
         addList()
         addAccountActionsMenuAction()
         updateSafeAreaWhenViewDidLayoutSubviews()
@@ -216,23 +220,6 @@ extension IncomingASAAccountInboxViewController {
     private func updateUIWhenListDidScroll() {
         updateAccountActionsMenuActionWhenListDidScroll()
         updateSafeAreaWhenListDidScroll()
-    }
-
-    private func addListBackground() {
-        listBackgroundView.customizeAppearance(
-            [
-                .backgroundColor(Colors.Helpers.heroBackground)
-            ]
-        )
-
-        view.addSubview(listBackgroundView)
-        listBackgroundView.snp.makeConstraints {
-            $0.fitToHeight(0)
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-            $0.bottom == 0
-        }
     }
 
     private func addList() {
@@ -441,7 +428,7 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
                         transitionStyle: nil,
                         transitioningDelegate: nil
                     )
-                )                
+                )
                 /// NFT
             case .collectibleAsset(let item):
                 // TODO:  Handle NFT

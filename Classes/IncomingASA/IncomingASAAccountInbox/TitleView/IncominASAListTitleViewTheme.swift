@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaAssetNameViewTheme.swift
+//   IncominAsaTitleViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct IncomingASAAssetNameViewTheme: IncominASATitleViewTheme {
+struct IncominASAListTitleViewTheme: StyleSheet, LayoutSheet {
     var primaryTitle: TextStyle
     var primaryTitleAccessory: ImageStyle
     var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
@@ -40,31 +40,14 @@ struct IncomingASAAssetNameViewTheme: IncominASATitleViewTheme {
         self.secondaryTitle = [
             .textColor(Colors.Button.Square.secondaryIcon),
             .font(Typography.captionMedium()),
-            .backgroundColor(Colors.Shadows.Tab.bottomLine)
+            .backgroundColor(Colors.Button.Ghost.focusBackground)
         ]
         self.secondSecondaryTitle = [
             .textColor(Colors.Button.Square.secondaryIcon),
             .font(Typography.captionMedium()),
-            .backgroundColor(Colors.Shadows.Tab.bottomLine)
+            .backgroundColor(Colors.Button.Ghost.focusBackground)
         ]
         self.spacingBetweenPrimaryAndSecondaryTitles = 0
         self.titleEdgeInsets = (2, 6, 4, 6)
     }
-    
-//    mutating func forceToDark() {
-//        self.primaryTitle = [
-//            .textColor(Colors.ASATiers.suspiciousIconBackground),
-//        ]
-//        
-//        self.secondaryTitle = [
-//            .textColor(Colors.Button.Square.secondaryIcon),
-//            .font(Typography.captionMedium()),
-//            .backgroundColor(Colors.Shadows.Tab.bottomLineDark)
-//        ]
-//        self.secondSecondaryTitle = [
-//            .textColor(Colors.Button.Square.secondaryIcon),
-//            .font(Typography.captionMedium()),
-//            .backgroundColor(Colors.Shadows.Tab.bottomLineDark)
-//        ]
-//    }
 }

@@ -25,7 +25,7 @@ struct IncomingASAListItemTheme: IncomingASAListItemViewTheme {
     let loadingIndicatorSize: LayoutSize
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
-    let title: IncominASATitleViewTheme
+    let title: IncominASAListTitleViewTheme
     var primaryValue: TextStyle
     let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
@@ -42,7 +42,7 @@ struct IncomingASAListItemTheme: IncomingASAListItemViewTheme {
         self.loadingIndicatorSize = (16, 16)
         self.contentHorizontalPadding = 16
         self.contentMinWidthRatio = 0.25
-        self.title = IncomingASAAssetNameViewTheme(family)
+        self.title = IncominASAListTitleViewTheme(family)
         self.primaryValue = [
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineText())

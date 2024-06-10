@@ -749,7 +749,7 @@ final class Router:
                 ),
                 configuration: configuration
             )
-        case let .accountDetail(accountHandle, eventHandler):
+        case let .accountDetail(accountHandle, eventHandler, incomingASAsRequestsCount):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
@@ -760,7 +760,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration, 
+                incomingASAsRequestsCount: incomingASAsRequestsCount
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
@@ -1096,6 +1097,18 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .incomingASAAccounts(result):
+            
+            let dataController = IncomingASAAccountsLocalDataController(
+                incommingASAsRequestList: result,
+                sharedDataController: configuration.sharedDataController
+            )
+            
+            viewController = IncomingASAAccountsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            
         case let .incomingASA(address, requestsCount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

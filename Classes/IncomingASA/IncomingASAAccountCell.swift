@@ -12,20 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncominAsaTitleViewTheme.swift
+//   IncomingASAAccountCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-protocol IncominASATitleViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var primaryTitle: TextStyle { get }
-    var primaryTitleAccessory: ImageStyle { get }
-    var primaryTitleAccessoryContentEdgeInsets: LayoutOffset { get }
-    var secondaryTitle: TextStyle { get }
-    var secondSecondaryTitle: TextStyle { get }
-    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric { get }
-    var titleEdgeInsets: LayoutPaddings { get }
+final class IncomingASAAccountCell:
+    CollectionCell<IncomingASAAccountView>,
+    ViewModelBindable {
+    
+    override static var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
+    
+    static let theme = IncomingASAAccountViewTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+        
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 24))
+        )
+        separatorStyle = .single(separator)
+    }
 }

@@ -24,7 +24,7 @@ struct AccountQuickActionsViewTheme:
     var spacingBetweenActions: LayoutMetric
     var actionWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
-    var buySellAction: ButtonStyle
+    var requestsAction: ButtonStyle
     var swapAction: ButtonStyle
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
@@ -35,9 +35,9 @@ struct AccountQuickActionsViewTheme:
         self.spacingBetweenActions = 16
         self.actionSpacingBetweenIconAndTitle = 12
         self.actionWidth = 64
-        self.buySellAction = [
-            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-buy-sell-title".localized))
+        self.requestsAction = [
+            .icon(Self.makeActionIcon(icon: "ASA-requests-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-asset-inbox-title".localized))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),

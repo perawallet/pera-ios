@@ -23,7 +23,6 @@ final class IncomingASARequesSenderView:
     ViewModelBindable,
     ListReusable {
     
-    
     private lazy var senderView = UILabel()
     private lazy var amountView = UILabel()
     
@@ -82,7 +81,6 @@ extension IncomingASARequesSenderView {
         senderView.snp.makeConstraints {
             $0.leading == 0
             $0.top == 0
-            $0.width.equalTo(theme.senderWidth)
             $0.bottom.equalToSuperview().inset(theme.senderBottomInset)
         }
         senderView.customizeAppearance(theme.sender)

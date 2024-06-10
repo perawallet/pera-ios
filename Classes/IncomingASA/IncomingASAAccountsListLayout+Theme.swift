@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
-import MacaroonUIKit
-import UIKit
+//   IncomingASAAccountsListLayout+Theme.swift
 
-protocol IncomingASAListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: URLImageViewStyleLayoutSheet { get }
-    var iconSize: LayoutSize { get }
-    var loadingIndicator: ImageStyle { get }
-    var loadingIndicatorSize: LayoutSize { get }
-    var contentHorizontalPadding: LayoutMetric { get }
-    var contentMinWidthRatio: LayoutMetric { get }
-    var title: IncominASAListTitleViewTheme { get }
-    var primaryValue: TextStyle { get }
-    var secondaryValue: TextStyle { get }
-    var minSpacingBetweenTitleAndValue: LayoutMetric { get }
+import Foundation
+import UIKit
+import MacaroonUIKit
+
+extension IncomingASAAccountsListLayout {
+    struct Theme: LayoutSheet, StyleSheet {
+        let assetManagementItemSize: LayoutSize
+        let assetLoadingItemSize: LayoutSize
+
+        init(_ family: LayoutFamily) {
+            self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 40)
+            self.assetLoadingItemSize = (UIScreen.main.bounds.width - 48, 75)
+        }
+    }
 }

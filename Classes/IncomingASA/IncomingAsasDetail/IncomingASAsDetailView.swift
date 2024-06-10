@@ -117,7 +117,9 @@ final class IncomingASAsDetailView:
             addSenderItem(vm, sendersTheme)
         })
         
-        "You will receive 0.22 ALGO in order to compensate the opt-in expenses.".load(in: infoFooterView)
+        "incoming-asa-detail-screen-description_accept"
+            .localized(params: viewModel?.algoGainOnClime?.toAlgos.stringValue ?? "")
+            .load(in: infoFooterView)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}

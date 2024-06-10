@@ -115,6 +115,7 @@ extension Colors {
             case disabledBackground = "ButtonGhost/disabledBg"
             case disabledText = "ButtonGhost/disabledText"
             case focusBackground = "ButtonGhost/focusBg"
+            case focusBackgroundDark = "ButtonGhost/focusBgDark"
             case text = "ButtonGhost/text"
         }
 

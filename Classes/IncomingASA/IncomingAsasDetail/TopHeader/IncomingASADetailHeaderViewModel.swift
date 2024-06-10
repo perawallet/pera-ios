@@ -21,20 +21,20 @@ import MacaroonURLImage
 struct IncomingASADetailHeaderViewModel: ViewModel {
     
     private(set) var accountItem: AccountListItemViewModel?
-    private(set) var assetItem: IncomingASAAssetListItemViewModel?
+    private(set) var accountPortfolio: AccountPortfolioItem?
+    private(set) var assetItem: IncomingASAItemViewModel?
     private(set) var account: Account?
 
-    init(_ draft: IncomingASAListItem, account: Account?) {
-        self.assetItem = draft.viewModel
-        if let account {
-            bindAccountItem(account)
-        }
+    init(_ draft: IncomingASAListItem, account: Account, accountPortfolio: AccountPortfolioItem) {
+        self.assetItem = draft.itemViewModel
+        self.accountPortfolio = accountPortfolio
+        self.bindAccountItem(account, accountPortfolio: accountPortfolio)
     }
 }
 
 extension IncomingASADetailHeaderViewModel {
-    mutating func bindAccountItem(_ account: Account) {
-        self.accountItem = AccountListItemViewModel(account)
+    mutating func bindAccountItem(_ account: Account, accountPortfolio: AccountPortfolioItem) {
+        self.accountItem = AccountListItemViewModel(accountPortfolio)
         self.account = account
     }
 }

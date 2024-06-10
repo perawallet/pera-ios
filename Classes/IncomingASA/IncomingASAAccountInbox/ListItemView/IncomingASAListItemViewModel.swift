@@ -20,7 +20,7 @@ import MacaroonURLImage
 
 protocol IncomingASAListItemViewModel: ViewModel {
     var imageSource: ImageSource? { get }
-    var title: IncominASATitleViewModel? { get }
+    var title: IncominASAListTitleViewModel? { get }
     var primaryValue: TextProvider? { get }
     var secondaryValue: TextProvider? { get }
 }

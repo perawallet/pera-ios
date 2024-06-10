@@ -26,7 +26,7 @@ final class IncomingASADetailHeaderView:
 
     private lazy var accountItemView = AccountListItemView()
     private lazy var dividerView = UIView()
-    private lazy var assetsItemView = IncomingASAListItemView()
+    private lazy var assetsItemView = IncomingASAItemView()
     
     func customize(_ theme: IncomingASADetailHeaderTheme) {
         addAccountItem(theme)

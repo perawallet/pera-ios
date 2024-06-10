@@ -58,6 +58,9 @@ struct AccountListItemViewTheme:
         var theme = AccountPreviewPrimaryTitleViewTheme()
         theme.forceToDark()
         self.title = theme
+        self.primaryAccessory = [
+            .textColor(Colors.Text.mainDark)
+        ]
     }
 }
 

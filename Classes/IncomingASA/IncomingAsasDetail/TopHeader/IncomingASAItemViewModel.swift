@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaAssetListItemViewModel.swift
+//   IncomingASAItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
@@ -20,7 +20,7 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct IncomingASAAssetListItemViewModel: IncomingASAListItemViewModel {
+struct IncomingASAItemViewModel: IncomingASAListItemViewModel {
     private(set) var imageSource: ImageSource?
     private(set) var title: IncominASAListTitleViewModel?
     private(set) var primaryValue: TextProvider?
@@ -34,7 +34,7 @@ struct IncomingASAAssetListItemViewModel: IncomingASAListItemViewModel {
     }
 }
 
-extension IncomingASAAssetListItemViewModel {
+extension IncomingASAItemViewModel {
     mutating func bindImageSource(
         _ item: AssetItem
     ) {
@@ -145,7 +145,7 @@ extension IncomingASAAssetListItemViewModel {
     }
 }
 
-extension IncomingASAAssetListItemViewModel {
+extension IncomingASAItemViewModel {
     func getPlaceholder(
         _ asset: Asset
     ) -> ImagePlaceholder? {

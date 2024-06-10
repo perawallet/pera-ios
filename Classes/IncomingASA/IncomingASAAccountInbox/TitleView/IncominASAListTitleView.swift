@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncominAsaTitleView.swift
+//   IncominASAListTitleView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class IncominASATitleView:
+final class IncominASAListTitleView:
     View,
     ViewModelBindable,
     ListReusable {
@@ -28,7 +28,7 @@ final class IncominASATitleView:
     private lazy var secondSecondaryTitleView = Label()
 
     func customize(
-        _ theme: IncominASATitleViewTheme
+        _ theme: IncominASAListTitleViewTheme
     ) {
         addPrimaryTitle(theme)
         addPrimaryTitleAccessory(theme)
@@ -45,7 +45,7 @@ final class IncominASATitleView:
     ) {}
 
     func bindData(
-        _ viewModel: IncominASATitleViewModel?
+        _ viewModel: IncominASAListTitleViewModel?
     ) {
         if let primaryTitle = viewModel?.primaryTitle {
             primaryTitle.load(in: primaryTitleView)
@@ -69,8 +69,8 @@ final class IncominASATitleView:
     }
 
     class func calculatePreferredSize(
-        _ viewModel: IncominASATitleViewModel?,
-        for theme: IncominASATitleViewTheme,
+        _ viewModel: IncominASAListTitleViewModel?,
+        for theme: IncominASAListTitleViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -106,9 +106,9 @@ final class IncominASATitleView:
     }
 }
 
-extension IncominASATitleView {
+extension IncominASAListTitleView {
     private func addPrimaryTitle(
-        _ theme: IncominASATitleViewTheme
+        _ theme: IncominASAListTitleViewTheme
     ) {
         primaryTitleView.customizeAppearance(theme.primaryTitle)
 
@@ -124,7 +124,7 @@ extension IncominASATitleView {
     }
 
     private func addPrimaryTitleAccessory(
-        _ theme: IncominASATitleViewTheme
+        _ theme: IncominASAListTitleViewTheme
     ) {
         primaryTitleAccessoryView.customizeAppearance(theme.primaryTitleAccessory)
 
@@ -139,7 +139,7 @@ extension IncominASATitleView {
     }
 
     private func addSecondaryTitle(
-        _ theme: IncominASATitleViewTheme
+        _ theme: IncominASAListTitleViewTheme
     ) {
         secondaryTitleView.customizeAppearance(theme.secondaryTitle)
         secondaryTitleView.draw(corner: Corner.init(radius: 8))
@@ -156,7 +156,7 @@ extension IncominASATitleView {
     }
     
     private func addSecondSecondaryTitle(
-        _ theme: IncominASATitleViewTheme
+        _ theme: IncominASAListTitleViewTheme
     ) {
         secondSecondaryTitleView.customizeAppearance(theme.secondSecondaryTitle)
         secondSecondaryTitleView.draw(corner: Corner.init(radius: 8))

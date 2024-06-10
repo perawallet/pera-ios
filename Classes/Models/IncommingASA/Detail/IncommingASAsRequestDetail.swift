@@ -20,9 +20,11 @@ import MacaroonUtils
 
 // MARK: - IncommingASAsRequestDetailListResult
 final class IncommingASAsRequestDetailResult: ALGEntityModel {
-    var totalAmount: Int?
+    var totalAmount: UInt64?
     var asset: AssetDecoration?
     var senders: Senders?
+    var algoGainOnClime: UInt64?
+    var algoGainOnReject: UInt64?
     
     // Initializer from APIModel
     init(
@@ -31,6 +33,8 @@ final class IncommingASAsRequestDetailResult: ALGEntityModel {
         self.totalAmount = apiModel.totalAmount
         self.asset = apiModel.asset.unwrap(AssetDecoration.init)
         self.senders = apiModel.senders.unwrap(Senders.init)
+        self.algoGainOnClime = apiModel.algoGainOnClime
+        self.algoGainOnReject = apiModel.algoGainOnReject
     }
     
     // Encode function to convert to APIModel
@@ -39,26 +43,34 @@ final class IncommingASAsRequestDetailResult: ALGEntityModel {
         apiModel.totalAmount = totalAmount
         apiModel.asset = asset?.encode()
         apiModel.senders = senders?.encode()
+        apiModel.algoGainOnClime = algoGainOnClime
+        apiModel.algoGainOnReject = algoGainOnReject
         return apiModel
     }
 }
 
 extension IncommingASAsRequestDetailResult {
     struct APIModel: ALGAPIModel {
-        var totalAmount: Int?
+        var totalAmount: UInt64?
         var asset: AssetDecoration.APIModel?
         var senders: Senders.APIModel?
-
+        var algoGainOnClime: UInt64?
+        var algoGainOnReject: UInt64?
+        
         init() {
             self.totalAmount = 0
             self.asset = .init()
             self.senders = .init()
+            self.algoGainOnClime = 0
+            self.algoGainOnReject = 0
         }
 
         private enum CodingKeys: String, CodingKey {
             case totalAmount = "total_amount"
             case asset
             case senders
+            case algoGainOnClime = "algo_gain_on_claim"
+            case algoGainOnReject = "algo_gain_on_reject"
         }
     }
 }

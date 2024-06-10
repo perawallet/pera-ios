@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaListItemView.swift
+//   IncomingASAItemView.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
-// amir check list az injast
-final class IncomingASAListItemView:
+
+final class IncomingASAItemView:
     View,
     ViewModelBindable,
     ListReusable {
     private lazy var iconView = URLImageView()
     private lazy var loadingIndicatorView = ViewLoadingIndicator()
     private lazy var contentView = UIView()
-    private lazy var titleView = IncominASAListTitleView()
+    private lazy var titleView = IncomingASAItemTitleView()
     private lazy var valueContentView = UIView()
     private lazy var primaryValueView = UILabel()
     private lazy var secondaryValueView = UILabel()
     
     func customize(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         addIcon(theme)
         addContent(theme)
@@ -51,7 +51,7 @@ final class IncomingASAListItemView:
     ) {}
 
     func bindData(
-        _ viewModel: IncomingASAListItemViewModel?
+        _ viewModel: IncomingASAItemViewModel?
     ) {
         if let icon = viewModel?.imageSource {
             iconView.load(from: icon)
@@ -77,10 +77,10 @@ final class IncomingASAListItemView:
             secondaryValueView.clearText()
         }
     }
-
+    
     class func calculatePreferredSize(
-        _ viewModel: IncomingASAListItemViewModel?,
-        for theme: IncomingASAListItemViewTheme,
+        _ viewModel: IncomingASAItemViewModel?,
+        for theme: IncomingASAItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -88,13 +88,13 @@ final class IncomingASAListItemView:
         }
 
         let width = size.width
-
-        let titleSize = IncominASAListTitleView.calculatePreferredSize(
-            viewModel.title,
-            for: theme.title,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
+        //amir check
+//        let titleSize = IncomingASAItemTitleView.calculatePreferredSize(
+//            viewModel.title,
+//            for: theme.title,
+//            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+//        )
+        let titleSize = CGSize((width, .greatestFiniteMagnitude))
         let primaryValueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
@@ -118,9 +118,9 @@ final class IncomingASAListItemView:
     }
 }
 
-extension IncomingASAListItemView {
+extension IncomingASAItemView {
     private func addIcon(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         iconView.build(theme.icon)
         iconView.customizeAppearance(theme.icon)
@@ -137,7 +137,7 @@ extension IncomingASAListItemView {
     }
 
     private func addLoadingIndicator(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         loadingIndicatorView.applyStyle(theme.loadingIndicator)
 
@@ -151,7 +151,7 @@ extension IncomingASAListItemView {
     }
 
     private func addContent(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
@@ -163,7 +163,7 @@ extension IncomingASAListItemView {
     }
 
     private func addTitle(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         titleView.customize(theme.title)
         contentView.addSubview(titleView)
@@ -177,7 +177,7 @@ extension IncomingASAListItemView {
     }
 
     private func addValueContent(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         contentView.addSubview(valueContentView)
         valueContentView.snp.makeConstraints {
@@ -190,7 +190,7 @@ extension IncomingASAListItemView {
     }
 
     private func addPrimaryValue(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         primaryValueView.customizeAppearance(theme.primaryValue)
         primaryValueView.fitToHorizontalIntrinsicSize(
@@ -211,7 +211,7 @@ extension IncomingASAListItemView {
     }
 
     private func addSecondaryValue(
-        _ theme: IncomingASAListItemViewTheme
+        _ theme: IncomingASAItemViewTheme
     ) {
         secondaryValueView.customizeAppearance(theme.secondaryValue)
         secondaryValueView.fitToHorizontalIntrinsicSize(
@@ -233,7 +233,7 @@ extension IncomingASAListItemView {
     }
 }
 
-extension IncomingASAListItemView {
+extension IncomingASAItemView {
     var isLoading: Bool {
         return loadingIndicatorView.isAnimating
     }
