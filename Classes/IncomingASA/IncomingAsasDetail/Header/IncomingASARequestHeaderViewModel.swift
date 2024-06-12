@@ -22,75 +22,145 @@ struct IncomingASARequestHeaderViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var subTitle: TextProvider?
 
-    init(_ draft: IncomingASAListItem) {
-        bindTitle(draft)
-        bindSubtitle(draft)
+    init(_ draft: IncomingASAListItem, currency: CurrencyProvider, currencyFormatter: CurrencyFormatter) {
+        bindPrimaryValue(
+            asset: draft.asset,
+            currencyFormatter: currencyFormatter
+        )
+        bindSecondaryValue(
+            asset: draft.asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension IncomingASARequestHeaderViewModel {
     
-    private mutating func bindTitle(_ draft: IncomingASAListItem) {
-        let amount = draft.asset.total ?? 0
-        
-        
-        var currencyFormatter = CurrencyFormatter()
-
+    mutating func bindPrimaryValue(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        if asset.isAlgo {
+            bindAlgoPrimaryValue(
+                asset: asset,
+                currencyFormatter: currencyFormatter
+            )
+        } else {
+            bindAssetPrimaryValue(
+                asset: asset,
+                currencyFormatter: currencyFormatter
+            )
+        }
+    }
+    
+    mutating func bindAlgoPrimaryValue(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
 
-        let amountText = currencyFormatter.format(amount.toAlgos)
-
-        title = amountText.someString
-            .titleMedium(alignment: .center)
+        let text = currencyFormatter.format(asset.decimalAmount)
+        bindPrimaryValue(text: text)
     }
 
-    private mutating func bindSubtitle(_ draft: IncomingASAListItem) {
-//        let value = draft.asset.usdValue
-//        
-//        
-//        var currencyFormatter = CurrencyFormatter()
-//
-//        currencyFormatter.formattingContext = .standalone()
-//        currencyFormatter.currency = AlgoLocalCurrency()
-//
-//        let amountText = currencyFormatter.format(usdValue.toAlgos)
-//        
-//        CurrencyProvider()
-//        guard let amountUSDValue = value,
-//              let fiatCurrencyValue = currency.fiatValue else {
-//            return getDetailValue(text: "0.00", priceImpact: priceImpact)
-//        }
-        
-        
-        let aTitle =
-        (draft.accountAddress?.decimalAmount ?? 0).stringValue
-            .bodyRegular(alignment: .center)
-        subTitle = aTitle
+    mutating func bindAssetPrimaryValue(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = nil
+
+        let amountText = currencyFormatter.format(asset.decimalAmount)
+        let unitText =
+            asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
+        let text = [ amountText, unitText ].compound(" ")
+        bindPrimaryValue(text: text)
+    }
+
+    mutating func bindPrimaryValue(text: String?) {
+        title = text?.titleSmallMedium(alignment: .center)
     }
     
-    func getDetailValue(
-        text: String?,
-        priceImpact: Decimal?
-    ) -> TextProvider?  {
-        let attributes: TextAttributeGroup
-
-        if let priceImpact,
-           priceImpact > PriceImpactLimit.fivePercent {
-            var someAttributes = Typography.footnoteRegularAttributes()
-            someAttributes.insert(.textColor(Colors.Helpers.negative))
-            attributes = someAttributes
+    
+    mutating func bindSecondaryValue(
+        asset: Asset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        if asset.isAlgo {
+            bindAlgoSecondaryValue(
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
         } else {
-            var someAttributes = Typography.footnoteRegularAttributes()
-            someAttributes.insert(.textColor(Colors.Text.grayLighter))
-            attributes = someAttributes
-        }
-
-        if let text = text.unwrapNonEmptyString() {
-            return text.attributed(attributes)
-        } else {
-            return nil
+            bindAssetSecondaryValue(
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
         }
     }
 
+    mutating func bindAlgoSecondaryValue(
+        asset: Asset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard let fiatCurrencyValue = currency.fiatValue else {
+            subTitle = nil
+            return
+        }
+
+        do {
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = fiatRawCurrency
+
+            let text = currencyFormatter.format(amount)
+            bindSecondaryValue(text: text)
+        } catch {
+            subTitle = nil
+        }
+    }
+
+    mutating func bindAssetSecondaryValue(
+        asset: Asset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard let currencyValue = currency.primaryValue else {
+            subTitle = nil
+            return
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(asset)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let text = currencyFormatter.format(amount)
+            bindSecondaryValue(text: text)
+        } catch {
+            subTitle = nil
+        }
+    }
+
+    mutating func bindSecondaryValue(text: String?) {
+        if let text = text.unwrapNonEmptyString() {
+            subTitle = text.bodyMedium(alignment: .center)
+        } else {
+            subTitle = nil
+        }
+    }
 }

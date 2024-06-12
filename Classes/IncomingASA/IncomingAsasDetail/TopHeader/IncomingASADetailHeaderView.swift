@@ -36,7 +36,7 @@ final class IncomingASADetailHeaderView:
     }
 
     func bindData(_ viewModel: IncomingASADetailHeaderViewModel?) {
-        assetsItemView.bindData(viewModel?.assetItem)
+        assetsItemView.bindData(viewModel?.listItem)
         accountItemView.bindData(viewModel?.accountItem)
     }
 

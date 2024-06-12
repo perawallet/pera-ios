@@ -22,11 +22,11 @@ struct IncomingASADetailHeaderViewModel: ViewModel {
     
     private(set) var accountItem: AccountListItemViewModel?
     private(set) var accountPortfolio: AccountPortfolioItem?
-    private(set) var assetItem: IncomingASAItemViewModel?
+    private(set) var listItem: IncomingASAListItem
     private(set) var account: Account?
 
     init(_ draft: IncomingASAListItem, account: Account, accountPortfolio: AccountPortfolioItem) {
-        self.assetItem = draft.itemViewModel
+        self.listItem = draft
         self.accountPortfolio = accountPortfolio
         self.bindAccountItem(account, accountPortfolio: accountPortfolio)
     }

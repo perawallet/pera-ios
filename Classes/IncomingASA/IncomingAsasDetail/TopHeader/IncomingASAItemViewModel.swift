@@ -25,10 +25,10 @@ struct IncomingASAItemViewModel: IncomingASAListItemViewModel {
     private(set) var title: IncominASAListTitleViewModel?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
-
-    init(_ item: AssetItem, senders: Senders?) {
+    
+    init(_ item: AssetItem, senders: Senders?, isCollectible: Bool) {
         bindImageSource(item)
-        bindTitle(item, senders: senders)
+        bindTitle(item, senders: senders, isCollectible: isCollectible)
         bindPrimaryValue(item)
         bindSecondaryValue(item)
     }
@@ -73,9 +73,10 @@ extension IncomingASAItemViewModel {
 
     mutating func bindTitle(
         _ item: AssetItem,
-        senders: Senders?
+        senders: Senders?,
+        isCollectible: Bool
     ) {
-        title = IncomingASASenderViewModel(item.asset, senders: senders)
+        title = IncomingASASenderViewModel(item.asset, senders: senders, isCollectible: isCollectible)
     }
 
     mutating func bindPrimaryValue(

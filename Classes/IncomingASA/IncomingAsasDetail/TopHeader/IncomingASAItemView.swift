@@ -29,7 +29,7 @@ final class IncomingASAItemView:
     private lazy var titleView = IncomingASAItemTitleView()
     private lazy var valueContentView = UIView()
     private lazy var primaryValueView = UILabel()
-    private lazy var secondaryValueView = UILabel()
+    private var isCollectible: Bool = false
     
     func customize(
         _ theme: IncomingASAItemViewTheme
@@ -39,7 +39,6 @@ final class IncomingASAItemView:
         addTitle(theme)
         addValueContent(theme)
         addPrimaryValue(theme)
-        addSecondaryValue(theme)
     }
 
     func customizeAppearance(
@@ -51,30 +50,41 @@ final class IncomingASAItemView:
     ) {}
 
     func bindData(
-        _ viewModel: IncomingASAItemViewModel?
+        _ viewModel: IncomingASAListItem?
     ) {
-        if let icon = viewModel?.imageSource {
-            iconView.load(from: icon)
+        
+        let asaItem = viewModel?.itemViewModel
+        
+        if let collectibleViewModel = viewModel?.collectibleViewModel {
+            iconView.load(from: collectibleViewModel.icon)
+            isCollectible = true
         } else {
-            iconView.prepareForReuse()
+            if let icon = asaItem?.imageSource {
+                iconView.load(from: icon)
+            } else {
+                iconView.prepareForReuse()
+            }
         }
-
-        if let title = viewModel?.title {
+        
+        if let title = asaItem?.title {
             titleView.bindData(title)
         } else {
             titleView.prepareForReuse()
         }
-
-        if let value = viewModel?.primaryValue {
-            value.load(in: primaryValueView)
+        
+        if viewModel?.collectibleViewModel != nil {
+            if let value = viewModel?.senders?.count {
+                let count = "\(value)"
+                count.load(in: primaryValueView)
+            } else {
+                primaryValueView.clearText()
+            }
         } else {
-            primaryValueView.clearText()
-        }
-
-        if let value = viewModel?.secondaryValue {
-            value.load(in: secondaryValueView)
-        } else {
-            secondaryValueView.clearText()
+            if let value = asaItem?.title?.primaryTitle {
+                value.load(in: primaryValueView)
+            } else {
+                primaryValueView.clearText()
+            }
         }
     }
     
@@ -88,12 +98,6 @@ final class IncomingASAItemView:
         }
 
         let width = size.width
-        //amir check
-//        let titleSize = IncomingASAItemTitleView.calculatePreferredSize(
-//            viewModel.title,
-//            for: theme.title,
-//            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-//        )
         let titleSize = CGSize((width, .greatestFiniteMagnitude))
         let primaryValueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
@@ -114,7 +118,6 @@ final class IncomingASAItemView:
         iconView.prepareForReuse()
         titleView.prepareForReuse()
         primaryValueView.clearText()
-        secondaryValueView.clearText()
     }
 }
 
@@ -124,7 +127,9 @@ extension IncomingASAItemView {
     ) {
         iconView.build(theme.icon)
         iconView.customizeAppearance(theme.icon)
-
+        if isCollectible {
+            iconView.draw(corner: theme.nftIconCorner)
+        }
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
@@ -204,30 +209,7 @@ extension IncomingASAItemView {
 
         valueContentView.addSubview(primaryValueView)
         primaryValueView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-        }
-    }
-
-    private func addSecondaryValue(
-        _ theme: IncomingASAItemViewTheme
-    ) {
-        secondaryValueView.customizeAppearance(theme.secondaryValue)
-        secondaryValueView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        secondaryValueView.fitToVerticalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        
-        valueContentView.addSubview(secondaryValueView)
-        secondaryValueView.snp.makeConstraints {
-            $0.top == primaryValueView.snp.bottom
-            $0.leading == 0
-            $0.bottom == 0
+            $0.top == titleView.snp.top
             $0.trailing == 0
         }
     }

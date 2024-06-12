@@ -3579,6 +3579,9 @@
 		8B3C40092BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
 		8B3C400A2BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
 		8B3C400B2BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
+		8B5276B52C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
+		8B5276B62C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
+		8B5276B72C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
 		8B542C6B2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
 		8B542C6C2BE23F24001CA427 /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
 		8B542C6D2BE23F24001CA427 /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
@@ -9104,6 +9107,7 @@
 		8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailViewModel.swift; sourceTree = "<group>"; };
 		8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderTheme.swift; sourceTree = "<group>"; };
 		8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderViewModel.swift; sourceTree = "<group>"; };
+		8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAsCollectibleListItemViewModel.swift; sourceTree = "<group>"; };
 		8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxViewController.swift; sourceTree = "<group>"; };
 		8B6D6DDF2BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxHeaderTitleCellViewModel.swift; sourceTree = "<group>"; };
 		8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxHeaderTitleCell.swift; sourceTree = "<group>"; };
@@ -18442,6 +18446,7 @@
 				8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */,
 				8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */,
 				8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */,
+				8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */,
 			);
 			path = IncomingASAAccountInbox;
 			sourceTree = "<group>";
@@ -23806,6 +23811,7 @@
 				F096C0FF28C63B2F00E5E576 /* AssetActionConfirmationLoadingViewTheme.swift in Sources */,
 				17BD4E052292F1260003E49A /* SettingsDetailCell.swift in Sources */,
 				046767832756A65F00C88F21 /* SingleSelectionView.swift in Sources */,
+				8B5276B72C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
 				F0DB41632793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift in Sources */,
 				17BD4E062292F1260003E49A /* NavigationBarConfigurable.swift in Sources */,
 				95BB6BE8279FD0C800F2A2F1 /* WCAssetCreationTransactionViewTheme.swift in Sources */,
@@ -28202,6 +28208,7 @@
 				D4F4C8A229D18B060069FB94 /* RekeyedAccountInformationAccountItemViewModel.swift in Sources */,
 				D47742BA27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */,
 				1770728F290A8DE7009E02AE /* DiscoverSearchScreen.swift in Sources */,
+				8B5276B62C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
 				F010634E28AAE80900AB6873 /* ASAAboutScreen.swift in Sources */,
 				2B61CF5C2A48D1B3004E229A /* WalletConnectRejectTransactionRequestParams.swift in Sources */,
 				2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */,
@@ -28881,6 +28888,7 @@
 				2B1073AD28858F6800D465C1 /* AssetVerificationTier.swift in Sources */,
 				D46DA19328CF920C006BA6A6 /* SwapAccountSelectionListHeaderViewModel.swift in Sources */,
 				D414083929F1A47C0088CE68 /* OverwriteRekeyConfirmationSheet.swift in Sources */,
+				8B5276B52C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
 				D40ADD9229452252004C74E3 /* AccountCollectibleListFilterSelectionViewControllerTheme.swift in Sources */,
 				2BD2E6B625A5E1A400C918AB /* ChangeNotificationFilterEvent.swift in Sources */,
 				17CADC7D28531313001D19A8 /* AccountQuickActionsViewTheme.swift in Sources */,

@@ -67,7 +67,7 @@ extension AccountQuickActionsViewTheme {
     }
 
     private static func makeActionTitle(title: String) -> Text {
-        var attributes = Typography.footnoteRegularAttributes(alignment: .center)
+        var attributes = Typography.captionRegularAttributes(alignment: .center)
         attributes.insert(.textColor(Colors.Text.main))
         return TextSet(title.attributed(attributes))
     }

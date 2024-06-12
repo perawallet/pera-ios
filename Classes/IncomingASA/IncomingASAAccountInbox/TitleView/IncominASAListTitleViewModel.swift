@@ -22,6 +22,7 @@ protocol IncominASAListTitleViewModel: ViewModel {
     var primaryTitleAccessory: Image?  { get }
     var secondaryTitle: TextProvider? { get }
     var secondSecondaryTitle: TextProvider? { get }
+    var isCollectible: Bool? { get }
 }
 
 extension IncominASAListTitleViewModel where Self: Hashable {
@@ -31,6 +32,7 @@ extension IncominASAListTitleViewModel where Self: Hashable {
         hasher.combine(primaryTitle?.string)
         hasher.combine(secondaryTitle?.string)
         hasher.combine(secondSecondaryTitle?.string)
+        hasher.combine(isCollectible)
     }
 
     static func == (
@@ -39,6 +41,7 @@ extension IncominASAListTitleViewModel where Self: Hashable {
     ) -> Bool {
         return lhs.primaryTitle?.string == rhs.primaryTitle?.string &&
             lhs.secondaryTitle?.string == rhs.secondaryTitle?.string &&
-            lhs.secondSecondaryTitle?.string == rhs.secondSecondaryTitle?.string
+            lhs.secondSecondaryTitle?.string == rhs.secondSecondaryTitle?.string &&
+            lhs.isCollectible == rhs.isCollectible
     }
 }

@@ -29,7 +29,7 @@ struct IncomingASAItemViewTheme: StyleSheet, LayoutSheet {
     var primaryValue: TextStyle
     let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
-    
+    let nftIconCorner: Corner
     init(
         _ family: LayoutFamily
     ) {
@@ -52,5 +52,6 @@ struct IncomingASAItemViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineText())
         ]
         self.minSpacingBetweenTitleAndValue = 16
+        self.nftIconCorner = .init(radius: 8.0)
     }
 }

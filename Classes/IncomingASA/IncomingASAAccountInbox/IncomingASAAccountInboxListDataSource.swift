@@ -33,31 +33,30 @@ final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataS
                 )
                 cell.bindData(item)
                 return cell
-//            case .assetLoading:
-//                return collectionView.dequeue(
-//                    AccountAssetListLoadingCell.self,
-//                    at: indexPath
-//                )
             case let .asset(item):
-                let cell = collectionView.dequeue(
-                    IncomingASAAccountInboxListItemCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item.viewModel)
-                return cell
-            case .empty(let item):
+                if item.collectibleAsset != nil {
+                    let cell = collectionView.dequeue(
+                        CollectibleListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item.collectibleViewModel)
+                    return cell
+                } else {
+                    let cell = collectionView.dequeue(
+                        IncomingASAAccountInboxListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item.viewModel)
+                    return cell
+                }
+            case .empty:
                 let cell = collectionView.dequeue(
                     NoContentCell.self,
                     at: indexPath
                 )
-                cell.bindData(item)
-                return cell
-            case let .collectibleAsset(item):
-                let cell = collectionView.dequeue(
-                    CollectibleListItemCell.self,
-                    at: indexPath
+                cell.bindData(
+                    IncomingASAAccountsNoContentViewModel()
                 )
-                cell.bindData(item.viewModel)
                 return cell
             }
         }

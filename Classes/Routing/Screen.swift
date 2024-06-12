@@ -176,6 +176,7 @@ indirect enum Screen {
         requestsCount: Int
     )
     case incomingASAsDetail(draft: IncomingASAListItem)
+    case incomingCollectibleASAsDetail(draft: IncomingASACollectibleAssetListItem)
     
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(

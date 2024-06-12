@@ -22,16 +22,19 @@ struct IncomingASASenderViewModel: IncominASAListTitleViewModel {
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?
     var secondSecondaryTitle: TextProvider?
-
+    var isCollectible: Bool?
+    
     init(
         _ asset: Asset,
-        senders: Senders?
+        senders: Senders?,
+        isCollectible: Bool
     ) {
         bindPrimaryTitle(asset)
         bindPrimaryTitleAccessory(asset)
         bindSecondaryTitle(senders)
         bindSecondSecondaryTitle(senders)
-    }    
+        self.isCollectible = isCollectible
+    }
 }
 
 extension IncomingASASenderViewModel {

@@ -116,7 +116,6 @@ extension IncomingASAAccountsLocalDataController {
             toSection: .empty
         )
     }
-
 }
 
 extension IncomingASAAccountsLocalDataController {

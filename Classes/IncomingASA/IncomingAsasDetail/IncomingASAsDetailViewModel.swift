@@ -30,12 +30,14 @@ struct IncomingASAsDetailViewModel: ViewModel {
         draft: IncomingASAListItem,
         account: Account,
         accountPortfolio: AccountPortfolioItem,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter,
         algoGainOnClime: UInt64?,
         algoGainOnReject: UInt64?
     ) {
         bindAccountAssets(draft, account: account, accountPortfolio: accountPortfolio)
         bindSenders(draft.senders)
-        bindAmount(draft)
+        bindAmount(draft, currency: currency, currencyFormatter: currencyFormatter)
         self.algoGainOnClime = algoGainOnClime
         self.algoGainOnReject = algoGainOnReject
     }
@@ -55,7 +57,7 @@ extension IncomingASAsDetailViewModel {
         }
     }
     
-    private mutating func bindAmount(_ draft: IncomingASAListItem) {
-        self.amount = IncomingASARequestHeaderViewModel(draft)
+    private mutating func bindAmount(_ draft: IncomingASAListItem, currency: CurrencyProvider, currencyFormatter: CurrencyFormatter) {
+        self.amount = IncomingASARequestHeaderViewModel(draft, currency: currency, currencyFormatter: currencyFormatter)
     }
 }

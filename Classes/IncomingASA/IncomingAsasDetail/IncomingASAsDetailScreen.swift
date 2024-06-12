@@ -25,8 +25,9 @@ final class IncomingASAsDetailScreen: BaseViewController {
     
     private lazy var theme = Theme()
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
-    let draft: IncomingASAListItem
-
+    let draft: IncomingASAListItem?
+    let collectibleDraft: IncomingASACollectibleAssetListItem?
+    
     private lazy var footerEffectView = EffectView()
     private lazy var actionsContextView = MacaroonUIKit.HStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
@@ -35,10 +36,12 @@ final class IncomingASAsDetailScreen: BaseViewController {
     private lazy var currencyFormatter = CurrencyFormatter()
 
     init(
-        draft: IncomingASAListItem,
+        draft: IncomingASAListItem?,
+        collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
         configuration: ViewControllerConfiguration
     ) {
         self.draft = draft
+        self.collectibleDraft = collectibleDraft
         super.init(configuration: configuration)
     }
 
@@ -77,19 +80,15 @@ extension IncomingASAsDetailScreen {
         incomingAsasDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        // TODO:  USE API
         
         let currency = self.sharedDataController.currency
         let currencyFormatter = self.currencyFormatter
 
         self.sharedDataController.sortedAccounts().forEach { accountHandle in
             
-            guard accountHandle.value.address == draft.accountAddress else {return}
-            
-//            let isAuthorizedAccount = accountHandle.value.authorization.isAuthorized
-//            if !isAuthorizedAccount {
-//                return
-//            }
+            guard let incomingASAListItem = draft,
+                    accountHandle.value.address == incomingASAListItem.accountAddress else {return}
+
             let item = AccountPortfolioItem(
                 accountValue: accountHandle,
                 currency: currency,
@@ -97,12 +96,17 @@ extension IncomingASAsDetailScreen {
             )
 
             incomingAsasDetailView.bindData(
-                IncomingASAsDetailViewModel(draft: draft, account: accountHandle.value, accountPortfolio: item, algoGainOnClime: draft.algoGainOnClime, algoGainOnReject: draft.algoGainOnReject)
+                IncomingASAsDetailViewModel(
+                    draft: incomingASAListItem,
+                    account: accountHandle.value,
+                    accountPortfolio: item,
+                    currency: sharedDataController.currency,
+                    currencyFormatter: CurrencyFormatter(),
+                    algoGainOnClime: incomingASAListItem.algoGainOnClime,
+                    algoGainOnReject: incomingASAListItem.algoGainOnReject
+                )
             )
         }
-//        incomingAsasDetailView.bindData(
-//            IncomingASAsDetailViewModel(draft: draft, account: configuration.sharedDataController.accountCollection["6MYLTNTQ7ZTMWDPBUR2AJLF2POVOYJFN5LGP67VEQ3QVUYB2A6S3M23YXU"/*draft.accountAddress ?? ""*/]?.value)
-//        )
     }
 }
 
@@ -192,7 +196,7 @@ extension IncomingASAsDetailScreen {
                 .localized
                 .bodyLargeMedium(alignment: .center),
             body: UISheetBodyTextProvider(text: "incoming-asa-detail-screen-description_reject"
-                .localized(params: draft.algoGainOnReject?.toAlgos.stringValue ?? "")
+                .localized(params: draft?.algoGainOnReject?.toAlgos.stringValue ?? "")
                 .bodyRegular(alignment: .center))
         )
 

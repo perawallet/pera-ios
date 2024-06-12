@@ -37,7 +37,7 @@ struct IncomingASARequestHeaderTheme:
         self.spacingBetweenTitleAndSubtitle = 8
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.gray)
         ]
     }
 }

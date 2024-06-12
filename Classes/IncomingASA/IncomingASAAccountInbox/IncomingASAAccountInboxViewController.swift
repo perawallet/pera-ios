@@ -302,12 +302,6 @@ extension IncomingASAAccountInboxViewController {
             return false
         }
 
-//        let additionalBottomPaddingForHeroBackground =
-//            dataController.account.value.authorization.isWatch
-//            ? WatchAccountQuickActionsCell.contextPaddings.bottom
-//            : AccountQuickActionsCell.contextPaddings.bottom
-//        let adjustedPositionY = positionY - additionalBottomPaddingForHeroBackground
-
         let adjustedPositionY = positionY - AccountQuickActionsCell.contextPaddings.bottom
         let listHeight = listView.bounds.height
         let listContentHeight = listView.contentSize.height
@@ -429,11 +423,6 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
                         transitioningDelegate: nil
                     )
                 )
-                /// NFT
-            case .collectibleAsset(let item):
-                // TODO:  Handle NFT
-                break
-
             default:
                 break
             }
@@ -538,10 +527,6 @@ extension IncomingASAAccountInboxViewController {
         }
 
         if case IncomingASAItem.asset(let item) = itemIdentifier {
-            return item.asset
-        }
-
-        if case IncomingASAItem.collectibleAsset(let item) = itemIdentifier {
             return item.asset
         }
 

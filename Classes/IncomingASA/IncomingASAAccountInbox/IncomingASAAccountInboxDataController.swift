@@ -37,17 +37,14 @@ enum IncomingASASection:
 
 enum IncomingASAItem: Hashable {
     case title(IncomingASAAccountInboxHeaderTitleCellViewModel)
-//    case assetLoading
     case asset(IncomingASAListItem)
-    case collectibleAsset(IncomingASACollectibleAssetListItem)
-    case empty(AssetListSearchNoContentViewModel)
+    case empty
 }
 
 extension IncomingASAItem {
     var asset: Asset? {
         switch self {
         case .asset(let item): return item.asset
-        case .collectibleAsset(let item): return item.asset
         default: return nil
         }
     }
@@ -55,18 +52,26 @@ extension IncomingASAItem {
 
 struct IncomingASAListItem: Hashable {
     let asset: Asset
+    let collectibleAsset: CollectibleAsset?
     let senders: Senders?
     let viewModel: IncomingASAAssetListItemViewModel
+    let collectibleViewModel: CollectibleListItemViewModel?
     let itemViewModel: IncomingASAItemViewModel
     let accountAddress: String?
     let algoGainOnClime: UInt64?
     let algoGainOnReject: UInt64?
     
-    init(item: AssetItem, senders: Senders?, accountAddress: String?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) {
+    init(item: AssetItem, collectibleAssetItem: CollectibleAssetItem?, senders: Senders?, accountAddress: String?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) {
         self.asset = item.asset
+        self.collectibleAsset = collectibleAssetItem?.asset
         self.senders = senders
-        self.viewModel = IncomingASAAssetListItemViewModel(item, senders: senders)
-        self.itemViewModel = IncomingASAItemViewModel(item, senders: senders)
+        if let item = collectibleAssetItem {
+            self.collectibleViewModel = CollectibleListItemViewModel(item: item)
+        } else {
+            self.collectibleViewModel = nil
+        }
+        self.viewModel = IncomingASAAssetListItemViewModel(item, senders: senders, isCollectible: self.collectibleViewModel != nil)
+        self.itemViewModel = IncomingASAItemViewModel(item, senders: senders, isCollectible: self.collectibleViewModel != nil)
         self.accountAddress = accountAddress
         self.algoGainOnClime = algoGainOnClime
         self.algoGainOnReject = algoGainOnReject
@@ -78,6 +83,10 @@ struct IncomingASAListItem: Hashable {
         hasher.combine(viewModel.title?.secondaryTitle?.string)
         hasher.combine(viewModel.primaryValue?.string)
         hasher.combine(viewModel.secondaryValue?.string)
+        hasher.combine(collectibleAsset?.id)
+        hasher.combine(collectibleAsset?.amount)
+        hasher.combine(collectibleViewModel?.primaryTitle?.string)
+        hasher.combine(collectibleViewModel?.secondaryTitle?.string)
     }
 
     static func == (
@@ -89,7 +98,11 @@ struct IncomingASAListItem: Hashable {
             lhs.viewModel.title?.primaryTitle?.string == rhs.viewModel.title?.primaryTitle?.string &&
             lhs.viewModel.title?.secondaryTitle?.string == rhs.viewModel.title?.secondaryTitle?.string &&
             lhs.viewModel.primaryValue?.string == rhs.viewModel.primaryValue?.string &&
-            lhs.viewModel.secondaryValue?.string == rhs.viewModel.secondaryValue?.string
+            lhs.viewModel.secondaryValue?.string == rhs.viewModel.secondaryValue?.string &&
+            lhs.collectibleAsset?.id == rhs.collectibleAsset?.id &&
+            lhs.collectibleAsset?.amount == rhs.collectibleAsset?.amount &&
+            lhs.collectibleViewModel?.primaryTitle?.string == rhs.collectibleViewModel?.primaryTitle?.string &&
+            lhs.collectibleViewModel?.secondaryTitle?.string == rhs.collectibleViewModel?.secondaryTitle?.string
     }
 }
 

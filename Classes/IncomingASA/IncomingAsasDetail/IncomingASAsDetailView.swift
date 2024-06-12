@@ -83,18 +83,37 @@ final class IncomingASAsDetailView:
         "Asset Transfer Request".load(in: titleView)
         
         
-        if let title = viewModel?.amount?.title {
-            title.load(in: assetValueView)
+        if let collectibleViewModel = viewModel?.accountAssets?.listItem.collectibleViewModel {
+            if let title = collectibleViewModel.primaryTitle {                
+                title
+                    .string
+                    .titleMedium(
+                        alignment: .center
+                    )
+                    .load(in: assetValueView)
+            } else {
+                clearView(assetValueView)
+            }
+            
+            if let subtitle = collectibleViewModel.secondaryTitle {
+                subtitle.string.footnoteRegular(alignment: .center)
+                    .load(in: amountValueView)
+            } else {
+                clearView(amountValueView)
+            }
+
         } else {
-            assetValueView.text = nil
-            assetValueView.attributedText = nil
-        }
-        viewModel?.accountAssets?.account?.amountWithoutRewards
-        if let subTitle = viewModel?.amount?.subTitle {
-            subTitle.load(in: amountValueView)
-        } else {
-            amountValueView.text = nil
-            amountValueView.attributedText = nil
+            if let title = viewModel?.amount?.title {
+                title.load(in: assetValueView)
+            } else {
+                clearView(assetValueView)
+            }
+
+            if let subTitle = viewModel?.amount?.subTitle {
+                subTitle.load(in: amountValueView)
+            } else {
+                clearView(amountValueView)
+            }
         }
 
         if let id = viewModel?.accountId {
@@ -120,6 +139,11 @@ final class IncomingASAsDetailView:
         "incoming-asa-detail-screen-description_accept"
             .localized(params: viewModel?.algoGainOnClime?.toAlgos.stringValue ?? "")
             .load(in: infoFooterView)
+    }
+    
+    private func clearView(_ view: UILabel) {
+        view.text = nil
+        view.attributedText = nil
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -158,8 +182,6 @@ extension IncomingASAsDetailView {
             $0.trailing == 0
         }
         contentView.roundTheCorners([.topLeft, .topRight], radius: theme.contetnCorner)
-        let copyActionCorner: LayoutMetric
-
         
         let dragIndicatorView = UIView()
         dragIndicatorView.customizeBaseAppearance(backgroundColor: theme.dragIndicatorBackground)

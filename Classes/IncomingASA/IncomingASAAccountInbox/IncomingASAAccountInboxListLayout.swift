@@ -65,12 +65,6 @@ extension IncomingASAAccountInboxListLayout {
                 sizeForHeaderTitleItem: item,
                 atSection: indexPath.section
             )
-//        case .assetLoading:
-//            return listView(
-//                collectionView,
-//                layout: collectionViewLayout,
-//                sizeForAssetLoadingItemAt: indexPath
-//            )
         case let .asset(item):
             return listView(
                 collectionView,
@@ -78,19 +72,8 @@ extension IncomingASAAccountInboxListLayout {
                 sizeForAssetCellItem: item.viewModel,
                 atSection: indexPath.section
             )
-        case let .collectibleAsset(item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForCollectibleAssetCellItem: item.viewModel,
-                atSection: indexPath.section
-            )
-        case .empty(let item):
-            return sizeForNoContent(
-                collectionView,
-                item: item,
-                atSection: indexPath.section
-            )
+        case .empty:
+            return collectionView.bounds.size
         }
     }
 
@@ -224,32 +207,6 @@ extension IncomingASAAccountInboxListLayout {
         let newSize = PendingCollectibleAssetListItemCell.calculatePreferredSize(
             item,
             for: PendingCollectibleAssetListItemCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
-    }
-    
-    private func sizeForNoContent(
-        _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel,
-        atSection section: Int
-    ) -> CGSize {
-        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
-        let newSize = NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
