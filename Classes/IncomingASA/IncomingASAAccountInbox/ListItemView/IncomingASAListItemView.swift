@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
-// amir check list az injast
+
 final class IncomingASAListItemView:
     View,
     ViewModelBindable,

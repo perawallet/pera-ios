@@ -1128,21 +1128,22 @@ final class Router:
             )
             
         case let .incomingASAsDetail(draft):
+            let dataController = IncomingASAsDetailScreenAPIDataController(
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api, 
+                bannerController: configuration.bannerController,
+                analytics: configuration.analytics,
+                draft: draft
+            )
+
             let screen = IncomingASAsDetailScreen(
                 draft: draft,
-                configuration: configuration
+                configuration: configuration,
+                dataController: dataController
             )
 
             viewController = screen
-            
-        case let .incomingCollectibleASAsDetail(draft):
-            let screen = IncomingASAsDetailScreen(
-                draft: nil,
-                collectibleDraft: draft,
-                configuration: configuration
-            )
-            viewController = screen
-            
+                        
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate

@@ -192,7 +192,6 @@ final class HomeViewController:
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
-                print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 requestsCounts: \(String(describing: asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +))) ⬅️")
             }
         }
         dataController.load()

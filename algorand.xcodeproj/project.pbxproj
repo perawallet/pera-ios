@@ -3589,6 +3589,9 @@
 		8B33005D2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */; };
 		8B33005E2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */; };
 		8B33005F2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */; };
+		8B34B7DA2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34B7D92C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift */; };
+		8B34B7DB2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34B7D92C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift */; };
+		8B34B7DC2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34B7D92C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift */; };
 		8B3C40052BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */; };
 		8B3C40062BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */; };
 		8B3C40072BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */; };
@@ -9128,6 +9131,7 @@
 		8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequesSenderViewModel.swift; sourceTree = "<group>"; };
 		8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequesSenderView.swift; sourceTree = "<group>"; };
 		8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailViewModel.swift; sourceTree = "<group>"; };
+		8B34B7D92C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailScreenAPIDataController.swift; sourceTree = "<group>"; };
 		8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderTheme.swift; sourceTree = "<group>"; };
 		8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderViewModel.swift; sourceTree = "<group>"; };
 		8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAsCollectibleListItemViewModel.swift; sourceTree = "<group>"; };
@@ -18540,6 +18544,7 @@
 			children = (
 				8B98C15D2BFBD68C00CFA0AF /* IncomingASAsDetailScreen.swift */,
 				8B98C19B2BFCA1CE00CFA0AF /* IncomingASAsDetailScreen+Theme.swift */,
+				8B34B7D92C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift */,
 				8B98C16A2BFBE6CD00CFA0AF /* IncomingASAsDetailView.swift */,
 				8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */,
 				8B98C1662BFBD6CC00CFA0AF /* IncomingASAsDetailViewTheme.swift */,
@@ -25197,6 +25202,7 @@
 				2BD95B0A2915528E005337E5 /* TapSwapInAccountDetailEvent.swift in Sources */,
 				2B5BE135251B4EEC00324BEE /* UIView+Animation.swift in Sources */,
 				2B7A1F4527DD24AD0010F52E /* CollectibleMediaPreviewDataSource.swift in Sources */,
+				8B34B7DC2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */,
 				2B69AACB28BE227400A8D65D /* SwapAssetSelectionViewModel.swift in Sources */,
 				2B69AB0D28BEBF5500A8D65D /* SwapAssetAPIDataController.swift in Sources */,
 				17CADC9E2859C7C1001D19A8 /* SortAccountAssetListLocalDataController.swift in Sources */,
@@ -27268,6 +27274,7 @@
 				D49B40E52AF049F1008C1883 /* AccountDetailAccountNotBackedUpWarningModel.swift in Sources */,
 				D48FDFD027CEBA1700C39FC7 /* TitleViewTheme.swift in Sources */,
 				D4176C2626F340590017A4AB /* LedgerAccountViewTheme.swift in Sources */,
+				8B34B7DB2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */,
 				2B0F622B24EC129D00DA22A6 /* BaseViewController.swift in Sources */,
 				048B3C1F27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */,
 				2BFA924D29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift in Sources */,
@@ -30889,6 +30896,7 @@
 				2BE09A7B28F60B820059EEF0 /* SwapSummaryStatusViewTheme.swift in Sources */,
 				2B288AD8269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				F0C542EC291DE4ED00596A0A /* DiscoverSearchNextListErrorView.swift in Sources */,
+				8B34B7DA2C1CA28600598611 /* IncomingASAsDetailScreenAPIDataController.swift in Sources */,
 				2B384DAA29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */,
 				D42360CC299D13CC002A9FB4 /* SwapAccountSelectionListScreen.swift in Sources */,
 				D4CF682D28C8E8890007A727 /* InfoBoxHeaderView.swift in Sources */,

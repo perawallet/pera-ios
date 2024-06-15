@@ -338,7 +338,6 @@ extension HomeAPIDataController: IncommingASAsAPIDataControllerDelegate {
     
     func incommingASAsAPIDataController(_ dataController: IncommingASAsAPIDataController, didFailToFetchRequests error: String) {
         // TODO:  Handle Error
-        print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 error: \(String(describing: error)) ⬅️")
     }
 }
 

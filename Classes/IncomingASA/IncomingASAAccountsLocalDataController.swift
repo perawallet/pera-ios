@@ -39,7 +39,9 @@ final class IncomingASAAccountsLocalDataController:
 
 extension IncomingASAAccountsLocalDataController {
     func load() {
-        if let results = incommingASAsRequestList?.results, results.isNonEmpty {
+        if let results = incommingASAsRequestList?.results,
+            results.isNonEmpty,
+            results.filter({ ($0.requestCount ?? 0) > 0}).isNonEmpty {
             deliverUpdatesForContent(for: .refresh)
         } else {
             deliverUpdatesForNoContent(for: .refresh)
@@ -109,7 +111,6 @@ extension IncomingASAAccountsLocalDataController {
     }
     
     private func appendSectionForNoContentAccounts(into snapshot: inout Snapshot) {
-        let items = makeItemForAccountItem()
         snapshot.appendSections([ .empty ])
         snapshot.appendItems(
             [.empty],

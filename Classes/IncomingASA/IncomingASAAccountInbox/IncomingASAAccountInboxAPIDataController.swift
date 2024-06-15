@@ -233,7 +233,15 @@ extension IncomingASAAccountInboxAPIDataController {
             )
         }
         
-        let item = IncomingASAListItem(item: assetItem, collectibleAssetItem: collectibleAssetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
+        let item = IncomingASAListItem(
+            item: assetItem,
+            collectibleAssetItem: collectibleAssetItem,
+            senders: senders,
+            accountAddress: incommingASAsRequestDetail?.address,
+            inboxAddress: incommingASAsRequestDetail?.inboxAddress,
+            algoGainOnClime: algoGainOnClime, 
+            algoGainOnReject: algoGainOnReject
+        )
         return .asset(item)
     }
 }

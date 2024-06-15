@@ -27,7 +27,8 @@ final class IncomingASAsDetailScreen: BaseViewController {
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
     let draft: IncomingASAListItem?
     let collectibleDraft: IncomingASACollectibleAssetListItem?
-    
+    private let dataController: IncomingASAsDetailScreenAPIDataController
+
     private lazy var footerEffectView = EffectView()
     private lazy var actionsContextView = MacaroonUIKit.HStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
@@ -35,13 +36,17 @@ final class IncomingASAsDetailScreen: BaseViewController {
     private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private var account: Account?
+    
     init(
         draft: IncomingASAListItem?,
         collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        dataController: IncomingASAsDetailScreenAPIDataController
     ) {
         self.draft = draft
         self.collectibleDraft = collectibleDraft
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
 
@@ -70,6 +75,8 @@ final class IncomingASAsDetailScreen: BaseViewController {
             [weak self] in
             self?.dismissScreen()
         }
+        
+        dataController.delegate = self
     }
 }
 
@@ -88,13 +95,14 @@ extension IncomingASAsDetailScreen {
             
             guard let incomingASAListItem = draft,
                     accountHandle.value.address == incomingASAListItem.accountAddress else {return}
-
+            self.account = accountHandle.value
+            
             let item = AccountPortfolioItem(
                 accountValue: accountHandle,
                 currency: currency,
                 currencyFormatter: currencyFormatter
             )
-
+            
             incomingAsasDetailView.bindData(
                 IncomingASAsDetailViewModel(
                     draft: incomingASAListItem,
@@ -185,7 +193,8 @@ extension IncomingASAsDetailScreen {
 extension IncomingASAsDetailScreen {
     @objc
     private func performPrimaryAction() {
-        self.dismissScreen()
+        guard let draft, let account else { return }
+        dataController.composeArc59ClaimAssetTxn(with: draft, account: account)
     }
 
     @objc
@@ -204,8 +213,8 @@ extension IncomingASAsDetailScreen {
             title: "Reject",
             style: .default
         ) { [unowned self] in
-            // TODO:  reject
-            self.dismiss(animated: true)
+            guard let draft, let account else { return }
+            dataController.composeArc59RejectAssetTxn(with: draft, account: account)
         }
         
         let cancelAction = UISheetAction(
@@ -225,5 +234,11 @@ extension IncomingASAsDetailScreen {
             ),
             by: .presentWithoutNavigationController
         )
+    }
+}
+
+extension IncomingASAsDetailScreen: IncomingASAsDetailScreenAPIDataControllerDelegate {
+    func incomingASAsDetailScreenAPIDataController(_ incomingASAsDetailScreenAPIDataController: IncomingASAsDetailScreenAPIDataController, didCompletedTransaction transactionId: TransactionID?) {
+        dismissScreen()
     }
 }
