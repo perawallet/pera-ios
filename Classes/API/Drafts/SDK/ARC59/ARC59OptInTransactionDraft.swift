@@ -22,5 +22,4 @@ struct ARC59OptInTransactionDraft: TransactionDraft {
     let appAddress: String
     let appID: Int64
     let assetID: Int64
-    let secretKey: Data?
 }

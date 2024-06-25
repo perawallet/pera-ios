@@ -27,5 +27,4 @@ struct ARC59SendAssetTransactionDraft: TransactionDraft {
     let innerTransactionCount: Int
     let appID: Int64
     let assetID: Int64
-    let secretKey: Data?
 }
