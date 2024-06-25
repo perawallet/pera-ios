@@ -1736,3 +1736,4 @@ FAQ section.";
 "send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
 "send-inbox-action-title" = "Send to Receiver";
 "send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
+"send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";
