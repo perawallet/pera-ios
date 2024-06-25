@@ -1100,7 +1100,7 @@ final class Router:
         case let .incomingASAAccounts(result):
             
             let dataController = IncomingASAAccountsLocalDataController(
-                incommingASAsRequestList: result,
+                incomingASAsRequestList: result,
                 sharedDataController: configuration.sharedDataController
             )
             

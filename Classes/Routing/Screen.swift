@@ -169,7 +169,7 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     
     case incomingASAAccounts(
-        result: IncommingASAsRequestList?
+        result: IncomingASAsRequestList?
     )
     case incomingASA(
         address: String,
