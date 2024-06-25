@@ -185,12 +185,9 @@ final class HomeViewController:
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
                 }
-                
             case .didUpdateIncomingASAsRequests(let asasReqUpdate):
                 self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
-            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }

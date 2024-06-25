@@ -20,7 +20,7 @@ import UIKit
 
 struct IncomingASAAccountCellViewModel: 
     ViewModel,
-        Hashable {
+    Hashable {
     private(set) var address: String?
     private(set) var requestCount: Int?
     private(set) var title: TextProvider?
@@ -32,8 +32,7 @@ struct IncomingASAAccountCellViewModel:
     ) {
         bind(account, incomingRequestCount: incomingRequestCount)
     }
-    
-    // Implementing the Hashable protocol
+
     static func == (lhs: IncomingASAAccountCellViewModel, rhs: IncomingASAAccountCellViewModel) -> Bool {
         return lhs.address?.string == rhs.address?.string &&
         lhs.title?.string == rhs.title?.string &&
@@ -68,14 +67,17 @@ extension IncomingASAAccountCellViewModel {
     mutating func bindTitle(
         _ requestCount: Int
     ) {
-        self.title = "incoming-asa-accounts-screen-cell-title".localized(params: "\(requestCount)")
+        if requestCount == 1 {
+            self.title = "incoming-asa-accounts-screen-cell-title-singular".localized
+        } else {
+            self.title = "incoming-asa-accounts-screen-cell-title".localized(params: "\(requestCount)")
+        }
     }
     
     mutating func bindIcon(
         _ account: Account
     ) {
         icon = account.typeImage
-
     }
     
     mutating func bindPrimaryAccessory(

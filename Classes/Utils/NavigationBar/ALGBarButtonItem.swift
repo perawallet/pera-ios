@@ -69,7 +69,15 @@ struct ALGBarButtonItem: BarButtonItem {
     var title: TitleContent? {
         switch kind {
         case .asaInbox(let count):
-            if count > 0 {
+            if count == 1 {
+                return BarButtonItemTitleContent(
+                    text: "title-asa-singular".localized,
+                    textColor: Colors.ASATiers.asaBarButton.uiColor,
+                    font: UIFont.font(withWeight: .medium(size: 13))
+                )
+            }
+            
+            if count > 1 {
                 return BarButtonItemTitleContent(
                     text: "title-asa".localized(params: "\(count)"),
                     textColor: Colors.ASATiers.asaBarButton.uiColor,

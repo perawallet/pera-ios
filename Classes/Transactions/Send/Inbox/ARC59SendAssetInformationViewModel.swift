@@ -70,16 +70,22 @@ struct ARC59SendAssetInformationItemValueViewModel: SecondaryListItemValueViewMo
         asset: Asset,
         amount: Decimal
     ) {
-        bindTitle(asset)
+        bindTitle(
+            asset: asset,
+            amount: amount
+        )
     }
 }
 
 extension ARC59SendAssetInformationItemValueViewModel {
-    private mutating func bindTitle(_ asset: Asset) {
+    private mutating func bindTitle(
+        asset: Asset,
+        amount: Decimal
+    ) {
         let formatter = CurrencyFormatter()
         formatter.formattingContext = .listItem
         formatter.currency = nil
-        guard let amount = formatter.format(asset.decimalAmount) else {
+        guard let amount = formatter.format(amount) else {
             return
         }
         

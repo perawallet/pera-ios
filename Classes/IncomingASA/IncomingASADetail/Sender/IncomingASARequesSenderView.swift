@@ -54,7 +54,6 @@ final class IncomingASARequesSenderView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) { }
 
     func bindData(_ viewModel: IncomingASARequesSenderViewModel?) {
-        
         if let sender = viewModel?.sender?.string.shortAddressDisplayWith4Characters {
             sender.load(in: senderView)
         } else {

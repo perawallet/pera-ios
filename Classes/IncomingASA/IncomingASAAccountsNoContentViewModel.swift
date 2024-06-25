@@ -29,11 +29,12 @@ struct IncomingASAAccountsNoContentViewModel: NoContentViewModel {
 
 extension IncomingASAAccountsNoContentViewModel {
     private mutating func bindBody() {
-        body =
-        "incoming-asa-accounts-screen-no-content-cell-body"
-                .localized
-                .bodyRegular(
-                    alignment: .center
+        let text = "incoming-asa-accounts-screen-no-content-cell-body".localized
+        body = text
+                .bodyMedium(alignment: .center)
+                .addAttributes(
+                    to: text,
+                    newAttributes: .init([.textColor( Colors.Text.main)])
                 )
     }
 }

@@ -42,8 +42,8 @@ struct IncomingASARequestIdTheme:
         self.dividerLineHeight = 1
         self.spacingBetweenDividerTitleAndLine = 16
         self.action = [
-            .titleColor([ .normal(Colors.Text.gray) ]),
-            .font(Typography.bodyMedium()),
+            .titleColor([ .normal(Colors.Text.main) ]),
+            .font(Typography.footnoteMedium()),
             .backgroundImage([
                 .normal("components/buttons/secondary/bg"),
                 .highlighted("components/buttons/secondary/bg-highlighted"),

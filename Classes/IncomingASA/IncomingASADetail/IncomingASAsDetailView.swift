@@ -80,8 +80,8 @@ final class IncomingASAsDetailView:
 
     func bindData(_ viewModel: IncomingASAsDetailViewModel?) {
         accountAssetsView.bindData(viewModel?.accountAssets)
-        "Asset Transfer Request".load(in: titleView)
-        
+        let mainTitle = "incoming-asa-account-inbox-header-main-title".localized.bodyMedium()
+        mainTitle.load(in: titleView)
         
         if let collectibleViewModel = viewModel?.accountAssets?.listItem.collectibleViewModel {
             if let title = collectibleViewModel.primaryTitle {                
@@ -288,7 +288,6 @@ extension IncomingASAsDetailView {
         
         idView.customizeAppearance(theme.id)
         
-        
         let seperator = UIView()
         addSubview(seperator)
         seperator.snp.makeConstraints {
@@ -332,6 +331,8 @@ extension IncomingASAsDetailView {
             $0.leading.trailing.equalToSuperview().inset(theme.sendersContextPadding)
             $0.top.equalTo(amountTitleView.snp.bottom).offset(theme.sendersContextTopInset)
         }
+        
+        sendersContextView.spacing = 16
     }
 
     private func addSenderItem(

@@ -46,7 +46,7 @@ struct IncomingASAsDetailViewModel: ViewModel {
 extension IncomingASAsDetailViewModel {
     private mutating func bindAccountAssets(_ draft: IncomingASAListItem, account: Account, accountPortfolio: AccountPortfolioItem) {
         self.accountAssets = IncomingASADetailHeaderViewModel(draft, account: account, accountPortfolio: accountPortfolio)
-        self.accountId = String(draft.asset.id)
+        self.accountId = String(draft.asset.id).footnoteRegular()
     }
     
     private mutating func bindSenders(_ senders: Senders?) {

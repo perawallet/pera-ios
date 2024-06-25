@@ -36,6 +36,15 @@ extension IncomingASAAccountInboxHeaderTitleCellViewModel {
     }
 
     mutating func bindTitle(count: Int) {
+        if count == 1 {
+            title = .attributedString(
+                "incoming-asa-account-inbox-header-title-cell-singular"
+                    .localized
+                    .footnoteRegular()
+            )
+            return
+        }
+        
         title = .attributedString(
             "incoming-asa-account-inbox-header-title-cell"
                 .localized(params: "\(count)")
@@ -45,7 +54,7 @@ extension IncomingASAAccountInboxHeaderTitleCellViewModel {
 
     mutating func bindTitleStyle() {
         titleStyle = [
-            .textColor(Colors.Text.grayLighter),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
     }

@@ -16,7 +16,8 @@
 "title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
-"title-asa" = "%@ Incoming ASAs";
+"title-asa" = "%@ Asset Requests";
+"title-asa-singular" = "1 Asset Request";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-receive" = "Receive";
@@ -1731,7 +1732,9 @@ FAQ section.";
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
 
 /// MARK: Incoming ASA Requests
+"incoming-asa-account-inbox-header-main-title" = "Asset Transfer Request";
 "incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
+"incoming-asa-account-inbox-header-title-cell-singular" = "You have 1 asset transfer request";
 "incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
 "incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
 "incoming-asa-account-inbox-screen-info-description-title" = "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.";
@@ -1743,6 +1746,7 @@ FAQ section.";
 "incoming-asa-detail-screen-amount-title" = "Amount";
 "incoming-asa-detail-screen-senders-title" = "Senders";
 "incoming-asa-accounts-screen-cell-title" = "%@ incoming assets";
+"incoming-asa-accounts-screen-cell-title-singular" = "1 incoming asset";
 
 "incoming-asa-accounts-screen-no-content-cell-body" = "This is where you can view your incoming asset transfer requests. Tap to learn more about this feature.";
 

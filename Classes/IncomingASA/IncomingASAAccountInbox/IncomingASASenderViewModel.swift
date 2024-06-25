@@ -73,7 +73,13 @@ extension IncomingASASenderViewModel {
                 secondSecondaryTitle = getSecondaryTitle(address.shortAddressDisplayWith4Characters)
             }
         case let count where count ?? 0 >= 3:
-            let titleText = count == 3 ? "2 \("title-more".localized)" : "+2 \("title-more".localized)"
+            guard let count else {
+                secondSecondaryTitle = nil
+                return
+            }
+            
+            let difference = count - 1
+            let titleText = "+\(difference) \("title-more".localized)"
             secondSecondaryTitle = getSecondaryTitle(titleText)
         default:
             secondSecondaryTitle = nil

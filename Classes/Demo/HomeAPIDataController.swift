@@ -40,7 +40,6 @@ final class HomeAPIDataController:
         qos: .userInitiated
     )
 
-    
     private var asasLoadRepeater: Repeater?
     
     init(
@@ -96,7 +95,7 @@ extension HomeAPIDataController {
     }
     
     func fetchIncomingASAsRequests() {
-        asasLoadRepeater = Repeater(intervalInSeconds: 3.0) {
+        asasLoadRepeater = Repeater(intervalInSeconds: 10) {
             [weak self] in
             guard let self else { return }
 

@@ -76,9 +76,9 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
         self.sendersContextPadding = 20
         self.sendersContextTopInset = 16
         self.infoFooter = [
-            .textColor(Colors.Text.gray),
+            .textColor(Colors.Text.main),
             .font(Typography.bodyRegular()),
-            .textOverflow(MultilineText(numberOfLines: 0))
+            .textOverflow(FittingText())
         ]
         
         self.infoFooterPadding = 20
