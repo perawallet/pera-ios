@@ -55,14 +55,14 @@ final class IncomingASAAccountInboxViewController:
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
-    private var query: IncommingASAsRequestDetailQuery
+    private var query: IncomingASAsRequestDetailQuery
 
     private let dataController: IncomingASAAccountInboxDataController
 
     private let copyToClipboardController: CopyToClipboardController
 
     init(
-        query: IncommingASAsRequestDetailQuery,
+        query: IncomingASAsRequestDetailQuery,
         dataController: IncomingASAAccountInboxDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration

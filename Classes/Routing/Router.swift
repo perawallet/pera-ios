@@ -2095,6 +2095,15 @@ final class Router:
                 theme: theme,
                 api: configuration.api
             )
+        case let .sendAssetInbox(draft):
+            viewController = SendAssetInboxScreen(
+                draft: draft,
+                transactionSigner: SwapTransactionSigner(
+                    api: appConfiguration.api,
+                    analytics: appConfiguration.analytics
+                ),
+                configuration: configuration
+            )
         case let .backUpAccountSelection(eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16

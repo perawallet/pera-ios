@@ -28,10 +28,10 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    private let incommingASAsAPIDataController: IncommingASAsAPIDataController
+    private let incomingASAsAPIDataController: IncomingASAsAPIDataController
 
     private var visibleAnnouncement: Announcement?
-    private var incommingASAsRequestList: IncommingASAsRequestList?
+    private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
 
@@ -47,12 +47,12 @@ final class HomeAPIDataController:
         sharedDataController: SharedDataController,
         session: Session,
         announcementDataController: AnnouncementAPIDataController,
-        incommingASAsAPIDataController: IncommingASAsAPIDataController
+        incomingASAsAPIDataController: IncomingASAsAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
-        self.incommingASAsAPIDataController = incommingASAsAPIDataController
+        self.incomingASAsAPIDataController = incomingASAsAPIDataController
     }
     
     deinit {
@@ -71,7 +71,7 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
         announcementDataController.delegate = self
-        incommingASAsAPIDataController.delegate = self
+        incomingASAsAPIDataController.delegate = self
     }
     
     func reload() {
@@ -95,7 +95,7 @@ extension HomeAPIDataController {
         announcementDataController.hideAnnouncement(visibleAnnouncement)
     }
     
-    func fetchIncommingASAsRequests() {
+    func fetchIncomingASAsRequests() {
         asasLoadRepeater = Repeater(intervalInSeconds: 3.0) {
             [weak self] in
             guard let self else { return }
@@ -107,7 +107,7 @@ extension HomeAPIDataController {
                     $0.value.isWatchAccount == false && $0.value.ledgerDetail == nil
                 }
                 let addresses = filteredAccounts.map({$0.value.address})
-                incommingASAsAPIDataController.fetchRequests(addresses: addresses)
+                incomingASAsAPIDataController.fetchRequests(addresses: addresses)
             }
         }
         
@@ -252,14 +252,14 @@ extension HomeAPIDataController {
 //            guard let self = self else { return (nil, NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>()) }
 //
 //
-//            return (incommingASAsRequests, snapshot)
+//            return (incomingASAsRequests, snapshot)
 //        }
         
         deliverAsasRequestsUpdate { [weak self] in
-//            guard let self else { return (nil as IncommingASAsRequestList?, Snapshot())}
+//            guard let self else { return (nil as IncomingASAsRequestList?, Snapshot())}
             guard let self = self else { return nil }
             var snapshot = Snapshot()
-            return (incommingASAsRequestList, Snapshot())
+            return (incomingASAsRequestList, Snapshot())
         }
     }
     
@@ -291,7 +291,7 @@ extension HomeAPIDataController {
     }
     
     private func deliverAsasRequestsUpdate(
-        _ updates: @escaping () -> IncommingASAs?
+        _ updates: @escaping () -> IncomingASAs?
     ) {
         snapshotQueue.async {
             [weak self] in
@@ -301,7 +301,7 @@ extension HomeAPIDataController {
                 return
             }
 
-            self.publish(.didUpdateIncommingASAsRequests(updates))
+            self.publish(.didUpdateIncomingASAsRequests(updates))
         }
     }
 }
@@ -329,14 +329,14 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
     }
 }
 
-extension HomeAPIDataController: IncommingASAsAPIDataControllerDelegate {
+extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
     
-    func incommingASAsAPIDataController(_ dataController: IncommingASAsAPIDataController, didFetch incommingASAsRequestList: IncommingASAsRequestList) {
-        self.incommingASAsRequestList = incommingASAsRequestList
+    func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFetch incomingASAsRequestList: IncomingASAsRequestList) {
+        self.incomingASAsRequestList = incomingASAsRequestList
         self.deliverAsasRequestsContentUpdate()
     }
     
-    func incommingASAsAPIDataController(_ dataController: IncommingASAsAPIDataController, didFailToFetchRequests error: String) {
+    func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFailToFetchRequests error: String) {
         // TODO:  Handle Error
         print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 error: \(String(describing: error)) ⬅️")
     }

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestDetail.swift
+//   IncomingASAsRequestDetail.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-// MARK: - IncommingASAsRequestDetailListResult
-final class IncommingASAsRequestDetailResult: ALGEntityModel {
+// MARK: - IncomingASAsRequestDetailListResult
+final class IncomingASAsRequestDetailResult: ALGEntityModel {
     var totalAmount: UInt64?
     var asset: AssetDecoration?
     var senders: Senders?
@@ -49,7 +49,7 @@ final class IncommingASAsRequestDetailResult: ALGEntityModel {
     }
 }
 
-extension IncommingASAsRequestDetailResult {
+extension IncomingASAsRequestDetailResult {
     struct APIModel: ALGAPIModel {
         var totalAmount: UInt64?
         var asset: AssetDecoration.APIModel?

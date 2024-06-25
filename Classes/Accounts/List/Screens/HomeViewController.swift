@@ -186,13 +186,15 @@ final class HomeViewController:
                     self.alertPresenter.presentIfNeeded()
                 }
                 
-            case .didUpdateIncommingASAsRequests(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 self.incommingASAsRequestList = asasReqUpdate.incommingASAsRequestList
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
-                print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 requestsCounts: \(String(describing: asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +))) ⬅️")
+                print("[DEBUG] ➡️ Class: \((#file.components(separatedBy: "/").last) ?? ""), Function: \(#function), Line: \(#line) 🔻 requestsCounts: \(String(describing: asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +))) ⬅️")
             }
         }
         dataController.load()
@@ -229,7 +231,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
-        dataController.fetchIncommingASAsRequests()
+        dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
 

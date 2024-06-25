@@ -33,15 +33,15 @@ final class IncomingASAAccountInboxAPIDataController:
 
     private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
     
-    private var nextQuery: IncommingASAsRequestDetailQuery?
-    private var lastQuery: IncommingASAsRequestDetailQuery?
+    private var nextQuery: IncomingASAsRequestDetailQuery?
+    private var lastQuery: IncomingASAsRequestDetailQuery?
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
 
     private var nextCursor: String?
-    private var incommingASAsRequestDetail: IncommingASAsRequestDetailList?
+    private var incomingASAsRequestDetail: IncomingASAsRequestDetailList?
 
     init(
         address: String,
@@ -61,14 +61,14 @@ final class IncomingASAAccountInboxAPIDataController:
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    func load(query: IncommingASAsRequestDetailQuery) {
-        api.fetchIncommingASAsRequest(address, with: query) {
+    func load(query: IncomingASAsRequestDetailQuery) {
+        api.fetchIncomingASAsRequest(address, with: query) {
             [weak self] response in
             guard let self else { return }
             
             switch response {
             case .success(let requestList):
-                self.incommingASAsRequestDetail = requestList
+                self.incomingASAsRequestDetail = requestList
                 reload()
             case .failure:
                 // TODO:  Handle Error Delegate
@@ -123,7 +123,7 @@ extension IncomingASAAccountInboxAPIDataController {
 
     private func deliverUpdatesForContent(
         when condition: () -> Bool,
-        query: IncommingASAsRequestDetailQuery?,
+        query: IncomingASAsRequestDetailQuery?,
         for operation: Updates.Operation
     ) {
         let updates = makeUpdatesForContent(
@@ -139,7 +139,7 @@ extension IncomingASAAccountInboxAPIDataController {
     }
 
     private func makeUpdatesForContent(
-        query: IncommingASAsRequestDetailQuery?,
+        query: IncomingASAsRequestDetailQuery?,
         for operation: Updates.Operation
     ) -> Updates {
         
@@ -169,10 +169,10 @@ extension IncomingASAAccountInboxAPIDataController {
     }
 
     private func appendSectionsForAssets(
-        query: IncommingASAsRequestDetailQuery?,
+        query: IncomingASAsRequestDetailQuery?,
         into snapshot: inout Snapshot
     ) {
-        let assetItems = makeItemsForAssets(assets: incommingASAsRequestDetail?.results ?? [])
+        let assetItems = makeItemsForAssets(assets: incomingASAsRequestDetail?.results ?? [])
         
         let items = assetItems
         snapshot.appendSections([ .assets ])
@@ -189,8 +189,8 @@ extension IncomingASAAccountInboxAPIDataController {
         let viewModel = IncomingASAAccountInboxHeaderTitleCellViewModel(count: requestsCount)
         return [.title(viewModel)]
     }
-    
-    private func makeItemsForAssets(assets: [IncommingASAsRequestDetailResult]?) -> [IncomingASAItem] {
+
+    private func makeItemsForAssets(assets: [IncomingASAsRequestDetailResult]?) -> [IncomingASAItem] {
         assets.someArray.compactMap{
             makeItemForAsset(
                 $0.asset,
@@ -213,16 +213,28 @@ extension IncomingASAAccountInboxAPIDataController {
             collectibleAsset = CollectibleAsset(decoration: assetDecoration)
         }
         
-        return makeItemForNonNFTAsset(StandardAsset(decoration: assetDecoration), collectibleAsset: collectibleAsset, senders: senders, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
+        return makeItemForNonNFTAsset(
+            StandardAsset(decoration: assetDecoration),
+            collectibleAsset: collectibleAsset,
+            senders: senders,
+            algoGainOnClime: algoGainOnClime,
+            algoGainOnReject: algoGainOnReject
+        )
     }
     
-    private func makeItemForNonNFTAsset(_ asset: StandardAsset, collectibleAsset: CollectibleAsset?, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem {
+    private func makeItemForNonNFTAsset(
+        _ asset: StandardAsset,
+        collectibleAsset: CollectibleAsset?,
+        senders: Senders?, algoGainOnClime: UInt64?,
+        algoGainOnReject: UInt64?
+    ) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
             asset: asset,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
+
         var collectibleAssetItem: CollectibleAssetItem?
         
         if let collectibleAsset {
@@ -233,7 +245,14 @@ extension IncomingASAAccountInboxAPIDataController {
             )
         }
         
-        let item = IncomingASAListItem(item: assetItem, collectibleAssetItem: collectibleAssetItem, senders: senders, accountAddress: incommingASAsRequestDetail?.address, algoGainOnClime: algoGainOnClime, algoGainOnReject: algoGainOnReject)
+        let item = IncomingASAListItem(
+            item: assetItem,
+            collectibleAssetItem: collectibleAssetItem,
+            senders: senders,
+            accountAddress: incomingASAsRequestDetail?.address,
+            algoGainOnClime: algoGainOnClime,
+            algoGainOnReject: algoGainOnReject
+        )
         return .asset(item)
     }
 }

@@ -23,7 +23,7 @@ protocol IncomingASAAccountInboxDataController: AnyObject {
     var requestsCount: Int { get }
     var address: String { get }
     
-    func load(query: IncommingASAsRequestDetailQuery)
+    func load(query: IncomingASAsRequestDetailQuery)
     func reload()
 }
 

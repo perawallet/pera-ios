@@ -21,24 +21,24 @@ import MagpieExceptions
 extension ALGAPI {
     
     @discardableResult
-    func fetchIncommingASAsRequests(
+    func fetchIncomingASAsRequests(
         _ addresses: [String],
-        onCompleted handler: @escaping (Response.ModelResult<IncommingASAsRequestList>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<IncomingASAsRequestList>) -> Void
     ) -> EndpointOperatable {        
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.asaInboxesRequests)
             .method(.get)
-            .query(IncommingASAsRequestsQuery(addresses: addresses.joined(separator: ",")))
+            .query(IncomingASAsRequestsQuery(addresses: addresses.joined(separator: ",")))
             .completionHandler(handler)
             .execute()
     }
     
     @discardableResult
-    func fetchIncommingASAsRequest(
+    func fetchIncomingASAsRequest(
         _ address: String,
-        with cursorQuery: IncommingASAsRequestDetailQuery,
-        onCompleted handler: @escaping (Response.ModelResult<IncommingASAsRequestDetailList>) -> Void
+        with cursorQuery: IncomingASAsRequestDetailQuery,
+        onCompleted handler: @escaping (Response.ModelResult<IncomingASAsRequestDetailList>) -> Void
     ) -> EndpointOperatable {
         
         return EndpointBuilder(api: self)

@@ -116,7 +116,6 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
             .placeholder(placeholder),
             .placeholderColor(Colors.Text.gray),
             .autocorrectionType(.no),
-            .textContentType(.username),
             .returnKeyType(.done),
             .autocapitalizationType(.none)
         ]
