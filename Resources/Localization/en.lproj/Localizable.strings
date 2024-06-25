@@ -1740,3 +1740,13 @@ FAQ section.";
 "incoming-asa-detail-screen-description" = "If you reject this request, the incoming asset will be permanently removed from circulation. It will not be returned to the sender. Instead, you will receive %@ ALGOs upon completion of this irreversible process. Please note that once rejected, the asset cannot be recovered.";
 "incoming-asa-detail-screen-amount-title" = "Amount";
 "incoming-asa-detail-screen-senders-title" = "Senders";
+
+/// MARK: Send Inbox
+"send-inbox-title" = "Send to Asset Inbox";
+"send-inbox-description" = "You can't send this asset directly because receiver not opted-in. But you can send it to its inbox address instead. Read more";
+"send-inbox-read-more" = "Read more";
+"send-inbox-fee-title" = "Protocol & minimum balance fees:";
+"send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
+"send-inbox-action-title" = "Send to Receiver";
+"send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
+"send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";

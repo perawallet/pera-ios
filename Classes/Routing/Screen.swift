@@ -430,6 +430,7 @@ indirect enum Screen {
     case backUpAccountSelection(
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
+    case sendAssetInbox(draft: SendAssetInboxDraft)
 }
 
 extension Screen {
