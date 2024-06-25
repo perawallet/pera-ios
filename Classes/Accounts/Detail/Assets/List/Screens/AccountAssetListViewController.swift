@@ -522,7 +522,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 let swapDisplayStore = SwapDisplayStore()
                 let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
                 item.isSwapBadgeVisible = !isOnboardedToSwap
-                item.isRquestsBadgeVisible = incomingASAsRequestsCount != 0
+                item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
                 item.startObserving(event: .requests) {

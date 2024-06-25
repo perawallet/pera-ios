@@ -44,9 +44,9 @@ final class AccountQuickActionsView:
         }
     }
 
-    var isRquestsBadgeVisible: Bool = false {
+    var isRequestsBadgeVisible: Bool = false {
         didSet {
-            requestsActionView.isBadgeVisible = isRquestsBadgeVisible
+            requestsActionView.isBadgeVisible = isRequestsBadgeVisible
         }
     }
     
