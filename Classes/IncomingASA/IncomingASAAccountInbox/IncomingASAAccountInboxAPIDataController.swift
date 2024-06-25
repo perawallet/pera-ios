@@ -70,9 +70,8 @@ extension IncomingASAAccountInboxAPIDataController {
             case .success(let requestList):
                 self.incomingASAsRequestDetail = requestList
                 reload()
-            case .failure:
-                // TODO:  Handle Error Delegate
-                break
+            case .failure(let apiError, _):
+                self.publish(event: .didReceiveError(apiError.localizedDescription))
             }
         }
         

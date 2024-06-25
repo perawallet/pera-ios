@@ -156,6 +156,7 @@ struct IncomingASACollectibleAssetListItem: Hashable {
 
 enum IncomingASAListDataControllerEvent {
     case didUpdate(IncomingASAListUpdates)
+    case didReceiveError(String)
 }
 
 struct IncomingASAListUpdates {

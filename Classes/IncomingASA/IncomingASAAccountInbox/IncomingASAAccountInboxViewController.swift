@@ -89,14 +89,14 @@ final class IncomingASAAccountInboxViewController:
 
             switch event {
             case .didUpdate(let updates):
-//                self.eventHandler?(.didUpdate(self.dataController.account))
-
-                switch updates.operation {
-                case .refresh: break
-                }
                 self.listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
+                )
+            case .didReceiveError(let error):
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error
                 )
             }
         }

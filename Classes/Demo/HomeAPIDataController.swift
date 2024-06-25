@@ -246,20 +246,11 @@ extension HomeAPIDataController {
         }
     }
 
-    private func deliverAsasRequestsContentUpdate() {
-//        deliverAsasRequestsUpdate {
-//            [weak self] in
-//            guard let self = self else { return (nil, NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>()) }
-//
-//
-//            return (incomingASAsRequests, snapshot)
-//        }
-        
-        deliverAsasRequestsUpdate { [weak self] in
-//            guard let self else { return (nil as IncomingASAsRequestList?, Snapshot())}
+    private func deliverASARequestsContentUpdate() {
+        deliverASARequestsUpdate { [weak self] in
             guard let self = self else { return nil }
             var snapshot = Snapshot()
-            return (incomingASAsRequestList, Snapshot())
+            return (incomingASAsRequestList, snapshot)
         }
     }
     
@@ -290,9 +281,7 @@ extension HomeAPIDataController {
         }
     }
     
-    private func deliverAsasRequestsUpdate(
-        _ updates: @escaping () -> IncomingASAs?
-    ) {
+    private func deliverASARequestsUpdate(_ updates: @escaping () -> IncomingASAs?) {
         snapshotQueue.async {
             [weak self] in
             guard let self = self else { return }
@@ -330,13 +319,15 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
 }
 
 extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
-    
     func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFetch incomingASAsRequestList: IncomingASAsRequestList) {
         self.incomingASAsRequestList = incomingASAsRequestList
-        self.deliverAsasRequestsContentUpdate()
+        self.deliverASARequestsContentUpdate()
     }
     
-    func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFailToFetchRequests error: String) {
+    func incomingASAsAPIDataController(
+        _ dataController: IncomingASAsAPIDataController,
+        didFailToFetchRequests error: String
+    ) {
         // TODO:  Handle Error
     }
 }
