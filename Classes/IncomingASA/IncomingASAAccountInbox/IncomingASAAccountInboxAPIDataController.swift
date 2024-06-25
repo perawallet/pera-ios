@@ -114,7 +114,6 @@ extension IncomingASAAccountInboxAPIDataController {
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
         appendSectionForTitle(into: &snapshot)
@@ -195,14 +194,18 @@ extension IncomingASAAccountInboxAPIDataController {
             makeItemForAsset(
                 $0.asset,
                 senders: $0.senders,
-                algoGainOnClime: $0.algoGainOnClime,
+                algoGainOnClaim: $0.algoGainOnClaim,
                 algoGainOnReject: $0.algoGainOnReject
             )
         }
     }
     
-    private func makeItemForAsset(_ assetDecoration: AssetDecoration?, senders: Senders?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) -> IncomingASAItem? {
-        
+    private func makeItemForAsset(
+        _ assetDecoration: AssetDecoration?,
+        senders: Senders?,
+        algoGainOnClaim: UInt64?,
+        algoGainOnReject: UInt64?
+    ) -> IncomingASAItem? {
         guard let assetDecoration else {
             return nil
         }
@@ -217,7 +220,7 @@ extension IncomingASAAccountInboxAPIDataController {
             StandardAsset(decoration: assetDecoration),
             collectibleAsset: collectibleAsset,
             senders: senders,
-            algoGainOnClime: algoGainOnClime,
+            algoGainOnClaim: algoGainOnClaim,
             algoGainOnReject: algoGainOnReject
         )
     }
@@ -225,7 +228,7 @@ extension IncomingASAAccountInboxAPIDataController {
     private func makeItemForNonNFTAsset(
         _ asset: StandardAsset,
         collectibleAsset: CollectibleAsset?,
-        senders: Senders?, algoGainOnClime: UInt64?,
+        senders: Senders?, algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) -> IncomingASAItem {
         let currency = sharedDataController.currency
@@ -251,7 +254,7 @@ extension IncomingASAAccountInboxAPIDataController {
             senders: senders,
             accountAddress: incomingASAsRequestDetail?.address,
             inboxAddress: incomingASAsRequestDetail?.inboxAddress,
-            algoGainOnClime: algoGainOnClime,
+            algoGainOnClaim: algoGainOnClaim,
             algoGainOnReject: algoGainOnReject
         )
         return .asset(item)
@@ -259,7 +262,6 @@ extension IncomingASAAccountInboxAPIDataController {
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    
     private func makeUpdatesForNoContent(
         for operation: Updates.Operation
     ) -> Updates {
@@ -291,9 +293,7 @@ extension IncomingASAAccountInboxAPIDataController {
             toSection: .empty
         )
     }
-
 }
-
 
 extension IncomingASAAccountInboxAPIDataController {
     private func publish(updates: Updates) {

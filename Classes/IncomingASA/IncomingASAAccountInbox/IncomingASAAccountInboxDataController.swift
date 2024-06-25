@@ -58,11 +58,19 @@ struct IncomingASAListItem: Hashable {
     let collectibleViewModel: CollectibleListItemViewModel?
     let itemViewModel: IncomingASAItemViewModel
     let accountAddress: String?
-    let algoGainOnClime: UInt64?
+    let algoGainOnClaim: UInt64?
     let algoGainOnReject: UInt64?
     let inboxAddress: String?
     
-    init(item: AssetItem, collectibleAssetItem: CollectibleAssetItem?, senders: Senders?, accountAddress: String?, inboxAddress: String?, algoGainOnClime: UInt64?, algoGainOnReject: UInt64?) {
+    init(
+        item: AssetItem,
+        collectibleAssetItem: CollectibleAssetItem?,
+        senders: Senders?,
+        accountAddress: String?,
+        inboxAddress: String?,
+        algoGainOnClaim: UInt64?, 
+        algoGainOnReject: UInt64?
+    ) {
         self.asset = item.asset
         self.collectibleAsset = collectibleAssetItem?.asset
         self.senders = senders
@@ -71,11 +79,19 @@ struct IncomingASAListItem: Hashable {
         } else {
             self.collectibleViewModel = nil
         }
-        self.viewModel = IncomingASAAssetListItemViewModel(item, senders: senders, isCollectible: self.collectibleViewModel != nil)
-        self.itemViewModel = IncomingASAItemViewModel(item, senders: senders, isCollectible: self.collectibleViewModel != nil)
+        self.viewModel = IncomingASAAssetListItemViewModel(
+            item, 
+            senders: senders,
+            isCollectible: self.collectibleViewModel != nil
+        )
+        self.itemViewModel = IncomingASAItemViewModel(
+            item,
+            senders: senders,
+            isCollectible: self.collectibleViewModel != nil
+        )
         self.accountAddress = accountAddress
         self.inboxAddress = inboxAddress
-        self.algoGainOnClime = algoGainOnClime
+        self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
     }
 

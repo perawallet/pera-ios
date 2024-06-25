@@ -355,7 +355,7 @@ extension IncomingASAsDetailScreenAPIDataController {
 
         sign(privateData, with: SDKTransactionSigner())
     }
-    // signer = AlgoSDK
+
     private func sign(_ privateData: Data?, with signer: TransactionSigner) {
         signer.delegate = self
 
@@ -375,7 +375,7 @@ extension IncomingASAsDetailScreenAPIDataController {
         transactionAPIConnector.uploadTransaction(transactionData) { transactionId, error in
             guard let id = transactionId else {
                 self.resetLedgerOperationIfNeeded()
-                self.logLedgerTransactionNonAcceptanceError()
+
                 if let error = error {
                     self.delegate?.incomingASAsDetailScreenAPIDataController(self, didFailedTransaction: .network(.unexpected(error)))
                 }

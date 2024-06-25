@@ -115,8 +115,6 @@ final class IncomingASAAccountInboxViewController:
         super.viewDidAppear(animated)
 
         startAnimatingLoadingIfNeededWhenViewDidAppear()
-
-//        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
 
     override func viewDidAppearAfterInteractiveDismiss() {

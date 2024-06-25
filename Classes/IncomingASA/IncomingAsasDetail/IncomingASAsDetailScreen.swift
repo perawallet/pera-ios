@@ -110,7 +110,7 @@ extension IncomingASAsDetailScreen {
                     accountPortfolio: item,
                     currency: sharedDataController.currency,
                     currencyFormatter: CurrencyFormatter(),
-                    algoGainOnClime: incomingASAListItem.algoGainOnClime,
+                    algoGainOnClaim: incomingASAListItem.algoGainOnClaim,
                     algoGainOnReject: incomingASAListItem.algoGainOnReject
                 )
             )

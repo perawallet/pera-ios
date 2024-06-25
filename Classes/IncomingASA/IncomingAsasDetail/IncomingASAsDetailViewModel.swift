@@ -23,7 +23,7 @@ struct IncomingASAsDetailViewModel: ViewModel {
     private(set) var amount: IncomingASARequestHeaderViewModel?
     private(set) var senders: [IncomingASARequesSenderViewModel]?
     private(set) var accountId: TextProvider?
-    private(set) var algoGainOnClime: UInt64?
+    private(set) var algoGainOnClaim: UInt64?
     private(set) var algoGainOnReject: UInt64?
     
     init(
@@ -32,13 +32,13 @@ struct IncomingASAsDetailViewModel: ViewModel {
         accountPortfolio: AccountPortfolioItem,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter,
-        algoGainOnClime: UInt64?,
+        algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) {
         bindAccountAssets(draft, account: account, accountPortfolio: accountPortfolio)
         bindSenders(draft.senders)
         bindAmount(draft, currency: currency, currencyFormatter: currencyFormatter)
-        self.algoGainOnClime = algoGainOnClime
+        self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
     }
 }

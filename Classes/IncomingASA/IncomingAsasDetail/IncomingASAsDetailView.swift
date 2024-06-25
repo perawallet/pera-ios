@@ -137,7 +137,7 @@ final class IncomingASAsDetailView:
         })
         
         "incoming-asa-detail-screen-description_accept"
-            .localized(params: viewModel?.algoGainOnClime?.toAlgos.stringValue ?? "")
+            .localized(params: viewModel?.algoGainOnClaim?.toAlgos.stringValue ?? "")
             .load(in: infoFooterView)
     }
     

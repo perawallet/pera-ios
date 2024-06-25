@@ -23,7 +23,7 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
     var totalAmount: UInt64?
     var asset: AssetDecoration?
     var senders: Senders?
-    var algoGainOnClime: UInt64?
+    var algoGainOnClaim: UInt64?
     var algoGainOnReject: UInt64?
     
     // Initializer from APIModel
@@ -33,7 +33,7 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
         self.totalAmount = apiModel.totalAmount
         self.asset = apiModel.asset.unwrap(AssetDecoration.init)
         self.senders = apiModel.senders.unwrap(Senders.init)
-        self.algoGainOnClime = apiModel.algoGainOnClime
+        self.algoGainOnClaim = apiModel.algoGainOnClaim
         self.algoGainOnReject = apiModel.algoGainOnReject
     }
     
@@ -43,7 +43,7 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
         apiModel.totalAmount = totalAmount
         apiModel.asset = asset?.encode()
         apiModel.senders = senders?.encode()
-        apiModel.algoGainOnClime = algoGainOnClime
+        apiModel.algoGainOnClaim = algoGainOnClaim
         apiModel.algoGainOnReject = algoGainOnReject
         return apiModel
     }
@@ -54,14 +54,14 @@ extension IncomingASAsRequestDetailResult {
         var totalAmount: UInt64?
         var asset: AssetDecoration.APIModel?
         var senders: Senders.APIModel?
-        var algoGainOnClime: UInt64?
+        var algoGainOnClaim: UInt64?
         var algoGainOnReject: UInt64?
         
         init() {
             self.totalAmount = 0
             self.asset = .init()
             self.senders = .init()
-            self.algoGainOnClime = 0
+            self.algoGainOnClaim = 0
             self.algoGainOnReject = 0
         }
 
@@ -69,7 +69,7 @@ extension IncomingASAsRequestDetailResult {
             case totalAmount = "total_amount"
             case asset
             case senders
-            case algoGainOnClime = "algo_gain_on_claim"
+            case algoGainOnClaim = "algo_gain_on_claim"
             case algoGainOnReject = "algo_gain_on_reject"
         }
     }
