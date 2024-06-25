@@ -26,6 +26,7 @@ enum APIParamKey: String, CodingKey {
     case accounts = "accounts"
     case accountType = "account_type"
     case address = "address"
+    case addresses = "addresses"
     case afterTime = "after-time"
     case algoDollarConversion = "symbol"
     case amount = "amount"

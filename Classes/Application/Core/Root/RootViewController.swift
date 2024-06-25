@@ -106,13 +106,17 @@ extension RootViewController {
             api: configuration.api!,
             session: configuration.session!
         )
-
+        let incomingASAsAPIDataController = IncomingASAsAPIDataController(
+            api: configuration.api!,
+            session: configuration.session!
+        )        
         let homeViewController = HomeViewController(
             swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
-                announcementDataController: announcementAPIDataController
+                announcementDataController: announcementAPIDataController,
+                incomingASAsAPIDataController: incomingASAsAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

@@ -16,6 +16,7 @@
 "title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
+"title-asa" = "%@ Incoming ASAs";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-receive" = "Receive";
@@ -1207,6 +1208,7 @@
 
 //MARK: QuickActions
 "quick-actions-buy-sell-title" = "Buy / Sell";
+"quick-actions-asset-inbox-title" = "Asset Inbox";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";
@@ -1727,6 +1729,22 @@ FAQ section.";
 
 /// MARK: Back Up Account Selection
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
+
+/// MARK: Incoming ASA Requests
+"incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
+"incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
+"incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
+"incoming-asa-account-inbox-screen-info-description-title" = "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.";
+"incoming-asa-detail-screen-right-button-title" = "Claim";
+"incoming-asa-detail-screen-left-button-title" = "Reject";
+"incoming-asa-detail-screen-info-title" = "Rejecting Requests";
+"incoming-asa-detail-screen-description_reject" = "If you reject this request, the incoming asset will be permanently removed from circulation. It will not be returned to the sender. Instead, you will receive %@ ALGOs upon completion of this irreversible process. Please note that once rejected, the asset cannot be recovered.";
+"incoming-asa-detail-screen-description_accept" = "You will receive %@ ALGO in order to compensate the opt-in expenses.";
+"incoming-asa-detail-screen-amount-title" = "Amount";
+"incoming-asa-detail-screen-senders-title" = "Senders";
+"incoming-asa-accounts-screen-cell-title" = "%@ incoming assets";
+
+"incoming-asa-accounts-screen-no-content-cell-body" = "This is where you can view your incoming asset transfer requests. Tap to learn more about this feature.";
 
 /// MARK: Send Inbox
 "send-inbox-title" = "Send to Asset Inbox";

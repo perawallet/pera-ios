@@ -749,7 +749,7 @@ final class Router:
                 ),
                 configuration: configuration
             )
-        case let .accountDetail(accountHandle, eventHandler):
+        case let .accountDetail(accountHandle, eventHandler, incomingASAsRequestsCount):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
@@ -760,7 +760,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration, 
+                incomingASAsRequestsCount: incomingASAsRequestsCount
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
@@ -1096,6 +1097,53 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .incomingASAAccounts(result):
+            
+            let dataController = IncomingASAAccountsLocalDataController(
+                incomingASAsRequestList: result,
+                sharedDataController: configuration.sharedDataController
+            )
+            
+            viewController = IncomingASAAccountsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            
+        case let .incomingASA(address, requestsCount):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            
+            let dataController = IncomingASAAccountInboxAPIDataController(
+                address: address,
+                requestsCount: requestsCount,
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api)
+
+            viewController = IncomingASAAccountInboxViewController(
+                query: .init(),
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            
+        case let .incomingASAsDetail(draft):
+            let dataController = IncomingASAsDetailScreenAPIDataController(
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api, 
+                bannerController: configuration.bannerController,
+                analytics: configuration.analytics,
+                draft: draft
+            )
+
+            let screen = IncomingASAsDetailScreen(
+                draft: draft,
+                configuration: configuration,
+                dataController: dataController
+            )
+
+            viewController = screen
+                        
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate

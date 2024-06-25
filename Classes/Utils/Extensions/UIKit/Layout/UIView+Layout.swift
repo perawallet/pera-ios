@@ -43,4 +43,10 @@ extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+    
+    func roundTheCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        clipsToBounds = true
+        layer.cornerRadius = radius
+        layer.maskedCorners = CACornerMask(rawValue: corners.rawValue)
+    }
 }

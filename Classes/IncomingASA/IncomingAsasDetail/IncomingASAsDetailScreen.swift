@@ -1,0 +1,244 @@
+// Copyright 2024 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   IncomingAsasDetailScreen.swift
+
+import Foundation
+import MacaroonForm
+import MacaroonUIKit
+import MacaroonUtils
+import UIKit
+import WalletConnectSwift
+
+final class IncomingASAsDetailScreen: BaseViewController {
+    
+    private lazy var theme = Theme()
+    private lazy var incomingAsasDetailView = IncomingASAsDetailView()
+    let draft: IncomingASAListItem?
+    let collectibleDraft: IncomingASACollectibleAssetListItem?
+    private let dataController: IncomingASAsDetailScreenAPIDataController
+
+    private lazy var footerEffectView = EffectView()
+    private lazy var actionsContextView = MacaroonUIKit.HStackView()
+    private lazy var primaryActionView = MacaroonUIKit.Button()
+    private lazy var secondaryActionView = MacaroonUIKit.Button()
+    private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private var account: Account?
+    
+    init(
+        draft: IncomingASAListItem?,
+        collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
+        configuration: ViewControllerConfiguration,
+        dataController: IncomingASAsDetailScreenAPIDataController
+    ) {
+        self.draft = draft
+        self.collectibleDraft = collectibleDraft
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
+
+    
+    override func configureAppearance() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+
+    
+    override func prepareLayout() {
+        addIncomingAsasDetailView()
+        addActions()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setStatusBarBackgroundColor(with: .black)
+    }
+    
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
+    override func linkInteractors() {
+        incomingAsasDetailView.startObserving(event: .performClose) {
+            [weak self] in
+            self?.dismissScreen()
+        }
+        
+        dataController.delegate = self
+    }
+}
+
+extension IncomingASAsDetailScreen {
+    private func addIncomingAsasDetailView() {
+        view.addSubview(incomingAsasDetailView)
+        
+        incomingAsasDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        let currency = self.sharedDataController.currency
+        let currencyFormatter = self.currencyFormatter
+
+        self.sharedDataController.sortedAccounts().forEach { accountHandle in
+            
+            guard let incomingASAListItem = draft,
+                    accountHandle.value.address == incomingASAListItem.accountAddress else {return}
+            self.account = accountHandle.value
+            
+            let item = AccountPortfolioItem(
+                accountValue: accountHandle,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
+            
+            incomingAsasDetailView.bindData(
+                IncomingASAsDetailViewModel(
+                    draft: incomingASAListItem,
+                    account: accountHandle.value,
+                    accountPortfolio: item,
+                    currency: sharedDataController.currency,
+                    currencyFormatter: CurrencyFormatter(),
+                    algoGainOnClaim: incomingASAListItem.algoGainOnClaim,
+                    algoGainOnReject: incomingASAListItem.algoGainOnReject
+                )
+            )
+        }
+    }
+}
+
+extension IncomingASAsDetailScreen {
+    private func addActions() {
+        addFooterGradient()
+        addActionsContext()
+    }
+
+    private func addFooterGradient() {
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+        footerEffectView.effect = LinearGradientEffect(gradient: backgroundGradient)
+
+        view.addSubview(footerEffectView)
+        footerEffectView.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+
+    private func addActionsContext() {
+        footerEffectView.addSubview(actionsContextView)
+
+        actionsContextView.spacing = theme.spacingBetweenActions
+
+        actionsContextView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.actionMargins.bottom
+
+            $0.top == theme.spacingBetweenListAndPrimaryAction
+            $0.leading == theme.actionMargins.leading
+            $0.trailing == theme.actionMargins.trailing
+            $0.bottom == bottom
+        }
+
+        addSecondaryAction()
+        addPrimaryAction()
+    }
+
+    private func addSecondaryAction() {
+        secondaryActionView.customizeAppearance(theme.secondaryAction)
+
+        footerEffectView.addSubview(secondaryActionView)
+        secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
+
+        actionsContextView.addArrangedSubview(secondaryActionView)
+
+        secondaryActionView.addTouch(
+            target: self,
+            action: #selector(performSecondaryAction)
+        )
+    }
+
+    private func addPrimaryAction() {
+        primaryActionView.customizeAppearance(theme.primaryAction)
+
+        primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
+        actionsContextView.addArrangedSubview(primaryActionView)
+
+        primaryActionView.snp.makeConstraints {
+            $0.width == secondaryActionView * theme.secondaryActionWidthMultiplier
+        }
+        primaryActionView.addTouch(
+            target: self,
+            action: #selector(performPrimaryAction)
+        )
+    }
+}
+
+extension IncomingASAsDetailScreen {
+    @objc
+    private func performPrimaryAction() {
+        guard let draft, let account else { return }
+        dataController.composeArc59ClaimAssetTxn(with: draft, account: account)
+    }
+
+    @objc
+    private func performSecondaryAction() {
+        let uiSheet = UISheet(
+            image: img("icon-incoming-asa-error"),
+            title: "incoming-asa-detail-screen-info-title"
+                .localized
+                .bodyLargeMedium(alignment: .center),
+            body: UISheetBodyTextProvider(text: "incoming-asa-detail-screen-description_reject"
+                .localized(params: draft?.algoGainOnReject?.toAlgos.stringValue ?? "")
+                .bodyRegular(alignment: .center))
+        )
+
+        let rejectAction = UISheetAction(
+            title: "Reject",
+            style: .default
+        ) { [unowned self] in
+            guard let draft, let account else { return }
+            dataController.composeArc59RejectAssetTxn(with: draft, account: account)
+        }
+        
+        let cancelAction = UISheetAction(
+            title: "title-cancel".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        
+        uiSheet.addAction(rejectAction)
+        uiSheet.addAction(cancelAction)
+
+        transitionToRejectConfirmInfo.perform(
+            .sheetAction(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension IncomingASAsDetailScreen: IncomingASAsDetailScreenAPIDataControllerDelegate {
+    func incomingASAsDetailScreenAPIDataController(_ incomingASAsDetailScreenAPIDataController: IncomingASAsDetailScreenAPIDataController, didCompletedTransaction transactionId: TransactionID?) {
+        dismissScreen()
+    }
+}

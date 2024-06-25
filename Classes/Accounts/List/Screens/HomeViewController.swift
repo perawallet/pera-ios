@@ -127,6 +127,10 @@ final class HomeViewController:
     private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
+    private var asasRequestsCount: Int?
+    private var incomingASAsRequestList: IncomingASAsRequestList?
+    private var listWasScrolled = false
+    
     init(
         swapDataStore: SwapDataStore,
         dataController: HomeDataController,
@@ -146,7 +150,7 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         configureNotificationBarButton()
-
+        configureASARequestBarButton()
         navigationView.prepareLayout(NoLayoutSheet())
 
         navigationItem.titleView = navigationView
@@ -180,6 +184,15 @@ final class HomeViewController:
 
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
+                }
+                
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                if !listWasScrolled {
+                    self.configureASARequestBarButton()
                 }
             }
         }
@@ -217,7 +230,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
-
+        dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
 
@@ -295,6 +308,21 @@ extension HomeViewController {
         rightBarButtonItems = [notificationBarButtonItem]
         setNeedsNavigationBarAppearanceUpdate()
     }
+    
+    private func configureASARequestBarButton() {
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount ?? 0)) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
+            }
+        }
+
+        leftBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
+    }
 }
 
 extension HomeViewController {
@@ -311,11 +339,29 @@ extension HomeViewController {
         updateNavigationBarWhenListDidScroll()
         updateListBackgroundWhenListDidScroll()
     }
-
+    
     private func updateNavigationBarWhenListDidScroll() {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-        navigationView.animateTitleVisible(!headerVisible)
+        navigationView.animateTitleVisible(!headerVisible) { isVisible in
+            if isVisible {
+                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(0)) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
+                    }
+                }
+                self.leftBarButtonItems = [notificationBarButtonItem]
+                self.setNeedsNavigationBarAppearanceUpdate()
+                self.listWasScrolled = true
+            } else {
+                self.listWasScrolled = false
+                self.configureASARequestBarButton()
+            }
+        }
     }
 
     private func addListBackground() {
@@ -913,10 +959,11 @@ extension HomeViewController {
             case .didBackUp:
                 self.dataController.reload()
             }
-        }
-
+        }        
+        let requestCount = self.incomingASAsRequestList?.results
+            .first { $0.address == account.value.address }?.requestCount ?? 0
         open(
-            .accountDetail(accountHandle: account, eventHandler: eventHandler),
+            .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: requestCount),
             by: .push
         )
     }
