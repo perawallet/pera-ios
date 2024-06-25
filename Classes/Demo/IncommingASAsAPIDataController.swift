@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsAPIDataController.swift
+//   IncomingASAsAPIDataController.swift
 
 import Foundation
 import MagpieCore
 
-final class IncommingASAsAPIDataController {
-    weak var delegate: IncommingASAsAPIDataControllerDelegate?
+final class IncomingASAsAPIDataController {
+    weak var delegate: IncomingASAsAPIDataControllerDelegate?
     
     private let api: ALGAPI
     private let session: Session
@@ -29,19 +29,19 @@ final class IncommingASAsAPIDataController {
     }
     
     func fetchRequests(addresses: [String]) {
-        api.fetchIncommingASAsRequests(addresses) { [weak self] response in
+        api.fetchIncomingASAsRequests(addresses) { [weak self] response in
             guard let self = self else {
                 return
             }
             
             switch response {
             case .success(let requestList):
-                self.delegate?.incommingASAsAPIDataController(
+                self.delegate?.incomingASAsAPIDataController(
                     self, 
                     didFetch: requestList
                 )
             case .failure(let apiError, _):
-                self.delegate?.incommingASAsAPIDataController(
+                self.delegate?.incomingASAsAPIDataController(
                     self,
                     didFailToFetchRequests: apiError.localizedDescription
                 )
@@ -50,14 +50,14 @@ final class IncommingASAsAPIDataController {
     }
 }
 
-protocol IncommingASAsAPIDataControllerDelegate: AnyObject {
-    func incommingASAsAPIDataController(
-        _ dataController: IncommingASAsAPIDataController,
-        didFetch incommingASAsRequestList: IncommingASAsRequestList
+protocol IncomingASAsAPIDataControllerDelegate: AnyObject {
+    func incomingASAsAPIDataController(
+        _ dataController: IncomingASAsAPIDataController,
+        didFetch incomingASAsRequestList: IncomingASAsRequestList
     )
     
-    func incommingASAsAPIDataController(
-        _ dataController: IncommingASAsAPIDataController,
+    func incomingASAsAPIDataController(
+        _ dataController: IncomingASAsAPIDataController,
         didFailToFetchRequests error: String
     )
 }

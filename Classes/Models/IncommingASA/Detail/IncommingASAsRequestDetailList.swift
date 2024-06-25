@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestDetailList.swift
+//   IncomingASAsRequestDetailList.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class IncommingASAsRequestDetailList:
-    PaginatedList<IncommingASAsRequestDetailResult>,
+final class IncomingASAsRequestDetailList:
+    PaginatedList<IncomingASAsRequestDetailResult>,
     ALGEntityModel {    
     var address: String?
     var inboxAddress: String?
@@ -29,7 +29,7 @@ final class IncommingASAsRequestDetailList:
     ) {
         self.init(
             pagination: apiModel,
-            results: apiModel.results.unwrapMap(IncommingASAsRequestDetailResult.init)
+            results: apiModel.results.unwrapMap(IncomingASAsRequestDetailResult.init)
         )
         
     }
@@ -45,7 +45,7 @@ final class IncommingASAsRequestDetailList:
     }
 }
 
-extension IncommingASAsRequestDetailList {
+extension IncomingASAsRequestDetailList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
@@ -54,7 +54,7 @@ extension IncommingASAsRequestDetailList {
         var previous: String?
         var address: String?
         var inboxAddress: String?
-        var results: [IncommingASAsRequestDetailResult.APIModel]?
+        var results: [IncomingASAsRequestDetailResult.APIModel]?
 
         init() {
             self.count = nil

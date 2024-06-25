@@ -55,8 +55,8 @@ final class AccountListItemView:
         iconView.load(from: viewModel?.icon)
         iconBottomRightBadgeView.image = viewModel?.iconBottomRightBadge?.uiImage
         titleView.bindData(viewModel?.title)
-        primaryAccessoryView.editText = viewModel?.primaryAccessory // ¦38,69
-        secondaryAccessoryView.editText = viewModel?.secondaryAccessory // "$7,25"
+        primaryAccessoryView.editText = viewModel?.primaryAccessory
+        secondaryAccessoryView.editText = viewModel?.secondaryAccessory
         accessoryIconView.image = viewModel?.accessoryIcon
     }
 

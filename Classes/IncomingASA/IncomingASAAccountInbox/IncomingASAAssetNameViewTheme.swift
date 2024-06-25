@@ -50,21 +50,4 @@ struct IncomingASAAssetNameViewTheme: IncominASATitleViewTheme {
         self.spacingBetweenPrimaryAndSecondaryTitles = 0
         self.titleEdgeInsets = (2, 6, 4, 6)
     }
-    
-//    mutating func forceToDark() {
-//        self.primaryTitle = [
-//            .textColor(Colors.ASATiers.suspiciousIconBackground),
-//        ]
-//        
-//        self.secondaryTitle = [
-//            .textColor(Colors.Button.Square.secondaryIcon),
-//            .font(Typography.captionMedium()),
-//            .backgroundColor(Colors.Shadows.Tab.bottomLineDark)
-//        ]
-//        self.secondSecondaryTitle = [
-//            .textColor(Colors.Button.Square.secondaryIcon),
-//            .font(Typography.captionMedium()),
-//            .backgroundColor(Colors.Shadows.Tab.bottomLineDark)
-//        ]
-//    }
 }

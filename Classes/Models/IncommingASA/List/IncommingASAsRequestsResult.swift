@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestsResult.swift
+//   IncomingASAsRequestsResult.swift
 
 import Foundation
 import MagpieCore
 
-final class IncommingASAsRequestsResult: ALGEntityModel {
+final class IncomingASAsRequestsResult: ALGEntityModel {
     var address: String?
     var inboxAddress: String?
     var requestCount: Int?
@@ -39,7 +39,7 @@ final class IncommingASAsRequestsResult: ALGEntityModel {
     }
 }
 
-extension IncommingASAsRequestsResult {
+extension IncomingASAsRequestsResult {
     struct APIModel: ALGAPIModel {
         var address: String?
         var inboxAddress: String?
