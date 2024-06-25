@@ -1128,7 +1128,7 @@ final class Router:
             )
             
         case let .incomingASAsDetail(draft):
-            let dataController = IncomingASAsDetailScreenAPIDataController(
+            let transactionController = IncomingASATransactionController(
                 sharedDataController: configuration.sharedDataController,
                 api: appConfiguration.api, 
                 bannerController: configuration.bannerController,
@@ -1139,7 +1139,7 @@ final class Router:
             let screen = IncomingASAsDetailScreen(
                 draft: draft,
                 configuration: configuration,
-                dataController: dataController
+                transactionController: transactionController
             )
 
             viewController = screen

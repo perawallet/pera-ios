@@ -23,5 +23,4 @@ struct ARC59RejectAssetTransactionDraft: TransactionDraft {
     let creatorAccount: String?
     let appID: Int64
     let assetID: Int64
-    let secretKey: Data?
 }

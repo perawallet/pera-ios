@@ -27,7 +27,7 @@ final class IncomingASAsDetailScreen: BaseViewController {
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
     let draft: IncomingASAListItem?
     let collectibleDraft: IncomingASACollectibleAssetListItem?
-    private let dataController: IncomingASAsDetailScreenAPIDataController
+    private let transactionController: IncomingASATransactionController
 
     private lazy var footerEffectView = EffectView()
     private lazy var actionsContextView = MacaroonUIKit.HStackView()
@@ -42,11 +42,11 @@ final class IncomingASAsDetailScreen: BaseViewController {
         draft: IncomingASAListItem?,
         collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
         configuration: ViewControllerConfiguration,
-        dataController: IncomingASAsDetailScreenAPIDataController
+        transactionController: IncomingASATransactionController
     ) {
         self.draft = draft
         self.collectibleDraft = collectibleDraft
-        self.dataController = dataController
+        self.transactionController = transactionController
         super.init(configuration: configuration)
     }
 
@@ -76,7 +76,7 @@ final class IncomingASAsDetailScreen: BaseViewController {
             self?.dismissScreen()
         }
         
-        dataController.delegate = self
+        transactionController.delegate = self
     }
 }
 
@@ -193,8 +193,16 @@ extension IncomingASAsDetailScreen {
 extension IncomingASAsDetailScreen {
     @objc
     private func performPrimaryAction() {
-        guard let draft, let account else { return }
-        dataController.composeArc59ClaimAssetTxn(with: draft, account: account)
+        guard let draft,
+              let account else {
+            return
+        }
+        
+        transactionController.getTransactionParamsAndCompleteTransaction(
+            with: draft,
+            for: account,
+            type: .claim
+        )
     }
 
     @objc
@@ -213,8 +221,16 @@ extension IncomingASAsDetailScreen {
             title: "Reject",
             style: .default
         ) { [unowned self] in
-            guard let draft, let account else { return }
-            dataController.composeArc59RejectAssetTxn(with: draft, account: account)
+            guard let draft,
+                  let account else {
+                return
+            }
+            
+            transactionController.getTransactionParamsAndCompleteTransaction(
+                with: draft,
+                for: account,
+                type: .reject
+            )
         }
         
         let cancelAction = UISheetAction(
@@ -237,8 +253,11 @@ extension IncomingASAsDetailScreen {
     }
 }
 
-extension IncomingASAsDetailScreen: IncomingASAsDetailScreenAPIDataControllerDelegate {
-    func incomingASAsDetailScreenAPIDataController(_ incomingASAsDetailScreenAPIDataController: IncomingASAsDetailScreenAPIDataController, didCompletedTransaction transactionId: TransactionID?) {
+extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didCompletedTransaction transactionId: TransactionID?
+    ) {
         dismissScreen()
     }
 }
