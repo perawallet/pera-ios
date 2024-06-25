@@ -195,7 +195,7 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
-            draft.secretKey,
+            nil,
             &error
         )?.flatten()
     }
@@ -236,7 +236,7 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
-            draft.secretKey,
+            nil,
             &error
         )?.flatten()
     }

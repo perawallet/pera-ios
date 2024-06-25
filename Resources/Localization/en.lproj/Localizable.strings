@@ -1745,3 +1745,13 @@ FAQ section.";
 "incoming-asa-accounts-screen-cell-title" = "%@ incoming assets";
 
 "incoming-asa-accounts-screen-no-content-cell-body" = "This is where you can view your incoming asset transfer requests. Tap to learn more about this feature.";
+
+/// MARK: Send Inbox
+"send-inbox-title" = "Send to Asset Inbox";
+"send-inbox-description" = "You can't send this asset directly because receiver not opted-in. But you can send it to its inbox address instead. Read more";
+"send-inbox-read-more" = "Read more";
+"send-inbox-fee-title" = "Protocol & minimum balance fees:";
+"send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
+"send-inbox-action-title" = "Send to Receiver";
+"send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
+"send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";

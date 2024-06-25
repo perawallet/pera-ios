@@ -33,9 +33,9 @@ final class AccountQuickActionsCell:
         }
     }
     
-    var isRquestsBadgeVisible: Bool = false {
+    var isRequestsBadgeVisible: Bool = false {
         didSet {
-            contextView.isRquestsBadgeVisible = isRquestsBadgeVisible
+            contextView.isRequestsBadgeVisible = isRequestsBadgeVisible
         }
     }
 

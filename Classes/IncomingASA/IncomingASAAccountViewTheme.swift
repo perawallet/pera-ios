@@ -21,8 +21,6 @@ import UIKit
 struct IncomingASAAccountViewTheme:
     StyleSheet,
     LayoutSheet {
-
-//    let paddings: LayoutPaddings
     let icon: ImageStyle
     let iconSize: LayoutSize
     let horizontalPadding: LayoutMetric
@@ -32,7 +30,6 @@ struct IncomingASAAccountViewTheme:
     let accessoryIconContentEdgeInsets: LayoutOffset
 
     init(_ family: LayoutFamily) {
-//        self.paddings = paddings
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]

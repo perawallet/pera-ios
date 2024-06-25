@@ -24,22 +24,22 @@ final class IncomingASAAccountsLocalDataController:
     
     var eventHandler: ((IncomingASAAccountsDataControllerEvent) -> Void)?
     
-    private(set)var incommingASAsRequestList: IncommingASAsRequestList?
+    private(set)var incomingASAsRequestList: IncomingASAsRequestList?
     private let sharedDataController: SharedDataController
     private var lastSnapshot: Snapshot?
 
     init(
-        incommingASAsRequestList: IncommingASAsRequestList?,
+        incomingASAsRequestList: IncomingASAsRequestList?,
         sharedDataController: SharedDataController
     ) {
-        self.incommingASAsRequestList = incommingASAsRequestList
+        self.incomingASAsRequestList = incomingASAsRequestList
         self.sharedDataController = sharedDataController
     }
 }
 
 extension IncomingASAAccountsLocalDataController {
     func load() {
-        if let results = incommingASAsRequestList?.results,
+        if let results = incomingASAsRequestList?.results,
             results.isNonEmpty,
             results.filter({ ($0.requestCount ?? 0) > 0}).isNonEmpty {
             deliverUpdatesForContent(for: .refresh)
@@ -123,10 +123,10 @@ extension IncomingASAAccountsLocalDataController {
 
     private func makeItemForAccountItem() -> [IncomingASAAccountsItem] {
         var accountsItems: [IncomingASAAccountsItem] = []
-        incommingASAsRequestList?.results.forEach { incommingASAsRequestsResult in
-            if let address = incommingASAsRequestsResult.address,
+        incomingASAsRequestList?.results.forEach { incomingASAsRequestsResult in
+            if let address = incomingASAsRequestsResult.address,
                let account = sharedDataController.accountCollection[address]?.value {
-                if let count = incommingASAsRequestsResult.requestCount, count > 0 {
+                if let count = incomingASAsRequestsResult.requestCount, count > 0 {
                     accountsItems.append(
                         IncomingASAAccountsItem.account(IncomingASAAccountCellViewModel.init(account, incomingRequestCount: count))
                     )

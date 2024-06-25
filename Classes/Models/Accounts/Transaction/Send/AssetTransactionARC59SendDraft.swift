@@ -12,19 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ARC59SendAssetTransactionDraft.swift
+//   AssetTransactionARC59SendDraft.swift
 
 import Foundation
 
-struct ARC59SendAssetTransactionDraft: TransactionDraft {
+struct AssetTransactionARC59SendDraft: TransactionSendDraft {
     var from: Account
-    var transactionParams: TransactionParams
-    let receiver: String
+    var toAccount: Account?
+    var toContact: Contact?
+    var asset: Asset?
+    var toNameService: NameService?
+    var amount: Decimal?
+    var fee: UInt64?
+    var isMaxTransaction = false
+    var identifier: String?
+    let assetIndex: Int64?
+    var assetCreator = ""
+    var assetDecimalFraction = 0
+    var isVerifiedAsset = false
+    var note: String?
+    var lockedNote: String?
     let appAddress: String
     let inboxAccount: String?
-    let amount: UInt64
     let minBalance: UInt64
     let innerTransactionCount: Int
     let appID: Int64
-    let assetID: Int64
 }

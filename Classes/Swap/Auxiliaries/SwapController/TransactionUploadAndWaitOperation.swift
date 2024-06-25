@@ -90,7 +90,7 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
                     guard let self = self else { return }
 
                     if self.shouldReturnSuccessWhenCompleted {
-                        self.publishEvent(.didCompleteSwap)
+                        self.publishEvent(.didCompleteTransactionOnTheNode)
                     }
                     
                     self.finish()
@@ -140,7 +140,7 @@ extension TransactionUploadAndWaitOperation {
 
 extension TransactionUploadAndWaitOperation {
     enum Event {
-        case didCompleteSwap
+        case didCompleteTransactionOnTheNode
         case didFailTransaction(TxnID)
         case didFailNetwork(Error)
         case didCancelTransaction

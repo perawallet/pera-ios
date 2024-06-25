@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestDetailQuery.swift
+//   IncomingASAsRequestDetailQuery.swift
 
 import Foundation
 import MagpieCore
 
-struct IncommingASAsRequestDetailQuery: ObjectQuery, Equatable {
+struct IncomingASAsRequestDetailQuery: ObjectQuery, Equatable {
     var limit: String?
     var cursor: String?
 
@@ -40,8 +40,8 @@ struct IncommingASAsRequestDetailQuery: ObjectQuery, Equatable {
     }
 
     static func == (
-        lhs: IncommingASAsRequestDetailQuery,
-        rhs: IncommingASAsRequestDetailQuery
+        lhs: IncomingASAsRequestDetailQuery,
+        rhs: IncomingASAsRequestDetailQuery
     ) -> Bool {
         return lhs.limit == rhs.limit &&
                lhs.cursor == rhs.cursor

@@ -106,7 +106,7 @@ extension RootViewController {
             api: configuration.api!,
             session: configuration.session!
         )
-        let incommingASAsAPIDataController = IncommingASAsAPIDataController(
+        let incomingASAsAPIDataController = IncomingASAsAPIDataController(
             api: configuration.api!,
             session: configuration.session!
         )        
@@ -116,7 +116,7 @@ extension RootViewController {
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController,
-                incommingASAsAPIDataController: incommingASAsAPIDataController
+                incomingASAsAPIDataController: incomingASAsAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

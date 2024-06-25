@@ -21,6 +21,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
     let minBalanceAmount: UInt64
     let innerTransactionCount: Int
     let totalProtocolFee: UInt64
+    let inboxAddress: String?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -29,6 +30,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         self.minBalanceAmount = apiModel.minimumBalanceRequirement ?? 1000
         self.innerTransactionCount = apiModel.innerTxCount ?? 0
         self.totalProtocolFee = apiModel.totalProtocolAndMbrFee ?? 1000
+        self.inboxAddress = apiModel.inboxAddress
     }
 
     func encode() -> APIModel {
@@ -37,6 +39,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         apiModel.minimumBalanceRequirement = minBalanceAmount
         apiModel.innerTxCount = innerTransactionCount
         apiModel.totalProtocolAndMbrFee = totalProtocolFee
+        apiModel.inboxAddress = inboxAddress
         return apiModel
     }
 }
@@ -47,12 +50,14 @@ extension AssetInboxSendSummary {
         var minimumBalanceRequirement: UInt64?
         var innerTxCount: Int?
         var totalProtocolAndMbrFee: UInt64?
+        var inboxAddress: String?
 
         init() {
             self.isArc59OptedIn = false
             self.minimumBalanceRequirement = 0
             self.innerTxCount = 0
             self.totalProtocolAndMbrFee = 0
+            self.inboxAddress = nil
         }
 
         private enum CodingKeys:
@@ -62,6 +67,7 @@ extension AssetInboxSendSummary {
             case minimumBalanceRequirement = "minimum_balance_requirement"
             case innerTxCount = "inner_tx_count"
             case totalProtocolAndMbrFee = "total_protocol_and_mbr_fee"
+            case inboxAddress = "inbox_address"
         }
     }
 }

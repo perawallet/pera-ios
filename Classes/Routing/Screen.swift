@@ -169,7 +169,7 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     
     case incomingASAAccounts(
-        result: IncommingASAsRequestList?
+        result: IncomingASAsRequestList?
     )
     case incomingASA(
         address: String,
@@ -434,6 +434,7 @@ indirect enum Screen {
     case backUpAccountSelection(
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
+    case sendAssetInbox(draft: SendAssetInboxDraft)
 }
 
 extension Screen {

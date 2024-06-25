@@ -19,7 +19,7 @@ import UIKit
 
 protocol IncomingASAAccountsDataController: AnyObject {
     var eventHandler: ((IncomingASAAccountsDataControllerEvent) -> Void)? { get set }
-    var incommingASAsRequestList: IncommingASAsRequestList? { get }
+    var incomingASAsRequestList: IncomingASAsRequestList? { get }
 
     func load()
 }

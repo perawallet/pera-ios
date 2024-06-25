@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestList.swift
+//   IncomingASAsRequestList.swift
 
 import Foundation
 import MagpieCore
 
-final class IncommingASAsRequestList: ALGEntityModel {
-    let results: [IncommingASAsRequestsResult]
+final class IncomingASAsRequestList: ALGEntityModel {
+    let results: [IncomingASAsRequestsResult]
     
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.results = apiModel.results.unwrapMap(IncommingASAsRequestsResult.init)
+        self.results = apiModel.results.unwrapMap(IncomingASAsRequestsResult.init)
     }
     
     func encode() -> APIModel {
@@ -33,9 +33,9 @@ final class IncommingASAsRequestList: ALGEntityModel {
     }
 }
 
-extension IncommingASAsRequestList {
+extension IncomingASAsRequestList {
     struct APIModel: ALGAPIModel {
-        var results: [IncommingASAsRequestsResult.APIModel]?
+        var results: [IncomingASAsRequestsResult.APIModel]?
         
         init() {
             self.results = []

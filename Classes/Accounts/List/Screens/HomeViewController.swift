@@ -128,7 +128,7 @@ final class HomeViewController:
     private let dataController: HomeDataController
 
     private var asasRequestsCount: Int?
-    private var incommingASAsRequestList: IncommingASAsRequestList?
+    private var incomingASAsRequestList: IncomingASAsRequestList?
     private var listWasScrolled = false
     
     init(
@@ -186,9 +186,11 @@ final class HomeViewController:
                     self.alertPresenter.presentIfNeeded()
                 }
                 
-            case .didUpdateIncommingASAsRequests(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate.incommingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
-                self.incommingASAsRequestList = asasReqUpdate.incommingASAsRequestList
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
+            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
@@ -228,7 +230,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
-        dataController.fetchIncommingASAsRequests()
+        dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
 
@@ -314,7 +316,7 @@ extension HomeViewController {
             }
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                self.open(.incomingASAAccounts(result: self.incommingASAsRequestList), by: .push)
+                self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
             }
         }
 
@@ -349,7 +351,7 @@ extension HomeViewController {
                     }
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
-                        self.open(.incomingASAAccounts(result: self.incommingASAsRequestList), by: .push)
+                        self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
                     }
                 }
                 self.leftBarButtonItems = [notificationBarButtonItem]
@@ -958,7 +960,7 @@ extension HomeViewController {
                 self.dataController.reload()
             }
         }        
-        let requestCount = self.incommingASAsRequestList?.results
+        let requestCount = self.incomingASAsRequestList?.results
             .first { $0.address == account.value.address }?.requestCount ?? 0
         open(
             .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: requestCount),

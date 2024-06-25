@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2024 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,62 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGSwapController.swift
+//   ARC59TransactionSendController.swift
 
 import Foundation
 import MacaroonUtils
+import MagpieCore
+import MagpieExceptions
+import MagpieHipo
 
-final class ALGSwapController: SwapController {
+final class ARC59TransactionSendController: NSObject {
+    typealias EventHandler = (ARC59TransactionSendControllerEvent) -> Void
+    typealias Error = HIPNetworkError<IndexerError>
+    
     var eventHandler: EventHandler?
 
-    var account: Account
-    let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
-    let providers: [SwapProvider] = [.tinyman, .tinymanV2, .vestige]
-
-    var userAsset: Asset
-    var quote: SwapQuote?
-    var poolAsset: Asset?
-    var slippage: Decimal?
-
-    private(set) var parsedTransactions: [ParsedSwapTransaction] = []
+    private(set) var signedTransactions: [Data] = []
     
     private lazy var uploadAndMonitorOperationQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.name = "com.algorad.swapTransactionUploadAndMonitorQueue"
+        queue.name = "com.algorad.arc59TransactionUploadAndMonitorQueue"
         queue.qualityOfService = .userInitiated
         return queue
     }()
 
     private lazy var transactionMonitor = TransactionPoolMonitor(api: api)
 
+    var account: Account
     private let api: ALGAPI
     private let transactionSigner: SwapTransactionSigner
 
-    private var signedTransactions: [Data] = []
-
-    private lazy var swapTransactionGroupSigner = SwapTransactionGroupSigner(
+    private lazy var sendGroupTransactionSigner = ARC59SendTransactionSigner(
         account: account,
         transactionSigner: transactionSigner
     )
 
     init(
-        draft: ALGSwapControllerDraft,
+        account: Account,
         api: ALGAPI,
         transactionSigner: SwapTransactionSigner
     ) {
-        self.account = draft.account
-        self.userAsset = draft.assetIn
-        self.poolAsset = draft.assetOut
+        self.account = account
         self.api = api
         self.transactionSigner = transactionSigner
     }
 }
 
-extension ALGSwapController {
-    func signTransactions(
-        _ transactionGroups: [SwapTransactionGroup]
-    ) {
-        swapTransactionGroupSigner.eventHandler = {
+extension ARC59TransactionSendController {
+    func signTransactionGroups(_ transactions: [[Data]]) {
+        sendGroupTransactionSigner.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
@@ -77,14 +69,14 @@ extension ALGSwapController {
             case .didCompleteSigningTransactions(let transactions):
                 self.signedTransactions = transactions
                 self.publishEvent(.didSignAllTransactions)
-                self.uploadTransactions()
+                self.uploadTransactionsAndWaitForConfirmation()
             case .didFailSigning(error: let error):
                 self.publishEvent(.didFailSigning(error: error))
             case .didLedgerRequestUserApproval(let ledger):
                 self.publishEvent(
                     .didLedgerRequestUserApproval(
                         ledger: ledger,
-                        transactionGroups: transactionGroups
+                        transactions: transactions
                     )
                 )
             case .didFinishTiming:
@@ -97,69 +89,26 @@ extension ALGSwapController {
                 self.publishEvent(.didLedgerRejectSigning)
             }
         }
-
-        parseTransactions(transactionGroups)
-        swapTransactionGroupSigner.signTransactions(transactionGroups)
-    }
-
-    private func parseTransactions(
-        _ transactionGroups: [SwapTransactionGroup]
-    ) {
-        let sdk = AlgorandSDK()
-
-        var parsedSwapTransactions = [ParsedSwapTransaction]()
-
-        for transactionGroup in transactionGroups where transactionGroup.transactions != nil {
-            var paidTransactions = [SDKTransaction]()
-            var receivedTransactions = [SDKTransaction]()
-            var otherTransactions = [SDKTransaction]()
-
-            for transaction in transactionGroup.transactions! {
-                var error: NSError?
-                guard let transactionData = sdk.msgpackToJSON(transaction, error: &error).data(using: .utf8),
-                      let sdkTransaction = try? JSONDecoder().decode(SDKTransaction.self, from: transactionData) else {
-                    continue
-                }
-
-                if sdkTransaction.sender == account.address {
-                    paidTransactions.append(sdkTransaction)
-                } else if sdkTransaction.receiver == account.address {
-                    receivedTransactions.append(sdkTransaction)
-                } else {
-                    otherTransactions.append(sdkTransaction)
-                }
-            }
-
-            let parsedSwapTransaction = ParsedSwapTransaction(
-                purpose: transactionGroup.purpose,
-                groupID: transactionGroup.groupID,
-                paidTransactions: paidTransactions,
-                receivedTransactions: receivedTransactions,
-                otherTransactions: otherTransactions
-            )
-
-            parsedSwapTransactions.append(parsedSwapTransaction)
+        
+        var mappedTransactions: [Int: [Data]] = [:]
+        for (groupIndex, groupTransactions) in transactions.enumerated() {
+            mappedTransactions[groupIndex] = groupTransactions
         }
 
-        self.parsedTransactions = parsedSwapTransactions
+        sendGroupTransactionSigner.signGroupTransactions(mappedTransactions)
     }
 
     func clearTransactions() {
         signedTransactions = []
-        parsedTransactions = []
-        swapTransactionGroupSigner.clearTransactions()
+        sendGroupTransactionSigner.clearTransactions()
     }
 
     func disconnectFromLedger() {
-        swapTransactionGroupSigner.disconnectFromLedger()
+        sendGroupTransactionSigner.disconnectFromLedger()
     }
 }
 
-extension ALGSwapController {
-    func uploadTransactions() {
-        uploadTransactionsAndWaitForConfirmation()
-    }
-
+extension ARC59TransactionSendController {
     private func uploadTransactionsAndWaitForConfirmation() {
         var operations: [Operation] = []
 
@@ -179,7 +128,7 @@ extension ALGSwapController {
 
                 switch event {
                 case .didCompleteTransactionOnTheNode:
-                    self.publishEvent(.didCompleteSwap)
+                    self.publishEvent(.didCompleteTransactionOnTheNode)
                 case .didFailTransaction(let id):
                     self.cancelAllOperations()
                     self.publishEvent(.didFailTransaction(id))
@@ -202,9 +151,13 @@ extension ALGSwapController {
         )
     }
 
-    private func addOperationDependencies(
-        _ operations: inout [Operation]
-    ) {
+    private func cancelAllOperations() {
+        uploadAndMonitorOperationQueue.cancelAllOperations()
+    }
+}
+
+extension ARC59TransactionSendController {
+    private func addOperationDependencies(_ operations: inout [Operation]) {
         var previousOperation: Operation?
         operations.forEach { operation in
             if let anOperation = previousOperation {
@@ -214,16 +167,10 @@ extension ALGSwapController {
             previousOperation = operation
         }
     }
-
-    private func cancelAllOperations() {
-        uploadAndMonitorOperationQueue.cancelAllOperations()
-    }
 }
 
-extension ALGSwapController {
-    private func publishEvent(
-        _ event: SwapControllerEvent
-    ) {
+extension ARC59TransactionSendController {
+    private func publishEvent(_ event: ARC59TransactionSendControllerEvent) {
         asyncMain {
             [weak self] in
             guard let self = self else { return }
@@ -231,4 +178,19 @@ extension ALGSwapController {
             self.eventHandler?(event)
         }
     }
+}
+
+enum ARC59TransactionSendControllerEvent {
+    case didSignTransaction
+    case didSignAllTransactions
+    case didCompleteTransactionOnTheNode
+    case didFailTransaction(TxnID)
+    case didFailNetwork(ARC59TransactionSendController.Error)
+    case didCancelTransaction
+    case didFailSigning(error: SwapTransactionSigner.SignError)
+    case didLedgerRequestUserApproval(ledger: String, transactions: [[Data]])
+    case didFinishTiming
+    case didLedgerReset
+    case didLedgerResetOnSuccess
+    case didLedgerRejectSigning
 }

@@ -12,5 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingASAsRequestDraft.swift
+//   SendAssetInboxDraft.swift
 
+import Foundation
+
+struct SendAssetInboxDraft {
+    let sender: Account
+    let receiver: String
+    let amount: Decimal
+    let asset: Asset
+    let appAddress: String
+    let appID: Int64
+}

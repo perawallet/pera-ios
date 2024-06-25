@@ -60,7 +60,12 @@ class Environment {
     lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
-
+    
+    let testNetARC59AppID: Int64 = 655494101
+    let mainNetARC59AppID: Int64 = 655494101
+    let testNetARC59AppAddress = "MEKFJGDJTHSBCAUMH5UFV7BGICQ3UCGUVR5CD6GURFUBYHUYSWQDLEGVXU"
+    let mainNetARC59AppAddress = "MEKFJGDJTHSBCAUMH5UFV7BGICQ3UCGUVR5CD6GURFUBYHUYSWQDLEGVXU"
+    
     lazy var serverHost: String = {
         switch target {
         case .staging:

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncommingASAsRequestsQuery.swift
+//   IncomingASAsRequestsQuery.swift
 
 import MagpieCore
 
-struct IncommingASAsRequestsQuery: ObjectQuery {
+struct IncomingASAsRequestsQuery: ObjectQuery {
     let addresses: String
 
     var queryParams: [APIQueryParam] {

@@ -52,7 +52,10 @@ extension IncomingASAsDetailViewModel {
     private mutating func bindSenders(_ senders: Senders?) {
         if let results = senders?.results {
             self.senders = results.compactMap { sender -> IncomingASARequesSenderViewModel? in
-                return IncomingASARequesSenderViewModel(amount: "\(sender.amount ?? 1412)", sender: sender.sender?.address ?? "")
+                return IncomingASARequesSenderViewModel(
+                    amount: "\(sender.amount ?? 0)",
+                    sender: sender.sender?.address ?? ""
+                )
             }
         }
     }
