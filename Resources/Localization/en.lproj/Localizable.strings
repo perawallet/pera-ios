@@ -1727,3 +1727,12 @@ FAQ section.";
 
 /// MARK: Back Up Account Selection
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
+
+/// MARK: Send Inbox
+"send-inbox-title" = "Send to Asset Inbox";
+"send-inbox-description" = "You can't send this asset directly because receiver not opted-in. But you can send it to its inbox address instead. Read more";
+"send-inbox-read-more" = "Read more";
+"send-inbox-fee-title" = "Protocol & minimum balance fees:";
+"send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
+"send-inbox-action-title" = "Send to Receiver";
+"send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
