@@ -22,6 +22,8 @@ import UIKit
 import WalletConnectSwift
 
 final class IncomingASAsDetailScreen: BaseViewController {
+    typealias EventHandler = (IncomingASADetailScreenEvent) -> Void
+    var eventHandler: EventHandler?
     
     private lazy var theme = Theme()
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
@@ -54,7 +56,6 @@ final class IncomingASAsDetailScreen: BaseViewController {
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
-
     
     override func prepareLayout() {
         addIncomingAsasDetailView()
@@ -218,13 +219,15 @@ extension IncomingASAsDetailScreen {
         )
 
         let rejectAction = UISheetAction(
-            title: "Reject",
+            title: "incoming-asa-detail-screen-left-button-title".localized,
             style: .default
         ) { [unowned self] in
             guard let draft,
                   let account else {
                 return
             }
+            
+            loadingController?.startLoadingWithMessage("title-loading".localized)
             
             transactionController.getTransactionParamsAndCompleteTransaction(
                 with: draft,
@@ -258,6 +261,30 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         _ incomingASATransactionController: IncomingASATransactionController,
         didCompletedTransaction transactionId: TransactionID?
     ) {
-        dismissScreen()
+        loadingController?.stopLoading()
+        bannerController?.presentSuccessBanner(
+            title: "transaction-result-started-title".localized,
+            message: "transaction-result-started-subtitle".localized
+        )
+        
+        eventHandler?(.didCompleteTransaction)
     }
+    
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+    }
+    
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+    }
+}
+
+enum IncomingASADetailScreenEvent {
+    case didCompleteTransaction
 }

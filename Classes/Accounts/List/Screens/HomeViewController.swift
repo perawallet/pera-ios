@@ -188,6 +188,7 @@ final class HomeViewController:
             case .didUpdateIncomingASAsRequests(let asasReqUpdate):
                 self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
+                
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
@@ -307,13 +308,18 @@ extension HomeViewController {
     }
     
     private func configureASARequestBarButton() {
-        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount ?? 0)) { [weak self] in
+        guard let asasRequestsCount,
+              asasRequestsCount > 0 else {
+            return
+        }
+        
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount)) { [weak self] in
             guard let self = self else {
                 return
             }
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
+                self.openASAInbox()
             }
         }
 
@@ -340,15 +346,23 @@ extension HomeViewController {
     private func updateNavigationBarWhenListDidScroll() {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-        navigationView.animateTitleVisible(!headerVisible) { isVisible in
+        navigationView.animateTitleVisible(!headerVisible) {
+            [weak self] isVisible in
+            guard let self else { return }
+            
             if isVisible {
+                guard let asasRequestsCount = self.asasRequestsCount,
+                      asasRequestsCount > 0 else {
+                    return
+                }
+                
                 let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(0)) { [weak self] in
                     guard let self = self else {
                         return
                     }
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
-                        self.open(.incomingASAAccounts(result: self.incomingASAsRequestList), by: .push)
+                        self.openASAInbox()
                     }
                 }
                 self.leftBarButtonItems = [notificationBarButtonItem]
@@ -1263,5 +1277,28 @@ extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegat
 
     func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
+    }
+}
+
+extension HomeViewController {
+    private func openASAInbox() {
+        let screen = open(
+            .incomingASAAccounts(
+                result: incomingASAsRequestList
+            ),
+            by: .push
+        ) as? IncomingASAAccountsViewController
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let screen else {
+                return
+            }
+                                
+            switch event {
+            case .didCompleteTransaction:
+                screen.dismissScreen()
+            }
+        }
     }
 }

@@ -413,14 +413,28 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
 
             switch itemIdentifier {
             case .asset(let item):
-                self.open(
+                let screen = open(
                     .incomingASAsDetail( draft: item),
                     by: .customPresent(
                         presentationStyle: .fullScreen,
                         transitionStyle: nil,
                         transitioningDelegate: nil
                     )
-                )
+                ) as? IncomingASAsDetailScreen
+                
+                screen?.eventHandler = {
+                    [weak self, weak screen] event in
+                    guard let self,
+                          let screen else {
+                        return
+                    }
+                    
+                    switch event {
+                    case .didCompleteTransaction:
+                        screen.dismissScreen()
+                        self.eventHandler?(.didCompleteTransaction)
+                    }
+                }
             default:
                 break
             }
@@ -535,5 +549,6 @@ extension IncomingASAAccountInboxViewController {
 extension IncomingASAAccountInboxViewController {
     enum Event {
         case transactionOption
+        case didCompleteTransaction
     }
 }

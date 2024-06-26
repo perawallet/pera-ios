@@ -333,15 +333,27 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController {
-    
     private func openIncomingASAAccountInbox()  {
-        open(
+        let screen = open(
             .incomingASA(
                 address: accountHandle.value.address,
                 requestsCount: incomingASAsRequestsCount
             ),
             by: .push
-        )
+        ) as? IncomingASAAccountInboxViewController
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let screen else {
+                return
+            }
+            
+            switch event {
+            case .didCompleteTransaction:
+                screen.closeScreen(by: .pop, animated: false)
+            case .transactionOption: break
+            }
+        }
     }
     
     private func openBuySellOptionsIfPossible() {

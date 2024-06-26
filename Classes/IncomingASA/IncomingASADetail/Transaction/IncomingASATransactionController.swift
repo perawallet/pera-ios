@@ -95,6 +95,10 @@ extension IncomingASATransactionController {
                     title: "title-error".localized,
                     message: error.localizedDescription
                 )
+                self.delegate?.incomingASATransactionController(
+                    self,
+                    didFailedComposing: .inapp(.other)
+                )
             }
         }
     }
@@ -155,6 +159,10 @@ extension IncomingASATransactionController {
                 title: "title-error".localized,
                 message: error?.localizedDescription ?? ""
             )
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: error))
+            )
             return
         }
         
@@ -194,6 +202,10 @@ extension IncomingASATransactionController {
                 title: "title-error".localized,
                 message: error?.localizedDescription ?? ""
             )
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: error))
+            )
             return
         }
         
@@ -224,6 +236,10 @@ extension IncomingASATransactionController {
     ) {
         guard let accountAddress = account?.signerAddress,
               let privateData = api.session.privateData(for: accountAddress) else {
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: nil))
+            )
             return
         }
 
@@ -241,9 +257,13 @@ extension IncomingASATransactionController {
         }
         
         if let signError {
-            self.bannerController?.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: signError.localizedDescription
+            )
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: nil))
             )
             return
         }
@@ -261,6 +281,14 @@ extension IncomingASATransactionController {
                     title: "title-error".localized,
                     message: error?.localizedDescription ?? ""
                 )
+                
+                if let error {
+                    self.delegate?.incomingASATransactionController(
+                        self,
+                        didFailedTransaction: .network(.unexpected(error))
+                    )
+                }
+
                 return
             }
             

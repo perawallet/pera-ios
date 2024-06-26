@@ -95,7 +95,7 @@ extension HomeAPIDataController {
     }
     
     func fetchIncomingASAsRequests() {
-        asasLoadRepeater = Repeater(intervalInSeconds: 10) {
+        asasLoadRepeater = Repeater(intervalInSeconds: 6) {
             [weak self] in
             guard let self else { return }
 

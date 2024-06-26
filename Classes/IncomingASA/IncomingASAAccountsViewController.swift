@@ -19,8 +19,9 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 
-final class IncomingASAAccountsViewController:
-    BaseViewController {
+final class IncomingASAAccountsViewController: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
     private lazy var theme = Theme()
     
@@ -199,13 +200,29 @@ extension IncomingASAAccountsViewController {
                 let requestCount = vm.requestCount else {
             return
         }
-        self.open(
+        
+        let screen = open(
             .incomingASA(
                 address: address,
                 requestsCount: requestCount
             ),
             by: .push
-        )
+        ) as? IncomingASAAccountInboxViewController
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let self,
+                  let screen else {
+                return
+            }
+            
+            switch event {
+            case .didCompleteTransaction:
+                screen.closeScreen(by: .pop, animated: false)
+                self.eventHandler?(.didCompleteTransaction)
+            case .transactionOption: break
+            }
+        }
     }
     
     private func getIncomingASAAccountCellViewModel(
@@ -222,3 +239,8 @@ extension IncomingASAAccountsViewController {
     }
 }
 
+extension IncomingASAAccountsViewController {
+    enum Event {
+        case didCompleteTransaction
+    }
+}
