@@ -26,11 +26,25 @@ struct IncomingASAAssetListItemViewModel: IncomingASAListItemViewModel {
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
 
-    init(_ item: AssetItem, senders: Senders?, isCollectible: Bool) {
+    init(
+        item: AssetItem, 
+        senders: Senders?,
+        isCollectible: Bool
+    ) {
         bindImageSource(item)
-        bindTitle(item, senders: senders, isCollectible: isCollectible)
-        bindPrimaryValue(item)
-        bindSecondaryValue(item)
+        bindTitle(
+            item: item,
+            senders: senders,
+            isCollectible: isCollectible
+        )
+        bindPrimaryValue(
+            item: item,
+            senders: senders
+        )
+        bindSecondaryValue(
+            item: item,
+            senders: senders
+        )
     }
 }
 
@@ -72,68 +86,68 @@ extension IncomingASAAssetListItemViewModel {
     }
 
     mutating func bindTitle(
-        _ item: AssetItem,
+        item: AssetItem,
         senders: Senders?,
         isCollectible: Bool
     ) {
-        title = IncomingASASenderViewModel(item.asset, senders: senders, isCollectible: isCollectible)
+        title = IncomingASASenderViewModel(
+            item.asset,
+            senders: senders,
+            isCollectible: isCollectible
+        )
     }
 
     mutating func bindPrimaryValue(
-        _ item: AssetItem
+        item: AssetItem,
+        senders: Senders?
     ) {
+        guard let senders else { return }
+        
         let asset = item.asset
+        let amount = senders.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
+        let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
-        if asset.isAlgo {
-            formatter.currency = AlgoLocalCurrency()
-        } else {
-            formatter.currency = nil
-        }
+        formatter.currency = nil
 
-        let text = formatter.format(asset.decimalAmount)
-        primaryValue = text?.bodyMedium(
+        let amountText = formatter.format(decimalAmount)
+        let unitText =
+            asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
+        let text = [amountText, unitText].compound(" ")
+        primaryValue = text.bodyMedium(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
     }
 
     mutating private func bindSecondaryValue(
-        _ item: AssetItem
+        item: AssetItem,
+        senders: Senders?
     ) {
-        let amount: Decimal
-
+        guard let senders else { return }
+        
         let asset = item.asset
+        let totalAmount = senders.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
+        let decimalAmount = totalAmount.assetAmount(fromFraction: asset.decimals)
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
         do {
-            let exchanger: CurrencyExchanger
-            if asset.isAlgo {
-                guard let fiatCurrencyValue = item.currency.fiatValue else {
-                    secondaryValue = nil
-                    return
-                }
-
-                let rawFiatCurrency = try fiatCurrencyValue.unwrap()
-                exchanger = CurrencyExchanger(currency: rawFiatCurrency)
-                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
-
-                formatter.currency = rawFiatCurrency
-            } else {
-                guard let currencyValue = item.currency.primaryValue else {
-                    secondaryValue = nil
-                    return
-                }
-
-                let rawCurrency = try currencyValue.unwrap()
-                exchanger = CurrencyExchanger(currency: rawCurrency)
-                amount = try exchanger.exchange(asset)
-
-                formatter.currency = rawCurrency
+            guard let currencyValue = item.currency.primaryValue else {
+                secondaryValue = nil
+                return
             }
+
+            let rawCurrency = try currencyValue.unwrap()
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(
+                asset,
+                amount: decimalAmount
+            )
+
+            formatter.currency = rawCurrency
 
             let text = formatter.format(amount)
             secondaryValue = text?.footnoteRegular(

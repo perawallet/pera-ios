@@ -80,7 +80,7 @@ struct IncomingASAListItem: Hashable {
             self.collectibleViewModel = nil
         }
         self.viewModel = IncomingASAAssetListItemViewModel(
-            item, 
+            item: item, 
             senders: senders,
             isCollectible: self.collectibleViewModel != nil
         )

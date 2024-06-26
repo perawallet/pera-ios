@@ -22,13 +22,17 @@ struct IncomingASARequestHeaderViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var subTitle: TextProvider?
 
-    init(_ draft: IncomingASAListItem, currency: CurrencyProvider, currencyFormatter: CurrencyFormatter) {
+    init(
+        draft: IncomingASAListItem,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         bindPrimaryValue(
-            asset: draft.asset,
+            draft: draft,
             currencyFormatter: currencyFormatter
         )
         bindSecondaryValue(
-            asset: draft.asset,
+            draft: draft,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
@@ -36,46 +40,30 @@ struct IncomingASARequestHeaderViewModel: ViewModel {
 }
 
 extension IncomingASARequestHeaderViewModel {
-    
     mutating func bindPrimaryValue(
-        asset: Asset,
+        draft: IncomingASAListItem,
         currencyFormatter: CurrencyFormatter
     ) {
-        if asset.isAlgo {
-            bindAlgoPrimaryValue(
-                asset: asset,
-                currencyFormatter: currencyFormatter
-            )
-        } else {
-            bindAssetPrimaryValue(
-                asset: asset,
-                currencyFormatter: currencyFormatter
-            )
-        }
-    }
-    
-    mutating func bindAlgoPrimaryValue(
-        asset: Asset,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        currencyFormatter.formattingContext = .standalone()
-        currencyFormatter.currency = AlgoLocalCurrency()
-
-        let text = currencyFormatter.format(asset.decimalAmount)
-        bindPrimaryValue(text: text)
+        bindAssetPrimaryValue(
+            draft: draft,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindAssetPrimaryValue(
-        asset: Asset,
+        draft: IncomingASAListItem,
         currencyFormatter: CurrencyFormatter
     ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = nil
 
-        let amountText = currencyFormatter.format(asset.decimalAmount)
+        let asset = draft.asset
+        let amount = draft.senders?.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
+        let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
+        let amountText = currencyFormatter.format(decimalAmount)
         let unitText =
             asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
-        let text = [ amountText, unitText ].compound(" ")
+        let text = [amountText, unitText].compound(" ")
         bindPrimaryValue(text: text)
     }
 
@@ -83,55 +71,20 @@ extension IncomingASARequestHeaderViewModel {
         title = text?.titleSmallMedium(alignment: .center)
     }
     
-    
     mutating func bindSecondaryValue(
-        asset: Asset,
+        draft: IncomingASAListItem,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        if asset.isAlgo {
-            bindAlgoSecondaryValue(
-                asset: asset,
-                currency: currency,
-                currencyFormatter: currencyFormatter
-            )
-        } else {
-            bindAssetSecondaryValue(
-                asset: asset,
-                currency: currency,
-                currencyFormatter: currencyFormatter
-            )
-        }
-    }
-
-    mutating func bindAlgoSecondaryValue(
-        asset: Asset,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        guard let fiatCurrencyValue = currency.fiatValue else {
-            subTitle = nil
-            return
-        }
-
-        do {
-            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
-
-            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-            let amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
-
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = fiatRawCurrency
-
-            let text = currencyFormatter.format(amount)
-            bindSecondaryValue(text: text)
-        } catch {
-            subTitle = nil
-        }
+        bindAssetSecondaryValue(
+            draft: draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindAssetSecondaryValue(
-        asset: Asset,
+        draft: IncomingASAListItem,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -140,16 +93,20 @@ extension IncomingASARequestHeaderViewModel {
             return
         }
 
+        let asset = draft.asset
+        
         do {
             let rawCurrency = try currencyValue.unwrap()
 
+            let amount = draft.senders?.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
             let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(asset)
+            let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
+            let exchangedAmount = try exchanger.exchange(asset, amount: decimalAmount)
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = rawCurrency
 
-            let text = currencyFormatter.format(amount)
+            let text = currencyFormatter.format(exchangedAmount)
             bindSecondaryValue(text: text)
         } catch {
             subTitle = nil

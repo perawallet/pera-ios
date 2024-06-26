@@ -35,32 +35,66 @@ struct IncomingASAsDetailViewModel: ViewModel {
         algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) {
-        bindAccountAssets(draft, account: account, accountPortfolio: accountPortfolio)
-        bindSenders(draft.senders)
-        bindAmount(draft, currency: currency, currencyFormatter: currencyFormatter)
+        bindAccountAssets(
+            draft: draft,
+            account: account,
+            accountPortfolio: accountPortfolio
+        )
+        bindSenders(
+            draft: draft, 
+            currencyFormatter: currencyFormatter
+        )
+        bindAmount(
+            draft: draft,
+            currency: currency, 
+            currencyFormatter: currencyFormatter
+        )
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
     }
 }
 
 extension IncomingASAsDetailViewModel {
-    private mutating func bindAccountAssets(_ draft: IncomingASAListItem, account: Account, accountPortfolio: AccountPortfolioItem) {
-        self.accountAssets = IncomingASADetailHeaderViewModel(draft, account: account, accountPortfolio: accountPortfolio)
+    private mutating func bindAccountAssets(
+        draft: IncomingASAListItem,
+        account: Account,
+        accountPortfolio: AccountPortfolioItem
+    ) {
+        self.accountAssets = IncomingASADetailHeaderViewModel(
+            draft,
+            account: account,
+            accountPortfolio: accountPortfolio
+        )
         self.accountId = String(draft.asset.id).footnoteRegular()
     }
     
-    private mutating func bindSenders(_ senders: Senders?) {
-        if let results = senders?.results {
-            self.senders = results.compactMap { sender -> IncomingASARequesSenderViewModel? in
-                return IncomingASARequesSenderViewModel(
-                    amount: "\(sender.amount ?? 0)",
-                    sender: sender.sender?.address ?? ""
-                )
-            }
+    private mutating func bindSenders(
+        draft: IncomingASAListItem,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        let senders = draft.senders
+        
+        guard let results = senders?.results else { return }
+        
+        self.senders = results.compactMap { sender -> IncomingASARequesSenderViewModel? in
+            return IncomingASARequesSenderViewModel(
+                currencyFormatter: currencyFormatter,
+                asset: draft.asset,
+                amount: sender.amount,
+                sender: sender.sender
+            )
         }
     }
     
-    private mutating func bindAmount(_ draft: IncomingASAListItem, currency: CurrencyProvider, currencyFormatter: CurrencyFormatter) {
-        self.amount = IncomingASARequestHeaderViewModel(draft, currency: currency, currencyFormatter: currencyFormatter)
+    private mutating func bindAmount(
+        draft: IncomingASAListItem,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        self.amount = IncomingASARequestHeaderViewModel(
+            draft: draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }

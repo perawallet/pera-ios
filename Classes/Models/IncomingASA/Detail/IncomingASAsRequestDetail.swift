@@ -115,7 +115,7 @@ extension Senders {
 // MARK: - SendersResult
 final class SendersResult: ALGEntityModel {
     var sender: Sender?
-    var amount: Int?
+    var amount: UInt64?
     
     init(
         _ apiModel: APIModel = APIModel()
@@ -135,7 +135,7 @@ final class SendersResult: ALGEntityModel {
 extension SendersResult {
     struct APIModel: ALGAPIModel {
         var sender: Sender.APIModel?
-        var amount: Int?
+        var amount: UInt64?
 
         init() {
             self.sender = .init()

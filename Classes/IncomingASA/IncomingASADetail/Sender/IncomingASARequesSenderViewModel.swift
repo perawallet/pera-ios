@@ -21,8 +21,44 @@ struct IncomingASARequesSenderViewModel: ViewModel {
     private(set) var amount: TextProvider?
     private(set) var sender: TextProvider?
 
-    init(amount: TextProvider?, sender: TextProvider?) {
-        self.amount = amount
-        self.sender = sender
+    init(
+        currencyFormatter: CurrencyFormatter,
+        asset: Asset,
+        amount: UInt64?,
+        sender: Sender?
+    ) {
+        bindAmount(
+            currencyFormatter: currencyFormatter,
+            asset: asset,
+            amountValue: amount
+        )
+        bindSender(sender)
+    }
+}
+
+extension IncomingASARequesSenderViewModel {
+    mutating func bindAmount(
+        currencyFormatter: CurrencyFormatter,
+        asset: Asset?,
+        amountValue: UInt64?
+    ) {
+        guard let asset,
+              let amountValue else {
+            return
+        }
+        
+        let decimalAmount = amountValue.assetAmount(fromFraction: asset.decimals)
+        let amountText = currencyFormatter.format(decimalAmount)
+        let unitText =
+            asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
+        let text = [amountText, unitText].compound(" ")
+        amount = "+\(text)"
+    }
+    
+    mutating func bindSender(_ senderValue: Sender?) {
+        guard let senderValue else { return }
+        
+        let aSender = senderValue.name ?? senderValue.address
+        sender = aSender?.footnoteRegular()
     }
 }

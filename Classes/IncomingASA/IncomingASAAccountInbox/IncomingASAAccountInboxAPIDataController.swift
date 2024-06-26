@@ -227,7 +227,8 @@ extension IncomingASAAccountInboxAPIDataController {
     private func makeItemForNonNFTAsset(
         _ asset: StandardAsset,
         collectibleAsset: CollectibleAsset?,
-        senders: Senders?, algoGainOnClaim: UInt64?,
+        senders: Senders?, 
+        algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) -> IncomingASAItem {
         let currency = sharedDataController.currency
