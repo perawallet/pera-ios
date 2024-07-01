@@ -20,10 +20,9 @@ import MacaroonURLImage
 import UIKit
 
 struct IncomingASADetailHeaderTheme: StyleSheet, LayoutSheet {
-    
     let height: LayoutMetric
     let backgroundColor: Color
-    let accountItem: AccountListItemViewTheme
+    let accountItem: PrimaryAccountListItemViewTheme
     let accountTopInset: LayoutMetric
     let accountAssetViewTopInset: LayoutMetric
     let divider: ViewStyle
@@ -38,9 +37,7 @@ struct IncomingASADetailHeaderTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.height = 200
         self.backgroundColor = Colors.Defaults.black
-        var theme = AccountListItemViewTheme()
-        theme.forceToDark()
-        self.accountItem = theme
+        self.accountItem = IncomingASAAccountListItemViewTheme()
         self.accountTopInset = 16
         self.accountAssetViewTopInset = 64
         self.divider = [
@@ -53,5 +50,62 @@ struct IncomingASADetailHeaderTheme: StyleSheet, LayoutSheet {
         self.infoIconSize = (24, 24)
         self.horizontalInset = 16
         self.verticalInset = 16
+    }
+}
+
+
+struct IncomingASAAccountListItemViewTheme: PrimaryAccountListItemViewTheme {
+    var icon: ImageStyle
+    var iconSize: LayoutSize
+    var iconBottomRightBadgePaddings: LayoutPaddings
+    var horizontalPadding: LayoutMetric
+    var contentMinWidthRatio: LayoutMetric
+    var title: PrimaryTitleViewTheme
+    var primaryAccessory: TextStyle
+    var secondaryAccessory: TextStyle
+    var accessoryIcon: ImageStyle
+    var accessoryIconContentEdgeInsets: LayoutOffset
+
+    init(_ family: LayoutFamily) {
+        self.icon = [
+            .contentMode(.scaleAspectFit)
+        ]
+        self.iconSize = (40, 40)
+        self.iconBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
+        self.horizontalPadding = 16
+        self.contentMinWidthRatio = 0.25
+        self.title = IncomingASAAccountPreviewPrimaryTitleViewTheme(family)
+        self.primaryAccessory = [
+            .textColor(Colors.Text.mainDark)
+        ]
+        self.secondaryAccessory = [
+            .textColor(Colors.Text.grayLighter)
+        ]
+        self.accessoryIcon = [
+            .contentMode(.right)
+        ]
+        self.accessoryIconContentEdgeInsets = (8, 0)
+    }
+}
+
+fileprivate struct IncomingASAAccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
+    var primaryTitle: TextStyle
+    let primaryTitleAccessory: ImageStyle
+    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    var secondaryTitle: TextStyle
+    let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.primaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.mainDark)
+        ]
+        self.primaryTitleAccessory = []
+        self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
+        self.secondaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayDark)
+        ]
+        self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }
 }
