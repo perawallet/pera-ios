@@ -23,6 +23,7 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
     let primaryTitleAccessory: ImageStyle
     let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
     let secondaryTitle: TextStyle
+    var secondaryTitleWidth: LayoutMetric
     let secondSecondaryTitle: TextStyle
     let titleHeight: LayoutMetric
     let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
@@ -44,6 +45,7 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
             .font(Typography.captionMedium()),
             .backgroundColor(Colors.Button.Ghost.focusBackgroundDark)
         ]
+        self.secondaryTitleWidth = 72
         self.secondSecondaryTitle = [
             .textColor(Colors.Button.Square.secondaryIcon),
             .font(Typography.captionMedium()),
