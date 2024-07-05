@@ -192,6 +192,8 @@ final class HomeViewController:
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
+            case .didReceiveError(let error):
+                bannerController?.presentErrorBanner(title: "", message: error)
             }
         }
         dataController.load()
@@ -1297,7 +1299,7 @@ extension HomeViewController {
                                 
             switch event {
             case .didCompleteTransaction:
-                screen.dismissScreen()
+                screen.closeScreen(by: .pop, animated: false)
             }
         }
     }

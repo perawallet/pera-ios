@@ -28,6 +28,7 @@ struct CollectibleListItemViewModel: ViewModel {
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
     private(set) var amount: TextProvider?
+    private(set) var incomingASACount: TextProvider?
 
     init(item: CollectibleAssetItem) {
         bindIcon(item)
@@ -36,6 +37,7 @@ struct CollectibleListItemViewModel: ViewModel {
         bindPrimaryTitleAccessory(item)
         bindSecondaryTitle(item)
         bindAmount(item)
+        bindIncomingASACount(item)
     }
 
     init(update: OptInBlockchainUpdate) {
@@ -99,7 +101,7 @@ extension CollectibleListItemViewModel {
             return
         }
 
-        if !asset.isOwned {
+        if !asset.isOwned, !(item.isCollectibleForIncomingASA ?? false) {
             iconBottomRightBadge = "circle-badge-warning".uiImage
             iconOverlayImage = "overlay-bg".uiImage
             return
@@ -155,6 +157,12 @@ extension CollectibleListItemViewModel {
         }
 
         amount = amountText.footnoteRegular(lineBreakMode: .byTruncatingTail)
+    }
+    
+    mutating func bindIncomingASACount(_ item: CollectibleAssetItem) {
+        if let count = item.requestCount {
+            incomingASACount = String(count)
+        }
     }
 }
 

@@ -45,7 +45,8 @@ struct IncomingASAListItemTheme: IncomingASAListItemViewTheme {
         self.title = IncominASAListTitleViewTheme(family)
         self.primaryValue = [
             .textColor(Colors.Text.main),
-            .textOverflow(SingleLineText())
+            .textOverflow(SingleLineText()),
+            .font(Typography.bodyMedium())
         ]
         self.secondaryValue = [
             .textColor(Colors.Text.gray),

@@ -33,7 +33,9 @@ final class CollectibleListItemView:
     private lazy var primaryTitleAccessoryView = ImageView()
     private lazy var secondaryTitleView = Label()
     private lazy var amountView = Label()
-
+    private lazy var requestCountBorderView = Label()
+    private lazy var requestCountView = Label()
+    
     var currentImage: UIImage? {
         return iconView.imageContainer.image
     }
@@ -71,6 +73,16 @@ final class CollectibleListItemView:
             amount.load(in: amountView)
         } else {
             amountView.clearText()
+        }
+        
+        if let requestCount = viewModel?.incomingASACount {
+            "x\(requestCount)".load(in: requestCountView)
+            requestCountBorderView.isHidden = false
+            requestCountView.isHidden = false
+        } else {
+            requestCountView.clearText()
+            requestCountBorderView.isHidden = true
+            requestCountView.isHidden = true
         }
     }
 
@@ -191,6 +203,7 @@ extension CollectibleListItemView {
         addPrimaryTitleAccessory(theme)
         addSecondaryTitle(theme)
         addAmount(theme)
+        addIncomingASARequestView(theme)
     }
 
     private func addPrimaryTitle(_ theme: CollectibleListItemViewTheme) {
@@ -243,6 +256,28 @@ extension CollectibleListItemView {
             $0.leading == secondaryTitleView.snp.trailing
             $0.bottom == 0
             $0.trailing <= 0
+        }
+    }
+    
+    private func addIncomingASARequestView(_ theme: CollectibleListItemViewTheme) {
+        requestCountBorderView.draw(border: theme.requestCountBorder)
+        requestCountBorderView.draw(corner: theme.requestCountBorderCorner)
+
+        addSubview(requestCountBorderView)
+        requestCountBorderView.snp.makeConstraints {
+            $0.top == primaryTitleView.snp.top
+            $0.trailing == 0
+        }
+
+        requestCountView.customizeAppearance(theme.requestCount)
+        requestCountBorderView.addSubview(requestCountView)
+        requestCountView.snp.makeConstraints {
+            $0.centerY == requestCountBorderView.snp.centerY
+            $0.centerX == requestCountBorderView.snp.centerX
+            $0.leading == theme.requestCountPadding
+            $0.trailing == theme.requestCountPadding
+            $0.top == theme.requestCountVerticalPadding
+            $0.bottom == theme.requestCountVerticalPadding
         }
     }
 }

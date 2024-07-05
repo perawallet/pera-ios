@@ -327,7 +327,7 @@ extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
         _ dataController: IncomingASAsAPIDataController,
         didFailToFetchRequests error: String
     ) {
-        // TODO:  Handle Error
+        self.publish(.didReceiveError(error))
     }
 }
 

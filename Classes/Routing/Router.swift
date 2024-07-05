@@ -1139,7 +1139,10 @@ final class Router:
             let screen = IncomingASAsDetailScreen(
                 draft: draft,
                 configuration: configuration,
-                transactionController: transactionController
+                transactionController: transactionController, 
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
             )
 
             viewController = screen

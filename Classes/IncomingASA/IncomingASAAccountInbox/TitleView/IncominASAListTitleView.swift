@@ -60,7 +60,7 @@ final class IncominASAListTitleView:
         } else {
             secondaryTitleView.clearText()
         }
-        // TODO:  get value
+
         if let seconsSecondaryTitle = viewModel?.secondSecondaryTitle {
             seconsSecondaryTitle.load(in: secondSecondaryTitleView)
         } else {
@@ -151,7 +151,6 @@ extension IncominASAListTitleView {
             $0.top == primaryTitleView.snp.bottom + 6
             $0.leading == 0
             $0.bottom == 0
-            $0.width <= theme.secondaryTitleWidth
         }
     }
     
@@ -167,7 +166,6 @@ extension IncominASAListTitleView {
             $0.top == primaryTitleView.snp.bottom + 6
             $0.leading == secondaryTitleView.snp.trailing + 6
             $0.bottom == 0
-            $0.width <= theme.secondaryTitleWidth
         }
     }
 }

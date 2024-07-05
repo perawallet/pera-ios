@@ -23,7 +23,6 @@ struct IncominASAListTitleViewTheme: StyleSheet, LayoutSheet {
     var primaryTitleAccessory: ImageStyle
     var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
     var secondaryTitle: TextStyle
-    var secondaryTitleWidth: LayoutMetric
     var secondSecondaryTitle: TextStyle
     var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
     var titleEdgeInsets: LayoutPaddings
@@ -33,6 +32,7 @@ struct IncominASAListTitleViewTheme: StyleSheet, LayoutSheet {
     ) {
         self.primaryTitle = [
             .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.primaryTitleAccessory = [
             .contentMode(.right),
@@ -43,7 +43,6 @@ struct IncominASAListTitleViewTheme: StyleSheet, LayoutSheet {
             .font(Typography.captionMedium()),
             .backgroundColor(Colors.Button.Ghost.focusBackground)
         ]
-        self.secondaryTitleWidth = 72
         self.secondSecondaryTitle = [
             .textColor(Colors.Button.Square.secondaryIcon),
             .font(Typography.captionMedium()),

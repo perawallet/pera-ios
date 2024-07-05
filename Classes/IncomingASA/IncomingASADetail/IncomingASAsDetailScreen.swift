@@ -30,25 +30,30 @@ final class IncomingASAsDetailScreen: BaseViewController {
     let draft: IncomingASAListItem?
     let collectibleDraft: IncomingASACollectibleAssetListItem?
     private let transactionController: IncomingASATransactionController
-
+    private let copyToClipboardController: CopyToClipboardController
+    
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var footerEffectView = EffectView()
     private lazy var actionsContextView = MacaroonUIKit.HStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
     private lazy var secondaryActionView = MacaroonUIKit.Button()
     private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
     private lazy var currencyFormatter = CurrencyFormatter()
-
+    
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var account: Account?
     
     init(
         draft: IncomingASAListItem?,
         collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
         configuration: ViewControllerConfiguration,
-        transactionController: IncomingASATransactionController
+        transactionController: IncomingASATransactionController,
+        copyToClipboardController: CopyToClipboardController
     ) {
         self.draft = draft
         self.collectibleDraft = collectibleDraft
         self.transactionController = transactionController
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
 
@@ -77,6 +82,12 @@ final class IncomingASAsDetailScreen: BaseViewController {
             self?.dismissScreen()
         }
         
+        incomingAsasDetailView.startObserving(event: .performCopy) {
+            [weak self] in
+            if let asset = self?.draft?.asset {
+                self?.copyToClipboardController.copyID(asset)
+            }
+        }
         transactionController.delegate = self
     }
 }
@@ -275,6 +286,17 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         didFailedComposing error: HIPTransactionError
     ) {
         loadingController?.stopLoading()
+        
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.prettyDescription
+            )
+        }
+
     }
     
     func incomingASATransactionController(
@@ -282,9 +304,73 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         didFailedTransaction error: HIPTransactionError
     ) {
         loadingController?.stopLoading()
+        
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.prettyDescription
+            )
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        }
     }
 }
 
+extension IncomingASAsDetailScreen {
+    private func displayTransactionError(
+        from transactionError: TransactionError
+    ) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.openLedgerConnectionIssues()
+            }
+        default:
+            break
+        }
+    }
+    
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+}
 enum IncomingASADetailScreenEvent {
     case didCompleteTransaction
 }

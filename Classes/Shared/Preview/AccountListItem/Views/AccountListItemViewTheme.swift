@@ -32,7 +32,7 @@ protocol PrimaryAccountListItemViewTheme: StyleSheet, LayoutSheet {
     var accessoryIconContentEdgeInsets: LayoutOffset { get }    
 }
 
-struct AccountListItemViewTheme: PrimaryAccountListItemViewTheme{
+struct AccountListItemViewTheme: PrimaryAccountListItemViewTheme {
     var icon: ImageStyle
     var iconSize: LayoutSize
     var iconBottomRightBadgePaddings: LayoutPaddings

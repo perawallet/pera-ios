@@ -244,7 +244,9 @@ extension IncomingASAAccountInboxAPIDataController {
             collectibleAssetItem = CollectibleAssetItem(
                 account: Account(),
                 asset: collectibleAsset,
-                amountFormatter: assetAmountFormatter
+                amountFormatter: assetAmountFormatter,
+                isCollectibleForIncomingASA: true,
+                requestCount: senders?.count
             )
         }
         

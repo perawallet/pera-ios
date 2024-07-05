@@ -76,10 +76,12 @@ struct IncomingASAAccountListItemViewTheme: PrimaryAccountListItemViewTheme {
         self.contentMinWidthRatio = 0.25
         self.title = IncomingASAAccountPreviewPrimaryTitleViewTheme(family)
         self.primaryAccessory = [
-            .textColor(Colors.Text.mainDark)
+            .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.secondaryAccessory = [
-            .textColor(Colors.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter),
+            .font(Typography.footnoteRegular())
         ]
         self.accessoryIcon = [
             .contentMode(.right)
@@ -98,13 +100,15 @@ fileprivate struct IncomingASAAccountPreviewPrimaryTitleViewTheme: PrimaryTitleV
     init(_ family: LayoutFamily) {
         self.primaryTitle = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.mainDark)
+            .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.primaryTitleAccessory = []
         self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
         self.secondaryTitle = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayDark)
+            .textColor(Colors.Text.grayDark),
+            .font(Typography.footnoteRegular())
         ]
         self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }

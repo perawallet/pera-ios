@@ -61,7 +61,7 @@ final class IncomingASAItemTitleView:
         } else {
             secondaryTitleView.clearText()
         }
-        // TODO:  get value
+
         if let seconsSecondaryTitle = viewModel?.secondSecondaryTitle {
             seconsSecondaryTitle.load(in: secondSecondaryTitleView)
         } else {

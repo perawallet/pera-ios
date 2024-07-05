@@ -33,7 +33,8 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
         _ family: LayoutFamily
     ) {
         self.primaryTitle = [
-            .textColor(Colors.Text.mainDark)
+            .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.primaryTitleAccessory = [
             .contentMode(.right),
