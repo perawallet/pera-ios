@@ -210,6 +210,16 @@ extension IncomingASAsDetailScreen {
             return
         }
         
+        if draft.hasInsufficientAlgoForClaiming {
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "required-min-balance-title".localized
+            )
+           return
+        }
+        
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        
         transactionController.getTransactionParamsAndCompleteTransaction(
             with: draft,
             for: account,
@@ -236,6 +246,14 @@ extension IncomingASAsDetailScreen {
             guard let draft,
                   let account else {
                 return
+            }
+            
+            if draft.hasInsufficientAlgoForRejecting {
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "required-min-balance-title".localized
+                )
+               return
             }
             
             loadingController?.startLoadingWithMessage("title-loading".localized)

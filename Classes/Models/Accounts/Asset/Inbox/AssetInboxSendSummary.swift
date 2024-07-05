@@ -22,6 +22,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
     let innerTransactionCount: Int
     let totalProtocolFee: UInt64
     let inboxAddress: String?
+    let algoFundAmount: UInt64
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -31,6 +32,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         self.innerTransactionCount = apiModel.innerTxCount ?? 0
         self.totalProtocolFee = apiModel.totalProtocolAndMbrFee ?? 1000
         self.inboxAddress = apiModel.inboxAddress
+        self.algoFundAmount = apiModel.algoFundAmount ?? 0
     }
 
     func encode() -> APIModel {
@@ -40,6 +42,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         apiModel.innerTxCount = innerTransactionCount
         apiModel.totalProtocolAndMbrFee = totalProtocolFee
         apiModel.inboxAddress = inboxAddress
+        apiModel.algoFundAmount = algoFundAmount
         return apiModel
     }
 }
@@ -51,6 +54,7 @@ extension AssetInboxSendSummary {
         var innerTxCount: Int?
         var totalProtocolAndMbrFee: UInt64?
         var inboxAddress: String?
+        var algoFundAmount: UInt64?
 
         init() {
             self.isArc59OptedIn = false
@@ -58,6 +62,7 @@ extension AssetInboxSendSummary {
             self.innerTxCount = 0
             self.totalProtocolAndMbrFee = 0
             self.inboxAddress = nil
+            self.algoFundAmount = 0
         }
 
         private enum CodingKeys:
@@ -68,6 +73,7 @@ extension AssetInboxSendSummary {
             case innerTxCount = "inner_tx_count"
             case totalProtocolAndMbrFee = "total_protocol_and_mbr_fee"
             case inboxAddress = "inbox_address"
+            case algoFundAmount = "algo_fund_amount"
         }
     }
 }

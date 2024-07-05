@@ -1272,6 +1272,9 @@
 		2B28D05E2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28D05D2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift */; };
 		2B28D05F2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28D05D2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift */; };
 		2B28D0602C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28D05D2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift */; };
+		2B28D0622C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B28D0612C34BF7C00231EE8 /* AlgoSDK.xcframework */; };
+		2B28D0632C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B28D0612C34BF7C00231EE8 /* AlgoSDK.xcframework */; };
+		2B28D0642C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B28D0612C34BF7C00231EE8 /* AlgoSDK.xcframework */; };
 		2B28DB5C276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB5B276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift */; };
 		2B28DB5D276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB5B276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift */; };
 		2B28DB5E276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB5B276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift */; };
@@ -2210,10 +2213,6 @@
 		2B82FFE82C0BC2BF001DD73F /* SendAssetInboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82FFE72C0BC2BF001DD73F /* SendAssetInboxScreen.swift */; };
 		2B82FFEA2C0BCA72001DD73F /* AssetInboxSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82FFE92C0BCA72001DD73F /* AssetInboxSendDraft.swift */; };
 		2B82FFED2C0BCADD001DD73F /* AssetInboxSendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82FFEC2C0BCADD001DD73F /* AssetInboxSendSummary.swift */; };
-		2B82FFFB2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */; };
-		2B82FFFC2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */; };
-		2B82FFFD2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */; };
-		2B82FFFE2C0D26CB001DD73F /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */; };
 		2B834932296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
 		2B834933296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
 		2B834934296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
@@ -8252,6 +8251,7 @@
 		2B288AEE2694E74B00BC6FB6 /* WCTransactionOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionOption.swift; sourceTree = "<group>"; };
 		2B28D0512C2B092F00231EE8 /* AssetTransactionARC59SendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionARC59SendDraft.swift; sourceTree = "<group>"; };
 		2B28D05D2C2B5AF400231EE8 /* IncomingASATransactionController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncomingASATransactionController+Delegate.swift"; sourceTree = "<group>"; };
+		2B28D0612C34BF7C00231EE8 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		2B28DB5B276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeveloperSettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B28DB63276B3E57005C5986 /* NodeSettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NodeSettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionViewModel.swift; sourceTree = "<group>"; };
@@ -8619,7 +8619,6 @@
 		2B82FFE72C0BC2BF001DD73F /* SendAssetInboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetInboxScreen.swift; sourceTree = "<group>"; };
 		2B82FFE92C0BCA72001DD73F /* AssetInboxSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInboxSendDraft.swift; sourceTree = "<group>"; };
 		2B82FFEC2C0BCADD001DD73F /* AssetInboxSendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInboxSendSummary.swift; sourceTree = "<group>"; };
-		2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFavouriteDappDetails.swift; sourceTree = "<group>"; };
 		2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionValidator.swift; sourceTree = "<group>"; };
 		2B835B6227A424870091E9F6 /* WCGroupTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WCGroupTransactionViewController.swift; path = Screens/WCGroupTransactionViewController.swift; sourceTree = "<group>"; };
@@ -10605,7 +10604,7 @@
 				CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */,
 				2BEEBFAE29A3D15B00DDD988 /* WalletConnect in Frameworks */,
 				CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */,
-				2B82FFFD2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */,
+				2B28D0642C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */,
 				2BEEBFA629A3D10400DDD988 /* Starscream in Frameworks */,
 				CBAD472B2745434A00C91946 /* MagpieCore in Frameworks */,
 				2BEEBFAA29A3D12C00DDD988 /* WalletConnectPairing in Frameworks */,
@@ -10645,7 +10644,7 @@
 				CBAD47212745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */,
 				CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				2B82FFFC2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */,
+				2B28D0632C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD47162745434A00C91946 /* SwiftDate in Frameworks */,
 				2BEEBFB229A3D18200DDD988 /* Web3Wallet in Frameworks */,
 				2BEEBFA829A3D11200DDD988 /* Starscream in Frameworks */,
@@ -10683,10 +10682,9 @@
 				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
 				CBAD47022745434A00C91946 /* Charts in Frameworks */,
 				CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				2B82FFFE2C0D26CB001DD73F /* AlgoSDK.xcframework in Frameworks */,
 				D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */,
 				CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */,
-				2B82FFFB2C0D26AC001DD73F /* AlgoSDK.xcframework in Frameworks */,
+				2B28D0622C34BF7D00231EE8 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				2BEEBF7B299AA5B000DDD988 /* WalletConnectNetworking in Frameworks */,
@@ -10904,7 +10902,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B82FFFA2C0D26AC001DD73F /* AlgoSDK.xcframework */,
+				2B28D0612C34BF7C00231EE8 /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";

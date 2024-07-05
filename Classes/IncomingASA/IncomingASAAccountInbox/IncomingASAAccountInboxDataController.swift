@@ -61,6 +61,10 @@ struct IncomingASAListItem: Hashable {
     let algoGainOnClaim: UInt64?
     let algoGainOnReject: UInt64?
     let inboxAddress: String?
+    let shouldUseFundsBeforeClaiming: Bool
+    let hasInsufficientAlgoForClaiming: Bool
+    let shouldUseFundsBeforeRejecting: Bool
+    let hasInsufficientAlgoForRejecting: Bool
     
     init(
         item: AssetItem,
@@ -69,7 +73,11 @@ struct IncomingASAListItem: Hashable {
         accountAddress: String?,
         inboxAddress: String?,
         algoGainOnClaim: UInt64?, 
-        algoGainOnReject: UInt64?
+        algoGainOnReject: UInt64?,
+        shouldUseFundsBeforeClaiming: Bool,
+        hasInsufficientAlgoForClaiming: Bool,
+        shouldUseFundsBeforeRejecting: Bool,
+        hasInsufficientAlgoForRejecting: Bool
     ) {
         self.asset = item.asset
         self.collectibleAsset = collectibleAssetItem?.asset
@@ -93,6 +101,10 @@ struct IncomingASAListItem: Hashable {
         self.inboxAddress = inboxAddress
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
+        self.shouldUseFundsBeforeClaiming = shouldUseFundsBeforeClaiming
+        self.hasInsufficientAlgoForClaiming = hasInsufficientAlgoForClaiming
+        self.shouldUseFundsBeforeRejecting = shouldUseFundsBeforeRejecting
+        self.hasInsufficientAlgoForRejecting = hasInsufficientAlgoForRejecting
     }
 
     func hash(into hasher: inout Hasher) {

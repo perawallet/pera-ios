@@ -98,7 +98,8 @@ extension ARC59SendTransactionDataBuilder {
             minBalance: assetTransactionDraft.minBalance,
             innerTransactionCount: assetTransactionDraft.innerTransactionCount,
             appID: assetTransactionDraft.appID,
-            assetID: assetIndex
+            assetID: assetIndex,
+            extraAlgoAmount: assetTransactionDraft.extraAlgoAmount
         )
 
         guard let transactionData = algorandSDK.composeArc59SendAssetTxn(with: draft, error: &transactionError) else {

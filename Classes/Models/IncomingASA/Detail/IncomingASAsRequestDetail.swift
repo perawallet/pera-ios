@@ -25,6 +25,10 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
     var senders: Senders?
     var algoGainOnClaim: UInt64?
     var algoGainOnReject: UInt64?
+    var shouldUseFundsBeforeClaiming: Bool
+    var hasInsufficientAlgoForClaiming: Bool
+    var shouldUseFundsBeforeRejecting: Bool
+    var hasInsufficientAlgoForRejecting: Bool
     
     // Initializer from APIModel
     init(
@@ -35,6 +39,10 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
         self.senders = apiModel.senders.unwrap(Senders.init)
         self.algoGainOnClaim = apiModel.algoGainOnClaim
         self.algoGainOnReject = apiModel.algoGainOnReject
+        self.shouldUseFundsBeforeClaiming = apiModel.shouldUseFundsBeforeClaiming ?? false
+        self.hasInsufficientAlgoForClaiming = apiModel.hasInsufficientAlgoForClaiming ?? false
+        self.shouldUseFundsBeforeRejecting = apiModel.shouldUseFundsBeforeRejecting ?? false
+        self.hasInsufficientAlgoForRejecting = apiModel.hasInsufficientAlgoForRejecting ?? false
     }
     
     // Encode function to convert to APIModel
@@ -45,6 +53,10 @@ final class IncomingASAsRequestDetailResult: ALGEntityModel {
         apiModel.senders = senders?.encode()
         apiModel.algoGainOnClaim = algoGainOnClaim
         apiModel.algoGainOnReject = algoGainOnReject
+        apiModel.shouldUseFundsBeforeClaiming = shouldUseFundsBeforeClaiming
+        apiModel.hasInsufficientAlgoForClaiming = hasInsufficientAlgoForClaiming
+        apiModel.shouldUseFundsBeforeRejecting = shouldUseFundsBeforeRejecting
+        apiModel.hasInsufficientAlgoForRejecting = hasInsufficientAlgoForRejecting
         return apiModel
     }
 }
@@ -56,6 +68,10 @@ extension IncomingASAsRequestDetailResult {
         var senders: Senders.APIModel?
         var algoGainOnClaim: UInt64?
         var algoGainOnReject: UInt64?
+        var shouldUseFundsBeforeClaiming: Bool?
+        var hasInsufficientAlgoForClaiming: Bool?
+        var shouldUseFundsBeforeRejecting: Bool?
+        var hasInsufficientAlgoForRejecting: Bool?
         
         init() {
             self.totalAmount = 0
@@ -63,6 +79,10 @@ extension IncomingASAsRequestDetailResult {
             self.senders = .init()
             self.algoGainOnClaim = 0
             self.algoGainOnReject = 0
+            self.shouldUseFundsBeforeClaiming = false
+            self.hasInsufficientAlgoForClaiming = false
+            self.shouldUseFundsBeforeRejecting = false
+            self.hasInsufficientAlgoForRejecting = false
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -71,6 +91,10 @@ extension IncomingASAsRequestDetailResult {
             case senders
             case algoGainOnClaim = "algo_gain_on_claim"
             case algoGainOnReject = "algo_gain_on_reject"
+            case shouldUseFundsBeforeClaiming = "should_use_funds_before_claiming"
+            case hasInsufficientAlgoForClaiming = "insufficient_algo_for_claiming"
+            case shouldUseFundsBeforeRejecting = "should_use_funds_before_rejecting"
+            case hasInsufficientAlgoForRejecting = "insufficient_algo_for_rejecting"
         }
     }
 }
