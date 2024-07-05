@@ -201,8 +201,8 @@ extension IncomingASAsDetailScreen {
         
         if draft.hasInsufficientAlgoForClaiming {
             bannerController?.presentErrorBanner(
-                title: "".localized,
-                message: "".localized
+                title: "title-error".localized,
+                message: "required-min-balance-title".localized
             )
            return
         }
@@ -239,8 +239,8 @@ extension IncomingASAsDetailScreen {
             
             if draft.hasInsufficientAlgoForRejecting {
                 bannerController?.presentErrorBanner(
-                    title: "".localized,
-                    message: "".localized
+                    title: "title-error".localized,
+                    message: "required-min-balance-title".localized
                 )
                return
             }
