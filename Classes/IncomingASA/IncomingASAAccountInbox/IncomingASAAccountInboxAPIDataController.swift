@@ -196,7 +196,9 @@ extension IncomingASAAccountInboxAPIDataController {
                 algoGainOnClaim: $0.algoGainOnClaim,
                 algoGainOnReject: $0.algoGainOnReject,
                 shouldUseFundsBeforeClaiming: $0.shouldUseFundsBeforeClaiming,
-                shouldUseFundsBeforeRejecting: $0.shouldUseFundsBeforeRejecting
+                hasInsufficientAlgoForClaiming: $0.hasInsufficientAlgoForClaiming,
+                shouldUseFundsBeforeRejecting: $0.shouldUseFundsBeforeRejecting,
+                hasInsufficientAlgoForRejecting: $0.hasInsufficientAlgoForRejecting
             )
         }
     }
@@ -207,7 +209,9 @@ extension IncomingASAAccountInboxAPIDataController {
         algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?,
         shouldUseFundsBeforeClaiming: Bool,
-        shouldUseFundsBeforeRejecting: Bool
+        hasInsufficientAlgoForClaiming: Bool,
+        shouldUseFundsBeforeRejecting: Bool,
+        hasInsufficientAlgoForRejecting: Bool
     ) -> IncomingASAItem? {
         guard let assetDecoration else {
             return nil
@@ -226,7 +230,9 @@ extension IncomingASAAccountInboxAPIDataController {
             algoGainOnClaim: algoGainOnClaim,
             algoGainOnReject: algoGainOnReject,
             shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,
-            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting
+            hasInsufficientAlgoForClaiming: hasInsufficientAlgoForClaiming,
+            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting,
+            hasInsufficientAlgoForRejecting: hasInsufficientAlgoForRejecting
         )
     }
     
@@ -237,7 +243,9 @@ extension IncomingASAAccountInboxAPIDataController {
         algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?,
         shouldUseFundsBeforeClaiming: Bool,
-        shouldUseFundsBeforeRejecting: Bool
+        hasInsufficientAlgoForClaiming: Bool,
+        shouldUseFundsBeforeRejecting: Bool,
+        hasInsufficientAlgoForRejecting: Bool
     ) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
@@ -265,7 +273,9 @@ extension IncomingASAAccountInboxAPIDataController {
             algoGainOnClaim: algoGainOnClaim,
             algoGainOnReject: algoGainOnReject,
             shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,
-            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting
+            hasInsufficientAlgoForClaiming: hasInsufficientAlgoForClaiming,
+            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting,
+            hasInsufficientAlgoForRejecting: hasInsufficientAlgoForRejecting
         )
         return .asset(item)
     }
