@@ -216,6 +216,7 @@ extension AlgorandSDK {
             draft.appID, 
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.extraAlgoAmount.toSDKInt64(),
             &error
         )?.toDataArray()
     }
@@ -236,6 +237,7 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.extraAlgoAmount.toSDKInt64(),
             nil,
             &error
         )?.flatten()
@@ -252,6 +254,7 @@ extension AlgorandSDK {
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
             draft.isOptedIn,
+            draft.isClaimingAlgo,
             &error
         )?.toDataArray()
     }
@@ -267,6 +270,7 @@ extension AlgorandSDK {
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
             draft.isOptedIn,
+            draft.isClaimingAlgo,
             nil,
             &error
         )?.flatten()
@@ -275,7 +279,7 @@ extension AlgorandSDK {
     func composeArc59RejectAssetTxn(
         with draft: ARC59RejectAssetTransactionDraft,
         error: inout NSError?
-    ) -> Data? {
+    ) -> [Data]? {
         AlgoSdkMakeARC59RejectTxn(
             getTrimmedAddress(from: draft.from),
             draft.inboxAccount,
@@ -283,8 +287,9 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.isClaimingAlgo,
             &error
-        )
+        )?.toDataArray()
     }
 
     func composeArc59RejectAssetTxnAndSign(
@@ -298,9 +303,10 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.isClaimingAlgo,
             nil,
             &error
-        )
+        )?.flatten()
     }
 }
 
