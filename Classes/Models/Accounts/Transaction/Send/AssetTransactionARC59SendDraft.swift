@@ -37,4 +37,5 @@ struct AssetTransactionARC59SendDraft: TransactionSendDraft {
     let minBalance: UInt64
     let innerTransactionCount: Int
     let appID: Int64
+    let extraAlgoAmount: UInt64
 }

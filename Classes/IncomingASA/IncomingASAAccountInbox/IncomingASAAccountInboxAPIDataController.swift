@@ -194,7 +194,9 @@ extension IncomingASAAccountInboxAPIDataController {
                 $0.asset,
                 senders: $0.senders,
                 algoGainOnClaim: $0.algoGainOnClaim,
-                algoGainOnReject: $0.algoGainOnReject
+                algoGainOnReject: $0.algoGainOnReject,
+                shouldUseFundsBeforeClaiming: $0.shouldUseFundsBeforeClaiming,
+                shouldUseFundsBeforeRejecting: $0.shouldUseFundsBeforeRejecting
             )
         }
     }
@@ -203,7 +205,9 @@ extension IncomingASAAccountInboxAPIDataController {
         _ assetDecoration: AssetDecoration?,
         senders: Senders?,
         algoGainOnClaim: UInt64?,
-        algoGainOnReject: UInt64?
+        algoGainOnReject: UInt64?,
+        shouldUseFundsBeforeClaiming: Bool,
+        shouldUseFundsBeforeRejecting: Bool
     ) -> IncomingASAItem? {
         guard let assetDecoration else {
             return nil
@@ -220,7 +224,9 @@ extension IncomingASAAccountInboxAPIDataController {
             collectibleAsset: collectibleAsset,
             senders: senders,
             algoGainOnClaim: algoGainOnClaim,
-            algoGainOnReject: algoGainOnReject
+            algoGainOnReject: algoGainOnReject,
+            shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,
+            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting
         )
     }
     
@@ -229,7 +235,9 @@ extension IncomingASAAccountInboxAPIDataController {
         collectibleAsset: CollectibleAsset?,
         senders: Senders?, 
         algoGainOnClaim: UInt64?,
-        algoGainOnReject: UInt64?
+        algoGainOnReject: UInt64?,
+        shouldUseFundsBeforeClaiming: Bool,
+        shouldUseFundsBeforeRejecting: Bool
     ) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
@@ -255,7 +263,9 @@ extension IncomingASAAccountInboxAPIDataController {
             accountAddress: incomingASAsRequestDetail?.address,
             inboxAddress: incomingASAsRequestDetail?.inboxAddress,
             algoGainOnClaim: algoGainOnClaim,
-            algoGainOnReject: algoGainOnReject
+            algoGainOnReject: algoGainOnReject,
+            shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,
+            shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting
         )
         return .asset(item)
     }

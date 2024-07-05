@@ -147,7 +147,8 @@ extension IncomingASATransactionController {
             inboxAccount: draft.inboxAddress,
             appID: appID,
             assetID: draft.asset.id,
-            isOptedIn: isOptedIn
+            isOptedIn: isOptedIn,
+            isClaimingAlgo: draft.shouldUseFundsBeforeClaiming
         )
         
         var error: NSError?
@@ -190,11 +191,12 @@ extension IncomingASATransactionController {
             inboxAccount: draft.inboxAddress,
             creatorAccount: draft.asset.creator?.address,
             appID: appID,
-            assetID: draft.asset.id
+            assetID: draft.asset.id,
+            isClaimingAlgo: draft.shouldUseFundsBeforeRejecting
         )
         
         var error: NSError?
-        guard let composedTransaction = algoSDK.composeArc59RejectAssetTxn(
+        guard let composedTransactions = algoSDK.composeArc59RejectAssetTxn(
             with: transactionDraft,
             error: &error
         ) else {
@@ -211,7 +213,7 @@ extension IncomingASATransactionController {
         
         startSigningProcess(
             for: account,
-            transactions: [composedTransaction]
+            transactions: composedTransactions
         )
     }
     

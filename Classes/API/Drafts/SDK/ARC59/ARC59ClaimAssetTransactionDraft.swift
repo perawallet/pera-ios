@@ -23,4 +23,5 @@ struct ARC59ClaimAssetTransactionDraft: TransactionDraft {
     let appID: Int64
     let assetID: Int64
     let isOptedIn: Bool
+    let isClaimingAlgo: Bool
 }

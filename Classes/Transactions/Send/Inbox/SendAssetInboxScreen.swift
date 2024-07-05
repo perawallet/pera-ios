@@ -412,7 +412,8 @@ extension SendAssetInboxScreen {
             inboxAccount: inboxSendSummary.inboxAddress,
             minBalance: inboxSendSummary.minBalanceAmount,
             innerTransactionCount: inboxSendSummary.innerTransactionCount,
-            appID: draft.appID
+            appID: draft.appID,
+            extraAlgoAmount: inboxSendSummary.algoFundAmount
         )
         
         let dataBuilder = ARC59SendTransactionDataBuilder(
