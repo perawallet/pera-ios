@@ -106,6 +106,7 @@ extension HomeAPIDataController {
                     $0.value.isWatchAccount == false && $0.value.ledgerDetail == nil
                 }
                 let addresses = filteredAccounts.map({$0.value.address})
+                guard addresses.isNonEmpty else { return }
                 incomingASAsAPIDataController.fetchRequests(addresses: addresses)
             }
         }
@@ -321,13 +322,6 @@ extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
     func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFetch incomingASAsRequestList: IncomingASAsRequestList) {
         self.incomingASAsRequestList = incomingASAsRequestList
         self.deliverASARequestsContentUpdate()
-    }
-    
-    func incomingASAsAPIDataController(
-        _ dataController: IncomingASAsAPIDataController,
-        didFailToFetchRequests error: String
-    ) {
-        self.publish(.didReceiveError(error))
     }
 }
 

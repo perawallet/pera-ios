@@ -243,6 +243,8 @@ extension IncomingASAsDetailScreen {
             title: "incoming-asa-detail-screen-left-button-title".localized,
             style: .default
         ) { [unowned self] in
+            self.dismiss(animated: true)
+
             guard let draft,
                   let account else {
                 return

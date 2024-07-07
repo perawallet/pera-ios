@@ -188,12 +188,13 @@ final class HomeViewController:
             case .didUpdateIncomingASAsRequests(let asasReqUpdate):
                 self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
-                
+                if self.asasRequestsCount == 0 {
+                    self.leftBarButtonItems = []
+                    self.setNeedsNavigationBarAppearanceUpdate()
+                }
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
-            case .didReceiveError(let error):
-                bannerController?.presentErrorBanner(title: "", message: error)
             }
         }
         dataController.load()
@@ -312,6 +313,8 @@ extension HomeViewController {
     private func configureASARequestBarButton() {
         guard let asasRequestsCount,
               asasRequestsCount > 0 else {
+            self.leftBarButtonItems = []
+            self.setNeedsNavigationBarAppearanceUpdate()
             return
         }
         

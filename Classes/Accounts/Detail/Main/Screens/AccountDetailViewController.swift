@@ -351,6 +351,7 @@ extension AccountDetailViewController {
             switch event {
             case .didCompleteTransaction:
                 screen.closeScreen(by: .pop, animated: false)
+                self?.popScreen()
             case .transactionOption: break
             }
         }
