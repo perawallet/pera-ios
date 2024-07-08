@@ -34,6 +34,11 @@ struct CollectibleListItemViewTheme:
     var secondaryTitle: TextStyle
     var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
     var amount: TextStyle
+    var requestCountPadding: LayoutMetric
+    var requestCountVerticalPadding: LayoutMetric
+    var requestCount: TextStyle
+    var requestCountBorderCorner: Corner
+    var requestCountBorder: Border
 
     init(_ family: LayoutFamily) {
         self.icon = URLImageViewCollectibleListItemTheme()
@@ -60,6 +65,14 @@ struct CollectibleListItemViewTheme:
         self.amount = [
             .textColor(Colors.Text.grayLighter)
         ]
+        self.requestCountPadding = 10
+        self.requestCountVerticalPadding = 3
+        self.requestCount = [
+            .textColor(Colors.Text.main),
+            .font(Typography.captionRegular())
+        ]
+        self.requestCountBorderCorner = .init(radius: 11.0)
+        self.requestCountBorder = Border(color: Colors.Layer.grayLighter.uiColor, width: 1)
     }
 }
 

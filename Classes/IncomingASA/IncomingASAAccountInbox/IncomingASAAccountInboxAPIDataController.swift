@@ -260,7 +260,9 @@ extension IncomingASAAccountInboxAPIDataController {
             collectibleAssetItem = CollectibleAssetItem(
                 account: Account(),
                 asset: collectibleAsset,
-                amountFormatter: assetAmountFormatter
+                amountFormatter: assetAmountFormatter,
+                showForIncomingASA: true,
+                requestCount: senders?.count
             )
         }
         

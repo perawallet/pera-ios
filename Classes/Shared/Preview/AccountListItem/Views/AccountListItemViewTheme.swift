@@ -19,9 +19,20 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
+protocol PrimaryAccountListItemViewTheme: StyleSheet, LayoutSheet {
+    var icon: ImageStyle { get }
+    var iconSize: LayoutSize { get }
+    var iconBottomRightBadgePaddings: LayoutPaddings { get }
+    var horizontalPadding: LayoutMetric { get }
+    var contentMinWidthRatio: LayoutMetric { get }
+    var title: PrimaryTitleViewTheme { get }
+    var primaryAccessory: TextStyle { get }
+    var secondaryAccessory: TextStyle { get }
+    var accessoryIcon: ImageStyle { get }
+    var accessoryIconContentEdgeInsets: LayoutOffset { get }    
+}
+
+struct AccountListItemViewTheme: PrimaryAccountListItemViewTheme {
     var icon: ImageStyle
     var iconSize: LayoutSize
     var iconBottomRightBadgePaddings: LayoutPaddings
@@ -53,15 +64,6 @@ struct AccountListItemViewTheme:
         ]
         self.accessoryIconContentEdgeInsets = (8, 0)
     }
-    
-    mutating  func forceToDark() {
-        var theme = AccountPreviewPrimaryTitleViewTheme()
-        theme.forceToDark()
-        self.title = theme
-        self.primaryAccessory = [
-            .textColor(Colors.Text.mainDark)
-        ]
-    }
 }
 
 fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
@@ -83,16 +85,5 @@ fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
             .textColor(Colors.Text.grayLighter)
         ]
         self.spacingBetweenPrimaryAndSecondaryTitles = 0
-    }
-    
-    mutating func forceToDark() {
-        self.primaryTitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.mainDark)
-        ]
-        self.secondaryTitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayDark)
-        ]
     }
 }

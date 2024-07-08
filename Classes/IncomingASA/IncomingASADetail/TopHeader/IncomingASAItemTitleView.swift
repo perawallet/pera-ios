@@ -61,7 +61,7 @@ final class IncomingASAItemTitleView:
         } else {
             secondaryTitleView.clearText()
         }
-        // TODO:  get value
+
         if let seconsSecondaryTitle = viewModel?.secondSecondaryTitle {
             seconsSecondaryTitle.load(in: secondSecondaryTitleView)
         } else {
@@ -152,7 +152,7 @@ extension IncomingASAItemTitleView {
             $0.leading == 0
             $0.bottom == 0
             $0.height == theme.titleHeight
-            $0.width <= 72
+            $0.width <= theme.secondaryTitleWidth
         }
     }
     
@@ -169,7 +169,7 @@ extension IncomingASAItemTitleView {
             $0.leading == secondaryTitleView.snp.trailing + 6
             $0.bottom == 0
             $0.height == theme.titleHeight
-            $0.width <= 72
+            $0.width <= theme.secondaryTitleWidth
         }
     }
 }

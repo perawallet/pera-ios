@@ -32,6 +32,7 @@ struct IncominASAListTitleViewTheme: StyleSheet, LayoutSheet {
     ) {
         self.primaryTitle = [
             .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.primaryTitleAccessory = [
             .contentMode(.right),

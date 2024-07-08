@@ -23,6 +23,7 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
     let primaryTitleAccessory: ImageStyle
     let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
     let secondaryTitle: TextStyle
+    var secondaryTitleWidth: LayoutMetric
     let secondSecondaryTitle: TextStyle
     let titleHeight: LayoutMetric
     let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
@@ -32,7 +33,8 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
         _ family: LayoutFamily
     ) {
         self.primaryTitle = [
-            .textColor(Colors.Text.mainDark)
+            .textColor(Colors.Text.mainDark),
+            .font(Typography.bodyMedium())
         ]
         self.primaryTitleAccessory = [
             .contentMode(.right),
@@ -44,6 +46,7 @@ struct IncomingASAItemTitleViewTheme: StyleSheet, LayoutSheet {
             .font(Typography.captionMedium()),
             .backgroundColor(Colors.Button.Ghost.focusBackgroundDark)
         ]
+        self.secondaryTitleWidth = 72
         self.secondSecondaryTitle = [
             .textColor(Colors.Button.Square.secondaryIcon),
             .font(Typography.captionMedium()),

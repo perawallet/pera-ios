@@ -188,7 +188,10 @@ final class HomeViewController:
             case .didUpdateIncomingASAsRequests(let asasReqUpdate):
                 self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
                 self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
-                
+                if self.asasRequestsCount == 0 {
+                    self.leftBarButtonItems = []
+                    self.setNeedsNavigationBarAppearanceUpdate()
+                }
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
@@ -310,6 +313,8 @@ extension HomeViewController {
     private func configureASARequestBarButton() {
         guard let asasRequestsCount,
               asasRequestsCount > 0 else {
+            self.leftBarButtonItems = []
+            self.setNeedsNavigationBarAppearanceUpdate()
             return
         }
         
@@ -1297,7 +1302,7 @@ extension HomeViewController {
                                 
             switch event {
             case .didCompleteTransaction:
-                screen.dismissScreen()
+                screen.closeScreen(by: .pop, animated: false)
             }
         }
     }

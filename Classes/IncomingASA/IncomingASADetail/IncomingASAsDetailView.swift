@@ -34,6 +34,7 @@ final class IncomingASAsDetailView:
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = false
         return scrollView
     }()
     

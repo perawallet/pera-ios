@@ -431,8 +431,14 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
                     
                     switch event {
                     case .didCompleteTransaction:
-                        screen.dismissScreen()
-                        self.eventHandler?(.didCompleteTransaction)
+                        screen.dismissScreen()                        
+                        asyncMain(
+                            afterDuration: 0.2
+                        ) {
+                            [weak self] in
+                            guard let self else { return }
+                            self.eventHandler?(.didCompleteTransaction)
+                        }
                     }
                 }
             default:

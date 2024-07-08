@@ -40,11 +40,8 @@ final class IncomingASAsAPIDataController {
                     self, 
                     didFetch: requestList
                 )
-            case .failure(let apiError, _):
-                self.delegate?.incomingASAsAPIDataController(
-                    self,
-                    didFailToFetchRequests: apiError.localizedDescription
-                )
+            case .failure:
+                break
             }
         }
     }
@@ -54,10 +51,5 @@ protocol IncomingASAsAPIDataControllerDelegate: AnyObject {
     func incomingASAsAPIDataController(
         _ dataController: IncomingASAsAPIDataController,
         didFetch incomingASAsRequestList: IncomingASAsRequestList
-    )
-    
-    func incomingASAsAPIDataController(
-        _ dataController: IncomingASAsAPIDataController,
-        didFailToFetchRequests error: String
     )
 }
