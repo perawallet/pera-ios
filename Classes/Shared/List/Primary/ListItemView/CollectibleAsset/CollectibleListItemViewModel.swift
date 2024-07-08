@@ -101,7 +101,7 @@ extension CollectibleListItemViewModel {
             return
         }
 
-        if !asset.isOwned, !(item.isCollectibleForIncomingASA ?? false) {
+        if !asset.isOwned, !(item.showForIncomingASA ?? false) {
             iconBottomRightBadge = "circle-badge-warning".uiImage
             iconOverlayImage = "overlay-bg".uiImage
             return

@@ -261,7 +261,7 @@ extension IncomingASAAccountInboxAPIDataController {
                 account: Account(),
                 asset: collectibleAsset,
                 amountFormatter: assetAmountFormatter,
-                isCollectibleForIncomingASA: true,
+                showForIncomingASA: true,
                 requestCount: senders?.count
             )
         }

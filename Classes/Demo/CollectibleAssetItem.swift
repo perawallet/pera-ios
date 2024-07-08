@@ -20,20 +20,20 @@ final class CollectibleAssetItem {
     let account: Account
     let asset: CollectibleAsset
     let amountFormatter: CollectibleAmountFormatter
-    let isCollectibleForIncomingASA: Bool?
+    let showForIncomingASA: Bool?
     let requestCount: Int?
     
     init(
         account: Account,
         asset: CollectibleAsset,
         amountFormatter: CollectibleAmountFormatter,
-        isCollectibleForIncomingASA: Bool? = nil,
+        showForIncomingASA: Bool? = nil,
         requestCount: Int? = nil
     ) {
         self.account = account
         self.asset = asset
         self.amountFormatter = amountFormatter
-        self.isCollectibleForIncomingASA = isCollectibleForIncomingASA
+        self.showForIncomingASA = showForIncomingASA
         self.requestCount = requestCount
     }
 }
