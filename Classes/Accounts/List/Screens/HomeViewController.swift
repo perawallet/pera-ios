@@ -186,15 +186,9 @@ final class HomeViewController:
                     self.alertPresenter.presentIfNeeded()
                 }
             case .didUpdateIncomingASAsRequests(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
-                self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
-                if self.asasRequestsCount == 0 {
-                    self.leftBarButtonItems = []
-                    self.setNeedsNavigationBarAppearanceUpdate()
-                }
-                if !listWasScrolled {
-                    self.configureASARequestBarButton()
-                }
+                self.handleASAUpdate(asasReqUpdate: asasReqUpdate.incomingASAsRequestList)
+            case .deliverASARequestsContentUpdate(let asasReqUpdate):
+                self.handleASAUpdate(asasReqUpdate: asasReqUpdate)
             }
         }
         dataController.load()
@@ -262,6 +256,20 @@ final class HomeViewController:
             }
 
             self.configureNewNotificationBarButton()
+        }
+    }
+}
+
+extension HomeViewController {
+    private func handleASAUpdate(asasReqUpdate: IncomingASAsRequestList?) {
+        self.asasRequestsCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+        self.incomingASAsRequestList = asasReqUpdate
+        if self.asasRequestsCount == 0 {
+            self.leftBarButtonItems = []
+            self.setNeedsNavigationBarAppearanceUpdate()
+        }
+        if !listWasScrolled {
+            self.configureASARequestBarButton()
         }
     }
 }

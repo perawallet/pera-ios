@@ -49,6 +49,11 @@ final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataS
                     cell.bindData(item.viewModel)
                     return cell
                 }
+            case .assetLoading:
+                return collectionView.dequeue(
+                    AccountAssetListLoadingCell.self,
+                    at: indexPath
+                )
             case .empty:
                 let cell = collectionView.dequeue(
                     NoContentCell.self,

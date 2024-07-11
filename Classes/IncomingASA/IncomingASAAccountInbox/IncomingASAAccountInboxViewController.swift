@@ -366,13 +366,49 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
-    ) {}
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+        
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+            switch itemIdentifier {
+            case .assetLoading:
+                startAnimatingListLoadingIfNeeded(cell)
+            default: break
+            }
+        default: break
+        }
+    }
 
     func collectionView(
         _ collectionView: UICollectionView,
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
-    ) {}
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+            switch itemIdentifier {
+            case .assetLoading:
+                stopAnimatingListLoadingIfNeeded(cell)
+            default: break
+            }
+        default: break
+        }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
