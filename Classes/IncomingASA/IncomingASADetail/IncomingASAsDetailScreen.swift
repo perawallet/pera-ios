@@ -70,10 +70,6 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
         addActions()
     }
     
-    override var shouldShowNavigationBar: Bool {
-        return true
-    }
-
     private func bindNavigationItemTitle() {
         title = "incoming-asa-account-inbox-header-main-title".localized
     }
