@@ -57,8 +57,9 @@ final class IncomingASAAccountInboxAPIDataController:
 
 extension IncomingASAAccountInboxAPIDataController {
     func load(query: IncomingASAsRequestDetailQuery) {
-        nextQuery = query
-        loadFirst(query: query)
+        deliverUpdatesForLoading(for: .refresh)
+        lastQuery = query
+        nextQuery = nil
         loadNext(query: query)
     }
 
@@ -75,12 +76,6 @@ extension IncomingASAAccountInboxAPIDataController {
                 self.publish(event: .didReceiveError(apiError.localizedDescription))
             }
         }
-    }
-    
-    private func loadFirst(query: IncomingASAsRequestDetailQuery?) {
-        deliverUpdatesForLoading(for: .refresh)
-        lastQuery = query
-        nextQuery = nil
     }
 
     func reload() {
