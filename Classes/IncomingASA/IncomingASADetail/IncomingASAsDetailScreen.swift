@@ -21,7 +21,7 @@ import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
-final class IncomingASAsDetailScreen: BaseViewController {
+final class IncomingASAsDetailScreen: BaseScrollViewController {
     typealias EventHandler = (IncomingASADetailScreenEvent) -> Void
     var eventHandler: EventHandler?
     
@@ -59,24 +59,28 @@ final class IncomingASAsDetailScreen: BaseViewController {
 
     
     override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        super.configureNavigationBarAppearance()
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        bindNavigationItemTitle()
     }
     
     override func prepareLayout() {
+        super.prepareLayout()
         addIncomingAsasDetailView()
         addActions()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setStatusBarBackgroundColor(with: .black)
-    }
     
     override var shouldShowNavigationBar: Bool {
-        return false
+        return true
     }
 
+    private func bindNavigationItemTitle() {
+        title = "incoming-asa-account-inbox-header-main-title".localized
+    }
+    
     override func linkInteractors() {
+        super.linkInteractors()
+
         incomingAsasDetailView.startObserving(event: .performClose) {
             [weak self] in
             self?.dismissScreen()
@@ -94,8 +98,7 @@ final class IncomingASAsDetailScreen: BaseViewController {
 
 extension IncomingASAsDetailScreen {
     private func addIncomingAsasDetailView() {
-        view.addSubview(incomingAsasDetailView)
-        
+        contentView.addSubview(incomingAsasDetailView)
         incomingAsasDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

@@ -41,10 +41,6 @@ final class IncomingASAsDetailView:
     private(set) lazy var contentView = UIView()
     
     private lazy var accountAssetsView = IncomingASADetailHeaderView()
-    
-    private lazy var titleView = Label()
-    private lazy var closeActionView = MacaroonUIKit.Button()
-
     private lazy var assetValueView = UILabel()
     private lazy var amountValueView = UILabel()
     private lazy var idView = UILabel()
@@ -64,10 +60,7 @@ final class IncomingASAsDetailView:
     
     func customize(_ theme: IncomingASAsDetailViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        addAccountAssetsView(theme.accountAssetsTheme)
-        addScroll(theme)
         addContent(theme)
-        addCloseAction(theme.titleCloseAction)
         addAssetValueView(theme.amount)
         addAmountValueView(theme.amount)
         addCopyActionView(theme.copy)
@@ -81,8 +74,6 @@ final class IncomingASAsDetailView:
 
     func bindData(_ viewModel: IncomingASAsDetailViewModel?) {
         accountAssetsView.bindData(viewModel?.accountAssets)
-        let mainTitle = "incoming-asa-account-inbox-header-main-title".localized.bodyMedium()
-        mainTitle.load(in: titleView)
         
         if let collectibleViewModel = viewModel?.accountAssets?.listItem.collectibleViewModel {
             if let title = collectibleViewModel.primaryTitle {                
@@ -174,60 +165,11 @@ extension IncomingASAsDetailView {
 
     private func addContent(_ theme: IncomingASAsDetailViewTheme) {
         contentView.customizeBaseAppearance(backgroundColor: theme.contentBackground)
-        scrollView.addSubview(contentView)
+        addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.width == self
-            $0.top == theme.contentTopInset
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-        contentView.roundTheCorners([.topLeft, .topRight], radius: theme.contetnCorner)
-        
-        let dragIndicatorView = UIView()
-        dragIndicatorView.customizeBaseAppearance(backgroundColor: theme.dragIndicatorBackground)
-        contentView.addSubview(dragIndicatorView)
-        dragIndicatorView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.topInset)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(theme.dragIndicatorHeight)
-            $0.width.equalTo(theme.dragIndicatorWidth)
-        }
+            $0.edges.equalToSuperview()
+        }        
     }
-    
-    private func addCloseAction(
-        _ theme: IncomingASARequestTitleTheme
-    ) {
-        closeActionView.customizeAppearance(theme.action)
-
-        contentView.addSubview(closeActionView)
-        closeActionView.fitToHorizontalIntrinsicSize()
-        closeActionView.snp.makeConstraints {
-            $0.setPaddings(theme.closeActionViewPaddings)
-        }
-
-        startPublishing(
-            event: .performClose,
-            for: closeActionView
-        )
-
-        addTitle(theme)
-    }
-
-    private func addTitle(
-        _ theme: IncomingASARequestTitleTheme
-    ) {
-        titleView.customizeAppearance(theme.title)
-
-        contentView.addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.centerY == closeActionView
-            $0.centerX == 0
-            $0.leading >= closeActionView.snp.trailing + theme.titleViewHorizontalPaddings.leading
-            $0.trailing <= theme.titleViewHorizontalPaddings.trailing
-        }
-    }
-
 }
 
 extension IncomingASAsDetailView {
@@ -237,7 +179,7 @@ extension IncomingASAsDetailView {
         contentView.addSubview(assetValueView)
         assetValueView.fitToIntrinsicSize()
         assetValueView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom).offset(theme.titleTopPadding)
+            $0.top.greaterThanOrEqualToSuperview().offset(theme.assetValueTopPadding)
             $0.leading == 0
             $0.trailing == 0
         }
@@ -265,7 +207,7 @@ extension IncomingASAsDetailView {
         contentView.addSubview(copyActionView)
         copyActionView.snp.makeConstraints {
             $0.trailing == theme.copyActionRightInset
-            $0.top.equalTo(amountValueView.snp.bottom).offset(theme.copyActionBottomInset)
+            $0.top.greaterThanOrEqualTo(amountValueView.snp.bottom).offset(theme.copyActionBottomInset)
             $0.height.equalTo(theme.copyActionHeight)
         }
         

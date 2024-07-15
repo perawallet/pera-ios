@@ -25,7 +25,9 @@ struct IncomingASAsDetailViewModel: ViewModel {
     private(set) var accountId: TextProvider?
     private(set) var algoGainOnClaim: UInt64?
     private(set) var algoGainOnReject: UInt64?
-    
+    private(set) var draft: IncomingASAListItem!
+    private(set) var currencyFormatter: CurrencyFormatter!
+
     init(
         draft: IncomingASAListItem,
         account: Account,
@@ -51,6 +53,8 @@ struct IncomingASAsDetailViewModel: ViewModel {
         )
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
+        self.draft = draft
+        self.currencyFormatter = currencyFormatter
     }
 }
 

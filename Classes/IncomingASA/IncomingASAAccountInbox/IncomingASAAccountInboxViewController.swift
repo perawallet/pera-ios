@@ -451,13 +451,9 @@ extension IncomingASAAccountInboxViewController: UICollectionViewDelegateFlowLay
             case .asset(let item):
                 let screen = open(
                     .incomingASAsDetail( draft: item),
-                    by: .customPresent(
-                        presentationStyle: .fullScreen,
-                        transitionStyle: nil,
-                        transitioningDelegate: nil
-                    )
+                    by: .present
                 ) as? IncomingASAsDetailScreen
-                
+                screen?.isModalInPresentation = true
                 screen?.eventHandler = {
                     [weak self, weak screen] event in
                     guard let self,
