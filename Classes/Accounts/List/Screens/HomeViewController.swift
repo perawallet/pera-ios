@@ -185,9 +185,9 @@ final class HomeViewController:
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
                 }
-            case .didUpdateIncomingASAsRequests(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate.incomingASAsRequestList?.results.map({$0.requestCount ?? 0}).reduce(0, +)
-                self.incomingASAsRequestList = asasReqUpdate.incomingASAsRequestList
+            case .deliverASARequestsContentUpdate(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.incomingASAsRequestList = asasReqUpdate
                 if self.asasRequestsCount == 0 {
                     self.leftBarButtonItems = []
                     self.setNeedsNavigationBarAppearanceUpdate()
@@ -197,6 +197,7 @@ final class HomeViewController:
                 }
             }
         }
+        
         dataController.load()
 
         pushNotificationController.requestAuthorization()

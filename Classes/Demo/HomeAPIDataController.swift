@@ -245,14 +245,6 @@ extension HomeAPIDataController {
             return (totalPortfolioItem, snapshot)
         }
     }
-
-    private func deliverASARequestsContentUpdate() {
-        deliverASARequestsUpdate { [weak self] in
-            guard let self = self else { return nil }
-            var snapshot = Snapshot()
-            return (incomingASAsRequestList, snapshot)
-        }
-    }
     
     private func deliverNoContentUpdates() {
         deliverUpdates {
@@ -278,19 +270,6 @@ extension HomeAPIDataController {
             }
 
             self.publish(.didUpdate(updates))
-        }
-    }
-    
-    private func deliverASARequestsUpdate(_ updates: @escaping () -> IncomingASAs?) {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-
-            guard let updates = updates() else {
-                return
-            }
-
-            self.publish(.didUpdateIncomingASAsRequests(updates))
         }
     }
 }
@@ -321,7 +300,7 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
 extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
     func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFetch incomingASAsRequestList: IncomingASAsRequestList) {
         self.incomingASAsRequestList = incomingASAsRequestList
-        self.deliverASARequestsContentUpdate()
+        self.publish(.deliverASARequestsContentUpdate(incomingASAsRequestList))
     }
 }
 

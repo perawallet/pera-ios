@@ -72,6 +72,12 @@ extension IncomingASAAccountInboxListLayout {
                 sizeForAssetCellItem: item.viewModel,
                 atSection: indexPath.section
             )
+        case .assetLoading:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetLoadingItemAt: indexPath
+            )
         case .empty:
             return collectionView.bounds.size
         }

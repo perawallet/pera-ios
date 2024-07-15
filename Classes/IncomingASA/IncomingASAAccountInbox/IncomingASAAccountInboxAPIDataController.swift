@@ -18,8 +18,7 @@ import Foundation
 import MacaroonUtils
 
 final class IncomingASAAccountInboxAPIDataController:
-    IncomingASAAccountInboxDataController,
-    SharedDataControllerObserver {
+    IncomingASAAccountInboxDataController {
     var eventHandler: ((IncomingASAListDataControllerEvent) -> Void)?
     
     private(set)var requestsCount: Int
@@ -54,14 +53,17 @@ final class IncomingASAAccountInboxAPIDataController:
         self.sharedDataController = sharedDataController
         self.api = api
     }
-
-    deinit {
-        sharedDataController.remove(self)
-    }
 }
 
 extension IncomingASAAccountInboxAPIDataController {
     func load(query: IncomingASAsRequestDetailQuery) {
+        deliverUpdatesForLoading(for: .refresh)
+        lastQuery = query
+        nextQuery = nil
+        loadNext(query: query)
+    }
+
+    private func loadNext(query: IncomingASAsRequestDetailQuery) {
         api.fetchIncomingASAsRequest(address, with: query) {
             [weak self] response in
             guard let self else { return }
@@ -74,12 +76,6 @@ extension IncomingASAAccountInboxAPIDataController {
                 self.publish(event: .didReceiveError(apiError.localizedDescription))
             }
         }
-        
-        nextQuery = query
-
-        lastQuery = query
-        nextQuery = nil
-        sharedDataController.add(self)
     }
 
     func reload() {
@@ -101,21 +97,22 @@ extension IncomingASAAccountInboxAPIDataController {
     }
 }
 
-extension IncomingASAAccountInboxAPIDataController {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        if case .didFinishRunning = event {
-            reload()
-        }
-    }
-}
 
 extension IncomingASAAccountInboxAPIDataController {
+    
+    private func deliverUpdatesForLoading(for operation: Updates.Operation) {
+        if lastSnapshot?.itemIdentifiers(inSection: .assets).last == .assetLoading {
+            return
+        }
+
+        let updates = makeUpdatesForLoading(for: operation)
+        publish(updates: updates)
+    }
+    
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
         appendSectionForTitle(into: &snapshot)
+        appendSectionsForAssetsLoading(into: &snapshot)
         return Updates(snapshot: snapshot, operation: operation)
     }
 
@@ -166,6 +163,15 @@ extension IncomingASAAccountInboxAPIDataController {
         )
     }
 
+    private func appendSectionsForAssetsLoading(into snapshot: inout Snapshot) {
+        let items = makeItemsForAssetsLoading()
+        snapshot.appendSections([ .assets ])
+        snapshot.appendItems(
+            items,
+            toSection: .assets
+        )
+    }
+    
     private func appendSectionsForAssets(
         query: IncomingASAsRequestDetailQuery?,
         into snapshot: inout Snapshot
@@ -183,6 +189,10 @@ extension IncomingASAAccountInboxAPIDataController {
 
 extension IncomingASAAccountInboxAPIDataController {
     
+    private func makeItemsForAssetsLoading() -> [IncomingASAItem] {
+        return [ .assetLoading ]
+    }
+
     private func makeItemForTitle() -> [IncomingASAItem] {
         let viewModel = IncomingASAAccountInboxHeaderTitleCellViewModel(count: requestsCount)
         return [.title(viewModel)]
@@ -298,14 +308,6 @@ extension IncomingASAAccountInboxAPIDataController {
             [.empty],
             toSection: .empty
         )
-    }
-    
-    private func makeUpdatesForSearchNoContent(
-        for operation: Updates.Operation
-    ) -> Updates {
-        var snapshot = Snapshot()
-        appendSectionForSearchNoContent(into: &snapshot)
-        return Updates(snapshot: snapshot, operation: operation)
     }
     
     private func appendSectionForSearchNoContent(into snapshot: inout Snapshot) {
