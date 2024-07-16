@@ -69,13 +69,11 @@ enum HomeAccountItemIdentifier: Hashable {
 
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
-    case didUpdateIncomingASAsRequests(HomeDataController.IncomingASAs)
     case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
-        case .didUpdateIncomingASAsRequests(let incomingASAsRequests): return incomingASAsRequests.snapshot
         case .deliverASARequestsContentUpdate(_): return .init()
         }
     }

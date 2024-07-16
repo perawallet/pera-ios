@@ -3,6 +3,16 @@
     {
       "filename" : "img-inbox-send.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-inbox-send 1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
