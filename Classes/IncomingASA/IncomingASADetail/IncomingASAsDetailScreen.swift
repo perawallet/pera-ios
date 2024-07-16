@@ -28,7 +28,6 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
     private lazy var theme = Theme()
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
     let draft: IncomingASAListItem?
-    let collectibleDraft: IncomingASACollectibleAssetListItem?
     private let transactionController: IncomingASATransactionController
     private let copyToClipboardController: CopyToClipboardController
     
@@ -45,13 +44,11 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
     
     init(
         draft: IncomingASAListItem?,
-        collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
         configuration: ViewControllerConfiguration,
         transactionController: IncomingASATransactionController,
         copyToClipboardController: CopyToClipboardController
     ) {
         self.draft = draft
-        self.collectibleDraft = collectibleDraft
         self.transactionController = transactionController
         self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
