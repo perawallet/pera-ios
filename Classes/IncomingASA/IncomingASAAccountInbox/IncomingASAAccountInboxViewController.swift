@@ -54,20 +54,14 @@ final class IncomingASAAccountInboxViewController:
 
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
-
-    private var query: IncomingASAsRequestDetailQuery
-
     private let dataController: IncomingASAAccountInboxDataController
-
     private let copyToClipboardController: CopyToClipboardController
 
     init(
-        query: IncomingASAsRequestDetailQuery,
         dataController: IncomingASAAccountInboxDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
-        self.query = query
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -100,7 +94,7 @@ final class IncomingASAAccountInboxViewController:
                 )
             }
         }
-        dataController.load(query: query)
+        dataController.load()
     }
 
     override func viewDidLayoutSubviews() {

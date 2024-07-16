@@ -30,7 +30,7 @@ class PaginatedList<Item> {
     let count: Int
     let next: URL?
     let previous: String?
-    let results: [Item]
+    var results: [Item]
 
     init(
         pagination: PaginationComponents,

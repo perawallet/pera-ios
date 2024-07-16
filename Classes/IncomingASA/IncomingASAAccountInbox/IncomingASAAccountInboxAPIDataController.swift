@@ -32,16 +32,18 @@ final class IncomingASAAccountInboxAPIDataController:
 
     private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
     
-    private var nextQuery: IncomingASAsRequestDetailQuery?
-    private var lastQuery: IncomingASAsRequestDetailQuery?
+    private var query: IncomingASAsRequestDetailQuery = .init()
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
 
-    private var nextCursor: String?
     private var incomingASAsRequestDetail: IncomingASAsRequestDetailList?
 
+    private var hasNextPage: Bool {
+        return query.cursor != nil
+    }
+    
     init(
         address: String,
         requestsCount: Int,
@@ -56,33 +58,44 @@ final class IncomingASAAccountInboxAPIDataController:
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    func load(query: IncomingASAsRequestDetailQuery) {
-        nextQuery = query
-        loadFirst(query: query)
-        loadNext(query: query)
+    func load() {
+        deliverUpdatesForLoading(for: .refresh)
+        loadinitialData()
     }
 
-    private func loadNext(query: IncomingASAsRequestDetailQuery) {
-        api.fetchIncomingASAsRequest(address, with: query) {
-            [weak self] response in
-            guard let self else { return }
-            
+    private func loadinitialData() {
+        fetchIncomingASAsRequest(isInitialLoad: true)
+    }
+    
+    private func loadNext() {
+        if !hasNextPage { return }
+        fetchIncomingASAsRequest(isInitialLoad: false)
+    }
+    
+    private func fetchIncomingASAsRequest(isInitialLoad: Bool) {
+        api.fetchIncomingASAsRequest(address, with: query) { [weak self] response in
+            guard let self = self else { return }
+
             switch response {
             case .success(let requestList):
-                self.incomingASAsRequestDetail = requestList
-                reload()
+                if isInitialLoad {
+                    self.incomingASAsRequestDetail = requestList
+                } else {
+                    self.incomingASAsRequestDetail?.results.append(contentsOf: requestList.results)
+                }
+                if let nextCursor = requestList.nextCursor {
+                    self.query.cursor = nextCursor
+                    self.loadNext()
+                } else {
+                    self.query.cursor = nil
+                }
+                self.reload()
             case .failure(let apiError, _):
                 self.publish(event: .didReceiveError(apiError.localizedDescription))
             }
         }
     }
     
-    private func loadFirst(query: IncomingASAsRequestDetailQuery?) {
-        deliverUpdatesForLoading(for: .refresh)
-        lastQuery = query
-        nextQuery = nil
-    }
-
     func reload() {
         let task = AsyncTask {
             [weak self] completionBlock in
@@ -93,8 +106,8 @@ extension IncomingASAAccountInboxAPIDataController {
             }
 
             self.deliverUpdatesForContent(
-                when: { self.nextQuery == nil },
-                query: self.lastQuery,
+                when: { self.query.cursor == nil },
+                query: self.query,
                 for: .refresh
             )
         }
@@ -132,9 +145,9 @@ extension IncomingASAAccountInboxAPIDataController {
         )
 
         if !condition() { return }
-
-        self.lastQuery = query
-        self.nextQuery = nil
+        if let query {
+            self.query = query
+        }
         self.publish(updates: updates)
     }
 
