@@ -152,21 +152,6 @@ extension IncomingASAAccountsLocalDataController {
 }
 
 extension IncomingASAAccountsLocalDataController {
-
-    private func createCurrencyFormatter() -> CurrencyFormatter {
-        return .init()
-    }
-
-    private func createAssetAmountFormatter() -> CollectibleAmountFormatter {
-        return .init()
-    }
-
-    private func createMinBalanceCalculator() -> TransactionFeeCalculator {
-        return .init(transactionDraft: nil, transactionData: nil, params: nil)
-    }
-}
-
-extension IncomingASAAccountsLocalDataController {
     typealias Updates = IncomingASAAccountsUpdates
     typealias Snapshot = IncomingASAAccountsUpdates.Snapshot
 }

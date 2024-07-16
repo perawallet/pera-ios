@@ -28,13 +28,9 @@ final class IncomingASAAccountInboxAPIDataController:
 
     private lazy var currencyFormatter = createCurrencyFormatter()
     private lazy var assetAmountFormatter = createAssetAmountFormatter()
-    private lazy var minBalanceCalculator = createMinBalanceCalculator()
-
-    private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
     
     private var query: IncomingASAsRequestDetailQuery = .init()
     private var lastSnapshot: Snapshot?
-
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
 
@@ -369,10 +365,6 @@ extension IncomingASAAccountInboxAPIDataController {
 
     private func createAssetAmountFormatter() -> CollectibleAmountFormatter {
         return .init()
-    }
-
-    private func createMinBalanceCalculator() -> TransactionFeeCalculator {
-        return .init(transactionDraft: nil, transactionData: nil, params: nil)
     }
 }
 

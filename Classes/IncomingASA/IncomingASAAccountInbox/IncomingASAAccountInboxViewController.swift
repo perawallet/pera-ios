@@ -52,8 +52,6 @@ final class IncomingASAAccountInboxViewController:
         return collectionView
     }()
 
-    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
-    private var positionYForVisibleAccountActionsMenuAction: CGFloat?
     private let dataController: IncomingASAAccountInboxDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -97,14 +95,6 @@ final class IncomingASAAccountInboxViewController:
         dataController.load()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        if !listView.frame.isEmpty {
-            updateUIWhenViewDidLayoutSubviews()
-        }
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -143,21 +133,7 @@ final class IncomingASAAccountInboxViewController:
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    func reloadData() {
-//        dataController.reload()
-    }
-
-    func reloadData(_ filters: AssetFilterOptions?) {
-//        query.update(withFilters: filters)
-//        dataController.load(query: query)
-    }
-
-    func reloadData(_ order: AccountAssetSortingAlgorithm?) {
-//        query.update(withSort: order)
-//        dataController.load(query: query)
-    }
+    }    
 }
 
 extension IncomingASAAccountInboxViewController {
@@ -200,18 +176,6 @@ extension IncomingASAAccountInboxViewController {
     
     private func addUI() {
         addList()
-        addAccountActionsMenuAction()
-        updateSafeAreaWhenViewDidLayoutSubviews()
-    }
-
-    private func updateUIWhenViewDidLayoutSubviews() {
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
-        updateSafeAreaWhenViewDidLayoutSubviews()
-    }
-
-    private func updateUIWhenListDidScroll() {
-        updateAccountActionsMenuActionWhenListDidScroll()
-        updateSafeAreaWhenListDidScroll()
     }
 
     private func addList() {
@@ -233,77 +197,6 @@ extension IncomingASAAccountInboxViewController {
         listView.showsHorizontalScrollIndicator = false
         listView.alwaysBounceVertical = true
         listView.delegate = self
-    }
-
-    private func updateSafeAreaWhenListDidScroll() {
-        updateSafeAreaWhenViewDidLayoutSubviews()
-    }
-
-    private func updateSafeAreaWhenViewDidLayoutSubviews() {
-        if !canAccessAccountActionsMenu() {
-            additionalSafeAreaInsets.bottom = 0
-            return
-        }
-
-        let listSafeAreaBottom =
-            theme.spacingBetweenListAndAccountActionsMenuAction +
-            theme.accountActionsMenuActionSize.h +
-            theme.accountActionsMenuActionBottomPadding
-        additionalSafeAreaInsets.bottom = listSafeAreaBottom
-    }
-}
-
-extension IncomingASAAccountInboxViewController {
-    private func addAccountActionsMenuAction() {
-        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
-
-        view.addSubview(accountActionsMenuActionView)
-
-        accountActionsMenuActionView.snp.makeConstraints {
-            let safeAreaBottom = view.compactSafeAreaInsets.bottom
-            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
-
-            $0.fitToSize(theme.accountActionsMenuActionSize)
-            $0.trailing == theme.accountActionsMenuActionTrailingPadding
-            $0.bottom == bottom
-        }
-
-        accountActionsMenuActionView.addTouch(
-            target: self,
-            action: #selector(openAccountActionsMenu)
-        )
-
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
-    }
-
-    private func updateAccountActionsMenuActionWhenListDidScroll() {
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
-    }
-
-    private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
-    }
-
-    @objc
-    private func openAccountActionsMenu() {
-        eventHandler?(.transactionOption)
-    }
-
-    private func canAccessAccountActionsMenu() -> Bool {
-        guard let positionY = positionYForVisibleAccountActionsMenuAction else {
-            return false
-        }
-
-        let adjustedPositionY = positionY - AccountQuickActionsCell.contextPaddings.bottom
-        let listHeight = listView.bounds.height
-        let listContentHeight = listView.contentSize.height
-
-        if listContentHeight - listHeight <= adjustedPositionY {
-            return false
-        }
-
-        let listContentOffset = listView.contentOffset
-        return listContentOffset.y >= adjustedPositionY
     }
 }
 
@@ -346,12 +239,6 @@ extension IncomingASAAccountInboxViewController {
                 return
             }
         }
-    }
-}
-
-extension IncomingASAAccountInboxViewController {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateUIWhenListDidScroll()
     }
 }
 
@@ -580,7 +467,6 @@ extension IncomingASAAccountInboxViewController {
 
 extension IncomingASAAccountInboxViewController {
     enum Event {
-        case transactionOption
         case didCompleteTransaction
     }
 }
