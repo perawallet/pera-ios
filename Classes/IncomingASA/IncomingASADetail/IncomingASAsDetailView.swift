@@ -26,21 +26,10 @@ final class IncomingASAsDetailView:
         .performCopy: TargetActionInteraction(),
         .performClose: TargetActionInteraction()
     ]
-
-    private lazy var theme = IncomingASAsDetailViewTheme()
-    
-    private(set) lazy var scrollView: UIScrollView = {
-        let scrollView = ScrollView()
-        scrollView.alwaysBounceVertical = true
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.bounces = false
-        return scrollView
-    }()
-    
     private(set) lazy var contentView = UIView()
     
-    private lazy var accountAssetsView = IncomingASADetailHeaderView()
+    private lazy var theme = IncomingASAsDetailViewTheme()
+    private lazy var accountView = IncomingASADetailAccountView()
     private lazy var assetValueView = UILabel()
     private lazy var amountValueView = UILabel()
     private lazy var idView = UILabel()
@@ -59,12 +48,13 @@ final class IncomingASAsDetailView:
     }
     
     func customize(_ theme: IncomingASAsDetailViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        customizeBaseAppearance(backgroundColor: theme.contentBackground)
         addContent(theme)
         addAssetValueView(theme.amount)
         addAmountValueView(theme.amount)
         addCopyActionView(theme.copy)
         addIdView(theme.copy)
+        addAccountView(theme.accountViewTheme)
         addSendersTitle(theme)
         addAmountTitle(theme)
         addSendersContextView(theme)
@@ -73,9 +63,9 @@ final class IncomingASAsDetailView:
     }
 
     func bindData(_ viewModel: IncomingASAsDetailViewModel?) {
-        accountAssetsView.bindData(viewModel?.accountAssets)
+        accountView.bindData(viewModel?.accountItem)
         
-        if let collectibleViewModel = viewModel?.accountAssets?.listItem.collectibleViewModel {
+        if let collectibleViewModel = viewModel?.draft.collectibleViewModel {
             if let title = collectibleViewModel.primaryTitle {                
                 title
                     .string
@@ -145,22 +135,24 @@ final class IncomingASAsDetailView:
 
 extension IncomingASAsDetailView {
     
-    private func addAccountAssetsView(_ theme: IncomingASADetailHeaderTheme) {
-        addSubview(accountAssetsView)
-        accountAssetsView.customize(theme)
-        
-        accountAssetsView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.accountAssetViewTopInset)
-            $0.leading.trailing.equalToSuperview()
+    private func addAccountView(_ theme: IncomingASADetailAccountViewTheme) {
+        addSubview(accountView)
+        accountView.customize(theme)
+
+        accountView.snp.makeConstraints {
+            $0.top.equalTo(idView.snp.bottom).offset(45)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.height.equalTo(theme.height)
         }
-    }
-
-    private func addScroll(_ theme: IncomingASAsDetailViewTheme) {
-        addSubview(scrollView)
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        
+        let seperator = UIView()
+        addSubview(seperator)
+        seperator.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.idSeperatorPadding)
+            $0.height.equalTo(theme.dividerLineHeight)
+            $0.top.equalTo(accountView.snp.bottom).offset(theme.idSeperatorPadding)
         }
+        seperator.customizeAppearance(theme.dividerLine)
     }
 
     private func addContent(_ theme: IncomingASAsDetailViewTheme) {
@@ -251,7 +243,7 @@ extension IncomingASAsDetailView {
         contentView.addSubview(sendersTitleView)
         sendersTitleView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.amountTrailingInset)
-            $0.top.equalTo(copyActionView.snp.bottom).offset(theme.amountTopInset)
+            $0.top.equalTo(accountView.snp.bottom).offset(theme.amountTopInset)
         }
     }
     
@@ -261,7 +253,7 @@ extension IncomingASAsDetailView {
         contentView.addSubview(amountTitleView)
         amountTitleView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.amountTrailingInset)
-            $0.top.equalTo(copyActionView.snp.bottom).offset(theme.amountTopInset)
+            $0.top.equalTo(accountView.snp.bottom).offset(theme.amountTopInset)
         }
     }
 }

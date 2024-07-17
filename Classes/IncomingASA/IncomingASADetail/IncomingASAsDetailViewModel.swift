@@ -19,7 +19,8 @@ import UIKit
 import MacaroonUIKit
 
 struct IncomingASAsDetailViewModel: ViewModel {
-    private(set) var accountAssets: IncomingASADetailHeaderViewModel?
+    private(set) var accountItem: AccountListItemViewModel?
+    private(set) var account: Account?
     private(set) var amount: IncomingASARequestHeaderViewModel?
     private(set) var senders: [IncomingASARequesSenderViewModel]?
     private(set) var accountId: TextProvider?
@@ -37,11 +38,8 @@ struct IncomingASAsDetailViewModel: ViewModel {
         algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) {
-        bindAccountAssets(
-            draft: draft,
-            account: account,
-            accountPortfolio: accountPortfolio
-        )
+        self.account = account
+        self.accountItem = AccountListItemViewModel(accountPortfolio)
         bindSenders(
             draft: draft, 
             currencyFormatter: currencyFormatter
@@ -59,19 +57,6 @@ struct IncomingASAsDetailViewModel: ViewModel {
 }
 
 extension IncomingASAsDetailViewModel {
-    private mutating func bindAccountAssets(
-        draft: IncomingASAListItem,
-        account: Account,
-        accountPortfolio: AccountPortfolioItem
-    ) {
-        self.accountAssets = IncomingASADetailHeaderViewModel(
-            draft,
-            account: account,
-            accountPortfolio: accountPortfolio
-        )
-        self.accountId = String(draft.asset.id).footnoteRegular()
-    }
-    
     private mutating func bindSenders(
         draft: IncomingASAListItem,
         currencyFormatter: CurrencyFormatter
