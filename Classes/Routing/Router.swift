@@ -1119,9 +1119,8 @@ final class Router:
                 requestsCount: requestsCount,
                 sharedDataController: configuration.sharedDataController,
                 api: appConfiguration.api)
-
+            
             viewController = IncomingASAAccountInboxViewController(
-                query: .init(),
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration

@@ -19,13 +19,16 @@ import UIKit
 import MacaroonUIKit
 
 struct IncomingASAsDetailViewModel: ViewModel {
-    private(set) var accountAssets: IncomingASADetailHeaderViewModel?
+    private(set) var accountItem: AccountListItemViewModel?
+    private(set) var account: Account?
     private(set) var amount: IncomingASARequestHeaderViewModel?
     private(set) var senders: [IncomingASARequesSenderViewModel]?
     private(set) var accountId: TextProvider?
     private(set) var algoGainOnClaim: UInt64?
     private(set) var algoGainOnReject: UInt64?
-    
+    private(set) var draft: IncomingASAListItem!
+    private(set) var currencyFormatter: CurrencyFormatter!
+
     init(
         draft: IncomingASAListItem,
         account: Account,
@@ -35,11 +38,8 @@ struct IncomingASAsDetailViewModel: ViewModel {
         algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?
     ) {
-        bindAccountAssets(
-            draft: draft,
-            account: account,
-            accountPortfolio: accountPortfolio
-        )
+        self.account = account
+        self.accountItem = AccountListItemViewModel(accountPortfolio)
         bindSenders(
             draft: draft, 
             currencyFormatter: currencyFormatter
@@ -51,23 +51,12 @@ struct IncomingASAsDetailViewModel: ViewModel {
         )
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
+        self.draft = draft
+        self.currencyFormatter = currencyFormatter
     }
 }
 
 extension IncomingASAsDetailViewModel {
-    private mutating func bindAccountAssets(
-        draft: IncomingASAListItem,
-        account: Account,
-        accountPortfolio: AccountPortfolioItem
-    ) {
-        self.accountAssets = IncomingASADetailHeaderViewModel(
-            draft,
-            account: account,
-            accountPortfolio: accountPortfolio
-        )
-        self.accountId = String(draft.asset.id).footnoteRegular()
-    }
-    
     private mutating func bindSenders(
         draft: IncomingASAListItem,
         currencyFormatter: CurrencyFormatter

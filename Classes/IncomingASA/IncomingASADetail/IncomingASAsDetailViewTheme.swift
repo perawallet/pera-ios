@@ -18,17 +18,10 @@ import Foundation
 import MacaroonUIKit
 
 struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
     let contentBackground: Color
-    let dragIndicatorBackground: Color
-    let dragIndicatorHeight: LayoutMetric
-    let dragIndicatorWidth: LayoutMetric
-    let accountAssetsTheme: IncomingASADetailHeaderTheme
-    let contentTopInset: LayoutMetric
-    let contetnCorner: LayoutMetric
+    let accountViewTheme: IncomingASADetailAccountViewTheme
     let cellSpacing: LayoutMetric
     let topInset: LayoutMetric
-    let titleCloseAction: IncomingASARequestTitleTheme
     let amount: IncomingASARequestHeaderTheme
     let amountTrailingInset: LayoutMetric
     let amountTopInset: LayoutMetric
@@ -46,17 +39,10 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
     let infoFooterBottomInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.black
         self.contentBackground = Colors.Defaults.background
-        self.dragIndicatorBackground = Colors.BottomSheet.line
-        self.dragIndicatorHeight = 4
-        self.dragIndicatorWidth = 36
-        self.accountAssetsTheme = IncomingASADetailHeaderTheme(family)
-        self.contentTopInset = 200
-        self.contetnCorner = 15
+        self.accountViewTheme = IncomingASADetailAccountViewTheme(family)
         self.cellSpacing = 0
         self.topInset = 16
-        self.titleCloseAction = IncomingASARequestTitleTheme(family)
         self.amount = IncomingASARequestHeaderTheme(family)
         self.amountTrailingInset = 20
         self.amountTopInset = 41

@@ -23,7 +23,7 @@ protocol IncomingASAAccountInboxDataController: AnyObject {
     var requestsCount: Int { get }
     var address: String { get }
     
-    func load(query: IncomingASAsRequestDetailQuery)
+    func load()
     func reload()
 }
 
@@ -57,7 +57,6 @@ struct IncomingASAListItem: Hashable {
     let senders: Senders?
     let viewModel: IncomingASAAssetListItemViewModel
     let collectibleViewModel: CollectibleListItemViewModel?
-    let itemViewModel: IncomingASAItemViewModel
     let accountAddress: String?
     let algoGainOnClaim: UInt64?
     let algoGainOnReject: UInt64?
@@ -90,11 +89,6 @@ struct IncomingASAListItem: Hashable {
         }
         self.viewModel = IncomingASAAssetListItemViewModel(
             item: item, 
-            senders: senders,
-            isCollectible: self.collectibleViewModel != nil
-        )
-        self.itemViewModel = IncomingASAItemViewModel(
-            item,
             senders: senders,
             isCollectible: self.collectibleViewModel != nil
         )

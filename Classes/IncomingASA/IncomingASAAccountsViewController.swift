@@ -27,11 +27,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private lazy var listLayout = IncomingASAAccountsListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = IncomingASAAccountsDataSource(listView)
-    
-    private var selectedAccountHandle: AccountHandle? = nil
-
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToApprovalScreen = BottomSheetTransition(presentingViewController: self, interactable: false)
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -47,10 +43,8 @@ final class IncomingASAAccountsViewController: BaseViewController {
         return collectionView
     }()
     
-    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
     private let dataController: IncomingASAAccountsDataController
-
 
     init(
         dataController: IncomingASAAccountsDataController,
@@ -83,10 +77,6 @@ final class IncomingASAAccountsViewController: BaseViewController {
                 }
                 self.listDataSource.apply(update.snapshot, animatingDifferences: true)
             }
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.dataController.load()
         }
     }
 
@@ -220,7 +210,6 @@ extension IncomingASAAccountsViewController {
             case .didCompleteTransaction:
                 screen.closeScreen(by: .pop, animated: false)
                 self.eventHandler?(.didCompleteTransaction)
-            case .transactionOption: break
             }
         }
     }

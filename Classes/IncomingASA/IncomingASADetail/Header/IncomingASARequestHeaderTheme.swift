@@ -27,6 +27,7 @@ struct IncomingASARequestHeaderTheme:
     let title: TextStyle
     let spacingBetweenTitleAndSubtitle: LayoutMetric
     let subtitle: TextStyle
+    let assetValueTopPadding: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.titleTopPadding = 56
@@ -39,5 +40,6 @@ struct IncomingASARequestHeaderTheme:
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
         ]
+        self.assetValueTopPadding = 150
     }
 }

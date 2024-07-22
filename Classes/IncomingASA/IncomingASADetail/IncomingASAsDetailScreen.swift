@@ -21,14 +21,13 @@ import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
-final class IncomingASAsDetailScreen: BaseViewController {
+final class IncomingASAsDetailScreen: BaseScrollViewController {
     typealias EventHandler = (IncomingASADetailScreenEvent) -> Void
     var eventHandler: EventHandler?
     
     private lazy var theme = Theme()
     private lazy var incomingAsasDetailView = IncomingASAsDetailView()
     let draft: IncomingASAListItem?
-    let collectibleDraft: IncomingASACollectibleAssetListItem?
     private let transactionController: IncomingASATransactionController
     private let copyToClipboardController: CopyToClipboardController
     
@@ -45,13 +44,11 @@ final class IncomingASAsDetailScreen: BaseViewController {
     
     init(
         draft: IncomingASAListItem?,
-        collectibleDraft: IncomingASACollectibleAssetListItem? = nil,
         configuration: ViewControllerConfiguration,
         transactionController: IncomingASATransactionController,
         copyToClipboardController: CopyToClipboardController
     ) {
         self.draft = draft
-        self.collectibleDraft = collectibleDraft
         self.transactionController = transactionController
         self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
@@ -59,24 +56,24 @@ final class IncomingASAsDetailScreen: BaseViewController {
 
     
     override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        super.configureNavigationBarAppearance()
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        bindNavigationItemTitle()
     }
     
     override func prepareLayout() {
+        super.prepareLayout()
         addIncomingAsasDetailView()
         addActions()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setStatusBarBackgroundColor(with: .black)
+    
+    private func bindNavigationItemTitle() {
+        title = "incoming-asa-account-inbox-header-main-title".localized
     }
     
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     override func linkInteractors() {
+        super.linkInteractors()
+
         incomingAsasDetailView.startObserving(event: .performClose) {
             [weak self] in
             self?.dismissScreen()
@@ -94,8 +91,7 @@ final class IncomingASAsDetailScreen: BaseViewController {
 
 extension IncomingASAsDetailScreen {
     private func addIncomingAsasDetailView() {
-        view.addSubview(incomingAsasDetailView)
-        
+        contentView.addSubview(incomingAsasDetailView)
         incomingAsasDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
