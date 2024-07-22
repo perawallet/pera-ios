@@ -39,7 +39,7 @@ final class IncomingASADetailAccountView:
     func bindData(_ viewModel: AccountListItemViewModel?) {
         iconView.load(from: viewModel?.icon)
         viewModel?.title?.primaryTitle?.load(in: accountNameView)
-        "Account".localized.load(in: titleView)
+        "title-account".localized.load(in: titleView)
     }
 
     static func calculatePreferredSize(
