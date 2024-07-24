@@ -31,7 +31,7 @@ final class SettingsDataSource: NSObject {
     private(set) lazy var accountSettings: [AccountSettings] = createAccountSettings()
 
     private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [
-        .language, .currency, .appearance
+        .currency, .appearance
     ]
 
     private(set) lazy var supportSettings: [SupportSettings] = [
@@ -120,7 +120,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
             case .appPreferences:
                 if let setting = appPreferenceSettings[safe: indexPath.item] {
                     switch setting {
-                    case .language, .currency, .appearance:
+                    case .currency, .appearance:
                         return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                     }
                 }
