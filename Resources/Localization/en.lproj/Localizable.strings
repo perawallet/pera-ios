@@ -873,7 +873,7 @@
 "wallet-connect-session-connection-approved-title" = "You are connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 "wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@.";
-"wallet-connect-v2-session-connection-approved-description" = "Its validity will be automatically extended, whenever used, until %@. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to %@ to complete your operation.";
+"wallet-connect-v2-session-connection-approved-description" = "Please return to %@ to complete your operation.";
 "wallet-connect-select-accounts" = "Select Accounts";
 "wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
 "wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
