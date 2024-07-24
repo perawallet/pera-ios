@@ -26,7 +26,8 @@ final class WalletConnectV2RequestHandler {
     }
 
     func canHandle(request: WalletConnectV2Request) -> Bool {
-        return request.isTransactionSignRequest
+        return request.isArbitraryDataSignRequest ||
+            request.isTransactionSignRequest
     }
 
     func handle(request: WalletConnectV2Request) {
@@ -36,9 +37,37 @@ final class WalletConnectV2RequestHandler {
 
 extension WalletConnectV2RequestHandler {
     private func handleRequest(_ request: WalletConnectV2Request) {
+        if request.isArbitraryDataSignRequest {
+            handleArbitraryDataSignRequest(request)
+            return
+        }
+
         if request.isTransactionSignRequest {
             handleTransactionSignRequest(request)
             return
+        }
+    }
+}
+
+extension WalletConnectV2RequestHandler {
+    private func handleArbitraryDataSignRequest(_ request: WalletConnectV2Request) {
+        var arbitraryData: [WCArbitraryData] = []
+
+        do {
+            arbitraryData = try request.params.get([WCArbitraryData].self)
+        } catch {
+            delegate?.walletConnectRequestHandler(self, didInvalidateTransactionRequest: request)
+            return
+        }
+
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self else { return }
+            self.delegate?.walletConnectRequestHandler(
+                self,
+                shouldSign: arbitraryData,
+                for: request
+            )
         }
     }
 }
@@ -92,9 +121,22 @@ protocol WalletConnectV2RequestHandlerDelegate: AnyObject {
         _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
         didInvalidateTransactionRequest request: WalletConnectV2Request
     )
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
+        shouldSign arbitraryData: [WCArbitraryData],
+        for request: WalletConnectV2Request
+    )
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectV2RequestHandler,
+        didInvalidateArbitraryDataRequest request: WalletConnectV2Request
+    )
 }
 
 fileprivate extension WalletConnectV2Request {
+    var isArbitraryDataSignRequest: Bool {
+        return method == WalletConnectMethod.arbitraryDataSign.rawValue
+    }
+
     var isTransactionSignRequest: Bool {
         return method == WalletConnectMethod.transactionSign.rawValue
     }

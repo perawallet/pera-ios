@@ -58,6 +58,7 @@ enum ALGAPIPath: String {
     case verifiedAssets = "/verified-assets/"
     case waitForBlock = "/status/wait-for-block-after/%@"
     case accountAsset = "/accounts/%@/assets/%@"
+    case scammerDomainCheck = "/is-scammer-domain"
     case asaInboxesRequests = "/asa-inboxes/requests/"
     case asaInboxesRequest = "/asa-inboxes/requests/%@/"
 }
