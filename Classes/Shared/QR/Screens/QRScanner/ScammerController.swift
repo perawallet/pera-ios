@@ -23,9 +23,10 @@ final class ScammerController: NSObject {
         self.api = api
     }
     
-    func checkDomain(
+    func checkWCScammerDomain(
         domain: String,
-        completion: @escaping (Result<Bool, String>) -> Void) {
+        completion: @escaping (Result<Bool, String>
+        ) -> Void) {
         api?.checkWCScammerDomain(domain: domain) { response in
             switch response {
             case .success(let scammerControlResult):

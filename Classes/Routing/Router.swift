@@ -2384,7 +2384,7 @@ extension Router {
                 return
             }
             
-            self.appConfiguration.scammerController.checkDomain(domain: domain) { [weak self] result in
+            self.appConfiguration.scammerController.checkWCScammerDomain(domain: domain) { [weak self] result in
                 guard let self else { return }
                 switch result {
                 case .success(let isScammer):
@@ -2705,7 +2705,7 @@ extension Router {
                 return
             }
             
-            self.appConfiguration.scammerController.checkDomain(domain: domain) { 
+            self.appConfiguration.scammerController.checkWCScammerDomain(domain: domain) { 
                 [weak self] result in
                 guard let self else { return }
                 switch result {
