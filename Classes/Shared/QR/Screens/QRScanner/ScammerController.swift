@@ -17,9 +17,9 @@
 import Foundation
 
 final class ScammerController: NSObject {
-    let api: ALGAPI
+    let api: ALGAPI?
     
-    init(api: ALGAPI) {
+    init(api: ALGAPI?) {
         self.api = api
     }
     
@@ -27,7 +27,7 @@ final class ScammerController: NSObject {
         domain: String,
         completion: @escaping (Result<Bool, String>
         ) -> Void) {
-        api.checkWCScammerDomain(domain: domain) { response in
+        api?.checkWCScammerDomain(domain: domain) { response in
             switch response {
             case .success(let scammerControlResult):
                 completion(.success(scammerControlResult.isScammer))

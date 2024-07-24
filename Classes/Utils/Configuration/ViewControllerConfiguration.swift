@@ -56,9 +56,6 @@ final class ViewControllerConfiguration {
         self.analytics = analytics
         self.launchController = launchController
         self.peraConnect = peraConnect
-        guard let api = api else {
-             fatalError("API should be set.")
-        }
         self.scammerController = ScammerController(api: api)
     }
 }
