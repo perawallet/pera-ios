@@ -27,12 +27,17 @@ extension ALGAPI {
         includesClosedAccounts: Bool = false,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
+        queryFilterOptions: AccountQueryOptions = [.assets],
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
+        var filterOptions = queryFilterOptions
+        if includesClosedAccounts {
+            filterOptions.insert(.includeAll)
+        }
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
-            .query(AccountQuery(excludesAll: false, includesAll: includesClosedAccounts))
+            .query(AccountQuery(options: filterOptions))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
@@ -50,7 +55,7 @@ extension ALGAPI {
         return EndpointBuilder(api: self)
             .base(.algod(network))
             .path(.accountDetail, args: draft.publicKey)
-            .query(AccountQuery(excludesAll: true, includesAll: false))
+            .query(AccountQuery(options: [.excludeAll]))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
