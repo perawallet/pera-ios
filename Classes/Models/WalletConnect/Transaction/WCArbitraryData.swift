@@ -19,10 +19,16 @@ import Foundation
 final class WCArbitraryData:
     Codable,
     Equatable {
-    let chainID: Int?
+
+    var chainID: Int? {
+        v2ChainID ?? v1ChainID
+    }
+
     let data: Data?
     let message: String?
     let signer: String?
+    private let v1ChainID: Int?
+    private let v2ChainID: Int?
 
     private(set) var requestedSigner = WCTransactionRequestedSigner()
 
@@ -30,7 +36,8 @@ final class WCArbitraryData:
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        chainID = try container.decodeIfPresent(Int.self, forKey: .chaindID)
+        v1ChainID = try container.decodeIfPresent(Int.self, forKey: .v1ChainID)
+        v2ChainID = try container.decodeIfPresent(Int.self, forKey: .v2ChainID)
         data = try container.decodeIfPresent(Data.self, forKey: .data)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         signer = try container.decodeIfPresent(String.self, forKey: .signer)
@@ -38,7 +45,8 @@ final class WCArbitraryData:
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(chainID, forKey: .chaindID)
+        try container.encodeIfPresent(v1ChainID, forKey: .v1ChainID)
+        try container.encodeIfPresent(v2ChainID, forKey: .v2ChainID)
         try container.encodeIfPresent(data, forKey: .data)
         try container.encodeIfPresent(message, forKey: .message)
         try container.encodeIfPresent(signer, forKey: .signer)
@@ -49,7 +57,8 @@ extension WCArbitraryData {
     private enum CodingKeys:
         String,
         CodingKey {
-        case chaindID = "chainId"
+        case v1ChainID = "chainId"
+        case v2ChainID = "chainID"
         case data = "data"
         case message = "message"
         case signer = "signer"

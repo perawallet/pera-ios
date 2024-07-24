@@ -51,19 +51,43 @@ struct TransactionsQuery: ObjectQuery {
     }
 }
 
-struct AccountQuery: ObjectQuery {
-    let excludesAll: Bool
-    let includesAll: Bool
+struct AccountQueryOptions: OptionSet {
+    let rawValue: Int
 
+    static let includeAll = AccountQueryOptions(rawValue: 1 << 0)
+    static let excludeAll = AccountQueryOptions(rawValue: 1 << 1)
+    static let createdAssets = AccountQueryOptions(rawValue: 1 << 2)
+    static let createdApps = AccountQueryOptions(rawValue: 1 << 3)
+    static let assets = AccountQueryOptions(rawValue: 1 << 4)
+}
+
+struct AccountQuery: ObjectQuery {
+    
+    var options: AccountQueryOptions
+    
+    init(options: AccountQueryOptions) {
+        self.options = options
+    }
+    
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
-
-        if includesAll {
-            params.append(.init(.includesAll, includesAll))
+        
+        if options.contains(.includeAll) {
+            params.append(.init(.includesAll, true))
         }
-
-        let excludeParams = excludesAll ? "all" : "created-assets,created-apps"
-        params.append(.init(.exclude, excludeParams))
+        
+        let excludeOptions: [(AccountQueryOptions, String)] = [
+            (.createdAssets, "created-assets"),
+            (.createdApps, "created-apps"),
+            (.assets, "assets")
+        ]
+        
+        let exclusions = options.contains(.excludeAll) ? ["all"] : excludeOptions.filter { options.contains($0.0) }.map { $0.1 }
+        
+        if !exclusions.isEmpty {
+            params.append(.init(.exclude, exclusions.joined(separator: ",")))
+        }
+        
         return params
     }
 }

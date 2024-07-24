@@ -19,28 +19,13 @@ import Foundation
 
 extension String {
     var localized: String {
-        let value = localizedString()
-        
-        if shouldReturnLocalizedValue(value) {
-            return value
-        }
-        
-        return getEnglishFallbackValue()
+        return localizedString()
     }
     
     func localized(params: CVarArg...) -> String {
         let value = localizedString()
-        
-        if shouldReturnLocalizedValue(value) {
-            return formattedString(
-                value,
-                params: params
-            )
-        }
-        
-        let fallbackValue = getEnglishFallbackValue()
         return formattedString(
-            fallbackValue,
+            value,
             params: params
         )
     }
@@ -53,24 +38,7 @@ extension String {
             comment: ""
         )
     }
-    
-    private func shouldReturnLocalizedValue(_ value: String) -> Bool {
-        return value != self || NSLocale.preferredLanguages.first == "en"
-    }
-    
-    private func getEnglishFallbackValue() -> String {
-        guard let path = Bundle.main.path(forResource: "en", ofType: "lproj"),
-              let bundle = Bundle(path: path) else {
-            return self
-        }
-        
-        return NSLocalizedString(
-            self,
-            bundle: bundle,
-            comment: ""
-        )
-    }
-    
+
     func formattedString(
         _ value: String,
         params: CVarArg...

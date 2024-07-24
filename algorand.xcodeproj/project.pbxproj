@@ -1150,6 +1150,9 @@
 		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536B2328029F00D54029 /* AlgorandNotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */; };
 		2B1B536C2328029F00D54029 /* AlgorandNotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */; };
+		2B2152422BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
+		2B2152432BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
+		2B2152442BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */; };
 		2B233B4927C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
 		2B233B4A27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
 		2B233B4B27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */; };
@@ -7915,8 +7918,6 @@
 		2B0322EB269F3E0200C9B2F5 /* WCGroupTransactionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionHeaderViewModel.swift; sourceTree = "<group>"; };
 		2B0322F1269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionHeaderView.swift; sourceTree = "<group>"; };
 		2B0322F5269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionSupplementaryHeaderView.swift; sourceTree = "<group>"; };
-		2B03D67B25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B03D67C25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B03D6AE25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximumBalanceWarningViewModel.swift; sourceTree = "<group>"; };
 		2B05A666251E23D7008A8791 /* ChangeCurrencyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyEvent.swift; sourceTree = "<group>"; };
 		2B05A674251E3BED008A8791 /* UITextView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Additions.swift"; sourceTree = "<group>"; };
@@ -7984,6 +7985,7 @@
 		2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUpdateDraft.swift; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* AlgorandNotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotificationDetail.swift; sourceTree = "<group>"; };
+		2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+WalletConnect.swift"; sourceTree = "<group>"; };
 		2B233B4827C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayIntroductionScreenTheme.swift; sourceTree = "<group>"; };
 		2B233B5027C4784600D16B82 /* MoonPayIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayIntroductionScreen.swift; sourceTree = "<group>"; };
 		2B2359912794D1790006D259 /* TransactionsAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsAPIDataController.swift; sourceTree = "<group>"; };
@@ -8204,19 +8206,7 @@
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		2B67554D27720D570090E170 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
-		2B681159252F59A000D4437F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		2B68115D252F59B600D4437F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2B68115E252F59BE00D4437F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2B68115F252F59C600D4437F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2B681161252F59EC00D4437F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2B681165252F731F00D4437F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B6811E225345B5700D4437F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B6811E725345B6100D4437F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B6811E825345B6100D4437F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B6811E925345B6200D4437F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		2B6811EA25345B6400D4437F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B6811EB25345B6500D4437F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2B6811EC25345B6500D4437F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2B68A22A26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemView.swift; sourceTree = "<group>"; };
 		2B68A22E26A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemCell.swift; sourceTree = "<group>"; };
 		2B68A23326A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemViewModel.swift; sourceTree = "<group>"; };
@@ -8434,8 +8424,6 @@
 		2B8E5F8D25482FC6001D8E30 /* TapReceiveTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapReceiveTabEvent.swift; sourceTree = "<group>"; };
 		2B8E5F942548318C001D8E30 /* ALGAnalyticsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalyticsScreen.swift; sourceTree = "<group>"; };
 		2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaReportListItemButtonViewModel.swift; sourceTree = "<group>"; };
-		2B8F52CB265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		2B8F52CC265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionRequestSDKErrorLog.swift; sourceTree = "<group>"; };
 		2B9352D327F6F305000DA8DB /* CollectibleDetailTransactionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailTransactionController.swift; sourceTree = "<group>"; };
 		2B95407725A75FB20098805B /* pera-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "pera-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -8548,8 +8536,6 @@
 		2BA015862636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationStatusView.swift; sourceTree = "<group>"; };
 		2BA015932636F507009EC914 /* LedgerAccountVerificationStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationStatusViewModel.swift; sourceTree = "<group>"; };
 		2BA015D12637154C009EC914 /* LedgerAccountVerifyOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerifyOperation.swift; sourceTree = "<group>"; };
-		2BA172212649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2BA172222649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BA1728F2649580000A613C4 /* AlgorandLineChartDataComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandLineChartDataComposer.swift; sourceTree = "<group>"; };
 		2BA172982649583F00A613C4 /* AlgoUSDValueChartDataSetCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDValueChartDataSetCustomizer.swift; sourceTree = "<group>"; };
 		2BA172A726495B9400A613C4 /* AlgoStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsViewController.swift; sourceTree = "<group>"; };
@@ -14044,6 +14030,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
+				2B2152412BE7CBB60035C619 /* RootViewController+WalletConnect.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -22928,15 +22915,6 @@
 			knownRegions = (
 				en,
 				Base,
-				"zh-Hans",
-				tr,
-				es,
-				de,
-				ko,
-				"pt-BR",
-				it,
-				fr,
-				"ja-JP",
 			);
 			mainGroup = 2B8BE4C522391C38005D8565;
 			packageReferences = (
@@ -24314,6 +24292,7 @@
 				D41EF1072AB70ADF0031A14C /* WCArbitraryDataView+Theme.swift in Sources */,
 				2B68F3AD281685E300A7C9C4 /* CollectibleMediaGIFPreviewViewModel.swift in Sources */,
 				8BAB5CD02BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */,
+				2B2152442BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				F07DAA8B29095FAB00DDBCF2 /* SwapAmountPercentage.swift in Sources */,
 				2BD36E1B2684650400C57728 /* WCGroupTransactionItemCell.swift in Sources */,
 				F0F40F202942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */,
@@ -25837,6 +25816,7 @@
 				2B262723284E3AA900ADE371 /* AssetTransactionItemViewModel.swift in Sources */,
 				2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B71CB9928FF327800B1E1A0 /* SwapQuoteList.swift in Sources */,
+				2B2152432BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				2B384DAB29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */,
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
 				D40ADD832944C28D004C74E3 /* DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel.swift in Sources */,
@@ -29273,6 +29253,7 @@
 				2BF90F5F25FBAAE70033F348 /* HStackView.swift in Sources */,
 				F0CF6B66285163CA007C30E4 /* AccountAscendingTotalPortfolioValueAlgorithm.swift in Sources */,
 				8BAB5CCE2BC41A6C00EF3B29 /* ALGAPI+WalletConnect.swift in Sources */,
+				2B2152422BE7CBB60035C619 /* RootViewController+WalletConnect.swift in Sources */,
 				F018D68C28FE055500FAB199 /* SwapAssetScreenTheme.swift in Sources */,
 				D43A0C392790D738007430B9 /* NoContentWithActionCell.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
@@ -30679,15 +30660,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				2B6811E225345B5700D4437F /* en */,
-				2B6811E725345B6100D4437F /* tr */,
-				2B6811E825345B6100D4437F /* es */,
-				2B6811E925345B6200D4437F /* pt-BR */,
-				2B6811EA25345B6400D4437F /* ko */,
-				2B6811EB25345B6500D4437F /* de */,
-				2B6811EC25345B6500D4437F /* zh-Hans */,
-				2B03D67B25C2086C0079A973 /* it */,
-				2BA172212649504400A613C4 /* fr */,
-				2B8F52CB265EB32E00A8CD7E /* ja-JP */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -30704,15 +30676,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				2BF34CCA223AA63D0052CAD3 /* en */,
-				2B681159252F59A000D4437F /* zh-Hans */,
-				2B68115D252F59B600D4437F /* tr */,
-				2B68115E252F59BE00D4437F /* es */,
-				2B68115F252F59C600D4437F /* de */,
-				2B681161252F59EC00D4437F /* ko */,
-				2B681165252F731F00D4437F /* pt-BR */,
-				2B03D67C25C2086C0079A973 /* it */,
-				2BA172222649504400A613C4 /* fr */,
-				2B8F52CC265EB32E00A8CD7E /* ja-JP */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -30727,7 +30690,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30740,7 +30703,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -30756,7 +30719,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30768,7 +30731,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -30784,7 +30747,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30796,7 +30759,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -30813,7 +30776,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -30826,7 +30789,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30843,7 +30806,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30855,7 +30818,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -30872,7 +30835,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -30884,7 +30847,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31023,7 +30986,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31036,7 +30999,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31053,7 +31016,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31065,7 +31028,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31209,7 +31172,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31221,7 +31184,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.13.1;
+				MARKETING_VERSION = 90.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
