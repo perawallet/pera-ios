@@ -1747,7 +1747,8 @@ FAQ section.";
 "incoming-asa-detail-screen-senders-title" = "Senders";
 "incoming-asa-accounts-screen-cell-title" = "%@ incoming assets";
 "incoming-asa-accounts-screen-cell-title-singular" = "1 incoming asset";
-"incoming-asa-accounts-screen-no-content-cell-body" = "This is where you can view your incoming asset transfer requests. Tap to learn more about this feature.";
+"incoming-asa-accounts-screen-no-content-cell-title" = "No Pending Asset Transfer Requests";
+"incoming-asa-accounts-screen-no-content-cell-body" = "When you have an asset transfer request, you can view it here. Tap on the info icon to learn more about this feature.";
 
 /// MARK: Send Inbox
 "send-inbox-title" = "Send to Asset Inbox";

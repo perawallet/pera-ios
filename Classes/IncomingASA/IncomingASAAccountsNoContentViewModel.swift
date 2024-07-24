@@ -23,18 +23,35 @@ struct IncomingASAAccountsNoContentViewModel: NoContentViewModel {
     private(set) var body: TextProvider?
 
     init() {
+        bindTitle()
         bindBody()
     }
 }
 
 extension IncomingASAAccountsNoContentViewModel {
+    private mutating func bindTitle() {
+        let text = "incoming-asa-accounts-screen-no-content-cell-title".localized
+        title = text
+                .bodyMedium(alignment: .center)
+                .addAttributes(
+                    to: text,
+                    newAttributes: .init([
+                        .textColor( Colors.Text.main),
+                        .font(Typography.bodyMedium())
+                    ])
+                )
+    }
+
     private mutating func bindBody() {
         let text = "incoming-asa-accounts-screen-no-content-cell-body".localized
         body = text
                 .bodyMedium(alignment: .center)
                 .addAttributes(
                     to: text,
-                    newAttributes: .init([.textColor( Colors.Text.main)])
+                    newAttributes: .init([
+                        .textColor( Colors.Text.gray),
+                        .font(Typography.footnoteRegular())
+                    ])
                 )
     }
 }
