@@ -30,7 +30,10 @@ extension ALGAPI {
         queryFilterOptions: AccountQueryOptions = [.assets],
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
-        let filterOptions = includesClosedAccounts ? queryFilterOptions.union([.includeAll]) : queryFilterOptions
+        var filterOptions = queryFilterOptions
+        if includesClosedAccounts {
+            filterOptions.insert(.includeAll)
+        }
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
