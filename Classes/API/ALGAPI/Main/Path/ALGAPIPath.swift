@@ -57,6 +57,7 @@ enum ALGAPIPath: String {
     case verifiedAssets = "/verified-assets/"
     case waitForBlock = "/status/wait-for-block-after/%@"
     case accountAsset = "/accounts/%@/assets/%@"
+    case scammerDomainCheck = "/is-scammer-domain"
 }
 
 extension EndpointBuilder {
