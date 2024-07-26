@@ -31,7 +31,7 @@ struct CoinbaseQR {
         
         if urlComponents.path.isValidatedAddress {
             return QRText(
-                mode: .algosRequest,
+                mode: .address,
                 address: urlComponents.path
             )
         }
@@ -46,6 +46,7 @@ struct CoinbaseQR {
         return QRText(
             mode: .assetRequest,
             address: address,
+            amount: 0,
             asset: assetID
         )
     }
