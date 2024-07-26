@@ -68,8 +68,6 @@ extension BuySellOptionsScreen {
             $0.trailing == theme.contextPaddings.trailing
         }
 
-        addBuyContextHeader()
-        addBuyContext()
         addSellContextHeader()
         addSellContext()
     }
@@ -145,7 +143,7 @@ extension BuySellOptionsScreen {
 
         contextView.addSubview(sellContextHeaderView)
         sellContextHeaderView.snp.makeConstraints {
-            $0.top == buyContextView.snp.bottom + theme.spacingBetweenBuyAndSellContext
+            $0.top == 0
             $0.leading == 0
             $0.trailing == 0
         }

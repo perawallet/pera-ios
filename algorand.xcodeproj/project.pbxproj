@@ -1522,6 +1522,7 @@
 		2B4FD20C27C654A60097AB65 /* MoonPayTransactionDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD20927C654A60097AB65 /* MoonPayTransactionDataController.swift */; };
 		2B50807D2852456B007D787E /* FilterCollectiblesItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesItemButtonViewModel.swift */; };
 		2B508FDF2864930C00220D83 /* TransactionViewModelDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */; };
+		2B513B7E2C544DF4001AE47C /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
 		2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
@@ -26254,6 +26255,7 @@
 				D4018CF527E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				2B384DAF29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift in Sources */,
 				2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */,
+				2B513B7E2C544DF4001AE47C /* AccountListItemView.swift in Sources */,
 				D422943A29D3772200C25E64 /* TransactionCorrectAddressInstructionViewModel.swift in Sources */,
 				2B99D45C28EC96C500323C11 /* SwapConfirmPriceInfoViewModel.swift in Sources */,
 				D419431A2735415C0055EC70 /* PageBar.swift in Sources */,
