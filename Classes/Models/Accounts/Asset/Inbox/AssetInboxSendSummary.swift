@@ -23,7 +23,8 @@ final class AssetInboxSendSummary: ALGEntityModel {
     let totalProtocolFee: UInt64
     let inboxAddress: String?
     let algoFundAmount: UInt64
-
+    let warningMessage: AssetInboxSendSummaryWarningMessage?
+    
     init(
         _ apiModel: APIModel = APIModel()
     ) {
@@ -33,6 +34,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         self.totalProtocolFee = apiModel.totalProtocolAndMbrFee ?? 1000
         self.inboxAddress = apiModel.inboxAddress
         self.algoFundAmount = apiModel.algoFundAmount ?? 0
+        self.warningMessage = apiModel.warningMessage
     }
 
     func encode() -> APIModel {
@@ -43,6 +45,7 @@ final class AssetInboxSendSummary: ALGEntityModel {
         apiModel.totalProtocolAndMbrFee = totalProtocolFee
         apiModel.inboxAddress = inboxAddress
         apiModel.algoFundAmount = algoFundAmount
+        apiModel.warningMessage = warningMessage
         return apiModel
     }
 }
@@ -55,6 +58,7 @@ extension AssetInboxSendSummary {
         var totalProtocolAndMbrFee: UInt64?
         var inboxAddress: String?
         var algoFundAmount: UInt64?
+        var warningMessage: AssetInboxSendSummaryWarningMessage?
 
         init() {
             self.isArc59OptedIn = false
@@ -63,6 +67,7 @@ extension AssetInboxSendSummary {
             self.totalProtocolAndMbrFee = 0
             self.inboxAddress = nil
             self.algoFundAmount = 0
+            self.warningMessage = nil
         }
 
         private enum CodingKeys:
@@ -74,6 +79,7 @@ extension AssetInboxSendSummary {
             case totalProtocolAndMbrFee = "total_protocol_and_mbr_fee"
             case inboxAddress = "inbox_address"
             case algoFundAmount = "algo_fund_amount"
+            case warningMessage = "warning_message"
         }
     }
 }

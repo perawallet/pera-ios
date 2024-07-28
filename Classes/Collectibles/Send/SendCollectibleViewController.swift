@@ -319,7 +319,6 @@ extension SendCollectibleViewController {
         let to = draft.toContact?.address ?? draft.toNameService?.name ?? draft.toAccount?.address
 
         let description = "collectible-recipient-opt-in-description".localized(params: title, to!)
-
         let configuratorDescription =
         BottomWarningViewConfigurator.BottomWarningDescription.custom(
             description: (description, [title, to!]),

@@ -3593,6 +3593,9 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
+		8B00DD692C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */; };
+		8B00DD6A2C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */; };
+		8B00DD6B2C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */; };
 		8B047C162C02548300851DF5 /* IncomingASAsRequestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */; };
 		8B047C172C02548300851DF5 /* IncomingASAsRequestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */; };
 		8B047C182C02548300851DF5 /* IncomingASAsRequestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */; };
@@ -9137,6 +9140,7 @@
 		2BFA924729CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
+		8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInboxSendSummaryWarningMessage.swift; sourceTree = "<group>"; };
 		8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsRequestList.swift; sourceTree = "<group>"; };
 		8B047C402C034C2300851DF5 /* IncomingASAsRequestDetailList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsRequestDetailList.swift; sourceTree = "<group>"; };
 		8B047C442C034C2B00851DF5 /* IncomingASAsRequestDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsRequestDetail.swift; sourceTree = "<group>"; };
@@ -13867,6 +13871,7 @@
 			isa = PBXGroup;
 			children = (
 				2B82FFEC2C0BCADD001DD73F /* AssetInboxSendSummary.swift */,
+				8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -24062,6 +24067,7 @@
 				2B9DDA37297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */,
 				2B262717284D668A00ADE371 /* AppCallTransactionItemDraftComposer.swift in Sources */,
 				D40BA4DA2A819D6C00138BF7 /* WCSessionSupportedEventsAdvancedPermissionViewModel.swift in Sources */,
+				8B00DD6B2C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */,
 				17A011CB27EB6D1C008C147D /* ALGAPI+Device.swift in Sources */,
 				D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				171083282906720800A80CC0 /* InAppBrowserScreenTheme.swift in Sources */,
@@ -28749,6 +28755,7 @@
 				2B0F631F24EC129D00DA22A6 /* LocalAuthenticator.swift in Sources */,
 				2BB86101288988810026AF60 /* Mail.swift in Sources */,
 				D41F4F20289417D300B59559 /* StandardAssetPreviewLoadingViewTheme.swift in Sources */,
+				8B00DD6A2C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */,
 				D4490B1D27FE168100B271EB /* SelectionValue.swift in Sources */,
 				D41BB533295084D700F1BA1F /* CollectionViewSwitchableFlowLayout.swift in Sources */,
 				2B13F6782C28D4BD00A1408E /* SendAssetInboxScreenViewModel.swift in Sources */,
@@ -29169,6 +29176,7 @@
 				2B69AAD028BE26FD00A8D65D /* SwapAssetAmountViewModel.swift in Sources */,
 				D4DC26BF28B3A3F50068152E /* ASAboutScreenASAURLSecondaryListItem.swift in Sources */,
 				D4226E882AD56B0C00B23634 /* WCv2SessionDisconnectionFailedLog.swift in Sources */,
+				8B00DD692C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift in Sources */,
 				17CADCAD285A0BD9001D19A8 /* AccountAssetDescendingTitleAlgorithm.swift in Sources */,
 				D4999E0428919BF900C7E05C /* AccountSecondaryListItemViewModel.swift in Sources */,
 				2BE09A5128F60A070059EEF0 /* SwapSummaryReceivedItemViewModel.swift in Sources */,

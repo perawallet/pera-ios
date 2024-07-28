@@ -42,6 +42,7 @@ final class SendAssetInboxScreen: BaseScrollViewController {
     private lazy var descriptionView = UILabel()
     private lazy var sendActionView = MacaroonUIKit.Button()
     private lazy var closeActionView = MacaroonUIKit.Button()
+    private lazy var transitionToWarning = BottomSheetTransition(presentingViewController: self)
 
     private let draft: SendAssetInboxDraft
     private let transactionSigner: SwapTransactionSigner
@@ -288,13 +289,7 @@ extension SendAssetInboxScreen {
 }
 
 extension SendAssetInboxScreen {
-    @objc
-    private func readMore() {
-        eventHandler?(.readMore)
-    }
-    
-    @objc
-    private func didSend() {
+    private func sendTransaction() {
         sendTransactionController.eventHandler = {
             [weak self] event in
             guard let self else { return }
@@ -359,6 +354,57 @@ extension SendAssetInboxScreen {
         }
         
         getTransactionParamsAndComposeRelatedTransactions()
+    }
+}
+
+extension SendAssetInboxScreen {
+    @objc
+    private func readMore() {
+        eventHandler?(.readMore)
+    }
+    
+    @objc
+    private func didSend() {
+        guard let inboxSendSummary else {
+            return
+        }
+        let configuratorDescription =
+        BottomWarningViewConfigurator.BottomWarningDescription.custom(
+            description: (inboxSendSummary.warningMessage?.detail ?? "", []),
+            markedWordWithHandler: (
+                word: inboxSendSummary.warningMessage?.readMore ?? "",
+                handler: {
+                    [weak self] in
+                    guard let self else { return }
+                    self.dismiss(animated: true) {
+                        [weak self] in
+                        guard let self else { return }
+                        if let url = URL(
+                            string: inboxSendSummary.warningMessage?.link ?? ""
+                        ) {
+                            self.open(url)
+                        }
+                    }
+                }
+            )
+        )
+
+        transitionToWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-incoming-asa-yellow-error".uiImage,
+                    title: inboxSendSummary.warningMessage?.title ?? "",
+                    description: configuratorDescription,
+                    primaryActionButtonTitle: "title-i-understand".localized,
+                    secondaryActionButtonTitle: "title-cancel".localized,
+                    primaryAction: { [weak self] in
+                        guard let self else { return }
+                        self.sendTransaction()
+                    }
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 
     @objc
