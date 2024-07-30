@@ -1116,6 +1116,7 @@ final class Router:
             )
             
         case let .incomingASAsDetail(draft):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(
                 sharedDataController: configuration.sharedDataController,
                 api: appConfiguration.api, 
@@ -1128,13 +1129,20 @@ final class Router:
                 draft: draft,
                 configuration: configuration,
                 transactionController: transactionController, 
-                copyToClipboardController: ALGCopyToClipboardController(
-                    toastPresentationController: appConfiguration.toastPresentationController
-                )
+                copyToClipboardController: 
+                    ALGCopyToClipboardController(
+                        toastPresentationController: appConfiguration.toastPresentationController
+                    ),
+                presentingScreen: visibleScreen
             )
 
             viewController = screen
-                        
+        case .successResultScreen(let viewModel, let theme):
+            viewController = SuccessResultScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate

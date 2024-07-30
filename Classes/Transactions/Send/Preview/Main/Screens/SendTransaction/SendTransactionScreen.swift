@@ -914,20 +914,24 @@ extension SendTransactionScreen {
         
         screen?.eventHandler = {
             [weak self, weak screen] event in
-                guard let self,
-                      let screen else {
+            guard let self,
+                  let screen else {
+                return
+            }
+            
+            switch event {
+            case .send:
+                screen.dismissScreen()
+                self.dismissScreen()
+            case .close:
+                screen.dismissScreen()
+            case .readMore(let urlString):
+                guard let urlString,
+                      let url = URL(string: urlString) else {
                     return
                 }
-                
-                switch event {
-                case .send:
-                    screen.dismissScreen()
-                    self.dismissScreen()
-                case .close:
-                    screen.dismissScreen()
-                case .readMore:
-                    break
-                }
+                screen.open(url)
+            }
         }
     }
 }

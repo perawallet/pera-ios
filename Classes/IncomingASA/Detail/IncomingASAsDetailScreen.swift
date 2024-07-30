@@ -39,18 +39,26 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
     private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
     private lazy var currencyFormatter = CurrencyFormatter()
     
+    private unowned let presentingScreen: UIViewController
+
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var account: Account?
+    private var loadingScreen: LoadingScreen?
+    private var visibleScreen: UIViewController {
+        return presentingScreen.findVisibleScreen()
+    }
     
     init(
         draft: IncomingASAListItem?,
         configuration: ViewControllerConfiguration,
         transactionController: IncomingASATransactionController,
-        copyToClipboardController: CopyToClipboardController
+        copyToClipboardController: CopyToClipboardController,
+        presentingScreen: UIViewController
     ) {
         self.draft = draft
         self.transactionController = transactionController
         self.copyToClipboardController = copyToClipboardController
+        self.presentingScreen = presentingScreen
         super.init(configuration: configuration)
     }
 
@@ -214,8 +222,7 @@ extension IncomingASAsDetailScreen {
            return
         }
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        
+        openLoading()
         transactionController.getTransactionParamsAndCompleteTransaction(
             with: draft,
             for: account,
@@ -239,7 +246,9 @@ extension IncomingASAsDetailScreen {
             title: "incoming-asa-detail-screen-left-button-title".localized,
             style: .default
         ) { [unowned self] in
-            self.dismiss(animated: true)
+            self.dismiss(animated: true) {
+                self.openLoading()
+            }
 
             guard let draft,
                   let account else {
@@ -253,8 +262,6 @@ extension IncomingASAsDetailScreen {
                 )
                return
             }
-            
-            loadingController?.startLoadingWithMessage("title-loading".localized)
             
             transactionController.getTransactionParamsAndCompleteTransaction(
                 with: draft,
@@ -288,20 +295,17 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         _ incomingASATransactionController: IncomingASATransactionController,
         didCompletedTransaction transactionId: TransactionID?
     ) {
-        loadingController?.stopLoading()
-        bannerController?.presentSuccessBanner(
-            title: "transaction-result-started-title".localized,
-            message: "transaction-result-started-subtitle".localized
-        )
-        
-        eventHandler?(.didCompleteTransaction)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self else { return }
+            self.openSuccess(transactionId)
+        }
     }
     
     func incomingASATransactionController(
         _ incomingASATransactionController: IncomingASATransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        loadingScreen?.popScreen()
         
         switch error {
         case let .inapp(transactionError):
@@ -319,8 +323,7 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         _ incomingASATransactionController: IncomingASATransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
-        
+        loadingScreen?.popScreen()
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
@@ -385,7 +388,60 @@ extension IncomingASAsDetailScreen {
             by: .presentWithoutNavigationController
         )
     }
+}
 
+extension IncomingASAsDetailScreen {
+    private func openLoading() {
+        loadingScreen = visibleScreen.open(
+            .loading(viewModel: IncomingASAsDetailLoadingScreenViewModel()),
+            by: .push
+        ) as? LoadingScreen
+    }
+
+    private func openSuccess(
+        _ transactionId: TransactionID?
+    ) {
+        let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
+            title: "incoming-asas-detail-success-title"
+                .localized,
+            detail: "incoming-asas-detail-success-detail"
+                .localized
+        )
+        let successScreen = loadingScreen?.open(
+            .successResultScreen(viewModel: successResultScreenViewModel),
+            by: .push,
+            animated: false
+        ) as? SuccessResultScreen
+
+        successScreen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didTapViewDetailAction:
+                self.openPeraExplorerForTransaction(transactionId)
+            case .didTapDoneAction:
+                self.visibleScreen.dismissScreen { [weak self] in
+                    guard let self else { return }
+                    self.eventHandler?(.didCompleteTransaction)
+                }
+            }
+        }
+    }
+
+    private func openPeraExplorerForTransaction(
+        _ transactionID: TransactionID?
+    ) {
+        guard let identifierlet = transactionID?.identifier,
+              let url = AlgoExplorerType.peraExplorer.transactionURL(
+                with: identifierlet,
+                in: api?.network ?? .mainnet
+              ) else {
+            return
+        }
+
+        visibleScreen.open(url)
+    }
 }
 enum IncomingASADetailScreenEvent {
     case didCompleteTransaction

@@ -176,7 +176,10 @@ indirect enum Screen {
         requestsCount: Int
     )
     case incomingASAsDetail(draft: IncomingASAListItem)
-    
+    case successResultScreen(
+        viewModel: SuccessResultScreenViewModel,
+        theme: SuccessResultScreenViewTheme = SuccessResultScreenTheme()
+    )
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
         dataController: SortAccountListDataController,

@@ -51,6 +51,7 @@ final class SendAssetInboxScreen: BaseScrollViewController {
     private let viewModel: SendAssetInboxScreenViewModel
     
     private var inboxSendSummary: AssetInboxSendSummary?
+    private var loadingScreen: LoadingScreen?
     
     init(
         draft: SendAssetInboxDraft,
@@ -299,15 +300,10 @@ extension SendAssetInboxScreen {
                 break
             case .didSignAllTransactions:
                 break
-            case .didCompleteTransactionOnTheNode:
-                self.loadingController?.stopLoading()
-                self.bannerController?.presentSuccessBanner(
-                    title: "transaction-result-started-title".localized,
-                    message: "transaction-result-started-subtitle".localized
-                )
-                eventHandler?(.send)
+            case .didCompleteTransactionOnTheNode(let id):
+                self.openSuccess(id)
             case let .didFailTransaction(id):
-                self.loadingController?.stopLoading()
+                loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: "send-inbox-transaction-failed".localized(id)
@@ -325,17 +321,17 @@ extension SendAssetInboxScreen {
                     message = error.debugDescription
                 }
                 
-                self.loadingController?.stopLoading()
+                loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: message
                 )
                 break
             case .didCancelTransaction:
-                self.loadingController?.stopLoading()
+                loadingScreen?.popScreen()
                 break
             case let .didFailSigning(error):
-                self.loadingController?.stopLoading()
+                loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: error.localizedDescription
@@ -358,9 +354,63 @@ extension SendAssetInboxScreen {
 }
 
 extension SendAssetInboxScreen {
+    private func openLoading() {
+        loadingScreen = open(
+            .loading(viewModel: IncomingASAsDetailLoadingScreenViewModel()),
+            by: .push
+        ) as? LoadingScreen
+    }
+
+    private func openSuccess(
+        _ transactionId: String?
+    ) {
+        let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
+            title: "incoming-asas-detail-success-title"
+                .localized,
+            detail: "incoming-asas-detail-success-detail"
+                .localized
+        )
+        let successScreen = loadingScreen?.open(
+            .successResultScreen(viewModel: successResultScreenViewModel),
+            by: .push,
+            animated: false
+        ) as? SuccessResultScreen
+
+        successScreen?.eventHandler = {
+            [weak self, weak successScreen] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didTapViewDetailAction:
+                self.openPeraExplorerForTransaction(transactionId)
+            case .didTapDoneAction:
+                successScreen?.dismissScreen { [weak self] in
+                    guard let self else { return }
+                    eventHandler?(.send)
+                }
+            }
+        }
+    }
+
+    private func openPeraExplorerForTransaction(
+        _ transactionID: String?
+    ) {
+        guard let identifierlet = transactionID,
+              let url = AlgoExplorerType.peraExplorer.transactionURL(
+                with: identifierlet,
+                in: api?.network ?? .mainnet
+              ) else {
+            return
+        }
+
+        open(url)
+    }
+}
+
+extension SendAssetInboxScreen {
     @objc
     private func readMore() {
-        eventHandler?(.readMore)
+        eventHandler?(.readMore(self.inboxSendSummary?.warningMessage?.link))
     }
     
     @objc
@@ -415,15 +465,14 @@ extension SendAssetInboxScreen {
 
 extension SendAssetInboxScreen {
     private func getTransactionParamsAndComposeRelatedTransactions() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        
+        openLoading()
         sharedDataController.getTransactionParams { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let params):
                 guard let transactions = composeTransactions(params) else {
-                    self.loadingController?.stopLoading()
+                    self.loadingScreen?.popScreen()
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
                         message: "send-inbox-transaction-composing-failed".localized
@@ -433,7 +482,7 @@ extension SendAssetInboxScreen {
                 
                 sendTransactionController.signTransactionGroups(transactions)
             case .failure(let error):
-                self.loadingController?.stopLoading()
+                self.loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: error.localizedDescription
@@ -487,7 +536,7 @@ extension SendAssetInboxScreen {
 
 extension SendAssetInboxScreen {
     enum Event {
-        case readMore
+        case readMore(_ urlString: String?)
         case send
         case close
     }

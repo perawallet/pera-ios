@@ -127,8 +127,8 @@ extension ARC59TransactionSendController {
                 guard let self = self else { return }
 
                 switch event {
-                case .didCompleteTransactionOnTheNode:
-                    self.publishEvent(.didCompleteTransactionOnTheNode)
+                case .didCompleteTransactionOnTheNode(let id):
+                    self.publishEvent(.didCompleteTransactionOnTheNode(id))
                 case .didFailTransaction(let id):
                     self.cancelAllOperations()
                     self.publishEvent(.didFailTransaction(id))
@@ -183,7 +183,7 @@ extension ARC59TransactionSendController {
 enum ARC59TransactionSendControllerEvent {
     case didSignTransaction
     case didSignAllTransactions
-    case didCompleteTransactionOnTheNode
+    case didCompleteTransactionOnTheNode(TxnID)
     case didFailTransaction(TxnID)
     case didFailNetwork(ARC59TransactionSendController.Error)
     case didCancelTransaction

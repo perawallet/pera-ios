@@ -1362,6 +1362,15 @@ FAQ section.";
 "swap-loading-title" = "Sending the transaction";
 "swap-loading-detail" = "You will receive at least %@ or the transaction will revert.";
 
+// MARK: Incoming ASAs Detail Loading
+"incoming-asas-detail-loading-title" = "Sending the transaction";
+"incoming-asas-detail-loading-detail" = "Your transaction is being processed by the Algorand network.";
+
+// MARK: Incoming ASAs Detail Success
+"incoming-asas-detail-success-title" = "Operation completed";
+"incoming-asas-detail-success-detail" = "Your transaction was successfully received by the Algorand network";
+"incoming-asas-detail-success-view-explorer" = "View Transaction Detail in Pera Explorer";
+
 // MARK: Swap Success
 "swap-success-title" = "%@ swap completed";
 "swap-success-detail" = "You received %@ in exchange for %@";
