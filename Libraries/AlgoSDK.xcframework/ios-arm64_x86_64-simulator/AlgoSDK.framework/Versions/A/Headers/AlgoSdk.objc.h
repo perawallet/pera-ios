@@ -22,6 +22,8 @@
 @class AlgoSdkMultisigAccount;
 @class AlgoSdkStringArray;
 @class AlgoSdkSuggestedParams;
+@class AlgoSdkTransactionSignerArray;
+@class AlgoSdkTransactionSignerItem;
 @class AlgoSdkUint64;
 @protocol AlgoSdkTransactionSigner;
 @class AlgoSdkTransactionSigner;
@@ -357,6 +359,29 @@ at least MinTxnFee for the current network protocol.
 @property (nonatomic) BOOL flatFee;
 @end
 
+@interface AlgoSdkTransactionSignerArray : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+// skipped method TransactionSignerArray.ExtractAssignedFlattenTxns with unsupported parameter or return types
+
+- (NSData* _Nullable)getAssignedFlattenTxns;
+- (NSString* _Nonnull)getSigner:(long)index;
+- (NSData* _Nullable)getTxn:(long)index;
+- (NSData* _Nullable)getTxnFromSigner:(long)index;
+- (long)length;
+@end
+
+@interface AlgoSdkTransactionSignerItem : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@end
+
 @interface AlgoSdkUint64 : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) _Nonnull id _ref;
@@ -543,49 +568,49 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeApplicationCloseOutTx(int64_t app
 
 - optIn:        true for opting in on complete, false for no-op.
 
-- accounts      lists the accounts (in addition to the sender) that may be accessed
-                from the application logic.
+  - accounts      lists the accounts (in addition to the sender) that may be accessed
+    from the application logic.
 
-- appArgs       ApplicationArgs lists some transaction-specific arguments accessible
-                from application logic.
+  - appArgs       ApplicationArgs lists some transaction-specific arguments accessible
+    from application logic.
 
-- appIdx        ApplicationID is the application being interacted with, or 0 if
-                creating a new application.
+  - appIdx        ApplicationID is the application being interacted with, or 0 if
+    creating a new application.
 
-- approvalProg  ApprovalProgram determines whether or not this ApplicationCall
-                transaction will be approved or not.
+  - approvalProg  ApprovalProgram determines whether or not this ApplicationCall
+    transaction will be approved or not.
 
-- clearProg     ClearStateProgram executes when a clear state ApplicationCall
-                transaction is executed. This program may not reject the
-                transaction, only update state.
+  - clearProg     ClearStateProgram executes when a clear state ApplicationCall
+    transaction is executed. This program may not reject the
+    transaction, only update state.
 
-- foreignApps   lists the applications (in addition to txn.ApplicationID) whose global
-                states may be accessed by this application. The access is read-only.
+  - foreignApps   lists the applications (in addition to txn.ApplicationID) whose global
+    states may be accessed by this application. The access is read-only.
 
 - foreignAssets lists the assets whose global state may be accessed by this application. The access is read-only.
 
 - boxRefs	   lists the boxes which be accessed by this application call.
 
-- globalSchema  GlobalStateSchema sets limits on the number of strings and
-                integers that may be stored in the GlobalState. The larger these
-                limits are, the larger minimum balance must be maintained inside
-                the creator's account (in order to 'pay' for the state that can
-                be used). The GlobalStateSchema is immutable.
+  - globalSchema  GlobalStateSchema sets limits on the number of strings and
+    integers that may be stored in the GlobalState. The larger these
+    limits are, the larger minimum balance must be maintained inside
+    the creator's account (in order to 'pay' for the state that can
+    be used). The GlobalStateSchema is immutable.
 
-- localSchema   LocalStateSchema sets limits on the number of strings and integers
-                that may be stored in an account's LocalState for this application.
-                The larger these limits are, the larger minimum balance must be
-                maintained inside the account of any users who opt into this
-                application. The LocalStateSchema is immutable.
+  - localSchema   LocalStateSchema sets limits on the number of strings and integers
+    that may be stored in an account's LocalState for this application.
+    The larger these limits are, the larger minimum balance must be
+    maintained inside the account of any users who opt into this
+    application. The LocalStateSchema is immutable.
 
-- extraPages    ExtraProgramPages specifies the additional app program size requested in pages.
-                A page is 1024 bytes. This field enables execution of app programs
-                larger than the default maximum program size.
+  - extraPages    ExtraProgramPages specifies the additional app program size requested in pages.
+    A page is 1024 bytes. This field enables execution of app programs
+    larger than the default maximum program size.
 
-- onComplete    This is the faux application type used to distinguish different
-                application actions. Specifically, OnCompletion specifies what
-                side effects this transaction will have if it successfully makes
-                it into a block.
+  - onComplete    This is the faux application type used to distinguish different
+    application actions. Specifically, OnCompletion specifies what
+    side effects this transaction will have if it successfully makes
+    it into a block.
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeApplicationCreateTx(BOOL optIn, NSData* _Nullable approvalProg, NSData* _Nullable clearProg, int64_t globalSchemaUint, int64_t globalSchemaByteSlice, int64_t localSchemaUint, int64_t localSchemaByteSlice, int32_t extraPages, AlgoSdkBytesArray* _Nullable appArgs, AlgoSdkStringArray* _Nullable accounts, AlgoSdkInt64Array* _Nullable foreignApps, AlgoSdkInt64Array* _Nullable foreignAssets, AlgoSdkAppBoxRefArray* _Nullable boxRefs, AlgoSdkSuggestedParams* _Nullable params, NSString* _Nullable sender, NSData* _Nullable note, NSError* _Nullable* _Nullable error);
 
@@ -748,6 +773,12 @@ FOUNDATION_EXPORT id<AlgoSdkTransactionSigner> _Nullable AlgoSdkMakeMultiSigAcco
  * MakeMultisigAccount creates a new instance of a MultiSig account. The order of the addresses matters.
  */
 FOUNDATION_EXPORT AlgoSdkMultisigAccount* _Nullable AlgoSdkMakeMultisigAccount(long version, long threshold, AlgoSdkStringArray* _Nullable addrs, NSError* _Nullable* _Nullable error);
+
+/**
+ * MakeOptInAndAssetTransferTxns makes transactions for opting in to one asset
+and sending the asset to the opted-in receiver.
+ */
+FOUNDATION_EXPORT AlgoSdkTransactionSignerArray* _Nullable AlgoSdkMakeOptInAndAssetTransferTxns(NSString* _Nullable sender, NSString* _Nullable receiver, AlgoSdkUint64* _Nullable transactionAmount, AlgoSdkUint64* _Nullable senderAlgoAmount, AlgoSdkUint64* _Nullable senderMinBalanceAmount, AlgoSdkUint64* _Nullable receiverAlgoAmount, AlgoSdkUint64* _Nullable receiverMinBalanceAmount, NSData* _Nullable note, NSString* _Nullable closeRemainderTo, int64_t assetID, AlgoSdkSuggestedParams* _Nullable params, NSError* _Nullable* _Nullable error);
 
 /**
  * MakePaymentTxn constructs a payment transaction using the passed parameters.
