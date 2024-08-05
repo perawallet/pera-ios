@@ -125,6 +125,39 @@ extension AlgorandSDK {
             &error
         )
     }
+
+    func composeOptInAndSendAssetTxn(
+        with draft: AssetOptInAndSendTransactionDraft,
+        error: inout NSError?
+    ) -> [SDKTransactionSignerItem]? {
+        guard let signerArray = AlgoSdkMakeOptInAndAssetTransferTxns(
+            getTrimmedAddress(from: draft.from),
+            draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines),
+            draft.amount.toSDKInt64(),
+            draft.senderAlgoBalance.toSDKInt64(),
+            draft.senderMinBalance.toSDKInt64(),
+            draft.receiverAlgoBalance.toSDKInt64(),
+            draft.receiverMinBalance.toSDKInt64(),
+            draft.note,
+            nil,
+            draft.assetIndex,
+            draft.transactionParams.toSDKSuggestedParams(),
+            &error
+        ) else { return nil }
+        
+        var transactionItems = [SDKTransactionSignerItem]()
+        for i in 0...signerArray.length() - 1 {
+            let signer = signerArray.getSigner(i)
+            let transaction = signerArray.getTxn(i)
+            let item = SDKTransactionSignerItem(
+                signer: signer,
+                data: transaction
+            )
+            transactionItems.append(item)
+        }
+        
+        return transactionItems
+    }
 }
 
 extension AlgorandSDK {
