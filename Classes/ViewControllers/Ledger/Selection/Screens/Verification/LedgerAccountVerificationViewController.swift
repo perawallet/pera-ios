@@ -184,6 +184,15 @@ extension LedgerAccountVerificationViewController {
             )
         ) as? TutorialViewController
         controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            self.launchHome {
+                [weak self] in
+                guard let self = self else { return }
+
+                let draft = MeldDraft(accounts: verifiedAccounts)
+                self.launchBuyAlgoWithMeld(draft: draft)
+            }
+        }
+        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
             self.launchHome()
         }
     }

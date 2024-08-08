@@ -86,12 +86,16 @@ extension DiscoverAssetDetailScreen {
 
         switch params.action {
         case .buyAlgo:
-           break
+           navigateToBuyAlgo()
         default:
             navigateToSwap(with: params)
         }
 
         sendAnalyticsEvent(with: params)
+    }
+
+    private func navigateToBuyAlgo() {
+        meldFlowCoordinator.launch()
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {

@@ -379,6 +379,17 @@ final class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
+        case .buyAlgoWithMeld(let draft):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(
+                analytics: appConfiguration.analytics,
+                presentingScreen: visibleScreen
+            )
+            self.meldFlowCoordinator = meldFlowCoordinator
+          
+            meldFlowCoordinator.launch(draft)
         case .accountSelect(let asset):
             launch(tab: .home)
 
