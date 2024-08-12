@@ -27,12 +27,12 @@ struct IncomingASARequesSenderViewTheme:
 
     init(_ family: LayoutFamily) {
         self.sender = [
-            .font(Typography.footnoteRegular()),
+            .font(Typography.bodyRegular()),
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
         self.amount = [
-            .font(Typography.footnoteMedium()),
+            .font(Typography.bodyMedium()),
             .textOverflow(SingleLineText()),
             .textColor(Colors.ASATiers.asaBarButton)
         ]

@@ -316,7 +316,6 @@ extension Colors {
         case main = "Text/main"
         case mainDark = "Text/mainDark"
         case gray = "Text/gray"
-        case grayDark = "Text/grayDark"
         case grayLighter = "Text/grayLighter"
         case white = "Text/white"
     }

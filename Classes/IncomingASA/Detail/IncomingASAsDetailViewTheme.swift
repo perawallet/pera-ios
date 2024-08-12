@@ -34,7 +34,9 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
     let sendersContextPadding: LayoutMetric
     let sendersContextTopInset: LayoutMetric
     let infoFooter: TextStyle
+    let infoIcon: ImageStyle
     let infoFooterPadding: LayoutMetric
+    let infoFooterLeadingInset: LayoutMetric
     let infoFooterTopInset: LayoutMetric
     let infoFooterBottomInset: LayoutMetric
     
@@ -48,28 +50,33 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
         self.amountTopInset = 41
         self.copy = IncomingASARequestIdTheme(family)
         self.sendersTitle = [
-            .textColor(Colors.Text.grayLighter),
-            .font(Typography.footnoteRegular()),
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular()),
             .textOverflow(SingleLineText())
         ]
         
         self.amountTitle = [
-            .textColor(Colors.Text.grayLighter),
-            .font(Typography.footnoteRegular()),
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular()),
             .textOverflow(SingleLineText())
         ]
         self.senders = IncomingASARequesSenderViewTheme(family)
         self.sendersContextPadding = 20
         self.sendersContextTopInset = 16
         self.infoFooter = [
-            .textColor(Colors.Text.main),
-            .font(Typography.bodyRegular()),
+            .textColor(Colors.Text.gray),
+            .font(Typography.footnoteRegular()),
             .textOverflow(FittingText())
         ]
         
         self.infoFooterPadding = 20
+        self.infoFooterLeadingInset = 8
         self.infoFooterTopInset = 32
         self.infoFooterBottomInset = 120
+        self.infoIcon = [
+            .image("icon-info-light-gray"),
+            .contentMode(.center)
+        ]
     }
 }
 
