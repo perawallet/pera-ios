@@ -46,8 +46,8 @@ struct IncomingASADetailAccountViewTheme: StyleSheet, LayoutSheet {
         self.horizontalPadding = 20
         self.contentMinWidthRatio = 0.25
         self.title = [
-            .textColor(Colors.Text.grayLighter),
-            .font(Typography.footnoteRegular()),
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular()),
             .textOverflow(SingleLineText())
         ]
         self.accountNameTitle = [

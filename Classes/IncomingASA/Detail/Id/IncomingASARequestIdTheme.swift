@@ -50,14 +50,15 @@ struct IncomingASARequestIdTheme:
                 .selected("components/buttons/secondary/bg-highlighted"),
                 .disabled("components/buttons/secondary/bg-disabled")
             ]),
-            .title("title-copy".localized)
+            .title("title-copy-id".localized)
         ]
         
         self.primaryActionContentEdgeInsets = (4, 20, 4, 20)
 
         self.id = [
-            .textColor(Colors.Text.main),
-            .textOverflow(SingleLineText())
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText()),
+            .font(Typography.bodyRegular())
         ]
         self.idLeftInset = 20
         self.idSeperatorPadding = 20

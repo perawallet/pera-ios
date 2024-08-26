@@ -33,12 +33,15 @@ struct IncomingASARequestHeaderTheme:
         self.titleTopPadding = 56
         self.title = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .font(Typography.titleMedium())
         ]
         self.spacingBetweenTitleAndSubtitle = 8
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Text.gray)
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular())
+
         ]
         self.assetValueTopPadding = 150
     }

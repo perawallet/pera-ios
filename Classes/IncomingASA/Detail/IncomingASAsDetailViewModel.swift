@@ -52,6 +52,7 @@ struct IncomingASAsDetailViewModel: ViewModel {
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
         self.draft = draft
+        self.accountId = String(draft.asset.id)
         self.currencyFormatter = currencyFormatter
     }
 }

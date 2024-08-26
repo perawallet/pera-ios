@@ -38,6 +38,7 @@ final class IncomingASAsDetailView:
     private lazy var amountTitleView = UILabel()
     private lazy var sendersContextView = MacaroonUIKit.VStackView()
     private lazy var infoFooterView = UILabel()
+    private lazy var infoFooterIcon = UIImageView()
 
     private var sendersTheme: IncomingASARequesSenderViewTheme?
     
@@ -299,11 +300,19 @@ extension IncomingASAsDetailView {
 
 extension IncomingASAsDetailView {
     private func addInfoFooterView(_ theme: IncomingASAsDetailViewTheme) {
-        infoFooterView.customizeAppearance(theme.infoFooter)
         
+        infoFooterIcon.customizeAppearance(theme.infoIcon)
+        contentView.addSubview(infoFooterIcon)
+        infoFooterIcon.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.infoFooterPadding)
+            $0.top.equalTo(sendersContextView.snp.bottom).offset(theme.infoFooterTopInset)
+        }
+        
+        infoFooterView.customizeAppearance(theme.infoFooter)
         contentView.addSubview(infoFooterView)
         infoFooterView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.infoFooterPadding)
+            $0.leading.equalTo(infoFooterIcon.snp.trailing).offset(theme.infoFooterLeadingInset)
+            $0.trailing.equalToSuperview().inset(theme.infoFooterPadding)
             $0.top.equalTo(sendersContextView.snp.bottom).offset(theme.infoFooterTopInset)
             $0.bottom.equalToSuperview().inset(theme.infoFooterBottomInset)
         }

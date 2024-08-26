@@ -35,6 +35,7 @@
 "title-id" = "ID";
 "title-asset-id" = "Asset ID";
 "title-copy" = "Copy";
+"title-copy-id" = "Copy ID";
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
 "title-skip-for-now" = "Skip for now";
