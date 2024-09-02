@@ -1134,9 +1134,14 @@ extension WCMainTransactionScreen {
                 switch result {
                 case .success(let subAssetDetails):
                     isAnyAssetDetailFetchFailed = subAssetDetails.isEmpty
-
                     subAssetDetails.forEach {
-                        self.sharedDataController.assetDetailCollection[$0.id] = $0
+                        if self.sharedDataController.assetDetailCollection[$0.id] == nil {
+                            self.fetchAssetDetailFromNode(id: $0.id) { isSuccess in
+                                isAnyAssetDetailFetchFailed = !isSuccess
+                            }
+                        } else {
+                            self.sharedDataController.assetDetailCollection[$0.id] = $0
+                        }
                     }
 
                     group.leave()
