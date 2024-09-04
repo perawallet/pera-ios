@@ -1124,6 +1124,16 @@ extension WCMainTransactionScreen {
         let group = DispatchGroup()
         var isAnyAssetDetailFetchFailed = false
 
+        func fetchAssetDetailFromNode(for subAssetIDs: [AssetID]) {
+            for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
+                group.enter()
+                self.fetchAssetDetailFromNode(id: id) { isSuccess in
+                    isAnyAssetDetailFetchFailed = !isSuccess
+                    group.leave()
+                }
+            }
+        }
+        
         for subAssetIDs in chunkedAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
             group.enter()
 
@@ -1141,25 +1151,12 @@ extension WCMainTransactionScreen {
                         if subAssetIDs.contains(assetDetail.id) {
                             self.sharedDataController.assetDetailCollection[assetDetail.id] = assetDetail
                         } else {
-                            for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
-                                group.enter()
-                                self.fetchAssetDetailFromNode(id: id) { isSuccess in
-                                    isAnyAssetDetailFetchFailed = !isSuccess
-                                    group.leave()
-                                }
-                            }
+                            fetchAssetDetailFromNode(for: subAssetIDs)
                         }
                     }
                     group.leave()
                 case .failure:
-                    for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
-                        group.enter()
-
-                        self.fetchAssetDetailFromNode(id: id) { isSuccess in
-                            isAnyAssetDetailFetchFailed = !isSuccess
-                            group.leave()
-                        }
-                    }
+                    fetchAssetDetailFromNode(for: subAssetIDs)
                     group.leave()
                 }
             }
@@ -1169,6 +1166,7 @@ extension WCMainTransactionScreen {
             handler(!isAnyAssetDetailFetchFailed)
         }
     }
+    
     private func fetchAssetDetails(
         withIDs ids: [AssetID],
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
