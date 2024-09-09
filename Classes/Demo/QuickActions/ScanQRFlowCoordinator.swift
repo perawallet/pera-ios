@@ -52,7 +52,8 @@ final class ScanQRFlowCoordinator:
     private let loadingController: LoadingController
     private let session: Session
     private let sharedDataController: SharedDataController
-
+    private let appLaunchController: AppLaunchController
+    
     init(
         analytics: ALGAnalytics,
         api: ALGAPI,
@@ -60,7 +61,8 @@ final class ScanQRFlowCoordinator:
         loadingController: LoadingController,
         presentingScreen: UIViewController,
         session: Session,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        appLaunchController: AppLaunchController
     ) {
         self.analytics = analytics
         self.api = api
@@ -69,6 +71,7 @@ final class ScanQRFlowCoordinator:
         self.presentingScreen = presentingScreen
         self.session = session
         self.sharedDataController = sharedDataController
+        self.appLaunchController = appLaunchController
     }
 }
 
@@ -120,6 +123,20 @@ extension ScanQRFlowCoordinator {
         }
     }
 
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead discoverExternalDestination: DiscoverExternalDestination,
+        completionHandler: EmptyHandler?
+    ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
+            guard let self else { return }
+            self.appLaunchController.receive(deeplinkWithSource: .externalInAppBrowser(discoverExternalDestination))
+            if let handler = completionHandler {
+                handler()
+            }
+        }
+    }
+    
     func qrScannerViewController(
         _ controller: QRScannerViewController,
         didFail error: QRScannerError,

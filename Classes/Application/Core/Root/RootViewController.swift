@@ -47,7 +47,8 @@ final class RootViewController: UIViewController {
         bannerController: appConfiguration.bannerController,
         loadingController: appConfiguration.loadingController,
         session: appConfiguration.session,
-        sharedDataController: appConfiguration.sharedDataController
+        sharedDataController: appConfiguration.sharedDataController,
+        appLaunchController: appConfiguration.launchController
     )
 
     private lazy var pushNotificationController = PushNotificationController(

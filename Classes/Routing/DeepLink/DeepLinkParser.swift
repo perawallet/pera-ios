@@ -390,8 +390,13 @@ extension DeepLinkParser {
             return nil
         }
 
-        let destination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
-        return .success(.externalInAppBrowser(destination: destination))
+        guard let browserDeeplinkURL = url?.browserDeeplinkURL else {
+            let redirectDestination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
+            return .success(.externalInAppBrowser(destination: redirectDestination))
+        }
+        
+        let urlDestination = DiscoverExternalDestination.url(browserDeeplinkURL)
+        return .success(.externalInAppBrowser(destination: urlDestination))
     }
 }
 

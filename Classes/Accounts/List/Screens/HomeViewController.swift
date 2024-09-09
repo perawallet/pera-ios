@@ -92,7 +92,8 @@ final class HomeViewController:
         loadingController: loadingController!,
         presentingScreen: self,
         session: session!,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        appLaunchController: configuration.launchController
     )
     private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
         configuration: configuration,
@@ -606,7 +607,8 @@ extension HomeViewController {
     }
 
     private func triggerBannerCTA(item: AnnouncementViewModel) {
-        guard let url = item.ctaUrl else { return }
+        guard let ctaUrl = item.ctaUrl else { return }
+        let url = ctaUrl.browserDeeplinkURL ?? ctaUrl
 
         let inAppBrowser = open(
             .externalInAppBrowser(destination: .url(url)),
