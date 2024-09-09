@@ -26916,7 +26916,6 @@
 				D4018CF527E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				2B384DAF29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift in Sources */,
 				2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */,
-				2B513B7E2C544DF4001AE47C /* AccountListItemView.swift in Sources */,
 				D422943A29D3772200C25E64 /* TransactionCorrectAddressInstructionViewModel.swift in Sources */,
 				2B99D45C28EC96C500323C11 /* SwapConfirmPriceInfoViewModel.swift in Sources */,
 				D419431A2735415C0055EC70 /* PageBar.swift in Sources */,

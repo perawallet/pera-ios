@@ -58,7 +58,7 @@
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-retry-later" = "Please try later.";
 "title-press-hold-copy-address" = "Press and hold to copy address";
-"title-buy-sell" = "Sell";
+"title-buy-sell" = "Buy / Sell";
 "title-sort" = "Sort";
 "title-alphabetically-a-to-z" = "Alphabetically A to Z";
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
@@ -1211,7 +1211,7 @@
 
 //MARK: QuickActions
 "quick-actions-asset-inbox-title" = "Asset Inbox";
-"quick-actions-buy-sell-title" = "Sell";
+"quick-actions-buy-sell-title" = "Buy / Sell";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";
@@ -1222,7 +1222,7 @@
 "action-not-available-for-account-type" = "This action is not available for this account type";
 
 // MARK: Transaction Options
-"transaction-option-list-buy-sell-subtitle" = "See all options to sell your crypto";
+"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";

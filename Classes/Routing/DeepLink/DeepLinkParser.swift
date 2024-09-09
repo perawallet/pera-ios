@@ -390,8 +390,13 @@ extension DeepLinkParser {
             return nil
         }
 
-        let destination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
-        return .success(.externalInAppBrowser(destination: destination))
+        guard let browserDeeplinkURL = url?.browserDeeplinkURL else {
+            let redirectDestination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
+            return .success(.externalInAppBrowser(destination: redirectDestination))
+        }
+        
+        let urlDestination = DiscoverExternalDestination.url(browserDeeplinkURL)
+        return .success(.externalInAppBrowser(destination: urlDestination))
     }
 }
 
@@ -568,6 +573,16 @@ extension DeepLinkParser {
 
         return .success(.wcMainArbitraryDataScreen(draft: draft))
     }
+
+    func discoverBuyAlgoWithMeld(
+        draft: MeldDraft
+    ) -> Result? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        return .success(.buyAlgoWithMeld(draft))
+    }
 }
 
 extension DeepLinkParser {
@@ -606,6 +621,7 @@ extension DeepLinkParser {
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)
+        case buyAlgoWithMeld(MeldDraft)
     }
     
     enum Error:

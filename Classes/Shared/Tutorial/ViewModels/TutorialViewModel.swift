@@ -186,6 +186,10 @@ extension TutorialViewModel {
             guard !flow.isBackUpAccount else { return }
 
             secondaryActionButtonTitle = "title-skip-for-now".localized
+        case .accountVerified(let flow, _):
+            bindAccountSetupFlowSecondaryButton(flow)
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowSecondaryButton(flow)
         default:
             break
         }
@@ -220,13 +224,23 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-continue".localized
         } else {
+            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+        }
+    }
+
+    private func bindAccountSetupFlowSecondaryButton(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .watch) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else if case .addNewAccount(mode: .watch) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else {
             switch flow {
             case .initializeAccount:
-                self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+                self.secondaryActionButtonTitle = "title-start-using-pera-wallet".localized
             case .addNewAccount,
                  .backUpAccount,
                  .none:
-                self.primaryActionButtonTitle = "title-continue".localized
+                self.secondaryActionButtonTitle = "title-continue".localized
             }
         }
     }
@@ -248,7 +262,7 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             return
         } else {
-            self.primaryActionButtonTheme = theme.mainButtonTheme
+            self.primaryActionButtonTheme = theme.actionButtonTheme
             self.secondaryActionButtonTheme = theme.mainButtonTheme
         }
     }
