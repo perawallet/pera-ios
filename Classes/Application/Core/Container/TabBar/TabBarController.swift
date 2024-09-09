@@ -110,7 +110,8 @@ final class TabBarController: TabBarContainer {
         loadingController: loadingController,
         presentingScreen: self,
         session: session,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        appLaunchController: appLaunchController
     )
 
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
@@ -128,6 +129,7 @@ final class TabBarController: TabBarContainer {
     private let loadingController: LoadingController
     private let session: Session
     private let sharedDataController: SharedDataController
+    private let appLaunchController: AppLaunchController
 
     init(
         swapDataStore: SwapDataStore,
@@ -136,7 +138,8 @@ final class TabBarController: TabBarContainer {
         bannerController: BannerController,
         loadingController: LoadingController,
         session: Session,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        appLaunchController: AppLaunchController
     ) {
         self.swapDataStore = swapDataStore
         self.analytics = analytics
@@ -145,6 +148,7 @@ final class TabBarController: TabBarContainer {
         self.loadingController = loadingController
         self.session = session
         self.sharedDataController = sharedDataController
+        self.appLaunchController = appLaunchController
         super.init()
     }
 

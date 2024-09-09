@@ -163,6 +163,12 @@ class AppDelegate:
 
             return true
         }
+        
+        if let browserURL = url.browserDeeplinkURL {
+            let destination = DiscoverExternalDestination.url(browserURL)
+            receive(deeplinkWithSource: .externalInAppBrowser(destination))
+            return true
+        }
 
         if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
             let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
@@ -197,6 +203,12 @@ class AppDelegate:
             return false
         }
 
+        if let browserURL = incomingURL.browserDeeplinkURL {
+            let destination = DiscoverExternalDestination.url(browserURL)
+            receive(deeplinkWithSource: .externalInAppBrowser(destination))
+            return true
+        }
+        
         let deeplinkQR = DeeplinkQR(url: incomingURL)
 
         if let walletConnectURL = deeplinkQR.walletConnectUrl() {
