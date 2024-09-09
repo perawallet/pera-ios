@@ -76,14 +76,11 @@ enum AccountSettings: Settings {
 }
 
 enum AppPreferenceSettings: Settings {
-    case language
     case currency
     case appearance
     
     var image: UIImage? {
         switch self {
-        case .language:
-            return img("icon-settings-language")
         case .currency:
             return img("icon-settings-currency")
         case .appearance:
@@ -93,8 +90,6 @@ enum AppPreferenceSettings: Settings {
     
     var name: String {
         switch self {
-        case .language:
-            return "settings-language".localized
         case .currency:
             return "settings-currency".localized
         case .appearance:

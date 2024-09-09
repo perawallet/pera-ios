@@ -401,6 +401,11 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             }
             closeScreen()
             delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+        } else if let url = URL(string: qrString),
+                  CoinbaseQR.isCoinbaseQR(url),
+                  let qrText = CoinbaseQR.parseQRText(url) {
+            closeScreen()
+            delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
         } else if qrString.isValidatedAddress {
             let qrText = QRText(mode: .address, address: qrString)
             closeScreen()

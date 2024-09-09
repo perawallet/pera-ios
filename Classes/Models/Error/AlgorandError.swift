@@ -42,3 +42,17 @@ enum APIErrorType: String {
     case deviceAlreadyExists = "DeviceAlreadyExistsException"
     case tinymanExcessAmount = "TinymanExcessAmountError"
 }
+
+extension APIError {
+    func getDictFromResponseData() -> [String: Any]? {
+        do {
+            // Convert the JSON data to a dictionary
+            guard let jsonData = self.responseData,
+                  let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
+                  let data = json["data"] as? [String: Any] else {
+                return nil
+            }            
+            return data
+        }
+    }
+}

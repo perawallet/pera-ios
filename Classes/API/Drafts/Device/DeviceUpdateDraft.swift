@@ -25,7 +25,7 @@ struct DeviceUpdateDraft: JSONObjectBody {
     let app: ALGAppTarget.App
     let platform = "ios"
     let model = UIDevice.current.model
-    let locale = Locale.current.languageCode ?? "en"
+    let locale = "en"
     var accounts: [String] = []
     
     var bodyParams: [APIBodyParam] {

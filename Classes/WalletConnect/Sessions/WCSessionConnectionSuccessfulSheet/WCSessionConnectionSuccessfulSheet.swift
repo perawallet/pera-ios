@@ -84,8 +84,7 @@ extension WCSessionConnectionSuccessfulSheet {
 
         if let wcV2Session = draft.wcV2Session {
             return Self.makeInfoForWCv2(
-                wcV2Session: wcV2Session,
-                pairExpiryDate: pairExpiryDate
+                wcV2Session: wcV2Session
             )
         }
 
@@ -160,29 +159,15 @@ extension WCSessionConnectionSuccessfulSheet {
 
 extension WCSessionConnectionSuccessfulSheet {
     private static func makeInfoForWCv2(
-        wcV2Session: WalletConnectV2Session,
-        pairExpiryDate: Date?
+        wcV2Session: WalletConnectV2Session
     ) -> TextProvider? {
-        guard let pairExpiryDate else {
-            return nil
-        }
-
-        let dateFormat = "MMM d, yyyy"
-        let formattedExtendedDate = pairExpiryDate.toFormat(dateFormat)
         let dAppName = wcV2Session.peer.name
-
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))
-        let text =
+        let aInfo =
             "wallet-connect-v2-session-connection-approved-description"
-                .localized(params: formattedExtendedDate, dAppName)
+                .localized(params: dAppName)
                 .attributed(textAttributes)
-
-        let extendedDateAttributes = Typography.footnoteMediumAttributes(alignment: .left)
-        let aInfo = text.addAttributes(
-            to: formattedExtendedDate,
-            newAttributes: extendedDateAttributes
-        )
         return aInfo
     }
 }
