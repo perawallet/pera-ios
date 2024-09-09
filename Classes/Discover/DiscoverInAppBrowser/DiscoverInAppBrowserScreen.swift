@@ -50,8 +50,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        updateTheme(self.traitCollection.userInterfaceStyle)
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0) { [weak self] in
+            guard let self else { return }
+            self.updateTheme(self.traitCollection.userInterfaceStyle)
+        }
     }
 
     override func viewDidLoad() {

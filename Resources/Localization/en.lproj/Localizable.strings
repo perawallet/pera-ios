@@ -242,7 +242,7 @@
 "recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
 "recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
-"recover-from-seed-verify-pop-up-title" = "Account is Verified!";
+"recover-from-seed-verify-pop-up-title" = "Account has been added!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";
@@ -473,8 +473,6 @@
 "settings-rate-modal-title" = "Rate your experience";
 "settings-rate-modal-description" = "Tell us how was your experience?";
 "settings-app-version" = "Pera Wallet Version %@";
-"settings-language-change-title" = "Set App Language";
-"settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 "settings-support-title" = "Get Help";
 "settings-security-title" = "Security";
 "settings-secure-backup-title" = "Algorand Secure Backup";
@@ -811,7 +809,7 @@
 "title-i-understand" = "I understand";
 
 "empty-accounts-title" = "Create an Account";
-"empty-accounts-detail" = "You need to create an account to start transacting your assets.";
+"empty-accounts-detail" = "You need to create an account to start transacting in the Algorand ecosystem.";
 "empty-accounts-action" = "Create new Account";
 
 "title-dont-ask" = "Don’t ask again";
@@ -875,7 +873,7 @@
 "wallet-connect-session-connection-approved-title" = "You are connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 "wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@.";
-"wallet-connect-v2-session-connection-approved-description" = "Its validity will be automatically extended, whenever used, until %@. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to %@ to complete your operation.";
+"wallet-connect-v2-session-connection-approved-description" = "Please return to %@ to complete your operation.";
 "wallet-connect-select-accounts" = "Select Accounts";
 "wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
 "wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
@@ -992,6 +990,9 @@
 "wc-arbitrary-data-request-signed-warning-message" = "The data has been signed and sent to %@. Please visit %@ for the remaining process.";
 
 "wallet-connect-session-timeout-message" = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
+
+"wallet-connect-scammer-domain-title" = " Malicious Website Blocked";
+"wallet-connect-scammer-domain-message" = "You attempted to connect to a malicious website. Pera blocked this connection for your security.";
 
 "wallet-connect-asset-creation-title" = "Asset Creation Request";
 "wallet-connect-asset-name-title" = "Asset Name";
@@ -1279,11 +1280,8 @@
 
 /// MARK: Swap Introduction
 "swap-introduction-title" = "Swap in Pera";
-"swap-introduction-body" = "Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees.";
+"swap-introduction-body" = "Pera Wallet provides an easy and fast way to swap assets on blockchain, using decentralized liquidity pools.";
 "swap-introduction-primary-action-title" = "Start Swapping";
-"swap-introduction-powered-by-title" = "Powered by";
-"swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
-"swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
 /// MARK: Swap Account Selection
 "swap-account-selection-header-description" = "Select an account to make the swap";
@@ -1730,3 +1728,6 @@ FAQ section.";
 
 /// MARK: Back Up Account Selection
 "back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";
+
+/// MARK: Check Domain Scammer Controller
+"check-domain-default-error" = "Your Domain is not valid.";

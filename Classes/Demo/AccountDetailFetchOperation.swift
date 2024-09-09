@@ -55,37 +55,86 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         
         let draft = AccountFetchDraft(publicKey: input.localAccount.address)
 
-        ongoingEndpoint =
-            api.fetchAccount(
-                draft,
-                queue: completionQueue,
-                ignoreResponseOnCancelled: false
-            ) { [weak self] result in
-                guard let self = self else { return }
+        ongoingEndpoint = api.fetchAccount(
+            draft,
+            queue: completionQueue,
+            ignoreResponseOnCancelled: false,
+            queryFilterOptions: [.createdAssets, .createdApps]
+        ) { [weak self] result in
+            guard let self = self else { return }
             
-                self.ongoingEndpoint = nil
-                
-                switch result {
-                case .success(let response):
-                    let account = response.account
-                    account.update(from: self.input.localAccount)
+            self.ongoingEndpoint = nil
+            
+            switch result {
+            case .success(let response):
+                let account = response.account
+                account.update(from: self.input.localAccount)
+                let output = Output(account: account)
+                self.result = .success(output)
+                self.finish()
+            case .failure(let apiError, let apiErrorDetail):
+                if apiError.isHttpNotFound {
+                    let account = Account(localAccount: self.input.localAccount)
                     let output = Output(account: account)
                     self.result = .success(output)
-                case .failure(let apiError, let apiErrorDetail):
-                    if apiError.isHttpNotFound {
-                        let account = Account(localAccount: self.input.localAccount)
-                        let output = Output(account: account)
-                        self.result = .success(output)
-                    } else {
-                        let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                        self.result = .failure(error)
-                    }
+                    self.finish()
+                } else {
+                    refetchTheAccountWithoutTheAssetsIfNeeded(draft: draft, apiError: apiError, apiErrorDetail: apiErrorDetail)
                 }
-                
-                self.finish()
             }
+        }
     }
 
+    private func refetchTheAccountWithoutTheAssetsIfNeeded(
+        draft: AccountFetchDraft,
+        apiError: APIError,
+        apiErrorDetail: NoAPIModel?
+    ) {
+        let mappedErrorResponse = apiError.getDictFromResponseData()
+        if let totalAssetsOptedIn = mappedErrorResponse?["total-assets-opted-in"] as? Int,
+            totalAssetsOptedIn > AccountFetchConfig.totalAssetsMinCount {
+            for _ in 1...AccountFetchConfig.pagingCountForFetchAccount {
+                self.fetchAccountWithHugeAssets(draft: draft)
+            }
+        } else {
+            let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+            self.result = .failure(error)
+            self.finish()
+        }
+    }
+    
+    private func fetchAccountWithHugeAssets(draft: AccountFetchDraft) {
+        ongoingEndpoint = api.fetchAccount(
+            draft,
+            queue: completionQueue,
+            ignoreResponseOnCancelled: false,
+            queryFilterOptions: [.createdAssets, .createdApps, .assets]
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.ongoingEndpoint = nil
+            
+            switch result {
+            case .success(let response):
+                let account = response.account
+                account.update(from: self.input.localAccount)
+                let output = Output(account: account)
+                self.result = .success(output)
+            case .failure(let apiError, let apiErrorDetail):
+                if apiError.isHttpNotFound {
+                    let account = Account(localAccount: self.input.localAccount)
+                    let output = Output(account: account)
+                    self.result = .success(output)
+                } else {
+                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    self.result = .failure(error)
+                }
+            }
+            
+            self.finish()
+        }
+    }
+    
     override func finishIfCancelled() -> Bool {
         if !isCancelled {
             return false
@@ -117,5 +166,12 @@ extension AccountDetailFetchOperation {
     
     struct Output {
         let account: Account
+    }
+}
+
+extension AccountDetailFetchOperation {
+    enum AccountFetchConfig {
+        static let totalAssetsMinCount = 10000
+        static let pagingCountForFetchAccount = 5
     }
 }

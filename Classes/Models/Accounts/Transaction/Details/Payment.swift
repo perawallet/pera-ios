@@ -75,7 +75,9 @@ extension Payment {
             self.closeRemainderTo = nil
         }
     }
+}
 
+extension Payment.APIModel {
     private enum CodingKeys: String, CodingKey {
         case amount = "amount"
         case receiver = "receiver"

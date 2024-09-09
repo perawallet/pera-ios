@@ -28,10 +28,7 @@ final class SwapIntroductionScreen: ScrollScreen {
     private lazy var bodyView = Label()
     private lazy var footerContentView = UIView()
     private lazy var providerContent = UIView()
-    private lazy var poweredByTitleView = Label()
-    private lazy var providerView = UIImageView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
-    private lazy var termsOfServiceView = ALGActiveLabel()
 
     private lazy var theme = SwapIntroductionScreenTheme()
 
@@ -245,7 +242,6 @@ extension SwapIntroductionScreen {
 
         addProviderContent()
         addPrimaryAction()
-        addTermsOfService()
     }
 
     private func addProviderContent() {
@@ -256,36 +252,6 @@ extension SwapIntroductionScreen {
             $0.leading >= 0
             $0.trailing <= 0
         }
-
-        addPoweredBy()
-        addProvider()
-    }
-
-    private func addPoweredBy() {
-        poweredByTitleView.customizeAppearance(theme.poweredByTitle)
-
-        providerContent.addSubview(poweredByTitleView)
-        poweredByTitleView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-        }
-
-        bindPoweredBy()
-    }
-
-    private func addProvider() {
-        providerContent.addSubview(providerView)
-        providerView.fitToIntrinsicSize()
-        providerView.snp.makeConstraints {
-            $0.top >= 0
-            $0.leading == poweredByTitleView.snp.trailing + theme.poweredByTitleLeadingInset
-            $0.centerY == poweredByTitleView
-            $0.bottom <= 0
-            $0.trailing == 0
-        }
-
-        bindProvider()
     }
 
     private func addPrimaryAction() {
@@ -294,29 +260,16 @@ extension SwapIntroductionScreen {
         footerContentView.addSubview(primaryActionView)
         primaryActionView.contentEdgeInsets = theme.primaryActionContentEdgeInsets
         primaryActionView.snp.makeConstraints {
-            $0.top == providerView.snp.bottom + theme.primaryActionTopInset
+            $0.top == theme.primaryActionTopInset
             $0.leading == 0
             $0.trailing == 0
+            $0.bottom == 0
         }
 
         primaryActionView.addTouch(
             target: self,
             action: #selector(performPrimaryAction)
         )
-    }
-
-    private func addTermsOfService() {
-        termsOfServiceView.customizeAppearance(theme.termsOfService)
-
-        footerContentView.addSubview(termsOfServiceView)
-        termsOfServiceView.snp.makeConstraints {
-            $0.top == primaryActionView.snp.bottom + theme.termsOfServiceTopInset
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-
-        bindTermsOfService()
     }
 }
 
@@ -341,43 +294,6 @@ extension SwapIntroductionScreen {
         newBadgeView.text =
             "title-new-uppercased"
                 .localized
-    }
-
-    private func bindPoweredBy() {
-        poweredByTitleView.attributedText =
-            "swap-introduction-powered-by-title"
-                .localized
-                .footnoteRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
-    }
-
-    private func bindProvider() {
-        providerView.image = draft.provider.icon.uiImage
-    }
-
-    private func bindTermsOfService() {
-        let text =
-            "swap-introduction-terms-of-service"
-                .localized
-                .footnoteRegular(alignment: .center)
-
-        let hyperlink: ALGActiveType =
-            .word("swap-introduction-terms-of-service-hyperlink".localized)
-
-        var attributes = Typography.footnoteMediumAttributes(
-            alignment: .center
-        )
-        attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
-
-        termsOfServiceView.attachHyperlink(
-            hyperlink,
-            to: text,
-            attributes: attributes
-        ) {
-            [unowned self] in
-            self.open(draft.provider.termsOfServiceLink)
-        }
     }
 }
 

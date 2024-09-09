@@ -76,13 +76,20 @@ extension SwapAvailableBalanceQuoteValidator {
             return
         }
 
-        addMinBalance(to: &amountOut)
-        addPaddingForFee(to: &amountOut)
-        addPeraFee(to: &amountOut)
-        extractAmountOutWithSlippage(from: &amountOut)
+        var algoAmountToValidate: UInt64 = 0
 
-        guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountOut) else {
-            publishEvent(.failure(.insufficientAlgoBalance(amountOut)))
+        addMinBalance(to: &algoAmountToValidate)
+        addPaddingForFee(to: &algoAmountToValidate)
+        addPeraFee(to: &algoAmountToValidate)
+
+        let remainingAlgoBalanceResult = account.algo.amount
+            .addingReportingOverflow(amountOut)
+            .partialValue
+            .subtractingReportingOverflow(algoAmountToValidate)
+
+        let remainingAlgoBalance = remainingAlgoBalanceResult.partialValue
+        if remainingAlgoBalanceResult.overflow {
+            publishEvent(.failure(.insufficientAlgoBalance(algoAmountToValidate)))
             return
         }
 

@@ -57,6 +57,7 @@ class AppDelegate:
     private lazy var rootViewController = createRootViewController()
     private lazy var pushNotificationController = createPushNotificationController()
     private lazy var lastSeenNotificationController = createLastSeenNotificationController()
+    private lazy var scammerController = createScammerController()
 
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -550,7 +551,8 @@ extension AppDelegate {
             lastSeenNotificationController: lastSeenNotificationController,
             analytics: analytics,
             launchController: appLaunchController,
-            peraConnect: peraConnect
+            peraConnect: peraConnect, 
+            scammerController: scammerController
         )
     }
     
@@ -635,5 +637,9 @@ extension AppDelegate {
 
     private func createLastSeenNotificationController() -> LastSeenNotificationController {
         return LastSeenNotificationController(api: api)
+    }
+    
+    private func createScammerController() -> ScammerController {
+        ScammerController(api: api)
     }
 }

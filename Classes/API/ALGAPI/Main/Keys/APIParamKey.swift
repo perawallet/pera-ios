@@ -46,6 +46,7 @@ enum APIParamKey: String, CodingKey {
     case cursor = "cursor"
     case lastSeenNotificationId = "last_seen_notification_id"
     case deviceId = "device_id"
+    case domain = "domain"
     case email = "email"
     case encryptedContent = "encrypted_content"
     case exceptionText = "exception_text"

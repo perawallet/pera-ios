@@ -184,13 +184,6 @@ extension SettingsViewController {
     
     private func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings?) {
         switch setting {
-        case .language:
-            displayProceedAlertWith(
-                title: "settings-language-change-title".localized,
-                message: "settings-language-change-detail".localized
-            ) { _ in
-                UIApplication.shared.openAppSettings()
-            }
         case .currency:
             open(.currencySelection, by: .push)
         case .appearance:
