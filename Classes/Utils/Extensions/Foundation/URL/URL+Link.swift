@@ -29,7 +29,7 @@ extension URL {
 
     var browserDeeplinkURL: URL? {
         guard
-            self.host == "browser",
+            self.host == "browser" || self.path == "/qr/perawallet/browser",
             let base64EncodedString = queryParameters?["url"],
             let decodedData = Data(base64Encoded: base64EncodedString),
             let decodedString = String(data: decodedData, encoding: .utf8)
