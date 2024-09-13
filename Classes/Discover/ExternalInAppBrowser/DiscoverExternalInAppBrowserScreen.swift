@@ -22,6 +22,13 @@ import MacaroonUIKit
 class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
     typealias EventHandler = (Event) -> Void
 
+    override var userAgent: String? {
+        let version: String? = Bundle.main["CFBundleShortVersionString"]
+        let versionUserAgent = version.unwrap { "pera_ios_" + $0 }
+        let currentUserAgent = webView.value(forKey: "userAgent") as? String
+        return [ currentUserAgent, versionUserAgent ].compound(" ")
+    }
+    
     var eventHandler: EventHandler?
 
     private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
