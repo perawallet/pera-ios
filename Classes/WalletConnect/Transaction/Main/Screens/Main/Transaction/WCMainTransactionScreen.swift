@@ -1017,6 +1017,7 @@ extension WCMainTransactionScreen {
 }
 
 extension WCMainTransactionScreen {
+    // comming from here
     private func getAssetDetailsIfNeeded() {
         asyncBackground(qos: .userInitiated) {
             [weak self] in
@@ -1119,26 +1120,44 @@ extension WCMainTransactionScreen {
         chunkedAssetIDs: [[AssetID]],
         onComplete handler: @escaping (Bool) -> Void
     ) {
-        if isRejected { return }
+        if isRejected {
+            handler(false)
+            return
+        }
 
         let group = DispatchGroup()
         var isAnyAssetDetailFetchFailed = false
 
-        func fetchAssetDetailFromNode(for subAssetIDs: [AssetID]) {
-            for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
-                group.enter()
-                self.fetchAssetDetailFromNode(id: id) { isSuccess in
-                    isAnyAssetDetailFetchFailed = !isSuccess
-                    group.leave()
+        func fetchAssetDetailFromNodeWithGroup(id: AssetID) {
+            group.enter()
+            self.fetchAssetDetailFromNode(id: id) { isSuccess in
+                isAnyAssetDetailFetchFailed = !isSuccess
+                group.leave()
+            }
+        }
+
+        func handleSubAssetIDs(_ subAssetIDs: [AssetID], subAssetDetails: [AssetDecoration] = []) {
+            if subAssetDetails.isEmpty {
+                for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
+                    fetchAssetDetailFromNodeWithGroup(id: id)
+                }
+            } else {
+                for assetDetail in subAssetDetails {
+                    if subAssetIDs.contains(assetDetail.id) {
+                        self.sharedDataController.assetDetailCollection[assetDetail.id] = assetDetail
+                    } else {
+                        for id in subAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
+                            fetchAssetDetailFromNodeWithGroup(id: id)
+                        }
+                    }
                 }
             }
         }
-        
+
         for subAssetIDs in chunkedAssetIDs where !isAnyAssetDetailFetchFailed && !isRejected {
             group.enter()
 
-            fetchAssetDetails(withIDs: subAssetIDs) {
-                [weak self] result in
+            fetchAssetDetails(withIDs: subAssetIDs) { [weak self] result in
                 guard let self else {
                     group.leave()
                     return
@@ -1146,17 +1165,10 @@ extension WCMainTransactionScreen {
 
                 switch result {
                 case .success(let subAssetDetails):
-                    isAnyAssetDetailFetchFailed = subAssetDetails.isEmpty
-                    for assetDetail in subAssetDetails {
-                        if subAssetIDs.contains(assetDetail.id) {
-                            self.sharedDataController.assetDetailCollection[assetDetail.id] = assetDetail
-                        } else {
-                            fetchAssetDetailFromNode(for: subAssetIDs)
-                        }
-                    }
+                    handleSubAssetIDs(subAssetIDs, subAssetDetails: subAssetDetails)
                     group.leave()
                 case .failure:
-                    fetchAssetDetailFromNode(for: subAssetIDs)
+                    handleSubAssetIDs(subAssetIDs)
                     group.leave()
                 }
             }
