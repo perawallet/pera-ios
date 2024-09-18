@@ -1017,7 +1017,6 @@ extension WCMainTransactionScreen {
 }
 
 extension WCMainTransactionScreen {
-    // comming from here
     private func getAssetDetailsIfNeeded() {
         asyncBackground(qos: .userInitiated) {
             [weak self] in
