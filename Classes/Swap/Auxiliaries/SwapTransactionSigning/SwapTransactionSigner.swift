@@ -16,9 +16,7 @@
 
 import Foundation
 
-final class SwapTransactionSigner:
-    LedgerTransactionOperationDelegate,
-    TransactionSignerDelegate {
+final class SwapTransactionSigner: LedgerTransactionOperationDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -112,21 +110,33 @@ extension SwapTransactionSigner {
             return
         }
 
+        let signer = SDKTransactionSigner()
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                eventHandler?(.didFailSigning(error: .api(error: error)))
+            }
+        }
+        
         sign(
             signature: signature,
-            signer: SDKTransactionSigner(),
+            signer: signer,
             unsignedTransaction: unsignedTransaction
         )
     }
 
     private func sign(
         signature: Data?,
-        signer: TransactionSigner,
+        signer: TransactionSignable,
         unsignedTransaction: Data
     ) {
-        signer.delegate = self
-
-        guard let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
+        guard let signedTransaction = signer.sign(
+            unsignedTransaction,
+            with: signature
+        ) else {
             return
         }
 
@@ -137,12 +147,24 @@ extension SwapTransactionSigner {
 extension SwapTransactionSigner {
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
-        didReceiveSignature data: Data
+        didReceiveSignature data: Data,
+        forTransactionIndex index: Int
     ) {
         if let account {
+            let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
+            signer.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .didFailedSigning(let error):
+                    eventHandler?(.didFailSigning(error: .api(error: error)))
+                }
+            }
+
             sign(
                 signature: data,
-                signer: LedgerTransactionSigner(signerAddress: account.authAddress),
+                signer: signer,
                 unsignedTransaction: unsignedTransaction!
             )
         }
@@ -185,15 +207,6 @@ extension SwapTransactionSigner {
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
         eventHandler?(.didLedgerRejectSigning)
-    }
-}
-
-extension SwapTransactionSigner {
-    func transactionSigner(
-        _ transactionSigner: TransactionSigner,
-        didFailedSigning error: HIPTransactionError
-    ) {
-        eventHandler?(.didFailSigning(error: .api(error: error)))
     }
 }
 

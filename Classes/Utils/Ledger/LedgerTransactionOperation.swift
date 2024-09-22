@@ -18,7 +18,10 @@
 import UIKit
 import CoreBluetooth
 
-class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate, LedgerBLEControllerDelegate {
+class LedgerTransactionOperation: 
+    LedgerOperation,
+    BLEConnectionManagerDelegate,
+    LedgerBLEControllerDelegate {
     var bleConnectionManager: BLEConnectionManager {
         return accountFetchOperation.bleConnectionManager
     }
@@ -41,9 +44,12 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     private var transaction: WCTransaction?
     private var account: Account?
     private var unsignedTransactionData: Data?
+    private var transactionIndex: Int = 0
     
-    private lazy var accountFetchOperation =
-        LedgerAccountFetchOperation(api: api, analytics: analytics)
+    private lazy var accountFetchOperation = LedgerAccountFetchOperation(
+        api: api,
+        analytics: analytics
+    )
     
     init(
         api: ALGAPI,
@@ -57,8 +63,12 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
         accountFetchOperation.delegate = self
     }
     
-    func setUnsignedTransactionData(_ unsignedTransaction: Data?) {
+    func setUnsignedTransactionData(
+        _ unsignedTransaction: Data?,
+        transactionIndex: Int = 0
+    ) {
         self.unsignedTransactionData = unsignedTransaction
+        self.transactionIndex = transactionIndex
     }
 
     func setTransaction(_ transaction: WCTransaction) {
@@ -109,7 +119,11 @@ extension LedgerTransactionOperation {
 
         resetOnSuccess()
         
-        delegate?.ledgerTransactionOperation(self, didReceiveSignature: signature)
+        delegate?.ledgerTransactionOperation(
+            self,
+            didReceiveSignature: signature,
+            forTransactionIndex: transactionIndex
+        )
     }
     
     func handleDiscoveryResults(_ peripherals: [CBPeripheral]) {
@@ -229,10 +243,16 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         }
     }
     
-    func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didDiscover peripherals: [CBPeripheral]) {
+    func ledgerAccountFetchOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
+        didDiscover peripherals: [CBPeripheral]
+    ) {
     }
     
-    func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) {
+    func ledgerAccountFetchOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation, 
+        didFailed error: LedgerOperationError
+    ) {
         reset()
         delegate?.ledgerTransactionOperation(self, didFailed: error)
     }
@@ -240,31 +260,49 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
         didRequestUserApprovalFor ledger: String
+    ) {}
+
+    func ledgerAccountFetchOperationDidFinishTimingOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation
     ) {
-
-    }
-
-    func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
         delegate?.ledgerTransactionOperationDidFinishTimingOperation(self)
     }
 
-    func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
-        
-    }
+    func ledgerAccountFetchOperationDidResetOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation
+    ) {}
 }
 
 protocol LedgerTransactionOperationDelegate: AnyObject {
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
-    func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation)
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didRequestUserApprovalFor ledger: String)
-    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
-    func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didReceiveSignature data: Data,
+        forTransactionIndex index: Int
+    )
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didFailed error: LedgerOperationError
+    )
+    func ledgerTransactionOperationDidRejected(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    )
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation, 
+        didRequestUserApprovalFor ledger: String
+    )
+    func ledgerTransactionOperationDidFinishTimingOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    )
+    func ledgerTransactionOperationDidResetOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    )
 
     /// This is a temporary solution for handling reset operations as successful resets until the whole flow is refactored.
     /// A successful reset means that you should not cancel any pending opt-in/opt-out requests in the delegate method implementation.
     /// The actual `reset` method is used for failure cases.
-    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation)
+    func ledgerTransactionOperationDidResetOperationOnSuccess(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    )
 }
 
 extension LedgerTransactionOperationDelegate {
