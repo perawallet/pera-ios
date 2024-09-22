@@ -2258,7 +2258,7 @@ extension Router {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
         if account.requiresLedgerConnection() {
             openLedgerConnection()
@@ -3179,7 +3179,7 @@ extension Router {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
             if account.requiresLedgerConnection() {
                 self.openLedgerConnection()

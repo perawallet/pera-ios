@@ -391,7 +391,7 @@ extension ScanQRFlowCoordinator {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
             if account.requiresLedgerConnection() {
                 self.openLedgerConnection()

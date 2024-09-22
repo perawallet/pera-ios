@@ -503,7 +503,7 @@ extension SendCollectibleViewController {
         )
 
         transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .asset)
 
         if fromAccount.requiresLedgerConnection() {
             openLedgerConnection()
