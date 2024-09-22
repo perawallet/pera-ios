@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//  RekeyTransactionDataBuilder.swift
+//  OptInTransactionDataBuilder.swift
 
 import Foundation
 
-final class RekeyTransactionDataBuilder: TransactionDataBuildable {
+final class OptInTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?
-    
+
     private let algorandSDK = AlgorandSDK()
     
     let params: TransactionParams
     let draft: TransactionSendDraft
-    
+
     init(
         params: TransactionParams,
         draft: TransactionSendDraft
@@ -32,16 +32,16 @@ final class RekeyTransactionDataBuilder: TransactionDataBuildable {
         self.params = params
         self.draft = draft
     }
-
+    
     func composeData() -> Data? {
-        return composeRekeyTransactionData()
+        return composeAssetOptInTransactionData()
     }
 }
 
-private extension RekeyTransactionDataBuilder {
-    func composeRekeyTransactionData() -> Data? {
-        guard let rekeyTransactionSendDraft = draft as? RekeyTransactionSendDraft,
-              let rekeyedAccount = rekeyTransactionSendDraft.toAccount else {
+private extension OptInTransactionDataBuilder {
+    func composeAssetOptInTransactionData() -> Data? {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+              let assetIndex = assetTransactionDraft.assetIndex else {
             eventHandler?(
                 .didFailedComposing(
                     error: .inapp(
@@ -53,14 +53,14 @@ private extension RekeyTransactionDataBuilder {
         }
 
         var transactionError: NSError?
-        let rekeyTransactionDraft = RekeyTransactionDraft(
-            from: rekeyTransactionSendDraft.from,
-            rekeyedAccount: rekeyedAccount.address,
-            transactionParams: params
+        let draft = AssetAdditionDraft(
+            from: assetTransactionDraft.from,
+            transactionParams: params,
+            assetIndex: assetIndex
         )
 
-        guard let transactionData = algorandSDK.rekeyAccount(
-            with: rekeyTransactionDraft,
+        guard let transactionData = algorandSDK.addAsset(
+            with: draft,
             error: &transactionError
         ) else {
             eventHandler?(

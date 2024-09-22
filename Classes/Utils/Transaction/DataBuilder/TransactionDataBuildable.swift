@@ -18,8 +18,28 @@
 import Foundation
 
 protocol TransactionDataBuildable: AnyObject {
-    var params: TransactionParams? { get }
-    var draft: TransactionSendDraft? { get }
+    var eventHandler: ((TransactionDataBuildableEvent) -> Void)? { get set }
+    var params: TransactionParams { get }
+    var draft: TransactionSendDraft { get }
 
     func composeData() -> Data?
+}
+
+extension TransactionDataBuildable {
+    func isValidAddress(_ address: String) -> Bool {
+        if !address.isValidatedAddress {
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(TransactionError.invalidAddress(address: address))
+                )
+            )
+            return false
+        }
+        
+        return true
+    }
+}
+
+enum TransactionDataBuildableEvent {
+    case didFailedComposing(error: HIPTransactionError)
 }

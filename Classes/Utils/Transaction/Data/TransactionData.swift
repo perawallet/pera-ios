@@ -17,9 +17,20 @@
 
 import Foundation
 
-class TransactionData {
+final class TransactionData {
     private(set) var unsignedTransaction: Data?
     private(set) var signedTransaction: Data?
+    private(set) var index: Int = 0
+    
+    init(
+        unsignedTransaction: Data? = nil,
+        signedTransaction: Data? = nil,
+        index: Int
+    ) {
+        self.unsignedTransaction = unsignedTransaction
+        self.signedTransaction = signedTransaction
+        self.index = index
+    }
 
     var isUnsignedTransactionComposed: Bool {
         return unsignedTransaction != nil

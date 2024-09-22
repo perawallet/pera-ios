@@ -13,29 +13,47 @@
 // limitations under the License.
 
 //
-//  SendAlgosTransactionDataBuilder.swift
+//  AlgoTransactionDataBuilder.swift
 
 import Foundation
 
-class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
-
-    private let initialSize: Int?
+final class AlgoTransactionDataBuilder: TransactionDataBuildable {
+    var eventHandler: ((TransactionDataBuildableEvent) -> Void)?
+    
     private(set) var calculatedTransactionAmount: UInt64?
     private(set) var minimumAccountBalance: UInt64?
-
-    init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
+    
+    let params: TransactionParams
+    let draft: TransactionSendDraft
+    
+    private let algorandSDK = AlgorandSDK()
+    private let initialSize: Int?
+    
+    init(
+        params: TransactionParams,
+        draft: TransactionSendDraft,
+        initialSize: Int?
+    ) {
+        self.params = params
+        self.draft = draft
         self.initialSize = initialSize
-        super.init(params: params, draft: draft)
     }
-
-    override func composeData() -> Data? {
+    
+    func composeData() -> Data? {
         return composeAlgosTransactionData()
     }
+}
 
-    private func composeAlgosTransactionData() -> Data? {
-        guard let params = params,
-              let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+private extension AlgoTransactionDataBuilder {
+    func composeAlgosTransactionData() -> Data? {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.other
+                    )
+                )
+            )
             return nil
         }
 
@@ -43,7 +61,13 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         let toContact = algosTransactionDraft.toContact
 
         guard let address = toAccount?.address ?? toContact?.address else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.other
+                    )
+                )
+            )
             return nil
         }
 
@@ -70,14 +94,20 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         var transactionError: NSError?
 
         guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 
         return transactionData
     }
 
-    private func updateMaximumTransactionStateIfNeeded(_ isMaxTransaction: inout Bool) {
+    func updateMaximumTransactionStateIfNeeded(_ isMaxTransaction: inout Bool) {
         if isMaxTransaction {
             // If transaction amount is equal to amount of the sender account when it is max transaction
             // If an account is rekeyed, it's not allowed to make max transaciton
@@ -86,9 +116,8 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
     }
 
-    private func calculateTransactionAmount(isMaxTransaction: Bool) -> UInt64 {
-        guard let params = params,
-              let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
+    func calculateTransactionAmount(isMaxTransaction: Bool) -> UInt64 {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
               var transactionAmount = algosTransactionDraft.amount?.toMicroAlgos else {
             return 0
         }
@@ -97,7 +126,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         let calculatedFee = params.getProjectedTransactionFee(from: initialSize)
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: algosTransactionDraft.from,
-            with: .algosTransaction,
+            with: .algo,
             calculatedFee: calculatedFee,
             isAfterTransaction: true
         )
@@ -125,11 +154,11 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return transactionAmount
     }
 
-    private func canSendMaxTransactions() -> Bool {
+    func canSendMaxTransactions() -> Bool {
         return !isMaxTransactionFromRekeyedAccount() && !hasMinAmountFieldsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
     }
 
-    private func isMaxTransactionFromRekeyedAccount() -> Bool {
+    func isMaxTransactionFromRekeyedAccount() -> Bool {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return false
         }
@@ -137,7 +166,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return algosTransactionDraft.isMaxTransactionFromRekeyedAccount
     }
 
-    private func hasMinAmountFieldsForMaxTransaction() -> Bool {
+    func hasMinAmountFieldsForMaxTransaction() -> Bool {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return false
         }
@@ -145,9 +174,9 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return algosTransactionDraft.from.hasDifferentMinBalance && algosTransactionDraft.isMaxTransaction
     }
 
-    private func hasMaximumAccountAmountForTransaction() -> Bool {
+    func hasMaximumAccountAmountForTransaction() -> Bool {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
-              let transactionAmount = draft?.amount?.toMicroAlgos else {
+              let transactionAmount = draft.amount?.toMicroAlgos else {
             return false
         }
 

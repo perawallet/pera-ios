@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//  RekeyTransactionDataBuilder.swift
+//  OptOutTransactionDataBuilder.swift
 
 import Foundation
 
-final class RekeyTransactionDataBuilder: TransactionDataBuildable {
+final class OptOutTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?
     
     private let algorandSDK = AlgorandSDK()
@@ -32,35 +32,54 @@ final class RekeyTransactionDataBuilder: TransactionDataBuildable {
         self.params = params
         self.draft = draft
     }
-
+    
     func composeData() -> Data? {
-        return composeRekeyTransactionData()
+        return composeAssetOptOutTransactionData()
     }
 }
 
-private extension RekeyTransactionDataBuilder {
-    func composeRekeyTransactionData() -> Data? {
-        guard let rekeyTransactionSendDraft = draft as? RekeyTransactionSendDraft,
-              let rekeyedAccount = rekeyTransactionSendDraft.toAccount else {
+private extension OptOutTransactionDataBuilder {
+    func composeAssetOptOutTransactionData() -> Data? {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+              let assetIndex = assetTransactionDraft.assetIndex,
+              let amountDecimalValue = assetTransactionDraft.amount,
+              let toAccount = assetTransactionDraft.toAccount else {
             eventHandler?(
                 .didFailedComposing(
                     error: .inapp(
-                        TransactionError.draft(draft: draft)
+                        TransactionError.other
+                    )
+                )
+            )
+            return nil
+        }
+        
+        if assetTransactionDraft.assetCreator == assetTransactionDraft.from.address {
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.optOutFromCreator
                     )
                 )
             )
             return nil
         }
 
+        if !isValidAddress(toAccount.address.trimmed()) {
+            return nil
+        }
+
         var transactionError: NSError?
-        let rekeyTransactionDraft = RekeyTransactionDraft(
-            from: rekeyTransactionSendDraft.from,
-            rekeyedAccount: rekeyedAccount.address,
-            transactionParams: params
+        let draft = AssetRemovalDraft(
+            from: assetTransactionDraft.from,
+            transactionParams: params,
+            amount: amountDecimalValue.uint64Value,
+            assetCreatorAddress: assetTransactionDraft.assetCreator,
+            assetIndex: assetIndex
         )
 
-        guard let transactionData = algorandSDK.rekeyAccount(
-            with: rekeyTransactionDraft,
+        guard let transactionData = algorandSDK.removeAsset(
+            with: draft, 
             error: &transactionError
         ) else {
             eventHandler?(

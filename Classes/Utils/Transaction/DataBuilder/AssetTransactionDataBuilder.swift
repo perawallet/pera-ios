@@ -13,22 +13,43 @@
 // limitations under the License.
 
 //
-//  SendAssetTransactionDataBuilder.swift
+//  AssetTransactionDataBuilder.swift
 
 import Foundation
 
-class SendAssetTransactionDataBuilder: TransactionDataBuilder {
+final class AssetTransactionDataBuilder: TransactionDataBuildable {
+    var eventHandler: ((TransactionDataBuildableEvent) -> Void)?
 
-    override func composeData() -> Data? {
+    private let algorandSDK = AlgorandSDK()
+    
+    let params: TransactionParams
+    let draft: TransactionSendDraft
+
+    init(
+        params: TransactionParams,
+        draft: TransactionSendDraft
+    ) {
+        self.params = params
+        self.draft = draft
+    }
+    
+    func composeData() -> Data? {
         return composeAssetTransactionData()
     }
+}
 
-    private func composeAssetTransactionData() -> Data? {
-        guard let params = params,
-              let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+private extension AssetTransactionDataBuilder {
+    func composeAssetTransactionData() -> Data? {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
               let amountDecimalValue = assetTransactionDraft.amount else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.other
+                    )
+                )
+            )
             return nil
         }
 
@@ -40,12 +61,24 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
         } else if let contact = assetTransactionDraft.toContact, let contactAddress = contact.address {
             address = contactAddress.trimmed()
         } else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.other
+                    )
+                )
+            )
             return nil
         }
 
         if !isValidAddress(address) {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: address)))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.invalidAddress(address: address)
+                    )
+                )
+            )
             return nil
         }
 
@@ -63,8 +96,17 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
             closeTo: assetTransactionDraft.assetCreator
         )
 
-        guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
+        guard let transactionData = algorandSDK.sendAsset(
+            with: draft,
+            error: &transactionError
+        ) else {
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 
