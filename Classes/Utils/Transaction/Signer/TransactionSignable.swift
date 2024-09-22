@@ -13,30 +13,16 @@
 // limitations under the License.
 
 //
-//  TransactionSigner.swift
+//  TransactionSignable.swift
 
 import Foundation
-import UIKit
-import MagpieHipo
 
-class TransactionSigner:
-    NSObject,
-    TransactionSignable {
-    weak var delegate: TransactionSignerDelegate?
-
-    let algorandSDK = AlgorandSDK()
-
-    func sign(
-        _ data: Data?,
-        with privateData: Data?
-    ) -> Data? {
-        return nil
-    }
+protocol TransactionSignable: AnyObject {
+    var eventHandler: ((TransactionSignableEvent) -> Void)? { get set }
+    
+    func sign(_ data: Data?, with privateData: Data?) -> Data?
 }
 
-protocol TransactionSignerDelegate: AnyObject {
-    func transactionSigner(
-        _ transactionSigner: TransactionSigner,
-        didFailedSigning error: HIPTransactionError
-    )
+enum TransactionSignableEvent {
+    case didFailedSigning(error: HIPTransactionError)
 }
