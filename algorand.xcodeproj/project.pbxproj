@@ -3727,6 +3727,9 @@
 		8B7852ED2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
 		8B7852EE2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
 		8B7852EF2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
+		8B671FCC2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
+		8B671FCD2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
+		8B671FCE2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
 		8B8419502BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
 		8B8419512BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
 		8B8419522BCD646100A912DF /* ScammerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84194F2BCD646100A912DF /* ScammerController.swift */; };
@@ -9205,6 +9208,7 @@
 		8B7852E42C0F168300B41962 /* IncomingASAAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountView.swift; sourceTree = "<group>"; };
 		8B7852E82C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountViewTheme.swift; sourceTree = "<group>"; };
 		8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountsNoContentViewModel.swift; sourceTree = "<group>"; };
+		8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowserSecureScriptMessageHandlerErrorLog.swift; sourceTree = "<group>"; };
 		8B84194F2BCD646100A912DF /* ScammerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerController.swift; sourceTree = "<group>"; };
 		8B98C15D2BFBD68C00CFA0AF /* IncomingASAsDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailScreen.swift; sourceTree = "<group>"; };
 		8B98C1662BFBD6CC00CFA0AF /* IncomingASAsDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailViewTheme.swift; sourceTree = "<group>"; };
@@ -12037,6 +12041,7 @@
 				D4226E932AD5740400B23634 /* WCv2SessionUpdateFailedLog.swift */,
 				D4226E7B2AD55E7D00B23634 /* WCv2TransactionRequestApprovalFailedLog.swift */,
 				D4226E772AD487E300B23634 /* WCv2TransactionRequestRejectionFailedLog.swift */,
+				8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -24155,6 +24160,7 @@
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				D48DBA5427B86EAA00CD35B7 /* TestNetTitleViewTheme.swift in Sources */,
 				95004BBA27BD37DD00AB2D9A /* TransactionSendController.swift in Sources */,
+				8B671FCC2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4E7A3072AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */,
 				D4023E3229A6C6A200DFB5E8 /* MoonPayAccountSelectionListHeaderViewModel.swift in Sources */,
 				D45AF6EB2A93AC7B00FA9409 /* WCSessionConnectionHeader.swift in Sources */,
@@ -27838,6 +27844,7 @@
 				2B0F627C24EC129D00DA22A6 /* TestNetTitleView.swift in Sources */,
 				D4E9E275298816850008C4D5 /* CollectibleListQuery.swift in Sources */,
 				2B9352D527F6F305000DA8DB /* CollectibleDetailTransactionController.swift in Sources */,
+				8B671FCE2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4B6EA63276FAB56005E2D2C /* TransactionStatusInformationViewTheme.swift in Sources */,
 				2B2DF28C28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
 				2B2626F5284CEF8300ADE371 /* TranactionListGrouping.swift in Sources */,
@@ -29275,6 +29282,7 @@
 				D4F4C90329D1B9710069FB94 /* AnyToNoAuthRekeyedAccountInformationScreenTheme.swift in Sources */,
 				D4CC28D12875A9CE0082E038 /* InnerTransactionListHeaderViewModel.swift in Sources */,
 				2BF727B327459BBA00CCAC30 /* LedgerPairWarningViewController.swift in Sources */,
+				8B671FCD2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4023E1829A6C5F600DFB5E8 /* MoonPayAccountSelectionListLayout.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				F0261A9827C4E28D009D8BF4 /* AppAuthChecker.swift in Sources */,
@@ -31484,7 +31492,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31512,7 +31520,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31540,7 +31548,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31570,7 +31578,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31599,7 +31607,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31628,7 +31636,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31780,7 +31788,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31809,7 +31817,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31965,7 +31973,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -32057,7 +32065,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
+				minimumVersion = 11.0.0;
 			};
 		};
 		2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */ = {

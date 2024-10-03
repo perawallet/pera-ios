@@ -22,6 +22,13 @@ import MacaroonUIKit
 class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
     typealias EventHandler = (Event) -> Void
 
+    override var userAgent: String? {
+        let version: String? = Bundle.main["CFBundleShortVersionString"]
+        let versionUserAgent = version.unwrap { "pera_ios_" + $0 }
+        let currentUserAgent = webView.value(forKey: "userAgent") as? String
+        return [ currentUserAgent, versionUserAgent ].compound(" ")
+    }
+    
     var eventHandler: EventHandler?
 
     private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
@@ -80,6 +87,20 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         /// App listens this script in order to catch html5 navigation process
         controller.addUserScript(navigationScript)
         controller.addUserScript(peraConnectScript)
+        self.analytics.record(
+            .inAppBrowserSecureScriptMessageHandler(
+                scriptMessageHandler: self,
+                scriptMessage: navigationScript.source,
+                screenName: self.analyticsScreen?.name ?? ""
+            )
+        )
+        self.analytics.record(
+            .inAppBrowserSecureScriptMessageHandler(
+                scriptMessageHandler: self,
+                scriptMessage: peraConnectScript.source,
+                screenName: self.analyticsScreen?.name ?? ""
+            )
+        )
         return controller
     }
 

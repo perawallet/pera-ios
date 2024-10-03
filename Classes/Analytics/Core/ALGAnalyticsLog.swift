@@ -47,6 +47,8 @@ enum ALGAnalyticsLogName:
     case walletConnectV2SessionDisconnectionFailed = "WCv2SessionDisconnectionFailed"
     case walletConnectV2TransactionRequestApprovalFailed = "WCv2TransactionRequestApprovalFailed"
     case walletConnectV2TransactionRequestRejectionFailed = "WCv2TransactionRequestRejectionFailed"
+    case inAppBrowserSecureScriptMessageHandler = "InAppBrowserSecureScriptMessageHandler"
+    
 }
 
 extension ALGAnalyticsLogName {
@@ -68,6 +70,7 @@ extension ALGAnalyticsLogName {
         case .walletConnectV2SessionDisconnectionFailed: return 13
         case .walletConnectV2TransactionRequestApprovalFailed: return 14
         case .walletConnectV2TransactionRequestRejectionFailed: return 15
+        case .inAppBrowserSecureScriptMessageHandler: return 16
         }
     }
 }
