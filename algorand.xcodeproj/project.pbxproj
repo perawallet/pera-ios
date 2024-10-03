@@ -30714,7 +30714,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -30742,7 +30742,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -30770,7 +30770,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -30800,7 +30800,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -30829,7 +30829,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -30858,7 +30858,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31010,7 +31010,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31039,7 +31039,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -31195,7 +31195,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
