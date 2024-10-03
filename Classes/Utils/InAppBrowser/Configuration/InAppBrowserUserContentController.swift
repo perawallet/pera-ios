@@ -72,7 +72,7 @@ struct NoInAppBrowserScriptMessage: InAppBrowserScriptMessage {
 final class InAppBrowserSecureScriptMessageHandler:
     NSObject,
     WKScriptMessageHandler {
-    private weak var handler: WKScriptMessageHandler?
+    private var handler: WKScriptMessageHandler?
 
     init(handler: WKScriptMessageHandler) {
         self.handler = handler

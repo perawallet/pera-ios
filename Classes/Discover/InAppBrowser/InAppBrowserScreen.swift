@@ -106,10 +106,24 @@ where ScriptMessage: InAppBrowserScriptMessage {
             forMainFrameOnly: false
         )
         controller.addUserScript(selectionScript)
+        self.analytics.record(
+            .inAppBrowserSecureScriptMessageHandler(
+                scriptMessageHandler: self,
+                scriptMessage: selectionScript.source,
+                screenName: self.analyticsScreen?.name ?? ""
+            )
+        )
         ScriptMessage.allCases.forEach {
             controller.add(
                 secureScriptMessageHandler: self,
                 forMessage: $0
+            )
+            self.analytics.record(
+                .inAppBrowserSecureScriptMessageHandler(
+                    scriptMessageHandler: self,
+                    scriptMessage: $0.rawValue,
+                    screenName: self.analyticsScreen?.name ?? ""
+                )
             )
         }
         return controller

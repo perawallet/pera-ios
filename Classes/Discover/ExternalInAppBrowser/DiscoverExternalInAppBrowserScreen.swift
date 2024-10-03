@@ -87,6 +87,20 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         /// App listens this script in order to catch html5 navigation process
         controller.addUserScript(navigationScript)
         controller.addUserScript(peraConnectScript)
+        self.analytics.record(
+            .inAppBrowserSecureScriptMessageHandler(
+                scriptMessageHandler: self,
+                scriptMessage: navigationScript.source,
+                screenName: self.analyticsScreen?.name ?? ""
+            )
+        )
+        self.analytics.record(
+            .inAppBrowserSecureScriptMessageHandler(
+                scriptMessageHandler: self,
+                scriptMessage: peraConnectScript.source,
+                screenName: self.analyticsScreen?.name ?? ""
+            )
+        )
         return controller
     }
 
