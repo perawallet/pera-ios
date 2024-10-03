@@ -62,7 +62,7 @@ extension BLEConnectionManager {
         peripherals = []
 
         centralManager?.scanForPeripherals(
-            withServices: [BLEConnectionManager.Keys.serviceUuid],
+            withServices: BLEConnectionManager.Keys.allServiceUuids,
             options: [
                 CBCentralManagerScanOptionAllowDuplicatesKey: false,
                 CBCentralManagerOptionShowPowerAlertKey: true
@@ -133,7 +133,7 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         connectedPeripheral = peripheral
         isDisconnectedInternally = false
         peripheral.delegate = self
-        peripheral.discoverServices([BLEConnectionManager.Keys.serviceUuid])
+        peripheral.discoverServices(BLEConnectionManager.Keys.allServiceUuids)
         
         delegate?.bleConnectionManager(self, didConnect: peripheral)
     }
@@ -185,7 +185,7 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     
     private func processCharacteristics(_ peripheral: CBPeripheral, of characteristics: [CBCharacteristic]) {
         for characteristic in characteristics {
-            if characteristic.uuid.isEqual(BLEConnectionManager.Keys.readCharacteristicUuid) {
+            if isMatchingWithTheReadCharacteristic(characteristic) {
                 readCharacteristic = characteristic
                 
                 guard let readCharacteristic = readCharacteristic else {
@@ -196,7 +196,7 @@ extension BLEConnectionManager: CBPeripheralDelegate {
                 peripheral.readValue(for: readCharacteristic)
             }
             
-            if characteristic.uuid.isEqual(BLEConnectionManager.Keys.writeCharacteristicUuid) {
+            if isMatchingWithTheWriteCharacteristic(characteristic) {
                 writeCharacteristic = characteristic
                 
                 /// Can write a data to the device since write characteristic is set.
@@ -223,6 +223,20 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     }
 }
 
+private extension BLEConnectionManager {
+    func isMatchingWithTheReadCharacteristic(_ characteristic: CBCharacteristic) -> Bool {
+        let characteristicUuid = characteristic.uuid
+        return characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoX.readCharacteristicUuid) ||
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.Stax.readCharacteristicUuid)
+    }
+
+    func isMatchingWithTheWriteCharacteristic(_ characteristic: CBCharacteristic) -> Bool {
+        let characteristicUuid = characteristic.uuid
+        return characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoX.writeCharacteristicUuid) ||
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.Stax.writeCharacteristicUuid)
+    }
+}
+
 extension BLEConnectionManager {
     private func makeCentralManager() -> CBCentralManager {
         return CBCentralManager(
@@ -244,15 +258,31 @@ extension BLEConnectionManager {
     }
 }
 
-extension BLEConnectionManager {
+private extension BLEConnectionManager {
     enum Keys {
-        private static let serviceUuidKey = "13D63400-2C97-0004-0000-4C6564676572"
-        private static let writeCharacteristicKey = "13D63400-2C97-0004-0002-4C6564676572"
-        private static let readCharacteristicKey = "13D63400-2C97-0004-0001-4C6564676572"
+        enum NanoX {
+            private static let serviceUuidValue = "13D63400-2C97-0004-0000-4C6564676572"
+            private static let writeCharacteristicValue = "13D63400-2C97-0004-0002-4C6564676572"
+            private static let readCharacteristicValue = "13D63400-2C97-0004-0001-4C6564676572"
 
-        fileprivate static let serviceUuid = CBUUID(string: serviceUuidKey)
-        fileprivate static let writeCharacteristicUuid = CBUUID(string: writeCharacteristicKey)
-        fileprivate static let readCharacteristicUuid = CBUUID(string: readCharacteristicKey)
+            fileprivate static let serviceUuid = CBUUID(string: serviceUuidValue)
+            fileprivate static let writeCharacteristicUuid = CBUUID(string: writeCharacteristicValue)
+            fileprivate static let readCharacteristicUuid = CBUUID(string: readCharacteristicValue)
+        }
+        
+        enum Stax {
+            private static let serviceUuidValue = "13d63400-2c97-6004-0000-4c6564676572"
+            private static let writeCharacteristicValue = "13d63400-2c97-6004-0002-4c6564676572"
+            private static let readCharacteristicValue = "13d63400-2c97-6004-0001-4c6564676572"
+
+            fileprivate static let serviceUuid = CBUUID(string: serviceUuidValue)
+            fileprivate static let writeCharacteristicUuid = CBUUID(string: writeCharacteristicValue)
+            fileprivate static let readCharacteristicUuid = CBUUID(string: readCharacteristicValue)
+        }
+        
+        static var allServiceUuids: [CBUUID] {
+            [NanoX.serviceUuid, Stax.serviceUuid]
+        }
     }
 }
 
