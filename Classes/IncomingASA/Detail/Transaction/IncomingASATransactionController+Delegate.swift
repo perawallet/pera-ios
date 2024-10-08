@@ -47,31 +47,3 @@ protocol IncomingASATransactionControllerDelegate: AnyObject {
         didFailedTransaction error: HIPTransactionError
     )
 }
-
-extension IncomingASATransactionControllerDelegate {
-    func incomingASATransactionController(
-        _ incomingASATransactionController: IncomingASATransactionController,
-        didFailedComposing error: HIPTransactionError
-    ) {}
-    func incomingASATransactionControllerDidResetLedgerOperation(
-        _ incomingASATransactionController: IncomingASATransactionController
-    ) {}
-    func incomingASATransactionControllerDidRejectedLedgerOperation(
-        _ incomingASATransactionController: IncomingASATransactionController
-    ) {}
-    func incomingASATransactionControllerDidResetLedgerOperationOnSuccess(
-        _ incomingASATransactionController: IncomingASATransactionController
-    ) {}
-    func incomingASATransactionController(
-        _ incomingASATransactionController: IncomingASATransactionController,
-        didRequestUserApprovalFrom ledger: String
-    ) {}
-    func incomingASATransactionController(
-        _ incomingASATransactionController: IncomingASATransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {}
-    func incomingASATransactionController(
-        _ incomingASATransactionController: IncomingASATransactionController,
-        didFailedTransaction error: HIPTransactionError
-    ) {}
-}
