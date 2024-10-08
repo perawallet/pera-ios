@@ -19,7 +19,6 @@ import MagpieHipo
 import MagpieExceptions
 import MacaroonUtils
 
-/// <todo> PrintableError
 typealias HIPTransactionError = HIPError<TransactionError, PrintableErrorDetail>
 
 protocol TransactionControllerDelegate: AnyObject {
