@@ -33,13 +33,13 @@ final class OptInTransactionDataBuilder: TransactionDataBuildable {
         self.draft = draft
     }
     
-    func composeData() -> Data? {
+    func composeData() -> [TransactionDataItem]? {
         return composeAssetOptInTransactionData()
     }
 }
 
 private extension OptInTransactionDataBuilder {
-    func composeAssetOptInTransactionData() -> Data? {
+    func composeAssetOptInTransactionData() -> [TransactionDataItem]? {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex else {
             eventHandler?(
@@ -73,6 +73,11 @@ private extension OptInTransactionDataBuilder {
             return nil
         }
 
-        return transactionData
+        return [
+            TransactionDataItem(
+                sender: assetTransactionDraft.from.address,
+                transaction: transactionData
+            )
+        ]
     }
 }

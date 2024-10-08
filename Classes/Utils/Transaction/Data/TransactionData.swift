@@ -18,15 +18,18 @@
 import Foundation
 
 final class TransactionData {
+    private(set) var sender: String
     private(set) var unsignedTransaction: Data?
     private(set) var signedTransaction: Data?
     private(set) var index: Int = 0
     
     init(
+        sender: String,
         unsignedTransaction: Data? = nil,
         signedTransaction: Data? = nil,
         index: Int
     ) {
+        self.sender = sender
         self.unsignedTransaction = unsignedTransaction
         self.signedTransaction = signedTransaction
         self.index = index

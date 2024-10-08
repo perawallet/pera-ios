@@ -33,13 +33,13 @@ final class OptOutTransactionDataBuilder: TransactionDataBuildable {
         self.draft = draft
     }
     
-    func composeData() -> Data? {
+    func composeData() -> [TransactionDataItem]? {
         return composeAssetOptOutTransactionData()
     }
 }
 
 private extension OptOutTransactionDataBuilder {
-    func composeAssetOptOutTransactionData() -> Data? {
+    func composeAssetOptOutTransactionData() -> [TransactionDataItem]? {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
               let amountDecimalValue = assetTransactionDraft.amount,
@@ -92,6 +92,11 @@ private extension OptOutTransactionDataBuilder {
             return nil
         }
 
-        return transactionData
+        return [
+            TransactionDataItem(
+                sender: assetTransactionDraft.from.address,
+                transaction: transactionData
+            )
+        ]
     }
 }

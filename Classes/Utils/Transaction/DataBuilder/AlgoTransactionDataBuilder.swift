@@ -39,13 +39,13 @@ final class AlgoTransactionDataBuilder: TransactionDataBuildable {
         self.initialSize = initialSize
     }
     
-    func composeData() -> Data? {
+    func composeData() -> [TransactionDataItem]? {
         return composeAlgosTransactionData()
     }
 }
 
 private extension AlgoTransactionDataBuilder {
-    func composeAlgosTransactionData() -> Data? {
+    func composeAlgosTransactionData() -> [TransactionDataItem]? {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             eventHandler?(
                 .didFailedComposing(
@@ -104,7 +104,12 @@ private extension AlgoTransactionDataBuilder {
             return nil
         }
 
-        return transactionData
+        return  [
+            TransactionDataItem(
+                sender: algosTransactionDraft.from.address,
+                transaction: transactionData
+            )
+        ]
     }
 
     func updateMaximumTransactionStateIfNeeded(_ isMaxTransaction: inout Bool) {

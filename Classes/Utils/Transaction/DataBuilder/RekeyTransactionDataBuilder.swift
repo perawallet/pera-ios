@@ -33,13 +33,13 @@ final class RekeyTransactionDataBuilder: TransactionDataBuildable {
         self.draft = draft
     }
 
-    func composeData() -> Data? {
+    func composeData() -> [TransactionDataItem]? {
         return composeRekeyTransactionData()
     }
 }
 
 private extension RekeyTransactionDataBuilder {
-    func composeRekeyTransactionData() -> Data? {
+    func composeRekeyTransactionData() -> [TransactionDataItem]? {
         guard let rekeyTransactionSendDraft = draft as? RekeyTransactionSendDraft,
               let rekeyedAccount = rekeyTransactionSendDraft.toAccount else {
             eventHandler?(
@@ -73,6 +73,11 @@ private extension RekeyTransactionDataBuilder {
             return nil
         }
 
-        return transactionData
+        return  [
+            TransactionDataItem(
+                sender: rekeyTransactionDraft.from.address,
+                transaction: transactionData
+            )
+        ]
     }
 }

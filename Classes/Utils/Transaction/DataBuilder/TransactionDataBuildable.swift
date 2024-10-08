@@ -22,7 +22,7 @@ protocol TransactionDataBuildable: AnyObject {
     var params: TransactionParams { get }
     var draft: TransactionSendDraft { get }
 
-    func composeData() -> Data?
+    func composeData() -> [TransactionDataItem]?
 }
 
 extension TransactionDataBuildable {
