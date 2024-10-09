@@ -42,7 +42,19 @@ final class SendAssetInboxScreen: BaseScrollViewController {
     private lazy var descriptionView = UILabel()
     private lazy var sendActionView = MacaroonUIKit.Button()
     private lazy var closeActionView = MacaroonUIKit.Button()
+
     private lazy var transitionToWarning = BottomSheetTransition(presentingViewController: self)
+    private var transitionToSignWithLedger: BottomSheetTransition?
+    private var transitionToLedgerSigningProcess: BottomSheetTransition?
+    private var transitionToLedgerConnection: BottomSheetTransition?
+    private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
+    
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+    
+    private var visibleScreen: UIViewController {
+        return findVisibleScreen()
+    }
 
     private let draft: SendAssetInboxDraft
     private let transactionSigner: SwapTransactionSigner
@@ -266,7 +278,7 @@ extension SendAssetInboxScreen {
             assetID: draft.asset.id
         )
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        startLoading()
         
         api?.fetchASASendInboxSummary(draft: assetInboxSendDraft) { [weak self] response in
             guard let self = self else { return }
@@ -274,11 +286,13 @@ extension SendAssetInboxScreen {
             switch response {
             case let .success(summary):
                 self.inboxSendSummary = summary
-                let viewModel = ARC59SendFeeInformationViewModel(fee: summary.totalProtocolFee)
+                let viewModel = ARC59SendFeeInformationViewModel(
+                    fee: summary.totalProtocolFee + summary.algoFundAmount
+                )
                 self.feeInformationView.bindData(viewModel)
-                self.loadingController?.stopLoading()
+                self.stopLoading()
             case let .failure(error, _):
-                self.loadingController?.stopLoading()
+                self.stopLoading()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: error.localizedDescription
@@ -297,7 +311,25 @@ extension SendAssetInboxScreen {
 
             switch event {
             case .didSignTransaction:
-                break
+                if self.draft.sender.requiresLedgerConnection(),
+                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
+                    signWithLedgerProcessScreen.increaseProgress()
+
+                    if signWithLedgerProcessScreen.isProgressFinished {
+                        self.stopLoading()
+
+                        self.visibleScreen.dismissScreen {
+                            [weak self] in
+                            guard let self = self else { return }
+
+                            self.bannerController?.presentSuccessBanner(
+                                title: "transaction-result-started-title".localized,
+                                message: "transaction-result-started-subtitle".localized
+                            )
+                            eventHandler?(.send)
+                        }
+                    }
+                }
             case .didSignAllTransactions:
                 break
             case .didCompleteTransactionOnTheNode(let id):
@@ -331,17 +363,33 @@ extension SendAssetInboxScreen {
                 loadingScreen?.popScreen()
                 break
             case let .didFailSigning(error):
+                self.sendTransactionController.clearTransactions()
                 loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: error.localizedDescription
                 )
             case let .didLedgerRequestUserApproval(ledger, transactions):
-                break
+                self.openSignWithLedgerProcess(
+                    ledger: ledger,
+                    transactions: transactions
+                )
             case .didFinishTiming:
                 break
             case .didLedgerReset:
-                break
+                self.sendTransactionController.clearTransactions()
+                self.stopLoading()
+
+                if self.visibleScreen is LedgerConnectionScreen {
+                    self.ledgerConnectionScreen?.dismissScreen()
+                    self.ledgerConnectionScreen = nil
+                    return
+                }
+
+                if self.visibleScreen is SignWithLedgerProcessScreen {
+                    self.signWithLedgerProcessScreen?.dismissScreen()
+                    self.signWithLedgerProcessScreen = nil
+                }
             case .didLedgerResetOnSuccess:
                 break
             case .didLedgerRejectSigning:
@@ -492,7 +540,7 @@ extension SendAssetInboxScreen {
     }
     
     private func composeTransactions(_ params: TransactionParams) -> [[Data]]? {
-        guard let inboxSendSummary else { 
+        guard let inboxSendSummary else {
             return nil
         }
         
@@ -531,6 +579,238 @@ extension SendAssetInboxScreen {
         
         transactionsToBeSigned.append(sendTransactions)
         return transactionsToBeSigned
+    }
+}
+
+extension SendAssetInboxScreen {
+     private func openSignWithLedgerConfirmation() {
+        let transition = BottomSheetTransition(presentingViewController: self)
+
+        let totalTransactionCountToSign = 3 // transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
+
+        let title =
+            "swap-sign-with-ledger-title"
+                .localized
+                .bodyLargeMedium(alignment: .center)
+        let highlightedBodyPart =
+            "swap-sign-with-ledger-body-highlighted"
+                .localized(params: "\(totalTransactionCountToSign)")
+        let body =
+            "swap-sign-with-ledger-body"
+                .localized(params: "\(totalTransactionCountToSign)")
+                .bodyRegular(alignment: .center)
+                .addAttributes(
+                    to: highlightedBodyPart,
+                    newAttributes: Typography.bodyMediumAttributes(alignment: .center)
+                )
+
+        let uiSheet = UISheet(
+            image: "icon-ledger-48",
+            title: title,
+            body: UISheetBodyTextProvider(text: body)
+        )
+
+        let signTransactionsAction = UISheetAction(
+            title: "swap-sign-with-ledger-action-title".localized,
+            style: .default
+        ) { [weak self] in
+            guard let self = self else { return }
+            
+            self.startLoading()
+            self.openLedgerConnection()
+            self.getTransactionParamsAndComposeRelatedTransactions()
+        }
+         
+        uiSheet.addAction(signTransactionsAction)
+
+         transition.perform(
+            .sheetAction(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToSignWithLedger = transition
+    }
+
+    private func openLedgerConnection() {
+        let transition = BottomSheetTransition(presentingViewController: self)
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.sendTransactionController.clearTransactions()
+                self.sendTransactionController.disconnectFromLedger()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
+    }
+
+    private func openLedgerConnectionIssues() {
+        let transition = BottomSheetTransition(presentingViewController: self)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnectionIssuesWarning = transition
+    }
+    
+    private func openSignWithLedgerProcess(
+        ledger: String,
+        transactions: [[Data]]
+    ) {
+        if visibleScreen is SignWithLedgerProcessScreen {
+            return
+        }
+
+        let transition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
+
+        let totalTransactionCount = transactions.reduce(0, { $0 + $1.count })
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledger,
+            totalTransactionCount: totalTransactionCount
+        )
+
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancelApproval:
+                self.sendTransactionController.clearTransactions()
+                self.sendTransactionController.disconnectFromLedger()
+
+                self.visibleScreen.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.stopLoading()
+            }
+        }
+
+        signWithLedgerProcessScreen = transition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+
+        transitionToLedgerSigningProcess = transition
+    }
+
+    private func displaySigningError(
+        _ error: HIPTransactionError
+    ) {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: error.debugDescription
+        )
+    }
+
+    private func displayLedgerError(_ ledgerError: LedgerOperationError) {
+        guard let bannerController else { return }
+        switch ledgerError {
+        case .cancelled:
+            bannerController.presentErrorBanner(
+                title: "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
+            )
+        case .closedApp:
+            bannerController.presentErrorBanner(
+                title: "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        case .failedToFetchAddress:
+            bannerController.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+        case .failedToFetchAccountFromIndexer:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "ledger-account-fetct-error".localized
+            )
+        case .custom(let title, let message):
+            bannerController.presentErrorBanner(
+                title: title,
+                message: message
+            )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            sendTransactionController.clearTransactions()
+            stopLoading()
+
+            if visibleScreen is LedgerConnectionScreen {
+                ledgerConnectionScreen?.dismissScreen()
+                ledgerConnectionScreen = nil
+            } else if visibleScreen is SignWithLedgerProcessScreen {
+                signWithLedgerProcessScreen?.dismissScreen()
+                signWithLedgerProcessScreen = nil
+            }
+
+            bannerController.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+        case .ledgerConnectionWarning:
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
+
+                self.sendTransactionController.clearTransactions()
+                self.stopLoading()
+
+                bannerController.presentErrorBanner(
+                    title: "ble-error-connection-title".localized,
+                    message: ""
+                )
+
+                self.openLedgerConnectionIssues()
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension SendAssetInboxScreen {
+    private func startLoading() {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+    }
+
+    private func stopLoading() {
+        loadingController?.stopLoading()
     }
 }
 

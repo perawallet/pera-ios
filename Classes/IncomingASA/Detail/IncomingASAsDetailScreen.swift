@@ -31,17 +31,28 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
     private let transactionController: IncomingASATransactionController
     private let copyToClipboardController: CopyToClipboardController
     
-    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var footerEffectView = EffectView()
     private lazy var actionsContextView = MacaroonUIKit.HStackView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
     private lazy var secondaryActionView = MacaroonUIKit.Button()
+    
     private lazy var transitionToRejectConfirmInfo = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var currencyFormatter = CurrencyFormatter()
     
     private unowned let presentingScreen: UIViewController
 
     private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+
     private var account: Account?
     private var loadingScreen: LoadingScreen?
     private var visibleScreen: UIViewController {
@@ -222,7 +233,6 @@ extension IncomingASAsDetailScreen {
            return
         }
         
-        openLoading()
         transactionController.getTransactionParamsAndCompleteTransaction(
             with: draft,
             for: account,
@@ -290,12 +300,67 @@ extension IncomingASAsDetailScreen {
     }
 }
 
+extension IncomingASAsDetailScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func openSignWithLedgerProcess(ledgerDeviceName: String) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 2
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
 extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
     func incomingASATransactionController(
         _ incomingASATransactionController: IncomingASATransactionController,
         didCompletedTransaction transactionId: TransactionID?
     ) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+        openLoading()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
             guard let self else { return }
             self.openSuccess(transactionId)
         }
@@ -318,6 +383,49 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         }
 
     }
+    
+    func incomingASATransactionControllerDidResetLedgerOperation(
+        _ incomingASATransactionController: IncomingASATransactionController
+    ) {
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        loadingController?.stopLoading()
+    }
+    
+    func incomingASATransactionControllerDidRejectedLedgerOperation(
+        _ incomingASATransactionController: IncomingASATransactionController
+    ) {}
+    
+    func incomingASATransactionControllerDidResetLedgerOperationOnSuccess(
+        _ incomingASATransactionController: IncomingASATransactionController
+    ) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        loadingController?.stopLoading()
+    }
+    
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                ledgerDeviceName: ledger
+            )
+        }
+    }
+    
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {}
     
     func incomingASATransactionController(
         _ incomingASATransactionController: IncomingASATransactionController,

@@ -21,9 +21,8 @@ final class ARC59SendTransactionSigner: NSObject {
     var eventHandler: EventHandler?
 
     private var allTransactionsSigned: Bool {
-        let unsignedTransactions = unsignedTransactionGroups.flatMap{ $0.value }
         let signedTransactions = signedTransactionGroups.flatMap{ $0.value }
-        return signedTransactions.count == unsignedTransactions.count
+        return signedTransactions.count == totalTransactionCountToBeSigned
     }
 
     private let account: Account
@@ -31,6 +30,7 @@ final class ARC59SendTransactionSigner: NSObject {
 
     private var unsignedTransactionGroups: [Int: [Data]] = [:]
     private var signedTransactionGroups: [Int: [Data]] = [:]
+    private var totalTransactionCountToBeSigned = 0
 
     init(
         account: Account,
@@ -40,8 +40,14 @@ final class ARC59SendTransactionSigner: NSObject {
         self.transactionSigner = transactionSigner
     }
 
-    func signGroupTransactions(_ unsignedTransactionGroups: [Int: [Data]]) {
+    func signGroupTransactions(
+        _ unsignedTransactionGroups: [Int: [Data]],
+        shouldUpdateUnsignedTransactions: Bool
+    ) {
         self.unsignedTransactionGroups = unsignedTransactionGroups
+        if shouldUpdateUnsignedTransactions {
+            self.totalTransactionCountToBeSigned = unsignedTransactionGroups.flatMap{ $0.value }.count
+        }
 
         for (groupIndex, transactionGroup) in unsignedTransactionGroups {
             for unsignedTransaction in transactionGroup {
@@ -92,13 +98,17 @@ extension ARC59SendTransactionSigner {
                 }
 
                 if self.account.requiresLedgerConnection() {
-                    /* guard let transactionsInGroup = self.unsignedTransactionGroups[groupIndex] else {
+                    guard let transactionsInGroup = self.unsignedTransactionGroups[groupIndex] else {
                         return
                     }
+                    
                     let remainingUnsignedTransactions = Array(transactionsInGroup.dropFirst())
-                    var copiedUnsignedTransactions = self.unsignedTransactionGroups[groupIndex]
+                    var copiedUnsignedTransactions = self.unsignedTransactionGroups
                     copiedUnsignedTransactions[groupIndex] = remainingUnsignedTransactions
-                    self.signGroupTransactions(copiedUnsignedTransactions) */
+                    self.signGroupTransactions(
+                        copiedUnsignedTransactions,
+                        shouldUpdateUnsignedTransactions: false
+                    )
                 }
             case .didFailSigning(let error):
                 self.publishEvent(.didFailSigning(error: error))

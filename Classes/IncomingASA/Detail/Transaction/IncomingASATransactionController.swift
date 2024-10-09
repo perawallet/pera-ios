@@ -18,9 +18,7 @@ import UIKit
 import MacaroonUtils
 import MagpieHipo
 
-final class IncomingASATransactionController:
-    LedgerTransactionOperationDelegate,
-    TransactionSignerDelegate {
+final class IncomingASATransactionController: LedgerTransactionOperationDelegate {
     weak var delegate: IncomingASATransactionControllerDelegate?
 
     private let sharedDataController: SharedDataController
@@ -28,11 +26,10 @@ final class IncomingASATransactionController:
     private var params: TransactionParams?
     private let bannerController: BannerController?
     private let analytics: ALGAnalytics
-    private var transactionDraft: TransactionSendDraft?
     private let draft: IncomingASAListItem?
 
     private var timer: Timer?
-    private let transactionData = TransactionData()
+    private var transactionData = [TransactionData]()
     private var algoSDK = AlgorandSDK()
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(
@@ -44,12 +41,12 @@ final class IncomingASATransactionController:
         analytics: analytics
     )
     private var isLedgerRequiredTransaction: Bool {
-        return transactionDraft?.from.requiresLedgerConnection() ?? false
+        return fromAccount?.requiresLedgerConnection() ?? false
     }
     private var fromAccount: Account?
 
-    private var isTransactionSigned: Bool {
-        return transactionData.signedTransaction != nil
+    private var allTransactionAreSigned: Bool {
+        return transactionData.first { !$0.isTransactionSigned } == nil
     }
     
     init(
@@ -167,6 +164,15 @@ extension IncomingASATransactionController {
             return
         }
         
+        for (index, transaction) in transactions.enumerated() {
+            let data = TransactionData(
+                sender: account.address,
+                unsignedTransaction: transaction,
+                index: index
+            )
+            transactionData.append(data)
+        }
+        
         startSigningProcess(
             for: account,
             transactions: transactions
@@ -211,6 +217,15 @@ extension IncomingASATransactionController {
             return
         }
         
+        for (index, transaction) in composedTransactions.enumerated() {
+            let data = TransactionData(
+                sender: account.address,
+                unsignedTransaction: transaction,
+                index: index
+            )
+            transactionData.append(data)
+        }
+        
         startSigningProcess(
             for: account,
             transactions: composedTransactions
@@ -222,7 +237,11 @@ extension IncomingASATransactionController {
         transactions: [Data]
     ) {
         if account.requiresLedgerConnection() {
-            ledgerTransactionOperation.setUnsignedTransactionData(transactionData.unsignedTransaction)
+            initializeLedgerTransactionAccount()
+            startTimer()
+
+            let transaction = transactions.first
+            ledgerTransactionOperation.setUnsignedTransactionData(transaction)
             ledgerTransactionOperation.startScan()
         } else {
             handleStandardAccountSigning(
@@ -366,9 +385,13 @@ extension IncomingASATransactionController {
 extension IncomingASATransactionController {
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
-        didReceiveSignature data: Data
+        didReceiveSignature data: Data,
+        forTransactionIndex index: Int
     ) {
-        signTransactionForLedgerAccount(with: data)
+        signTransactionForLedgerAccount(
+            with: data,
+            index: index
+        )
     }
 
     func ledgerTransactionOperation(
@@ -459,45 +482,75 @@ extension IncomingASATransactionController {
 }
 
 extension IncomingASATransactionController {
-    private func signTransactionForLedgerAccount(with data: Data) {
+    private func signTransactionForLedgerAccount(
+        with data: Data,
+        index: Int
+    ) {
         guard let account = fromAccount else {
             return
         }
-
-        sign(data, with: LedgerTransactionSigner(signerAddress: account.authAddress))
-        if transactionDraft?.fee != nil {
+        
+        if transactionData.count - 1 == index {
+            let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
+            signer.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedSigning(let error):
+                    resetLedgerOperationIfNeeded()
+                    delegate?.incomingASATransactionController(
+                        self,
+                        didFailedComposing: error
+                    )
+                }
+            }
+            
+            sign(
+                data,
+                with: signer,
+                index: index
+            )
+            
             completeLedgerTransaction()
+            /* if transactionDraft?.fee != nil {
+
+            } */
+            return
         }
+        
+        let nextTransaction = transactionData[index + 1].unsignedTransaction
+        ledgerTransactionOperation.setUnsignedTransactionData(
+            nextTransaction,
+            transactionIndex: index + 1
+        )
+        ledgerTransactionOperation.startScan()
     }
 
     private func completeLedgerTransaction() {
+        var transactionToUpload = Data()
         
+        for transaction in transactionData {
+            guard let signedTransaction = transaction.signedTransaction else { return }
+            transactionToUpload += signedTransaction
+        }
+        
+        uploadTransaction(transactionToUpload)
     }
 }
 
 extension IncomingASATransactionController {
-    private func sign(_ privateData: Data?, with signer: TransactionSigner) {
-        signer.delegate = self
-
-        guard let unsignedTransactionData = transactionData.unsignedTransaction,
+    private func sign(
+        _ privateData: Data?,
+        with signer: TransactionSignable,
+        index: Int
+    ) {
+        guard let unsignedTransactionData = transactionData[index].unsignedTransaction,
               let signedTransaction = signer.sign(unsignedTransactionData, with: privateData) else {
             return
         }
 
-        transactionData.setSignedTransaction(signedTransaction)
-    }
-}
-
-extension IncomingASATransactionController {
-    func transactionSigner(
-        _ transactionSigner: TransactionSigner,
-        didFailedSigning error: HIPTransactionError
-    ) {
-        resetLedgerOperationIfNeeded()
-        delegate?.incomingASATransactionController(
-            self,
-            didFailedComposing: error
-        )
+        transactionData[index].setSignedTransaction(signedTransaction)
     }
 }
 

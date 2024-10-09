@@ -95,7 +95,10 @@ extension ARC59TransactionSendController {
             mappedTransactions[groupIndex] = groupTransactions
         }
 
-        sendGroupTransactionSigner.signGroupTransactions(mappedTransactions)
+        sendGroupTransactionSigner.signGroupTransactions(
+            mappedTransactions,
+            shouldUpdateUnsignedTransactions: true
+        )
     }
 
     func clearTransactions() {
