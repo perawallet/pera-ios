@@ -3670,9 +3670,6 @@
 		8B5F1F922C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F1F912C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift */; };
 		8B5F1F932C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F1F912C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift */; };
 		8B5F1F942C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F1F912C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift */; };
-		8B671FCC2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
-		8B671FCD2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
-		8B671FCE2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */; };
 		8B6D6DE02BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DDF2BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift */; };
 		8B6D6DE12BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DDF2BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift */; };
 		8B6D6DE22BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DDF2BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift */; };
@@ -9192,7 +9189,6 @@
 		8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxViewController.swift; sourceTree = "<group>"; };
 		8B5F1F8D2C47CF420096899C /* IncomingASADetailAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASADetailAccountView.swift; sourceTree = "<group>"; };
 		8B5F1F912C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASADetailAccountViewTheme.swift; sourceTree = "<group>"; };
-		8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowserSecureScriptMessageHandlerErrorLog.swift; sourceTree = "<group>"; };
 		8B6D6DDF2BE7BFA5007B3F88 /* IncomingASAAccountInboxHeaderTitleCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxHeaderTitleCellViewModel.swift; sourceTree = "<group>"; };
 		8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxHeaderTitleCell.swift; sourceTree = "<group>"; };
 		8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncomingASAAccountInboxViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -31488,7 +31484,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31517,7 +31513,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31545,7 +31541,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31574,7 +31570,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31604,7 +31600,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31633,7 +31629,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31784,7 +31780,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31814,7 +31810,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31970,7 +31966,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
