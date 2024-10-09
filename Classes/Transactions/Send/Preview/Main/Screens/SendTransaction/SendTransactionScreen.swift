@@ -785,23 +785,27 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             guard let self = self else {
                 return
             }
-
-            let controller = self.open(
-                .sendTransactionPreview(
-                    draft: controller.draft
-                ),
-                by: .push
-            ) as? SendTransactionPreviewScreen
-            controller?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
-                switch event {
-                case .didCompleteTransaction:
-                    self.eventHandler?(.didCompleteTransaction)
-                case .didEditNote(let note):
-                    self.didEditNote(note: note)
-                default: break
-                }
+            
+            self.openSendTransactionPreview(controller)
+        }
+    }
+    
+    private func openSendTransactionPreview(_ controller: TransactionSendController) {
+        let controller = open(
+            .sendTransactionPreview(
+                draft: controller.draft
+            ),
+            by: .push
+        ) as? SendTransactionPreviewScreen
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            case .didEditNote(let note):
+                self.didEditNote(note: note)
+            default: break
             }
         }
     }
@@ -849,6 +853,19 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             case .asset(let assetError):
                 switch assetError {
                 case .assetNotSupported(let address):
+                    if let accountInDevice = sharedDataController.accountCollection[address],
+                       accountInDevice.value.authorization.isAuthorized {
+                        stopLoading { [weak self] in
+                            guard let self = self else {
+                                return
+                            }
+                            
+                            controller.draft.isReceiverOptingInToAsset = true
+                            self.openSendTransactionPreview(controller)
+                        }
+                        return
+                    }
+                    
                     self.openSendAssetInbox(address)
                 case .minimumAmount:
                     self.bannerController?.presentErrorBanner(

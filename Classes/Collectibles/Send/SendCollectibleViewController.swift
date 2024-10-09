@@ -487,23 +487,29 @@ extension SendCollectibleViewController {
         let fromAccount = draft.fromAccount
         
         if !transactionController.canSignTransaction(for: fromAccount) { return }
-
+        
         sendCollectibleActionView.startLoading()
-
+        
         let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
-
+        
         let transactionDraft = AssetTransactionSendDraft(
             from: fromAccount,
             toAccount: draft.toAccount,
             amount: 1,
             assetIndex: draft.collectibleAsset.id,
             assetCreator: creatorAddress,
+            isReceiverOptingInToAsset: draft.isReceiverOptingInToCollectible,
             toContact: draft.toContact,
             toNameService: draft.toNameService
         )
-
+        
         transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .asset)
+        
+        if draft.isReceiverOptingInToCollectible {
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .optInAndSend)
+        } else {
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .asset)
+        }
 
         if fromAccount.requiresLedgerConnection() {
             openLedgerConnection()

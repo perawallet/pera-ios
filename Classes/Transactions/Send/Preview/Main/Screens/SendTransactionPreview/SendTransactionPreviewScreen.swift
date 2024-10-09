@@ -166,25 +166,71 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       let builder: TransactionDataBuildable
 
       if transactionDraft is AlgosTransactionSendDraft {
-         builder = SendAlgosTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
-      } else if transactionDraft is AssetTransactionSendDraft {
-         builder = SendAssetTransactionDataBuilder(params: params, draft: transactionDraft)
+         builder = AlgoTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
+      } else if let draft = transactionDraft as? AssetTransactionSendDraft {
+         if draft.isReceiverOptingInToAsset {
+            builder = OptInAndSendTransactionDataBuilder(
+               sharedDataController: sharedDataController,
+               params: params,
+               draft: transactionDraft
+            )
+         } else {
+            builder = AssetTransactionDataBuilder(
+               params: params,
+               draft: transactionDraft
+            )
+         }
       } else {
          return
       }
 
-      let data = builder.composeData()
-
-      var error: NSError?
-      let json = AlgorandSDK().msgpackToJSON(data, error: &error)
-
-      guard let jsonData = json.data(using: .utf8) else {
+      let dataArray = builder.composeData()?.map { $0.transaction }
+      guard let dataArray,
+            let firstTransactionData = dataArray.first else {
          return
       }
+      
+      var totalFee: UInt64 = 0
+      
+      for data in dataArray {
+         var error: NSError?
+         let json = AlgorandSDK().msgpackToJSON(
+            data,
+            error: &error
+         )
+
+         guard let jsonData = json.data(using: .utf8) else { return }
+         
+         do {
+            let transactionDetail = try JSONDecoder().decode(
+               SDKTransaction.self,
+               from: jsonData
+            )
+            
+            totalFee += transactionDetail.fee ?? 0
+         } catch {
+            bannerController?.presentErrorBanner(
+               title: "title-error".localized,
+               message: error.localizedDescription
+            )
+         }
+      }
+
+      transactionDraft.fee = totalFee
 
       do {
-         let transactionDetail = try JSONDecoder().decode(SDKTransaction.self, from: jsonData)
-         transactionDraft.fee = transactionDetail.fee
+         var error: NSError?
+         let json = AlgorandSDK().msgpackToJSON(
+            firstTransactionData,
+            error: &error
+         )
+
+         guard let jsonData = json.data(using: .utf8) else { return }
+         
+         let transactionDetail = try JSONDecoder().decode(
+            SDKTransaction.self,
+            from: jsonData
+         )
 
          /// <note>: When transaction detail fetched from SDK, amount will be updated as well
          /// Otherwise, amount field wouldn't be normalized with minimum balance
@@ -240,7 +286,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             assetDecimalFraction: asset.decimals,
             isVerifiedAsset: asset.verificationTier.isVerified,
             note: draft.note,
-            lockedNote: draft.lockedNote
+            lockedNote: draft.lockedNote,
+            isReceiverOptingInToAsset: sendTransactionDraft.isReceiverOptingInToAsset
          )
          assetTransactionDraft.toContact = draft.toContact
          assetTransactionDraft.asset = asset
@@ -264,12 +311,16 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    private func composedTransactionType(draft: TransactionSendDraft) -> TransactionController.TransactionType {
       if draft is AlgosTransactionSendDraft {
-         return .algosTransaction
-      } else if draft is AssetTransactionSendDraft {
-         return .assetTransaction
+         return .algo
+      } else if let assetTransactionDraft = draft as? AssetTransactionSendDraft {
+         if assetTransactionDraft.isReceiverOptingInToAsset {
+            return .optInAndSend
+         } else {
+            return .asset
+         }
       }
 
-      return .algosTransaction
+      return .algo
    }
 }
 
