@@ -68,13 +68,6 @@ final class BidaliDappDetailScreen:
                 secureScriptMessageHandler: self,
                 forMessage: $0
             )
-            self.analytics.record(
-                .inAppBrowserSecureScriptMessageHandler(
-                    scriptMessageHandler: self,
-                    scriptMessage: $0.rawValue,
-                    screenName: self.analyticsScreen?.name ?? ""
-                )
-            )
         }
         return controller
     }
