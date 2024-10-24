@@ -101,6 +101,8 @@ final class NotificationsViewController: BaseViewController {
                     )
                 case let .externalInAppBrowser(destination):
                     self.openExternalLink(destination: destination)
+                case let .assetInbox(address, requestsCount):
+                    self.openAssetInbox(address: address, requestsCount: requestsCount)
                 default:
                     break
                 }
@@ -338,6 +340,20 @@ extension NotificationsViewController {
         )
     }
 
+    private func openAssetInbox(
+        address: String,
+        requestsCount: Int
+    ) {
+        let screen = Screen.incomingASA(
+            address: address,
+            requestsCount: requestsCount
+        )
+        open(
+            screen,
+            by: .push
+        )
+    }
+        
     private func openExternalLink(
         destination: DiscoverExternalDestination
     ) {

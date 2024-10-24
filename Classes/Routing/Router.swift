@@ -417,6 +417,12 @@ final class Router:
                 default: break
                 }
             }
+        case .assetInbox(let address, let requestsCount):
+            route(
+                to: .incomingASA(address: address, requestsCount: requestsCount),
+                from: findVisibleScreen(over: rootViewController),
+                by: .push
+            )
         }
     }
     
