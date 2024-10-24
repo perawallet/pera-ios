@@ -103,7 +103,7 @@ extension HomeAPIDataController {
                 guard let self else { return }
                 
                 let filteredAccounts = sharedDataController.accountCollection.filter {
-                    $0.value.isWatchAccount == false && $0.value.ledgerDetail == nil
+                    $0.value.isWatchAccount == false
                 }
                 let addresses = filteredAccounts.map({$0.value.address})
                 guard addresses.isNonEmpty else { return }
