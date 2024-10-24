@@ -44,6 +44,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    private var ledgerConnectionScreen: LedgerConnectionScreen?
    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+   private var loadingScreen: LoadingScreen?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
    private lazy var nextButton = Button()
@@ -329,8 +330,11 @@ extension SendTransactionPreviewScreen {
    private func didTapNext() {
       if !transactionController.canSignTransaction(for: draft.from) { return }
       
-      loadingController?.startLoadingWithMessage("title-loading".localized)
-
+      loadingScreen = open(
+          .loading(viewModel: IncomingASAsDetailLoadingScreenViewModel()),
+          by: .push
+      ) as? LoadingScreen
+      
       let composedTransacation = composeTransaction()
       let transactionType = composedTransactionType(draft: composedTransacation)
 
@@ -438,8 +442,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didFailedComposing error: HIPTransactionError
    ) {
-      loadingController?.stopLoading()
-
+      loadingScreen?.popScreen()
       switch error {
       case .network:
          displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
@@ -470,22 +473,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didCompletedTransaction id: TransactionID
    ) {
-      loadingController?.stopLoading()
-
-      let controller = open(
-         .transactionResult,
-         by: .push
-      ) as? TransactionResultScreen
-
-      controller?.eventHandler = {
-         [weak self] event in
-         guard let self = self else { return }
-         switch event {
-         case .didCompleteTransaction:
-            self.eventHandler?(.didCompleteTransaction)
-         }
-      }
-
+      openSuccess(id.identifier)
       if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
          analytics.track(
             .completeStandardTransaction(draft: draft, transactionId: id)
@@ -497,8 +485,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didFailedTransaction error: HIPTransactionError
    ) {
-      loadingController?.stopLoading()
-
+      loadingScreen?.popScreen()
       switch error {
       case let .network(apiError):
          switch apiError {
@@ -539,6 +526,52 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
 
       cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
    }
+}
+
+extension SendTransactionPreviewScreen {
+   
+   private func openSuccess(
+      _ transactionId: String?
+   ) {
+      let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
+         title: "send-transaction-preview-success-title"
+            .localized,
+         detail: "send-transaction-preview-success-detail"
+            .localized
+      )
+      let successScreen = loadingScreen?.open(
+         .successResultScreen(viewModel: successResultScreenViewModel),
+         by: .push,
+         animated: false
+      ) as? SuccessResultScreen
+      
+      successScreen?.eventHandler = {
+         [weak self, weak successScreen] event in
+         guard let self = self else { return }
+         switch event {
+         case .didTapViewDetailAction:
+            self.openPeraExplorerForTransaction(transactionId)
+         case .didTapDoneAction:
+            successScreen?.dismissScreen { [weak self] in
+                guard let self else { return }
+               self.eventHandler?(.didCompleteTransaction)
+            }
+         }
+      }
+   }
+
+    private func openPeraExplorerForTransaction(
+        _ transactionID: String?
+    ) {
+        guard let identifierlet = transactionID,
+              let url = AlgoExplorerType.peraExplorer.transactionURL(
+                with: identifierlet,
+                in: api?.network ?? .mainnet
+              ) else {
+            return
+        }
+        open(url)
+    }
 }
 
 extension SendTransactionPreviewScreen {
@@ -610,14 +643,13 @@ extension SendTransactionPreviewScreen {
 
             switch event {
             case .performCancel:
-                self.transactionController.stopBLEScan()
-                self.transactionController.stopTimer()
-
-                self.ledgerConnectionScreen?.dismissScreen()
-                self.ledgerConnectionScreen = nil
-
-                self.loadingController?.stopLoading()
-
+               self.transactionController.stopBLEScan()
+               self.transactionController.stopTimer()
+               
+               self.ledgerConnectionScreen?.dismissScreen()
+               self.ledgerConnectionScreen = nil
+               
+               self.loadingController?.stopLoading()
                self.cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
             }
         }

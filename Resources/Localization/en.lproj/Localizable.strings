@@ -1078,6 +1078,8 @@
 "send-transaction-preview-title" = "Confirm Transaction";
 "send-transaction-preview-button" = "Confirm transfer";
 "send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-success-title" = "Asset transfer completed";
+"send-transaction-preview-success-detail" = "Your transaction was successfully\nreceived by the Algorand network";
 
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
