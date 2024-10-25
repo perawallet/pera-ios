@@ -225,6 +225,12 @@ extension IncomingASAsDetailScreen {
             return
         }
         
+        if account.requiresLedgerConnection() {
+            openLedgerConnection()
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+        
         if draft.hasInsufficientAlgoForClaiming {
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,

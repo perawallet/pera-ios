@@ -164,6 +164,10 @@ extension IncomingASATransactionController {
             return
         }
         
+        if transactionData.isNonEmpty {
+            transactionData = []
+        }
+        
         for (index, transaction) in transactions.enumerated() {
             let data = TransactionData(
                 sender: account.address,
@@ -215,6 +219,10 @@ extension IncomingASATransactionController {
                 didFailedComposing: .inapp(.sdkError(error: error))
             )
             return
+        }
+        
+        if transactionData.isNonEmpty {
+            transactionData = []
         }
         
         for (index, transaction) in composedTransactions.enumerated() {
@@ -339,7 +347,7 @@ extension IncomingASATransactionController {
         ledgerTransactionOperation.delegate = self
 
         timer = Timer.scheduledTimer(
-            withTimeInterval: 10.0,
+            withTimeInterval: 20.0,
             repeats: false
         ) { [weak self] timer in
             guard let self = self else {
@@ -471,7 +479,9 @@ extension IncomingASATransactionController {
     func ledgerTransactionOperationDidResetOperationOnSuccess(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
-        delegate?.incomingASATransactionControllerDidResetLedgerOperationOnSuccess(self)
+        if allTransactionAreSigned {
+            delegate?.incomingASATransactionControllerDidResetLedgerOperationOnSuccess(self)
+        }
     }
 
     func ledgerTransactionOperationDidResetOperation(
@@ -490,7 +500,7 @@ extension IncomingASATransactionController {
             return
         }
         
-        if transactionData.count - 1 == index {
+        func signTransaction() {
             let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
             signer.eventHandler = {
                 [weak self] event in
@@ -511,7 +521,10 @@ extension IncomingASATransactionController {
                 with: signer,
                 index: index
             )
-            
+        }
+
+        if transactionData.count - 1 == index {
+            signTransaction()
             completeLedgerTransaction()
             /* if transactionDraft?.fee != nil {
 
@@ -519,6 +532,7 @@ extension IncomingASATransactionController {
             return
         }
         
+        signTransaction()
         let nextTransaction = transactionData[index + 1].unsignedTransaction
         ledgerTransactionOperation.setUnsignedTransactionData(
             nextTransaction,
