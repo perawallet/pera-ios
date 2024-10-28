@@ -765,7 +765,7 @@
 "min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
-"required-min-balance-title" = "Insufficient Algo Balance";
+"required-min-balance-title" = "Insufficient ALGO balance. Please add more ALGO to claim.";
 "required-min-balance-description" = "This account doesn't have the minimum required Algo balance to support this transaction. Please add more Algo to the account before continuing.\n\nMinimum required Algo balance increases by 0.1 Algo with each asset, NFT and smart contract you opt-in with. You can opt-out of assets and smart contracts to decrease the minimum required Algo balance.";
 
 "screenshot-title" = "Screenshot Detected";
