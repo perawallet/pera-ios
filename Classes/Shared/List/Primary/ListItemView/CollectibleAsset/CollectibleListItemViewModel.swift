@@ -160,7 +160,7 @@ extension CollectibleListItemViewModel {
     }
     
     mutating func bindIncomingASACount(_ item: CollectibleAssetItem) {
-        if let count = item.requestCount {
+        if let count = item.totalAmount {
             incomingASACount = String(count)
         }
     }
