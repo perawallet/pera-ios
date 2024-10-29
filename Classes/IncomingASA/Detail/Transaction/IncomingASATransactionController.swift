@@ -347,7 +347,7 @@ extension IncomingASATransactionController {
         ledgerTransactionOperation.delegate = self
 
         timer = Timer.scheduledTimer(
-            withTimeInterval: 20.0,
+            withTimeInterval: 50.0,
             repeats: false
         ) { [weak self] timer in
             guard let self = self else {
