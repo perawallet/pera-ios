@@ -365,10 +365,12 @@ extension SendAssetInboxScreen {
             case let .didFailSigning(error):
                 self.sendTransactionController.clearTransactions()
                 loadingScreen?.popScreen()
-                self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: error.localizedDescription
-                )
+                switch error {
+                case .api(let apiError):
+                    self.displaySigningError(apiError)
+                case .ledger(let ledgerError):
+                    self.displayLedgerError(ledgerError)
+                }
             case let .didLedgerRequestUserApproval(ledger, transactions):
                 self.openSignWithLedgerProcess(
                     ledger: ledger,
@@ -785,12 +787,7 @@ extension SendAssetInboxScreen {
                 message: errorSubtitle
             )
         case .ledgerConnectionWarning:
-            ledgerConnectionScreen?.dismiss(animated: true) {
-                self.ledgerConnectionScreen = nil
-
-                self.sendTransactionController.clearTransactions()
-                self.stopLoading()
-
+            func showLedgerConnectionIssue() {
                 bannerController.presentErrorBanner(
                     title: "ble-error-connection-title".localized,
                     message: ""
@@ -798,6 +795,19 @@ extension SendAssetInboxScreen {
 
                 self.openLedgerConnectionIssues()
             }
+            
+            if let ledgerConnectionScreen {
+                ledgerConnectionScreen.dismiss(animated: true) {
+                    self.ledgerConnectionScreen = nil
+
+                    self.sendTransactionController.clearTransactions()
+                    self.stopLoading()
+                    showLedgerConnectionIssue()
+                }
+            } else {
+                showLedgerConnectionIssue()
+            }
+            
         default:
             break
         }
