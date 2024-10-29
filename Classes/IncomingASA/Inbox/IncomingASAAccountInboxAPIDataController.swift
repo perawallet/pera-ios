@@ -222,7 +222,8 @@ extension IncomingASAAccountInboxAPIDataController {
                 shouldUseFundsBeforeClaiming: $0.shouldUseFundsBeforeClaiming,
                 hasInsufficientAlgoForClaiming: $0.hasInsufficientAlgoForClaiming,
                 shouldUseFundsBeforeRejecting: $0.shouldUseFundsBeforeRejecting,
-                hasInsufficientAlgoForRejecting: $0.hasInsufficientAlgoForRejecting
+                hasInsufficientAlgoForRejecting: $0.hasInsufficientAlgoForRejecting,
+                totalAmount: $0.totalAmount
             )
         }
     }
@@ -235,7 +236,8 @@ extension IncomingASAAccountInboxAPIDataController {
         shouldUseFundsBeforeClaiming: Bool,
         hasInsufficientAlgoForClaiming: Bool,
         shouldUseFundsBeforeRejecting: Bool,
-        hasInsufficientAlgoForRejecting: Bool
+        hasInsufficientAlgoForRejecting: Bool,
+        totalAmount: UInt64?
     ) -> IncomingASAItem? {
         guard let assetDecoration else {
             return nil
@@ -256,7 +258,8 @@ extension IncomingASAAccountInboxAPIDataController {
             shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,
             hasInsufficientAlgoForClaiming: hasInsufficientAlgoForClaiming,
             shouldUseFundsBeforeRejecting: shouldUseFundsBeforeRejecting,
-            hasInsufficientAlgoForRejecting: hasInsufficientAlgoForRejecting
+            hasInsufficientAlgoForRejecting: hasInsufficientAlgoForRejecting,
+            totalAmount: totalAmount
         )
     }
     
@@ -269,7 +272,8 @@ extension IncomingASAAccountInboxAPIDataController {
         shouldUseFundsBeforeClaiming: Bool,
         hasInsufficientAlgoForClaiming: Bool,
         shouldUseFundsBeforeRejecting: Bool,
-        hasInsufficientAlgoForRejecting: Bool
+        hasInsufficientAlgoForRejecting: Bool,
+        totalAmount: UInt64?
     ) -> IncomingASAItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
@@ -286,7 +290,7 @@ extension IncomingASAAccountInboxAPIDataController {
                 asset: collectibleAsset,
                 amountFormatter: assetAmountFormatter,
                 showForIncomingASA: true,
-                requestCount: senders?.count
+                totalAmount: totalAmount
             )
         }
         
