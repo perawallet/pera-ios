@@ -558,29 +558,20 @@ extension SendAssetInboxScreen {
             minBalance: inboxSendSummary.minBalanceAmount,
             innerTransactionCount: inboxSendSummary.innerTransactionCount,
             appID: draft.appID,
-            extraAlgoAmount: inboxSendSummary.algoFundAmount
+            extraAlgoAmount: inboxSendSummary.algoFundAmount,
+            isOptedInToProtocol: inboxSendSummary.isOptedInToProtocol
         )
         
         let dataBuilder = ARC59SendTransactionDataBuilder(
             params: params,
             draft: transactionDraft
         )
-        var transactionsToBeSigned: [[Data]] = []
-        
-        if !inboxSendSummary.isOptedInToProtocol {
-            guard let optInTransactions = dataBuilder.composeOptInToProtocolTransactionData() else {
-                return nil
-            }
-            
-            transactionsToBeSigned.append(optInTransactions)
-        }
         
         guard let sendTransactions = dataBuilder.composeSendTransactionData() else {
             return nil
         }
         
-        transactionsToBeSigned.append(sendTransactions)
-        return transactionsToBeSigned
+        return [sendTransactions]
     }
 }
 

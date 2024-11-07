@@ -28,4 +28,5 @@ struct ARC59SendAssetTransactionDraft: TransactionDraft {
     let appID: Int64
     let assetID: Int64
     let extraAlgoAmount: UInt64
+    let isOptedInToProtocol: Bool
 }

@@ -35,31 +35,6 @@ final class ARC59SendTransactionDataBuilder: NSObject {
 }
 
 extension ARC59SendTransactionDataBuilder {
-    func composeOptInToProtocolTransactionData() -> [Data]? {
-        guard let params = params,
-              let assetTransactionDraft = draft as? AssetTransactionARC59SendDraft,
-              let assetIndex = assetTransactionDraft.assetIndex else {
-            eventHandler?(.didFailedComposing(error: .inapp(TransactionError.other)))
-            return nil
-        }
-        
-        let draft = ARC59OptInTransactionDraft(
-            from: assetTransactionDraft.from,
-            transactionParams: params,
-            appAddress: assetTransactionDraft.appAddress,
-            appID: assetTransactionDraft.appID,
-            assetID: assetIndex
-        )
-        
-        var transactionError: NSError?
-        guard let transactionData = algorandSDK.composeArc59OptInTxn(with: draft, error: &transactionError) else {
-            eventHandler?(.didFailedComposing(error: .inapp(TransactionError.sdkError(error: transactionError))))
-            return nil
-        }
-        
-        return transactionData
-    }
-    
     func composeSendTransactionData() -> [Data]? {
         guard let params = params,
               let assetTransactionDraft = draft as? AssetTransactionARC59SendDraft,
@@ -99,7 +74,8 @@ extension ARC59SendTransactionDataBuilder {
             innerTransactionCount: assetTransactionDraft.innerTransactionCount,
             appID: assetTransactionDraft.appID,
             assetID: assetIndex,
-            extraAlgoAmount: assetTransactionDraft.extraAlgoAmount
+            extraAlgoAmount: assetTransactionDraft.extraAlgoAmount,
+            isOptedInToProtocol: assetTransactionDraft.isOptedInToProtocol
         )
 
         guard let transactionData = algorandSDK.composeArc59SendAssetTxn(with: draft, error: &transactionError) else {

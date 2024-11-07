@@ -204,35 +204,6 @@ extension AlgorandSDK {
 // MARK: ARC59
 
 extension AlgorandSDK {
-    func composeArc59OptInTxn(
-        with draft: ARC59OptInTransactionDraft,
-        error: inout NSError?
-    ) -> [Data]? {
-        return AlgoSdkMakeARC59OptInTxn(
-            getTrimmedAddress(from: draft.from),
-            draft.appAddress, 
-            draft.appID,
-            draft.assetID,
-            draft.transactionParams.toSDKSuggestedParams(),
-            &error
-        )?.toDataArray()
-    }
-    
-    func composeArc59OptInTxnAndSign(
-        with draft: ARC59OptInTransactionDraft,
-        error: inout NSError?
-    ) -> Data? {
-        AlgoSdkMakeAndSignARC59OptInTxn(
-            getTrimmedAddress(from: draft.from),
-            draft.appAddress,
-            draft.appID,
-            draft.assetID,
-            draft.transactionParams.toSDKSuggestedParams(),
-            nil,
-            &error
-        )?.flatten()
-    }
-    
     func composeArc59SendAssetTxn(
         with draft: ARC59SendAssetTransactionDraft,
         error: inout NSError?
@@ -249,6 +220,7 @@ extension AlgorandSDK {
             draft.appID, 
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedInToProtocol,
             draft.extraAlgoAmount.toSDKInt64(),
             &error
         )?.toDataArray()
@@ -270,6 +242,7 @@ extension AlgorandSDK {
             draft.appID,
             draft.assetID,
             draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedInToProtocol,
             draft.extraAlgoAmount.toSDKInt64(),
             nil,
             &error

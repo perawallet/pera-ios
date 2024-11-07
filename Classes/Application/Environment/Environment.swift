@@ -62,9 +62,9 @@ class Environment {
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
     
     let testNetARC59AppID: Int64 = 643020148
-    let mainNetARC59AppID: Int64 = 2038081706
+    let mainNetARC59AppID: Int64 = 2449590623
     let testNetARC59AppAddress = "YIIC6GF4DUJYZTYTZ5UEOAXONUUKZRDFOTV4EKSGD5E7BYE6EE3IVPYEDQ"
-    let mainNetARC59AppAddress = "X4OKVV2ISZTCETWJOSHJ2M5DYK5F75MQ42NBBUU3Q6RJPMTZVK6FP2SDS4"
+    let mainNetARC59AppAddress = "EZRVNZFJGOUZC67FUMEC7ZMVP232TPICFTQCVZ6EQEIRRT3TIHSKZULRNI"
     
     lazy var serverHost: String = {
         switch target {

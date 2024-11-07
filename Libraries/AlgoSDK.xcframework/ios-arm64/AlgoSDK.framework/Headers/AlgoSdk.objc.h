@@ -369,6 +369,10 @@ at least MinTxnFee for the current network protocol.
 
 - (NSData* _Nullable)getAssignedFlattenTxns;
 - (NSString* _Nonnull)getSigner:(long)index;
+// skipped method TransactionSignerArray.GetSignerItem with unsupported parameter or return types
+
+// skipped method TransactionSignerArray.GetSignerItems with unsupported parameter or return types
+
 - (NSData* _Nullable)getTxn:(long)index;
 - (NSData* _Nullable)getTxnFromSigner:(long)index;
 - (long)length;
@@ -380,6 +384,8 @@ at least MinTxnFee for the current network protocol.
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 - (nonnull instancetype)init;
+- (NSString* _Nonnull)getSigner;
+- (NSData* _Nullable)getTransaction;
 @end
 
 @interface AlgoSdkUint64 : NSObject <goSeqRefInterface> {
@@ -508,11 +514,6 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkLogicSigProgramForSigning(NSData* _Nu
 FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59ClaimTxn(NSString* _Nullable receiver, NSString* _Nullable inboxAccountAddress, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, BOOL isOptedInToAsset, BOOL isClaimingAlgo, NSError* _Nullable* _Nullable error);
 
 /**
- * MakeARC59OptInTxn creates the app call transaction for opting into ARC59 protocol.
- */
-FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59OptInTxn(NSString* _Nullable sender, NSString* _Nullable appAddress, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, NSError* _Nullable* _Nullable error);
-
-/**
  * MakeARC59RejectTxn creates the app call transaction to reject the asset from the ARC59 protocol.
  */
 FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59RejectTxn(NSString* _Nullable receiver, NSString* _Nullable inboxAccountAddress, NSString* _Nullable creatorAccountAddress, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, BOOL isClaimingAlgo, NSError* _Nullable* _Nullable error);
@@ -520,18 +521,13 @@ FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59RejectTxn(NSStrin
 /**
  * MakeARC59SendTxn creates the payment, asset transfer and app call transactions for sending an asset with the ARC59 protocol.
  */
-FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59SendTxn(NSString* _Nullable sender, NSString* _Nullable receiver, NSString* _Nullable appAddress, NSString* _Nullable inboxAccountAddressOrEmptyString, AlgoSdkUint64* _Nullable amount, AlgoSdkUint64* _Nullable minimumBalanceRequirement, int64_t innerTxCount, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, AlgoSdkUint64* _Nullable extraAlgoAmount, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeARC59SendTxn(NSString* _Nullable sender, NSString* _Nullable receiver, NSString* _Nullable appAddress, NSString* _Nullable inboxAccountAddressOrEmptyString, AlgoSdkUint64* _Nullable amount, AlgoSdkUint64* _Nullable minimumBalanceRequirement, int64_t innerTxCount, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, BOOL is_arc59_opted_in, AlgoSdkUint64* _Nullable extraAlgoAmount, NSError* _Nullable* _Nullable error);
 
 /**
  * MakeAndSignARC59ClaimTxn creates the app call transaction, and opt in transaction if needed, to claim the asset from
 the ARC59 protocol and signs these transactions.
  */
 FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeAndSignARC59ClaimTxn(NSString* _Nullable receiver, NSString* _Nullable inboxAccountAddress, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, BOOL isOptedInToAsset, BOOL isClaimingAlgo, NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
-
-/**
- * MakeAndSignARC59OptInTxn creates the app call transaction for opting into ARC59 protocol and returns the signed transaction.
- */
-FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeAndSignARC59OptInTxn(NSString* _Nullable sender, NSString* _Nullable appAddress, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 /**
  * MakeAndSignARC59RejectTxn creates the app call transaction to reject the asset from the ARC59 protocol and signs the transaction.
@@ -542,7 +538,7 @@ FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeAndSignARC59RejectTxn(
  * MakeAndSignARC59SendTxn creates the payment, asset transfer and app call transactions for sending an asset with
 the ARC59 protocol and signs these transactions.
  */
-FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeAndSignARC59SendTxn(NSString* _Nullable sender, NSString* _Nullable receiver, NSString* _Nullable appAddress, NSString* _Nullable inboxAccountAddressOrEmptyString, AlgoSdkUint64* _Nullable amount, AlgoSdkUint64* _Nullable minimumBalanceRequirement, int64_t innerTxCount, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, AlgoSdkUint64* _Nullable extraAlgoAmount, NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT AlgoSdkBytesArray* _Nullable AlgoSdkMakeAndSignARC59SendTxn(NSString* _Nullable sender, NSString* _Nullable receiver, NSString* _Nullable appAddress, NSString* _Nullable inboxAccountAddressOrEmptyString, AlgoSdkUint64* _Nullable amount, AlgoSdkUint64* _Nullable minimumBalanceRequirement, int64_t innerTxCount, int64_t appID, int64_t assetID, AlgoSdkSuggestedParams* _Nullable suggestedParams, BOOL is_arc59_opted_in, AlgoSdkUint64* _Nullable extraAlgoAmount, NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 // skipped function MakeAppArgumentsByteArrayWithAddressAndAmount with unsupported parameter or return types
 
