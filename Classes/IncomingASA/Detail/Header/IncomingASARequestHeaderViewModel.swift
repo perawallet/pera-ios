@@ -58,7 +58,7 @@ extension IncomingASARequestHeaderViewModel {
         currencyFormatter.currency = nil
 
         let asset = draft.asset
-        let amount = draft.senders?.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
+        let amount = draft.totalAmount ?? 0
         let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
         let amountText = currencyFormatter.format(decimalAmount)
         let unitText =
@@ -98,7 +98,7 @@ extension IncomingASARequestHeaderViewModel {
         do {
             let rawCurrency = try currencyValue.unwrap()
 
-            let amount = draft.senders?.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
+            let amount = draft.totalAmount ?? 0
             let exchanger = CurrencyExchanger(currency: rawCurrency)
             let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
             let exchangedAmount = try exchanger.exchange(asset, amount: decimalAmount)

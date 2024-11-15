@@ -298,7 +298,10 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
 }
 
 extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
-    func incomingASAsAPIDataController(_ dataController: IncomingASAsAPIDataController, didFetch incomingASAsRequestList: IncomingASAsRequestList) {
+    func incomingASAsAPIDataController(
+        _ dataController: IncomingASAsAPIDataController,
+        didFetch incomingASAsRequestList: IncomingASAsRequestList
+    ) {
         self.incomingASAsRequestList = incomingASAsRequestList
         self.publish(.deliverASARequestsContentUpdate(incomingASAsRequestList))
     }

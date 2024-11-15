@@ -58,6 +58,7 @@ struct IncomingASAListItem: Hashable {
     let viewModel: IncomingASAAssetListItemViewModel
     let collectibleViewModel: CollectibleListItemViewModel?
     let accountAddress: String?
+    let totalAmount: UInt64?
     let algoGainOnClaim: UInt64?
     let algoGainOnReject: UInt64?
     let inboxAddress: String?
@@ -72,7 +73,8 @@ struct IncomingASAListItem: Hashable {
         senders: Senders?,
         accountAddress: String?,
         inboxAddress: String?,
-        algoGainOnClaim: UInt64?, 
+        totalAmount: UInt64?,
+        algoGainOnClaim: UInt64?,
         algoGainOnReject: UInt64?,
         shouldUseFundsBeforeClaiming: Bool,
         hasInsufficientAlgoForClaiming: Bool,
@@ -90,10 +92,12 @@ struct IncomingASAListItem: Hashable {
         self.viewModel = IncomingASAAssetListItemViewModel(
             item: item, 
             senders: senders,
+            totalAmount: totalAmount,
             isCollectible: self.collectibleViewModel != nil
         )
         self.accountAddress = accountAddress
         self.inboxAddress = inboxAddress
+        self.totalAmount = totalAmount
         self.algoGainOnClaim = algoGainOnClaim
         self.algoGainOnReject = algoGainOnReject
         self.shouldUseFundsBeforeClaiming = shouldUseFundsBeforeClaiming

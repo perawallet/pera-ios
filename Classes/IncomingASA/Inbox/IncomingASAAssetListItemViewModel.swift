@@ -29,6 +29,7 @@ struct IncomingASAAssetListItemViewModel: IncomingASAListItemViewModel {
     init(
         item: AssetItem, 
         senders: Senders?,
+        totalAmount: UInt64?,
         isCollectible: Bool
     ) {
         bindImageSource(item)
@@ -39,11 +40,11 @@ struct IncomingASAAssetListItemViewModel: IncomingASAListItemViewModel {
         )
         bindPrimaryValue(
             item: item,
-            senders: senders
+            totalAmount: totalAmount
         )
         bindSecondaryValue(
             item: item,
-            senders: senders
+            totalAmount: totalAmount
         )
     }
 }
@@ -99,13 +100,12 @@ extension IncomingASAAssetListItemViewModel {
 
     mutating func bindPrimaryValue(
         item: AssetItem,
-        senders: Senders?
+        totalAmount: UInt64?
     ) {
-        guard let senders else { return }
+        guard let totalAmount else { return }
         
         let asset = item.asset
-        let amount = senders.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
-        let decimalAmount = amount.assetAmount(fromFraction: asset.decimals)
+        let decimalAmount = totalAmount.assetAmount(fromFraction: asset.decimals)
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
@@ -123,12 +123,11 @@ extension IncomingASAAssetListItemViewModel {
 
     mutating private func bindSecondaryValue(
         item: AssetItem,
-        senders: Senders?
+        totalAmount: UInt64?
     ) {
-        guard let senders else { return }
+        guard let totalAmount else { return }
         
         let asset = item.asset
-        let totalAmount = senders.results?.reduce(0) { $0 + ($1.amount ?? 0) } ?? 0
         let decimalAmount = totalAmount.assetAmount(fromFraction: asset.decimals)
 
         let formatter = item.currencyFormatter

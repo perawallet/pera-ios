@@ -300,6 +300,7 @@ extension IncomingASAAccountInboxAPIDataController {
             senders: senders,
             accountAddress: incomingASAsRequestDetail?.address,
             inboxAddress: incomingASAsRequestDetail?.inboxAddress,
+            totalAmount: totalAmount,
             algoGainOnClaim: algoGainOnClaim,
             algoGainOnReject: algoGainOnReject,
             shouldUseFundsBeforeClaiming: shouldUseFundsBeforeClaiming,

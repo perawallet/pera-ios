@@ -286,9 +286,7 @@ extension SendAssetInboxScreen {
             switch response {
             case let .success(summary):
                 self.inboxSendSummary = summary
-                let viewModel = ARC59SendFeeInformationViewModel(
-                    fee: summary.totalProtocolFee + summary.algoFundAmount
-                )
+                let viewModel = ARC59SendFeeInformationViewModel(fee: summary.totalProtocolFee)
                 self.feeInformationView.bindData(viewModel)
                 self.stopLoading()
             case let .failure(error, _):

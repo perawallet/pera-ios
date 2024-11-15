@@ -1119,19 +1119,17 @@ final class Router:
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
-            
             let dataController = IncomingASAAccountInboxAPIDataController(
                 address: address,
                 requestsCount: requestsCount,
                 sharedDataController: configuration.sharedDataController,
-                api: appConfiguration.api)
-            
+                api: appConfiguration.api
+            )
             viewController = IncomingASAAccountInboxViewController(
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-            
         case let .incomingASAsDetail(draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(
