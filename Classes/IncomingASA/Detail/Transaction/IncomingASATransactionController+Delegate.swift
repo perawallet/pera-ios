@@ -23,6 +23,13 @@ protocol IncomingASATransactionControllerDelegate: AnyObject {
     )
     func incomingASATransactionController(
         _ incomingASATransactionController: IncomingASATransactionController,
+        didSignTransactionAt index: Int
+    )
+    func incomingASATransactionControllerDidStartUploadingTransaction(
+        _ incomingASATransactionController: IncomingASATransactionController
+    )
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
         didFailedComposing error: HIPTransactionError
     )
     func incomingASATransactionControllerDidResetLedgerOperation(

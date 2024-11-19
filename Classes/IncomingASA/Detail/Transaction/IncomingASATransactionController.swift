@@ -70,6 +70,10 @@ final class IncomingASATransactionController: LedgerTransactionOperationDelegate
 }
 
 extension IncomingASATransactionController {
+    var transactionCount: Int {
+        transactionData.count
+    }
+
     func getTransactionParamsAndCompleteTransaction(
         with draft: IncomingASAListItem,
         for account: Account,
@@ -301,6 +305,8 @@ extension IncomingASATransactionController {
     }
 
     private func uploadTransaction(_ transaction: Data) {
+        delegate?.incomingASATransactionControllerDidStartUploadingTransaction(self)
+        
         transactionAPIConnector.uploadTransaction(transaction) {
             [weak self] transactionID, error in
             guard let self else { return }
@@ -526,9 +532,6 @@ extension IncomingASATransactionController {
         if transactionData.count - 1 == index {
             signTransaction()
             completeLedgerTransaction()
-            /* if transactionDraft?.fee != nil {
-
-            } */
             return
         }
         
@@ -565,6 +568,7 @@ extension IncomingASATransactionController {
         }
 
         transactionData[index].setSignedTransaction(signedTransaction)
+        delegate?.incomingASATransactionController(self, didSignTransactionAt: index)
     }
 }
 

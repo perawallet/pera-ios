@@ -333,7 +333,7 @@ extension IncomingASAsDetailScreen {
     private func openSignWithLedgerProcess(ledgerDeviceName: String) {
         let draft = SignWithLedgerProcessDraft(
             ledgerDeviceName: ledgerDeviceName,
-            totalTransactionCount: 2
+            totalTransactionCount: transactionController.transactionCount
         )
         let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
             [weak self] event in
@@ -364,11 +364,36 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         _ incomingASATransactionController: IncomingASATransactionController,
         didCompletedTransaction transactionId: TransactionID?
     ) {
-        openLoading()
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
             guard let self else { return }
             self.openSuccess(transactionId)
+        }
+    }
+    
+    func incomingASATransactionController(
+        _ incomingASATransactionController: IncomingASATransactionController,
+        didSignTransactionAt index: Int
+    ) {
+        if let account,
+           let signWithLedgerProcessScreen,
+           account.requiresLedgerConnection() {
+            if !signWithLedgerProcessScreen.isProgressFinished {
+                signWithLedgerProcessScreen.increaseProgress()
+            }
+        }
+    }
+    
+    func incomingASATransactionControllerDidStartUploadingTransaction(
+        _ incomingASATransactionController: IncomingASATransactionController
+    ) {
+        if let account,
+           account.requiresLedgerConnection() {
+            signWithLedgerProcessScreen?.dismissScreen { [weak self] in
+                guard let self else { return }
+                self.openLoading()
+            }
+
+            signWithLedgerProcessScreen = nil
         }
     }
     
