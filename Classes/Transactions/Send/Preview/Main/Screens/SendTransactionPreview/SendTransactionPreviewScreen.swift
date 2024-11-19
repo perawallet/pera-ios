@@ -355,6 +355,20 @@ extension SendTransactionPreviewScreen {
 
          transactionController.initializeLedgerTransactionAccount()
          transactionController.startTimer()
+         return
+      }
+      
+      if transactionType == .optInAndSend {
+         guard let receiver = draft.toAccount?.address ??
+                  draft.toContact?.address ??
+                  draft.toNameService?.address,
+               let receiverAccount = sharedDataController.accountCollection[receiver]?.value else {
+            return
+         }
+
+         if receiverAccount.requiresLedgerConnection() {
+            openLedgerConnection()
+         }
       }
    }
 }
@@ -474,7 +488,9 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       didCompletedTransaction id: TransactionID
    ) {
       openSuccess(id.identifier)
-      if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
+      if draft is AlgosTransactionSendDraft ||
+            draft is AssetTransactionSendDraft ||
+            draft is AssetTransactionARC59SendDraft {
          analytics.track(
             .completeStandardTransaction(draft: draft, transactionId: id)
          )
@@ -529,7 +545,6 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
 }
 
 extension SendTransactionPreviewScreen {
-   
    private func openSuccess(
       _ transactionId: String?
    ) {
@@ -684,7 +699,7 @@ extension SendTransactionPreviewScreen {
     ) {
         let draft = SignWithLedgerProcessDraft(
             ledgerDeviceName: ledgerDeviceName,
-            totalTransactionCount: 1
+            totalTransactionCount: transactionController.transactionCount
         )
         let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
             [weak self] event in

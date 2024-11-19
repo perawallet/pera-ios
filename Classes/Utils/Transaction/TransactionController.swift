@@ -22,6 +22,10 @@ final class TransactionController {
     weak var delegate: TransactionControllerDelegate?
 
     private(set) var currentTransactionType: TransactionType?
+    
+    var transactionCount: Int {
+        transactions.count
+    }
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
         api: api,
@@ -69,7 +73,7 @@ extension TransactionController {
     var senderAccountForLedger: Account? {
         let senderAddresses = transactions.map { $0.sender }
         if senderAddresses.isEmpty {
-            return transactionDraft?.from
+            return nil
         }
         
         let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
@@ -122,7 +126,6 @@ extension TransactionController {
               let authAccount = sharedDataController.accountCollection[authAddress],
               let ledgerDetail = authAccount.value.ledgerDetail else {
             return
-            
         }
         
         account.addRekeyDetail(
@@ -148,7 +151,7 @@ extension TransactionController {
         ledgerTransactionOperation.delegate = self
 
         timer = Timer.scheduledTimer(
-            withTimeInterval: 10.0,
+            withTimeInterval: 20.0,
             repeats: false
         ) { [weak self] timer in
             guard let self = self else {
@@ -415,14 +418,16 @@ extension TransactionController {
         for transactionType: TransactionType,
         index: Int
     ) {
-        guard let senderAddress = transactions[safe: index]?.sender,
-              let account = sharedDataController.accountCollection[senderAddress]?.value else {
+        guard let transaction = transactions[safe: index],
+              let account = sharedDataController.accountCollection[transaction.sender]?.value else {
                   return
         }
 
         if account.requiresLedgerConnection() {
+            initializeLedgerTransactionAccount()
+            startTimer()
             ledgerTransactionOperation.setUnsignedTransactionData(
-                transactions.first?.unsignedTransaction,
+                transaction.unsignedTransaction,
                 transactionIndex: index
             )
             ledgerTransactionOperation.startScan()
@@ -438,9 +443,7 @@ extension TransactionController {
         with transactionType: TransactionType,
         index: Int
     ) {
-        for (i, _) in transactions.enumerated() {
-            signTransactionForStandardAccount(index: i)
-        }
+        signTransactionForStandardAccount(index: index)
 
         if isTransactionSigned {
             calculateTransactionFee(
@@ -456,6 +459,11 @@ extension TransactionController {
             } else {
                 completeAssetTransaction(for: transactionType)
             }
+        } else {
+            startSigningProcess(
+                for: transactionType,
+                index: index + 1
+            )
         }
     }
 
@@ -515,9 +523,11 @@ extension TransactionController: LedgerTransactionOperationDelegate {
     ) {
         guard let transactionType = currentTransactionType,
               let senderAddress = transactions[safe: index]?.sender,
-              let account = sharedDataController.accountCollection[senderAddress]?.value else {
+              var account = sharedDataController.accountCollection[senderAddress]?.value else {
             return
         }
+        
+        updateLedgerDetailOfRekeyedAccountIfNeeded(of: &account)
         
         let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
         signer.eventHandler = {
@@ -541,10 +551,17 @@ extension TransactionController: LedgerTransactionOperationDelegate {
             index: index
         )
         if transactionDraft?.fee != nil {
-            completeLedgerTransaction(
-                for: transactionType,
-                index: index
-            )
+            if isTransactionSigned {
+                completeLedgerTransaction(
+                    for: transactionType,
+                    index: index
+                )
+            } else {
+                startSigningProcess(
+                    for: transactionType,
+                    index: index + 1
+                )
+            }
         }
     }
 
