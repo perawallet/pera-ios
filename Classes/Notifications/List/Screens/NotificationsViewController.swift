@@ -102,7 +102,16 @@ final class NotificationsViewController: BaseViewController {
                 case let .externalInAppBrowser(destination):
                     self.openExternalLink(destination: destination)
                 case let .assetInbox(address, requestsCount):
-                    self.openAssetInbox(address: address, requestsCount: requestsCount)
+                    guard let account = sharedDataController.accountCollection[address] else { return }
+                    
+                    if account.value.isWatchAccount {
+                        self.openAccountDetail(account)
+                    } else {
+                        self.openAssetInbox(
+                            address: address,
+                            requestsCount: requestsCount
+                        )
+                    }
                 default:
                     break
                 }
@@ -336,6 +345,32 @@ extension NotificationsViewController {
 
         open(
             screen,
+            by: .push
+        )
+    }
+    
+    private func openAccountDetail(_ account: AccountHandle) {
+        if !account.isAvailable {
+            return
+        }
+
+        let eventHandler: AccountDetailViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didEdit: break
+            case .didRemove: break
+            case .didBackUp: break
+            }
+        }
+
+        open(
+            .accountDetail(
+                accountHandle: account,
+                eventHandler: eventHandler,
+                incomingASAsRequestsCount: 0
+            ),
             by: .push
         )
     }
