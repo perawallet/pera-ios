@@ -23,8 +23,14 @@ final class TransactionController {
 
     private(set) var currentTransactionType: TransactionType?
     
-    var transactionCount: Int {
-        transactions.count
+    var ledgerTansactionCount: Int {
+        let senderAddresses = transactions.map { $0.sender }
+        if senderAddresses.isEmpty {
+            return 0
+        }
+        
+        let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
+        return accounts.filter { $0.requiresLedgerConnection() }.count
     }
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(

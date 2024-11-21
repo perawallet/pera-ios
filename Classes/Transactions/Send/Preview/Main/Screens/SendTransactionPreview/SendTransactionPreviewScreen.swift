@@ -330,11 +330,6 @@ extension SendTransactionPreviewScreen {
    private func didTapNext() {
       if !transactionController.canSignTransaction(for: draft.from) { return }
       
-      loadingScreen = open(
-          .loading(viewModel: IncomingASAsDetailLoadingScreenViewModel()),
-          by: .push
-      ) as? LoadingScreen
-      
       let composedTransacation = composeTransaction()
       let transactionType = composedTransactionType(draft: composedTransacation)
 
@@ -442,7 +437,10 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
             case .success(let params):
                self.bindTransaction(with: params)
             case .failure(let error):
-               self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+               self.bannerController?.presentErrorBanner(
+                  title: "title-error".localized,
+                  message: error.localizedDescription
+               )
             }
          }
 
@@ -479,7 +477,8 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
             object: self
          )
       }
-
+      
+      openLoading()
       transactionController.uploadTransaction()
    }
 
@@ -487,13 +486,18 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didCompletedTransaction id: TransactionID
    ) {
-      openSuccess(id.identifier)
-      if draft is AlgosTransactionSendDraft ||
-            draft is AssetTransactionSendDraft ||
-            draft is AssetTransactionARC59SendDraft {
-         analytics.track(
-            .completeStandardTransaction(draft: draft, transactionId: id)
-         )
+      asyncMain(afterDuration: 3.0) {
+         [weak self] in
+         guard let self = self else { return }
+         
+         self.openSuccess(id.identifier)
+         if draft is AlgosTransactionSendDraft ||
+               draft is AssetTransactionSendDraft ||
+               draft is AssetTransactionARC59SendDraft {
+            analytics.track(
+               .completeStandardTransaction(draft: draft, transactionId: id)
+            )
+         }
       }
    }
 
@@ -545,6 +549,13 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
 }
 
 extension SendTransactionPreviewScreen {
+   private func openLoading() {
+      loadingScreen = open(
+          .loading(viewModel: IncomingASAsDetailLoadingScreenViewModel()),
+          by: .push
+      ) as? LoadingScreen
+   }
+
    private func openSuccess(
       _ transactionId: String?
    ) {
@@ -699,7 +710,7 @@ extension SendTransactionPreviewScreen {
     ) {
         let draft = SignWithLedgerProcessDraft(
             ledgerDeviceName: ledgerDeviceName,
-            totalTransactionCount: transactionController.transactionCount
+            totalTransactionCount: transactionController.ledgerTansactionCount
         )
         let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
             [weak self] event in

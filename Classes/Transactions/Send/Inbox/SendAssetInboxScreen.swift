@@ -315,17 +315,7 @@ extension SendAssetInboxScreen {
 
                     if signWithLedgerProcessScreen.isProgressFinished {
                         self.stopLoading()
-
-                        self.visibleScreen.dismissScreen {
-                            [weak self] in
-                            guard let self = self else { return }
-
-                            self.bannerController?.presentSuccessBanner(
-                                title: "transaction-result-started-title".localized,
-                                message: "transaction-result-started-subtitle".localized
-                            )
-                            eventHandler?(.send)
-                        }
+                        openLoading()
                     }
                 }
             case .didSignAllTransactions:
@@ -513,7 +503,10 @@ extension SendAssetInboxScreen {
 
 extension SendAssetInboxScreen {
     private func getTransactionParamsAndComposeRelatedTransactions() {
-        openLoading()
+        if !draft.sender.requiresLedgerConnection() {
+            openLoading()
+        }
+
         sharedDataController.getTransactionParams { [weak self] result in
             guard let self else { return }
             
