@@ -474,10 +474,12 @@ extension TransactionController {
     }
 
     private func signTransactionForStandardAccount(index: Int) {
-        guard let accountAddress = transactions[safe: index]?.sender,
-              let privateData = api.session.privateData(for: accountAddress) else {
+        guard let accountAddress = transactions[safe: index]?.sender else {
             return
         }
+        
+        let address = sharedDataController.accountCollection[accountAddress]?.value.authAddress ?? accountAddress
+        guard let privateData = api.session.privateData(for: address) else { return }
 
         let signer = SDKTransactionSigner()
         signer.eventHandler = {

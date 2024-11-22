@@ -156,7 +156,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          case .success(let params):
             self.bindTransaction(with: params)
          case .failure(let error):
-            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            self.bannerController?.presentErrorBanner(
+               title: "title-error".localized,
+               message: error.localizedDescription
+            )
          }
       }
    }
@@ -165,11 +168,14 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private func bindTransaction(with params: TransactionParams) {
       var transactionDraft = composeTransaction()
       let builder: TransactionDataBuildable
+      
+      var isOptInAndSendTransaction = false
 
       if transactionDraft is AlgosTransactionSendDraft {
          builder = AlgoTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
       } else if let draft = transactionDraft as? AssetTransactionSendDraft {
          if draft.isReceiverOptingInToAsset {
+            isOptInAndSendTransaction = true
             builder = OptInAndSendTransactionDataBuilder(
                sharedDataController: sharedDataController,
                params: params,
@@ -192,6 +198,22 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
       
       var totalFee: UInt64 = 0
+      
+      let receiver = draft.toAccount?.address ??
+         draft.toContact?.address ??
+         draft.toNameService?.address
+      
+      if let receiver,
+         let receiverAccount = sharedDataController.accountCollection[receiver]?.value,
+         isOptInAndSendTransaction {
+
+         let receiverMinBalanceFee = calculateExtraAlgoAmount(
+            receiverAlgoAmount: receiverAccount.algo.amount,
+            receiverMinBalanceAmount: receiverAccount.calculateMinBalance()
+         )
+         
+         totalFee = UInt64(receiverMinBalanceFee)
+      }
       
       for data in dataArray {
          var error: NSError?
@@ -357,7 +379,8 @@ extension SendTransactionPreviewScreen {
          guard let receiver = draft.toAccount?.address ??
                   draft.toContact?.address ??
                   draft.toNameService?.address,
-               let receiverAccount = sharedDataController.accountCollection[receiver]?.value else {
+               let receiverAccount = sharedDataController.accountCollection[receiver]?.value,
+               receiverAccount.authorization.isAuthorized else {
             return
          }
 
@@ -735,6 +758,25 @@ extension SendTransactionPreviewScreen {
             by: .present
         ) as? SignWithLedgerProcessScreen
     }
+}
+
+private extension SendTransactionPreviewScreen {
+   func calculateExtraAlgoAmount(
+      receiverAlgoAmount: UInt64,
+      receiverMinBalanceAmount: UInt64
+   ) -> Int64 {
+      let ASSET_OPT_IN_MBR: UInt64 = 100_000
+      let ACCOUNT_MBR: UInt64 = 100_000
+      
+      if receiverAlgoAmount == 0 {
+         return Int64(ACCOUNT_MBR + ASSET_OPT_IN_MBR)
+      }
+
+      let availableAmount = Int64(receiverAlgoAmount) - Int64(receiverMinBalanceAmount)
+      let extraAlgoAmount = Int64(ASSET_OPT_IN_MBR) - availableAmount
+
+      return extraAlgoAmount > 0 ? extraAlgoAmount : 0
+   }
 }
 
 extension SendTransactionPreviewScreen {
