@@ -394,6 +394,12 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
             }
 
             signWithLedgerProcessScreen = nil
+            return
+        }
+        
+        if let account,
+           !account.requiresLedgerConnection() {
+            openLoading()
         }
     }
     
