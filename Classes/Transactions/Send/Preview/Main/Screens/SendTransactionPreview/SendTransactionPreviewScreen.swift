@@ -774,8 +774,12 @@ private extension SendTransactionPreviewScreen {
 
       let availableAmount = Int64(receiverAlgoAmount) - Int64(receiverMinBalanceAmount)
       let extraAlgoAmount = Int64(ASSET_OPT_IN_MBR) - availableAmount
+      
+      if ASSET_OPT_IN_MBR > availableAmount {
+         return extraAlgoAmount
+      }
 
-      return extraAlgoAmount > 0 ? extraAlgoAmount : 0
+      return 0
    }
 }
 
