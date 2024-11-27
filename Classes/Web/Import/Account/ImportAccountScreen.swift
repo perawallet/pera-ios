@@ -170,7 +170,9 @@ extension ImportAccountScreen {
                 if sharedDataController.accountCollection[accountAddress] != nil {
                     unimportedAccounts.append(transferAccount.accountInformation)
                 } else {
-                    session.savePrivate(transferAccount.privateKey, for: accountAddress)
+                    if let privateKey = transferAccount.privateKey {
+                        session.savePrivate(privateKey, for: accountAddress)
+                    }
                     importableAccounts.append(transferAccount.accountInformation)
                 }
             }

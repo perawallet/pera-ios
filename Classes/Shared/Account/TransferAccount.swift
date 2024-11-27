@@ -17,6 +17,6 @@
 import Foundation
 
 struct TransferAccount {
-    let privateKey: Data
+    let privateKey: Data?
     let accountInformation: AccountInformation
 }
