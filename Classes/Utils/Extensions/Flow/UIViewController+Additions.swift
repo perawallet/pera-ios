@@ -177,3 +177,20 @@ extension UIViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }
+
+extension UIViewController {
+    func setStatusBarBackgroundColor(with color: UIColor) {
+        var statusBarHeight: CGFloat = 8
+
+        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            statusBarHeight += window.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        }
+        
+        let statusBarBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: statusBarHeight))
+        statusBarBackgroundView.backgroundColor = color
+        statusBarBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+        
+        self.view.addSubview(statusBarBackgroundView)
+        self.view.bringSubviewToFront(statusBarBackgroundView)
+    }
+}

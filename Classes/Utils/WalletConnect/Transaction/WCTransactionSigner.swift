@@ -21,8 +21,10 @@ import MagpieHipo
 final class WCTransactionSigner {
     weak var delegate: WCTransactionSignerDelegate?
 
-    private lazy var ledgerTransactionOperation =
-        LedgerTransactionOperation(api: api, analytics: analytics)
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
+        api: api,
+        analytics: analytics
+    )
 
     private var timer: Timer?
 
@@ -82,9 +84,24 @@ extension WCTransactionSigner {
 
         let signerAddress = account.address
         guard let signature = api.session.privateData(for: signerAddress) else { return }
+        
+        let signer = SDKTransactionSigner()
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: error)
+                )
+            }
+        }
+        
         sign(
             signature,
-            signer: SDKTransactionSigner(),
+            signer: signer,
             for: transaction
         )
     }
@@ -136,20 +153,32 @@ extension WCTransactionSigner {
         let signerAddress = account.signerAddress
         guard let signature = api.session.privateData(for: signerAddress) else { return }
         
+        let signer = SDKTransactionSigner()
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: error)
+                )
+            }
+        }
+        
         sign(
             signature,
-            signer: SDKTransactionSigner(),
+            signer: signer,
             for: transaction
         )
     }
 
     private func sign(
         _ signature: Data?,
-        signer: TransactionSigner,
+        signer: TransactionSignable,
         for transaction: WCTransaction
     ) {
-        signer.delegate = self
-
         guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
             delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
             return
@@ -166,7 +195,8 @@ extension WCTransactionSigner {
 extension WCTransactionSigner: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
-        didReceiveSignature data: Data
+        didReceiveSignature data: Data,
+        forTransactionIndex index: Int
     ) {
         guard let account,
               let transaction else {
@@ -174,25 +204,50 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
         }
 
         let signerAddress = transaction.authAddress ?? account.authAddress
+        let signer = LedgerTransactionSigner(signerAddress: signerAddress)
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: error)
+                )
+            }
+        }
+        
         sign(
             data,
-            signer: LedgerTransactionSigner(signerAddress: signerAddress),
+            signer: signer,
             for: transaction
         )
     }
 
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
-        delegate?.wcTransactionSigner(self, didFailedWith: .ledger(error: error))
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didFailed error: LedgerOperationError
+    ) {
+        delegate?.wcTransactionSigner(
+            self,
+            didFailedWith: .ledger(error: error)
+        )
     }
 
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didRequestUserApprovalFor ledger: String
     ) {
-        delegate?.wcTransactionSigner(self, didRequestUserApprovalFrom: ledger)
+        delegate?.wcTransactionSigner(
+            self,
+            didRequestUserApprovalFrom: ledger
+        )
     }
 
-    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+    func ledgerTransactionOperationDidFinishTimingOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
         stopTimer()
         delegate?.wcTransactionSignerDidFinishTimingOperation(self)
     }
@@ -207,12 +262,6 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
 
     func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         delegate?.wcTransactionSignerDidRejectedLedgerOperation(self)
-    }
-}
-
-extension WCTransactionSigner: TransactionSignerDelegate {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError) {
-        delegate?.wcTransactionSigner(self, didFailedWith: .api(error: error))
     }
 }
 

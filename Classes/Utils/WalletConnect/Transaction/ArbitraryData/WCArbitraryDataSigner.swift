@@ -36,9 +36,22 @@ final class WCArbitraryDataSigner {
         for account: Account
     ) {
         if let signature = api.session.privateData(for: account.address) {
+            let signer = SDKArbitraryDataSigner()
+            signer.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedSigning(let error):
+                    delegate?.wcArbitraryDataSigner(
+                        self,
+                        didFailedWith: .api(error: error)
+                    )
+                }
+            }
             sign(
                 signature,
-                signer: SDKArbitraryDataSigner(),
+                signer: signer,
                 for: data
             )
         }
@@ -48,11 +61,9 @@ final class WCArbitraryDataSigner {
 extension WCArbitraryDataSigner {
     private func sign(
         _ signature: Data?,
-        signer: TransactionSigner,
+        signer: TransactionSignable,
         for data: WCArbitraryData
     ) {
-        signer.delegate = self
-
         guard let unsignedData = data.data else {
             delegate?.wcArbitraryDataSigner(self, didFailedWith: .missingData)
             return
@@ -63,15 +74,6 @@ extension WCArbitraryDataSigner {
         }
 
         delegate?.wcArbitraryDataSigner(self, didSign: data, signedData: signedData)
-    }
-}
-
-extension WCArbitraryDataSigner: TransactionSignerDelegate {
-    func transactionSigner(
-        _ transactionSigner: TransactionSigner,
-        didFailedSigning error: HIPTransactionError
-    ) {
-        delegate?.wcArbitraryDataSigner(self, didFailedWith: .api(error: error))
     }
 }
 

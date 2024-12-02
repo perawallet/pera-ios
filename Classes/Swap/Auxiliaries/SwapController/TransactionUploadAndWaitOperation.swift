@@ -81,7 +81,7 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
             guard let self = self else { return }
 
             switch event {
-            case .didCompleted:
+            case .didCompleted(let txnID):
                 /// <note>
                 /// When a transaction is confirmed, we are waiting for some amount time to make sure that nodes are synced.
                 /// Default waiting time is 1 second.
@@ -90,7 +90,7 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
                     guard let self = self else { return }
 
                     if self.shouldReturnSuccessWhenCompleted {
-                        self.publishEvent(.didCompleteSwap)
+                        self.publishEvent(.didCompleteTransactionOnTheNode(txnID))
                     }
                     
                     self.finish()
@@ -140,7 +140,7 @@ extension TransactionUploadAndWaitOperation {
 
 extension TransactionUploadAndWaitOperation {
     enum Event {
-        case didCompleteSwap
+        case didCompleteTransactionOnTheNode(TxnID)
         case didFailTransaction(TxnID)
         case didFailNetwork(Error)
         case didCancelTransaction

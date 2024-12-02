@@ -17,21 +17,26 @@
 
 import Foundation
 
-final class LedgerTransactionSigner: TransactionSigner {
+final class LedgerTransactionSigner: TransactionSignable {
+    private let algorandSDK = AlgorandSDK()
     private var signerAddress: PublicKey?
+    
+    var eventHandler: ((TransactionSignableEvent) -> Void)?
 
     init(
         signerAddress: PublicKey?
     ) {
         self.signerAddress = signerAddress
-        super.init()
     }
 
-    override func sign(
+    func sign(
         _ data: Data?,
         with privateData: Data?
     ) -> Data? {
-        return signTransaction(data, with: privateData)
+        return signTransaction(
+            data, 
+            with: privateData
+        )
     }
 }
 
@@ -44,7 +49,13 @@ extension LedgerTransactionSigner {
 
         guard let transactionData = data,
               let privateData = privateData else {
-                  delegate?.transactionSigner(self, didFailedSigning: .inapp(.sdkError(error: transactionError)))
+            eventHandler?(
+                .didFailedSigning(
+                    error: .inapp(
+                        .sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 
@@ -76,7 +87,13 @@ extension LedgerTransactionSigner {
             from: privateData,
             error: &transactionError
         ) else {
-            delegate?.transactionSigner(self, didFailedSigning: .inapp(TransactionError.sdkError(error: transactionError)))
+            eventHandler?(
+                .didFailedSigning(
+                    error: .inapp(
+                        .sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 
@@ -93,7 +110,13 @@ extension LedgerTransactionSigner {
             from: privateData,
             error: &transactionError
         ) else {
-            delegate?.transactionSigner(self, didFailedSigning: .inapp(TransactionError.sdkError(error: transactionError)))
+            eventHandler?(
+                .didFailedSigning(
+                    error: .inapp(
+                        .sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 

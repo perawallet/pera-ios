@@ -783,7 +783,7 @@ extension ASADiscoveryScreen {
                 assetIndex: asset.id
             )
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -890,7 +890,7 @@ extension ASADiscoveryScreen {
             )
 
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -1101,12 +1101,12 @@ extension ASADiscoveryScreen {
             let assetID = dataController.asset.id
 
             switch transactionType {
-            case .assetAddition:
+            case .optIn:
                 monitor.cancelMonitoringOptInUpdates(
                     forAssetID: assetID,
                     for: account
                 )
-            case .assetRemoval:
+            case .optOut:
                 monitor.cancelMonitoringOptOutUpdates(
                     forAssetID: assetID,
                     for: account
