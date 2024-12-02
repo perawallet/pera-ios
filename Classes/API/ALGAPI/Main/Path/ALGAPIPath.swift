@@ -27,6 +27,7 @@ enum ALGAPIPath: String {
     case availableSwapPoolAssets = "/dex-swap/available-assets/"
     case algoUSDHistory = "/price/algo-usd/history"
     case announcements = "/devices/%@/banners/"
+    case asaInboxSendSummary = "/asa-inboxes/summary/send-flow/%@/%@/"
     case assetDetail = "/assets/%@/"
     case assetRequest = "/asset-requests/"
     case assets = "/assets/"
@@ -58,6 +59,8 @@ enum ALGAPIPath: String {
     case waitForBlock = "/status/wait-for-block-after/%@"
     case accountAsset = "/accounts/%@/assets/%@"
     case scammerDomainCheck = "/is-scammer-domain"
+    case asaInboxesRequests = "/asa-inboxes/requests/"
+    case asaInboxesRequest = "/asa-inboxes/requests/%@/"
 }
 
 extension EndpointBuilder {

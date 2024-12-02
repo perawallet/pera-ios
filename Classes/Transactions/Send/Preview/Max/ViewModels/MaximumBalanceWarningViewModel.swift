@@ -59,7 +59,7 @@ extension MaximumBalanceWarningViewModel {
         let calculatedFee = params.getProjectedTransactionFee()
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: account,
-               with: .algosTransaction,
+               with: .algo,
                calculatedFee: calculatedFee,
                isAfterTransaction: true
         ) - calculatedFee
