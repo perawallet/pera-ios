@@ -125,6 +125,39 @@ extension AlgorandSDK {
             &error
         )
     }
+
+    func composeOptInAndSendAssetTxn(
+        with draft: AssetOptInAndSendTransactionDraft,
+        error: inout NSError?
+    ) -> [SDKTransactionSignerItem]? {
+        guard let signerArray = AlgoSdkMakeOptInAndAssetTransferTxns(
+            getTrimmedAddress(from: draft.from),
+            draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines),
+            draft.amount.toSDKInt64(),
+            draft.senderAlgoBalance.toSDKInt64(),
+            draft.senderMinBalance.toSDKInt64(),
+            draft.receiverAlgoBalance.toSDKInt64(),
+            draft.receiverMinBalance.toSDKInt64(),
+            draft.note,
+            nil,
+            draft.assetIndex,
+            draft.transactionParams.toSDKSuggestedParams(),
+            &error
+        ) else { return nil }
+        
+        var transactionItems = [SDKTransactionSignerItem]()
+        for i in 0...signerArray.length() - 1 {
+            let signer = signerArray.getSigner(i)
+            let transaction = signerArray.getTxn(i)
+            let item = SDKTransactionSignerItem(
+                signer: signer,
+                data: transaction
+            )
+            transactionItems.append(item)
+        }
+        
+        return transactionItems
+    }
 }
 
 extension AlgorandSDK {
@@ -168,6 +201,121 @@ extension AlgorandSDK {
     }
 }
 
+// MARK: ARC59
+
+extension AlgorandSDK {
+    func composeArc59SendAssetTxn(
+        with draft: ARC59SendAssetTransactionDraft,
+        error: inout NSError?
+    ) -> [Data]? {
+        let toAddress = draft.receiver.trimmingCharacters(in: .whitespacesAndNewlines)
+        return AlgoSdkMakeARC59SendTxn(
+            getTrimmedAddress(from: draft.from),
+            toAddress, 
+            draft.appAddress,
+            draft.inboxAccount,
+            draft.amount.toSDKInt64(),
+            draft.minBalance.toSDKInt64(),
+            Int64(draft.innerTransactionCount),
+            draft.appID, 
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedInToProtocol,
+            draft.extraAlgoAmount.toSDKInt64(),
+            &error
+        )?.toDataArray()
+    }
+    
+    func composeArc59SendAssetTxnAndSign(
+        with draft: ARC59SendAssetTransactionDraft,
+        error: inout NSError?
+    ) -> Data? {
+        let toAddress = draft.receiver.trimmingCharacters(in: .whitespacesAndNewlines)
+        return AlgoSdkMakeAndSignARC59SendTxn(
+            getTrimmedAddress(from: draft.from),
+            toAddress,
+            draft.appAddress,
+            draft.inboxAccount,
+            draft.amount.toSDKInt64(),
+            draft.minBalance.toSDKInt64(),
+            Int64(draft.innerTransactionCount),
+            draft.appID,
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedInToProtocol,
+            draft.extraAlgoAmount.toSDKInt64(),
+            nil,
+            &error
+        )?.flatten()
+    }
+    
+    func composeArc59ClaimAssetTxn(
+        with draft: ARC59ClaimAssetTransactionDraft,
+        error: inout NSError?
+    ) -> [Data]? {
+        AlgoSdkMakeARC59ClaimTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.inboxAccount,
+            draft.appID,
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedIn,
+            draft.isClaimingAlgo,
+            &error
+        )?.toDataArray()
+    }
+    
+    func composeArc59ClaimAssetTxnAndSign(
+        with draft: ARC59ClaimAssetTransactionDraft,
+        error: inout NSError?
+    ) -> Data? {
+        AlgoSdkMakeAndSignARC59ClaimTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.inboxAccount,
+            draft.appID,
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isOptedIn,
+            draft.isClaimingAlgo,
+            nil,
+            &error
+        )?.flatten()
+    }
+    
+    func composeArc59RejectAssetTxn(
+        with draft: ARC59RejectAssetTransactionDraft,
+        error: inout NSError?
+    ) -> [Data]? {
+        AlgoSdkMakeARC59RejectTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.inboxAccount,
+            draft.creatorAccount,
+            draft.appID,
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isClaimingAlgo,
+            &error
+        )?.toDataArray()
+    }
+
+    func composeArc59RejectAssetTxnAndSign(
+        with draft: ARC59RejectAssetTransactionDraft,
+        error: inout NSError?
+    ) -> Data? {
+        AlgoSdkMakeAndSignARC59RejectTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.inboxAccount,
+            draft.creatorAccount,
+            draft.appID,
+            draft.assetID,
+            draft.transactionParams.toSDKSuggestedParams(),
+            draft.isClaimingAlgo,
+            nil,
+            &error
+        )?.flatten()
+    }
+}
+
 extension AlgorandSDK {
     private func getTrimmedAddress(from account: Account) -> String {
         return account.address.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -193,6 +341,20 @@ fileprivate extension Array where Element == Data {
             transactionByteArray.append($0)
         }
         return transactionByteArray
+    }
+}
+
+fileprivate extension AlgoSdkBytesArray {
+    func toDataArray() -> [Data] {
+        var dataArray = [Data]()
+        
+        for i in 0...length() - 1 {
+            if let data = get(i) {
+                dataArray.append(data)
+            }
+        }
+        
+        return dataArray
     }
 }
 

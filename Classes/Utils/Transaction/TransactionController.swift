@@ -18,35 +18,48 @@
 import MagpieHipo
 import UIKit
 
-class TransactionController {
+final class TransactionController {
     weak var delegate: TransactionControllerDelegate?
 
     private(set) var currentTransactionType: TransactionType?
     
-    private var api: ALGAPI
-    private let sharedDataController: SharedDataController
-    private let bannerController: BannerController?
-    private var params: TransactionParams?
-    private var transactionDraft: TransactionSendDraft?
+    var ledgerTansactionCount: Int {
+        let senderAddresses = transactions.map { $0.sender }
+        if senderAddresses.isEmpty {
+            return 0
+        }
+        
+        let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
+        return accounts.filter { $0.requiresLedgerConnection() }.count
+    }
 
-    private var timer: Timer?
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
+        api: api,
+        analytics: analytics
+    )
 
-    private let transactionData = TransactionData()
-    
-    private lazy var ledgerTransactionOperation =
-        LedgerTransactionOperation(api: api, analytics: analytics)
-
-    private lazy var transactionAPIConnector = TransactionAPIConnector(api: api, sharedDataController: sharedDataController)
+    private lazy var transactionAPIConnector = TransactionAPIConnector(
+        api: api, 
+        sharedDataController: sharedDataController
+    )
     
     private lazy var transactionSignatureValidator = TransactionSignatureValidator(
         session: api.session,
         sharedDataController: sharedDataController
     )
 
-    private var isLedgerRequiredTransaction: Bool {
-        return transactionDraft?.from.requiresLedgerConnection() ?? false
+    private var requiresLedgerConnection: Bool {
+        return senderAccountForLedger != nil
     }
+    
+    private var params: TransactionParams?
+    private var timer: Timer?
+    private var transactions = [TransactionData]()
+    private var transactionDraft: TransactionSendDraft?
 
+    private var api: ALGAPI
+    private let sharedDataController: SharedDataController
+    private let bannerController: BannerController?
     private let analytics: ALGAnalytics
     
     init(
@@ -63,8 +76,14 @@ class TransactionController {
 }
 
 extension TransactionController {
-    private var fromAccount: Account? {
-        return transactionDraft?.from
+    var senderAccountForLedger: Account? {
+        let senderAddresses = transactions.map { $0.sender }
+        if senderAddresses.isEmpty {
+            return nil
+        }
+        
+        let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
+        return accounts.first { $0.requiresLedgerConnection() }
     }
 
     var assetTransactionDraft: AssetTransactionSendDraft? {
@@ -80,7 +99,7 @@ extension TransactionController {
     }
 
     private var isTransactionSigned: Bool {
-        return transactionData.signedTransaction != nil
+        return transactions.allSatisfy { $0.signedTransaction != nil }
     }
 }
 
@@ -104,16 +123,15 @@ extension TransactionController {
         /// We need to update the ledger information of a rekeyed account so that we can use ledger information
         /// of its auth account while signing the transaction.
         var account = transactionDraft.from
-        updateLedgerDetailOfRekeyedAccountIfNeeded(for: &account)
+        updateLedgerDetailOfRekeyedAccountIfNeeded(of: &account)
         self.transactionDraft?.from = account
     }
     
-    private func updateLedgerDetailOfRekeyedAccountIfNeeded(for account: inout Account) {
+    private func updateLedgerDetailOfRekeyedAccountIfNeeded(of account: inout Account) {
         guard let authAddress = account.authAddress,
               let authAccount = sharedDataController.accountCollection[authAddress],
               let ledgerDetail = authAccount.value.ledgerDetail else {
             return
-            
         }
         
         account.addRekeyDetail(
@@ -123,7 +141,7 @@ extension TransactionController {
     }
     
     func stopBLEScan() {
-        if !isLedgerRequiredTransaction {
+        if !requiresLedgerConnection {
             return
         }
 
@@ -132,13 +150,16 @@ extension TransactionController {
     }
 
     func startTimer() {
-        if !isLedgerRequiredTransaction {
+        if !requiresLedgerConnection {
             return
         }
 
         ledgerTransactionOperation.delegate = self
 
-        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
+        timer = Timer.scheduledTimer(
+            withTimeInterval: 20.0,
+            repeats: false
+        ) { [weak self] timer in
             guard let self = self else {
                 timer.invalidate()
                 return
@@ -151,13 +172,16 @@ extension TransactionController {
                 message: ""
             )
 
-            self.delegate?.transactionController(self, didFailedComposing: .inapp(.ledgerConnection))
+            self.delegate?.transactionController(
+                self,
+                didFailedComposing: .inapp(.ledgerConnection)
+            )
             self.stopTimer()
         }
     }
 
     func stopTimer() {
-        if !isLedgerRequiredTransaction {
+        if !requiresLedgerConnection {
             return
         }
 
@@ -166,11 +190,11 @@ extension TransactionController {
     }
 
     func initializeLedgerTransactionAccount() {
-        if !isLedgerRequiredTransaction {
+        if !requiresLedgerConnection {
             return
         }
 
-        if let account = fromAccount {
+        if let account = senderAccountForLedger {
             ledgerTransactionOperation.setTransactionAccount(account)
         }
     }
@@ -184,158 +208,377 @@ extension TransactionController {
             switch result {
             case .success(let params):
                 self.params = params
-                self.composeTransactionData(for: transactionType)
+                self.composeTransactionData(
+                    for: transactionType,
+                    index: 0
+                )
             case .failure:
                 self.resetLedgerOperationIfNeeded()
+                self.transactions.removeAll()
 
-                self.delegate?.transactionController(self, didFailedComposing: .network(.connection(.init(reason: .unexpected(.unknown)))))
+                self.delegate?.transactionController(
+                    self,
+                    didFailedComposing: .network(.connection(.init(reason: .unexpected(.unknown))))
+                )
             }
         }
     }
     
-    func uploadTransaction(with completion: EmptyHandler? = nil) {
-        guard let transactionData = transactionData.signedTransaction else {
-            return
+    func uploadTransaction(_ completion: EmptyHandler? = nil) {
+        var transactionToUpload = Data()
+        for transaction in transactions {
+            guard let signedTransaction = transaction.signedTransaction else {
+                continue
+            }
+            
+            transactionToUpload.append(signedTransaction)
         }
 
-        transactionAPIConnector.uploadTransaction(transactionData) { transactionId, error in
+        transactionAPIConnector.uploadTransaction(transactionToUpload) { transactionId, error in
             guard let id = transactionId else {
                 self.resetLedgerOperationIfNeeded()
                 self.logLedgerTransactionNonAcceptanceError()
                 if let error = error {
-                    self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
+                    self.delegate?.transactionController(
+                        self,
+                        didFailedTransaction: .network(.unexpected(error))
+                    )
                 }
+                self.transactions.removeAll()
                 return
             }
 
             completion?()
-            self.delegate?.transactionController(self, didCompletedTransaction: id)
+            self.delegate?.transactionController(
+                self,
+                didCompletedTransaction: id
+            )
         }
     }
 }
 
 extension TransactionController {
-    private func composeTransactionData(for transactionType: TransactionType, initialSize: Int? = nil) {
+    private func composeTransactionData(
+        for transactionType: TransactionType,
+        initialSize: Int? = nil,
+        index: Int
+    ) {
+        guard let params else { return }
+        
         switch transactionType {
-        case .algosTransaction:
-            let builder = SendAlgosTransactionDataBuilder(params: params, draft: algosTransactionDraft, initialSize: initialSize)
+        case .algo:
+            guard let algosTransactionDraft else { return }
+            
+            let builder = AlgoTransactionDataBuilder(
+                params: params,
+                draft: algosTransactionDraft,
+                initialSize: initialSize
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
             composeTransactionData(from: builder)
-        case .assetAddition:
-            composeTransactionData(from: AddAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))
-        case .assetRemoval:
-            composeTransactionData(from: RemoveAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))
-        case .assetTransaction:
-            composeTransactionData(from: SendAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))
+        case .optIn:
+            guard let assetTransactionDraft else { return }
+            
+            let builder = OptInTransactionDataBuilder(
+                params: params,
+                draft: assetTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
+        case .optOut:
+            guard let assetTransactionDraft else { return }
+            
+            let builder = OptOutTransactionDataBuilder(
+                params: params,
+                draft: assetTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
+        case .asset:
+            guard let assetTransactionDraft else { return }
+            
+            let builder = AssetTransactionDataBuilder(
+                params: params,
+                draft: assetTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
         case .rekey:
-            composeTransactionData(from: RekeyTransactionDataBuilder(params: params, draft: rekeyTransactionDraft))
+            guard let rekeyTransactionDraft else { return }
+            
+            let builder = RekeyTransactionDataBuilder(
+                params: params,
+                draft: rekeyTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
+        case .optInAndSend:
+            guard let assetTransactionDraft else { return }
+            
+            let builder = OptInAndSendTransactionDataBuilder(
+                sharedDataController: sharedDataController,
+                params: params,
+                draft: assetTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
         }
 
-        if transactionData.isUnsignedTransactionComposed {
-            startSigningProcess(for: transactionType)
+        let isUnsignedTransactionComposed = transactions.allSatisfy { $0.isUnsignedTransactionComposed }
+        if isUnsignedTransactionComposed {
+            startSigningProcess(
+                for: transactionType,
+                index: index
+            )
         }
     }
 
-    private func composeTransactionData(from builder: TransactionDataBuilder) {
-        builder.delegate = self
-
-        guard let data = builder.composeData() else {
+    private func composeTransactionData(from builder: TransactionDataBuildable) {
+        guard let txnItems = builder.composeData() else {
             handleMinimumAmountErrorIfNeeded(from: builder)
             resetLedgerOperationIfNeeded()
+            transactions.removeAll()
             return
         }
 
         updateTransactionAmount(from: builder)
-        transactionData.setUnsignedTransaction(data)
+        
+        for item in txnItems {
+            let transaction = TransactionData(
+                sender: item.sender,
+                unsignedTransaction: item.transaction,
+                index: transactions.count
+            )
+            transactions.append(transaction)
+        }
     }
 
-    private func handleMinimumAmountErrorIfNeeded(from builder: TransactionDataBuilder) {
-        if let builder = builder as? SendAlgosTransactionDataBuilder,
+    private func handleMinimumAmountErrorIfNeeded(from builder: TransactionDataBuildable) {
+        if let builder = builder as? AlgoTransactionDataBuilder,
            let minimumAccountBalance = builder.minimumAccountBalance,
            builder.calculatedTransactionAmount.unwrap(or: 0).isBelowZero {
-            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAccountBalance)))
+            delegate?.transactionController(
+                self,
+                didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAccountBalance))
+            )
         }
     }
 
-    private func updateTransactionAmount(from builder: TransactionDataBuilder) {
-        if let builder = builder as? SendAlgosTransactionDataBuilder {
+    private func updateTransactionAmount(from builder: TransactionDataBuildable) {
+        if let builder = builder as? AlgoTransactionDataBuilder {
             transactionDraft?.amount = builder.calculatedTransactionAmount?.toAlgos
-        }
-    }
-
-    private func startSigningProcess(for transactionType: TransactionType) {
-        guard let account = fromAccount else {
-            return
-        }
-
-        if account.requiresLedgerConnection() {
-            ledgerTransactionOperation.setUnsignedTransactionData(transactionData.unsignedTransaction)
-            ledgerTransactionOperation.startScan()
-        } else {
-            handleStandardAccountSigning(with: transactionType)
         }
     }
 }
 
 extension TransactionController {
-    private func handleStandardAccountSigning(with transactionType: TransactionType) {
-        signTransactionForStandardAccount()
-        
+    private func startSigningProcess(
+        for transactionType: TransactionType,
+        index: Int
+    ) {
+        guard let transaction = transactions[safe: index],
+              let account = sharedDataController.accountCollection[transaction.sender]?.value else {
+                  return
+        }
+
+        if account.requiresLedgerConnection() {
+            initializeLedgerTransactionAccount()
+            startTimer()
+            ledgerTransactionOperation.setUnsignedTransactionData(
+                transaction.unsignedTransaction,
+                transactionIndex: index
+            )
+            ledgerTransactionOperation.startScan()
+        } else {
+            handleStandardAccountSigning(
+                with: transactionType,
+                index: index
+            )
+        }
+    }
+    
+    private func handleStandardAccountSigning(
+        with transactionType: TransactionType,
+        index: Int
+    ) {
+        signTransactionForStandardAccount(index: index)
+
         if isTransactionSigned {
-            calculateTransactionFee(for: transactionType)
+            calculateTransactionFee(
+                for: transactionType,
+                index: index
+            )
             if transactionDraft?.fee == nil {
                 return
             }
             
-            if transactionType == .algosTransaction {
-                completeAlgosTransaction()
+            if transactionType == .algo {
+                completeAlgosTransaction(index: index)
             } else {
                 completeAssetTransaction(for: transactionType)
             }
+        } else {
+            startSigningProcess(
+                for: transactionType,
+                index: index + 1
+            )
         }
     }
 
-    private func signTransactionForStandardAccount() {
-        guard let accountAddress = fromAccount?.signerAddress,
-              let privateData = api.session.privateData(for: accountAddress) else {
+    private func signTransactionForStandardAccount(index: Int) {
+        guard let accountAddress = transactions[safe: index]?.sender else {
             return
         }
+        
+        let address = sharedDataController.accountCollection[accountAddress]?.value.authAddress ?? accountAddress
+        guard let privateData = api.session.privateData(for: address) else { return }
 
-        sign(privateData, with: SDKTransactionSigner())
+        let signer = SDKTransactionSigner()
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                handleTransactionComposingError(error)
+            }
+        }
+        
+        sign(
+            privateData,
+            with: signer,
+            index: index
+        )
     }
 
-    private func sign(_ privateData: Data?, with signer: TransactionSigner) {
-        signer.delegate = self
-
-        guard let unsignedTransactionData = transactionData.unsignedTransaction,
+    private func sign(
+        _ privateData: Data?,
+        with signer: TransactionSignable,
+        index: Int
+    ) {
+        guard let unsignedTransactionData = transactions[index].unsignedTransaction,
               let signedTransaction = signer.sign(unsignedTransactionData, with: privateData) else {
             return
         }
 
-        transactionData.setSignedTransaction(signedTransaction)
+        transactions[index].setSignedTransaction(signedTransaction)
     }
 }
 
 extension TransactionController: LedgerTransactionOperationDelegate {
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
-        signTransactionForLedgerAccount(with: data)
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didReceiveSignature data: Data,
+        forTransactionIndex index: Int
+    ) {
+        signTransactionForLedgerAccount(
+            with: data,
+            index: index
+        )
     }
 
-    private func signTransactionForLedgerAccount(with data: Data) {
+    private func signTransactionForLedgerAccount(
+        with data: Data,
+        index: Int
+    ) {
         guard let transactionType = currentTransactionType,
-              let account = fromAccount else {
+              let senderAddress = transactions[safe: index]?.sender,
+              var account = sharedDataController.accountCollection[senderAddress]?.value else {
             return
         }
+        
+        updateLedgerDetailOfRekeyedAccountIfNeeded(of: &account)
+        
+        let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
+        signer.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didFailedSigning(let error):
+                handleTransactionComposingError(error)
+            }
+        }
 
-        sign(data, with: LedgerTransactionSigner(signerAddress: account.authAddress))
-        calculateTransactionFee(for: transactionType)
+        sign(
+            data,
+            with: signer,
+            index: index
+        )
+        
+        calculateTransactionFee(
+            for: transactionType,
+            index: index
+        )
         if transactionDraft?.fee != nil {
-            completeLedgerTransaction(for: transactionType)
+            if isTransactionSigned {
+                completeLedgerTransaction(
+                    for: transactionType,
+                    index: index
+                )
+            } else {
+                startSigningProcess(
+                    for: transactionType,
+                    index: index + 1
+                )
+            }
         }
     }
 
-    private func completeLedgerTransaction(for transactionType: TransactionType) {
-        if transactionType == .algosTransaction {
-            completeAlgosTransaction()
+    private func completeLedgerTransaction(
+        for transactionType: TransactionType,
+        index: Int
+    ) {
+        if transactionType == .algo {
+            completeAlgosTransaction(index: index)
         } else if transactionType == .rekey {
             completeRekeyTransaction()
         } else {
@@ -343,7 +586,10 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         }
     }
 
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didFailed error: LedgerOperationError
+    ) {
         switch error {
         case .cancelled:
             bannerController?.presentErrorBanner(
@@ -403,24 +649,33 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         delegate?.transactionControllerDidRejectedLedgerOperation(self)
     }
 
-    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+    func ledgerTransactionOperationDidFinishTimingOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
         stopTimer()
     }
 
-    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+    func ledgerTransactionOperationDidResetOperationOnSuccess(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
         delegate?.transactionControllerDidResetLedgerOperationOnSuccess(self)
     }
 
-    func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+    func ledgerTransactionOperationDidResetOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
         delegate?.transactionControllerDidResetLedgerOperation(self)
     }
 }
 
 extension TransactionController {
-    private func calculateTransactionFee(for transactionType: TransactionType) {
+    private func calculateTransactionFee(
+        for transactionType: TransactionType,
+        index: Int
+    ) {
         let feeCalculator = TransactionFeeCalculator(
             transactionDraft: transactionDraft,
-            transactionData: transactionData,
+            transactionData: transactions[index],
             params: params
         )
         feeCalculator.delegate = self
@@ -432,65 +687,76 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    private func completeAlgosTransaction() {
+    private func completeAlgosTransaction(index: Int) {
         guard let calculatedFee = transactionDraft?.fee,
               let params = params,
-              let signedTransactionData = transactionData.signedTransaction else {
+              let signedTransactionData = transactions[index].signedTransaction else {
             return
         }
         
         /// Re-sign transaction if the calculated fee is not matching with the projected fee
         if params.getProjectedTransactionFee(from: signedTransactionData.count) != calculatedFee {
-            composeTransactionData(for: .algosTransaction, initialSize: signedTransactionData.count)
+            composeTransactionData(
+                for: .algo,
+                initialSize: signedTransactionData.count,
+                index: index
+            )
         } else {
-            delegate?.transactionController(self, didComposedTransactionDataFor: self.algosTransactionDraft)
+            delegate?.transactionController(
+                self,
+                didComposedTransactionDataFor: self.algosTransactionDraft
+            )
         }
     }
 
     private func completeAssetTransaction(for transactionType: TransactionType) {
         /// Asset addition and removal actions do not have approve part, so transaction should be completed here.
-        if transactionType != .assetTransaction {
-            uploadTransaction {
-                self.delegate?.transactionController(self, didComposedTransactionDataFor: self.assetTransactionDraft)
-            }
+        if transactionType == .asset || transactionType == .optInAndSend {
+            delegate?.transactionController(
+                self,
+                didComposedTransactionDataFor: self.assetTransactionDraft
+            )
         } else {
-            delegate?.transactionController(self, didComposedTransactionDataFor: self.assetTransactionDraft)
+            uploadTransaction {
+                self.delegate?.transactionController(
+                    self,
+                    didComposedTransactionDataFor: self.assetTransactionDraft
+                )
+            }
+
         }
     }
 
     private func completeRekeyTransaction() {
         uploadTransaction {
-            self.delegate?.transactionController(self, didComposedTransactionDataFor: self.rekeyTransactionDraft)
+            self.delegate?.transactionController(
+                self,
+                didComposedTransactionDataFor: self.rekeyTransactionDraft
+            )
         }
     }
 }
 
-extension TransactionController: TransactionDataBuilderDelegate {
-    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPTransactionError) {
-        handleTransactionComposingError(error)
-    }
-
+extension TransactionController {
     private func handleTransactionComposingError(_ error: HIPTransactionError) {
         resetLedgerOperationIfNeeded()
+        transactions.removeAll()
         delegate?.transactionController(self, didFailedComposing: error)
     }
 }
 
-extension TransactionController: TransactionSignerDelegate {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError) {
-        handleTransactionComposingError(error)
-    }
-}
-
 extension TransactionController: TransactionFeeCalculatorDelegate {
-    func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: UInt64) {
-        handleTransactionComposingError( .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
+    func transactionFeeCalculator(
+        _ transactionFeeCalculator: TransactionFeeCalculator,
+        didFailedWith minimumAmount: UInt64
+    ) {
+        handleTransactionComposingError(.inapp(TransactionError.minimumAmount(amount: minimumAmount)))
     }
 }
 
 extension TransactionController {
     private func resetLedgerOperationIfNeeded() {
-        if fromAccount?.requiresLedgerConnection() ?? false {
+        if senderAccountForLedger != nil {
             ledgerTransactionOperation.reset()
         }
     }
@@ -498,66 +764,26 @@ extension TransactionController {
 
 extension TransactionController {
     private func logLedgerTransactionNonAcceptanceError() {
-        guard let account = fromAccount,
-              account.requiresLedgerConnection() else {
+        guard let account = senderAccountForLedger else {
             return
         }
         
         analytics.record(
-            .nonAcceptanceLedgerTransaction(account: account, transactionData: transactionData)
+            .nonAcceptanceLedgerTransaction(
+                account: account,
+                transactionData: transactions[0]
+            )
         )
     }
 }
 
 extension TransactionController {
     enum TransactionType {
-        case algosTransaction
-        case assetTransaction
-        case assetAddition
-        case assetRemoval
+        case algo
+        case asset
+        case optIn
+        case optOut
+        case optInAndSend
         case rekey
-    }
-}
-
-/// <todo>
-/// NOP! This is an informative type, shouldn't have actual data without error detail.
-enum TransactionError: Error, Hashable {
-    case minimumAmount(amount: UInt64)
-    case invalidAddress(address: String)
-    case sdkError(error: NSError?)
-    case draft(draft: TransactionSendDraft?)
-    case ledgerConnection
-    case optOutFromCreator
-    case other
-}
-
-extension TransactionError {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        switch self {
-        case .minimumAmount: hasher.combine(0)
-        case .invalidAddress: hasher.combine(1)
-        case .sdkError: hasher.combine(2)
-        case .draft: hasher.combine(3)
-        case .ledgerConnection: hasher.combine(4)
-        case .optOutFromCreator: hasher.combine(5)
-        case .other: hasher.combine(6)
-        }
-    }
-
-    static func == (
-        lhs: Self,
-        rhs: Self
-    ) -> Bool {
-        switch (lhs, rhs) {
-        case (.minimumAmount, .minimumAmount): return true
-        case (.invalidAddress, .invalidAddress): return true
-        case (.sdkError, .sdkError): return true
-        case (.draft, .draft): return true
-        case (.ledgerConnection, .ledgerConnection): return true
-        case (.other, .other): return true
-        default: return false
-        }
     }
 }

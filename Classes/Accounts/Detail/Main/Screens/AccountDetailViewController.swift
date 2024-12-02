@@ -121,19 +121,21 @@ final class AccountDetailViewController: PageContainer {
     /// routing approach hasn't been refactored yet.
     private let swapDataStore: SwapDataStore
     private let copyToClipboardController: CopyToClipboardController
+    private let incomingASAsRequestsCount: Int
 
     init(
         accountHandle: AccountHandle,
         dataController: AccountDetailDataController,
         swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        incomingASAsRequestsCount: Int
     ) {
         self.accountHandle = accountHandle
         self.dataController = dataController
         self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
-
+        self.incomingASAsRequestsCount = incomingASAsRequestsCount
         super.init(configuration: configuration)
     }
 
@@ -216,10 +218,9 @@ extension AccountDetailViewController {
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
                 self.openAddAssetScreenIfPossible()
-            case .buySell:
+            case .requests:
                 self.assetListScreen.endEditing()
-
-                self.openBuySellOptionsIfPossible()
+                self.openIncomingASAAccountInbox()
             case .swap:
                 self.assetListScreen.endEditing()
 
@@ -332,6 +333,29 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController {
+    private func openIncomingASAAccountInbox()  {
+        let screen = open(
+            .incomingASA(
+                address: accountHandle.value.address,
+                requestsCount: incomingASAsRequestsCount
+            ),
+            by: .push
+        ) as? IncomingASAAccountInboxViewController
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let screen else {
+                return
+            }
+            
+            switch event {
+            case .didCompleteTransaction:
+                screen.closeScreen(by: .pop, animated: false)
+                self?.popScreen()
+            }
+        }
+    }
+    
     private func openBuySellOptionsIfPossible() {
         let aRawAccount = accountHandle.value
         if aRawAccount.authorization.isNoAuth {
@@ -764,7 +788,8 @@ extension AccountDetailViewController {
             query: query,
             dataController: dataController.assetListDataController,
             copyToClipboardController: copyToClipboardController,
-            configuration: configuration
+            configuration: configuration,
+            incomingASAsRequestsCount: incomingASAsRequestsCount
         )
     }
 

@@ -55,7 +55,8 @@ class TransactionFeeCalculator: NSObject {
             return true
         }
 
-        let transactionAmount = transactionType == .algosTransaction ? transactionDraft?.amount?.toMicroAlgos ?? 0 : 0
+        let transactionAmount = transactionType == .algo ?
+            transactionDraft?.amount?.toMicroAlgos ?? 0 : 0
 
         let minimumAmount = calculateMinimumAmount(
             for: account,
@@ -81,19 +82,23 @@ class TransactionFeeCalculator: NSObject {
         var assetCount = (account.assets?.count ?? 0) + 1
 
         switch transactionType {
-        case .algosTransaction:
+        case .algo:
             break
-        case .assetTransaction:
+        case .asset:
             break
-        case .assetAddition:
+        case .optIn:
             if isAfterTransaction {
                 assetCount += 1
             }
         case .rekey:
             break
-        case .assetRemoval:
+        case .optOut:
             if isAfterTransaction {
                 assetCount -= 1
+            }
+        case .optInAndSend:
+            if isAfterTransaction {
+                assetCount += 1
             }
         }
 

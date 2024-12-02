@@ -394,6 +394,12 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         } else if let url = URL(string: qrString),
                   let scheme = url.scheme,
                   target.deeplinkConfig.qr.canAcceptScheme(scheme) {
+            if let browserURL = url.browserDeeplinkURL {
+                closeScreen()
+                let destination = DiscoverExternalDestination.url(browserURL)
+                self.delegate?.qrScannerViewController(self, didRead: destination, completionHandler: nil)
+                return
+            }
             let deeplinkQR = DeeplinkQR(url: url)
             guard let qrText = deeplinkQR.qrText() else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
@@ -582,6 +588,12 @@ protocol QRScannerViewControllerDelegate: AnyObject {
         didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     )
+    
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead discoverExternalDestination: DiscoverExternalDestination,
+        completionHandler: EmptyHandler?
+    )
 }
 
 extension QRScannerViewControllerDelegate {
@@ -598,6 +610,11 @@ extension QRScannerViewControllerDelegate {
     func qrScannerViewController(
         _ controller: QRScannerViewController,
         didRead qrBackupParameters: QRBackupParameters,
+        completionHandler: EmptyHandler?
+    ) {}
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead discoverExternalDestination: DiscoverExternalDestination,
         completionHandler: EmptyHandler?
     ) {}
 }

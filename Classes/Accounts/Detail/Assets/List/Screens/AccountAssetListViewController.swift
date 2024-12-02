@@ -67,17 +67,18 @@ final class AccountAssetListViewController:
     private let dataController: AccountAssetListDataController
 
     private let copyToClipboardController: CopyToClipboardController
-
+    private let incomingASAsRequestsCount: Int
     init(
         query: AccountAssetListQuery,
         dataController: AccountAssetListDataController,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        incomingASAsRequestsCount: Int
     ) {
         self.query = query
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
-
+        self.incomingASAsRequestsCount = incomingASAsRequestsCount
         super.init(configuration: configuration)
 
         keyboardController.activate()
@@ -521,12 +522,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 let swapDisplayStore = SwapDisplayStore()
                 let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
                 item.isSwapBadgeVisible = !isOnboardedToSwap
-
+                item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
-                item.startObserving(event: .buySell) {
+                item.startObserving(event: .requests) {
                     [unowned self] in
-                    self.eventHandler?(.buySell)
+                    self.eventHandler?(.requests)
                 }
 
                 item.startObserving(event: .swap) {
@@ -976,7 +977,7 @@ extension AccountAssetListViewController {
         case copyAddress
         case showAddress
         case addAsset
-        case buySell
+        case requests
         case swap
         case send
         case more

@@ -57,7 +57,7 @@ extension CollectibleDetailTransactionController {
             assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
 
         eventHandlers.didStartRemovingAsset?()
 
@@ -79,7 +79,7 @@ extension CollectibleDetailTransactionController {
             assetIndex: asset.id
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
         eventHandlers.didStartOptingInToAsset?()
 
