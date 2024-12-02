@@ -34,7 +34,7 @@ final class AccountListItemView:
     private lazy var accessoryIconView = ImageView()
 
     func customize(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         addIcon(theme)
         addContentAndAccessoryContext(theme)
@@ -62,7 +62,7 @@ final class AccountListItemView:
 
     class func calculatePreferredSize(
         _ viewModel: AccountListItemViewModel?,
-        for theme: AccountListItemViewTheme,
+        for theme: PrimaryAccountListItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -98,7 +98,7 @@ final class AccountListItemView:
 
 extension AccountListItemView {
     private func addIcon(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
 
@@ -114,7 +114,7 @@ extension AccountListItemView {
     }
 
     private func addIconBottomRightBadge(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         addSubview(iconBottomRightBadgeView)
         iconBottomRightBadgeView.snp.makeConstraints {
@@ -124,7 +124,7 @@ extension AccountListItemView {
     }
 
     private func addContentAndAccessoryContext(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         addSubview(contentAndAccessoryContextView)
         contentAndAccessoryContextView.snp.makeConstraints {
@@ -138,7 +138,7 @@ extension AccountListItemView {
     }
 
     private func addContent(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         contentAndAccessoryContextView.addSubview(contentView)
         contentView.snp.makeConstraints {
@@ -152,7 +152,7 @@ extension AccountListItemView {
     }
 
     private func addTitle(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         titleView.customize(theme.title)
 
@@ -167,7 +167,7 @@ extension AccountListItemView {
     }
 
     private func addAccessory(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         contentAndAccessoryContextView.addSubview(accessoryView)
         accessoryView.snp.makeConstraints {
@@ -182,7 +182,7 @@ extension AccountListItemView {
     }
 
     private func addPrimaryAccessory(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         primaryAccessoryView.customizeAppearance(theme.primaryAccessory)
 
@@ -209,7 +209,7 @@ extension AccountListItemView {
     }
 
     private func addSecondaryAccessory(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         secondaryAccessoryView.customizeAppearance(theme.secondaryAccessory)
 
@@ -234,7 +234,7 @@ extension AccountListItemView {
     }
 
     private func addAccessoryIcon(
-        _ theme: AccountListItemViewTheme
+        _ theme: PrimaryAccountListItemViewTheme
     ) {
         accessoryIconView.customizeAppearance(theme.accessoryIcon)
 

@@ -472,9 +472,12 @@ extension AssetAdditionViewController {
             let request = OptInBlockchainRequest(account: account, asset: asset)
             monitor.startMonitoringOptInUpdates(request)
 
-            let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
             transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
             if account.requiresLedgerConnection() {
                 self.openLedgerConnection(transactionController)

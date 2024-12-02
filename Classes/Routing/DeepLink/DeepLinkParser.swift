@@ -75,6 +75,8 @@ extension DeepLinkParser {
             return makeAssetTransactionDetailScreen(for: notification)
         case .inAppBrowser:
             return makeExternalBrowserScreen(for: notification)
+        case .assetInbox:
+            return makeIncomingASAScreen(for: notification)
         default:
             return nil
         }
@@ -165,7 +167,22 @@ extension DeepLinkParser {
 
         return .success(.asaDiscoveryWithOptInAction(account: rawAccount, assetID: assetID))
     }
-
+    
+    private func makeIncomingASAScreen(for notificationMessage: NotificationMessage) -> Result? {
+        let url = notificationMessage.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+        
+        guard let accountAddress else {
+            return .failure(.accountNotFound)
+        }
+        
+        return .success(.assetInbox(
+            address: accountAddress,
+            requestsCount: 1
+        ))
+    }
+    
     private func makeAssetTransactionDetailScreen(for notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         let params = url?.queryParameters
@@ -622,6 +639,10 @@ extension DeepLinkParser {
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)
         case buyAlgoWithMeld(MeldDraft)
+        case assetInbox(
+            address: String,
+            requestsCount: Int
+        )
     }
     
     enum Error:
@@ -704,5 +725,6 @@ extension DeepLinkParser {
         case assetOptIn = "asset/opt-in"
         case assetTransactions = "asset/transactions"
         case inAppBrowser = "in-app-browser"
+        case assetInbox = "asset-inbox"
     }
 }

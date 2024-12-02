@@ -30,6 +30,7 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var isVerifiedAsset = false
     var note: String?
     var lockedNote: String?
+    var isReceiverOptingInToAsset = false
 
     var toContact: Contact?
     var asset: Asset?

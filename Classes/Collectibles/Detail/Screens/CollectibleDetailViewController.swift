@@ -863,12 +863,12 @@ extension CollectibleDetailViewController {
         if let transactionType = transactionController.currentTransactionType {
             let monitor = sharedDataController.blockchainUpdatesMonitor
             switch transactionType {
-            case .assetAddition:
+            case .optIn:
                 monitor.cancelMonitoringOptInUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
-            case .assetRemoval:
+            case .optOut:
                 monitor.cancelMonitoringOptOutUpdates(
                     forAssetID: asset.id,
                     for: account

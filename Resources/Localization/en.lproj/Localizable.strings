@@ -16,6 +16,8 @@
 "title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
+"title-asa" = "%@ Asset Requests";
+"title-asa-singular" = "1 Asset Request";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-receive" = "Receive";
@@ -33,6 +35,7 @@
 "title-id" = "ID";
 "title-asset-id" = "Asset ID";
 "title-copy" = "Copy";
+"title-copy-id" = "Copy ID";
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
 "title-skip-for-now" = "Skip for now";
@@ -762,7 +765,7 @@
 "min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
-"required-min-balance-title" = "Insufficient Algo Balance";
+"required-min-balance-title" = "Insufficient ALGO balance. Please add more ALGO to claim.";
 "required-min-balance-description" = "This account doesn't have the minimum required Algo balance to support this transaction. Please add more Algo to the account before continuing.\n\nMinimum required Algo balance increases by 0.1 Algo with each asset, NFT and smart contract you opt-in with. You can opt-out of assets and smart contracts to decrease the minimum required Algo balance.";
 
 "screenshot-title" = "Screenshot Detected";
@@ -1075,6 +1078,8 @@
 "send-transaction-preview-title" = "Confirm Transaction";
 "send-transaction-preview-button" = "Confirm transfer";
 "send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-success-title" = "Asset transfer completed";
+"send-transaction-preview-success-detail" = "Your transaction was successfully\nreceived by the Algorand network";
 
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
@@ -1207,6 +1212,7 @@
 "story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
 
 //MARK: QuickActions
+"quick-actions-asset-inbox-title" = "Asset Inbox";
 "quick-actions-buy-sell-title" = "Buy / Sell";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
@@ -1358,6 +1364,15 @@ FAQ section.";
 // MARK: Swap Loading
 "swap-loading-title" = "Sending the transaction";
 "swap-loading-detail" = "You will receive at least %@ or the transaction will revert.";
+
+// MARK: Incoming ASAs Detail Loading
+"incoming-asas-detail-loading-title" = "Sending the transaction";
+"incoming-asas-detail-loading-detail" = "Your transaction is being processed by the Algorand network.";
+
+// MARK: Incoming ASAs Detail Success
+"incoming-asas-detail-success-title" = "Asset transfer completed";
+"incoming-asas-detail-success-detail" = "Your transaction was successfully received by the Algorand network";
+"incoming-asas-detail-success-view-explorer" = "View Transaction Detail in Pera Explorer";
 
 // MARK: Swap Success
 "swap-success-title" = "%@ swap completed";
@@ -1731,3 +1746,32 @@ FAQ section.";
 
 /// MARK: Check Domain Scammer Controller
 "check-domain-default-error" = "Your Domain is not valid.";
+
+/// MARK: Incoming ASA Requests
+"incoming-asa-account-inbox-header-main-title" = "Asset Transfer Request";
+"incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
+"incoming-asa-account-inbox-header-title-cell-singular" = "You have 1 asset transfer request";
+"incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
+"incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
+"incoming-asa-account-inbox-screen-info-description-title" = "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.";
+"incoming-asa-detail-screen-right-button-title" = "Claim";
+"incoming-asa-detail-screen-left-button-title" = "Reject";
+"incoming-asa-detail-screen-info-title" = "Rejecting Requests";
+"incoming-asa-detail-screen-description_reject" = "If you reject this request, the incoming asset will be permanently removed from circulation. It will not be returned to the sender. Instead, you will receive %@ ALGOs upon completion of this irreversible process. Please note that once rejected, the asset cannot be recovered.";
+"incoming-asa-detail-screen-description_accept" = "You will receive %@ ALGO in order to compensate the opt-in expenses.";
+"incoming-asa-detail-screen-amount-title" = "Amount";
+"incoming-asa-detail-screen-senders-title" = "Senders";
+"incoming-asa-accounts-screen-cell-title" = "%@ incoming assets";
+"incoming-asa-accounts-screen-cell-title-singular" = "1 incoming asset";
+"incoming-asa-accounts-screen-no-content-cell-title" = "No Pending Asset Transfer Requests";
+"incoming-asa-accounts-screen-no-content-cell-body" = "When you have an asset transfer request, you can view it here. Tap on the info icon to learn more about this feature.";
+
+/// MARK: Send Inbox
+"send-inbox-title" = "Send to Asset Inbox";
+"send-inbox-description" = "You can't send this asset directly because receiver not opted-in. But you can send it to its inbox address instead. Read more";
+"send-inbox-read-more" = "Read more";
+"send-inbox-fee-title" = "Protocol & minimum balance fees:";
+"send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
+"send-inbox-action-title" = "Send to Receiver";
+"send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
+"send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";

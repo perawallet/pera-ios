@@ -47,6 +47,7 @@ enum ALGAnalyticsLogName:
     case walletConnectV2SessionDisconnectionFailed = "WCv2SessionDisconnectionFailed"
     case walletConnectV2TransactionRequestApprovalFailed = "WCv2TransactionRequestApprovalFailed"
     case walletConnectV2TransactionRequestRejectionFailed = "WCv2TransactionRequestRejectionFailed"
+    
 }
 
 extension ALGAnalyticsLogName {

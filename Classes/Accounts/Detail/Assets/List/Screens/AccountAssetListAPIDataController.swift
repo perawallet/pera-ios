@@ -348,7 +348,7 @@ extension AccountAssetListAPIDataController {
         let currency = sharedDataController.currency
         let calculatedMinimumBalance = minBalanceCalculator.calculateMinimumAmount(
             for: account.value,
-            with: .algosTransaction,
+            with: .algo,
             calculatedFee: .zero,
             isAfterTransaction: false
         )

@@ -25,6 +25,7 @@ struct SendCollectibleDraft {
     var toContact: Contact?
     var toNameService: NameService?
     var fee: UInt64?
+    var isReceiverOptingInToCollectible: Bool
 
     var receiverAddress: String? {
         toAccount?.address ??

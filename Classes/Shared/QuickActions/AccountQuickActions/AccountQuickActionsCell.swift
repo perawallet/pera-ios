@@ -32,6 +32,13 @@ final class AccountQuickActionsCell:
             contextView.isSwapBadgeVisible = isSwapBadgeVisible
         }
     }
+    
+    var isRequestsBadgeVisible: Bool = false {
+        didSet {
+            contextView.isRequestsBadgeVisible = isRequestsBadgeVisible
+        }
+    }
+
 
     override init(
         frame: CGRect

@@ -371,7 +371,7 @@ extension TransakFlowCoordinator {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
         if account.requiresLedgerConnection() {
             openLedgerConnection()

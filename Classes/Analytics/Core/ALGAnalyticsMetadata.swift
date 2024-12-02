@@ -73,4 +73,7 @@ enum ALGAnalyticsMetadataKey:
     case wcRequestError = "wc_request_error"
     case wcVersion = "wc_version"
     case wcV2SessionProposalID = "wc_v2_proposal_id"
+    case scriptMessageHandler = "script_message_handler"
+    case scriptMessage = "script_message"
+    case screenName = "screen"
 }

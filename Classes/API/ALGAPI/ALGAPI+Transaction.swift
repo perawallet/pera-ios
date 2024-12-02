@@ -127,6 +127,21 @@ extension ALGAPI {
 }
 
 extension ALGAPI {
+    @discardableResult
+    func fetchASASendInboxSummary(
+        draft: AssetInboxSendDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetInboxSendSummary>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.asaInboxSendSummary, args: draft.account, "\(draft.assetID)")
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+}
+
+extension ALGAPI {
     private enum Formatter {
         static let date: DateFormatter = {
             let formatter = DateFormatter()

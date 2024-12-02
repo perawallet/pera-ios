@@ -620,7 +620,7 @@ extension ManageAssetListViewController {
                 assetCreator: creator.address
             )
             transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
 
             if account.requiresLedgerConnection() {
                 self.openLedgerConnection(transactionController)
