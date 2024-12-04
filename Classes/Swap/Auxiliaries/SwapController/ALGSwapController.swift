@@ -178,7 +178,7 @@ extension ALGSwapController {
                 guard let self = self else { return }
 
                 switch event {
-                case .didCompleteSwap:
+                case .didCompleteTransactionOnTheNode:
                     self.publishEvent(.didCompleteSwap)
                 case .didFailTransaction(let id):
                     self.cancelAllOperations()

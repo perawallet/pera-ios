@@ -20,14 +20,19 @@ final class CollectibleAssetItem {
     let account: Account
     let asset: CollectibleAsset
     let amountFormatter: CollectibleAmountFormatter
-
+    let showForIncomingASA: Bool?
+    let totalAmount: UInt64?
     init(
         account: Account,
         asset: CollectibleAsset,
-        amountFormatter: CollectibleAmountFormatter
+        amountFormatter: CollectibleAmountFormatter,
+        showForIncomingASA: Bool? = nil,
+        totalAmount: UInt64? = nil
     ) {
         self.account = account
         self.asset = asset
         self.amountFormatter = amountFormatter
+        self.showForIncomingASA = showForIncomingASA
+        self.totalAmount = totalAmount
     }
 }
