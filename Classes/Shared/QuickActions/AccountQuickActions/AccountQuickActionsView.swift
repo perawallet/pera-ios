@@ -31,7 +31,7 @@ final class AccountQuickActionsView:
     ]
 
     private lazy var contentView = HStackView()
-    private lazy var requestsActionView = makeBadgeActionView()
+    private lazy var requestsActionView = makeActionView()
     private lazy var swapActionView = makeBadgeActionView()
     private lazy var sendActionView =  makeActionView()
     private lazy var moreActionView = makeActionView()
@@ -46,7 +46,7 @@ final class AccountQuickActionsView:
 
     var isRequestsBadgeVisible: Bool = false {
         didSet {
-            requestsActionView.isBadgeVisible = isRequestsBadgeVisible
+            requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
         }
     }
     
@@ -134,8 +134,7 @@ extension AccountQuickActionsView {
     }
 
     private func addRequestsAction(_ theme: AccountQuickActionsViewTheme) {
-        requestsActionView.customize(theme: theme.swapBadge)
-        requestsActionView.customizeAppearance(theme.requestsAction)
+        requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
         customizeAction(
             requestsActionView,
             theme

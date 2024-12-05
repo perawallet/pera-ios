@@ -25,6 +25,7 @@ struct AccountQuickActionsViewTheme:
     var actionWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
     var requestsAction: ButtonStyle
+    var requestsBadgeAction: ButtonStyle
     var swapAction: ButtonStyle
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
@@ -37,6 +38,10 @@ struct AccountQuickActionsViewTheme:
         self.actionWidth = 64
         self.requestsAction = [
             .icon(Self.makeActionIcon(icon: "ASA-requests-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-asset-inbox-title".localized))
+        ]
+        self.requestsBadgeAction = [
+            .icon(Self.makeActionIcon(icon: "ASA-requests-icon-badge")),
             .title(Self.makeActionTitle(title: "quick-actions-asset-inbox-title".localized))
         ]
         self.swapAction = [
