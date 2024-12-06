@@ -1214,6 +1214,10 @@ final class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = true
             viewController = resultScreen
+        case .sendAssetAndOptInTransactionInfo:
+            viewController = SendAssetAndOptInTransactionInfoScreen(
+                configuration: configuration
+            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,

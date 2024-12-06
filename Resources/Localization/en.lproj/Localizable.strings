@@ -1055,6 +1055,14 @@
 "send-transaction-show-note-title" = "Show Note";
 "send-transaction-max-button-title" = "MAX";
 
+// MARK: SendTransaction Info Screen
+"express-send-title" = "Express Send";
+"express-send-explanation" = "Your Receiving Wallet is not opted in. It needs to opt-in to receive the asset.\nPera simplifies this process by combining multiple transactions for a seamless experience.";
+"asset-transfer-title" = "How this asset transfer works?";
+"asset-transfer-explanation-part1" = "Your Sending Account will send over the fees needed to opt into the asset";
+"asset-transfer-explanation-part2" = "Your Receiving Account will be opted into the asset";
+"asset-transfer-explanation-part3" = "Your Sending Account will send over the asset";
+
 // MARK: EditNote
 "edit-note-title" = "Add Note";
 "edit-note-note-explanation" = "Enter your note";

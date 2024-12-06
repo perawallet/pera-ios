@@ -202,6 +202,7 @@ indirect enum Screen {
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
     )
     case transactionResult
+    case sendAssetAndOptInTransactionInfo
     case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(
         draft: WalletConnectTransactionSignRequestDraft,

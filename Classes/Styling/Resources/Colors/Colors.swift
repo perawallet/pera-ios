@@ -318,6 +318,7 @@ extension Colors {
         case gray = "Text/gray"
         case grayLighter = "Text/grayLighter"
         case white = "Text/white"
+        case sonicSilver = "Text/sonicSilver"
     }
 }
 
@@ -380,6 +381,7 @@ extension Colors {
         enum Global:
             String,
             Color {
+            case gray98 = "Other/Global/gray98"
             case gray400 = "Other/Global/gray400"
             case gray800 = "Other/Global/gray800"
             case yellow600 = "Other/Global/yellow600"

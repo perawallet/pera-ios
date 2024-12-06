@@ -785,7 +785,6 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             guard let self = self else {
                 return
             }
-            
             self.openSendTransactionPreview(controller)
         }
     }
@@ -860,8 +859,12 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                                 return
                             }
                             
-                            controller.draft.isReceiverOptingInToAsset = true
-                            self.openSendTransactionPreview(controller)
+                            if SendAssetAndOptInTransactionInfoScreenDisplayStore().hasPermissionToAskAgain {
+                                self.transactionSendControllerShouldShowInfoScreen(controller)
+                            } else {
+                                controller.draft.isReceiverOptingInToAsset = true
+                                self.openSendTransactionPreview(controller)
+                            }
                         }
                         return
                     }
@@ -893,6 +896,24 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             on: .main,
             execute: execute
         )
+    }
+    
+    private func transactionSendControllerShouldShowInfoScreen(_ controller: TransactionSendController) {
+        let infoController = self.open(
+            .sendAssetAndOptInTransactionInfo,
+            by: .present
+        ) as? SendAssetAndOptInTransactionInfoScreen
+        infoController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didTapContinue:
+                infoController?.dismissScreen {
+                    controller.draft.isReceiverOptingInToAsset = true
+                    self.openSendTransactionPreview(controller)
+                }
+            }
+        }
     }
 }
 
