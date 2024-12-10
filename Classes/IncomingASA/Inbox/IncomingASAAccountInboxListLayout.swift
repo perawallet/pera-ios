@@ -58,13 +58,6 @@ extension IncomingASAAccountInboxListLayout {
         }
         
         switch itemIdentifier {
-        case .title(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForHeaderTitleItem: item,
-                atSection: indexPath.section
-            )
         case let .asset(item):
             return listView(
                 collectionView,
@@ -90,36 +83,6 @@ extension IncomingASAAccountInboxListLayout {
     ) -> UIEdgeInsets {
         return .zero
     }
-}
-
-extension IncomingASAAccountInboxListLayout {
-    func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForHeaderTitleItem item: IncomingASAAccountInboxHeaderTitleCellViewModel,
-        atSection section: Int
-    ) -> CGSize {
-        let sizeCacheIdentifier = IncomingASAAccountInboxHeaderTitleCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
-        let newSize = IncomingASAAccountInboxHeaderTitleCell.calculatePreferredSize(
-            item,
-            for: IncomingASAAccountInboxHeaderTitleCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
-    }
-    
 }
 
 

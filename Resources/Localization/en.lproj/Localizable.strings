@@ -1758,8 +1758,6 @@ FAQ section.";
 
 /// MARK: Incoming ASA Requests
 "incoming-asa-account-inbox-header-main-title" = "Asset Transfer Request";
-"incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
-"incoming-asa-account-inbox-header-title-cell-singular" = "You have 1 asset transfer request";
 "incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
 "incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
 "incoming-asa-account-inbox-screen-info-description-title" = "This feature is as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the asset transfer requests.";
