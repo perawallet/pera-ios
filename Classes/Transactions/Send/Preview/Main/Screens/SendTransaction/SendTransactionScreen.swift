@@ -32,8 +32,6 @@ final class SendTransactionScreen: BaseViewController {
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToInsufficientAlgoBalance = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToOptInInformation = BottomSheetTransition(presentingViewController: self)
 
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var nextButton = Button()
@@ -787,23 +785,26 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             guard let self = self else {
                 return
             }
-
-            let controller = self.open(
-                .sendTransactionPreview(
-                    draft: controller.draft
-                ),
-                by: .push
-            ) as? SendTransactionPreviewScreen
-            controller?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
-                switch event {
-                case .didCompleteTransaction:
-                    self.eventHandler?(.didCompleteTransaction)
-                case .didEditNote(let note):
-                    self.didEditNote(note: note)
-                default: break
-                }
+            self.openSendTransactionPreview(controller)
+        }
+    }
+    
+    private func openSendTransactionPreview(_ controller: TransactionSendController) {
+        let controller = open(
+            .sendTransactionPreview(
+                draft: controller.draft
+            ),
+            by: .push
+        ) as? SendTransactionPreviewScreen
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            case .didEditNote(let note):
+                self.didEditNote(note: note)
+            default: break
             }
         }
     }
@@ -851,7 +852,24 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             case .asset(let assetError):
                 switch assetError {
                 case .assetNotSupported(let address):
-                    self.presentAskReceiverToOptIn(receiverAddress: address)
+                    if let accountInDevice = sharedDataController.accountCollection[address],
+                       accountInDevice.value.authorization.isAuthorized {
+                        stopLoading { [weak self] in
+                            guard let self = self else {
+                                return
+                            }
+                            
+                            if SendAssetAndOptInTransactionInfoScreenDisplayStore().hasPermissionToAskAgain {
+                                self.transactionSendControllerShouldShowInfoScreen(controller)
+                            } else {
+                                controller.draft.isReceiverOptingInToAsset = true
+                                self.openSendTransactionPreview(controller)
+                            }
+                        }
+                        return
+                    }
+                    
+                    self.openSendAssetInbox(address)
                 case .minimumAmount:
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
@@ -879,112 +897,80 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             execute: execute
         )
     }
+    
+    private func transactionSendControllerShouldShowInfoScreen(_ controller: TransactionSendController) {
+        let infoController = self.open(
+            .sendAssetAndOptInTransactionInfo,
+            by: .present
+        ) as? SendAssetAndOptInTransactionInfoScreen
+        infoController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didTapContinue:
+                infoController?.dismissScreen {
+                    controller.draft.isReceiverOptingInToAsset = true
+                    self.openSendTransactionPreview(controller)
+                }
+            }
+        }
+    }
 }
 
 extension SendTransactionScreen {
-    private func presentAskReceiverToOptIn(receiverAddress: String) {
-        guard let asset = draft.asset else {
+    private func openSendAssetInbox(_ receiver: String) {
+        guard let api,
+              let amount = draft.amount,
+              let asset = draft.asset else {
             return
         }
-
-        let title: String
-
-        if let asset = asset as? CollectibleAsset {
-            title =
-                asset.title.unwrapNonEmptyString() ??
-                asset.name.unwrapNonEmptyString() ??
-                "#\(String(asset.id))"
+        
+        let isTestNet = api.isTestNet
+        let appID: Int64
+        let appAddress: String
+        if isTestNet {
+            appID = Environment.current.testNetARC59AppID
+            appAddress = Environment.current.testNetARC59AppAddress
         } else {
-            title =
-                asset.naming.unitName.unwrapNonEmptyString() ??
-                asset.naming.name.unwrapNonEmptyString() ??
-                "#\(String(asset.id))"
+            appID = Environment.current.mainNetARC59AppID
+            appAddress = Environment.current.mainNetARC59AppAddress
         }
-
-        let description = "collectible-recipient-opt-in-description".localized(params: title, receiverAddress)
-
-        let configuratorDescription = BottomWarningViewConfigurator.BottomWarningDescription.custom(
-            description: (description, [title, receiverAddress]),
-            markedWordWithHandler: (
-                word: "collectible-recipient-opt-in-description-marked".localized,
-                handler: {
-                    [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.dismiss(animated: true) {
-                        self.openOptInInformation()
-                    }
-                }
-            )
-        )
-
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-green".uiImage,
-            title: "collectible-recipient-opt-in-title".localized,
-            description: configuratorDescription,
-            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
-            secondaryActionButtonTitle: "title-close".localized,
-            primaryAction: {
-                [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.sendOptInRequestToReceiver(receiverAddress)
-            }
-        )
-
-        transitionToAskReceiverToOptIn.perform(
-            .bottomWarning(
-                configurator: configurator
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func sendOptInRequestToReceiver(_ receiverAddress: String) {
-        let draft = AssetSupportDraft(
-            sender: draft.from.address,
-            receiver: receiverAddress,
-            assetId: draft.asset!.id
+        
+        let draft = SendAssetInboxDraft(
+            sender: draft.from,
+            receiver: receiver,
+            amount: amount,
+            asset: asset,
+            appAddress: appAddress,
+            appID: appID
         )
         
-        api?.sendAssetSupportRequest(draft) {
-            [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success:
+        let screen = open(
+            .sendAssetInbox(draft: draft),
+            by: .present
+        ) as? SendAssetInboxScreen
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let self,
+                  let screen else {
                 return
-            case let .failure(apiError, errorModel):
-                self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: errorModel?.message() ?? apiError.description
-                )
+            }
+            
+            switch event {
+            case .send:
+                screen.dismissScreen()
+                self.dismissScreen()
+            case .close:
+                screen.dismissScreen()
+            case .readMore(let urlString):
+                guard let urlString,
+                      let url = URL(string: urlString) else {
+                    return
+                }
+                screen.open(url)
             }
         }
-    }
-
-    private func openOptInInformation() {
-        let uiSheet = UISheet(
-            title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "collectible-opt-in-info-description".localized.bodyRegular())
-        )
-
-        let closeAction = UISheetAction(
-            title: "title-close".localized,
-            style: .cancel
-        ) { [unowned self] in
-            self.dismiss(animated: true)
-        }
-        uiSheet.addAction(closeAction)
-
-        transitionToOptInInformation.perform(
-            .sheetAction(sheet: uiSheet),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 

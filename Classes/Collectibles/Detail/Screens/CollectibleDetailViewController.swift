@@ -176,6 +176,47 @@ final class CollectibleDetailViewController:
                         self.dataController.load()
                     }
                 )
+            case .didFetchImage(let image):
+                DispatchQueue.main.async {
+                    self.loadingController?.stopLoading()
+                    self.copyToClipboardController.copyImage(image)
+                }
+            case .didImageResponseFail(let url):
+                DispatchQueue.main.async {
+                    self.loadingController?.stopLoading()
+                    self.bottomBannerController.presentFetchError(
+                        title: "title-generic-api-error".localized,
+                        message: "title-generic-response-description".localized,
+                        actionTitle: "title-retry".localized,
+                        actionHandler: {
+                            [unowned self] in
+                            self.bottomBannerController.dismissError()
+                            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+                            self.dataController.getImageDataToCopy(from: url)
+                        }
+                    )
+                }
+            case .didFetchMedia(let url):
+                DispatchQueue.main.async {
+                    self.loadingController?.stopLoading()
+                    self.presentShareController([url])
+                }
+            case .didMediaResponseFail(url: let url):
+                DispatchQueue.main.async {
+                    self.loadingController?.stopLoading()
+                    self.bottomBannerController.presentFetchError(
+                        title: "title-generic-api-error".localized,
+                        message: "title-generic-response-description".localized,
+                        actionTitle: "title-retry".localized,
+                        actionHandler: {
+                            [unowned self] in
+                            self.bottomBannerController.dismissError()
+                            guard let fileExtension = self.displayedMedia?.mediaExtension.rawValue else { return }
+                            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+                            self.dataController.downloadAssetMediaToSave(from: url, of: self.asset.mediaType, with: fileExtension)
+                        }
+                    )
+                }
             }
         }
 
@@ -427,9 +468,9 @@ extension CollectibleDetailViewController {
             linkInteractors(
                 cell as! CollectibleDetailAccountInformationCell
             )
-        case .sendAction:
+        case .quickActions:
             linkInteractors(
-                cell as! CollectibleDetailSendActionCell
+                cell as! CollectibleDetailQuickActionsCell
             )
         case .optOutAction:
             linkInteractors(
@@ -491,14 +532,20 @@ extension CollectibleDetailViewController {
             self.copyToClipboardController.copyAddress(account)
         }
     }
-
+    
     private func linkInteractors(
-        _ cell: CollectibleDetailSendActionCell
+        _ cell: CollectibleDetailQuickActionsCell
     ) {
-        cell.startObserving(event: .performAction) {
+        cell.startObserving(event: .send) {
             [weak self] in
-            guard let self = self,
-                  let asset = self.account[self.asset.id] as? CollectibleAsset else {
+            guard let self = self else { return }
+            
+            if self.account.authorization.isNoAuth {
+                presentActionsNotAvailableForAccountBanner()
+                return
+            }
+            
+            guard let asset = self.account[self.asset.id] as? CollectibleAsset else {
                 return
             }
             
@@ -527,8 +574,38 @@ extension CollectibleDetailViewController {
                 }
             }
         }
-    }
 
+        cell.startObserving(event: .copy) {
+            [weak self] in
+            guard let self = self,
+                  let asset = self.account[self.asset.id] as? CollectibleAsset else {
+                return
+            }
+            
+            switch asset.mediaType {
+            case .image:
+                loadingController?.startLoadingWithMessage("title-loading".localized)
+                guard let downloadUrl = displayedMedia?.downloadURL ?? asset.thumbnailImage else { return }
+                dataController.getImageDataToCopy(from: downloadUrl)
+            default:
+                guard let explorerUrl = asset.explorerURL else { return }
+                self.copyToClipboardController.copyURL(explorerUrl.absoluteString)
+            }
+        }
+
+        cell.startObserving(event: .save) {
+            [weak self] in
+            guard let self = self,
+                  let asset = self.account[self.asset.id] as? CollectibleAsset,
+                  let downloadUrl = displayedMedia?.downloadURL ?? asset.thumbnailImage,
+                  let fileExtension = displayedMedia?.mediaExtension.rawValue else {
+                      return
+            }
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+            dataController.downloadAssetMediaToSave(from: downloadUrl, of: asset.mediaType, with: fileExtension)
+        }
+    }
+    
     private func shareCollectible() {
         var items: [Any] = []
 
@@ -863,12 +940,12 @@ extension CollectibleDetailViewController {
         if let transactionType = transactionController.currentTransactionType {
             let monitor = sharedDataController.blockchainUpdatesMonitor
             switch transactionType {
-            case .assetAddition:
+            case .optIn:
                 monitor.cancelMonitoringOptInUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
-            case .assetRemoval:
+            case .optOut:
                 monitor.cancelMonitoringOptOutUpdates(
                     forAssetID: asset.id,
                     for: account

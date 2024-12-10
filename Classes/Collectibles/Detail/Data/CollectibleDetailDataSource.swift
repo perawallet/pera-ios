@@ -61,9 +61,9 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 )
                 cell.contextView = mediaPreviewController.view
                 return cell
-            case .sendAction:
+            case .quickActions:
                 let cell = collectionView.dequeue(
-                    CollectibleDetailSendActionCell.self,
+                    CollectibleDetailQuickActionsCell.self,
                     at: indexPath
                 )
                 return cell
@@ -159,7 +159,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleMediaErrorCell.self,
             CollectibleDetailNameCell.self,
             CollectibleDetailAccountInformationCell.self,
-            CollectibleDetailSendActionCell.self,
+            CollectibleDetailQuickActionsCell.self,
             CollectibleDetailOptOutActionCell.self,
             CollectibleDescriptionCell.self,
             CollectibleDetailCreatorAccountItemCell.self,

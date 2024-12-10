@@ -60,7 +60,12 @@ class Environment {
     lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
-
+    
+    let testNetARC59AppID: Int64 = 643020148
+    let mainNetARC59AppID: Int64 = 2449590623
+    let testNetARC59AppAddress = "YIIC6GF4DUJYZTYTZ5UEOAXONUUKZRDFOTV4EKSGD5E7BYE6EE3IVPYEDQ"
+    let mainNetARC59AppAddress = "EZRVNZFJGOUZC67FUMEC7ZMVP232TPICFTQCVZ6EQEIRRT3TIHSKZULRNI"
+    
     lazy var serverHost: String = {
         switch target {
         case .staging:
@@ -118,6 +123,15 @@ class Environment {
             return "\(mainNetStagingMobileAPI)/v2/"
         case .prod:
             return "\(mainNetProductionMobileAPI)/v2/"
+        }
+    }()
+
+    lazy var stakingBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://staking-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://staking-mobile.perawallet.app/"
         }
     }()
 

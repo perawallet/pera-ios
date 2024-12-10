@@ -91,22 +91,17 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
         let algorandSDK = AlgorandSDK()
 
         for accountParameter in accountParameters where accountParameter.isImportable(using: algorandSDK) {
-            guard let privateKey = accountParameter.privateKey else {
-                continue
-            }
-
             let accountAddress = accountParameter.address
-
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                isWatchAccount: false,
+                isWatchAccount: accountParameter.accountType == .watch,
                 preferredOrder: currentPreferredOrder,
                 isBackedUp: true
             )
             transferAccounts.append(
                 TransferAccount(
-                    privateKey: privateKey,
+                    privateKey: accountParameter.privateKey,
                     accountInformation: accountInformation
                 )
             )
@@ -141,7 +136,9 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
             if sharedDataController.accountCollection[accountAddress] != nil {
                 unimportedAccounts.append(transferAccount.accountInformation)
             } else {
-                session.savePrivate(transferAccount.privateKey, for: accountAddress)
+                if let privateKey = transferAccount.privateKey {
+                    session.savePrivate(privateKey, for: accountAddress)
+                }
                 importableAccounts.append(transferAccount.accountInformation)
             }
         }

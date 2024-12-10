@@ -128,6 +128,10 @@ final class HomeViewController:
     private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
+    private var asasRequestsCount: Int?
+    private var incomingASAsRequestList: IncomingASAsRequestList?
+    private var listWasScrolled = false
+    
     init(
         swapDataStore: SwapDataStore,
         dataController: HomeDataController,
@@ -147,7 +151,7 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         configureNotificationBarButton()
-
+        configureASARequestBarButton()
         navigationView.prepareLayout(NoLayoutSheet())
 
         navigationItem.titleView = navigationView
@@ -182,14 +186,25 @@ final class HomeViewController:
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
                 }
+            case .deliverASARequestsContentUpdate(let asasReqUpdate):
+                self.asasRequestsCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.incomingASAsRequestList = asasReqUpdate
+                if self.asasRequestsCount == 0 {
+                    self.leftBarButtonItems = []
+                    self.setNeedsNavigationBarAppearanceUpdate()
+                }
+                if !listWasScrolled {
+                    self.configureASARequestBarButton()
+                }
             }
         }
+        
         dataController.load()
 
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
 
-        requestAppReview()
+        requestAppReview()        
     }
 
     override func viewDidLayoutSubviews() {
@@ -218,7 +233,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
-
+        dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
 
@@ -296,6 +311,28 @@ extension HomeViewController {
         rightBarButtonItems = [notificationBarButtonItem]
         setNeedsNavigationBarAppearanceUpdate()
     }
+    
+    private func configureASARequestBarButton() {
+        guard let asasRequestsCount,
+              asasRequestsCount > 0 else {
+            self.leftBarButtonItems = []
+            self.setNeedsNavigationBarAppearanceUpdate()
+            return
+        }
+        
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount)) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.openASAInbox()
+            }
+        }
+
+        leftBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
+    }
 }
 
 extension HomeViewController {
@@ -312,11 +349,37 @@ extension HomeViewController {
         updateNavigationBarWhenListDidScroll()
         updateListBackgroundWhenListDidScroll()
     }
-
+    
     private func updateNavigationBarWhenListDidScroll() {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-        navigationView.animateTitleVisible(!headerVisible)
+        navigationView.animateTitleVisible(!headerVisible) {
+            [weak self] isVisible in
+            guard let self else { return }
+            
+            if isVisible {
+                guard let asasRequestsCount = self.asasRequestsCount,
+                      asasRequestsCount > 0 else {
+                    return
+                }
+                
+                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(0)) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.openASAInbox()
+                    }
+                }
+                self.leftBarButtonItems = [notificationBarButtonItem]
+                self.setNeedsNavigationBarAppearanceUpdate()
+                self.listWasScrolled = true
+            } else {
+                self.listWasScrolled = false
+                self.configureASARequestBarButton()
+            }
+        }
     }
 
     private func addListBackground() {
@@ -484,6 +547,25 @@ extension HomeViewController {
 
     private func linkInteractors(
         _ cell: GenericAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.triggerBannerCTA(item: item)
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: StakingAnnouncementCell,
         for item: AnnouncementViewModel
     ) {
         cell.startObserving(event: .close) {
@@ -841,6 +923,8 @@ extension HomeViewController {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)
             case .backup:
                 linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
+            case .staking:
+                linkInteractors(cell as! StakingAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {
@@ -915,10 +999,11 @@ extension HomeViewController {
             case .didBackUp:
                 self.dataController.reload()
             }
-        }
-
+        }        
+        let requestCount = self.incomingASAsRequestList?.results
+            .first { $0.address == account.value.address }?.requestCount ?? 0
         open(
-            .accountDetail(accountHandle: account, eventHandler: eventHandler),
+            .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: requestCount),
             by: .push
         )
     }
@@ -1221,5 +1306,28 @@ extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegat
 
     func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
+    }
+}
+
+extension HomeViewController {
+    private func openASAInbox() {
+        let screen = open(
+            .incomingASAAccounts(
+                result: incomingASAsRequestList
+            ),
+            by: .push
+        ) as? IncomingASAAccountsViewController
+        
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let screen else {
+                return
+            }
+                                
+            switch event {
+            case .didCompleteTransaction:
+                screen.closeScreen(by: .pop, animated: false)
+            }
+        }
     }
 }

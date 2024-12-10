@@ -53,6 +53,7 @@ extension Colors {
         case verifiedIconInline = "ASA/verifiedIconInline"
         case verifiedIconSolidBackground = "ASA/verifiedSolidBackground"
         case verifiedIconSolidInline = "ASA/verifiedSolidInline"
+        case asaBarButton = "ASA/asaBarButton"
     }
 }
 
@@ -114,6 +115,7 @@ extension Colors {
             case disabledBackground = "ButtonGhost/disabledBg"
             case disabledText = "ButtonGhost/disabledText"
             case focusBackground = "ButtonGhost/focusBg"
+            case focusBackgroundDark = "ButtonGhost/focusBgDark"
             case text = "ButtonGhost/text"
         }
 
@@ -176,6 +178,7 @@ extension Colors {
         Color {
         case background = "Defaults/bg"
         case systemElements = "Defaults/systemElements"
+        case black = "Defaults/black"
     }
 }
 
@@ -263,6 +266,7 @@ extension Colors {
             String,
             Color {
             case bottomLine = "Shadows/Tab/bottomLine"
+            case bottomLineDark = "Shadows/Tab/bottomLineDark"
         }
 
         enum TextField:
@@ -310,9 +314,11 @@ extension Colors {
         String,
         Color {
         case main = "Text/main"
+        case mainDark = "Text/mainDark"
         case gray = "Text/gray"
         case grayLighter = "Text/grayLighter"
         case white = "Text/white"
+        case sonicSilver = "Text/sonicSilver"
     }
 }
 
@@ -375,6 +381,7 @@ extension Colors {
         enum Global:
             String,
             Color {
+            case gray98 = "Other/Global/gray98"
             case gray400 = "Other/Global/gray400"
             case gray800 = "Other/Global/gray800"
             case yellow600 = "Other/Global/yellow600"

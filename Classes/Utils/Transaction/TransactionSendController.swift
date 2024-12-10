@@ -32,7 +32,7 @@ final class TransactionSendController {
         return false
     }
 
-    let draft: SendTransactionDraft
+    var draft: SendTransactionDraft
 
     private let api: ALGAPI
     private let analytics: ALGAnalytics

@@ -17,17 +17,38 @@
 
 import Foundation
 
-class RekeyTransactionDataBuilder: TransactionDataBuilder {
-
-    override func composeData() -> Data? {
-        return composeRekeyTransactionData()
+final class RekeyTransactionDataBuilder: TransactionDataBuildable {
+    var eventHandler: ((TransactionDataBuildableEvent) -> Void)?
+    
+    private let algorandSDK = AlgorandSDK()
+    
+    let params: TransactionParams
+    let draft: TransactionSendDraft
+    
+    init(
+        params: TransactionParams,
+        draft: TransactionSendDraft
+    ) {
+        self.params = params
+        self.draft = draft
     }
 
-    private func composeRekeyTransactionData() -> Data? {
-        guard let params = params,
-              let rekeyTransactionSendDraft = draft as? RekeyTransactionSendDraft,
+    func composeData() -> [TransactionDataItem]? {
+        return composeRekeyTransactionData()
+    }
+}
+
+private extension RekeyTransactionDataBuilder {
+    func composeRekeyTransactionData() -> [TransactionDataItem]? {
+        guard let rekeyTransactionSendDraft = draft as? RekeyTransactionSendDraft,
               let rekeyedAccount = rekeyTransactionSendDraft.toAccount else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.draft(draft: draft)))
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.draft(draft: draft)
+                    )
+                )
+            )
             return nil
         }
 
@@ -38,11 +59,25 @@ class RekeyTransactionDataBuilder: TransactionDataBuilder {
             transactionParams: params
         )
 
-        guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
-            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
+        guard let transactionData = algorandSDK.rekeyAccount(
+            with: rekeyTransactionDraft,
+            error: &transactionError
+        ) else {
+            eventHandler?(
+                .didFailedComposing(
+                    error: .inapp(
+                        TransactionError.sdkError(error: transactionError)
+                    )
+                )
+            )
             return nil
         }
 
-        return transactionData
+        return  [
+            TransactionDataItem(
+                sender: rekeyTransactionDraft.from.address,
+                transaction: transactionData
+            )
+        ]
     }
 }

@@ -446,10 +446,11 @@ extension AlgorandSecureBackupMnemonicsScreen {
     }
 
     private func getAccountImportParameters() -> [AccountImportParameters] {
-        accounts.map { account in
+        return accounts.map { account in
             let privateKey = session?.privateData(for: account.address)
             return .init(
                 account: account,
+                accountType: account.isWatchAccount ? .watch : .single,
                 privateKey: privateKey
             )
         }

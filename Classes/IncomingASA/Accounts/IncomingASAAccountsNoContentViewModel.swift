@@ -1,0 +1,57 @@
+// Copyright 2024 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   IncomingASAAccountsNoContentViewModel.swift
+
+import Foundation
+import MacaroonUIKit
+
+struct IncomingASAAccountsNoContentViewModel: NoContentViewModel {
+    private(set) var icon: Image?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
+
+    init() {
+        bindTitle()
+        bindBody()
+    }
+}
+
+extension IncomingASAAccountsNoContentViewModel {
+    private mutating func bindTitle() {
+        let text = "incoming-asa-accounts-screen-no-content-cell-title".localized
+        title = text
+                .bodyMedium(alignment: .center)
+                .addAttributes(
+                    to: text,
+                    newAttributes: .init([
+                        .textColor( Colors.Text.main),
+                        .font(Typography.bodyMedium())
+                    ])
+                )
+    }
+
+    private mutating func bindBody() {
+        let text = "incoming-asa-accounts-screen-no-content-cell-body".localized
+        body = text
+                .bodyMedium(alignment: .center)
+                .addAttributes(
+                    to: text,
+                    newAttributes: .init([
+                        .textColor( Colors.Text.gray),
+                        .font(Typography.footnoteRegular())
+                    ])
+                )
+    }
+}

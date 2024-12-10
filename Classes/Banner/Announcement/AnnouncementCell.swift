@@ -56,6 +56,18 @@ extension AnnouncementCell {
     }
 }
 
+final class StakingAnnouncementCell: AnnouncementCell {
+    static let theme = StakingAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}
+
+
 final class GenericAnnouncementCell: AnnouncementCell {
     static let theme = GenericAnnouncementViewTheme()
     

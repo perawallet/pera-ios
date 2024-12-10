@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import UIKit
 
 final class CollectibleDetailAPIDataController:
     CollectibleDetailDataController,
@@ -291,7 +292,7 @@ extension CollectibleDetailAPIDataController {
         }
 
         if asset.isOwned {
-            addSendActionContent(&snapshot)
+            addActionsContent(&snapshot)
             return
         }
 
@@ -305,12 +306,12 @@ extension CollectibleDetailAPIDataController {
         }
     }
 
-    private func addSendActionContent(
+    private func addActionsContent(
         _ snapshot: inout Snapshot
     ) {
         snapshot.appendSections([.action])
         snapshot.appendItems(
-            [.sendAction],
+            [.quickActions],
             toSection: .action
         )
     }
@@ -422,5 +423,58 @@ extension CollectibleDetailAPIDataController {
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
+    }
+}
+
+extension CollectibleDetailAPIDataController {
+    func getImageDataToCopy(
+        from url: URL
+    ) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard error == nil,
+                  let data = data,
+                  let image = UIImage(data: data) else {
+                self.eventHandler?(.didImageResponseFail(url: url))
+                return
+            }
+            self.eventHandler?(.didFetchImage(image))
+        }.resume()
+    }
+    
+    func downloadAssetMediaToSave(
+        from url: URL,
+        of type: MediaType,
+        with fileExtension: String
+    ) {
+        let fileComponents = url.lastPathComponent.split(separator: ".", maxSplits: 1)
+        URLSession.shared.downloadTask(with: url) { tempLocalUrl, _, error in
+            do {
+                guard error == nil,
+                      let tempLocalUrl = tempLocalUrl,
+                      let fileName = fileComponents.first?.string,
+                      let destinationURL = try self.handleDownloadedCollectible(at: tempLocalUrl, with: fileName, and: fileExtension) else {
+                    throw FileError.missingData
+                }
+                self.eventHandler?(.didFetchMedia(destinationURL))
+            } catch {
+                self.eventHandler?(.didMediaResponseFail(url: url))
+            }
+        }.resume()
+    }
+    
+    private func handleDownloadedCollectible(
+        at temporaryLocalUrl: URL,
+        with fileName: String,
+        and fileExtension: String
+    ) throws -> URL? {
+        let destinationURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+        
+        if FileManager.default.fileExists(atPath: destinationURL.path) {
+            try FileManager.default.removeItem(at: destinationURL)
+        }
+        
+        try FileManager.default.moveItem(at: temporaryLocalUrl, to: destinationURL)
+        
+        return destinationURL
     }
 }

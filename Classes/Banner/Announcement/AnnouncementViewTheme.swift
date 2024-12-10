@@ -36,9 +36,63 @@ protocol AnnouncementViewTheme: StyleSheet, LayoutSheet {
     var closeSize: LayoutSize { get }
 }
 
+struct StakingAnnouncementViewTheme: AnnouncementViewTheme {
+    var background: ViewStyle
+    var backgroundImage: ImageSource? = nil
+    var corner: Corner
+    var stackViewEdgeInset: LayoutMargins
+    var stackViewLayoutMargins: LayoutMargins
+    var stackViewItemSpacing: LayoutMetric
+    var stackViewButtonSpacing: LayoutMetric
+    var title: TextStyle
+    var subtitle: TextStyle
+    var action: ButtonStyle
+    var actionEdgeInsets: LayoutPaddings
+    var actionHeight: LayoutMetric
+    var close: ButtonStyle
+    var closeMargins: LayoutMargins
+    var closeSize: LayoutSize
+    
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.background = [
+            .backgroundColor(Colors.Banner.background)
+        ]
+        self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-generic-banners"))
+        self.corner = Corner(radius: 4)
+        self.stackViewEdgeInset = (24, 24, 28, 24)
+        self.stackViewLayoutMargins = (0, 0, 0, 0)
+        self.stackViewItemSpacing = 12
+        self.stackViewButtonSpacing = 16
+        self.title = [
+            .font(Fonts.DMSans.medium.make(15)),
+            .textOverflow(FittingText()),
+            .textColor(Colors.Banner.text)
+        ]
+        self.subtitle = [
+            .font(Fonts.DMSans.regular.make(13)),
+            .textOverflow(FittingText()),
+            .textColor(Colors.Banner.text)
+        ]
+        self.action = [
+            .backgroundImage([.normal("banner-cta-background")]),
+            .font(Fonts.DMSans.medium.make(13))
+        ]
+        self.actionEdgeInsets = (0, 20, 0, 20)
+        self.actionHeight = 44
+        self.close = [
+            .backgroundImage([.normal("icon-new-generic-close-banner")])
+        ]
+        self.closeMargins = (8, .noMetric, .noMetric, 8)
+        self.closeSize = (24, 24)
+    }
+}
+
 struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
     var background: ViewStyle
     var backgroundImage: ImageSource? = nil
+    var backgroundLeadingMargin: LayoutMetric? = nil
     var corner: Corner
     var stackViewEdgeInset: LayoutMargins
     var stackViewLayoutMargins: LayoutMargins

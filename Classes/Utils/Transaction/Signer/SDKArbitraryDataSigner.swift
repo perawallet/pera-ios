@@ -16,8 +16,12 @@
 
 import Foundation
 
-final class SDKArbitraryDataSigner: TransactionSigner {
-    override func sign(
+final class SDKArbitraryDataSigner: TransactionSignable {
+    private let algorandSDK = AlgorandSDK()
+    
+    var eventHandler: ((TransactionSignableEvent) -> Void)?
+    
+    func sign(
         _ data: Data?,
         with privateData: Data?
     ) -> Data? {
@@ -30,9 +34,12 @@ final class SDKArbitraryDataSigner: TransactionSigner {
                 with: privateData,
                 with: &error
               ) else {
-            delegate?.transactionSigner(
-                self,
-                didFailedSigning: .inapp(TransactionError.sdkError(error: error))
+            eventHandler?(
+                .didFailedSigning(
+                    error: .inapp(
+                        .sdkError(error: error)
+                    )
+                )
             )
             return nil
         }

@@ -64,7 +64,8 @@ struct SendTransactionDraft: TransactionSendDraft {
         toAccount != nil || toContact != nil
     }
     var toNameService: NameService?
-    var isOptingOut: Bool = false
+    var isOptingOut = false
+    var isReceiverOptingInToAsset = false
  }
 
 enum TransactionMode {

@@ -417,6 +417,12 @@ final class Router:
                 default: break
                 }
             }
+        case .assetInbox(let address, let requestsCount):
+            route(
+                to: .incomingASA(address: address, requestsCount: requestsCount),
+                from: findVisibleScreen(over: rootViewController),
+                by: .push
+            )
         }
     }
     
@@ -749,7 +755,7 @@ final class Router:
                 ),
                 configuration: configuration
             )
-        case let .accountDetail(accountHandle, eventHandler):
+        case let .accountDetail(accountHandle, eventHandler, incomingASAsRequestsCount):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
@@ -760,7 +766,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration, 
+                incomingASAsRequestsCount: incomingASAsRequestsCount
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
@@ -1096,6 +1103,61 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .incomingASAAccounts(result):
+            
+            let dataController = IncomingASAAccountsLocalDataController(
+                incomingASAsRequestList: result,
+                sharedDataController: configuration.sharedDataController
+            )
+            
+            viewController = IncomingASAAccountsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            
+        case let .incomingASA(address, requestsCount):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let dataController = IncomingASAAccountInboxAPIDataController(
+                address: address,
+                requestsCount: requestsCount,
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api
+            )
+            viewController = IncomingASAAccountInboxViewController(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+        case let .incomingASAsDetail(draft):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transactionController = IncomingASATransactionController(
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api, 
+                bannerController: configuration.bannerController,
+                analytics: configuration.analytics,
+                draft: draft
+            )
+
+            let screen = IncomingASAsDetailScreen(
+                draft: draft,
+                configuration: configuration,
+                transactionController: transactionController, 
+                copyToClipboardController: 
+                    ALGCopyToClipboardController(
+                        toastPresentationController: appConfiguration.toastPresentationController
+                    ),
+                presentingScreen: visibleScreen
+            )
+
+            viewController = screen
+        case .successResultScreen(let viewModel, let theme):
+            viewController = SuccessResultScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
@@ -1152,6 +1214,10 @@ final class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = true
             viewController = resultScreen
+        case .sendAssetAndOptInTransactionInfo:
+            viewController = SendAssetAndOptInTransactionInfoScreen(
+                configuration: configuration
+            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -2048,6 +2114,15 @@ final class Router:
                 theme: theme,
                 api: configuration.api
             )
+        case let .sendAssetInbox(draft):
+            viewController = SendAssetInboxScreen(
+                draft: draft,
+                transactionSigner: SwapTransactionSigner(
+                    api: appConfiguration.api,
+                    analytics: appConfiguration.analytics
+                ),
+                configuration: configuration
+            )
         case let .backUpAccountSelection(eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
@@ -2090,6 +2165,8 @@ final class Router:
                 configuration: configuration
             )
 
+        case .staking:
+            viewController = StakingScreen(configuration: configuration)
         }
         return viewController as? T
     }
@@ -2191,7 +2268,7 @@ extension Router {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
         if account.requiresLedgerConnection() {
             openLedgerConnection()
@@ -3112,7 +3189,7 @@ extension Router {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
             if account.requiresLedgerConnection() {
                 self.openLedgerConnection()

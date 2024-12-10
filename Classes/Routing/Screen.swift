@@ -41,7 +41,7 @@ indirect enum Screen {
     )
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
-    case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
+    case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler, incomingASAsRequestsCount: Int)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case renameAccount(account: Account, delegate: RenameAccountScreenDelegate)
@@ -167,6 +167,19 @@ indirect enum Screen {
         wcSession: WCSessionDraft
     )
     case jsonDisplay(jsonData: Data, title: String)
+    
+    case incomingASAAccounts(
+        result: IncomingASAsRequestList?
+    )
+    case incomingASA(
+        address: String,
+        requestsCount: Int
+    )
+    case incomingASAsDetail(draft: IncomingASAListItem)
+    case successResultScreen(
+        viewModel: SuccessResultScreenViewModel,
+        theme: SuccessResultScreenViewTheme = SuccessResultScreenTheme()
+    )
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
         dataController: SortAccountListDataController,
@@ -189,6 +202,7 @@ indirect enum Screen {
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
     )
     case transactionResult
+    case sendAssetAndOptInTransactionInfo
     case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(
         draft: WalletConnectTransactionSignRequestDraft,
@@ -424,6 +438,8 @@ indirect enum Screen {
     case backUpAccountSelection(
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
+    case staking
+    case sendAssetInbox(draft: SendAssetInboxDraft)
 }
 
 extension Screen {

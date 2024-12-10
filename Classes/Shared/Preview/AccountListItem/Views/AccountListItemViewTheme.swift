@@ -19,9 +19,20 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
+protocol PrimaryAccountListItemViewTheme: StyleSheet, LayoutSheet {
+    var icon: ImageStyle { get }
+    var iconSize: LayoutSize { get }
+    var iconBottomRightBadgePaddings: LayoutPaddings { get }
+    var horizontalPadding: LayoutMetric { get }
+    var contentMinWidthRatio: LayoutMetric { get }
+    var title: PrimaryTitleViewTheme { get }
+    var primaryAccessory: TextStyle { get }
+    var secondaryAccessory: TextStyle { get }
+    var accessoryIcon: ImageStyle { get }
+    var accessoryIconContentEdgeInsets: LayoutOffset { get }    
+}
+
+struct AccountListItemViewTheme: PrimaryAccountListItemViewTheme {
     var icon: ImageStyle
     var iconSize: LayoutSize
     var iconBottomRightBadgePaddings: LayoutPaddings
@@ -56,10 +67,10 @@ struct AccountListItemViewTheme:
 }
 
 fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
-    let primaryTitle: TextStyle
+    var primaryTitle: TextStyle
     let primaryTitleAccessory: ImageStyle
     let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
-    let secondaryTitle: TextStyle
+    var secondaryTitle: TextStyle
     let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
     init(_ family: LayoutFamily) {

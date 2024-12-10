@@ -22,7 +22,7 @@ struct AccountImportParameters: ALGEntityModel {
     let name: String?
     let accountType: AccountType
     let privateKey: Data?
-
+    
     init() {
         address = ""
         name = nil
@@ -30,10 +30,10 @@ struct AccountImportParameters: ALGEntityModel {
         privateKey = nil
     }
 
-    init(account: Account, privateKey: Data?) {
+    init(account: Account, accountType: AccountType, privateKey: Data?) {
         self.address = account.address
         self.name = account.name
-        self.accountType = .single
+        self.accountType = accountType
         self.privateKey = privateKey
     }
 
@@ -71,13 +71,14 @@ extension AccountImportParameters {
         Hashable {
         case single
         case unsupported(String)
-
+        case watch
         typealias RawAccountType = AccountAuthorization
 
         var rawValue: String {
             switch self {
             case .single: return "single"
             case .unsupported(let someType): return someType
+            case .watch: return "watch"
             }
         }
 
@@ -85,6 +86,7 @@ extension AccountImportParameters {
             switch self {
             case .single: return .standard
             case .unsupported: return .standard
+            case .watch: return .watch
             }
         }
 
@@ -129,11 +131,15 @@ extension AccountImportParameters {
     }
 
     func isImportable(using algorandSDK: AlgorandSDK) -> Bool {
-        guard let privateKey = privateKey else {
+        if accountType == .watch {
+            return algorandSDK.isValidAddress(self.address)
+        }
+        
+        if case .unsupported = accountType {
             return false
         }
-
-        guard accountType == .single else {
+        
+        guard accountType == .single, let privateKey = privateKey else {
             return false
         }
 
