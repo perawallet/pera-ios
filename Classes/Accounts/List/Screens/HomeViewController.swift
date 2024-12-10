@@ -204,7 +204,7 @@ final class HomeViewController:
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
 
-        requestAppReview()
+        requestAppReview()        
     }
 
     override func viewDidLayoutSubviews() {
@@ -565,6 +565,25 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
+        _ cell: StakingAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.triggerBannerCTA(item: item)
+        }
+    }
+
+    private func linkInteractors(
         _ cell: AccountNotBackedUpWarningCell
     ) {
         cell.startObserving(event: .performBackup) {
@@ -904,6 +923,8 @@ extension HomeViewController {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)
             case .backup:
                 linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
+            case .staking:
+                linkInteractors(cell as! StakingAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {

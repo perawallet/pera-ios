@@ -30,7 +30,7 @@ struct AnnouncementViewModel:
         switch type {
         case .backup:
             return true
-        case .governance, .generic:
+        case .governance, .generic, .staking:
             return ctaUrl != nil && ctaTitle != nil
         }
     }
@@ -41,7 +41,7 @@ struct AnnouncementViewModel:
         switch model.type {
         case .backup:
             configureForBackup()
-        case .generic:
+        case .generic, .staking:
             configureForGeneric(model)
         case .governance:
             configureForGovernance(model)

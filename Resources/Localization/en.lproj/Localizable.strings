@@ -93,6 +93,7 @@
 "title-about-with-param" = "ABOUT %@";
 "title-csv" = "CSV";
 "title-swap" = "Swap";
+"title-staking" = "Stake";
 "title-later" = "Later";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
@@ -1234,6 +1235,7 @@
 
 // MARK: Transaction Options
 "transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
+"transaction-option-list-staking-subtitle" = "Explore the ecosystem for staking rewards";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";

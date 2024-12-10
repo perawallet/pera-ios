@@ -2165,6 +2165,8 @@ final class Router:
                 configuration: configuration
             )
 
+        case .staking:
+            viewController = StakingScreen(configuration: configuration)
         }
         return viewController as? T
     }

@@ -342,6 +342,12 @@ extension HomeListLayout {
                 for: GenericAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
+        case .staking:
+            return StakingAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GenericAnnouncementCell.theme,
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
         }
     }
 }
