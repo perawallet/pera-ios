@@ -497,8 +497,14 @@ extension CollectibleDetailViewController {
     ) {
         cell.startObserving(event: .performAction) {
             [weak self] in
-            guard let self = self,
-                  let asset = self.account[self.asset.id] as? CollectibleAsset else {
+            guard let self = self else { return }
+            
+            if self.account.authorization.isNoAuth {
+                presentActionsNotAvailableForAccountBanner()
+                return
+            }
+            
+            guard let asset = self.account[self.asset.id] as? CollectibleAsset else {
                 return
             }
             
