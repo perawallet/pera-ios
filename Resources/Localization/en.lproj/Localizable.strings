@@ -101,6 +101,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"image-copied-to-clipboard" = "Image copied to clipboard";
 "title-copied-to-clipboard" = "Copied to clipboard";
 "account-not-found" = "Account not found";
 "title-select-all" = "Select all";

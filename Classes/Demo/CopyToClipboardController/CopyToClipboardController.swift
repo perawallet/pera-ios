@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 protocol CopyToClipboardController {
     func copy(
@@ -134,18 +135,32 @@ extension CopyToClipboardController {
         let item = ClipboardItem(copy: someText, interaction: interaction)
         return copy(item)
     }
+    
+    func copyImage(
+        _ someImage: UIImage
+    ) {
+        let interaction = CopyToClipboardInteraction(
+            title: "image-copied-to-clipboard".localized,
+            body: nil
+        )
+        let item = ClipboardItem(image: someImage, interaction: interaction)
+        return copy(item)
+    }
 }
 
 struct ClipboardItem {
     let copy: String
+    let image: UIImage?
     /// The message to interact with the user as the result of the copy action.
     let interaction: ClipboardInteraction?
 
     init(
-        copy: String,
+        copy: String = "",
+        image: UIImage? = nil,
         interaction: ClipboardInteraction? = nil
     ) {
         self.copy = copy
+        self.image = image
         self.interaction = interaction
     }
 }

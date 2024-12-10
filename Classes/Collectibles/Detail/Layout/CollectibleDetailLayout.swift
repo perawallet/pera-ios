@@ -170,8 +170,8 @@ extension CollectibleDetailLayout {
                 layout: collectionViewLayout,
                 sizeForErrorItem: item
             )
-        case .sendAction:
-            return sizeForSendActionItem(
+        case .quickActions:
+            return listView(
                 collectionView,
                 layout: collectionViewLayout
             )
@@ -310,17 +310,19 @@ extension CollectibleDetailLayout {
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
     }
-
-    private func sizeForSendActionItem(
+    
+    private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let width = calculateContentWidth(listView)
-
-        return CollectibleDetailSendActionCell.calculatePreferredSize(
-            for: CollectibleDetailSendActionCell.theme,
+        let width = calculateContentWidth(listView
+        )
+        let newSize = CollectibleDetailQuickActionsCell.calculatePreferredSize(
+            for: CollectibleDetailQuickActionsCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
+
+        return newSize
     }
 
     private func sizeForOptedInActionItem(
