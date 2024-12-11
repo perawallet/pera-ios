@@ -6815,6 +6815,9 @@
 		D4DADADE29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
 		D4DADADF29F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
 		D4DADAE029F19AFF002836BE /* RemoveAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */; };
+		D4DB80062CEE08D400939AF5 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB80042CEE067500939AF5 /* Bundle+Extension.swift */; };
+		D4DB80072CEE08E200939AF5 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB80042CEE067500939AF5 /* Bundle+Extension.swift */; };
+		D4DB80082CEE08E200939AF5 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB80042CEE067500939AF5 /* Bundle+Extension.swift */; };
 		D4DC267728AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
 		D4DC267828AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
 		D4DC267928AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */; };
@@ -10241,6 +10244,7 @@
 		D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationStatusViewTheme.swift; sourceTree = "<group>"; };
 		D4DA32DB2AEBDE2900F07CA8 /* KeyRegTransactionDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRegTransactionDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountSheet.swift; sourceTree = "<group>"; };
+		D4DB80042CEE067500939AF5 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		D4DC267628AF94F80068152E /* AlertScreenWithFillingImageTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreenWithFillingImageTheme.swift; sourceTree = "<group>"; };
 		D4DC269628B145160068152E /* TransactionOptionsScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOptionsScreenTheme.swift; sourceTree = "<group>"; };
 		D4DC26AE28B3A22E0068152E /* ASAAboutScreenASAIDSecondaryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAAboutScreenASAIDSecondaryListItem.swift; sourceTree = "<group>"; };
@@ -14433,6 +14437,7 @@
 		2B9540EB25A85C9C0098805B /* Bundle */ = {
 			isa = PBXGroup;
 			children = (
+				D4DB80042CEE067500939AF5 /* Bundle+Extension.swift */,
 				2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */,
 			);
 			path = Bundle;
@@ -25842,6 +25847,7 @@
 				2BB350C625892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				954DFF2D2794607A0066FFF6 /* WCUnsignedRequestViewTheme.swift in Sources */,
 				D450DE6D2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */,
+				D4DB80082CEE08E200939AF5 /* Bundle+Extension.swift in Sources */,
 				D46BB382277CE86E00F50F44 /* TransactionContactInformationViewModel.swift in Sources */,
 				F063BE76290BF7BA00AEAEF7 /* EditSwapSlippageScreen.swift in Sources */,
 				17BD4ED32292F1260003E49A /* algorand.xcdatamodeld in Sources */,
@@ -28756,6 +28762,7 @@
 				D459E28C27DE540600F7FC33 /* CollectibleTransactionInfoView.swift in Sources */,
 				955B617227848188005A5C7E /* WCScrollOverlayFragment.swift in Sources */,
 				D4C68D82277DB2F90019C882 /* TransactionFilterViewController+Theme.swift in Sources */,
+				D4DB80072CEE08E200939AF5 /* Bundle+Extension.swift in Sources */,
 				D4092BA0276B495D0009722D /* WCSessionShortListView.swift in Sources */,
 				2B0AD8332757DEB200F83660 /* SingleLineTitleActionView.swift in Sources */,
 				2BB98FC72979456A00262D63 /* WCTransactionRequestReceivedEvent.swift in Sources */,
@@ -30983,6 +30990,7 @@
 				D48FDFAF27CE327700C39FC7 /* TitleViewTheme.swift in Sources */,
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6BFE27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
+				D4DB80062CEE08D400939AF5 /* Bundle+Extension.swift in Sources */,
 				D4F4C8FA29D1B5670069FB94 /* AccountInformationNoAuthAccountItemViewModel.swift in Sources */,
 				D4CA4EBC29E00ADA00E231EB /* RekeyAccountSelectionListHeader.swift in Sources */,
 				D47C4AA92791B5B90012D7A6 /* ListErrorViewModel.swift in Sources */,
@@ -31580,7 +31588,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31593,7 +31601,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31609,7 +31617,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31621,7 +31629,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31637,7 +31645,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31649,7 +31657,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31666,7 +31674,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31679,7 +31687,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31696,7 +31704,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31708,7 +31716,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31725,7 +31733,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31737,7 +31745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31876,7 +31884,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
 				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
@@ -31891,7 +31899,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31910,7 +31918,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31923,7 +31931,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32069,7 +32077,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -32082,7 +32090,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.15.1;
+				MARKETING_VERSION = 90.23.1134;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
