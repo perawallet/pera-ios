@@ -272,6 +272,7 @@
 "qr-scan-option-send-transaction" = "Send transaction";
 "qr-scan-option-add-watch" = "Add Watch account";
 "qr-scan-option-add-contact" = "Add new contact";
+"qr-scan-account-match-error" = "You don't have any authorized account matching with %@";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -1784,3 +1785,18 @@ FAQ section.";
 "send-inbox-action-title" = "Send to Receiver";
 "send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
 "send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";
+
+/// MARK: Send KeyReg Transaction
+"title-txn-sign-request" = "Transaction Signature Request";
+"title-keyreg-txn-address" = "Address";
+"title-keyreg-txn-fee" = "Fee";
+"title-keyreg-txn-type" = "Type";
+"title-keyreg-txn-selection" = "Selection key";
+"title-keyreg-txn-voting" = "Voting key";
+"title-keyreg-txn-state" = "State proof key";
+"title-keyreg-txn-key" = "Key dilution";
+"title-keyreg-txn-first" = "First valid round";
+"title-keyreg-txn-xnote" = "xNote";
+"title-keyreg-txn-note" = "Note";
+"title-keyreg-txn-last" = "Last valid round";
+"title-txn-completed" = "Transaction completed";

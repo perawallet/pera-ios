@@ -100,6 +100,8 @@ class TransactionFeeCalculator: NSObject {
             if isAfterTransaction {
                 assetCount += 1
             }
+        case .keyreg:
+            break
         }
 
         let createdAppAmount = minimumTransactionMicroAlgosLimit * UInt64(account.totalCreatedApps)

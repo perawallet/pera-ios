@@ -440,6 +440,10 @@ indirect enum Screen {
     )
     case staking
     case sendAssetInbox(draft: SendAssetInboxDraft)
+    case sendKeyRegTransaction(
+        account: Account,
+        transactionDraft: KeyRegTransactionSendDraft
+    )
 }
 
 extension Screen {

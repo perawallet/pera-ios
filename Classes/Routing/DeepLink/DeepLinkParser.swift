@@ -440,6 +440,10 @@ extension DeepLinkParser {
             )
         case .mnemonic:
             return nil
+        case .keyregRequest:
+            return makeKeyRegTransactionRequestScreen(
+                qrText
+            )
         }
     }
     
@@ -548,6 +552,28 @@ extension DeepLinkParser {
 
         return .success(.accountSelect(asset: assetID))
     }
+    
+    private func makeKeyRegTransactionRequestScreen(
+        _ qr: QRText
+    ) -> Result? {
+        guard
+            let accountAddress = qr.address,
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAssetsToBeAvailable)
+        }
+        
+        guard let account = sharedDataController.accountCollection[accountAddress]?.value else {
+            return .failure(.accountNotFound)
+        }
+
+        let draft = KeyRegTransactionSendDraft(
+            account: account,
+            qrText: qr
+        )
+
+        return .success(.keyRegTransaction(account: account, draft: draft))
+    }
 }
 
 extension DeepLinkParser {
@@ -634,6 +660,7 @@ extension DeepLinkParser {
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil
         )
+        case keyRegTransaction(account: Account, draft: KeyRegTransactionSendDraft)
         case wcMainTransactionScreen(draft: WalletConnectTransactionSignRequestDraft)
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
         case accountSelect(asset: AssetID)
