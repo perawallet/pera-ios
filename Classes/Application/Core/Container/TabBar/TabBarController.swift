@@ -42,6 +42,9 @@ final class TabBarController: TabBarContainer {
         self.navigateToBuySell()
     }
 
+    private lazy var stakingActionViewModel = createStakingActionViewModel()
+    private lazy var stakingAction = createStakingListAction()
+    
     private lazy var swapActionViewModel = createSwapActionViewModel()
     private lazy var swapAction = createSwapListAction()
 
@@ -113,6 +116,8 @@ final class TabBarController: TabBarContainer {
         sharedDataController: sharedDataController,
         appLaunchController: appLaunchController
     )
+
+    private lazy var stakingFlowCoordinator = StakingFlowCoordinator(presentingScreen: self)
 
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
@@ -249,11 +254,10 @@ extension TabBarController {
 
         let aView = TransactionOptionsView(
             actions: [
+                stakingAction,
                 swapAction,
                 buySellAction,
-                sendAction,
                 receiveAction,
-                scanQRCodeAction,
                 browseDAppsAction
             ]
         )
@@ -366,6 +370,12 @@ extension TabBarController {
 }
 
 extension TabBarController {
+    
+    private func navigateToStakingFlow() {
+        toggleTransactionOptions()
+        stakingFlowCoordinator.launch()
+    }
+    
     private func navigateToSwapAssetFlow() {
         toggleTransactionOptions()
         swapAssetFlowCoordinator.resetDraft()
@@ -467,6 +477,22 @@ extension TabBarController {
         swapActionViewModel = createSwapActionViewModel()
         swapAction = createSwapListAction()
         transactionOptionsView = createTransactionOptions()
+    }
+
+    private func createStakingActionViewModel() -> StakingTransactionOptionListItemButtonViewModel {
+        StakingTransactionOptionListItemButtonViewModel(isBadgeVisible: false)
+    }
+    
+    private func createStakingListAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: stakingActionViewModel
+        ) {
+            [weak self] actionView in
+            guard let self = self else { return }
+            
+            actionView.bindData(self.stakingActionViewModel)
+            self.navigateToStakingFlow()
+        }
     }
 
     private func createSwapActionViewModel() -> SwapTransactionOptionListItemButtonViewModel {

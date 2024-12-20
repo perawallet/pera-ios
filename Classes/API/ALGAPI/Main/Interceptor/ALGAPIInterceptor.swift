@@ -19,10 +19,13 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 import MagpieHipo
+import UIKit
 
 final class ALGAPIInterceptor: APIInterceptor {
 
     private let sharedHeaders: Headers = [AcceptJSONHeader(), AcceptGZIPEncodingHeader(), ContentTypeJSONHeader()]
+    
+    private let userAgentHeader: Header = UserAgentHeader()
 
     private lazy var apiBase = ALGAPIBase()
 
@@ -94,6 +97,7 @@ extension ALGAPIInterceptor {
         endpoint.setAdditionalHeader(ClientTypeHeader(device), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(DeviceOSVersionHeader(device), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(DeviceModelHeader(device), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(userAgentHeader)
     }
 }
 
@@ -131,5 +135,46 @@ struct ModificationHeader: Header {
     ) {
         self.key = "X-Modification-Key"
         self.value = modificationKey
+    }
+}
+
+struct UserAgentHeader: Header {
+    let key: String
+    var value: String?
+    
+    private let platform = UIDevice.current.systemName
+    private let modelName = UIDevice.current.model
+    private let operationSystemVersion = ProcessInfo.processInfo.operatingSystemVersionString
+    
+    init() {
+        self.key = "User-Agent"
+        self.value = Bundle.main.buildInfo + " " +
+        "(\(platform); \(modelName); \(operationSystemVersion)) " +
+        "CFNetwork/\(cfNetworkVersion ?? "") " +
+        "Darwin/\(darwinVersion ?? "")" + " " +
+        Bundle.main.peraVersion
+    }
+}
+
+fileprivate extension UserAgentHeader {
+    var cfNetworkVersion: String? {
+        guard
+            let bundle = Bundle(identifier: "com.apple.CFNetwork"),
+            let versionAny = bundle.infoDictionary?[kCFBundleVersionKey as String],
+            let version = versionAny as? String
+        else { return nil }
+        return version
+    }
+    
+    var darwinVersion: String? {
+        var utsnameInfo = utsname()
+        uname(&utsnameInfo)
+        
+        let versionCString = withUnsafePointer(to: &utsnameInfo.release) {
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
+                String(cString: $0)
+            }
+        }
+        return versionCString
     }
 }

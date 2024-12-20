@@ -125,7 +125,6 @@ extension IncomingASAAccountInboxAPIDataController {
     
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
-        appendSectionForTitle(into: &snapshot)
         appendSectionsForAssetsLoading(into: &snapshot)
         return Updates(snapshot: snapshot, operation: operation)
     }
@@ -157,7 +156,6 @@ extension IncomingASAAccountInboxAPIDataController {
         }
         
         var snapshot = Snapshot()
-        appendSectionForTitle(into: &snapshot)
         appendSectionsForAssets(
             query: query,
             into: &snapshot
@@ -167,15 +165,6 @@ extension IncomingASAAccountInboxAPIDataController {
 }
 
 extension IncomingASAAccountInboxAPIDataController {
-    
-    private func appendSectionForTitle(into snapshot: inout Snapshot) {
-        let items = makeItemForTitle()
-        snapshot.appendSections([.title])
-        snapshot.appendItems(
-            items,
-            toSection: .title
-        )
-    }
 
     private func appendSectionsForAssetsLoading(into snapshot: inout Snapshot) {
         let items = makeItemsForAssetsLoading()
@@ -205,11 +194,6 @@ extension IncomingASAAccountInboxAPIDataController {
     
     private func makeItemsForAssetsLoading() -> [IncomingASAItem] {
         return [ .assetLoading ]
-    }
-
-    private func makeItemForTitle() -> [IncomingASAItem] {
-        let viewModel = IncomingASAAccountInboxHeaderTitleCellViewModel(count: requestsCount)
-        return [.title(viewModel)]
     }
 
     private func makeItemsForAssets(assets: [IncomingASAsRequestDetailResult]?) -> [IncomingASAItem] {

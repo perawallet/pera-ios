@@ -137,7 +137,7 @@ extension AnnouncementView {
 
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
             make.top.bottom.equalToSuperview()
         }
     }

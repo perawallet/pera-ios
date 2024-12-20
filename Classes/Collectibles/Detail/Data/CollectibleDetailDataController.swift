@@ -29,6 +29,9 @@ protocol CollectibleDetailDataController: AnyObject {
     func hasOptedIn() -> OptInStatus
     func hasOptedOut() -> OptOutStatus
     func getCurrentAccountCollectibleStatus() -> AccountCollectibleStatus
+    
+    func getImageDataToCopy(from url: URL)
+    func downloadAssetMediaToSave(from url: URL, of type: MediaType, with extension: String)
 }
 
 enum CollectibleDetailSection:
@@ -49,7 +52,7 @@ enum CollectibleDetailItem: Hashable {
     case name(CollectibleDetailNameItemIdentifier)
     case accountInformation(CollectibleDetailAccountInformationItemIdentifier)
     case media(CollectibleAsset)
-    case sendAction
+    case quickActions
     case optOutAction
     case description
     case creatorAccount(CollectibleDetailCreatorAccountItemIdentifier)
@@ -146,6 +149,10 @@ enum CollectibleDetailDataControllerEvent {
     case didUpdate(CollectibleDetailDataController.Snapshot)
     case didFetch(CollectibleAsset)
     case didResponseFail(message: String)
+    case didFetchImage(UIImage)
+    case didImageResponseFail(url: URL)
+    case didFetchMedia(URL)
+    case didMediaResponseFail(url: URL)
 
     var snapshot: CollectibleDetailDataController.Snapshot? {
         switch self {

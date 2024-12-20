@@ -28,6 +28,7 @@ final class ListItemButton:
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
     private lazy var accessoryView = ImageView()
+    private lazy var leftAccessoryView = ImageView()
 
     override var isEnabled: Bool {
         didSet {
@@ -43,6 +44,7 @@ final class ListItemButton:
         addIcon(theme)
         addContent(theme)
         addAccessory(theme)
+        addLeftAccessory(theme)
     }
     
     func customizeAppearance(
@@ -61,6 +63,7 @@ final class ListItemButton:
         titleView.editText = viewModel?.title
         subtitleView.editText = viewModel?.subtitle
         accessoryView.image = viewModel?.accessory?.uiImage
+        leftAccessoryView.image = viewModel?.leftAccessory?.uiImage
     }
 }
 
@@ -180,6 +183,18 @@ extension ListItemButton {
             $0.centerY == 0
             $0.leading == contentView.snp.trailing
             $0.trailing == 0
+        }
+    }
+    
+    private func addLeftAccessory(
+        _ theme: ListItemButtonTheme
+    ) {
+        addSubview(leftAccessoryView)
+        leftAccessoryView.contentEdgeInsets = theme.accessoryContentEdgeInsets
+        leftAccessoryView.fitToIntrinsicSize()
+        leftAccessoryView.snp.makeConstraints {
+            $0.centerY == titleView.snp.centerY
+            $0.leading == 100
         }
     }
 }

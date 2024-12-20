@@ -26,13 +26,6 @@ final class IncomingASAAccountInboxListDataSource: UICollectionViewDiffableDataS
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case .title(let item):
-                let cell = collectionView.dequeue(
-                    IncomingASAAccountInboxHeaderTitleCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
             case let .asset(item):
                 if item.collectibleAsset != nil {
                     let cell = collectionView.dequeue(

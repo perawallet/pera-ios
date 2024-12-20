@@ -93,6 +93,7 @@
 "title-about-with-param" = "ABOUT %@";
 "title-csv" = "CSV";
 "title-swap" = "Swap";
+"title-staking" = "Stake";
 "title-later" = "Later";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
@@ -101,6 +102,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"image-copied-to-clipboard" = "Image copied to clipboard";
 "title-copied-to-clipboard" = "Copied to clipboard";
 "account-not-found" = "Account not found";
 "title-select-all" = "Select all";
@@ -270,6 +272,7 @@
 "qr-scan-option-send-transaction" = "Send transaction";
 "qr-scan-option-add-watch" = "Add Watch account";
 "qr-scan-option-add-contact" = "Add new contact";
+"qr-scan-account-match-error" = "You don't have any authorized account matching with %@";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -1055,6 +1058,14 @@
 "send-transaction-show-note-title" = "Show Note";
 "send-transaction-max-button-title" = "MAX";
 
+// MARK: SendTransaction Info Screen
+"express-send-title" = "Express Send";
+"express-send-explanation" = "Your Receiving Wallet is not opted in. It needs to opt-in to receive the asset.\nPera simplifies this process by combining multiple transactions for a seamless experience.";
+"asset-transfer-title" = "How this asset transfer works?";
+"asset-transfer-explanation-part1" = "Your Sending Account will send over the fees needed to opt into the asset";
+"asset-transfer-explanation-part2" = "Your Receiving Account will be opted into the asset";
+"asset-transfer-explanation-part3" = "Your Sending Account will send over the asset";
+
 // MARK: EditNote
 "edit-note-title" = "Add Note";
 "edit-note-note-explanation" = "Enter your note";
@@ -1225,6 +1236,7 @@
 
 // MARK: Transaction Options
 "transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
+"transaction-option-list-staking-subtitle" = "Explore the ecosystem for staking rewards";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
@@ -1749,11 +1761,9 @@ FAQ section.";
 
 /// MARK: Incoming ASA Requests
 "incoming-asa-account-inbox-header-main-title" = "Asset Transfer Request";
-"incoming-asa-account-inbox-header-title-cell" = "You have %@ asset transfer requests";
-"incoming-asa-account-inbox-header-title-cell-singular" = "You have 1 asset transfer request";
 "incoming-asa-account-inbox-screen-title" = "Asset Transfer Requests";
 "incoming-asa-account-inbox-screen-info-title" = "Asset Transfer Requests";
-"incoming-asa-account-inbox-screen-info-description-title" = "Consider this feature as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the  asset transfer requests.";
+"incoming-asa-account-inbox-screen-info-description-title" = "This feature is as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the asset transfer requests.";
 "incoming-asa-detail-screen-right-button-title" = "Claim";
 "incoming-asa-detail-screen-left-button-title" = "Reject";
 "incoming-asa-detail-screen-info-title" = "Rejecting Requests";
@@ -1771,7 +1781,22 @@ FAQ section.";
 "send-inbox-description" = "You can't send this asset directly because receiver not opted-in. But you can send it to its inbox address instead. Read more";
 "send-inbox-read-more" = "Read more";
 "send-inbox-fee-title" = "Protocol & minimum balance fees:";
-"send-inbox-fee-description" = "The fee above will be used to cover the minimum balance requirements of the receiver. If the receiver rejects the asset, you will not receive anything back.";
+"send-inbox-fee-description" = "The fee above will be used to cover transaction fees and the receiver's minimum balance requirements. If the receiver rejects the asset, you will not receive anything back.";
 "send-inbox-action-title" = "Send to Receiver";
 "send-inbox-transaction-failed" = "Transaction with ID %@ is failed.";
 "send-inbox-transaction-composing-failed" = "Composing the transactions is failed.";
+
+/// MARK: Send KeyReg Transaction
+"title-txn-sign-request" = "Transaction Signature Request";
+"title-keyreg-txn-address" = "Address";
+"title-keyreg-txn-fee" = "Fee";
+"title-keyreg-txn-type" = "Type";
+"title-keyreg-txn-selection" = "Selection key";
+"title-keyreg-txn-voting" = "Voting key";
+"title-keyreg-txn-state" = "State proof key";
+"title-keyreg-txn-key" = "Key dilution";
+"title-keyreg-txn-first" = "First valid round";
+"title-keyreg-txn-xnote" = "xNote";
+"title-keyreg-txn-note" = "Note";
+"title-keyreg-txn-last" = "Last valid round";
+"title-txn-completed" = "Transaction completed";

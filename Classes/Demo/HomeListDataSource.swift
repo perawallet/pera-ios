@@ -84,6 +84,14 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     )
                     cell.bindData(item)
                     return cell
+                case .staking:
+                    let cell = collectionView.dequeue(
+                        StakingAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
+
                 }
             case .account(let item):
                 switch item {
@@ -113,6 +121,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             AccountNotBackedUpWarningCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
+            StakingAnnouncementCell.self,
             HomeAccountsHeader.self,
             TitleWithAccessorySupplementaryCell.self,
             HomeAccountCell.self

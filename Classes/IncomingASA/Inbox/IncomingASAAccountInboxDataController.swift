@@ -36,7 +36,6 @@ enum IncomingASASection:
 }
 
 enum IncomingASAItem: Hashable {
-    case title(IncomingASAAccountInboxHeaderTitleCellViewModel)
     case assetLoading
     case asset(IncomingASAListItem)
     case empty

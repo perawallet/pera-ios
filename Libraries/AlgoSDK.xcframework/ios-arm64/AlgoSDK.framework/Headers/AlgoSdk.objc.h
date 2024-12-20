@@ -497,6 +497,11 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGenerateSK(void);
 FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkGetABIMethodSignature(NSString* _Nullable methodJSON, NSError* _Nullable* _Nullable error);
 
 /**
+ * Calculate the min balance amount needed by the receiver account
+ */
+FOUNDATION_EXPORT BOOL AlgoSdkGetReceiverMinBalanceFee(AlgoSdkUint64* _Nullable receiverAlgoAmount, AlgoSdkUint64* _Nullable receiverMinBalanceAmount, long* _Nullable receiverMinBalanceFee, NSError* _Nullable* _Nullable error);
+
+/**
  * GetTxID takes an encoded txn and return the txid as string
  */
 FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkGetTxID(NSData* _Nullable encodedTxn);
@@ -708,6 +713,12 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeAssetTransferTxn(NSString* _Nulla
 FOUNDATION_EXPORT id<AlgoSdkTransactionSigner> _Nullable AlgoSdkMakeBasicAccountSigner(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeBid(NSString* _Nullable bidderAddress, int64_t bidAmount, int64_t maxPrice, int64_t bidID, NSString* _Nullable auctionAddress, int64_t auctionID, NSError* _Nullable* _Nullable error);
+
+/**
+ * MakeKeyRegTxn constructs a keyreg transaction using the passed parameters.
+`from` and `to` addresses should be checksummed, human-readable addresses
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeKeyRegTxn(NSString* _Nullable account, NSData* _Nullable note, AlgoSdkSuggestedParams* _Nullable params, NSString* _Nullable voteKey, NSString* _Nullable selectionKey, NSString* _Nullable stateProofPK, int64_t voteFirst, int64_t voteLast, int64_t voteKeyDilution, BOOL nonpart, NSError* _Nullable* _Nullable error);
 
 /**
  * MakeLogicSigAccountDelegatedSign creates a new delegated LogicSigAccount. This

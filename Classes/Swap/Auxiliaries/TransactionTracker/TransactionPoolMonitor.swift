@@ -94,6 +94,10 @@ extension TransactionPoolMonitor {
                     self.failTransaction(transaction)
                 }
             case .failure(let apiError, let apiModelError):
+                if apiError.isHttpNotFound && !hasReachedRepeatingLimit {
+                    return
+                }
+                
                 let error = HIPNetworkError(
                     apiError: apiError,
                     apiErrorDetail: apiModelError
