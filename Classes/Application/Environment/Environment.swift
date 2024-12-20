@@ -126,6 +126,15 @@ class Environment {
         }
     }()
 
+    lazy var stakingBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://staking-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://staking-mobile.perawallet.app/"
+        }
+    }()
+
     lazy var discoverBaseUrl: String = {
         switch target {
         case .staging:

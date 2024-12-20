@@ -31,7 +31,12 @@ extension ALGCopyToClipboardController {
     func copy(
         _ item: ClipboardItem
     ) {
-        item.copy.copyToClipboard()
+        if !item.copy.isEmpty {
+            item.copy.copyToClipboard()
+        } else if let image = item.image {
+            image.copyToClipboard()
+        }
+        
         notifyForInteractionIfNeeded(item.interaction)
     }
 }

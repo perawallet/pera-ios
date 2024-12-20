@@ -74,9 +74,12 @@ extension SettingsDataSource {
         guard let accounts else {
             return .secureBackupLoading
         }
-
-        let filteredAccounts = accounts.filter(\.authorization.isStandard)
-
+        let filteredAccounts = accounts.filter {
+            $0.authorization.isStandard ||
+            $0.authorization.isStandardToStandardRekeyed ||
+            $0.authorization.isStandardToLedgerRekeyed ||
+            $0.authorization.isWatch
+        }
         var numberOfAccountsNotBackedUp = 0
         for account in filteredAccounts {
             if session?.backups[account.address] == nil {

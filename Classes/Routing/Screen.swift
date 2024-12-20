@@ -202,6 +202,7 @@ indirect enum Screen {
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
     )
     case transactionResult
+    case sendAssetAndOptInTransactionInfo
     case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(
         draft: WalletConnectTransactionSignRequestDraft,
@@ -437,7 +438,12 @@ indirect enum Screen {
     case backUpAccountSelection(
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
+    case staking
     case sendAssetInbox(draft: SendAssetInboxDraft)
+    case sendKeyRegTransaction(
+        account: Account,
+        transactionDraft: KeyRegTransactionSendDraft
+    )
 }
 
 extension Screen {

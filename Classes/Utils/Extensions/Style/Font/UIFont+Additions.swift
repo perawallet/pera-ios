@@ -15,6 +15,7 @@
 //
 //  UIFont+Additions.swift
 
+import SwiftUI
 import UIKit
 
 enum FontType: String {
@@ -57,5 +58,9 @@ extension UIFont {
         case .semiBold:
             return fontName.appending("SemiBold")
         }
+    }
+    
+    var font: SwiftUI.Font {
+        return Font(self)
     }
 }

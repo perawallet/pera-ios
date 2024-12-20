@@ -121,8 +121,14 @@ extension TransactionAmountValidator {
         on asset: Asset?
     ) -> Bool {
         guard let asset = asset else {
-            let requiredMinimumAmount = calculateMininmumAmount(using: transactionParams)
-            return Int(account.algo.amount) - Int(amount.toMicroAlgos) - Int(minimumFee) < Int(requiredMinimumAmount)
+            let requiredMinimumAmount = calculateMininmumAmount(using: transactionParams)            
+            guard let toMicroAlgos = Int64(exactly: amount.toMicroAlgos),
+                  let accountAmount = Int64(exactly: account.algo.amount),
+                  let minimumFee64 = Int64(exactly: minimumFee),
+                  let requiredMinimumAmount64 = Int64(exactly: requiredMinimumAmount) else {
+                return false
+            }
+            return accountAmount - toMicroAlgos - minimumFee64 < requiredMinimumAmount64
         }
 
         return asset.amount == amount.uint64Value

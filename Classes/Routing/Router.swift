@@ -147,6 +147,15 @@ final class Router:
         }
         
         switch screen {
+        case .keyRegTransaction(let account, let draft):
+            route(
+                to: .sendKeyRegTransaction(
+                        account: account,
+                        transactionDraft: draft
+                ),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         case .actionSelection(let address, let label):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
@@ -1214,6 +1223,10 @@ final class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = true
             viewController = resultScreen
+        case .sendAssetAndOptInTransactionInfo:
+            viewController = SendAssetAndOptInTransactionInfoScreen(
+                configuration: configuration
+            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -2160,7 +2173,15 @@ final class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .sendKeyRegTransaction(let account, let draft):
+            viewController = SendKeyRegTransactionScreen(
+                account: account,
+                transactionDraft: draft,
+                configuration: configuration
+            )
 
+        case .staking:
+            viewController = StakingScreen(configuration: configuration)
         }
         return viewController as? T
     }

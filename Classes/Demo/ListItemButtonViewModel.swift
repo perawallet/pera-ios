@@ -24,6 +24,7 @@ protocol ListItemButtonViewModel: ViewModel {
     var title: EditText? { get }
     var subtitle: EditText? { get }
     var accessory: Image? { get }
+    var leftAccessory: Image? { get }
 }
 
 extension ListItemButtonViewModel {
@@ -32,6 +33,10 @@ extension ListItemButtonViewModel {
     }
     
     var accessory: Image? {
+        return nil
+    }
+    
+    var leftAccessory: Image? {
         return nil
     }
 }

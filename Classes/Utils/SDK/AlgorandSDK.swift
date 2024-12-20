@@ -125,6 +125,25 @@ extension AlgorandSDK {
             &error
         )
     }
+    
+    func sendKeyRegTransaction(
+        with draft: KeyRegTransactionDraft,
+        error: inout NSError?
+    ) -> Data? {
+        return AlgoSdkMakeKeyRegTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.note,
+            draft.transactionParams.toSDKSuggestedParams(customFee: draft.fee),
+            draft.voteKey,
+            draft.selectionKey,
+            draft.stateProofKey,
+            draft.voteFirst ?? 0,
+            draft.voteLast ?? 0,
+            draft.voteKeyDilution ?? 0,
+            false,
+            &error
+        )
+    }
 
     func composeOptInAndSendAssetTxn(
         with draft: AssetOptInAndSendTransactionDraft,
@@ -323,9 +342,9 @@ extension AlgorandSDK {
 }
 
 fileprivate extension TransactionParams {
-    func toSDKSuggestedParams() -> AlgoSdkSuggestedParams {
+    func toSDKSuggestedParams(customFee: Int64? = nil) -> AlgoSdkSuggestedParams {
         let params = AlgoSdkSuggestedParams()
-        params.fee = Int64(fee)
+        params.fee = customFee ?? Int64(fee)
         params.firstRoundValid = Int64(lastRound)
         params.lastRoundValid = Int64(lastRound) + AlgorandSDK.roundTreshold // Need to add 1000 as last round
         params.genesisHash = genesisHashData

@@ -130,4 +130,5 @@ enum QRMode {
     case algosRequest
     case assetRequest
     case optInRequest
+    case keyregRequest
 }
