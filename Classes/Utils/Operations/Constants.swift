@@ -30,4 +30,9 @@ enum Constants {
         static let collectibleListDidRemoveCollectible = "collectibleListDidRemoveCollectible"
         static let collectibleListDidSendCollectible = "collectibleListDidSendCollectible"
     }
+    
+    enum Cards {
+        static let singleAccount = "singleAccount"
+        static let selectedAccount = "selectedAccount"
+    }
 }

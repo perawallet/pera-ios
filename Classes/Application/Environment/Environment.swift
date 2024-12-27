@@ -16,6 +16,7 @@
 //  Environment.swift
 
 import Foundation
+import UIKit
 
 private enum AppTarget {
     case staging, prod
@@ -126,6 +127,15 @@ class Environment {
         }
     }()
 
+    lazy var cardsBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://cards-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://cards-mobile.perawallet.app/"
+        }
+    }()
+    
     lazy var stakingBaseUrl: String = {
         switch target {
         case .staging:
