@@ -1011,7 +1011,7 @@ final class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnection(draft):
+        case let .wcConnection(draft, isAccountMultiselectionEnabled):
             let dataController = WCSessionConnectionLocalDataController(
                 draft: draft,
                 sharedDataController: appConfiguration.sharedDataController
@@ -1019,7 +1019,8 @@ final class Router:
             let screen = WCSessionConnectionScreen(
                 draft: draft,
                 dataController: dataController,
-                configuration: configuration
+                configuration: configuration, 
+                isAccountMultiselectionEnabled: isAccountMultiselectionEnabled
             )
             viewController = screen
         case .walletConnectSessionList:
@@ -2173,13 +2174,15 @@ final class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .cards:
+            let cardsScreen = CardsScreen(configuration: configuration)
+            viewController = cardsScreen
         case .sendKeyRegTransaction(let account, let draft):
             viewController = SendKeyRegTransactionScreen(
                 account: account,
                 transactionDraft: draft,
                 configuration: configuration
             )
-
         case .staking:
             viewController = StakingScreen(configuration: configuration)
         }
@@ -2509,17 +2512,35 @@ extension Router {
         preferences: WalletConnectSessionCreationPreferences,
         completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
-        
+        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)        
         let transition = BottomSheetTransition(
             presentingViewController: visibleScreen,
             interactable: false
         )
-        
         let draft = WCSessionConnectionDraft(session: session)
+        if let mandotaryAccount = preferences.mandotaryAccount {
+            if self.isAutoConnectionEnabled(draft: draft) {
+                handleWalletConnectV1ConnectEvent(
+                    session: session,
+                    preferences: preferences,
+                    screen: nil,
+                    accounts: [mandotaryAccount],
+                    completion: completion
+                )
+            } else {
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-address-not-match".localized
+                )
+            }
+            return
+        }
         
         let screen = transition.perform(
-            .wcConnection(draft: draft),
+            .wcConnection(
+                draft: draft,
+                isAccountMultiselectionEnabled: preferences.isAccountMultiselectionEnabled
+            ),
             by: .present
         ) as? WCSessionConnectionScreen
         
@@ -2561,43 +2582,65 @@ extension Router {
                     self.publishQRScannerScreenResetNotification(preferences)
                 }
             case .performConnect(let accounts):
-                self.appConfiguration.analytics.track(
-                    .wcSessionApproved(
-                        version: .v1,
-                        topic: session.url.topic,
-                        dappName: session.dAppInfo.peerMeta.name,
-                        dappURL: session.dAppInfo.peerMeta.url.absoluteString,
-                        address: accounts.joined(separator: ","),
-                        totalAccount: accounts.count
-                    )
+                handleWalletConnectV1ConnectEvent(
+                    session: session,
+                    preferences: preferences,
+                    screen: screen,
+                    accounts: accounts,
+                    completion: completion
                 )
-                
-                asyncMain {
-                    [weak self, weak screen] in
-                    guard
-                        let self,
-                        let screen
-                    else {
-                        return
-                    }
-                    
-                    completion(
-                        session.getApprovedWalletConnectionInfo(
-                            for: accounts,
-                            on: appConfiguration.api.network
-                        )
-                    )
-                    
-                    screen.dismiss(animated: true)
-                    
-                    self.publishQRScannerScreenResetNotification(preferences)
-                }
             }
         }
         
         self.ongoingTransitions.append(transition)
     }
-
+    
+    private func isAutoConnectionEnabled(draft: WCSessionConnectionDraft) -> Bool {
+        let characterSet: CharacterSet = CharacterSet(charactersIn: "/")
+        let dappURL = draft.dappURL?.absoluteString
+        let cardsBaseUrl = URL(string: Environment.current.cardsBaseUrl)?.absoluteString
+        return dappURL?.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet)
+    }
+    
+    private func handleWalletConnectV1ConnectEvent(
+        session: WalletConnectSession,
+        preferences: WalletConnectSessionCreationPreferences,
+        screen: WCSessionConnectionScreen?,
+        accounts: [PublicKey],
+        completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        self.appConfiguration.analytics.track(
+            .wcSessionApproved(
+                version: .v1,
+                topic: session.url.topic,
+                dappName: session.dAppInfo.peerMeta.name,
+                dappURL: session.dAppInfo.peerMeta.url.absoluteString,
+                address: accounts.joined(separator: ","),
+                totalAccount: accounts.count
+            )
+        )
+        
+        asyncMain {
+            [weak self, weak screen] in
+            guard
+                let self
+            else {
+                return
+            }
+            
+            completion(
+                session.getApprovedWalletConnectionInfo(
+                    for: accounts,
+                    on: appConfiguration.api.network
+                )
+            )
+            
+            screen?.dismiss(animated: true)
+            
+            self.publishQRScannerScreenResetNotification(preferences)
+        }
+    }
+    
     private func peraConnectDidFailToConnectV1(
         with error: WalletConnectV1Protocol.WCError,
         preferences: WalletConnectSessionCreationPreferences
@@ -2832,11 +2875,31 @@ extension Router {
         let draft = WCSessionConnectionDraft(sessionProposal: sessionProposal)
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
+        if let mandotaryAccount = preferences.mandotaryAccount {
+            if self.isAutoConnectionEnabled(draft: draft) {
+                handleWalletConnectV2ConnectEvent(
+                    sessionProposal: sessionProposal,
+                    preferences: preferences,
+                    wcConnectionScreen: nil,
+                    selectedAccounts: [mandotaryAccount]
+                )
+            } else {
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-address-not-match".localized
+                )
+            }
+            return
+        }
+        
         let wcConnectionScreen = transition.perform(
-            .wcConnection(draft: draft),
+            .wcConnection(
+                draft: draft,
+                isAccountMultiselectionEnabled: preferences.isAccountMultiselectionEnabled
+            ),
             by: .present
         ) as? WCSessionConnectionScreen
+        
         wcConnectionScreen?.eventHandler = {
             [weak self, weak wcConnectionScreen] event in
             guard let self = self else { return }
@@ -2867,71 +2930,85 @@ extension Router {
                     publishQRScannerScreenResetNotification(preferences)
                 }
             case .performConnect(let selectedAccounts):
-                appConfiguration.analytics.track(
-                    .wcSessionApproved(
-                        version: .v2,
-                        topic: sessionProposal.pairingTopic,
-                        dappName: sessionProposal.proposer.name,
-                        dappURL: sessionProposal.proposer.url,
-                        address: selectedAccounts.joined(separator: ","),
-                        totalAccount: selectedAccounts.count
-                    )
+                handleWalletConnectV2ConnectEvent(
+                    sessionProposal: sessionProposal,
+                    preferences: preferences,
+                    wcConnectionScreen: wcConnectionScreen,
+                    selectedAccounts: selectedAccounts
                 )
-
-                var sessionNamespaces = SessionNamespaces()
-                sessionProposal.requiredNamespaces.forEach {
-                    let caip2Namespace = $0.key
-                    guard caip2Namespace == WalletConnectNamespaceKey.algorand else {
-                        return
-                    }
-
-                    let proposalNamespace = $0.value
-
-                    let requestedChains = proposalNamespace.chains
-                    guard let requestedChains else { return }
-                    let chains = requestedChains.filter { allowedChainReference in
-                        return
-                            algorandWalletConnectV2TestNetChainReference == allowedChainReference.reference ||
-                            algorandWalletConnectV2MainNetChainReference == allowedChainReference.reference
-                    }
-
-                    let accounts = Set(
-                        chains.compactMap { chain in
-                            selectedAccounts.compactMap { account in
-                                return WalletConnectV2Account(
-                                    "\(chain.absoluteString):\(account)"
-                                )
-                            }
-                        }
-                    ).flatMap { $0 }
-
-                    let supportedMethods = WalletConnectMethod.allCases.map(\.rawValue)
-                    let requestedMethods = proposalNamespace.methods
-                    let methods = requestedMethods.filter {
-                        return supportedMethods.contains($0)
-                    }
-                    let sessionNamespace = WalletConnectV2SessionNamespace(
-                        accounts: Set(accounts),
-                        methods: methods,
-                        events: proposalNamespace.events
-                    )
-
-                    sessionNamespaces[caip2Namespace] = sessionNamespace
-                }
-
-                let params = WalletConnectV2ApproveSessionConnectionParams(
-                    proposalId: sessionProposal.id,
-                    namespaces: sessionNamespaces
-                )
-                appConfiguration.peraConnect.approveSessionConnection(params)
-
-                wcConnectionScreen?.dismiss(animated: true)
-
-                publishQRScannerScreenResetNotification(preferences)
             }
 
             ongoingTransitions.append(transition)
         }
+    }
+    
+    private func handleWalletConnectV2ConnectEvent(
+        sessionProposal: WalletConnectV2SessionProposal,
+        preferences: WalletConnectSessionCreationPreferences,
+        wcConnectionScreen: WCSessionConnectionScreen?,
+        selectedAccounts: [PublicKey]
+    ) {
+        appConfiguration.analytics.track(
+            .wcSessionApproved(
+                version: .v2,
+                topic: sessionProposal.pairingTopic,
+                dappName: sessionProposal.proposer.name,
+                dappURL: sessionProposal.proposer.url,
+                address: selectedAccounts.joined(separator: ","),
+                totalAccount: selectedAccounts.count
+            )
+        )
+
+        var sessionNamespaces = SessionNamespaces()
+        sessionProposal.requiredNamespaces.forEach {
+            let caip2Namespace = $0.key
+            guard caip2Namespace == WalletConnectNamespaceKey.algorand else {
+                return
+            }
+
+            let proposalNamespace = $0.value
+
+            let requestedChains = proposalNamespace.chains
+            guard let requestedChains else { return }
+            let chains = requestedChains.filter { allowedChainReference in
+                return
+                    algorandWalletConnectV2TestNetChainReference == allowedChainReference.reference ||
+                    algorandWalletConnectV2MainNetChainReference == allowedChainReference.reference
+            }
+
+            let accounts = Set(
+                chains.compactMap { chain in
+                    selectedAccounts.compactMap { account in
+                        return WalletConnectV2Account(
+                            "\(chain.absoluteString):\(account)"
+                        )
+                    }
+                }
+            ).flatMap { $0 }
+
+            let supportedMethods = WalletConnectMethod.allCases.map(\.rawValue)
+            let requestedMethods = proposalNamespace.methods
+            let methods = requestedMethods.filter {
+                return supportedMethods.contains($0)
+            }
+            let sessionNamespace = WalletConnectV2SessionNamespace(
+                accounts: Set(accounts),
+                methods: methods,
+                events: proposalNamespace.events
+            )
+
+            sessionNamespaces[caip2Namespace] = sessionNamespace
+        }
+
+        let params = WalletConnectV2ApproveSessionConnectionParams(
+            proposalId: sessionProposal.id,
+            namespaces: sessionNamespaces
+        )
+        appConfiguration.peraConnect.approveSessionConnection(params)
+
+        wcConnectionScreen?.dismiss(animated: true)
+
+        publishQRScannerScreenResetNotification(preferences)
     }
     
     func peraConnectDidSettleSessionV2(

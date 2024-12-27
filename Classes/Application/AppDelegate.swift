@@ -18,12 +18,14 @@
 import CoreData
 import Firebase
 import FirebaseCrashlytics
+import FirebaseRemoteConfig
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import SwiftDate
 import UIKit
 import UserNotifications
+import Kingfisher
 
 @UIApplicationMain
 class AppDelegate:
@@ -58,6 +60,7 @@ class AppDelegate:
     private lazy var pushNotificationController = createPushNotificationController()
     private lazy var lastSeenNotificationController = createLastSeenNotificationController()
     private lazy var scammerController = createScammerController()
+    private lazy var featureFlagService = createFeatureFlagService()
 
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -401,12 +404,35 @@ extension AppDelegate {
         analytics.setup()
         
         /// <mark>
+        /// Firebase Remote Config & Feature Flags
+        Task {
+            do {
+                try await featureFlagService.fetchAndActivate()
+            } catch {
+                print("failed to receive remote config")
+            }
+
+        }
+        
+        /// <mark>
         /// SwiftDate
         SwiftDate.defaultRegion = Region(
             calendar: Calendar.autoupdatingCurrent,
             zone: TimeZone.autoupdatingCurrent,
             locale: Locales.autoUpdating
         )
+        
+        /// <mark>
+        /// Kingfisher
+        let userAgentHeader = UserAgentHeader()
+        guard let userAgentHeaderValue = userAgentHeader.value else { return }
+        let sessionConfiguration = URLSessionConfiguration.default
+        sessionConfiguration.httpAdditionalHeaders = [
+            userAgentHeader.key: userAgentHeaderValue
+        ]
+        let customDownloader = ImageDownloader(name: "ImageDownloaderWithPeraUserAgent")
+        customDownloader.sessionConfiguration = sessionConfiguration
+        KingfisherManager.shared.downloader = customDownloader
     }
 
     private func runMigrations() {
@@ -563,8 +589,9 @@ extension AppDelegate {
             lastSeenNotificationController: lastSeenNotificationController,
             analytics: analytics,
             launchController: appLaunchController,
-            peraConnect: peraConnect, 
-            scammerController: scammerController
+            peraConnect: peraConnect,
+            scammerController: scammerController,
+            featureFlagService: featureFlagService
         )
     }
     
@@ -653,5 +680,9 @@ extension AppDelegate {
     
     private func createScammerController() -> ScammerController {
         ScammerController(api: api)
+    }
+    
+    private func createFeatureFlagService() -> FeatureFlagServicing {
+        FeatureFlagService()
     }
 }

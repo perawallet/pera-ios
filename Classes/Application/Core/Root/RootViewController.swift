@@ -48,7 +48,8 @@ final class RootViewController: UIViewController {
         loadingController: appConfiguration.loadingController,
         session: appConfiguration.session,
         sharedDataController: appConfiguration.sharedDataController,
-        appLaunchController: appConfiguration.launchController
+        appLaunchController: appConfiguration.launchController,
+        featureFlagService: appConfiguration.featureFlagService
     )
 
     private lazy var pushNotificationController = PushNotificationController(
@@ -127,7 +128,7 @@ extension RootViewController {
         let homeTab = HomeTabBarItem(
             NavigationContainer(rootViewController: homeViewController)
         )
-
+        
         let discoverViewController = DiscoverHomeScreen(configuration: configuration)
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)

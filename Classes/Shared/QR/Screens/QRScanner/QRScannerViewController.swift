@@ -378,12 +378,26 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 return
             }
 
-            let preferences = WalletConnectSessionCreationPreferences(session: qrString)
+            var isAccountMultiselectionEnabled = true
+            var mandotaryAccount: String?
 
-            walletConnectSessionCreationPreferences = preferences
+            if let queryString = qrString.split(separator: "?").last {
+                let parameters = queryString.split(separator: "&")
+                mandotaryAccount = parseQrCodeQueryParameter(parameters:parameters, key: Constants.Cards.selectedAccount.rawValue)
+                if let singleAccountValue = parseQrCodeQueryParameter(parameters:parameters, key: Constants.Cards.singleAccount.rawValue) {
+                    isAccountMultiselectionEnabled = (singleAccountValue != "true")
+                }
+            }
+
+            let preferences = WalletConnectSessionCreationPreferences(
+                session: qrString,
+                prefersConnectionApproval: true,
+                isAccountMultiselectionEnabled: isAccountMultiselectionEnabled,
+                mandotaryAccount: mandotaryAccount
+            )
             
+            walletConnectSessionCreationPreferences = preferences
             peraConnect.connectToSession(with: preferences)
-
             startWCConnectionTimer()
         } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
             closeScreen()
@@ -422,6 +436,21 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         } else {
             delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
         }
+    }
+    
+    private func parseQrCodeQueryParameter(
+        parameters: [Substring],
+        key: String
+    ) -> String? {
+        guard let param = parameters.first(
+            where: {
+                $0.hasPrefix("\(key)=")
+            })
+        else {
+            return nil
+        }
+        let keyValue = param.split(separator: "=")
+        return keyValue[safe: 1].map {String($0)}
     }
 }
 

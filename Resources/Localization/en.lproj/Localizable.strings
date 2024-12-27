@@ -72,6 +72,7 @@
 "title-show-all-detail" = "Show All Details";
 "title-home" = "Home";
 "title-discover" = "Discover";
+"title-cards" = "Cards";
 "title-price" = "Price";
 "title-collectibles" = "NFTs";
 "settings-title" = "Settings";
@@ -863,6 +864,7 @@
 "wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
 "wallet-connect-session-select-account"= "Select Account";
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
+"wallet-connect-session-error-address-not-match" = "Requested account cannot be connected.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
 "wallet-connect-session-disconnect-all-action" = "Delete All Sessions";
@@ -1246,6 +1248,8 @@
 "transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
 "transaction-option-list-browse-dapps-title" = "Browse dApps";
 "transaction-option-list-browse-dapps-subtitle" = "Use browser to interact with dApps";
+"transaction-option-list-cards-title" = "Cards";
+"transaction-option-list-cards-subtitle" = "Get the world’s first web3 Mastercard.";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";

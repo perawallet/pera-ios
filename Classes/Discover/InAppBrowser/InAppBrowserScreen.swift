@@ -238,6 +238,40 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
         return nil
     }
+    
+    func webView(
+        _ webView: WKWebView,
+        runJavaScriptConfirmPanelWithMessage message: String,
+        initiatedByFrame frame: WKFrameInfo,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
+        let controller = UIAlertController(
+            title: nil,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(
+            title: "title-ok".localized,
+            style: .default
+        ) { _ in
+            completionHandler(true)
+        }
+        controller.addAction(confirmAction)
+        
+        let cancelAction = UIAlertAction(
+            title: "title-cancel".localized,
+            style: .cancel
+        ) { _ in
+            completionHandler(false)
+        }
+        controller.addAction(cancelAction)
+
+        present(
+            controller,
+            animated: true
+        )
+    }
 
     /// <mark>
     /// WKScriptMessageHandler

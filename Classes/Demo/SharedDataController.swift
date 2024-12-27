@@ -107,6 +107,12 @@ extension SharedDataController {
     }
 }
 
+extension SharedDataController {
+    func sortedAccounts(by sortAlgorithm: AccountSortingAlgorithm) -> [AccountHandle] {
+        accountCollection.sorted(sortAlgorithm)
+    }
+}
+
 /// <todo>
 /// Can this approach move to 'Macaroon' library???
 ///
