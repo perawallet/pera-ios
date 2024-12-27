@@ -12113,7 +12113,6 @@
 				D4226E932AD5740400B23634 /* WCv2SessionUpdateFailedLog.swift */,
 				D4226E7B2AD55E7D00B23634 /* WCv2TransactionRequestApprovalFailedLog.swift */,
 				D4226E772AD487E300B23634 /* WCv2TransactionRequestRejectionFailedLog.swift */,
-				8B671FCB2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -24284,7 +24283,6 @@
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				D48DBA5427B86EAA00CD35B7 /* TestNetTitleViewTheme.swift in Sources */,
 				95004BBA27BD37DD00AB2D9A /* TransactionSendController.swift in Sources */,
-				8B671FCC2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4E7A3072AF91B1900712672 /* BrowseDAppsTransactionOptionListItemButtonViewModel.swift in Sources */,
 				D4023E3229A6C6A200DFB5E8 /* MoonPayAccountSelectionListHeaderViewModel.swift in Sources */,
 				D45AF6EB2A93AC7B00FA9409 /* WCSessionConnectionHeader.swift in Sources */,
@@ -27998,7 +27996,6 @@
 				2B0F627C24EC129D00DA22A6 /* TestNetTitleView.swift in Sources */,
 				D4E9E275298816850008C4D5 /* CollectibleListQuery.swift in Sources */,
 				2B9352D527F6F305000DA8DB /* CollectibleDetailTransactionController.swift in Sources */,
-				8B671FCE2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4B6EA63276FAB56005E2D2C /* TransactionStatusInformationViewTheme.swift in Sources */,
 				2B2DF28C28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
 				2B2626F5284CEF8300ADE371 /* TranactionListGrouping.swift in Sources */,
@@ -29445,7 +29442,6 @@
 				D4F4C90329D1B9710069FB94 /* AnyToNoAuthRekeyedAccountInformationScreenTheme.swift in Sources */,
 				D4CC28D12875A9CE0082E038 /* InnerTransactionListHeaderViewModel.swift in Sources */,
 				2BF727B327459BBA00CCAC30 /* LedgerPairWarningViewController.swift in Sources */,
-				8B671FCD2CA1B986003F0BE9 /* InAppBrowserSecureScriptMessageHandlerErrorLog.swift in Sources */,
 				D4023E1829A6C5F600DFB5E8 /* MoonPayAccountSelectionListLayout.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				F0261A9827C4E28D009D8BF4 /* AppAuthChecker.swift in Sources */,
@@ -31677,7 +31673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31705,7 +31701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31733,7 +31729,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31763,7 +31759,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31792,7 +31788,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31821,7 +31817,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31974,7 +31970,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32006,7 +32002,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32165,7 +32161,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 90.25.976;
+				MARKETING_VERSION = 90.25.724;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
