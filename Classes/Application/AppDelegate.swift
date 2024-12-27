@@ -25,6 +25,7 @@ import MacaroonUtils
 import SwiftDate
 import UIKit
 import UserNotifications
+import Kingfisher
 
 @UIApplicationMain
 class AppDelegate:
@@ -420,6 +421,18 @@ extension AppDelegate {
             zone: TimeZone.autoupdatingCurrent,
             locale: Locales.autoUpdating
         )
+        
+        /// <mark>
+        /// Kingfisher
+        let userAgentHeader = UserAgentHeader()
+        guard let userAgentHeaderValue = userAgentHeader.value else { return }
+        let sessionConfiguration = URLSessionConfiguration.default
+        sessionConfiguration.httpAdditionalHeaders = [
+            userAgentHeader.key: userAgentHeaderValue
+        ]
+        let customDownloader = ImageDownloader(name: "ImageDownloaderWithPeraUserAgent")
+        customDownloader.sessionConfiguration = sessionConfiguration
+        KingfisherManager.shared.downloader = customDownloader
     }
 
     private func runMigrations() {
