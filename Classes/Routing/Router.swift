@@ -147,6 +147,15 @@ final class Router:
         }
         
         switch screen {
+        case .keyRegTransaction(let account, let draft):
+            route(
+                to: .sendKeyRegTransaction(
+                        account: account,
+                        transactionDraft: draft
+                ),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         case .actionSelection(let address, let label):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
@@ -2162,6 +2171,12 @@ final class Router:
                 listDataSource: diffableDataSource,
                 theme: theme,
                 eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .sendKeyRegTransaction(let account, let draft):
+            viewController = SendKeyRegTransactionScreen(
+                account: account,
+                transactionDraft: draft,
                 configuration: configuration
             )
 

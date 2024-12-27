@@ -120,6 +120,11 @@ extension ScanQRFlowCoordinator {
                 controller,
                 assetOptInWasDetected: qrText
             )
+        case .keyregRequest:
+            qrScanner(
+                controller,
+                keyRegTransactionWasDetected: qrText
+            )
         }
     }
 
@@ -201,7 +206,7 @@ extension ScanQRFlowCoordinator {
                 assetID,
                 to: account
             )
-        default:
+        case .send, .receive:
             if draft.requiresAssetSelection {
                 openAssetSelection(
                     with: account,
@@ -880,6 +885,34 @@ extension ScanQRFlowCoordinator {
 
         presentingScreen.open(
             screen,
+            by: .present
+        )
+    }
+    
+    private func qrScanner(
+        _ qrScannerScreen: QRScannerViewController,
+        keyRegTransactionWasDetected qr: QRText
+    ) {
+        guard let address = qr.address else { return }
+        
+        guard let account = sharedDataController.accountCollection[address]?.value else {
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "qr-scan-account-match-error".localized(params: address)
+            )
+            return
+        }
+        
+        var transactionDraft = KeyRegTransactionSendDraft(
+            account: account,
+            qrText: qr
+        )
+
+        presentingScreen.open(
+            .sendKeyRegTransaction(
+                account: account,
+                transactionDraft: transactionDraft
+            ),
             by: .present
         )
     }

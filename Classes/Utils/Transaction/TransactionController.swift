@@ -89,6 +89,10 @@ extension TransactionController {
     var assetTransactionDraft: AssetTransactionSendDraft? {
         return transactionDraft as? AssetTransactionSendDraft
     }
+    
+    var keyRegTransactionDraft: KeyRegTransactionSendDraft? {
+        return transactionDraft as? KeyRegTransactionSendDraft
+    }
 
     var algosTransactionDraft: AlgosTransactionSendDraft? {
         return transactionDraft as? AlgosTransactionSendDraft
@@ -370,6 +374,23 @@ extension TransactionController {
                 }
             }
             composeTransactionData(from: builder)
+        case .keyreg:
+            guard let keyRegTransactionDraft else { return }
+            
+            let builder = KeyRegTransactionDataBuilder(
+                params: params,
+                draft: keyRegTransactionDraft
+            )
+            builder.eventHandler = {
+                [weak self] event in
+                guard let self else { return }
+                
+                switch event {
+                case .didFailedComposing(let error):
+                    handleTransactionComposingError(error)
+                }
+            }
+            composeTransactionData(from: builder)
         }
 
         let isUnsignedTransactionComposed = transactions.allSatisfy { $0.isUnsignedTransactionComposed }
@@ -462,6 +483,8 @@ extension TransactionController {
             
             if transactionType == .algo {
                 completeAlgosTransaction(index: index)
+            } else if transactionType == .keyreg {
+                completeKeyRegTranscation()
             } else {
                 completeAssetTransaction(for: transactionType)
             }
@@ -581,6 +604,8 @@ extension TransactionController: LedgerTransactionOperationDelegate {
             completeAlgosTransaction(index: index)
         } else if transactionType == .rekey {
             completeRekeyTransaction()
+        } else if transactionType == .keyreg {
+            completeKeyRegTranscation()
         } else {
             completeAssetTransaction(for: transactionType)
         }
@@ -708,6 +733,15 @@ extension TransactionController {
             )
         }
     }
+    
+    private func completeKeyRegTranscation() {
+        uploadTransaction {
+            self.delegate?.transactionController(
+                self,
+                didComposedTransactionDataFor: self.keyRegTransactionDraft
+            )
+        }
+    }
 
     private func completeAssetTransaction(for transactionType: TransactionType) {
         /// Asset addition and removal actions do not have approve part, so transaction should be completed here.
@@ -785,5 +819,6 @@ extension TransactionController {
         case optOut
         case optInAndSend
         case rekey
+        case keyreg
     }
 }
