@@ -3547,6 +3547,18 @@
 		2BF34CC2223A95A50052CAD3 /* ALGAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */; };
 		2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC4223A99670052CAD3 /* String+Localization.swift */; };
 		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
+		2BF3B0C12D1D7E1100E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */; };
+		2BF3B0C32D1D7E1D00E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */; };
+		2BF3B0C52D1D7E2300E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */; };
+		2BF3B0C62D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
+		2BF3B0C72D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
+		2BF3B0C82D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
+		2BF3B0CE2D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */; };
+		2BF3B0CF2D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */; };
+		2BF3B0D02D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */; };
+		2BF3B0D22D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */; };
+		2BF3B0D32D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */; };
+		2BF3B0D42D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */; };
 		2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */; };
 		2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */; };
 		2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */; };
@@ -9193,6 +9205,9 @@
 		2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAPI.swift; sourceTree = "<group>"; };
 		2BF34CC4223A99670052CAD3 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
+		2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
+		2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigValue.swift; sourceTree = "<group>"; };
 		2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
 		2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
 		2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewModel.swift; sourceTree = "<group>"; };
@@ -10680,6 +10695,7 @@
 				CBAD473A2745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				D4B33AB127F1E65900523CEA /* ActiveLabel in Frameworks */,
 				CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */,
+				2BF3B0C52D1D7E2300E78ADA /* FirebaseRemoteConfig in Frameworks */,
 				2BEEBFAE29A3D15B00DDD988 /* WalletConnect in Frameworks */,
 				CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */,
 				2BD2B7C72D0B71BB007F8782 /* AlgoSDK.xcframework in Frameworks */,
@@ -10720,6 +10736,7 @@
 				CBAD47192745434A00C91946 /* Charts in Frameworks */,
 				CBAD47272745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD47212745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
+				2BF3B0C32D1D7E1D00E78ADA /* FirebaseRemoteConfig in Frameworks */,
 				D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */,
 				CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */,
 				2BD2B7C62D0B71BB007F8782 /* AlgoSDK.xcframework in Frameworks */,
@@ -10760,6 +10777,7 @@
 				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
 				CBAD47022745434A00C91946 /* Charts in Frameworks */,
 				CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */,
+				2BF3B0C12D1D7E1100E78ADA /* FirebaseRemoteConfig in Frameworks */,
 				D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */,
 				CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */,
 				2BD2B7C82D0B71BB007F8782 /* AlgoSDK.xcframework in Frameworks */,
@@ -17446,6 +17464,16 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		2BF3B0BF2D1D796500E78ADA /* FeatureFlag */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */,
+				2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */,
+				2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */,
+			);
+			path = FeatureFlag;
+			sourceTree = "<group>";
+		};
 		2BF3D830226F0F7900716C09 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
@@ -18180,6 +18208,7 @@
 		2BF7280227471E4700CCAC30 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2BF3B0BF2D1D796500E78ADA /* FeatureFlag */,
 				2B9148572C21E997005DC1B7 /* ARC59 */,
 				F0877F7E299AEE3200CD8D8A /* InAppBrowser */,
 				2B3F6BD128CB3030009DF7E6 /* Validators */,
@@ -23421,6 +23450,7 @@
 				2BEEBFAB29A3D15200DDD988 /* WalletConnectNetworking */,
 				2BEEBFAD29A3D15B00DDD988 /* WalletConnect */,
 				2BEEBFAF29A3D17600DDD988 /* Web3Wallet */,
+				2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -23473,6 +23503,7 @@
 				2BEEBFB329A3D1B400DDD988 /* WalletConnect */,
 				2BEEBFB529A3D1BF00DDD988 /* WalletConnectPairing */,
 				2BEEBFB729A3D1C700DDD988 /* WalletConnectNetworking */,
+				2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -23525,6 +23556,7 @@
 				2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */,
 				2BEEBF7E299AA5B000DDD988 /* Web3Wallet */,
 				2BEEBF81299AB81700DDD988 /* Starscream */,
+				2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -24774,6 +24806,7 @@
 				F010638828AC5E5400AB6873 /* RightAccessorizedLabelModel.swift in Sources */,
 				2B98E48727EB6262000FA690 /* CollectibleMediaVideoPreviewCell.swift in Sources */,
 				1783309329548D6900AD5B4E /* TelegramDeeplink.swift in Sources */,
+				2BF3B0D02D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */,
 				D48D11DD27428D31000061CE /* AccountNameSwitchViewTheme.swift in Sources */,
 				95C9590C278A1132003D0D78 /* WCSingleTransactionRequestBottomView.swift in Sources */,
 				2BAAF4B228E49C5100FC59AF /* SelectAssetListItemCellTheme.swift in Sources */,
@@ -25521,6 +25554,7 @@
 				2BE8798828BD2CBD00A6C682 /* BuySellTransactionOptionListItemButtonViewModel.swift in Sources */,
 				2B71CB7528FDD70E00B1E1A0 /* SwapAssetAmountOutViewModel.swift in Sources */,
 				D40C295326E2A25C0037A0F4 /* BottomWarningViewController+Theme.swift in Sources */,
+				2BF3B0D32D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */,
 				8B7852E72C0F168300B41962 /* IncomingASAAccountView.swift in Sources */,
 				8B3C400B2BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift in Sources */,
 				D439518B293540CD0052FEB9 /* CollectibleGalleryUIActionsView.swift in Sources */,
@@ -25950,6 +25984,7 @@
 				D499D28627C7DA7800641FF5 /* CollectibleGridItemLoadingView.swift in Sources */,
 				2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */,
 				D411B36F26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
+				2BF3B0C82D1D7EF200E78ADA /* FeatureFlag.swift in Sources */,
 				2B97787529943AA500F88C7C /* NavigationPrimaryTitleItemViewTheme.swift in Sources */,
 				D4F068BB26EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift in Sources */,
 				2B3E226B26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
@@ -27273,6 +27308,7 @@
 				1828816626CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				951E883A2754FF3F00FFEB69 /* SelectAccountDataSource.swift in Sources */,
 				2B26271F284E3A8700ADE371 /* AlgoTransactionItemViewModel.swift in Sources */,
+				2BF3B0C72D1D7EF200E78ADA /* FeatureFlag.swift in Sources */,
 				2B902D012CF275EA00182B34 /* SendKeyRegTransactionViewTheme.swift in Sources */,
 				95BB6C1D27A2CF0300F2A2F1 /* TransactionMultipleAmountInformationView.swift in Sources */,
 				D43A0C3A2790D738007430B9 /* NoContentWithActionCell.swift in Sources */,
@@ -27844,6 +27880,7 @@
 				2B0F626024EC129D00DA22A6 /* Environment.swift in Sources */,
 				2B0F626324EC129D00DA22A6 /* AccountRecoverView.swift in Sources */,
 				2B0F626424EC129D00DA22A6 /* PassphraseCell.swift in Sources */,
+				2BF3B0CF2D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */,
 				2B648616276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */,
 				D49E240F2995432E0016F698 /* BuyAlgoWithMoonPayOptionViewModel.swift in Sources */,
 				2BECB4B525A0F2210081870A /* NotificationFilterDraft.swift in Sources */,
@@ -28296,6 +28333,7 @@
 				955B617627848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
 				2B0F62AC24EC129D00DA22A6 /* Notification.Name+Additions.swift in Sources */,
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
+				2BF3B0D22D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */,
 				2B5F6F852768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D40D5EB2287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				D4027C11299E05C300F59F15 /* PaymentOption.swift in Sources */,
@@ -29934,6 +29972,7 @@
 				D40650392A5B5B5E00B05DBC /* UndoRekeySuccessScreen.swift in Sources */,
 				D4DA32DC2AEBDE2900F07CA8 /* KeyRegTransactionDetailViewTheme.swift in Sources */,
 				2B56716224008B590037FCFA /* LedgerTutorialInstructionView.swift in Sources */,
+				2BF3B0CE2D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */,
 				2B85F3EA257A71D100C871A5 /* LedgerOperation.swift in Sources */,
 				F010638628AC5E5400AB6873 /* RightAccessorizedLabelModel.swift in Sources */,
 				D4D86C65293FDE3B001CE878 /* PendingAssetListItemCell.swift in Sources */,
@@ -30681,6 +30720,7 @@
 				F0CF6B62285163AE007C30E4 /* AccountDescendingTitleAlgorithm.swift in Sources */,
 				2BD5A6AD263330A00048FA5E /* FetchAlgoPriceHistoryDraft.swift in Sources */,
 				8B7852E52C0F168300B41962 /* IncomingASAAccountView.swift in Sources */,
+				2BF3B0D42D1F048A00E78ADA /* RemoteConfigValue.swift in Sources */,
 				8B3C40092BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift in Sources */,
 				F045BE49286D21480069056B /* Portfolio.swift in Sources */,
 				2B82B1CC2253DE2500A8909F /* ContactsViewModel.swift in Sources */,
@@ -31110,6 +31150,7 @@
 				2B8CD5902906FB0A004A81B9 /* SwapErrorView.swift in Sources */,
 				2B0AD8372757DEDD00F83660 /* SingleLineTitleActionViewModel.swift in Sources */,
 				2B99D4BD28F58A7A00323C11 /* SwapConfirmPeraFeeInfoViewModel.swift in Sources */,
+				2BF3B0C62D1D7EF200E78ADA /* FeatureFlag.swift in Sources */,
 				2B5671572400751C0037FCFA /* LedgerTutorialInstructionListViewController.swift in Sources */,
 				D453A5B92AB0C7CB0079A7AB /* WCMainArbitraryDataLayout.swift in Sources */,
 				2B0D84EB239488A500F0EAA7 /* AssetConfigTransactionType.swift in Sources */,
@@ -32754,6 +32795,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
 			productName = WalletConnectNetworking;
+		};
+		2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 		D499D27D27C7D40B00641FF5 /* Prism */ = {
 			isa = XCSwiftPackageProductDependency;

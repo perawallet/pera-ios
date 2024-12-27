@@ -30,6 +30,7 @@ final class AppConfiguration {
     let launchController: AppLaunchController
     let peraConnect: PeraConnect
     let scammerController: ScammerController
+    let featureFlagService: FeatureFlagServicing
 
     init(
         api: ALGAPI,
@@ -43,7 +44,8 @@ final class AppConfiguration {
         analytics: ALGAnalytics,
         launchController: AppLaunchController,
         peraConnect: PeraConnect,
-        scammerController: ScammerController
+        scammerController: ScammerController,
+        featureFlagService: FeatureFlagServicing
     ) {
         self.api = api
         self.session = session
@@ -57,6 +59,7 @@ final class AppConfiguration {
         self.launchController = launchController
         self.peraConnect = peraConnect
         self.scammerController = ScammerController(api: api)
+        self.featureFlagService = featureFlagService
     }
     
     func all() -> ViewControllerConfiguration {
@@ -71,8 +74,9 @@ final class AppConfiguration {
             lastSeenNotificationController: lastSeenNotificationController,
             analytics: analytics,
             launchController: launchController,
-            peraConnect: peraConnect, 
-            scammerController: scammerController
+            peraConnect: peraConnect,
+            scammerController: scammerController,
+            featureFlagService: featureFlagService
         )
         return configuration
     }

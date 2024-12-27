@@ -18,6 +18,7 @@
 import CoreData
 import Firebase
 import FirebaseCrashlytics
+import FirebaseRemoteConfig
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
@@ -58,6 +59,7 @@ class AppDelegate:
     private lazy var pushNotificationController = createPushNotificationController()
     private lazy var lastSeenNotificationController = createLastSeenNotificationController()
     private lazy var scammerController = createScammerController()
+    private lazy var featureFlagService = createFeatureFlagService()
 
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -401,6 +403,17 @@ extension AppDelegate {
         analytics.setup()
         
         /// <mark>
+        /// Firebase Remote Config & Feature Flags
+        Task {
+            do {
+                try await featureFlagService.fetchAndActivate()
+            } catch {
+                print("failed to receive remote config")
+            }
+
+        }
+        
+        /// <mark>
         /// SwiftDate
         SwiftDate.defaultRegion = Region(
             calendar: Calendar.autoupdatingCurrent,
@@ -563,8 +576,9 @@ extension AppDelegate {
             lastSeenNotificationController: lastSeenNotificationController,
             analytics: analytics,
             launchController: appLaunchController,
-            peraConnect: peraConnect, 
-            scammerController: scammerController
+            peraConnect: peraConnect,
+            scammerController: scammerController,
+            featureFlagService: featureFlagService
         )
     }
     
@@ -653,5 +667,9 @@ extension AppDelegate {
     
     private func createScammerController() -> ScammerController {
         ScammerController(api: api)
+    }
+    
+    private func createFeatureFlagService() -> FeatureFlagServicing {
+        FeatureFlagService()
     }
 }
