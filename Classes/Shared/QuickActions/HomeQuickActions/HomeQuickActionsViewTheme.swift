@@ -24,7 +24,7 @@ struct HomeQuickActionsViewTheme:
     var spacingBetweenActions: LayoutMetric
     var actionWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
-    var stakeAction: ButtonStyle
+    var buySellAction: ButtonStyle
     var swapAction: ButtonStyle
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
@@ -35,9 +35,9 @@ struct HomeQuickActionsViewTheme:
         self.spacingBetweenActions = 16
         self.actionSpacingBetweenIconAndTitle = 12
         self.actionWidth = 64
-        self.stakeAction = [
-            .icon(Self.makeActionIcon(icon: "stake-quick-icon")),
-            .title(Self.makeActionTitle(title: "title-staking".localized))
+        self.buySellAction = [
+            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-buy-sell-title".localized))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),

@@ -99,7 +99,6 @@ final class HomeViewController:
         configuration: configuration,
         presentingScreen: self
     )
-    private lazy var stakingFlowCoordinator = StakingFlowCoordinator(presentingScreen: self)
 
     private let copyToClipboardController: CopyToClipboardController
 
@@ -516,10 +515,10 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeQuickActionsCell
     ) {
-        cell.startObserving(event: .stake) {
+        cell.startObserving(event: .buySell) {
             [weak self] in
             guard let self = self else { return }
-            self.stakingFlowCoordinator.launch()
+            self.openBuySellOptions()
         }
 
         cell.startObserving(event: .swap) {
@@ -535,6 +534,7 @@ extension HomeViewController {
             guard let self = self else { return }
             self.sendTransactionFlowCoordinator.launch()
         }
+
 
         cell.startObserving(event: .scanQR) {
             [weak self] in

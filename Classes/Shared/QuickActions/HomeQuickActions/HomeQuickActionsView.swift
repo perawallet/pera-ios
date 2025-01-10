@@ -24,15 +24,15 @@ final class HomeQuickActionsView:
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .stake: TargetActionInteraction(),
+        .buySell: TargetActionInteraction(),
         .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .scanQR: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
+    private lazy var buySellActionView = makeActionView()
     private lazy var swapActionView = makeBadgeActionView()
-    private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
     private lazy var scanActionView = makeActionView()
 
@@ -61,7 +61,7 @@ final class HomeQuickActionsView:
         let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
         let buySellActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.stakeAction,
+            for: theme.buySellAction,
             fittingIn: maxActionSize
         )
         let sendActionSize = calculateActionPreferredSize(
@@ -122,9 +122,24 @@ extension HomeQuickActionsView {
         }
 
         addSwapAction(theme)
-        addStakeAction(theme)
+        addBuySellAction(theme)
         addSendAction(theme)
         addScanAction(theme)
+    }
+
+    private func addBuySellAction(_ theme: HomeQuickActionsViewTheme) {
+        buySellActionView.customizeAppearance(theme.buySellAction)
+        customizeAction(
+            buySellActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(buySellActionView)
+
+        startPublishing(
+            event: .buySell,
+            for: buySellActionView
+        )
     }
 
     private func addSwapAction(_ theme: HomeQuickActionsViewTheme) {
@@ -140,21 +155,6 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .swap,
             for: swapActionView
-        )
-    }
-
-    private func addStakeAction(_ theme: HomeQuickActionsViewTheme) {
-        stakeActionView.customizeAppearance(theme.stakeAction)
-        customizeAction(
-            stakeActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(stakeActionView)
-
-        startPublishing(
-            event: .stake,
-            for: stakeActionView
         )
     }
 
@@ -222,7 +222,7 @@ extension HomeQuickActionsView {
 
 extension HomeQuickActionsView {
     enum Event {
-        case stake
+        case buySell
         case swap
         case send
         case scanQR

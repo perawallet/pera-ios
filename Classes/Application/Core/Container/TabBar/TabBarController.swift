@@ -382,6 +382,7 @@ extension TabBarController {
 }
 
 extension TabBarController {
+    
     private func navigateToStakingFlow() {
         toggleTransactionOptions()
         stakingFlowCoordinator.launch()
