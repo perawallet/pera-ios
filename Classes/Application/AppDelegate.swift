@@ -167,6 +167,11 @@ class AppDelegate:
             return true
         }
         
+        if let externalDeepLink = url.externalDeepLink {
+            receive(deeplinkWithSource: .externalDeepLink(externalDeepLink))
+            return true
+        }
+        
         if let browserURL = url.browserDeeplinkURL {
             let destination = DiscoverExternalDestination.url(browserURL)
             receive(deeplinkWithSource: .externalInAppBrowser(destination))

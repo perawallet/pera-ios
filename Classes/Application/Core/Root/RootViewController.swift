@@ -40,7 +40,7 @@ final class RootViewController: UIViewController {
         return areTabsVisible ? mainContainer : nil
     }
 
-    private lazy var mainContainer = TabBarController(
+    private(set) lazy var mainContainer = TabBarController(
         swapDataStore: SwapDataLocalStore(),
         analytics: appConfiguration.analytics,
         api: appConfiguration.api,

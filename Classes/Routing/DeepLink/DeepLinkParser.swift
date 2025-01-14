@@ -673,6 +673,7 @@ extension DeepLinkParser {
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)
+        case externalDeepLink(deepLink: ExternalDeepLink)
         case buyAlgoWithMeld(MeldDraft)
         case assetInbox(
             address: String,

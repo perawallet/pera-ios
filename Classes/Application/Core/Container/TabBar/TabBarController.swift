@@ -462,7 +462,7 @@ extension TabBarController {
     private func navigateToBrowseDApps() {
         toggleTransactionOptions()
 
-        launchDiscoverWithBrowserTab()
+        launchDiscover(with: .browser)
     }
 
     private func navigateToCardsScreen() {
@@ -629,5 +629,15 @@ extension TabBarController: SharedDataControllerObserver {
         default:
             break
         }
+    }
+}
+
+extension TabBarController {
+    func launchDiscover(with destination: DiscoverDestination) {
+        selectedTab = .discover
+
+        let container = selectedScreen as? NavigationContainer
+        let screen = container?.viewControllers.first as? DiscoverHomeScreen
+        screen?.destination = destination
     }
 }

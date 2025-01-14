@@ -26,9 +26,9 @@ final class CardsScreen:
     private lazy var theme = DiscoverHomeScreenTheme()
     private var isViewLayoutLoaded = false
 
-    init(configuration: ViewControllerConfiguration) {
+    init(configuration: ViewControllerConfiguration, destination: CardsDestination = .welcome) {
         super.init(
-            destination: .welcome,
+            destination: destination,
             configuration: configuration
         )
     }

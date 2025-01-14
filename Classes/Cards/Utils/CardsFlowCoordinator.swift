@@ -30,7 +30,7 @@ final class CardsFlowCoordinator {
 extension CardsFlowCoordinator {
     func launch() {
         presentingScreen.open(
-            .cards,
+            .cards(path: nil),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,

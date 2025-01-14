@@ -29,6 +29,13 @@ final class CardsURLGenerator {
                 theme: theme,
                 session: session
             )
+        case .other(path: let path):
+            guard let path else { return nil }
+            return generateURLForPath(
+                path: path,
+                theme: theme,
+                session: session
+            )
         }
     }
 
@@ -37,6 +44,19 @@ final class CardsURLGenerator {
         session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.cardsBaseUrl)
+        components?.queryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        return components?.url
+    }
+    
+    private static func generateURLForPath(
+        path: String,
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var components = URLComponents(string: Environment.current.cardsBaseUrl + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
@@ -69,4 +89,5 @@ final class CardsURLGenerator {
 
 enum CardsDestination {
     case welcome
+    case other(path: String?)
 }
