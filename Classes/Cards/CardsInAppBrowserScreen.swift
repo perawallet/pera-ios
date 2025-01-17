@@ -131,7 +131,8 @@ extension CardsInAppBrowserScreen {
         CardsURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            network: api?.network ?? .mainnet
         )
     }
 

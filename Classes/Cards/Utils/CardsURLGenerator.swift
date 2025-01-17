@@ -21,29 +21,33 @@ final class CardsURLGenerator {
     static func generateURL(
         destination: CardsDestination,
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        network: ALGAPI.Network
     ) -> URL? {
         switch destination {
         case .welcome:
             return generateURLForHome(
                 theme: theme,
-                session: session
+                session: session,
+                network: network
             )
         case .other(path: let path):
             guard let path else { return nil }
             return generateURLForPath(
                 path: path,
                 theme: theme,
-                session: session
+                session: session,
+                network: network
             )
         }
     }
 
     private static func generateURLForHome(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        network: ALGAPI.Network
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.cardsBaseUrl)
+        var components = URLComponents(string: Environment.current.cardsBaseUrl(network: network))
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
@@ -54,9 +58,10 @@ final class CardsURLGenerator {
     private static func generateURLForPath(
         path: String,
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        network: ALGAPI.Network
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.cardsBaseUrl + path)
+        var components = URLComponents(string: Environment.current.cardsBaseUrl(network: network) + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session

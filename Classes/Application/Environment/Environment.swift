@@ -127,14 +127,18 @@ class Environment {
         }
     }()
 
-    lazy var cardsBaseUrl: String = {
-        switch target {
-        case .staging:
-            return "https://cards-mobile-staging.perawallet.app/"
-        case .prod:
-            return "https://cards-mobile.perawallet.app/"
+    lazy var cardsMainNetBaseUrl = "https://cards-mobile.perawallet.app/"
+    
+    lazy var cardsTestNetBaseUrl = "https://cards-mobile-staging.perawallet.app/"
+    
+    func cardsBaseUrl(network: ALGAPI.Network) -> String {
+        switch network {
+        case .testnet:
+            return cardsTestNetBaseUrl
+        case .mainnet:
+            return cardsMainNetBaseUrl
         }
-    }()
+    }
     
     lazy var stakingBaseUrl: String = {
         switch target {

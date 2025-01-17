@@ -2655,7 +2655,11 @@ extension Router {
     private func isAutoConnectionEnabled(draft: WCSessionConnectionDraft) -> Bool {
         let characterSet: CharacterSet = CharacterSet(charactersIn: "/")
         let dappURL = draft.dappURL?.absoluteString
-        let cardsBaseUrl = URL(string: Environment.current.cardsBaseUrl)?.absoluteString
+        let cardsBaseUrl = URL(
+            string: Environment.current.cardsBaseUrl(
+                network: appConfiguration.api.network
+            )
+        )?.absoluteString
         return dappURL?.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet)
     }
     
