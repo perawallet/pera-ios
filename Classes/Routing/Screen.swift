@@ -438,8 +438,8 @@ indirect enum Screen {
     case backUpAccountSelection(
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
-    case cards
     case staking
+    case cards(path: String?)
     case sendAssetInbox(draft: SendAssetInboxDraft)
     case sendKeyRegTransaction(
         account: Account,

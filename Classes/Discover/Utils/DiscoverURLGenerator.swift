@@ -34,6 +34,11 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
+        case .markets:
+            return generateURLForMarket(
+                theme: theme,
+                session: session
+            )
         case .assetDetail(let params):
             return generateURLForAssetDetail(
                 params: params,
@@ -56,6 +61,19 @@ final class DiscoverURLGenerator {
 
         }
     }
+    
+    static func generateURL(
+        path: String,
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var components = URLComponents(string: Environment.current.discoverBaseUrl + path)
+        components?.queryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        return components?.url
+    }
 
     private static func generateURLForHome(
         theme: UIUserInterfaceStyle,
@@ -74,6 +92,18 @@ final class DiscoverURLGenerator {
         session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBrowserURL)
+        components?.queryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        return components?.url
+    }
+    
+    private static func generateURLForMarket(
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var components = URLComponents(string: Environment.current.discoverMarketURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
@@ -171,6 +201,7 @@ final class DiscoverURLGenerator {
 enum DiscoverDestination {
     case home
     case browser
+    case markets
     case assetDetail(DiscoverAssetParameters)
     case generic(DiscoverGenericParameters)
     case external(DiscoverExternalDestination)

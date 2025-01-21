@@ -432,6 +432,60 @@ final class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .push
             )
+        case .externalDeepLink(deepLink: let deepLink):
+            switch deepLink {
+            case .discover(path: let path):
+                guard let path else {
+                    launch(tab: .discover)
+                    return
+                }
+                switch path {
+                case "main/browser":
+                    rootViewController.mainContainer.launchDiscover(with: .browser)
+                    break
+                case "main/markets":
+                    rootViewController.mainContainer.launchDiscover(with: .markets)
+                case let path where path.contains("token-detail") || path.contains("news"):
+                    rootViewController.mainContainer.launchDiscover(with: .home)
+                    let visibleScreen = findVisibleScreen(over: rootViewController)
+                    guard let url = DiscoverURLGenerator.generateURL(path: path, theme: visibleScreen.traitCollection.userInterfaceStyle, session: nil) else {
+                        return
+                    }
+                    visibleScreen.open(
+                        .discoverGeneric(DiscoverGenericParameters(url: url)),
+                        by: .present
+                    )
+                default:
+                    launch(tab: .discover)
+                }
+            case .staking:
+                findVisibleScreen(over: rootViewController).open(
+                    .staking,
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    )
+                )
+            case .cards(path: let path):
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                guard let path else {
+                    let cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: visibleScreen)
+                    cardsFlowCoordinator.launch()
+                    return
+                }
+
+                visibleScreen.open(
+                    .cards(path: path),
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    )
+                )
+            case .other:
+                launch(tab: .home)
+            }
         }
     }
     
@@ -2174,8 +2228,11 @@ final class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .cards:
-            let cardsScreen = CardsScreen(configuration: configuration)
+        case .cards(path: let path):
+            let cardsScreen = CardsScreen(
+                configuration: configuration,
+                destination: path.isNilOrEmpty ? .welcome : .other(path: path)
+            )
             viewController = cardsScreen
         case .sendKeyRegTransaction(let account, let draft):
             viewController = SendKeyRegTransactionScreen(
@@ -2598,7 +2655,11 @@ extension Router {
     private func isAutoConnectionEnabled(draft: WCSessionConnectionDraft) -> Bool {
         let characterSet: CharacterSet = CharacterSet(charactersIn: "/")
         let dappURL = draft.dappURL?.absoluteString
-        let cardsBaseUrl = URL(string: Environment.current.cardsBaseUrl)?.absoluteString
+        let cardsBaseUrl = URL(
+            string: Environment.current.cardsBaseUrl(
+                network: appConfiguration.api.network
+            )
+        )?.absoluteString
         return dappURL?.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet)
     }
     

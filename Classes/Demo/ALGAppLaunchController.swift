@@ -314,6 +314,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forRedirectedDestination: destination)
         case .buyAlgoWithMeld(let draft):
             result = determineUIStateIfPossible(forMeld: draft)
+        case .externalDeepLink(let deepLink):
+            result = determineUIStateIfPossible(forExternalDeepLink: deepLink)
         }
         
         switch result {
@@ -445,6 +447,12 @@ extension ALGAppLaunchController {
         forRedirectedDestination destination: DiscoverExternalDestination
     ) -> DeeplinkResult {
         return .success(.deeplink(.externalInAppBrowser(destination: destination)))
+    }
+    
+    private func determineUIStateIfPossible(
+        forExternalDeepLink deepLink: ExternalDeepLink
+    ) -> DeeplinkResult {
+        return .success(.deeplink(.externalDeepLink(deepLink: deepLink)))
     }
 
     private func determineUIStateIfPossible(forMeld draft: MeldDraft) -> DeeplinkResult {
