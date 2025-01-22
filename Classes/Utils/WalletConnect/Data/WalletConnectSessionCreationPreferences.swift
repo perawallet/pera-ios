@@ -19,19 +19,27 @@ import Foundation
 struct WalletConnectSessionCreationPreferences {
     let session: WalletConnectSessionText
     let prefersConnectionApproval: Bool
+    let isAccountMultiselectionEnabled: Bool
+    let mandotaryAccount: String?
 
     init(
         session: WalletConnectSessionText
     ) {
         self.session = session
         self.prefersConnectionApproval = true
+        self.isAccountMultiselectionEnabled = true
+        self.mandotaryAccount = nil
     }
     
     init(
         session: WalletConnectSessionText,
-        prefersConnectionApproval: Bool
+        prefersConnectionApproval: Bool,
+        isAccountMultiselectionEnabled: Bool,
+        mandotaryAccount: String?
     ) {
         self.session = session
         self.prefersConnectionApproval = prefersConnectionApproval
+        self.isAccountMultiselectionEnabled = isAccountMultiselectionEnabled
+        self.mandotaryAccount = mandotaryAccount
     }
 }

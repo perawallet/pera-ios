@@ -31,6 +31,7 @@ enum DeeplinkSource {
     case qrText(QRText)
     case externalInAppBrowser(DiscoverExternalDestination)
     case buyAlgoWithMeld(MeldDraft)
+    case externalDeepLink(ExternalDeepLink)
 
     static func walletConnectSessionRequestForDiscover(_ url: URL) -> DeeplinkSource {
         return .walletConnectSessionRequest(url, prefersConnectionApproval: false)
@@ -67,4 +68,11 @@ struct WalletConnectArbitraryDataSignRequestDraft {
     let request: WalletConnectRequestDraft
     let arbitraryData: [WCArbitraryData]
     let session: WCSessionDraft
+}
+
+enum ExternalDeepLink {
+    case discover(path: String?)
+    case staking(path: String?)
+    case cards(path: String?)
+    case other(path: String?)
 }

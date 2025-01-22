@@ -61,14 +61,17 @@ final class WCSessionConnectionScreen:
     private var isAdditionalSafeAreaInsetsFinalized = false
 
     private let dataController: WCSessionConnectionDataController
+    private let isAccountMultiselectionEnabled: Bool
 
     init(
         draft: WCSessionConnectionDraft,
         dataController: WCSessionConnectionDataController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        isAccountMultiselectionEnabled: Bool
     ) {
         self.draft = draft
         self.dataController = dataController
+        self.isAccountMultiselectionEnabled = isAccountMultiselectionEnabled
         super.init(configuration: configuration)
 
         startObservingDataUpdates()
@@ -365,7 +368,7 @@ extension WCSessionConnectionScreen {
 
         switch itemIdentifier {
         case .account:
-            toggleAccountSelection(at: indexPath)
+            toggleCellForSingleOrMultipleSelection(at: indexPath)
             togglePrimaryActionStateIfNeeded()
         default:
             break
@@ -429,26 +432,6 @@ extension WCSessionConnectionScreen {
 }
 
 extension WCSessionConnectionScreen {
-    private func toggleAccountSelection(
-        at indexPath: IndexPath
-    ) {
-        guard !dataController.hasSingleAccount else {
-            return
-        }
-
-        let cell = listView.cellForItem(at: indexPath) as! WCSessionConnectionAccountCell
-        let index = indexPath.row
-        let isSelected = cell.accessory == .selected
-
-        cell.accessory.toggle()
-
-        if isSelected {
-            dataController.unselectAccountItem(at: index)
-        } else {
-            dataController.selectAccountItem(at: index)
-        }
-    }
-
     private func selectSingleAccountIfNeeded() {
         if dataController.hasSingleAccount {
             dataController.selectAccountItem(at: .zero)
@@ -465,5 +448,44 @@ extension WCSessionConnectionScreen {
     enum Event {
         case performCancel
         case performConnect(accounts: [PublicKey])
+    }
+}
+
+extension WCSessionConnectionScreen {
+    private func toggleCellForSingleOrMultipleSelection(at indexPath: IndexPath) {
+        if dataController.hasSingleAccount {
+            return
+        }
+
+        let index = indexPath.row
+        let isSelected = dataController.isAccountSelected(at: index)
+
+        if isAccountMultiselectionEnabled {
+            if isSelected {
+                dataController.unselectAccountItem(at: index)
+            } else {
+                dataController.selectAccountItem(at: index)
+            }
+        } else {
+            let selectedAccounts = dataController.getSelectedAccounts()
+            if selectedAccounts.first != nil {
+                for i in 0..<listView.numberOfItems(inSection: indexPath.section) {
+                    if dataController.isAccountSelected(at: i) {
+                        dataController.unselectAccountItem(at: i)
+                        if let previousCell = listView.cellForItem(at: IndexPath(row: i, section: indexPath.section)) as? WCSessionConnectionAccountCell {
+                            previousCell.accessory = .unselected
+                        }
+                        break
+                    }
+                }
+            }
+            dataController.selectAccountItem(at: index)
+        }
+
+        if let cell = listView.cellForItem(at: indexPath) as? WCSessionConnectionAccountCell {
+            cell.accessory = isSelected ? .unselected : .selected
+        }
+        
+        togglePrimaryActionStateIfNeeded()
     }
 }

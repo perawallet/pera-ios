@@ -16,6 +16,7 @@
 //  Environment.swift
 
 import Foundation
+import UIKit
 
 private enum AppTarget {
     case staging, prod
@@ -126,6 +127,19 @@ class Environment {
         }
     }()
 
+    lazy var cardsMainNetBaseUrl = "https://cards-mobile.perawallet.app/"
+    
+    lazy var cardsTestNetBaseUrl = "https://cards-mobile-staging.perawallet.app/"
+    
+    func cardsBaseUrl(network: ALGAPI.Network) -> String {
+        switch network {
+        case .testnet:
+            return cardsTestNetBaseUrl
+        case .mainnet:
+            return cardsMainNetBaseUrl
+        }
+    }
+    
     lazy var stakingBaseUrl: String = {
         switch target {
         case .staging:
@@ -151,6 +165,15 @@ class Environment {
         case .prod:
             return "https://discover-mobile.perawallet.app/main/browser"
         }
+    }()
+    
+    lazy var discoverMarketURL: String = {
+            switch target {
+            case .staging:
+                return "https://discover-mobile-staging.perawallet.app/main/markets"
+            case .prod:
+                return "https://discover-mobile.perawallet.app/main/markets"
+            }
     }()
 
     private let target: AppTarget

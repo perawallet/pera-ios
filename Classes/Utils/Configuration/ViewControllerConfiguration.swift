@@ -30,6 +30,7 @@ final class ViewControllerConfiguration {
     let launchController: AppLaunchController
     let peraConnect: PeraConnect
     let scammerController: ScammerController
+    let featureFlagService: FeatureFlagServicing
     
     init(
         api: ALGAPI?,
@@ -43,7 +44,8 @@ final class ViewControllerConfiguration {
         analytics: ALGAnalytics,
         launchController: AppLaunchController,
         peraConnect: PeraConnect,
-        scammerController: ScammerController
+        scammerController: ScammerController,
+        featureFlagService: FeatureFlagServicing
     ) {
         self.api = api
         self.session = session
@@ -57,5 +59,6 @@ final class ViewControllerConfiguration {
         self.launchController = launchController
         self.peraConnect = peraConnect
         self.scammerController = ScammerController(api: api)
+        self.featureFlagService = featureFlagService
     }
 }
