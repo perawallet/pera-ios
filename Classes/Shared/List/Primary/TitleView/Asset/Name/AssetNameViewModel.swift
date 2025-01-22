@@ -63,7 +63,7 @@ extension AssetNameViewModel {
     mutating func bindSecondaryTitle(
         _ asset: Asset
     ) {
-        secondaryTitle = getSecondaryTitle(asset.naming.unitName)
+        secondaryTitle = getSecondaryTitle(asset.naming.unitName, assetId: asset.id)
     }
 }
 
@@ -81,7 +81,7 @@ extension AssetNameViewModel {
     }
 
     mutating func bindSecondaryTitle(update: OptInBlockchainUpdate) {
-        secondaryTitle = getSecondaryTitle(update.assetUnitName)
+        secondaryTitle = getSecondaryTitle(update.assetUnitName, assetId: update.assetID)
     }
 }
 
@@ -99,7 +99,7 @@ extension AssetNameViewModel {
     }
 
     mutating func bindSecondaryTitle(update: OptOutBlockchainUpdate) {
-        secondaryTitle = getSecondaryTitle(update.assetUnitName)
+        secondaryTitle = getSecondaryTitle(update.assetUnitName, assetId: update.assetID)
     }
 }
 
@@ -144,7 +144,9 @@ extension AssetNameViewModel {
         }
     }
 
-    private func getSecondaryTitle(_ assetUnitName: String?) -> TextProvider? {
-        return assetUnitName?.footnoteRegular(lineBreakMode: .byTruncatingTail)
+    private func getSecondaryTitle(_ assetUnitName: String?, assetId: AssetID?) -> TextProvider? {
+        guard let assetUnitName else { return nil }
+        guard let assetId, assetId > 0 else { return assetUnitName.footnoteRegular(lineBreakMode: .byTruncatingTail) }
+        return "\(assetUnitName)  ·  \(assetId)".footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

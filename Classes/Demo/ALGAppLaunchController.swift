@@ -314,6 +314,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forRedirectedDestination: destination)
         case .buyAlgoWithMeld(let draft):
             result = determineUIStateIfPossible(forMeld: draft)
+        case .externalDeepLink(let deepLink):
+            result = determineUIStateIfPossible(forExternalDeepLink: deepLink)
         }
         
         switch result {
@@ -403,10 +405,12 @@ extension ALGAppLaunchController {
         switch parserResult {
         case .none:
             return nil
-        case .success(let session):
+        case .success(let result):
             let preferences = WalletConnectSessionCreationPreferences(
-                session: session,
-                prefersConnectionApproval: prefersConnectionApproval
+                session: result.walletConnectSessionKey,
+                prefersConnectionApproval: prefersConnectionApproval,
+                isAccountMultiselectionEnabled: result.isAccountMultiselectionEnabled,
+                mandotaryAccount: result.mandotaryAccount
             )
             return .success(.walletConnectSessionRequest(preferences))
         case .failure(let error):
@@ -443,6 +447,12 @@ extension ALGAppLaunchController {
         forRedirectedDestination destination: DiscoverExternalDestination
     ) -> DeeplinkResult {
         return .success(.deeplink(.externalInAppBrowser(destination: destination)))
+    }
+    
+    private func determineUIStateIfPossible(
+        forExternalDeepLink deepLink: ExternalDeepLink
+    ) -> DeeplinkResult {
+        return .success(.deeplink(.externalDeepLink(deepLink: deepLink)))
     }
 
     private func determineUIStateIfPossible(forMeld draft: MeldDraft) -> DeeplinkResult {

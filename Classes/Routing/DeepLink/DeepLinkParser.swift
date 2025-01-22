@@ -579,7 +579,7 @@ extension DeepLinkParser {
 extension DeepLinkParser {
     func discover(
         walletConnectSessionRequest: URL
-    ) -> Swift.Result<String, Error>? {
+    ) -> Swift.Result<WalletConnectSessionRequestResponse, Error>? {
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
@@ -591,9 +591,17 @@ extension DeepLinkParser {
             return nil
         }
         
+        let isAccountMultiselectionEnabled = queryItems?.first(where: { $0.name == Constants.Cards.singleAccount.rawValue })?.value == "true"
+        let mandotaryAccount = queryItems?.first(where: { $0.name == Constants.Cards.selectedAccount.rawValue })?.value
+        let result = WalletConnectSessionRequestResponse(
+            walletConnectSessionKey: maybeWalletConnectSessionKey,
+            isAccountMultiselectionEnabled: !isAccountMultiselectionEnabled,
+            mandotaryAccount: mandotaryAccount
+        )
+        
         return
             peraConnect.isValidSession(maybeWalletConnectSessionKey) ?
-            .success(maybeWalletConnectSessionKey) :
+            .success(result) :
             nil
     }
     
@@ -665,6 +673,7 @@ extension DeepLinkParser {
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)
+        case externalDeepLink(deepLink: ExternalDeepLink)
         case buyAlgoWithMeld(MeldDraft)
         case assetInbox(
             address: String,

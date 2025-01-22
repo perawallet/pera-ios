@@ -117,7 +117,7 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnection(draft: WCSessionConnectionDraft)
+    case wcConnection(draft: WCSessionConnectionDraft, isAccountMultiselectionEnabled: Bool)
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
@@ -439,6 +439,7 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
     )
     case staking
+    case cards(path: String?)
     case sendAssetInbox(draft: SendAssetInboxDraft)
     case sendKeyRegTransaction(
         account: Account,

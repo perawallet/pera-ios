@@ -73,7 +73,9 @@ final class TabBarController: TabBarContainer {
     }
 
     private lazy var browseDAppsAction = createBrowseDAppsListAction()
-
+    
+    private lazy var cardsAction = createCardsAction()
+    
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
@@ -117,8 +119,8 @@ final class TabBarController: TabBarContainer {
         appLaunchController: appLaunchController
     )
 
+    private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     private lazy var stakingFlowCoordinator = StakingFlowCoordinator(presentingScreen: self)
-
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private var isTransactionOptionsVisible: Bool = false
@@ -135,6 +137,7 @@ final class TabBarController: TabBarContainer {
     private let session: Session
     private let sharedDataController: SharedDataController
     private let appLaunchController: AppLaunchController
+    private let featureFlagService: FeatureFlagServicing
 
     init(
         swapDataStore: SwapDataStore,
@@ -144,7 +147,8 @@ final class TabBarController: TabBarContainer {
         loadingController: LoadingController,
         session: Session,
         sharedDataController: SharedDataController,
-        appLaunchController: AppLaunchController
+        appLaunchController: AppLaunchController,
+        featureFlagService: FeatureFlagServicing
     ) {
         self.swapDataStore = swapDataStore
         self.analytics = analytics
@@ -154,6 +158,7 @@ final class TabBarController: TabBarContainer {
         self.session = session
         self.sharedDataController = sharedDataController
         self.appLaunchController = appLaunchController
+        self.featureFlagService = featureFlagService
         super.init()
     }
 
@@ -252,15 +257,22 @@ extension TabBarController {
         var theme = TransactionOptionsViewTheme()
         theme.contentSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBar.bounds.height, right: 0)
 
-        let aView = TransactionOptionsView(
-            actions: [
-                stakingAction,
-                swapAction,
-                buySellAction,
-                receiveAction,
-                browseDAppsAction
-            ]
-        )
+        var actions = [
+            stakingAction,
+            swapAction,
+            buySellAction,
+            sendAction,
+            receiveAction,
+            scanQRCodeAction,
+            browseDAppsAction
+        ]
+        
+        if featureFlagService.isEnabled(.immersiveEnabled) {
+            actions.append(cardsAction)
+        }
+        
+        let aView = TransactionOptionsView(actions: actions)
+
         aView.customize(theme)
 
         aView.startObserving(event: .performClose) {
@@ -370,7 +382,6 @@ extension TabBarController {
 }
 
 extension TabBarController {
-    
     private func navigateToStakingFlow() {
         toggleTransactionOptions()
         stakingFlowCoordinator.launch()
@@ -451,9 +462,15 @@ extension TabBarController {
     private func navigateToBrowseDApps() {
         toggleTransactionOptions()
 
-        launchDiscoverWithBrowserTab()
+        launchDiscover(with: .browser)
     }
 
+    private func navigateToCardsScreen() {
+        toggleTransactionOptions()
+        
+        cardsFlowCoordinator.launch()
+    }
+    
     private func launchDiscoverWithBrowserTab() {
         selectedTab = .discover
 
@@ -561,6 +578,17 @@ extension TabBarController {
             self.navigateToBrowseDApps()
         }
     }
+    
+    private func createCardsAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            isEnabled: true,
+            viewModel: CardsTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self else { return }
+            self.navigateToCardsScreen()
+        }
+    }
 }
 
 extension Array where Element == TabBarItem {
@@ -601,5 +629,15 @@ extension TabBarController: SharedDataControllerObserver {
         default:
             break
         }
+    }
+}
+
+extension TabBarController {
+    func launchDiscover(with destination: DiscoverDestination) {
+        selectedTab = .discover
+
+        let container = selectedScreen as? NavigationContainer
+        let screen = container?.viewControllers.first as? DiscoverHomeScreen
+        screen?.destination = destination
     }
 }

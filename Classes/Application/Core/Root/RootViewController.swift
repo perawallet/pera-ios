@@ -20,7 +20,13 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-final class RootViewController: UIViewController {
+final class RootViewController:
+    UIViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+    
+    private(set) var isInAppBrowserActive = false
+    
     var areTabsVisible: Bool {
         return !mainContainer.items.isEmpty
     }
@@ -40,7 +46,7 @@ final class RootViewController: UIViewController {
         return areTabsVisible ? mainContainer : nil
     }
 
-    private lazy var mainContainer = TabBarController(
+    private(set) lazy var mainContainer = TabBarController(
         swapDataStore: SwapDataLocalStore(),
         analytics: appConfiguration.analytics,
         api: appConfiguration.api,
@@ -48,7 +54,8 @@ final class RootViewController: UIViewController {
         loadingController: appConfiguration.loadingController,
         session: appConfiguration.session,
         sharedDataController: appConfiguration.sharedDataController,
-        appLaunchController: appConfiguration.launchController
+        appLaunchController: appConfiguration.launchController,
+        featureFlagService: appConfiguration.featureFlagService
     )
 
     private lazy var pushNotificationController = PushNotificationController(
@@ -93,6 +100,7 @@ final class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
+        observeNotifications()
     }
 }
 
@@ -127,7 +135,7 @@ extension RootViewController {
         let homeTab = HomeTabBarItem(
             NavigationContainer(rootViewController: homeViewController)
         )
-
+        
         let discoverViewController = DiscoverHomeScreen(configuration: configuration)
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)
@@ -197,6 +205,22 @@ extension RootViewController {
                 $0.bottom == 0
                 $0.trailing == 0
             }
+        }
+    }
+    
+    private func observeNotifications() {
+        observe(notification: .inAppBrowserAppeared) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            self.isInAppBrowserActive = true
+        }
+        
+        observe(notification: .inAppBrowserDisappeared) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            self.isInAppBrowserActive = false
         }
     }
 }

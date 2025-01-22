@@ -72,3 +72,38 @@ extension URL {
         return URL(string: urlString)
     }
 }
+
+extension URL {
+
+    var externalDeepLink: ExternalDeepLink? {
+        let pattern = #"^perawallet://([^?]+)(\?.+)?$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return nil }
+
+        let range = NSRange(location: 0, length: absoluteString.utf16.count)
+        if let match = regex.firstMatch(in: absoluteString, options: [], range: range) {
+            let typeString = (absoluteString as NSString).substring(with: match.range(at: 1))
+
+            var path: String?
+            if let paramsString = match.range(at: 2).location != NSNotFound ? (absoluteString as NSString).substring(with: match.range(at: 2)) : nil {
+                if let urlComponents = URLComponents(string: "\(paramsString)") {
+                    if let pathValue = urlComponents.queryItems?.first(where: { $0.name == "path" })?.value {
+                        path = pathValue
+                    }
+                }
+            }
+
+            switch typeString {
+            case "discover":
+                return .discover(path: path)
+            case "staking":
+                return .staking(path: path)
+            case "cards":
+                return .cards(path: path)
+            default:
+                return .other(path: path)
+            }
+        }
+
+        return nil
+    }
+}
