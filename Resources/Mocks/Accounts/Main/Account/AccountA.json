@@ -166,5 +166,6 @@
   "sig-type": "sig",
   "round": 11713920,
   "status": "Offline",
-  "name": "Chase"
+  "name": "Chase",
+  "total-created-apps": 1
 }

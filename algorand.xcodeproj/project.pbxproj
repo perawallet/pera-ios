@@ -1336,7 +1336,6 @@
 		2B2DF29628103522008BC52D /* CurrencySelectionListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DF29328103522008BC52D /* CurrencySelectionListLayout+Theme.swift */; };
 		2B2EE88A25B6E936006A53C5 /* AssetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */; };
 		2B2EE89425B6E944006A53C5 /* AlgoAssetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE89325B6E944006A53C5 /* AlgoAssetViewModelTests.swift */; };
-		2B2EE8B125B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE8B025B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift */; };
 		2B2EE8BB25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE8BA25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift */; };
 		2B2EE8CD25B6F671006A53C5 /* AccountNameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE8CC25B6F671006A53C5 /* AccountNameViewModelTests.swift */; };
 		2B2EE8E425B6F93D006A53C5 /* RewardDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE8E325B6F93D006A53C5 /* RewardDetailViewModelTests.swift */; };
@@ -4969,6 +4968,9 @@
 		D424BE632A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424BE622A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift */; };
 		D424BE642A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424BE622A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift */; };
 		D424BE652A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424BE622A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift */; };
+		D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */; };
+		D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */; };
+		D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */; };
 		D42A022526D7A50A00CEFC16 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D42A022726D7A52F00CEFC16 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
 		D42A520628994F7D00023002 /* SecondaryListItemValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A520528994F7D00023002 /* SecondaryListItemValueView.swift */; };
@@ -8380,7 +8382,6 @@
 		2B2DF29328103522008BC52D /* CurrencySelectionListLayout+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrencySelectionListLayout+Theme.swift"; sourceTree = "<group>"; };
 		2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE89325B6E944006A53C5 /* AlgoAssetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoAssetViewModelTests.swift; sourceTree = "<group>"; };
-		2B2EE8B025B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE8BA25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE8CC25B6F671006A53C5 /* AccountNameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE8E325B6F93D006A53C5 /* RewardDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewModelTests.swift; sourceTree = "<group>"; };
@@ -9696,6 +9697,9 @@
 		D4247CDF2945449500856587 /* CollectibleAmountFormattingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleAmountFormattingHandler.swift; sourceTree = "<group>"; };
 		D424BE5E2A7F980C002E5AF6 /* WCSessionAdvancedPermissionsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderView.swift; sourceTree = "<group>"; };
 		D424BE622A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeader.swift; sourceTree = "<group>"; };
+		D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingDeeplinksTests.swift; sourceTree = "<group>"; };
+		D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsDeeplinksTests.swift; sourceTree = "<group>"; };
+		D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDeeplinksTests.swift; sourceTree = "<group>"; };
 		D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransition.swift; sourceTree = "<group>"; };
 		D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitionController.swift; sourceTree = "<group>"; };
 		D42A520528994F7D00023002 /* SecondaryListItemValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryListItemValueView.swift; sourceTree = "<group>"; };
@@ -11092,6 +11096,7 @@
 		1798D9B4294B18C300A7B2AA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D42585242D4B923A00E89BF2 /* Deeplinks */,
 				1798D9B5294B18CB00A7B2AA /* Discover */,
 			);
 			path = Utils;
@@ -12061,42 +12066,17 @@
 		2B2EE8AC25B6F073006A53C5 /* Ledger */ = {
 			isa = PBXGroup;
 			children = (
-				2B2EE8AD25B6F0A4006A53C5 /* Rekey */,
 				2B2EE8AE25B6F0A8006A53C5 /* Selection */,
 			);
 			path = Ledger;
 			sourceTree = "<group>";
 		};
-		2B2EE8AD25B6F0A4006A53C5 /* Rekey */ = {
-			isa = PBXGroup;
-			children = (
-				2B2EE8AF25B6F0CC006A53C5 /* Confirm */,
-			);
-			path = Rekey;
-			sourceTree = "<group>";
-		};
 		2B2EE8AE25B6F0A8006A53C5 /* Selection */ = {
 			isa = PBXGroup;
 			children = (
-				2B2EE8C025B6F62F006A53C5 /* Detail */,
 				2B2EE8BA25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift */,
 			);
 			path = Selection;
-			sourceTree = "<group>";
-		};
-		2B2EE8AF25B6F0CC006A53C5 /* Confirm */ = {
-			isa = PBXGroup;
-			children = (
-				2B2EE8B025B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift */,
-			);
-			path = Confirm;
-			sourceTree = "<group>";
-		};
-		2B2EE8C025B6F62F006A53C5 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Detail;
 			sourceTree = "<group>";
 		};
 		2B2EE8CB25B6F665006A53C5 /* Common */ = {
@@ -19956,6 +19936,40 @@
 				D40BA50C2A81AD3200138BF7 /* WCV1Info */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D42585242D4B923A00E89BF2 /* Deeplinks */ = {
+			isa = PBXGroup;
+			children = (
+				D42585272D4B925E00E89BF2 /* Discover */,
+				D42585262D4B925800E89BF2 /* Staking */,
+				D42585252D4B924C00E89BF2 /* Cards */,
+			);
+			path = Deeplinks;
+			sourceTree = "<group>";
+		};
+		D42585252D4B924C00E89BF2 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
+		D42585262D4B925800E89BF2 /* Staking */ = {
+			isa = PBXGroup;
+			children = (
+				D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */,
+			);
+			path = Staking;
+			sourceTree = "<group>";
+		};
+		D42585272D4B925E00E89BF2 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */,
+			);
+			path = Discover;
 			sourceTree = "<group>";
 		};
 		D42A022326D7A4DA00CEFC16 /* BottomSheet */ = {
@@ -31714,11 +31728,12 @@
 				2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */,
 				2B95419525AE632B0098805B /* QRTextTests.swift in Sources */,
 				2B18433E29DF830600264152 /* MockSession.swift in Sources */,
+				D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */,
 				1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift in Sources */,
 				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
-				2B2EE8B125B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardViewModelTests.swift in Sources */,
 				2B9541F525AFC2E80098805B /* algorand.xcdatamodeld in Sources */,
+				D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */,
 				2BE7517525BF490500F2CC66 /* TransactionFeeCalculatorTests.swift in Sources */,
 				2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */,
 				2B95409925A7835A0098805B /* NotificationsViewModelTests.swift in Sources */,
@@ -31736,6 +31751,7 @@
 				2B95418C25AE630A0098805B /* AssetDetailTests.swift in Sources */,
 				2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */,
 				2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */,
+				D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */,
 				2B95417A25AE62D40098805B /* PaymentTests.swift in Sources */,
 				2B2EE89425B6E944006A53C5 /* AlgoAssetViewModelTests.swift in Sources */,
 				2B9541A525AE634E0098805B /* UserTests.swift in Sources */,
@@ -32148,7 +32164,7 @@
 				DEVELOPMENT_TEAM = KHH37325LN;
 				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
 				INFOPLIST_FILE = "algorand-tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -32171,7 +32187,7 @@
 				DEVELOPMENT_TEAM = W9875NV3WF;
 				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
 				INFOPLIST_FILE = "algorand-tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -32194,7 +32210,7 @@
 				DEVELOPMENT_TEAM = W9875NV3WF;
 				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
 				INFOPLIST_FILE = "algorand-tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
