@@ -112,7 +112,7 @@ extension URL {
             case "cards":
                 return .cards(path: path)
             default:
-                return .other(path: path)
+                return nil
             }
         }
 

@@ -483,8 +483,6 @@ final class Router:
                         transitioningDelegate: nil
                     )
                 )
-            case .other:
-                launch(tab: .home)
             }
         }
     }
