@@ -57,6 +57,18 @@ extension URL {
 }
 
 extension URL {
+    func extractBaseURL() -> URL? {
+        let baseURLString = self.scheme.flatMap { scheme in
+            self.host.map { host in
+                "\(scheme)://\(host)/"
+            }
+        }
+        guard let baseURLString else { return nil }
+        return URL(string: baseURLString)
+    }
+}
+
+extension URL {
     var inAppBrowserDeeplinkURL: URL? {
         let browserValidationHost = "in-app-browser"
         let urlHost = self.host
@@ -100,7 +112,7 @@ extension URL {
             case "cards":
                 return .cards(path: path)
             default:
-                return .other(path: path)
+                return nil
             }
         }
 

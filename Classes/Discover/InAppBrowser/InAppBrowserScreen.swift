@@ -58,6 +58,22 @@ where ScriptMessage: InAppBrowserScriptMessage {
         super.viewDidLoad()
         addUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.post(
+            name: .inAppBrowserAppeared,
+            object: nil
+        )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(
+            name: .inAppBrowserDisappeared,
+            object: nil
+        )
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

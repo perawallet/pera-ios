@@ -20,7 +20,13 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-final class RootViewController: UIViewController {
+final class RootViewController:
+    UIViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+    
+    private(set) var isInAppBrowserActive = false
+    
     var areTabsVisible: Bool {
         return !mainContainer.items.isEmpty
     }
@@ -94,6 +100,7 @@ final class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
+        observeNotifications()
     }
 }
 
@@ -198,6 +205,22 @@ extension RootViewController {
                 $0.bottom == 0
                 $0.trailing == 0
             }
+        }
+    }
+    
+    private func observeNotifications() {
+        observe(notification: .inAppBrowserAppeared) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            self.isInAppBrowserActive = true
+        }
+        
+        observe(notification: .inAppBrowserDisappeared) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            self.isInAppBrowserActive = false
         }
     }
 }

@@ -328,11 +328,17 @@ extension RootViewController: WCMainArbitraryDataScreenDelegate {
         wcMainArbitraryDataScreen.dismissScreen {
             [weak self] in
             guard let self else { return }
-            self.presentWCArbitraryDataSuccessMessage(for: session)
+            self.presentWCArbitraryDataSuccessMessageIfNeeded(for: session)
         }
     }
 
-    private func presentWCArbitraryDataSuccessMessage(for session: WCSessionDraft) {
+    private func presentWCArbitraryDataSuccessMessageIfNeeded(for session: WCSessionDraft) {
+        if isInAppBrowserActive {
+            return
+        }
+        
+        let visibleScreen = findVisibleScreen()
+        
         let dappName =
             session.wcV1Session?.peerMeta.name ??
             session.wcV2Session?.peer.name ??
@@ -346,7 +352,7 @@ extension RootViewController: WCMainArbitraryDataScreenDelegate {
             primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized
         )
-        let transition = BottomSheetTransition(presentingViewController: findVisibleScreen())
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         transition.perform(
             .bottomWarning(configurator: configurator),
@@ -370,7 +376,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         wcMainTransactionScreen.dismissScreen {
             [weak self] in
             guard let self else { return }
-            self.openWCTransactionSignSuccessful(session)
+            self.openWCTransactionSignSuccessfulIfNeeded(session)
         }
     }
     
@@ -382,8 +388,13 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         wcMainTransactionScreen.dismissScreen()
     }
     
-    private func openWCTransactionSignSuccessful(_ draft: WCSessionDraft) {
+    private func openWCTransactionSignSuccessfulIfNeeded(_ draft: WCSessionDraft) {
+        if isInAppBrowserActive {
+            return
+        }
+        
         let visibleScreen = findVisibleScreen()
+        
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
         
         let eventHandler: WCTransactionSignSuccessfulSheet.EventHandler = {

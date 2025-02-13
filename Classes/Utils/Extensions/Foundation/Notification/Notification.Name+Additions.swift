@@ -57,4 +57,12 @@ extension Notification.Name {
     static var backupCreated: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.backup.update")
     }
+    
+    static var inAppBrowserAppeared: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.inAppBrowser.appeared")
+    }
+    
+    static var inAppBrowserDisappeared: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.inAppBrowser.disappeared")
+    }
 }
