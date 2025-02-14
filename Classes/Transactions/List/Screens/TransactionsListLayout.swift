@@ -52,7 +52,8 @@ extension TransactionsListLayout {
                  .appCallTransaction,
                  .keyRegTransaction,
                  .assetConfigTransaction,
-                 .pendingTransaction:
+                 .pendingTransaction,
+                 .heartbeat:
                 return CGSize(theme.transactionHistoryCellSize)
             case .title:
                 return CGSize(theme.transactionHistoryTitleCellSize)
