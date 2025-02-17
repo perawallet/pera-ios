@@ -66,9 +66,9 @@ private extension KeyRegTransactionDataBuilder {
                 from: keyRegTransactionDraft.from,
                 note: note?.data(using: .utf8),
                 transactionParams: params,
-                voteKey: keyRegTransactionDraft.voteKey ?? "",
-                selectionKey: keyRegTransactionDraft.selectionKey ?? "",
-                stateProofKey: keyRegTransactionDraft.stateProofKey ?? "",
+                voteKey: standardizeBase64(keyRegTransactionDraft.voteKey ?? ""),
+                selectionKey: standardizeBase64(keyRegTransactionDraft.selectionKey ?? ""),
+                stateProofKey: standardizeBase64(keyRegTransactionDraft.stateProofKey ?? ""),
                 voteFirst: Int64(keyRegTransactionDraft.voteFirst ?? 0),
                 voteLast: Int64(keyRegTransactionDraft.voteLast ?? 0),
                 voteKeyDilution: Int64(keyRegTransactionDraft.voteKeyDilution ?? 0),
@@ -109,6 +109,30 @@ private extension KeyRegTransactionDataBuilder {
                 transaction: transactionData
             )
         ]
+    }
+    
+    private func standardizeBase64(_ base64String: String) -> String {
+        if isValidBase64(base64String) {
+            return base64String
+        }
+        var standardBase64 = base64String
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        
+        // Calculate the number of padding characters needed
+        let paddingCount = 4 - (standardBase64.count % 4)
+        if paddingCount < 4 {
+            standardBase64.append(contentsOf: repeatElement("=", count: paddingCount))
+        }
+        
+        return standardBase64
+    }
+    
+    private func isValidBase64(_ string: String) -> Bool {
+        if let _ = Data(base64Encoded: string) {
+            return true
+        }
+        return false
     }
     
     private func isOnlineKeyRegTxn() -> Bool {
