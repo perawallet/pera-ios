@@ -11562,16 +11562,8 @@
 				17D0F9F428EC28DD0061B55D /* Cryptor.swift */,
 				17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */,
 				1773311729659115006E66F1 /* Import */,
-				17D0F9EB28EC28DD0061B55D /* Export */,
 			);
 			path = Web;
-			sourceTree = "<group>";
-		};
-		17D0F9EB28EC28DD0061B55D /* Export */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Export;
 			sourceTree = "<group>";
 		};
 		17D6B06329E055B0007E0FB1 /* NoAccountCell */ = {
