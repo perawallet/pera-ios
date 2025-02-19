@@ -163,6 +163,12 @@ extension Colors {
 }
 
 extension Colors {
+    enum ASACellBackground: String, Color {
+        case optOut = "ASA/OptOutCellSideMenuBackground"
+    }
+}
+
+extension Colors {
     enum Dapp:
         String,
         Color {
