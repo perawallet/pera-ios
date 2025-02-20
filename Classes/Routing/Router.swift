@@ -1938,60 +1938,6 @@ final class Router:
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
-        case .transakIntroduction:
-            viewController = TransakIntroductionScreen(api: configuration.api)
-        case .transakAccountSelection(let eventHandler):
-            var theme = AccountSelectionListScreenTheme()
-            theme.listContentTopInset = 16
-
-            let listView: UICollectionView = {
-                let collectionViewLayout = TransakAccountSelectionListLayout.build()
-                let collectionView = UICollectionView(
-                    frame: .zero,
-                    collectionViewLayout: collectionViewLayout
-                )
-                collectionView.showsVerticalScrollIndicator = false
-                collectionView.showsHorizontalScrollIndicator = false
-                collectionView.alwaysBounceVertical = true
-                collectionView.backgroundColor = .clear
-                return collectionView
-            }()
-
-            let dataController = TransakAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
-
-            let dataSource = TransakAccountSelectionListDataSource(dataController)
-            let diffableDataSource = UICollectionViewDiffableDataSource<TransakAccountSelectionListSectionIdentifier, TransakAccountSelectionListItemIdentifier>(
-                collectionView: listView,
-                cellProvider: dataSource.getCellProvider()
-            )
-            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
-            dataSource.registerSupportedCells(listView)
-            dataSource.registerSupportedSupplementaryViews(listView)
-
-            viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
-                listView: listView,
-                dataController: dataController,
-                listLayout: TransakAccountSelectionListLayout(
-                    dataSource: diffableDataSource,
-                    itemDataSource: dataController
-                ),
-                listDataSource: diffableDataSource,
-                theme: theme,
-                eventHandler: eventHandler,
-                configuration: configuration
-            )
-        case .transakDappDetail(let account):
-            let config = TransakConfig(account: account, network: configuration.api!.network)
-            let url = URL(string: config.url)
-            let destination = DiscoverExternalDestination.url(url)
-
-            let aViewController = DiscoverExternalInAppBrowserScreen(
-                destination: destination,
-                configuration: configuration
-            )
-            aViewController.allowsPullToRefresh = false
-            viewController = aViewController
         case .standardAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

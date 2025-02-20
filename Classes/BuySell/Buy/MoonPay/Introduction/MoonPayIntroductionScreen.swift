@@ -358,36 +358,13 @@ extension MoonPayIntroductionScreen {
             presentTestNetAlert()
             return
         }
-
+        
         analytics.track(.moonPay(type: .tapBuy))
-
+        
         if moonPayDraft.hasValidAddress() {
             openMoonPay(for: moonPayDraft)
             return
         }
-
-        openAccountSelection()
-    }
-
-    private func openAccountSelection() {
-        let screen = Screen.transakAccountSelection {
-            [weak self] event, screen in
-            guard let self else { return }
-
-            switch event {
-            case .didSelect(let account):
-                let moonPayDraft = MoonPayDraft()
-                moonPayDraft.address = account.value.address
-                self.openMoonPay(for: moonPayDraft)
-            default:
-                break
-            }
-        }
-
-        open(
-            screen,
-            by: .push
-        )
     }
 }
 

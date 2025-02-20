@@ -83,14 +83,6 @@ final class TabBarController: TabBarContainer {
         analytics: analytics,
         presentingScreen: self
     )
-    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
-        presentingScreen: self,
-        api: api,
-        sharedDataController: sharedDataController,
-        bannerController: bannerController,
-        loadingController: loadingController,
-        analytics: analytics
-    )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -421,12 +413,6 @@ extension TabBarController {
                     guard let self else { return }
                     self.openBuyWithMeld()
                 }
-            case .performBuyWithTransak:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyWithTransak()
-                }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -444,10 +430,6 @@ extension TabBarController {
 
     private func openBuyWithMeld() {
         meldFlowCoordinator.launch()
-    }
-
-    private func openBuyWithTransak() {
-        transakFlowCoordinator.launch()
     }
 
     private func openBuyGiftCardsWithBidali() {

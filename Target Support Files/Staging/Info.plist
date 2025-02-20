@@ -12,10 +12,6 @@
 	<string>$(WC_V2_PROJECT_ID)</string>
 	<key>BIDALI_STAGING_API_KEY</key>
 	<string>$(BIDALI_STAGING_API_KEY)</string>
-	<key>TRANSAK_PROD_API_KEY</key>
-	<string>$(TRANSAK_PROD_API_KEY)</string>
-	<key>TRANSAK_STAGING_API_KEY</key>
-	<string>$(TRANSAK_STAGING_API_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
