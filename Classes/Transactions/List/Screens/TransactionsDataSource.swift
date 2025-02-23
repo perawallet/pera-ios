@@ -63,6 +63,10 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                 let cell = collectionView.dequeue(PendingTransactionCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case let .heartbeat(item):
+                let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
             case let .empty(state):
                 switch state {
                 case .noContent:

@@ -15,7 +15,6 @@
 //
 //   AccountPortfolioView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -186,6 +185,7 @@ extension AccountPortfolioView {
             $0.top == secondaryValueView.snp.bottom + theme.spacingBetweenSecondaryValueAndMinimumBalanceContent
             $0.leading >= theme.contentHorizontalPaddings.leading
             $0.trailing <= theme.contentHorizontalPaddings.trailing
+            $0.bottom.equalToSuperview()
         }
 
         addMinimumBalanceTitle(theme)

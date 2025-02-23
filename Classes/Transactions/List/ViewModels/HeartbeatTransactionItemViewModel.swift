@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ExportAccountsConfirmationListItemHeader.swift
+//   HeartbeatTransactionItemViewModel.swift
 
-import UIKit
 import MacaroonUIKit
 
-final class ExportAccountsConfirmationListItemHeader:
-    CollectionSupplementaryView<TitleView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
-    }
+struct HeartbeatTransactionItemViewModel: TransactionListItemViewModel {
+    var id: String?
+    var title: MacaroonUIKit.EditText? = .string("transaction-detail-heartbeat".localized)
+    var subtitle: MacaroonUIKit.EditText? = nil
+    var transactionAmountViewModel: TransactionAmountViewModel? = nil
+}
 
-    static let theme = TitleViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme)
+extension HeartbeatTransactionItemViewModel: Hashable {
+    
+    static func == (lhs: HeartbeatTransactionItemViewModel, rhs: HeartbeatTransactionItemViewModel) -> Bool {
+        lhs.id == rhs.id
     }
 }

@@ -62,6 +62,10 @@ protocol Asset: AnyObject {
     var isFault: Bool { get }
 }
 
+extension Asset {
+    var isEmpty: Bool { amountWithFraction.isZero }
+}
+
 enum AssetState: Codable {
     case ready
     case pending(AssetOperation)
