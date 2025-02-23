@@ -15,9 +15,14 @@
 //
 //   AccountAssetListLayout.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
+
+struct SwipeMenuConfiguration {
+    let icon: UIImage?
+    let backgroundColor: UIColor?
+    let onAction: (() -> Void)?
+}
 
 /// <todo>
 /// Refactor. See `HomeListLayout`
@@ -35,10 +40,27 @@ final class AccountAssetListLayout: NSObject {
         super.init()
     }
 
-    class func build() -> UICollectionViewLayout {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        return flowLayout
+    static func build(swipeActionCallback: ((_ indexPath: IndexPath) -> SwipeMenuConfiguration?)? = nil) -> UICollectionViewLayout {
+        
+        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        configuration.showsSeparators = false
+        
+        configuration.trailingSwipeActionsConfigurationProvider = {
+            
+            guard let menuConfiguration = swipeActionCallback?($0) else { return nil }
+            
+            let action = UIContextualAction(style: .normal, title: nil) { _, _, handler in
+                menuConfiguration.onAction?()
+                handler(true)
+            }
+            
+            action.image = menuConfiguration.icon
+            action.backgroundColor = menuConfiguration.backgroundColor
+            
+            return UISwipeActionsConfiguration(actions: [action])
+        }
+        
+        return UICollectionViewCompositionalLayout.list(using: configuration)
     }
 }
 

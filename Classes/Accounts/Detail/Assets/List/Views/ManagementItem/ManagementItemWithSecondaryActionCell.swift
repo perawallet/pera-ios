@@ -14,7 +14,6 @@
 
 //   AssetManagementItemCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -22,7 +21,9 @@ final class ManagementItemWithSecondaryActionCell:
     CollectionCell<ManagementItemView>,
     ViewModelBindable,
     UIInteractable {
+    
     static let theme = ManagementItemViewTheme()
+    override class var contextPaddings: LayoutPaddings { (0.0, 24.0, 0.0, 24.0) }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
