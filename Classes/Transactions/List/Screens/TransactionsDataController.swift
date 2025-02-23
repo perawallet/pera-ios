@@ -48,6 +48,7 @@ enum TransactionsItem: Hashable {
     case keyRegTransaction(KeyRegTransactionItemViewModel)
     case pendingTransaction(PendingTransactionItemViewModel)
     case title(TransactionHistoryTitleContextViewModel)
+    case heartbeat(HeartbeatTransactionItemViewModel)
     case empty(EmptyState)
     case nextList
 }

@@ -610,7 +610,15 @@ extension TransactionsAPIDataController {
                             transactionItems.append(.keyRegTransaction(viewModel))
                             addedItemIDs[transactionID] = true
                         }
-                    default:
+                    case .heartbeat:
+                        
+                        let viewModel = HeartbeatTransactionItemViewModel(id: transaction.id)
+                        
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.heartbeat(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
+                    case .assetFreeze, .unsupported:
                         break
                     }
                 }

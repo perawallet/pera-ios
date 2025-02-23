@@ -531,6 +531,7 @@
 "transaction-detail-send" = "Send";
 "transaction-detail-pending-transactions" = "Pending Transactions";
 "transaction-detail-receive" = "Receive";
+"transaction-detail-heartbeat" = "Heartbeat";
 "transaction-detail-to" = "To";
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";

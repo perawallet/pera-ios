@@ -3579,6 +3579,9 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
+		54C8AEA02D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
+		54C8AEA12D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
+		54C8AEA22D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
 		543447762D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447772D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447782D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
@@ -9156,6 +9159,7 @@
 		2BFA924729CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
+		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
@@ -15138,6 +15142,7 @@
 		2BA7133B274858F700B8A907 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */,
 				2B26271D284E3A8700ADE371 /* AlgoTransactionItemViewModel.swift */,
 				2B26272D284EBC6D00ADE371 /* AppCallTransactionItemViewModel.swift */,
 				2B262729284EBC5200ADE371 /* AssetConfigTransactionItemViewModel.swift */,
@@ -24402,6 +24407,7 @@
 				95266C0227B53EBF00E99EC7 /* SelectAccountListLayout.swift in Sources */,
 				17CE51C629C9AFCD00155489 /* AlgorandSecureBackupFileViewModel.swift in Sources */,
 				D4DCD69D29D704FF007CA6B8 /* RekeyLedgerToStandardAccountNoLongerRequiredToSignInstructionViewModel.swift in Sources */,
+				54C8AEA02D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */,
 				D422944B29D3932B00C25E64 /* LedgerPairConfirmPairingOnLedgerHomeScreenInstructionItemViewModel.swift in Sources */,
 				2B3A34E1246DA32A001C8F22 /* AlgorandNode.swift in Sources */,
 				D4B6C09A2AE930F400AD3C22 /* KeyRegTransaction.swift in Sources */,
@@ -27225,6 +27231,7 @@
 				D4027C09299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				D4B6C0A22AE95C3600AD3C22 /* KeyRegTransactionDetailView.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
+				54C8AEA12D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */,
 				D48FDFD727CEBC5400C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift in Sources */,
 				2BE4D16B25967F92005F5764 /* Account+Signature.swift in Sources */,
 				D44EEEEB26D54740009998FA /* BannerInfoViewModel.swift in Sources */,
@@ -29524,6 +29531,7 @@
 				2BE4D1202594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
 				17CADC832853A665001D19A8 /* TransactionOptionsScreen.swift in Sources */,
 				2B2BCC282936369400465720 /* SwapAssetFlowDraft.swift in Sources */,
+				54C8AEA22D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */,
 				F08708EA278E0F8900BEE5C2 /* HIPNetworkError+Extensions.swift in Sources */,
 				F01264392836FACE00380C4E /* WalletConnectConfig.swift in Sources */,
 				D40869782997AA5A00D5797D /* BidaliIntroductionScreenTheme.swift in Sources */,
@@ -31382,7 +31390,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31410,7 +31418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31438,7 +31446,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31468,7 +31476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31497,7 +31505,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31526,7 +31534,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31679,7 +31687,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31710,7 +31718,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31868,7 +31876,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.3.1515;
+				MARKETING_VERSION = 91.3.1528;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
