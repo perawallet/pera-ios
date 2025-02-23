@@ -562,7 +562,7 @@ extension ManageAssetListViewController {
         _ asset: Asset,
         optOutApprovalCompletion: @escaping () -> Void
     ) {
-        if !self.isValidAssetDeletion(asset) {
+        if !asset.isEmpty {
             self.openTransferAssetBalance(asset: asset)
             return
         }
@@ -690,12 +690,6 @@ extension ManageAssetListViewController {
 
     private func cancelTransferAssetBalance() {
         dismiss(animated: true)
-    }
-}
-
-extension ManageAssetListViewController {
-    private func isValidAssetDeletion(_ asset: Asset) -> Bool {
-        return asset.amountWithFraction == 0
     }
 }
 

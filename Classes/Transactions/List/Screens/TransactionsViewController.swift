@@ -266,7 +266,11 @@ class TransactionsViewController:
             if let transaction = dataController[item.id] {
                 openTransactionDetail(transaction)
             }
-        default:
+        case let .heartbeat(item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
+        case .filter, .pendingTransaction, .title, .empty, .nextList:
             break
         }
     }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetManagementItemCell.swift
+//   HeartbeatTransactionItemViewModel.swift
 
 import MacaroonUIKit
-import UIKit
 
-final class ManagementItemWithSecondaryActionCell:
-    CollectionCell<ManagementItemView>,
-    ViewModelBindable,
-    UIInteractable {
+struct HeartbeatTransactionItemViewModel: TransactionListItemViewModel {
+    var id: String?
+    var title: MacaroonUIKit.EditText? = .string("transaction-detail-heartbeat".localized)
+    var subtitle: MacaroonUIKit.EditText? = nil
+    var transactionAmountViewModel: TransactionAmountViewModel? = nil
+}
+
+extension HeartbeatTransactionItemViewModel: Hashable {
     
-    static let theme = ManagementItemViewTheme()
-    override class var contextPaddings: LayoutPaddings { (0.0, 24.0, 0.0, 24.0) }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+    static func == (lhs: HeartbeatTransactionItemViewModel, rhs: HeartbeatTransactionItemViewModel) -> Bool {
+        lhs.id == rhs.id
     }
 }

@@ -14,7 +14,6 @@
 
 //   AccountQuickActionsView.swift
 
-import Foundation
 import MacaroonUIKit
 import SnapKit
 import UIKit
@@ -31,6 +30,7 @@ final class AccountQuickActionsView:
     ]
 
     private lazy var contentView = HStackView()
+    private let contentBackgroundView = UIView()
     private lazy var requestsActionView = makeActionView()
     private lazy var swapActionView = makeBadgeActionView()
     private lazy var sendActionView =  makeActionView()
@@ -115,15 +115,26 @@ final class AccountQuickActionsView:
 
 extension AccountQuickActionsView {
     private func addActions(_ theme: AccountQuickActionsViewTheme) {
-        addSubview(contentView)
+        
+        addSubview(contentBackgroundView)
+        contentBackgroundView.addSubview(contentView)
+        
+        contentBackgroundView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+        
         contentView.distribution = .fillEqually
         contentView.alignment = .top
         contentView.spacing = theme.spacingBetweenActions
+        
+        contentBackgroundView.snp.makeConstraints {
+            $0.top.leading.trailing == 0
+            $0.bottom == theme.bottomPadding
+        }
+        
         contentView.snp.makeConstraints {
             $0.centerX == 0
             $0.top == 0
             $0.leading >= 0
-            $0.bottom == 0
+            $0.bottom == theme.bottomPadding
             $0.trailing <= 0
         }
         
@@ -135,6 +146,7 @@ extension AccountQuickActionsView {
 
     private func addRequestsAction(_ theme: AccountQuickActionsViewTheme) {
         requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
+        requestsActionView.sizeToFit()
         customizeAction(
             requestsActionView,
             theme
@@ -151,6 +163,7 @@ extension AccountQuickActionsView {
     private func addSwapAction(_ theme: AccountQuickActionsViewTheme) {
         swapActionView.customize(theme: theme.swapBadge)
         swapActionView.customizeAppearance(theme.swapAction)
+        swapActionView.sizeToFit()
         customizeAction(
             swapActionView,
             theme
@@ -166,6 +179,7 @@ extension AccountQuickActionsView {
 
     private func addSendAction(_ theme: AccountQuickActionsViewTheme) {
         sendActionView.customizeAppearance(theme.sendAction)
+        sendActionView.sizeToFit()
         customizeAction(
             sendActionView,
             theme
@@ -181,6 +195,7 @@ extension AccountQuickActionsView {
 
     private func addMoreAction(_ theme: AccountQuickActionsViewTheme) {
         moreActionView.customizeAppearance(theme.moreAction)
+        moreActionView.sizeToFit()
         customizeAction(
             moreActionView,
             theme

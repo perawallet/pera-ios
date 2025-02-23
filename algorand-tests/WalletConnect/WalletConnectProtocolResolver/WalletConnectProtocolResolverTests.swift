@@ -19,9 +19,7 @@ import XCTest
 
 final class WalletConnectProtocolResolverTests: XCTestCase {
     private let walletConnectProtocolResolver = ALGWalletConnectProtocolResolver(
-        api: ALGAPI(session: MockSession()),
-        analytics: MockALGAnalytics(),
-        pushToken: ""
+        analytics: MockALGAnalytics()
     )
     
     func test_getWalletConnectProtocol_fromSession_v1_success() {

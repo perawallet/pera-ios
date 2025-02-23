@@ -27,6 +27,7 @@ enum TransactionType:
     case assetTransfer
     case keyReg
     case payment
+    case heartbeat
     case unsupported(String)
 
     var rawValue: String {
@@ -37,6 +38,7 @@ enum TransactionType:
         case .assetTransfer: return "axfer"
         case .keyReg: return "keyreg"
         case .payment: return "pay"
+        case .heartbeat: return "hb"
         case .unsupported(let someType): return someType
         }
     }
@@ -47,7 +49,8 @@ enum TransactionType:
         .assetFreeze,
         .assetTransfer,
         .keyReg,
-        .payment
+        .payment,
+        .heartbeat
     ]
 
     init() {
