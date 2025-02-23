@@ -389,11 +389,6 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<MeldAccountSelectionListLocalDataController>.EventHandler
     )
     case meldDappDetail(address: PublicKey)
-    case transakIntroduction
-    case transakAccountSelection(
-        eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
-    )
-    case transakDappDetail(account: AccountHandle)
     case standardAccountInformation(account: Account)
     case watchAccountInformation(account: Account)
     case ledgerAccountInformation(account: Account)

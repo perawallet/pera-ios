@@ -117,25 +117,12 @@ extension BuySellOptionsScreen {
             to: buyContextView
         )
     }
-
-    private func addBuyWithTransakOption() {
-        addOption(
-            viewModel: BuyWithTransakOptionViewModel(),
-            selector: #selector(performBuyWithTransak),
-            to: buyContextView
-        )
-    }
 }
 
 extension BuySellOptionsScreen {
     @objc
     private func performBuyWithMeld() {
         eventHandler?(.performBuyWithMeld)
-    }
-
-    @objc
-    private func performBuyWithTransak() {
-        eventHandler?(.performBuyWithTransak)
     }
 }
 
@@ -206,7 +193,6 @@ extension BuySellOptionsScreen {
  extension BuySellOptionsScreen {
      enum Event {
          case performBuyWithMeld
-         case performBuyWithTransak
          case performBuyGiftCardsWithBidali
      }
  }

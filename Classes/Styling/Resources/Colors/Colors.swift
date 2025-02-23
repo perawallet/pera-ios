@@ -173,7 +173,6 @@ extension Colors {
         String,
         Color {
         case moonPay = "Dapp/moonpay"
-        case transak = "Dapp/transak"
         case bidali = "Dapp/bidali"
     }
 }
