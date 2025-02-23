@@ -52,13 +52,33 @@ class Environment {
 
     lazy var apiKey: String? = Bundle.main["API_KEY"]
     
-    lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
-    lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
+    lazy var testNetAlgodHost: String = {
+        guard let host = Bundle.main.infoDictionary?["ALGOD_TESTNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
+    lazy var testNetIndexerHost: String = {
+        guard let host = Bundle.main.infoDictionary?["INDEXER_TESTNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
 
-    lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
-    lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
+    lazy var mainNetAlgodHost: String = {
+        guard let host = Bundle.main.infoDictionary?["ALGOD_MAINNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
+    lazy var mainNetIndexerHost: String = {
+        guard let host = Bundle.main.infoDictionary?["INDEXER_MAINNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
     
@@ -81,13 +101,33 @@ class Environment {
         return api
     }()
 
-    lazy var testNetStagingMobileHost = "testnet.staging.api.perawallet.app"
-    lazy var testNetProductionMobileHost = "testnet.api.perawallet.app"
+    lazy var testNetStagingMobileHost: String = {
+        guard let host = Bundle.main.infoDictionary?["MOBILE_API_STAGING_TESTNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
+    lazy var testNetProductionMobileHost: String = {
+        guard let host = Bundle.main.infoDictionary?["MOBILE_API_PROD_TESTNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
     lazy var testNetStagingMobileAPI = "\(schema)://\(testNetStagingMobileHost)"
     lazy var testNetProductionMobileAPI = "\(schema)://\(testNetProductionMobileHost)"
 
-    lazy var mainNetStagingMobileHost = "mainnet.staging.api.perawallet.app"
-    lazy var mainNetProductionMobileHost = "mainnet.api.perawallet.app"
+    lazy var mainNetStagingMobileHost: String = {
+        guard let host = Bundle.main.infoDictionary?["MOBILE_API_STAGING_MAINNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
+    lazy var mainNetProductionMobileHost: String = {
+        guard let host = Bundle.main.infoDictionary?["MOBILE_API_PROD_MAINNET_HOST"] as? String else {
+            return ""
+        }
+        return host
+    }()
     lazy var mainNetStagingMobileAPI = "\(schema)://\(mainNetStagingMobileHost)"
     lazy var mainNetProductionMobileAPI = "\(schema)://\(mainNetProductionMobileHost)"
 
