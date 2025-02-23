@@ -3,6 +3,16 @@
     {
       "filename" : "icon-transaction-option-list-stake.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-transaction-option-list-stake-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
