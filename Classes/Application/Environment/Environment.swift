@@ -126,10 +126,24 @@ class Environment {
             return "\(mainNetProductionMobileAPI)/v2/"
         }
     }()
-
-    lazy var cardsMainNetBaseUrl = "https://cards-mobile.perawallet.app/"
     
-    lazy var cardsTestNetBaseUrl = "https://cards-mobile-staging.perawallet.app/"
+    lazy var cardsMainNetBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://cards-mobile-staging-mainnet.perawallet.app/"
+        case .prod:
+            return "https://cards-mobile.perawallet.app/"
+        }
+    }()
+
+    lazy var cardsTestNetBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://cards-mobile-staging-testnet.perawallet.app/"
+        case .prod:
+            return "https://cards-mobile-staging.perawallet.app/"
+        }
+    }()
     
     func cardsBaseUrl(network: ALGAPI.Network) -> String {
         switch network {
@@ -138,6 +152,14 @@ class Environment {
         case .mainnet:
             return cardsMainNetBaseUrl
         }
+    }
+    
+    func isCardsFeatureEnabled(for network: ALGAPI.Network) -> Bool {
+        if network == .testnet && target == .prod {
+            return false
+        }
+        
+        return true
     }
     
     lazy var stakingBaseUrl: String = {
