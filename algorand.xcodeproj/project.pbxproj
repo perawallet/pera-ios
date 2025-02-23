@@ -3579,9 +3579,6 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
-		54C8AEA02D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
-		54C8AEA12D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
-		54C8AEA22D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
 		543447762D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447772D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447782D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
@@ -3591,6 +3588,9 @@
 		548EF17B2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
 		548EF17C2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
 		548EF17D2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
+		54C8AEA02D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
+		54C8AEA12D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
+		54C8AEA22D5F494400741510 /* HeartbeatTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */; };
 		8B00DD652C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
 		8B00DD662C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
 		8B00DD672C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
@@ -9117,10 +9117,10 @@
 		2BFA924729CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
-		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
+		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailSuccessResultScreenViewModel.swift; sourceTree = "<group>"; };
 		8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInboxSendSummaryWarningMessage.swift; sourceTree = "<group>"; };
 		8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsRequestList.swift; sourceTree = "<group>"; };
@@ -29029,7 +29029,6 @@
 				D48D11E727429150000061CE /* ToggleTitleHeaderViewTheme.swift in Sources */,
 				D4F4C89D29D189810069FB94 /* RekeyedAccountInformationAccountItemViewTheme.swift in Sources */,
 				F09FAC872907346D008E3319 /* PercentageInputFormatter.swift in Sources */,
-				2B0A6A98265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				D4CC28D92875AC370082E038 /* InnerTransactionPreviewCell.swift in Sources */,
 				F0E72191284F6ABB00865419 /* ScanQRFlowCoordinator.swift in Sources */,
