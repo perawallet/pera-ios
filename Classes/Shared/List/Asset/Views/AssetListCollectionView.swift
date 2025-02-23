@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetManagementItemCell.swift
+//   AssetListCollectionView.swift
 
-import MacaroonUIKit
 import UIKit
 
-final class ManagementItemWithSecondaryActionCell:
-    CollectionCell<ManagementItemView>,
-    ViewModelBindable,
-    UIInteractable {
-    
-    static let theme = ManagementItemViewTheme()
-    override class var contextPaddings: LayoutPaddings { (0.0, 24.0, 0.0, 24.0) }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+final class AssetListCollectionView: UICollectionView {
+}
+
+extension AssetListCollectionView: ListViewTouchInteractable {
+    func shouldCancelListViewGesture(atPoint point: CGPoint) -> Bool { visibleCells.first { $0.frame.contains(point) } is AssetListItemCell }
 }

@@ -31,6 +31,7 @@ struct AccountQuickActionsViewTheme:
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
     var sendAction: ButtonStyle
     var moreAction: ButtonStyle
+    let bottomPadding: CGFloat = 32.0
 
     init(_ family: LayoutFamily) {
         self.spacingBetweenActions = 16

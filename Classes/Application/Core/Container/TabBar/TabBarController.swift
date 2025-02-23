@@ -259,7 +259,7 @@ extension TabBarController {
             browseDAppsAction
         ]
         
-        if featureFlagService.isEnabled(.immersiveEnabled) {
+        if isCardsFeatureEnabled() {
             actions.append(cardsAction)
         }
         
@@ -295,6 +295,11 @@ extension TabBarController {
 
     private func removeTransactionOptions() {
         transactionOptionsView.removeFromSuperview()
+    }
+    
+    private func isCardsFeatureEnabled() -> Bool {
+        featureFlagService.isEnabled(.immersiveEnabled) &&
+            Environment.current.isCardsFeatureEnabled(for: api.network)
     }
 }
 

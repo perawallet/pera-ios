@@ -14,16 +14,12 @@
 
 //   AccountQuickActionsCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
 final class AccountQuickActionsCell:
     CollectionCell<AccountQuickActionsView>,
     UIInteractable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 36, 24)
-    }
 
     static let theme = AccountQuickActionsViewTheme()
 
@@ -44,9 +40,6 @@ final class AccountQuickActionsCell:
         frame: CGRect
     ) {
         super.init(frame: frame)
-
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-        
         contextView.customize(Self.theme)
     }
 
