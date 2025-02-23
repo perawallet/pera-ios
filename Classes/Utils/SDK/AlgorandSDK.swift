@@ -345,6 +345,9 @@ fileprivate extension TransactionParams {
     func toSDKSuggestedParams(customFee: Int64? = nil) -> AlgoSdkSuggestedParams {
         let params = AlgoSdkSuggestedParams()
         params.fee = customFee ?? Int64(fee)
+        if customFee != nil {
+            params.flatFee = true
+        }
         params.firstRoundValid = Int64(lastRound)
         params.lastRoundValid = Int64(lastRound) + AlgorandSDK.roundTreshold // Need to add 1000 as last round
         params.genesisHash = genesisHashData

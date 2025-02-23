@@ -337,10 +337,7 @@ extension CollectibleListLayout {
             return cachedSize
         }
 
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
+        let width = listView.bounds.width
         let newSize = ManagementItemWithSecondaryActionCell.calculatePreferredSize(
             item,
             for: ManagementItemWithSecondaryActionCell.theme,

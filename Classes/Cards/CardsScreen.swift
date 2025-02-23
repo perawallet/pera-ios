@@ -19,9 +19,7 @@ import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class CardsScreen:
-    CardsInAppBrowserScreen<CardsScreenScriptMessage>,
-    UIScrollViewDelegate {
+final class CardsScreen: CardsInAppBrowserScreen<CardsScreenScriptMessage> {
     
     private lazy var theme = DiscoverHomeScreenTheme()
     private var isViewLayoutLoaded = false
@@ -52,6 +50,14 @@ final class CardsScreen:
             return
         }
         isViewLayoutLoaded = true
+    }
+}
+
+extension CardsScreen: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !scrollView.isDragging else { return }
+        scrollView.contentOffset = .zero
     }
 }
 

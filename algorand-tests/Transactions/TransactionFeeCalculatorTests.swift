@@ -23,7 +23,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
 
     private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
     private let transactionSendDraft = AlgosTransactionSendDraft(from: Bundle.main.decode(response: Account.self, from: "AccountA.json"))
-    private let transactionData = TransactionData()
+    private let transactionData = TransactionData(sender: "", index: 0)
     private let params = Bundle.main.decode(response: TransactionParams.self, from: "TransactionParams.json")
 
     private lazy var transactionFeeCalculator: TransactionFeeCalculator = {
@@ -56,7 +56,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testAlgosTransactionFeeCalculation() {
-        let fee = transactionFeeCalculator.calculate(for: .algosTransaction)
+        let fee = transactionFeeCalculator.calculate(for: .algo)
         XCTAssertEqual(fee, 1000)
     }
 
@@ -71,15 +71,15 @@ class TransactionFeeCalculatorTests: XCTestCase {
 //    }
 
     func testIsValidAlgosTransaction() {
-        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .algosTransaction, calculatedFee: 1000))
+        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .algo, calculatedFee: 1000))
     }
 
     func testIsNotValidAlgosTransaction() {
-        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .algosTransaction, calculatedFee: 1000))
+        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .algo, calculatedFee: 1000))
     }
 
     func testAssetTransactionFeeCalculation() {
-        let fee = transactionFeeCalculator.calculate(for: .assetTransaction)
+        let fee = transactionFeeCalculator.calculate(for: .asset)
         XCTAssertEqual(fee, 1000)
     }
 
@@ -94,15 +94,15 @@ class TransactionFeeCalculatorTests: XCTestCase {
 //    }
 
     func testIsValidAssetTransaction() {
-        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .assetTransaction, calculatedFee: 1000))
+        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
     func testIsNotValidAssetTransaction() {
-        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .assetTransaction, calculatedFee: 1000))
+        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
     func testAddAssetTransactionFeeCalculation() {
-        let fee = transactionFeeCalculator.calculate(for: .assetAddition)
+        let fee = transactionFeeCalculator.calculate(for: .asset)
         XCTAssertEqual(fee, 1000)
     }
 
@@ -117,15 +117,15 @@ class TransactionFeeCalculatorTests: XCTestCase {
 //    }
 
     func testIsValidAddAssetTransaction() {
-        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .assetAddition, calculatedFee: 1000))
+        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
     func testIsNotValidAddAssetTransaction() {
-        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .assetAddition, calculatedFee: 1000))
+        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
     func testRemoveAssetTransactionFeeCalculation() {
-        let fee = transactionFeeCalculator.calculate(for: .assetRemoval)
+        let fee = transactionFeeCalculator.calculate(for: .asset)
         XCTAssertEqual(fee, 1000)
     }
 
@@ -140,11 +140,11 @@ class TransactionFeeCalculatorTests: XCTestCase {
 //    }
 
     func testIsValidRemoveAssetTransaction() {
-        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .assetRemoval, calculatedFee: 1000))
+        XCTAssertTrue(transactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
     func testIsNotValidRemoveAssetTransaction() {
-        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .assetRemoval, calculatedFee: 1000))
+        XCTAssertFalse(notValidTransactionFeeCalculator.isValidTransactionAmount(for: .asset, calculatedFee: 1000))
     }
 
 //    func testMinimumamountAfterRekeyTransaction() {

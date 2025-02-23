@@ -15,7 +15,6 @@
 //
 //   AccountAssetListViewController.swift
 
-import Foundation
 import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
@@ -39,9 +38,9 @@ final class AccountAssetListViewController:
 
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var listView: UICollectionView = {
-        let collectionViewLayout = AccountAssetListLayout.build()
-        let collectionView = UICollectionView(
+    private lazy var listView: AssetListCollectionView = {
+        let collectionViewLayout = AccountAssetListLayout.build(swipeActionCallback: { [weak self] in self?.handleSwipeAction(indexPath: $0) })
+        let collectionView = AssetListCollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
         )
@@ -59,6 +58,12 @@ final class AccountAssetListViewController:
         screen: self
     )
 
+    private lazy var optOutAssetCoordinator: OptOutAssetCoordinator = {
+        let coordinator = OptOutAssetCoordinator()
+        coordinator.presenter = self
+        return coordinator
+    }()
+    
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
@@ -193,6 +198,16 @@ final class AccountAssetListViewController:
 
     private func reloadIfNeededForPendingAssetRequests() {
         dataController.reloadIfNeededForPendingAssetRequests()
+    }
+    
+    // MARK: - Handlers
+        
+    private func handleSwipeAction(indexPath: IndexPath) -> SwipeMenuConfiguration? {
+        let account = dataController.account.value
+        guard let asset = getAsset(at: indexPath), optOutAssetCoordinator.isAssetOptOutable(asset: asset, account: account) else { return nil }
+        return SwipeMenuConfiguration(icon: UIImage(named: "Swipe Actions/Image"), backgroundColor: Colors.ASACellBackground.optOut.uiColor, onAction: { [weak self] in
+            self?.optOutAssetCoordinator.optOut(asset: asset, account: account)
+        })
     }
 }
 
@@ -411,7 +426,7 @@ extension AccountAssetListViewController {
     }
 }
 
-extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
+extension AccountAssetListViewController: UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -602,30 +617,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         default:
             break
         }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            sizeForItemAt: indexPath
-        )
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            insetForSectionAt: section
-        )
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

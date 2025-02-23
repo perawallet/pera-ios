@@ -468,6 +468,14 @@ final class Router:
                     )
                 )
             case .cards(path: let path):
+                let isCardsFeatureEnabled = Environment.current.isCardsFeatureEnabled(
+                    for: appConfiguration.api.network
+                )
+                
+                if !isCardsFeatureEnabled {
+                    return
+                }
+                
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 guard let path else {
                     let cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: visibleScreen)
@@ -483,8 +491,6 @@ final class Router:
                         transitioningDelegate: nil
                     )
                 )
-            case .other:
-                launch(tab: .home)
             }
         }
     }
