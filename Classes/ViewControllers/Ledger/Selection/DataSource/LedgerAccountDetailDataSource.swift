@@ -152,7 +152,8 @@ extension LedgerAccountDetailDataSource {
         let item = AccountPortfolioItem(
             accountValue: accountValue,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
         return AccountListItemViewModel(item)
     }
@@ -240,7 +241,8 @@ extension LedgerAccountDetailDataSource {
         let item = AssetItem(
             asset: asset,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
         
         return .asset(LedgerAccountAssetListItem(item: item))

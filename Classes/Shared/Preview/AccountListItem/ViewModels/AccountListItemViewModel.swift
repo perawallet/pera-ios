@@ -15,7 +15,6 @@
 //
 //   AccountListItemViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 import MacaroonURLImage
@@ -152,6 +151,7 @@ extension AccountListItemViewModel {
         let text = format(
             portfolioValue: accountPortfolioItem.portfolioValue,
             currencyValue: accountPortfolioItem.currency.primaryValue,
+            isAmountHidden: accountPortfolioItem.isAmountHidden,
             in: .listItem
         )
         bindPrimaryAccessory(text)
@@ -168,6 +168,7 @@ extension AccountListItemViewModel {
         let text = format(
             portfolioValue: accountPortfolioItem.portfolioValue,
             currencyValue: accountPortfolioItem.currency.secondaryValue,
+            isAmountHidden: accountPortfolioItem.isAmountHidden,
             in: .listItem
         )
         bindSecondaryAccessory(text)

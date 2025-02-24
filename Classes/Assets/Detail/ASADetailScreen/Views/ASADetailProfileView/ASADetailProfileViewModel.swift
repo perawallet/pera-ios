@@ -14,13 +14,13 @@
 
 //   ASADetailProfileViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 import UIKit
 
 struct ASADetailProfileViewModel: ASAProfileViewModel {
+    let isAmountHidden: Bool
     private(set) var icon: ImageSource?
     private(set) var name: RightAccessorizedLabelModel?
     private(set) var titleSeparator: TextProvider?
@@ -31,8 +31,10 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
     init(
         asset: Asset,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        isAmountHidden: Bool
     ) {
+        self.isAmountHidden = isAmountHidden
         bindIcon(asset: asset)
         bindName(asset: asset)
         bindTitleSeparator(asset: asset)
@@ -116,6 +118,7 @@ extension ASADetailProfileViewModel {
     ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
+        currencyFormatter.isValueHidden = isAmountHidden
 
         let text = currencyFormatter.format(asset.decimalAmount)
         bindPrimaryValue(text: text)
@@ -127,6 +130,7 @@ extension ASADetailProfileViewModel {
     ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = nil
+        currencyFormatter.isValueHidden = isAmountHidden
 
         let amountText = currencyFormatter.format(asset.decimalAmount)
         let unitText =
@@ -177,6 +181,7 @@ extension ASADetailProfileViewModel {
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = fiatRawCurrency
+            currencyFormatter.isValueHidden = isAmountHidden
 
             let text = currencyFormatter.format(amount)
             bindSecondaryValue(text: text)
@@ -203,6 +208,7 @@ extension ASADetailProfileViewModel {
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = rawCurrency
+            currencyFormatter.isValueHidden = isAmountHidden
 
             let text = currencyFormatter.format(amount)
             bindSecondaryValue(text: text)

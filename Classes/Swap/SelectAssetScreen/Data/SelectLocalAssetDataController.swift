@@ -158,7 +158,8 @@ extension SelectLocalAssetDataController {
                  let assetItem = AssetItem(
                      asset: asset,
                      currency: currency,
-                     currencyFormatter: currencyFormatter
+                     currencyFormatter: currencyFormatter,
+                     isAmountHidden: false
                  )
                  let listItem = SelectAssetListItem(item: assetItem, account: self.account)
                  return SelectAssetItem.asset(listItem)

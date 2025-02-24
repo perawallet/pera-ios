@@ -462,6 +462,14 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     [unowned self] in
                     openMinimumBalanceInfo()
                 }
+                cell.startObserving(event: .onAmountTap) {
+                    ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+                }
+            case .watchPortfolio:
+                let cell = cell as? WatchAccountPortfolioCell
+                cell?.startObserving(event: .onAmountTap) {
+                    ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+                }
             default:
                 break
             }

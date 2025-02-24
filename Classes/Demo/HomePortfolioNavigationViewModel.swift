@@ -46,6 +46,7 @@ extension HomePortfolioNavigationViewModel {
         let text = format(
             portfolioValue: portfolioItem?.portfolioValue,
             currencyValue: portfolioItem?.currency.primaryValue,
+            isAmountHidden: portfolioItem?.isAmountHidden ?? false,
             in: .standalone()
         )
         primaryValue = text?.bodyMedium(
@@ -60,6 +61,7 @@ extension HomePortfolioNavigationViewModel {
         let text = format(
             portfolioValue: portfolioItem?.portfolioValue,
             currencyValue: portfolioItem?.currency.secondaryValue,
+            isAmountHidden: portfolioItem?.isAmountHidden ?? false,
             in: .standalone()
         )
         secondaryValue = text?.captionMedium(

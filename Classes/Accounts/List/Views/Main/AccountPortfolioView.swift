@@ -24,16 +24,31 @@ final class AccountPortfolioView:
     UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showMinimumBalanceInfo: TargetActionInteraction()
+        .showMinimumBalanceInfo: TargetActionInteraction(),
+        .onAmountTap: TargetActionInteraction()
     ]
 
     private lazy var titleView = UILabel()
     private lazy var valueView = UILabel()
+    private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = UILabel()
     private lazy var minimumBalanceContentView = UIView()
     private lazy var minimumBalanceTitleView = UILabel()
     private lazy var minimumBalanceValueView = UILabel()
     private lazy var minimumBalanceInfoActionView = MacaroonUIKit.Button()
+    
+    // MARK: - Initialisers
+    
+    init() {
+        super.init(frame: .zero)
+        setupGestures()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupGestures() {
+        startPublishing(event: .onAmountTap, for: valueButton)
+    }
     
     func customize(
         _ theme: AccountPortfolioViewTheme
@@ -153,12 +168,17 @@ extension AccountPortfolioView {
     ) {
         valueView.customizeAppearance(theme.value)
         
-        addSubview(valueView)
+        [valueView, valueButton].forEach(addSubview)
+        
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == theme.contentHorizontalPaddings.leading
             $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
+        
+        valueButton.snp.makeConstraints {
+            $0.edges.equalTo(valueView)
         }
     }
 
@@ -250,5 +270,6 @@ extension AccountPortfolioView {
 extension AccountPortfolioView {
     enum Event {
         case showMinimumBalanceInfo
+        case onAmountTap
     }
 }

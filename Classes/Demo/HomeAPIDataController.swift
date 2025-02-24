@@ -17,13 +17,12 @@
 
 import UIKit
 import MacaroonUtils
+import Combine
 
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
-
-    private lazy var currencyFormatter = CurrencyFormatter()
 
     private let session: Session
     private let sharedDataController: SharedDataController
@@ -41,6 +40,7 @@ final class HomeAPIDataController:
     )
 
     private var asasLoadRepeater: Repeater?
+    private var cancellables = Set<AnyCancellable>()
     
     init(
         sharedDataController: SharedDataController,
@@ -52,6 +52,8 @@ final class HomeAPIDataController:
         self.session = session
         self.announcementDataController = announcementDataController
         self.incomingASAsAPIDataController = incomingASAsAPIDataController
+        
+        setupCallbacks()
     }
     
     deinit {
@@ -63,6 +65,12 @@ final class HomeAPIDataController:
         return address.unwrap {
             sharedDataController.accountCollection[$0]
         }
+    }
+    
+    private func setupCallbacks() {
+        ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .sink { [weak self] _ in self?.deliverContentUpdates() }
+            .store(in: &cancellables)
     }
 }
 
@@ -165,29 +173,19 @@ extension HomeAPIDataController {
             return
         }
         
-        deliverUpdates {
-            [weak self] in
-            guard let self = self else { return nil }
+        deliverUpdates { [weak self] in
             
-            var accounts: [AccountHandle] = []
-            var accountItems: [HomeItemIdentifier] = []
-
+            guard let self else { return nil }
+            
+            let accounts = self.sharedDataController.sortedAccounts()
             let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
+            let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
             
-            self.sharedDataController.sortedAccounts().forEach {
-                let accountPortfolioItem = AccountPortfolioItem(
-                    accountValue: $0,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-                let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
-                let cellItem: HomeAccountItemIdentifier = .cell(accountListItemViewModel)
-                let item: HomeItemIdentifier = .account(cellItem)
-
-                accounts.append($0)
-                accountItems.append(item)
-            }
+            var accountItems = accounts
+                .map { AccountPortfolioItem(accountValue: $0, currency: currency, currencyFormatter: CurrencyFormatter(), isAmountHidden: isAmountHidden) }
+                .map { AccountListItemViewModel($0) }
+                .map { HomeAccountItemIdentifier.cell($0) }
+                .map { HomeItemIdentifier.account($0) }
             
             var snapshot = Snapshot()
             
@@ -197,7 +195,8 @@ extension HomeAPIDataController {
             let totalPortfolioItem = TotalPortfolioItem(
                 accountValues: nonWatchAccounts,
                 currency: currency,
-                currencyFormatter: currencyFormatter
+                currencyFormatter: CurrencyFormatter(),
+                isAmountHidden: isAmountHidden
             )
             let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem)
 

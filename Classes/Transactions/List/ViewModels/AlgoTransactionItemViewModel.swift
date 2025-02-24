@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct AlgoTransactionItemViewModel:
     TransactionListItemViewModel,
     Hashable {
+    let isAmountHidden: Bool
     var id: String?
     var title: EditText?
     var subtitle: EditText?
@@ -28,8 +29,10 @@ struct AlgoTransactionItemViewModel:
     init(
         _ draft: TransactionViewModelDraft,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        isAmountHidden: Bool
     ) {
+        self.isAmountHidden = isAmountHidden
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
@@ -107,8 +110,10 @@ struct AlgoTransactionItemViewModel:
               let payment = transaction.payment else {
                   return
         }
+        
+        currencyFormatter.isValueHidden = isAmountHidden
 
-        if payment.receiver == transaction.sender {
+        if payment.receiver == transaction.sender || isAmountHidden {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
                 currency: currency,

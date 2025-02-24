@@ -128,7 +128,8 @@ extension SelectAccountAPIDataController {
                 let item = AccountPortfolioItem(
                     accountValue: accountHandle,
                     currency: currency,
-                    currencyFormatter: currencyFormatter
+                    currencyFormatter: currencyFormatter,
+                    isAmountHidden: false
                 )
                 let viewModel = AccountListItemViewModel(item)
                 let listItem = SelectAccountListViewItem.account(viewModel, accountHandle)

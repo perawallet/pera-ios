@@ -163,7 +163,8 @@ extension BidaliAccountSelectionListLocalDataController {
         let item = AccountPortfolioItem(
             accountValue: account,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
 
         let aRawAccount = account.value

@@ -15,10 +15,10 @@
 //
 //   HomeViewController.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonUtils
+import Combine
 
 final class HomeViewController:
     BaseViewController,
@@ -125,6 +125,9 @@ final class HomeViewController:
     private var incomingASAsRequestList: IncomingASAsRequestList?
     private var listWasScrolled = false
     
+    @Published private var isPrivacyModeTooltipVisible: Bool = false
+    private var portfolioTooltipCancellable: AnyCancellable?
+    
     init(
         swapDataStore: SwapDataStore,
         dataController: HomeDataController,
@@ -197,7 +200,8 @@ final class HomeViewController:
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
 
-        requestAppReview()        
+        requestAppReview()
+        setupGestures()
     }
 
     override func viewDidLayoutSubviews() {
@@ -223,6 +227,11 @@ final class HomeViewController:
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
+        }
+        
+        if PeraUserDefaults.wasPrivacyTooltipPresented != true {
+            PeraUserDefaults.wasPrivacyTooltipPresented = true
+            isPrivacyModeTooltipVisible = true
         }
         
         dataController.fetchAnnouncements()
@@ -258,6 +267,20 @@ final class HomeViewController:
 
             self.configureNewNotificationBarButton()
         }
+    }
+    
+    // MARK: - Setups
+    
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOnTapAnywhere))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    // MARK: - Handlers
+    
+    @objc private func handleOnTapAnywhere() {
+        isPrivacyModeTooltipVisible = false
     }
 }
 
@@ -503,6 +526,15 @@ extension HomeViewController {
                 by: .presentWithoutNavigationController
             )
         }
+        
+        cell.startObserving(event: .onAmountTap) {
+            ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+        }
+        
+        portfolioTooltipCancellable?.cancel()
+        portfolioTooltipCancellable = $isPrivacyModeTooltipVisible
+            .receive(on: DispatchQueue.main)
+            .sink { [weak cell] in cell?.isPrivacyModeTooltipVisible = $0 }
     }
 
     private func linkInteractors(
@@ -1300,8 +1332,7 @@ extension HomeViewController {
             by: .push
         ) as? IncomingASAAccountsViewController
         
-        screen?.eventHandler = {
-            [weak self, weak screen] event in
+        screen?.eventHandler = { [weak screen] event in
             guard let screen else {
                 return
             }

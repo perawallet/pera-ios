@@ -263,7 +263,8 @@ extension IncomingASAAccountInboxAPIDataController {
         let assetItem = AssetItem(
             asset: asset,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
 
         var collectibleAssetItem: CollectibleAssetItem?

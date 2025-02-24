@@ -393,7 +393,8 @@ extension ManageAssetListViewController {
         let assetItem = AssetItem(
             asset: asset,
             currency: sharedDataController.currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
         let optOutAssetListItem = OptOutAssetListItem(item: assetItem)
         let listItem = ManageAssetListItem.asset(optOutAssetListItem)

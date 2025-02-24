@@ -1801,3 +1801,6 @@ FAQ section.";
 "title-keyreg-txn-note" = "Note";
 "title-keyreg-txn-last" = "Last valid round";
 "title-txn-completed" = "Transaction completed";
+
+/// MARK: - Privacy Mode
+"tooltip-privacy-mode" = "Tap value to hide your balance";

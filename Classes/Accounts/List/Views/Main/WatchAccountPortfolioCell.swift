@@ -14,17 +14,15 @@
 
 //   WatchAccountPortfolioCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
 final class WatchAccountPortfolioCell:
     CollectionCell<WatchAccountPortfolioView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (36, 24, 36, 24)
-    }
-
+    ViewModelBindable,
+    UIInteractable {
+    
+    override class var contextPaddings: LayoutPaddings { (36, 24, 36, 24) }
     static let theme = WatchAccountPortfolioViewTheme()
 
     override init(

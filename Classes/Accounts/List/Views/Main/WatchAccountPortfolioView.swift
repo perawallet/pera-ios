@@ -14,17 +14,42 @@
 
 //   WatchAccountPortfolioView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
 final class WatchAccountPortfolioView:
     View,
     ViewModelBindable,
-    ListReusable {
+    ListReusable,
+    UIInteractable {
+    
+    enum Event {
+        case onAmountTap
+    }
+    
+    // MARK: - Properties
+    
+    let uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .onAmountTap: TargetActionInteraction()
+    ]
+    
     private lazy var titleView = Label()
     private lazy var valueView = Label()
+    private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = Label()
+    
+    // MARK: - Initialisers
+    
+    init() {
+        super.init(frame: .zero)
+        setupGestures()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupGestures() {
+        startPublishing(event: .onAmountTap, for: valueButton)
+    }
 
     func customize(
         _ theme: WatchAccountPortfolioViewTheme
@@ -120,12 +145,17 @@ extension WatchAccountPortfolioView {
     ) {
         valueView.customizeAppearance(theme.value)
 
-        addSubview(valueView)
+        [valueView, valueButton].forEach(addSubview)
+        
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == theme.contentHorizontalPaddings.leading
             $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
+        
+        valueButton.snp.makeConstraints {
+            $0.edges.equalTo(valueView)
         }
     }
 

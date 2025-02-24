@@ -127,7 +127,8 @@ extension IncomingASAsDetailScreen {
             let item = AccountPortfolioItem(
                 accountValue: accountHandle,
                 currency: currency,
-                currencyFormatter: currencyFormatter
+                currencyFormatter: currencyFormatter,
+                isAmountHidden: false
             )
             
             incomingAsasDetailView.bindData(

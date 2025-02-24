@@ -24,6 +24,7 @@ final class CurrencyFormatter {
 
     var formattingContext: CurrencyFormattingContext = .listItem
     var currency: LocalCurrency?
+    var isValueHidden: Bool = false
 
     private let numberFormatter: NumberFormatter
 
@@ -79,7 +80,7 @@ extension CurrencyFormatter {
 
         let number = input.number
 
-        guard let formattedString = numberFormatter.string(from: number) else {
+        guard let formattedString = isValueHidden ? numberFormatter.addCurrency(text: CurrencyConstanst.hiddenValue.rawValue) : numberFormatter.string(from: number) else {
             return nil
         }
 
@@ -128,4 +129,13 @@ extension CurrencyFormatter {
 
 enum CurrencyConstanst {
     static let unavailable = "N/A"
+    static let hiddenValue = "*****"
+}
+
+private extension NumberFormatter {
+    
+    func addCurrency(text: String) -> String? {
+        guard let result = string(from: NSNumber(0)), let currencySymbol else { return nil }
+        return result.hasPrefix(currencySymbol) ? "\(currencySymbol) \(text)" : "\(text) \(currencySymbol)"
+    }
 }

@@ -15,7 +15,6 @@
 //
 //   HomePortfolioCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -23,11 +22,18 @@ final class HomePortfolioCell:
     CollectionCell<HomePortfolioView>,
     ViewModelBindable,
     UIInteractable {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
-    }
-
+    
+    // MARK: - Properties
+    
+    override class var contextPaddings: LayoutPaddings { (16, 24, 8, 24) }
     static let theme = HomePortfolioViewTheme()
+    
+    var isPrivacyModeTooltipVisible: Bool {
+        get { contextView.isPrivacyModeTooltipVisible }
+        set { contextView.isPrivacyModeTooltipVisible = newValue }
+    }
+    
+    // MARK: - Initialisers
     
     override init(
         frame: CGRect

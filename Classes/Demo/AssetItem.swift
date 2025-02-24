@@ -14,23 +14,24 @@
 
 //   AssetItem.swift
 
-import Foundation
-
 final class AssetItem {
     let asset: Asset
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
     let currencyFormattingContext: CurrencyFormattingContext?
+    let isAmountHidden: Bool
 
     init(
         asset: Asset,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter,
-        currencyFormattingContext: CurrencyFormattingContext? = nil
+        currencyFormattingContext: CurrencyFormattingContext? = nil,
+        isAmountHidden: Bool
     ) {
         self.asset = asset
         self.currency = currency
         self.currencyFormatter = currencyFormatter
         self.currencyFormattingContext = currencyFormattingContext
+        self.isAmountHidden = isAmountHidden
     }
 }

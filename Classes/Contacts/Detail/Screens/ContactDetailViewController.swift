@@ -126,7 +126,8 @@ extension ContactDetailViewController {
                 let algoAssetItem = AssetItem(
                     asset: account.algo,
                     currency: currency,
-                    currencyFormatter: currencyFormatter
+                    currencyFormatter: currencyFormatter,
+                    isAmountHidden: false
                 )
                 let preview = AssetPreviewModelAdapter.adapt(algoAssetItem)
                 self.assetPreviews.append(preview)
@@ -168,7 +169,8 @@ extension ContactDetailViewController {
                                             let standardAssetItem = AssetItem(
                                                 asset: standardAsset,
                                                 currency: currency,
-                                                currencyFormatter: currencyFormatter
+                                                currencyFormatter: currencyFormatter,
+                                                isAmountHidden: false
                                             )
                                             let preview = AssetPreviewModelAdapter.adapt(standardAssetItem)
                                             self.assetPreviews.append(preview)

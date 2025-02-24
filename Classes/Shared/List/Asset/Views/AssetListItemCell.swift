@@ -15,28 +15,70 @@
 //   AssetListItemCell.swift
 
 import UIKit
-import MacaroonUIKit
 
-final class AssetListItemCell:
-    CollectionCell<PrimaryListItemView>,
-    ViewModelBindable {
-    override static var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
-    }
-
+final class AssetListItemCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
     static let theme = AssetListItemTheme()
-
-    override init(
-        frame: CGRect
-    ) {
+    
+    private let contextView: PrimaryListItemView = {
+        let view = PrimaryListItemView()
+        view.customize(AssetListItemCell.theme)
+        return view
+    }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.Layer.grayLighter.uiColor
+        return view
+    }()
+    
+    // MARK: - Initialisers
+    
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        contextView.customize(Self.theme)
-
-        let separator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 24))
-        )
-        separatorStyle = .single(separator)
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Setups
+    
+    private func setupConstraints() {
+        
+        [contextView, separatorView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        
+        let constraints = [
+            contextView.topAnchor.constraint(equalTo: topAnchor, constant: Self.theme.verticalPadding),
+            contextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.theme.horizontalPadding),
+            contextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.theme.horizontalPadding),
+            contextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.theme.verticalPadding),
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80.0),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24.0),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    // MARK: - Actions
+    
+    func bindData(_ data: any PrimaryListItemViewModel) {
+        contextView.bindData(data)
+    }
+    
+    // MARK: - Helpers
+    
+    static func calculatePreferredSize(_ viewModel: PrimaryListItemViewModel?, for theme: PrimaryListItemViewTheme, fittingIn size: CGSize) -> CGSize {
+        var preferredSize = PrimaryListItemView.calculatePreferredSize(viewModel, for: theme, fittingIn: size)
+        preferredSize.height += self.theme.verticalPadding * 2.0
+        return preferredSize
     }
 }

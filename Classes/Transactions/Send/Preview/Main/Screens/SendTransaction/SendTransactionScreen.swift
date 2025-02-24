@@ -359,7 +359,8 @@ extension SendTransactionScreen {
                 asset: draft.from.algo,
                 currency: currency,
                 currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
+                currencyFormattingContext: .standalone(),
+                isAmountHidden: false
             )
             viewModel = AssetListItemViewModel(algoAssetItem)
         case .asset(let asset):
@@ -367,7 +368,8 @@ extension SendTransactionScreen {
                 asset: asset,
                 currency: currency,
                 currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
+                currencyFormattingContext: .standalone(),
+                isAmountHidden: false
             )
             viewModel = AssetListItemViewModel(assetItem)
         }
@@ -604,7 +606,8 @@ extension SendTransactionScreen {
             asset: draft.from.algo,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter,
-            currencyFormattingContext: .standalone()
+            currencyFormattingContext: .standalone(),
+            isAmountHidden: false
         )
 
         let draft = InsufficientAlgoBalanceDraft(algoAssetItem: algoAssetItem)

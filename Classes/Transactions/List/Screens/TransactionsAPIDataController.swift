@@ -15,18 +15,16 @@
 //
 //   TransactionsAPIDataController.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 import MacaroonUtils
 import MagpieCore
+import Combine
 
 final class TransactionsAPIDataController:
     TransactionsDataController,
     SharedDataControllerObserver {
     var eventHandler: ((TransactionsDataControllerEvent) -> Void)?
-
-    private lazy var currencyFormatter = CurrencyFormatter()
 
     private var pendingTransactionPolling: PollingOperation?
     private var fetchRequest: EndpointOperatable?
@@ -52,6 +50,8 @@ final class TransactionsAPIDataController:
         label: "pera.queue.pendingTransactions.updates",
         qos: .userInitiated
     )
+    
+    private var cancellables = Set<AnyCancellable>()
 
     init(
         _ api: ALGAPI,
@@ -63,6 +63,14 @@ final class TransactionsAPIDataController:
         self.draft = draft
         self.filterOption = filterOption
         self.sharedDataController = sharedDataController
+        
+        setupCallbacks()
+    }
+    
+    private func setupCallbacks() {
+        ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .sink { [weak self] in self?.deliverContentSnapshot(isAmountHidden: $0) }
+            .store(in: &cancellables)
     }
 
     deinit {
@@ -156,7 +164,7 @@ extension TransactionsAPIDataController {
                         self.pendingTransactions = updatedPendingTransactions
 
                         if !updatedPendingTransactions.isEmpty {
-                            self.deliverContentSnapshot()
+                            self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                         }
                     }
                 case .failure:
@@ -211,7 +219,7 @@ extension TransactionsAPIDataController {
                         transactionResults.transactions,
                         isPaginated: false
                     )
-                    self.deliverContentSnapshot()
+                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                 }
             }
         }
@@ -324,7 +332,7 @@ extension TransactionsAPIDataController {
                         transactionResults.transactions,
                         isPaginated: true
                     )
-                    self.deliverContentSnapshot()
+                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                 }
             }
         }
@@ -417,7 +425,7 @@ extension TransactionsAPIDataController {
         }
     }
     
-    private func deliverContentSnapshot() {
+    private func deliverContentSnapshot(isAmountHidden: Bool) {
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -432,7 +440,7 @@ extension TransactionsAPIDataController {
                 toSection: .transactionHistory
             )
 
-            let transactionItems = self.getTransactionHistoryItemsWithDates()
+            let transactionItems = self.getTransactionHistoryItemsWithDates(isAmountHidden: isAmountHidden)
             self.appendPendingTransactions(to: &snapshot)
 
             if self.pendingTransactions.isEmpty,
@@ -445,7 +453,6 @@ extension TransactionsAPIDataController {
                 transactionItems,
                 toSection: .transactionHistory
             )
-
             return snapshot
         }
     }
@@ -468,7 +475,7 @@ extension TransactionsAPIDataController {
                 let viewModel = PendingTransactionItemViewModel(
                     draft,
                     currency: sharedDataController.currency,
-                    currencyFormatter: currencyFormatter
+                    currencyFormatter: CurrencyFormatter()
                 )
                 return .pendingTransaction(viewModel)
             }
@@ -496,7 +503,7 @@ extension TransactionsAPIDataController {
 }
 
 extension TransactionsAPIDataController {
-    private func getTransactionHistoryItemsWithDates() -> [TransactionsItem] {
+    private func getTransactionHistoryItemsWithDates(isAmountHidden: Bool) -> [TransactionsItem] {
         var transactionItems: [TransactionsItem] = []
         var addedItemIDs: [String: Bool] = [:]
 
@@ -543,7 +550,8 @@ extension TransactionsAPIDataController {
                         let viewModel = AlgoTransactionItemViewModel(
                             viewModelDraft,
                             currency: sharedDataController.currency,
-                            currencyFormatter: currencyFormatter
+                            currencyFormatter: CurrencyFormatter(),
+                            isAmountHidden: isAmountHidden
                         )
 
                         if addedItemIDs[transactionID] == nil {
@@ -564,7 +572,8 @@ extension TransactionsAPIDataController {
                         let viewModel = AssetTransactionItemViewModel(
                             viewModelDraft,
                             currency: sharedDataController.currency,
-                            currencyFormatter: currencyFormatter
+                            currencyFormatter: CurrencyFormatter(),
+                            isValueHidden: isAmountHidden
                         )
 
                         if addedItemIDs[transactionID] == nil {

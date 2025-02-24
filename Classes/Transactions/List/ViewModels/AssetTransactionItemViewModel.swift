@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct AssetTransactionItemViewModel:
     TransactionListItemViewModel,
     Hashable {
+    let isValueHidden: Bool
     var id: String?
     var title: EditText?
     var subtitle: EditText?
@@ -28,8 +29,10 @@ struct AssetTransactionItemViewModel:
     init(
         _ draft: TransactionViewModelDraft,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        isValueHidden: Bool
     ) {
+        self.isValueHidden = isValueHidden
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
@@ -134,8 +137,10 @@ struct AssetTransactionItemViewModel:
               let asset = draft.localAssets?[assetID] else {
                   return
         }
+        
+        currencyFormatter.isValueHidden = isValueHidden
 
-        if assetTransfer.receiverAddress == transaction.sender {
+        if assetTransfer.receiverAddress == transaction.sender || isValueHidden {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(
                     amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),

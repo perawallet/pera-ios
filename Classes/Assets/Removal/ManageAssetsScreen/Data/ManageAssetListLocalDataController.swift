@@ -332,7 +332,8 @@ extension ManageAssetListLocalDataController {
         let item = AssetItem(
             asset: asset,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            isAmountHidden: false
         )
         let listItem = OptOutAssetListItem(item: item)
         return .asset(listItem)

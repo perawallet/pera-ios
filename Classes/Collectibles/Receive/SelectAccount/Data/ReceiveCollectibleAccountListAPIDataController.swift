@@ -118,7 +118,8 @@ extension ReceiveCollectibleAccountListAPIDataController {
                     let accountPortfolioItem = AccountPortfolioItem(
                         accountValue: $0,
                         currency: currency,
-                        currencyFormatter: self.currencyFormatter
+                        currencyFormatter: self.currencyFormatter,
+                        isAmountHidden: false
                     )
                     let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
                     let cellItem: ReceiveCollectibleAccountListItem = .account(

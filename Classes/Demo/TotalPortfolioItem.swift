@@ -20,14 +20,17 @@ final class TotalPortfolioItem {
     let portfolioValue: PortfolioValue
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
+    let isAmountHidden: Bool
 
     init(
         accountValues: [AccountHandle],
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        isAmountHidden: Bool
     ) {
         self.portfolioValue = PortfolioValue(accountValues: accountValues)
         self.currency = currency
         self.currencyFormatter = currencyFormatter
+        self.isAmountHidden = isAmountHidden
     }
 }

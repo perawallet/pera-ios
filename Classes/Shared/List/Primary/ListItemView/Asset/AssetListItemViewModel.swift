@@ -14,7 +14,6 @@
 
 //   AssetListItemViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
@@ -96,6 +95,7 @@ extension AssetListItemViewModel {
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        formatter.isValueHidden = item.isAmountHidden
         if asset.isAlgo {
             formatter.currency = AlgoLocalCurrency()
         } else {
@@ -118,6 +118,7 @@ extension AssetListItemViewModel {
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        formatter.isValueHidden = item.isAmountHidden
 
         do {
             let exchanger: CurrencyExchanger

@@ -87,7 +87,8 @@ extension SelectAssetViewControllerDataSource {
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter,
-            currencyFormattingContext: .listItem
+            currencyFormattingContext: .listItem,
+            isAmountHidden: false
         )
         let listItem = SelectAssetListItem(item: item, account: account)
         return .asset(listItem)

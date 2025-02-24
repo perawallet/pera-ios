@@ -29,6 +29,8 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
     var primaryValue: TextStyle
     let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
+    let horizontalPadding: CGFloat
+    let verticalPadding: CGFloat
 
     init(
         _ family: LayoutFamily
@@ -52,5 +54,7 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
             .textOverflow(SingleLineText())
         ]
         self.minSpacingBetweenTitleAndValue = 16
+        horizontalPadding = 24.0
+        verticalPadding = 14.0
     }
 }

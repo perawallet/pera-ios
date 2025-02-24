@@ -25,7 +25,8 @@ final class ASAProfileView:
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
-        .copyAssetID: GestureInteraction(gesture: .longPress)
+        .copyAssetID: GestureInteraction(gesture: .longPress),
+        .onAmountTap: TargetActionInteraction()
     ]
 
     private(set) var intrinsicExpandedContentSize: CGSize = .zero
@@ -41,9 +42,27 @@ final class ASAProfileView:
     private lazy var titleSeparatorView = Label()
     private lazy var idView = UILabel()
     private lazy var primaryValueView = UILabel()
+    private lazy var primaryValueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = UILabel()
-
+    
     private var theme = ASAProfileViewTheme()
+    
+    // MARK: - Initialisers
+    
+    @MainActor init() {
+        super.init(frame: .zero)
+        setupGestures()
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Setups
+    
+    private func setupGestures() {
+        startPublishing(event: .onAmountTap, for: primaryValueButton)
+    }
 
     func customize(_ theme: ASAProfileViewTheme) {
         self.theme = theme
@@ -228,6 +247,7 @@ extension ASAProfileView {
 
     private func addPrimaryValue(_ theme: ASAProfileViewTheme) {
         primaryValueView.customizeAppearance(theme.primaryValue)
+        primaryValueView.addSubview(primaryValueButton)
 
         expandedContentView.addArrangedSubview(primaryValueView)
         primaryValueView.fitToVerticalIntrinsicSize()
@@ -235,6 +255,10 @@ extension ASAProfileView {
             theme.spacingBetweenTitleAndPrimaryValue,
             after: compressedContentView
         )
+        
+        primaryValueButton.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     private func addSecondaryValue(_ theme: ASAProfileViewTheme) {
@@ -301,5 +325,6 @@ extension ASAProfileView {
     enum Event {
         case layoutChanged
         case copyAssetID
+        case onAmountTap
     }
 }

@@ -15,7 +15,6 @@
 //
 //   HomePortfolioView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -25,13 +24,34 @@ final class HomePortfolioView:
     UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: TargetActionInteraction()
+        .showInfo: TargetActionInteraction(),
+        .onAmountTap: TargetActionInteraction()
     ]
+    
+    var isPrivacyModeTooltipVisible: Bool = false {
+        didSet { update(isPrivacyModeTooltipVisible: isPrivacyModeTooltipVisible) }
+    }
 
     private(set) lazy var titleView = Label()
     private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
+    private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = Label()
+    
+    private lazy var tooltipController = TooltipUIController(presentingView: self)
+    
+    // MARK: - Initialisers
+    
+    init() {
+        super.init(frame: .zero)
+        setupGestures()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupGestures() {
+        startPublishing(event: .onAmountTap, for: valueButton)
+    }
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -109,6 +129,18 @@ final class HomePortfolioView:
             secondaryValueSize.height
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
+    
+    // MARK: - Actions
+    
+    private func update(isPrivacyModeTooltipVisible: Bool) {
+        
+        guard isPrivacyModeTooltipVisible else {
+            tooltipController.dismiss()
+            return
+        }
+        
+        tooltipController.present(on: valueView, title: "tooltip-privacy-mode".localized)
+    }
 }
 
 extension HomePortfolioView {
@@ -150,12 +182,17 @@ extension HomePortfolioView {
         valueView.adjustsFontSizeToFitWidth = true
         valueView.minimumScaleFactor = 14/36
         
-        addSubview(valueView)
+        [valueView, valueButton].forEach(addSubview)
+        
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0
             $0.trailing == 0
+        }
+        
+        valueButton.snp.makeConstraints {
+            $0.edges.equalTo(valueView)
         }
     }
     
@@ -181,5 +218,6 @@ extension HomePortfolioView {
 extension HomePortfolioView {
     enum Event {
         case showInfo
+        case onAmountTap
     }
 }

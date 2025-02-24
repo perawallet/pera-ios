@@ -14,11 +14,11 @@
 
 //   ASADetailScreen.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import SnapKit
 import UIKit
+import Combine
 
 final class ASADetailScreen:
     BaseViewController,
@@ -85,7 +85,6 @@ final class ASADetailScreen:
         sharedDataController: sharedDataController
     )
 
-    private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var rekeyingValidator = RekeyingValidator(
         session: session!,
         sharedDataController: sharedDataController
@@ -123,6 +122,8 @@ final class ASADetailScreen:
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
+    
+    private var cancellables = Set<AnyCancellable>()
 
     init(
         swapDataStore: SwapDataStore,
@@ -147,6 +148,7 @@ final class ASADetailScreen:
 
         addUI()
         loadData()
+        setupCallbacks()
     }
 
     override func viewDidLayoutSubviews() {
@@ -178,6 +180,14 @@ final class ASADetailScreen:
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
         super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
         bindUIDataWhenPreferredUserInterfaceStyleDidChange()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupCallbacks() {
+        ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .sink { [weak self] in self?.bindProfileData(isAmountHidden: $0) }
+            .store(in: &cancellables)
     }
 }
 
@@ -319,7 +329,7 @@ extension ASADetailScreen {
     }
 
     private func bindUIData() {
-        bindProfileData()
+        bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
         bindMarketData()
         bindPagesFragmentData()
     }
@@ -407,16 +417,21 @@ extension ASADetailScreen {
 
             self.copyToClipboardController.copyID(self.dataController.asset)
         }
+        
+        profileView.startObserving(event: .onAmountTap) {
+            ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+        }
 
-        bindProfileData()
+        bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
     }
 
-    private func bindProfileData() {
+    private func bindProfileData(isAmountHidden: Bool) {
         let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
             asset: asset,
             currency: sharedDataController.currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: CurrencyFormatter(),
+            isAmountHidden: isAmountHidden
         )
         profileView.bindData(viewModel)
     }
@@ -635,7 +650,8 @@ extension ASADetailScreen {
             assetItem: .init(
                 asset: asset,
                 currency: sharedDataController.currency,
-                currencyFormatter: currencyFormatter
+                currencyFormatter: CurrencyFormatter(),
+                isAmountHidden: false
             )
         )
         marketInfoView.bindData(viewModel)

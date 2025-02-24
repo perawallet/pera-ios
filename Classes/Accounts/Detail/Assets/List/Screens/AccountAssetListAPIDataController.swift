@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUtils
+import Combine
 
 final class AccountAssetListAPIDataController:
     AccountAssetListDataController,
@@ -28,7 +29,6 @@ final class AccountAssetListAPIDataController:
     private lazy var asyncLoadingQueue = createAsyncLoadingQueue()
     private lazy var searchThrottler = createSearchThrottler()
 
-    private lazy var currencyFormatter = createCurrencyFormatter()
     private lazy var assetAmountFormatter = createAssetAmountFormatter()
     private lazy var minBalanceCalculator = createMinBalanceCalculator()
 
@@ -39,6 +39,7 @@ final class AccountAssetListAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private var canDeliverUpdatesForAssets = false
+    private var cancellables = Set<AnyCancellable>()
 
     private let sharedDataController: SharedDataController
 
@@ -48,6 +49,13 @@ final class AccountAssetListAPIDataController:
     ) {
         self.account = account
         self.sharedDataController = sharedDataController
+        setupCallbacks()
+    }
+    
+    private func setupCallbacks() {
+        ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .sink { [weak self] _ in self?.reload() }
+            .store(in: &cancellables)
     }
 
     deinit {
@@ -338,7 +346,9 @@ extension AccountAssetListAPIDataController {
         let portfolio = AccountPortfolioItem(
             accountValue: account,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: createCurrencyFormatter(),
+            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
+            
         )
         let viewModel = WatchAccountPortfolioViewModel(portfolio)
         return [ .watchPortfolio(viewModel) ]
@@ -355,8 +365,9 @@ extension AccountAssetListAPIDataController {
         let portfolio = AccountPortfolioItem(
             accountValue: account,
             currency: currency,
-            currencyFormatter: currencyFormatter,
-            minimumBalance: calculatedMinimumBalance
+            currencyFormatter: createCurrencyFormatter(),
+            minimumBalance: calculatedMinimumBalance,
+            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
         )
         let viewModel = AccountPortfolioViewModel(portfolio)
         return [ .portfolio(viewModel) ]
@@ -538,7 +549,8 @@ extension AccountAssetListAPIDataController {
         let assetItem = AssetItem(
             asset: algoAsset,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: createCurrencyFormatter(),
+            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
         )
         let item = AccountAssetsAssetListItem(item: assetItem)
         return .asset(item)
@@ -549,7 +561,8 @@ extension AccountAssetListAPIDataController {
         let assetItem = AssetItem(
             asset: asset,
             currency: currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: createCurrencyFormatter(),
+            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
         )
         let item = AccountAssetsAssetListItem(item: assetItem)
         return .asset(item)

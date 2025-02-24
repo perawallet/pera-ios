@@ -22,17 +22,20 @@ final class AccountPortfolioItem {
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
     let minimumBalance: UInt64?
+    let isAmountHidden: Bool
 
     init(
         accountValue: AccountHandle,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter,
-        minimumBalance: UInt64? = nil
+        minimumBalance: UInt64? = nil,
+        isAmountHidden: Bool
     ) {
         self.accountValue = accountValue
         self.portfolioValue = PortfolioValue(accountValue: accountValue)
         self.currency = currency
         self.currencyFormatter = currencyFormatter
         self.minimumBalance = minimumBalance
+        self.isAmountHidden = isAmountHidden
     }
 }

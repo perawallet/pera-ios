@@ -25,6 +25,7 @@ extension PortfolioViewModel {
     func format(
         portfolioValue: PortfolioValue?,
         currencyValue: RemoteCurrencyValue?,
+        isAmountHidden: Bool,
         in context: CurrencyFormattingContext
     ) -> String? {
         guard
@@ -44,6 +45,7 @@ extension PortfolioViewModel {
             let formatter = currencyFormatter ?? CurrencyFormatter()
             formatter.formattingContext = context
             formatter.currency =  rawCurrency
+            formatter.isValueHidden = isAmountHidden
             return formatter.format(amount)
         } catch {
             return nil
