@@ -2,24 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>270342103187-238qs7cush6jtofklb8np442nlejpjdd.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.270342103187-238qs7cush6jtofklb8np442nlejpjdd</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>270342103187-5fc48kjvs75onsj1pue6dnm6psiem4k5.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD2faYXA2cgDGjIPBdMh8NMmkCZSrkHsC8</string>
+	<string>AIzaSyDgEkBGqnhB0zLbUUsvtxSgh4WjVUoVIEA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>270342103187</string>
+	<string>335421783381</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.peralda.perawallet.beta</string>
 	<key>PROJECT_ID</key>
-	<string>algorand-e3fe3</string>
+	<string>pera-wallet-ios</string>
 	<key>STORAGE_BUCKET</key>
-	<string>algorand-e3fe3.appspot.com</string>
+	<string>pera-wallet-ios.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:270342103187:ios:8155f79ff2a6aa46a1ad66</string>
-	<key>DATABASE_URL</key>
-	<string>https://algorand-e3fe3.firebaseio.com</string>
+	<string>1:335421783381:ios:4b003f40234612d27e43dc</string>
 </dict>
 </plist>

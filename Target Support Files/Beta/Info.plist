@@ -6,6 +6,22 @@
 	<string>$(ALGOD_TOKEN)</string>
 	<key>API_KEY</key>
 	<string>$(PROD_API_KEY)</string>
+	<key>MOBILE_API_PROD_MAINNET_HOST</key>
+	<string>$(MOBILE_API_PROD_MAINNET_HOST)</string>
+	<key>MOBILE_API_PROD_TESTNET_HOST</key>
+	<string>$(MOBILE_API_PROD_TESTNET_HOST)</string>
+	<key>MOBILE_API_STAGING_MAINNET_HOST</key>
+	<string>$(MOBILE_API_STAGING_MAINNET_HOST)</string>
+	<key>MOBILE_API_STAGING_TESTNET_HOST</key>
+	<string>$(MOBILE_API_STAGING_TESTNET_HOST)</string>
+	<key>ALGOD_TESTNET_HOST</key>
+	<string>$(ALGOD_TESTNET_HOST)</string>
+	<key>ALGOD_MAINNET_HOST</key>
+	<string>$(ALGOD_MAINNET_HOST)</string>
+	<key>INDEXER_MAINNET_HOST</key>
+	<string>$(INDEXER_MAINNET_HOST)</string>
+	<key>INDEXER_TESTNET_HOST</key>
+	<string>$(INDEXER_TESTNET_HOST)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
