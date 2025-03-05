@@ -212,6 +212,8 @@ extension AccountDetailViewController {
                 self.openAddAssetScreenIfPossible()
             case .requests:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .tapAssetInbox))
+                
                 self.openIncomingASAAccountInbox()
             case .swap:
                 self.assetListScreen.endEditing()
@@ -219,10 +221,12 @@ extension AccountDetailViewController {
                 self.openSwapAssetIfPossible()
             case .send:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .tapSend))
 
                 self.openSendTransactionIfPossible()
             case .more:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .tapMore))
 
                 self.presentOptionsScreen()
             case .transactionOption:

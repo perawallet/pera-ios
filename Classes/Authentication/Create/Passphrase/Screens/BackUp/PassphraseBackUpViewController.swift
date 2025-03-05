@@ -119,6 +119,7 @@ extension PassphraseBackUpViewController {
     private func makeSkipBarButtonItem() -> ALGBarButtonItem {
         return ALGBarButtonItem(kind: .skip) {
             [unowned self] in
+            analytics.track(.onboardCreateAccountPassphrase(type: .skipRecover))
             guard let account = createAccount() else { return }
             self.navigateToSetupNameScreen(account)
         }

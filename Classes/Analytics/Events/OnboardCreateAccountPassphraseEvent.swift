@@ -35,6 +35,10 @@ extension OnboardCreateAccountPassphraseEvent {
         case begin
         case copy
         case verify
+        case verifyComplete
+        case skipCreate
+        case skipWrite
+        case skipRecover
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -46,6 +50,14 @@ extension OnboardCreateAccountPassphraseEvent {
                 return .onboardCreateAccountCopyPassphrase
             case .verify:
                 return .onboardCreateAccountVerifyPassphrase
+            case .verifyComplete:
+                return .onboardCreateAccountVerifyPassphraseComplete
+            case .skipCreate:
+                return .onboardCreateAccountSkipCreatePassphrase
+            case .skipWrite:
+                return .onboardCreateAccountSkipWritePassphrase
+            case .skipRecover:
+                return .onboardCreateAccountSkipRecoverPassphrase
             }
         }
     }

@@ -51,11 +51,6 @@ final class StakingDeeplinksTests: XCTestCase {
     func testStakingDeeplinkWithError() {
         let deepLinkToTest = URL(string: "perawallet://stakig")!
         
-        switch deepLinkToTest.externalDeepLink {
-        case .other:
-            XCTAssertTrue(true)
-        default:
-            XCTFail()
-        }
+        XCTAssertNil(deepLinkToTest.externalDeepLink)
     }
 }

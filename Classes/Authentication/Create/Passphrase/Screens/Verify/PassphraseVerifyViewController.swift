@@ -85,6 +85,8 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
             guard let account = self.createAccount() else {
                 return
             }
+            
+            analytics.track(.onboardCreateAccountPassphrase(type: .verifyComplete))
 
             self.open(
                 .tutorial(

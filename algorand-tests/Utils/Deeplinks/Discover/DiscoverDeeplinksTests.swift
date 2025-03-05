@@ -127,12 +127,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
     func testDiscoverDeeplinkWithError() {
         let deepLinkToTest = URL(string: "perawallet://discove")!
         
-        switch deepLinkToTest.externalDeepLink {
-        case .other:
-            XCTAssertTrue(true)
-        default:
-            XCTFail()
-        }
+        XCTAssertNil(deepLinkToTest.externalDeepLink)
     }
     
 

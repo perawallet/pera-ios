@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OnboardCreateAccountEvent.swift
+//   TabBarPressedEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct OnboardCreateAccountEvent: ALGAnalyticsEvent {
+struct TabBarPressedEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
@@ -29,32 +29,35 @@ struct OnboardCreateAccountEvent: ALGAnalyticsEvent {
     }
 }
 
-extension OnboardCreateAccountEvent {
+extension TabBarPressedEvent {
     enum `Type` {
-        case new
-        case skip
-        case watch
-        case watchComplete
+        case tapHome
+        case tapDiscover
+        case tapQuickConnect
+        case tapNFTs
+        case tapSettings
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
-            case .new:
-                return .onboardCreateAccountNew
-            case .skip:
-                return .onboardCreateAccountSkip
-            case .watch:
-                return .onboardCreateAccountWatch
-            case .watchComplete:
-                return .onboardCreateAccountWatchComplete
+            case .tapHome:
+                return .tapBarPressedHomeEvent
+            case .tapDiscover:
+                return .tapBarPressedDiscoverEvent
+            case .tapQuickConnect:
+                return .tapBarPressedQuickConnectEvent
+            case .tapNFTs:
+                return .tapBarPressedNFTsEvent
+            case .tapSettings:
+                return .tapBarPressedSettingsEvent
             }
         }
     }
 }
 
-extension AnalyticsEvent where Self == OnboardCreateAccountEvent {
-    static func onboardCreateAccount(
-        type: OnboardCreateAccountEvent.`Type`
+extension AnalyticsEvent where Self == TabBarPressedEvent {
+    static func tabBarPressed(
+        type: TabBarPressedEvent.`Type`
     ) -> Self {
-        return OnboardCreateAccountEvent(type: type)
+        return TabBarPressedEvent(type: type)
     }
 }

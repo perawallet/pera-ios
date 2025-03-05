@@ -198,6 +198,21 @@ final class TabBarController: TabBarContainer {
         self.observeNetworkChanges()
         observeWhenUserIsOnboardedToSwap()
     }
+    
+    override func selectedIndexDidChange() {
+        switch selectedTab {
+        case .home:
+            analytics.track(.tabBarPressed(type: .tapHome))
+        case .discover:
+            analytics.track(.tabBarPressed(type: .tapDiscover))
+        case .collectibles:
+            analytics.track(.tabBarPressed(type: .tapNFTs))
+        case .settings:
+            analytics.track(.tabBarPressed(type: .tapSettings))
+        default:
+            break
+        }
+    }
 }
 
 extension TabBarController {
@@ -329,6 +344,8 @@ extension TabBarController {
     private func showTransactionOptionsAnimated() {
         addTransactionOptions()
         view.layoutIfNeeded()
+        
+        analytics.track(.tabBarPressed(type: .tapQuickConnect))
 
         currentTransactionOptionsAnimator = makeTransactionOptionsAnimator(for: .end)
         currentTransactionOptionsAnimator?.addCompletion { [weak self] position in
@@ -382,6 +399,8 @@ extension TabBarController {
     private func navigateToStakingFlow() {
         toggleTransactionOptions()
         stakingFlowCoordinator.launch()
+        
+        analytics.track(.tapInQuickAction(type: .tapStake))
     }
     
     private func navigateToSwapAssetFlow() {
@@ -389,7 +408,7 @@ extension TabBarController {
         swapAssetFlowCoordinator.resetDraft()
         swapAssetFlowCoordinator.launch()
 
-        analytics.track(.tapSwapInQuickAction())
+        analytics.track(.tapInQuickAction(type: .tapSwap))
     }
 
     private func navigateToSendTransaction() {
@@ -448,8 +467,9 @@ extension TabBarController {
 
     private func navigateToBrowseDApps() {
         toggleTransactionOptions()
-
         launchDiscover(with: .browser)
+        
+        analytics.track(.tapInQuickAction(type: .tapBrowseDApps))
     }
 
     private func navigateToCardsScreen() {
@@ -628,3 +648,4 @@ extension TabBarController {
         screen?.destination = destination
     }
 }
+

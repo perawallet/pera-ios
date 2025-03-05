@@ -304,6 +304,7 @@ extension HomeViewController {
             guard let self = self else {
                 return
             }
+            self.analytics.track(.recordHomeScreen(type: .assetInbox))
 
             self.open(
                 .notifications,
@@ -543,6 +544,7 @@ extension HomeViewController {
         cell.startObserving(event: .stake) {
             [weak self] in
             guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .stake))
             self.stakingFlowCoordinator.launch()
         }
 
@@ -557,6 +559,7 @@ extension HomeViewController {
         cell.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
         }
 
@@ -676,6 +679,8 @@ extension HomeViewController {
                     }
                 }
             }
+            
+            self.analytics.track(.recordHomeScreen(type: .sort))
 
             self.open(
                 .sortAccountList(

@@ -599,6 +599,8 @@ extension WatchAccountAdditionViewController {
 
         /// <todo> Refactor error handling? Move to data controller?
 
+        analytics.track(.onboardCreateAccount(type: .watchComplete))
+        
         guard let address = addressInputView.text,
             !address.isEmpty,
             address.isValidatedAddress else {

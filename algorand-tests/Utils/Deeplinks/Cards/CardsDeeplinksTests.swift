@@ -97,12 +97,7 @@ final class CardsDeeplinksTests: XCTestCase {
     func testCardsDeeplinkWithError() {
         let deepLinkToTest = URL(string: "perawallet://card")!
         
-        switch deepLinkToTest.externalDeepLink {
-        case .other:
-            XCTAssertTrue(true)
-        default:
-            XCTFail()
-        }
+        XCTAssertNil(deepLinkToTest.externalDeepLink)
     }
     
 

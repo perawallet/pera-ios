@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,49 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OnboardCreateAccountEvent.swift
+//   SwapSelectTokenEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct OnboardCreateAccountEvent: ALGAnalyticsEvent {
+struct SwapSelectTokenEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        type: Type
+        type: Type,
+        assetID: AssetID
     ) {
         self.name = type.rawValue
-        self.metadata = [:]
+
+        self.metadata = [
+            .assetID: String(assetID)
+        ]
     }
 }
 
-extension OnboardCreateAccountEvent {
+extension SwapSelectTokenEvent {
     enum `Type` {
-        case new
-        case skip
-        case watch
-        case watchComplete
+        case from
+        case to
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
-            case .new:
-                return .onboardCreateAccountNew
-            case .skip:
-                return .onboardCreateAccountSkip
-            case .watch:
-                return .onboardCreateAccountWatch
-            case .watchComplete:
-                return .onboardCreateAccountWatchComplete
+            case .from:
+                return .swapSelectFromToken
+            case .to:
+                return .swapSelectToToken
             }
         }
     }
 }
 
-extension AnalyticsEvent where Self == OnboardCreateAccountEvent {
-    static func onboardCreateAccount(
-        type: OnboardCreateAccountEvent.`Type`
+extension AnalyticsEvent where Self == SwapSelectTokenEvent {
+    static func swapSelectToken(
+        type: SwapSelectTokenEvent.`Type`,
+        assetID: AssetID
     ) -> Self {
-        return OnboardCreateAccountEvent(type: type)
+        return SwapSelectTokenEvent(type: type, assetID: assetID)
     }
 }

@@ -367,8 +367,10 @@ extension SwapAssetScreen {
     ) {
         switch event {
         case .didSelectUserAsset(let asset):
+            analytics.track(.swapSelectToken(type: .from, assetID: asset.id))
             updateUserAsset(asset)
         case .didSelectPoolAsset(let asset):
+            analytics.track(.swapSelectToken(type: .to, assetID: asset.id))
             updatePoolAsset(asset)
         case .didApproveOptInToAsset: break
         }
@@ -949,6 +951,9 @@ extension SwapAssetScreen {
         didChangeTextIn textField: TextField
     ) {
         guard let input = textField.text else { return }
+        
+        analytics.track(.swapEnterNumbers())
+        
         getSwapQuoteIfNeeded(for: input)
     }
 

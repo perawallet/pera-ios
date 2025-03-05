@@ -252,5 +252,6 @@
   "sig-type": "sig",
   "round": 11713968,
   "status": "Offline",
-  "name": "Venue"
+  "name": "Venue",
+  "total-created-apps": 1
 }

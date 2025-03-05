@@ -122,6 +122,7 @@ extension BuySellOptionsScreen {
 extension BuySellOptionsScreen {
     @objc
     private func performBuyWithMeld() {
+        analytics.track(.buyCryptoSelected(type: .meld))
         eventHandler?(.performBuyWithMeld)
     }
 }
@@ -167,6 +168,7 @@ extension BuySellOptionsScreen {
 extension BuySellOptionsScreen {
     @objc
     private func performBuyGiftCardsWithBidali() {
+        analytics.track(.buyCryptoSelected(type: .bidali))
         eventHandler?(.performBuyGiftCardsWithBidali)
     }
  }

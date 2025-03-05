@@ -32,9 +32,13 @@ struct RecordHomeScreenEvent: ALGAnalyticsEvent {
 extension RecordHomeScreenEvent {
     enum `Type` {
         case addAccount
+        case assetInbox
         case qrScan
         case qrScanConnected
         case buyAlgo
+        case send
+        case sort
+        case stake
         case swap
         case tapAccounts
         case visitGovernance
@@ -43,12 +47,20 @@ extension RecordHomeScreenEvent {
             switch self {
             case .addAccount:
                 return .createAccountInHomeScreen
+            case .assetInbox:
+                return .tapAssetInboxInHome
             case .qrScan:
                 return .tapQRInHome
             case .qrScanConnected:
                 return .qrConnectedInHome
             case .buyAlgo:
                 return .tapBuyAlgoInHome
+            case .send:
+                return .tapSendInHome
+            case .sort:
+                return .tapSortInHome
+            case .stake:
+                return .tapStakeInHome
             case .swap:
                 return .tapSwapInHome
             case .tapAccounts:

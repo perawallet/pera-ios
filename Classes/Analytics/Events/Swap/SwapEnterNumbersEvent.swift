@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TapSwapInQuickActionEvent.swift
+//   SwapEnterNumbersEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct TapSwapInQuickActionEvent: ALGAnalyticsEvent {
+struct SwapEnterNumbersEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init() {
-        self.name = .tapSwapInQuickAction
+        self.name = .swapEnterNumbers
         self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == TapSwapInQuickActionEvent {
-    static func tapSwapInQuickAction() -> Self {
-        return TapSwapInQuickActionEvent()
+extension AnalyticsEvent where Self == SwapEnterNumbersEvent {
+    static func swapEnterNumbers() -> Self {
+        return SwapEnterNumbersEvent()
     }
 }

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OnboardCreateAccountEvent.swift
+//   TapInQuickActionEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct OnboardCreateAccountEvent: ALGAnalyticsEvent {
+struct TapInQuickActionEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
@@ -29,32 +29,29 @@ struct OnboardCreateAccountEvent: ALGAnalyticsEvent {
     }
 }
 
-extension OnboardCreateAccountEvent {
+extension TapInQuickActionEvent {
     enum `Type` {
-        case new
-        case skip
-        case watch
-        case watchComplete
+        case tapSwap
+        case tapStake
+        case tapBrowseDApps
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
-            case .new:
-                return .onboardCreateAccountNew
-            case .skip:
-                return .onboardCreateAccountSkip
-            case .watch:
-                return .onboardCreateAccountWatch
-            case .watchComplete:
-                return .onboardCreateAccountWatchComplete
+            case .tapSwap:
+                return .tapSwapInQuickAction
+            case .tapStake:
+                return .tapStakeInQuickAction
+            case .tapBrowseDApps:
+                return .tapBrowseDAppsInQuickAction
             }
         }
     }
 }
 
-extension AnalyticsEvent where Self == OnboardCreateAccountEvent {
-    static func onboardCreateAccount(
-        type: OnboardCreateAccountEvent.`Type`
+extension AnalyticsEvent where Self == TapInQuickActionEvent {
+    static func tapInQuickAction(
+        type: TapInQuickActionEvent.`Type`
     ) -> Self {
-        return OnboardCreateAccountEvent(type: type)
+        return TapInQuickActionEvent(type: type)
     }
 }

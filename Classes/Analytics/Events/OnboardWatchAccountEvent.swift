@@ -37,9 +37,9 @@ extension OnboardWatchAccountEvent {
         var rawValue: ALGAnalyticsEventName {
             switch self {
             case .create:
-                return .onboardWatchAccountCreate
+                return .onboardWatchAccountCreateComplete
             case .verified:
-                return .onboardWatchAccountCreateCompleted
+                return .onboardWatchAccountCreateVerified
             }
         }
     }

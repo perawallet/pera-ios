@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TapSwapInHomeEvent.swift
+//   BuyCryptoEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct TapSwapInHomeEvent: ALGAnalyticsEvent {
+struct BuyCryptoEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    fileprivate init() {
-        self.name = .tapSwapInHome
+    fileprivate init(
+        type: Type
+    ) {
+        self.name = type.rawValue
         self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == TapSwapInHomeEvent {
-    static func tapSwapInHome() -> Self {
-        return TapSwapInHomeEvent()
+extension BuyCryptoEvent {
+    enum `Type` {
+        case meld
+        case bidali
+
+        var rawValue: ALGAnalyticsEventName {
+            switch self {
+            case .meld:
+                return .buyCryptoMeldSelected
+            case .bidali:
+                return .buyCryptoBidaliSelected
+            }
+        }
+    }
+}
+
+extension AnalyticsEvent where Self == BuyCryptoEvent {
+    static func buyCryptoSelected(
+        type: BuyCryptoEvent.`Type`
+    ) -> Self {
+        return BuyCryptoEvent(type: type)
     }
 }

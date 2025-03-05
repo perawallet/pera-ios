@@ -32,8 +32,11 @@ struct RecordAccountDetailScreenEvent: ALGAnalyticsEvent {
 extension RecordAccountDetailScreenEvent {
     enum `Type` {
         case tapAssets
+        case tapAssetInbox
         case tapCollectibles
         case tapHistory
+        case tapMore
+        case tapSend
         case tapTransactionFilter
         case tapTransactionDownload
         case addAssets
@@ -45,10 +48,16 @@ extension RecordAccountDetailScreenEvent {
             switch self {
             case .tapAssets:
                 return .tapAssetsInAccountDetail
+            case .tapAssetInbox:
+                return .tapAssetInboxInAccountDetail
             case .tapCollectibles:
                 return .tapCollectiblesInAccountDetail
             case .tapHistory:
                 return .tapHistoryInAccountDetail
+            case .tapMore:
+                return .tapMoreInAccountDetail
+            case .tapSend:
+                return .tapSendInAccountDetail
             case .tapTransactionFilter:
                 return .tapFilterTransactionInHistory
             case .tapTransactionDownload:

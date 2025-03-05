@@ -234,22 +234,12 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
-        case .backUp,
-             .writePassphrase:
-            guard let newAccount = createAccount() else {
-                return
-            }
-
-            let screen = open(
-                .accountNameSetup(
-                    flow: flow,
-                    mode: .add,
-                    accountAddress: newAccount.address
-                ),
-                by: .push
-            ) as? AccountNameSetupViewController
-            screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-            screen?.hidesCloseBarButtonItem = true
+        case .backUp(flow: let flow, address: _):
+            analytics.track(.onboardCreateAccountPassphrase(type: .skipCreate))
+            createAccount(flow: flow)
+        case .writePassphrase(flow: let flow, address: _):
+            analytics.track(.onboardCreateAccountPassphrase(type: .skipWrite))
+            createAccount(flow: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapSecondaryActionButton?(self)
         case .accountVerified(let flow, _):
@@ -265,6 +255,25 @@ extension TutorialViewController: TutorialViewDelegate {
         default:
             break
         }
+    }
+    
+    private func createAccount(
+        flow: AccountSetupFlow
+    ) {
+        guard let newAccount = createAccount() else {
+            return
+        }
+
+        let screen = open(
+            .accountNameSetup(
+                flow: flow,
+                mode: .add,
+                accountAddress: newAccount.address
+            ),
+            by: .push
+        ) as? AccountNameSetupViewController
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        screen?.hidesCloseBarButtonItem = true
     }
 
     private func routeBuyAlgo(
