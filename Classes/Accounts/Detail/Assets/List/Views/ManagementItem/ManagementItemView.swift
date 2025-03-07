@@ -14,7 +14,6 @@
 
 //   AssetManagementItemView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -35,6 +34,10 @@ final class ManagementItemView:
         addSecondaryButton(theme)
         addPrimaryButton(theme)
         addTitle(theme)
+        
+        snp.makeConstraints {
+            $0.height.equalTo(theme.buttonHeight)
+        }
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}

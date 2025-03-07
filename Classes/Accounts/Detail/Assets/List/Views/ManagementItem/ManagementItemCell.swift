@@ -14,7 +14,6 @@
 
 //   ManagementItemCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -22,12 +21,15 @@ final class ManagementItemCell:
     CollectionCell<ManagementItemView>,
     ViewModelBindable,
     UIInteractable {
+    
     static let theme: ManagementItemViewTheme = {
         var theme = ManagementItemViewTheme()
         theme.configureForSingleAction()
         return theme
     }()
 
+    override class var contextPaddings: LayoutPaddings { (0.0, 24.0, 0.0, 24.0) }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(Self.theme)

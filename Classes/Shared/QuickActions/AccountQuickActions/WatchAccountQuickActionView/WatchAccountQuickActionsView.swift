@@ -14,7 +14,6 @@
 
 //   WatchAccountQuickActionsView.swift
 
-import Foundation
 import MacaroonUIKit
 import SnapKit
 import UIKit
@@ -110,6 +109,8 @@ extension WatchAccountQuickActionsView {
         addCopyAddressAction(theme)
         addShowAddressAction(theme)
         addMoreAction(theme)
+        
+        contentView.layoutIfNeeded()
     }
 
     private func addCopyAddressAction(_ theme: WatchAccountQuickActionsViewTheme) {
