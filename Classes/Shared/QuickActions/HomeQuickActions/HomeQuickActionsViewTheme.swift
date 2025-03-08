@@ -29,7 +29,7 @@ struct HomeQuickActionsViewTheme:
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
     var sendAction: ButtonStyle
-    var scanAction: ButtonStyle
+    var buyAction: ButtonStyle
 
     init(_ family: LayoutFamily) {
         self.spacingBetweenActions = 16
@@ -54,9 +54,9 @@ struct HomeQuickActionsViewTheme:
             .icon(Self.makeActionIcon(icon: "send-icon")),
             .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))
         ]
-        self.scanAction = [
-            .icon(Self.makeActionIcon(icon: "scan-qr-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-scan-qr-title".localized))
+        self.buyAction = [
+            .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
+            .title(Self.makeActionTitle(title: "title-buy-algo".localized))
         ]
     }
 }

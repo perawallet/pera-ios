@@ -300,6 +300,13 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func configureNotificationBarButton() {
+        let qrScannerBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self else { return }
+            
+            self.analytics.track(.recordHomeScreen(type: .qrScan))
+            self.scanQRFlowCoordinator.launch()
+        }
+        
         let notificationBarButtonItem = ALGBarButtonItem(kind: .notification) { [weak self] in
             guard let self = self else {
                 return
@@ -312,11 +319,18 @@ extension HomeViewController {
             )
         }
 
-        rightBarButtonItems = [notificationBarButtonItem]
+        rightBarButtonItems = [notificationBarButtonItem, qrScannerBarButtonItem]
         setNeedsNavigationBarAppearanceUpdate()
     }
 
     private func configureNewNotificationBarButton() {
+        let qrScannerBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self else { return }
+            
+            self.analytics.track(.recordHomeScreen(type: .qrScan))
+            self.scanQRFlowCoordinator.launch()
+        }
+        
         let notificationBarButtonItem = ALGBarButtonItem(kind: .newNotification) { [weak self] in
             guard let self = self else {
                 return
@@ -325,7 +339,7 @@ extension HomeViewController {
             self.open(.notifications, by: .push)
         }
 
-        rightBarButtonItems = [notificationBarButtonItem]
+        rightBarButtonItems = [notificationBarButtonItem, qrScannerBarButtonItem]
         setNeedsNavigationBarAppearanceUpdate()
     }
     
@@ -541,13 +555,6 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeQuickActionsCell
     ) {
-        cell.startObserving(event: .stake) {
-            [weak self] in
-            guard let self = self else { return }
-            self.analytics.track(.recordHomeScreen(type: .stake))
-            self.stakingFlowCoordinator.launch()
-        }
-
         cell.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
@@ -555,20 +562,26 @@ extension HomeViewController {
             self.swapAssetFlowCoordinator.resetDraft()
             self.swapAssetFlowCoordinator.launch()
         }
+        
+        cell.startObserving(event: .buy) {
+            [weak self] in
+            guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
+            self.openBuySellOptions()
+        }
+        
+        cell.startObserving(event: .stake) {
+            [weak self] in
+            guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .stake))
+            self.stakingFlowCoordinator.launch()
+        }
 
         cell.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
             self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
-        }
-
-        cell.startObserving(event: .scanQR) {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.analytics.track(.recordHomeScreen(type: .qrScan))
-            self.scanQRFlowCoordinator.launch()
         }
     }
 

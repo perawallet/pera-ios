@@ -24,17 +24,17 @@ final class HomeQuickActionsView:
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .stake: TargetActionInteraction(),
         .swap: TargetActionInteraction(),
-        .send: TargetActionInteraction(),
-        .scanQR: TargetActionInteraction()
+        .buy: TargetActionInteraction(),
+        .stake: TargetActionInteraction(),
+        .send: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
     private lazy var swapActionView = makeBadgeActionView()
+    private lazy var buyActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
-    private lazy var scanActionView = makeActionView()
 
     private var theme: HomeQuickActionsViewTheme!
 
@@ -59,7 +59,7 @@ final class HomeQuickActionsView:
         fittingIn size: CGSize
     ) -> CGSize {
         let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
-        let buySellActionSize = calculateActionPreferredSize(
+        let stakeActionSize = calculateActionPreferredSize(
             theme,
             for: theme.stakeAction,
             fittingIn: maxActionSize
@@ -74,16 +74,16 @@ final class HomeQuickActionsView:
             for: theme.swapAction,
             fittingIn: maxActionSize
         )
-        let scanActionSize = calculateActionPreferredSize(
+        let buyActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.scanAction,
+            for: theme.buyAction,
             fittingIn: maxActionSize
         )
         let preferredHeight = [
-            buySellActionSize.height,
+            stakeActionSize.height,
             swapActionSize.height,
             sendActionSize.height,
-            scanActionSize.height
+            buyActionSize.height
         ].max()!
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
@@ -122,9 +122,9 @@ extension HomeQuickActionsView {
         }
 
         addSwapAction(theme)
+        addBuyAction(theme)
         addStakeAction(theme)
         addSendAction(theme)
-        addScanAction(theme)
     }
 
     private func addSwapAction(_ theme: HomeQuickActionsViewTheme) {
@@ -140,6 +140,21 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .swap,
             for: swapActionView
+        )
+    }
+    
+    private func addBuyAction(_ theme: HomeQuickActionsViewTheme) {
+        buyActionView.customizeAppearance(theme.buyAction)
+        customizeAction(
+            buyActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(buyActionView)
+
+        startPublishing(
+            event: .buy,
+            for: buyActionView
         )
     }
 
@@ -170,21 +185,6 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .send,
             for: sendActionView
-        )
-    }
-
-    private func addScanAction(_ theme: HomeQuickActionsViewTheme) {
-        scanActionView.customizeAppearance(theme.scanAction)
-        customizeAction(
-            scanActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(scanActionView)
-
-        startPublishing(
-            event: .scanQR,
-            for: scanActionView
         )
     }
 
@@ -222,9 +222,9 @@ extension HomeQuickActionsView {
 
 extension HomeQuickActionsView {
     enum Event {
-        case stake
         case swap
+        case buy
+        case stake
         case send
-        case scanQR
     }
 }

@@ -23,17 +23,17 @@ final class AccountQuickActionsView:
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .requests: TargetActionInteraction(),
         .swap: TargetActionInteraction(),
-        .send: TargetActionInteraction(),
+        .buy: TargetActionInteraction(),
+        .requests: TargetActionInteraction(),
         .more: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
     private let contentBackgroundView = UIView()
-    private lazy var requestsActionView = makeActionView()
     private lazy var swapActionView = makeBadgeActionView()
-    private lazy var sendActionView =  makeActionView()
+    private lazy var buyActionView =  makeActionView()
+    private lazy var requestsActionView = makeActionView()
     private lazy var moreActionView = makeActionView()
 
     private var theme: AccountQuickActionsViewTheme!
@@ -65,14 +65,14 @@ final class AccountQuickActionsView:
         fittingIn size: CGSize
     ) -> CGSize {
         let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
-        let buySellActionSize = calculateActionPreferredSize(
+        let buyActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.requestsAction,
+            for: theme.buyAction,
             fittingIn: maxActionSize
         )
-        let sendActionSize = calculateActionPreferredSize(
+        let requestsActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.sendAction,
+            for: theme.requestsAction,
             fittingIn: maxActionSize
         )
         let swapActionSize = calculateActionPreferredSize(
@@ -86,9 +86,9 @@ final class AccountQuickActionsView:
             fittingIn: maxActionSize
         )
         let preferredHeight = [
-            buySellActionSize.height,
+            buyActionSize.height,
             swapActionSize.height,
-            sendActionSize.height,
+            requestsActionSize.height,
             moreActionSize.height
         ].max()!
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
@@ -139,25 +139,9 @@ extension AccountQuickActionsView {
         }
         
         addSwapAction(theme)
+        addBuyAction(theme)
         addRequestsAction(theme)
-        addSendAction(theme)
         addMoreAction(theme)
-    }
-
-    private func addRequestsAction(_ theme: AccountQuickActionsViewTheme) {
-        requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
-        requestsActionView.sizeToFit()
-        customizeAction(
-            requestsActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(requestsActionView)
-
-        startPublishing(
-            event: .requests,
-            for: requestsActionView
-        )
     }
 
     private func addSwapAction(_ theme: AccountQuickActionsViewTheme) {
@@ -177,19 +161,35 @@ extension AccountQuickActionsView {
         )
     }
 
-    private func addSendAction(_ theme: AccountQuickActionsViewTheme) {
-        sendActionView.customizeAppearance(theme.sendAction)
-        sendActionView.sizeToFit()
+    private func addBuyAction(_ theme: AccountQuickActionsViewTheme) {
+        buyActionView.customizeAppearance(theme.buyAction)
+        buyActionView.sizeToFit()
         customizeAction(
-            sendActionView,
+            buyActionView,
             theme
         )
 
-        contentView.addArrangedSubview(sendActionView)
+        contentView.addArrangedSubview(buyActionView)
 
         startPublishing(
-            event: .send,
-            for: sendActionView
+            event: .buy,
+            for: buyActionView
+        )
+    }
+    
+    private func addRequestsAction(_ theme: AccountQuickActionsViewTheme) {
+        requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
+        requestsActionView.sizeToFit()
+        customizeAction(
+            requestsActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(requestsActionView)
+
+        startPublishing(
+            event: .requests,
+            for: requestsActionView
         )
     }
 
@@ -243,9 +243,9 @@ extension AccountQuickActionsView {
 
 extension AccountQuickActionsView {
     enum Event {
-        case requests
         case swap
-        case send
+        case buy
+        case requests
         case more
     }
 }

@@ -147,6 +147,7 @@
 "title-active" = "Active";
 "tite-pinging" = "Pinging";
 "title-action-required" = "ACTION REQUIRED";
+"title-buy-algo" = "Buy Algo";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";

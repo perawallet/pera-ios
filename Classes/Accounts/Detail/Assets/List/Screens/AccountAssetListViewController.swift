@@ -558,9 +558,9 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     self.eventHandler?(.swap)
                 }
 
-                item.startObserving(event: .send) {
+                item.startObserving(event: .buy) {
                     [unowned self] in
-                    self.eventHandler?(.send)
+                    self.eventHandler?(.buy)
                 }
 
                 item.startObserving(event: .more) {
@@ -977,6 +977,7 @@ extension AccountAssetListViewController {
         case showAddress
         case addAsset
         case requests
+        case buy
         case swap
         case send
         case more

@@ -29,7 +29,7 @@ struct AccountQuickActionsViewTheme:
     var swapAction: ButtonStyle
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
-    var sendAction: ButtonStyle
+    var buyAction: ButtonStyle
     var moreAction: ButtonStyle
     let bottomPadding: CGFloat = 32.0
 
@@ -56,9 +56,9 @@ struct AccountQuickActionsViewTheme:
             bottom: 0,
             trailing: 16
         )
-        self.sendAction = [
-            .icon(Self.makeActionIcon(icon: "send-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))
+        self.buyAction = [
+            .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
+            .title(Self.makeActionTitle(title: "title-buy-algo".localized))
         ]
         self.moreAction = [
             .icon(Self.makeActionIcon(icon: "more-icon")),
