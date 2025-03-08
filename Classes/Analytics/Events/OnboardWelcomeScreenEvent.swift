@@ -42,7 +42,7 @@ extension OnboardWelcomeScreenEvent {
             case .create:
                 return .onboardWelcomeScreenAccountCreate
             case .watch:
-                return .onboardWatchAccountCreate
+                return .onboardWatchAccountCreateComplete
             }
         }
     }
