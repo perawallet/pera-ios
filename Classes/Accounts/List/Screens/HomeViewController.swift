@@ -311,7 +311,7 @@ extension HomeViewController {
             guard let self = self else {
                 return
             }
-            self.analytics.track(.recordHomeScreen(type: .assetInbox))
+            self.analytics.track(.recordHomeScreen(type: .notification))
 
             self.open(
                 .notifications,
@@ -336,6 +336,7 @@ extension HomeViewController {
                 return
             }
             self.configureNotificationBarButton()
+            self.analytics.track(.recordHomeScreen(type: .notification))
             self.open(.notifications, by: .push)
         }
 
@@ -357,6 +358,7 @@ extension HomeViewController {
             }
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
+                self.analytics.track(.recordHomeScreen(type: .assetInbox))
                 self.openASAInbox()
             }
         }
@@ -400,6 +402,7 @@ extension HomeViewController {
                     }
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
+                        self.analytics.track(.recordHomeScreen(type: .assetInbox))
                         self.openASAInbox()
                     }
                 }

@@ -42,6 +42,7 @@ extension RecordHomeScreenEvent {
         case swap
         case tapAccounts
         case visitGovernance
+        case notification
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -67,6 +68,8 @@ extension RecordHomeScreenEvent {
                 return .createAccountInHomeScreen /// <todo>: It will be replaced the actual event when event created
             case .visitGovernance:
                 return .tapGovernanceBanner
+            case .notification:
+                return .tapNotifictionInHome
             }
         }
     }

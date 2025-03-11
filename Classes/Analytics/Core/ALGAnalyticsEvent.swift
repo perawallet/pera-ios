@@ -108,6 +108,7 @@ enum ALGAnalyticsEventName:
     case tapHistoryInAccountDetail
     case tapMoreInAccountDetail
     case tapNftReceive
+    case tapNotifictionInHome
     case tapReceiveInDetail
     case tapReceiveTab
     case tapSendInAccountDetail
@@ -167,6 +168,7 @@ extension ALGAnalyticsEventName {
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
         case .createAccountInHomeScreen: rawName = "homescr_account_add"
         case .tapBuyAlgoInHome: rawName = "homescr_algo_buy_tap"
+        case .tapNotifictionInHome: rawName = "homescr_notification_tap"
         case .tapSwapInHome: rawName = "homescr_swap_tap"
         case .tapSortInHome: rawName = "homescr_sort_tap"
         case .tapStakeInHome: rawName = "homescr_stake_tap"
