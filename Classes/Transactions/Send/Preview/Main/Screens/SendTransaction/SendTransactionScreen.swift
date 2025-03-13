@@ -177,7 +177,7 @@ extension SendTransactionScreen {
 
 extension SendTransactionScreen {
     private func bindAmount() {
-        let amountValue = self.amount
+        let amountValue = self.amount.replacingOccurrences(of: "\\s", with: "", options: .regularExpression)
         var showingValue = ""
 
         valueLabel.customizeAppearance(theme.valueLabelStyle)
