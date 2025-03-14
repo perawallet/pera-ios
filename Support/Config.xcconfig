@@ -1,0 +1,35 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   Config.xcconfig
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MOBILE_API_STAGING_MAINNET_HOST = mainnet.staging.api.perawallet.app
+MOBILE_API_STAGING_TESTNET_HOST = testnet.staging.api.perawallet.app
+MOBILE_API_PROD_MAINNET_HOST = mainnet.staging.api.perawallet.app
+MOBILE_API_PROD_TESTNET_HOST = testnet.staging.api.perawallet.app
+ALGOD_MAINNET_HOST = mainnet-api.algonode.cloud
+ALGOD_TESTNET_HOST = testnet-api.algonode.cloud
+INDEXER_MAINNET_HOST = mainnet-idx.algonode.cloud
+INDEXER_TESTNET_HOST = testnet-idx.algonode.cloud
+ALGOD_TOKEN = ""
+INDEXER_TOKEN = ""
+PROD_API_KEY = development-purposes-only-dc98f2c7-908f-4f74-81ef-9f5464213f99
+STAGING_API_KEY = development-purposes-only-dc98f2c7-908f-4f74-81ef-9f5464213f99
+BIDALI_PROD_API_KEY = ""
+BIDALI_STAGING_API_KEY = ""
+WC_V2_PROJECT_ID = d98a4285aff59c9cd463bdd8b7415465
