@@ -39,7 +39,7 @@ final class AlgorandSecureBackupRecoverMnemonicScreen:
         return inputSuggestionViewController
     }()
 
-    private lazy var accountRecoverView = AccountRecoverView.mnemonicsForSecureBackup()
+    private lazy var accountRecoverView = AccountRecoverView()
     private lazy var nextActionView = MacaroonUIKit.Button()
 
     private lazy var theme = AlgorandSecureBackupRecoverMnemonicScreenTheme()

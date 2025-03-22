@@ -20,7 +20,7 @@ import AVFoundation
 
 final class PassphraseBackUpViewController: BaseScrollViewController {
     private var mnemonics: [String]?
-    private var address: String
+    private var address: PublicKey
     private var isDisplayedAllScreen = false
 
     private lazy var passphraseBackUpView = PassphraseBackUpView()
@@ -35,21 +35,34 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private let flow: AccountSetupFlow
+    private let walletFlowType: WalletFlowType
 
     init(
         flow: AccountSetupFlow,
-        address: String,
+        address: PublicKey,
+        walletFlowType: WalletFlowType,
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
         self.address = address
+        self.walletFlowType = walletFlowType
+        
         super.init(configuration: configuration)
 
         if !flow.isBackUpAccount {
             generatePrivateKey()
         }
-
-        mnemonics = session?.mnemonics(forAccount: address)
+        
+        guard
+            let walletId = session?.authenticatedUser?.account(address: address)?.hdWalletAddressDetail?.walletId,
+            var entropy = try? configuration.hdWalletStorage.wallet(id: walletId)?.entropy
+        else {
+            mnemonics = walletFlowType.mnemonicProvider.mnemonics(forAccount: address, with: session)
+            return
+        }
+        
+        mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: entropy)?.components(separatedBy: " ")
+        entropy.resetBytes(in: 0..<entropy.count)
     }
 
     override func configureNavigationBarAppearance() {
@@ -65,6 +78,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        mnemonics = nil
 
         NotificationCenter.default.removeObserver(
             self,
@@ -121,17 +135,23 @@ extension PassphraseBackUpViewController {
             [unowned self] in
             analytics.track(.onboardCreateAccountPassphrase(type: .skipRecover))
             guard let account = createAccount() else { return }
-            self.navigateToSetupNameScreen(account)
+            switch walletFlowType {
+            case .algo25:
+                self.navigateToSetupAccountNameScreen(account)
+            case .bip39:
+                self.navigateToSetupAddressNameScreen(account)
+            }
+            
         }
     }
 }
 
 extension PassphraseBackUpViewController {
-    private func navigateToSetupNameScreen(_ account: AccountInformation) {
+    private func navigateToSetupAccountNameScreen(_ account: AccountInformation) {
         let screen = open(
             .accountNameSetup(
                 flow: flow,
-                mode: .add,
+                mode: .addAlgo25Account,
                 accountAddress: account.address
             ),
             by: .push 
@@ -139,12 +159,24 @@ extension PassphraseBackUpViewController {
         screen?.hidesCloseBarButtonItem = true
         screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
+    
+    private func navigateToSetupAddressNameScreen(_ account: AccountInformation) {
+        let screen = open(
+            .addressNameSetup(
+                flow: flow,
+                mode: .addBip39Wallet,
+                account: account
+            ),
+            by: .push
+        ) as? AddressNameSetupViewController
+        screen?.hidesCloseBarButtonItem = true
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
 }
 
 extension PassphraseBackUpViewController {
     private func addPassphraseView() {
-        passphraseBackUpView.customize(theme.passphraseBackUpViewTheme)
-
+        passphraseBackUpView.customize(walletFlowType.passphraseBackUpViewTheme)
         contentView.addSubview(passphraseBackUpView)
         passphraseBackUpView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -178,11 +210,11 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseBackUpViewDidTapActionButton(_ passphraseView: PassphraseBackUpView) {
         analytics.track(.onboardCreateAccountPassphrase(type: .copy))
-       
         open(
             .passphraseVerify(
                 flow: flow,
-                address: address
+                address: address,
+                walletFlowType: walletFlowType
             ),
             by: .push
         )
@@ -234,34 +266,68 @@ extension PassphraseBackUpViewController {
 
 extension PassphraseBackUpViewController {
     private func createAccount() -> AccountInformation? {
-        guard
-            let tempPrivateKey = session?.privateData(for: "temp"),
-            let address = session?.address(for: "temp")
-        else {
-            return nil
-        }
-
         analytics.track(.registerAccount(registrationType: .create))
 
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay,
-            isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
-            isBackedUp: false
-        )
-        session?.savePrivate(tempPrivateKey, for: account.address)
-        session?.removePrivateData(for: "temp")
+        switch walletFlowType {
+        case .bip39:
+            let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+                session: session,
+                storage: hdWalletStorage,
+                entropy: session?.privateData(for: "temp")
+            )
+            
+            guard let hdWalletAddressDetail, let address else {
+                assertionFailure("Could not create HD wallet")
+                return nil
+            }
+            
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: false,
+                hdWalletAddressDetail: hdWalletAddressDetail
+            )
 
-        if let authenticatedUser = session?.authenticatedUser {
-            authenticatedUser.addAccount(account)
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            let user = User(accounts: [account])
-            session?.authenticatedUser = user
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+            session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
+
+            return account
+        default:
+            guard let tempPrivateKey = session?.privateData(for: "temp"),
+                let address = session?.address(for: "temp") else {
+                    return nil
+            }
+            
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: false
+            )
+            session?.savePrivate(tempPrivateKey, for: address)
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+
+            return account
         }
-
-        return account
     }
 
     private func generatePrivateKey() {

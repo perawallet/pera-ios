@@ -212,7 +212,8 @@ extension WCMainArbitraryDataScreen {
     private func createDataSigner() -> WCArbitraryDataSigner {
         let signer = WCArbitraryDataSigner(
             api: api!,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
         signer.delegate = self
         return signer
@@ -225,7 +226,8 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
             data.forEach {
                 $0.findSignerAccount(
                     in: sharedDataController.accountCollection,
-                    on: session
+                    on: session,
+                    hdWalletStorage: hdWalletStorage
                 )
             }
         }

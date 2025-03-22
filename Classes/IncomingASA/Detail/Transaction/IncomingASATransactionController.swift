@@ -27,6 +27,7 @@ final class IncomingASATransactionController: LedgerTransactionOperationDelegate
     private let bannerController: BannerController?
     private let analytics: ALGAnalytics
     private let draft: IncomingASAListItem?
+    private let hdWalletStorage: HDWalletStorable
 
     private var timer: Timer?
     private var transactionData = [TransactionData]()
@@ -54,13 +55,15 @@ final class IncomingASATransactionController: LedgerTransactionOperationDelegate
         api: ALGAPI,
         bannerController: BannerController?,
         analytics: ALGAnalytics,
-        draft: IncomingASAListItem
+        draft: IncomingASAListItem,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
         self.bannerController = bannerController
         self.analytics = analytics
         self.draft = draft
+        self.hdWalletStorage = hdWalletStorage
         
         self.sharedDataController.sortedAccounts().forEach { accountHandle in
             guard accountHandle.value.address == draft.accountAddress else {return}
@@ -267,8 +270,105 @@ extension IncomingASATransactionController {
         account: Account?,
         transactions: [Data]
     ) {
-        guard let accountAddress = account?.signerAddress,
-              let privateData = api.session.privateData(for: accountAddress) else {
+        guard let account else {
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: nil))
+            )
+            return
+        }
+        
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(
+                account: account,
+                transactions: transactions
+            )
+            return
+        }
+        
+        if account.isHDAccount,
+           !account.hasAuthAccount() {
+            signTransactionForHDWalletAccount(
+                account: account,
+                transactions: transactions
+            )
+            return
+        }
+        
+        handleSigningForAlgo25Account(
+            account: account,
+            transactions: transactions
+        )
+    }
+    
+    private func signTransactionForHDWalletAccount(
+        account: Account,
+        transactions: [Data]
+    ) {
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail else { return }
+        
+        do {
+            var authWalletId = hdWalletAddressDetail.walletId
+            if let authAddress = account.authAddress,
+               let accountAccount = sharedDataController.accountCollection[authAddress]?.value,
+               let hdWalletAddressDetail = accountAccount.hdWalletAddressDetail {
+                authWalletId = hdWalletAddressDetail.walletId
+            }
+            
+            guard let seed = try hdWalletStorage.wallet(id: authWalletId) else { return }
+            
+            var transactionToUpload = Data()
+            
+            for transaction in transactions {
+                let sdk = AlgorandSDK()
+                
+                var error: NSError?
+                guard let rawTxn = sdk.rawTransactionToSign(
+                    transaction,
+                    error: &error
+                ) else {
+                    continue
+                }
+                
+                let signer = HDWalletTransactionSigner(wallet: seed)
+                let signature = try signer.signTransaction(
+                    rawTxn,
+                    with: hdWalletAddressDetail
+                )
+                
+                guard let signedTransaction = sdk.getSignedTransaction(
+                    transaction,
+                    from: signature,
+                    for: account.authAddress,
+                    error: &error
+                ) else {
+                    continue
+                }
+                
+                transactionToUpload += signedTransaction
+            }
+            
+            uploadTransaction(transactionToUpload)
+        } catch {
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+            
+            delegate?.incomingASATransactionController(
+                self,
+                didFailedComposing: .inapp(.sdkError(error: nil))
+            )
+        }
+    }
+    
+    private func handleSigningForAlgo25Account(
+        account: Account,
+        transactions: [Data]
+    ) {
+        guard let privateData = api.session.privateData(for: account.signerAddress) else {
             delegate?.incomingASATransactionController(
                 self,
                 didFailedComposing: .inapp(.sdkError(error: nil))
@@ -507,6 +607,16 @@ extension IncomingASATransactionController {
         }
         
         func signTransaction() {
+            if let authAddress = account.authAddress,
+               let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+               authAccount.isHDAccount {
+                signTransactionForHDWalletAccount(
+                    account: account,
+                    transactions: [data]
+                )
+                return
+            }
+            
             let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
             signer.eventHandler = {
                 [weak self] event in

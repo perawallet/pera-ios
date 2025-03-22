@@ -21,13 +21,11 @@ import UIKit
 
 extension PassphraseBackUpViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let passphraseBackUpViewTheme: PassphraseBackUpViewTheme
         let backgroundColor: Color
         let modalSize: LayoutSize
         let cellHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            passphraseBackUpViewTheme = PassphraseBackUpViewTheme()
             backgroundColor = Colors.Defaults.background
             modalSize = (UIScreen.main.bounds.width, 338)
             cellHeight = 24

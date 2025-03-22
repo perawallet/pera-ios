@@ -61,7 +61,8 @@ final class RekeyConfirmationScreen:
             api: api!,
             sharedDataController: sharedDataController,
             bannerController: bannerController,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
     }()
 
@@ -73,6 +74,7 @@ final class RekeyConfirmationScreen:
     private let bannerController: BannerController
     private let loadingController: LoadingController
     private let analytics: ALGAnalytics
+    private let hdWalletStorage: HDWalletStorable
 
     private let sourceAccount: Account
     private let authAccount: Account?
@@ -88,7 +90,8 @@ final class RekeyConfirmationScreen:
         sharedDataController: SharedDataController,
         bannerController: BannerController,
         loadingController: LoadingController,
-        analytics: ALGAnalytics
+        analytics: ALGAnalytics,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
@@ -99,6 +102,7 @@ final class RekeyConfirmationScreen:
         self.bannerController = bannerController
         self.loadingController = loadingController
         self.analytics = analytics
+        self.hdWalletStorage = hdWalletStorage
         super.init(api: api)
     }
 

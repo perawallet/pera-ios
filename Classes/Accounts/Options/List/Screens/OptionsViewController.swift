@@ -50,7 +50,8 @@ final class OptionsViewController:
         self.account = account
         self.optionGroup = OptionGroup.makeOptionGroup(
             for: account,
-            session: configuration.session!
+            session: configuration.session!,
+            configuration: configuration
         )
         self.theme = theme
         
@@ -222,9 +223,10 @@ extension OptionsViewController {
                     #selector(showRekeyInformation),
                     to: stackView
                 )
-            case .viewPassphrase:
+            case let .viewPassphrase(isRootPassphrase):
+                let model: ListItemButtonViewModel = isRootPassphrase ? ViewRootWalletPassphraseListItemButtonViewModel() : ViewPassphraseListItemButtonViewModel()
                 addButton(
-                    ViewPassphraseListItemButtonViewModel(),
+                    model,
                     #selector(viewPassphrase),
                     to: stackView
                 )
@@ -426,15 +428,13 @@ extension OptionsViewController {
         let secondaryOptions: [Option]
         let tertiaryOptions: [Option]
 
-        static func makeOptionGroup(
-            for account: Account,
-            session: Session
-        ) -> OptionGroup {
+        static func makeOptionGroup(for account: Account, session: Session, configuration: ViewControllerConfiguration) -> OptionGroup {
             return account.authorization.isWatch
             ? makeOptionGroup(forWatchAccount: account)
             : makeOptionGroup(
                 forNonWatchAccount: account,
-                session: session
+                session: session,
+                configuration: configuration
             )
         }
 
@@ -462,10 +462,7 @@ extension OptionsViewController {
             )
         }
 
-        private static func makeOptionGroup(
-            forNonWatchAccount account: Account,
-            session: Session
-        ) -> OptionGroup {
+        private static func makeOptionGroup(forNonWatchAccount account: Account, session: Session, configuration: ViewControllerConfiguration) -> OptionGroup {
             var primaryOptions: [Option] = []
 
             primaryOptions.append(.copyAddress)
@@ -475,8 +472,10 @@ extension OptionsViewController {
                 primaryOptions.append(.rekeyInformation)
             }
             
-            if session.hasPrivateData(for: account.address) {
-                primaryOptions.append(.viewPassphrase)
+            if PassphraseUtils.isHDWallet(account: account, hdWalletStorage: configuration.hdWalletStorage) {
+                primaryOptions.append(.viewPassphrase(isRootPassphrase: true))
+            } else if session.hasPrivateData(for: account.address) {
+                primaryOptions.append(.viewPassphrase(isRootPassphrase: false))
             }
 
             var secondaryOptions: [Option] = []
@@ -518,7 +517,7 @@ extension OptionsViewController {
         case rekeyToLedger
         case rekeyToStandardAccount
         case rekeyInformation
-        case viewPassphrase
+        case viewPassphrase(isRootPassphrase: Bool)
         case muteNotifications
         case renameAccount
         case removeAccount

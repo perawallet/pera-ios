@@ -97,6 +97,7 @@ final class AccountRecoverDataController: NSObject {
     }
 
     private func addRecoveredAccount(_ account: AccountInformation, with privateKey: Data) {
+        
         session.savePrivate(privateKey, for: account.address)
 
         let user: User

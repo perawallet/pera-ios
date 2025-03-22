@@ -21,26 +21,26 @@ import MacaroonUIKit
 final class PassphraseDisplayView: View {
     private lazy var passphraseView = PassphraseView()
 
-    func customize(_ theme: PassphraseDisplayViewTheme) {
+    func customize(_ theme: PassphraseDisplayViewTheme, isHdWallet: Bool) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
-        addPassphraseView(theme)
+        addPassphraseView(theme, isHdWallet: isHdWallet)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension PassphraseDisplayView {
-    private func addPassphraseView(_ theme: PassphraseDisplayViewTheme) {
+    private func addPassphraseView(_ theme: PassphraseDisplayViewTheme, isHdWallet: Bool) {
         passphraseView.customize(PassphraseViewTheme())
+        
+        let height = isHdWallet ? theme.hdWalletCollectionViewHeight : theme.collectionViewHeight
 
         addSubview(passphraseView)
         passphraseView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().offset(theme.topInset)
-            $0.height.equalTo(theme.collectionViewHeight)
+            $0.height.equalTo(height)
         }
     }
 }

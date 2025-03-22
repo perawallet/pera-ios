@@ -70,6 +70,7 @@ final class HomeViewController:
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -85,7 +86,8 @@ final class HomeViewController:
         presentingScreen: self,
         session: session!,
         sharedDataController: sharedDataController,
-        appLaunchController: configuration.launchController
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: configuration.hdWalletStorage
     )
     private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
         configuration: configuration,
@@ -1233,7 +1235,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
 
     private func presentPassphraseView(_ accountHandle: AccountHandle) {
         transitionToPassphraseDisplay.perform(
-            .passphraseDisplay(address: accountHandle.value.address),
+            .passphraseDisplay(address: accountHandle.value),
             by: .present
         )
     }

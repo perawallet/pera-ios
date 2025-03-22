@@ -35,8 +35,10 @@ struct AccountTypeViewModel: PairedViewModel {
 extension AccountTypeViewModel {
     private mutating func bindImage(_ mode: AccountSetupMode) {
         switch mode {
-        case .add:
+        case .addAlgo25Account, .addBip39Wallet:
             image = img("icon-add-account")
+        case .addBip39Address:
+            image = img("icon-add-address")
         case let .recover(type):
             switch type {
             case .none, .passphrase:
@@ -64,8 +66,10 @@ extension AccountTypeViewModel {
         var titleText: String = ""
         
         switch mode {
-        case .add:
-            titleText = "account-type-selection-create".localized
+        case .addAlgo25Account, .addBip39Wallet:
+            titleText = "account-type-selection-create-wallet".localized
+        case .addBip39Address:
+            titleText = "account-type-selection-create-address".localized
         case let .recover(type):
             switch type {
             case .passphrase:
@@ -79,10 +83,10 @@ extension AccountTypeViewModel {
             case .qr:
                 titleText = "account-type-selection-qr".localized
             case .none:
-                titleText = "account-type-selection-recover".localized
+                titleText = "account-type-selection-recover-wallet".localized
             }
         case .watch:
-            titleText = "account-type-selection-watch".localized
+            titleText = "account-type-selection-watch-address".localized
         case .rekey,
              .none:
             break
@@ -111,8 +115,10 @@ extension AccountTypeViewModel {
         var detailText: String = ""
         
         switch mode {
-        case .add:
-            detailText = "account-type-selection-add-detail".localized
+        case .addAlgo25Account, .addBip39Wallet:
+            detailText = "account-type-selection-create-wallet-detail".localized
+        case .addBip39Address:
+            detailText = "account-type-selection-create-address-detail".localized
         case let .recover(type):
             switch type {
             case .passphrase:
@@ -126,10 +132,10 @@ extension AccountTypeViewModel {
             case .qr:
                 detailText = "account-type-selection-qr-detail".localized
             case .none:
-                detailText = "account-type-selection-recover-detail".localized
+                detailText = "account-type-selection-recover-wallet-detail".localized
             }
         case .watch:
-            detailText = "account-type-selection-watch-detail".localized
+            detailText = "account-type-selection-watch-address-detail".localized
         case .rekey,
              .none:
             break

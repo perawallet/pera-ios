@@ -55,7 +55,8 @@ final class RootViewController:
         session: appConfiguration.session,
         sharedDataController: appConfiguration.sharedDataController,
         appLaunchController: appConfiguration.launchController,
-        featureFlagService: appConfiguration.featureFlagService
+        featureFlagService: appConfiguration.featureFlagService,
+        hdWalletStorage: appConfiguration.hdWalletStorage
     )
 
     private lazy var pushNotificationController = PushNotificationController(

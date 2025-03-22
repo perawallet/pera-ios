@@ -20,9 +20,10 @@ import MacaroonUIKit
 
 struct WelcomeViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var createAccountViewModel: AccountTypeViewModel?
-    private(set) var importAccountViewModel: AccountTypeViewModel?
-    private(set) var watchAccountViewModel: AccountTypeViewModel?
+    private(set) var createAddressViewModel: AccountTypeViewModel?
+    private(set) var createWalletViewModel: AccountTypeViewModel?
+    private(set) var importWalletViewModel: AccountTypeViewModel?
+    private(set) var watchWalletViewModel: AccountTypeViewModel?
 
     init(
         with flow: AccountSetupFlow
@@ -34,9 +35,10 @@ struct WelcomeViewModel: ViewModel {
 extension WelcomeViewModel {
     private mutating func bind(_ flow: AccountSetupFlow) {
         bindTitle(flow)
-        bindCreateAccountViewModel()
-        bindImportAccountViewModel()
-        bindWatchAccountViewModel()
+        bindCreateAddressViewModel()
+        bindCreateWalletViewModel()
+        bindImportWalletViewModel()
+        bindWatchWalletViewModel()
     }
 
     private mutating func bindTitle(_ flow: AccountSetupFlow) {
@@ -50,17 +52,21 @@ extension WelcomeViewModel {
             title = nil
         }
     }
-
-    private mutating func bindCreateAccountViewModel() {
-        createAccountViewModel = AccountTypeViewModel(.add)
+    
+    private mutating func bindCreateAddressViewModel() {
+        createAddressViewModel = AccountTypeViewModel(.addBip39Address(newAddress: nil))
     }
 
-    private mutating func bindImportAccountViewModel() {
-        importAccountViewModel = AccountTypeViewModel(.recover(type: .none))
+    private mutating func bindCreateWalletViewModel() {
+        createWalletViewModel = AccountTypeViewModel(.addBip39Wallet)
+    }
+
+    private mutating func bindImportWalletViewModel() {
+        importWalletViewModel = AccountTypeViewModel(.recover(type: .none))
     }
     
-    private mutating func bindWatchAccountViewModel() {
-        watchAccountViewModel = AccountTypeViewModel(.watch)
+    private mutating func bindWatchWalletViewModel() {
+        watchWalletViewModel = AccountTypeViewModel(.watch)
     }
 }
 

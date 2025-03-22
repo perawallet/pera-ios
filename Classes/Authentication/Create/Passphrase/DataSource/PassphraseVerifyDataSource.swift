@@ -20,8 +20,6 @@ import UIKit
 final class PassphraseVerifyDataSource: NSObject {
     weak var delegate: PassphraseVerifyDataSourceDelegate?
 
-    private let privateKey: Data
-
     private let numberOfValidations = 4
     private let numberOfWordsInAValidation = 3
 
@@ -31,11 +29,42 @@ final class PassphraseVerifyDataSource: NSObject {
     private var correctSelections: [String] = []
     private var selectedMnemonics: [Int: Int] = [:]
 
-    init(privateKey: Data) {
-        self.privateKey = privateKey
-        
+    init(
+        address: PublicKey,
+        walletFlowType: WalletFlowType,
+        configuration: ViewControllerConfiguration
+    ) {
         var error: NSError?
-        self.mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error).components(separatedBy: " ")
+        
+        switch walletFlowType {
+        case .algo25:
+            guard let privateKey = configuration.session?.privateData(for: address) else {
+                fatalError("Private key should be set.")
+            }
+            self.mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error).components(separatedBy: " ")
+        case .bip39:
+            
+            var entropy: Data?
+            
+            if let walletId = configuration.session?.authenticatedUser?.account(address: address)?
+                .hdWalletAddressDetail?.walletId {
+                entropy = try? configuration.hdWalletStorage.wallet(id: walletId)?.entropy
+            }
+            
+            if entropy == nil {
+                entropy = configuration.session?.privateData(for: address)
+            }
+            
+            guard var entropyData = entropy,
+                  var mnemonic = HDWalletUtils.generateMnemonic(fromEntropy: entropyData) else {
+                fatalError("Error generating mnemonic.")
+            }
+
+            entropyData.resetBytes(in: 0..<entropyData.count)
+            entropy = nil
+            self.mnemonics = mnemonic.components(separatedBy: " ")
+            mnemonic = .empty
+        }
         
         super.init()
         
@@ -70,6 +99,11 @@ extension PassphraseVerifyDataSource {
         shownMnemonics.removeAll()
         correctSelections.removeAll()
         selectedMnemonics.removeAll()
+    }
+    
+    func cleanData() {
+        self.mnemonics = []
+        clearDisplayedData()
     }
     
     private func composeDisplayedData() {

@@ -65,6 +65,7 @@ final class AccountDetailViewController: PageContainer {
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -620,7 +621,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     private func presentPassphraseView() {
         transitionToPassphraseDisplay.perform(
-            .passphraseDisplay(address: accountHandle.value.address),
+            .passphraseDisplay(address: accountHandle.value),
             by: .present
         )
     }

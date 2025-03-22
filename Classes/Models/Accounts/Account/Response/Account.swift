@@ -40,6 +40,7 @@ final class Account: ALGEntityModel {
     var createdRound: UInt64?
     var closedRound: UInt64?
     var isDeleted: Bool?
+    var hdWalletAddressDetail: HDWalletAddressDetail?
 
     var appsLocalState: [ApplicationLocalState]?
     var appsTotalExtraPages: Int?
@@ -143,6 +144,7 @@ final class Account: ALGEntityModel {
         self.totalCreatedApps = 0
         self.algo = Algo(amount: 0)
         self.isBackedUp = localAccount.isBackedUp
+        self.hdWalletAddressDetail = localAccount.hdWalletAddressDetail
     }
 
     func encode() -> APIModel {
@@ -205,6 +207,10 @@ extension Account {
         }
 
         return subtitle
+    }
+    
+    var isHDAccount: Bool {
+        return hdWalletAddressDetail != nil
     }
 }
 
@@ -481,6 +487,7 @@ extension Account {
 }
 
 extension Account {
+    
     func update(from localAccount: AccountInformation) {
         name = localAccount.name
         authorization = localAccount.isWatchAccount ? .watch : authorization
@@ -490,6 +497,7 @@ extension Account {
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
         isBackedUp = localAccount.isBackedUp
+        hdWalletAddressDetail = localAccount.hdWalletAddressDetail
     }
 
     func update(with account: Account) {
@@ -518,6 +526,10 @@ extension Account {
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
         isBackedUp = account.isBackedUp
+        
+        if let updatedHDWalletAddressDetail = account.hdWalletAddressDetail {
+            hdWalletAddressDetail = updatedHDWalletAddressDetail
+        }
 
         if let updatedName = account.name {
             name = updatedName

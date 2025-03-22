@@ -101,11 +101,13 @@ final class SharedAPIDataController:
     private let session: Session
     private let api: ALGAPI
     private let cache: Cache
+    private let hdWalletStorage: HDWalletStorable
 
     init(
         target: ALGAppTarget,
         currency: CurrencyProvider,
         session: Session,
+        storage: HDWalletStorable,
         api: ALGAPI
     ) {
         let cache = Cache()
@@ -113,6 +115,7 @@ final class SharedAPIDataController:
         self.target = target
         self.currency = currency
         self.session = session
+        self.hdWalletStorage = storage
         self.api = api
         self.cache = Cache()
 
@@ -214,7 +217,7 @@ extension SharedAPIDataController {
         let address = account.address
         
         if let localAccount = session.accountInformation(from: address) {
-            session.authenticatedUser?.removeAccount(localAccount)
+            session.authenticatedUser?.removeAccount(localAccount, storage: hdWalletStorage)
         }
 
         session.removePrivateData(for: address)
@@ -375,16 +378,14 @@ extension SharedAPIDataController {
     private func blockProcessorWillFetchAccount(
         _ localAccount: AccountInformation
     ) {
-        let address = localAccount.address
-        
         let account: Account
-        if let cachedAccount = accountCollection[address] {
+        if let cachedAccount = accountCollection[localAccount.address] {
             account = cachedAccount.value
         } else {
             account = Account(localAccount: localAccount)
         }
 
-        nextAccountCollection[address] = AccountHandle(account: account, status: .idle)
+        nextAccountCollection[localAccount.address] = AccountHandle(account: account, status: .idle)
     }
     
     private func blockProcessorDidFetchAccount(
@@ -398,16 +399,14 @@ extension SharedAPIDataController {
         _ localAccount: AccountInformation,
         _ error: HIPNetworkError<NoAPIModel>
     ) {
-        let address = localAccount.address
-
         let account: Account
-        if let cachedAccount = accountCollection[address] {
+        if let cachedAccount = accountCollection[localAccount.address] {
             account = cachedAccount.value
         } else {
             account = Account(localAccount: localAccount)
         }
         
-        nextAccountCollection[address] = AccountHandle(account: account, status: .failed(error))
+        nextAccountCollection[localAccount.address] = AccountHandle(account: account, status: .failed(error))
     }
     
     private func blockProcessorWillFetchAssetDetails(

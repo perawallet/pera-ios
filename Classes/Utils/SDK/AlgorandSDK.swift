@@ -29,6 +29,28 @@ class AlgorandSDK {
         return AlgoSdkSignTransaction(privateData, data, &error)
     }
     
+    func getSignedTransaction(
+        _ transaction: Data,
+        from signature: Data,
+        for authAddress: String?,
+        error: inout NSError?
+    ) -> Data? {
+        if let authAddress {
+            return getSignedTransaction(
+                with: authAddress,
+                transaction: transaction,
+                from: signature,
+                error: &error
+            )
+        }
+        
+        return getSignedTransaction(
+            transaction,
+            from: signature,
+            error: &error
+        )
+    }
+    
     func getSignedTransaction(_ transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
         return AlgoSdkAttachSignature(signature, transaction, &error)
     }
@@ -217,6 +239,10 @@ extension AlgorandSDK {
 
     func getAddressfromProgram(_ program: Data?) -> String {
         return AlgoSdkAddressFromProgram(program)
+    }
+    
+    func rawTransactionToSign(_ txn: Data, error: inout NSError?) -> Data? {
+        AlgoSdkRawTransactionBytesToSign(txn, &error)
     }
 }
 

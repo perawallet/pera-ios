@@ -22,19 +22,30 @@ final class WCArbitraryDataSigner {
 
     private let api: ALGAPI
     private let analytics: ALGAnalytics
+    private let hdWalletStorage: HDWalletStorable
 
     init(
         api: ALGAPI,
-        analytics: ALGAnalytics
+        analytics: ALGAnalytics,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.api = api
         self.analytics = analytics
+        self.hdWalletStorage = hdWalletStorage
     }
 
     func signData(
         _ data: WCArbitraryData,
         for account: Account
     ) {
+        if account.hdWalletAddressDetail != nil {
+            signArbitraryDataForHDWalletAccount(
+                data,
+                for: account
+            )
+            return
+        }
+        
         if let signature = api.session.privateData(for: account.address) {
             let signer = SDKArbitraryDataSigner()
             signer.eventHandler = {
@@ -55,6 +66,50 @@ final class WCArbitraryDataSigner {
                 for: data
             )
         }
+    }
+    
+    private func signArbitraryDataForHDWalletAccount(
+        _ arbitraryData: WCArbitraryData,
+        for account: Account
+    ) {
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail,
+              let data = arbitraryData.data else {
+            delegate?.wcArbitraryDataSigner(
+                self,
+                didFailedWith: .missingData
+            )
+            return
+        }
+        
+        do {
+            guard let seed = try hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId) else {
+                return
+            }
+            
+            let signer = HDWalletTransactionSigner(wallet: seed)
+            let signedData = try signer.signTransaction(
+                prefixedData(data),
+                with: hdWalletAddressDetail
+            )
+                    
+            delegate?.wcArbitraryDataSigner(
+                self,
+                didSign: arbitraryData,
+                signedData: signedData
+            )
+        } catch {
+            delegate?.wcArbitraryDataSigner(
+                self,
+                didFailedWith: .missingData
+            )
+        }
+    }
+    
+    private func prefixedData(_ data: Data) -> Data {
+        guard let prefix = "MX".data(using: .utf8) else {
+            fatalError("Should never happen")
+        }
+        return prefix + data
     }
 }
 

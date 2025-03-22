@@ -106,9 +106,6 @@
 "image-copied-to-clipboard" = "Image copied to clipboard";
 "title-copied-to-clipboard" = "Copied to clipboard";
 "account-not-found" = "Account not found";
-"title-select-all" = "Select all";
-"title-unselect-all" = "Unselect all";
-"title-disclaimer" = "DISCLAIMER";
 "title-select-account" = "Select account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
@@ -154,10 +151,18 @@
 "account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-create-address" = "Create a new address";
+"account-type-selection-create-address-detail" = "Create a new address for an existing HD Wallet";
+"account-type-selection-create-wallet" = "Create a new wallet";
+"account-type-selection-create-wallet-detail" = "Create a new Algorand wallet with a new address and recovery passphrase";
 "account-type-selection-watch" = "Watch an account";
 "account-type-selection-watch-detail" = "Monitor an Algorand account by providing its address";
+"account-type-selection-watch-address" = "Watch an address";
+"account-type-selection-watch-address-detail" = "Monitor an Algorand address by providing its address";
 "account-type-selection-recover" = "Import an account";
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
+"account-type-selection-recover-wallet" = "Import a wallet";
+"account-type-selection-recover-wallet-detail" = "Import an existing Algorand account with various methods or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-type-selection-import-web" = "Import from Pera Web";
@@ -173,6 +178,17 @@
 "account-welcome-add-account-title" = "Add an account";
 "title-arbitrary-data" = "Arbitrary Data";
 "title-data" = "Data";
+
+// MARK: Mnemonic Types
+
+"mnemonic-types-screen-title" = "Select your Mnemonic type";
+"mnemonic-types-bip39-title" = "BIP39";
+"mnemonic-types-bip39-detail" = "New Inter-operable format that enables important features like HD Wallet";
+"mnemonic-types-bip39-info" = "24 key mnemonic keys";
+"mnemonic-types-algo25-title" = "ALGO25";
+"mnemonic-types-algo25-detail" = "Legacy format that is specific to Algorand ecosystem";
+"mnemonic-types-algo25-info" = "25 key mnemonic keys";
+"mnemonic-type-tag" = "Recommended";
 
 // MARK: Introduction
 
@@ -210,7 +226,8 @@
 // MARK: Passphrase Back Up
 "recover-passphrase-title" = "Recovery Passphrase";
 "back-up-phrase-qr" = "Show QR";
-"passphrase-bottom-title" = "Make sure to record these words in the correct order, using the corresponding numbers.";
+"passphrase-bottom-title-bip39" = "New Inter-operable format that enables important features like HD Wallet";
+"passphrase-bottom-title-alg25" = "Legacy format that is specific to Algorand ecosystem";
 
 // MARK: Passphrase Verify
 "pass-phrase-verify-pop-up-title" = "Passphrase Verified";
@@ -238,6 +255,27 @@
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
 
+// MARK: Address Name Setup
+"address-details-title" = "Name your address";
+"address-name-setup-placeholder" = "Address name";
+"address-name-setup-description" = "Name your address to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
+"address-name-setup-finish" = "Finish address Creation";
+
+// MARK: HD Wallet Setup
+"hd-wallet-setup-title" = "Select HD Wallet";
+"hd-wallet-setup-description" = "Create your new address under an HD Wallet you already have";
+"hd-wallet-setup-wallet-name" = "HD Wallet #%@";
+"hd-wallet-account-name" = "%@ (HDWallet Account)";
+
+"address-count" = "1 address";
+"address-count-plural" = "%d addresses";
+
+// MARK: Select Address
+"select-address-title" = "Select addresses\nto add";
+"select-address-description" = "We found that there is 1 address\nregistered to this wallet.";
+"select-address-description-plural" = "We found that there are %d addresses\nregistered to this wallet.";
+"already-imported-title" = "already imported";
+
 // MARK: Recover From Seed
 "recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
 "recover-from-seed-name-title" = "Name";
@@ -246,10 +284,12 @@
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation-already-added-plural" = "Congratulations, your accounts are ready to use.";
 "recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
 "recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-title" = "Account has been added!";
+"recover-from-seed-verify-pop-up-title-plural" = "Accounts have been added!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";
@@ -407,6 +447,7 @@
 "options-rekey-ledger" = "Rekey to Ledger Account";
 "options-rekey-standard" = "Rekey to Standard Account";
 "options-view-passphrase" = "View Passphrase";
+"options-view-root-wallet-passphrase" = "View root wallet passphrase";
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
 "options-remove-account" = "Remove Account";
@@ -778,11 +819,13 @@
 "screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
 
 "tutorial-title-back-up" = "Create a passphrase backup for your account";
+"tutorial-title-back-up-bip39" = "Create a passphrase backup for your wallet";
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
 
 "tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
+"tutorial-description-back-up-bip39" = "Creating a passphrase backup will allow you to recover your wallet. Without the passphrase, if you lose your device, remove the wallet or delete the app, you can permanently lose access to your Algorand wallet!";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
 "tutorial-description-write-warning" = "Do not share this passphrase with anyone, as it grants full access to your account.";
@@ -1588,6 +1631,9 @@ FAQ section.";
 "algorand-secure-backup-import-recover-mnemonic-title" = "Enter 12-word key";
 
 "discover-error-favorites-max-limit" = "You cannot have more than 100 favourites.";
+
+// MARK: HD Accounts Discovery
+"hd-account-discovery-loading-description" = "Searching your accounts";
 
 // MARK: Buy / Sell Options
 "buy-sell-options-buy-header-title" = "Buy crypto";

@@ -92,7 +92,7 @@ final class DeviceRegistrationController {
             id: id,
             pushToken: token,
             app: target.app,
-            accounts: user.accounts.map(\.address)
+            accounts: user.accounts.compactMap(\.address)
         )
 
         api.updateDevice(draft) { response in
@@ -122,7 +122,7 @@ final class DeviceRegistrationController {
         let draft = DeviceRegistrationDraft(
             pushToken: token,
             app: target.app,
-            accounts: user.accounts.map(\.address)
+            accounts: user.accounts.compactMap(\.address)
         )
 
         api.registerDevice(draft) { response in
@@ -155,7 +155,7 @@ final class DeviceRegistrationController {
             id: id,
             pushToken: nil,
             app: target.app,
-            accounts: user.accounts.map(\.address)
+            accounts: user.accounts.compactMap(\.address)
         )
 
         api.unregisterDevice(

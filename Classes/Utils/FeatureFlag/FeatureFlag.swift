@@ -18,11 +18,14 @@ import Foundation
 
 enum FeatureFlag: String, CaseIterable {
     case immersiveEnabled = "enable_immersve"
+    case hdWalletEnabled = "enable_hd_wallet"
 
     var defaultValue: RemoteConfigValue {
         switch self {
         case .immersiveEnabled:
             return .bool(false)
+        case .hdWalletEnabled:
+            return .bool(true)
         }
     }
 }

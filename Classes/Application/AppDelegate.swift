@@ -61,6 +61,8 @@ class AppDelegate:
     private lazy var lastSeenNotificationController = createLastSeenNotificationController()
     private lazy var scammerController = createScammerController()
     private lazy var featureFlagService = createFeatureFlagService()
+    private lazy var hdWalletService = createHDWalletService()
+    private lazy var hdWalletStorage = createHDWalletStorage()
 
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -596,7 +598,9 @@ extension AppDelegate {
             launchController: appLaunchController,
             peraConnect: peraConnect,
             scammerController: scammerController,
-            featureFlagService: featureFlagService
+            featureFlagService: featureFlagService,
+            hdWalletService: hdWalletService,
+            hdWalletStorage: hdWalletStorage
         )
     }
     
@@ -625,6 +629,7 @@ extension AppDelegate {
             target: ALGAppTarget.current,
             currency: currency,
             session: session,
+            storage: hdWalletStorage,
             api: api
         )
         sharedDataController.add(self)
@@ -689,5 +694,13 @@ extension AppDelegate {
     
     private func createFeatureFlagService() -> FeatureFlagServicing {
         FeatureFlagService()
+    }
+    
+    private func createHDWalletService() -> HDWalletService {
+        HDWalletService()
+    }
+    
+    private func createHDWalletStorage() -> HDWalletStorage {
+        HDWalletStorage()
     }
 }

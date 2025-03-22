@@ -28,6 +28,7 @@ class Session: Storable {
     private let biometricStorageKey = "com.algorand.algorand.biometric.storage"
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
+    private let tempMnemonicKey = "com.algorand.algorand.token.temp.mnemonic.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
     private let passwordKey = "pera.pinCode"
     /// <todo> Remove this key in other releases later when the v2 is accepted.
@@ -377,6 +378,27 @@ extension Session {
         return privateData(for: account) != nil
     }
 }
+
+//extension Session {
+//    func saveTempMnemonic(_ mnemonic: String, for account: String) throws {
+//        let key = tempMnemonicKey.appending(".\(account)")
+//        try privateStorage.set(mnemonic, key: key)
+//    }
+//    
+//    func tempMnemonic(for account: String) -> String? {
+//        let key = tempMnemonicKey.appending(".\(account)")
+//        return privateStorage.string(for: key)
+//    }
+//    
+//    func removeTempMnemonic(for account: String) {
+//        let key = tempMnemonicKey.appending(".\(account)")
+//        privateStorage.remove(for: key)
+//    }
+//    
+//    func hasTempMnemonic(for account: PublicKey) -> Bool {
+//        return tempMnemonic(for: account) != nil
+//    }
+//}
 
 extension Session {
     func hasAlreadyCreatedBackupPrivateKey() -> Bool {

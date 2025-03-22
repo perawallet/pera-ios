@@ -30,16 +30,22 @@ final class SwapTransactionSigner: LedgerTransactionOperationDelegate {
 
     private let api: ALGAPI
     private let analytics: ALGAnalytics
+    private let hdWalletStorage: HDWalletStorable
+    private let sharedDataController: SharedDataController
 
     private var account: Account?
     private var unsignedTransaction: Data?
 
     init(
         api: ALGAPI,
-        analytics: ALGAnalytics
+        analytics: ALGAnalytics,
+        hdWalletStorage: HDWalletStorable,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
         self.analytics = analytics
+        self.hdWalletStorage = hdWalletStorage
+        self.sharedDataController = sharedDataController
     }
 
     func signTransaction(
@@ -105,7 +111,26 @@ extension SwapTransactionSigner {
     ) {
         self.unsignedTransaction = unsignedTransaction
         self.account = account
-
+        
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(
+                unsignedTransaction,
+                for: account
+            )
+            return
+        }
+        
+        if account.isHDAccount,
+           !account.hasAuthAccount() {
+            signTransactionForHDWalletAccount(
+                unsignedTransaction,
+                for: account
+            )
+            return
+        }
+        
         guard let signature = api.session.privateData(for: account.signerAddress) else {
             return
         }
@@ -142,6 +167,68 @@ extension SwapTransactionSigner {
 
         eventHandler?(.didSignTransaction(signedTransaction: signedTransaction))
     }
+    
+    private func signTransactionForHDWalletAccount(
+        _ unsignedTransaction: Data,
+        for account: Account
+    ) {
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail else { return }
+        
+        do {
+            var authWalletId = hdWalletAddressDetail.walletId
+            if let authAddress = account.authAddress,
+               let accountAccount = sharedDataController.accountCollection[authAddress]?.value,
+               let hdWalletAddressDetail = accountAccount.hdWalletAddressDetail {
+                authWalletId = hdWalletAddressDetail.walletId
+            }
+            
+            guard let seed = try hdWalletStorage.wallet(id: authWalletId) else {
+                return
+            }
+            
+            let sdk = AlgorandSDK()
+            
+            var error: NSError?
+            guard let rawTxn = sdk.rawTransactionToSign(
+                unsignedTransaction,
+                error: &error
+            ) else {
+                eventHandler?(
+                    .didFailSigning(
+                        error: .api(error: HIPTransactionError.inapp(.sdkError(error: error)))
+                    )
+                )
+                return
+            }
+            
+            let signer = HDWalletTransactionSigner(wallet: seed)
+            let signature = try signer.signTransaction(
+                rawTxn,
+                with: hdWalletAddressDetail
+            )
+            guard let signedTransaction = sdk.getSignedTransaction(
+                unsignedTransaction,
+                from: signature,
+                for: account.authAddress,
+                error: &error
+            ) else {
+                eventHandler?(
+                    .didFailSigning(
+                        error: .api(error: HIPTransactionError.inapp(.sdkError(error: error)))
+                    )
+                )
+                return
+            }
+                    
+            eventHandler?(.didSignTransaction(signedTransaction: signedTransaction))
+        } catch {
+            eventHandler?(
+                .didFailSigning(
+                    error: .api(error: HIPTransactionError.inapp(.other))
+                )
+            )
+        }
+    }
 }
 
 extension SwapTransactionSigner {
@@ -151,6 +238,16 @@ extension SwapTransactionSigner {
         forTransactionIndex index: Int
     ) {
         if let account {
+            if let authAddress = account.authAddress,
+               let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+               authAccount.isHDAccount {
+                signTransactionForHDWalletAccount(
+                    unsignedTransaction!,
+                    for: account
+                )
+                return
+            }
+            
             let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
             signer.eventHandler = {
                 [weak self] event in

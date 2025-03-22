@@ -29,6 +29,7 @@ final class AccountInformation: Codable {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
     var isBackedUp: Bool
+    var hdWalletAddressDetail: HDWalletAddressDetail?
 
     static let invalidOrder = -1
 
@@ -51,7 +52,8 @@ final class AccountInformation: Codable {
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
         preferredOrder: Int? = nil,
-        isBackedUp: Bool
+        isBackedUp: Bool,
+        hdWalletAddressDetail: HDWalletAddressDetail? = nil
     ) {
         self.address = address
         self.name = name
@@ -61,6 +63,7 @@ final class AccountInformation: Codable {
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder ?? Self.invalidOrder
         self.isBackedUp = isBackedUp
+        self.hdWalletAddressDetail = hdWalletAddressDetail
     }
     
     required init(from decoder: Decoder) throws {
@@ -73,6 +76,7 @@ final class AccountInformation: Codable {
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
         preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
         isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
+        hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
     }
 }
 
@@ -119,6 +123,7 @@ extension AccountInformation {
         case rekeyDetail = "rekeyDetail"
         case preferredOrder = "preferredOrder"
         case isBackedUp = "isBackedUp"
+        case hdWalletAddressDetail = "hdWalletAddressDetail"
     }
 }
 

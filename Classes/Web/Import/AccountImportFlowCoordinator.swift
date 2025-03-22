@@ -139,7 +139,7 @@ extension AccountImportFlowCoordinator {
 
 extension AccountImportFlowCoordinator {
     private func makeImportAccountScreen(with parameters: QRBackupParameters) -> Screen {
-        Screen.importAccount(parameters) { [weak self] event, importAccountScreen in
+        Screen.importAccount(.qr(parameters)) { [weak self] event, importAccountScreen in
             guard let self else {
                 return
             }
@@ -159,6 +159,8 @@ extension AccountImportFlowCoordinator {
                 )
             case .didFailToImport(let error):
                 self.continueErrorScreen(error: error, from: importAccountScreen)
+            case .didCompleteHDWalletImport:
+                fatalError("Shouldn't enter here")
             }
         }
     }

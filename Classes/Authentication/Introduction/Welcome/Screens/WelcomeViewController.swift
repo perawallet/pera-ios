@@ -22,9 +22,12 @@ final class WelcomeViewController: BaseViewController {
     private lazy var theme = Theme()
 
     private let flow: AccountSetupFlow
+    private let featureFlagService: FeatureFlagServicing
+    private lazy var transitionToMnemonicTypeSelection = BottomSheetTransition(presentingViewController: self)
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
+        self.featureFlagService = configuration.featureFlagService
         super.init(configuration: configuration)
     }
 
@@ -50,7 +53,7 @@ final class WelcomeViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        welcomeView.customize(theme.welcomeViewTheme)
+        welcomeView.customize(theme.welcomeViewTheme, configuration: configuration)
 
         prepareWholeScreenLayoutFor(welcomeView)
     }
@@ -71,9 +74,28 @@ extension WelcomeViewController {
 }
 
 extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView) {
-        analytics.track(.onboardWelcomeScreen(type: .create))
-        open(.tutorial(flow: flow, tutorial: .backUp(flow: flow, address: "temp")), by: .push)
+    func welcomeViewDidSelectCreateAddress(_ welcomeView: WelcomeView) {
+        open(.hdWalletSetup(flow: flow, mode: .addBip39Address(newAddress: nil)), by: .push)
+    }
+    
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView) {
+        
+        guard featureFlagService.isEnabled(.hdWalletEnabled) else {
+            self.openTutorialScreen(walletFlowType: .algo25)
+            return
+        }
+        
+        let eventHandler: MnemonicTypeSelectionScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didSelectBip39:
+                self.openTutorialScreen(walletFlowType: .bip39)
+            case .didSelectAlgo25:
+                self.openTutorialScreen(walletFlowType: .algo25)
+            }
+        }
+        
+        transitionToMnemonicTypeSelection.perform(.mnemonicTypeSelection(eventHandler: eventHandler),by: .present)
     }
     
     func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
@@ -102,5 +124,36 @@ extension WelcomeViewController: WelcomeViewDelegate {
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {
         open(url)
+    }
+    
+    private func openTutorialScreen(walletFlowType: WalletFlowType) {
+        analytics.track(.onboardWelcomeScreen(type: .create))
+        switch walletFlowType {
+        case .algo25:
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .backUp(
+                        flow: flow,
+                        address: "temp"
+                    ),
+                    walletFlowType: walletFlowType
+                ),
+                by: .push
+            )
+        case .bip39:
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .backUpBip39(
+                        flow: flow,
+                        address: "temp"
+                    ),
+                    walletFlowType: walletFlowType
+                ),
+                by: .push
+            )
+        }
+
     }
 }

@@ -77,14 +77,16 @@ extension WCArbitraryData {
 extension WCArbitraryData {
     func findSignerAccount(
         in accountCollection: AccountCollection,
-        on session: Session
+        on session: Session,
+        hdWalletStorage: HDWalletStorable
     ) {
         guard let signer else { return }
 
         requestedSigner.findSignerAccount(
             signer: signer,
             in: accountCollection,
-            on: session
+            on: session,
+            hdWalletStorage: hdWalletStorage
         )
     }
 }

@@ -363,7 +363,8 @@ extension ManageAssetListViewController {
             api: api!,
             sharedDataController: sharedDataController,
             bannerController: bannerController,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
         optOutTransactions[asset.id] = AssetOptOutTransaction(
             asset: asset,

@@ -20,6 +20,7 @@ import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import SwiftUI
 
 final class Router:
     AssetActionConfirmationViewControllerDelegate,
@@ -42,7 +43,8 @@ final class Router:
         api: appConfiguration.api,
         sharedDataController: appConfiguration.sharedDataController,
         bannerController: appConfiguration.bannerController,
-        analytics: appConfiguration.analytics
+        analytics: appConfiguration.analytics,
+        hdWalletStorage: appConfiguration.hdWalletStorage
     )
 
     /// <todo>
@@ -703,23 +705,31 @@ final class Router:
             viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
+        case let .mnemonicTypeSelection(eventHandler):
+            let screen = MnemonicTypeSelectionScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         case let .recoverAccount(flow):
             viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
+        case .recoverAccountsLoadingScreen:
+            viewController = RecoverAccountsLoadingScreen(configuration: configuration)
         case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,
                 accountSetupFlow: flow,
                 configuration: configuration
             )
-        case let .passphraseView(flow, address):
+        case let .passphraseView(flow, address, walletFlowType):
             viewController = PassphraseBackUpViewController(
                 flow: flow,
                 address: address,
+                walletFlowType: walletFlowType,
                 configuration: configuration
             )
-        case let .passphraseVerify(flow, address):
+        case let .passphraseVerify(flow, address, walletFlowType):
             viewController = PassphraseVerifyViewController(
                 address: address,
+                walletFlowType: walletFlowType,
                 flow: flow,
                 configuration: configuration
             )
@@ -731,9 +741,30 @@ final class Router:
                 accountAddress: accountAddress,
                 configuration: configuration
             )
-        case let .accountRecover(flow, initialMnemonic):
+        case let .addressNameSetup(flow, mode, nameServiceName, account):
+            viewController = AddressNameSetupViewController(
+                flow: flow,
+                mode: mode,
+                nameServiceName: nameServiceName,
+                account: account,
+                configuration: configuration
+            )
+        case let .hdWalletSetup(flow, mode):
+            viewController = HDWalletSetupViewController(
+                flow: flow,
+                mode: mode,
+                configuration: configuration
+            )
+        case let .selectAddress(recoveredAddresses, hdWalletId):
+            viewController = SelectAddressViewController(
+                recoveredAddresses: recoveredAddresses,
+                hdWalletId: hdWalletId,
+                configuration: configuration
+            )
+        case let .accountRecover(flow, walletFlowType, initialMnemonic):
             viewController = AccountRecoverViewController(
                 accountSetupFlow: flow,
+                walletFlowType: walletFlowType,
                 initialMnemonic: initialMnemonic,
                 configuration: configuration
             )
@@ -927,7 +958,8 @@ final class Router:
                 sharedDataController: configuration.sharedDataController,
                 bannerController: configuration.bannerController!,
                 loadingController: configuration.loadingController!,
-                analytics: configuration.analytics
+                analytics: configuration.analytics,
+                hdWalletStorage: configuration.hdWalletStorage
             )
         case let .rekeySuccess(sourceAccount, eventHandler):
             let aViewController = RekeySuccessScreen(
@@ -946,7 +978,8 @@ final class Router:
                 sharedDataController: configuration.sharedDataController,
                 bannerController: configuration.bannerController!,
                 loadingController: configuration.loadingController!,
-                analytics: configuration.analytics
+                analytics: configuration.analytics,
+                hdWalletStorage: configuration.hdWalletStorage
             )
         case let .undoRekeySuccess(sourceAccount, eventHandler):
             let aViewController = UndoRekeySuccessScreen(
@@ -1053,10 +1086,11 @@ final class Router:
             viewController = NotificationFilterViewController(configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
-        case let .tutorial(flow, tutorial):
+        case let .tutorial(flow, tutorial, walletFlowType):
             viewController = TutorialViewController(
                 flow: flow,
                 tutorial: tutorial,
+                walletFlowType: walletFlowType,
                 configuration: configuration
             )
         case let .transactionTutorial(isInitialDisplay):
@@ -1207,7 +1241,8 @@ final class Router:
                 api: appConfiguration.api, 
                 bannerController: configuration.bannerController,
                 analytics: configuration.analytics,
-                draft: draft
+                draft: draft,
+                hdWalletStorage: configuration.hdWalletStorage
             )
 
             let screen = IncomingASAsDetailScreen(
@@ -1692,8 +1727,8 @@ final class Router:
             let screen = ImportQRScannerScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .importAccount(backupParameters, eventHandler):
-            let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
+        case let .importAccount(request, eventHandler):
+            let screen = ImportAccountScreen(configuration: configuration, request: request)
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountError(let error, let eventHandler):
@@ -2135,7 +2170,9 @@ final class Router:
                 draft: draft,
                 transactionSigner: SwapTransactionSigner(
                     api: appConfiguration.api,
-                    analytics: appConfiguration.analytics
+                    analytics: appConfiguration.analytics,
+                    hdWalletStorage: appConfiguration.hdWalletStorage,
+                    sharedDataController: appConfiguration.sharedDataController
                 ),
                 configuration: configuration
             )

@@ -48,7 +48,9 @@ extension AccountSetupFlow {
 }
 
 enum AccountSetupMode: Equatable {
-    case add
+    case addAlgo25Account
+    case addBip39Address(newAddress: HDWalletAddress?)
+    case addBip39Wallet
     case recover(type: RecoverType)
     case rekey(account: Account)
     case watch

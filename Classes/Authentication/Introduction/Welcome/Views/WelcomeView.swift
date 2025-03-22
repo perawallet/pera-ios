@@ -27,12 +27,18 @@ final class WelcomeView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var termsAndConditionsTextView = UITextView()
-    private lazy var createAccountView = AccountTypeView()
-    private lazy var importAccountView = AccountTypeView()
-    private lazy var watchAccountView = AccountTypeView()
+    private lazy var createAddressView = AccountTypeView()
+    private lazy var createWalletView = AccountTypeView()
+    private lazy var importWalletView = AccountTypeView()
+    private lazy var watchAddressView = AccountTypeView()
+    
+    private var session: Session?
+    private var featureFlagService: FeatureFlagServicing?
 
-    func customize(_ theme: WelcomeViewTheme) {
+    func customize(_ theme: WelcomeViewTheme, configuration: ViewControllerConfiguration) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        session = configuration.session
+        featureFlagService = configuration.featureFlagService
 
         addTitle(theme)
         addTermsAndConditionsTextView(theme)
@@ -44,19 +50,25 @@ final class WelcomeView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        createAccountView.addTarget(
+        createAddressView.addTarget(
             self,
-            action: #selector(notifyDelegateToCreateAccount),
+            action: #selector(notifyDelegateToCreateAddress),
+            for: .touchUpInside
+        )
+        
+        createWalletView.addTarget(
+            self,
+            action: #selector(notifyDelegateToCreateWallet),
             for: .touchUpInside
         )
 
-        importAccountView.addTarget(
+        importWalletView.addTarget(
             self,
             action: #selector(notifyDelegateToImportAccount),
             for: .touchUpInside
         )
         
-        watchAccountView.addTarget(
+        watchAddressView.addTarget(
             self,
             action: #selector(notifyDelegateToWatchAccount),
             for: .touchUpInside
@@ -69,16 +81,21 @@ final class WelcomeView:
 
     func bindData(_ viewModel: WelcomeViewModel?) {
         titleLabel.text = viewModel?.title
-        createAccountView.bindData(viewModel?.createAccountViewModel)
-        importAccountView.bindData(viewModel?.importAccountViewModel)
-        watchAccountView.bindData(viewModel?.watchAccountViewModel)
+        createAddressView.bindData(viewModel?.createAddressViewModel)
+        createWalletView.bindData(viewModel?.createWalletViewModel)
+        importWalletView.bindData(viewModel?.importWalletViewModel)
+        watchAddressView.bindData(viewModel?.watchWalletViewModel)
     }
 }
 
 extension WelcomeView {
     @objc
-    private func notifyDelegateToCreateAccount() {
-        delegate?.welcomeViewDidSelectCreate(self)
+    private func notifyDelegateToCreateAddress() {
+        delegate?.welcomeViewDidSelectCreateAddress(self)
+    }
+    @objc
+    private func notifyDelegateToCreateWallet() {
+        delegate?.welcomeViewDidSelectCreateWallet(self)
     }
 
     @objc
@@ -132,13 +149,19 @@ extension WelcomeView {
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
-
-        createAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(createAccountView)
-        importAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(importAccountView)
-        watchAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(watchAccountView)
+        if
+            featureFlagService?.isEnabled(.hdWalletEnabled) ?? false,
+            session?.authenticatedUser?.hasHDWalletsAccounts ?? false
+        {
+            createAddressView.customize(theme.accountTypeViewTheme)
+            stackView.addArrangedSubview(createAddressView)
+        }
+        createWalletView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(createWalletView)
+        importWalletView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importWalletView)
+        watchAddressView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(watchAddressView)
     }
 }
 
@@ -155,7 +178,8 @@ extension WelcomeView: UITextViewDelegate {
 }
 
 protocol WelcomeViewDelegate: AnyObject {
-    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectCreateAddress(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView)
     func welcomeViewDidSelectImport(_ welcomeView: WelcomeView)
     func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView)
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)

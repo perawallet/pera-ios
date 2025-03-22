@@ -21,12 +21,14 @@ struct PassphraseDisplayViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let topInset: LayoutMetric
     let collectionViewHeight: LayoutMetric
+    let hdWalletCollectionViewHeight: LayoutMetric
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.topInset = 20
-        self.collectionViewHeight = 456
-        self.horizontalInset = 24
+        backgroundColor = Colors.Defaults.background
+        topInset = 20
+        collectionViewHeight = 456
+        hdWalletCollectionViewHeight = 432.0
+        horizontalInset = 24
     }
 }

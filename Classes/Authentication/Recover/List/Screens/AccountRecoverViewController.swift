@@ -38,7 +38,7 @@ final class AccountRecoverViewController: BaseScrollViewController {
     
     private lazy var accountRecoverView = AccountRecoverView()
     private lazy var recoverButton = Button()
-    private lazy var theme = Theme()
+    private let theme: AccountRecoverViewControllerTheme
 
     private var isRecoverEnabled: Bool {
         return getMnemonics() != nil
@@ -56,7 +56,7 @@ final class AccountRecoverViewController: BaseScrollViewController {
         return dataController
     }()
 
-    private lazy var mnemonicsParser = MnemonicsParser(wordCount: 25)
+    private lazy var mnemonicsParser = MnemonicsParser(wordCount: theme.mnemonicsParserWordCount)
 
     private var recoverInputViews: [RecoverInputView] {
         return accountRecoverView.recoverInputViews
@@ -64,14 +64,18 @@ final class AccountRecoverViewController: BaseScrollViewController {
 
     private let accountSetupFlow: AccountSetupFlow
     private let initialMnemonic: String?
-    
+    private let walletFlowType: WalletFlowType
+
     init(
         accountSetupFlow: AccountSetupFlow,
+        walletFlowType: WalletFlowType,
         initialMnemonic: String?,
         configuration: ViewControllerConfiguration
     ) {
+        self.theme = walletFlowType.accountRecoverViewControllerTheme
         self.accountSetupFlow = accountSetupFlow
         self.initialMnemonic = initialMnemonic
+        self.walletFlowType = walletFlowType
         super.init(configuration: configuration)
     }
 
@@ -227,9 +231,61 @@ extension AccountRecoverViewController {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-fill-all-error".localized)
             return
         }
-
         view.endEditing(true)
-        dataController.recoverAccount(from: mnemonics)
+        switch walletFlowType {
+        case .algo25:
+            dataController.recoverAccount(from: mnemonics)
+        case .bip39:
+            open(
+                .importAccount(.recoverHDWallet(mnemonics), { event, screen in
+                    switch event {
+                    case .didCompleteHDWalletImport(let addresses, let hdWalletId):
+                        if let hdWalletId {
+                            self.finishRecoverAccount(addresses: addresses, hdWalletId: hdWalletId, screen: screen)
+                        } else {
+                            guard
+                                let entropy = HDWalletUtils.generateEntropy(fromMnemonic: mnemonics),
+                                let newHDWallet = try? self.hdWalletService.createWallet(from: entropy),
+                                let _ = try? self.hdWalletStorage.save(wallet: newHDWallet)
+                            else {
+                                self.showErrorScreen(error: ImportAccountScreenError.decryption, from: self)
+                                return
+                            }
+                            self.session?.authenticatedUser?.setWalletName(for: newHDWallet.id)
+                            self.finishRecoverAccount(addresses: addresses, hdWalletId: newHDWallet.id, screen: screen)
+                        }
+                    case .didFailToImport(let error):
+                        self.showErrorScreen(error: error, from: self)
+                    case .didCompleteImport:
+                        fatalError("Shouldn't enter here")
+                    }
+                }),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: .coverVertical, transitioningDelegate: nil)
+            )
+        }
+    }
+    
+    private func finishRecoverAccount(addresses: [RecoveredAddress], hdWalletId: String, screen: ImportAccountScreen) {
+        self.open(
+            .selectAddress(recoveredAddresses: addresses, hdWalletId: hdWalletId),
+            by: .push
+        )
+        screen.dismissScreen()
+    }
+    
+    private func showErrorScreen(
+        error: ImportAccountScreenError,
+        from screen: UIViewController
+    ) {
+        let errorScreen = Screen.importAccountError(error) { [weak self] event, errorScreen in
+            guard let self else {
+                return
+            }
+
+            screen.dismiss(animated: true)
+        }
+
+        screen.open(errorScreen, by: .push)
     }
 }
 
@@ -418,7 +474,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didRecover account: AccountInformation
     ) {
         analytics.track(.registerAccount(registrationType: .recover))
-
+        
         fetchRekeyedAccounts(to: account)
     }
 

@@ -143,7 +143,13 @@ final class OptOutAssetCoordinator {
     
     private func makeTransactionController() -> TransactionController? {
         guard let presenter, let api = presenter.api else { return nil }
-        return TransactionController(api: api, sharedDataController: presenter.sharedDataController, bannerController: presenter.bannerController, analytics: presenter.analytics)
+        return TransactionController(
+            api: api,
+            sharedDataController: presenter.sharedDataController,
+            bannerController: presenter.bannerController,
+            analytics: presenter.analytics,
+            hdWalletStorage: presenter.hdWalletStorage
+        )
     }
     
     private func cancelMonitoringOptOutUpdates(transactionController: TransactionController, account: Account) {

@@ -18,6 +18,24 @@
 import Foundation
 
 extension Data {
+    init?(hexStr: String) {
+        let length = hexStr.count / 2
+        var data = Data(capacity: length)
+        for i in 0 ..< length {
+            let j = hexStr.index(hexStr.startIndex, offsetBy: i * 2)
+            let k = hexStr.index(j, offsetBy: 2)
+            let bytes = hexStr[j ..< k]
+            if var num = UInt8(bytes, radix: 16) {
+                data.append(&num, count: 1)
+            } else {
+                return nil
+            }
+        }
+        self = data
+    }
+}
+
+extension Data {
     init?(fromHexEncodedString string: String) {
         self.init(capacity: string.utf16.count / 2)
         

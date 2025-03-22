@@ -19,6 +19,7 @@ import UIKit
 final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
+    private lazy var transitionToMnemonicTypeSelection = BottomSheetTransition(presentingViewController: self)
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
         presentingScreen: self
     )
@@ -26,6 +27,7 @@ final class RecoverAccountViewController: BaseViewController {
         presentingScreen: self
     )
     private let flow: AccountSetupFlow
+    private let featureFlagService: FeatureFlagServicing
 
     private var initializeAccount: Bool {
         switch flow {
@@ -38,6 +40,7 @@ final class RecoverAccountViewController: BaseViewController {
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
+        self.featureFlagService = configuration.featureFlagService
         super.init(configuration: configuration)
     }
 
@@ -92,7 +95,24 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
     func recoverAccountView(_ recoverAccountView: RecoverAccountView, didSelect type: RecoverType) {
         switch type {
         case .passphrase:
-            open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase), by: .push)
+            
+            guard featureFlagService.isEnabled(.hdWalletEnabled) else {
+                open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType:
+                        .algo25), by: .push)
+                return
+            }
+            
+            let eventHandler: MnemonicTypeSelectionScreen.EventHandler = {
+                [unowned self] event in
+                switch event {
+                case .didSelectBip39:
+                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType: .bip39), by: .push)
+                case .didSelectAlgo25:
+                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType:
+                            .algo25), by: .push)
+                }
+            }
+            transitionToMnemonicTypeSelection.perform(.mnemonicTypeSelection(eventHandler: eventHandler), by: .present)
         case .importFromSecureBackup:
             secureBackupCoordinator.launch()
         case .ledger:

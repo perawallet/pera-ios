@@ -31,6 +31,8 @@ final class ViewControllerConfiguration {
     let peraConnect: PeraConnect
     let scammerController: ScammerController
     let featureFlagService: FeatureFlagServicing
+    let hdWalletService: HDWalletServicing
+    let hdWalletStorage: HDWalletStorable
     
     init(
         api: ALGAPI?,
@@ -45,7 +47,9 @@ final class ViewControllerConfiguration {
         launchController: AppLaunchController,
         peraConnect: PeraConnect,
         scammerController: ScammerController,
-        featureFlagService: FeatureFlagServicing
+        featureFlagService: FeatureFlagServicing,
+        hdWalletService: HDWalletServicing,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.api = api
         self.session = session
@@ -60,5 +64,7 @@ final class ViewControllerConfiguration {
         self.peraConnect = peraConnect
         self.scammerController = ScammerController(api: api)
         self.featureFlagService = featureFlagService
+        self.hdWalletService = hdWalletService
+        self.hdWalletStorage = hdWalletStorage
     }
 }
