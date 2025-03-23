@@ -308,9 +308,6 @@ extension TutorialViewController: TutorialViewDelegate {
             }
 
             analytics.track(.onboardCreateAccountPassphrase(type: .skipCreate))
-        case .writePassphrase(flow: let flow, address: _):
-            analytics.track(.onboardCreateAccountPassphrase(type: .skipWrite))
-            createAccount(flow: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapSecondaryActionButton?(self)
         case .accountVerified(let flow, _, _):
@@ -326,25 +323,6 @@ extension TutorialViewController: TutorialViewDelegate {
         default:
             break
         }
-    }
-    
-    private func createAccount(
-        flow: AccountSetupFlow
-    ) {
-        guard let newAccount = createAccount() else {
-            return
-        }
-
-        let screen = open(
-            .accountNameSetup(
-                flow: flow,
-                mode: .add,
-                accountAddress: newAccount.address
-            ),
-            by: .push
-        ) as? AccountNameSetupViewController
-        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        screen?.hidesCloseBarButtonItem = true
     }
 
     private func routeBuyAlgo(
