@@ -7208,6 +7208,9 @@
 		D4F72B7E28E4CAC000907287 /* AccountNameTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B7A28E4CAC000907287 /* AccountNameTitleViewTheme.swift */; };
 		D4F72B7F28E4CAC000907287 /* AccountNameTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B7A28E4CAC000907287 /* AccountNameTitleViewTheme.swift */; };
 		D4F72B8028E4CAC000907287 /* AccountNameTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B7A28E4CAC000907287 /* AccountNameTitleViewTheme.swift */; };
+		D4F79FAC2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
+		D4F79FAD2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
+		D4F79FAE2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
 		D4F860B02D65E6350008A03F /* SelectAddressListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860AF2D65E6270008A03F /* SelectAddressListItemAccessory.swift */; };
 		D4F860B12D65E6350008A03F /* SelectAddressListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860AF2D65E6270008A03F /* SelectAddressListItemAccessory.swift */; };
 		D4F860B22D65E6350008A03F /* SelectAddressListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860AF2D65E6270008A03F /* SelectAddressListItemAccessory.swift */; };
@@ -7220,9 +7223,6 @@
 		D4F860C12D65FFE20008A03F /* SelectAddressListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860C02D65FFD00008A03F /* SelectAddressListHeaderViewModel.swift */; };
 		D4F860C22D65FFE20008A03F /* SelectAddressListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860C02D65FFD00008A03F /* SelectAddressListHeaderViewModel.swift */; };
 		D4F860C32D65FFE20008A03F /* SelectAddressListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F860C02D65FFD00008A03F /* SelectAddressListHeaderViewModel.swift */; };
-		D4F79FAC2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
-		D4F79FAD2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
-		D4F79FAE2D7206320087EA5D /* TabBarPressedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */; };
 		D4F8F28A273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
 		D4F8F28B273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
 		D4F8F28C273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
@@ -10520,11 +10520,11 @@
 		D4F72B7528E4A26700907287 /* AccountNameTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameTitleViewModel.swift; sourceTree = "<group>"; };
 		D4F72B7928E4CABF00907287 /* AccountNameTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountNameTitleView.swift; sourceTree = "<group>"; };
 		D4F72B7A28E4CAC000907287 /* AccountNameTitleViewTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountNameTitleViewTheme.swift; sourceTree = "<group>"; };
+		D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPressedEvent.swift; sourceTree = "<group>"; };
 		D4F860AF2D65E6270008A03F /* SelectAddressListItemAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressListItemAccessory.swift; sourceTree = "<group>"; };
 		D4F860B42D65FF230008A03F /* SelectAddressListHeaderItemState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressListHeaderItemState.swift; sourceTree = "<group>"; };
 		D4F860BC2D65FF970008A03F /* SelectAddressListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressListHeaderView.swift; sourceTree = "<group>"; };
 		D4F860C02D65FFD00008A03F /* SelectAddressListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressListHeaderViewModel.swift; sourceTree = "<group>"; };
-		D4F79FAB2D7206160087EA5D /* TabBarPressedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPressedEvent.swift; sourceTree = "<group>"; };
 		D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseDisplayViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4F8F28D273EA74D003DCE1D /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D4F8F291273EA8C3003DCE1D /* PassphraseDisplayViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewTheme.swift; sourceTree = "<group>"; };
@@ -32086,7 +32086,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -32114,7 +32114,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32142,7 +32142,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32172,7 +32172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32201,7 +32201,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32230,7 +32230,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32383,7 +32383,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32414,7 +32414,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32572,7 +32572,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.18.0;
+				MARKETING_VERSION = 6.0.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
