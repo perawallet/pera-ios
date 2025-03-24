@@ -29,7 +29,7 @@ struct AccountListItemViewModel:
 
     private(set) var icon: ImageSource?
     private(set) var iconBottomRightBadge: Image?
-    private(set) var title: AccountPreviewTitleViewModel?
+    public var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
     private(set) var accessoryIcon: UIImage?
