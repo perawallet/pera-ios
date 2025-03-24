@@ -14,7 +14,6 @@
 
 //   SendAssetInboxScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
@@ -316,6 +315,7 @@ extension SendAssetInboxScreen {
                     if signWithLedgerProcessScreen.isProgressFinished {
                         self.stopLoading()
                         openLoading()
+                        signWithLedgerProcessScreen.dismissScreen()
                     }
                 }
             case .didSignAllTransactions:
