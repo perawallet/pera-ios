@@ -145,7 +145,7 @@ class AppDelegate:
         )
         
         guard
-            let deepLink = userInfo["deeplink"] as? String,
+            let deepLink = userInfo["url"] as? String,
             let url = URL(string: deepLink),
             let externalDeepLink = url.externalDeepLink
         else {
