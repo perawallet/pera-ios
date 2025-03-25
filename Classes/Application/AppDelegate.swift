@@ -144,11 +144,21 @@ class AppDelegate:
             userInfo: nil
         )
         
-        appLaunchController.receive(
-            deeplinkWithSource: .remoteNotification(
-                userInfo,
-                waitForUserConfirmation: UIApplication.shared.isActive
+        guard
+            let deepLink = userInfo["deeplink"] as? String,
+            let url = URL(string: deepLink),
+            let externalDeepLink = url.externalDeepLink
+        else {
+            appLaunchController.receive(
+                deeplinkWithSource: .remoteNotification(
+                    userInfo,
+                    waitForUserConfirmation: UIApplication.shared.isActive
+                )
             )
+            return
+        }
+        appLaunchController.receive(
+            deeplinkWithSource: .externalDeepLink(externalDeepLink)
         )
     }
     
