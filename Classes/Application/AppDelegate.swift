@@ -254,7 +254,14 @@ extension AppDelegate {
         let src: DeeplinkSource?
         
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
-            src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+            if let deepLink = userInfo["url"] as? String,
+               let url = URL(string: deepLink),
+               let externalDeepLink = url.externalDeepLink {
+                src = .externalDeepLink(externalDeepLink)
+            } else {
+                src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+            }
+            
         } else if let url = options?[.url] as? URL {
             if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
                 let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
