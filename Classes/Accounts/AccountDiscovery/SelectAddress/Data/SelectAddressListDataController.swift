@@ -77,7 +77,7 @@ extension SelectAddressListDataController {
     }
     
     var headerTitle: String {
-        addressesDictonary.count == 1 ? "address-count".localized : "address-count-plural".localized(params: addressesDictonary.count)
+        addressesDictonary.count == 1 ? "account-count".localized : "account-count-plural".localized(params: addressesDictonary.count)
     }
     
     var descriptionText: String {

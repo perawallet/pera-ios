@@ -19,6 +19,7 @@ import UIKit
 
 final class WelcomeViewController: BaseViewController {
     private lazy var welcomeView = WelcomeView()
+    private lazy var peraWelcomeLogo = UIImageView()
     private lazy var theme = Theme()
 
     private let flow: AccountSetupFlow
@@ -34,6 +35,18 @@ final class WelcomeViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let defaultAppearance = UINavigationBarAppearance()
+        defaultAppearance.configureWithOpaqueBackground()
+        defaultAppearance.backgroundColor = theme.backgroundColor.uiColor
+        defaultAppearance.shadowColor = theme.backgroundColor.uiColor
+        
+        navigationController?.navigationBar.standardAppearance = defaultAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = defaultAppearance
+    }
 
     override func bindData() {
         welcomeView.bindData(WelcomeViewModel(with : flow))
@@ -47,7 +60,18 @@ final class WelcomeViewController: BaseViewController {
     override func setListeners() {
         welcomeView.setListeners()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
 
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
@@ -56,6 +80,18 @@ final class WelcomeViewController: BaseViewController {
         welcomeView.customize(theme.welcomeViewTheme, configuration: configuration)
 
         prepareWholeScreenLayoutFor(welcomeView)
+        
+        addPeraWelcomeLogo(theme.welcomeViewTheme)
+    }
+    
+    private func addPeraWelcomeLogo(_ theme: WelcomeViewTheme) {
+        peraWelcomeLogo.customizeAppearance(theme.peraWelcomeLogo)
+        view.addSubview(peraWelcomeLogo)
+        
+        peraWelcomeLogo.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(theme.peraWelcomeLogoTopInset)
+            $0.trailing.equalToSuperview()
+        }
     }
 }
 
