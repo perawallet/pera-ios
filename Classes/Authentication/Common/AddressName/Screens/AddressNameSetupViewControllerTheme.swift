@@ -22,9 +22,11 @@ struct AddressNameSetupViewControllerTheme:
     StyleSheet {
     let background: ViewStyle
     let contentEdgeInsets: LayoutPaddings
-    let title: TextStyle
+    let accountTitle: TextStyle
+    let walletTitle: TextStyle
     let spacingBetweenTitleAndDescription: LayoutMetric
-    let description: TextStyle
+    let accountDescription: TextStyle
+    let walletDescription: TextStyle
     let spacingBetweenDescriptionAndWalletName: LayoutMetric
     let walletNameViewCornerRadius: LayoutMetric
     let walletNameViewMinHeight: LayoutMetric
@@ -44,16 +46,26 @@ struct AddressNameSetupViewControllerTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.contentEdgeInsets = (2, 24, 0, 24)
-        self.title = [
+        self.accountTitle = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("address-details-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text("account-details-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+        ]
+        self.walletTitle = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.main),
+            .text("account-details-wallet-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
-        self.description = [
+        self.accountDescription = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("address-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text("account-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+        ]
+        self.walletDescription = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText()),
+            .text("account-wallet-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenDescriptionAndWalletName = 36
         self.walletNameViewCornerRadius = 8
@@ -87,7 +99,7 @@ struct AddressNameSetupViewControllerTheme:
         )
         self.nameInputMinHeight = 48
         self.action = [
-            .title("address-name-setup-finish".localized),
+            .title("account-name-setup-finish".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),

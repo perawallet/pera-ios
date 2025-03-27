@@ -51,6 +51,6 @@ struct MnemonicTypeViewModel: ViewModel {
     private mutating func bindRecommendation(
         _ isRecommended: Bool
     ) {
-        self.isRecommended = isRecommended ? "mnemonic-type-tag".localized : nil
+        self.isRecommended = isRecommended ? "title-new-uppercased".localized : "LEGACY"
     }
 }

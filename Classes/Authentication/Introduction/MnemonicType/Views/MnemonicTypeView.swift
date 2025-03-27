@@ -19,7 +19,6 @@ import MacaroonUIKit
 import Foundation
 
 final class MnemonicTypeView: TripleShadowView {
-    private lazy var theme = MnemonicTypeViewTheme()
     private lazy var rightAccessoryImageView = UIImageView()
     private lazy var titleLabel = UILabel()
     private lazy var badgeLabel = UILabel()

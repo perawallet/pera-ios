@@ -47,7 +47,7 @@ extension WelcomeViewModel {
              .none:
             title = "account-welcome-wallet-title".localized
         case .addNewAccount:
-            title = "account-welcome-add-account-title".localized
+            title = "account-welcome-add-wallet-or-account-title".localized
         case .backUpAccount:
             title = nil
         }

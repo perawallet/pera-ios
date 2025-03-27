@@ -151,6 +151,7 @@
 "account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-create-one-key-detail" = "Create a new account for an existing ONE Key Wallet";
 "account-type-selection-create-address" = "Create a new address";
 "account-type-selection-create-address-detail" = "Create a new address for an existing HD Wallet";
 "account-type-selection-create-wallet" = "Create a new wallet";
@@ -176,19 +177,19 @@
 "account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
+"account-welcome-add-wallet-or-account-title" = "Add a wallet\nor account";
 "title-arbitrary-data" = "Arbitrary Data";
 "title-data" = "Data";
 
 // MARK: Mnemonic Types
 
 "mnemonic-types-screen-title" = "Select your Mnemonic type";
-"mnemonic-types-bip39-title" = "BIP39";
-"mnemonic-types-bip39-detail" = "New Inter-operable format that enables important features like HD Wallet";
+"mnemonic-types-bip39-title" = "ONE Key";
+"mnemonic-types-bip39-detail" = "Wallet that lets you derive new wallets, all using the same key";
 "mnemonic-types-bip39-info" = "24 key mnemonic keys";
 "mnemonic-types-algo25-title" = "ALGO25";
 "mnemonic-types-algo25-detail" = "Legacy format that is specific to Algorand ecosystem";
 "mnemonic-types-algo25-info" = "25 key mnemonic keys";
-"mnemonic-type-tag" = "Recommended";
 
 // MARK: Introduction
 
@@ -254,21 +255,22 @@
 "account-name-setup-placeholder" = "Account name";
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
+"account-details-wallet-title" = "Name your wallet";
+"account-wallet-name-setup-description" = "Name your wallet to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 
 // MARK: Address Name Setup
 "address-details-title" = "Name your address";
 "address-name-setup-placeholder" = "Address name";
-"address-name-setup-description" = "Name your address to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "address-name-setup-finish" = "Finish address Creation";
 
 // MARK: HD Wallet Setup
-"hd-wallet-setup-title" = "Select HD Wallet";
-"hd-wallet-setup-description" = "Create your new address under an HD Wallet you already have";
-"hd-wallet-setup-wallet-name" = "HD Wallet #%@";
+"hd-wallet-setup-title" = "Select ONE Key Wallet";
+"hd-wallet-setup-description" = "Create your new account under an ONE KEY you already have";
+"hd-wallet-setup-wallet-name" = "Wallet #%@";
 "hd-wallet-account-name" = "%@ (HDWallet Account)";
 
-"address-count" = "1 address";
-"address-count-plural" = "%d addresses";
+"account-count" = "1 account";
+"account-count-plural" = "%d accounts";
 
 // MARK: Select Address
 "select-address-title" = "Select addresses\nto add";

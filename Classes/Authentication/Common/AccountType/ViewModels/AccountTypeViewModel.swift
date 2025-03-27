@@ -69,7 +69,7 @@ extension AccountTypeViewModel {
         case .addAlgo25Account, .addBip39Wallet:
             titleText = "account-type-selection-create-wallet".localized
         case .addBip39Address:
-            titleText = "account-type-selection-create-address".localized
+            titleText = "account-type-selection-create".localized
         case let .recover(type):
             switch type {
             case .passphrase:
@@ -118,7 +118,7 @@ extension AccountTypeViewModel {
         case .addAlgo25Account, .addBip39Wallet:
             detailText = "account-type-selection-create-wallet-detail".localized
         case .addBip39Address:
-            detailText = "account-type-selection-create-address-detail".localized
+            detailText = "account-type-selection-create-one-key-detail".localized
         case let .recover(type):
             switch type {
             case .passphrase:

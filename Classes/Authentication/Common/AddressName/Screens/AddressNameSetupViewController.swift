@@ -108,7 +108,11 @@ extension AddressNameSetupViewController {
     }
 
     private func addTitle() {
-        titleView.customizeAppearance(theme.title)
+        guard mode == .addBip39Wallet else {
+            titleView.customizeAppearance(theme.accountTitle)
+            return
+        }
+        titleView.customizeAppearance(theme.walletTitle)
 
         contentView.addSubview(titleView)
         titleView.snp.makeConstraints {
@@ -119,7 +123,11 @@ extension AddressNameSetupViewController {
     }
 
     private func addDescription() {
-        descriptionView.customizeAppearance(theme.description)
+        guard mode == .addBip39Wallet else {
+            descriptionView.customizeAppearance(theme.accountDescription)
+            return
+        }
+        descriptionView.customizeAppearance(theme.walletDescription)
 
         contentView.addSubview(descriptionView)
         descriptionView.snp.makeConstraints {
