@@ -97,7 +97,7 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
         case .passphrase:
             
             guard featureFlagService.isEnabled(.hdWalletEnabled) else {
-                open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType:
+                open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .algo25), walletFlowType:
                         .algo25), by: .push)
                 return
             }
@@ -106,9 +106,9 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
                 [unowned self] event in
                 switch event {
                 case .didSelectBip39:
-                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType: .bip39), by: .push)
+                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .bip39), walletFlowType: .bip39), by: .push)
                 case .didSelectAlgo25:
-                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase, walletFlowType:
+                    open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .algo25), walletFlowType:
                             .algo25), by: .push)
                 }
             }

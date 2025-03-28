@@ -150,7 +150,9 @@
 "account-type-selection-add" = "I want to create an account";
 "account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
+"account-type-selection-one-key-warning-title" = "Because you have already a ONE Key";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-create-one-key-detail" = "Create a new account for an existing ONE Key Wallet";
 "account-type-selection-create-address" = "Create a new address";
 "account-type-selection-create-address-detail" = "Create a new address for an existing HD Wallet";
 "account-type-selection-create-wallet" = "Create a new wallet";
@@ -162,39 +164,39 @@
 "account-type-selection-recover" = "Import an account";
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
 "account-type-selection-recover-wallet" = "Import a wallet";
-"account-type-selection-recover-wallet-detail" = "Import an existing Algorand account with various methods or pair your Ledger";
+"account-type-selection-recover-wallet-detail" = "Import an existing wallet with various methods or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-type-selection-import-web" = "Import from Pera Web";
 "account-type-selection-import-web-detail" = "I want to import Algorand accounts from Pera Web";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
-"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-passphrase-detail" = "I want to recover an Algorand wallet.";
 "account-type-selection-import-secure-backup" = "Algorand Secure Backup";
 "account-type-selection-import-secure-backup-detail" = "I want to restore my accounts using an Algorand Secure Backup file and 12-word key";
 "account-type-selection-qr" = "Recover an account with QR code";
 "account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
+"account-welcome-add-wallet-or-account-title" = "Add a wallet\nor account";
 "title-arbitrary-data" = "Arbitrary Data";
 "title-data" = "Data";
 
 // MARK: Mnemonic Types
 
 "mnemonic-types-screen-title" = "Select your Mnemonic type";
-"mnemonic-types-bip39-title" = "BIP39";
-"mnemonic-types-bip39-detail" = "New Inter-operable format that enables important features like HD Wallet";
+"mnemonic-types-bip39-title" = "ONE Key";
+"mnemonic-types-bip39-detail" = "Wallet that lets you derive new wallets, all using the same key";
 "mnemonic-types-bip39-info" = "24 key mnemonic keys";
 "mnemonic-types-algo25-title" = "ALGO25";
 "mnemonic-types-algo25-detail" = "Legacy format that is specific to Algorand ecosystem";
 "mnemonic-types-algo25-info" = "25 key mnemonic keys";
-"mnemonic-type-tag" = "Recommended";
 
 // MARK: Introduction
 
 "introduction-add-account-text" = "I want to create\nan Algorand account";
 "introduction-recover-account-text" = "Import an account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By adding a wallet, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -254,21 +256,22 @@
 "account-name-setup-placeholder" = "Account name";
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
+"account-details-wallet-title" = "Name your wallet";
+"account-wallet-name-setup-description" = "Name your wallet to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 
 // MARK: Address Name Setup
 "address-details-title" = "Name your address";
 "address-name-setup-placeholder" = "Address name";
-"address-name-setup-description" = "Name your address to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "address-name-setup-finish" = "Finish address Creation";
 
 // MARK: HD Wallet Setup
-"hd-wallet-setup-title" = "Select HD Wallet";
-"hd-wallet-setup-description" = "Create your new address under an HD Wallet you already have";
-"hd-wallet-setup-wallet-name" = "HD Wallet #%@";
+"hd-wallet-setup-title" = "Select ONE Key Wallet";
+"hd-wallet-setup-description" = "Create your new account under an ONE KEY you already have";
+"hd-wallet-setup-wallet-name" = "Wallet #%@";
 "hd-wallet-account-name" = "%@ (HDWallet Account)";
 
-"address-count" = "1 address";
-"address-count-plural" = "%d addresses";
+"account-count" = "1 account";
+"account-count-plural" = "%d accounts";
 
 // MARK: Select Address
 "select-address-title" = "Select addresses\nto add";
@@ -821,12 +824,14 @@
 "tutorial-title-back-up" = "Create a passphrase backup for your account";
 "tutorial-title-back-up-bip39" = "Create a passphrase backup for your wallet";
 "tutorial-title-recover" = "Recover an Algorand Account";
+"tutorial-title-recover-bip39" = "Recover an Algorand Wallet";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
 
 "tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
 "tutorial-description-back-up-bip39" = "Creating a passphrase backup will allow you to recover your wallet. Without the passphrase, if you lose your device, remove the wallet or delete the app, you can permanently lose access to your Algorand wallet!";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
+"tutorial-description-recover-bip39" = "In the following steps, you'll enter your recovery passphrase to recover an Algorand wallet. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
 "tutorial-description-write-warning" = "Do not share this passphrase with anyone, as it grants full access to your account.";
 "tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";

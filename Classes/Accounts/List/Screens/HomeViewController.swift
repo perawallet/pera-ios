@@ -102,6 +102,8 @@ final class HomeViewController:
     override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .accountList)
     }
+    
+    private lazy var successAnimationImageView = LottieImageView()
 
     private lazy var listView =
         UICollectionView(frame: .zero, collectionViewLayout: HomeListLayout.build())
@@ -239,6 +241,11 @@ final class HomeViewController:
         dataController.fetchAnnouncements()
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
+        
+        if PeraUserDefaults.shouldShowNewAccountAnimation ?? false {
+            playAnimation()
+            PeraUserDefaults.shouldShowNewAccountAnimation = false
+        }
     }
 
     override func viewWillDisappear(
@@ -268,6 +275,17 @@ final class HomeViewController:
             }
 
             self.configureNewNotificationBarButton()
+        }
+    }
+    
+    private func playAnimation() {
+        successAnimationImageView.isHidden = false
+        var configuration = LottieImageView.Configuration()
+        configuration.loopMode = .playOnce
+        successAnimationImageView.play(with: configuration) { finished in
+            if finished {
+                self.successAnimationImageView.isHidden = true
+            }
         }
     }
     
@@ -374,6 +392,7 @@ extension HomeViewController {
     private func addUI() {
         addListBackground()
         addList()
+        addSuccessAnimation()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -487,6 +506,17 @@ extension HomeViewController {
         listView.showsHorizontalScrollIndicator = false
         listView.alwaysBounceVertical = true
         listView.delegate = self
+    }
+    
+    private func addSuccessAnimation() {
+        successAnimationImageView.isHidden = true
+        successAnimationImageView.setAnimation("pera-confetti")
+        view.addSubview(successAnimationImageView)
+        successAnimationImageView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(600)
+        }
     }
 }
 

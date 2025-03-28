@@ -20,16 +20,16 @@ import UIKit
 
 struct MnemonicTypeSelectionViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let bip39ViewTheme: MnemonicTypeViewTheme
-    let algo25ViewTheme: MnemonicTypeViewTheme
+    let bip39ViewTheme: MnemonicTypeViewNewTheme
+    let algo25ViewTheme: MnemonicTypeViewLegacyTheme
     
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
-        self.bip39ViewTheme = MnemonicTypeViewTheme(family)
-        self.algo25ViewTheme = MnemonicTypeViewTheme(family)
+        self.bip39ViewTheme = MnemonicTypeViewNewTheme(family)
+        self.algo25ViewTheme = MnemonicTypeViewLegacyTheme(family)
 
         self.horizontalInset = 24
         self.verticalInset = 20

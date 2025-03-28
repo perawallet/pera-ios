@@ -23,15 +23,40 @@ final class HDWalletSetupDataController {
     private let hdWallets: [HDWalletInfoViewModel]
     
     init(configuration: ViewControllerConfiguration) {
-        hdWallets = configuration.session?.authenticatedUser?.hdWallets ?? []
-        Task { @MainActor in
-            for hdWallet in hdWallets {
-                
-                var mainCurrency = 0.0
-                var secondaryCurrency = 0.0
-                let addressesForHDWallet = configuration.session?.authenticatedUser?.accounts(withWalletId: hdWallet.walletId).map { $0.address } ?? []
-                
-                guard let api = configuration.api else {
+        if let hdWalletsList = configuration.session?.authenticatedUser?.hdWallets {
+            hdWallets = hdWalletsList.sorted {
+                let number1 = Int($0.walletName.split(separator: "#").last ?? "") ?? 0
+                let number2 = Int($1.walletName.split(separator: "#").last ?? "") ?? 0
+                return number1 < number2
+            }
+            
+            Task { @MainActor in
+                for hdWallet in hdWallets {
+                    
+                    var mainCurrency = 0.0
+                    var secondaryCurrency = 0.0
+                    let addressesForHDWallet = configuration.session?.authenticatedUser?.accounts(withWalletId: hdWallet.walletId).map { $0.address } ?? []
+                    
+                    guard let api = configuration.api else {
+                        items.append(HDWalletItemViewModel(
+                            walletName: hdWallet.walletName,
+                            accountsCount: configuration.session?.authenticatedUser?.addresses(forWalletId: hdWallet.walletId) ?? 0,
+                            mainCurrency: mainCurrency,
+                            secondaryCurrency: secondaryCurrency,
+                            currencyFormatter: CurrencyFormatter(),
+                            currencyProvider: configuration.sharedDataController.currency
+                        ))
+                        continue
+                    }
+                    
+                    for address in addressesForHDWallet {
+                        if let lookupInfo = await configuration.hdWalletService.fastLookupAccount(address: address, api: api),
+                           lookupInfo.accountExists {
+                            mainCurrency += Double(lookupInfo.algoValue) ?? 0
+                            secondaryCurrency += Double(lookupInfo.usdValue) ?? 0
+                        }
+                    }
+                    
                     items.append(HDWalletItemViewModel(
                         walletName: hdWallet.walletName,
                         accountsCount: configuration.session?.authenticatedUser?.addresses(forWalletId: hdWallet.walletId) ?? 0,
@@ -40,26 +65,11 @@ final class HDWalletSetupDataController {
                         currencyFormatter: CurrencyFormatter(),
                         currencyProvider: configuration.sharedDataController.currency
                     ))
-                    continue
                 }
-                
-                for address in addressesForHDWallet {
-                    if let lookupInfo = await configuration.hdWalletService.fastLookupAccount(address: address, api: api),
-                       lookupInfo.accountExists {
-                        mainCurrency += Double(lookupInfo.algoValue) ?? 0
-                        secondaryCurrency += Double(lookupInfo.usdValue) ?? 0
-                    }
-                }
-                
-                items.append(HDWalletItemViewModel(
-                    walletName: hdWallet.walletName,
-                    accountsCount: configuration.session?.authenticatedUser?.addresses(forWalletId: hdWallet.walletId) ?? 0,
-                    mainCurrency: mainCurrency,
-                    secondaryCurrency: secondaryCurrency,
-                    currencyFormatter: CurrencyFormatter(),
-                    currencyProvider: configuration.sharedDataController.currency
-                ))
+                eventHandler?(.didFinishFastLookup)
             }
+        } else {
+            hdWallets = []
             eventHandler?(.didFinishFastLookup)
         }
     }

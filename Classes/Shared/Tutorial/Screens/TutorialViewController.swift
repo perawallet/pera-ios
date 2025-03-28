@@ -318,6 +318,8 @@ extension TutorialViewController: TutorialViewDelegate {
             } else {
                 analytics.track(.onboardCreateAccountVerified(type: .start))
             }
+            
+            PeraUserDefaults.shouldShowNewAccountAnimation = true
 
             launchMain()
         default:
@@ -329,6 +331,7 @@ extension TutorialViewController: TutorialViewDelegate {
         flow: AccountSetupFlow,
         address: PublicKey?
     ) {
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
         if case .initializeAccount(mode: .watch) = flow {
             launchMain()
             return
@@ -456,6 +459,7 @@ extension TutorialViewController {
             if case .none = self.flow {
                 self.dismissScreen()
             } else {
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
                 tutorialViewController.launchMain()
             }
         }
@@ -473,7 +477,7 @@ enum Tutorial: Equatable {
     case backUpBip39(flow: AccountSetupFlow, address: String?)
     case writePassphrase(flow: AccountSetupFlow, address: String)
     case watchAccount
-    case recoverWithPassphrase
+    case recoverWithPassphrase (walletFlowType: WalletFlowType)
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled

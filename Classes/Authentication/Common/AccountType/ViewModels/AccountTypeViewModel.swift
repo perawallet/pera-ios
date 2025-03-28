@@ -24,11 +24,19 @@ struct AccountTypeViewModel: PairedViewModel {
     private(set) var title: EditText?
     private(set) var detail: EditText?
     private(set) var badge: String?
+    private(set) var shouldShowNewAccountWarning: Bool = false
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
         bindTitle(model)
         bindDetail(model)
+        
+        switch model {
+        case .addBip39Address:
+            shouldShowNewAccountWarning = true
+        default:
+            shouldShowNewAccountWarning = false
+        }
     }
 }
 
@@ -69,7 +77,7 @@ extension AccountTypeViewModel {
         case .addAlgo25Account, .addBip39Wallet:
             titleText = "account-type-selection-create-wallet".localized
         case .addBip39Address:
-            titleText = "account-type-selection-create-address".localized
+            titleText = "account-type-selection-create".localized
         case let .recover(type):
             switch type {
             case .passphrase:
@@ -118,7 +126,7 @@ extension AccountTypeViewModel {
         case .addAlgo25Account, .addBip39Wallet:
             detailText = "account-type-selection-create-wallet-detail".localized
         case .addBip39Address:
-            detailText = "account-type-selection-create-address-detail".localized
+            detailText = "account-type-selection-create-one-key-detail".localized
         case let .recover(type):
             switch type {
             case .passphrase:
