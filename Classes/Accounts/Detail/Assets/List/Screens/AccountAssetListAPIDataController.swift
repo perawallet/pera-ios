@@ -54,6 +54,7 @@ final class AccountAssetListAPIDataController:
     
     private func setupCallbacks() {
         ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .dropFirst()
             .sink { [weak self] _ in self?.reload() }
             .store(in: &cancellables)
     }

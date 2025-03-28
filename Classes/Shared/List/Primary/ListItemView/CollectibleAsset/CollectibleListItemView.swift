@@ -14,7 +14,6 @@
 
 //   CollectibleListItemView.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
@@ -170,8 +169,6 @@ extension CollectibleListItemView {
     
     private func addLoadingIndicator(_ theme: CollectibleListItemViewTheme) {
         loadingIndicatorView.applyStyle(theme.loadingIndicator)
-
-
         iconOverlayView.addSubview(loadingIndicatorView)
         loadingIndicatorView.snp.makeConstraints {
             $0.fitToSize(theme.loadingIndicatorSize)

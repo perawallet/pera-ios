@@ -39,7 +39,7 @@ final class AccountAssetListViewController:
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: AssetListCollectionView = {
-        let collectionViewLayout = AccountAssetListLayout.build(swipeActionCallback: { [weak self] in self?.handleSwipeAction(indexPath: $0) })
+        let collectionViewLayout = AccountAssetListLayout.build(backgroundColor: theme.listBackgroundColor.uiColor, swipeActionCallback: { [weak self] in self?.handleSwipeAction(indexPath: $0) })
         let collectionView = AssetListCollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -47,7 +47,6 @@ final class AccountAssetListViewController:
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = theme.listBackgroundColor.uiColor
         collectionView.keyboardDismissMode = .interactive
         return collectionView
     }()

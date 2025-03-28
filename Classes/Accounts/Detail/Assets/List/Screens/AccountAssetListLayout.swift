@@ -40,10 +40,11 @@ final class AccountAssetListLayout: NSObject {
         super.init()
     }
 
-    static func build(swipeActionCallback: ((_ indexPath: IndexPath) -> SwipeMenuConfiguration?)? = nil) -> UICollectionViewLayout {
+    static func build(backgroundColor: UIColor? = nil, swipeActionCallback: ((_ indexPath: IndexPath) -> SwipeMenuConfiguration?)? = nil) -> UICollectionViewLayout {
         
         var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
         configuration.showsSeparators = false
+        configuration.backgroundColor = backgroundColor
         
         configuration.trailingSwipeActionsConfigurationProvider = {
             

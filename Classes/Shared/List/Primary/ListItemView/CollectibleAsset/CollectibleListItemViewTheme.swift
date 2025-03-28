@@ -39,6 +39,8 @@ struct CollectibleListItemViewTheme:
     var requestCount: TextStyle
     var requestCountBorderCorner: Corner
     var requestCountBorder: Border
+    let verticalPadding: CGFloat = 14.0
+    let horizontalPadding: CGFloat = 24.0
 
     init(_ family: LayoutFamily) {
         self.icon = URLImageViewCollectibleListItemTheme()

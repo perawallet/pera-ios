@@ -15,37 +15,72 @@
 //   CollectibleListItemCell.swift
 
 import UIKit
-import MacaroonUIKit
 
-final class CollectibleListItemCell:
-    CollectionCell<CollectibleListItemView>,
-    ViewModelBindable {
-    override static var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
-    }
-
+final class CollectibleListItemCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
     static let theme = CollectibleListItemViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
+    
+    // MARK: - Subviews
+    
+    let contextView: CollectibleListItemView = {
+        let view = CollectibleListItemView()
+        view.customize(CollectibleListItemCell.theme)
+        return view
+    }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.Layer.grayLighter.uiColor
+        return view
+    }()
+    
+    // MARK: - Initialisers
+    
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        contextView.customize(Self.theme)
-
-        let separator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 24))
-        )
-        separatorStyle = .single(separator)
+        setupConstraints()
     }
-}
-
-extension CollectibleListItemCell {
-    func getTargetedPreview() -> UITargetedPreview {
-        return UITargetedPreview(
-           view: self,
-           backgroundColor: Colors.Defaults.background.uiColor
-       )
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupConstraints() {
+        
+        [contextView, separatorView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        
+        let constraints = [
+            contextView.topAnchor.constraint(equalTo: topAnchor, constant: Self.theme.verticalPadding),
+            contextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.theme.horizontalPadding),
+            contextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.theme.horizontalPadding),
+            contextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.theme.verticalPadding),
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80.0),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24.0),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    // MARK: - Actions
+    
+    static func calculatePreferredSize(_ viewModel: CollectibleListItemViewModel?, for theme: CollectibleListItemViewTheme, fittingIn size: CGSize) -> CGSize {
+        var preferredSize = CollectibleListItemView.calculatePreferredSize(viewModel, for: theme, fittingIn: size)
+        preferredSize.height += self.theme.verticalPadding * 2.0
+        return preferredSize
+    }
+    
+    func bindData(_ data: CollectibleListItemViewModel?) {
+        contextView.bindData(data)
+    }
+    
+    func getTargetedPreview() -> UITargetedPreview? {
+        UITargetedPreview(view: self, backgroundColor: Colors.Defaults.background.uiColor)
     }
 }
