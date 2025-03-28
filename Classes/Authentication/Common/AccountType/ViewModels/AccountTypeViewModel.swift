@@ -24,11 +24,19 @@ struct AccountTypeViewModel: PairedViewModel {
     private(set) var title: EditText?
     private(set) var detail: EditText?
     private(set) var badge: String?
+    private(set) var shouldShowNewAccountWarning: Bool = false
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
         bindTitle(model)
         bindDetail(model)
+        
+        switch model {
+        case .addBip39Address:
+            shouldShowNewAccountWarning = true
+        default:
+            shouldShowNewAccountWarning = false
+        }
     }
 }
 

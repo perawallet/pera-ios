@@ -23,6 +23,8 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let detail: TextStyle
+    let warning: TextStyle
+    let warningIcon: ImageStyle
 
     let badge: TextStyle
     let badgeCorner: Corner
@@ -30,9 +32,15 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let badgeHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
 
     let iconSize: LayoutSize
+    let warningIconSize: LayoutSize
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let minimumInset: LayoutMetric
+    let warningIconLeadingInset: LayoutMetric
+    let dashedLineInset: LayoutMetric
+    let warningViewHeight: LayoutMetric
+    let warningViewHorizontalInset: LayoutMetric
+    let warningViewTopInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
@@ -50,7 +58,19 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .isInteractable(false)
         ]
-
+        self.warning = [
+            .textOverflow(FittingText()),
+            .font(Typography.footnoteMedium()),
+            .textColor(Colors.Wallet.wallet3),
+            .text("account-type-selection-one-key-warning-title".localized),
+            .backgroundColor(Colors.Defaults.background),
+            .textAlignment(.center),
+            .isInteractable(false)
+        ]
+        self.warningIcon = [
+            .image("icon-info-20".templateImage),
+            .tintColor(Colors.Wallet.wallet3)
+        ]
         self.badge = [
             .textColor(Colors.Helpers.positive),
             .font(Typography.captionBold()),
@@ -66,8 +86,14 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
         )
 
         self.iconSize = (40, 40)
+        self.warningIconSize = (20, 20)
         self.horizontalInset = 24
         self.verticalInset = 24
         self.minimumInset = 2
+        self.warningIconLeadingInset = 3
+        self.dashedLineInset = 12
+        self.warningViewHeight = 20
+        self.warningViewHorizontalInset = 55
+        self.warningViewTopInset = 2
     }
 }
