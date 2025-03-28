@@ -6029,9 +6029,9 @@
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
-		D490B42F2D96CCA30051983E /* NewAccountWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningView.swift */; };
-		D490B4302D96CCA30051983E /* NewAccountWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningView.swift */; };
-		D490B4312D96CCA30051983E /* NewAccountWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningView.swift */; };
+		D490B42F2D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */; };
+		D490B4302D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */; };
+		D490B4312D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */; };
 		D49490312A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
 		D49490322A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
 		D49490332A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
@@ -10141,7 +10141,7 @@
 		D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListAPIDataController.swift; sourceTree = "<group>"; };
 		D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleReceiveSearchInputCell.swift; sourceTree = "<group>"; };
 		D490B42A2D958CBD0051983E /* pera-confetti.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "pera-confetti.json"; sourceTree = "<group>"; };
-		D490B42E2D96CCA20051983E /* NewAccountWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWarningView.swift; sourceTree = "<group>"; };
+		D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWarningOverlayView.swift; sourceTree = "<group>"; };
 		D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAuthorizationDeterminer.swift; sourceTree = "<group>"; };
 		D495D3F529A381DC00929635 /* MeldConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldConfig.swift; sourceTree = "<group>"; };
 		D495FB612834F61500BD273C /* FullScreenContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenContentViewController.swift; sourceTree = "<group>"; };
@@ -18534,7 +18534,7 @@
 			children = (
 				2B5BE06625190B7D00324BEE /* AccountTypeView.swift */,
 				D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */,
-				D490B42E2D96CCA20051983E /* NewAccountWarningView.swift */,
+				D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -26308,7 +26308,7 @@
 				2B9778682993D55200F88C7C /* NavigationPrimaryTitleItemViewModel.swift in Sources */,
 				2BBC2D49278B6EC80091B6FC /* ErrorView.swift in Sources */,
 				D48FDFE127CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift in Sources */,
-				D490B42F2D96CCA30051983E /* NewAccountWarningView.swift in Sources */,
+				D490B42F2D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */,
 				2BFA924A29CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift in Sources */,
 				F0454217287B767B0081C01C /* TotalPortfolioItem.swift in Sources */,
 				8B7852D72C0EE7CB00B41962 /* IncomingASAAccountsListLayout.swift in Sources */,
@@ -27566,7 +27566,7 @@
 				2BB0B12827830E7B00A16494 /* AccountAssetListLayout+Theme.swift in Sources */,
 				D43A0C4A2790D7D8007430B9 /* NoContentWithActionViewCommonTheme.swift in Sources */,
 				D46954A5296F3BF300D3D6C0 /* String+Additions.swift in Sources */,
-				D490B4312D96CCA30051983E /* NewAccountWarningView.swift in Sources */,
+				D490B4312D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */,
 				D4F4C90429D1B9710069FB94 /* AnyToNoAuthRekeyedAccountInformationScreenTheme.swift in Sources */,
 				046767972756A6E000C88F21 /* CurrencySelectionViewController+Theme.swift in Sources */,
 				8B98C16C2BFBE6CD00CFA0AF /* IncomingASAsDetailView.swift in Sources */,
@@ -31534,7 +31534,7 @@
 				2B6B423927BEC7030036BF9E /* MuteNotificationsListItemButtonViewModel.swift in Sources */,
 				2BA0157F2636B8A7009EC914 /* LedgerAccountVerificationView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
-				D490B4302D96CCA30051983E /* NewAccountWarningView.swift in Sources */,
+				D490B4302D96CCA30051983E /* NewAccountWarningOverlayView.swift in Sources */,
 				8B7852D52C0EE7CB00B41962 /* IncomingASAAccountsListLayout.swift in Sources */,
 				2B5739ED26F3F701007E0252 /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
 				D42DA4F02A8613ED00442908 /* WCV1SessionBadgeViewTheme.swift in Sources */,
