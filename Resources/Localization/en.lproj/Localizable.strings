@@ -150,6 +150,7 @@
 "account-type-selection-add" = "I want to create an account";
 "account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
+"account-type-selection-one-key-warning-title" = "Because you have already a ONE Key";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
 "account-type-selection-create-one-key-detail" = "Create a new account for an existing ONE Key Wallet";
 "account-type-selection-create-address" = "Create a new address";

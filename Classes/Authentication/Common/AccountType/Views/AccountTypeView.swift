@@ -100,5 +100,15 @@ extension AccountTypeView: ViewModelBindable {
         titleLabel.editText = viewModel?.title
         detailLabel.editText = viewModel?.detail
         badgeView.text = viewModel?.badge
+        
+        if viewModel?.shouldShowNewAccountWarning ?? false {
+            let view = NewAccountWarningView(theme: theme)
+            
+            addSubview(view)
+            view.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+
     }
 }
