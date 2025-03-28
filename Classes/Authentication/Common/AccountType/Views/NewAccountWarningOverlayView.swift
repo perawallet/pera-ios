@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NewAccountWarningView.swift
+//   NewAccountWarningOverlayView.swift
 
 import UIKit
 
-class NewAccountWarningView: UIView {
+class NewAccountWarningOverlayView: UIView {
     
     init(theme: AccountTypeViewTheme) {
         super.init(frame: .zero)

@@ -102,7 +102,7 @@ extension AccountTypeView: ViewModelBindable {
         badgeView.text = viewModel?.badge
         
         if viewModel?.shouldShowNewAccountWarning ?? false {
-            let view = NewAccountWarningView(theme: theme)
+            let view = NewAccountWarningOverlayView(theme: theme)
             
             addSubview(view)
             view.snp.makeConstraints {
