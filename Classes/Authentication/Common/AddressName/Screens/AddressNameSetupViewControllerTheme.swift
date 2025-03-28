@@ -94,8 +94,8 @@ struct AddressNameSetupViewControllerTheme:
         ]
         self.nameInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "address-name-setup-placeholder".localized,
-            floatingPlaceholder: "address-name-setup-placeholder".localized
+            placeholder: "account-name-setup-placeholder".localized,
+            floatingPlaceholder: "account-name-setup-placeholder".localized
         )
         self.nameInputMinHeight = 48
         self.action = [

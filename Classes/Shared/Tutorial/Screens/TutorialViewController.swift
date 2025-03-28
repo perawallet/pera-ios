@@ -479,7 +479,7 @@ enum Tutorial: Equatable {
     case backUpBip39(flow: AccountSetupFlow, address: String?)
     case writePassphrase(flow: AccountSetupFlow, address: String)
     case watchAccount
-    case recoverWithPassphrase
+    case recoverWithPassphrase (walletFlowType: WalletFlowType)
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled

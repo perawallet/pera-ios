@@ -75,8 +75,13 @@ extension TutorialViewModel {
             title = "tutorial-title-back-up".localized
         case .backUpBip39:
             title = "tutorial-title-back-up-bip39".localized
-        case .recoverWithPassphrase:
-            title = "tutorial-title-recover".localized
+        case .recoverWithPassphrase(walletFlowType: let walletFlowType):
+            switch walletFlowType {
+            case .algo25:
+                title = "tutorial-title-recover".localized
+            case .bip39:
+                title = "tutorial-title-recover-bip39".localized
+            }
         case .watchAccount:
             title = "title-watch-account".localized
         case .writePassphrase:
@@ -112,8 +117,13 @@ extension TutorialViewModel {
             description = "tutorial-description-back-up".localized
         case .backUpBip39:
             description = "tutorial-description-back-up-bip39".localized
-        case .recoverWithPassphrase:
-            description = "tutorial-description-recover".localized
+        case .recoverWithPassphrase(walletFlowType: let walletFlowType):
+            switch walletFlowType {
+            case .algo25:
+                description = "tutorial-description-recover".localized
+            case .bip39:
+                description = "tutorial-description-recover-bip39".localized
+            }
         case .watchAccount:
             description = "tutorial-description-watch".localized
         case .writePassphrase:
@@ -143,8 +153,13 @@ extension TutorialViewModel {
         switch tutorial {
         case .backUp, .backUpBip39:
             primaryActionButtonTitle = "tutorial-main-title-back-up".localized
-        case .recoverWithPassphrase:
-            primaryActionButtonTitle = "tutorial-main-title-recover".localized
+        case .recoverWithPassphrase(walletFlowType: let walletFlowType):
+            switch walletFlowType {
+            case .algo25:
+                primaryActionButtonTitle = "tutorial-main-title-recover".localized
+            case .bip39:
+                primaryActionButtonTitle = "tutorial-title-recover-bip39".localized
+            }
         case .watchAccount:
             primaryActionButtonTitle = "watch-account-button".localized
         case .writePassphrase:

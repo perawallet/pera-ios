@@ -20,6 +20,7 @@ class NewAccountWarningView: UIView {
     
     init(theme: AccountTypeViewTheme) {
         super.init(frame: .zero)
+        isUserInteractionEnabled = false
         loadView(theme: theme)
     }
     
