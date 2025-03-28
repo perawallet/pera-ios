@@ -6026,6 +6026,9 @@
 		D48FDFF727CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */; };
 		D48FDFF827CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */; };
 		D48FDFF927CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */; };
+		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
+		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
+		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D49490312A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
 		D49490322A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
 		D49490332A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */; };
@@ -10134,6 +10137,7 @@
 		D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListDataController.swift; sourceTree = "<group>"; };
 		D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListAPIDataController.swift; sourceTree = "<group>"; };
 		D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleReceiveSearchInputCell.swift; sourceTree = "<group>"; };
+		D490B42A2D958CBD0051983E /* pera-confetti.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "pera-confetti.json"; sourceTree = "<group>"; };
 		D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAuthorizationDeterminer.swift; sourceTree = "<group>"; };
 		D495D3F529A381DC00929635 /* MeldConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldConfig.swift; sourceTree = "<group>"; };
 		D495FB612834F61500BD273C /* FullScreenContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenContentViewController.swift; sourceTree = "<group>"; };
@@ -18709,6 +18713,7 @@
 				8BF250032CB03A1E00D2297B /* light-dots.json */,
 				F07F006F2923C5E800901F07 /* pera-loader-purple-dark.json */,
 				F07F006E2923C5E700901F07 /* pera-loader-purple-light.json */,
+				D490B42A2D958CBD0051983E /* pera-confetti.json */,
 				2B4E85AA260A6A7300FC04BB /* Ledger */,
 				2B99D48628F5606300323C11 /* Loader */,
 				D446A748272ABEC90081D60B /* Rekey */,
@@ -23924,6 +23929,7 @@
 			files = (
 				2B95410625A861830098805B /* Currency.json in Resources */,
 				2B516174243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
+				D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */,
 				2B95420725B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
 				2B9541B525AF161C0098805B /* TransactionParams.json in Resources */,
 				2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */,
@@ -24006,6 +24012,7 @@
 				F02F19E527DF52D80085521C /* Assets.xcassets in Resources */,
 				17B7E1D027DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
 				2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */,
+				D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */,
 				8BF250082CB03A1E00D2297B /* dark-dots.json in Resources */,
 				8BF250092CB03A1E00D2297B /* light-dots.json in Resources */,
 				2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */,
@@ -24047,6 +24054,7 @@
 				F02F19E627DF52D80085521C /* Assets.xcassets in Resources */,
 				17B7E1CF27DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
 				2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */,
+				D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */,
 				8BF250042CB03A1E00D2297B /* dark-dots.json in Resources */,
 				8BF250052CB03A1E00D2297B /* light-dots.json in Resources */,
 				2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,

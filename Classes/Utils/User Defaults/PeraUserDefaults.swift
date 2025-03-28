@@ -17,4 +17,5 @@
 enum PeraUserDefaults {
     @UserDefault(key: "wasPrivacyTooltipPresented") static var wasPrivacyTooltipPresented: Bool?
     @UserDefault(key: "isPrivacyModeEnabled") static var isPrivacyModeEnabled: Bool?
+    @UserDefault(key: "shouldShowNewAccountAnimation") static var shouldShowNewAccountAnimation: Bool?
 }
