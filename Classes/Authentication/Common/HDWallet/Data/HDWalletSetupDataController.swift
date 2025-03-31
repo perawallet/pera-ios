@@ -20,9 +20,13 @@ final class HDWalletSetupDataController {
     var eventHandler: ((Event) -> Void)?
 
     var items: [HDWalletItemViewModel] = []
-    private let hdWallets: [HDWalletInfoViewModel]
+    private var hdWallets: [HDWalletInfoViewModel] = []
     
     init(configuration: ViewControllerConfiguration) {
+        parseHDWallets(configuration: configuration)
+    }
+    
+    private func parseHDWallets(configuration: ViewControllerConfiguration) {
         if let hdWalletsList = configuration.session?.authenticatedUser?.hdWallets {
             hdWallets = hdWalletsList.sorted {
                 let number1 = Int($0.walletName.split(separator: "#").last ?? "") ?? 0
