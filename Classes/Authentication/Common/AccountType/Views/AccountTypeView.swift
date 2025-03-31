@@ -24,9 +24,9 @@ final class AccountTypeView: Control {
     private lazy var imageView = UIImageView()
     private lazy var titleLabel = UILabel()
     private lazy var detailLabel = UILabel()
-
     private lazy var badgeView = Label()
-
+    private lazy var warningOverlayView = UIView()
+    
     func customize(_ theme: AccountTypeViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
@@ -101,14 +101,19 @@ extension AccountTypeView: ViewModelBindable {
         detailLabel.editText = viewModel?.detail
         badgeView.text = viewModel?.badge
         
-        if viewModel?.shouldShowNewAccountWarning ?? false {
-            let view = NewAccountWarningOverlayView(theme: theme)
-            
-            addSubview(view)
-            view.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
+        guard viewModel?.shouldShowNewAccountWarning == true else { return }
+        addNewAccountWarningOverlayView()
+    }
+    
+    private func addNewAccountWarningOverlayView() {
+        if warningOverlayView.superview != nil {
+            warningOverlayView.removeFromSuperview()
         }
-
+        warningOverlayView = NewAccountWarningOverlayView(theme: theme)
+        
+        addSubview(warningOverlayView)
+        warningOverlayView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }

@@ -31,12 +31,7 @@ struct AccountTypeViewModel: PairedViewModel {
         bindTitle(model)
         bindDetail(model)
         
-        switch model {
-        case .addBip39Address:
-            shouldShowNewAccountWarning = true
-        default:
-            shouldShowNewAccountWarning = false
-        }
+        shouldShowNewAccountWarning = model.shouldShowNewAccountWarning
     }
 }
 

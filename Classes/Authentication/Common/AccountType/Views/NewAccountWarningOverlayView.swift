@@ -16,19 +16,23 @@
 
 import UIKit
 
-class NewAccountWarningOverlayView: UIView {
+final class NewAccountWarningOverlayView: UIView {
+    
+    // MARK: - Initialisers
     
     init(theme: AccountTypeViewTheme) {
         super.init(frame: .zero)
         isUserInteractionEnabled = false
-        loadView(theme: theme)
+        setupView(with: theme)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func loadView(theme: AccountTypeViewTheme) {
+    // MARK: - Setup
+    
+    private func setupView(with theme: AccountTypeViewTheme) {
         let dashedView = DashedBorderView()
         dashedView.backgroundColor = .clear
         
@@ -66,9 +70,12 @@ class NewAccountWarningOverlayView: UIView {
     }
 }
 
+// MARK: - DashedBorderView
 
-fileprivate class DashedBorderView: UIView {
+fileprivate final class DashedBorderView: UIView {
     private var dashBorder = CAShapeLayer()
+    
+    // MARK: - Initialisers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,17 +87,19 @@ fileprivate class DashedBorderView: UIView {
         setupBorder()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        dashBorder.frame = bounds
+        dashBorder.path = UIBezierPath(roundedRect: bounds, cornerRadius: 12).cgPath
+    }
+    
+    // MARK: - Setup
+
     private func setupBorder() {
         dashBorder.strokeColor = Colors.Wallet.wallet3.uiColor.cgColor
         dashBorder.lineDashPattern = [5, 3]
         dashBorder.lineWidth = 2
         dashBorder.fillColor = nil
         layer.addSublayer(dashBorder)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        dashBorder.frame = bounds
-        dashBorder.path = UIBezierPath(roundedRect: bounds, cornerRadius: 12).cgPath
     }
 }

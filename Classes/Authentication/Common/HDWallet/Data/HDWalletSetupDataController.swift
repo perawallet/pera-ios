@@ -29,9 +29,7 @@ final class HDWalletSetupDataController {
     private func parseHDWallets(configuration: ViewControllerConfiguration) {
         if let hdWalletsList = configuration.session?.authenticatedUser?.hdWallets {
             hdWallets = hdWalletsList.sorted {
-                let number1 = Int($0.walletName.split(separator: "#").last ?? "") ?? 0
-                let number2 = Int($1.walletName.split(separator: "#").last ?? "") ?? 0
-                return number1 < number2
+                return $0.walletOrderNumber < $1.walletOrderNumber
             }
             
             Task { @MainActor in
@@ -52,12 +50,19 @@ final class HDWalletSetupDataController {
                         ))
                         continue
                     }
-                    
-                    for address in addressesForHDWallet {
-                        if let lookupInfo = await configuration.hdWalletService.fastLookupAccount(address: address, api: api),
-                           lookupInfo.accountExists {
-                            mainCurrency += Double(lookupInfo.algoValue) ?? 0
-                            secondaryCurrency += Double(lookupInfo.usdValue) ?? 0
+
+                    await withTaskGroup(of: AccountFastLookup?.self) { group in
+                        for address in addressesForHDWallet {
+                            group.addTask {
+                                await configuration.hdWalletService.fastLookupAccount(address: address, api: api)
+                            }
+                        }
+
+                        for await lookupInfo in group {
+                            if let lookupInfo, lookupInfo.accountExists {
+                                mainCurrency += Double(lookupInfo.algoValue) ?? 0
+                                secondaryCurrency += Double(lookupInfo.usdValue) ?? 0
+                            }
                         }
                     }
                     
