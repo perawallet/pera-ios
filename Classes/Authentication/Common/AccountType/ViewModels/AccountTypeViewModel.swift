@@ -24,7 +24,7 @@ struct AccountTypeViewModel: PairedViewModel {
     private(set) var title: EditText?
     private(set) var detail: EditText?
     private(set) var badge: String?
-    private(set) var shouldShowNewAccountWarning: Bool = false
+    private(set) var shouldShowNewAccountWarning = false
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
