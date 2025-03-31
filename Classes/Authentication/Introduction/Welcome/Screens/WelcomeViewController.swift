@@ -35,18 +35,6 @@ final class WelcomeViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        let defaultAppearance = UINavigationBarAppearance()
-        defaultAppearance.configureWithOpaqueBackground()
-        defaultAppearance.backgroundColor = theme.backgroundColor.uiColor
-        defaultAppearance.shadowColor = theme.backgroundColor.uiColor
-        
-        navigationController?.navigationBar.standardAppearance = defaultAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = defaultAppearance
-    }
 
     override func bindData() {
         welcomeView.bindData(WelcomeViewModel(with : flow))
@@ -63,6 +51,7 @@ final class WelcomeViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .clear
@@ -70,6 +59,18 @@ final class WelcomeViewController: BaseViewController {
 
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let defaultAppearance = UINavigationBarAppearance()
+        defaultAppearance.configureWithOpaqueBackground()
+        defaultAppearance.backgroundColor = theme.backgroundColor.uiColor
+        defaultAppearance.shadowColor = theme.backgroundColor.uiColor
+        
+        navigationController?.navigationBar.standardAppearance = defaultAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = defaultAppearance
     }
     
     override func configureAppearance() {

@@ -96,6 +96,10 @@ final class User: Codable {
 struct HDWalletInfoViewModel: Equatable {
     let walletId: String
     let walletName: String
+    
+    var walletOrderNumber: Int {
+        Int(walletName.split(separator: "#").last ?? "") ?? 0
+    }
 }
 
 extension User {

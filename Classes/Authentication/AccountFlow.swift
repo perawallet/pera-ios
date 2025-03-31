@@ -57,6 +57,20 @@ enum AccountSetupMode: Equatable {
     case none
 }
 
+extension AccountSetupMode {
+    var shouldShowNewAccountWarning: Bool {
+        switch self {
+        case .addBip39Address:
+            return true
+        case .addAlgo25Account, .addBip39Wallet, .recover, .rekey, .watch:
+            return false
+        case .none:
+            assertionFailure("Should not happen")
+            return false
+        }
+    }
+}
+
 enum RecoverType: Equatable {
     case passphrase
     case importFromSecureBackup

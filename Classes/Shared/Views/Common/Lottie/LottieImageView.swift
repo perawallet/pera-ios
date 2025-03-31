@@ -51,9 +51,15 @@ extension LottieImageView {
         animationView.animation = LottieAnimation.named(jsonName)
     }
 
-    func play(with configuration: LottieImageView.Configuration, completion: ((Bool) -> Void)? = nil) {
-        animationView.play(fromProgress: configuration.from, toProgress: configuration.to, loopMode: configuration.loopMode) { finished in
-            completion?(finished)
+    func play(with configuration: LottieImageView.Configuration) {
+        animationView.play(fromProgress: configuration.from, toProgress: configuration.to, loopMode: configuration.loopMode)
+    }
+    
+    func play(with configuration: LottieImageView.Configuration) async -> Bool {
+        await withCheckedContinuation { continuation in
+            animationView.play(fromProgress: configuration.from, toProgress: configuration.to, loopMode: configuration.loopMode) { finished in
+                continuation.resume(returning: finished)
+            }
         }
     }
 

@@ -243,7 +243,7 @@ final class HomeViewController:
         lastSeenNotificationController?.checkStatus()
         
         if PeraUserDefaults.shouldShowNewAccountAnimation ?? false {
-            playAnimation()
+            Task { await playAnimation() }
             PeraUserDefaults.shouldShowNewAccountAnimation = false
         }
     }
@@ -278,14 +278,15 @@ final class HomeViewController:
         }
     }
     
-    private func playAnimation() {
+    private func playAnimation() async {
         successAnimationImageView.isHidden = false
         var configuration = LottieImageView.Configuration()
         configuration.loopMode = .playOnce
-        successAnimationImageView.play(with: configuration) { finished in
-            if finished {
-                self.successAnimationImageView.isHidden = true
-            }
+        
+        let isFinished = await successAnimationImageView.play(with: configuration)
+        
+        if isFinished {
+            successAnimationImageView.isHidden = true
         }
     }
     
@@ -513,9 +514,7 @@ extension HomeViewController {
         successAnimationImageView.setAnimation("pera-confetti")
         view.addSubview(successAnimationImageView)
         successAnimationImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(600)
+            $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
         }
     }
 }
