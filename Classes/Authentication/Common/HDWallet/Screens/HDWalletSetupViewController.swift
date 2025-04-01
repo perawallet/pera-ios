@@ -97,8 +97,10 @@ final class HDWalletSetupViewController:
         dataController.eventHandler = { event in
             switch event {
             case .didFinishFastLookup:
-                self.collectionView.reloadData()
-                self.loadingController?.stopLoading()
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.loadingController?.stopLoading()
+                }
             }
         }
     }
