@@ -222,14 +222,16 @@ extension TutorialViewController: TutorialViewDelegate {
 
             switch walletType {
             case .algo25:
-                open(
+                let screen = open(
                     .accountNameSetup(
                         flow: flow,
                         mode: .addAlgo25Account,
                         accountAddress: account.address
                     ),
                     by: .push
-                )
+                ) as? AccountNameSetupViewController
+                screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                screen?.hidesCloseBarButtonItem = true
             case .bip39:
                 let screen = open(
                     .addressNameSetup(
