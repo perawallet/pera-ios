@@ -80,8 +80,24 @@ extension AlgorandSecureBackupAccountListLocalDataController {
         guard let selectedAccount = accounts[index] else {
             return
         }
-
-        selectedAccounts[index] = selectedAccount
+        
+        guard selectedAccount.isHDAccount else {
+            selectedAccounts[index] = selectedAccount
+            return
+        }
+        
+        guard let walletId = selectedAccount.hdWalletAddressDetail?.walletId else { return }
+        let walletAccounts = accounts.values.filter { $0.hdWalletAddressDetail?.walletId == walletId }
+        
+        for account in walletAccounts {
+            if let accountIndex = getIndex(of: account.address) {
+                selectedAccounts[accountIndex] = account
+            }
+        }
+    }
+    
+    private func getIndex(of accountAddress: String) -> Index? {
+        return accounts.first { $0.value.address == accountAddress }?.key
     }
 
     func unselectAccountItem(at index: Index ) {

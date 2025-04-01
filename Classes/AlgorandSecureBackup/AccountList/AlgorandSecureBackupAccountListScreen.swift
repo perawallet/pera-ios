@@ -441,6 +441,7 @@ extension AlgorandSecureBackupAccountListScreen {
         }
 
         dataController.selectAccountItem(at: index)
+        listView.reloadData()
     }
 }
 
