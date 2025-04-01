@@ -381,6 +381,13 @@ extension TutorialViewController {
             localAccount.isBackedUp = true
             session?.authenticatedUser?.updateAccount(localAccount)
         }
+        
+        if let walletId = account.hdWalletAddressDetail?.walletId {
+            session?.authenticatedUser?.accounts(withWalletId: walletId).forEach { account in
+                account.isBackedUp = true
+                session?.authenticatedUser?.updateAccount(account)
+            }
+        }
 
         if let cachedAccount = sharedDataController.accountCollection[account.address]?.value {
             cachedAccount.isBackedUp = true
