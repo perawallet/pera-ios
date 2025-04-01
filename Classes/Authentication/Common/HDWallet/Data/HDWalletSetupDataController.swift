@@ -19,7 +19,7 @@ import UIKit
 final class HDWalletSetupDataController {
     var eventHandler: ((Event) -> Void)?
 
-    var items: [HDWalletItemViewModel] = []
+    private(set) var items: [HDWalletItemViewModel] = []
     private var hdWallets: [HDWalletInfoViewModel] = []
     
     init(configuration: ViewControllerConfiguration) {
@@ -27,60 +27,59 @@ final class HDWalletSetupDataController {
     }
     
     private func parseHDWallets(configuration: ViewControllerConfiguration) {
-        if let hdWalletsList = configuration.session?.authenticatedUser?.hdWallets {
-            hdWallets = hdWalletsList.sorted {
-                return $0.walletOrderNumber < $1.walletOrderNumber
-            }
-            
-            Task { @MainActor in
-                for hdWallet in hdWallets {
-                    
-                    var mainCurrency = 0.0
-                    var secondaryCurrency = 0.0
-                    let addressesForHDWallet = configuration.session?.authenticatedUser?.accounts(withWalletId: hdWallet.walletId).map { $0.address } ?? []
-                    
-                    guard let api = configuration.api else {
-                        items.append(HDWalletItemViewModel(
-                            walletName: hdWallet.walletName,
-                            accountsCount: configuration.session?.authenticatedUser?.addresses(forWalletId: hdWallet.walletId) ?? 0,
-                            mainCurrency: mainCurrency,
-                            secondaryCurrency: secondaryCurrency,
-                            currencyFormatter: CurrencyFormatter(),
-                            currencyProvider: configuration.sharedDataController.currency
-                        ))
-                        continue
-                    }
+        let hdWalletsList = configuration.session?.authenticatedUser?.hdWallets ?? []
+        hdWallets = hdWalletsList.sorted { $0.walletOrderNumber < $1.walletOrderNumber }
 
-                    await withTaskGroup(of: AccountFastLookup?.self) { group in
-                        for address in addressesForHDWallet {
-                            group.addTask {
-                                await configuration.hdWalletService.fastLookupAccount(address: address, api: api)
-                            }
-                        }
-
-                        for await lookupInfo in group {
-                            if let lookupInfo, lookupInfo.accountExists {
-                                mainCurrency += Double(lookupInfo.algoValue) ?? 0
-                                secondaryCurrency += Double(lookupInfo.usdValue) ?? 0
-                            }
-                        }
-                    }
-                    
-                    items.append(HDWalletItemViewModel(
-                        walletName: hdWallet.walletName,
-                        accountsCount: configuration.session?.authenticatedUser?.addresses(forWalletId: hdWallet.walletId) ?? 0,
-                        mainCurrency: mainCurrency,
-                        secondaryCurrency: secondaryCurrency,
-                        currencyFormatter: CurrencyFormatter(),
-                        currencyProvider: configuration.sharedDataController.currency
-                    ))
-                }
-                eventHandler?(.didFinishFastLookup)
+        Task {
+            var newItems = [HDWalletItemViewModel]()
+            for wallet in hdWallets {
+                let viewModel = await makeHDWalletViewModel(name: wallet.walletName, walletID: wallet.walletId, configuration: configuration)
+                newItems.append(viewModel)
             }
-        } else {
-            hdWallets = []
+            items = newItems
             eventHandler?(.didFinishFastLookup)
         }
+    }
+
+    private func makeHDWalletViewModel(name: String, walletID: String, configuration: ViewControllerConfiguration) async -> HDWalletItemViewModel {
+
+        let addresses = configuration.session?.authenticatedUser?.accounts(withWalletId: walletID).map(\.address) ?? []
+        
+        let accountsCount = configuration.session?.authenticatedUser?.addresses(forWalletId: walletID) ?? 0
+        let currencyValues = await calculateCurrencyValues(addresses: addresses, configuration: configuration)
+
+        return HDWalletItemViewModel(
+            walletName: name,
+            accountsCount: accountsCount,
+            mainCurrency: currencyValues.main,
+            secondaryCurrency: currencyValues.secondary,
+            currencyFormatter: CurrencyFormatter(),
+            currencyProvider: configuration.sharedDataController.currency
+        )
+    }
+
+    private func calculateCurrencyValues(addresses: [String], configuration: ViewControllerConfiguration) async -> (main: Double, secondary: Double) {
+
+        guard let api = configuration.api else { return (0.0, 0.0) }
+
+        var mainCurrency = 0.0
+        var secondaryCurrency = 0.0
+
+        await withTaskGroup(of: AccountFastLookup?.self) { group in
+            for address in addresses {
+                group.addTask {
+                    await configuration.hdWalletService.fastLookupAccount(address: address, api: api)
+                }
+            }
+
+            for await lookupInfo in group {
+                guard let lookupInfo, lookupInfo.accountExists else { continue }
+                mainCurrency += Double(lookupInfo.algoValue) ?? 0.0
+                secondaryCurrency += Double(lookupInfo.usdValue) ?? 0.0
+            }
+        }
+
+        return (mainCurrency, secondaryCurrency)
     }
 }
 
