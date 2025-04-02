@@ -252,7 +252,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func appendSectionsForAccountNotBackedUpWarningIfNeeded(into snapshot: inout Snapshot) {
-        guard !account.value.isBackedUp else { return }
+        guard !account.value.isBackedUp, account.value.hasBalance else { return }
 
         let items = makeItemsForAccountNotBackedUpWarning()
         snapshot.appendSections([ .accountNotBackedUpWarning ])

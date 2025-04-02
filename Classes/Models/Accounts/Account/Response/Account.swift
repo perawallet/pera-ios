@@ -206,6 +206,14 @@ extension Account {
 
         return subtitle
     }
+    
+    var hasBalance: Bool {
+        if algo.amount > 0 {
+            return true
+        }
+        
+        return assets?.contains { $0.amount > 0 } ?? false || allAssets?.contains { $0.amount > 0 } ?? false
+    }
 }
 
 extension Account {
