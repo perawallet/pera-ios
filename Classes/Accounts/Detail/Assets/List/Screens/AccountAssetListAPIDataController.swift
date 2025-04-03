@@ -211,9 +211,9 @@ extension AccountAssetListAPIDataController {
 
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
-        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssetsLoading(into: &snapshot)
         return Updates(snapshot: snapshot, operation: operation)
     }
@@ -240,9 +240,9 @@ extension AccountAssetListAPIDataController {
         for operation: Updates.Operation
     ) -> Updates {
         var snapshot = Snapshot()
-        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssets(
             query: query,
             into: &snapshot

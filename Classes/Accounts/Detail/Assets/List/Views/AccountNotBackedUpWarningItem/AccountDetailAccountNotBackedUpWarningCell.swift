@@ -23,7 +23,7 @@ final class AccountDetailAccountNotBackedUpWarningCell:
     ViewModelBindable,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
-        return (24, 24, 0, 24)
+        return (0, 24, 24, 24)
     }
 
     static let theme: ActionableBannerViewTheme = {
