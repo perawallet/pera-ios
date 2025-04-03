@@ -31,7 +31,7 @@ struct CardsBannerViewModel: Hashable {
         subtitle =
             "cards-banner-subtitle"
                 .localized
-                .bodyRegular()
+                .footnoteRegular()
         image = "cards-banner-image"
         action = .attributedString(
             "cards-banner-button-title"
