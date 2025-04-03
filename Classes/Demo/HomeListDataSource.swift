@@ -68,6 +68,13 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                 )
                 cell.bindData(item)
                 return cell
+            case .cardsBanner(let item):
+                let cell = collectionView.dequeue(
+                    CardsBannerCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
             case .announcement(let item):
                 switch item.type {
                 case .generic, .backup:
@@ -119,6 +126,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             HomePortfolioCell.self,
             HomeQuickActionsCell.self,
             AccountNotBackedUpWarningCell.self,
+            CardsBannerCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
             StakingAnnouncementCell.self,

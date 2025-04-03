@@ -94,6 +94,13 @@ extension HomeListLayout {
                 sizeForAccountNotBackedUpWarningCellItem: item,
                 atSection: indexPath.section
             )
+        case .cardsBanner(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCardsBannerCellItem: item,
+                atSection: indexPath.section
+            )
         case .announcement(let item):
             return listView(
                 collectionView,
@@ -316,6 +323,33 @@ extension HomeListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
 
         return newSize
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCardsBannerCellItem item: CardsBannerViewModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = CardsBannerCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = CardsBannerCell.calculatePreferredSize(
+            item,
+            for: CardsBannerCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return CGSize(width: newSize.width, height: 188)
     }
 
     private func listView(

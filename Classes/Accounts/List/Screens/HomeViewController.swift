@@ -635,6 +635,22 @@ extension HomeViewController {
             openBackUpAccount()
         }
     }
+    
+    private func linkInteractors(
+        _ cell: CardsBannerCell
+    ) {
+        cell.startObserving(event: .performTryCards) {
+            [weak self] in
+            guard let self else { return }
+            print("Try Pera Cards")
+        }
+        
+        cell.startObserving(event: .performHideBanner) {
+            [weak self] in
+            guard let self else { return }
+            print("Hide Banner")
+        }
+    }
 
     private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
@@ -950,6 +966,8 @@ extension HomeViewController {
             }
         case .accountNotBackedUpWarning:
             linkInteractors(cell as! AccountNotBackedUpWarningCell)
+        case .cardsBanner:
+            linkInteractors(cell as! CardsBannerCell)
         case .announcement(let item):
             switch item.type {
             case .governance:

@@ -1805,3 +1805,8 @@ FAQ section.";
 
 /// MARK: - Privacy Mode
 "tooltip-privacy-mode" = "Tap value to hide your balance";
+
+/// MARK: Cards Banner
+"cards-banner-title" = "Pera Cards";
+"cards-banner-subtitle" = "No banks, exchanges, yearly, or sign-up fees necessary.";
+"cards-banner-button-title" = "Try Pera Cards";

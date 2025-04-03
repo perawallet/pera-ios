@@ -219,6 +219,8 @@ extension HomeAPIDataController {
             if shouldDisplayCriticalWarningForNotBackedUpAccounts {
                 appendAccountNotBackedUpItems(into: &snapshot)
             }
+            
+            appendCardsBanner(into: &snapshot)
 
             /// <note>
             /// If there is a critical warning, announcements section should not be displayed.
@@ -332,6 +334,19 @@ extension HomeAPIDataController {
         snapshot.appendItems(
             items,
             toSection: .accountNotBackedUpWarning
+        )
+    }
+    
+    private func appendCardsBanner(
+        into snapshot: inout Snapshot
+    ) {
+        snapshot.appendSections([ .cardsBanner ])
+
+        let viewModel = CardsBannerViewModel()
+        let items = [ HomeItemIdentifier.cardsBanner(viewModel) ]
+        snapshot.appendItems(
+            items,
+            toSection: .cardsBanner
         )
     }
 
