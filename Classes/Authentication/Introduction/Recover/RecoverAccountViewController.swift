@@ -106,8 +106,10 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
                 [unowned self] event in
                 switch event {
                 case .didSelectBip39:
+                    analytics.track(.onboardCreateAccount(type: .recoverOneKey))
                     open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .bip39), walletFlowType: .bip39), by: .push)
                 case .didSelectAlgo25:
+                    analytics.track(.onboardCreateAccount(type: .recoverAlgo25))
                     open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .algo25), walletFlowType:
                             .algo25), by: .push)
                 }
