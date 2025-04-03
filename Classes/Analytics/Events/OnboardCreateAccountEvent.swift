@@ -35,6 +35,8 @@ extension OnboardCreateAccountEvent {
         case skip
         case watch
         case watchComplete
+        case recoverAlgo25
+        case recoverOneKey
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -46,6 +48,10 @@ extension OnboardCreateAccountEvent {
                 return .onboardCreateAccountWatch
             case .watchComplete:
                 return .onboardCreateAccountWatchComplete
+            case .recoverAlgo25:
+                return .onboardCreateAccountRecoverAlgo25
+            case .recoverOneKey:
+                return .onboardCreateAccountRecoverOneKey
             }
         }
     }
