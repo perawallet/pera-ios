@@ -348,7 +348,7 @@ extension HomeListLayout {
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
-
+        // TODO: fix height
         return CGSize(width: newSize.width, height: 188)
     }
 

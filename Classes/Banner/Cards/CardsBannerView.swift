@@ -32,6 +32,7 @@ final class CardsBannerView:
     private lazy var titleView = UILabel()
     private lazy var subtitleView = UILabel()
     private lazy var actionView = MacaroonUIKit.Button()
+    private lazy var closeActionView = MacaroonUIKit.Button()
     private lazy var imageView = UIImageView()
 
     func customize(_ theme: CardsBannerTheme) {
@@ -92,12 +93,13 @@ final class CardsBannerView:
             titleSize.height +
             theme.spacingBetweenTitleAndSubtitle +
             subtitleSize.height +
-            theme.spacingBetweenContextAndAction +
+            theme.spacingBetweenSubtitleAndAction +
             theme.actionEdgeInsets.top +
             actionSize.height +
             theme.actionEdgeInsets.bottom +
             theme.contentPaddings.bottom
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+        // TODO: fix height
+        return CGSize((size.width, 188))
     }
 }
 
@@ -105,51 +107,34 @@ extension CardsBannerView {
     private func addContent(_ theme: CardsBannerTheme) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.top == theme.contentPaddings.top
-            $0.leading == theme.contentPaddings.leading
-            $0.trailing == theme.contentPaddings.trailing
-            $0.bottom == theme.contentPaddings.bottom
+            $0.edges.equalToSuperview()
         }
-        contentView.backgroundColor = .orange
-//        addContext(theme)
         addTitle(theme)
         addSubtitle(theme)
         addImage(theme)
         addAction(theme)
+        addCloseAction(theme)
     }
-
-//    private func addContext(_ theme: CardsBannerTheme) {
-//        contentView.addSubview(contextView)
-//        contextView.backgroundColor = .orange
-//        contextView.snp.makeConstraints {
-//            $0.top == 0
-//            $0.leading == 0
-//        }
-//
-//        addTitle(theme)
-//        addSubtitle(theme)
-//    }
 
     private func addTitle(_ theme: CardsBannerTheme) {
         titleView.customizeAppearance(theme.title)
-        titleView.backgroundColor = .cyan
         contentView.addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.top == contentView.snp.top
-            $0.leading == contentView.snp.leading
-            $0.trailing == contentView.snp.trailing - 42
-            $0.height == 28
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
+            $0.trailing == contentView.snp.trailing - theme.titleTrailingMargin
+            $0.height.equalTo(theme.titleHeight)
         }
     }
     
     private func addSubtitle(_ theme: CardsBannerTheme) {
         subtitleView.customizeAppearance(theme.subtitle)
-        subtitleView.backgroundColor = .green
         contentView.addSubview(subtitleView)
         subtitleView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom + 12
-            $0.leading == contentView.snp.leading + 24
-            $0.trailing == contentView.snp.trailing - 100
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndSubtitle
+            $0.leading == theme.contentPaddings.leading
+            $0.trailing == contentView.snp.trailing - theme.subtitleTrailingMargin
+            $0.height.equalTo(theme.subtitleHeight)
         }
     }
 
@@ -158,28 +143,46 @@ extension CardsBannerView {
 
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints {
-            $0.bottom.equalTo(contentView.safeAreaBottom)
-            $0.trailing.equalTo(contentView.snp.trailingMargin)
+            $0.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
     }
 
     private func addAction(_ theme: CardsBannerTheme) {
         actionView.customizeAppearance(theme.action)
         actionView.draw(corner: theme.actionCorner)
-
+        
         contentView.addSubview(actionView)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
         actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
-            $0.top == contentView.snp.bottom + theme.spacingBetweenContextAndAction
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing <= 0
+            $0.top == subtitleView.snp.bottom + theme.spacingBetweenSubtitleAndAction
+            $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.trailing
         }
 
         startPublishing(
             event: .performTryCards,
             for: actionView
+        )
+    }
+    
+    private func addCloseAction(_ theme: CardsBannerTheme) {
+        closeActionView.customizeAppearance(theme.closeAction)
+        closeActionView.draw(corner: theme.closeActionCorner)
+        contentView.addSubview(closeActionView)
+        
+        closeActionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.closeActionPadding)
+            $0.trailing.equalToSuperview().inset(theme.closeActionPadding)
+            $0.width.equalTo(theme.closeActionWidth)
+            $0.height.equalTo(theme.closeActionWidth)
+        }
+
+        startPublishing(
+            event: .performHideBanner,
+            for: closeActionView
         )
     }
 }

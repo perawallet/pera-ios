@@ -25,15 +25,24 @@ struct CardsBannerTheme:
     let corner: Corner
     let contentPaddings: LayoutPaddings
     let title: TextStyle
+    let titleHeight: LayoutMetric
+    let titleTrailingMargin: LayoutMetric
     let spacingBetweenTitleAndSubtitle: LayoutMetric
     let subtitle: TextStyle
+    let subtitleHeight: LayoutMetric
+    let subtitleTrailingMargin: LayoutMetric
     let spacingBetweenContextAndImage: LayoutMetric
     let image: ImageStyle
     let imageTopMargin: LayoutMetric
-    let spacingBetweenContextAndAction: LayoutMetric
+    let spacingBetweenSubtitleAndAction: LayoutMetric
     let action: ButtonStyle
     let actionCorner: Corner
     let actionEdgeInsets: LayoutPaddings
+    let closeAction: ButtonStyle
+    let closeActionWidth: LayoutMetric
+    let closeActionPadding: LayoutMetric
+    let closeActionCorner: Corner
+    let closeActionEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
@@ -42,27 +51,40 @@ struct CardsBannerTheme:
             .backgroundColor(Colors.Discover.main)
         ]
         self.corner = Corner(radius: 8)
-        self.contentPaddings = (24, 24, 24, 20)
+        self.contentPaddings = (24, 24, 20, 24)
         self.title = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.6))
+            .textColor(Colors.Text.white)
         ]
-        self.spacingBetweenTitleAndSubtitle = 8
+        self.titleHeight = 28
+        self.titleTrailingMargin = 42
+        self.spacingBetweenTitleAndSubtitle = 12
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Defaults.background)
+            .textColor(Colors.Text.white)
         ]
+        self.subtitleHeight = 50
+        self.subtitleTrailingMargin = 130
         self.spacingBetweenContextAndImage = 12
         self.image = [
             .contentMode(.scaleAspectFit)
         ]
         self.imageTopMargin = 8
-        self.spacingBetweenContextAndAction = 12
+        self.spacingBetweenSubtitleAndAction = 13
         self.action = [
-            .titleColor([.normal(Colors.Button.Primary.text)]),
-            .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.12))
+            .titleColor([.normal(Colors.Text.white)]),
+            .backgroundColor(Colors.Text.white.uiColor.withAlphaComponent(0.12)),
         ]
         self.actionCorner = Corner(radius: 4)
         self.actionEdgeInsets = (8, 16, 8, 16)
+        self.closeAction = [
+            .icon([.normal("icon-field-close".templateImage)]),
+            .backgroundColor(Colors.Text.white.uiColor.withAlphaComponent(0.12)),
+            .tintColor(Colors.Text.white)
+        ]
+        self.closeActionWidth = 24
+        self.closeActionPadding = 10
+        self.closeActionCorner = Corner(radius: closeActionWidth / 2)
+        self.closeActionEdgeInsets = (8, 16, 8, 16)
     }
 }
