@@ -207,7 +207,7 @@ extension HDWalletSetupViewController {
             name: hdWalletAddress.address.shortAddressDisplay,
             isWatchAccount: false,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
-            isBackedUp: false,
+            isBackedUp: session?.authenticatedUser?.accounts(withWalletId: hdWallet.id).first?.isBackedUp ?? false,
             hdWalletAddressDetail: hdWalletService.createAddressDetail(for: existingHDWallet, in: accountIndex)
         )
         
