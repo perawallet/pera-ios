@@ -511,6 +511,7 @@ extension HomeViewController {
     
     private func addSuccessAnimation() {
         successAnimationImageView.isHidden = true
+        successAnimationImageView.isUserInteractionEnabled = false
         successAnimationImageView.setAnimation("pera-confetti")
         view.addSubview(successAnimationImageView)
         successAnimationImageView.snp.makeConstraints {
