@@ -72,6 +72,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>perawallet-wc</string>
+				<string>wc</string>
 			</array>
 		</dict>
 	</array>
@@ -142,5 +143,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>WC_V2_PROJECT_ID</key>
+ 	<string>$(WC_V2_PROJECT_ID)</string>
 </dict>
 </plist>
