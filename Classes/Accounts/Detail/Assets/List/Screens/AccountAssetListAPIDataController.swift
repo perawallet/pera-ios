@@ -54,6 +54,7 @@ final class AccountAssetListAPIDataController:
     
     private func setupCallbacks() {
         ObservableUserDefaults.shared.$isPrivacyModeEnabled
+            .dropFirst()
             .sink { [weak self] _ in self?.reload() }
             .store(in: &cancellables)
     }
@@ -210,9 +211,9 @@ extension AccountAssetListAPIDataController {
 
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
-        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssetsLoading(into: &snapshot)
         return Updates(snapshot: snapshot, operation: operation)
     }
@@ -239,9 +240,9 @@ extension AccountAssetListAPIDataController {
         for operation: Updates.Operation
     ) -> Updates {
         var snapshot = Snapshot()
-        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssets(
             query: query,
             into: &snapshot
@@ -252,7 +253,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func appendSectionsForAccountNotBackedUpWarningIfNeeded(into snapshot: inout Snapshot) {
-        guard !account.value.isBackedUp else { return }
+        guard !account.value.isBackedUp, account.value.hasBalance else { return }
 
         let items = makeItemsForAccountNotBackedUpWarning()
         snapshot.appendSections([ .accountNotBackedUpWarning ])

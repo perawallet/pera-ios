@@ -212,6 +212,14 @@ extension Account {
     var isHDAccount: Bool {
         return hdWalletAddressDetail != nil
     }
+    
+    var hasBalance: Bool {
+        if algo.amount > 0 {
+            return true
+        }
+        
+        return assets?.contains { $0.amount > 0 } ?? false || allAssets?.contains { $0.amount > 0 } ?? false
+    }
 }
 
 extension Account {
