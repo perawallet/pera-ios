@@ -140,7 +140,8 @@ extension User {
         syncronize()
     }
     
-    // Removes a specific account from the User's account list and the if it's an HDWallet removes the Keychain data for wallet and address
+    // Removes a specific account from the User's account list.
+    // If it's an HDWallet removes the Keychain data for address, if it's the last account in a wallet, the wallet is also removed from Keychain.
     func removeAccount(_ account: AccountInformation, storage: HDWalletStorable) {
         guard let index = index(of: account) else {
             return
@@ -152,6 +153,11 @@ extension User {
         if let hdWalletAddressDetail = account.hdWalletAddressDetail {
             do {
                 try storage.deleteAddress(walletId: hdWalletAddressDetail.walletId, address: account.address)
+                
+                if self.accounts(withWalletId: hdWalletAddressDetail.walletId).isEmpty {
+                    try storage.deleteWallet(id: hdWalletAddressDetail.walletId)
+                    self.removeWalletName(for: hdWalletAddressDetail.walletId)
+                }
             } catch {
                 assertionFailure("Error deleting wallet and address from Keychain: \(error)")
             }
