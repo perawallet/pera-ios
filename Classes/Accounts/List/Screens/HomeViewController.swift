@@ -625,6 +625,25 @@ extension HomeViewController {
             self.triggerBannerCTA(item: item)
         }
     }
+    
+    private func linkInteractors(
+        _ cell: CardAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.triggerBannerCTA(item: item)
+        }
+    }
 
     private func linkInteractors(
         _ cell: AccountNotBackedUpWarningCell
@@ -960,6 +979,8 @@ extension HomeViewController {
                 linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
             case .staking:
                 linkInteractors(cell as! StakingAnnouncementCell, for: item)
+            case .card:
+                linkInteractors(cell as! CardAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {
