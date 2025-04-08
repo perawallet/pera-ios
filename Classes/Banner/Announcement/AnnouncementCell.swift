@@ -89,3 +89,14 @@ final class GovernanceAnnouncementCell: AnnouncementCell {
         contextView.customize(Self.theme)
     }
 }
+
+final class CardAnnouncementCell: AnnouncementCell {
+    static let theme = CardAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}
