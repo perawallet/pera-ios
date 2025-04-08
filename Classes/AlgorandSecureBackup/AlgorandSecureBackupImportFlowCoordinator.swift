@@ -81,27 +81,20 @@ extension AlgorandSecureBackupImportFlowCoordinator {
     
     private func parseImportedAccounts(_ importedAccounts: [AccountImportParameters]) -> [Account] {
         let algorandSDK = AlgorandSDK()
-        let filteredAccounts = importedAccounts.filter { $0.isImportable(using: algorandSDK) }
+        return importedAccounts
+            .filter { $0.isImportable(using: algorandSDK) }
+            .map { accountParameter in
+                    let accountAddress = accountParameter.address
 
-        let restoredAccounts = filteredAccounts.map { accountParameter in
-            let accountAddress = accountParameter.address
+                    let accountInformation = AccountInformation(
+                        address: accountAddress,
+                        name: accountParameter.name ?? accountAddress.shortAddressDisplay,
+                        isWatchAccount: false,
+                        isBackedUp: true
+                    )
 
-            let accountInformation = AccountInformation(
-                address: accountAddress,
-                name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                isWatchAccount: false,
-                isBackedUp: true
-            )
-
-            return Account(localAccount: accountInformation)
-        }
-        let accounts: [Account] =
-            restoredAccounts
-                .filter {
-                    let isWatchAccount = $0.isWatchAccount
-                    let isRekeyedToAnyAccount = $0.hasAuthAccount()
-                    return !isWatchAccount && !isRekeyedToAnyAccount
+                    return Account(localAccount: accountInformation)
             }
-        return accounts
+            .filter { !$0.isWatchAccount &&  !$0.hasAuthAccount() }
     }
 }

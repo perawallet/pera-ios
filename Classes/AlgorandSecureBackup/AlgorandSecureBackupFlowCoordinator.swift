@@ -61,7 +61,7 @@ extension AlgorandSecureBackupFlowCoordinator {
         guard let session = configuration.session else { return }
 
         guard session.hasPassword() else {
-           self.openMnemonicsScreen(from: viewController)
+            openMnemonicsScreen(from: viewController)
             return
         }
 
