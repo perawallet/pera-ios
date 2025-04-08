@@ -285,7 +285,7 @@ extension User {
     
     // Generate the next available name for a new HD Wallet
     private func generateHDWalletName() -> String {
-        "hd-wallet-setup-wallet-name".localized(params: "\(hdWallets.count + 1)")
+        "hd-wallet-setup-wallet-name".localized(params: "\((walletNames.values.compactMap { name in Int(name.components(separatedBy: "#").last?.trimmingCharacters(in: .whitespaces) ?? "")}.max() ?? 0) + 1)")
     }
     
     // Deletes the name of the wallet by its id
