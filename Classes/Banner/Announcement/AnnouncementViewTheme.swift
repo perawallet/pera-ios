@@ -200,22 +200,22 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
 }
 
 struct CardAnnouncementViewTheme: AnnouncementViewTheme {
-    var background: ViewStyle
+    let background: ViewStyle
     var backgroundImage: ImageSource? = nil
-    var corner: Corner
-    var stackViewEdgeInset: LayoutMargins
-    var stackViewLayoutMargins: LayoutMargins
-    var stackViewItemSpacing: LayoutMetric
-    var stackViewButtonSpacing: LayoutMetric
-    var title: TextStyle
-    var subtitle: TextStyle
+    let corner: Corner
+    let stackViewEdgeInset: LayoutMargins
+    let stackViewLayoutMargins: LayoutMargins
+    let stackViewItemSpacing: LayoutMetric
+    let stackViewButtonSpacing: LayoutMetric
+    let title: TextStyle
+    let subtitle: TextStyle
     var subtitleNumberOfLines: Int? = nil
-    var action: ButtonStyle
-    var actionEdgeInsets: LayoutPaddings
-    var actionHeight: LayoutMetric
-    var close: ButtonStyle
-    var closeMargins: LayoutMargins
-    var closeSize: LayoutSize
+    let action: ButtonStyle
+    let actionEdgeInsets: LayoutPaddings
+    let actionHeight: LayoutMetric
+    let close: ButtonStyle
+    let closeMargins: LayoutMargins
+    let closeSize: LayoutSize
     
     init(
         _ family: LayoutFamily
