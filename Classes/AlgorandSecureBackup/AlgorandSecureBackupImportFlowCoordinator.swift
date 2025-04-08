@@ -51,7 +51,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
             switch event {
             case .decryptedBackup(let backupParameters):
-                self.openRestoreAccountListScreen(with: backupParameters.accounts, from: screen)
+                let accounts = parseImportedAccounts(backupParameters.accounts)
+                openSuccessScreen(accountImportParameters: backupParameters.accounts, selectedAccounts: accounts, from: screen)
             }
         }
 
@@ -77,26 +78,30 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
         viewController.open(screen, by: .push)
     }
+    
+    private func parseImportedAccounts(_ importedAccounts: [AccountImportParameters]) -> [Account] {
+        let algorandSDK = AlgorandSDK()
+        let filteredAccounts = importedAccounts.filter { $0.isImportable(using: algorandSDK) }
 
-    private func openRestoreAccountListScreen(
-        with importedAccounts: [AccountImportParameters],
-        from viewController: UIViewController
-    ) {
-        let screen: Screen = .algorandSecureBackupRestoreAccountList(
-            accountImportParameters: importedAccounts
-        ) { [weak self] event, screen in
-            guard let self else { return }
+        let restoredAccounts = filteredAccounts.map { accountParameter in
+            let accountAddress = accountParameter.address
 
-            switch event {
-            case .performContinue(let accounts):
-                self.openSuccessScreen(
-                    accountImportParameters: importedAccounts,
-                    selectedAccounts: accounts,
-                    from: screen
-                )
-            }
+            let accountInformation = AccountInformation(
+                address: accountAddress,
+                name: accountParameter.name ?? accountAddress.shortAddressDisplay,
+                isWatchAccount: false,
+                isBackedUp: true
+            )
+
+            return Account(localAccount: accountInformation)
         }
-
-        viewController.open(screen, by: .push)
+        let accounts: [Account] =
+            restoredAccounts
+                .filter {
+                    let isWatchAccount = $0.isWatchAccount
+                    let isRekeyedToAnyAccount = $0.hasAuthAccount()
+                    return !isWatchAccount && !isRekeyedToAnyAccount
+            }
+        return accounts
     }
 }

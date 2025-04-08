@@ -1745,16 +1745,6 @@ final class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupRestoreAccountList(accountImportParameters, eventHandler):
-            let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
-                accountImportParameters: accountImportParameters
-            )
-            let screen = AlgorandSecureBackupAccountRecoverListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .algorandSecureBackupRecoverMnemonic(let backup, let eventHandler):
             let screen = AlgorandSecureBackupRecoverMnemonicScreen(
                 backup: backup,
