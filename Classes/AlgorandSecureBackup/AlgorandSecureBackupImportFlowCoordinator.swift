@@ -89,7 +89,7 @@ extension AlgorandSecureBackupImportFlowCoordinator {
                     let accountInformation = AccountInformation(
                         address: accountAddress,
                         name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                        isWatchAccount: false,
+                        isWatchAccount: accountParameter.accountType.rawAccountType == .watch,
                         isBackedUp: true
                     )
 
