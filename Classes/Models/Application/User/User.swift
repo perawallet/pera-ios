@@ -150,17 +150,24 @@ extension User {
         removeBackup(from: account.address)
         accounts.remove(at: index)
         
-        if let hdWalletAddressDetail = account.hdWalletAddressDetail {
-            do {
-                try storage.deleteAddress(walletId: hdWalletAddressDetail.walletId, address: account.address)
-                
-                if self.accounts(withWalletId: hdWalletAddressDetail.walletId).isEmpty {
-                    try storage.deleteWallet(id: hdWalletAddressDetail.walletId)
-                    self.removeWalletName(for: hdWalletAddressDetail.walletId)
-                }
-            } catch {
-                assertionFailure("Error deleting wallet and address from Keychain: \(error)")
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail else {
+            syncronize()
+            return
+        }
+        
+        do {
+            try storage.deleteAddress(walletId: hdWalletAddressDetail.walletId, address: account.address)
+            
+            let walletId = hdWalletAddressDetail.walletId
+            guard accounts(withWalletId: walletId).isEmpty else {
+                syncronize()
+                return
             }
+            
+            try storage.deleteWallet(id: walletId)
+            removeWalletName(for: walletId)
+        } catch {
+            assertionFailure("Error deleting wallet and address from Keychain: \(error)")
         }
         
         syncronize()
@@ -285,7 +292,16 @@ extension User {
     
     // Generate the next available name for a new HD Wallet
     private func generateHDWalletName() -> String {
-        "hd-wallet-setup-wallet-name".localized(params: "\((walletNames.values.compactMap { name in Int(name.components(separatedBy: "#").last?.trimmingCharacters(in: .whitespaces) ?? "")}.max() ?? 0) + 1)")
+        let highestWalletNameNumber = walletNames.values
+            .compactMap { name in
+                name.components(separatedBy: "#")
+                    .last?
+                    .trimmingCharacters(in: .whitespaces)
+            
+            }
+            .compactMap { Int($0) }
+            .max() ?? 0
+        return "hd-wallet-setup-wallet-name".localized(params: "\(highestWalletNameNumber + 1)")
     }
     
     // Deletes the name of the wallet by its id
