@@ -51,7 +51,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
             switch event {
             case .decryptedBackup(let backupParameters):
-                self.openRestoreAccountListScreen(with: backupParameters.accounts, from: screen)
+                let accounts = parseImportedAccounts(backupParameters.accounts)
+                openSuccessScreen(accountImportParameters: backupParameters.accounts, selectedAccounts: accounts, from: screen)
             }
         }
 
@@ -77,26 +78,23 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
         viewController.open(screen, by: .push)
     }
+    
+    private func parseImportedAccounts(_ importedAccounts: [AccountImportParameters]) -> [Account] {
+        let algorandSDK = AlgorandSDK()
+        return importedAccounts
+            .filter { $0.isImportable(using: algorandSDK) }
+            .map { accountParameter in
+                    let accountAddress = accountParameter.address
 
-    private func openRestoreAccountListScreen(
-        with importedAccounts: [AccountImportParameters],
-        from viewController: UIViewController
-    ) {
-        let screen: Screen = .algorandSecureBackupRestoreAccountList(
-            accountImportParameters: importedAccounts
-        ) { [weak self] event, screen in
-            guard let self else { return }
+                    let accountInformation = AccountInformation(
+                        address: accountAddress,
+                        name: accountParameter.name ?? accountAddress.shortAddressDisplay,
+                        isWatchAccount: accountParameter.accountType.rawAccountType == .watch,
+                        isBackedUp: true
+                    )
 
-            switch event {
-            case .performContinue(let accounts):
-                self.openSuccessScreen(
-                    accountImportParameters: importedAccounts,
-                    selectedAccounts: accounts,
-                    from: screen
-                )
+                    return Account(localAccount: accountInformation)
             }
-        }
-
-        viewController.open(screen, by: .push)
+            .filter { !$0.isWatchAccount &&  !$0.hasAuthAccount() }
     }
 }
