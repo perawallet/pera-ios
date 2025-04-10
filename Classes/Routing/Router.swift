@@ -705,6 +705,8 @@ final class Router:
             viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
+        case let .addAccount(flow):
+            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .mnemonicTypeSelection(eventHandler):
             let screen = MnemonicTypeSelectionScreen(configuration: configuration)
             screen.eventHandler = eventHandler
