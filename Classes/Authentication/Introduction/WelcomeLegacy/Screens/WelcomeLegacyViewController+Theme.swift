@@ -1,4 +1,4 @@
-// Copyright 2024 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FeatureFlag.swift
+//   WelcomeLegacyViewController+Theme.swift
 
+import MacaroonUIKit
 import Foundation
 
-enum FeatureFlag: String, CaseIterable {
-    case immersiveEnabled = "enable_immersve"
-    case hdWalletEnabled = "enable_hd_wallet"
+extension WelcomeLegacyViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let welcomeViewTheme: WelcomeViewTheme
+        let backgroundColor: Color
 
-    var defaultValue: RemoteConfigValue {
-        switch self {
-        case .immersiveEnabled:
-            return .bool(false)
-        case .hdWalletEnabled:
-            return .bool(false)
+        init(_ family: LayoutFamily) {
+            welcomeViewTheme = WelcomeViewTheme()
+            backgroundColor = Colors.Defaults.background
         }
     }
 }
