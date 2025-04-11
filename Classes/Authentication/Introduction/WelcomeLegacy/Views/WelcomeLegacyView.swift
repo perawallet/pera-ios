@@ -32,7 +32,7 @@ final class WelcomeLegacyView:
     
     private var session: Session?
 
-    func customize(_ theme: WelcomeViewTheme, configuration: ViewControllerConfiguration) {
+    func customize(_ theme: WelcomeLegacyViewTheme, configuration: ViewControllerConfiguration) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         session = configuration.session
 
@@ -95,7 +95,7 @@ extension WelcomeLegacyView {
 }
 
 extension WelcomeLegacyView {
-    private func addTitle(_ theme: WelcomeViewTheme) {
+    private func addTitle(_ theme: WelcomeLegacyViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -105,7 +105,7 @@ extension WelcomeLegacyView {
         }
     }
 
-    private func addTermsAndConditionsTextView(_ theme: WelcomeViewTheme) {
+    private func addTermsAndConditionsTextView(_ theme: WelcomeLegacyViewTheme) {
         termsAndConditionsTextView.isEditable = false
         termsAndConditionsTextView.isScrollEnabled = false
         termsAndConditionsTextView.dataDetectorTypes = .link
@@ -125,7 +125,7 @@ extension WelcomeLegacyView {
         }
     }
 
-    private func addStackView(_ theme: WelcomeViewTheme) {
+    private func addStackView(_ theme: WelcomeLegacyViewTheme) {
         stackView.axis = .vertical
 
         addSubview(stackView)

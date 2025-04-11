@@ -27,8 +27,8 @@ final class WelcomeView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var termsAndConditionsTextView = UITextView()
-    private lazy var createWalletView = AccountTypeView()
-    private lazy var importWalletView = AccountTypeView()
+    private lazy var createWalletView = WelcomeTypeView()
+    private lazy var importWalletView = WelcomeTypeView()
     
     private var session: Session?
 
@@ -116,6 +116,7 @@ extension WelcomeView {
 
     private func addStackView(_ theme: WelcomeViewTheme) {
         stackView.axis = .vertical
+        stackView.spacing = 40
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
@@ -123,9 +124,9 @@ extension WelcomeView {
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
-        createWalletView.customize(theme.accountTypeViewTheme)
+        createWalletView.customize(theme.welcomeTypeViewTheme)
         stackView.addArrangedSubview(createWalletView)
-        importWalletView.customize(theme.accountTypeViewTheme)
+        importWalletView.customize(theme.welcomeTypeViewTheme)
         stackView.addArrangedSubview(importWalletView)
     }
 }

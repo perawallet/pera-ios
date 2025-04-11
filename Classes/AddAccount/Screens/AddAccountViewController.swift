@@ -97,23 +97,7 @@ extension AddAccountViewController: AddAccountViewDelegate {
     }
     
     func addAccountViewDidSelectCreateWallet(_ addAccountView: AddAccountView) {
-        
-        guard featureFlagService.isEnabled(.hdWalletEnabled) else {
-            self.openTutorialScreen(walletFlowType: .algo25)
-            return
-        }
-        
-        let eventHandler: MnemonicTypeSelectionScreen.EventHandler = {
-            [unowned self] event in
-            switch event {
-            case .didSelectBip39:
-                self.openTutorialScreen(walletFlowType: .bip39)
-            case .didSelectAlgo25:
-                self.openTutorialScreen(walletFlowType: .algo25)
-            }
-        }
-        
-        transitionToMnemonicTypeSelection.perform(.mnemonicTypeSelection(eventHandler: eventHandler),by: .present)
+        self.openTutorialScreen(walletFlowType: featureFlagService.isEnabled(.hdWalletEnabled) ? .bip39 : .algo25)
     }
     
     func addAccountViewDidSelectImport(_ addAccountView: AddAccountView) {

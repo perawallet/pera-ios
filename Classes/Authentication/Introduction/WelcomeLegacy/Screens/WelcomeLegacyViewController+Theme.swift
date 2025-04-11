@@ -19,11 +19,11 @@ import Foundation
 
 extension WelcomeLegacyViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let welcomeViewTheme: WelcomeViewTheme
+        let welcomeViewTheme: WelcomeLegacyViewTheme
         let backgroundColor: Color
 
         init(_ family: LayoutFamily) {
-            welcomeViewTheme = WelcomeViewTheme()
+            welcomeViewTheme = WelcomeLegacyViewTheme()
             backgroundColor = Colors.Defaults.background
         }
     }

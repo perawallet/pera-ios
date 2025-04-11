@@ -84,7 +84,7 @@ final class WelcomeLegacyViewController: BaseViewController {
         addPeraWelcomeLogo(theme.welcomeViewTheme)
     }
     
-    private func addPeraWelcomeLogo(_ theme: WelcomeViewTheme) {
+    private func addPeraWelcomeLogo(_ theme: WelcomeLegacyViewTheme) {
         peraWelcomeLogo.customizeAppearance(theme.peraWelcomeLogo)
         view.addSubview(peraWelcomeLogo)
         

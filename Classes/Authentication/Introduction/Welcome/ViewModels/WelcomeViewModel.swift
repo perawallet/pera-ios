@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 struct WelcomeViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var createWalletViewModel: AccountTypeViewModel?
-    private(set) var importWalletViewModel: AccountTypeViewModel?
+    private(set) var createWalletViewModel: WelcomeTypeViewModel?
+    private(set) var importWalletViewModel: WelcomeTypeViewModel?
 
     init(
         with flow: AccountSetupFlow
@@ -48,11 +48,11 @@ extension WelcomeViewModel {
     }
 
     private mutating func bindCreateWalletViewModel() {
-        createWalletViewModel = AccountTypeViewModel(.addBip39Wallet)
+        createWalletViewModel = WelcomeTypeViewModel(.addBip39Wallet)
     }
 
     private mutating func bindImportWalletViewModel() {
-        importWalletViewModel = AccountTypeViewModel(.recover(type: .none))
+        importWalletViewModel = WelcomeTypeViewModel(.recover(type: .none))
     }
 }
 

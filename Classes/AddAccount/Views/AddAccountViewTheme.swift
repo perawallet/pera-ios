@@ -60,7 +60,7 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
         
         self.horizontalInset = 24
         self.topInset = 2
-        self.peraWelcomeLogoTopInset = -100
+        self.peraWelcomeLogoTopInset = -122
         self.verticalInset = 16
     }
 }
