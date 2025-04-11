@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  WelcomeViewController.swift
+//   WelcomeLegacyViewController.swift
 
 import UIKit
 
-final class WelcomeViewController: BaseViewController {
-    private lazy var welcomeView = WelcomeView()
+final class WelcomeLegacyViewController: BaseViewController {
+    private lazy var welcomeView = WelcomeLegacyView()
     private lazy var peraWelcomeLogo = UIImageView()
     private lazy var theme = Theme()
 
@@ -33,11 +32,11 @@ final class WelcomeViewController: BaseViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        hidesCloseBarButtonItem = true
+        addBarButtons()
     }
 
     override func bindData() {
-        welcomeView.bindData(WelcomeViewModel(with : flow))
+        welcomeView.bindData(WelcomeLegacyViewModel(with : flow))
     }
 
     override func linkInteractors() {
@@ -85,7 +84,7 @@ final class WelcomeViewController: BaseViewController {
         addPeraWelcomeLogo(theme.welcomeViewTheme)
     }
     
-    private func addPeraWelcomeLogo(_ theme: WelcomeViewTheme) {
+    private func addPeraWelcomeLogo(_ theme: WelcomeLegacyViewTheme) {
         peraWelcomeLogo.customizeAppearance(theme.peraWelcomeLogo)
         view.addSubview(peraWelcomeLogo)
         
@@ -96,90 +95,51 @@ final class WelcomeViewController: BaseViewController {
     }
 }
 
-extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView) {
-        guard let account = createAccount() else { return }
-        navigateToSetupAddressNameScreen(account)
+extension WelcomeLegacyViewController {
+    private func addBarButtons() {
+        switch flow {
+        case .initializeAccount:
+            hidesCloseBarButtonItem = true
+            
+        case .addNewAccount,
+             .backUpAccount,
+             .none:
+            break
+        }
+    }
+}
+
+extension WelcomeLegacyViewController: WelcomeLegacyViewDelegate {
+    
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeLegacyView) {
+        open(
+            .tutorial(
+                flow: flow,
+                tutorial: .backUp(
+                    flow: flow,
+                    address: "temp"
+                ),
+                walletFlowType: .algo25
+            ),
+            by: .push
+        )
     }
     
-    func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
+    func welcomeViewDidSelectImport(_ welcomeView: WelcomeLegacyView) {
         analytics.track(.onboardWelcomeScreen(type: .recover))
         open(.recoverAccount(flow: flow), by: .push)
     }
-
-    func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {
-        open(url)
-    }
     
-    private func navigateToSetupAddressNameScreen(_ account: AccountInformation) {
-        let screen = open(
-            .addressNameSetup(
-                flow: flow,
-                mode: .addBip39Wallet,
-                account: account
-            ),
+    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeLegacyView) {
+        analytics.track(.onboardWelcomeScreen(type: .watch))
+
+        open(
+            .tutorial(flow: .initializeAccount(mode: .watch), tutorial: .watchAccount),
             by: .push
-        ) as? AddressNameSetupViewController
-        screen?.hidesCloseBarButtonItem = true
-        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-    }
-    
-    private func openTutorialScreen(walletFlowType: WalletFlowType) {
-        analytics.track(.onboardWelcomeScreen(type: .create))
-        switch walletFlowType {
-        case .algo25:
-            open(
-                .tutorial(
-                    flow: flow,
-                    tutorial: .backUp(
-                        flow: flow,
-                        address: "temp"
-                    ),
-                    walletFlowType: walletFlowType
-                ),
-                by: .push
-            )
-        case .bip39:
-            open(
-                .tutorial(
-                    flow: flow,
-                    tutorial: .backUpBip39(
-                        flow: flow,
-                        address: "temp"
-                    ),
-                    walletFlowType: walletFlowType
-                ),
-                by: .push
-            )
-        }
-
-    }
-    
-    private func createAccount() -> AccountInformation? {
-        let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
-            session: session,
-            storage: hdWalletStorage,
-            entropy: nil
         )
-        
-        guard let hdWalletAddressDetail, let address else {
-            assertionFailure("Could not create HD wallet")
-            return nil
-        }
-        
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay,
-            isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
-            isBackedUp: false,
-            hdWalletAddressDetail: hdWalletAddressDetail
-        )
-        
-        let user = User(accounts: [account])
-        session?.authenticatedUser = user
-        session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
+    }
 
-        return account
+    func welcomeView(_ welcomeView: WelcomeLegacyView, didOpen url: URL) {
+        open(url)
     }
 }

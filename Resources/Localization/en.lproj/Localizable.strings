@@ -157,12 +157,14 @@
 "account-type-selection-create-address" = "Create a new address";
 "account-type-selection-create-address-detail" = "Create a new address for an existing HD Wallet";
 "account-type-selection-create-wallet" = "Create a new wallet";
+"account-type-selection-create-wallet-detail-title" = "New to Algorand?";
 "account-type-selection-create-wallet-detail" = "Create a new Algorand wallet with a new address and recovery passphrase";
 "account-type-selection-watch" = "Watch an account";
 "account-type-selection-watch-detail" = "Monitor an Algorand account by providing its address";
 "account-type-selection-watch-address" = "Watch an address";
 "account-type-selection-watch-address-detail" = "Monitor an Algorand address by providing its address";
 "account-type-selection-recover" = "Import an account";
+"account-type-selection-recover-detail-title" = "Already have an account?";
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
 "account-type-selection-recover-wallet" = "Import a wallet";
 "account-type-selection-recover-wallet-detail" = "Import an existing wallet with various methods or pair your Ledger";

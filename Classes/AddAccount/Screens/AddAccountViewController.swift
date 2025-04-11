@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  WelcomeViewController.swift
+//   AddAccountViewController.swift
 
 import UIKit
 
-final class WelcomeViewController: BaseViewController {
-    private lazy var welcomeView = WelcomeView()
+final class AddAccountViewController: BaseViewController {
+    private lazy var addAccountView = AddAccountView()
     private lazy var peraWelcomeLogo = UIImageView()
     private lazy var theme = Theme()
 
@@ -32,21 +31,17 @@ final class WelcomeViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        hidesCloseBarButtonItem = true
-    }
-
     override func bindData() {
-        welcomeView.bindData(WelcomeViewModel(with : flow))
+        addAccountView.bindData(AddAccountViewModel(with: flow))
     }
 
     override func linkInteractors() {
-        welcomeView.delegate = self
-        welcomeView.linkInteractors()
+        addAccountView.delegate = self
+        addAccountView.linkInteractors()
     }
 
     override func setListeners() {
-        welcomeView.setListeners()
+        addAccountView.setListeners()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,14 +73,14 @@ final class WelcomeViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        welcomeView.customize(theme.welcomeViewTheme, configuration: configuration)
+        addAccountView.customize(theme.addAccountViewTheme, configuration: configuration)
 
-        prepareWholeScreenLayoutFor(welcomeView)
+        prepareWholeScreenLayoutFor(addAccountView)
         
-        addPeraWelcomeLogo(theme.welcomeViewTheme)
+        addPeraWelcomeLogo(theme.addAccountViewTheme)
     }
     
-    private func addPeraWelcomeLogo(_ theme: WelcomeViewTheme) {
+    private func addPeraWelcomeLogo(_ theme: AddAccountViewTheme) {
         peraWelcomeLogo.customizeAppearance(theme.peraWelcomeLogo)
         view.addSubview(peraWelcomeLogo)
         
@@ -96,32 +91,31 @@ final class WelcomeViewController: BaseViewController {
     }
 }
 
-extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView) {
-        guard let account = createAccount() else { return }
-        navigateToSetupAddressNameScreen(account)
+extension AddAccountViewController: AddAccountViewDelegate {
+    func addAccountViewDidSelectCreateAddress(_ addAccountView: AddAccountView) {
+        open(.hdWalletSetup(flow: flow, mode: .addBip39Address(newAddress: nil)), by: .push)
     }
     
-    func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
+    func addAccountViewDidSelectCreateWallet(_ addAccountView: AddAccountView) {
+        self.openTutorialScreen(walletFlowType: featureFlagService.isEnabled(.hdWalletEnabled) ? .bip39 : .algo25)
+    }
+    
+    func addAccountViewDidSelectImport(_ addAccountView: AddAccountView) {
         analytics.track(.onboardWelcomeScreen(type: .recover))
         open(.recoverAccount(flow: flow), by: .push)
     }
-
-    func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {
-        open(url)
-    }
     
-    private func navigateToSetupAddressNameScreen(_ account: AccountInformation) {
-        let screen = open(
-            .addressNameSetup(
-                flow: flow,
-                mode: .addBip39Wallet,
-                account: account
-            ),
+    func addAccountViewDidSelectWatch(_ addAccountView: AddAccountView) {
+        analytics.track(.onboardWelcomeScreen(type: .watch))
+
+        open(
+            .tutorial(flow: .addNewAccount(mode: .watch), tutorial: .watchAccount),
             by: .push
-        ) as? AddressNameSetupViewController
-        screen?.hidesCloseBarButtonItem = true
-        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        )
+    }
+
+    func addAccountView(_ addAccountView: AddAccountView, didOpen url: URL) {
+        open(url)
     }
     
     private func openTutorialScreen(walletFlowType: WalletFlowType) {
@@ -153,33 +147,5 @@ extension WelcomeViewController: WelcomeViewDelegate {
             )
         }
 
-    }
-    
-    private func createAccount() -> AccountInformation? {
-        let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
-            session: session,
-            storage: hdWalletStorage,
-            entropy: nil
-        )
-        
-        guard let hdWalletAddressDetail, let address else {
-            assertionFailure("Could not create HD wallet")
-            return nil
-        }
-        
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay,
-            isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
-            isBackedUp: false,
-            hdWalletAddressDetail: hdWalletAddressDetail
-        )
-        
-        let user = User(accounts: [account])
-        session?.authenticatedUser = user
-        session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
-
-        return account
     }
 }

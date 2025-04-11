@@ -538,7 +538,7 @@ extension HomeViewController {
             guard let self = self else { return }
             
             self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
+                .addAccount(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,
@@ -755,7 +755,7 @@ extension HomeViewController {
 
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
+                .addAccount(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,

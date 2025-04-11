@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  WelcomeView.swift
+//   WelcomeLegacyView.swift
 
 import UIKit
 import MacaroonUIKit
 import Foundation
 
-final class WelcomeView:
+final class WelcomeLegacyView:
     View,
     ViewModelBindable {
-    weak var delegate: WelcomeViewDelegate?
+    weak var delegate: WelcomeLegacyViewDelegate?
 
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var termsAndConditionsTextView = UITextView()
-    private lazy var createWalletView = WelcomeTypeView()
-    private lazy var importWalletView = WelcomeTypeView()
+    private lazy var createWalletView = AccountTypeView()
+    private lazy var importWalletView = AccountTypeView()
+    private lazy var watchAddressView = AccountTypeView()
     
     private var session: Session?
 
-    func customize(_ theme: WelcomeViewTheme, configuration: ViewControllerConfiguration) {
+    func customize(_ theme: WelcomeLegacyViewTheme, configuration: ViewControllerConfiguration) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         session = configuration.session
 
@@ -57,20 +57,27 @@ final class WelcomeView:
             action: #selector(notifyDelegateToImportAccount),
             for: .touchUpInside
         )
+        
+        watchAddressView.addTarget(
+            self,
+            action: #selector(notifyDelegateToWatchAccount),
+            for: .touchUpInside
+        )
     }
 
     func linkInteractors() {
         termsAndConditionsTextView.delegate = self
     }
 
-    func bindData(_ viewModel: WelcomeViewModel?) {
+    func bindData(_ viewModel: WelcomeLegacyViewModel?) {
         titleLabel.text = viewModel?.title
         createWalletView.bindData(viewModel?.createWalletViewModel)
         importWalletView.bindData(viewModel?.importWalletViewModel)
+        watchAddressView.bindData(viewModel?.watchWalletViewModel)
     }
 }
 
-extension WelcomeView {
+extension WelcomeLegacyView {
     @objc
     private func notifyDelegateToCreateWallet() {
         delegate?.welcomeViewDidSelectCreateWallet(self)
@@ -81,10 +88,14 @@ extension WelcomeView {
         delegate?.welcomeViewDidSelectImport(self)
     }
     
+    @objc
+    private func notifyDelegateToWatchAccount() {
+        delegate?.welcomeViewDidSelectWatch(self)
+    }
 }
 
-extension WelcomeView {
-    private func addTitle(_ theme: WelcomeViewTheme) {
+extension WelcomeLegacyView {
+    private func addTitle(_ theme: WelcomeLegacyViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -94,7 +105,7 @@ extension WelcomeView {
         }
     }
 
-    private func addTermsAndConditionsTextView(_ theme: WelcomeViewTheme) {
+    private func addTermsAndConditionsTextView(_ theme: WelcomeLegacyViewTheme) {
         termsAndConditionsTextView.isEditable = false
         termsAndConditionsTextView.isScrollEnabled = false
         termsAndConditionsTextView.dataDetectorTypes = .link
@@ -114,9 +125,8 @@ extension WelcomeView {
         }
     }
 
-    private func addStackView(_ theme: WelcomeViewTheme) {
+    private func addStackView(_ theme: WelcomeLegacyViewTheme) {
         stackView.axis = .vertical
-        stackView.spacing = 40
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
@@ -124,14 +134,16 @@ extension WelcomeView {
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
-        createWalletView.customize(theme.welcomeTypeViewTheme)
+        createWalletView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(createWalletView)
-        importWalletView.customize(theme.welcomeTypeViewTheme)
+        importWalletView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(importWalletView)
+        watchAddressView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(watchAddressView)
     }
 }
 
-extension WelcomeView: UITextViewDelegate {
+extension WelcomeLegacyView: UITextViewDelegate {
     func textView(
         _ textView: UITextView,
         shouldInteractWith URL: URL,
@@ -143,8 +155,9 @@ extension WelcomeView: UITextViewDelegate {
     }
 }
 
-protocol WelcomeViewDelegate: AnyObject {
-    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView)
-    func welcomeViewDidSelectImport(_ welcomeView: WelcomeView)
-    func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
+protocol WelcomeLegacyViewDelegate: AnyObject {
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeLegacyView)
+    func welcomeViewDidSelectImport(_ welcomeView: WelcomeLegacyView)
+    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeLegacyView)
+    func welcomeView(_ welcomeView: WelcomeLegacyView, didOpen url: URL)
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WelcomeViewTheme.swift
+//   WelcomeLegacyViewTheme.swift
 
 import MacaroonUIKit
 import Foundation
 import UIKit
 
-struct WelcomeViewTheme: StyleSheet, LayoutSheet {
+struct WelcomeLegacyViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let peraWelcomeLogo: ImageStyle
     let termsOfConditionsAttributes: [AttributedTextBuilder.Attribute]
     let termsOfConditionsLinkAttributes: [AttributedTextBuilder.Attribute]
-    let welcomeTypeViewTheme: WelcomeTypeViewTheme
+    let accountTypeViewTheme: AccountTypeViewTheme
 
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
@@ -38,7 +37,7 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .font(Typography.titleMedium())
+            .font(Fonts.DMSans.medium.make(32))
         ]
         self.peraWelcomeLogo = [
             .image("icon-welcome-pera"),
@@ -57,10 +56,10 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
                 .alignment(.center)
             ])
         ]
-        self.welcomeTypeViewTheme = WelcomeTypeViewTheme()
+        self.accountTypeViewTheme = AccountTypeViewTheme()
         
         self.horizontalInset = 24
-        self.topInset = 70
+        self.topInset = 2
         self.peraWelcomeLogoTopInset = -122
         self.verticalInset = 16
     }
