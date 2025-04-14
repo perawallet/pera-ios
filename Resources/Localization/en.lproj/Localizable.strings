@@ -269,7 +269,6 @@
 "hd-wallet-setup-title" = "Select Universal Wallet";
 "hd-wallet-setup-description" = "Create your new account under a Universal Wallet you already have";
 "hd-wallet-setup-wallet-name" = "Wallet #%@";
-"hd-wallet-account-name" = "%@ (HDWallet Account)";
 
 "account-count" = "1 account";
 "account-count-plural" = "%d accounts";
