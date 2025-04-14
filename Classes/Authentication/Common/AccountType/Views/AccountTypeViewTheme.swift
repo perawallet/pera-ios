@@ -62,7 +62,7 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .font(Typography.footnoteMedium()),
             .textColor(Colors.Wallet.wallet3),
-            .text("account-type-selection-one-key-warning-title".localized),
+            .text("account-type-selection-universal-wallet-warning-title".localized),
             .backgroundColor(Colors.Defaults.background),
             .textAlignment(.center),
             .isInteractable(false)
@@ -93,7 +93,7 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
         self.warningIconLeadingInset = 3
         self.dashedLineInset = 12
         self.warningViewHeight = 20
-        self.warningViewHorizontalInset = 55
+        self.warningViewHorizontalInset = 40
         self.warningViewTopInset = 2
     }
 }
