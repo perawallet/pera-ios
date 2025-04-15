@@ -361,7 +361,6 @@ indirect enum Screen {
     case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
     case importAccountSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
-    case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupMnemonic(accounts: [Account], eventHandler: AlgorandSecureBackupMnemonicsScreen.EventHandler)
     case algorandSecureBackupSuccess(backup: AlgorandSecureBackup, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
@@ -371,7 +370,6 @@ indirect enum Screen {
         selectedAccounts: [Account],
         eventHandler: WebImportSuccessScreen.EventHandler
     )
-    case algorandSecureBackupRestoreAccountList(accountImportParameters: [AccountImportParameters], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupRecoverMnemonicScreen.EventHandler)
     case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)

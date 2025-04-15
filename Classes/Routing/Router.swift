@@ -1758,16 +1758,6 @@ final class Router:
             let screen = AlgorandSecureBackupInstructionsScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case .algorandSecureBackupAccountList(let eventHandler):
-            let dataController = AlgorandSecureBackupAccountListLocalDataController(
-                sharedDataController: appConfiguration.sharedDataController
-            )
-            let screen = AlgorandSecureBackupAccountExportListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
         case let .algorandSecureBackupMnemonic(accounts, eventHandler):
             let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
             screen.eventHandler = eventHandler
@@ -1791,16 +1781,6 @@ final class Router:
                 selectedAccounts: selectedAccounts
             )
             let screen = WebImportSuccessScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case let .algorandSecureBackupRestoreAccountList(accountImportParameters, eventHandler):
-            let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
-                accountImportParameters: accountImportParameters
-            )
-            let screen = AlgorandSecureBackupAccountRecoverListScreen(
                 dataController: dataController,
                 configuration: configuration
             )
