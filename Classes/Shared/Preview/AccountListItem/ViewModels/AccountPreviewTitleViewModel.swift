@@ -41,12 +41,7 @@ struct AccountPreviewTitleViewModel:
 
 extension AccountPreviewTitleViewModel {
     mutating func bindPrimaryTitle(account: Account) {
-        if account.hdWalletAddressDetail != nil {
-            primaryTitle = getPrimaryTitle("hd-wallet-account-name".localized(params: account.primaryDisplayName))
-        } else {
-            primaryTitle = getPrimaryTitle(account.primaryDisplayName)
-        }
-        
+        primaryTitle = getPrimaryTitle(account.primaryDisplayName)
     }
 
     mutating func bindSecondaryTitle(account: Account) {

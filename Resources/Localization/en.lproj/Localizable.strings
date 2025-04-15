@@ -151,9 +151,9 @@
 "account-type-selection-add" = "I want to create an account";
 "account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
-"account-type-selection-one-key-warning-title" = "Because you have already a ONE Key";
+"account-type-selection-universal-wallet-warning-title" = "Because you have already a Universal Wallet";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
-"account-type-selection-create-one-key-detail" = "Create a new account for an existing ONE Key Wallet";
+"account-type-selection-create-universal-wallet-detail" = "Create a new account for an existing Universal Wallet";
 "account-type-selection-create-address" = "Create a new address";
 "account-type-selection-create-address-detail" = "Create a new address for an existing HD Wallet";
 "account-type-selection-create-wallet" = "Create a new wallet";
@@ -188,8 +188,8 @@
 // MARK: Mnemonic Types
 
 "mnemonic-types-screen-title" = "Select your Mnemonic type";
-"mnemonic-types-bip39-title" = "ONE Key";
-"mnemonic-types-bip39-detail" = "Wallet that lets you derive new wallets, all using the same key";
+"mnemonic-types-bip39-title" = "Universal Wallet";
+"mnemonic-types-bip39-detail" = "Wallet that lets you derive new accounts, all using the same mnemonic";
 "mnemonic-types-bip39-info" = "24 key mnemonic keys";
 "mnemonic-types-algo25-title" = "ALGO25";
 "mnemonic-types-algo25-detail" = "Legacy format that is specific to Algorand ecosystem";
@@ -268,10 +268,9 @@
 "address-name-setup-finish" = "Finish address Creation";
 
 // MARK: HD Wallet Setup
-"hd-wallet-setup-title" = "Select ONE Key Wallet";
-"hd-wallet-setup-description" = "Create your new account under an ONE KEY you already have";
+"hd-wallet-setup-title" = "Select Universal Wallet";
+"hd-wallet-setup-description" = "Create your new account under a Universal Wallet you already have";
 "hd-wallet-setup-wallet-name" = "Wallet #%@";
-"hd-wallet-account-name" = "%@ (HDWallet Account)";
 
 "account-count" = "1 account";
 "account-count-plural" = "%d accounts";

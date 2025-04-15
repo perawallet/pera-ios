@@ -211,7 +211,10 @@ extension Account {
     
     var typeImage: UIImage {
         if authorization.isStandard {
-            return "icon-standard-account".uiImage
+            guard hdWalletAddressDetail != nil else {
+                return "icon-standard-account".uiImage
+            }
+            return "icon-hd-account".uiImage
         }
 
         if authorization.isWatch {
