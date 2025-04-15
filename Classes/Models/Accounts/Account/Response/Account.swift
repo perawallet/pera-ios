@@ -703,3 +703,19 @@ extension AccountAuthorization {
             isUnknownToNoAuthInLocalRekeyed
     }
 }
+
+extension Account {
+    var supportLink: URL? {
+        if isWatchAccount {
+            return AlgorandWeb.watchAccountSupport.link
+        } else if isHDAccount {
+            return AlgorandWeb.hdWallet.link
+        } else if rekeyDetail != nil {
+            return AlgorandWeb.rekey.link
+        } else if ledgerDetail != nil {
+            return AlgorandWeb.ledgerSupport.link
+        } else {
+            return AlgorandWeb.standard.link
+        }
+    }
+}

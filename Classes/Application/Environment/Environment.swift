@@ -271,6 +271,8 @@ enum AlgorandWeb: String {
     case rekey = "https://perawallet.app/support/rekey/"
     case tinymanSwap = "https://perawallet.app/support/swap/"
     case tinymanSwapPriceImpact = "https://docs.tinyman.org/faq#what-is-a-price-impact"
+    case hdWallet = "https://support.perawallet.app/support/hd-wallets/"
+    case standard = "https://perawallet.app/support/create-new-account/"
 
     var presentation: String {
         switch self {

@@ -133,9 +133,8 @@ extension StandardAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountTypeInformationView.startObserving(event: .performHyperlinkAction) {
-            [unowned self] in
-            self.open(AlgorandWeb.rekey.link)
+        accountTypeInformationView.startObserving(event: .performHyperlinkAction) { [unowned self] in
+            self.open(account.supportLink)
         }
 
         bindAccountTypeInformation()
