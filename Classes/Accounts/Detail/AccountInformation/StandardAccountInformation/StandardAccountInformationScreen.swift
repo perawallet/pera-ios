@@ -115,8 +115,8 @@ extension StandardAccountInformationScreen {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
 
-        accountItemView.startObserving(event: .performAction) {
-            [unowned self] in
+        accountItemView.startObserving(event: .performAction) { [weak self] in
+            guard let self else { return }
             self.copyToClipboardController.copyAddress(self.account)
         }
 
@@ -133,9 +133,9 @@ extension StandardAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountTypeInformationView.startObserving(event: .performHyperlinkAction) {
-            [unowned self] in
-            self.open(AlgorandWeb.rekey.link)
+        accountTypeInformationView.startObserving(event: .performHyperlinkAction) { [weak self] in
+            guard let self else { return }
+            self.open(account.supportLink)
         }
 
         bindAccountTypeInformation()
@@ -162,15 +162,15 @@ extension StandardAccountInformationScreen {
 
 extension StandardAccountInformationScreen {
     private func makeRekeyToLedgerAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToLedger) {
-            [unowned self] in
+        return AccountInformationOptionItem(viewModel: .rekeyToLedger) { [weak self] in
+            guard let self else { return }
             self.eventHandler?(.performRekeyToLedger)
         }
     }
 
     private func makeRekeyToStandardAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToStandard) {
-            [unowned self] in
+        return AccountInformationOptionItem(viewModel: .rekeyToStandard) { [weak self] in
+            guard let self else { return }
             self.eventHandler?(.performRekeyToStandard)
         }
     }
