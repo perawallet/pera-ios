@@ -41,7 +41,7 @@ final class AccountInformation: Codable {
         }
     }
 
-    private var type: AccountType
+    private(set) var type: AccountType
     
     init(
         address: String,
