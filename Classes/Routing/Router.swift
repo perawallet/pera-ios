@@ -704,7 +704,13 @@ final class Router:
 
             viewController = aViewController
         case let .welcome(flow):
-            viewController = WelcomeViewController(flow: flow, configuration: configuration)
+            if configuration.featureFlagService.isEnabled(.hdWalletEnabled) {
+                viewController = WelcomeViewController(flow: flow, configuration: configuration)
+            } else {
+                viewController = WelcomeLegacyViewController(flow: flow, configuration: configuration)
+            }
+        case let .addAccount(flow):
+            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .mnemonicTypeSelection(eventHandler):
             let screen = MnemonicTypeSelectionScreen(configuration: configuration)
             screen.eventHandler = eventHandler
