@@ -1,4 +1,4 @@
-// Copyright 2023 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupNoAccountCellViewModel.swift
+//   AddAccountViewController+Theme.swift
 
-import Foundation
 import MacaroonUIKit
+import Foundation
 
-struct AlgorandSecureBackupNoAccountCellViewModel: NoContentViewModel {
-    var icon: Image?
-    var title: TextProvider?
-    var body: TextProvider?
+extension AddAccountViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let addAccountViewTheme: AddAccountViewTheme
+        let backgroundColor: Color
 
-    init() {
-        bindBody()
-    }
-
-    private mutating func bindBody() {
-        title = "algorand-secure-backup-account-list-no-content-body"
-            .localized
-            .bodyMedium(alignment: .center)
+        init(_ family: LayoutFamily) {
+            addAccountViewTheme = AddAccountViewTheme()
+            backgroundColor = Colors.Defaults.background
+        }
     }
 }

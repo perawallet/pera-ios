@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//   WelcomeLegacyViewModel.swift
+
 //   WelcomeViewModel.swift
 
 import Foundation
 import Foundation
 import MacaroonUIKit
 
-struct WelcomeViewModel: ViewModel {
+struct WelcomeLegacyViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var createWalletViewModel: WelcomeTypeViewModel?
-    private(set) var importWalletViewModel: WelcomeTypeViewModel?
+    private(set) var createWalletViewModel: AccountTypeViewModel?
+    private(set) var importWalletViewModel: AccountTypeViewModel?
+    private(set) var watchWalletViewModel: AccountTypeViewModel?
 
     init(
         with flow: AccountSetupFlow
@@ -30,11 +33,12 @@ struct WelcomeViewModel: ViewModel {
     }
 }
 
-extension WelcomeViewModel {
+extension WelcomeLegacyViewModel {
     private mutating func bind(_ flow: AccountSetupFlow) {
         bindTitle(flow)
         bindCreateWalletViewModel()
         bindImportWalletViewModel()
+        bindWatchWalletViewModel()
     }
 
     private mutating func bindTitle(_ flow: AccountSetupFlow) {
@@ -48,11 +52,14 @@ extension WelcomeViewModel {
     }
 
     private mutating func bindCreateWalletViewModel() {
-        createWalletViewModel = WelcomeTypeViewModel(.addBip39Wallet)
+        createWalletViewModel = AccountTypeViewModel(.addBip39Wallet)
     }
 
     private mutating func bindImportWalletViewModel() {
-        importWalletViewModel = WelcomeTypeViewModel(.recover(type: .none))
+        importWalletViewModel = AccountTypeViewModel(.recover(type: .none))
+    }
+    
+    private mutating func bindWatchWalletViewModel() {
+        watchWalletViewModel = AccountTypeViewModel(.watch)
     }
 }
-

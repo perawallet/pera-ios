@@ -30,6 +30,7 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
+    case addAccount(flow: AccountSetupFlow)
     case mnemonicTypeSelection(eventHandler: MnemonicTypeSelectionScreen.EventHandler)
     case recoverAccount(flow: AccountSetupFlow)
     case recoverAccountsLoadingScreen
@@ -360,7 +361,6 @@ indirect enum Screen {
     case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
     case importAccountSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
-    case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupMnemonic(accounts: [Account], eventHandler: AlgorandSecureBackupMnemonicsScreen.EventHandler)
     case algorandSecureBackupSuccess(backup: AlgorandSecureBackup, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
@@ -370,7 +370,6 @@ indirect enum Screen {
         selectedAccounts: [Account],
         eventHandler: WebImportSuccessScreen.EventHandler
     )
-    case algorandSecureBackupRestoreAccountList(accountImportParameters: [AccountImportParameters], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupRecoverMnemonicScreen.EventHandler)
     case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
