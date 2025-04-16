@@ -41,6 +41,7 @@ final class AlgorandSecureBackupInstructionsScreen:
     private lazy var contextView = UIView()
     private lazy var headerView = UILabel()
     private lazy var instructionsView = VStackView()
+    private lazy var noteView = UILabel()
     private lazy var startActionView = MacaroonUIKit.Button()
 
     private lazy var theme = AlgorandSecureBackupInstructionsScreenTheme()
@@ -143,6 +144,7 @@ extension AlgorandSecureBackupInstructionsScreen {
 
         addHeader()
         addInstructions()
+        addNote()
     }
 
     private func addHeader() {
@@ -197,6 +199,19 @@ extension AlgorandSecureBackupInstructionsScreen {
         instructionsView.addArrangedSubview(view)
         return view
     }
+    
+    private func addNote() {
+        noteView.customizeAppearance(theme.header)
+
+        contextView.addSubview(noteView)
+        noteView.snp.makeConstraints {
+            $0.top == instructionsView.snp.bottom + theme.spacingBetweenInstructionsAndHeader
+            $0.leading == 0
+            $0.trailing == 0
+        }
+        
+        bindNote()
+    }
 
     private func addStartAction() {
         startActionView.customizeAppearance(theme.startAction)
@@ -223,6 +238,13 @@ extension AlgorandSecureBackupInstructionsScreen {
     private func bindHeader() {
         headerView.attributedText =
             "algorand-secure-backup-instruction-header-title"
+                .localized
+                .bodyRegular()
+    }
+    
+    private func bindNote() {
+        noteView.attributedText =
+            "algorand-secure-backup-instruction-save-backup-file-instruction-warning"
                 .localized
                 .bodyRegular()
     }

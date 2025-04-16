@@ -1551,6 +1551,7 @@ FAQ section.";
 "algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text" = "Learn more";
 "algorand-secure-backup-instruction-save-backup-file-instruction-title" = "Save your backup file";
 "algorand-secure-backup-instruction-save-backup-file-instruction-subtitle" = "Download your backup to a secure location on your device.";
+"algorand-secure-backup-instruction-save-backup-file-instruction-warning" = "Please note: We currently do not support the backing up of Universal and Ledger Wallets";
 "algorand-secure-backup-account-list-title" = "Choose accounts to backup";
 "algorand-secure-backup-account-list-restore-title" = "Choose accounts to restore";
 "algorand-secure-backup-account-list-action-title" = "Backup account";
