@@ -32,7 +32,12 @@ final class AddAccountViewController: BaseViewController {
     }
 
     override func bindData() {
-        addAccountView.bindData(AddAccountViewModel(with: flow))
+        addAccountView.bindData(
+            AddAccountViewModel(
+                with: flow,
+                and: featureFlagService.isEnabled(.hdWalletEnabled),
+            )
+        )
     }
 
     override func linkInteractors() {

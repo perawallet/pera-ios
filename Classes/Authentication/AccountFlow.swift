@@ -72,6 +72,7 @@ extension AccountSetupMode {
 }
 
 enum RecoverType: Equatable {
+    case passphraseAlgo25
     case passphrase
     case importFromSecureBackup
     case qr

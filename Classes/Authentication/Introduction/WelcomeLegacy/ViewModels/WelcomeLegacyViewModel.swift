@@ -52,7 +52,7 @@ extension WelcomeLegacyViewModel {
     }
 
     private mutating func bindCreateWalletViewModel() {
-        createWalletViewModel = AccountTypeViewModel(.addBip39Wallet)
+        createWalletViewModel = AccountTypeViewModel(.addAlgo25Account)
     }
 
     private mutating func bindImportWalletViewModel() {

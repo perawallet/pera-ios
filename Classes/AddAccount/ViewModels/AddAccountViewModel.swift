@@ -26,25 +26,30 @@ struct AddAccountViewModel: ViewModel {
     private(set) var watchWalletViewModel: AccountTypeViewModel?
 
     init(
-        with flow: AccountSetupFlow
+        with flow: AccountSetupFlow,
+        and isHDWalletActive: Bool
     ) {
-        bind(flow)
+        bind(flow, isHDWalletActive: isHDWalletActive)
     }
 }
 
 extension AddAccountViewModel {
-    private mutating func bind(_ flow: AccountSetupFlow) {
-        bindTitle(flow)
+    private mutating func bind(_ flow: AccountSetupFlow, isHDWalletActive: Bool) {
+        bindTitle(flow, with: isHDWalletActive)
         bindCreateAddressViewModel()
-        bindCreateWalletViewModel()
+        bindCreateWalletViewModel(with: isHDWalletActive)
         bindImportWalletViewModel()
         bindWatchWalletViewModel()
     }
 
-    private mutating func bindTitle(_ flow: AccountSetupFlow) {
+    private mutating func bindTitle(_ flow: AccountSetupFlow, with isHDWalletActive: Bool) {
         switch flow {
         case .addNewAccount:
-            title = "account-welcome-add-wallet-or-account-title".localized
+            if isHDWalletActive {
+                title = "account-welcome-add-wallet-or-account-title".localized
+            } else {
+                title = "account-welcome-add-account-title".localized
+            }
         case .backUpAccount:
             title = nil
         case .initializeAccount,
@@ -57,8 +62,8 @@ extension AddAccountViewModel {
         createAddressViewModel = AccountTypeViewModel(.addBip39Address(newAddress: nil))
     }
 
-    private mutating func bindCreateWalletViewModel() {
-        createWalletViewModel = AccountTypeViewModel(.addBip39Wallet)
+    private mutating func bindCreateWalletViewModel(with isHDWalletActive: Bool) {
+        createWalletViewModel = AccountTypeViewModel(isHDWalletActive ? .addBip39Wallet : .addAlgo25Account)
     }
 
     private mutating func bindImportWalletViewModel() {

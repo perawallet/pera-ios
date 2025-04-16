@@ -126,10 +126,18 @@ extension AddAccountView {
         termsAndConditionsTextView.textContainerInset = .zero
         termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
-        termsAndConditionsTextView.bindHTML(
-            "introduction-title-terms-and-services".localized(params: AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
-            attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
-        )
+        if featureFlagService?.isEnabled(.hdWalletEnabled) ?? false {
+            termsAndConditionsTextView.bindHTML(
+                "introduction-title-terms-and-services-wallet".localized(params: AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
+                attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
+            )
+        } else {
+            termsAndConditionsTextView.bindHTML(
+                "introduction-title-terms-and-services".localized(params: AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
+                attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
+            )
+        }
+
 
         addSubview(termsAndConditionsTextView)
         termsAndConditionsTextView.snp.makeConstraints {
