@@ -41,31 +41,33 @@ final class NewAccountWarningOverlayView: UIView {
             $0.edges.equalToSuperview().inset(theme.dashedLineInset)
         }
         
-        let view = UIView()
-        
-        let label = UILabel()
-        label.customizeAppearance(theme.warning)
-        view.addSubview(label)
-        label.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        let contentView = UIView()
+        contentView.backgroundColor = theme.backgroundColor.uiColor
         
         let icon = UIImageView()
         icon.customizeAppearance(theme.warningIcon)
-        view.addSubview(icon)
+        contentView.addSubview(icon)
         icon.snp.makeConstraints {
             $0.width.equalTo(theme.warningIconSize.w)
             $0.height.equalTo(theme.warningIconSize.h)
-            $0.centerY.equalTo(label.snp.centerY)
-            $0.leading.equalToSuperview().inset(theme.warningIconLeadingInset)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(theme.warningViewHorizontalInset)
         }
         
-        addSubview(view)
-        view.snp.makeConstraints {
+        let label = UILabel()
+        label.customizeAppearance(theme.warning)
+        contentView.addSubview(label)
+        label.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.leading.equalTo(icon.snp.trailing).offset(theme.warningIconAndTextSpacing)
             $0.trailing.equalToSuperview().inset(theme.warningViewHorizontalInset)
-            $0.leading.equalToSuperview().inset(theme.warningViewHorizontalInset)
+        }
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.warningViewTopInset)
             $0.height.equalTo(theme.warningViewHeight)
+            $0.centerX.equalToSuperview()
         }
     }
 }
