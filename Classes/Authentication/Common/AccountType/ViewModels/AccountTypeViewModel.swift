@@ -44,7 +44,7 @@ extension AccountTypeViewModel {
             image = img("icon-add-address")
         case let .recover(type):
             switch type {
-            case .none, .passphrase:
+            case .none, .passphrase, .passphraseAlgo25:
                 image = img("icon-recover-passphrase")
             case .importFromSecureBackup:
                 image = img("icon-import-from-secure-backup")
@@ -69,13 +69,15 @@ extension AccountTypeViewModel {
         var titleText: String = ""
         
         switch mode {
-        case .addAlgo25Account, .addBip39Wallet:
+        case .addAlgo25Account:
+            titleText = "account-type-selection-create".localized
+        case .addBip39Wallet:
             titleText = "account-type-selection-create-wallet".localized
         case .addBip39Address:
-            titleText = "account-type-selection-create".localized
+            titleText = "account-type-selection-add-account".localized
         case let .recover(type):
             switch type {
-            case .passphrase:
+            case .passphrase, .passphraseAlgo25:
                 titleText = "account-type-selection-passphrase".localized
             case .importFromSecureBackup:
                 titleText = "account-type-selection-import-secure-backup".localized
@@ -86,7 +88,7 @@ extension AccountTypeViewModel {
             case .qr:
                 titleText = "account-type-selection-qr".localized
             case .none:
-                titleText = "account-type-selection-recover-wallet".localized
+                titleText = "account-type-selection-recover".localized
             }
         case .watch:
             titleText = "account-type-selection-watch-address".localized
@@ -118,7 +120,9 @@ extension AccountTypeViewModel {
         var detailText: String = ""
         
         switch mode {
-        case .addAlgo25Account, .addBip39Wallet:
+        case .addAlgo25Account:
+            detailText = "account-type-selection-add-detail".localized
+        case .addBip39Wallet:
             detailText = "account-type-selection-create-wallet-detail".localized
         case .addBip39Address:
             detailText = "account-type-selection-create-universal-wallet-detail".localized
@@ -126,6 +130,8 @@ extension AccountTypeViewModel {
             switch type {
             case .passphrase:
                 detailText = "account-type-selection-passphrase-detail".localized
+            case .passphraseAlgo25:
+                detailText = "account-type-selection-passphrase-detail-algo25".localized
             case .importFromSecureBackup:
                 detailText = "account-type-selection-import-secure-backup-detail".localized
             case .ledger:
@@ -135,7 +141,7 @@ extension AccountTypeViewModel {
             case .qr:
                 detailText = "account-type-selection-qr-detail".localized
             case .none:
-                detailText = "account-type-selection-recover-wallet-detail".localized
+                detailText = "account-type-selection-recover-detail".localized
             }
         case .watch:
             detailText = "account-type-selection-watch-address-detail".localized

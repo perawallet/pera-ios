@@ -65,7 +65,7 @@ final class RecoverAccountViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        addAccountView.customize(theme.recoverAccountViewTheme)
+        addAccountView.customize(theme.recoverAccountViewTheme, configuration: configuration)
 
         prepareWholeScreenLayoutFor(addAccountView)
     }

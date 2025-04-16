@@ -36,7 +36,7 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let minimumInset: LayoutMetric
-    let warningIconLeadingInset: LayoutMetric
+    let warningIconAndTextSpacing: LayoutMetric
     let dashedLineInset: LayoutMetric
     let warningViewHeight: LayoutMetric
     let warningViewHorizontalInset: LayoutMetric
@@ -90,10 +90,10 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.verticalInset = 24
         self.minimumInset = 2
-        self.warningIconLeadingInset = 3
+        self.warningIconAndTextSpacing = 3
         self.dashedLineInset = 12
         self.warningViewHeight = 20
-        self.warningViewHorizontalInset = 40
+        self.warningViewHorizontalInset = 12
         self.warningViewTopInset = 2
     }
 }
