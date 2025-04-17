@@ -293,20 +293,9 @@ extension AddressNameSetupViewController {
             fatalError("Shouldn't enter here")
         }
         
-        openAddressCreatedScreen()
-    }
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
 
-    private func openAddressCreatedScreen() {
-        open(
-            .tutorial(
-                flow: .addNewAccount(mode: mode),
-                tutorial: .accountVerified(
-                    flow: .addNewAccount(mode: mode),
-                    address: "accountAddress"
-                )
-            ),
-            by: .push
-        )
+        launchMain()
     }
 }
 
