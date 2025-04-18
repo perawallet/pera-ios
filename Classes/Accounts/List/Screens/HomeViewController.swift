@@ -510,12 +510,18 @@ extension HomeViewController {
     }
     
     private func addSuccessAnimation() {
+        guard let navView = navigationController?.view else { return }
         successAnimationImageView.isHidden = true
+        successAnimationImageView.contentMode = .top
         successAnimationImageView.isUserInteractionEnabled = false
         successAnimationImageView.setAnimation("pera-confetti")
-        view.addSubview(successAnimationImageView)
+        
+        navView.addSubview(successAnimationImageView)
         successAnimationImageView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(500)
         }
     }
 }
