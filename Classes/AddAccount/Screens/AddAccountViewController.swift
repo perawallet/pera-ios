@@ -24,6 +24,12 @@ final class AddAccountViewController: BaseViewController {
     private let flow: AccountSetupFlow
     private let featureFlagService: FeatureFlagServicing
     private lazy var transitionToMnemonicTypeSelection = BottomSheetTransition(presentingViewController: self)
+    
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!
+    )
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
@@ -102,16 +108,35 @@ extension AddAccountViewController: AddAccountViewDelegate {
     }
     
     func addAccountViewDidSelectCreateWallet(_ addAccountView: AddAccountView) {
-        self.openTutorialScreen(walletFlowType: featureFlagService.isEnabled(.hdWalletEnabled) ? .bip39 : .algo25)
+        analytics.track(.registerAccount(registrationType: .create))
+        if featureFlagService.isEnabled(.hdWalletEnabled) {
+            guard
+                let account = createAccount() else {
+                return
+            }
+            
+            let screen = open(
+                .addressNameSetup(
+                    flow: flow,
+                    mode: .addBip39Wallet,
+                    account: account
+                ),
+                by: .push
+            ) as? AddressNameSetupViewController
+            screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+            screen?.hidesCloseBarButtonItem = true
+        } else {
+            self.openTutorialScreen()
+        }
     }
     
     func addAccountViewDidSelectImport(_ addAccountView: AddAccountView) {
-        analytics.track(.onboardWelcomeScreen(type: .recover))
+        analytics.track(.registerAccount(registrationType: .recover))
         open(.recoverAccount(flow: flow), by: .push)
     }
     
     func addAccountViewDidSelectWatch(_ addAccountView: AddAccountView) {
-        analytics.track(.onboardWelcomeScreen(type: .watch))
+        analytics.track(.registerAccount(registrationType: .watch))
 
         open(
             .tutorial(flow: .addNewAccount(mode: .watch), tutorial: .watchAccount),
@@ -123,34 +148,51 @@ extension AddAccountViewController: AddAccountViewDelegate {
         open(url)
     }
     
-    private func openTutorialScreen(walletFlowType: WalletFlowType) {
-        analytics.track(.onboardWelcomeScreen(type: .create))
-        switch walletFlowType {
-        case .algo25:
-            open(
-                .tutorial(
+    private func openTutorialScreen() {
+        open(
+            .tutorial(
+                flow: flow,
+                tutorial: .backUp(
                     flow: flow,
-                    tutorial: .backUp(
-                        flow: flow,
-                        address: "temp"
-                    ),
-                    walletFlowType: walletFlowType
+                    address: "temp"
                 ),
-                by: .push
-            )
-        case .bip39:
-            open(
-                .tutorial(
-                    flow: flow,
-                    tutorial: .backUpBip39(
-                        flow: flow,
-                        address: "temp"
-                    ),
-                    walletFlowType: walletFlowType
-                ),
-                by: .push
-            )
-        }
+                walletFlowType: .algo25
+            ),
+            by: .push
+        )
+    }
+    
+    private func createAccount() -> AccountInformation? {
 
+        let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+            session: session,
+            storage: hdWalletStorage,
+            entropy: nil
+        )
+        
+        guard let hdWalletAddressDetail, let address else {
+            assertionFailure("Could not create HD wallet")
+            return nil
+        }
+        
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: false,
+            hdWalletAddressDetail: hdWalletAddressDetail
+        )
+        
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+        session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
+
+        return account
     }
 }
