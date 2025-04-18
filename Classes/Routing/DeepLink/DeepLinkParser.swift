@@ -66,6 +66,7 @@ extension DeepLinkParser {
     func discover(
         notification: NotificationMessage
     ) -> Result? {
+        
         let action = resolveNotificationAction(for: notification)
 
         switch action {
@@ -78,7 +79,10 @@ extension DeepLinkParser {
         case .assetInbox:
             return makeIncomingASAScreen(for: notification)
         default:
-            return nil
+            guard  let externalDeepLink = notification.url?.externalDeepLink else {
+                return nil
+            }
+            return .success(.externalDeepLink(deepLink: externalDeepLink))
         }
     }
 
