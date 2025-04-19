@@ -76,7 +76,7 @@ struct HDWalletListItemViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.icon = [
-            .image("icon-wallet-24"),
+            .image("icon-add-account"),
             .contentMode(.scaleAspectFit),
         ]
         self.iconSize = (24, 24)

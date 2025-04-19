@@ -139,7 +139,7 @@ extension AddressNameSetupViewController {
     
     private func addWalletNameView() {
         walletNameView.translatesAutoresizingMaskIntoConstraints = false
-        walletNameView.backgroundColor = Colors.Button.Float.focusBackground.uiColor
+        walletNameView.backgroundColor = Colors.Layer.grayLighter.uiColor
         walletNameView.roundTheCorners(.allCorners, radius: theme.walletNameViewCornerRadius)
         walletNameView.setContentHuggingPriority(.required, for: .vertical)
         
