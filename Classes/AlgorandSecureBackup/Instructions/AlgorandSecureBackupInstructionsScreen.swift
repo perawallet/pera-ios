@@ -168,18 +168,12 @@ extension AlgorandSecureBackupInstructionsScreen {
             $0.trailing == 0
         }
 
-        addSelectAccountsInstruction()
         addStoreKeysInstruction()
         addSaveBackupFileInstruction()
     }
 
-    private func addSelectAccountsInstruction() {
-        let viewModel = AlgorandSecureBackupSelectAccountsInstructionItemViewModel(order: 1)
-        addInstruction(viewModel)
-    }
-
     private func addStoreKeysInstruction() {
-        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(order: 2)
+        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(order: 1)
         let instruction = addInstruction(viewModel)
         instruction.startObserving(event: .performHyperlinkAction) {
             [unowned self] in
@@ -188,7 +182,7 @@ extension AlgorandSecureBackupInstructionsScreen {
     }
 
     private func addSaveBackupFileInstruction() {
-        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(order: 3)
+        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(order: 2)
         addInstruction(viewModel)
     }
 
@@ -251,12 +245,12 @@ extension AlgorandSecureBackupInstructionsScreen {
 extension AlgorandSecureBackupInstructionsScreen {
     @objc
     private func performStartAction() {
-        eventHandler?(.performStart, self)
+        eventHandler?(.performStartASB, self)
     }
 }
 
 extension AlgorandSecureBackupInstructionsScreen {
     enum Event {
-        case performStart
+        case performStartASB
     }
 }

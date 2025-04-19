@@ -49,7 +49,11 @@ extension AlgorandSecureBackupFlowCoordinator {
     private func makeInstructionScreen() -> Screen {
         .algorandSecureBackupInstructions { [weak self] event, screen in
             guard let self else { return }
-            self.openPasswordScreenIfNeeded(from: screen)
+            switch event {
+            case .performStartASB:
+                self.openPasswordScreenIfNeeded(from: screen)
+            }
+            
         }
     }
 
@@ -57,7 +61,7 @@ extension AlgorandSecureBackupFlowCoordinator {
         guard let session = configuration.session else { return }
 
         guard session.hasPassword() else {
-            openAccountSelection(from: viewController)
+            openMnemonicsScreen(from: viewController)
             return
         }
 
@@ -71,23 +75,14 @@ extension AlgorandSecureBackupFlowCoordinator {
         controller?.delegate = self
     }
 
-    private func makeAccountSelection() -> Screen {
-        .algorandSecureBackupAccountList { [weak self] event, screen in
-            guard let self else { return }
-
-            switch event {
-            case .performContinue(let accounts):
-                self.openMnemonicsScreen(with: accounts, from: screen)
-            }
-        }
+    private func openMnemonicsScreen(from viewController: UIViewController) {
+        let screen = createASBMnmonicScreen()
+        viewController.open(screen, by: .push)
     }
-
-    private func openAccountSelection(from viewController: UIViewController) {
-        viewController.open(makeAccountSelection(), by: .push)
-    }
-
-    private func openMnemonicsScreen(with accounts: [Account], from viewController: UIViewController) {
-        let screen: Screen = .algorandSecureBackupMnemonic(accounts: accounts) { [weak self] event, screen in
+    
+    private func createASBMnmonicScreen() -> Screen {
+        let accounts = configuration.session?.authenticatedUser?.accounts.map { Account(localAccount: $0)} ?? []
+        return .algorandSecureBackupMnemonic(accounts: accounts) { [weak self] event, screen in
             guard let self else { return }
 
             switch event {
@@ -98,7 +93,6 @@ extension AlgorandSecureBackupFlowCoordinator {
                 self.openErrorScreen(from: screen)
             }
         }
-        viewController.open(screen, by: .push)
     }
 
     private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
@@ -146,11 +140,11 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
 
         for (index, viewController) in viewControllers.enumerated() {
             if viewController is ChoosePasswordViewController {
-                let accountSelectionScreen = viewController.open(
-                    makeAccountSelection(),
+                let asbMnmonicScreen = viewController.open(
+                    createASBMnmonicScreen(),
                     by: .push
-                ) as! AlgorandSecureBackupAccountListScreen
-                viewControllers.append(accountSelectionScreen)
+                ) as! AlgorandSecureBackupMnemonicsScreen
+                viewControllers.append(asbMnmonicScreen)
 
                 viewControllers.remove(at: index)
                 break
