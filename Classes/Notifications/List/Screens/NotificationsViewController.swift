@@ -112,6 +112,8 @@ final class NotificationsViewController: BaseViewController {
                             requestsCount: requestsCount
                         )
                     }
+                case let .externalDeepLink(deepLink: deepLink):
+                    self.open(deepLink: deepLink)
                 default:
                     break
                 }
@@ -354,10 +356,7 @@ extension NotificationsViewController {
             return
         }
 
-        let eventHandler: AccountDetailViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
+        let eventHandler: AccountDetailViewController.EventHandler = { event in
             switch event {
             case .didEdit: break
             case .didRemove: break
@@ -404,6 +403,14 @@ extension NotificationsViewController {
             default: break
             }
         }
+    }
+    
+    private func open(
+        deepLink: ExternalDeepLink
+    ) {
+        launchController.receive(
+            deeplinkWithSource: .externalDeepLink(deepLink)
+        )
     }
 }
 
