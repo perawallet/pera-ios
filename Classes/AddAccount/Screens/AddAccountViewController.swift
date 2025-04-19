@@ -41,7 +41,7 @@ final class AddAccountViewController: BaseViewController {
         addAccountView.bindData(
             AddAccountViewModel(
                 with: flow,
-                and: featureFlagService.isEnabled(.hdWalletEnabled),
+                and: featureFlagService.isEnabled(.hdWalletEnabled)
             )
         )
     }
