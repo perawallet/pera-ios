@@ -5113,6 +5113,50 @@
         }
       }
     },
+    "qr-scan-option-add-watch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Watch account"
+          }
+        }
+      }
+    },
+    "qr-scan-option-scanned-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanned account address"
+          }
+        }
+      }
+    },
+    "qr-scan-option-send-transaction" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send transaction"
+          }
+        }
+      }
+    },
+    "qr-scan-option-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address scanned!"
+          }
+        }
+      }
+    },
     "qr-scan-overlay-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7239,17 +7283,6 @@
         }
       }
     },
-    "title_about" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
-    },
     "title-about-with-param" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8634,6 +8667,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rekeyed to %@"
+          }
+        }
+      }
+    },
+    "title-remove" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
           }
         }
       }
