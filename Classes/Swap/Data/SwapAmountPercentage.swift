@@ -26,7 +26,7 @@ extension SwapAmountPercentage where Self == PresetSwapAmountPercentage {
     static func maxPercentage() -> SwapAmountPercentage {
         return PresetSwapAmountPercentage(
             value: 100,
-            customTitle: "swap-amount-percentage-max".localized
+            customTitle: "send-transaction-max-button-title".localized
         )
     }
 }

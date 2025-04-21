@@ -36,12 +36,8 @@ extension InnerTransactionListHeaderViewModel {
     mutating func bindTitle(
         _ innerTransactionCount: UInt
     ) {
-        let aText: String = innerTransactionCount == 1
-        ? "inner-transaction-singular-count".localized
-        : "inner-transaction-plural-count".localized(params: "\(innerTransactionCount)")
-
         title = .attributedString(
-            aText.bodyRegular(
+            "inner-transaction-count".localized(params: innerTransactionCount).bodyRegular(
                 lineBreakMode: .byTruncatingTail
             )
         )

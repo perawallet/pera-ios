@@ -65,7 +65,7 @@ struct AssetTransactionItemViewModel:
                 return
             }
 
-            bindTitle("transaction-item-opt-out".localized)
+            bindTitle("title-opt-out".localized)
             return
         }
 

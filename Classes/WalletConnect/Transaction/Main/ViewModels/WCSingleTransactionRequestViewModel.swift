@@ -63,7 +63,7 @@ final class WCSingleTransactionRequestViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        title = "request-title".localized
+        title = "title-request".localized
     }
 
     private func setTitle(transaction: WCTransaction, account: Account?) {

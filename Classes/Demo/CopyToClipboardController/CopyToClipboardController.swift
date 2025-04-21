@@ -35,7 +35,7 @@ extension CopyToClipboardController {
         _ url: String
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "url-copied".localized,
+            title: "url-copied-to-clipboard".localized,
             body: url
         )
         let item = ClipboardItem(copy: url, interaction: interaction)
@@ -46,7 +46,7 @@ extension CopyToClipboardController {
         _ address: String
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "qr-creation-copied".localized,
+            title: "address-copied-to-clipboard".localized,
             body: address.shortAddressDisplay
         )
         let item = ClipboardItem(copy: address, interaction: interaction)
@@ -58,7 +58,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(asset.id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: "id-copied-to-clipboard".localized,
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -70,7 +70,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(asset.id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: "id-copied-to-clipboard".localized,
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -82,7 +82,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: "id-copied-to-clipboard".localized,
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -94,7 +94,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = (transaction.id ?? transaction.parentID).someString
         let interaction = CopyToClipboardInteraction(
-            title: "transaction-detail-id-copied-title".localized,
+            title: "id-copied-to-clipboard".localized,
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -106,7 +106,7 @@ extension CopyToClipboardController {
     ) {
         let noteCopy = transaction.noteRepresentation().someString
         let interaction = CopyToClipboardInteraction(
-            title: "transaction-detail-note-copied".localized,
+            title: "note-copied-to-clipboard".localized,
             body: nil
         )
         let item = ClipboardItem(copy: noteCopy, interaction: interaction)
@@ -118,7 +118,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(transaction.applicationCall!.appID ?? .zero)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: "id-copied-to-clipboard".localized,
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)

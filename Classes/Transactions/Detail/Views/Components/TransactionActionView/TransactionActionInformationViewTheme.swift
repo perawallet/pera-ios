@@ -57,7 +57,7 @@ struct TransactionActionInformationViewTheme: StyleSheet, LayoutSheet {
             ])
         ]
         self.actionWithoutData = [
-            .title("send-enter-note-title".localized),
+            .title("title-add-note".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Helpers.positive)

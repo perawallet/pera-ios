@@ -276,7 +276,7 @@ extension SwapIntroductionScreen {
 extension SwapIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "swap-introduction-title"
+            "swap-alert-title"
                 .localized
                 .titleMedium(
                     lineBreakMode: .byTruncatingTail

@@ -54,7 +54,7 @@ extension AssetIDSecondaryListItemValueViewModel {
         attributes.insert(.textColor(Colors.Text.main))
 
         title =
-            "asset-copy-id"
+            "title-copy-id"
                 .localized
                 .attributed(
                     attributes

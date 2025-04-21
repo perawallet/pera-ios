@@ -515,7 +515,6 @@
 		17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
 		17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
-		17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		17BEC4602248C81E00AAF370 /* PassphraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */; };
 		17C93248290CF841000EE03D /* DiscoverSearchAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C93247290CF841000EE03D /* DiscoverSearchAssetCell.swift */; };
 		17C93249290CF841000EE03D /* DiscoverSearchAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C93247290CF841000EE03D /* DiscoverSearchAssetCell.swift */; };
@@ -1064,7 +1063,6 @@
 		2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
 		2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */; };
-		2B0F634324EC129D00DA22A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		2B0F635224ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */; };
 		2B0F635324ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */; };
 		2B0F635624ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */; };
@@ -1728,9 +1726,6 @@
 		2B67554E27720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
 		2B67554F27720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
 		2B67555027720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
-		2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
-		2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
-		2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
 		2B68A22B26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A22A26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift */; };
 		2B68A22C26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A22A26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift */; };
 		2B68A22D26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A22A26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift */; };
@@ -3485,7 +3480,6 @@
 		2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBE223A8E740052CAD3 /* NavigationController.swift */; };
 		2BF34CC2223A95A50052CAD3 /* ALGAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */; };
 		2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC4223A99670052CAD3 /* String+Localization.swift */; };
-		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		2BF3B0C12D1D7E1100E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */; };
 		2BF3B0C32D1D7E1D00E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */; };
 		2BF3B0C52D1D7E2300E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */; };
@@ -7045,6 +7039,12 @@
 		D4FDC5CC289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */; };
 		D4FDC5CD289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */; };
 		D4FDC5CE289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */; };
+		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
+		D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
+		D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
+		D4FF6CB82DB660610041C7A6 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
+		D4FF6CB92DB660610041C7A6 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
+		D4FF6CBA2DB660610041C7A6 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
 		D4FFDCB727E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
 		D4FFDCB827E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
 		D4FFDCB927E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
@@ -8379,7 +8379,6 @@
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		2B67554D27720D570090E170 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
-		2B6811E225345B5700D4437F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2B68A22A26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemView.swift; sourceTree = "<group>"; };
 		2B68A22E26A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemCell.swift; sourceTree = "<group>"; };
 		2B68A23326A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultipleTransactionItemViewModel.swift; sourceTree = "<group>"; };
@@ -9047,7 +9046,6 @@
 		2BF34CBE223A8E740052CAD3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAPI.swift; sourceTree = "<group>"; };
 		2BF34CC4223A99670052CAD3 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
-		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		2BF3B0CD2D1D7F3C00E78ADA /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
 		2BF3B0D12D1F048A00E78ADA /* RemoteConfigValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigValue.swift; sourceTree = "<group>"; };
@@ -10223,6 +10221,8 @@
 		D4FDA57628258BA600BFB778 /* CollectibleFullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageViewController.swift; sourceTree = "<group>"; };
 		D4FDA57A28258EC500BFB778 /* FullScreenContentViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenContentViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListViewControllerTheme.swift; sourceTree = "<group>"; };
+		D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableBannerDraft.swift; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RawRepresentable+Extensions.swift"; sourceTree = "<group>"; };
@@ -17108,8 +17108,8 @@
 		2BF34CC6223A99850052CAD3 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				2BF34CCB223AA63D0052CAD3 /* Localizable.strings */,
-				2B6811E325345B5700D4437F /* InfoPlist.strings */,
+				D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */,
+				D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -23176,9 +23176,9 @@
 				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
 				F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */,
+				D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */,
 				2B99D48A28F5607E00323C11 /* pera_loader_240x240.json in Resources */,
 				2B98844F25B880D5004532CE /* AssetSearchResult.json in Resources */,
-				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
@@ -23197,7 +23197,7 @@
 				D405059226F0F0A1001D0D11 /* light-ledger.json in Resources */,
 				F06FF4D927E8901B0047A20E /* Config.json in Resources */,
 				2B95422025B07FEA0098805B /* LedgerAccountInformation.json in Resources */,
-				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
+				D4FF6CB82DB660610041C7A6 /* InfoPlist.xcstrings in Resources */,
 				D4CC470126DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D4CC470726DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				17B7E1D127DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
@@ -23220,6 +23220,7 @@
 				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */,
 				2B99D48928F5607E00323C11 /* pera_loader_240x240.json in Resources */,
+				D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */,
 				F06FF4D727E88FF60047A20E /* Config.json in Resources */,
 				17B7E1D427DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
@@ -23230,16 +23231,15 @@
 				17B7E1DC27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
 				F02F19E527DF52D80085521C /* Assets.xcassets in Resources */,
 				17B7E1D027DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
-				2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */,
 				F07F00712923C5E800901F07 /* pera-loader-purple-light.json in Resources */,
-				2B0F634324EC129D00DA22A6 /* Localizable.strings in Resources */,
 				D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
 				F07F00742923C5E800901F07 /* pera-loader-purple-dark.json in Resources */,
 				D4CC470326DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				D4CC470626DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				D4CC471826DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
+				D4FF6CB92DB660610041C7A6 /* InfoPlist.xcstrings in Resources */,
 				17B7E1D827DF4D3100A89025 /* DMSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -23258,6 +23258,7 @@
 				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059426F0F0A7001D0D11 /* dark-ledger.json in Resources */,
 				2B99D48828F5607E00323C11 /* pera_loader_240x240.json in Resources */,
+				D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */,
 				F06FF4DB27E890320047A20E /* Config.json in Resources */,
 				17B7E1D327DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
@@ -23268,16 +23269,15 @@
 				17B7E1DB27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
 				F02F19E627DF52D80085521C /* Assets.xcassets in Resources */,
 				17B7E1CF27DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
-				2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				F07F00702923C5E800901F07 /* pera-loader-purple-light.json in Resources */,
-				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
 				F07F00732923C5E800901F07 /* pera-loader-purple-dark.json in Resources */,
 				D4CC470226DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				D4CC470526DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				D4CC471726DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
+				D4FF6CBA2DB660610041C7A6 /* InfoPlist.xcstrings in Resources */,
 				17B7E1D727DF4D3100A89025 /* DMSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -31031,28 +31031,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		2B6811E325345B5700D4437F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2B6811E225345B5700D4437F /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				2B8BE4DB22391C3B005D8565 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		2BF34CCB223AA63D0052CAD3 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2BF34CCA223AA63D0052CAD3 /* en */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -31065,7 +31049,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31078,7 +31062,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1898;
+				MARKETING_VERSION = 91.7.1590;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31094,7 +31078,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31106,7 +31090,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1898;
+				MARKETING_VERSION = 91.7.1590;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31122,7 +31106,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31134,7 +31118,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1898;
+				MARKETING_VERSION = 91.7.1590;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31151,7 +31135,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31164,7 +31148,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31181,7 +31165,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31193,7 +31177,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31210,7 +31194,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31222,7 +31206,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31292,6 +31276,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -31349,6 +31334,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -31361,7 +31347,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
@@ -31375,7 +31361,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31394,7 +31380,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31406,7 +31392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31539,6 +31525,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -31552,7 +31539,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31564,7 +31551,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.7.1929;
+				MARKETING_VERSION = 91.7.1590;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";

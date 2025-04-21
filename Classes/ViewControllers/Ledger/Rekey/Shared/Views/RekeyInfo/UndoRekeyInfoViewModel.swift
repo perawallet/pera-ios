@@ -35,7 +35,7 @@ struct UndoRekeyInfoViewModel: RekeyInfoViewModel {
 extension UndoRekeyInfoViewModel {
     private mutating func bindTitle() {
         title =
-            "title-undo-rekey-capitalized-sentence"
+            "title-undo-rekey"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
     }

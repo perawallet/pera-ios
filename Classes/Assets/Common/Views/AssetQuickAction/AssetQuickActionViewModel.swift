@@ -137,7 +137,7 @@ extension AssetQuickActionViewModel {
 
             if asset is CollectibleAsset {
                 self.buttonTitle = .attributedString(
-                    "single-transaction-request-opt-in-title"
+                    "title-opt-in"
                         .localized
                         .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )
@@ -156,7 +156,7 @@ extension AssetQuickActionViewModel {
 
             if asset is CollectibleAsset {
                 self.buttonTitle = .attributedString(
-                    "single-transaction-request-opt-in-title"
+                    "title-opt-in"
                         .localized
                         .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )

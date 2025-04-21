@@ -794,7 +794,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
+            title: "swap-slippage-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-slippage-tolerance-info-body".localized.bodyRegular())
         )
 
@@ -840,7 +840,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            title: "swap-price-impact-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-price-impact-info-body".localized.bodyRegular())
         )
 

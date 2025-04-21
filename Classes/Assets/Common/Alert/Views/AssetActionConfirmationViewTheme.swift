@@ -86,7 +86,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         ]
         self.copyIDButton = [
             .backgroundColor(Colors.Layer.grayLighter),
-            .title("asset-copy-id".localized),
+            .title("title-copy-id".localized),
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(Colors.Text.main)])
         ]

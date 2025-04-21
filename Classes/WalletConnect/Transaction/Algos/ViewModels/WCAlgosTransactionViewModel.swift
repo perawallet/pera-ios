@@ -103,7 +103,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-to".localized,
+            title: "title-to".localized,
             account: account,
             hasImage: account == senderAccount
         )
@@ -132,13 +132,13 @@ final class WCAlgosTransactionViewModel {
         )
 
         let balanceViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        balanceViewModel.setTitle("title-account-balance".localized)
+        balanceViewModel.setTitle("title-balance".localized)
         self.balanceViewModel = balanceViewModel
     }
 
     private func setAssetInformationViewModel(from senderAccount: Account?) {
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: "title-asset".localized,
             asset: nil
         )
     }
@@ -246,7 +246,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

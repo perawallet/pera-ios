@@ -268,7 +268,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

@@ -47,7 +47,7 @@ struct SwapAssetAmountOutViewModel: SwapAssetAmountViewModel {
 
 extension SwapAssetAmountOutViewModel {
     mutating func bindLeftTitle() {
-        leftTitle = "transaction-detail-to"
+        leftTitle = "title-to"
             .localized
             .footnoteRegular(
                 alignment: .left,

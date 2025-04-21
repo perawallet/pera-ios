@@ -84,7 +84,7 @@ extension AccountNameTitleViewModel {
         case .asset(let asset):
             title = "send-transaction-title".localized(params: asset.naming.displayNames.primaryName)
         case .algo:
-            title = "send-transaction-title".localized(params: "asset-algos-title".localized)
+            title = "send-transaction-title".localized(params: "title-algo".localized)
         }
 
         self.title = title.bodyMedium(

@@ -24,7 +24,7 @@ struct SortListItemButtonViewModel: ListItemButtonViewModel {
 
     init() {
         icon = "icon-options-sort"
-        title = Self.getTitle("options-sort-title".localized)
+        title = Self.getTitle("title-sort".localized)
         subtitle = nil
     }
 }

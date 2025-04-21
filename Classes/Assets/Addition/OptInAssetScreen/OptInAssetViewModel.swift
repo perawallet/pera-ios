@@ -44,7 +44,7 @@ extension OptInAssetViewModel {
         _ draft: OptInAssetDraft
     ) {
         if draft.asset.isCollectible {
-            title = "opt-in-title-adding-nft".localized
+            title = "collectibles-receive-asset-title".localized
         } else {
             title = "asset-add-confirmation-title".localized
         }

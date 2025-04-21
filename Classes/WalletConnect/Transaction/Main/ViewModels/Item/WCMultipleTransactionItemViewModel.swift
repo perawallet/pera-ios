@@ -40,9 +40,7 @@ class WCMultipleTransactionItemViewModel {
 
         let id = getShortIDDisplay(from: groupId)
 
-        detail = transactions.count == 1 ?
-            "wallet-connect-transaction-count-singular".localized(params: id) :
-            "wallet-connect-transaction-count".localized(params: transactions.count, id)
+        detail = "wallet-connect-transaction-count".localized(params: transactions.count, id)
     }
 }
 

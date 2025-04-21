@@ -56,7 +56,7 @@ extension SendAssetInboxScreenViewModel {
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         highlightedSubtitleText = HighlightedText(
-            text: "send-inbox-read-more".localized,
+            text: "title-read-more".localized,
             attributes: attributes
         )
     }

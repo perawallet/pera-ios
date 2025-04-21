@@ -528,7 +528,7 @@ extension WatchAccountAdditionViewController: MultilineTextInputFieldViewDelegat
 extension WatchAccountAdditionViewController {
     func updateAddressInputViewInputStateForNameServicesNoContentState() {
         let text: EditText = .attributedString(
-            "account-not-found"
+            "title-account-not-found"
                 .localized
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
         )

@@ -135,7 +135,7 @@ extension AccountRecoverViewController {
 
     private func addRecoverButton() {
         recoverButton.customize(ButtonPrimaryTheme())
-        recoverButton.bindData(ButtonCommonViewModel(title: "recover-title".localized))
+        recoverButton.bindData(ButtonCommonViewModel(title: "title-recover".localized))
 
         view.addSubview(recoverButton)
         recoverButton.snp.makeConstraints {

@@ -95,21 +95,21 @@ struct UIActionItem {
 
     static var copyAddress: UIActionItem {
         return UIActionItem(
-            title: "qr-creation-copy-address".localized,
+            title: "title-copy-address".localized.capitalized,
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyAssetID: UIActionItem {
         return UIActionItem(
-            title: "asset-copy-id".localized,
+            title: "title-copy-id".localized,
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyTransactionID: UIActionItem {
         return UIActionItem(
-            title: "transaction-menu-copy-id".localized,
+            title: "title-copy-id".localized,
             image: "icon-copy-gray".uiImage
         )
     }

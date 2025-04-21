@@ -40,9 +40,9 @@ import MacaroonUIKit
              .textContentType(.name)
          ]
          self.nameInput = FloatingTextInputFieldViewCommonTheme(
-             textInput: textInputBaseStyle,
-             placeholder: "account-name-setup-placeholder".localized,
-             floatingPlaceholder: "account-name-setup-placeholder".localized
+            textInput: textInputBaseStyle,
+            placeholder: "placeholder-account-name-setup".localized,
+            floatingPlaceholder: "placeholder-account-name-setup".localized
          )
          self.nameInputMinHeight = 48
      }

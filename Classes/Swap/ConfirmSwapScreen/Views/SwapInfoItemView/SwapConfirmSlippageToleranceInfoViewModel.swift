@@ -37,7 +37,7 @@ struct SwapConfirmSlippageToleranceInfoViewModel: SwapInfoItemViewModel {
 
 extension SwapConfirmSlippageToleranceInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-slippage-tolerance-info-title"
+        title = "swap-slippage-title"
             .localized
             .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }

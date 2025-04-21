@@ -95,10 +95,10 @@ struct ASADetailLoadingViewTheme:
         self.spacingBetweenQuickActionsAndPageBar = 36
         self.pageBarStyle = PageBarCommonStyleSheet()
         self.pageBarLayout = PageBarCommonLayoutSheet()
-        self.activityPageBarItem = PrimaryPageBarButtonItem(title: "activity".localized)
+        self.activityPageBarItem = PrimaryPageBarButtonItem(title: "title-activity".localized)
         self.activity = TransactionHistoryLoadingViewCommonTheme()
         self.activityContentEdgeInsets = .init(top: 36, leading: 24, bottom: 0, trailing: 24)
-        self.aboutPageBarItem = PrimaryPageBarButtonItem(title: "about".localized)
+        self.aboutPageBarItem = PrimaryPageBarButtonItem(title: "title-about".localized)
         self.about = ASAAboutLoadingViewTheme()
         self.corner = Corner(radius: 4)
     }

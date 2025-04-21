@@ -35,7 +35,7 @@ struct RekeySummaryInfoViewModel: RekeyInfoViewModel {
 extension RekeySummaryInfoViewModel {
     private mutating func bindTitle() {
         title =
-            "summary-of-rekey-title"
+            "title-summary-of-rekey"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
     }

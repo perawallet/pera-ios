@@ -48,7 +48,7 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
         self.filterButton = [
             .icon([.normal("icon-transaction-filter-primary")]),
             .titleColor([.normal(Colors.Helpers.positive)]),
-            .title("filter".localized),
+            .title("title-filter".localized),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.buttonHeight = 40

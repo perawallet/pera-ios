@@ -33,7 +33,7 @@ enum DeveloperSettings: Settings {
     var name: String {
         switch self {
         case .nodeSettings:
-            return "settings-server-node-settings".localized
+            return "node-settings-title".localized
         case .dispenser:
             return "settings-developer-dispenser".localized
         }

@@ -254,7 +254,7 @@ extension AppCallTransactionDetailView {
 
         noteView.bindData(
             TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized,
+                title: "title-note".localized,
                 detail: viewModel?.note
             )
         )

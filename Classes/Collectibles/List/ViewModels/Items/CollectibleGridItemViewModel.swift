@@ -173,7 +173,7 @@ extension CollectibleGridItemViewModel {
 
     private mutating func bindPendingTitle() {
         pendingTitle = .attributedString(
-            "collectible-list-item-pending-title"
+            "title-pending"
                 .localized
                 .footnoteBold(lineBreakMode: .byTruncatingTail)
         )

@@ -78,7 +78,7 @@ final class SettingsViewController:
     }
 
     override func configureAppearance() {
-        title = "settings-title".localized
+        title = "title-settings".localized
     }
     
     override func prepareLayout() {
@@ -229,7 +229,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             title: "settings-delete-data-title".localized,
             description: .plain("settings-logout-detail".localized),
             primaryActionButtonTitle: "settings-logout-button-delete".localized,
-            secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
+            secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return

@@ -74,7 +74,7 @@ final class WCTransactionDappMessageView: BaseView {
             .withLine(.single)
             .withTextColor(Colors.Helpers.positive.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
-            .withText("wallet-connect-transaction-dapp-show-more".localized)
+            .withText("title-read-more".localized)
     }()
 
     private lazy var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))

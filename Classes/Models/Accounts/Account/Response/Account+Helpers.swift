@@ -161,15 +161,15 @@ extension Account {
         }
 
         if authorization.isWatch {
-            return "title-watch-account".localized
+            return "title-watch-account".localized.capitalized
         }
 
         if authorization.isLedger {
-            return "title-ledger-account".localized
+            return "title-ledger-account".localized.capitalized
         }
 
         if authorization.isRekeyed {
-            return "title-rekeyed-account".localized
+            return "title-rekeyed-account".localized.capitalized
         }
 
         if authorization.isNoAuth {

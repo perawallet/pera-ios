@@ -25,7 +25,7 @@ struct ShowQrCodeListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-qr"
-        title = Self.getTitle("options-show-qr".localized)
+        title = Self.getTitle("title-show-address".localized.capitalized)
         subtitle = nil
     }
 }

@@ -326,7 +326,7 @@ extension SendAssetInboxScreen {
                 loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
-                    message: "send-inbox-transaction-failed".localized(id)
+                    message: "send-inbox-transaction-failed".localized(params: id)
                 )
             case let .didFailNetwork(error):
                 let message: String
@@ -403,7 +403,7 @@ extension SendAssetInboxScreen {
         _ transactionId: String?
     ) {
         let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-            title: "incoming-asas-detail-success-title"
+            title: "send-transaction-preview-success-title"
                 .localized,
             detail: "incoming-asas-detail-success-detail"
                 .localized
