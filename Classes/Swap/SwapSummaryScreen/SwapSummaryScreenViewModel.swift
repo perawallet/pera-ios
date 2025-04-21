@@ -56,10 +56,6 @@ struct SwapSummaryScreenViewModel: ViewModel {
             parsedTransactions: parsedTransactions,
             currencyFormatter: currencyFormatter
         )
-        bindExchangeFeeInfo(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
         bindPeraFeeInfo(
             quote: quote,
             currencyFormatter: currencyFormatter
@@ -128,16 +124,6 @@ extension SwapSummaryScreenViewModel {
         optInFeeInfo = SwapSummaryOptInFeeItemViewModel(
             quote: quote,
             parsedTransactions: parsedTransactions,
-            currencyFormatter: currencyFormatter
-        )
-    }
-
-    mutating func bindExchangeFeeInfo(
-        quote: SwapQuote,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        exchangeFeeInfo = SwapSummaryExchangeFeeItemViewModel(
-            quote: quote,
             currencyFormatter: currencyFormatter
         )
     }

@@ -26,7 +26,6 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var slippageInfo: SwapInfoItemViewModel?
     private(set) var priceImpactInfo: SwapInfoItemViewModel?
     private(set) var minimumReceivedInfo: SwapInfoItemViewModel?
-    private(set) var exchangeFeeInfo: SwapInfoItemViewModel?
     private(set) var peraFeeInfo: SwapInfoItemViewModel?
     private(set) var isConfirmActionEnabled: Bool = true
 
@@ -57,10 +56,6 @@ struct ConfirmSwapScreenViewModel: ViewModel {
         bindSlippageInfo(quote)
         bindPriceImpactInfo(quote)
         bindMinimumReceivedInfo(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
-        bindExchangeFeeInfo(
             quote: quote,
             currencyFormatter: currencyFormatter
         )
@@ -202,16 +197,6 @@ extension ConfirmSwapScreenViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         minimumReceivedInfo = SwapConfirmMinimumReceivedInfoViewModel(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
-    }
-
-    mutating func bindExchangeFeeInfo(
-        quote: SwapQuote,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        exchangeFeeInfo = SwapConfirmExchangeFeeInfoViewModel(
             quote: quote,
             currencyFormatter: currencyFormatter
         )

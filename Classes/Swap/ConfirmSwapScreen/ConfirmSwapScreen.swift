@@ -36,7 +36,6 @@ final class ConfirmSwapScreen:
     private var poolAssetBottomSeparator: UIView?
     private lazy var priceImpactInfoView = SwapInfoItemView()
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
-    private lazy var exchangeFeeInfoView = SwapInfoItemView()
     private lazy var peraFeeInfoView = SwapInfoItemView()
     private lazy var warningView = SwapErrorView()
     private lazy var confirmActionView: LoadingButton = {
@@ -105,7 +104,6 @@ final class ConfirmSwapScreen:
         addToSeparator()
         addWarning()
         addPeraFeeInfo()
-        addExchangeFeeInfo()
         addMinimumReceivedInfo()
         addPriceImpactInfo()
         addSlippageInfo()
@@ -266,25 +264,6 @@ extension ConfirmSwapScreen {
         }
     }
 
-    private func addExchangeFeeInfo() {
-        exchangeFeeInfoView.customize(theme.infoItem)
-
-        contentView.addSubview(exchangeFeeInfoView)
-        exchangeFeeInfoView.fitToIntrinsicSize()
-        exchangeFeeInfoView.snp.makeConstraints {
-            $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == peraFeeInfoView.snp.top - theme.infoSectionItemSpacing
-            $0.trailing == theme.infoSectionPaddings.trailing
-        }
-
-        exchangeFeeInfoView.startObserving(event: .didTapInfo) {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.eventHandler?(.didTapExchangeFeeInfo)
-        }
-    }
-
     private func addMinimumReceivedInfo() {
         minimumReceivedInfoView.customize(theme.infoItem)
 
@@ -292,7 +271,7 @@ extension ConfirmSwapScreen {
         minimumReceivedInfoView.fitToIntrinsicSize()
         minimumReceivedInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == exchangeFeeInfoView.snp.top - theme.infoSectionItemSpacing
+            $0.bottom == peraFeeInfoView.snp.top - theme.infoSectionItemSpacing
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -440,7 +419,6 @@ extension ConfirmSwapScreen {
         slippageInfoView.bindData(viewModel?.slippageInfo)
         priceImpactInfoView.bindData(viewModel?.priceImpactInfo)
         minimumReceivedInfoView.bindData(viewModel?.minimumReceivedInfo)
-        exchangeFeeInfoView.bindData(viewModel?.exchangeFeeInfo)
         peraFeeInfoView.bindData(viewModel?.peraFeeInfo)
         warningView.bindData(viewModel?.warning)
         confirmActionView.isEnabled = viewModel?.isConfirmActionEnabled ?? true
@@ -621,6 +599,5 @@ extension ConfirmSwapScreen {
         case didTapSlippageInfo
         case didTapSlippageAction
         case didTapPriceImpactInfo
-        case didTapExchangeFeeInfo
     }
 }
