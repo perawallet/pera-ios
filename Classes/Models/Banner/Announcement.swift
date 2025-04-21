@@ -111,6 +111,7 @@ enum AnnouncementType: String, Codable {
     case generic
     case backup
     case staking
+    case card
     
     init?(rawValue: String) {
         switch rawValue {
@@ -120,6 +121,8 @@ enum AnnouncementType: String, Codable {
             self = .backup
         case "staking":
             self = .staking
+        case "card":
+            self = .card
         default:
             self = .generic
         }

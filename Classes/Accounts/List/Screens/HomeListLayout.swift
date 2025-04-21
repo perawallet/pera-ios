@@ -348,6 +348,12 @@ extension HomeListLayout {
                 for: GenericAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
+        case .card:
+            return CardAnnouncementCell.calculatePreferredSize(
+                item,
+                for: CardAnnouncementCell.theme,
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
         }
     }
 }

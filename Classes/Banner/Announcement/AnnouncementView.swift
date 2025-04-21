@@ -193,6 +193,9 @@ extension AnnouncementView {
         _ theme: AnnouncementViewTheme
     ) {
         subtitleView.customizeAppearance(theme.subtitle)
+        if let numberOfLines = theme.subtitleNumberOfLines {
+            subtitleView.numberOfLines = numberOfLines
+        }
         
         stackView.addArrangedSubview(subtitleView)
         stackView.setCustomSpacing(theme.stackViewButtonSpacing, after: subtitleView)
