@@ -55,7 +55,7 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(Colors.Text.main),
-            .text("contacts-info-address".localized)
+            .text("contact-input-address-placeholder".localized)
         ]
         self.accountAddressValueLabel = [
             .textOverflow(FittingText()),

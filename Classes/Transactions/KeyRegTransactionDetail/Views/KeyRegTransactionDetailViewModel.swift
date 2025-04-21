@@ -159,7 +159,7 @@ extension KeyRegTransactionDetailViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "selection-key-title".localized,
+            title: "title-selection-key".localized,
             detail: selectionKey
         )
         self.selectionKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -175,7 +175,7 @@ extension KeyRegTransactionDetailViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "state-proof-key-title".localized,
+            title: "title-state-proof-key".localized,
             detail: stateProofKey
         )
         self.stateProofKeyViewModel = TransactionTextInformationViewModel(titledInformation)

@@ -53,7 +53,7 @@ struct WCSingleTransactionRequestBottomViewTheme: LayoutSheet, StyleSheet {
         networkFeeTitleLabel = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
-            .text("single-transaction-request-network-fee-title".localized)
+            .text("title-network-fee".localized)
         ]
         networkFeeLabel = [
             .textColor(Colors.Text.main),

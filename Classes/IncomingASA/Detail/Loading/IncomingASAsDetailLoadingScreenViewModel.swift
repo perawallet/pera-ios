@@ -36,7 +36,7 @@ extension IncomingASAsDetailLoadingScreenViewModel {
     }
 
     mutating func bindTitle() {
-        title = "incoming-asas-detail-loading-title"
+        title = "sending-transaction-loading-title"
             .localized
             .bodyLargeMedium(alignment: .center)
     }

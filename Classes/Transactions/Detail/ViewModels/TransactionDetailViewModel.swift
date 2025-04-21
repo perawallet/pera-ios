@@ -64,7 +64,7 @@ extension TransactionDetailViewModel {
         for account: Account
     ) {
         transactionStatus = transaction.status
-        userViewTitle = "transaction-detail-to".localized
+        userViewTitle = "title-to".localized
         opponentViewTitle = "transaction-detail-from".localized
 
         let receiverAddress = transaction.getReceiver()
@@ -149,7 +149,7 @@ extension TransactionDetailViewModel {
         bindReward(for: transaction)
 
         userViewTitle = "transaction-detail-from".localized
-        opponentViewTitle = "transaction-detail-to".localized
+        opponentViewTitle = "title-to".localized
 
         let senderAddress = transaction.sender
         let accountAddress = account.address
@@ -170,7 +170,7 @@ extension TransactionDetailViewModel {
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
-            opponentViewTitle = "transaction-detail-to".localized
+            opponentViewTitle = "title-to".localized
             bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
@@ -187,7 +187,7 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
         }  else if let payment = transaction.payment {
-            opponentViewTitle = "transaction-detail-to".localized
+            opponentViewTitle = "title-to".localized
             bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos

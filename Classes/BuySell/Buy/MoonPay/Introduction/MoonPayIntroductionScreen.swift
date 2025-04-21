@@ -318,7 +318,7 @@ extension MoonPayIntroductionScreen {
 extension MoonPayIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "moonpay-buy-button-title"
+            "quick-actions-buy-algo-title"
                 .localized
                 .titleMedium()
     }

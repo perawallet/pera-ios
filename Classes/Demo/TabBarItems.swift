@@ -101,7 +101,7 @@ struct SettingsTabBarItem: TabBarItem {
                     .selected("tabbar-icon-settings-selected"),
                     .disabled("tabbar-icon-settings-disabled")
                 ],
-                title: "settings-title".localized
+                title: "title-settings".localized
             )
         self.screen = screen
     }

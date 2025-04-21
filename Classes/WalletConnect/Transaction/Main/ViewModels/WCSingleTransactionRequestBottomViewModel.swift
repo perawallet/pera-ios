@@ -48,7 +48,7 @@ final class WCSingleTransactionRequestBottomViewModel {
             asset: asset,
             currencyFormatter: currencyFormatter
         )
-        showDetailsActionTitle = "single-transaction-request-show-detail-title".localized
+        showDetailsActionTitle = "title-show-transaction-detail".localized
     }
 
     init(

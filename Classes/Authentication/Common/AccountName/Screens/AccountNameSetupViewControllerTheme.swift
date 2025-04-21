@@ -40,7 +40,7 @@ struct AccountNameSetupViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("account-details-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text("title-name-your-account".localized.titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.description = [
@@ -60,8 +60,8 @@ struct AccountNameSetupViewControllerTheme:
         ]
         self.nameInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "account-name-setup-placeholder".localized,
-            floatingPlaceholder: "account-name-setup-placeholder".localized
+            placeholder: "placeholder-account-name-setup".localized,
+            floatingPlaceholder: "placeholder-account-name-setup".localized
         )
         self.nameInputMinHeight = 48
         self.action = [

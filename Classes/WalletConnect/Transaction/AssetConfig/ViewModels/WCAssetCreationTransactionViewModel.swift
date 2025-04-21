@@ -105,7 +105,7 @@ class WCAssetCreationTransactionViewModel {
         asset: Asset?
     ) {
         assetNameViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: "title-asset".localized,
             asset: asset
         )
     }
@@ -300,7 +300,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

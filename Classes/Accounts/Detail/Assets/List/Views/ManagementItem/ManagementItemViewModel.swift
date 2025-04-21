@@ -42,7 +42,7 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.title = .attributedString(
-                "accounts-title"
+                "title-accounts"
                     .localized
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
@@ -50,27 +50,16 @@ extension ManagementItemViewModel {
             )
         case .asset:
             self.title = .attributedString(
-                "assets-title"
+                "title-assets"
                     .localized
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
             )
         case .collectible(let count, _):
-            if count < 2 {
-                self.title = .attributedString(
-                    "title-plus-collectible-singular-count"
-                        .localized(params: "\(count)")
-                        .bodyMedium(
-                            lineBreakMode: .byTruncatingTail
-                        )
-                )
-                return
-            }
-
             self.title = .attributedString(
                 "title-plus-collectible-count"
-                    .localized(params: "\(count)")
+                    .localized(params: count)
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
@@ -84,7 +73,7 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.primaryButtonTitle = .attributedString(
-                "options-sort-title"
+                "title-sort"
                     .localized
                     .bodyMedium()
             )

@@ -377,7 +377,7 @@ extension AlgorandSecureBackupMnemonicsScreen {
             title: "algorand-secure-backup-mnemonics-regenerate-confirmation-title".localized,
             description: .plain("algorand-secure-backup-mnemonics-regenerate-confirmation-message".localized),
             primaryActionButtonTitle: "algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title".localized,
-            secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in
                 guard let self else { return }
                 self.generateNewKey()

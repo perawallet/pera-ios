@@ -43,7 +43,7 @@ struct RewardDetailViewModel:
 extension RewardDetailViewModel {
     private mutating func bindTitle() {
         title = .attributedString(
-            "rewards-title"
+            "title-rewards"
                 .localized
                 .footnoteRegular()
         )
@@ -86,7 +86,7 @@ extension RewardDetailViewModel {
 
     private mutating func bindFAQLabel() {
         let title = "total-rewards-faq-title".localized
-        let FAQ = "total-rewards-faq".localized
+        let FAQ = "title-faq".localized
 
         let titleAttributes = NSMutableAttributedString(
             attributedString: title.bodyRegular()

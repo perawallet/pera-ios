@@ -67,7 +67,7 @@ extension CollectiblesNoContentWithActionViewModel {
 
     private mutating func bindTitle() {
         title =
-            "collectibles-empty-title"
+            "title-collectibles"
                 .localized
                 .titleMedium(alignment: .center)
     }
@@ -126,7 +126,7 @@ extension CollectiblesNoContentWithActionViewModel {
         }
 
         return .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
+            "collectibles-empty-secondary-action-title".localized(params: hiddenCollectibleCount)
         )
     }
 }

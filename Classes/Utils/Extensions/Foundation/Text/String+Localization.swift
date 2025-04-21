@@ -33,10 +33,8 @@ extension String {
 
 extension String {
     private func localizedString() -> String {
-        return NSLocalizedString(
-            self,
-            comment: ""
-        )
+        let localized = String(localized: String.LocalizationValue(self))
+        return localized.replacingOccurrences(of: "\\n", with: "\n")
     }
 
     func formattedString(

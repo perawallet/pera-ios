@@ -435,7 +435,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([.contacts])
 
-        let headerItem = makeHeaderItem("send-algos-contacts".localized)
+        let headerItem = makeHeaderItem("contacts-title".localized)
 
         snapshot.appendItems(
             [ headerItem ],

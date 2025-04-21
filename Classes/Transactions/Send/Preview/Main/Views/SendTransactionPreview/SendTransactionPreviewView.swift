@@ -164,7 +164,7 @@ extension SendTransactionPreviewView {
         lockedNoteView.customize(theme.transactionTextInformationViewTheme)
         lockedNoteView.bindData(
             TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized
+                title: "title-note".localized
             )
         )
         

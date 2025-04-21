@@ -128,7 +128,7 @@ extension EditNoteScreen {
         }
 
         if note.isNilOrEmpty {
-            navigationItem.title = "edit-note-title".localized
+            navigationItem.title = "title-add-note".localized
         } else {
             navigationItem.title = "send-transaction-edit-note-title".localized
         }

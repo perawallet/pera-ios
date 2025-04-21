@@ -47,7 +47,7 @@ struct WebImportInstructionScreenTheme: LayoutSheet, StyleSheet {
         self.instructionEdgeInset = .init(top: 28, left: 24, bottom: 24, right: 24)
 
         self.startAction = [
-            .title("web-import-instruction-start-button-title".localized),
+            .title("title-start".localized),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

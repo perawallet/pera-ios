@@ -58,7 +58,7 @@ extension StandardAccountTypeInformationViewModel {
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let descriptionHighlightedText = HighlightedText(
-            text: "standard-account-type-description-highlighted-text".localized,
+            text: "title-learn-more".localized,
             attributes: descriptionHighlightedTextAttributes
         )
 

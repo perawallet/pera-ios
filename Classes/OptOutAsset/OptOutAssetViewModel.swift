@@ -109,7 +109,7 @@ extension OptOutAssetViewModel {
         let aTitle: String
 
         if draft.isOptingOutCollectibleAsset {
-            aTitle = "transaction-item-opt-out".localized
+            aTitle = "title-opt-out".localized
         } else {
             aTitle = "title-remove".localized
         }

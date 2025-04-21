@@ -89,7 +89,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: "title-asset".localized,
             asset: asset
         )
     }
@@ -181,7 +181,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

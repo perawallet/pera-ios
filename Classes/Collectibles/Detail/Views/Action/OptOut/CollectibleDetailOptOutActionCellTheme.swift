@@ -29,7 +29,7 @@ struct CollectibleDetailOptOutActionCellTheme:
         let contextFont = Typography.bodyMedium()
         self.contextFont = contextFont
         self.context = [
-            .title("collectible-detail-opt-out".localized),
+            .title("title-opt-out".localized),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(contextFont),
             .backgroundImage([

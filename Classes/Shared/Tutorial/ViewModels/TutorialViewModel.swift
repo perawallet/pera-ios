@@ -76,7 +76,7 @@ extension TutorialViewModel {
         case .recoverWithPassphrase:
             title = "tutorial-title-recover".localized
         case .watchAccount:
-            title = "title-watch-account".localized
+            title = "title-watch-account".localized.capitalized
         case .writePassphrase:
             title = "tutorial-title-write".localized
         case .passcode:
@@ -134,7 +134,7 @@ extension TutorialViewModel {
     private func bindPrimaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            primaryActionButtonTitle = "tutorial-main-title-back-up".localized
+            primaryActionButtonTitle = "title-i-understand".localized
         case .recoverWithPassphrase:
             primaryActionButtonTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
@@ -224,7 +224,7 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-continue".localized
         } else {
-            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+            self.primaryActionButtonTitle = "quick-actions-buy-algo-title".localized
         }
     }
 

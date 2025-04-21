@@ -415,7 +415,7 @@ extension OptionsViewController {
     ) {
         bannerController?.presentErrorBanner(
             title: "title-error".localized,
-            message: apiErrorDetail?.fallbackMessage ?? "transaction-filter-error-title".localized
+            message: apiErrorDetail?.fallbackMessage ?? "title-generic-error".localized
         )
     }
 }

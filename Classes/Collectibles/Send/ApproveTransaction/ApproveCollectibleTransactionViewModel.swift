@@ -84,7 +84,7 @@ extension ApproveCollectibleTransactionViewModel {
 
         let info = CollectibleTransactionInformation(
             icon: icon,
-            title: "collectible-approve-transaction-to".localized,
+            title: "title-to".localized,
             value: value
         )
         toAccountViewModel = CollectibleTransactionInfoViewModel(info)

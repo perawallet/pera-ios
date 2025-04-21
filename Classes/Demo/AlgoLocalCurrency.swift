@@ -27,7 +27,7 @@ struct AlgoLocalCurrency: LocalCurrency {
         pairID: CurrencyID? = nil
     ) {
         self.id = CurrencyID.algo(pairID: pairID)
-        self.name = "title-algorand".localized
+        self.name = "title-algo".localized
         self.symbol = "\u{00A6}"
     }
 }

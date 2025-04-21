@@ -44,10 +44,7 @@ extension WebImportSuccessInfoBoxViewModel {
     }
 
     private mutating func bindMessage(unimportedAccountCount: Int) {
-        let isSingular = unimportedAccountCount == 1
-        let message = isSingular ? "web-import-success-unimported-singular-body".localized(params: "\(unimportedAccountCount)") : "web-import-success-unimported-body".localized(params: "\(unimportedAccountCount)")
-
-        self.message = message.footnoteRegular()
+        self.message = "web-import-success-unimported-body".localized(params: unimportedAccountCount).footnoteRegular()
     }
 
     private mutating func bindStyle() {

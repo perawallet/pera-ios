@@ -24,7 +24,7 @@ final class TransactionActionInformationViewModel: ViewModel {
     init(
         description: String? = nil
     ) {
-        self.title = "transaction-detail-note".localized
+        self.title = "title-note".localized
         self.description = description
     }
 }

@@ -24,7 +24,7 @@ struct FilterCollectiblesItemButtonViewModel: ListItemButtonViewModel {
 
     init() {
         icon = "icon-asset-filter"
-        title = Self.getTitle("filter".localized)
+        title = Self.getTitle("title-filter".localized)
         subtitle = nil
     }
 }

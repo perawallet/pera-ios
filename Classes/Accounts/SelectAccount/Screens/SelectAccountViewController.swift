@@ -57,7 +57,7 @@ final class SelectAccountViewController: BaseViewController {
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Defaults.background.uiColor
-        navigationItem.title = "send-algos-select".localized
+        navigationItem.title = "title-select-account".localized.capitalized
     }
 
     override func setListeners() {

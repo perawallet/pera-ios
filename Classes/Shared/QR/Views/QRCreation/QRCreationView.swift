@@ -140,7 +140,7 @@ extension QRCreationView {
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(
             ButtonCommonViewModel(
-                title: "qr-creation-copy-address".localized,
+                title: "title-copy-address".localized.capitalized,
                 iconSet: [.normal("icon-qr-copy")])
         )
 

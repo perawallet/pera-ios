@@ -30,7 +30,7 @@ struct RecoverAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .text("introduction-recover-account-text".localized),
+            .text("account-type-selection-recover".localized),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),

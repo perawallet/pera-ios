@@ -103,7 +103,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
         ]
         confirmActionViewTopPadding = 40
         confirmAction = [
-            .title(Self.getActionTitle("collectible-approve-transaction-action-title")),
+            .title(Self.getActionTitle("send-transaction-preview-button")),
             .titleColor([
                 .normal(Colors.Button.Primary.text),
             ]),
@@ -142,7 +142,7 @@ extension ApproveCollectibleTransactionViewControllerTheme {
 
     private static func getOptOutTitle() -> EditText {
         return .attributedString(
-            "collectible-approve-transaction-opt-out"
+            "collectible-opt-out-info-title"
                 .localized
                 .bodyRegular()
         )

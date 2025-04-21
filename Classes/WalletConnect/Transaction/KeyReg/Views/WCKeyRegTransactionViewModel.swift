@@ -139,7 +139,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "selection-key-title".localized,
+            title: "title-selection-key".localized,
             detail: selectionKey
         )
         self.selectionKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -155,7 +155,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "state-proof-key-title".localized,
+            title: "title-state-proof-key".localized,
             detail: stateProofKey
         )
         self.stateProofKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -275,7 +275,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
         self.noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)

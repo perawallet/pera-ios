@@ -98,7 +98,7 @@ extension IncomingASAAccountsViewController {
         let infoBarButton = ALGBarButtonItem(kind: .info) {
             [unowned self] in
             let uiSheet = UISheet(
-                title: "incoming-asa-account-inbox-screen-info-title"
+                title: "incoming-asa-account-inbox-screen-title"
                     .localized
                     .bodyLargeMedium(),
                 body: UISheetBodyTextProvider(text: "incoming-asa-account-inbox-screen-info-description-title"

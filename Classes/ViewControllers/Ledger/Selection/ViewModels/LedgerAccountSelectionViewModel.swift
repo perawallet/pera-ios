@@ -54,10 +54,6 @@ final class LedgerAccountSelectionViewModel: ViewModel {
     }
 
     private func bindAccountCount(_ accounts: [Account]) {
-        let text =
-            accounts.count == 1
-            ? "ledger-account-selection-title-singular".localized(params: accounts.count)
-            : "ledger-account-selection-title-plural".localized(params: accounts.count)
-        accountCount = text.bodyLargeMedium()
+        accountCount = "ledger-account-selection-title".localized(params: accounts.count).bodyLargeMedium()
     }
 }

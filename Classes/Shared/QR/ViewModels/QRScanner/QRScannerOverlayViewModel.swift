@@ -29,14 +29,6 @@ extension QRScannerOverlayViewModel {
     private func bindTitle(_ dAppCount: UInt) {
         guard dAppCount != 0 else { return }
 
-        let title: String
-
-        if dAppCount > 1 {
-            title = "qr-scan-connected-app-count".localized(params: "\(dAppCount)")
-        } else {
-            title = "qr-scan-connected-app-singular-count".localized(params: "1")
-        }
-
-        self.connectedAppsButtonTitle = title
+        self.connectedAppsButtonTitle = "qr-scan-connected-app-count".localized(params: dAppCount)
     }
 }

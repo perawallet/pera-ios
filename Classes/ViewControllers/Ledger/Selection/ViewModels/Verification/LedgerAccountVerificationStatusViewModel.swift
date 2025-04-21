@@ -48,7 +48,7 @@ final class LedgerAccountVerificationStatusViewModel: ViewModel {
         case .awaiting:
             return "ledger-account-verification-status-awaiting".localized
         case .pending:
-            return "ledger-account-verification-status-pending".localized
+            return "title-pending".localized
         case .verified:
             return "ledger-account-verification-status-verified".localized
         case .unverified:

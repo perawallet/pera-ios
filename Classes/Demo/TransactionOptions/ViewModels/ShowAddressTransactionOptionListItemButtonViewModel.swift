@@ -23,7 +23,7 @@ struct ShowAddressTransactionOptionListItemButtonViewModel: TransactionOptionLis
 
     init() {
         icon = "icon-transaction-option-list-show-address"
-        title = Self.getTitle("title-show-address-capitalized-sentence".localized)
+        title = Self.getTitle("title-show-address".localized)
         subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
     }
 }

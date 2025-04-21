@@ -107,7 +107,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-to".localized,
+            title: "title-to".localized,
             account: account,
             hasImage: account == senderAccount
         )
@@ -120,7 +120,7 @@ final class WCAssetAdditionTransactionViewModel {
         and asset: Asset?
     ) {
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: "title-asset".localized,
             asset: asset
         )
     }
@@ -207,7 +207,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

@@ -41,7 +41,7 @@ extension RangeSelectionViewModel {
         case .from:
             title = "transaction-detail-from".localized
         case .to:
-            title = "transaction-detail-to".localized
+            title = "title-to".localized
         }
     }
 
