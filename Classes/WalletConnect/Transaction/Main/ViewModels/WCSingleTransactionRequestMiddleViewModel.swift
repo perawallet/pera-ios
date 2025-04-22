@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -174,7 +174,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     var titleAttributes = Typography.largeTitleRegularAttributes()
                     titleAttributes.insert(.textColor(Colors.Text.main))
                     self.title =
-                        "single-transaction-request-opt-in-title"
+                        "title-opt-in"
                             .localized
                             .attributed(titleAttributes)
                     self.subtitle = appCallOncomplete.representation
@@ -241,8 +241,8 @@ final class WCSingleTransactionRequestMiddleViewModel {
             self.title = "key-reg-title".localized
             self.subtitle =
                 transactionDetail.isOnlineKeyRegTransaction
-                ? "online-title".localized
-                : "offline-title".localized
+                ? "title-online".localized
+                : "title-offline".localized
         }
     }
 

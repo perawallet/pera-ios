@@ -110,7 +110,7 @@ extension KeyRegTransactionDetailView {
 
         verticalStackView.addArrangedSubview(rewardView)
 
-        rewardView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-reward".localized))
+        rewardView.bindData(TransactionAmountInformationViewModel(title: "title-reward".localized))
     }
 
     private func addUserView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -205,7 +205,7 @@ extension KeyRegTransactionDetailView {
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: noteView)
         noteView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
 
-        noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
+        noteView.bindData(TransactionTextInformationViewModel(title: "title-note".localized))
     }
 
     private func addOpenInPeraExplorerButton(_ theme: KeyRegTransactionDetailViewTheme) {

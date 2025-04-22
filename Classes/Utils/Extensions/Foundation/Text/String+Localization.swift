@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,10 +33,8 @@ extension String {
 
 extension String {
     private func localizedString() -> String {
-        return NSLocalizedString(
-            self,
-            comment: ""
-        )
+        let localized = String(localized: String.LocalizationValue(self))
+        return localized.replacingOccurrences(of: "\\n", with: "\n")
     }
 
     func formattedString(

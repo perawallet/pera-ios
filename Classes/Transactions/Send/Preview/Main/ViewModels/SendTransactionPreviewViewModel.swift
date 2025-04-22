@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -172,7 +172,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private func setOpponentView(
         for draft: TransactionSendDraft
     ) {
-        let title = "transaction-detail-to".localized
+        let title = "title-to".localized
 
         if let contact = draft.toContact {
             opponentView = TitledTransactionAccountNameViewModel(
@@ -210,7 +210,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         
         if isLocked {
             lockedNoteView = TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized,
+                title: "title-note".localized,
                 detail: editNote
             )
             

@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct BackUpAccountSelectionListHeaderViewModel: ViewModel {
     let description: TextProvider =
-        "back-up-account-selection-header-title"
+        "title-back-up-account-selection-header"
             .localized
             .bodyRegular()
 }

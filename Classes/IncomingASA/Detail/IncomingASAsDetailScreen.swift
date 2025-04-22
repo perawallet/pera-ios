@@ -548,7 +548,7 @@ extension IncomingASAsDetailScreen {
         _ transactionId: TransactionID?
     ) {
         let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-            title: "incoming-asas-detail-success-title"
+            title: "send-transaction-preview-success-title"
                 .localized,
             detail: "incoming-asas-detail-success-detail"
                 .localized

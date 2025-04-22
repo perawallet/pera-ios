@@ -58,7 +58,7 @@ extension WatchAccountTypeInformationViewModel {
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let descriptionHighlightedText = HighlightedText(
-            text: "watch-account-type-description-highlighted-text".localized,
+            text: "title-learn-more".localized,
             attributes: descriptionHighlightedTextAttributes
         )
 

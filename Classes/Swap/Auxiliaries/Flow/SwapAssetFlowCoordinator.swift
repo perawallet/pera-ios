@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -792,7 +792,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
+            title: "swap-slippage-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-slippage-tolerance-info-body".localized.bodyRegular())
         )
 
@@ -838,7 +838,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            title: "swap-price-impact-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-price-impact-info-body".localized.bodyRegular())
         )
 

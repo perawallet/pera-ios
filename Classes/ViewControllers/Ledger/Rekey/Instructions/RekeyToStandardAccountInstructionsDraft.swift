@@ -67,7 +67,7 @@ extension RekeyToStandardAccountInstructionsDraft {
     private static func makeTitle(
         sourceAccount: Account
     ) -> TextProvider {
-        return "title-rekey-to-standard-account-capitalized-sentence"
+        return "title-rekey-to-standard-account"
             .localized
             .titleMedium()
     }
@@ -96,19 +96,19 @@ extension RekeyToStandardAccountInstructionsDraft {
 
     private static func makeRekeyStandardAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
         let text = "rekey-standard-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-standard-to-standard-account-instructions-body-highlighted-text".localized
+        let highlightedText = "title-learn-more".localized
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyLedgerAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
         let text = "rekey-ledger-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-ledger-to-standard-account-instructions-body-highlighted-text".localized
+        let highlightedText = "title-learn-more".localized
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyRekeyedAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
         let text = "rekey-rekeyed-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-rekeyed-to-standard-account-instructions-body-highlighted-text".localized
+        let highlightedText = "title-learn-more".localized
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 }

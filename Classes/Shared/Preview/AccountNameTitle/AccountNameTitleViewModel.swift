@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ extension AccountNameTitleViewModel {
         case .asset(let asset):
             title = "send-transaction-title".localized(params: asset.naming.displayNames.primaryName)
         case .algo:
-            title = "send-transaction-title".localized(params: "asset-algos-title".localized)
+            title = "send-transaction-title".localized(params: "title-algo".localized)
         }
 
         self.title = title.bodyMedium(

@@ -35,7 +35,7 @@ extension UndoRekeyListItemButtonViewModel {
     }
 
     private mutating func bindTitle() {
-        let aTitle = "undo-rekey-title".localized
+        let aTitle = "title-undo-rekey".localized.capitalized
         title = Self.getTitle(aTitle)
     }
 

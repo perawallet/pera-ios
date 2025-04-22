@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ struct SwapAssetSuccessScreenTheme:
         self.doneActionEdgeInsets = (12, 24, 16, 24)
         self.summaryAction = [
             .font(Typography.bodyMedium()),
-            .title("swap-success-view-summary".localized),
+            .title("swap-confirm-view-summary-title".localized),
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.summaryActionHorizontalInset = 24

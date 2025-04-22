@@ -110,7 +110,7 @@ final class UndoRekeyScreen:
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationBarLargeTitleController.title = "title-undo-rekey-capitalized-sentence".localized
+        navigationBarLargeTitleController.title = "title-undo-rekey".localized
     }
 
     override func viewDidLoad() {
@@ -268,7 +268,7 @@ extension UndoRekeyScreen {
                 .bodyRegular()
 
         let hyperlink: ALGActiveType =
-            .word("undo-any-account-rekey-body-highlighted-text".localized)
+            .word("title-learn-more".localized)
 
         var attributes = Typography.bodyMediumAttributes()
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))

@@ -30,7 +30,7 @@ final class OverwriteRekeyConfirmationSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "overwrite-rekey-confirmation-title"
+            "title-overwrite-rekey-confirmation"
                 .localized
                 .bodyLargeMedium(alignment: .center)
         let body = Self.makeBody(
@@ -85,7 +85,7 @@ extension OverwriteRekeyConfirmationSheet {
             )
         }
 
-        let bodyHighlightedText = "overwrite-undo-rekey-confirmation-body-highlighted-text".localized
+        let bodyHighlightedText = "title-learn-more".localized
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
