@@ -59,7 +59,7 @@ extension HDWalletItemViewModel {
     private mutating func bindSubtitle(
         _ accountsCount: Int
     ) {
-        subtitle = accountsCount == 1 ? "account-count".localized(params: accountsCount) : "account-count-plural".localized(params: accountsCount)
+        subtitle = "account-count".localized(params: accountsCount)
     }
     
     private mutating func bindMainCurrency(
