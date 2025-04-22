@@ -261,14 +261,14 @@ extension BidaliIntroductionScreen {
 extension BidaliIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "bidali-introduction-title"
+            "title-buy-gift-cards-crypto"
                 .localized
                 .titleMedium()
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "bidali-introduction-body"
+            "buy-gift-cards-with-crypto-alert-body"
                 .localized
                 .bodyRegular()
     }

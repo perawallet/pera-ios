@@ -50,7 +50,7 @@ final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
 extension BackUpBeforeRemovingAccountWarningSheet {
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-yes-continue".localized,
+            title: "title-yes-continue".localized.uppercased(),
             style: .default
         ) {
             [unowned self] in

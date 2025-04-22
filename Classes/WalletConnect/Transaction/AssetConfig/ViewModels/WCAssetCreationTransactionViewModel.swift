@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ class WCAssetCreationTransactionViewModel {
         asset: Asset?
     ) {
         assetNameViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: "title-asset".localized,
             asset: asset
         )
     }
@@ -300,7 +300,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: "title-note".localized,
             detail: note
         )
 

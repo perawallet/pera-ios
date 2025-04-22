@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,13 +42,13 @@ extension ChoosePasswordViewModel {
         case .verify:
             choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
         case .login:
-            choosePasswordView.titleLabel.text = "login-subtitle".localized
+            choosePasswordView.titleLabel.text = "title-enter-pin".localized
         case .deletePassword:
-            choosePasswordView.titleLabel.text = "login-subtitle".localized
+            choosePasswordView.titleLabel.text = "title-enter-pin".localized
         case .resetPassword(let flow):
             switch flow {
             case .initial:
-                choosePasswordView.titleLabel.text = "password-change-subtitle".localized
+                choosePasswordView.titleLabel.text = "password-set-subtitle".localized
             case .fromVerifyOld:
                 choosePasswordView.titleLabel.text = "password-change-new-subtitle".localized
             }
@@ -60,7 +60,7 @@ extension ChoosePasswordViewModel {
                 choosePasswordView.titleLabel.text = "password-verify-new-subtitle".localized
             }
         case .confirm:
-            choosePasswordView.titleLabel.text = "login-subtitle".localized
+            choosePasswordView.titleLabel.text = "title-enter-pin".localized
         case .verifyOld:
             choosePasswordView.titleLabel.text = "password-change-old-subtitle".localized
         }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -435,7 +435,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([.contacts])
 
-        let headerItem = makeHeaderItem("send-algos-contacts".localized)
+        let headerItem = makeHeaderItem("contacts-title".localized)
 
         snapshot.appendItems(
             [ headerItem ],

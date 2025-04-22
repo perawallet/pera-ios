@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ extension ApproveCollectibleTransactionViewModel {
 
         let info = CollectibleTransactionInformation(
             icon: icon,
-            title: "collectible-approve-transaction-to".localized,
+            title: "title-to".localized,
             value: value
         )
         toAccountViewModel = CollectibleTransactionInfoViewModel(info)

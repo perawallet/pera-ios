@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         ]
         self.copyIDButton = [
             .backgroundColor(Colors.Layer.grayLighter),
-            .title("asset-copy-id".localized),
+            .title("title-copy-id".localized),
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(Colors.Text.main)])
         ]

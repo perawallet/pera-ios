@@ -34,10 +34,6 @@ extension RekeyedAccountSelectionListNavigationBarViewModel {
     }
 
     private mutating func bindTitle(_ accounts: [Account]) {
-        let aTitle =
-            accounts.isSingular
-            ? "rekeyed-account-selection-list-header-title-singular".localized
-            : "rekeyed-account-selection-list-header-title-plural".localized(params: "\(accounts.count)")
-        title = aTitle.bodyLargeMedium()
+        title = "rekeyed-account-selection-list-header-title".localized(params: accounts.count).bodyLargeMedium()
     }
 }

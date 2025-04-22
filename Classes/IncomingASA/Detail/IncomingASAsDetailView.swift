@@ -105,7 +105,7 @@ final class IncomingASAsDetailView:
             idView.clearText()
         }
         
-        "incoming-asa-detail-screen-amount-title"
+        "transaction-detail-amount"
             .localized
             .load(in: amountTitleView)
         

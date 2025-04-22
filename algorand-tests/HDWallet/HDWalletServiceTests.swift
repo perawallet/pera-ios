@@ -100,7 +100,7 @@ final class HDWalletServiceTests: XCTestCase {
         mockSDK.deriveKeyResult = .success(expectedPrivateKey)
         
         // When
-        let address = try sut.generateAddress(for: wallet, at: 0, derivationType: .peikert)
+        let address = try sut.generateAddress(for: wallet, at: 0)
         
         // Then
         XCTAssertTrue(mockSDK.generateKeyCalled)
@@ -116,38 +116,6 @@ final class HDWalletServiceTests: XCTestCase {
         XCTAssertEqual(deriveKeyDraft?.bip44Path, [44, 283, 0, 0, 0].map { UInt32($0) })
         XCTAssertEqual(deriveKeyDraft?.isPrivate, true)
         XCTAssertEqual(deriveKeyDraft?.derivationType, .peikert)
-        
-        XCTAssertEqual(address.publicKey, expectedPublicKey)
-        XCTAssertEqual(address.privateKey, expectedPrivateKey)
-    }
-    
-    func test_GenerateAddress_WithKhovratovichDerivation_ShouldSucceed() throws {
-        // Given
-        let entropy = HDWalletUtils.generate256BitEntropy()
-        let wallet = HDWalletSeed(entropy: entropy)
-        
-        let expectedPublicKey = Data([7, 8, 9])
-        let expectedPrivateKey = Data([10, 11, 12])
-        mockSDK.generateKeyResult = .success(expectedPublicKey)
-        mockSDK.deriveKeyResult = .success(expectedPrivateKey)
-        
-        // When
-        let address = try sut.generateAddress(for: wallet, at: 0, derivationType: .bip32)
-        
-        // Then
-        XCTAssertTrue(mockSDK.generateKeyCalled)
-        XCTAssertTrue(mockSDK.deriveKeyCalled)
-        
-        let keyGenDraft = mockSDK.lastKeyGenDraft
-        XCTAssertEqual(keyGenDraft?.account, 0)
-        XCTAssertEqual(keyGenDraft?.change, 0)
-        XCTAssertEqual(keyGenDraft?.keyIndex, 0)
-        XCTAssertEqual(keyGenDraft?.derivationType, .bip32)
-        
-        let deriveKeyDraft = mockSDK.lastDeriveKeyDraft
-        XCTAssertEqual(deriveKeyDraft?.bip44Path, [44, 283, 0, 0, 0].map { UInt32($0) })
-        XCTAssertEqual(deriveKeyDraft?.isPrivate, true)
-        XCTAssertEqual(deriveKeyDraft?.derivationType, .bip32)
         
         XCTAssertEqual(address.publicKey, expectedPublicKey)
         XCTAssertEqual(address.privateKey, expectedPrivateKey)

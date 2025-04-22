@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,17 +69,9 @@ struct ALGBarButtonItem: BarButtonItem {
     var title: TitleContent? {
         switch kind {
         case .asaInbox(let count):
-            if count == 1 {
+            if count > 0 {
                 return BarButtonItemTitleContent(
-                    text: "title-asa-singular".localized,
-                    textColor: Colors.ASATiers.asaBarButton.uiColor,
-                    font: UIFont.font(withWeight: .medium(size: 13))
-                )
-            }
-            
-            if count > 1 {
-                return BarButtonItemTitleContent(
-                    text: "title-asa".localized(params: "\(count)"),
+                    text: "title-asa".localized(params: count),
                     textColor: Colors.ASATiers.asaBarButton.uiColor,
                     font: UIFont.font(withWeight: .medium(size: 13))
                 )

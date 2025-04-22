@@ -179,7 +179,7 @@ extension LedgerAccountInformationScreen {
 extension LedgerAccountInformationScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "title-ledger-account-capitalized-sentence"
+            "title-ledger-account"
                 .localized
                 .titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }

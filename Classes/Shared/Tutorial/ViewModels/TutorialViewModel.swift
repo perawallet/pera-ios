@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ extension TutorialViewModel {
                 title = "tutorial-title-recover-bip39".localized
             }
         case .watchAccount:
-            title = "title-watch-account".localized
+            title = "title-watch-account".localized.capitalized
         case .writePassphrase:
             title = "tutorial-title-write".localized
         case .passcode:
@@ -152,7 +152,7 @@ extension TutorialViewModel {
     private func bindPrimaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp, .backUpBip39:
-            primaryActionButtonTitle = "tutorial-main-title-back-up".localized
+            primaryActionButtonTitle = "title-i-understand".localized
         case .recoverWithPassphrase(walletFlowType: let walletFlowType):
             switch walletFlowType {
             case .algo25:
@@ -248,7 +248,7 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-continue".localized
         } else {
-            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+            self.primaryActionButtonTitle = "quick-actions-buy-algo-title".localized
         }
     }
 
