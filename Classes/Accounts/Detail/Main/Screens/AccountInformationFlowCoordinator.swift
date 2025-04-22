@@ -14,13 +14,14 @@
 
 //   AccountInformationFlowCoordinator.swift
 
-import Foundation
 import UIKit
 
 final class AccountInformationFlowCoordinator  {
-    private unowned let presentingScreen: UIViewController
+    
+    private unowned let presentingScreen: BaseViewController
     private let sharedDataController: SharedDataController
 
+    private var rescanRekeyedAccountsCoordinator: RescanRekeyedAccountsCoordinator?
     private lazy var transitionToAccountInformation = BottomSheetTransition(presentingViewController: presentingScreen)
 
     private lazy var undoRekeyFlowCoordinator = UndoRekeyFlowCoordinator(
@@ -37,7 +38,7 @@ final class AccountInformationFlowCoordinator  {
     )
 
     init(
-        presentingScreen: UIViewController,
+        presentingScreen: BaseViewController,
         sharedDataController: SharedDataController
     ) {
         self.presentingScreen = presentingScreen
@@ -47,8 +48,10 @@ final class AccountInformationFlowCoordinator  {
 
 extension AccountInformationFlowCoordinator {
     func launch(_ sourceAccount: Account) {
+        
         let authorization = sourceAccount.authorization
-
+        rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: presentingScreen, account: sourceAccount)
+        
         if authorization.isStandard {
             openAccountInformationForStandardAccount(sourceAccount)
             return
@@ -95,6 +98,8 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToLedgerAccount(sourceAccount)
             case .performRekeyToStandard:
                 self.openRekeyToStandardAccount(sourceAccount)
+            case .performRescanRekeyedAccounts:
+                self.openRescanRekeyedAccounts()
             }
         }
     }
@@ -120,6 +125,8 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToLedgerAccount(sourceAccount)
             case .performRekeyToStandard:
                 self.openRekeyToStandardAccount(sourceAccount)
+            case .performRescanRekeyedAccounts:
+                self.openRescanRekeyedAccounts()
             }
         }
     }
@@ -146,6 +153,8 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToStandardAccount(sourceAccount)
             case .performUndoRekey:
                 self.openUndoRekey(sourceAccount)
+            case .performRescanRekeyedAccounts:
+                self.openRescanRekeyedAccounts()
             }
         }
     }
@@ -182,6 +191,12 @@ extension AccountInformationFlowCoordinator {
             [weak self] in
             guard let self else { return }
             rekeyToLedgerAccountFlowCoordinator.launch(sourceAccount)
+        }
+    }
+    
+    private func openRescanRekeyedAccounts() {
+        presentingScreen.dismiss(animated: true) { [weak self] in
+            self?.rescanRekeyedAccountsCoordinator?.rescan()
         }
     }
 

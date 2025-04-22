@@ -161,7 +161,8 @@ extension RekeyedAccountInformationScreen {
 
         let options = [
             makeRekeyToLedgerAccountItem(),
-            makeRekeyToStandardAccountItem()
+            makeRekeyToStandardAccountItem(),
+            makeRescanRekeyedAccountsItem()
         ]
         options.forEach(optionsView.addOption)
     }
@@ -179,6 +180,12 @@ extension RekeyedAccountInformationScreen {
         return AccountInformationOptionItem(viewModel: .rekeyToStandard) {
             [unowned self] in
             self.eventHandler?(.performRekeyToStandard)
+        }
+    }
+    
+    private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
+        AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
+            self?.eventHandler?(.performRescanRekeyedAccounts)
         }
     }
 }
@@ -207,5 +214,6 @@ extension RekeyedAccountInformationScreen {
         case performRekeyToLedger
         case performRekeyToStandard
         case performUndoRekey
+        case performRescanRekeyedAccounts
     }
 }

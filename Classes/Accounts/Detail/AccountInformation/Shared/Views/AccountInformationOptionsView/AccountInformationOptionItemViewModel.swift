@@ -14,7 +14,6 @@
 
 //   AccountInformationOptionItemViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 
 protocol AccountInformationOptionItemViewModel: ListItemButtonViewModel { }
@@ -27,6 +26,11 @@ where Self == RekeyToLedgerAccountInformationOptionItemViewModel {
 extension AccountInformationOptionItemViewModel
 where Self == RekeyToStandardAccountInformationOptionItemViewModel {
     static var rekeyToStandard: Self { Self() }
+}
+
+extension AccountInformationOptionItemViewModel
+where Self == RescanRekeyedAccountsInformationOptionItemViewModel {
+    static var rescanRekeyedAccounts: Self { Self() }
 }
 
 struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
@@ -57,4 +61,15 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
         )
         accessory = "icon-list-arrow".templateImage
     }
+}
+
+struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
+    let icon: Image? = nil
+    let title: EditText? = .attributedString(
+        "options-rescan-accounts-title"
+            .localized
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
+    )
+    let subtitle: EditText? = nil
+    var accessory: Image? = "icon-list-arrow".templateImage
 }
