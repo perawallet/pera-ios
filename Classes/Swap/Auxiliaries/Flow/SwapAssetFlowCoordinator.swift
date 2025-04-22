@@ -456,8 +456,6 @@ extension SwapAssetFlowCoordinator {
                 self.openSlippageToleranceInfo()
             case .didTapSlippageAction:
                 self.openEditSlippage()
-            case .didTapExchangeFeeInfo:
-                self.openExchangeFeeInfo()
             }
         }
         let screen: Screen = .confirmSwap(
@@ -858,30 +856,6 @@ extension SwapAssetFlowCoordinator {
         )
 
         transitionToPriceImpactInfo = transition
-    }
-
-    private func openExchangeFeeInfo() {
-        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-        let uiSheet = UISheet(
-            title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "swap-confirm-exchange-fee-detail".localized.bodyRegular())
-        )
-
-        let closeAction = UISheetAction(
-            title: "title-close".localized,
-            style: .cancel
-        ) { [unowned self] in
-            self.visibleScreen.dismiss(animated: true)
-        }
-        uiSheet.addAction(closeAction)
-
-        transition.perform(
-            .sheetAction(sheet: uiSheet),
-            by: .presentWithoutNavigationController
-        )
-
-        transitionToExchangeFeeInfo = transition
     }
 
     private func openPeraExplorerForSwapTransaction(
