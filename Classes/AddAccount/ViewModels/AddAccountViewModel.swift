@@ -38,7 +38,7 @@ extension AddAccountViewModel {
         bindTitle(flow, with: isHDWalletActive)
         bindCreateAddressViewModel()
         bindCreateWalletViewModel(with: isHDWalletActive)
-        bindImportWalletViewModel()
+        bindImportWalletViewModel(with: isHDWalletActive)
         bindWatchWalletViewModel()
     }
 
@@ -66,8 +66,8 @@ extension AddAccountViewModel {
         createWalletViewModel = AccountTypeViewModel(isHDWalletActive ? .addBip39Wallet : .addAlgo25Account)
     }
 
-    private mutating func bindImportWalletViewModel() {
-        importWalletViewModel = AccountTypeViewModel(.recover(type: .none))
+    private mutating func bindImportWalletViewModel(with isHDWalletActive: Bool) {
+        importWalletViewModel = AccountTypeViewModel(.recover(type: isHDWalletActive ? .title : .titleAlgo25))
     }
     
     private mutating func bindWatchWalletViewModel() {

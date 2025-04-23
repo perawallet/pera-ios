@@ -65,7 +65,17 @@ final class RecoverAccountViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        addAccountView.customize(theme.recoverAccountViewTheme, configuration: configuration)
+        switch flow {
+        case .initializeAccount:
+            addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
+        default:
+            guard featureFlagService.isEnabled(.hdWalletEnabled) else {
+                addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
+                prepareWholeScreenLayoutFor(addAccountView)
+                return
+            }
+            addAccountView.customize(theme.recoverAddAccountViewTheme, configuration: configuration)
+        }
 
         prepareWholeScreenLayoutFor(addAccountView)
     }

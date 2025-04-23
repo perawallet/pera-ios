@@ -44,7 +44,7 @@ extension AccountTypeViewModel {
             image = img("icon-add-address")
         case let .recover(type):
             switch type {
-            case .none, .passphrase, .passphraseAlgo25:
+            case .titleAlgo25, .title, .passphrase, .passphraseAlgo25:
                 image = img("icon-recover-passphrase")
             case .importFromSecureBackup:
                 image = img("icon-import-from-secure-backup")
@@ -77,7 +77,9 @@ extension AccountTypeViewModel {
             titleText = "account-type-selection-add-account".localized
         case let .recover(type):
             switch type {
-            case .passphrase, .passphraseAlgo25:
+            case .passphrase:
+                titleText = "account-type-selection-recover-wallet".localized
+            case .passphraseAlgo25:
                 titleText = "account-type-selection-passphrase".localized
             case .importFromSecureBackup:
                 titleText = "account-type-selection-import-secure-backup".localized
@@ -87,8 +89,10 @@ extension AccountTypeViewModel {
                 titleText = "account-type-selection-import-web".localized
             case .qr:
                 titleText = "account-type-selection-qr".localized
-            case .none:
+            case .titleAlgo25:
                 titleText = "account-type-selection-recover".localized
+            case .title:
+                titleText = "account-type-selection-import-wallet".localized
             }
         case .watch:
             titleText = "account-type-selection-watch-address".localized
@@ -140,8 +144,10 @@ extension AccountTypeViewModel {
                 detailText = "account-type-selection-import-web-detail".localized
             case .qr:
                 detailText = "account-type-selection-qr-detail".localized
-            case .none:
+            case .titleAlgo25:
                 detailText = "account-type-selection-recover-detail".localized
+            case .title:
+                detailText = "account-type-selection-recover-wallet-detail".localized
             }
         case .watch:
             detailText = "account-type-selection-watch-address-detail".localized

@@ -52,7 +52,7 @@ extension WelcomeViewModel {
     }
 
     private mutating func bindImportWalletViewModel() {
-        importWalletViewModel = WelcomeTypeViewModel(.recover(type: .none))
+        importWalletViewModel = WelcomeTypeViewModel(.recover(type: .title))
     }
 }
 

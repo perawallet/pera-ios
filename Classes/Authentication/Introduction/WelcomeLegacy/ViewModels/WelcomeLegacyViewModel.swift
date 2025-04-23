@@ -56,7 +56,7 @@ extension WelcomeLegacyViewModel {
     }
 
     private mutating func bindImportWalletViewModel() {
-        importWalletViewModel = AccountTypeViewModel(.recover(type: .none))
+        importWalletViewModel = AccountTypeViewModel(.recover(type: .titleAlgo25))
     }
     
     private mutating func bindWatchWalletViewModel() {
