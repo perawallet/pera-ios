@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
         self.filterButton = [
             .icon([.normal("icon-transaction-filter-primary")]),
             .titleColor([.normal(Colors.Helpers.positive)]),
-            .title("filter".localized),
+            .title("title-filter".localized),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.buttonHeight = 40

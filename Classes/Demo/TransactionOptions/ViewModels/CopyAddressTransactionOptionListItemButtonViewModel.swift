@@ -23,7 +23,7 @@ struct CopyAddressTransactionOptionListItemButtonViewModel: TransactionOptionLis
 
     init(_ account: Account) {
         icon = "icon-transaction-option-list-copy-address"
-        title = Self.getTitle("title-copy-address-capitalized-sentence".localized)
+        title = Self.getTitle("title-copy-address".localized)
         subtitle = Self.getSubtitle(account.address.shortAddressDisplay)
     }
 }

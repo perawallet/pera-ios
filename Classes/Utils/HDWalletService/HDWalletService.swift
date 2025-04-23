@@ -21,13 +21,14 @@ import x_hd_wallet_api
 final class HDWalletService: HDWalletServicing {
     private let algorandSDK = AlgorandSDK()
     private let sdk: HDWalletSDK?
+    private var derivationType: HDWalletDerivationType = .peikert
     
     private static let wordCount = 24
     private static let gapLimit = 5
-    static let derivationType: HDWalletDerivationType = .peikert
     
-    init(sdk: HDWalletSDK? = nil) {
+    init(sdk: HDWalletSDK? = nil, derivationType: HDWalletDerivationType = .peikert) {
         self.sdk = sdk
+        self.derivationType = derivationType
     }
     
     // MARK: - BIP44 Path Components
@@ -267,7 +268,7 @@ final class HDWalletService: HDWalletServicing {
             account: accountIndex,
             change: Self.changeIndex,
             keyIndex: addressIndex,
-            derivationType: Self.derivationType
+            derivationType: derivationType
         )
         return try sdk.generateKey(keyGenDraft)
     }
@@ -281,7 +282,7 @@ final class HDWalletService: HDWalletServicing {
             rootKey: seed,
             bip44Path: [],
             isPrivate: true,
-            derivationType: Self.derivationType
+            derivationType: derivationType
         )
         
         return try sdk.deriveKey(rootKeyDraft)
@@ -297,7 +298,7 @@ final class HDWalletService: HDWalletServicing {
             rootKey: masterKey,
             bip44Path: bip44Path,
             isPrivate: true,
-            derivationType: Self.derivationType
+            derivationType: derivationType
         )
         
         return try sdk.deriveKey(deriveKeyDraft)

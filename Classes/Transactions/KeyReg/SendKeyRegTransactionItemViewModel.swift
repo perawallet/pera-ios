@@ -39,7 +39,7 @@ final class SendKeyRegTransactionItemViewModel: ViewModel, ObservableObject {
 extension SendKeyRegTransactionItemViewModel {
     func bindAddress(_ draft: KeyRegTransactionSendDraft) {
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-address".localized,
+            title: "title-address".localized,
             value: draft.from.address,
             hasSeparator: false
         )
@@ -55,7 +55,7 @@ extension SendKeyRegTransactionItemViewModel {
         guard let formattedFee = formatter.format(unformattedFee) else { return }
         
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-fee".localized,
+            title: "transaction-detail-fee".localized,
             value: formattedFee,
             hasSeparator: false
         )
@@ -64,7 +64,7 @@ extension SendKeyRegTransactionItemViewModel {
     
     func bindType(_ draft: KeyRegTransactionSendDraft) {
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-type".localized,
+            title: "title-type".localized,
             value: "keyreg",
             hasSeparator: true
         )
@@ -75,7 +75,7 @@ extension SendKeyRegTransactionItemViewModel {
         guard let selectionKey = draft.selectionKey else { return }
 
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-selection".localized,
+            title: "title-selection-key".localized,
             value: selectionKey,
             hasSeparator: false
         )
@@ -97,7 +97,7 @@ extension SendKeyRegTransactionItemViewModel {
         guard let stateProofKey = draft.stateProofKey else { return }
         
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-state".localized,
+            title: "title-state-proof-key".localized,
             value: stateProofKey,
             hasSeparator: false
         )
@@ -150,7 +150,7 @@ extension SendKeyRegTransactionItemViewModel {
         
         if let note = draft.note {
             let item = KeyRegTransactionItem(
-                title: "title-keyreg-txn-note".localized,
+                title: "title-note".localized,
                 value: note,
                 hasSeparator: true,
                 action: "send-transaction-edit-note-title".localized
@@ -160,7 +160,7 @@ extension SendKeyRegTransactionItemViewModel {
         }
         
         let item = KeyRegTransactionItem(
-            title: "title-keyreg-txn-note".localized,
+            title: "title-note".localized,
             value: "",
             hasSeparator: true,
             action: "send-transaction-add-note-title".localized

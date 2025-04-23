@@ -58,8 +58,8 @@ struct KeyRegTransactionItemViewModel:
 
         let aSubtitle = 
             keyRegTransaction.isOnlineKeyRegTransaction
-            ? "online-title".localized
-            : "offline-title".localized
+            ? "title-online".localized
+            : "title-offline".localized
         bindSubtitle(aSubtitle)
     }
 }

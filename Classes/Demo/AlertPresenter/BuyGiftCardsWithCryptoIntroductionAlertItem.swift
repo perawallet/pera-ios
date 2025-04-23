@@ -39,7 +39,7 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
     func makeAlert() -> Alert {
         isSeen = true
 
-        let title = "buy-gift-cards-with-crypto-alert-title"
+        let title = "title-buy-gift-cards-crypto"
             .localized
             .bodyLargeMedium(
                 alignment: .center,
@@ -73,7 +73,7 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
 extension BuyGiftCardsWithCryptoIntroductionAlertItem {
     private func makeBuyGiftCardsAction() -> AlertAction {
         return AlertAction(
-            title: "buy-gift-cards-with-crypto-alert-primary-action".localized,
+            title: "title-buy-gift-cards".localized,
             style: .primary
         ) {
             [unowned self] in

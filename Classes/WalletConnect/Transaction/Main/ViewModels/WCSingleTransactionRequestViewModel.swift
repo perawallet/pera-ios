@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ final class WCSingleTransactionRequestViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        title = "request-title".localized
+        title = "title-request".localized
     }
 
     private func setTitle(transaction: WCTransaction, account: Account?) {

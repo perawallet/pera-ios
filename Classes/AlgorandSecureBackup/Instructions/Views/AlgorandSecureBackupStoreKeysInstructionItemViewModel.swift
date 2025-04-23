@@ -48,7 +48,7 @@ extension AlgorandSecureBackupStoreKeysInstructionItemViewModel {
         )
         subtitleHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
         let subtitleHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text".localized,
+            text: "title-learn-more".localized,
             attributes: subtitleHighlightedTextAttributes
         )
 

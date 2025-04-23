@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -95,21 +95,21 @@ struct UIActionItem {
 
     static var copyAddress: UIActionItem {
         return UIActionItem(
-            title: "qr-creation-copy-address".localized,
+            title: "title-copy-address".localized.capitalized,
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyAssetID: UIActionItem {
         return UIActionItem(
-            title: "asset-copy-id".localized,
+            title: "title-copy-id".localized,
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyTransactionID: UIActionItem {
         return UIActionItem(
-            title: "transaction-menu-copy-id".localized,
+            title: "title-copy-id".localized,
             image: "icon-copy-gray".uiImage
         )
     }

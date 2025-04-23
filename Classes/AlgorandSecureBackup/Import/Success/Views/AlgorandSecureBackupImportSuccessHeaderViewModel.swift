@@ -41,8 +41,6 @@ extension AlgorandSecureBackupImportSuccessHeaderViewModel {
     }
 
     private mutating func bindBody(for importedAccountCount: Int) {
-        let isSingular = importedAccountCount == 1
-        let resultBody = isSingular ? "algorand-secure-backup-import-success-header-singular-body".localized(params: "\(importedAccountCount)") : "algorand-secure-backup-import-success-header-body".localized(params: "\(importedAccountCount)")
-        body = resultBody.bodyRegular()
+        body = "algorand-secure-backup-import-success-header-body".localized(params: importedAccountCount).bodyRegular()
     }
 }

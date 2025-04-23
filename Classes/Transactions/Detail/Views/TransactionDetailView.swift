@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -133,7 +133,7 @@ extension TransactionDetailView {
 
     private func addRewardView(_ theme: TransactionDetailViewTheme) {
         rewardView.customize(theme.commonTransactionAmountInformationViewTheme)
-        rewardView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-reward".localized))
+        rewardView.bindData(TransactionAmountInformationViewModel(title: "title-reward".localized))
 
         verticalStackView.addArrangedSubview(rewardView)
     }
@@ -190,7 +190,7 @@ extension TransactionDetailView {
     
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
         noteView.customize(theme.transactionTextInformationViewCommonTheme)
-        noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
+        noteView.bindData(TransactionTextInformationViewModel(title: "title-note".localized))
         noteView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(noteView)

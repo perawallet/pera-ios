@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ enum AccountSettings: Settings {
         case .secureBackup, .secureBackupLoading:
             return "settings-secure-backup-title".localized
         case .security:
-            return "settings-security-title".localized
+            return "security-settings-title".localized
         case .contacts:
             return "contacts-title".localized
         case .notifications:
@@ -132,9 +132,9 @@ enum SupportSettings: Settings {
         case .appReview:
             return "settings-rate-title".localized
         case .termsAndServices:
-            return "terms-and-services-title".localized
+            return "title-terms-and-services".localized
         case .privacyPolicy:
-            return "privacy-policy-title".localized
+            return "title-privacy-policy".localized
         case .developer:
             return "settings-developer".localized
         }

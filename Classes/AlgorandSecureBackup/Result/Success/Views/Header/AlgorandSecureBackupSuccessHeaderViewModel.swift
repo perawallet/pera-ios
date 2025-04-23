@@ -45,7 +45,7 @@ extension AlgorandSecureBackupSuccessHeaderViewModel {
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let bodyHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-success-header-body-highlighted-text".localized,
+            text: "title-learn-more".localized,
             attributes: bodyHighlightedTextAttributes
         )
         body = BodyTextProvider(text: bodyText, highlightedText: bodyHighlightedText)

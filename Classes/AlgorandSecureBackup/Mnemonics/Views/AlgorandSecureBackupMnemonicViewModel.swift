@@ -56,7 +56,7 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
             highlightedText = "alogrand-secure-backup-mnemonics-pera-learn-highlighted-text".localized
         } else {
             text = "algorand-secure-backup-mnemonics-second-backup-pera-learn".localized
-            highlightedText = "alogrand-secure-backup-mnemonics-second-backup-pera-learn-highlighted-text".localized
+            highlightedText = "title-learn-more".localized
         }
 
         var subtitleHighlightedTextAttributes = Typography.bodyMediumAttributes()

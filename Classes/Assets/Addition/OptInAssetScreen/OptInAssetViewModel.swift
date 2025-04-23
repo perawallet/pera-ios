@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ extension OptInAssetViewModel {
         _ draft: OptInAssetDraft
     ) {
         if draft.asset.isCollectible {
-            title = "opt-in-title-adding-nft".localized
+            title = "collectibles-receive-asset-title".localized
         } else {
             title = "asset-add-confirmation-title".localized
         }

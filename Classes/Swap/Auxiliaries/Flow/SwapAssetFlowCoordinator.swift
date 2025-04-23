@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -461,8 +461,6 @@ extension SwapAssetFlowCoordinator {
                 self.openSlippageToleranceInfo()
             case .didTapSlippageAction:
                 self.openEditSlippage()
-            case .didTapExchangeFeeInfo:
-                self.openExchangeFeeInfo()
             }
         }
         let screen: Screen = .confirmSwap(
@@ -799,7 +797,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
+            title: "swap-slippage-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-slippage-tolerance-info-body".localized.bodyRegular())
         )
 
@@ -845,7 +843,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            title: "swap-price-impact-title".localized.bodyLargeMedium(),
             body: UISheetBodyTextProvider(text: "swap-price-impact-info-body".localized.bodyRegular())
         )
 
@@ -863,30 +861,6 @@ extension SwapAssetFlowCoordinator {
         )
 
         transitionToPriceImpactInfo = transition
-    }
-
-    private func openExchangeFeeInfo() {
-        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-        let uiSheet = UISheet(
-            title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "swap-confirm-exchange-fee-detail".localized.bodyRegular())
-        )
-
-        let closeAction = UISheetAction(
-            title: "title-close".localized,
-            style: .cancel
-        ) { [unowned self] in
-            self.visibleScreen.dismiss(animated: true)
-        }
-        uiSheet.addAction(closeAction)
-
-        transition.perform(
-            .sheetAction(sheet: uiSheet),
-            by: .presentWithoutNavigationController
-        )
-
-        transitionToExchangeFeeInfo = transition
     }
 
     private func openPeraExplorerForSwapTransaction(

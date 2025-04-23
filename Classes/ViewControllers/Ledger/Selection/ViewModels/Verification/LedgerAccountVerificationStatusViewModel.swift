@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ final class LedgerAccountVerificationStatusViewModel: ViewModel {
         case .awaiting:
             return "ledger-account-verification-status-awaiting".localized
         case .pending:
-            return "ledger-account-verification-status-pending".localized
+            return "title-pending".localized
         case .verified:
             return "ledger-account-verification-status-verified".localized
         case .unverified:

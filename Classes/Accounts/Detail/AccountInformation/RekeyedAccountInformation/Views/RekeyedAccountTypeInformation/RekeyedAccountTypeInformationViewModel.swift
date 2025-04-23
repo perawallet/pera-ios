@@ -142,7 +142,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text:  "ledger-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "ledger-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
@@ -159,7 +159,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text: "ledger-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "ledger-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
@@ -176,7 +176,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text: "standard-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
@@ -193,7 +193,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text: "standard-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
@@ -214,7 +214,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text: "standard-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
@@ -235,7 +235,7 @@ extension RekeyedAccountTypeInformationViewModel {
     private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
             text: "standard-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            highlightedText: "title-learn-more".localized
         )
     }
 }
