@@ -233,17 +233,56 @@ extension HDWalletSetupViewController {
 
     @objc
     private func createNewWallet() {
-        open(
-            .tutorial(
+        analytics.track(.registerAccount(registrationType: .create))
+        guard
+            let account = createAccount() else {
+            return
+        }
+        
+        let screen = open(
+            .addressNameSetup(
                 flow: flow,
-                tutorial: .backUpBip39(
-                    flow: flow,
-                    address: "temp"
-                ),
-                walletFlowType: .bip39
+                mode: .addBip39Wallet,
+                account: account
             ),
             by: .push
+        ) as? AddressNameSetupViewController
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        screen?.hidesCloseBarButtonItem = true
+    }
+    
+    private func createAccount() -> AccountInformation? {
+
+        let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+            session: session,
+            storage: hdWalletStorage,
+            entropy: nil
         )
+        
+        guard let hdWalletAddressDetail, let address else {
+            assertionFailure("Could not create HD wallet")
+            return nil
+        }
+        
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: false,
+            hdWalletAddressDetail: hdWalletAddressDetail
+        )
+        
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+        session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
+
+        return account
     }
 }
 
