@@ -78,5 +78,6 @@ enum RecoverType: Equatable {
     case qr
     case ledger
     case importFromWeb
-    case none
+    case titleAlgo25
+    case title
 }

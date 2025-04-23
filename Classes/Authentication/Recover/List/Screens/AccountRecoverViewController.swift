@@ -525,7 +525,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         open(
             .accountNameSetup(
                 flow: accountSetupFlow,
-                mode: .recover(type: .none),
+                mode: .recover(type: walletFlowType == .algo25 ? .titleAlgo25 : .title),
                 accountAddress: account.address
             ),
             by: .push

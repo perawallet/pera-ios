@@ -65,7 +65,12 @@ final class RecoverAccountViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        addAccountView.customize(theme.recoverAccountViewTheme, configuration: configuration)
+        switch flow {
+        case .initializeAccount:
+            addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
+        default:
+            addAccountView.customize(theme.recoverAddAccountViewTheme, configuration: configuration)
+        }
 
         prepareWholeScreenLayoutFor(addAccountView)
     }

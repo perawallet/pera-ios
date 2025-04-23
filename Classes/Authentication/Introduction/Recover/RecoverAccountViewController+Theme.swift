@@ -19,11 +19,13 @@ import Foundation
 
 extension RecoverAccountViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let recoverAccountViewTheme: RecoverAccountViewTheme
+        let recoverWelcomeViewTheme: RecoverWelcomeAccountViewTheme
+        let recoverAddAccountViewTheme: RecoverAddAccountViewTheme
         let backgroundColor: Color
 
         init(_ family: LayoutFamily) {
-            recoverAccountViewTheme = RecoverAccountViewTheme()
+            recoverWelcomeViewTheme = RecoverWelcomeAccountViewTheme()
+            recoverAddAccountViewTheme = RecoverAddAccountViewTheme()
             backgroundColor = Colors.Defaults.background
         }
     }

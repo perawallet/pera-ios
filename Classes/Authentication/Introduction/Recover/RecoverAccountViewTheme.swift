@@ -18,7 +18,16 @@ import MacaroonUIKit
 import Foundation
 import UIKit
 
-struct RecoverAccountViewTheme: StyleSheet, LayoutSheet {
+protocol RecoverAccountViewTheme: StyleSheet, LayoutSheet {
+    var backgroundColor: Color { get }
+    var title: TextStyle { get }
+    var accountTypeViewTheme: AccountTypeViewTheme { get }
+    var horizontalInset: LayoutMetric { get }
+    var topInset: LayoutMetric { get }
+    var verticalInset: LayoutMetric { get }
+}
+
+struct RecoverAddAccountViewTheme: RecoverAccountViewTheme {
     let backgroundColor: Color
     let title: TextStyle
     let accountTypeViewTheme: AccountTypeViewTheme
@@ -30,7 +39,33 @@ struct RecoverAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .text("introduction-recover-account-text".localized),
+            .text("account-type-selection-import-wallet".localized),
+            .textAlignment(.left),
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.main),
+            .font(Fonts.DMSans.medium.make(32))
+        ]
+        self.accountTypeViewTheme = AccountTypeViewTheme()
+
+        self.horizontalInset = 24
+        self.verticalInset = 20
+        self.topInset = 2
+    }
+}
+
+struct RecoverWelcomeAccountViewTheme: RecoverAccountViewTheme {
+    let backgroundColor: Color
+    let title: TextStyle
+    let accountTypeViewTheme: AccountTypeViewTheme
+
+    let horizontalInset: LayoutMetric
+    let topInset: LayoutMetric
+    let verticalInset: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = Colors.Defaults.background
+        self.title = [
+            .text("account-type-selection-recover".localized),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
