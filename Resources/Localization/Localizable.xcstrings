@@ -519,6 +519,17 @@
         }
       }
     },
+    "account-type-selection-recover-wallet-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import an existing wallet with various methods or pair your Ledger"
+          }
+        }
+      }
+    },
     "account-type-selection-universal-wallet-warning-title" : {
       "extractionState" : "manual",
       "localizations" : {
