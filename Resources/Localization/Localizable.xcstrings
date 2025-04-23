@@ -7736,6 +7736,17 @@
         }
       }
     },
+    "title-about" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
+    },
     "title-about-with-param" : {
       "extractionState" : "manual",
       "localizations" : {
