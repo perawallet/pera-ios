@@ -54,7 +54,7 @@ struct MoonPayTransactionViewTheme:
             .textOverflow(FittingText())
         ]
         accountLabel = [
-            .text("title-account".localized),
+            .text(String(localized: "title-account")),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.grayLighter),
             .textOverflow(FittingText())
@@ -65,7 +65,7 @@ struct MoonPayTransactionViewTheme:
             .textOverflow(SingleLineText(lineBreakMode: .byTruncatingMiddle))
         ]
         doneButton = [
-            .title("title-done".localized),
+            .title(String(localized: "title-done")),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

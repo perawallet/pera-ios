@@ -37,8 +37,7 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
 
     mutating func bindTitle() {
         title = .attributedString(
-            "collectibles-receive-account-list-header-description"
-                .localized
+            String(localized: "collectibles-receive-account-list-header-description")
                 .bodyRegular()
         )
     }

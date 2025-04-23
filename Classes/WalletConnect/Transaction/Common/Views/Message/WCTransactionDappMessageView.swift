@@ -74,7 +74,7 @@ final class WCTransactionDappMessageView: BaseView {
             .withLine(.single)
             .withTextColor(Colors.Helpers.positive.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
-            .withText("title-read-more".localized)
+            .withText(String(localized: "title-read-more"))
     }()
 
     private lazy var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))

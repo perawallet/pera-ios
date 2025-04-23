@@ -29,7 +29,7 @@ struct EditSwapAmountScreenTheme:
             .init(top: 40, leading: 0, bottom: 40, trailing: 0)
 
         self.amountPercentageInput = .init(
-            textInputPlaceholder: "swap-amount-percentage-placeholder".localized,
+            textInputPlaceholder: String(localized: "swap-amount-percentage-placeholder"),
             family: family
         )
         self.amountPercentageInput.contentEdgeInsets =

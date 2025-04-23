@@ -23,7 +23,7 @@ struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListItemBu
 
     init() {
         icon = "add-icon-40"
-        title = Self.getTitle("transaction-option-list-add-asset-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-add-asset-subtitle".localized)
+        title = Self.getTitle(String(localized: "transaction-option-list-add-asset-title"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-add-asset-subtitle"))
     }
 }

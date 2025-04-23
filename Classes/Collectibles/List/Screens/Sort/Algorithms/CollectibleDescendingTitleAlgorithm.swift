@@ -22,7 +22,7 @@ struct CollectibleDescendingTitleAlgorithm: CollectibleSortingAlgorithm {
 
     init() {
         self.id = "cache.value.collectibleDescendingTitleAlgorithm"
-        self.name = "title-alphabetically-z-to-a".localized
+        self.name = String(localized: "title-alphabetically-z-to-a")
     }
 }
 

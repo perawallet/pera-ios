@@ -39,8 +39,7 @@ struct AssetListSearchNoContentViewModel:
 extension AssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "asset-not-found-title"
-                .localized
+            String(localized: "asset-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -48,8 +47,7 @@ extension AssetListSearchNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "asset-not-found-detail"
-                .localized
+            String(localized: "asset-not-found-detail")
                 .bodyRegular(
                     alignment: .center
                 )

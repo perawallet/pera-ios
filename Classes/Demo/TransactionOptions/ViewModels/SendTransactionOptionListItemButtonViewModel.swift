@@ -23,7 +23,7 @@ struct SendTransactionOptionListItemButtonViewModel: TransactionOptionListItemBu
 
     init() {
         icon = "icon-transaction-option-list-send"
-        title = Self.getTitle("title-send".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-send-subtitle".localized)
+        title = Self.getTitle(String(localized: "title-send"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-send-subtitle"))
     }
 }

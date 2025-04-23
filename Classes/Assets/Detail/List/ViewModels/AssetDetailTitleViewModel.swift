@@ -53,7 +53,7 @@ extension AssetDetailTitleViewModel {
                !assetName.isEmptyOrBlank {
                 title = getTitle(assetName)
             } else {
-                title = getTitle("title-unknown".localized)
+                title = getTitle(String(localized: "title-unknown"))
             }
 
             return

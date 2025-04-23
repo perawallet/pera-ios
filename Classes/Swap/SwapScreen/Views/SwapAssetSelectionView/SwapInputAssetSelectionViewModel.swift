@@ -35,7 +35,7 @@ extension SwapInputAssetSelectionViewModel {
     mutating func bindTitle(
         _ asset: Asset
     ) {
-        let unitName = asset.naming.unitName ?? "title-unknown".localized
+        let unitName = asset.naming.unitName ?? String(localized: "title-unknown")
         title = unitName.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

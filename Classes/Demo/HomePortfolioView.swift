@@ -139,7 +139,7 @@ final class HomePortfolioView:
             return
         }
         
-        tooltipController.present(on: valueView, title: "tooltip-privacy-mode".localized)
+        tooltipController.present(on: valueView, title: String(localized: "tooltip-privacy-mode"))
     }
 }
 

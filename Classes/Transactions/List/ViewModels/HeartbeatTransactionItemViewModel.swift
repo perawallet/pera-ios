@@ -18,7 +18,7 @@ import MacaroonUIKit
 
 struct HeartbeatTransactionItemViewModel: TransactionListItemViewModel {
     var id: String?
-    var title: MacaroonUIKit.EditText? = .string("transaction-detail-heartbeat".localized)
+    var title: MacaroonUIKit.EditText? = .string(String(localized: "transaction-detail-heartbeat"))
     var subtitle: MacaroonUIKit.EditText? = nil
     var transactionAmountViewModel: TransactionAmountViewModel? = nil
 }

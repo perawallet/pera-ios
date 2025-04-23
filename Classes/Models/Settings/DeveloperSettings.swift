@@ -33,9 +33,9 @@ enum DeveloperSettings: Settings {
     var name: String {
         switch self {
         case .nodeSettings:
-            return "node-settings-title".localized
+            return String(localized: "node-settings-title")
         case .dispenser:
-            return "settings-developer-dispenser".localized
+            return String(localized: "settings-developer-dispenser")
         }
     }
 

@@ -24,7 +24,7 @@ struct BrowseDAppsTransactionOptionListItemButtonViewModel: TransactionOptionLis
 
     init() {
         icon = "icon-transaction-option-list-browse-dapps"
-        title = Self.getTitle("transaction-option-list-browse-dapps-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-browse-dapps-subtitle".localized)
+        title = Self.getTitle(String(localized: "transaction-option-list-browse-dapps-title"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-browse-dapps-subtitle"))
     }
 }

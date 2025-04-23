@@ -77,7 +77,7 @@ extension SettingsFooterView {
         }
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            versionLabel.text = "settings-app-version".localized(params: version)
+            versionLabel.text = String(format: String(localized: "settings-app-version"), version)
         }
     }
 }

@@ -28,8 +28,7 @@ struct WCSessionAdvancedPermissionsHeaderViewModel: ViewModel {
 extension WCSessionAdvancedPermissionsHeaderViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-advanced-permissions"
-                .localized
+            String(localized: "wc-session-advanced-permissions")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

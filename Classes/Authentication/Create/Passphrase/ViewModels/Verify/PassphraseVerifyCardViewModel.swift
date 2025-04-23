@@ -44,8 +44,7 @@ extension PassphraseVerifyCardViewModel {
         }
         
         headerText = .attributedString(
-            "passphrase-verify-select-word"
-                .localized(params: "\(index + 1)")
+            String(format: String(localized: "passphrase-verify-select-word"), "\(index + 1)")
                 .bodyRegular(
                     alignment: .center
                 )

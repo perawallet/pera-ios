@@ -235,7 +235,7 @@ extension RootViewController {
     func deleteAllData(
         onCompletion handler: @escaping BoolHandler
     ) {
-        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+        appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         appConfiguration.sharedDataController.stopPolling()
 

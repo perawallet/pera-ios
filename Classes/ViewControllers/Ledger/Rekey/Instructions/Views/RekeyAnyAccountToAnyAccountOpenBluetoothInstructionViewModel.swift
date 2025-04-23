@@ -24,6 +24,6 @@ struct RekeyAnyAccountToAnyAccountOpenBluetoothInstructionViewModel: Instruction
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "ledger-tutorial-bluetooth".localized.bodyRegular()
+        self.title = String(localized: "ledger-tutorial-bluetooth").bodyRegular()
     }
 }

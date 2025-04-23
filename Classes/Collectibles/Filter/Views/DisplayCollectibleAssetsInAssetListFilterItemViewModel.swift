@@ -22,7 +22,7 @@ struct DisplayCollectibleAssetsInAssetListFilterItemViewModel: AssetFilterItemVi
     let description: TextProvider?
 
     init() {
-        self.title = "asset-filter-selection-display-collectible-assets-filter-title".localized.bodyRegular()
-        self.description = "asset-filter-selection-display-collectible-assets-filter-description".localized.footnoteRegular()
+        self.title = String(localized: "asset-filter-selection-display-collectible-assets-filter-title").bodyRegular()
+        self.description = String(localized: "asset-filter-selection-display-collectible-assets-filter-description").footnoteRegular()
     }
 }

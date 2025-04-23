@@ -93,7 +93,7 @@ extension WCSessionConnectionSuccessfulSheet {
 
     private func makeCloseAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) {
             [unowned self] in
@@ -104,30 +104,17 @@ extension WCSessionConnectionSuccessfulSheet {
 
 extension WCSessionConnectionSuccessfulSheet {
     private static func makeTitleForWCv1(_ wcV1Session: WCSession) -> TextProvider {
-        let dAppName = wcV1Session.peerMeta.name
-        let aTitle =
-            "wallet-connect-session-connection-approved-title"
-                .localized(params: dAppName)
-                .bodyLargeMedium(alignment: .center)
-        return aTitle
+        return String(format: String(localized: "wallet-connect-session-connection-approved-title"), wcV1Session.peerMeta.name).bodyLargeMedium(alignment: .center)
     }
 
     private static func makeTitleForWCv2(_ wcV2Session: WalletConnectV2Session) -> TextProvider {
-        let dAppName = wcV2Session.peer.name
-        let aTitle =
-            "wallet-connect-session-connection-approved-title"
-                .localized(params: dAppName)
-                .bodyLargeMedium(alignment: .center)
-        return aTitle
+        return String(format: String(localized: "wallet-connect-session-connection-approved-title"), wcV2Session.peer.name).bodyLargeMedium(alignment: .center)
     }
 }
 
 extension WCSessionConnectionSuccessfulSheet {
     private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
-        let dAppName = wcV1Session.peerMeta.name
-        let aBody = "wallet-connect-session-connection-approved-description"
-            .localized(params: dAppName)
-            .bodyRegular(alignment: .center)
+        let aBody = String(format: String(localized: "wallet-connect-session-connection-approved-description"), wcV1Session.peerMeta.name).bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
 
@@ -139,10 +126,7 @@ extension WCSessionConnectionSuccessfulSheet {
 
         let dateFormat = "MMM d, yyyy, h:mm a"
         let validUntilDate = expiryDate.toFormat(dateFormat)
-        let text =
-            "wallet-connect-v2-session-valid-until-date"
-                .localized(params: validUntilDate)
-                .attributed(textAttributes)
+        let text = String(format: String(localized: "wallet-connect-v2-session-valid-until-date"), validUntilDate).attributed(textAttributes)
 
         var validUntilDateAttributes = Typography.bodyMediumAttributes(alignment: .center)
         validUntilDateAttributes.insert(.textColor(Colors.Text.main))
@@ -161,14 +145,9 @@ extension WCSessionConnectionSuccessfulSheet {
     private static func makeInfoForWCv2(
         wcV2Session: WalletConnectV2Session
     ) -> TextProvider? {
-        let dAppName = wcV2Session.peer.name
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))
-        let aInfo =
-            "wallet-connect-v2-session-connection-approved-description"
-                .localized(params: dAppName)
-                .attributed(textAttributes)
-        return aInfo
+        return String(format: String(localized: "wallet-connect-v2-session-connection-approved-description"), wcV2Session.peer.name).attributed(textAttributes)
     }
 }
 

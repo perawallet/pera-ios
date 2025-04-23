@@ -162,7 +162,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         for draft: TransactionSendDraft
     ) {
         userView = TitledTransactionAccountNameViewModel(
-            title: "title-account".localized,
+            title: String(localized: "title-account"),
             account: draft.from,
             hasImage: true
         )
@@ -172,7 +172,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private func setOpponentView(
         for draft: TransactionSendDraft
     ) {
-        let title = "title-to".localized
+        let title = String(localized: "title-to")
 
         if let contact = draft.toContact {
             opponentView = TitledTransactionAccountNameViewModel(
@@ -210,7 +210,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         
         if isLocked {
             lockedNoteView = TransactionTextInformationViewModel(
-                title: "title-note".localized,
+                title: String(localized: "title-note"),
                 detail: editNote
             )
             

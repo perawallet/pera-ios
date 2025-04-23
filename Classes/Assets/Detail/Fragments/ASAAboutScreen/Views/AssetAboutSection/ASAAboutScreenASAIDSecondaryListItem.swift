@@ -34,8 +34,7 @@ extension ASAAboutScreenASAIDSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "asa-about-asa-id"
-                .localized
+            String(localized: "asa-about-asa-id")
                 .attributed(attributes)
     }
 }

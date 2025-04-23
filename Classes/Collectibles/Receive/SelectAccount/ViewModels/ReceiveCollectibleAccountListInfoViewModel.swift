@@ -40,7 +40,7 @@ extension ReceiveCollectibleAccountListInfoViewModel {
     }
 
     private mutating func bindMessage() {
-        message = "collectible-receive-account-list-info".localized.footnoteMedium()
+        message = String(localized: "collectible-receive-account-list-info").footnoteMedium()
     }
 
     private mutating func bindStyle() {

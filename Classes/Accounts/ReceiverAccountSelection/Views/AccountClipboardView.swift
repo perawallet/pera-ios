@@ -70,7 +70,7 @@ final class AccountClipboardView:
         addAddressLabel(theme)
         addCopyIconView(theme)
 
-        titleLabel.text = "account-select-clipboard-title".localized
+        titleLabel.text = String(localized: "account-select-clipboard-title")
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}

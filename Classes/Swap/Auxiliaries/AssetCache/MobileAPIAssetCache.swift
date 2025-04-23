@@ -56,7 +56,7 @@ struct MobileAPIAssetCache: AssetCache {
             }
         }
 
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         api.fetchAssetDetail(draft) {
             result in

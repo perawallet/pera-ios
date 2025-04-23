@@ -227,11 +227,11 @@ extension AssetDecoration {
             let code = unitName, !code.isEmptyOrBlank {
             return (name, "\(code.uppercased())")
         } else if let name = name, !name.isEmptyOrBlank {
-            return (name, "title-unknown".localized)
+            return (name, String(localized: "title-unknown"))
         } else if let code = unitName, !code.isEmptyOrBlank {
-            return ("\(code.uppercased())", "title-unknown".localized)
+            return ("\(code.uppercased())", String(localized: "title-unknown"))
         } else {
-            return ("title-unknown".localized, "title-unknown".localized)
+            return (String(localized: "title-unknown"), String(localized: "title-unknown"))
         }
     }
 }

@@ -36,8 +36,7 @@ extension NoInternetConnectionViewModel {
     
     private mutating func bindTitle() {
         title =
-            "internet-connection-error-title"
-                .localized
+            String(localized: "internet-connection-error-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -45,8 +44,7 @@ extension NoInternetConnectionViewModel {
 
     private mutating func bindBody() {
         body =
-            "internet-connection-error-detail"
-                .localized
+            String(localized: "internet-connection-error-detail")
                 .bodyRegular(
                     alignment: .center
                 )

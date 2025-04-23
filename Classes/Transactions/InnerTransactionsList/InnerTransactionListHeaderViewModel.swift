@@ -37,7 +37,7 @@ extension InnerTransactionListHeaderViewModel {
         _ innerTransactionCount: UInt
     ) {
         title = .attributedString(
-            "inner-transaction-count".localized(params: innerTransactionCount).bodyRegular(
+            String(format: String(localized: "inner-transaction-count"), innerTransactionCount).bodyRegular(
                 lineBreakMode: .byTruncatingTail
             )
         )

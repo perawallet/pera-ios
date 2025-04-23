@@ -46,7 +46,7 @@ struct TransactionActionInformationViewTheme: StyleSheet, LayoutSheet {
         self.descriptionLeadingPadding = 137
         
         self.actionWithData = [
-            .title("title-edit".localized),
+            .title(String(localized: "title-edit")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Helpers.positive)
@@ -57,7 +57,7 @@ struct TransactionActionInformationViewTheme: StyleSheet, LayoutSheet {
             ])
         ]
         self.actionWithoutData = [
-            .title("title-add-note".localized),
+            .title(String(localized: "title-add-note")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Helpers.positive)

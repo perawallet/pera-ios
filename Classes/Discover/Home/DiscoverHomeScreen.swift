@@ -55,7 +55,7 @@ final class DiscoverHomeScreen:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = "title-discover".localized
+        navigationBarLargeTitleController.title = String(localized: "title-discover")
         navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
 
         navigationBarLargeTitleView.searchAction = {

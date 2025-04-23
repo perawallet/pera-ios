@@ -71,8 +71,7 @@ struct SwapAmountPercentageValidationMessageGenericResolver: SwapAmountPercentag
         Self.Error.allCases.forEach { error in
             switch error {
             default:
-                map[error] = "swap-amount-percentage-validation-error-limitExceeded".localized(
-                    params:
+                map[error] = String(format: String(localized: "swap-amount-percentage-validation-error-limitExceeded"), 
                     (Self.Error.minLimit / 100).toPercentageWith(fractions: 2).someString,
                     (Self.Error.maxLimit / 100).toPercentageWith(fractions: 2).someString
                 )

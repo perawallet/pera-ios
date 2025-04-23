@@ -62,7 +62,7 @@ final class SelectAssetViewController:
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        navigationItem.title = "send-select-asset".localized
+        navigationItem.title = String(localized: "send-select-asset")
     }
 
     override func viewDidLoad() {

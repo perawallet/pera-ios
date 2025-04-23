@@ -57,7 +57,7 @@ final class WCGroupTransactionViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "wallet-connect-transaction-title-multiple".localized
+        title = String(localized: "wallet-connect-transaction-title-multiple")
         view.backgroundColor = Colors.Defaults.background.uiColor
         groupTransactionView.backgroundColor = Colors.Defaults.background.uiColor
     }

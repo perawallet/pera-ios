@@ -345,12 +345,12 @@ extension RootViewController: WCMainArbitraryDataScreenDelegate {
             .empty
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
-            title: "wc-arbitrary-data-request-signed-warning-title".localized,
+            title: String(localized: "wc-arbitrary-data-request-signed-warning-title"),
             description: .plain(
-                "wc-arbitrary-data-request-signed-warning-message".localized(params: dappName, dappName)
+                String(format: String(localized: "wc-arbitrary-data-request-signed-warning-message"), dappName, dappName)
             ),
             primaryActionButtonTitle: nil,
-            secondaryActionButtonTitle: "title-close".localized
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 

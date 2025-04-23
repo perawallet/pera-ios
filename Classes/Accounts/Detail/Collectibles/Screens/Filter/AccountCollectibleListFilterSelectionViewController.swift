@@ -43,7 +43,7 @@ final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
         addBarButtons()
 
         navigationItem.largeTitleDisplayMode =  .never
-        navigationItem.title = "collectible-filter-selection-title".localized
+        navigationItem.title = String(localized: "collectible-filter-selection-title")
     }
 
     override func viewDidLoad() {

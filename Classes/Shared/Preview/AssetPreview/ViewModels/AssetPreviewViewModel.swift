@@ -127,7 +127,7 @@ extension AssetPreviewViewModel {
             attributes.insert(.textColor(Colors.Text.main))
         }
 
-        let aTitle = title.unwrapNonEmptyString() ?? "title-unknown".localized
+        let aTitle = title.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
         let destroyedText = makeDestroyedAssetTextIfNeeded(isAssetDestroyed)
         let assetText = aTitle.attributed(attributes)
@@ -141,7 +141,7 @@ extension AssetPreviewViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)
@@ -208,7 +208,7 @@ extension AssetPreviewViewModel {
     ) -> ImagePlaceholder? {
         let title =
             asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.naming.name
 
         let aPlaceholder = TextFormatter.assetShortName.format(title)

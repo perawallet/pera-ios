@@ -37,8 +37,7 @@ private struct AssetDiscordListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-discord"
         title = .attributedString(
-            "social-media-platform-discord"
-                .localized
+            String(localized: "social-media-platform-discord")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
         subtitle = nil

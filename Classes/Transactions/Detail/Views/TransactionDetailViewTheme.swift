@@ -44,7 +44,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.openInPeraExplorerButton = [
-            .title("transaction-id-open-peraexplorer".localized),
+            .title(String(localized: "transaction-id-open-peraexplorer")),
             .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
             .backgroundColor(Colors.Button.Secondary.background)

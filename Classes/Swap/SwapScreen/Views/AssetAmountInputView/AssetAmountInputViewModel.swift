@@ -42,7 +42,7 @@ extension AssetAmountInputViewModel {
             .build()
 
         let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.naming.name
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholder = ImagePlaceholder.init(

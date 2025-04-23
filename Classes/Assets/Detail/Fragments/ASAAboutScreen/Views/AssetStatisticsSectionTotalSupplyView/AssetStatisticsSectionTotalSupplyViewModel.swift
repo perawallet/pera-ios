@@ -37,8 +37,7 @@ struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
 
 extension AssetStatisticsSectionTotalSupplyViewModel {
     mutating func bindTitle() {
-        primaryTitle = "title-total-supply"
-            .localized
+        primaryTitle = String(localized: "title-total-supply")
             .footnoteRegular(
                 lineBreakMode: .byTruncatingTail
             )

@@ -31,8 +31,7 @@ struct CurrencySelectionNoContentViewModel: NoContentViewModel, Hashable {
 extension CurrencySelectionNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "settings-currency-not-found-title"
-                .localized
+            String(localized: "settings-currency-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -40,8 +39,7 @@ extension CurrencySelectionNoContentViewModel {
     
     private mutating func bindBody() {
         body =
-            "settings-currency-not-found-detail"
-                .localized
+            String(localized: "settings-currency-not-found-detail")
                 .bodyRegular(
                     alignment: .center
                 )

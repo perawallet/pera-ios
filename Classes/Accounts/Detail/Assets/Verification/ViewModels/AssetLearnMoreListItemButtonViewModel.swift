@@ -26,7 +26,7 @@ struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-pera-solid"
         title = Self.getTitle(
-            "asa-verification-learn-more".localized,
+            String(localized: "asa-verification-learn-more"),
             Colors.Helpers.positive
         )
         subtitle = nil

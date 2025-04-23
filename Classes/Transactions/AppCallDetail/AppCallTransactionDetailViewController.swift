@@ -61,7 +61,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "title-app-call".localized
+        title = String(localized: "title-app-call")
     }
 
     override func prepareLayout() {

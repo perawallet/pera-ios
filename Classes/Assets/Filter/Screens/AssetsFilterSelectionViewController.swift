@@ -66,7 +66,7 @@ extension AssetsFilterSelectionViewController {
     }
 
     private func bindNavigationItemTitle() {
-        title = "asset-filter-title".localized
+        title = String(localized: "asset-filter-title")
     }
 }
 

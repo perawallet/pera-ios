@@ -32,7 +32,7 @@ struct SwapSummaryStatusViewTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
-            .text("transaction-detail-status".localized),
+            .text(String(localized: "transaction-detail-status")),
             .font(Typography.bodyRegular())
         ]
         self.status = TransactionStatusViewTheme()

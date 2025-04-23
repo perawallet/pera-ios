@@ -56,7 +56,7 @@ final class WCTransactionFullDappDetailConfigurator {
             setup(from: transaction)
         }
 
-        self.primaryActionButtonTitle = "title-close".localized
+        self.primaryActionButtonTitle = String(localized: "title-close")
         self.primaryAction = primaryAction
     }
 }

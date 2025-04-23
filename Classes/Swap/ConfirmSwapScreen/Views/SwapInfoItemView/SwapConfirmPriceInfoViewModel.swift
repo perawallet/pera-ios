@@ -44,8 +44,7 @@ struct SwapConfirmPriceInfoViewModel: SwapInfoItemViewModel {
 
 extension SwapConfirmPriceInfoViewModel {
     mutating func bindTitle() {
-        title = "title-price"
-            .localized
+        title = String(localized: "title-price")
             .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
@@ -88,10 +87,7 @@ extension SwapConfirmPriceInfoViewModel {
         }
 
         let assetText = "\(formattedAmount) \(firstAssetDisplayName)"
-        detail = "swap-confirm-price-info"
-            .localized(
-                params: assetText, secondAssetDisplayName
-            ).footnoteRegular(lineBreakMode: .byTruncatingTail)
+        detail = String(format: String(localized: "swap-confirm-price-info"), assetText, secondAssetDisplayName).footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

@@ -43,8 +43,7 @@ struct AssetStatisticsSectionViewModel: ViewModel {
 
 extension AssetStatisticsSectionViewModel {
     mutating func bindTitle() {
-        title = "algo-statistics-title"
-            .localized
+        title = String(localized: "algo-statistics-title")
             .uppercased()
             .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
     }

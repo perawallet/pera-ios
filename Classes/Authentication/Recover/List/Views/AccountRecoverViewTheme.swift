@@ -44,7 +44,7 @@ struct AccountRecoverViewCommonTheme: AccountRecoverViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .text("recover-from-seed-title".localized)
+            .text(String(localized: "recover-from-seed-title"))
         ]
 
         self.horizontalStackViewTopInset = 37

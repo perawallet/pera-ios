@@ -57,7 +57,7 @@ final class SelectAccountViewController: BaseViewController {
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Defaults.background.uiColor
-        navigationItem.title = "title-select-account".localized.capitalized
+        navigationItem.title = String(localized: "title-select-account").capitalized
     }
 
     override func setListeners() {

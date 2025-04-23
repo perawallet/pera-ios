@@ -41,20 +41,17 @@ extension SwapUnexpectedErrorViewModel {
     }
 
     mutating func bindDetail() {
-        detail = "swap-error-unexpected-detail"
-            .localized
+        detail = String(localized: "swap-error-unexpected-detail")
             .bodyRegular(alignment: .center)
     }
 
     mutating func bindPrimaryAction() {
-        primaryAction = "title-try-again"
-            .localized
+        primaryAction = String(localized: "title-try-again")
             .bodyMedium(alignment: .center)
     }
 
     mutating func bindSecondaryAction() {
-        secondaryAction = "swap-error-go-home"
-            .localized
+        secondaryAction = String(localized: "swap-error-go-home")
             .bodyMedium(alignment: .center)
     }
 }

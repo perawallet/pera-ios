@@ -320,8 +320,7 @@ extension RekeyInstructionsScreen {
 
     private func bindInstructionsTitle() {
         instructionsTitleView.attributedText =
-        "rekey-instruction-header"
-            .localized
+        String(localized: "rekey-instruction-header")
             .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
     }
 
@@ -331,7 +330,7 @@ extension RekeyInstructionsScreen {
     }
 
     private func bindPrimaryAction() {
-        primaryActionView.editTitle = .string("rekey-instruction-start".localized)
+        primaryActionView.editTitle = .string(String(localized: "rekey-instruction-start"))
     }
 }
 

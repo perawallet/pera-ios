@@ -50,7 +50,7 @@ extension OptInAssetListItemViewModel {
         /// <todo>
         /// Find a better way of formatting name
         let title = asset.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.name
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholderImage =

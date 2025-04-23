@@ -36,7 +36,7 @@ final class TransactionFilterView: View {
     }()
 
     private lazy var closeButtonContainer = UIView()
-    private lazy var closeButton = ViewFactory.Button.makeSecondaryButton("title-close".localized)
+    private lazy var closeButton = ViewFactory.Button.makeSecondaryButton(String(localized: "title-close"))
 
     private var isLayoutFinalized = false
     

@@ -43,8 +43,7 @@ extension SwapAssetLoadingScreenViewModel {
     }
 
     mutating func bindTitle() {
-        title = "sending-transaction-loading-title"
-            .localized
+        title = String(localized: "sending-transaction-loading-title")
             .bodyLargeMedium(alignment: .center)
     }
 
@@ -72,7 +71,7 @@ extension SwapAssetLoadingScreenViewModel {
 
         let assetText = "\(amountText) \(assetOutDisplayName)"
 
-        let fullText = "swap-loading-detail".localized(params: assetText).localized
+        let fullText = String(format: String(localized: "swap-loading-detail"), assetText)
         let textAttributes = NSMutableAttributedString(
             attributedString: fullText.bodyRegular(alignment: .center, lineBreakMode: .byWordWrapping)
         )

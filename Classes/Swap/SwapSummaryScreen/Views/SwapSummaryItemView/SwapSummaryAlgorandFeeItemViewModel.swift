@@ -39,8 +39,7 @@ struct SwapSummaryAlgorandFeeItemViewModel: SwapSummaryItemViewModel {
 
 extension SwapSummaryAlgorandFeeItemViewModel {
     mutating func bindTitle() {
-        title = "title-network-fee"
-            .localized
+        title = String(localized: "title-network-fee")
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

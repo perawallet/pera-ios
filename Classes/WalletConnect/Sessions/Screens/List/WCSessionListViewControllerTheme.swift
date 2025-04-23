@@ -32,7 +32,7 @@ struct WCSessionListViewControllerTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.disconnectAllAction = [
-            .title("wallet-connect-session-disconnect-all-action".localized),
+            .title(String(localized: "wallet-connect-session-disconnect-all-action")),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)
             ]),

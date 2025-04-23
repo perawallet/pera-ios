@@ -37,8 +37,7 @@ extension SecuredByPaymentOptionsViewModel {
 
     mutating func bindTitle() {
         title =
-        "moonpay-introduction-security"
-            .localized
+        String(localized: "moonpay-introduction-security")
             .bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 }

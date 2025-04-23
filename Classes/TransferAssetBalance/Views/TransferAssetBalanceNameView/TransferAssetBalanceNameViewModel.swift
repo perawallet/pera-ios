@@ -31,7 +31,7 @@ struct TransferAssetBalanceNameViewModel: PrimaryTitleViewModel {
 
 extension TransferAssetBalanceNameViewModel {
     mutating func bindPrimaryTitle(asset: AssetDecoration) {
-        let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        let title = asset.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
         var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
 
@@ -50,7 +50,7 @@ extension TransferAssetBalanceNameViewModel {
             return nil
         }
 
-        let deletedTitle = "title-deleted-with-parantheses".localized
+        let deletedTitle = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return deletedTitle.attributed(attributes)

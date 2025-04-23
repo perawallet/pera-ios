@@ -42,24 +42,21 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.title = .attributedString(
-                "title-accounts"
-                    .localized
+                String(localized: "title-accounts")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
             )
         case .asset:
             self.title = .attributedString(
-                "title-assets"
-                    .localized
+                String(localized: "title-assets")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
             )
         case .collectible(let count, _):
             self.title = .attributedString(
-                "title-plus-collectible-count"
-                    .localized(params: count)
+                String(format: String(localized: "title-plus-collectible-count"), count)
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
@@ -73,16 +70,14 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.primaryButtonTitle = .attributedString(
-                "title-sort"
-                    .localized
+                String(localized: "title-sort")
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
         case .asset,
              .collectible:
             self.primaryButtonTitle = .attributedString(
-                "asset-manage-button"
-                    .localized
+                String(localized: "asset-manage-button")
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-asset-manage")

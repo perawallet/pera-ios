@@ -33,8 +33,7 @@ extension ASAAboutScreenShowOnSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "collectible-detail-show-on"
-                .localized
+            String(localized: "collectible-detail-show-on")
                 .attributed(attributes)
     }
 }
@@ -55,8 +54,7 @@ extension ASAAboutScreenShowOnListItemValueViewModel {
         attributes.insert(.textColor(Colors.Link.primary))
 
         title =
-            "collectible-detail-pera-explorer"
-                .localized
+            String(localized: "collectible-detail-pera-explorer")
                 .attributed(attributes)
     }
 

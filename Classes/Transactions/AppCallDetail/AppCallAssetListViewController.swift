@@ -58,7 +58,7 @@ final class AppCallAssetListViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        title = "title-assets".localized
+        title = String(localized: "title-assets")
     }
 
     override func prepareLayout() {

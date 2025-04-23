@@ -40,7 +40,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\\n\\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation."
+            "value" : "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation."
           }
         }
       }
@@ -293,7 +293,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to recover an Algorand account\\nthat is backed by my Ledger hardware wallet"
+            "value" : "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet"
           }
         }
       }
@@ -359,7 +359,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import an existing Algorand account\\nvia various methods or pair your Ledger"
+            "value" : "Import an existing Algorand account\nvia various methods or pair your Ledger"
           }
         }
       }
@@ -403,7 +403,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to\\nPera Wallet"
+            "value" : "Welcome to\nPera Wallet"
           }
         }
       }
@@ -502,7 +502,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We couldn't find any accounts\\neligible for backup."
+            "value" : "We couldn't find any accounts\neligible for backup."
           }
         }
       }
@@ -722,7 +722,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select your\\nbackup file"
+            "value" : "Select your\nbackup file"
           }
         }
       }
@@ -780,13 +780,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account was restored from backup file"
+                  "value" : "%lld account was restored from backup file"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts were restored from backup file"
+                  "value" : "%lld accounts were restored from backup file"
                 }
               }
             }
@@ -825,13 +825,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account was not restored because they already exist in your wallet"
+                  "value" : "%lld account was not restored because they already exist in your wallet"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts were not restored because they already exist in your wallet"
+                  "value" : "%lld accounts were not restored because they already exist in your wallet"
                 }
               }
             }
@@ -867,7 +867,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d accounts were not restored. They may already exist in your wallet or be unsupported account types"
+            "value" : "%lld accounts were not restored. They may already exist in your wallet or be unsupported account types"
           }
         }
       }
@@ -881,13 +881,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account was not restored because it has an unsupported account type"
+                  "value" : "%lld account was not restored because it has an unsupported account type"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts were not restored because they have an unsupported account type"
+                  "value" : "%lld accounts were not restored because they have an unsupported account type"
                 }
               }
             }
@@ -1088,7 +1088,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Store your 12-word key securely.\\nFind out how with Pera Learn."
+            "value" : "Store your 12-word key securely.\nFind out how with Pera Learn."
           }
         }
       }
@@ -1110,7 +1110,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\\n\\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding."
+            "value" : "You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\n\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding."
           }
         }
       }
@@ -1165,7 +1165,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Review your\\n12-word key"
+            "value" : "Review your\n12-word key"
           }
         }
       }
@@ -1187,7 +1187,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Store your\\n12-word key"
+            "value" : "Store your\n12-word key"
           }
         }
       }
@@ -1264,7 +1264,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your backup file is\\nready"
+            "value" : "Your backup file is\nready"
           }
         }
       }
@@ -2760,7 +2760,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show hidden NFTs (%d)"
+            "value" : "Show hidden NFTs (%lld)"
           }
         }
       }
@@ -3123,7 +3123,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Receiving Wallet is not opted in. It needs to opt-in to receive the asset.\\nPera simplifies this process by combining multiple transactions for a seamless experience."
+            "value" : "Your Receiving Wallet is not opted in. It needs to opt-in to receive the asset.\nPera simplifies this process by combining multiple transactions for a seamless experience."
           }
         }
       }
@@ -3225,13 +3225,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d incoming asset"
+                  "value" : "%lld incoming asset"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d incoming assets"
+                  "value" : "%lld incoming assets"
                 }
               }
             }
@@ -3369,13 +3369,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Inner Transaction"
+                  "value" : "%lld Inner Transaction"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Inner Transactions"
+                  "value" : "%lld Inner Transactions"
                 }
               }
             }
@@ -3403,13 +3403,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d inner txn"
+                  "value" : "%lld inner txn"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d inner txns"
+                  "value" : "%lld inner txns"
                 }
               }
             }
@@ -3536,13 +3536,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account found"
+                  "value" : "%lld account found"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts found"
+                  "value" : "%lld accounts found"
                 }
               }
             }
@@ -3699,7 +3699,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Is your Ledger paired with this device?\\nIf not, please follow these steps:"
+            "value" : "Is your Ledger paired with this device?\nIf not, please follow these steps:"
           }
         }
       }
@@ -3809,7 +3809,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Account successfully\\nrekeyed"
+            "value" : "Account successfully\nrekeyed"
           }
         }
       }
@@ -3974,7 +3974,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Make sure that your ledger device is on\\nand has Bluetooth enabled."
+            "value" : "Make sure that your ledger device is on\nand has Bluetooth enabled."
           }
         }
       }
@@ -4007,7 +4007,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verify Account Addresses\\nvia Ledger"
+            "value" : "Verify Account Addresses\nvia Ledger"
           }
         }
       }
@@ -4051,7 +4051,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Biometric\\nAuthentication\\nEnabled"
+            "value" : "Biometric\nAuthentication\nEnabled"
           }
         }
       }
@@ -4117,7 +4117,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ASA Report: %d"
+            "value" : "ASA Report: %lld"
           }
         }
       }
@@ -4128,7 +4128,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Based on your account configuration, your minimum balance is %@.\\n\\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step."
+            "value" : "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step."
           }
         }
       }
@@ -4139,7 +4139,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\\n\\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step."
+            "value" : "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step."
           }
         }
       }
@@ -4876,7 +4876,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter your new\\n6-digit PIN"
+            "value" : "Enter your new\n6-digit PIN"
           }
         }
       }
@@ -4887,7 +4887,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter your old\\n6-digit PIN"
+            "value" : "Enter your old\n6-digit PIN"
           }
         }
       }
@@ -4898,7 +4898,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose your\\n6-digit PIN"
+            "value" : "Choose your\n6-digit PIN"
           }
         }
       }
@@ -4909,7 +4909,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Re-enter your new\\n6-digit PIN"
+            "value" : "Re-enter your new\n6-digit PIN"
           }
         }
       }
@@ -4920,7 +4920,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Re-enter your\\n6-digit PIN"
+            "value" : "Re-enter your\n6-digit PIN"
           }
         }
       }
@@ -4986,7 +4986,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\\n\\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation."
+            "value" : "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation."
           }
         }
       }
@@ -5033,13 +5033,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d app connected"
+                  "value" : "%lld app connected"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d apps connected"
+                  "value" : "%lld apps connected"
                 }
               }
             }
@@ -5295,7 +5295,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter Your Recovery\\nPassphrase"
+            "value" : "Enter Your Recovery\nPassphrase"
           }
         }
       }
@@ -5328,7 +5328,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to Pera Wallet!\\nYour Watch Account has been added successfully."
+            "value" : "Welcome to Pera Wallet!\nYour Watch Account has been added successfully."
           }
         }
       }
@@ -5339,7 +5339,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to Pera Wallet!\\nYour account is ready to use."
+            "value" : "Welcome to Pera Wallet!\nYour account is ready to use."
           }
         }
       }
@@ -5612,7 +5612,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You have %d rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\\n\\nSelect the rekeyed accounts you want to add to your wallet:"
+                  "value" : "You have %lld rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:"
                 }
               }
             }
@@ -5635,7 +5635,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d rekeyed accounts found"
+                  "value" : "%lld rekeyed accounts found"
                 }
               }
             }
@@ -5685,13 +5685,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can’t remove this account before removing its %d rekeyed account"
+                  "value" : "You can’t remove this account before removing its %lld rekeyed account"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can’t remove this account before removing its %d rekeyed accounts"
+                  "value" : "You can’t remove this account before removing its %lld rekeyed accounts"
                 }
               }
             }
@@ -5705,7 +5705,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This account doesn't have the minimum required Algo balance to support this transaction. Please add more Algo to the account before continuing.\\n\\nMinimum required Algo balance increases by 0.1 Algo with each asset, NFT and smart contract you opt-in with. You can opt-out of assets and smart contracts to decrease the minimum required Algo balance."
+            "value" : "This account doesn't have the minimum required Algo balance to support this transaction. Please add more Algo to the account before continuing.\n\nMinimum required Algo balance increases by 0.1 Algo with each asset, NFT and smart contract you opt-in with. You can opt-out of assets and smart contracts to decrease the minimum required Algo balance."
           }
         }
       }
@@ -6079,7 +6079,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Current\\nBalance"
+            "value" : "Current\nBalance"
           }
         }
       }
@@ -6090,7 +6090,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your transaction was successfully\\nreceived by the Algorand network"
+            "value" : "Your transaction was successfully\nreceived by the Algorand network"
           }
         }
       }
@@ -6409,7 +6409,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Not backed up (%@)"
+            "value" : "Not backed up (%lld)"
           }
         }
       }
@@ -6970,7 +6970,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\\nTo learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s\nFAQ section."
+            "value" : "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\nTo learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s FAQ section."
           }
         }
       }
@@ -7283,6 +7283,9 @@
         }
       }
     },
+    "title-about" : {
+
+    },
     "title-about-with-param" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7501,13 +7504,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%dAsset Request"
+                  "value" : "%lldAsset Request"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%dAsset Requests"
+                  "value" : "%lldAsset Requests"
                 }
               }
             }
@@ -8467,7 +8470,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verify recovery\\npassphrase backup"
+            "value" : "Verify recovery\npassphrase backup"
           }
         }
       }
@@ -8494,6 +8497,9 @@
         }
       }
     },
+    "title-plus-asset-singular-count" : {
+
+    },
     "title-plus-collectible-count" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8503,13 +8509,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d NFT"
+                  "value" : "%lld NFT"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d NFTs"
+                  "value" : "%lld NFTs"
                 }
               }
             }
@@ -8864,7 +8870,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show +%d more assets"
+            "value" : "Show +%lld more assets"
           }
         }
       }
@@ -9384,13 +9390,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Show %d TXN"
+                  "value" : "Show %lld TXN"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Show %d TXNS"
+                  "value" : "Show %lld TXNS"
                 }
               }
             }
@@ -9602,7 +9608,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application ID: %d"
+            "value" : "Application ID: %lld"
           }
         }
       }
@@ -10141,7 +10147,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prepare to write\\ndown your recovery passphrase"
+            "value" : "Prepare to write\ndown your recovery passphrase"
           }
         }
       }
@@ -10240,7 +10246,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project."
+            "value" : "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project."
           }
         }
       }
@@ -10504,7 +10510,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your WalletConnect request failed with the following error: \\n\\n%@\\n\\nPlease try again by going back to the dApp where you initiated the request."
+            "value" : "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request."
           }
         }
       }
@@ -10636,7 +10642,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ wants to\\nconnect to your account"
+            "value" : "%@ wants to\nconnect to your account"
           }
         }
       }
@@ -10771,13 +10777,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Transaction  ·  Group ID: %@"
+                  "value" : "%lld Transaction  ·  Group ID: %@"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Transactions  ·  Group ID: %@"
+                  "value" : "%lld Transactions  ·  Group ID: %@"
                 }
               }
             }
@@ -11055,7 +11061,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application Call to #%@"
+            "value" : "Application Call to #%lld"
           }
         }
       }
@@ -11066,7 +11072,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application Close to #%@"
+            "value" : "Application Close to #%lld"
           }
         }
       }
@@ -11077,7 +11083,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application Delete to #%@"
+            "value" : "Application Delete to #%lld"
           }
         }
       }
@@ -11088,7 +11094,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application Opt-in to #%@"
+            "value" : "Application Opt-in to #%lld"
           }
         }
       }
@@ -11099,7 +11105,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application Update to #%@"
+            "value" : "Application Update to #%lld"
           }
         }
       }
@@ -11110,7 +11116,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opting-in to Asset #%@"
+            "value" : "Opting-in to Asset #%lld"
           }
         }
       }
@@ -11121,7 +11127,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Possible Opting-in to Asset #%@"
+            "value" : "Possible Opting-in to Asset #%lld"
           }
         }
       }
@@ -11451,7 +11457,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\\n\\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know."
+            "value" : "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know."
           }
         }
       }
@@ -11550,7 +11556,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This session is valid until:\\n%@."
+            "value" : "This session is valid until:\n%@."
           }
         }
       }
@@ -11605,7 +11611,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create a watch\\naccount"
+            "value" : "Create a watch\naccount"
           }
         }
       }
@@ -11869,7 +11875,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This WalletConnect session is approaching its maximal validity, which cannot be extended beyond: %@\\n\\nAfter this date, the session will be automatically disconnected and you'll have to reconnect again."
+            "value" : "This WalletConnect session is approaching its maximal validity, which cannot be extended beyond: %@\n\nAfter this date, the session will be automatically disconnected and you'll have to reconnect again."
           }
         }
       }
@@ -12004,13 +12010,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account was imported from Pera Web"
+                  "value" : "%lld account was imported from Pera Web"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts were imported from Pera Web"
+                  "value" : "%lld accounts were imported from Pera Web"
                 }
               }
             }
@@ -12049,13 +12055,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d account was not imported because it was previously imported."
+                  "value" : "%lld account was not imported because it was previously imported."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d accounts were not imported because they were previously imported."
+                  "value" : "%lld accounts were not imported because they were previously imported."
                 }
               }
             }

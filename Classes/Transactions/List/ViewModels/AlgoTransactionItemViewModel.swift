@@ -60,16 +60,16 @@ struct AlgoTransactionItemViewModel:
         }
         
         if transaction.sender == draft.account.address && transaction.isSelfTransaction {
-            bindTitle("transaction-item-self-transfer".localized)
+            bindTitle(String(localized: "transaction-item-self-transfer"))
             return
         }
 
         if isReceivingTransaction(draft, for: payment) {
-            bindTitle("transaction-detail-receive".localized)
+            bindTitle(String(localized: "transaction-detail-receive"))
             return
         }
         
-        bindTitle("transaction-detail-send".localized)
+        bindTitle(String(localized: "transaction-detail-send"))
     }
 
     private mutating func bindSubtitle(

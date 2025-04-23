@@ -40,17 +40,17 @@ extension TransactionFilterOptionViewModel {
     private func bindTitle(_ option: TransactionFilterViewController.FilterOption) {
         switch option {
         case .allTime:
-            title = "transaction-filter-option-all".localized
+            title = String(localized: "transaction-filter-option-all")
         case .today:
-            title = "transaction-filter-option-today".localized
+            title = String(localized: "transaction-filter-option-today")
         case .yesterday:
-            title = "transaction-filter-option-yesterday".localized
+            title = String(localized: "transaction-filter-option-yesterday")
         case .lastWeek:
-            title = "transaction-filter-option-week".localized
+            title = String(localized: "transaction-filter-option-week")
         case .lastMonth:
-            title = "transaction-filter-option-month".localized
+            title = String(localized: "transaction-filter-option-month")
         case .customRange:
-            title = "transaction-filter-option-custom".localized
+            title = String(localized: "transaction-filter-option-custom")
         }
     }
 

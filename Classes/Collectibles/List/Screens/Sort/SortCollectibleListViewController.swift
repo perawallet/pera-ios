@@ -109,7 +109,7 @@ extension SortCollectibleListViewController {
     }
 
     private func bindNavigationItemTitle() {
-        title = "title-sort".localized
+        title = String(localized: "title-sort")
     }
 }
 

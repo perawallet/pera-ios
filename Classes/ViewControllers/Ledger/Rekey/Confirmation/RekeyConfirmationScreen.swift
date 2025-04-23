@@ -110,7 +110,7 @@ final class RekeyConfirmationScreen:
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationBarLargeTitleController.title = "ledger-rekey-confirm-title".localized
+        navigationBarLargeTitleController.title = String(localized: "ledger-rekey-confirm-title")
     }
 
     override func viewDidLoad() {
@@ -302,7 +302,7 @@ extension RekeyConfirmationScreen {
     }
 
     private func bindPrimaryAction() {
-        primaryActionView.editTitle = .string("title-confirm".localized)
+        primaryActionView.editTitle = .string(String(localized: "title-confirm"))
     }
 }
 
@@ -350,7 +350,7 @@ extension RekeyConfirmationScreen {
     private func performRekeying() {
         if !transactionController.canSignTransaction(for: sourceAccount) { return }
 
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         let rekeyTransactionDraft = RekeyTransactionSendDraft(
             account: sourceAccount,
@@ -393,7 +393,7 @@ extension RekeyConfirmationScreen {
             displayTransactionError(from: transactionError)
         default:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.asAFError?.errorDescription ?? error.localizedDescription
             )
         }
@@ -407,9 +407,9 @@ extension RekeyConfirmationScreen {
 
         switch error {
         case let .network(apiError):
-            bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController.presentErrorBanner(title: String(localized: "title-error"), message: apiError.debugDescription)
         default:
-            bannerController.presentErrorBanner(title: "title-error".localized, message: error.debugDescription)
+            bannerController.presentErrorBanner(title: String(localized: "title-error"), message: error.debugDescription)
         }
     }
 
@@ -476,19 +476,17 @@ extension RekeyConfirmationScreen {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "send-algos-minimum-amount-custom-error"), amountText.someString)
             )
         case .invalidAddress:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController.presentErrorBanner(
-                title: "title-error".localized, message: error.debugDescription
+                title: String(localized: "title-error"), message: error.debugDescription
             )
         case .ledgerConnection:
             ledgerConnectionScreen?.dismiss(animated: true) {
@@ -533,9 +531,9 @@ extension RekeyConfirmationScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController

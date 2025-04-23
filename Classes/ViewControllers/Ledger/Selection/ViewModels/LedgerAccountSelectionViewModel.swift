@@ -34,10 +34,10 @@ final class LedgerAccountSelectionViewModel: ViewModel {
         if isMultiSelect {
             buttonText =
                 selectedCount <= 1
-                ? "ledger-account-selection-verify".localized
-                : "ledger-account-selection-verify-plural".localized
+                ? String(localized: "ledger-account-selection-verify")
+                : String(localized: "ledger-account-selection-verify-plural")
         } else {
-            buttonText = "title-continue".localized
+            buttonText = String(localized: "title-continue")
         }
     }
 
@@ -48,12 +48,12 @@ final class LedgerAccountSelectionViewModel: ViewModel {
     private func bindDetail(_ isMultiSelect: Bool) {
         let text =
             isMultiSelect
-            ? "ledger-account-selection-detail".localized
-            : "ledger-account-selection-detail-rekey".localized
+            ? String(localized: "ledger-account-selection-detail")
+            : String(localized: "ledger-account-selection-detail-rekey")
         detail = text.bodyRegular()
     }
 
     private func bindAccountCount(_ accounts: [Account]) {
-        accountCount = "ledger-account-selection-title".localized(params: accounts.count).bodyLargeMedium()
+        accountCount = String(format: String(localized: "ledger-account-selection-title"), accounts.count).bodyLargeMedium()
     }
 }

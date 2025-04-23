@@ -22,8 +22,7 @@ struct WCSessionConnectionRequestedPermissionsHeaderViewModel: WCSessionConnecti
 
     init() {
         title =
-            "wc-session-connection-requested-permissions"
-                .localized
+            String(localized: "wc-session-connection-requested-permissions")
                 .captionMedium(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail

@@ -26,7 +26,7 @@ struct AccountAscendingTotalPortfolioValueAlgorithm: AccountSortingAlgorithm {
         currency: CurrencyProvider
     ) {
         self.id = "cache.value.accountAscendingTotalPortfolioValueAlgorithm"
-        self.name = "title-lowest-value-to-highest".localized
+        self.name = String(localized: "title-lowest-value-to-highest")
         self.isCustom = false
         self.currency = currency
     }

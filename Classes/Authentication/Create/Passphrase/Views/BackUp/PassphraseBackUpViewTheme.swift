@@ -40,14 +40,14 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("title-recover-passphrase".localized)
+            .text(String(localized: "title-recover-passphrase"))
         ]
         self.description = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("title-passphrase-bottom".localized)
+            .text(String(localized: "title-passphrase-bottom"))
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

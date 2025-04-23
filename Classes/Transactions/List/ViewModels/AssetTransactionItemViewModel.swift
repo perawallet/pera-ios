@@ -61,31 +61,31 @@ struct AssetTransactionItemViewModel:
 
         if let closeToAddress = transaction.getCloseAddress() {
             if closeToAddress == draft.account.address {
-                bindTitle("transaction-item-receive-opt-out".localized)
+                bindTitle(String(localized: "transaction-item-receive-opt-out"))
                 return
             }
 
-            bindTitle("title-opt-out".localized)
+            bindTitle(String(localized: "title-opt-out"))
             return
         }
 
         if transaction.sender == draft.account.address &&
             transaction.isSelfTransaction {
             if transaction.getAmount() != 0 {
-                bindTitle("transaction-item-self-transfer".localized)
+                bindTitle(String(localized: "transaction-item-self-transfer"))
                 return
             }
 
-            bindTitle("transaction-item-opt-in".localized)
+            bindTitle(String(localized: "transaction-item-opt-in"))
             return
         }
 
         if draft.account.address == assetTransfer.receiverAddress {
-            bindTitle("transaction-detail-receive".localized)
+            bindTitle(String(localized: "transaction-detail-receive"))
             return
         }
 
-        bindTitle("transaction-detail-send".localized)
+        bindTitle(String(localized: "transaction-detail-send"))
     }
 
     private mutating func bindSubtitle(

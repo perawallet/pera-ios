@@ -29,7 +29,7 @@ final class WCAlgosTransactionViewController: WCSingleTransactionViewController 
     override func configureAppearance() {
         super.configureAppearance()
 
-        title = "wallet-connect-transaction-title-transaction".localized
+        title = String(localized: "wallet-connect-transaction-title-transaction")
     }
 
     override func linkInteractors() {

@@ -23,7 +23,7 @@ struct AccountListViewModel {
     init(_ mode: AccountListViewController.Mode) {
         switch mode {
         case .contact:
-            title = "send-sending-algos-select".localized
+            title = String(localized: "send-sending-algos-select")
         }
     }
 }

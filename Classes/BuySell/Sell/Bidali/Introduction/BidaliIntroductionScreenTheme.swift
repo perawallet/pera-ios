@@ -67,7 +67,7 @@ struct BidaliIntroductionScreenTheme:
             trailing: 24
         )
         self.primaryAction = [
-            .title("title-buy-gift-cards".localized),
+            .title(String(localized: "title-buy-gift-cards")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

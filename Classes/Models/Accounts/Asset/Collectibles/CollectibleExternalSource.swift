@@ -25,7 +25,7 @@ protocol CollectibleExternalSource {
 
 struct PeraExplorerExternalSource: CollectibleExternalSource {
     let image = img("icon-pera-logo")
-    let title = "collectible-detail-algo-explorer".localized
+    let title = String(localized: "collectible-detail-algo-explorer")
     let url: URL?
 
     init(asset: AssetID, network: ALGAPI.Network) {

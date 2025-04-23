@@ -40,15 +40,11 @@ extension MaximumBalanceWarningViewModel {
         let minimumAmountForAccount = "\(calculateMininmumAmount(for: account, and: transactionParams).toAlgos)"
 
         if !account.hasAuthAccount() {
-            description =
-            "maximum-balance-standard-account-warning-description"
-                .localized(params: minimumAmountForAccount)
+            description = String(format: String(localized: "maximum-balance-standard-account-warning-description"), minimumAmountForAccount)
             return
         }
 
-        description =
-        "maximum-balance-warning-description"
-            .localized(params: minimumAmountForAccount)
+        description = String(format: String(localized: "maximum-balance-warning-description"), minimumAmountForAccount)
     }
 
     private func calculateMininmumAmount(

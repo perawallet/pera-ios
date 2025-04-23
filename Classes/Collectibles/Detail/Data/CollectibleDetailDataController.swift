@@ -66,7 +66,7 @@ struct CollectibleDetailNameItemIdentifier: Hashable {
     let viewModel: CollectibleDetailNameViewModel
 
     init(_ asset: CollectibleAsset) {
-        self.name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        self.name = asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         self.viewModel = CollectibleDetailNameViewModel(asset)
     }
 

@@ -535,12 +535,12 @@ extension ASAAboutScreen {
 extension ASAAboutScreen {
     private func openTotalSupplyInfo() {
         let uiSheet = UISheet(
-            title: "title-total-supply".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "asset-total-supply-body".localized.bodyRegular())
+            title: String(localized: "title-total-supply").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "asset-total-supply-body").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [unowned self] in
             self.dismiss(animated: true)

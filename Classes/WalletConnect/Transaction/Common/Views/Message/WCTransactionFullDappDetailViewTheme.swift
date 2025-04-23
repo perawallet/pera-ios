@@ -47,14 +47,14 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("screenshot-title".localized)
+            .text(String(localized: "screenshot-title"))
         ]
         self.description = [
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("screenshot-description".localized)
+            .text(String(localized: "screenshot-description"))
         ]
         self.primaryAction = [
             .titleColor([ .normal(Colors.Button.Primary.text) ]),

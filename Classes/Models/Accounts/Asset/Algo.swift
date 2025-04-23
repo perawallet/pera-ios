@@ -64,7 +64,7 @@ final class Algo: Asset {
         self.total = total
         /// totalSupply = total * 10^-(decimals)
         self.totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(total))
-        self.description = "asset-algos-description".localized
+        self.description = String(localized: "asset-algos-description")
         self.projectURL = AlgorandWeb.algorand.link
         self.discordURL = URL(string: "https://discord.com/invite/algorand")
         self.telegramURL = URL(string: "https://t.me/algorand")

@@ -30,7 +30,7 @@ struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
-            .text("notification-filter-show-title".localized)
+            .text(String(localized: "notification-filter-show-title"))
         ]
         self.horizontalPadding = 24
         self.toggle = ToggleTheme(family)

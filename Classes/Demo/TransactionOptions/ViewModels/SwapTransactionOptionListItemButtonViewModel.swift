@@ -25,8 +25,8 @@ struct SwapTransactionOptionListItemButtonViewModel: TransactionOptionListItemBu
     init(isBadgeVisible: Bool) {
         self.icon = "icon-transaction-option-list-swap"
         self.isBadgeVisible = isBadgeVisible
-        self.title = Self.getTitle("title-swap".localized)
-        self.subtitle = Self.getSubtitle("transaction-option-list-swap-subtitle".localized)
+        self.title = Self.getTitle(String(localized: "title-swap"))
+        self.subtitle = Self.getSubtitle(String(localized: "transaction-option-list-swap-subtitle"))
     }
 }
 

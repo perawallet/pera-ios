@@ -49,9 +49,9 @@ struct AnnouncementViewModel:
     }
 
     private mutating func configureForBackup() {
-        title = "algorand-secure-backup-banner-title".localized
-        subtitle = "algorand-secure-backup-banner-subtitle".localized
-        ctaTitle = "algorand-secure-backup-banner-cta-title".localized
+        title = String(localized: "algorand-secure-backup-banner-title")
+        subtitle = String(localized: "algorand-secure-backup-banner-subtitle")
+        ctaTitle = String(localized: "algorand-secure-backup-banner-cta-title")
         ctaUrl = nil
     }
 

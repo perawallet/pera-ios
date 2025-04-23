@@ -103,7 +103,7 @@ struct SwapSetMaxAmountQuickActionItem: SwapQuickActionItem {
     init() {
         self.layout = .none
         self.style = [
-            .title("send-transaction-max-button-title".localized),
+            .title(String(localized: "send-transaction-max-button-title")),
             .font(Typography.captionBold()),
             .titleColor([
                 .normal(Colors.Helpers.positive)

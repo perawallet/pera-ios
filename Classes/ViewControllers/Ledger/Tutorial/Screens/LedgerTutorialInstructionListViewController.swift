@@ -30,7 +30,7 @@ final class LedgerTutorialInstructionListViewController: BaseScrollViewControlle
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "tutorial-action-title-ledger".localized
+        title = String(localized: "tutorial-action-title-ledger")
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     

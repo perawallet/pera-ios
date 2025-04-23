@@ -33,7 +33,7 @@ struct SwapSummaryAccountViewTheme:
         self.title = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
-            .text("title-account".localized),
+            .text(String(localized: "title-account")),
             .font(Typography.bodyRegular())
         ]
         self.iconSize = (24, 24)

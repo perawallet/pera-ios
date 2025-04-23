@@ -79,7 +79,7 @@ class ContactsViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "contacts-title".localized
+        title = String(localized: "contacts-title")
         contactsView.contactsCollectionView.refreshControl = refreshControl
         fetchContacts()
     }

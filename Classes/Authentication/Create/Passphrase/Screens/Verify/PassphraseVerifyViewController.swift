@@ -60,8 +60,8 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
             if !self.dataSource.verifyPassphrase() {
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "passphrase-verify-wrong-message".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "passphrase-verify-wrong-message")
                 )
                 self.contextView.reset()
                 self.dataSource.resetAndReloadData()

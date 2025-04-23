@@ -24,11 +24,10 @@ struct RekeyAccountSelectionListHeaderViewModel: ViewModel {
 extension RekeyAccountSelectionListHeaderViewModel {
     private static func makeDescription() -> TextProvider {
         let text =
-            "rekey-account-selection-list-header"
-                .localized
+            String(localized: "rekey-account-selection-list-header")
                 .bodyRegular()
 
-        let highlightedText = "rekey-account-selection-list-header-highlighted-text".localized
+        let highlightedText = String(localized: "rekey-account-selection-list-header-highlighted-text")
         let highlightedTextAttributes = Typography.bodyMediumAttributes()
 
         let description = text.addAttributes(

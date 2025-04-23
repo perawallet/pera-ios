@@ -36,11 +36,11 @@ extension AlgorandSecureBackupImportSuccessHeaderViewModel {
 
     private mutating func bindTitle(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
-        let resultTitle = isSingular ? "algorand-secure-backup-import-success-header-singular-title".localized : "algorand-secure-backup-import-success-header-title".localized
+        let resultTitle = isSingular ? String(localized: "algorand-secure-backup-import-success-header-singular-title") : String(localized: "algorand-secure-backup-import-success-header-title")
         title = resultTitle.titleMedium()
     }
 
     private mutating func bindBody(for importedAccountCount: Int) {
-        body = "algorand-secure-backup-import-success-header-body".localized(params: importedAccountCount).bodyRegular()
+        body = String(format: String(localized: "algorand-secure-backup-import-success-header-body"), importedAccountCount).bodyRegular()
     }
 }

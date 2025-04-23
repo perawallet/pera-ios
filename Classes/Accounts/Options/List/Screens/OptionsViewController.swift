@@ -374,7 +374,7 @@ extension OptionsViewController {
             return
         }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         let draft = NotificationFilterDraft(
             deviceId: deviceId,
@@ -414,8 +414,8 @@ extension OptionsViewController {
         _ apiErrorDetail: HIPAPIError?
     ) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: apiErrorDetail?.fallbackMessage ?? "title-generic-error".localized
+            title: String(localized: "title-error"),
+            message: apiErrorDetail?.fallbackMessage ?? String(localized: "title-generic-error")
         )
     }
 }

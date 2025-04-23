@@ -27,8 +27,8 @@ struct StakingTransactionOptionListItemButtonViewModel: TransactionOptionListIte
     init(isBadgeVisible: Bool) {
         self.icon = "icon-transaction-option-list-stake"
         self.isBadgeVisible = false
-        self.title = Self.getTitle("title-staking".localized)
-        self.subtitle = Self.getSubtitle("transaction-option-list-staking-subtitle".localized)
+        self.title = Self.getTitle(String(localized: "title-staking"))
+        self.subtitle = Self.getSubtitle(String(localized: "transaction-option-list-staking-subtitle"))
         self.leftAccessory = "icon-transaction-option-list-stake-accessory"
     }
 }

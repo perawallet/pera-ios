@@ -72,9 +72,9 @@ extension AlgorandSecureBackupFileViewModel {
     private mutating func bindTitle(for state: State) {
         switch state {
         case .empty:
-            title = "algorand-secure-backup-import-backup-title".localized.bodyMedium(alignment: .center)
+            title = String(localized: "algorand-secure-backup-import-backup-title").bodyMedium(alignment: .center)
         case .uploaded:
-            title = "algorand-secure-backup-import-backup-upload-successful-title".localized.bodyMedium(alignment: .center)
+            title = String(localized: "algorand-secure-backup-import-backup-upload-successful-title").bodyMedium(alignment: .center)
         case .uploadFailed(let validationError):
             bindValidationError(validationError)
         }
@@ -87,19 +87,19 @@ extension AlgorandSecureBackupFileViewModel {
 
         switch validationError {
         case .emptySource:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-failed-subtitle")
         case .wrongFormat:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-json-failed-title")
         case .unsupportedVersion:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-version-failed-title")
         case .cipherSuiteUnknown:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title")
         case .jsonSerialization:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-json-failed-title")
         case .unauthorized:
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+            errorTitle = String(localized: "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title")
         case .keyNotFound(let key):
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(params: key)
+            errorTitle = String(format: String(localized: "algorand-secure-backup-import-backup-clipboard-key-not-exist"), key)
         }
 
         title = errorTitle.bodyMedium(alignment: .center)

@@ -30,7 +30,7 @@ extension HIPNetworkError {
     }
     
     var prettyDescription: String {
-        let defaultMessage = "title-generic-api-error".localized
+        let defaultMessage = String(localized: "title-generic-api-error")
         
         switch self {
         case .client(_, let detail),

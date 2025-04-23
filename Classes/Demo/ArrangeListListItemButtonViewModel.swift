@@ -25,7 +25,7 @@ struct ArrangeListListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-arrange-24"
-        title = Self.getTitle("account-options-arrange-list-title".localized)
+        title = Self.getTitle(String(localized: "account-options-arrange-list-title"))
         subtitle = nil
     }
 }

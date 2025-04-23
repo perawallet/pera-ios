@@ -32,7 +32,7 @@ final class SearchBarItemView:
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        customize(SearchBarItemViewTheme(placeholder: "account-detail-assets-search".localized))
+        customize(SearchBarItemViewTheme(placeholder: String(localized: "account-detail-assets-search")))
     }
 
     func customize(_ theme: SearchBarItemViewTheme) {

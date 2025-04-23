@@ -38,7 +38,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let connectedAppsButtonTitleImageSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.init(family, title: "qr-scan-overlay-title".localized)
+        self.init(family, title: String(localized: "qr-scan-overlay-title"))
     }
 
     init(_ family: LayoutFamily, title: String) {

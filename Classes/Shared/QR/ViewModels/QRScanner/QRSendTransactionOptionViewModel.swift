@@ -24,7 +24,7 @@ struct QRSendTransactionOptionViewModel: QRScanOptionListItemButtonViewModel {
 
     init() {
         icon = "icon-qr-option-transaction"
-        title = Self.getTitle("qr-scan-option-send-transaction".localized)
+        title = Self.getTitle(String(localized: "qr-scan-option-send-transaction"))
         subtitle = nil
     }
 }

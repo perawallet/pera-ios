@@ -41,7 +41,7 @@ struct DiscoverSearchNextListErrorViewTheme:
                 .highlighted("primary-btn-bg-highlighted")
             ]),
             .font(Typography.footnoteMedium()),
-            .title("title-try-again".localized),
+            .title(String(localized: "title-try-again")),
             .titleColor([
                 .normal(Colors.Discover.buttonPrimaryText)
             ])

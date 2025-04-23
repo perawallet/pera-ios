@@ -66,7 +66,7 @@ extension ASADetailProfileViewModel {
         /// <todo>
         /// Find a better way of formatting name
         let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.naming.name
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholderImage = placeholderText?.toPlaceholderImage(size: size)

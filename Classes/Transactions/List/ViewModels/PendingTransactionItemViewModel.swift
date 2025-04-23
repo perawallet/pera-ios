@@ -56,11 +56,11 @@ struct PendingTransactionItemViewModel:
         }
 
         if transaction.receiver == draft.account.address {
-            bindTitle("transaction-detail-receive".localized)
+            bindTitle(String(localized: "transaction-detail-receive"))
             return
         }
 
-        bindTitle("transaction-detail-send".localized)
+        bindTitle(String(localized: "transaction-detail-send"))
     }
 
     private mutating func bindSubtitle(

@@ -127,7 +127,7 @@ struct StandardAssetImageViewModel:
         case .url(let url, let title):
             let imageSize = CGSize(width: 40, height: 40)
             let placeholder = TextFormatter.assetShortName.format(
-                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+                (title.isNilOrEmpty ? String(localized: "title-unknown") : title!)
             )
 
             self.imageSource = setPrismImage(
@@ -169,7 +169,7 @@ struct AssetImageLargeViewModel:
         case .url(let url, let title):
             let imageSize = CGSize(width: 40, height: 40)
             let placeholder = TextFormatter.assetShortName.format(
-                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+                (title.isNilOrEmpty ? String(localized: "title-unknown") : title!)
             )
 
             self.imageSource = setPrismImage(
@@ -211,7 +211,7 @@ struct AssetImageSmallViewModel:
         case .url(let url, let title):
             let imageSize = CGSize(width: 24, height: 24)
             let placeholder = TextFormatter.assetShortName.format(
-                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+                (title.isNilOrEmpty ? String(localized: "title-unknown") : title!)
             )
 
             self.imageSource = setPrismImage(

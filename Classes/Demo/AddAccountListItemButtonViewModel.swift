@@ -25,7 +25,7 @@ struct AddAccountListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-plus-24"
-        title = Self.getTitle("account-options-add-account-title".localized)
+        title = Self.getTitle(String(localized: "account-options-add-account-title"))
         subtitle = nil
     }
 }

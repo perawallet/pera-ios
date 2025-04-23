@@ -44,7 +44,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
             return
         }
 
-        let aTitle = "swap-price-impact-title".localized
+        let aTitle = String(localized: "swap-price-impact-title")
 
         let attributes: TextAttributeGroup
 

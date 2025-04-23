@@ -32,7 +32,7 @@ struct QRScanOptionsViewModel: ViewModel {
         let lineHeightMultiplier = 1.18
 
         title = .attributedString(
-            "qr-scan-option-scanned-title".localized.attributed([
+            String(localized: "qr-scan-option-scanned-title").attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([

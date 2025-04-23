@@ -358,7 +358,7 @@ extension CollectibleDetailAPIDataController {
                     .information(
                         CollectibleTransactionInformation(
                             icon: nil,
-                            title: "title-total-supply".localized,
+                            title: String(localized: "title-total-supply"),
                             value: formattedTotalSupply,
                             isCollectibleSpecificValue: false
                         )
@@ -371,8 +371,8 @@ extension CollectibleDetailAPIDataController {
             .information(
                 CollectibleTransactionInformation(
                     icon: .custom(img("icon-pera-logo")),
-                    title: "collectible-detail-show-on".localized,
-                    value: "collectible-detail-pera-explorer".localized,
+                    title: String(localized: "collectible-detail-show-on"),
+                    value: String(localized: "collectible-detail-pera-explorer"),
                     isCollectibleSpecificValue: true,
                     actionURL: asset.explorerURL
                 )

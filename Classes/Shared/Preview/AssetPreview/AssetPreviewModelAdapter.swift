@@ -25,7 +25,7 @@ enum AssetPreviewModelAdapter {
         let assetViewModel = AssetViewModel(item)
         let asset = item.asset
         let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),

@@ -44,13 +44,13 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
-            .text("settings-rate-modal-title".localized)
+            .text(String(localized: "settings-rate-modal-title"))
         ]
         self.description = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
-            .text("settings-rate-modal-description".localized)
+            .text(String(localized: "settings-rate-modal-description"))
         ]
         
         self.topInset = 60

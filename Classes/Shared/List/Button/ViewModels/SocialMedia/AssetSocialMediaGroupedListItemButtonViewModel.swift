@@ -30,8 +30,7 @@ struct AssetSocialMediaGroupedListItemButtonViewModel: GroupedListItemButtonView
 
 extension AssetSocialMediaGroupedListItemButtonViewModel {
     mutating func bindTitle() {
-        title = "social-media-platform-title"
-            .localized
+        title = String(localized: "social-media-platform-title")
             .uppercased()
             .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
     }

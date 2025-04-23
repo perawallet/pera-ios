@@ -35,7 +35,7 @@ final class AssetAboutSectionViewModel: ViewModel {
 extension AssetAboutSectionViewModel {
     func bindTitle(asset: Asset) {
         title = getAboutTitle(
-            param: asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+            param: asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         )
     }
 }
@@ -51,8 +51,7 @@ extension AssetAboutSectionViewModel {
         
         attributes.insert(.textColor(textColor))
         
-        return "title-about-with-param"
-            .localized(params: param.uppercased())
+        return String(format: String(localized: "title-about-with-param"), param.uppercased())
             .attributed(
                 attributes
             )

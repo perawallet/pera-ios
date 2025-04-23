@@ -34,8 +34,7 @@ extension CollectibleDetailCreatorAccountItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "collectible-detail-creator-account"
-                .localized
+            String(localized: "collectible-detail-creator-account")
                 .attributed(attributes)
     }
 }

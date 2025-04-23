@@ -38,9 +38,9 @@ extension RekeyConfirmationBodyViewModel {
 
         let hasAuthAccount = authAccount != nil
         if hasAuthAccount {
-            aText = "rekey-rekeyed-to-any-account-confirmation-body".localized
+            aText = String(localized: "rekey-rekeyed-to-any-account-confirmation-body")
         } else {
-            aText = "rekey-any-to-any-account-confirmation-body".localized
+            aText = String(localized: "rekey-any-to-any-account-confirmation-body")
         }
 
         text = aText.bodyRegular()
@@ -51,7 +51,7 @@ extension RekeyConfirmationBodyViewModel {
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         highlightedText = HighlightedText(
-            text: "title-learn-more".localized,
+            text: String(localized: "title-learn-more"),
             attributes: attributes
         )
     }

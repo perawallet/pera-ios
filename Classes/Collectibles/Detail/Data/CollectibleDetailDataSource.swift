@@ -136,7 +136,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                     CollectibleDetailHeaderViewModel(
                         SingleLineIconTitleItem(
                             icon: nil,
-                            title: "collectible-detail-properties".localized
+                            title: String(localized: "collectible-detail-properties")
                         )
                     )
                 )
@@ -146,7 +146,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                     CollectibleDetailHeaderViewModel(
                         SingleLineIconTitleItem(
                             icon: nil,
-                            title: "collectible-detail-description".localized
+                            title: String(localized: "collectible-detail-description")
                         )
                     )
                 )

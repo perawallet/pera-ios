@@ -135,7 +135,7 @@ extension PassphraseVerifyView {
     
     private func addNextButton(_ theme: PassphraseVerifyViewTheme) {
         nextButton.customize(theme.nextButtonTheme)
-        nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+        nextButton.bindData(ButtonCommonViewModel(title: String(localized: "title-next")))
         nextButton.isEnabled = false
 
         addSubview(nextButton)

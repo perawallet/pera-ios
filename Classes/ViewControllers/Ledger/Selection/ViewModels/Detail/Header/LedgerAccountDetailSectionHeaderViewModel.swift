@@ -29,14 +29,14 @@ extension LedgerAccountDetailSectionHeaderViewModel {
     private func bindHeaderTitle(section: LedgerAccountDetailDataSource.Section, account: Account) {
         switch section {
         case .ledgerAccount:
-            headerTitle = "title-account-details".localized
+            headerTitle = String(localized: "title-account-details")
         case .assets:
-            headerTitle = "title-assets".localized
+            headerTitle = String(localized: "title-assets")
         case .rekeyedAccounts:
             headerTitle =
                 account.authorization.isRekeyed
-                ? "ledger-account-detail-can-signed".localized
-                : "ledger-account-detail-can-sign".localized
+                ? String(localized: "ledger-account-detail-can-signed")
+                : String(localized: "ledger-account-detail-can-sign")
         }
     }
 }

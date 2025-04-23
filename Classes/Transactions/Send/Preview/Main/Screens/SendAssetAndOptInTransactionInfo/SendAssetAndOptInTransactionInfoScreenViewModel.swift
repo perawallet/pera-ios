@@ -36,9 +36,9 @@ struct SendAssetAndOptInTransactionInfoScreenViewModel: ViewModel {
 extension SendAssetAndOptInTransactionInfoScreenViewModel {
     mutating func bindHeaderView() {
         headerViewImage = "img-transaction-info-express-send"
-        headerViewTitle = "express-send-title".localized.bodyLargeMedium()
+        headerViewTitle = String(localized: "express-send-title").bodyLargeMedium()
         
-        let headerViewTextString = "express-send-explanation".localized
+        let headerViewTextString = String(localized: "express-send-explanation")
         let headerViewTextAttributedString = NSMutableAttributedString(string: headerViewTextString)
         
         let paragraphStyle = NSMutableParagraphStyle()
@@ -59,11 +59,11 @@ extension SendAssetAndOptInTransactionInfoScreenViewModel {
     }
     
     mutating func bindBodyView() {
-        bodyViewTitle = "asset-transfer-title".localized.bodyMedium()
+        bodyViewTitle = String(localized: "asset-transfer-title").bodyMedium()
         bodyViewText = [
-            "asset-transfer-explanation-part1".localized.footnoteRegular(),
-            "asset-transfer-explanation-part2".localized.footnoteRegular(),
-            "asset-transfer-explanation-part3".localized.footnoteRegular()
+            String(localized: "asset-transfer-explanation-part1").footnoteRegular(),
+            String(localized: "asset-transfer-explanation-part2").footnoteRegular(),
+            String(localized: "asset-transfer-explanation-part3").footnoteRegular()
         ]
     }
 

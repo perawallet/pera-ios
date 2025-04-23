@@ -34,8 +34,7 @@ extension WCV1SessionBadgeViewModel {
 
     private mutating func bindInfo() {
         info =
-            "wc-session-wcv1-info"
-                .localized
+            String(localized: "wc-session-wcv1-info")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

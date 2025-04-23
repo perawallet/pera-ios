@@ -37,7 +37,7 @@ struct WCSessionShortListItemViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.nameLabel = [
             .isInteractable(false),
-            .text("title-select-account".localized.capitalized),
+            .text(String(localized: "title-select-account").capitalized),
             .textAlignment(.left),
             .textOverflow(SingleLineText()),
             .font(Fonts.DMSans.medium.make(15)),

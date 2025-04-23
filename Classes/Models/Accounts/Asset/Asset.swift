@@ -108,7 +108,7 @@ struct AssetNaming {
             return ("\(code.uppercased())", nil)
         }
 
-        return ("title-unknown".localized, nil)
+        return (String(localized: "title-unknown"), nil)
     }
 
     var hasOnlyAssetName: Bool {

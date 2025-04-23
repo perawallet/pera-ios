@@ -68,7 +68,7 @@ struct SendCollectibleActionViewTheme:
         handleTopPadding = 8
 
         title = [
-            .text(Self.getTitle("collectible-send-title".localized)),
+            .text(Self.getTitle(String(localized: "collectible-send-title"))),
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineText())
         ]
@@ -86,8 +86,8 @@ struct SendCollectibleActionViewTheme:
 
         var addressInputTheme = MultilineTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder:"collectible-send-input-placeholder".localized,
-            floatingPlaceholder: "collectible-send-input-placeholder".localized
+            placeholder:String(localized: "collectible-send-input-placeholder"),
+            floatingPlaceholder: String(localized: "collectible-send-input-placeholder")
         )
 
         addressInputTheme.configureForDoubleAccessory()
@@ -110,7 +110,7 @@ struct SendCollectibleActionViewTheme:
         ]
 
         actionButton = [
-            .title(Self.getTitle("collectible-send-action".localized)),
+            .title(Self.getTitle(String(localized: "collectible-send-action"))),
             .titleColor([
                 .normal(Colors.Button.Primary.text),
             ]),
@@ -118,7 +118,7 @@ struct SendCollectibleActionViewTheme:
         ]
 
         actionButtonDisabled = [
-            .title(Self.getTitle("collectible-send-action".localized)),
+            .title(Self.getTitle(String(localized: "collectible-send-action"))),
             .titleColor([
                 .normal(Colors.Button.Primary.disabledText),
             ]),

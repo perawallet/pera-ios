@@ -58,7 +58,7 @@ final class InnerTransactionListViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        title = "inner-transactions-title".localized
+        title = String(localized: "inner-transactions-title")
 
         addBarButtons()
     }

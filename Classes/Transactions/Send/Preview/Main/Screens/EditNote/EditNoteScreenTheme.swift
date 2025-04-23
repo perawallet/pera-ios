@@ -40,8 +40,8 @@ struct EditNoteScreenTheme:
         ]
         var noteInput = MultilineTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "edit-note-note-explanation".localized,
-            floatingPlaceholder: "edit-note-note-explanation".localized
+            placeholder: String(localized: "edit-note-note-explanation"),
+            floatingPlaceholder: String(localized: "edit-note-note-explanation")
         )
         noteInput.textContainerInsets.trailing = .zero
         self.noteInput = noteInput

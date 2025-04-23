@@ -39,14 +39,12 @@ extension CopyAddressIntroductionAlertItem {
     func makeAlert() -> Alert {
         isSeen = true
 
-        let title = "story-copy-address-title"
-            .localized
+        let title = String(localized: "story-copy-address-title")
             .bodyLargeMedium(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
             )
-        let body = "story-copy-address-description"
-            .localized
+        let body = String(localized: "story-copy-address-description")
             .footnoteRegular(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
@@ -71,7 +69,7 @@ extension CopyAddressIntroductionAlertItem {
 extension CopyAddressIntroductionAlertItem {
     private func makeGotItAction() -> AlertAction {
         return AlertAction(
-            title: "title-got-it".localized,
+            title: String(localized: "title-got-it"),
             style: .secondary
         ) {
             [unowned self] in

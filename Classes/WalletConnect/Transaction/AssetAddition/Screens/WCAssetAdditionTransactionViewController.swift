@@ -31,7 +31,7 @@ final class WCAssetAdditionTransactionViewController: WCSingleTransactionViewCon
     override func configureAppearance() {
         super.configureAppearance()
 
-        title = "wallet-connect-transaction-title-opt-in".localized
+        title = String(localized: "wallet-connect-transaction-title-opt-in")
     }
 
     override func linkInteractors() {

@@ -45,7 +45,7 @@ final class TransactionCustomRangeSelectionViewController: BaseViewController {
     }
 
     override func bindData() {
-        title = "transaction-filter-option-custom".localized
+        title = String(localized: "transaction-filter-option-custom")
 
         transactionCustomRangeSelectionView.bindData(
             TransactionCustomRangeSelectionViewModel(

@@ -198,7 +198,7 @@ extension SelectAssetListItemViewModel {
         _ asset: Asset
     ) -> ImagePlaceholder? {
         let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
         : asset.naming.name
 
         let aPlaceholder = TextFormatter.assetShortName.format(title)

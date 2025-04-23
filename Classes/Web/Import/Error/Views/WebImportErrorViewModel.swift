@@ -35,7 +35,7 @@ extension WebImportErrorViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "title-generic-error".localized.titleMedium()
+        title = String(localized: "title-generic-error").titleMedium()
     }
 
     private mutating func bindBody(with error: ImportAccountScreenError) {
@@ -53,13 +53,11 @@ extension WebImportErrorViewModel {
     }
 
     private mutating func bindUnsupportedVersionBody(_ qrVersion: String) {
-        body =
-            "web-import-error-unsupported-version-body"
-                .localized(params: qrVersion)
+        body = String(format: String(localized: "web-import-error-unsupported-version-body"), qrVersion)
                 .bodyRegular()
     }
 
     private mutating func bindGenericBody() {
-        body = "web-import-error-body".localized.bodyRegular()
+        body = String(localized: "web-import-error-body").bodyRegular()
     }
 }

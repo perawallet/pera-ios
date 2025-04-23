@@ -32,7 +32,7 @@ final class CollectibleReceiveSearchInputCell:
 
         contextView.customize(
             SearchInputViewCommonTheme(
-                placeholder: "collectibles-receive-asset-list-search-placeholder".localized,
+                placeholder: String(localized: "collectibles-receive-asset-list-search-placeholder"),
                 family: .current
             )
         )

@@ -32,7 +32,7 @@ struct ReceiverAccountSelectionNoContentViewModel: NoContentViewModel {
 extension ReceiverAccountSelectionNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "account-select-search-empty-title".localized
+            String(localized: "account-select-search-empty-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -40,8 +40,7 @@ extension ReceiverAccountSelectionNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "account-select-search-empty-detail"
-                .localized
+            String(localized: "account-select-search-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

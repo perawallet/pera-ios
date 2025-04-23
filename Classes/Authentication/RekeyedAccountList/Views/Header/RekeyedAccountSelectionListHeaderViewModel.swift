@@ -27,6 +27,6 @@ struct RekeyedAccountSelectionListHeaderViewModel: ViewModel {
 
 extension RekeyedAccountSelectionListHeaderViewModel {
     private mutating func bindTitle(_ accounts: [Account]) {
-        title = "rekeyed-account-selection-list-header-body".localized(params: accounts.count).bodyRegular()
+        title = String(format: String(localized: "rekeyed-account-selection-list-header-body"), accounts.count).bodyRegular()
     }
 }

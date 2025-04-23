@@ -35,8 +35,7 @@ extension WebImportGoToPeraWebWalletInstructionItemViewModel {
 
     private mutating func bindTitle() {
         title =
-        "web-import-instruction-first-message"
-            .localized
+        String(localized: "web-import-instruction-first-message")
             .bodyRegular()
     }
 }

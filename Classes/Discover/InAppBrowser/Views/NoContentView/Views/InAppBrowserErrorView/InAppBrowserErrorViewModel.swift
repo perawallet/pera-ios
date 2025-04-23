@@ -43,11 +43,11 @@ extension InAppBrowserErrorViewModel {
     }
 
     mutating func bindTitle(error: ConnectionError) {
-        bindTitle(string: "discover-error-connection-title".localized)
+        bindTitle(string: String(localized: "discover-error-connection-title"))
     }
 
     mutating func bindBody(error: ConnectionError) {
-        bindBody(string: "discover-error-connection-body".localized)
+        bindBody(string: String(localized: "discover-error-connection-body"))
     }
 }
 
@@ -59,11 +59,11 @@ extension InAppBrowserErrorViewModel {
     }
 
     mutating func bindTitle(error: UnexpectedError) {
-        bindTitle(string: "title-generic-api-error".localized)
+        bindTitle(string: String(localized: "title-generic-api-error"))
     }
 
     mutating func bindBody(error: UnexpectedError) {
-        bindBody(string: "\("discover-error-fallback-body".localized)\n\("title-retry-later".localized)")
+        bindBody(string: "\(String(localized: "discover-error-fallback-body"))\n\(String(localized: "title-retry-later"))")
     }
 }
 

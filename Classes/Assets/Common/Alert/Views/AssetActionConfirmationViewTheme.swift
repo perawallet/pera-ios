@@ -86,12 +86,12 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         ]
         self.copyIDButton = [
             .backgroundColor(Colors.Layer.grayLighter),
-            .title("title-copy-id".localized),
+            .title(String(localized: "title-copy-id")),
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(Colors.Text.main)])
         ]
         self.transactionFeeTitleLabel = [
-            .text("collectible-approve-transaction-fee".localized),
+            .text(String(localized: "collectible-approve-transaction-fee")),
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),

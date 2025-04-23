@@ -268,7 +268,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         )
         
         let confirmAction = UIAlertAction(
-            title: "title-ok".localized,
+            title: String(localized: "title-ok"),
             style: .default
         ) { _ in
             completionHandler(true)
@@ -276,7 +276,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         controller.addAction(confirmAction)
         
         let cancelAction = UIAlertAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) { _ in
             completionHandler(false)

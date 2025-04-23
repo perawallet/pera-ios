@@ -37,8 +37,7 @@ private struct AssetTelegramListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-telegram"
         title = .attributedString(
-            "social-media-platform-telegram"
-                .localized
+            String(localized: "social-media-platform-telegram")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
         subtitle = nil

@@ -37,8 +37,7 @@ struct SwapSummaryPeraFeeItemViewModel: SwapSummaryItemViewModel {
 
 extension SwapSummaryPeraFeeItemViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-pera-fee-title"
-            .localized
+        title = String(localized: "swap-confirm-pera-fee-title")
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

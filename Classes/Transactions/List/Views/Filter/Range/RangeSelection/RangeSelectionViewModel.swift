@@ -39,9 +39,9 @@ extension RangeSelectionViewModel {
     private func bindTitle(_ range: Range) {
         switch range {
         case .from:
-            title = "transaction-detail-from".localized
+            title = String(localized: "transaction-detail-from")
         case .to:
-            title = "title-to".localized
+            title = String(localized: "title-to")
         }
     }
 

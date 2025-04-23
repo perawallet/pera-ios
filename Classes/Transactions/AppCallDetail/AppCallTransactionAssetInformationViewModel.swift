@@ -36,8 +36,8 @@ extension AppCallTransactionAssetInformationViewModel {
         _ assets: [Asset]
     ) {
         let aText: String = assets.count == 1
-        ? "title-asset".localized
-        : "title-assets".localized
+        ? String(localized: "title-asset")
+        : String(localized: "title-assets")
 
         title = .attributedString(
             aText

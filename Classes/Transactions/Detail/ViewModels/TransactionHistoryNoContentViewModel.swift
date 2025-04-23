@@ -32,8 +32,7 @@ struct TransactionHistoryNoContentViewModel: NoContentViewModel {
 extension TransactionHistoryNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "accounts-tranaction-empty-text"
-                .localized
+            String(localized: "accounts-tranaction-empty-text")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -41,8 +40,7 @@ extension TransactionHistoryNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "accounts-tranaction-empty-detail"
-                .localized
+            String(localized: "accounts-tranaction-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

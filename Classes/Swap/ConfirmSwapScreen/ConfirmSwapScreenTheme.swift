@@ -78,7 +78,7 @@ struct ConfirmSwapScreenTheme:
         self.infoItem = SwapInfoItemViewTheme()
         self.infoSectionItemSpacing = 16
         self.viewSummary = [
-            .title("swap-confirm-view-summary-title".localized),
+            .title(String(localized: "swap-confirm-view-summary-title")),
             .titleColor([
                 .normal(Colors.Helpers.positive)
             ]),
@@ -87,7 +87,7 @@ struct ConfirmSwapScreenTheme:
         self.warningTopInset = 28
         self.warning = SwapErrorViewTheme()
         self.confirmAction = [
-            .title("swap-confirm-title".localized),
+            .title(String(localized: "swap-confirm-title")),
             .titleColor(
                 [
                     .normal(Colors.Button.Primary.text),

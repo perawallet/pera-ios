@@ -35,7 +35,7 @@ struct TestNetTitleViewTheme:
         ]
         testNetLabel = [
             .textOverflow(SingleLineFittingText()),
-            .text("title-testnet".localized.uppercased()),
+            .text(String(localized: "title-testnet").uppercased()),
             .font(Fonts.DMSans.bold.make(11)),
             .textAlignment(.center),
             .textColor(Colors.Testnet.text),

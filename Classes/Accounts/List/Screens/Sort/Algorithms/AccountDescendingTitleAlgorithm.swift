@@ -23,7 +23,7 @@ struct AccountDescendingTitleAlgorithm: AccountSortingAlgorithm {
 
     init() {
         self.id = "cache.value.accountDescendingTitleAlgorithm"
-        self.name = "title-alphabetically-z-to-a".localized
+        self.name = String(localized: "title-alphabetically-z-to-a")
         self.isCustom = false
     }
 }

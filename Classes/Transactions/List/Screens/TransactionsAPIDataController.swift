@@ -481,7 +481,7 @@ extension TransactionsAPIDataController {
             }
 
             snapshot.appendItems(
-                [.title(TransactionHistoryTitleContextViewModel( title: "transaction-detail-pending-transactions".localized))] + pendingTransactionsItems,
+                [.title(TransactionHistoryTitleContextViewModel( title: String(localized: "transaction-detail-pending-transactions")))] + pendingTransactionsItems,
                 toSection: .transactionHistory
             )
         }

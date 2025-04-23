@@ -43,9 +43,9 @@ extension WelcomeViewModel {
         switch flow {
         case .initializeAccount,
              .none:
-            title = "account-welcome-wallet-title".localized
+            title = String(localized: "account-welcome-wallet-title")
         case .addNewAccount:
-            title = "account-welcome-add-account-title".localized
+            title = String(localized: "account-welcome-add-account-title")
         case .backUpAccount:
             title = nil
         }

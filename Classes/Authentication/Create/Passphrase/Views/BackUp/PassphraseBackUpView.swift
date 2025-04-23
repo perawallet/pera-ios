@@ -86,7 +86,7 @@ extension PassphraseBackUpView {
 
     private func addNextButton(_ theme: PassphraseBackUpViewTheme) {
         nextButton.customize(theme.mainButtonTheme)
-        nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+        nextButton.bindData(ButtonCommonViewModel(title: String(localized: "title-next")))
 
         addSubview(nextButton)
         nextButton.snp.makeConstraints {

@@ -44,7 +44,7 @@ final class LedgerAccountDetailViewDataSource: NSObject {
             return
         }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         var assetsToBeFetched: [AssetID] = []
 

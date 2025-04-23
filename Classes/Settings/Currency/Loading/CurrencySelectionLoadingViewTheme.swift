@@ -51,7 +51,7 @@ struct CurrencySelectionLoadingViewTheme:
         self.subtitleTopPadding = 12
 
         self.searchInputTheme = SearchInputViewCommonTheme(
-            placeholder: "settings-currency-search".localized,
+            placeholder: String(localized: "settings-currency-search"),
             family: family
         )
         self.searchInputHeight = 40

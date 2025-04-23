@@ -44,8 +44,7 @@ struct BuySellOptionsScreenTheme:
         self.option = option
         self.spacingBetweenOptions = 20
         let buyContextHeaderText =
-            "buy-sell-options-buy-header-title"
-                .localized
+            String(localized: "buy-sell-options-buy-header-title")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
         self.buyContextHeader = [
             .text(buyContextHeaderText),
@@ -53,8 +52,7 @@ struct BuySellOptionsScreenTheme:
             .textOverflow(SingleLineText()),
         ]
         let buyOptionsNotAvailableText =
-            "buy-sell-options-buy-not-available-description"
-                .localized
+            String(localized: "buy-sell-options-buy-not-available-description")
                 .footnoteRegular(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail
@@ -67,8 +65,7 @@ struct BuySellOptionsScreenTheme:
         self.spacingBetweenBuyAndSellContext = 40
         self.spacingBetweenBuyContextHeaderAndBuyContext = 12
         let sellContextHeaderText =
-            "buy-sell-options-sell-header-title"
-                .localized
+            String(localized: "buy-sell-options-sell-header-title")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
         self.sellContextHeader = [
             .text(sellContextHeaderText),

@@ -22,7 +22,7 @@ struct CollectibleDescendingOptedInRoundAlgorithm: CollectibleSortingAlgorithm {
 
     init() {
         self.id = "cache.value.collectibleDescendingOptedInRoundAlgorithm"
-        self.name = "title-newest-to-oldest".localized
+        self.name = String(localized: "title-newest-to-oldest")
     }
 }
 

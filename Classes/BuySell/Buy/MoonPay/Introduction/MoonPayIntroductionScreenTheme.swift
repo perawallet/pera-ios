@@ -76,7 +76,7 @@ struct MoonPayIntroductionScreenTheme:
             trailing: 24
         )
         self.primaryAction = [
-            .title("moonpay-introduction-title".localized),
+            .title(String(localized: "moonpay-introduction-title")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

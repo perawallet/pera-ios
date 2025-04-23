@@ -62,7 +62,7 @@ struct TransactionTutorialViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
         ]
         self.actionButton = [
-            .title("title-i-understand".localized),
+            .title(String(localized: "title-i-understand")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)

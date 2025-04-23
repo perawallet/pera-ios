@@ -95,28 +95,28 @@ struct UIActionItem {
 
     static var copyAddress: UIActionItem {
         return UIActionItem(
-            title: "title-copy-address".localized.capitalized,
+            title: String(localized: "title-copy-address").capitalized,
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyAssetID: UIActionItem {
         return UIActionItem(
-            title: "title-copy-id".localized,
+            title: String(localized: "title-copy-id"),
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyTransactionID: UIActionItem {
         return UIActionItem(
-            title: "title-copy-id".localized,
+            title: String(localized: "title-copy-id"),
             image: "icon-copy-gray".uiImage
         )
     }
 
     static var copyTransactionNote: UIActionItem {
         return UIActionItem(
-            title: "transaction-menu-copy-note".localized,
+            title: String(localized: "transaction-menu-copy-note"),
             image: "icon-copy-gray".uiImage
         )
     }

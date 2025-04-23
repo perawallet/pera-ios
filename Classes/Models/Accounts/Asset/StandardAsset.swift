@@ -139,7 +139,7 @@ extension StandardAsset {
             return name
         }
 
-        return "title-unknown".localized
+        return String(localized: "title-unknown")
     }
 
     var unitNameRepresentation: String {
@@ -148,7 +148,7 @@ extension StandardAsset {
             return code.uppercased()
         }
 
-        return "title-unknown".localized
+        return String(localized: "title-unknown")
     }
 
     var hasDisplayName: Bool {

@@ -34,7 +34,7 @@ struct AlgorandSecureBackupErrorScreenTheme:
         self.contextPaddings = (28, 24, 28, 24)
         self.result = AlgorandSecureBackupErrorResultViewTheme(family)
         self.tryAgainAction = [
-            .title("title-try-again".localized),
+            .title(String(localized: "title-try-again")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

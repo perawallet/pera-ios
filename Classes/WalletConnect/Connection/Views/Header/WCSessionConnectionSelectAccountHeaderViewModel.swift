@@ -23,11 +23,10 @@ struct WCSessionConnectionSelectAccountHeaderViewModel: WCSessionConnectionHeade
     init(isSingle: Bool) {
         let aTitle =
             isSingle
-            ? "title-select-account"
-            : "wallet-connect-select-accounts"
+            ? String(localized: "title-select-account")
+            : String(localized: "wallet-connect-select-accounts")
         title =
             aTitle
-                .localized
                 .uppercased()
                 .captionMedium(
                     alignment: .center,

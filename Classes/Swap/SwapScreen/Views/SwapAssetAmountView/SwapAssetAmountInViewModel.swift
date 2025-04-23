@@ -49,8 +49,7 @@ struct SwapAssetAmountInViewModel: SwapAssetAmountViewModel {
 
 extension SwapAssetAmountInViewModel {
     mutating func bindLeftTitle() {
-        leftTitle = "transaction-detail-from"
-            .localized
+        leftTitle = String(localized: "transaction-detail-from")
             .footnoteRegular(
                 alignment: .left,
                 lineBreakMode: .byTruncatingTail
@@ -76,8 +75,7 @@ extension SwapAssetAmountInViewModel {
             text = [text, asset.naming.unitName].compound(" ")
         }
 
-        rightTitle = "swap-asset-amount-title-balance"
-            .localized(params: text ?? "")
+        rightTitle = String(format: String(localized: "swap-asset-amount-title-balance"), text ?? "")
             .footnoteRegular(
                 alignment: .right,
                 lineBreakMode: .byTruncatingTail

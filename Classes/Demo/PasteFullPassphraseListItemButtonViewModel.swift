@@ -24,7 +24,7 @@ struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-paste"
-        title = Self.getTitle("title-paste-passphrase".localized)
+        title = Self.getTitle(String(localized: "title-paste-passphrase"))
         subtitle = nil
     }
 }

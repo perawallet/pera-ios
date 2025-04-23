@@ -54,7 +54,7 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
-        title = "options-passphrase".localized
+        title = String(localized: "options-passphrase")
     }
 
     private func customizeBackground() {
@@ -123,9 +123,9 @@ extension PassphraseDisplayViewController {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-red".uiImage,
-                    title: "screenshot-title".localized,
-                    description: .plain("screenshot-description".localized),
-                    secondaryActionButtonTitle: "title-close".localized
+                    title: String(localized: "screenshot-title"),
+                    description: .plain(String(localized: "screenshot-description")),
+                    secondaryActionButtonTitle: String(localized: "title-close")
                 )
             ),
             by: .presentWithoutNavigationController

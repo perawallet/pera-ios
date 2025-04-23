@@ -35,7 +35,7 @@ extension AppCallAssetPreviewWithImageViewModel {
         _ asset: Asset
     ) {
         let title = asset.naming.name.isNilOrEmpty ?
-        "title-unknown".localized
+        String(localized: "title-unknown")
         : asset.naming.name
 
         icon = AssetImageLargeViewModel(

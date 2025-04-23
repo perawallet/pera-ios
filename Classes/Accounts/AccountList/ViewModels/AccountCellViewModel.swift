@@ -46,7 +46,7 @@ final class AccountCellViewModel {
 
 extension AccountCellViewModel {
     private func bindName(_ account: Account) {
-        name = account.name ?? "title-unknown".localized
+        name = account.name ?? String(localized: "title-unknown")
     }
 
     private func bindDetail(

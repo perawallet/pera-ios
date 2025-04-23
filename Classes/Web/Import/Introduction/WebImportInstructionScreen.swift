@@ -69,7 +69,7 @@ final class WebImportInstructionScreen: ScrollScreen, NavigationBarLargeTitleCon
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        navigationBarLargeTitleController.title = "account-type-selection-import-web".localized
+        navigationBarLargeTitleController.title = String(localized: "account-type-selection-import-web")
     }
 
     override func addFooter() {
