@@ -18,6 +18,6 @@ import MacaroonUIKit
 
 struct RescanAccountsListItemViewModel: ListItemButtonViewModel {
     let icon: Image? = "icon-options-rekey"
-    let title: EditText? = getTitle("options-rescan-accounts-title".localized)
-    let subtitle: EditText? = getSubtitle("options-rescan-accounts-subtitle".localized)
+    let title: EditText? = getTitle(String(localized: "options-rescan-accounts-title"))
+    let subtitle: EditText? = getSubtitle(String(localized:"options-rescan-accounts-subtitle"))
 }

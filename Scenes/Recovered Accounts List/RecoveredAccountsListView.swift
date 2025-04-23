@@ -45,12 +45,12 @@ struct RecoveredAccountsListView: View {
             }
             .padding(.top, 32.0)
             .padding(.bottom, 24.0)
-            Text(makeTitle())
+            Text("rekeyed-account-selection-list-header-title".localized(model.addressViewModels.count))
                 .foregroundStyle(Color(uiColor: Colors.Text.main.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
                 .font(.dmSans.medium.size(19.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 12.0)
-            Text(makeDescription())
+            Text("rekeyed-account-selection-list-header-body".localized(model.addressViewModels.count))
                 .foregroundStyle(Color(uiColor: Colors.Text.gray.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
                 .font(.dmSans.regular.size(15.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -79,32 +79,6 @@ struct RecoveredAccountsListView: View {
         .padding(.horizontal, 24.0)
         .background(Color(uiColor: Colors.Defaults.background.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
         .onReceive(model.$action) { handle(action: $0) }
-    }
-    
-    // MARK: - Formatters
-    
-    private func makeTitle() -> String {
-        
-        switch model.addressViewModels.count {
-        case 0:
-            return "rekeyed-account-selection-list-header-title-no-accounts".localized
-        case 1:
-            return "rekeyed-account-selection-list-header-title-singular".localized
-        default:
-            return "rekeyed-account-selection-list-header-title-plural.%d".localized(model.addressViewModels.count)
-        }
-    }
-    
-    private func makeDescription() -> String {
-        
-        switch model.addressViewModels.count {
-        case 0:
-            return "rekeyed-account-selection-list-header-body-singular-no-accounts".localized
-        case 1:
-            return "rekeyed-account-selection-list-header-body-singular".localized
-        default:
-            return "rekeyed-account-selection-list-header-body-plural.%d".localized(params: model.addressViewModels.count)
-        }
     }
     
     // MARK: Handlers

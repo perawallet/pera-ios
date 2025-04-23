@@ -44,7 +44,7 @@ final class RescanRekeyedAccountsCoordinator {
             return
         }
         
-        presenter?.loadingController?.startLoadingWithMessage("rekeyed-account-selection-list-loading".localized)
+        presenter?.loadingController?.startLoadingWithMessage(String(localized: "rekeyed-account-selection-list-loading"))
         
         presenter?.api?.fetchRekeyedAccounts(account.address) { [weak self] response in
             switch response {
@@ -85,9 +85,9 @@ final class RescanRekeyedAccountsCoordinator {
         
         switch error {
         case .noAccount:
-            presenter?.configuration.bannerController?.presentErrorBanner(title: "default-error-message".localized, message: "")
+            presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "default-error-message"), message: "")
         case .apiError:
-            presenter?.configuration.bannerController?.presentErrorBanner(title: "title-failed-to-fetch-rekeyed-accounts".localized, message: "")
+            presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "title-failed-to-fetch-rekeyed-accounts"), message: "")
         }
     }
 }

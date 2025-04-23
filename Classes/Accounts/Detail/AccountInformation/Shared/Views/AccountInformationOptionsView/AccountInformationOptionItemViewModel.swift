@@ -66,8 +66,7 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
 struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
     let icon: Image? = nil
     let title: EditText? = .attributedString(
-        "options-rescan-accounts-title"
-            .localized
+        String(localized:"options-rescan-accounts-title")
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     )
     let subtitle: EditText? = nil

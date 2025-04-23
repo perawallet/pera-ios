@@ -130,6 +130,6 @@ final class RecoveredAccountsListModel: ObservableObject {
     
     private func handle(error: ModelError) {
         self.error = error
-        legacyViewControllerConfiguration.bannerController?.presentErrorBanner(title: "default-error-message".localized, message: "")
+        legacyViewControllerConfiguration.bannerController?.presentErrorBanner(title: String(localized: "default-error-message"), message: "")
     }
 }
