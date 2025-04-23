@@ -8,7 +8,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Pera Algo Wallet Staging"
+            "value" : "Pera Algo Wallet"
           }
         }
       }
@@ -20,7 +20,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "pera-staging"
+            "value" : "pera"
           }
         }
       }

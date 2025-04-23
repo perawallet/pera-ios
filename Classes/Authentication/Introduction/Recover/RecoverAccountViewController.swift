@@ -69,6 +69,11 @@ final class RecoverAccountViewController: BaseViewController {
         case .initializeAccount:
             addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
         default:
+            guard featureFlagService.isEnabled(.hdWalletEnabled) else {
+                addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
+                prepareWholeScreenLayoutFor(addAccountView)
+                return
+            }
             addAccountView.customize(theme.recoverAddAccountViewTheme, configuration: configuration)
         }
 
