@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -168,7 +168,7 @@ final class HomeViewController:
         
         dataController.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch event {
             case .didUpdate(let updates):
@@ -541,7 +541,7 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .performPrimaryAction) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.open(
                 .addAccount(flow: .addNewAccount(mode: .none)),
@@ -560,13 +560,13 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .showInfo) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             /// <todo>
             /// How to manage it without knowing view controller. Name conventions vs. protocols???
             let eventHandler: PortfolioCalculationInfoViewController.EventHandler = {
                 [weak self] event in
-                guard let self = self else { return }
+                guard let self else { return }
 
                 switch event {
                 case .close:
@@ -598,7 +598,7 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .swap) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .swap))
             self.swapAssetFlowCoordinator.resetDraft()
             self.swapAssetFlowCoordinator.launch()
@@ -606,21 +606,21 @@ extension HomeViewController {
         
         cell.startObserving(event: .buy) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .buyAlgo))
             self.openBuySellOptions()
         }
         
         cell.startObserving(event: .stake) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .stake))
             self.stakingFlowCoordinator.launch()
         }
 
         cell.startObserving(event: .send) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
         }
@@ -632,14 +632,14 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .close) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.dataController.hideAnnouncement()
         }
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.triggerBannerCTA(item: item)
         }
@@ -651,14 +651,33 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .close) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.dataController.hideAnnouncement()
         }
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
+
+            self.triggerBannerCTA(item: item)
+        }
+    }
+    
+    private func linkInteractors(
+        _ cell: CardAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self else { return }
 
             self.triggerBannerCTA(item: item)
         }
@@ -680,14 +699,14 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .close) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.dataController.hideAnnouncement()
         }
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.triggerBannerCTA(item: item)
 
@@ -701,7 +720,7 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .close) {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.dataController.hideAnnouncement()
         }
@@ -721,11 +740,11 @@ extension HomeViewController {
         cell.startObserving(event: .primaryAction) {
             let eventHandler: SortAccountListViewController.EventHandler = {
                 [weak self] event in
-                guard let self = self else { return }
+                guard let self else { return }
 
                 self.dismiss(animated: true) {
                     [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
 
                     switch event {
                     case .didComplete:
@@ -852,7 +871,7 @@ extension HomeViewController {
     private func observeWhenUserIsOnboardedToSwap() {
         observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
             [weak self] notification in
-            guard let self = self else { return }
+            guard let self else { return }
 
             guard
                 let indexPath = self.listDataSource.indexPath(for: .portfolio(.quickActions)),
@@ -998,6 +1017,8 @@ extension HomeViewController {
                 linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
             case .staking:
                 linkInteractors(cell as! StakingAnnouncementCell, for: item)
+            case .card:
+                linkInteractors(cell as! CardAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {
@@ -1058,7 +1079,7 @@ extension HomeViewController {
 
         let eventHandler: AccountDetailViewController.EventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didEdit:

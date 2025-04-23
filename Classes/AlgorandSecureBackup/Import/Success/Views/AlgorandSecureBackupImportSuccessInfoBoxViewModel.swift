@@ -65,24 +65,16 @@ extension AlgorandSecureBackupImportSuccessInfoBoxViewModel {
     }
 
     private mutating func bindMessageForUnimportedAccount(_ unimportedAccountCount: Int) {
-        let isSingular = unimportedAccountCount == 1
-        let message = isSingular ? "algorand-secure-backup-import-success-unimported-singular-body".localized(params: "\(unimportedAccountCount)") : "algorand-secure-backup-import-success-unimported-body".localized(params: "\(unimportedAccountCount)")
-
-        self.message = message.footnoteRegular()
+        self.message = "algorand-secure-backup-import-success-unimported-body".localized(params: unimportedAccountCount).footnoteRegular()
     }
 
 
     private mutating func bindMessageForUnsupportedAccount(_ unimportedAccountCount: Int) {
-        let isSingular = unimportedAccountCount == 1
-        let message = isSingular ? "algorand-secure-backup-import-success-unsupported-singular-body".localized(params: "\(unimportedAccountCount)") : "algorand-secure-backup-import-success-unsupported-body".localized(params: "\(unimportedAccountCount)")
-
-        self.message = message.footnoteRegular()
+        self.message = "algorand-secure-backup-import-success-unsupported-body".localized(params: unimportedAccountCount).footnoteRegular()
     }
 
 
     private mutating func bindMessageForUnimportedAndUnsupportedAccount(accountCount: Int) {
-        let message = "algorand-secure-backup-import-success-unsupported-and-unimported-body".localized(params: "\(accountCount)")
-
-        self.message = message.footnoteRegular()
+        self.message = "algorand-secure-backup-import-success-unsupported-and-unimported-body".localized(params: accountCount).footnoteRegular()
     }
 }

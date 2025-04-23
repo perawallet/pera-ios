@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ struct PassphraseBackUpViewCommonTheme: PassphraseBackUpViewTheme {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("recover-passphrase-title".localized)
+            .text("title-recover-passphrase".localized)
         ]
         self.description = [
             .textColor(Colors.Text.gray),

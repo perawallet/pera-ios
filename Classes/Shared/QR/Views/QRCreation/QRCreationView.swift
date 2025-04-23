@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -140,7 +140,7 @@ extension QRCreationView {
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(
             ButtonCommonViewModel(
-                title: "qr-creation-copy-address".localized,
+                title: "title-copy-address".localized.capitalized,
                 iconSet: [.normal("icon-qr-copy")])
         )
 

@@ -37,7 +37,7 @@ struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOpt
 
     init() {
         title = .attributedString(
-            "options-rekey-ledger"
+            "title-rekey-to-ledger-account"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
@@ -53,7 +53,7 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
 
     init() {
         title = .attributedString(
-            "options-rekey-standard"
+            "title-rekey-to-standard-account"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )

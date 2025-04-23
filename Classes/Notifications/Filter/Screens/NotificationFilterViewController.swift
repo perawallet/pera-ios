@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         loadingController?.stopLoading()
         bannerController?.presentErrorBanner(
             title: "title-error".localized,
-            message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
+            message: error?.fallbackMessage ?? "title-generic-error".localized
         )
         revertFilterSwitch(for: account)
     }

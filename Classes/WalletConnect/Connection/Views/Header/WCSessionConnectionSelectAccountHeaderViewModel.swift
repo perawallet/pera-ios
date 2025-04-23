@@ -23,7 +23,7 @@ struct WCSessionConnectionSelectAccountHeaderViewModel: WCSessionConnectionHeade
     init(isSingle: Bool) {
         let aTitle =
             isSingle
-            ? "send-algos-select"
+            ? "title-select-account"
             : "wallet-connect-select-accounts"
         title =
             aTitle

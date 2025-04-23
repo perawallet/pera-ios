@@ -28,7 +28,7 @@ struct HDWalletAddressDetail: Codable {
         account: UInt32,
         change: UInt32,
         keyIndex: UInt32,
-        derivationType: HDWalletDerivationType = HDWalletService.derivationType
+        derivationType: HDWalletDerivationType = .peikert
     ) {
         self.walletId = walletId
         self.account = account

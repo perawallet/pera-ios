@@ -30,7 +30,7 @@ final class UndoRekeyConfirmationSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "undo-rekey-confirmation-title"
+            "title-undo-rekey-confirmation"
                 .localized
                 .bodyLargeMedium(alignment: .center)
         let body = Self.makeBody(
@@ -85,7 +85,7 @@ extension UndoRekeyConfirmationSheet {
             )
         }
 
-        let bodyHighlightedText = "overwrite-undo-rekey-confirmation-body-highlighted-text".localized
+        let bodyHighlightedText = "title-learn-more".localized
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -276,7 +276,7 @@ extension SwapIntroductionScreen {
 extension SwapIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "swap-introduction-title"
+            "swap-alert-title"
                 .localized
                 .titleMedium(
                     lineBreakMode: .byTruncatingTail

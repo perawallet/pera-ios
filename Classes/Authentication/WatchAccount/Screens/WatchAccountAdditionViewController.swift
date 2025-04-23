@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -528,7 +528,7 @@ extension WatchAccountAdditionViewController: MultilineTextInputFieldViewDelegat
 extension WatchAccountAdditionViewController {
     func updateAddressInputViewInputStateForNameServicesNoContentState() {
         let text: EditText = .attributedString(
-            "account-not-found"
+            "title-account-not-found"
                 .localized
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
         )

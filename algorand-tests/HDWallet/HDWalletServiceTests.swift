@@ -100,7 +100,7 @@ final class HDWalletServiceTests: XCTestCase {
         mockSDK.deriveKeyResult = .success(expectedPrivateKey)
         
         // When
-        let address = try sut.generateAddress(for: wallet, at: 0, derivationType: .peikert)
+        let address = try sut.generateAddress(for: wallet, at: 0)
         
         // Then
         XCTAssertTrue(mockSDK.generateKeyCalled)
@@ -130,9 +130,10 @@ final class HDWalletServiceTests: XCTestCase {
         let expectedPrivateKey = Data([10, 11, 12])
         mockSDK.generateKeyResult = .success(expectedPublicKey)
         mockSDK.deriveKeyResult = .success(expectedPrivateKey)
+        sut = HDWalletService(sdk: mockSDK, derivationType: .bip32)
         
         // When
-        let address = try sut.generateAddress(for: wallet, at: 0, derivationType: .bip32)
+        let address = try sut.generateAddress(for: wallet, at: 0)
         
         // Then
         XCTAssertTrue(mockSDK.generateKeyCalled)

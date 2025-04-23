@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ extension ListErrorViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "transaction-filter-error-title".localized
+        title = "title-generic-error".localized
     }
 
     private mutating func bindBody() {
@@ -48,7 +48,7 @@ extension ListErrorViewModel {
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("transaction-filter-try-again".localized),
+            title: .string("title-try-again".localized),
             image: nil
         )
     }

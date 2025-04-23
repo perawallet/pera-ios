@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ extension CollectiblesNoContentWithActionViewModel {
 
     private mutating func bindTitle() {
         title =
-            "collectibles-empty-title"
+            "title-collectibles"
                 .localized
                 .titleMedium(alignment: .center)
     }
@@ -126,7 +126,7 @@ extension CollectiblesNoContentWithActionViewModel {
         }
 
         return .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
+            "collectibles-empty-secondary-action-title".localized(params: hiddenCollectibleCount)
         )
     }
 }
