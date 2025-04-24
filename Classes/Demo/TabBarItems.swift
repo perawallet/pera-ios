@@ -76,8 +76,8 @@ struct SwapTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-swap"),
-                    .selected("tabbar-icon-swap"),
-                    .disabled("tabbar-icon-swap")
+                    .selected("tabbar-icon-swap-selected"),
+                    .disabled("tabbar-icon-swap-disabled")
                 ],
                 title: String(localized: "title-swap")
             )
@@ -98,8 +98,8 @@ struct StakeTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-stake"),
-                    .selected("tabbar-icon-stake"),
-                    .disabled("tabbar-icon-stake")
+                    .selected("tabbar-icon-stake-selected"),
+                    .disabled("tabbar-icon-stake-disabled")
                 ],
                 title: String(localized: "title-staking")
             )
@@ -121,7 +121,7 @@ struct MenuTabBarItem: TabBarItem {
                 icon: [
                     .normal("tabbar-icon-menu"),
                     .selected("tabbar-icon-menu-selected"),
-                    .disabled("tabbar-icon-menu")
+                    .disabled("tabbar-icon-menu-disabled")
                 ],
                 title: String(localized: "title-menu")
             )
