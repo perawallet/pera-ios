@@ -156,19 +156,22 @@ extension RootViewController {
             ),
             configuration: configuration
         )
-        let collectiblesTab =
-            CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
-
+        
+        
+        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
+        
+        let stakingViewController = StakingScreen(configuration: configuration)
+        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingViewController))
+        
         let settingsViewController = SettingsViewController(configuration: configuration)
-        let settingsTab =
-            SettingsTabBarItem(NavigationContainer(rootViewController: settingsViewController))
+        let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: settingsViewController))
 
         mainContainer.items = [
             homeTab,
             discoverTab,
-            FixedSpaceTabBarItem(width: .noMetric),
-            collectiblesTab,
-            settingsTab
+            swapTab,
+            stakeTab,
+            menuTab
         ]
 
         setNeedsDiscoverTabBarItemUpdateIfNeeded()
