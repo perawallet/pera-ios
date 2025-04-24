@@ -8242,6 +8242,17 @@
         }
       }
     },
+    "title-menu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        }
+      }
+    },
     "title-more" : {
       "extractionState" : "manual",
       "localizations" : {

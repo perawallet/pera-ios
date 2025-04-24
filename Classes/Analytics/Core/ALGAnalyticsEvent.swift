@@ -89,6 +89,9 @@ enum ALGAnalyticsEventName:
     case tapBarPressedQuickConnectEvent
     case tapBarPressedNFTsEvent
     case tapBarPressedSettingsEvent
+    case tapBarPressedMenuEvent
+    case tapBarPressedSwapEvent
+    case tapBarPressedStakeEvent
     case tapAssetsInAccountDetail
     case tapAssetInboxInAccountDetail
     case tapAssetInboxInHome
@@ -223,6 +226,9 @@ extension ALGAnalyticsEventName {
         case .tapBarPressedQuickConnectEvent: rawName = "lowermenu_pera_tap"
         case .tapBarPressedNFTsEvent: rawName = "lowermenu_nfts_tap"
         case .tapBarPressedSettingsEvent: rawName = "lowermenu_settings_tap"
+        case .tapBarPressedMenuEvent: rawName = "lowermenu_menu_tap"
+        case .tapBarPressedSwapEvent: rawName = "lowermenu_swap_tap"
+        case .tapBarPressedStakeEvent: rawName = "lowermenu_stake_tap"
         case .tapBuyAlgoTab: rawName = "tap_tab_buy_algo"
         case .tapReceiveTab: rawName = "tap_tab_receive"
         case .tapSendTab: rawName = "tap_tab_send"
