@@ -8497,8 +8497,27 @@
         }
       }
     },
-    "title-plus-asset-singular-count" : {
-
+    "title-plus-asset-count" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Asset"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Assets"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "title-plus-collectible-count" : {
       "extractionState" : "manual",
