@@ -430,8 +430,7 @@
         }
       }
     },
-    "accounts-tranaction-empty-detail" : {
-      "extractionState" : "manual",
+    "accounts-transaction-empty-detail" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -441,8 +440,7 @@
         }
       }
     },
-    "accounts-tranaction-empty-text" : {
-      "extractionState" : "manual",
+    "accounts-transaction-empty-text" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {

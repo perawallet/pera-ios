@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TranactionListGrouping.swift
+//   TransactionListGrouping.swift
 
 import Foundation
 
-protocol TranactionListGrouping {
+protocol TransactionListGrouping {
     func groupTransactions(
         _ transactions: [Transaction]
     ) -> [Transaction]
