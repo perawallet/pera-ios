@@ -111,7 +111,7 @@ extension SortAccountListViewController {
     }
 
     private func bindNavigationItemTitle() {
-        title = "title-sort".localized
+        title = String(localized: "title-sort")
     }
 }
 

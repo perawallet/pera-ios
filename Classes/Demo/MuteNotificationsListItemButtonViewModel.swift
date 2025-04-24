@@ -51,7 +51,7 @@ extension MuteNotificationsListItemButtonViewModel {
         _ account: Account
     ) {
         title = account.receivesNotification
-            ? Self.getTitle("options-mute-notification".localized)
-            : Self.getTitle("options-unmute-notification".localized)
+            ? Self.getTitle(String(localized: "options-mute-notification"))
+            : Self.getTitle(String(localized: "options-unmute-notification"))
     }
 }

@@ -30,7 +30,7 @@ struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
-            .text("notification-filter-show-for".localized)
+            .text(String(localized: "notification-filter-show-for"))
         ]
         self.horizontalPadding = 24
         self.topPadding = 36

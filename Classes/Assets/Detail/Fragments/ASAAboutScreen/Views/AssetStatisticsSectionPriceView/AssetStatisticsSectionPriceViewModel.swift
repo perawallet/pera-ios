@@ -37,8 +37,7 @@ struct AssetStatisticsSectionPriceViewModel: PrimaryTitleViewModel {
 
 extension AssetStatisticsSectionPriceViewModel {
     mutating func bindTitle() {
-        primaryTitle = "title-price"
-            .localized
+        primaryTitle = String(localized: "title-price")
             .footnoteRegular(
                 lineBreakMode: .byTruncatingTail
             )

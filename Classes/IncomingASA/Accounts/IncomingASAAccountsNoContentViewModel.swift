@@ -30,7 +30,7 @@ struct IncomingASAAccountsNoContentViewModel: NoContentViewModel {
 
 extension IncomingASAAccountsNoContentViewModel {
     private mutating func bindTitle() {
-        let text = "incoming-asa-accounts-screen-no-content-cell-title".localized
+        let text = String(localized: "incoming-asa-accounts-screen-no-content-cell-title")
         title = text
                 .bodyMedium(alignment: .center)
                 .addAttributes(
@@ -43,7 +43,7 @@ extension IncomingASAAccountsNoContentViewModel {
     }
 
     private mutating func bindBody() {
-        let text = "incoming-asa-accounts-screen-no-content-cell-body".localized
+        let text = String(localized: "incoming-asa-accounts-screen-no-content-cell-body")
         body = text
                 .bodyMedium(alignment: .center)
                 .addAttributes(

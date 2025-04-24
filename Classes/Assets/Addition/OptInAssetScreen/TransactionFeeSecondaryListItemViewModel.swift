@@ -35,8 +35,7 @@ extension TransactionFeeSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-        "collectible-approve-transaction-fee"
-            .localized
+        String(localized: "collectible-approve-transaction-fee")
             .attributed(attributes)
     }
 

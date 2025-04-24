@@ -60,8 +60,8 @@ struct ShowMoreViewTheme:
             .titleColor([ .normal(Colors.Helpers.positive) ]),
             .title(
                 TextSet(
-                    "title-show-more".localized,
-                    selected: "title-show-less".localized
+                    String(localized: "title-show-more"),
+                    selected: String(localized: "title-show-less")
                 )
             )
         ]

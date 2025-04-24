@@ -35,7 +35,7 @@ final class WCSingleTransactionRequestBottomViewModel {
     ) {
         let warningCount = transaction.transactionDetail?.warningCount ?? 0
         senderAddress = transaction.requestedSigner.account?.name ?? transaction.requestedSigner.account?.address
-        warningMessage = warningCount > 0 ? "node-settings-warning-title".localized: nil
+        warningMessage = warningCount > 0 ? String(localized: "node-settings-warning-title"): nil
         assetIcon = account?.typeImage
 
         bindNetworkFee(
@@ -48,7 +48,7 @@ final class WCSingleTransactionRequestBottomViewModel {
             asset: asset,
             currencyFormatter: currencyFormatter
         )
-        showDetailsActionTitle = "title-show-transaction-detail".localized
+        showDetailsActionTitle = String(localized: "title-show-transaction-detail")
     }
 
     init(
@@ -70,7 +70,7 @@ final class WCSingleTransactionRequestBottomViewModel {
             account: account,
             currencyFormatter: currencyFormatter
         )
-        showDetailsActionTitle = "title-show-details".localized
+        showDetailsActionTitle = String(localized: "title-show-details")
     }
 }
 

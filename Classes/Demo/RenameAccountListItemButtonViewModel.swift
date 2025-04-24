@@ -24,7 +24,7 @@ struct RenameAccountListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-edit-account"
-        title = Self.getTitle("options-edit-account-name".localized)
+        title = Self.getTitle(String(localized: "options-edit-account-name"))
         subtitle = nil
     }
 }

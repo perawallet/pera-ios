@@ -34,13 +34,12 @@ extension TransactionCorrectAddressInstructionItemViewModel {
     }
 
     private mutating func bindTitle() {
-        let highlightedText = "transaction-tutorial-tip-second-highlighted".localized
+        let highlightedText = String(localized: "transaction-tutorial-tip-second-highlighted")
         var highlightedTextAttributes = Typography.bodyMediumAttributes()
         highlightedTextAttributes.insert(.textColor(Colors.Helpers.negative))
 
         title =
-            "transaction-tutorial-tip-second"
-                .localized
+            String(localized: "transaction-tutorial-tip-second")
                 .bodyRegular()
                 .addAttributes(
                     to: highlightedText,

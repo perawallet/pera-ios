@@ -32,16 +32,16 @@ final class SingleGrayTitleHeaderViewModel: ViewModel {
     private func setTitle(_ name: GeneralSettings) {
         switch name {
         case .account:
-            self.title = "title-account".localized
+            self.title = String(localized: "title-account")
         case .appPreferences:
-            self.title = "settings-sections-appPreferences".localized
+            self.title = String(localized: "settings-sections-appPreferences")
         case .support:
-            self.title = "settings-sections-support".localized
+            self.title = String(localized: "settings-sections-support")
         }
     }
     
     private func setTitle(_ name: String) {
-        self.title = name.localized
+        self.title = name
     }
 }
 

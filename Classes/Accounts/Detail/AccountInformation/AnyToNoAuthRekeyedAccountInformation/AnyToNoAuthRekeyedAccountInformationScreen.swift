@@ -139,10 +139,7 @@ extension AnyToNoAuthRekeyedAccountInformationScreen {
 
 extension AnyToNoAuthRekeyedAccountInformationScreen {
     private func bindTitle() {
-        titleView.attributedText =
-            "title-no-auth-account-capitalized-sentence"
-                .localized
-                .titleSmallMedium(lineBreakMode: .byTruncatingTail)
+        titleView.attributedText = String(localized: "title-no-auth-account-capitalized-sentence").titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private func bindAccountItem() {

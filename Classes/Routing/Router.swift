@@ -204,8 +204,8 @@ final class Router:
 
                         let bannerController = self.appConfiguration.bannerController
                         bannerController.presentErrorBanner(
-                            title: "user-account-limit-error-title".localized,
-                            message: "user-account-limit-error-message".localized
+                            title: String(localized: "user-account-limit-error-title"),
+                            message: String(localized: "user-account-limit-error-message")
                         )
                         return
                     }
@@ -1027,7 +1027,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: RekeyAccountSelectionListLayout(
@@ -1421,7 +1421,7 @@ final class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-            aViewController.navigationItem.title = "collectible-send-account-list-title".localized
+            aViewController.navigationItem.title = String(localized: "collectible-send-account-list-title")
             viewController = aViewController
         case let .sendAssetReceiverAccountSelectionList(asset, addressInputViewText):
             let dataController = ReceiverAccountSelectionListAPIDataController(
@@ -1558,7 +1558,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = SwapAccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: SwapAccountSelectionListLayout(
@@ -1845,7 +1845,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: BidaliAccountSelectionListLayout(
@@ -1896,7 +1896,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: MoonPayAccountSelectionListLayout(
@@ -1942,7 +1942,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: MeldAccountSelectionListLayout(
@@ -2191,7 +2191,7 @@ final class Router:
             dataSource.registerSupportedSupplementaryViews(listView)
 
             viewController = AccountSelectionListScreen(
-                navigationBarTitle: "title-select-account".localized,
+                navigationBarTitle: String(localized: "title-select-account"),
                 listView: listView,
                 dataController: dataController,
                 listLayout: BackUpAccountSelectionListLayout(
@@ -2305,7 +2305,7 @@ extension Router {
         
         if !transactionController.canSignTransaction(for: account) { return }
 
-        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+        appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
@@ -2448,8 +2448,8 @@ extension Router {
                 }
 
                 bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-transaction-error-node".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-transaction-error-node")
                 )
 
                 completion(
@@ -2483,8 +2483,8 @@ extension Router {
                     return
                 }
                 bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-error-no-account".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-session-error-no-account")
                 )
                 
                 completion(
@@ -2518,8 +2518,8 @@ extension Router {
                     if isScammer {
                         visibleScreen.dismissScreen()
                         self.appConfiguration.bannerController.presentErrorBanner(
-                            title: "wallet-connect-scammer-domain-title".localized,
-                            message: "wallet-connect-scammer-domain-message".localized
+                            title: String(localized: "wallet-connect-scammer-domain-title"),
+                            message: String(localized: "wallet-connect-scammer-domain-message")
                         )
                     } else {
                         self.handleWalletConnectSession(
@@ -2561,8 +2561,8 @@ extension Router {
                 )
             } else {
                 appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-error-address-not-match".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-session-error-address-not-match")
                 )
             }
             return
@@ -2690,8 +2690,8 @@ extension Router {
                 self.publishQRScannerScreenResetNotification(preferences)
 
                 appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-invalid-qr-message".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-session-invalid-qr-message")
                 )
             }
         default:
@@ -2790,7 +2790,7 @@ extension Router {
                 )
 
                 appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.message
                 )
 
@@ -2844,8 +2844,8 @@ extension Router {
                 guard let self else { return }
 
                 appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-error-no-account".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-session-error-no-account")
                 )
 
                 publishQRScannerScreenResetNotification(preferences)
@@ -2884,8 +2884,8 @@ extension Router {
                     if isScammer {
                         visibleScreen.dismissScreen()
                         self.appConfiguration.bannerController.presentErrorBanner(
-                            title: "wallet-connect-scammer-domain-title".localized,
-                            message: "wallet-connect-scammer-domain-message".localized
+                            title: String(localized: "wallet-connect-scammer-domain-title"),
+                            message: String(localized: "wallet-connect-scammer-domain-message")
                         )
                     } else {
                         self.handleWalletConnectV2Session(
@@ -2921,8 +2921,8 @@ extension Router {
                 )
             } else {
                 appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-error-address-not-match".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "wallet-connect-session-error-address-not-match")
                 )
             }
             return
@@ -3080,8 +3080,8 @@ extension Router {
             publishQRScannerScreenResetNotification(preferences)
 
             appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-invalid-qr-message".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "wallet-connect-session-invalid-qr-message")
             )
         }
     }
@@ -3200,11 +3200,11 @@ extension Router {
         to account: Account
     ) {
         if account.containsAsset(assetID) {
-            appConfiguration.bannerController.presentInfoBanner("asset-you-already-own-message".localized)
+            appConfiguration.bannerController.presentInfoBanner(String(localized: "asset-you-already-own-message"))
             return
         }
 
-        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+        appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         appConfiguration.api.fetchAssetDetails(
             AssetFetchQuery(ids: [assetID]),
@@ -3219,8 +3219,8 @@ extension Router {
             case let .success(assetResponse):
                 if assetResponse.results.isEmpty {
                     self.appConfiguration.bannerController.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "asset-confirmation-not-found".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "asset-confirmation-not-found")
                     )
                     return
                 }
@@ -3233,8 +3233,8 @@ extension Router {
                 }
             case .failure:
                 self.appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "asset-confirmation-not-fetched".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "asset-confirmation-not-fetched")
                 )
             }
         }
@@ -3313,7 +3313,7 @@ extension Router {
                 assetIndex: asset.id
             )
 
-            self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+            self.appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
@@ -3391,12 +3391,12 @@ extension Router {
         switch error {
         case let .network(apiError):
             appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.debugDescription
             )
         default:
             appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.localizedDescription
             )
         }
@@ -3422,19 +3422,17 @@ extension Router {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             appConfiguration.bannerController.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "asset-min-transaction-error-message"), amountText.someString)
             )
         case .invalidAddress:
             appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -3565,9 +3563,9 @@ extension Router {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController

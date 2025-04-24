@@ -34,8 +34,7 @@ extension ASAAboutScreenASACreatorSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "asa-about-asa-creator"
-                .localized
+            String(localized: "asa-about-asa-creator")
                 .attributed(attributes)
     }
 }

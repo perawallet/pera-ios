@@ -34,8 +34,7 @@ extension DiscoverSearchListNotFoundViewModel {
     }
 
     mutating func bindTitle() {
-        title = "asset-not-found-title"
-            .localized
+        title = String(localized: "asset-not-found-title")
             .bodyMedium(alignment: .center)
     }
 }

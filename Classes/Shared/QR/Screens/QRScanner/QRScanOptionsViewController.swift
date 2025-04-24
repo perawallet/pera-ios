@@ -69,7 +69,7 @@ final class QRScanOptionsViewController:
 extension QRScanOptionsViewController {
     private func configureBackground() {
         view.customizeAppearance(theme.background)
-        title = "qr-scan-option-title".localized
+        title = String(localized: "qr-scan-option-title")
     }
 
     private func bindData(_ viewModel: QRScanOptionsViewModel) {

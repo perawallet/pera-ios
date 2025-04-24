@@ -56,12 +56,12 @@ enum CollectibleMediaError: Error {
     var message: String {
         switch self {
         case .unsupported:
-            return "collectible-detail-error-media-type".localized
+            return String(localized: "collectible-detail-error-media-type")
         case .notOwner(let isWatchAccount):
             if isWatchAccount {
-                return "collectible-detail-error-not-owner-watch-account".localized
+                return String(localized: "collectible-detail-error-not-owner-watch-account")
             } else {
-                return "collectible-detail-error-not-owner".localized
+                return String(localized: "collectible-detail-error-not-owner")
             }
         }
     }

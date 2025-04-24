@@ -37,8 +37,7 @@ private struct AssetTwitterListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-twitter"
         title = .attributedString(
-            "social-media-platform-twitter"
-                .localized
+            String(localized: "social-media-platform-twitter")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
         subtitle = nil

@@ -40,7 +40,7 @@ extension ReceiveCollectibleAssetListInfoViewModel {
     }
 
     private mutating func bindMessage() {
-        message = "collectible-receive-asset-list-info".localized.footnoteMedium()
+        message = String(localized: "collectible-receive-asset-list-info").footnoteMedium()
     }
 
     private mutating func bindStyle() {

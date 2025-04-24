@@ -39,16 +39,16 @@ extension ListErrorViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "title-generic-error".localized
+        title = String(localized: "title-generic-error")
     }
 
     private mutating func bindBody() {
-        body = "transaction-filter-error-subtitle".localized
+        body = String(localized: "transaction-filter-error-subtitle")
     }
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("title-try-again".localized),
+            title: .string(String(localized: "title-try-again")),
             image: nil
         )
     }

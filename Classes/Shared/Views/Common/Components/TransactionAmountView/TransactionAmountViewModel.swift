@@ -142,7 +142,7 @@ extension TransactionAmountViewModel {
 
         if showInList {
             amountLabelText = .attributedString(
-                "inner-txns-count".localized(params: count).bodyMedium(
+                String(format: String(localized: "inner-txns-count"), count).bodyMedium(
                     alignment: .right
                 )
             )
@@ -150,7 +150,7 @@ extension TransactionAmountViewModel {
         }
 
         amountLabelText = .attributedString(
-            "transaction-detail-inner-transaction-detail".localized(params: count).bodyMedium(
+            String(format: String(localized: "transaction-detail-inner-transaction-detail"), count).bodyMedium(
                 alignment: .right
             )
         )

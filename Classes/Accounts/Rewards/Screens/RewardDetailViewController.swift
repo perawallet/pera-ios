@@ -37,7 +37,7 @@ final class RewardDetailViewController: BaseViewController {
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
-        title = "title-rewards".localized
+        title = String(localized: "title-rewards")
     }
 
     override func bindData() {

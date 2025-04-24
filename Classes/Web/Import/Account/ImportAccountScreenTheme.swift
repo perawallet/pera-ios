@@ -39,7 +39,7 @@ struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
         
         title = [
             .textColor(Colors.Text.main),
-            .text("backup-operation-loading-body".localized),
+            .text(String(localized: "backup-operation-loading-body")),
             .font(Typography.bodyLargeMedium()),
             .textAlignment(.center)
         ]

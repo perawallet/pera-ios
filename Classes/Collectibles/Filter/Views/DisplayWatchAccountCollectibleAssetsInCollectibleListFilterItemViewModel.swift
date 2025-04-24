@@ -22,7 +22,7 @@ struct DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel:
     let description: TextProvider?
 
     init() {
-        self.title = "collectible-filter-selection-display-watch-account-collectible-assets-filter-title".localized.bodyRegular()
-        self.description = "collectible-filter-selection-display-watch-account-collectible-assets-filter-description".localized.footnoteRegular()
+        self.title = String(localized: "collectible-filter-selection-display-watch-account-collectible-assets-filter-title").bodyRegular()
+        self.description = String(localized: "collectible-filter-selection-display-watch-account-collectible-assets-filter-description").footnoteRegular()
     }
 }

@@ -37,7 +37,7 @@ struct CollectibleMediaVideoPreviewViewTheme:
             .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
             .backgroundImage([.normal("icon-3d-bg"), .highlighted("icon-3d-bg")]),
             .titleColor([ .normal(Colors.Text.white) ]),
-            .title("collectible-detail-tap-3D".localized.footnoteMedium()),
+            .title(String(localized: "collectible-detail-tap-3D").footnoteMedium()),
         ]
         threeDActionContentEdgeInsets = (4, 8, 4, 8)
         threeDModeActionPaddings = (.noMetric, 16, 16, .noMetric)

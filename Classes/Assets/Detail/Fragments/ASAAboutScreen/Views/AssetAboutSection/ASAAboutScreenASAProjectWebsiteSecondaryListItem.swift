@@ -34,8 +34,7 @@ extension ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "asa-about-asa-project-website"
-                .localized
+            String(localized: "asa-about-asa-project-website")
                 .attributed(attributes)
     }
 }

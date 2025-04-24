@@ -39,16 +39,16 @@ extension ContactsNoContentWithActionViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "contacts-empty-text".localized
+        title = String(localized: "contacts-empty-text")
     }
 
     private mutating func bindBody() {
-        body = "contacts-empty-detail-text".localized
+        body = String(localized: "contacts-empty-detail-text")
     }
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("contacts-add".localized),
+            title: .string(String(localized: "contacts-add")),
             image: nil
         )
     }

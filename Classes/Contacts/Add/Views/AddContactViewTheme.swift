@@ -34,7 +34,7 @@ struct AddContactViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.photoLabel = [
-            .text("contacts-add-photo".localized),
+            .text(String(localized: "contacts-add-photo")),
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.main),

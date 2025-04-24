@@ -23,7 +23,7 @@ struct ScanQRCodeTransactionOptionListItemButtonViewModel: TransactionOptionList
 
     init() {
         icon = "icon-transaction-option-list-scan-qr-code"
-        title = Self.getTitle("qr-scan-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-scan-qr-code-subtitle".localized)
+        title = Self.getTitle(String(localized: "qr-scan-title"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-scan-qr-code-subtitle"))
     }
 }

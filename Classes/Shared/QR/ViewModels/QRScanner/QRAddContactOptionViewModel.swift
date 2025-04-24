@@ -24,7 +24,7 @@ struct QRAddContactOptionViewModel: QRScanOptionListItemButtonViewModel {
 
     init() {
         icon = "icon-qr-option-contact"
-        title = Self.getTitle("qr-scan-option-add-contact".localized)
+        title = Self.getTitle(String(localized: "qr-scan-option-add-contact"))
         subtitle = nil
     }
 }

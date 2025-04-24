@@ -40,7 +40,7 @@ final class DeveloperSettingsViewController:
 
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        navigationItem.title = "settings-developer".localized
+        navigationItem.title = String(localized: "settings-developer")
     }
     
     override func linkInteractors() {

@@ -235,7 +235,7 @@ extension AlgorandSecureBackupImportBackupScreen {
 extension AlgorandSecureBackupImportBackupScreen {
     @objc
     private func performPasteAction() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         let pasteBoardText = UIPasteboard.general.string
         loadingController?.stopLoading()
 
@@ -244,7 +244,7 @@ extension AlgorandSecureBackupImportBackupScreen {
         switch validation {
         case .success(let secureBackup):
             bannerController?.presentSuccessBanner(
-                title: "algorand-secure-backup-import-backup-clipboard-success-title".localized
+                title: String(localized: "algorand-secure-backup-import-backup-clipboard-success-title")
             )
 
             eventHandler?(.backupSelected(secureBackup), self)
@@ -323,25 +323,25 @@ extension AlgorandSecureBackupImportBackupScreen {
 
         switch error {
         case .emptySource:
-            title = "algorand-secure-backup-import-backup-clipboard-failed-title".localized
-            message = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-failed-title")
+            message = String(localized: "algorand-secure-backup-import-backup-clipboard-failed-subtitle")
         case .wrongFormat:
-            title = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-json-failed-title")
             message = ""
         case .unsupportedVersion:
-            title = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-version-failed-title")
             message = ""
         case .cipherSuiteUnknown:
-            title = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title")
             message = ""
         case .jsonSerialization:
-            title = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-json-failed-title")
             message = ""
         case .unauthorized:
-            title = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+            title = String(localized: "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title")
             message = ""
         case .keyNotFound(let key):
-            title = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(params: key)
+            title = String(format: String(localized: "algorand-secure-backup-import-backup-clipboard-key-not-exist"), key)
             message = ""
         }
 

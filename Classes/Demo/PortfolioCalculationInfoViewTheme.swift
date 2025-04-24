@@ -46,16 +46,14 @@ struct PortfolioCalculationInfoViewTheme:
 extension PortfolioCalculationInfoViewTheme {
     private static func getTitle() -> EditText {        
         return .attributedString(
-            "portfolio-calculation-title"
-                .localized
+            String(localized: "portfolio-calculation-title")
                 .bodyLargeMedium()
         )
     }
     
     private static func getBody() -> EditText {
         return .attributedString(
-            "portfolio-calculation-description"
-                .localized
+            String(localized: "portfolio-calculation-description")
                 .bodyRegular()
         )
     }

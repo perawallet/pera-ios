@@ -40,13 +40,13 @@ struct AccountNameSetupViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("title-name-your-account".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "title-name-your-account").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.description = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("account-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-name-setup-description").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenDescriptionAndNameInput = 40
         let textInputBaseStyle: TextInputStyle = [
@@ -60,12 +60,12 @@ struct AccountNameSetupViewControllerTheme:
         ]
         self.nameInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "placeholder-account-name-setup".localized,
-            floatingPlaceholder: "placeholder-account-name-setup".localized
+            placeholder: String(localized: "placeholder-account-name-setup"),
+            floatingPlaceholder: String(localized: "placeholder-account-name-setup")
         )
         self.nameInputMinHeight = 48
         self.action = [
-            .title("account-name-setup-finish".localized),
+            .title(String(localized: "account-name-setup-finish")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),

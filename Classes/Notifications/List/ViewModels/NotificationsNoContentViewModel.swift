@@ -35,10 +35,10 @@ extension NotificationsNoContentViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "notifications-empty-title".localized
+        title = String(localized: "notifications-empty-title")
     }
 
     private mutating func bindBody() {
-        body = "notifications-empty-subtitle".localized
+        body = String(localized: "notifications-empty-subtitle")
     }
 }

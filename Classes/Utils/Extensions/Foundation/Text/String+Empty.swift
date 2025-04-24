@@ -21,7 +21,7 @@ extension String {
     static let empty = ""
 
     func isUnknown() -> Bool {
-        return self == "title-unknown".localized
+        return self == String(localized: "title-unknown")
     }
     
     var isEmptyOrBlank: Bool {

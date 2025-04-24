@@ -19,7 +19,6 @@ import MacaroonUIKit
 
 struct SwapAccountSelectionListHeaderViewModel: ViewModel {
     let description: TextProvider =
-    "swap-account-selection-header-description"
-        .localized
+    String(localized: "swap-account-selection-header-description")
         .bodyRegular()
 }

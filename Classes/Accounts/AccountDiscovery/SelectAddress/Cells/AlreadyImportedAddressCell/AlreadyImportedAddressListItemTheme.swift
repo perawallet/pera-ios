@@ -61,7 +61,7 @@ struct AlreadyImportedAddressListItemTextViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.sonicSilver),
             .font(Typography.captionMedium()),
             .textAlignment(.center),
-            .text("already-imported-title".localized.uppercased()),
+            .text(String(localized: "already-imported-title").uppercased()),
             .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.spacing = 16

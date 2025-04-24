@@ -53,14 +53,14 @@ struct PassphraseBackUpViewCommonTheme: PassphraseBackUpViewTheme {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("title-recover-passphrase".localized)
+            .text(String(localized: "title-recover-passphrase"))
         ]
         self.description = [
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular()),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("passphrase-bottom-title-alg25".localized)
+            .text(String(localized: "title-passphrase-bottom"))
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
@@ -95,14 +95,14 @@ struct PassphraseBackUpViewBip39Theme: PassphraseBackUpViewTheme {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("recover-passphrase-title".localized)
+            .text(String(localized: "recover-passphrase-title"))
         ]
         self.description = [
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular()),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("passphrase-bottom-title-bip39".localized)
+            .text(String(localized: "passphrase-bottom-title-bip39"))
             ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

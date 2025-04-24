@@ -70,7 +70,7 @@ final class SendKeyRegTransactionScreen:
     override func viewDidLoad() {
         super.viewDidLoad()
         add(UIHostingController(rootView: transactionView))
-        title = "title-txn-sign-request".localized
+        title = String(localized: "title-txn-sign-request")
     }
     
     override func setListeners() {
@@ -153,7 +153,7 @@ private extension SendKeyRegTransactionScreen {
         open(
             .jsonDisplay(
                 jsonData: data,
-                title: "wallet-connect-raw-transaction-title".localized
+                title: String(localized: "wallet-connect-raw-transaction-title")
             ),
             by: .present
         )
@@ -184,8 +184,8 @@ private extension SendKeyRegTransactionScreen {
         _ transactionId: TransactionID?
     ) {
         let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-            title: "title-txn-completed".localized,
-            detail: "incoming-asas-detail-success-detail".localized
+            title: String(localized: "title-txn-completed"),
+            detail: String(localized: "incoming-asas-detail-success-detail")
         )
         let successScreen = loadingScreen?.open(
             .successResultScreen(viewModel: successResultScreenViewModel),
@@ -253,7 +253,7 @@ extension SendKeyRegTransactionScreen {
             displayTransactionError(from: transactionError)
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.asAFError?.errorDescription ?? error.localizedDescription
             )
         }
@@ -268,12 +268,12 @@ extension SendKeyRegTransactionScreen {
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.debugDescription
             )
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         }
@@ -319,19 +319,17 @@ extension SendKeyRegTransactionScreen {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "send-algos-minimum-amount-custom-error"), amountText.someString)
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -392,9 +390,9 @@ extension SendKeyRegTransactionScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController

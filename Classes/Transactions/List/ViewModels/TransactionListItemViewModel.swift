@@ -75,7 +75,7 @@ extension TransactionListItemViewModel {
             return name
         }
 
-        return "title-unknown".localized.uppercased()
+        return String(localized: "title-unknown").uppercased()
     }
 }
 

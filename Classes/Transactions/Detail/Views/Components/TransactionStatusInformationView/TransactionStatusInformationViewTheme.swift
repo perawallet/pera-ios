@@ -30,7 +30,7 @@ struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
     ) {
         self.contentPaddings = NSDirectionalEdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
         self.title = [
-            .text("transaction-detail-status".localized),
+            .text(String(localized: "transaction-detail-status")),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),

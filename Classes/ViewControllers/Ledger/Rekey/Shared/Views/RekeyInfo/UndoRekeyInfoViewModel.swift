@@ -35,8 +35,7 @@ struct UndoRekeyInfoViewModel: RekeyInfoViewModel {
 extension UndoRekeyInfoViewModel {
     private mutating func bindTitle() {
         title =
-            "title-undo-rekey"
-                .localized
+            String(localized: "title-undo-rekey")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

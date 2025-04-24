@@ -24,7 +24,7 @@ struct RekeyAccountInformationListActionViewModel: ListItemButtonViewModel {
 
     init() {
         self.icon = "icon-qr"
-        self.title = Self.getTitle("options-auth-account".localized)
+        self.title = Self.getTitle(String(localized: "options-auth-account"))
         self.subtitle = nil
     }
 }

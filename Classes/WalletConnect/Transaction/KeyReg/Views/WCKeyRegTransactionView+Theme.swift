@@ -29,7 +29,7 @@ extension WCKeyRegTransactionView {
 
         init(_ family: LayoutFamily) {
             self.rawTransactionButtonStyle = [
-                .title("wallet-connect-raw-transaction-title".localized),
+                .title(String(localized: "wallet-connect-raw-transaction-title")),
                 .titleColor([.normal(Colors.Button.Secondary.text)]),
                 .font(Fonts.DMSans.medium.make(13)),
                 .backgroundColor(Colors.Button.Secondary.background)

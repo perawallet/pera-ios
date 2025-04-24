@@ -30,6 +30,6 @@ extension WCSingleTransactionViewControllerActionable where Self: WCSingleTransa
             return
         }
 
-        open(.jsonDisplay(jsonData: data, title: "wallet-connect-raw-transaction-title".localized), by: .present)
+        open(.jsonDisplay(jsonData: data, title: String(localized: "wallet-connect-raw-transaction-title")), by: .present)
     }
 }

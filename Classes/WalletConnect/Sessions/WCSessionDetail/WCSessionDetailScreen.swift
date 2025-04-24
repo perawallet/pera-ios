@@ -269,7 +269,7 @@ extension WCSessionDetailScreen {
 
     @objc
     private func performSecondaryAction() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         let draft = dataController.getSessionDraft()
         disconnectFromSession(draft)
@@ -736,8 +736,8 @@ extension WCSessionDetailScreen {
                     eventHandler?(.didDisconnect)
                 case .failedToDisconnect:
                     bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "title-generic-error".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "title-generic-error")
                     )
                 default: break
                 }
@@ -764,7 +764,7 @@ extension WCSessionDetailScreen {
                 loadingController?.stopLoading()
 
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
             }

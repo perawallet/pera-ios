@@ -102,11 +102,11 @@ extension AppCallTransactionDetailViewModel {
         _ transaction: Transaction
     ) {
         if transaction.isInner {
-            transactionIDTitle = "transaction-detail-parent-id".localized
+            transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
 
-        transactionIDTitle = "transaction-detail-id".localized
+        transactionIDTitle = String(localized: "transaction-detail-id")
     }
 
     private func bindTransactionID(

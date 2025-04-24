@@ -176,7 +176,7 @@ extension ReceiverAccountSelectionListLayout {
         let sampleAccountPreview = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
-            title: "title-unknown".localized,
+            title: String(localized: "title-unknown"),
             subtitle: nil
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountPreview)
@@ -229,8 +229,8 @@ extension ReceiverAccountSelectionListLayout {
         let sampleAccountPreview = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized
+            title: String(localized: "title-unknown"),
+            subtitle: String(localized: "title-unknown")
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountPreview)
         let newSize = ReceiverAccountSelectionPreviewCell.calculatePreferredSize(

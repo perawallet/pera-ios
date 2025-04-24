@@ -45,7 +45,7 @@ extension WelcomeLegacyViewModel {
         switch flow {
         case .initializeAccount,
              .none:
-            title = "account-welcome-wallet-title".localized
+            title = String(localized: "account-welcome-wallet-title")
         case .addNewAccount, .backUpAccount:
             fatalError("Shouldn't enter here")
         }

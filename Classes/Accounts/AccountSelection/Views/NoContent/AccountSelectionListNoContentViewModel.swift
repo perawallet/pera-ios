@@ -32,9 +32,6 @@ extension AccountSelectionListNoContentViewModel {
         var attributes = Typography.bodyLargeMediumAttributes(alignment: .center)
         attributes.insert(.textColor(Colors.Text.main))
 
-        title =
-            "account-select-search-empty-title"
-                .localized
-                .attributed(attributes)
+        title = String(localized: "account-select-search-empty-title").attributed(attributes)
     }
 }

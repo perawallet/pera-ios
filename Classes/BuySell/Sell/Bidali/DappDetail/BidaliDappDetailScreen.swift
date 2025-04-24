@@ -354,8 +354,8 @@ extension BidaliDappDetailScreen {
 extension BidaliDappDetailScreen {
     private func presentGenericErrorBanner() {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "title-generic-error".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "title-generic-error")
         )
     }
 }

@@ -67,15 +67,13 @@ extension CollectiblesNoContentWithActionViewModel {
 
     private mutating func bindTitle() {
         title =
-            "title-collectibles"
-                .localized
+            String(localized: "title-collectibles")
                 .titleMedium(alignment: .center)
     }
 
     private mutating func bindBody() {
         body =
-            "collectibles-empty-body"
-                .localized
+            String(localized: "collectibles-empty-body")
                 .bodyRegular(alignment: .center)
     }
 }
@@ -83,7 +81,7 @@ extension CollectiblesNoContentWithActionViewModel {
 extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindPrimaryActionTitle() {
         primaryAction = Action(
-            title: .string("collectibles-receive-asset-title".localized),
+            title: .string(String(localized: "collectibles-receive-asset-title")),
             image: "icon-plus".uiImage
         )
     }
@@ -126,7 +124,7 @@ extension CollectiblesNoContentWithActionViewModel {
         }
 
         return .string(
-            "collectibles-empty-secondary-action-title".localized(params: hiddenCollectibleCount)
+            String(format: String(localized: "collectibles-empty-secondary-action-title"), hiddenCollectibleCount)
         )
     }
 }

@@ -42,9 +42,9 @@ final class ManagementOptionsViewController:
         switch managementType {
         case .assets,
              .watchAccountAssets:
-            title = "options-manage-assets".localized
+            title = String(localized: "options-manage-assets")
         case .collectibles:
-            title = "options-manage-collectibles".localized
+            title = String(localized: "options-manage-collectibles")
         }
     }
 

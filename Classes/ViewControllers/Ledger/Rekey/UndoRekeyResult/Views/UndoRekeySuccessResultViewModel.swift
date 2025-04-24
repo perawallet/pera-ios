@@ -36,18 +36,14 @@ extension UndoRekeySuccessResultViewModel {
 
     private mutating func bindTitle() {
         let aTitle =
-            "undo-rekey-success-result-title"
-                .localized
+            String(localized: "undo-rekey-success-result-title")
                 .titleMedium()
         title = aTitle
     }
 
     private mutating func bindBody(_ account: Account) {
         let accountName = account.primaryDisplayName
-        let text =
-            "undo-rekey-success-result-body"
-                .localized(params: accountName)
-                .bodyRegular()
+        let text = String(format: String(localized: "undo-rekey-success-result-body"), accountName).bodyRegular()
 
         let highlightedTextAttributes = Typography.bodyMediumAttributes()
         let aBody = text.addAttributes(

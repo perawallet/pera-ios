@@ -82,7 +82,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-sender".localized,
+            title: String(localized: "transaction-detail-sender"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -107,7 +107,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "title-to".localized,
+            title: String(localized: "title-to"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -120,7 +120,7 @@ final class WCAssetAdditionTransactionViewModel {
         and asset: Asset?
     ) {
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "title-asset".localized,
+            title: String(localized: "title-asset"),
             asset: asset
         )
     }
@@ -134,7 +134,7 @@ final class WCAssetAdditionTransactionViewModel {
             }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-close-asset-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-close-asset-title"),
             detail: closeAddress
         )
 
@@ -151,7 +151,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -188,7 +188,7 @@ final class WCAssetAdditionTransactionViewModel {
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeViewModel = feeInformationViewModel
     }
 
@@ -207,7 +207,7 @@ final class WCAssetAdditionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "title-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
 

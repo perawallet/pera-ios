@@ -476,16 +476,16 @@ extension DiscoverSearchAPIDataController {
     }
 
     private func createErrorItem(error: GetAssetsError) -> DiscoverSearchErrorItem {
-        let fallbackTitle = "title-generic-api-error".localized
-        let fallbackBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
+        let fallbackTitle = String(localized: "title-generic-api-error")
+        let fallbackBody = "\(String(localized: "asset-search-not-found"))\n\(String(localized: "title-retry-later"))"
 
         let title: String
         let body: String
         switch error {
         case .connection(let connectionError):
             if connectionError.isNotConnectedToInternet {
-                title = "discover-error-connection-title".localized
-                body = "discover-error-connection-body".localized
+                title = String(localized: "discover-error-connection-title")
+                body = String(localized: "discover-error-connection-body")
             } else {
                 title = fallbackTitle
                 body = fallbackBody

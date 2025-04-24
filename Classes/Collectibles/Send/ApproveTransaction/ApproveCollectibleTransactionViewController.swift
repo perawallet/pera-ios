@@ -311,9 +311,9 @@ extension ApproveCollectibleTransactionViewController {
     private func openOptOutInformation() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green".uiImage,
-            title: "collectible-opt-out-info-title".localized,
-            description: .plain("collectible-opt-out-info-description".localized),
-            secondaryActionButtonTitle: "title-close".localized
+            title: String(localized: "collectible-opt-out-info-title"),
+            description: .plain(String(localized: "collectible-opt-out-info-description")),
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
 
         bottomTransition.perform(

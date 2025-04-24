@@ -64,7 +64,7 @@ final class SwapSummaryScreen: ScrollScreen {
     override func bindData() {
         super.bindData()
 
-        title = "swap-confirm-summary-title".localized
+        title = String(localized: "swap-confirm-summary-title")
 
         let viewModel = SwapSummaryScreenViewModel(
             account: swapController.account,

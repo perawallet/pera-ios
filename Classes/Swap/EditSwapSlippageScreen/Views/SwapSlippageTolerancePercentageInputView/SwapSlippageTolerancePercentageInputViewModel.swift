@@ -27,7 +27,7 @@ struct SwapSlippageTolerancePercentageInputViewModel: AdjustableSingleSelectionI
     let percentagesPreset: [SwapSlippageTolerancePercentage] = [
         PresetSwapSlippageTolerancePercentage(
             value: 0,
-            customTitle: "swap-slippage-percentage-custom".localized
+            customTitle: String(localized: "swap-slippage-percentage-custom")
         ),
         PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.halfPercent),
         PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.onePercent),

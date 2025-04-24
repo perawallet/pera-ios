@@ -26,7 +26,7 @@ extension ASADetailScreen {
 
         init(screen: UIViewController) {
             self.id = PageBarItemID.activity.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "title-activity".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "title-activity"))
             self.screen = screen
         }
     }
@@ -38,7 +38,7 @@ extension ASADetailScreen {
 
         init(screen: UIViewController) {
             self.id = PageBarItemID.about.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "title-about".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "title-about"))
             self.screen = screen
         }
     }

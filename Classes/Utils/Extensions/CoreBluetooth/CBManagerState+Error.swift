@@ -21,15 +21,15 @@ extension CBManagerState {
     var errorDescription: (title: String?, subtitle: String?) {
         switch self {
         case .poweredOff:
-            return ("ble-error-bluetooth-title".localized, "ble-error-fail-ble-connection-power".localized)
+            return (String(localized: "ble-error-bluetooth-title"), String(localized: "ble-error-fail-ble-connection-power"))
         case .unsupported:
-            return ("ble-error-unsupported-device-title".localized, "ble-error-fail-ble-connection-unsupported".localized)
+            return (String(localized: "ble-error-unsupported-device-title"), String(localized: "ble-error-fail-ble-connection-unsupported"))
         case .unknown:
-            return ("ble-error-unsupported-device-title".localized, "ble-error-fail-ble-connection-unsupported".localized)
+            return (String(localized: "ble-error-unsupported-device-title"), String(localized: "ble-error-fail-ble-connection-unsupported"))
         case .unauthorized:
-            return ("ble-error-search-title".localized, "ble-error-fail-ble-connection-unauthorized".localized)
+            return (String(localized: "ble-error-search-title"), String(localized: "ble-error-fail-ble-connection-unauthorized"))
         case .resetting:
-            return ("ble-error-bluetooth-title".localized, "ble-error-fail-ble-connection-resetting".localized)
+            return (String(localized: "ble-error-bluetooth-title"), String(localized: "ble-error-fail-ble-connection-resetting"))
         default:
             return (nil, nil)
         }

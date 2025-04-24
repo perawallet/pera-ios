@@ -166,8 +166,8 @@ extension SortAccountListLayout {
         let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
-            title: "title-unknown".localized,
-            subtitle: "title-plus-asset-singular-count".localized(params: "1")
+            title: String(localized: "title-unknown"),
+            subtitle: String(format: String(localized: "title-plus-asset-count"), 1)
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
         let newSize = AccountListItemCell.calculatePreferredSize(

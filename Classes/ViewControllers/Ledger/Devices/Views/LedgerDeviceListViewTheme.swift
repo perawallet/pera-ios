@@ -42,12 +42,12 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("ledger-device-list-looking".localized.bodyLargeMedium())
+            .text(String(localized: "ledger-device-list-looking").bodyLargeMedium())
         ]
         self.description = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
-            .text("ledger-device-list-body".localized.bodyRegular())
+            .text(String(localized: "ledger-device-list-body").bodyRegular())
         ]
         if let i = img("loading-indicator") {
             self.indicator = [

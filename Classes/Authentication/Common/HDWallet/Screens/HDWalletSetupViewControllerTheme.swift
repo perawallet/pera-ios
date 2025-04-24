@@ -39,13 +39,13 @@ struct HDWalletSetupViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("hd-wallet-setup-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "hd-wallet-setup-title").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.description = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("hd-wallet-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "hd-wallet-setup-description").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingListView = 28
         self.action = [

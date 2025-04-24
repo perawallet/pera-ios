@@ -49,23 +49,23 @@ struct AddressNameSetupViewControllerTheme:
         self.accountTitle = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("account-details-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-details-title").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.walletTitle = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("account-details-wallet-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-details-wallet-title").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.accountDescription = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("account-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-name-setup-description").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.walletDescription = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("account-wallet-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-wallet-name-setup-description").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenDescriptionAndWalletName = 36
         self.walletNameViewCornerRadius = 8
@@ -94,12 +94,12 @@ struct AddressNameSetupViewControllerTheme:
         ]
         self.nameInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "account-name-setup-placeholder".localized,
-            floatingPlaceholder: "account-name-setup-placeholder".localized
+            placeholder: String(localized: "account-name-setup-placeholder"),
+            floatingPlaceholder: String(localized: "account-name-setup-placeholder")
         )
         self.nameInputMinHeight = 48
         self.action = [
-            .title("account-name-setup-finish".localized),
+            .title(String(localized: "account-name-setup-finish")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),

@@ -31,8 +31,7 @@ struct WCSessionSupportedEventsAdvancedPermissionViewModel: PrimaryTitleViewMode
 extension WCSessionSupportedEventsAdvancedPermissionViewModel {
     private mutating func bindPrimaryTitle() {
         primaryTitle =
-            "wc-session-supported-events"
-                .localized
+            String(localized: "wc-session-supported-events")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 

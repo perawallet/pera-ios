@@ -41,7 +41,7 @@ extension ARC59SendAssetInformationViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title = (
-            asset.naming.unitName.unwrapNonEmptyString() ?? "title-unknown".localized
+            asset.naming.unitName.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         ).attributed(attributes)
     }
 
@@ -89,7 +89,7 @@ extension ARC59SendAssetInformationItemValueViewModel {
             return
         }
         
-        let assetName = asset.naming.unitName.unwrapNonEmptyString() ?? "title-unknown".localized
+        let assetName = asset.naming.unitName.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         
         var attributes = Typography.bodyLargeMediumAttributes(
             lineBreakMode: .byTruncatingTail

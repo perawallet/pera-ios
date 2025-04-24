@@ -26,7 +26,7 @@ struct AccountAssetDescendingAmountAlgorithm: AccountAssetSortingAlgorithm {
         self.currency = currency
 
         self.id = "cache.value.accountAssetDescendingAmountAlgorithm"
-        self.name = "title-highest-value-to-lowest".localized
+        self.name = String(localized: "title-highest-value-to-lowest")
     }
 }
 
@@ -43,10 +43,10 @@ extension AccountAssetDescendingAmountAlgorithm {
 
         let assetTitle =
             asset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+            String(localized: "title-unknown")
         let otherAssetTitle =
             otherAsset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+            String(localized: "title-unknown")
         if assetTitle != otherAssetTitle {
             let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
             return result == .orderedDescending

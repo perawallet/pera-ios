@@ -52,10 +52,10 @@ final class LedgerTutorialInstructionListView: View {
     }
 
     func bindData() {
-        openLedgerInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-turned-on".localized))
-        installAppInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-install-app".localized))
-        openAppInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-open-app".localized))
-        turnOnBluetoothInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-bluetooth".localized))
+        openLedgerInstructionView.bindData(LedgerTutorialInstructionViewModel(String(localized: "ledger-tutorial-turned-on")))
+        installAppInstructionView.bindData(LedgerTutorialInstructionViewModel(String(localized: "ledger-tutorial-install-app")))
+        openAppInstructionView.bindData(LedgerTutorialInstructionViewModel(String(localized: "ledger-tutorial-open-app")))
+        turnOnBluetoothInstructionView.bindData(LedgerTutorialInstructionViewModel(String(localized: "ledger-tutorial-bluetooth")))
     }
 }
 

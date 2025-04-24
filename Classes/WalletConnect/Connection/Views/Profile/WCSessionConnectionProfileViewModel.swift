@@ -56,8 +56,7 @@ extension WCSessionConnectionProfileViewModel {
         let dAppNameAttributes = Typography.bodyLargeMediumAttributes(alignment: .center)
 
         let aTitle =
-        "wallet-connect-session-connection-description"
-            .localized(params: dAppName)
+        String(format: String(localized: "wallet-connect-session-connection-description"), dAppName)
             .bodyLargeRegular(alignment: .center)
             .addAttributes(
                 to: dAppName,

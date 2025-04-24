@@ -43,7 +43,7 @@ struct AlertScreenWithFillingImageTheme:
         ]
         self.imageEdgeInsets = (0, 0, 0, 0)
         self.newBadge = [
-            .text("title-new-uppercased".localized),
+            .text(String(localized: "title-new-uppercased")),
             .textColor(Colors.Helpers.positive),
             .font(Typography.captionBold()),
             .textAlignment(.center),

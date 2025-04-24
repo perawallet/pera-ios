@@ -39,8 +39,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindTitle() {
         title =
-            "empty-accounts-title"
-                .localized
+            String(localized: "empty-accounts-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -48,8 +47,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "empty-accounts-detail"
-                .localized
+            String(localized: "empty-accounts-detail")
                 .bodyRegular(
                     alignment: .center
                 )
@@ -57,7 +55,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("empty-accounts-action".localized),
+            title: .string(String(localized: "empty-accounts-action")),
             image: nil
         )
     }

@@ -31,7 +31,7 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.searchInputViewTheme = SearchInputViewCommonTheme(
-            placeholder: "contacts-search".localized,
+            placeholder: String(localized: "contacts-search"),
             family: family
         )
         self.topInset = 20

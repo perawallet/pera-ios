@@ -301,7 +301,7 @@ extension User {
             }
             .compactMap { Int($0) }
             .max() ?? 0
-        return "hd-wallet-setup-wallet-name".localized(params: "\(highestWalletNameNumber + 1)")
+        return String(format: String(localized: "hd-wallet-setup-wallet-name"), "\(highestWalletNameNumber + 1)")
     }
     
     // Deletes the name of the wallet by its id

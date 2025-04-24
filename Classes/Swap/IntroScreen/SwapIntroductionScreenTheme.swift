@@ -123,7 +123,7 @@ struct SwapIntroductionScreenTheme:
         self.poweredByTitleLeadingInset = 10
 
         self.primaryAction = [
-            .title("swap-introduction-primary-action-title".localized),
+            .title(String(localized: "swap-introduction-primary-action-title")),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

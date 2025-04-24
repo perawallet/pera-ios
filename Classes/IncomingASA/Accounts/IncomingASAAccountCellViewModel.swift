@@ -67,7 +67,7 @@ extension IncomingASAAccountCellViewModel {
     mutating func bindTitle(
         _ requestCount: Int
     ) {
-        self.title = "incoming-asa-accounts-screen-cell-title".localized(params: requestCount)
+        self.title = String(format: String(localized: "incoming-asa-accounts-screen-cell-title"), requestCount)
     }
     
     mutating func bindIcon(

@@ -81,7 +81,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
+            title: String(localized: "transaction-detail-from"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -103,7 +103,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "title-to".localized,
+            title: String(localized: "title-to"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -132,13 +132,13 @@ final class WCAlgosTransactionViewModel {
         )
 
         let balanceViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        balanceViewModel.setTitle("title-balance".localized)
+        balanceViewModel.setTitle(String(localized: "title-balance"))
         self.balanceViewModel = balanceViewModel
     }
 
     private func setAssetInformationViewModel(from senderAccount: Account?) {
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "title-asset".localized,
+            title: String(localized: "title-asset"),
             asset: nil
         )
     }
@@ -151,7 +151,7 @@ final class WCAlgosTransactionViewModel {
             }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-close-asset-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-close-asset-title"),
             detail: closeAddress
         )
 
@@ -166,7 +166,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -200,7 +200,7 @@ final class WCAlgosTransactionViewModel {
         )
 
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        amountInformationViewModel.setTitle("transaction-detail-amount".localized)
+        amountInformationViewModel.setTitle(String(localized: "transaction-detail-amount"))
         self.amountViewModel = amountInformationViewModel
     }
 
@@ -227,7 +227,7 @@ final class WCAlgosTransactionViewModel {
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeViewModel = feeInformationViewModel
     }
 
@@ -246,7 +246,7 @@ final class WCAlgosTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "title-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
 

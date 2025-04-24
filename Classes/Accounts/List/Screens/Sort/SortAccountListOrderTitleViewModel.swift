@@ -26,7 +26,7 @@ struct SortAccountListOrderTitleViewModel:
 
     init() {
         bind(
-            "sort-account-list-manually-header-title".localized
+            String(localized: "sort-account-list-manually-header-title")
         )
     }
 }

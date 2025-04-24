@@ -25,20 +25,20 @@ final class MnemonicTypeSelectionScreen: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "mnemonic-types-screen-title".localized
+        self.title = String(localized: "mnemonic-types-screen-title")
     }
 
     override func bindData() {
         let bip39ViewModel = MnemonicTypeViewModel(
-            title: "mnemonic-types-bip39-title".localized,
-            detail: "mnemonic-types-bip39-detail".localized,
-            info: "mnemonic-types-bip39-info".localized,
+            title: String(localized: "mnemonic-types-bip39-title"),
+            detail: String(localized: "mnemonic-types-bip39-detail"),
+            info: String(localized: "mnemonic-types-bip39-info"),
             isRecommended: true
         )
         let algo25ViewModel = MnemonicTypeViewModel(
-            title: "mnemonic-types-algo25-title".localized,
-            detail: "mnemonic-types-algo25-detail".localized,
-            info: "mnemonic-types-algo25-info".localized,
+            title: String(localized: "mnemonic-types-algo25-title"),
+            detail: String(localized: "mnemonic-types-algo25-detail"),
+            info: String(localized: "mnemonic-types-algo25-info"),
             isRecommended: false
         )
         mnemonicTypeSelectionView.bindData(

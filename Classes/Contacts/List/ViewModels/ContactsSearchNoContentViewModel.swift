@@ -32,8 +32,7 @@ struct ContactsSearchNoContentViewModel: NoContentViewModel {
 extension ContactsSearchNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "contact-search-empty-title"
-                .localized
+            String(localized: "contact-search-empty-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -41,8 +40,7 @@ extension ContactsSearchNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "contact-search-empty-detail"
-                .localized
+            String(localized: "contact-search-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

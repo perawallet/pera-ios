@@ -192,16 +192,16 @@ extension ImportQRScannerScreen {
 
     private func presentDisabledCameraAlert() {
         let alertController = UIAlertController(
-            title: "qr-scan-go-settings-title".localized,
-            message: "qr-scan-go-settings-message".localized,
+            title: String(localized: "qr-scan-go-settings-title"),
+            message: String(localized: "qr-scan-go-settings-message"),
             preferredStyle: .alert
         )
 
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+        let settingsAction = UIAlertAction(title: String(localized: "title-go-to-settings"), style: .default) { _ in
             UIApplication.shared.openAppSettings()
         }
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel, handler: nil)
 
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
@@ -211,7 +211,7 @@ extension ImportQRScannerScreen {
 
     private func handleFailedState() {
         captureSession = nil
-        displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+        displaySimpleAlertWith(title: String(localized: "qr-scan-error-title"), message: String(localized: "qr-scan-error-message"))
     }
 
     private func setupPreviewLayer() {
@@ -240,7 +240,7 @@ extension ImportQRScannerScreen {
         overlayView.customize(
             QRScannerOverlayViewTheme(
                 LayoutFamily.current,
-                title: "web-import-qr-scanner-title".localized
+                title: String(localized: "web-import-qr-scanner-title")
             )
         )
         view.addSubview(overlayView)

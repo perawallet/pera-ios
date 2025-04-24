@@ -29,8 +29,7 @@ struct AssetDescriptionViewModel: ShowMoreViewModel {
 
 extension AssetDescriptionViewModel {
     mutating func bindTitle() {
-        title = "collectible-detail-description"
-            .localized
+        title = String(localized: "collectible-detail-description")
             .uppercased()
             .footnoteHeadingMedium()
     }

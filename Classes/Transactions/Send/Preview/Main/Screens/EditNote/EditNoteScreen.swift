@@ -123,14 +123,14 @@ extension EditNoteScreen {
 extension EditNoteScreen {
     private func bindNavigationTitle() {
         if isLocked {
-            navigationItem.title = "send-transaction-show-note-title".localized
+            navigationItem.title = String(localized: "send-transaction-show-note-title")
             return
         }
 
         if note.isNilOrEmpty {
-            navigationItem.title = "title-add-note".localized
+            navigationItem.title = String(localized: "title-add-note")
         } else {
-            navigationItem.title = "send-transaction-edit-note-title".localized
+            navigationItem.title = String(localized: "send-transaction-edit-note-title")
         }
     }
 

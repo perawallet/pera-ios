@@ -24,7 +24,7 @@ struct LearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-info-black-24"
-        title = Self.getTitle("title-learn-more".localized)
+        title = Self.getTitle(String(localized: "title-learn-more"))
         subtitle = nil
     }
 }

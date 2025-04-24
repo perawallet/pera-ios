@@ -30,8 +30,7 @@ struct ReceiveCollectibleAssetListSearchNoContentViewModel: NoContentViewModel {
 extension ReceiveCollectibleAssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "collectibles-receive-asset-list-search-no-content"
-                .localized
+            String(localized: "collectibles-receive-asset-list-search-no-content")
                 .bodyLargeMedium(
                     alignment: .center
                 )

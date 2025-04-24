@@ -23,7 +23,7 @@ struct AccountCustomReorderingAlgorithm: AccountSortingAlgorithm {
 
     init() {
         self.id = "cache.value.accountCustomReorderingAlgorithm"
-        self.name = "title-manually".localized
+        self.name = String(localized: "title-manually")
         self.isCustom = true
     }
 }

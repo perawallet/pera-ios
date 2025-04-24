@@ -61,7 +61,7 @@ struct SwapAssetScreenTheme:
         self.emptyPoolAsset = SwapAssetSelectionEmptyViewTheme()
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.swapAction = [
-            .title("title-swap".localized),
+            .title(String(localized: "title-swap")),
             .titleColor(
                 [
                     .normal(Colors.Button.Primary.text),

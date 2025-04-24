@@ -70,32 +70,32 @@ extension AccountTypeViewModel {
         
         switch mode {
         case .addAlgo25Account:
-            titleText = "account-type-selection-create".localized
+            titleText = String(localized: "account-type-selection-create")
         case .addBip39Wallet:
-            titleText = "account-type-selection-create-wallet".localized
+            titleText = String(localized: "account-type-selection-create-wallet")
         case .addBip39Address:
-            titleText = "account-type-selection-add-account".localized
+            titleText = String(localized: "account-type-selection-add-account")
         case let .recover(type):
             switch type {
             case .passphrase:
-                titleText = "account-type-selection-recover-wallet".localized
+                titleText = String(localized: "account-type-selection-passphrase")
             case .passphraseAlgo25:
-                titleText = "account-type-selection-passphrase".localized
+                titleText = String(localized: "account-type-selection-passphrase")
             case .importFromSecureBackup:
-                titleText = "account-type-selection-import-secure-backup".localized
+                titleText = String(localized: "account-type-selection-import-secure-backup")
             case .ledger:
-                titleText = "account-type-selection-ledger".localized
+                titleText = String(localized: "account-type-selection-ledger")
             case .importFromWeb:
-                titleText = "account-type-selection-import-web".localized
+                titleText = String(localized: "account-type-selection-import-web")
             case .qr:
-                titleText = "account-type-selection-qr".localized
+                titleText = String(localized: "account-type-selection-qr")
             case .titleAlgo25:
-                titleText = "account-type-selection-recover".localized
+                titleText = String(localized: "account-type-selection-recover")
             case .title:
-                titleText = "account-type-selection-import-wallet".localized
+                titleText = String(localized: "account-type-selection-import-wallet")
             }
         case .watch:
-            titleText = "account-type-selection-watch-address".localized
+            titleText = String(localized: "account-type-selection-watch-address")
         case .rekey,
              .none:
             break
@@ -109,7 +109,7 @@ extension AccountTypeViewModel {
         case let .recover(type):
             switch type {
             case .importFromWeb, .importFromSecureBackup:
-                badge = "title-new-uppercased".localized
+                badge = String(localized: "title-new-uppercased")
             default:
                 break
             }
@@ -125,32 +125,32 @@ extension AccountTypeViewModel {
         
         switch mode {
         case .addAlgo25Account:
-            detailText = "account-type-selection-add-detail".localized
+            detailText = String(localized: "account-type-selection-add-detail")
         case .addBip39Wallet:
-            detailText = "account-type-selection-create-wallet-detail".localized
+            detailText = String(localized: "account-type-selection-create-wallet-detail")
         case .addBip39Address:
-            detailText = "account-type-selection-create-universal-wallet-detail".localized
+            detailText = String(localized: "account-type-selection-create-universal-wallet-detail")
         case let .recover(type):
             switch type {
             case .passphrase:
-                detailText = "account-type-selection-passphrase-detail".localized
+                detailText = String(localized: "account-type-selection-passphrase-detail")
             case .passphraseAlgo25:
-                detailText = "account-type-selection-passphrase-detail-algo25".localized
+                detailText = String(localized: "account-type-selection-passphrase-detail-algo25")
             case .importFromSecureBackup:
-                detailText = "account-type-selection-import-secure-backup-detail".localized
+                detailText = String(localized: "account-type-selection-import-secure-backup-detail")
             case .ledger:
-                detailText = "account-type-selection-ledger-detail".localized
+                detailText = String(localized: "account-type-selection-ledger-detail")
             case .importFromWeb:
-                detailText = "account-type-selection-import-web-detail".localized
+                detailText = String(localized: "account-type-selection-import-web-detail")
             case .qr:
-                detailText = "account-type-selection-qr-detail".localized
+                detailText = String(localized: "account-type-selection-qr-detail")
             case .titleAlgo25:
-                detailText = "account-type-selection-recover-detail".localized
+                detailText = String(localized: "account-type-selection-recover-detail")
             case .title:
-                detailText = "account-type-selection-recover-wallet-detail".localized
+                detailText = String(localized: "account-type-selection-recover-wallet-detail")
             }
         case .watch:
-            detailText = "account-type-selection-watch-address-detail".localized
+            detailText = String(localized: "account-type-selection-watch-detail")
         case .rekey,
              .none:
             break

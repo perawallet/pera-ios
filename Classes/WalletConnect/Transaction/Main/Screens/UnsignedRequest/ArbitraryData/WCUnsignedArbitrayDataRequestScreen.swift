@@ -57,7 +57,7 @@ final class WCUnsignedArbitrayDataRequestScreen: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "wallet-connect-title-unsigned-requests".localized
+        title = String(localized: "wallet-connect-title-unsigned-requests")
 
         hidesCloseBarButtonItem = true
     }

@@ -109,7 +109,7 @@ extension RenameAccountScreen {
 
 extension RenameAccountScreen {
     private func bindNavigationTitle() {
-        navigationItem.title = "options-edit-account-name".localized
+        navigationItem.title = String(localized: "options-edit-account-name")
     }
 
     private func addNavigationActions() {

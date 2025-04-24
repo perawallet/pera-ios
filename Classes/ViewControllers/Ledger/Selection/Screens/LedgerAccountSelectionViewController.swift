@@ -65,7 +65,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         ledgerAccountSelectionView.setLoadingState()
         dataSource.loadData()
     }
@@ -158,7 +158,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidTryAgain(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         ledgerAccountSelectionView.setLoadingState()
         dataSource.loadData()
     }

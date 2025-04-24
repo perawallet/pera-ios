@@ -41,22 +41,20 @@ final class WCAdvancedPermissionsInfoSheet: UISheet {
 extension WCAdvancedPermissionsInfoSheet {
     private static func makeTitle() -> TextProvider {
         return
-            "wc-advanced-permissions-info-title"
-                .localized
+            String(localized: "wc-advanced-permissions-info-title")
                 .bodyLargeMedium()
     }
 
     private static func makeBody() -> UISheetBodyTextProvider {
         let aBody =
-            "wc-advanced-permissions-info-body"
-                .localized
+            String(localized: "wc-advanced-permissions-info-body")
                 .bodyRegular()
         return UISheetBodyTextProvider(text: aBody)
     }
 
     private func makeCloseAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) {
             [unowned self] in

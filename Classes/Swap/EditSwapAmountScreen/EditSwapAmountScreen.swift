@@ -71,7 +71,7 @@ final class EditSwapAmountScreen:
     }
 
     override func configureNavigationBarAppearance() {
-        navigationItem.title = "swap-amount-percentage-title".localized
+        navigationItem.title = String(localized: "swap-amount-percentage-title")
 
         let doneItem = ALGBarButtonItem(kind: .done(Colors.Helpers.positive.uiColor)) {
             [unowned self] in

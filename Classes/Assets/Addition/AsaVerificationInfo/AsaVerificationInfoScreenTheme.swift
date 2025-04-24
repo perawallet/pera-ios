@@ -80,7 +80,7 @@ struct AsaVerificationInfoScreenTheme:
         self.spacingBetweenTitleAndBody = 16
 
         self.primaryAction = [
-            .title("title-learn-more".localized),
+            .title(String(localized: "title-learn-more")),
             .titleColor([
                 .normal(Colors.Text.main)
             ]),

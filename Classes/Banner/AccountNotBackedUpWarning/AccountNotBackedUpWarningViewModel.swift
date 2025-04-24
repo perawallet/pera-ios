@@ -25,17 +25,14 @@ struct AccountNotBackedUpWarningViewModel: Hashable {
 
     init() {
         title =
-        "title-action-required"
-            .localized
+        String(localized: "title-action-required")
             .captionMedium()
         subtitle =
-            "account-not-backed-up-warning-subtitle"
-                .localized
+            String(localized: "account-not-backed-up-warning-subtitle")
                 .bodyMedium(lineBreakMode: .byWordWrapping)
         image = "icon-circled-key"
         action = .attributedString(
-            "account-not-backed-up-warning-action-title"
-                .localized
+            String(localized: "account-not-backed-up-warning-action-title")
                 .footnoteMedium()
         )
     }

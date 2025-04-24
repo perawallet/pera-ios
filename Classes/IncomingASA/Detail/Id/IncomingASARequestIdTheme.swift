@@ -50,7 +50,7 @@ struct IncomingASARequestIdTheme:
                 .selected("components/buttons/secondary/bg-highlighted"),
                 .disabled("components/buttons/secondary/bg-disabled")
             ]),
-            .title("title-copy-id".localized)
+            .title(String(localized: "title-copy-id"))
         ]
         
         self.primaryActionContentEdgeInsets = (4, 20, 4, 20)

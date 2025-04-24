@@ -198,8 +198,7 @@ extension AsaVerificationInfoScreen {
 
 extension AsaVerificationInfoScreen {
     private func bindTitle() {
-        titleView.attributedText = "verification-info-title"
-            .localized
+        titleView.attributedText = String(localized: "verification-info-title")
             .titleMedium()
     }
 
@@ -207,11 +206,11 @@ extension AsaVerificationInfoScreen {
     /// Support it in 'Macaroon' properly
     private func bindBody() {
         let hightlightedTexts = [
-            "verification-info-body-first-highlight".localized,
-            "verification-info-body-second-highlight".localized,
-            "verification-info-body-third-highlight".localized
+            String(localized: "verification-info-body-first-highlight"),
+            String(localized: "verification-info-body-second-highlight"),
+            String(localized: "verification-info-body-third-highlight")
         ]
-        let body = "verification-info-body".localized
+        let body = String(localized: "verification-info-body")
         let attributedBody = NSMutableAttributedString(string: body)
         
         addBodyNormalAttributes(in: attributedBody)

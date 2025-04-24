@@ -42,7 +42,7 @@ struct ASADetailMarketViewModel: ViewModel {
 
 extension ASADetailMarketViewModel {
     mutating private func bindTitle() {
-        self.title = "asset-detail-markets-title".localized.footnoteRegular()
+        self.title = String(localized: "asset-detail-markets-title").footnoteRegular()
     }
 
     mutating private func bindPrice(_ item: AssetItem) {

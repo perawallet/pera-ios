@@ -61,7 +61,7 @@ final class AlgorandSecureBackupInstructionsScreen:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = "algorand-secure-backup-instruction-title".localized
+        navigationBarLargeTitleController.title = String(localized: "algorand-secure-backup-instruction-title")
     }
 
     override func customizeTabBarAppearence() {
@@ -236,21 +236,15 @@ extension AlgorandSecureBackupInstructionsScreen {
 
 extension AlgorandSecureBackupInstructionsScreen {
     private func bindHeader() {
-        headerView.attributedText =
-            "algorand-secure-backup-instruction-header-title"
-                .localized
-                .bodyRegular()
+        headerView.attributedText = String(localized: "algorand-secure-backup-instruction-header-title").bodyRegular()
     }
     
     private func bindNote() {
-        noteView.attributedText =
-            "algorand-secure-backup-instruction-save-backup-file-instruction-warning"
-                .localized
-                .bodyRegular()
+        noteView.attributedText = String(localized: "algorand-secure-backup-instruction-save-backup-file-instruction-warning").bodyRegular()
     }
 
     private func bindStartAction() {
-        startActionView.editTitle = .string("title-start".localized)
+        startActionView.editTitle = .string(String(localized: "title-start"))
     }
 }
 

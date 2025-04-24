@@ -33,8 +33,7 @@ struct SelectAssetErrorItemViewModel:
 extension SelectAssetErrorItemViewModel {
     mutating func bindTitle() {
         title =
-            "title-generic-error"
-                .localized
+            String(localized: "title-generic-error")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -42,8 +41,7 @@ extension SelectAssetErrorItemViewModel {
 
     mutating func bindBody() {
         body =
-            "swap-asset-pool-search-error"
-                .localized
+            String(localized: "swap-asset-pool-search-error")
                 .bodyRegular(
                     alignment: .center
                 )

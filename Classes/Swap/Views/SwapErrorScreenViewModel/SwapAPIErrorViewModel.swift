@@ -52,23 +52,21 @@ extension SwapAPIErrorViewModel {
         case .server(_, let apiError):
             message = apiError?.message ?? apiError.debugDescription
         case .connection:
-            message = "title-internet-connection".localized
+            message = String(localized: "title-internet-connection")
         case .unexpected:
-            message = "title-generic-api-error".localized
+            message = String(localized: "title-generic-api-error")
         }
         
         detail = message.bodyRegular(alignment: .center)
     }
 
     mutating func bindPrimaryAction() {
-        primaryAction = "title-try-again"
-            .localized
+        primaryAction = String(localized: "title-try-again")
             .bodyMedium(alignment: .center)
     }
 
     mutating func bindSecondaryAction() {
-        secondaryAction = "swap-error-go-home"
-            .localized
+        secondaryAction = String(localized: "swap-error-go-home")
             .bodyMedium(alignment: .center)
     }
 }

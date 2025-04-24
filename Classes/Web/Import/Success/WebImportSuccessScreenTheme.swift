@@ -37,7 +37,7 @@ struct WebImportSuccessScreenTheme: LayoutSheet, StyleSheet {
         listContentInsetTop = 0
         horizontalPadding = 24
         goToHomeAction = [
-            .title("web-import-success-button-title".localized),
+            .title(String(localized: "web-import-success-button-title")),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

@@ -70,7 +70,7 @@ final class CurrencySelectionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "settings-currency".localized
+        title = String(localized: "settings-currency")
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     

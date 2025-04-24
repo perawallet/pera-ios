@@ -29,7 +29,7 @@ struct EditSwapSlippageScreenTheme:
             .init(top: 40, leading: 0, bottom: 40, trailing: 0)
 
         self.slippageTolerancePercentageInput = .init(
-            textInputPlaceholder: "swap-slippage-placeholder".localized,
+            textInputPlaceholder: String(localized: "swap-slippage-placeholder"),
             family: family
         )
         self.slippageTolerancePercentageInput.contentEdgeInsets =

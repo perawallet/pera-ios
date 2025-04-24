@@ -47,8 +47,7 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
         var titleAttributes = Typography.titleMediumAttributes()
         titleAttributes.insert(.textColor(Colors.Text.main))
         self.titleText = .attributedString(
-            "title-passphrase-verify"
-                .localized
+            String(localized: "title-passphrase-verify")
                 .attributed(
                     titleAttributes
                 )

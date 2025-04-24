@@ -94,8 +94,7 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
 extension WCSessionItemViewTheme {
     private static func getPingingStatus() -> TextStyle {
         let text =
-            "tite-pinging"
-                .localized
+            String(localized: "tite-pinging")
                 .footnoteMedium(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail
@@ -111,8 +110,7 @@ extension WCSessionItemViewTheme {
 
     private static func getConnectedStatus() -> TextStyle {
         let text =
-            "wallet-connect-session-connected"
-                .localized
+            String(localized: "wallet-connect-session-connected")
                 .footnoteMedium(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail
@@ -128,8 +126,7 @@ extension WCSessionItemViewTheme {
 
     private static func getDisconnectedStatus() -> TextStyle {
         let text =
-            "wallet-connect-session-disconnected"
-                .localized
+            String(localized: "wallet-connect-session-disconnected")
                 .footnoteMedium(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail

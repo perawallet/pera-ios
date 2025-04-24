@@ -1010,7 +1010,7 @@ extension ASADetailScreen {
 extension ASADetailScreen {
     private func presentActionsNotAvailableForAccountBanner() {
         bannerController?.presentErrorBanner(
-            title: "action-not-available-for-account-type".localized,
+            title: String(localized: "action-not-available-for-account-type"),
             message: ""
         )
     }

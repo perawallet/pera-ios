@@ -32,8 +32,7 @@ struct SelectAssetNoContentItemViewModel:
 extension SelectAssetNoContentItemViewModel {
     mutating func bindTitle() {
         title =
-            "asset-not-found-title"
-                .localized
+            String(localized: "asset-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )

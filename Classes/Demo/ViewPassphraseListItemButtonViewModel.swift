@@ -25,7 +25,7 @@ struct ViewPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-options-view-passphrase"
-        title = Self.getTitle("options-view-passphrase".localized)
+        title = Self.getTitle(String(localized: "options-view-passphrase"))
         subtitle = nil
     }
 }

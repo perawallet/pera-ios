@@ -64,11 +64,11 @@ class WCAssetConfigTransactionItemViewModel {
         case let .assetConfig(type):
             switch type {
             case .create:
-                title = "wallet-connect-asset-creation-title".localized
+                title = String(localized: "wallet-connect-asset-creation-title")
             case .reconfig:
-                title = "wallet-connect-asset-reconfiguration-title".localized
+                title = String(localized: "wallet-connect-asset-reconfiguration-title")
             case .delete:
-                title = "wallet-connect-asset-deletion-title".localized
+                title = String(localized: "wallet-connect-asset-deletion-title")
             }
         default:
             break
@@ -91,11 +91,11 @@ class WCAssetConfigTransactionItemViewModel {
             switch type {
             case .create:
                 if let assetConfigParams = transactionDetail.assetConfigParams {
-                    detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
+                    detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? String(localized: "title-unknown"))"
                 }
             case .reconfig:
                 if let asset = asset {
-                    detail = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
+                    detail = "\(asset.naming.name ?? asset.naming.unitName ?? String(localized: "title-unknown"))"
                 }
             case .delete:
                 if let assetId = transactionDetail.assetIdBeingConfigured {

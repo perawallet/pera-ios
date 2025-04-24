@@ -35,8 +35,7 @@ extension TransactionSmallTestTransactionInstructionItemViewModel {
 
     private mutating func bindTitle() {
         title =
-            "transaction-tutorial-tip-first"
-                .localized
+            String(localized: "transaction-tutorial-tip-first")
                 .bodyRegular()
     }
 }

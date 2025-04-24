@@ -28,7 +28,7 @@ struct AddAssetItemViewTheme: StyleSheet, LayoutSheet {
         self.button = [
             .icon([.normal("add-icon-40")]),
             .font(Fonts.DMSans.regular.make(15)),
-            .title("title-add-asset".localized),
+            .title(String(localized: "title-add-asset")),
             .titleColor([.normal(Colors.Text.main)])
         ]
 

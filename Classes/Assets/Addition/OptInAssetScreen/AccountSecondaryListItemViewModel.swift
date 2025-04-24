@@ -35,8 +35,7 @@ extension AccountSecondaryListItemViewModel {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
-        title = "title-account"
-            .localized
+        title = String(localized: "title-account")
             .attributed(attributes)
     }
 }

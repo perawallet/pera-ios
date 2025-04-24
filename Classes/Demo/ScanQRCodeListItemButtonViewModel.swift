@@ -24,7 +24,7 @@ struct ScanQRCodeListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-qr-scan"
-        title = Self.getTitle("qr-scan-title".localized)
+        title = Self.getTitle(String(localized: "qr-scan-title"))
         subtitle = nil
     }
 }

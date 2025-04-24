@@ -43,6 +43,6 @@ struct AssetConfigTransactionItemViewModel:
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        bindTitle("wallet-connect-transaction-title-asset-config".localized)
+        bindTitle(String(localized: "wallet-connect-transaction-title-asset-config"))
     }
 }

@@ -30,8 +30,7 @@ struct WCSessionMethodsRequestedPermissionViewModel: SecondaryListItemViewModel 
 extension WCSessionMethodsRequestedPermissionViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-connection-wc-methods"
-                .localized
+            String(localized: "wc-session-connection-wc-methods")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 

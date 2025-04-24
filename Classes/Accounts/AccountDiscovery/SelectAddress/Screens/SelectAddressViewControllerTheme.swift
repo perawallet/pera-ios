@@ -40,7 +40,7 @@ struct SelectAddressViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("select-address-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "select-address-title").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.spacingBetweenDescriptionAndHeader = 34
@@ -93,17 +93,17 @@ struct SelectAddressListHeaderTheme:
         ]
         self.infoMinWidthRatio = 0.5
         self.selectAllAction = [
-            .title("title-select-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
+            .title(String(localized: "title-select-all").bodyMedium(lineBreakMode: .byTruncatingTail)),
             .titleColor([ .normal(Colors.Link.primary) ]),
             .icon([ .normal("icon-checkbox-unselected") ])
         ]
         self.partialSelectionAction = [
-            .title("title-select-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
+            .title(String(localized: "title-select-all").bodyMedium(lineBreakMode: .byTruncatingTail)),
             .titleColor([ .normal(Colors.Link.primary) ]),
             .icon([ .normal("icon-checkbox-partial-selected") ])
         ]
         self.unselectAllAction = [
-            .title("title-unselect-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
+            .title(String(localized: "title-unselect-all").bodyMedium(lineBreakMode: .byTruncatingTail)),
             .titleColor([ .normal(Colors.Link.primary) ]),
             .icon([ .normal("icon-checkbox-selected") ])
         ]

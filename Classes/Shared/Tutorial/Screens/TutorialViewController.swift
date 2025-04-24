@@ -431,16 +431,16 @@ extension TutorialViewController {
 
     private func presentDisabledLocalAuthenticationAlert() {
         let alertController = UIAlertController(
-            title: "local-authentication-go-settings-title".localized,
-            message: "local-authentication-go-settings-text".localized,
+            title: String(localized: "local-authentication-go-settings-title"),
+            message: String(localized: "local-authentication-go-settings-text"),
             preferredStyle: .alert
         )
 
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+        let settingsAction = UIAlertAction(title: String(localized: "title-go-to-settings"), style: .default) { _ in
             UIApplication.shared.openAppSettings()
         }
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel, handler: nil)
 
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)

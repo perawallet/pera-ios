@@ -36,12 +36,10 @@ final class RemoveAccountSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "options-remove-account"
-                .localized
+            String(localized: "options-remove-account")
                 .bodyLargeMedium(alignment: .center)
         let body =
-            "options-remove-account-explanation"
-                .localized
+            String(localized: "options-remove-account-explanation")
                 .bodyRegular(alignment: .center)
 
         super.init(
@@ -61,7 +59,7 @@ final class RemoveAccountSheet: UISheet {
 extension RemoveAccountSheet {
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-remove".localized,
+            title: String(localized: "title-remove"),
             style: .default
         ) {
             [unowned self] in
@@ -77,7 +75,7 @@ extension RemoveAccountSheet {
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-keep".localized,
+            title: String(localized: "title-keep"),
             style: .cancel
         ) {
             [unowned self] in

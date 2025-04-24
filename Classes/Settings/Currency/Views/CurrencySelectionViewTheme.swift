@@ -57,7 +57,7 @@ struct CurrencySelectionViewTheme:
         self.descriptionTrailingPadding = 54
 
         self.searchInputViewTheme = SearchInputViewCommonTheme(
-            placeholder: "settings-currency-search".localized,
+            placeholder: String(localized: "settings-currency-search"),
             family: family
         )
         self.searchViewTopPadding = 24

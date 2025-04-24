@@ -35,8 +35,7 @@ extension WebImportTapStartToScanQRInstructionItemViewModel {
 
     private mutating func bindTitle() {
         title =
-            "web-import-instruction-fourth-message"
-                .localized
+            String(localized: "web-import-instruction-fourth-message")
                 .bodyRegular()
     }
 }

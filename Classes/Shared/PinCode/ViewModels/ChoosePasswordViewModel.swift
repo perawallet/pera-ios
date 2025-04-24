@@ -38,31 +38,31 @@ extension ChoosePasswordViewModel {
     func configure(_ choosePasswordView: ChoosePasswordView) {
         switch mode {
         case .setup:
-            choosePasswordView.titleLabel.text = "password-set-subtitle".localized
+            choosePasswordView.titleLabel.text = String(localized: "password-set-subtitle")
         case .verify:
-            choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
+            choosePasswordView.titleLabel.text = String(localized: "password-verify-subtitle")
         case .login:
-            choosePasswordView.titleLabel.text = "title-enter-pin".localized
+            choosePasswordView.titleLabel.text = String(localized: "title-enter-pin")
         case .deletePassword:
-            choosePasswordView.titleLabel.text = "title-enter-pin".localized
+            choosePasswordView.titleLabel.text = String(localized: "title-enter-pin")
         case .resetPassword(let flow):
             switch flow {
             case .initial:
-                choosePasswordView.titleLabel.text = "password-set-subtitle".localized
+                choosePasswordView.titleLabel.text = String(localized: "password-set-subtitle")
             case .fromVerifyOld:
-                choosePasswordView.titleLabel.text = "password-change-new-subtitle".localized
+                choosePasswordView.titleLabel.text = String(localized: "password-change-new-subtitle")
             }
         case .resetVerify(_, let flow):
             switch flow {
             case .initial:
-                choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
+                choosePasswordView.titleLabel.text = String(localized: "password-verify-subtitle")
             case .fromVerifyOld:
-                choosePasswordView.titleLabel.text = "password-verify-new-subtitle".localized
+                choosePasswordView.titleLabel.text = String(localized: "password-verify-new-subtitle")
             }
         case .confirm:
-            choosePasswordView.titleLabel.text = "title-enter-pin".localized
+            choosePasswordView.titleLabel.text = String(localized: "title-enter-pin")
         case .verifyOld:
-            choosePasswordView.titleLabel.text = "password-change-old-subtitle".localized
+            choosePasswordView.titleLabel.text = String(localized: "password-change-old-subtitle")
         }
     }
 

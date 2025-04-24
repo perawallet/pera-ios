@@ -44,7 +44,7 @@ struct KeyRegTransactionItemViewModel:
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        bindTitle("key-reg-title".localized)
+        bindTitle(String(localized: "key-reg-title"))
     }
 
     private mutating func bindSubtitle(
@@ -58,8 +58,8 @@ struct KeyRegTransactionItemViewModel:
 
         let aSubtitle = 
             keyRegTransaction.isOnlineKeyRegTransaction
-            ? "title-online".localized
-            : "title-offline".localized
+            ? String(localized: "title-online")
+            : String(localized: "title-offline")
         bindSubtitle(aSubtitle)
     }
 }

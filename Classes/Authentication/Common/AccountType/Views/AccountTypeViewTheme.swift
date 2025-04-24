@@ -62,7 +62,7 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .font(Typography.footnoteMedium()),
             .textColor(Colors.Wallet.wallet3),
-            .text("account-type-selection-universal-wallet-warning-title".localized),
+            .text(String(localized: "account-type-selection-universal-wallet-warning-title")),
             .backgroundColor(Colors.Defaults.background),
             .textAlignment(.center),
             .isInteractable(false)

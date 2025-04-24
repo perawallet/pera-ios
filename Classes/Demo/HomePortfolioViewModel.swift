@@ -49,8 +49,7 @@ extension HomePortfolioViewModel {
     mutating func bindTitle(
         _ portfolioItem: TotalPortfolioItem
     ) {
-        title = "portfolio-title"
-            .localized
+        title = String(localized: "portfolio-title")
             .bodyRegular(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail

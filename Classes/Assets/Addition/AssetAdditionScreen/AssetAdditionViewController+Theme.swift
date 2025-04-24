@@ -36,7 +36,7 @@ extension AssetAdditionViewController {
             self.backgroundColor = Colors.Defaults.background
 
             self.searchInputTheme = SearchInputViewCommonTheme(
-                placeholder: "asset-search-placeholder".localized,
+                placeholder: String(localized: "asset-search-placeholder"),
                 family: family
             )
             self.searchInputHorizontalPadding = 24

@@ -33,8 +33,7 @@ struct CurrencySelectionViewModel: ViewModel {
 extension CurrencySelectionViewModel {
     private mutating func bindTitle() {
         self.title =
-        "settings-currency-title"
-            .localized
+        String(localized: "settings-currency-title")
             .bodyMedium()
     }
 
@@ -45,7 +44,7 @@ extension CurrencySelectionViewModel {
         let secondaryCurrencyValue = currencyID?.pairValue ?? CurrencyConstanst.unavailable
 
         let descriptionText = String(
-            format: "settings-currency-description".localized,
+            format: String(localized: "settings-currency-description"),
             primaryCurrencyValue,
             secondaryCurrencyValue
         )

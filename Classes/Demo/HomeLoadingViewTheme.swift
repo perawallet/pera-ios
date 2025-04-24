@@ -52,7 +52,7 @@ struct HomeLoadingViewTheme:
         ]
         self.contentEdgeInsets = (16, 24, 0, 24)
         self.portfolioTitle = [
-            .text("portfolio-title".localized.bodyRegular()),
+            .text(String(localized: "portfolio-title").bodyRegular()),
             .textColor(Colors.Text.gray)
         ]
         self.portfolioTitleTopPadding = 8

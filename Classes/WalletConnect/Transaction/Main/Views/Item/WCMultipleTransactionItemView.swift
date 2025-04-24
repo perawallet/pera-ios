@@ -39,7 +39,7 @@ class WCMultipleTransactionItemView: TripleShadowView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.regular.make(19).uiFont)
-            .withText("wallet-connect-transaction-title-multiple".localized)
+            .withText(String(localized: "wallet-connect-transaction-title-multiple"))
     }()
 
     private lazy var detailLabel: UILabel = {
@@ -56,7 +56,7 @@ class WCMultipleTransactionItemView: TripleShadowView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.bold.make(13).uiFont)
-            .withText("title-show-transaction-detail".localized)
+            .withText(String(localized: "title-show-transaction-detail"))
     }()
 
     override init(frame: CGRect) {

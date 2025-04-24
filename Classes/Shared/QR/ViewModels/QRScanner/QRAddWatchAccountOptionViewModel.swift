@@ -24,7 +24,7 @@ struct QRAddWatchAccountOptionViewModel: QRScanOptionListItemButtonViewModel {
 
     init() {
         icon = "icon-qr-option-watch"
-        title = Self.getTitle("qr-scan-option-add-watch".localized)
+        title = Self.getTitle(String(localized: "qr-scan-option-add-watch"))
         subtitle = nil
     }
 }

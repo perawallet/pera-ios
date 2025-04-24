@@ -169,7 +169,7 @@ extension SelectAddressViewController {
     private func addAction() {
         actionView.customizeAppearance(theme.action)
         actionView.bindData(
-            ButtonCommonViewModel(title: "account-name-setup-finish".localized)
+            ButtonCommonViewModel(title: String(localized: "account-name-setup-finish"))
         )
         actionView.isEnabled = false
 

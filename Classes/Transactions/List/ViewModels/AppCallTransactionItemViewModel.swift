@@ -45,7 +45,7 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        bindTitle("title-app-call".localized)
+        bindTitle(String(localized: "title-app-call"))
     }
 
     private mutating func bindSubtitle(
@@ -57,7 +57,7 @@ struct AppCallTransactionItemViewModel:
         }
 
         if let appID = applicationCall.appID {
-            let appId = "transaction-item-app-id-title".localized(params: appID)
+            let appId = String(format: String(localized: "transaction-item-app-id-title"), appID)
             bindSubtitle(appId)
         }
     }

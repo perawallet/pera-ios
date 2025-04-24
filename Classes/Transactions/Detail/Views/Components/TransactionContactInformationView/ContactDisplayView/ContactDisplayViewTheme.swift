@@ -46,7 +46,7 @@ struct ContactDisplayViewTheme: LayoutSheet, StyleSheet {
             .backgroundColor(Colors.Layer.grayLighter),
             .font(Fonts.DMSans.regular.make(15)),
             .titleColor([.normal(Colors.Text.gray)]),
-            .title("transaction-detail-add".localized)
+            .title(String(localized: "transaction-detail-add"))
         ]
         self.addContactButtonEdgeInsets = (4, 12, 4, 12)
         self.addContactButtonCorner = Corner(radius: 16)

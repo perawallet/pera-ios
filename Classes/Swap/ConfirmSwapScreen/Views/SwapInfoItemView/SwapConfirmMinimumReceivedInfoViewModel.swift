@@ -43,8 +43,7 @@ struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
 
 extension SwapConfirmMinimumReceivedInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-minimum-received-title"
-            .localized
+        title = String(localized: "swap-confirm-minimum-received-title")
             .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 

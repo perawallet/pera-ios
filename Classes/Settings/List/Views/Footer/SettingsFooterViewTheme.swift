@@ -31,7 +31,7 @@ struct SettingsFooterViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.button = [
-            .title("settings-logout-title".localized),
+            .title(String(localized: "settings-logout-title")),
             .titleColor([.normal(Colors.Button.Secondary.text)]),
             .backgroundColor(Colors.Button.Secondary.background),
             .font(Fonts.DMSans.medium.make(15))

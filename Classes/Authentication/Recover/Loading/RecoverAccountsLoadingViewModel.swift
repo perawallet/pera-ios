@@ -27,8 +27,6 @@ struct RecoverAccountsLoadingViewModel: ViewModel {
 
 extension RecoverAccountsLoadingViewModel {
     mutating func bindTitle() {        
-        title = "hd-account-discovery-loading-description"
-            .localized
-            .bodyLargeMedium(alignment: .center)
+        title = String(localized: "hd-account-discovery-loading-description").bodyLargeMedium(alignment: .center)
     }
 }

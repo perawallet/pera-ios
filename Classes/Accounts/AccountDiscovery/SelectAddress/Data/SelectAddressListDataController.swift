@@ -77,11 +77,11 @@ extension SelectAddressListDataController {
     }
     
     var headerTitle: String {
-        "account-count".localized(params: addressesDictonary.count)
+        String(format: String(localized: "account-count"), addressesDictonary.count)
     }
     
     var descriptionText: String {
-        "select-address-description".localized(params: addressesDictonary.count)
+        String(format: String(localized: "select-address-description"), addressesDictonary.count)
     }
 }
 

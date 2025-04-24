@@ -24,7 +24,7 @@ struct RekeyToLedgerAccountListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-options-rekey"
-        title = Self.getTitle("title-rekey-to-ledger-account".localized)
+        title = Self.getTitle(String(localized: "title-rekey-to-ledger-account"))
         subtitle = nil
     }
 }

@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct AllTransactionListGrouping: TranactionListGrouping {
+struct AllTransactionListGrouping: TransactionListGrouping {
     func groupTransactions(
         _ transactions: [Transaction]
     ) -> [Transaction] {

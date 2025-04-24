@@ -31,7 +31,7 @@ final class PortfolioCalculationInfoViewController:
 
     private lazy var closeActionViewContainer = UIView()
     private lazy var closeActionView =
-        ViewFactory.Button.makeSecondaryButton("title-close".localized)
+        ViewFactory.Button.makeSecondaryButton(String(localized: "title-close"))
     
     private let result: PortfolioValue?
 

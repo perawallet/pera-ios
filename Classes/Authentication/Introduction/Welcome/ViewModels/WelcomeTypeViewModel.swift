@@ -54,9 +54,9 @@ extension WelcomeTypeViewModel {
         
         switch mode {
         case .addBip39Wallet:
-            titleText = "account-type-selection-create-wallet".localized
+            titleText = String(localized: "account-type-selection-create-wallet")
         case .recover:
-            titleText = "account-type-selection-recover".localized
+            titleText = String(localized: "account-type-selection-recover")
         case .addAlgo25Account,
              .addBip39Address,
              .rekey,
@@ -75,9 +75,9 @@ extension WelcomeTypeViewModel {
         
         switch mode {
         case .addBip39Wallet:
-            detailText = "account-type-selection-create-wallet-detail-title".localized
+            detailText = String(localized: "account-type-selection-create-wallet-detail-title")
         case .recover:
-            detailText = "account-type-selection-recover-detail-title".localized
+            detailText = String(localized: "account-type-selection-recover-detail-title")
         case .addAlgo25Account,
              .addBip39Address,
              .rekey,

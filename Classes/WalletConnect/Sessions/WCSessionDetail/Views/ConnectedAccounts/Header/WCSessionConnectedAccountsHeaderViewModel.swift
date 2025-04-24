@@ -28,8 +28,7 @@ struct WCSessionConnectedAccountsHeaderViewModel: ViewModel {
 extension WCSessionConnectedAccountsHeaderViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-connected-with"
-                .localized
+            String(localized: "wc-session-connected-with")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

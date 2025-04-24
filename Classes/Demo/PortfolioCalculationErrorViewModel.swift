@@ -24,7 +24,7 @@ struct PortfolioCalculationErrorViewModel: ErrorViewModel {
     
     init() {
         icon = getIcon()
-        message = getMessage("account-listing-error-message".localized)
+        message = getMessage(String(localized: "account-listing-error-message"))
     }
 }
 
@@ -34,6 +34,6 @@ struct PortfolioCalculationPartialErrorViewModel: ErrorViewModel {
 
     init() {
         icon = getIcon()
-        message = getMessage("account-listing-partial-error-message".localized)
+        message = getMessage(String(localized: "account-listing-partial-error-message"))
     }
 }

@@ -48,8 +48,7 @@ extension WatchAccountPortfolioViewModel {
     mutating func bindTitle(
         _ portfolioItem: AccountPortfolioItem
     ) {
-        title = "account-detail-portfolio-title"
-            .localized
+        title = String(localized: "account-detail-portfolio-title")
             .bodyRegular(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail

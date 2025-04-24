@@ -44,9 +44,9 @@ extension OptInAssetViewModel {
         _ draft: OptInAssetDraft
     ) {
         if draft.asset.isCollectible {
-            title = "collectibles-receive-asset-title".localized
+            title = String(localized: "collectibles-receive-asset-title")
         } else {
-            title = "asset-add-confirmation-title".localized
+            title = String(localized: "asset-add-confirmation-title")
         }
     }
 
@@ -80,19 +80,19 @@ extension OptInAssetViewModel {
         let aDescription: String
 
         if draft.asset.isCollectible {
-            aDescription = "opt-in-description-adding-nft".localized
+            aDescription = String(localized: "opt-in-description-adding-nft")
         } else {
-            aDescription = "asset-add-warning".localized
+            aDescription = String(localized: "asset-add-warning")
         }
 
         description = aDescription.bodyRegular()
     }
 
     private mutating func bindApproveAction() {
-        approveAction = "title-approve".localized
+        approveAction = String(localized: "title-approve")
     }
 
     private mutating func bindCloseAction() {
-        closeAction = "title-close".localized
+        closeAction = String(localized: "title-close")
     }
 }

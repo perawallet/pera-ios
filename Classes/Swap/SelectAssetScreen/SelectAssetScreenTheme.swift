@@ -32,7 +32,7 @@ struct SelectAssetScreenTheme:
     ) {
         self.listBackgroundColor = Colors.Defaults.background
         self.searchInputView = SearchInputViewCommonTheme(
-            placeholder: "asset-search-placeholder".localized,
+            placeholder: String(localized: "asset-search-placeholder"),
             family: family
         )
         self.searchInsets = NSDirectionalEdgeInsets((8, 24, .noMetric, 24))

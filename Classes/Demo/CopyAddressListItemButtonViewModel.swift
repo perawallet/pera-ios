@@ -30,7 +30,7 @@ struct CopyAddressListItemButtonViewModel:
         _ model: T
     ) {
         icon = "icon-copy"
-        title = Self.getTitle("title-copy-address".localized.capitalized)
+        title = Self.getTitle(String(localized: "title-copy-address").capitalized)
         
         bind(model)
     }

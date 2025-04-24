@@ -46,9 +46,9 @@ extension AddAccountViewModel {
         switch flow {
         case .addNewAccount:
             if isHDWalletActive {
-                title = "account-welcome-add-wallet-or-account-title".localized
+                title = String(localized: "account-welcome-add-wallet-or-account-title")
             } else {
-                title = "account-welcome-add-account-title".localized
+                title = String(localized: "account-welcome-add-account-title")
             }
         case .backUpAccount:
             title = nil

@@ -25,7 +25,7 @@ struct RemoveAccountListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-remove-account"
         title = Self.getTitle(
-            "options-remove-account".localized,
+            String(localized: "options-remove-account"),
             Colors.Helpers.negative
         )
         subtitle = nil

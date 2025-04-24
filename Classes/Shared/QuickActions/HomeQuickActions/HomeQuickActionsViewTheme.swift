@@ -37,11 +37,11 @@ struct HomeQuickActionsViewTheme:
         self.actionWidth = 64
         self.stakeAction = [
             .icon(Self.makeActionIcon(icon: "stake-quick-icon")),
-            .title(Self.makeActionTitle(title: "title-staking".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-staking")))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),
-            .title(Self.makeActionTitle(title: "title-swap".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-swap")))
         ]
         self.swapBadge = BadgeButtonTheme()
         self.swapBadgeEdgeInsets = NSDirectionalEdgeInsets(
@@ -52,11 +52,11 @@ struct HomeQuickActionsViewTheme:
         )
         self.sendAction = [
             .icon(Self.makeActionIcon(icon: "send-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-send-title")))
         ]
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-buy-algo-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
         ]
     }
 }

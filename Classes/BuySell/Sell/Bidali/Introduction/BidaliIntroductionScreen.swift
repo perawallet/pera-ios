@@ -36,7 +36,7 @@ final class BidaliIntroductionScreen: ScrollScreen {
         hidesCloseBarButtonItem = true
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "bidali-introduction-navigation-title".localized
+        navigationItem.title = String(localized: "bidali-introduction-navigation-title")
 
         addNavigationBarButtonItems()
     }
@@ -261,15 +261,13 @@ extension BidaliIntroductionScreen {
 extension BidaliIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "title-buy-gift-cards-crypto"
-                .localized
+            String(localized: "title-buy-gift-cards-crypto")
                 .titleMedium()
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "buy-gift-cards-with-crypto-alert-body"
-                .localized
+            String(localized: "buy-gift-cards-with-crypto-alert-body")
                 .bodyRegular()
     }
 }

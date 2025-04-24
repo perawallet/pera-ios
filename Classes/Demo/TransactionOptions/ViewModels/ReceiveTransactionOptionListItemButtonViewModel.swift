@@ -23,7 +23,7 @@ struct ReceiveTransactionOptionListItemButtonViewModel: TransactionOptionListIte
 
     init() {
         icon = "icon-transaction-option-list-receive"
-        title = Self.getTitle("title-receive".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
+        title = Self.getTitle(String(localized: "title-receive"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-receive-subtitle"))
     }
 }

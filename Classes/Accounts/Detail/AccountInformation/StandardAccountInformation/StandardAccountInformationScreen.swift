@@ -178,10 +178,7 @@ extension StandardAccountInformationScreen {
 
 extension StandardAccountInformationScreen {
     private func bindTitle() {
-        titleView.attributedText =
-            "title-standard-account-capitalized-sentence"
-                .localized
-                .titleSmallMedium(lineBreakMode: .byTruncatingTail)
+        titleView.attributedText = String(localized: "title-standard-account-capitalized-sentence").titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private func bindAccountItem() {

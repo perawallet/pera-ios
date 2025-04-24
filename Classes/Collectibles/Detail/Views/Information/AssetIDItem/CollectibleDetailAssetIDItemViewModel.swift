@@ -34,8 +34,7 @@ extension CollectibleDetailAssetIDItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "title-asset-id"
-                .localized
+            String(localized: "title-asset-id")
                 .attributed(attributes)
     }
 }

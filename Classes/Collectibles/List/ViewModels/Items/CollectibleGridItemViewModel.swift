@@ -173,8 +173,7 @@ extension CollectibleGridItemViewModel {
 
     private mutating func bindPendingTitle() {
         pendingTitle = .attributedString(
-            "title-pending"
-                .localized
+            String(localized: "title-pending")
                 .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
     }
@@ -246,7 +245,7 @@ extension CollectibleGridItemViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

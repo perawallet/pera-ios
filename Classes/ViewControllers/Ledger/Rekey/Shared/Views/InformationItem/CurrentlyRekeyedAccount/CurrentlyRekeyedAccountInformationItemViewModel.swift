@@ -32,8 +32,7 @@ extension CurrentlyRekeyedAccountInformationItemViewModel {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
-        title = "title-currently-rekeyed"
-            .localized
+        title = String(localized: "title-currently-rekeyed")
             .attributed(attributes)
     }
 }

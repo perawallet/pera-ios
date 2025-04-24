@@ -139,7 +139,7 @@ extension AccountRecoverViewController {
 
     private func addRecoverButton() {
         recoverButton.customize(ButtonPrimaryTheme())
-        recoverButton.bindData(ButtonCommonViewModel(title: "title-recover".localized))
+        recoverButton.bindData(ButtonCommonViewModel(title: String(localized: "title-recover")))
 
         view.addSubview(recoverButton)
         recoverButton.snp.makeConstraints {
@@ -218,7 +218,7 @@ extension AccountRecoverViewController: AccountRecoverOptionsViewControllerDeleg
 extension AccountRecoverViewController {
     private func openQRScanner() {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
-            displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+            displaySimpleAlertWith(title: String(localized: "qr-scan-error-title"), message: String(localized: "qr-scan-error-message"))
             return
         }
 
@@ -228,7 +228,7 @@ extension AccountRecoverViewController {
 
     private func recoverAccount() {
         guard let mnemonics = getMnemonics() else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "recover-fill-all-error".localized)
+            displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "recover-fill-all-error"))
             return
         }
         view.endEditing(true)
@@ -389,8 +389,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             /// <note>
             /// Invalid copy/paste action for mnemonics.
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "recover-copy-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "recover-copy-error")
             )
 
             return false
@@ -461,8 +461,8 @@ extension AccountRecoverViewController {
             /// <note>
             /// Invalid copy/paste action for mnemonics.
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "recover-copy-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "recover-copy-error")
             )
         }
     }
@@ -479,7 +479,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     }
 
     private func fetchRekeyedAccounts(to account: AccountInformation) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         api?.fetchRekeyedAccounts(account.address) {
             [weak self] response in
@@ -505,7 +505,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                 )
             case .failure:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-failed-to-fetch-rekeyed-accounts".localized,
+                    title: String(localized: "title-failed-to-fetch-rekeyed-accounts"),
                     message: ""
                 )
                 
@@ -578,21 +578,21 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
 
         switch error {
         case .alreadyExist:
-            errorTitle = "title-error"
-            errorDescription = "recover-from-seed-verify-exist-error"
+            errorTitle = String(localized: "title-error")
+            errorDescription = String(localized: "recover-from-seed-verify-exist-error")
         case .invalid:
-            errorTitle = "passphrase-verify-invalid-title"
-            errorDescription = "pass-phrase-verify-invalid-passphrase"
+            errorTitle = String(localized: "passphrase-verify-invalid-title")
+            errorDescription = String(localized: "pass-phrase-verify-invalid-passphrase")
         case .sdk:
-            errorTitle = "title-error"
-            errorDescription = "pass-phrase-verify-sdk-error"
+            errorTitle = String(localized: "title-error")
+            errorDescription = String(localized: "pass-phrase-verify-sdk-error")
         }
 
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: errorTitle.localized,
-            description: .plain(errorDescription.localized),
-            secondaryActionButtonTitle: "title-close".localized
+            title: errorTitle,
+            description: .plain(errorDescription),
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
 
         bottomSheetTransition.perform(
@@ -611,7 +611,7 @@ extension AccountRecoverViewController: InputSuggestionViewControllerDelegate {
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .mnemonic else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
+            displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-mnemonics-message")) { _ in
                 completionHandler?()
             }
 
@@ -628,7 +628,7 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+        displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-valid-qr")) { _ in
             completionHandler?()
         }
     }

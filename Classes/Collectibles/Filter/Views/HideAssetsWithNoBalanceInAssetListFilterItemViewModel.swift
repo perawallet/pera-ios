@@ -22,7 +22,7 @@ struct HideAssetsWithNoBalanceInAssetListFilterItemViewModel: AssetFilterItemVie
     let description: TextProvider?
 
     init() {
-        self.title = "asset-filter-selection-toggle-title".localized.bodyRegular()
-        self.description = "asset-filter-selection-toggle-description".localized.footnoteRegular()
+        self.title = String(localized: "asset-filter-selection-toggle-title").bodyRegular()
+        self.description = String(localized: "asset-filter-selection-toggle-description").footnoteRegular()
     }
 }

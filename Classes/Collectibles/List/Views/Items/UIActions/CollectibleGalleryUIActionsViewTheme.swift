@@ -33,7 +33,7 @@ struct CollectibleGalleryUIActionsViewTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.searchInput = SearchInputViewCommonTheme(
-            placeholder: "collectibles-list-input-placeholder".localized,
+            placeholder: String(localized: "collectibles-list-input-placeholder"),
             family: family
         )
         self.spacingBetweenSearchInputAndGalleryUIStyleInput = 16

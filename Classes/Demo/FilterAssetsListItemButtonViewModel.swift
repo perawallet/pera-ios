@@ -24,7 +24,7 @@ struct FilterAssetsListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         self.icon = "icon-asset-filter"
-        self.title = Self.getTitle("title-filter".localized)
+        self.title = Self.getTitle(String(localized: "title-filter"))
         self.subtitle = nil
     }
 }

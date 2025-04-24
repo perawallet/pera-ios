@@ -772,8 +772,8 @@ extension HomeViewController {
             if let authenticatedUser = self.session?.authenticatedUser,
                authenticatedUser.hasReachedTotalAccountLimit {
                 self.bannerController?.presentErrorBanner(
-                    title: "user-account-limit-error-title".localized,
-                    message: "user-account-limit-error-message".localized
+                    title: String(localized: "user-account-limit-error-title"),
+                    message: String(localized: "user-account-limit-error-message")
                 )
                 return
             }

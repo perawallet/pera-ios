@@ -36,7 +36,7 @@ struct ContactDetailViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(Colors.Text.main),
-            .text("title-assets".localized)
+            .text(String(localized: "title-assets"))
         ]
         self.contactInformationViewTheme = ContactInformationViewTheme()
 

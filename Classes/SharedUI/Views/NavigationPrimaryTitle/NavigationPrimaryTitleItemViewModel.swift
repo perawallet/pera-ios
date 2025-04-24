@@ -35,7 +35,6 @@ struct NavigationPrimaryTitleItemViewModel: PrimaryTitleViewModel {
 extension NavigationPrimaryTitleItemViewModel {
     mutating func bindPrimaryTitle(_ title: String) {
         primaryTitle = title
-            .localized
             .bodyMedium(alignment: .center)
     }
     
@@ -45,7 +44,6 @@ extension NavigationPrimaryTitleItemViewModel {
     
     mutating func bindSecondaryTitle(_ detail: String) {
         secondaryTitle = detail
-            .localized
             .footnoteRegular(alignment: .center)
     }
 }

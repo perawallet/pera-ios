@@ -317,7 +317,7 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     }
 
     func transactionHistoryFilterCellDidShareHistory(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         analytics.track(.recordAccountDetailScreen(type: .tapTransactionDownload))
 
@@ -345,8 +345,8 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
                     by: .presentWithoutNavigationController
                 )
             case .failure(_, let errorModel):
-                let title = "title-error".localized
-                let message = errorModel?.message() ?? "title-generic-api-error".localized
+                let title = String(localized: "title-error")
+                let message = errorModel?.message() ?? String(localized: "title-generic-api-error")
                 self.bannerController?.presentErrorBanner(
                     title: title,
                     message: message

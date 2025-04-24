@@ -168,9 +168,9 @@ final class CollectibleDetailViewController:
                 self.mediaPreviewController.updateAsset(asset)
             case .didResponseFail(let message):
                 self.bottomBannerController.presentFetchError(
-                    title: "title-generic-api-error".localized,
-                    message: "title-error-description".localized(params: message),
-                    actionTitle: "title-retry".localized,
+                    title: String(localized: "title-generic-api-error"),
+                    message: String(format: String(localized: "title-error-description"), message),
+                    actionTitle: String(localized: "title-retry"),
                     actionHandler: {
                         [unowned self] in
                         self.bottomBannerController.dismissError()
@@ -186,13 +186,13 @@ final class CollectibleDetailViewController:
                 DispatchQueue.main.async {
                     self.loadingController?.stopLoading()
                     self.bottomBannerController.presentFetchError(
-                        title: "title-generic-api-error".localized,
-                        message: "title-generic-response-description".localized,
-                        actionTitle: "title-retry".localized,
+                        title: String(localized: "title-generic-api-error"),
+                        message: String(localized: "title-generic-response-description"),
+                        actionTitle: String(localized: "title-retry"),
                         actionHandler: {
                             [unowned self] in
                             self.bottomBannerController.dismissError()
-                            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+                            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
                             self.dataController.getImageDataToCopy(from: url)
                         }
                     )
@@ -206,14 +206,14 @@ final class CollectibleDetailViewController:
                 DispatchQueue.main.async {
                     self.loadingController?.stopLoading()
                     self.bottomBannerController.presentFetchError(
-                        title: "title-generic-api-error".localized,
-                        message: "title-generic-response-description".localized,
-                        actionTitle: "title-retry".localized,
+                        title: String(localized: "title-generic-api-error"),
+                        message: String(localized: "title-generic-response-description"),
+                        actionTitle: String(localized: "title-retry"),
                         actionHandler: {
                             [unowned self] in
                             self.bottomBannerController.dismissError()
                             guard let fileExtension = self.displayedMedia?.mediaExtension.rawValue else { return }
-                            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+                            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
                             self.dataController.downloadAssetMediaToSave(from: url, of: self.asset.mediaType, with: fileExtension)
                         }
                     )
@@ -274,7 +274,7 @@ final class CollectibleDetailViewController:
             [weak self] in
             guard let self = self else { return }
 
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
             if self.account.requiresLedgerConnection() {
                 self.openLedgerConnection()
@@ -285,7 +285,7 @@ final class CollectibleDetailViewController:
             [weak self] in
             guard let self = self else { return }
 
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
             if self.account.requiresLedgerConnection() {
                 self.openLedgerConnection()
@@ -585,7 +585,7 @@ extension CollectibleDetailViewController {
             
             switch asset.mediaType {
             case .image:
-                loadingController?.startLoadingWithMessage("title-loading".localized)
+                loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
                 guard let downloadUrl = displayedMedia?.downloadURL ?? asset.thumbnailImage else { return }
                 dataController.getImageDataToCopy(from: downloadUrl)
             default:
@@ -602,7 +602,7 @@ extension CollectibleDetailViewController {
                   let fileExtension = displayedMedia?.mediaExtension.rawValue else {
                       return
             }
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
             dataController.downloadAssetMediaToSave(from: downloadUrl, of: asset.mediaType, with: fileExtension)
         }
     }
@@ -779,7 +779,7 @@ extension CollectibleDetailViewController {
 extension CollectibleDetailViewController {
     private func presentActionsNotAvailableForAccountBanner() {
         bannerController?.presentErrorBanner(
-            title: "action-not-available-for-account-type".localized,
+            title: String(localized: "action-not-available-for-account-type"),
             message: ""
         )
     }
@@ -891,12 +891,12 @@ extension CollectibleDetailViewController {
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.debugDescription
             )
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.localizedDescription
             )
         }
@@ -990,9 +990,9 @@ extension CollectibleDetailViewController {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -1045,14 +1045,12 @@ extension CollectibleDetailViewController {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "asset-min-transaction-error-message"), amountText.someString)
             )
         case let .sdkError(error):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -1061,8 +1059,8 @@ extension CollectibleDetailViewController {
             }
         case .optOutFromCreator:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "asset-creator-opt-out-error-message".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "asset-creator-opt-out-error-message")
             )
         default:
             break

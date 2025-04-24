@@ -83,7 +83,7 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
             finishTimingOperation()
         default:
             reset()
-            returnError(.custom(title: "ble-error-connection-title".localized, message: ""))
+            returnError(.custom(title: String(localized: "ble-error-connection-title"), message: ""))
             returnError(.ledgerConnectionWarning)
         }
     }

@@ -66,7 +66,7 @@ final class HDWalletSetupViewController:
         layout.scrollDirection = .vertical
 
         super.init(configuration: configuration)
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         setupCallbacks()
     }
 
@@ -145,7 +145,7 @@ extension HDWalletSetupViewController {
         actionView.customizeAppearance(theme.action)
         actionView.bindData(
             ButtonCommonViewModel(
-                title: "account-type-selection-create-wallet".localized,
+                title: String(localized: "account-type-selection-create-wallet"),
                 iconSet: [.normal("icon-plus-24")])
         )
 

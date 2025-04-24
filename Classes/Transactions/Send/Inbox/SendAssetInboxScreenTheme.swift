@@ -86,7 +86,7 @@ struct SendAssetInboxScreenTheme:
             .textColor(Colors.Text.main),
         ]
         self.sendActionView = [
-            .title("send-inbox-action-title".localized),
+            .title(String(localized: "send-inbox-action-title")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -95,7 +95,7 @@ struct SendAssetInboxScreenTheme:
             ])
         ]
         self.closeActionView = [
-            .title("title-close".localized),
+            .title(String(localized: "title-close")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
