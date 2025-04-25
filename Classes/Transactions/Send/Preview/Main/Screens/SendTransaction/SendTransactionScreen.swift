@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, Lda
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,11 +52,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private var transactionParams: TransactionParams?
 
-    private var _amount: String = "0"
-    private var amount: String {
-        get { _amount }
-        set { _amount = newValue.components(separatedBy: .whitespacesAndNewlines).joined() }
-    }
+    private var amount: String = "0"
     private var isAmountResetted: Bool = true
 
     private lazy var amountValidator = TransactionAmountValidator(account: draft.from)
