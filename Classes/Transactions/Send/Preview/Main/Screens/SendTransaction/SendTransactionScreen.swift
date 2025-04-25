@@ -52,7 +52,11 @@ final class SendTransactionScreen: BaseViewController {
 
     private var transactionParams: TransactionParams?
 
-    private var amount: String = "0"
+    private var _amount: String = "0"
+    private var amount: String {
+        get { _amount }
+        set { _amount = newValue.components(separatedBy: .whitespacesAndNewlines).joined() }
+    }
     private var isAmountResetted: Bool = true
 
     private lazy var amountValidator = TransactionAmountValidator(account: draft.from)
