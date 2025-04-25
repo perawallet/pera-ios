@@ -587,7 +587,13 @@ extension DeepLinkParser {
         let urlComponents =
             URLComponents(url: walletConnectSessionRequest, resolvingAgainstBaseURL: true)
         let queryItems = urlComponents?.queryItems
-        guard let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value.unwrap(or: "") else {
+        
+        let maybeWalletConnectSessionKey: String!
+        if let key = queryItems?.first(matching: (\.name, "uri"))?.value.unwrap(or: "") {
+            maybeWalletConnectSessionKey = key
+        } else if let urlString = urlComponents?.url?.absoluteString, urlString.containsCaseInsensitive("wc:") {
+            maybeWalletConnectSessionKey = urlString
+        } else {
             return nil
         }
         
