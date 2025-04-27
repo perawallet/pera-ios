@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
         self.currency = currency
         self.currencyFormatter = currencyFormatter
 
-        self.title = "title-arbitrary-data".localized
+        self.title = String(localized: "title-arbitrary-data")
         self.subtitle = data.message
     }
 
@@ -174,8 +174,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     var titleAttributes = Typography.largeTitleRegularAttributes()
                     titleAttributes.insert(.textColor(Colors.Text.main))
                     self.title =
-                        "single-transaction-request-opt-in-title"
-                            .localized
+                        String(localized: "title-opt-in")
                             .attributed(titleAttributes)
                     self.subtitle = appCallOncomplete.representation
                     self.verificationTierIcon = nil
@@ -189,7 +188,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             var titleAttributes = Typography.largeTitleRegularAttributes()
             titleAttributes.insert(.textColor(Colors.Text.main))
             self.title = "#\(id)".attributed(titleAttributes)
-            self.subtitle = "wallet-connect-transaction-title-app-id".localized
+            self.subtitle = String(localized: "wallet-connect-transaction-title-app-id")
             self.verificationTierIcon = nil
         case .assetConfig(let type):
             switch type {
@@ -197,7 +196,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 if let assetConfigParams = transaction.transactionDetail?.assetConfigParams {
                     var titleAttributes = Typography.largeTitleRegularAttributes()
                     titleAttributes.insert(.textColor(Colors.Text.main))
-                    self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
+                    self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? String(localized: "title-unknown"))".attributed(titleAttributes)
                     /// <note> Newly created asset should be unverified.
                     self.verificationTierIcon = nil
                 }
@@ -212,7 +211,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     }
 
                     let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
-                    let assetText = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
+                    let assetText = "\(asset.naming.name ?? asset.naming.unitName ?? String(localized: "title-unknown"))".attributed(titleAttributes)
                     let text = [ destroyedText, assetText ].compound(" ")
                     self.title = text
                     self.subtitle = "#\(asset.id)"
@@ -230,7 +229,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
                     let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
                     let assetText =
-                        "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
+                        "\(asset.naming.name ?? asset.naming.unitName ?? String(localized: "title-unknown"))".attributed(titleAttributes)
                     let text = [ destroyedText, assetText ].compound(" ")
                     self.title = text
                     self.subtitle = "#\(asset.id)"
@@ -238,11 +237,11 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 }
             }
         case .keyReg:
-            self.title = "key-reg-title".localized
+            self.title = String(localized: "key-reg-title")
             self.subtitle =
                 transactionDetail.isOnlineKeyRegTransaction
-                ? "online-title".localized
-                : "offline-title".localized
+                ? String(localized: "title-online")
+                : String(localized: "title-offline")
         }
     }
 
@@ -251,7 +250,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.largeTitleMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

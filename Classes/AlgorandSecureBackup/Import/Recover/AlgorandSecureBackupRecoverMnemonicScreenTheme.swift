@@ -51,7 +51,7 @@ struct AlgorandSecureBackupRecoverMnemonicScreenTheme: LayoutSheet, StyleSheet {
                 .selected("components/buttons/primary/bg-highlighted"),
                 .disabled("components/buttons/primary/bg-disabled")
             ]),
-            .title("title-next".localized)
+            .title(String(localized: "title-next"))
         ]
         self.nextActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)
         self.nextActionEdgeInsets = .init(top: 36, leading: 24, bottom: 16, trailing: 24)

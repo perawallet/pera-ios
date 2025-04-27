@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,12 +52,12 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
         self.subtitle = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
-            .text(Self.getBody("pin-limit-too-many"))
+            .text(Self.getBody(String(localized: "pin-limit-too-many")))
         ]
         self.tryAgain = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
-            .text(Self.getBody("pin-limit-try-again"))
+            .text(Self.getBody(String(localized: "pin-limit-try-again")))
         ]
         self.counter = [
             .textAlignment(.center),
@@ -66,7 +66,7 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMMono.regular.make(36)),
         ]
         self.resetButton = [
-            .title("pin-limit-reset-all".localized),
+            .title(String(localized: "pin-limit-reset-all")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)
@@ -89,8 +89,7 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
 extension PinLimitViewTheme {
     private static func getTitle() -> EditText {
         return .attributedString(
-            "pin-limit-title"
-                .localized
+            String(localized: "pin-limit-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -98,12 +97,6 @@ extension PinLimitViewTheme {
     }
 
     private static func getBody(_ text: String) -> EditText {
-        return .attributedString(
-            text
-                .localized
-                .bodyRegular(
-                    alignment: .center
-                )
-        )
+        return .attributedString(text.bodyRegular(alignment: .center))
     }
 }

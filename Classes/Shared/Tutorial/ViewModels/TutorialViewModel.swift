@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,102 +72,102 @@ extension TutorialViewModel {
     private func bindTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            title = "tutorial-title-back-up".localized
+            title = String(localized: "tutorial-title-back-up")
         case .recoverWithPassphrase:
-            title = "tutorial-title-recover".localized
+            title = String(localized: "tutorial-title-recover")
         case .watchAccount:
-            title = "title-watch-account".localized
+            title = String(localized: "title-watch-account").capitalized
         case .writePassphrase:
-            title = "tutorial-title-write".localized
+            title = String(localized: "tutorial-title-write")
         case .passcode:
-            title = "tutorial-title-passcode".localized
+            title = String(localized: "tutorial-title-passcode")
         case .localAuthentication:
-            title = "local-authentication-preference-title".localized
+            title = String(localized: "local-authentication-preference-title")
         case .biometricAuthenticationEnabled:
-            title = "local-authentication-enabled-title".localized
+            title = String(localized: "local-authentication-enabled-title")
         case .passphraseVerified:
-            title = "pass-phrase-verify-pop-up-title".localized
+            title = String(localized: "pass-phrase-verify-pop-up-title")
         case .accountVerified(let flow, _):
             bindAccountSetupFlowTitle(flow)
         case .recoverWithLedger:
-            title = "ledger-tutorial-title-text".localized
+            title = String(localized: "ledger-tutorial-title-text")
         case .ledgerSuccessfullyConnected:
-            title = "recover-from-seed-verify-pop-up-title".localized
+            title = String(localized: "recover-from-seed-verify-pop-up-title")
         case .failedToImportLedgerAccounts:
-            title = "tutorial-title-failed-to-import-ledger-accounts".localized
+            title = String(localized: "tutorial-title-failed-to-import-ledger-accounts")
         case .collectibleTransferConfirmed:
-            title = "collectible-transfer-confirmed-title".localized
+            title = String(localized: "collectible-transfer-confirmed-title")
         }
     }
 
     private func bindDescription(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            description = "tutorial-description-back-up".localized
+            description = String(localized: "tutorial-description-back-up")
         case .recoverWithPassphrase:
-            description = "tutorial-description-recover".localized
+            description = String(localized: "tutorial-description-recover")
         case .watchAccount:
-            description = "tutorial-description-watch".localized
+            description = String(localized: "tutorial-description-watch")
         case .writePassphrase:
-            description = "tutorial-description-write".localized
+            description = String(localized: "tutorial-description-write")
         case .passcode:
-            description = "tutorial-description-passcode".localized
+            description = String(localized: "tutorial-description-passcode")
         case .localAuthentication:
-            description = "tutorial-description-local".localized
+            description = String(localized: "tutorial-description-local")
         case .biometricAuthenticationEnabled:
-            description = "local-authentication-enabled-subtitle".localized
+            description = String(localized: "local-authentication-enabled-subtitle")
         case .passphraseVerified:
-            description = "pass-phrase-verify-pop-up-explanation".localized
+            description = String(localized: "pass-phrase-verify-pop-up-explanation")
         case .accountVerified(let flow, _):
             bindAccountSetupFlowDescription(flow)
         case .recoverWithLedger:
-            description = "tutorial-description-ledger".localized
+            description = String(localized: "tutorial-description-ledger")
         case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowDescription(flow)
         case .failedToImportLedgerAccounts:
-            description = "tutorial-description-failed-to-import-ledger-accounts".localized
+            description = String(localized: "tutorial-description-failed-to-import-ledger-accounts")
         case .collectibleTransferConfirmed:
-            description = "collectible-transfer-confirmed-description".localized
+            description = String(localized: "collectible-transfer-confirmed-description")
         }
     }
 
     private func bindPrimaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            primaryActionButtonTitle = "tutorial-main-title-back-up".localized
+            primaryActionButtonTitle = String(localized: "title-i-understand")
         case .recoverWithPassphrase:
-            primaryActionButtonTitle = "tutorial-main-title-recover".localized
+            primaryActionButtonTitle = String(localized: "tutorial-main-title-recover")
         case .watchAccount:
-            primaryActionButtonTitle = "watch-account-button".localized
+            primaryActionButtonTitle = String(localized: "watch-account-button")
         case .writePassphrase:
-            primaryActionButtonTitle = "tutorial-main-title-write".localized
+            primaryActionButtonTitle = String(localized: "tutorial-main-title-write")
         case .passcode:
-            primaryActionButtonTitle = "tutorial-main-title-passcode".localized
+            primaryActionButtonTitle = String(localized: "tutorial-main-title-passcode")
         case .localAuthentication:
-            primaryActionButtonTitle = "local-authentication-enable".localized
+            primaryActionButtonTitle = String(localized: "local-authentication-enable")
         case .biometricAuthenticationEnabled:
-            primaryActionButtonTitle = "title-go-to-accounts".localized
+            primaryActionButtonTitle = String(localized: "title-go-to-accounts")
         case .passphraseVerified:
-            primaryActionButtonTitle = "title-next".localized
+            primaryActionButtonTitle = String(localized: "title-next")
         case .accountVerified(let flow, _):
             bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
-            primaryActionButtonTitle = "ledger-tutorial-title-text".localized
+            primaryActionButtonTitle = String(localized: "ledger-tutorial-title-text")
         case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowPrimaryButton(flow)
         case .failedToImportLedgerAccounts:
-            primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
+            primaryActionButtonTitle = String(localized: "tutorial-main-title-ledger-connected")
         case .collectibleTransferConfirmed:
-            primaryActionButtonTitle = "collectible-transfer-confirmed-action-title".localized
+            primaryActionButtonTitle = String(localized: "collectible-transfer-confirmed-action-title")
         }
     }
 
     private func bindWarningTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .watchAccount:
-            warningDescription = "tutorial-description-watch-warning".localized
+            warningDescription = String(localized: "tutorial-description-watch-warning")
         case .writePassphrase:
-            warningDescription = "tutorial-description-write-warning".localized
+            warningDescription = String(localized: "tutorial-description-write-warning")
         default:
             break
         }
@@ -176,16 +176,16 @@ extension TutorialViewModel {
     private func bindSecondaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .passcode:
-            secondaryActionButtonTitle = "tutorial-action-title-passcode".localized
+            secondaryActionButtonTitle = String(localized: "tutorial-action-title-passcode")
         case .localAuthentication:
-            secondaryActionButtonTitle = "local-authentication-no".localized
+            secondaryActionButtonTitle = String(localized: "local-authentication-no")
         case .recoverWithLedger:
-            secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
+            secondaryActionButtonTitle = String(localized: "tutorial-action-title-ledger")
         case .backUp(let flow, _),
              .writePassphrase(let flow, _):
             guard !flow.isBackUpAccount else { return }
 
-            secondaryActionButtonTitle = "title-skip-for-now".localized
+            secondaryActionButtonTitle = String(localized: "title-skip-for-now")
         case .accountVerified(let flow, _):
             bindAccountSetupFlowSecondaryButton(flow)
         case .ledgerSuccessfullyConnected(let flow):
@@ -198,33 +198,33 @@ extension TutorialViewModel {
 
 extension TutorialViewModel {
     private func bindAccountSetupFlowTitle(_ flow: AccountSetupFlow) {
-        self.title = "recover-from-seed-verify-pop-up-title".localized
+        self.title = String(localized: "recover-from-seed-verify-pop-up-title")
     }
     
     private func bindAccountSetupFlowDescription(_ flow: AccountSetupFlow) {
         if case .initializeAccount(mode: .watch) = flow {
-            self.description = "recover-from-seed-verify-pop-up-description-watch-account-initialize".localized
+            self.description = String(localized: "recover-from-seed-verify-pop-up-description-watch-account-initialize")
         } else if case .addNewAccount(mode: .watch) = flow {
-            self.description = "recover-from-seed-verify-pop-up-description-watch-account-add".localized
+            self.description = String(localized: "recover-from-seed-verify-pop-up-description-watch-account-add")
         } else {
             switch flow {
             case .initializeAccount:
-                self.description = "recover-from-seed-verify-pop-up-explanation".localized
+                self.description = String(localized: "recover-from-seed-verify-pop-up-explanation")
             case .addNewAccount,
                  .backUpAccount,
                  .none:
-                self.description = "recover-from-seed-verify-pop-up-explanation-already-added".localized
+                self.description = String(localized: "recover-from-seed-verify-pop-up-explanation-already-added")
             }
         }
     }
     
     private func bindAccountSetupFlowPrimaryButton(_ flow: AccountSetupFlow) {
         if case .initializeAccount(mode: .watch) = flow {
-            self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+            self.primaryActionButtonTitle = String(localized: "title-start-using-pera-wallet")
         } else if case .addNewAccount(mode: .watch) = flow {
-            self.primaryActionButtonTitle = "title-continue".localized
+            self.primaryActionButtonTitle = String(localized: "title-continue")
         } else {
-            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+            self.primaryActionButtonTitle = String(localized: "quick-actions-buy-algo-title")
         }
     }
 
@@ -236,11 +236,11 @@ extension TutorialViewModel {
         } else {
             switch flow {
             case .initializeAccount:
-                self.secondaryActionButtonTitle = "title-start-using-pera-wallet".localized
+                self.secondaryActionButtonTitle = String(localized: "title-start-using-pera-wallet")
             case .addNewAccount,
                  .backUpAccount,
                  .none:
-                self.secondaryActionButtonTitle = "title-continue".localized
+                self.secondaryActionButtonTitle = String(localized: "title-continue")
             }
         }
     }

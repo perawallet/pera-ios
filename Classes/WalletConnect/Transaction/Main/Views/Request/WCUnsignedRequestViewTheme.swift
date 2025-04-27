@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ struct WCUnsignedRequestViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.confirmButton = [
-            .title("title-confirm-all".localized),
+            .title(String(localized: "title-confirm-all")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -45,7 +45,7 @@ struct WCUnsignedRequestViewTheme: StyleSheet, LayoutSheet {
             ])
         ]
         self.cancelButton = [
-            .title("title-cancel".localized),
+            .title(String(localized: "title-cancel")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

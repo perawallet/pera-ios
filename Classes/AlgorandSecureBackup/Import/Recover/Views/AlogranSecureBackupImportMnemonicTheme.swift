@@ -32,7 +32,7 @@ struct AlogranSecureBackupImportMnemonicTheme: AccountRecoverViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.titleMedium()),
-            .text("algorand-secure-backup-import-recover-mnemonic-title".localized)
+            .text(String(localized: "algorand-secure-backup-import-recover-mnemonic-title"))
         ]
 
         self.horizontalStackViewTopInset = 37

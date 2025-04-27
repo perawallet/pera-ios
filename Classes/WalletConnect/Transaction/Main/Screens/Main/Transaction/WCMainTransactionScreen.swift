@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -353,10 +353,10 @@ extension WCMainTransactionScreen {
     private func presentSigningFutureTransactionAlert() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "wallet-connect-transaction-request-signing-future-transaction-alert-title".localized,
-            description: .plain("wallet-connect-transaction-request-signing-future-transaction-alert-description".localized),
-            primaryActionButtonTitle: "title-accept".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            title: String(localized: "wallet-connect-transaction-request-signing-future-transaction-alert-title"),
+            description: .plain(String(localized: "wallet-connect-transaction-request-signing-future-transaction-alert-description")),
+            primaryActionButtonTitle: String(localized: "title-accept"),
+            secondaryActionButtonTitle: String(localized: "title-cancel"),
             primaryAction: { [weak self] in
                 asyncBackground(qos: .userInitiated) {
                     [weak self] in
@@ -388,9 +388,9 @@ extension WCMainTransactionScreen {
 
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green-large".uiImage,
-            title: "wallet-connect-transaction-warning-initial-title".localized,
-            description: .plain("wallet-connect-transaction-warning-initial-description".localized),
-            secondaryActionButtonTitle: "title-close".localized
+            title: String(localized: "wallet-connect-transaction-warning-initial-title"),
+            description: .plain(String(localized: "wallet-connect-transaction-warning-initial-description")),
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
         transitionToInitialTransactionWarning.perform(
             .bottomWarning(configurator: configurator),
@@ -674,7 +674,7 @@ extension WCMainTransactionScreen {
 extension WCMainTransactionScreen {
     private func displaySigningError(_ error: HIPTransactionError) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: String(localized: "title-error"),
             message: error.debugDescription
         )
     }
@@ -683,22 +683,22 @@ extension WCMainTransactionScreen {
         switch ledgerError {
         case .cancelled:
             bannerController?.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+                title: String(localized: "ble-error-transaction-cancelled-title"),
+                message: String(localized: "ble-error-fail-sign-transaction")
             )
         case .closedApp:
             bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized, message: "ble-error-ledger-connection-open-app-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"), message: String(localized: "ble-error-ledger-connection-open-app-error")
             )
         case .failedToFetchAddress:
             bannerController?.presentErrorBanner(
-                title: "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
+                title: String(localized: "ble-error-transmission-title"),
+                message: String(localized: "ble-error-fail-fetch-account-address")
             )
         case .failedToFetchAccountFromIndexer:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-account-fetct-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "ledger-account-fetct-error")
             )
         case .failedBLEConnectionError(let state):
             guard let errorTitle = state.errorDescription.title,
@@ -719,7 +719,7 @@ extension WCMainTransactionScreen {
                 guard let self else { return }
 
                 self.bannerController?.presentErrorBanner(
-                    title: "ble-error-connection-title".localized,
+                    title: String(localized: "ble-error-connection-title"),
                     message: ""
                 )
 
@@ -737,8 +737,8 @@ extension WCMainTransactionScreen {
 
     private func displayGenericError() {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "title-generic-error".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "title-generic-error")
         )
     }
 }
@@ -785,9 +785,9 @@ extension WCMainTransactionScreen {
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
+                        title: String(localized: "ledger-pairing-issue-error-title"),
+                        description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                        secondaryActionButtonTitle: String(localized: "title-ok")
                     )
                 ),
                 by: .presentWithoutNavigationController
@@ -893,9 +893,9 @@ extension WCMainTransactionScreen {
     private func showRejectionReasonBottomSheet(_ reason: WCTransactionErrorResponse) {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "title-error".localized,
-            description: .plain("wallet-connect-no-account-for-transaction".localized(params: reason.message)),
-            secondaryActionButtonTitle: "title-ok".localized,
+            title: String(localized: "title-error"),
+            description: .plain(String(format: String(localized: "wallet-connect-no-account-for-transaction"), reason.message)),
+            secondaryActionButtonTitle: String(localized: "title-ok"),
             secondaryAction: {
                 [weak self] in
                 guard let self else { return  }
@@ -956,9 +956,9 @@ extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
     ) {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "title-error".localized,
-            description: .plain("wallet-connect-transaction-error-invalid-group".localized),
-            secondaryActionButtonTitle: "title-ok".localized,
+            title: String(localized: "title-error"),
+            description: .plain(String(localized: "wallet-connect-transaction-error-invalid-group")),
+            secondaryActionButtonTitle: String(localized: "title-ok"),
             secondaryAction: { [weak self] in
                 self?.rejectTransaction(with: .rejected(.failedValidation))
             }
@@ -1087,7 +1087,7 @@ extension WCMainTransactionScreen {
         asyncMain {
             [weak self] in
             guard let self else { return }
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         }
     }
 

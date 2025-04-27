@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -141,24 +141,16 @@ extension TransactionAmountViewModel {
         amountLabelColor = Colors.Helpers.positive.uiColor
 
         if showInList {
-            let aText = count == 1
-            ? "inner-txns-singular-count".localized
-            : "inner-txns-plural-count".localized(params: "\(count)")
-
             amountLabelText = .attributedString(
-                aText.bodyMedium(
+                String(format: String(localized: "inner-txns-count"), count).bodyMedium(
                     alignment: .right
                 )
             )
             return
         }
 
-        let aText = count == 1
-        ?  "transaction-detail-singular-inner-transaction-detail".localized
-        : "transaction-detail-plural-inner-transaction-detail".localized(params: "\(count)")
-
         amountLabelText = .attributedString(
-            aText.bodyMedium(
+            String(format: String(localized: "transaction-detail-inner-transaction-detail"), count).bodyMedium(
                 alignment: .right
             )
         )

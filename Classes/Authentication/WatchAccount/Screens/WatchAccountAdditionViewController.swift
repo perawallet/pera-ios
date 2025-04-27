@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -528,8 +528,7 @@ extension WatchAccountAdditionViewController: MultilineTextInputFieldViewDelegat
 extension WatchAccountAdditionViewController {
     func updateAddressInputViewInputStateForNameServicesNoContentState() {
         let text: EditText = .attributedString(
-            "account-not-found"
-                .localized
+            String(localized: "title-account-not-found")
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
         )
         addressInputView.inputState = .incorrect(text)
@@ -537,8 +536,7 @@ extension WatchAccountAdditionViewController {
 
     func updateAddressInputViewInputStateForNameServicesLoadingFailureState() {
         let text: EditText = .attributedString(
-            "title-generic-error"
-                .localized
+            String(localized: "title-generic-error")
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
         )
         addressInputView.inputState = .incorrect(text)
@@ -572,7 +570,7 @@ extension WatchAccountAdditionViewController {
     }
 
     private func bindPasteFromClipboardAction(_ address: String) {
-        let pasteText = "watch-account-paste".localized
+        let pasteText = String(localized: "watch-account-paste")
         let addressText  = "\("(\(address.shortAddressDisplay))")"
         let text = [pasteText, addressText].joined(separator: " ")
 
@@ -581,7 +579,7 @@ extension WatchAccountAdditionViewController {
                 .bodyRegular()
                 .add([ .textColor(Colors.Text.white.uiColor) ])
                 .addAttributes(
-                    to: addressText.localized,
+                    to: addressText,
                     newAttributes: [
                         .textColor(Colors.Text.grayLighter.uiColor),
                         .font(Typography.footnoteMedium())
@@ -605,16 +603,16 @@ extension WatchAccountAdditionViewController {
             !address.isEmpty,
             address.isValidatedAddress else {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "watch-account-error-address".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "watch-account-error-address")
             )
             return
         }
 
         if sharedDataController.accountCollection[address] != nil {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "recover-from-seed-verify-exist-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "recover-from-seed-verify-exist-error")
             )
             return
         }
@@ -641,8 +639,8 @@ extension WatchAccountAdditionViewController {
     func didTapScanQR() {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(
-                title: "qr-scan-error-title".localized,
-                message: "qr-scan-error-message".localized
+                title: String(localized: "qr-scan-error-title"),
+                message: String(localized: "qr-scan-error-message")
             )
             return
         }
@@ -665,8 +663,8 @@ extension WatchAccountAdditionViewController: QRScannerViewControllerDelegate {
     ) {
         guard qrText.mode == .address else {
             displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "qr-scan-should-scan-address-message".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "qr-scan-should-scan-address-message")
             ) { _ in
                 completionHandler?()
             }
@@ -685,8 +683,8 @@ extension WatchAccountAdditionViewController: QRScannerViewControllerDelegate {
         completionHandler: EmptyHandler?
     ) {
         displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "qr-scan-should-scan-valid-qr")
         ) { _ in
             completionHandler?()
         }

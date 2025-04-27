@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import MacaroonUIKit
 
 struct SwapAccountSelectionListHeaderViewModel: ViewModel {
     let description: TextProvider =
-    "swap-account-selection-header-description"
-        .localized
+    String(localized: "swap-account-selection-header-description")
         .bodyRegular()
 }

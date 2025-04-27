@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindTitle() {
         title =
-            "empty-accounts-title"
-                .localized
+            String(localized: "empty-accounts-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -48,8 +47,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "empty-accounts-detail"
-                .localized
+            String(localized: "empty-accounts-detail")
                 .bodyRegular(
                     alignment: .center
                 )
@@ -57,7 +55,7 @@ extension HomeNoContentViewModel {
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("empty-accounts-action".localized),
+            title: .string(String(localized: "empty-accounts-action")),
             image: nil
         )
     }

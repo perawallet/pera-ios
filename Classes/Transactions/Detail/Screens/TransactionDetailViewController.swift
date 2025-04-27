@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
 
             tooltipController.present(
                 on: transactionDetailView.userView.detailLabel,
-                title: "title-press-hold-copy-address".localized,
+                title: String(localized: "title-press-hold-copy-address"),
                 duration: .default
             )
             return
@@ -96,7 +96,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
-        title = "transaction-detail-title".localized
+        title = String(localized: "transaction-detail-title")
         configureTransactionDetail()
     }
     

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ extension ASADetailScreen {
 
         init(screen: UIViewController) {
             self.id = PageBarItemID.activity.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "activity".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "title-activity"))
             self.screen = screen
         }
     }
@@ -38,7 +38,7 @@ extension ASADetailScreen {
 
         init(screen: UIViewController) {
             self.id = PageBarItemID.about.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "about".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "title-about"))
             self.screen = screen
         }
     }

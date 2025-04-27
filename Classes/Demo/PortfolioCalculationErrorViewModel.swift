@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ struct PortfolioCalculationErrorViewModel: ErrorViewModel {
     
     init() {
         icon = getIcon()
-        message = getMessage("account-listing-error-message".localized)
+        message = getMessage(String(localized: "account-listing-error-message"))
     }
 }
 
@@ -34,6 +34,6 @@ struct PortfolioCalculationPartialErrorViewModel: ErrorViewModel {
 
     init() {
         icon = getIcon()
-        message = getMessage("account-listing-partial-error-message".localized)
+        message = getMessage(String(localized: "account-listing-partial-error-message"))
     }
 }

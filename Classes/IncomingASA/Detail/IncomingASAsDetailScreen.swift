@@ -87,7 +87,7 @@ final class IncomingASAsDetailScreen: BaseScrollViewController {
     }
     
     private func bindNavigationItemTitle() {
-        title = "incoming-asa-account-inbox-header-main-title".localized
+        title = String(localized: "incoming-asa-account-inbox-header-main-title")
     }
     
     override func linkInteractors() {
@@ -234,8 +234,8 @@ extension IncomingASAsDetailScreen {
         
         if draft.hasInsufficientAlgoForClaiming {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "required-min-balance-title".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "required-min-balance-title")
             )
            return
         }
@@ -251,16 +251,14 @@ extension IncomingASAsDetailScreen {
     private func performSecondaryAction() {
         let uiSheet = UISheet(
             image: img("icon-incoming-asa-error"),
-            title: "incoming-asa-detail-screen-info-title"
-                .localized
+            title: String(localized: "incoming-asa-detail-screen-info-title")
                 .bodyLargeMedium(alignment: .center),
-            body: UISheetBodyTextProvider(text: "incoming-asa-detail-screen-description_reject"
-                .localized(params: draft?.algoGainOnReject?.toAlgos.stringValue ?? "")
+            body: UISheetBodyTextProvider(text: String(format: String(localized: "incoming-asa-detail-screen-description_reject"), draft?.algoGainOnReject?.toAlgos.stringValue ?? "")
                 .bodyRegular(alignment: .center))
         )
 
         let rejectAction = UISheetAction(
-            title: "incoming-asa-detail-screen-left-button-title".localized,
+            title: String(localized: "incoming-asa-detail-screen-left-button-title"),
             style: .default
         ) { [unowned self] in
             self.dismiss(animated: true) {
@@ -274,8 +272,8 @@ extension IncomingASAsDetailScreen {
             
             if draft.hasInsufficientAlgoForRejecting {
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "required-min-balance-title".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "required-min-balance-title")
                 )
                return
             }
@@ -288,7 +286,7 @@ extension IncomingASAsDetailScreen {
         }
         
         let cancelAction = UISheetAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) { [unowned self] in
             self.dismiss(animated: true)
@@ -415,7 +413,7 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
             displayTransactionError(from: transactionError)
         case let .network(apiError):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.prettyDescription
             )
         }
@@ -473,12 +471,12 @@ extension IncomingASAsDetailScreen: IncomingASATransactionControllerDelegate {
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.prettyDescription
             )
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         }
@@ -497,19 +495,17 @@ extension IncomingASAsDetailScreen {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "asset-min-transaction-error-message"), amountText.someString)
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -526,9 +522,9 @@ extension IncomingASAsDetailScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -548,10 +544,8 @@ extension IncomingASAsDetailScreen {
         _ transactionId: TransactionID?
     ) {
         let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-            title: "incoming-asas-detail-success-title"
-                .localized,
-            detail: "incoming-asas-detail-success-detail"
-                .localized
+            title: String(localized: "send-transaction-preview-success-title"),
+            detail: String(localized: "incoming-asas-detail-success-detail")
         )
         let successScreen = loadingScreen?.open(
             .successResultScreen(viewModel: successResultScreenViewModel),

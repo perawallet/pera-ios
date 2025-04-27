@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -149,8 +149,8 @@ extension ScanQRFlowCoordinator {
     ) {
         let visibleScreen = presentingScreen.findVisibleScreen()
         visibleScreen.displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "qr-scan-should-scan-valid-qr")
         ) { _ in
             if let handler = completionHandler {
                 handler()
@@ -186,8 +186,7 @@ extension ScanQRFlowCoordinator {
         on controller: QRScannerViewController,
         using qrBackupParameters: QRBackupParameters
     ) {
-        let message = "web-import-error-unsupported-version-body"
-            .localized(params: qrBackupParameters.version)
+        let message = String(format: String(localized: "web-import-error-unsupported-version-body"), qrBackupParameters.version)
         controller.bannerController?.presentErrorBanner(title: "Error", message: message)
     }
 }
@@ -229,11 +228,11 @@ extension ScanQRFlowCoordinator {
         to account: Account
     ) {
         if account.containsAsset(assetID) {
-            bannerController.presentInfoBanner("asset-you-already-own-message".localized)
+            bannerController.presentInfoBanner(String(localized: "asset-you-already-own-message"))
             return
         }
 
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         api.fetchAssetDetails(
             AssetFetchQuery(ids: [assetID]),
@@ -250,8 +249,8 @@ extension ScanQRFlowCoordinator {
             case let .success(assetResponse):
                 if assetResponse.results.isEmpty {
                     self.bannerController.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "asset-confirmation-not-found".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "asset-confirmation-not-found")
                     )
                     return
                 }
@@ -264,8 +263,8 @@ extension ScanQRFlowCoordinator {
                 }
             case .failure:
                 self.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "asset-confirmation-not-fetched".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "asset-confirmation-not-fetched")
                 )
             }
         }
@@ -392,7 +391,7 @@ extension ScanQRFlowCoordinator {
                 assetIndex: asset.id
             )
 
-            self.loadingController.startLoadingWithMessage("title-loading".localized)
+            self.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
@@ -444,12 +443,12 @@ extension ScanQRFlowCoordinator {
         switch error {
         case let .network(apiError):
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: apiError.debugDescription
             )
         default:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.localizedDescription
             )
         }
@@ -474,19 +473,17 @@ extension ScanQRFlowCoordinator {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "asset-min-transaction-error-message"), amountText.someString)
             )
         case .invalidAddress:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -617,9 +614,9 @@ extension ScanQRFlowCoordinator {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -717,8 +714,8 @@ extension ScanQRFlowCoordinator {
         if let authenticatedUser = session.authenticatedUser,
            authenticatedUser.hasReachedTotalAccountLimit {
             bannerController.presentErrorBanner(
-                title: "user-account-limit-error-title".localized,
-                message: "user-account-limit-error-message".localized
+                title: String(localized: "user-account-limit-error-title"),
+                message: String(localized: "user-account-limit-error-message")
             )
             return
         }
@@ -791,9 +788,9 @@ extension ScanQRFlowCoordinator {
                 account: nil,
                 assetId: assetID,
                 asset: nil,
-                title: "asset-support-your-add-title".localized,
-                detail: "asset-support-your-add-message".localized,
-                cancelTitle: "title-close".localized
+                title: String(localized: "asset-support-your-add-title"),
+                detail: String(localized: "asset-support-your-add-message"),
+                cancelTitle: String(localized: "title-close")
             )
             let screen: Screen = .assetActionConfirmation(
                 assetAlertDraft: draft,
@@ -840,8 +837,8 @@ extension ScanQRFlowCoordinator {
         if let authenticatedUser = session.authenticatedUser,
            authenticatedUser.hasReachedTotalAccountLimit {
             bannerController.presentErrorBanner(
-                title: "user-account-limit-error-title".localized,
-                message: "user-account-limit-error-message".localized
+                title: String(localized: "user-account-limit-error-title"),
+                message: String(localized: "user-account-limit-error-message")
             )
             return
         }
@@ -897,8 +894,8 @@ extension ScanQRFlowCoordinator {
         
         guard let account = sharedDataController.accountCollection[address]?.value else {
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "qr-scan-account-match-error".localized(params: address)
+                title: String(localized: "title-error"),
+                message: String(format: String(localized: "qr-scan-account-match-error"), address)
             )
             return
         }

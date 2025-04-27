@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -222,9 +222,9 @@ extension PassphraseBackUpViewController {
                 configurator:
                     BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
-                        title: "screenshot-title".localized,
-                        description: .plain("screenshot-description".localized),
-                        secondaryActionButtonTitle: "title-close".localized
+                        title: String(localized: "screenshot-title"),
+                        description: .plain(String(localized: "screenshot-description")),
+                        secondaryActionButtonTitle: String(localized: "title-close")
                     )
             ),
             by: .presentWithoutNavigationController

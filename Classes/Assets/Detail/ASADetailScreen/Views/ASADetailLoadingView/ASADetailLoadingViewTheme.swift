@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,11 +83,9 @@ struct ASADetailLoadingViewTheme:
         )
         quickActionTitleAttributes.insert(.textColor(Colors.Text.main))
 
-        self.sendActionTitle = "quick-actions-send-title"
-            .localized
+        self.sendActionTitle = String(localized: "quick-actions-send-title")
             .attributed(quickActionTitleAttributes)
-        self.receiveActionTitle = "quick-actions-receive-title"
-            .localized
+        self.receiveActionTitle = String(localized: "quick-actions-receive-title")
             .attributed(quickActionTitleAttributes)
 
         self.quickActionWidth = 64
@@ -95,10 +93,10 @@ struct ASADetailLoadingViewTheme:
         self.spacingBetweenQuickActionsAndPageBar = 36
         self.pageBarStyle = PageBarCommonStyleSheet()
         self.pageBarLayout = PageBarCommonLayoutSheet()
-        self.activityPageBarItem = PrimaryPageBarButtonItem(title: "activity".localized)
+        self.activityPageBarItem = PrimaryPageBarButtonItem(title: String(localized: "title-activity"))
         self.activity = TransactionHistoryLoadingViewCommonTheme()
         self.activityContentEdgeInsets = .init(top: 36, leading: 24, bottom: 0, trailing: 24)
-        self.aboutPageBarItem = PrimaryPageBarButtonItem(title: "about".localized)
+        self.aboutPageBarItem = PrimaryPageBarButtonItem(title: String(localized: "title-about"))
         self.about = ASAAboutLoadingViewTheme()
         self.corner = Corner(radius: 4)
     }

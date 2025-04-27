@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ final class SwapSummaryScreen: ScrollScreen {
     override func bindData() {
         super.bindData()
 
-        title = "swap-confirm-summary-title".localized
+        title = String(localized: "swap-confirm-summary-title")
 
         let viewModel = SwapSummaryScreenViewModel(
             account: swapController.account,

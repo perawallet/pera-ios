@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,13 +44,9 @@ extension TransferAssetBalanceViewModel {
         let asset = draft.asset
 
         if draft.isTransferingCollectibleAssetBalance {
-            title =
-            "collectible-detail-opt-out-alert-title"
-                .localized(
-                    params: asset.naming.unitName ?? "title-unknown".localized
-                )
+            title = String(format: String(localized: "collectible-detail-opt-out-alert-title"), asset.naming.unitName ?? String(localized: "title-unknown"))
         } else {
-            title = "asset-remove-confirmation-title".localized
+            title = String(localized: "asset-remove-confirmation-title")
         }
     }
 
@@ -75,21 +71,19 @@ extension TransferAssetBalanceViewModel {
     ) {
         let asset = draft.asset
 
-        let assetName = asset.naming.unitName ?? "title-unknown".localized
+        let assetName = asset.naming.unitName ?? String(localized: "title-unknown")
         let accountName = draft.account.primaryDisplayName
         
-        let aDescription =
-        "asset-remove-warning".localized
-            .localized(params: assetName, accountName)
+        let aDescription = String(format: String(localized: "asset-remove-warning"), assetName, accountName)
 
         description = aDescription.bodyRegular()
     }
 
     private mutating func bindApproveAction() {
-        approveAction = "asset-transfer-balance".localized
+        approveAction = String(localized: "asset-transfer-balance")
     }
 
     private mutating func bindCloseAction() {
-        closeAction = "title-keep" .localized
+        closeAction = String(localized: "title-keep")
     }
 }

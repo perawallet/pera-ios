@@ -34,15 +34,15 @@ struct WatchAccountQuickActionsViewTheme:
         self.actionWidth = 80
         self.copyAddressAction = [
             .icon(Self.makeActionIcon(icon: "copy-address-icon")),
-            .title(Self.makeActionTitle(title: "title-copy-address-capitalized-sentence".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-copy-address")))
         ]
         self.showAddressAction = [
             .icon(Self.makeActionIcon(icon: "address-icon")),
-            .title(Self.makeActionTitle(title: "title-show-address-capitalized-sentence".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-show-address")))
         ]
         self.moreAction = [
             .icon(Self.makeActionIcon(icon: "more-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-more-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-more")))
         ]
     }
 }

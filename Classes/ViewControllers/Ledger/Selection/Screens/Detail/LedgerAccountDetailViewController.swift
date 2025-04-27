@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ extension LedgerAccountDetailViewController {
 extension LedgerAccountDetailViewController {
     private func setTitle() {
         if let index = ledgerIndex {
-            title = "ledger-account-detail-name".localized(params: "\(index)")
+            title = String(format: String(localized: "ledger-account-detail-name"), index)
         } else {
             title = account.address.shortAddressDisplay
         }

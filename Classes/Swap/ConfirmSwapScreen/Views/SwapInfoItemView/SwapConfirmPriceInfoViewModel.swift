@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,8 +44,7 @@ struct SwapConfirmPriceInfoViewModel: SwapInfoItemViewModel {
 
 extension SwapConfirmPriceInfoViewModel {
     mutating func bindTitle() {
-        title = "title-price"
-            .localized
+        title = String(localized: "title-price")
             .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
@@ -88,10 +87,7 @@ extension SwapConfirmPriceInfoViewModel {
         }
 
         let assetText = "\(formattedAmount) \(firstAssetDisplayName)"
-        detail = "swap-confirm-price-info"
-            .localized(
-                params: assetText, secondAssetDisplayName
-            ).footnoteRegular(lineBreakMode: .byTruncatingTail)
+        detail = String(format: String(localized: "swap-confirm-price-info"), assetText, secondAssetDisplayName).footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

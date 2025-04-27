@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -143,7 +143,7 @@ extension AppCallTransactionDetailView {
         feeView.customize(theme.feeViewTheme)
         feeView.bindData(
             TransactionAmountInformationViewModel(
-                title: "transaction-detail-fee".localized
+                title: String(localized: "transaction-detail-fee")
             )
         )
 
@@ -163,7 +163,7 @@ extension AppCallTransactionDetailView {
         innerTransactionView.customize(theme.innerTransactionViewTheme)
         innerTransactionView.bindData(
             TransactionAmountInformationViewModel(
-                title: "transaction-detail-inner-transaction-title".localized
+                title: String(localized: "transaction-detail-inner-transaction-title")
             )
         )
 
@@ -219,7 +219,7 @@ extension AppCallTransactionDetailView {
         senderView.bindData(
             TransactionTextInformationViewModel(
                 TitledInformation(
-                    title: "transaction-detail-sender".localized,
+                    title: String(localized: "transaction-detail-sender"),
                     detail: viewModel?.sender
                 )
             )
@@ -227,14 +227,14 @@ extension AppCallTransactionDetailView {
 
         applicationIDView.bindData(
             TransactionTextInformationViewModel(
-                title: "wallet-connect-transaction-title-app-id".localized,
+                title: String(localized: "wallet-connect-transaction-title-app-id"),
                 detail: viewModel?.applicationID
             )
         )
 
         onCompletionView.bindData(
             TransactionTextInformationViewModel(
-                title: "single-transaction-request-opt-in-subtitle".localized,
+                title: String(localized: "single-transaction-request-opt-in-subtitle"),
                 detail: viewModel?.onCompletion
             )
         )
@@ -254,7 +254,7 @@ extension AppCallTransactionDetailView {
 
         noteView.bindData(
             TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized,
+                title: String(localized: "title-note"),
                 detail: viewModel?.note
             )
         )

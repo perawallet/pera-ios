@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,8 +49,7 @@ struct SwapAssetAmountInViewModel: SwapAssetAmountViewModel {
 
 extension SwapAssetAmountInViewModel {
     mutating func bindLeftTitle() {
-        leftTitle = "transaction-detail-from"
-            .localized
+        leftTitle = String(localized: "transaction-detail-from")
             .footnoteRegular(
                 alignment: .left,
                 lineBreakMode: .byTruncatingTail
@@ -76,8 +75,7 @@ extension SwapAssetAmountInViewModel {
             text = [text, asset.naming.unitName].compound(" ")
         }
 
-        rightTitle = "swap-asset-amount-title-balance"
-            .localized(params: text ?? "")
+        rightTitle = String(format: String(localized: "swap-asset-amount-title-balance"), text ?? "")
             .footnoteRegular(
                 alignment: .right,
                 lineBreakMode: .byTruncatingTail

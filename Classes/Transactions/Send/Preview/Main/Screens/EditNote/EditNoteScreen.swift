@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -123,14 +123,14 @@ extension EditNoteScreen {
 extension EditNoteScreen {
     private func bindNavigationTitle() {
         if isLocked {
-            navigationItem.title = "send-transaction-show-note-title".localized
+            navigationItem.title = String(localized: "send-transaction-show-note-title")
             return
         }
 
         if note.isNilOrEmpty {
-            navigationItem.title = "edit-note-title".localized
+            navigationItem.title = String(localized: "title-add-note")
         } else {
-            navigationItem.title = "send-transaction-edit-note-title".localized
+            navigationItem.title = String(localized: "send-transaction-edit-note-title")
         }
     }
 

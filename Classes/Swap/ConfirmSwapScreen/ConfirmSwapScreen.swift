@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ final class ConfirmSwapScreen:
     private var poolAssetBottomSeparator: UIView?
     private lazy var priceImpactInfoView = SwapInfoItemView()
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
-    private lazy var exchangeFeeInfoView = SwapInfoItemView()
     private lazy var peraFeeInfoView = SwapInfoItemView()
     private lazy var warningView = SwapErrorView()
     private lazy var confirmActionView: LoadingButton = {
@@ -105,7 +104,6 @@ final class ConfirmSwapScreen:
         addToSeparator()
         addWarning()
         addPeraFeeInfo()
-        addExchangeFeeInfo()
         addMinimumReceivedInfo()
         addPriceImpactInfo()
         addSlippageInfo()
@@ -158,7 +156,7 @@ extension ConfirmSwapScreen {
 
     private func bindNavigationTitle() {
         let draft = AccountNameTitleDraft(
-            title: "swap-confirm-title".localized,
+            title: String(localized: "swap-confirm-title"),
             account: dataController.account
         )
 
@@ -266,25 +264,6 @@ extension ConfirmSwapScreen {
         }
     }
 
-    private func addExchangeFeeInfo() {
-        exchangeFeeInfoView.customize(theme.infoItem)
-
-        contentView.addSubview(exchangeFeeInfoView)
-        exchangeFeeInfoView.fitToIntrinsicSize()
-        exchangeFeeInfoView.snp.makeConstraints {
-            $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == peraFeeInfoView.snp.top - theme.infoSectionItemSpacing
-            $0.trailing == theme.infoSectionPaddings.trailing
-        }
-
-        exchangeFeeInfoView.startObserving(event: .didTapInfo) {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.eventHandler?(.didTapExchangeFeeInfo)
-        }
-    }
-
     private func addMinimumReceivedInfo() {
         minimumReceivedInfoView.customize(theme.infoItem)
 
@@ -292,7 +271,7 @@ extension ConfirmSwapScreen {
         minimumReceivedInfoView.fitToIntrinsicSize()
         minimumReceivedInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == exchangeFeeInfoView.snp.top - theme.infoSectionItemSpacing
+            $0.bottom == peraFeeInfoView.snp.top - theme.infoSectionItemSpacing
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -392,7 +371,7 @@ extension ConfirmSwapScreen {
         _ quote: SwapQuote
     ) {
         confirmActionView.stopLoading()
-        bannerController?.presentSuccessBanner(title: "swap-confirm-slippage-updated-title".localized)
+        bannerController?.presentSuccessBanner(title: String(localized: "swap-confirm-slippage-updated-title"))
         bindData(quote)
     }
 
@@ -440,7 +419,6 @@ extension ConfirmSwapScreen {
         slippageInfoView.bindData(viewModel?.slippageInfo)
         priceImpactInfoView.bindData(viewModel?.priceImpactInfo)
         minimumReceivedInfoView.bindData(viewModel?.minimumReceivedInfo)
-        exchangeFeeInfoView.bindData(viewModel?.exchangeFeeInfo)
         peraFeeInfoView.bindData(viewModel?.peraFeeInfo)
         warningView.bindData(viewModel?.warning)
         confirmActionView.isEnabled = viewModel?.isConfirmActionEnabled ?? true
@@ -479,9 +457,9 @@ extension ConfirmSwapScreen {
         case .server(_, let apiError):
             displayError(apiError?.fallbackMessage ?? error.prettyDescription)
         case .connection:
-            displayError("title-internet-connection".localized)
+            displayError(String(localized: "title-internet-connection"))
         case .unexpected:
-            displayError("title-generic-api-error".localized)
+            displayError(String(localized: "title-generic-api-error"))
         }
     }
 
@@ -490,7 +468,7 @@ extension ConfirmSwapScreen {
         _ completion: (() -> Void)? = nil
     ) {
         bannerController?.presentErrorBanner(
-            title: "swap-confirm-failed-title".localized,
+            title: String(localized: "swap-confirm-failed-title"),
             message: message,
             completion
         )
@@ -542,8 +520,7 @@ extension ConfirmSwapScreen {
 extension ConfirmSwapScreen {
     private func presentWarningForHighPriceImpact() {
         let title =
-            "swap-high-price-impact-warning-title"
-                .localized
+            String(localized: "swap-high-price-impact-warning-title")
                 .bodyLargeMedium(alignment: .center)
         let body = makeHighPriceImpactWarningBody()
 
@@ -575,8 +552,8 @@ extension ConfirmSwapScreen {
     }
 
     private func makeHighPriceImpactWarningBody() -> UISheetBodyTextProvider {
-        let body = "swap-high-price-impact-warning-body".localized
-        let bodyHighlightedText = "swap-high-price-impact-warning-body-highlighted-text".localized
+        let body = String(localized: "swap-high-price-impact-warning-body")
+        let bodyHighlightedText = String(localized: "swap-high-price-impact-warning-body-highlighted-text")
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
@@ -595,7 +572,7 @@ extension ConfirmSwapScreen {
 
     private func makeHighPriceImpactWarningConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "swap-confirm-title".localized,
+            title: String(localized: "swap-confirm-title"),
             style: .default
         ) { [weak self] in
             guard let self = self else { return }
@@ -607,7 +584,7 @@ extension ConfirmSwapScreen {
 
     private func makeHighPriceImpactWarningCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) { [unowned self] in
             self.dismiss(animated: true)
@@ -621,6 +598,5 @@ extension ConfirmSwapScreen {
         case didTapSlippageInfo
         case didTapSlippageAction
         case didTapPriceImpactInfo
-        case didTapExchangeFeeInfo
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ struct TransactionActionInformationViewTheme: StyleSheet, LayoutSheet {
         self.descriptionLeadingPadding = 137
         
         self.actionWithData = [
-            .title("title-edit".localized),
+            .title(String(localized: "title-edit")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Helpers.positive)
@@ -57,7 +57,7 @@ struct TransactionActionInformationViewTheme: StyleSheet, LayoutSheet {
             ])
         ]
         self.actionWithoutData = [
-            .title("send-enter-note-title".localized),
+            .title(String(localized: "title-add-note")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Helpers.positive)

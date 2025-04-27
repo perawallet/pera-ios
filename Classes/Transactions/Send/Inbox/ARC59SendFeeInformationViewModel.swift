@@ -34,8 +34,7 @@ extension ARC59SendFeeInformationViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "send-inbox-fee-title"
-                .localized
+            String(localized: "send-inbox-fee-title")
                 .attributed(attributes)
     }
 

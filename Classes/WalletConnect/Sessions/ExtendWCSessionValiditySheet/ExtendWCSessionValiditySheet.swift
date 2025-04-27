@@ -56,11 +56,7 @@ extension ExtendWCSessionValiditySheet {
         let dateFormat = "MMM d, yyyy"
         let formattedDate = maxExpiryDate.toFormat(dateFormat)
 
-        let aTitle =
-            "extend-wc-session-validity-title"
-                .localized(params: formattedDate)
-                .bodyLargeMedium(alignment: .center)
-        return aTitle
+        return String(format: String(localized: "extend-wc-session-validity-title"), formattedDate).bodyLargeMedium(alignment: .center)
     }
 
     private static func makeBody(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider? {
@@ -73,7 +69,7 @@ extension ExtendWCSessionValiditySheet {
         let dateFormat = "MMM d, yyyy"
         let formattedDate = maxExpiryDate.toFormat(dateFormat)
 
-        let text = "extend-wc-session-validity-body".localized(params: formattedDate)
+        let text = String(format: String(localized: "extend-wc-session-validity-body"), formattedDate)
 
         let attributedBody = text.bodyRegular(alignment: .center)
 
@@ -90,7 +86,7 @@ extension ExtendWCSessionValiditySheet {
 
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-extend".localized,
+            title: String(localized: "title-extend"),
             style: .default
         ) {
             [unowned self] in
@@ -100,7 +96,7 @@ extension ExtendWCSessionValiditySheet {
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) {
             [unowned self] in

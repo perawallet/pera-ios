@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ struct CollectibleDetailNameItemIdentifier: Hashable {
     let viewModel: CollectibleDetailNameViewModel
 
     init(_ asset: CollectibleAsset) {
-        self.name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        self.name = asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         self.viewModel = CollectibleDetailNameViewModel(asset)
     }
 

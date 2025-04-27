@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -199,7 +199,7 @@ extension SwapAssetScreen {
 
     private func bindNavigationTitle() {
         let draft = AccountNameTitleDraft(
-            title: "title-swap".localized,
+            title: String(localized: "title-swap"),
             account: dataController.account
         )
 
@@ -301,7 +301,7 @@ extension SwapAssetScreen {
             self.didTapPoolAsset()
         }
 
-        let draft = SwapAssetSelectionEmptyViewDraft(title: "title-to".localized)
+        let draft = SwapAssetSelectionEmptyViewDraft(title: String(localized: "title-to"))
         emptyPoolAssetView.bindData(SwapAssetSelectionEmptyViewModel(draft))
     }
 
@@ -448,7 +448,7 @@ extension SwapAssetScreen {
                 switch error {
                 case .amountInNotAvailable,
                      .amountOutNotAvailable:
-                    self.showError("swap-asset-not-available".localized)
+                    self.showError(String(localized: "swap-asset-not-available"))
                 case .insufficientAlgoBalance(let minBalance):
                     self.showInsufficientAlgoBalanceErrorForQuoteValidation(minBalance)
                 case .insufficientAssetBalance:
@@ -470,9 +470,9 @@ extension SwapAssetScreen {
         case .server(_, let apiError):
             showError(apiError?.fallbackMessage ?? error.prettyDescription)
         case .connection:
-            showError("title-internet-connection".localized)
+            showError(String(localized: "title-internet-connection"))
         case .unexpected:
-            showError("title-generic-api-error".localized)
+            showError(String(localized: "title-generic-api-error"))
         }
     }
 }
@@ -570,7 +570,7 @@ extension SwapAssetScreen {
             return
         }
 
-        showError("swap-asset-algo-min-balance-error".localized(params: amountText))
+        showError(String(format: String(localized: "swap-asset-algo-min-balance-error"), amountText))
     }
 
     private func showInsufficientAssetBalanceErrorForQuoteValidation(
@@ -582,7 +582,7 @@ extension SwapAssetScreen {
         }
 
         let assetDisplayValue = swapAssetValueFormatter.getAssetDisplayName(assetIn)
-        showError("swap-asset-min-balance-error".localized(params: assetDisplayValue))
+        showError(String(format: String(localized: "swap-asset-min-balance-error"), assetDisplayValue))
     }
 
     private func showError(
@@ -753,15 +753,15 @@ extension SwapAssetScreen {
                         with: minBalance,
                         quote: nil
                     )
-                    self.showError("swap-asset-min-balance-error-without-amount".localized)
+                    self.showError(String(localized: "swap-asset-min-balance-error-without-amount"))
                 case .insufficientAssetBalance(let minBalance):
                     self.updateUserAssetAmount(
                         with: minBalance,
                         quote: nil
                     )
-                    self.showError("swap-asset-min-balance-error-fee".localized)
+                    self.showError(String(localized: "swap-asset-min-balance-error-fee"))
                 case .unavailablePeraFee(let feeError):
-                    self.showError(feeError?.prettyDescription ?? "swap-asset-fee-unavailable-error".localized)
+                    self.showError(feeError?.prettyDescription ?? String(localized: "swap-asset-fee-unavailable-error"))
                 }
             }
         }

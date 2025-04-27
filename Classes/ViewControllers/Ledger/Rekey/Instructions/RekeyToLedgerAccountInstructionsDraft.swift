@@ -67,8 +67,7 @@ extension RekeyToLedgerAccountInstructionsDraft {
     private static func makeTitle(
         sourceAccount: Account
     ) -> TextProvider {
-        return "title-rekey-to-ledger-account-capitalized-sentence"
-            .localized
+        return String(localized: "title-rekey-to-ledger-account")
             .titleMedium()
     }
 }
@@ -95,20 +94,20 @@ extension RekeyToLedgerAccountInstructionsDraft {
     }
 
     private static func makeRekeyStandardAccountToLedgerAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-standard-to-ledger-account-instructions-body".localized
-        let highlightedText = "rekey-standard-to-ledger-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-standard-to-ledger-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyLedgerAccountToLedgerAccountInstructions() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-ledger-to-ledger-account-instructions-body".localized
-        let highlightedText = "rekey-ledger-to-ledger-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-ledger-to-ledger-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyRekeyedAccountToLedgerAccountInstructions() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-rekeyed-to-ledger-account-instructions-body".localized
-        let highlightedText = "rekey-rekeyed-to-ledger-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-rekeyed-to-ledger-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 }

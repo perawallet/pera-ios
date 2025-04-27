@@ -24,7 +24,7 @@ struct AlgorandSecureBackupSelectAccountsInstructionItemViewModel: AlgorandSecur
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "algorand-secure-backup-instruction-select-accounts-instruction-title".localized.bodyMedium()
-        self.subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-select-accounts-instruction-subtitle".localized.footnoteRegular())
+        self.title = String(localized: "algorand-secure-backup-instruction-select-accounts-instruction-title").bodyMedium()
+        self.subtitle = SubtitleTextProvider(text: String(localized: "algorand-secure-backup-instruction-select-accounts-instruction-subtitle").footnoteRegular())
     }
 }

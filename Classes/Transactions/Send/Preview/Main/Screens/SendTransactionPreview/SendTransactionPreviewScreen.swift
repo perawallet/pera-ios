@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    override func configureAppearance() {
       super.configureAppearance()
       view.customizeBaseAppearance(backgroundColor: theme.background)
-      title = "send-transaction-preview-title".localized
+      title = String(localized: "send-transaction-preview-title")
    }
 
    override func prepareLayout() {
@@ -143,7 +143,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    }
 
    private func fetchTransactionParams() {
-      loadingController?.startLoadingWithMessage("title-loading".localized)
+      loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
       sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] paramsResult in
          guard let self else {
@@ -157,7 +157,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             self.bindTransaction(with: params)
          case .failure(let error):
             self.bannerController?.presentErrorBanner(
-               title: "title-error".localized,
+               title: String(localized: "title-error"),
                message: error.localizedDescription
             )
          }
@@ -233,7 +233,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             totalFee += transactionDetail.fee ?? 0
          } catch {
             bannerController?.presentErrorBanner(
-               title: "title-error".localized,
+               title: String(localized: "title-error"),
                message: error.localizedDescription
             )
          }
@@ -274,7 +274,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             currencyFormatter: self.currencyFormatter
          )
       } catch {
-         self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         self.bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
       }
    }
 
@@ -425,7 +425,7 @@ extension SendTransactionPreviewScreen {
 
    private func addNextButton() {
       nextButton.customize(theme.nextButtonStyle)
-      nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
+      nextButton.bindData(ButtonCommonViewModel(title: String(localized: "send-transaction-preview-button")))
 
       footerView.addSubview(nextButton)
       nextButton.snp.makeConstraints {
@@ -461,7 +461,7 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
                self.bindTransaction(with: params)
             case .failure(let error):
                self.bannerController?.presentErrorBanner(
-                  title: "title-error".localized,
+                  title: String(localized: "title-error"),
                   message: error.localizedDescription
                )
             }
@@ -480,7 +480,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       loadingScreen?.popScreen()
       switch error {
       case .network:
-         displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+         displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
       case let .inapp(transactionError):
          displayTransactionError(from: transactionError)
       }
@@ -533,12 +533,12 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       case let .network(apiError):
          switch apiError {
          case .connection:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+            displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
          default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: apiError.debugDescription)
          }
       default:
-         bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
       }
 
       cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
@@ -583,10 +583,8 @@ extension SendTransactionPreviewScreen {
       _ transactionId: String?
    ) {
       let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-         title: "send-transaction-preview-success-title"
-            .localized,
-         detail: "send-transaction-preview-success-detail"
-            .localized
+         title: String(localized: "send-transaction-preview-success-title"),
+         detail: String(localized: "send-transaction-preview-success-detail")
       )
       let successScreen = loadingScreen?.open(
          .successResultScreen(viewModel: successResultScreenViewModel),
@@ -654,19 +652,17 @@ extension SendTransactionPreviewScreen {
          let amountText = currencyFormatter.format(amount.toAlgos)
 
          bannerController?.presentErrorBanner(
-            title: "asset-min-transaction-error-title".localized,
-            message: "send-algos-minimum-amount-custom-error".localized(
-               params: amountText.someString
-            )
+            title: String(localized: "asset-min-transaction-error-title"),
+            message: String(format: String(localized: "send-algos-minimum-amount-custom-error"), amountText.someString)
          )
       case .invalidAddress:
          bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "send-algos-receiver-address-validation".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "send-algos-receiver-address-validation")
          )
       case let .sdkError(error):
          bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: String(localized: "title-error"),
             message: error.debugDescription
          )
       case .ledgerConnection:
@@ -677,8 +673,8 @@ extension SendTransactionPreviewScreen {
          }
       default:
          displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "title-internet-connection".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "title-internet-connection")
          )
       }
    }
@@ -716,9 +712,9 @@ extension SendTransactionPreviewScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController

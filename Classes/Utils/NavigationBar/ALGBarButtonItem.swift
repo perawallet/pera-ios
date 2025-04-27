@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,17 +69,9 @@ struct ALGBarButtonItem: BarButtonItem {
     var title: TitleContent? {
         switch kind {
         case .asaInbox(let count):
-            if count == 1 {
+            if count > 0 {
                 return BarButtonItemTitleContent(
-                    text: "title-asa-singular".localized,
-                    textColor: Colors.ASATiers.asaBarButton.uiColor,
-                    font: UIFont.font(withWeight: .medium(size: 13))
-                )
-            }
-            
-            if count > 1 {
-                return BarButtonItemTitleContent(
-                    text: "title-asa".localized(params: "\(count)"),
+                    text: String(format: String(localized: "title-asa"), count),
                     textColor: Colors.ASATiers.asaBarButton.uiColor,
                     font: UIFont.font(withWeight: .medium(size: 13))
                 )
@@ -87,37 +79,37 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .save:
             return BarButtonItemTitleContent(
-                text: "title-save".localized,
+                text: String(localized: "title-save"),
                 textColor: Colors.Text.main.uiColor,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
         case .closeTitle:
             return BarButtonItemTitleContent(
-                text: "title-close".localized,
+                text: String(localized: "title-close"),
                 textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .done(let color):
             return BarButtonItemTitleContent(
-                text: "title-done".localized,
+                text: String(localized: "title-done"),
                 textColor: color,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
             return BarButtonItemTitleContent(
-                text: "title-skip".localized,
+                text: String(localized: "title-skip"),
                 textColor: Colors.Text.main.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .dontAskAgain:
             return BarButtonItemTitleContent(
-                text: "title-dont-ask".localized,
+                text: String(localized: "title-dont-ask"),
                 textColor: Colors.Text.main.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .copy:
             return BarButtonItemTitleContent(
-                text: "title-copy".localized,
+                text: String(localized: "title-copy"),
                 textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
@@ -126,7 +118,7 @@ struct ALGBarButtonItem: BarButtonItem {
 
             if authorization.isRekeyedToLedger {
                 return BarButtonItemTitleContent(
-                    text: "title-rekeyed".localized,
+                    text: String(localized: "title-rekeyed"),
                     textColor: Colors.Wallet.wallet3Icon.uiColor,
                     font: Typography.captionMedium()
                 )
@@ -134,7 +126,7 @@ struct ALGBarButtonItem: BarButtonItem {
 
             if authorization.isRekeyedToStandard {
                 return BarButtonItemTitleContent(
-                    text: "title-rekeyed".localized,
+                    text: String(localized: "title-rekeyed"),
                     textColor: Colors.Wallet.wallet4Icon.uiColor,
                     font: Typography.captionMedium()
                 )
@@ -142,7 +134,7 @@ struct ALGBarButtonItem: BarButtonItem {
 
             if authorization.isNoAuth {
                 return BarButtonItemTitleContent(
-                    text: "title-no-auth".localized,
+                    text: String(localized: "title-no-auth"),
                     textColor: Colors.Helpers.negative.uiColor,
                     font: Typography.captionMedium()
                 )

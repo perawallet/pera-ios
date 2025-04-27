@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ extension DeepLinkParser {
     func discover(
         notification: NotificationMessage
     ) -> Result? {
+        
         let action = resolveNotificationAction(for: notification)
 
         switch action {
@@ -78,7 +79,10 @@ extension DeepLinkParser {
         case .assetInbox:
             return makeIncomingASAScreen(for: notification)
         default:
-            return nil
+            guard  let externalDeepLink = notification.url?.externalDeepLink else {
+                return nil
+            }
+            return .success(.externalDeepLink(deepLink: externalDeepLink))
         }
     }
 
@@ -382,10 +386,10 @@ extension DeepLinkParser {
             account: rawAccount,
             assetId: assetID,
             asset: nil,
-            title: "asset-support-add-title".localized,
-            detail: String(format: "asset-support-add-message".localized, "\(accountName)"),
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
+            title: String(localized: "asset-support-add-title"),
+            detail: String(format: String(localized: "asset-support-add-message"), "\(accountName)"),
+            actionTitle: String(localized: "title-approve"),
+            cancelTitle: String(localized: "title-cancel")
         )
         return .success(.assetActionConfirmation(draft: draft))
     }
@@ -509,9 +513,9 @@ extension DeepLinkParser {
                 account: nil,
                 assetId: assetId,
                 asset: nil,
-                title: "asset-support-your-add-title".localized,
-                detail: "asset-support-your-add-message".localized,
-                cancelTitle: "title-close".localized
+                title: String(localized: "asset-support-your-add-title"),
+                detail: String(localized: "asset-support-your-add-message"),
+                cancelTitle: String(localized: "title-close")
             )
             return .success(
                 .assetActionConfirmation(
@@ -701,23 +705,23 @@ extension DeepLinkParser {
 
             switch self {
             case .tryingToOptInForWatchAccount:
-                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
-                description = "notifications-trying-to-opt-in-for-watch-account-description".localized
+                title = String(localized: "notifications-trying-to-opt-in-for-watch-account-title")
+                description = String(localized: "notifications-trying-to-opt-in-for-watch-account-description")
             case .tryingToOptInForNoAuthInLocalAccount: 
-                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
-                description = "action-not-available-for-account-type".localized
+                title = String(localized: "notifications-trying-to-opt-in-for-watch-account-title")
+                description = String(localized: "action-not-available-for-account-type")
             case .tryingToActForAssetWithPendingOptInRequest(let accountName):
-                title = "title-error".localized
-                description = "ongoing-opt-in-request-description".localized(params: accountName)
+                title = String(localized: "title-error")
+                description = String(format: String(localized: "ongoing-opt-in-request-description"), accountName)
             case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
-                title = "title-error".localized
-                description = "ongoing-opt-out-request-description".localized(params: accountName)
+                title = String(localized: "title-error")
+                description = String(format: String(localized: "ongoing-opt-out-request-description"), accountName)
             case .accountNotFound:
-                title = "notifications-account-not-found-title".localized
-                description = "notifications-account-not-found-description".localized
+                title = String(localized: "notifications-account-not-found-title")
+                description = String(localized: "notifications-account-not-found-description")
             case .assetNotFound:
-                title = "notifications-asset-not-found-title".localized
-                description = "notifications-asset-not-found-description".localized
+                title = String(localized: "notifications-asset-not-found-title")
+                description = String(localized: "notifications-asset-not-found-description")
             default:
                 preconditionFailure("Error mapping must be done properly.")
             }

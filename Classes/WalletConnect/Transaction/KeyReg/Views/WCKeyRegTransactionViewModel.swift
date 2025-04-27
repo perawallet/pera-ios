@@ -83,7 +83,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
+            title: String(localized: "transaction-detail-from"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -100,7 +100,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -123,7 +123,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "vote-key-title".localized,
+            title: String(localized: "vote-key-title"),
             detail: voteKey
         )
         self.voteKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -139,7 +139,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "selection-key-title".localized,
+            title: String(localized: "title-selection-key"),
             detail: selectionKey
         )
         self.selectionKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -155,7 +155,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "state-proof-key-title".localized,
+            title: String(localized: "title-state-proof-key"),
             detail: stateProofKey
         )
         self.stateProofKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -172,7 +172,7 @@ extension WCKeyRegTransactionViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteFirstValidRound = formatter.string(from: NSNumber(value: voteFirstValidRound))
         let titledInfromation = TitledInformation(
-            title: "valid-first-round-title".localized,
+            title: String(localized: "valid-first-round-title"),
             detail: formattedVoteFirstValidRound
         )
         voteFirstValidRoundViewModel = .init(titledInfromation)
@@ -189,7 +189,7 @@ extension WCKeyRegTransactionViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteLastValidRound = formatter.string(from: NSNumber(value: voteLastValidRound))
         let titledInfromation = TitledInformation(
-            title: "valid-last-round-title".localized,
+            title: String(localized: "valid-last-round-title"),
             detail: formattedVoteLastValidRound
         )
         voteLastValidRoundViewModel = .init(titledInfromation)
@@ -206,7 +206,7 @@ extension WCKeyRegTransactionViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteKeyDilution = formatter.string(from: NSNumber(value: voteKeyDilution))
         let titledInfromation = TitledInformation(
-            title: "vote-key-dilution-title".localized,
+            title: String(localized: "vote-key-dilution-title"),
             detail: formattedVoteKeyDilution
         )
         voteKeyDilutionViewModel = .init(titledInfromation)
@@ -221,10 +221,10 @@ extension WCKeyRegTransactionViewModel {
         let nonParticipation = transactionDetail.nonParticipation
         let participationStatusTitle =
         nonParticipation
-        ? "not-participating-title".localized
-        : "participating-title".localized
+        ? String(localized: "not-participating-title")
+        : String(localized: "participating-title")
         let titledInfromation = TitledInformation(
-            title: "participation-status-title".localized,
+            title: String(localized: "participation-status-title"),
             detail: participationStatusTitle
         )
         participationStatusViewModel = .init(titledInfromation)
@@ -251,7 +251,7 @@ extension WCKeyRegTransactionViewModel {
             currencyFormatter: currencyFormatter
         )
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeViewModel = feeInformationViewModel
     }
 
@@ -275,7 +275,7 @@ extension WCKeyRegTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
         self.noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)

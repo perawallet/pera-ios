@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -88,7 +88,7 @@ extension SendTransactionPreviewView {
         amountView.customize(theme.bigMultipleAmountInformationViewTheme)
         amountView.bindData(
             TransactionCurrencyAmountInformationViewModel(
-                title: "transaction-detail-amount".localized
+                title: String(localized: "transaction-detail-amount")
             )
         )
 
@@ -119,7 +119,7 @@ extension SendTransactionPreviewView {
         feeView.customize(theme.commonTransactionAmountInformationViewTheme)
         feeView.bindData(
             TransactionAmountInformationViewModel(
-                title: "transaction-detail-fee".localized
+                title: String(localized: "transaction-detail-fee")
             )
         )
 
@@ -138,7 +138,7 @@ extension SendTransactionPreviewView {
         balanceView.customize(theme.smallMultipleAmountInformationViewTheme)
         balanceView.bindData(
             TransactionCurrencyAmountInformationViewModel(
-                title: "send-transaction-preview-current-balance".localized
+                title: String(localized: "send-transaction-preview-current-balance")
             )
         )
 
@@ -164,7 +164,7 @@ extension SendTransactionPreviewView {
         lockedNoteView.customize(theme.transactionTextInformationViewTheme)
         lockedNoteView.bindData(
             TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized
+                title: String(localized: "title-note")
             )
         )
         

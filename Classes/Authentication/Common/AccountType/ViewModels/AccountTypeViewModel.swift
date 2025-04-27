@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,24 +65,24 @@ extension AccountTypeViewModel {
         
         switch mode {
         case .add:
-            titleText = "account-type-selection-create".localized
+            titleText = String(localized: "account-type-selection-create")
         case let .recover(type):
             switch type {
             case .passphrase:
-                titleText = "account-type-selection-passphrase".localized
+                titleText = String(localized: "account-type-selection-passphrase")
             case .importFromSecureBackup:
-                titleText = "account-type-selection-import-secure-backup".localized
+                titleText = String(localized: "account-type-selection-import-secure-backup")
             case .ledger:
-                titleText = "account-type-selection-ledger".localized
+                titleText = String(localized: "account-type-selection-ledger")
             case .importFromWeb:
-                titleText = "account-type-selection-import-web".localized
+                titleText = String(localized: "account-type-selection-import-web")
             case .qr:
-                titleText = "account-type-selection-qr".localized
+                titleText = String(localized: "account-type-selection-qr")
             case .none:
-                titleText = "account-type-selection-recover".localized
+                titleText = String(localized: "account-type-selection-recover")
             }
         case .watch:
-            titleText = "account-type-selection-watch".localized
+            titleText = String(localized: "account-type-selection-watch")
         case .rekey,
              .none:
             break
@@ -96,7 +96,7 @@ extension AccountTypeViewModel {
         case let .recover(type):
             switch type {
             case .importFromWeb, .importFromSecureBackup:
-                badge = "title-new-uppercased".localized
+                badge = String(localized: "title-new-uppercased")
             default:
                 break
             }
@@ -112,24 +112,24 @@ extension AccountTypeViewModel {
         
         switch mode {
         case .add:
-            detailText = "account-type-selection-add-detail".localized
+            detailText = String(localized: "account-type-selection-add-detail")
         case let .recover(type):
             switch type {
             case .passphrase:
-                detailText = "account-type-selection-passphrase-detail".localized
+                detailText = String(localized: "account-type-selection-passphrase-detail")
             case .importFromSecureBackup:
-                detailText = "account-type-selection-import-secure-backup-detail".localized
+                detailText = String(localized: "account-type-selection-import-secure-backup-detail")
             case .ledger:
-                detailText = "account-type-selection-ledger-detail".localized
+                detailText = String(localized: "account-type-selection-ledger-detail")
             case .importFromWeb:
-                detailText = "account-type-selection-import-web-detail".localized
+                detailText = String(localized: "account-type-selection-import-web-detail")
             case .qr:
-                detailText = "account-type-selection-qr-detail".localized
+                detailText = String(localized: "account-type-selection-qr-detail")
             case .none:
-                detailText = "account-type-selection-recover-detail".localized
+                detailText = String(localized: "account-type-selection-recover-detail")
             }
         case .watch:
-            detailText = "account-type-selection-watch-detail".localized
+            detailText = String(localized: "account-type-selection-watch-detail")
         case .rekey,
              .none:
             break

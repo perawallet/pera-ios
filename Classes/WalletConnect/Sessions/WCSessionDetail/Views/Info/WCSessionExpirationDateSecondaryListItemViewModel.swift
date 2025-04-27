@@ -30,8 +30,7 @@ struct WCSessionExpirationDateSecondaryListItemViewModel: SecondaryListItemViewM
 extension WCSessionExpirationDateSecondaryListItemViewModel {
     private mutating func bindTitle(_ wcV2Session: WalletConnectV2Session) {
         title =
-            "wc-session-expiration-date"
-                .localized
+            String(localized: "wc-session-expiration-date")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 

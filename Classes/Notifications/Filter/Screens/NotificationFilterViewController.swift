@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ final class NotificationFilterViewController:
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "notifications-title".localized
+        title = String(localized: "notifications-title")
     }
 
     override func linkInteractors() {
@@ -133,7 +133,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         didChangeAccountNotificationsToggleValue value: Bool,
         from cell: AccountNameSwitchCell
     ) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         updateNotificationFilter(of: cell, with: value)
     }
 
@@ -155,8 +155,8 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
     ) {
         loadingController?.stopLoading()
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
+            title: String(localized: "title-error"),
+            message: error?.fallbackMessage ?? String(localized: "title-generic-error")
         )
         revertFilterSwitch(for: account)
     }
@@ -168,11 +168,11 @@ extension NotificationFilterViewController {
         let alertMessage: String
 
         if isOn {
-            alertTitle = "settings-notification-disabled-go-settings-title".localized
-            alertMessage = "settings-notification-disabled-go-settings-text".localized
+            alertTitle = String(localized: "settings-notification-disabled-go-settings-title")
+            alertMessage = String(localized: "settings-notification-disabled-go-settings-text")
         } else {
-            alertTitle = "settings-notification-enabled-go-settings-title".localized
-            alertMessage = "settings-notification-enabled-go-settings-text".localized
+            alertTitle = String(localized: "settings-notification-enabled-go-settings-title")
+            alertMessage = String(localized: "settings-notification-enabled-go-settings-text")
         }
 
         let alertController = UIAlertController(
@@ -182,7 +182,7 @@ extension NotificationFilterViewController {
         )
 
         let openAppSettingsAction = UIAlertAction(
-            title: "title-launch-ios-settings".localized,
+            title: String(localized: "title-launch-ios-settings"),
             style: .default
         ) { _ in
             UIApplication.shared.openAppSettings()
@@ -190,7 +190,7 @@ extension NotificationFilterViewController {
         alertController.addAction(openAppSettingsAction)
 
         let cancelAction = UIAlertAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         )
         alertController.addAction(cancelAction)

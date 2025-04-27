@@ -141,8 +141,7 @@ extension WatchAccountInformationScreen {
 extension WatchAccountInformationScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "title-watch-account-capitalized-sentence"
-                .localized
+            String(localized: "title-watch-account")
                 .titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 

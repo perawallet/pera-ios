@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ extension PassphraseBackUpView {
 
     private func addNextButton(_ theme: PassphraseBackUpViewTheme) {
         nextButton.customize(theme.mainButtonTheme)
-        nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+        nextButton.bindData(ButtonCommonViewModel(title: String(localized: "title-next")))
 
         addSubview(nextButton)
         nextButton.snp.makeConstraints {

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ struct HomeTabBarItem: TabBarItem {
                     .selected("tabbar-icon-accounts-selected"),
                     .disabled("tabbar-icon-accounts-disabled")
                 ],
-                title: "title-home".localized
+                title: String(localized: "title-home")
             )
         self.screen = screen
     }
@@ -57,7 +57,7 @@ struct DiscoverTabBarItem: TabBarItem {
                     .selected("tabbar-icon-discover-selected"),
                     .disabled("tabbar-icon-discover-disabled")
                 ],
-                title: "title-discover".localized
+                title: String(localized: "title-discover")
             )
         self.screen = screen
     }
@@ -79,7 +79,7 @@ struct CollectiblesTabBarItem: TabBarItem {
                     .selected("tabbar-icon-collectibles-selected"),
                     .disabled("tabbar-icon-collectibles-disabled")
                 ],
-                title: "title-collectibles".localized
+                title: String(localized: "title-collectibles")
             )
         self.screen = screen
     }
@@ -101,7 +101,7 @@ struct SettingsTabBarItem: TabBarItem {
                     .selected("tabbar-icon-settings-selected"),
                     .disabled("tabbar-icon-settings-disabled")
                 ],
-                title: "settings-title".localized
+                title: String(localized: "title-settings")
             )
         self.screen = screen
     }

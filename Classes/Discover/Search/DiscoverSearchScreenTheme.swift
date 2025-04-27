@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ struct DiscoverSearchScreenTheme:
         self.spacingBetweenSearchInputAndCancelAction = 12
         self.cancelAction = [
             .font(Fonts.DMSans.medium.make(13)),
-            .title("title-cancel".localized),
+            .title(String(localized: "title-cancel")),
             .titleColor([ .normal(Colors.Discover.main) ])
         ]
         self.cancelActionContentEdgeInsets = .init(top: 10, left: 12, bottom: 10, right: 12)
@@ -80,7 +80,7 @@ struct DiscoverSearchInputViewTheme: SearchInputViewTheme {
     let placeholder: String
 
     init(_ family: LayoutFamily) {
-        let placeholder = "discover-search-input-placeholder".localized
+        let placeholder = String(localized: "discover-search-input-placeholder")
 
         self.textInput = [
             .autocapitalizationType(.none),

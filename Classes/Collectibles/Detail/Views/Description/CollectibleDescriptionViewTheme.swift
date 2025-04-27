@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ struct CollectibleDescriptionViewTheme:
             .titleColor([ .normal(Colors.Helpers.positive) ]),
             .title(
                 TextSet(
-                    "title-show-more".localized,
-                    selected: "title-show-less".localized
+                    String(localized: "title-show-more"),
+                    selected: String(localized: "title-show-less")
                 )
             )
         ]

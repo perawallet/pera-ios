@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let connectedAppsButtonTitleImageSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.init(family, title: "qr-scan-overlay-title".localized)
+        self.init(family, title: String(localized: "qr-scan-overlay-title"))
     }
 
     init(_ family: LayoutFamily, title: String) {

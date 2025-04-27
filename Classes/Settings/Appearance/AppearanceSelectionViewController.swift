@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ final class AppearanceSelectionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "settings-theme-set".localized
+        title = String(localized: "settings-theme-set")
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
@@ -90,11 +90,11 @@ enum UserInterfaceStyle: String, CaseIterable {
     func representation() -> String {
         switch self {
         case .system:
-            return "settings-theme-system".localized
+            return String(localized: "settings-theme-system")
         case .light:
-            return "settings-theme-light".localized
+            return String(localized: "settings-theme-light")
         case .dark:
-            return "settings-theme-dark".localized
+            return String(localized: "settings-theme-dark")
         }
     }
 }

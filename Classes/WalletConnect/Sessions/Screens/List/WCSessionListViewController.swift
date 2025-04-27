@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ final class WCSessionListViewController:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "settings-wallet-connect-title".localized
+        title = String(localized: "settings-wallet-connect-title")
 
         addBarButtons()
     }
@@ -256,8 +256,8 @@ extension WCSessionListViewController {
                 self.stopLoading()
             case .didFailDisconnectingFromSession:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "title-generic-error".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "title-generic-error")
                 )
             }
         }
@@ -455,7 +455,7 @@ extension WCSessionListViewController {
 extension WCSessionListViewController {
     private func presentSessionDeletedSuccessfullyBanner() {
         bannerController?.presentSuccessBanner(
-            title: "wallet-connect-session-disconnected-successfully-message".localized
+            title: String(localized: "wallet-connect-session-disconnected-successfully-message")
         )
     }
 }
@@ -486,8 +486,8 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
         completionHandler: EmptyHandler?
     ) {
         displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "qr-scan-should-scan-valid-qr")
         ) { _ in
             completionHandler?()
         }
@@ -574,12 +574,12 @@ extension WCSessionListViewController {
     private func performDisconnectAll() {
         let alertController = UIAlertController(
             title: nil,
-            message: "wallet-connect-session-disconnect-all-message".localized,
+            message: String(localized: "wallet-connect-session-disconnect-all-message"),
             preferredStyle: .actionSheet
         )
 
         let disconnectAction = UIAlertAction(
-            title: "node-settings-action-delete-title".localized,
+            title: String(localized: "node-settings-action-delete-title"),
             style: .destructive
         ) { [weak self] _ in
             guard let self else { return  }
@@ -589,7 +589,7 @@ extension WCSessionListViewController {
         }
 
         let cancelAction = UIAlertAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         )
 
@@ -648,7 +648,7 @@ extension WCSessionListViewController {
     private func startLoading() {
         asyncMain {
             [weak self] in
-            self?.loadingController?.startLoadingWithMessage("title-loading".localized)
+            self?.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         }
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ final class TransactionCustomRangeSelectionViewController: BaseViewController {
     }
 
     override func bindData() {
-        title = "transaction-filter-option-custom".localized
+        title = String(localized: "transaction-filter-option-custom")
 
         transactionCustomRangeSelectionView.bindData(
             TransactionCustomRangeSelectionViewModel(

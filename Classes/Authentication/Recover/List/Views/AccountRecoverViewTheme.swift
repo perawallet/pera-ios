@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ struct AccountRecoverViewCommonTheme: AccountRecoverViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .text("recover-from-seed-title".localized)
+            .text(String(localized: "recover-from-seed-title"))
         ]
 
         self.horizontalStackViewTopInset = 37

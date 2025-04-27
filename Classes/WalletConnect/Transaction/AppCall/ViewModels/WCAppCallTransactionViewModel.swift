@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
+            title: String(localized: "transaction-detail-from"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -95,7 +95,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-id".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-id"),
             detail: "#\(id)"
         )
 
@@ -109,7 +109,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-on-complete".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-on-complete"),
             detail: "\(appCallOnComplete.representation)"
         )
 
@@ -124,7 +124,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-global-schema".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-global-schema"),
             detail: globalSchema.representation
         )
 
@@ -139,7 +139,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-local-schema".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-local-schema"),
             detail: localSchema.representation
         )
 
@@ -154,7 +154,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-extra-pages".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-extra-pages"),
             detail: "\(extraPages)"
         )
 
@@ -169,7 +169,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-approval-hash".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-approval-hash"),
             detail: AlgorandSDK().getAddressfromProgram(approvalHash)
         )
 
@@ -184,7 +184,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-app-call-clear-hash".localized,
+            title: String(localized: "wallet-connect-transaction-title-app-call-clear-hash"),
             detail: AlgorandSDK().getAddressfromProgram(stateHash)
         )
 
@@ -200,7 +200,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-close-to".localized,
+            title: String(localized: "transaction-detail-close-to"),
             detail: closeAddress
         )
 
@@ -214,7 +214,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -249,7 +249,7 @@ final class WCAppCallTransactionViewModel {
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeInformationViewModel = feeInformationViewModel
     }
 
@@ -268,7 +268,7 @@ final class WCAppCallTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
 

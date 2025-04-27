@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,11 +103,11 @@ extension WCSessionShortListViewController {
 
         let actionSheet = UIAlertController(
             title: nil,
-            message: "wallet-connect-session-disconnect-message".localized(params: name),
+            message: String(format: String(localized: "wallet-connect-session-disconnect-message"), name),
             preferredStyle: .actionSheet
         )
 
-        let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { [weak self] _ in
+        let disconnectAction = UIAlertAction(title: String(localized: "title-disconnect"), style: .destructive) { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -135,12 +135,12 @@ extension WCSessionShortListViewController {
                 )
             )
 
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
             self.dataSource.disconnectFromSession(session)
         }
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel)
 
         actionSheet.addAction(disconnectAction)
         actionSheet.addAction(cancelAction)
@@ -205,8 +205,8 @@ extension WCSessionShortListViewController {
                     updateScreenAfterDisconnecting()
                 case .failedToDisconnect:
                     bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "title-generic-error".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "title-generic-error")
                     )
                 default: break
                 }
@@ -237,7 +237,7 @@ extension WCSessionShortListViewController {
                 loadingController?.stopLoading()
 
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
             }

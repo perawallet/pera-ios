@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ extension ApproveCollectibleTransactionViewModel {
     ) {
         let info = CollectibleTransactionInformation(
             icon: .account(draft.fromAccount),
-            title: "collectible-approve-transaction-sender".localized,
+            title: String(localized: "collectible-approve-transaction-sender"),
             value: draft.fromAccount.address.shortAddressDisplay
         )
         senderAccountViewModel = CollectibleTransactionInfoViewModel(info)
@@ -84,7 +84,7 @@ extension ApproveCollectibleTransactionViewModel {
 
         let info = CollectibleTransactionInformation(
             icon: icon,
-            title: "collectible-approve-transaction-to".localized,
+            title: String(localized: "title-to"),
             value: value
         )
         toAccountViewModel = CollectibleTransactionInfoViewModel(info)
@@ -103,7 +103,7 @@ extension ApproveCollectibleTransactionViewModel {
 
         let feeText = currencyFormatter.format(fee.toAlgos)
         let info = CollectibleTransactionInformation(
-            title: "collectible-approve-transaction-fee".localized,
+            title: String(localized: "collectible-approve-transaction-fee"),
             value: feeText.someString
         )
 

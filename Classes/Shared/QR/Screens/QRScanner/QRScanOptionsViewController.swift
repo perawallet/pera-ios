@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ final class QRScanOptionsViewController:
 extension QRScanOptionsViewController {
     private func configureBackground() {
         view.customizeAppearance(theme.background)
-        title = "qr-scan-option-title".localized
+        title = String(localized: "qr-scan-option-title")
     }
 
     private func bindData(_ viewModel: QRScanOptionsViewModel) {

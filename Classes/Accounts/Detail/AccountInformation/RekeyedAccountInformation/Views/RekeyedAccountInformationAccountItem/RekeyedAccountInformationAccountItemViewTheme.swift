@@ -35,9 +35,7 @@ struct RekeyedAccountInformationAccountItemViewTheme:
         self.dividerLineMinWidth = 40
         self.dividerLineHeight = 1
         self.spacingBetweenDividerTitleAndLine = 20
-        let dividerTitleText =
-            "title-rekeyed-to"
-                .localized
+        let dividerTitleText = String(localized: "title-rekeyed-to")
                 .captionMedium(
                     alignment: .center,
                     lineBreakMode: .byTruncatingTail

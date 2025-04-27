@@ -39,7 +39,7 @@ extension AccountInformationUndoRekeyAccountItemViewModel {
         let titleColor = Colors.Helpers.positive
         let action: ButtonStyle = [
             .titleColor([ .normal(titleColor), .highlighted(titleColor) ]),
-            .title("title-undo-rekey-capitalized-sentence".localized.footnoteMedium())
+            .title(String(localized: "title-undo-rekey").footnoteMedium())
         ]
         self.action = action
     }

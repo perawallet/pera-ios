@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ final class EditContactViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "contacts-info-edit".localized
+        title = String(localized: "contacts-info-edit")
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
@@ -109,14 +109,14 @@ extension EditContactViewController: EditContactViewDelegate {
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = editContactView.nameInputView.text,
               !name.isEmptyOrBlank else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "contacts-name-validation-error"))
                   return nil
               }
 
         guard let address = editContactView.addressInputView.text,
               !address.isEmpty,
               address.isValidatedAddress else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "contacts-address-validation-error"))
                   return nil
               }
 
@@ -158,10 +158,10 @@ extension EditContactViewController: EditContactViewDelegate {
     private func displayDeleteAlert(for contact: Contact) {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-trash-red".uiImage,
-            title: "contacts-delete-contact".localized,
-            description: .plain("contacts-delete-contact-alert-explanation".localized),
-            primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
+            title: String(localized: "contacts-delete-contact"),
+            description: .plain(String(localized: "contacts-delete-contact-alert-explanation")),
+            primaryActionButtonTitle: String(localized: "contacts-approve-delete-contact"),
+            secondaryActionButtonTitle: String(localized: "title-keep"),
             primaryAction: {
                 [weak self] in
                 guard let self = self else {
@@ -194,7 +194,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
     func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
-            displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+            displaySimpleAlertWith(title: String(localized: "qr-scan-error-title"), message: String(localized: "qr-scan-error-message"))
             return
         }
 
@@ -236,7 +236,7 @@ extension EditContactViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .address,
               let qrAddress = qrText.address else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-address-message")) { _ in
                       if let handler = completionHandler {
                           handler()
                       }
@@ -248,7 +248,7 @@ extension EditContactViewController: QRScannerViewControllerDelegate {
     }
 
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+        displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-valid-qr")) { _ in
             if let handler = completionHandler {
                 handler()
             }

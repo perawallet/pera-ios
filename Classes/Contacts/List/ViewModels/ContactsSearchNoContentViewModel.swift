@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,8 +32,7 @@ struct ContactsSearchNoContentViewModel: NoContentViewModel {
 extension ContactsSearchNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "contact-search-empty-title"
-                .localized
+            String(localized: "contact-search-empty-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -41,8 +40,7 @@ extension ContactsSearchNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "contact-search-empty-detail"
-                .localized
+            String(localized: "contact-search-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

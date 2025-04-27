@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListItemBu
 
     init() {
         icon = "add-icon-40"
-        title = Self.getTitle("transaction-option-list-add-asset-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-add-asset-subtitle".localized)
+        title = Self.getTitle(String(localized: "transaction-option-list-add-asset-title"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-add-asset-subtitle"))
     }
 }

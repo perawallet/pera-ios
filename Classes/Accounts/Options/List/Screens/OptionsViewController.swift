@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -374,7 +374,7 @@ extension OptionsViewController {
             return
         }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         let draft = NotificationFilterDraft(
             deviceId: deviceId,
@@ -414,8 +414,8 @@ extension OptionsViewController {
         _ apiErrorDetail: HIPAPIError?
     ) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: apiErrorDetail?.fallbackMessage ?? "transaction-filter-error-title".localized
+            title: String(localized: "title-error"),
+            message: apiErrorDetail?.fallbackMessage ?? String(localized: "title-generic-error")
         )
     }
 }

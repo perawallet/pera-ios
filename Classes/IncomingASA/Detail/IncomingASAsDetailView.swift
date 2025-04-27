@@ -105,12 +105,10 @@ final class IncomingASAsDetailView:
             idView.clearText()
         }
         
-        "incoming-asa-detail-screen-amount-title"
-            .localized
+        String(localized: "transaction-detail-amount")
             .load(in: amountTitleView)
         
-        "incoming-asa-detail-screen-senders-title"
-            .localized
+        String(localized: "incoming-asa-detail-screen-senders-title")
             .load(in: sendersTitleView)
         
         sendersContextView.deleteAllArrangedSubviews()
@@ -119,8 +117,7 @@ final class IncomingASAsDetailView:
             addSenderItem(vm, sendersTheme)
         })
         
-        "incoming-asa-detail-screen-description_accept"
-            .localized(params: viewModel?.algoGainOnClaim?.toAlgos.stringValue ?? "")
+        String(format: String(localized: "incoming-asa-detail-screen-description_accept"), viewModel?.algoGainOnClaim?.toAlgos.stringValue ?? "")
             .load(in: infoFooterView)
     }
     

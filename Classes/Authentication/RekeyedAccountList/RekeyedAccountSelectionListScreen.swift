@@ -546,11 +546,11 @@ extension RekeyedAccountSelectionListScreen {
         /// <todo>:
         /// Support singular/plural localization properly.
         if selectedAccountsCount == 0 {
-            title = "rekeyed-account-selection-list-primary-action-title".localized
+            title = String(localized: "rekeyed-account-selection-list-primary-action-title")
         } else if selectedAccountsCount == 1 {
-            title = "rekeyed-account-selection-list-primary-action-title-singular".localized
+            title = String(localized: "rekeyed-account-selection-list-primary-action-title-singular")
         } else {
-            title = "rekeyed-account-selection-list-primary-action-title-plural".localized(params: "\(selectedAccountsCount)")
+            title = String(format: String(localized: "rekeyed-account-selection-list-primary-action-title-plural"), selectedAccountsCount)
         }
 
         primaryActionView.editTitle = .string(title)

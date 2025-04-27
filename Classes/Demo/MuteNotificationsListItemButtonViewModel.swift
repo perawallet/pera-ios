@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ extension MuteNotificationsListItemButtonViewModel {
         _ account: Account
     ) {
         title = account.receivesNotification
-            ? Self.getTitle("options-mute-notification".localized)
-            : Self.getTitle("options-unmute-notification".localized)
+            ? Self.getTitle(String(localized: "options-mute-notification"))
+            : Self.getTitle(String(localized: "options-unmute-notification"))
     }
 }

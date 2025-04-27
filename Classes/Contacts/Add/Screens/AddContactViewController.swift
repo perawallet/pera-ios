@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -95,14 +95,14 @@ extension AddContactViewController: AddContactViewDelegate {
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = addContactView.nameInputView.text,
               !name.isEmptyOrBlank else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "contacts-name-validation-error"))
                   return nil
               }
         
         guard let address = addContactView.addressInputView.text,
               !address.isEmpty,
               address.isValidatedAddress else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "contacts-address-validation-error"))
                   return nil
               }
         
@@ -149,7 +149,7 @@ extension AddContactViewController: AddContactViewDelegate {
     
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
-            displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+            displaySimpleAlertWith(title: String(localized: "qr-scan-error-title"), message: String(localized: "qr-scan-error-message"))
             return
         }
         
@@ -190,7 +190,7 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .address,
               let qrAddress = qrText.address else {
-                  displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
+                  displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-address-message")) { _ in
                       if let handler = completionHandler {
                           handler()
                       }
@@ -202,7 +202,7 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+        displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "qr-scan-should-scan-valid-qr")) { _ in
             if let handler = completionHandler {
                 handler()
             }

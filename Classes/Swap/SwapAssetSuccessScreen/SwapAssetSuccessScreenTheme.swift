@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ struct SwapAssetSuccessScreenTheme:
         self.detailHorizontalInset = 40
         self.spacingBetweenTitleAndDetail = 12
         self.doneAction = [
-            .title("title-done".localized),
+            .title(String(localized: "title-done")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -87,7 +87,7 @@ struct SwapAssetSuccessScreenTheme:
         self.doneActionEdgeInsets = (12, 24, 16, 24)
         self.summaryAction = [
             .font(Typography.bodyMedium()),
-            .title("swap-success-view-summary".localized),
+            .title(String(localized: "swap-confirm-view-summary-title")),
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.summaryActionHorizontalInset = 24
@@ -99,7 +99,7 @@ struct SwapAssetSuccessScreenTheme:
         self.spacingBetweenSeparatorAndSummaryAction = 10
         self.viewDetailAction = [
             .font(Typography.bodyMedium()),
-            .title("swap-success-view-explorer".localized),
+            .title(String(localized: "swap-success-view-explorer")),
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.viewDetailActionHorizontalInset = 24

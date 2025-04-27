@@ -37,16 +37,14 @@ extension SelectAccountNoContentViewModel {
     }
     
     private mutating func bindTitle() {
-        title = "empty-accounts-title"
-            .localized
+        title = String(localized: "empty-accounts-title")
             .bodyLargeMedium(
                 alignment: .center
             )
     }
     
     private mutating func bindBody() {
-        body = "empty-accounts-detail"
-            .localized
+        body = String(localized: "empty-accounts-detail")
             .bodyRegular(
                 alignment: .center
             )

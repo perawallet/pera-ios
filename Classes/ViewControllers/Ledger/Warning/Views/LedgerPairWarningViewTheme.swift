@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
         ]
         self.actionButton = [
-            .title("title-close".localized),
+            .title(String(localized: "title-close")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)
@@ -77,8 +77,7 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
 extension LedgerPairWarningViewTheme {
     private static func getTitle() -> EditText {
         return .attributedString(
-            "ledger-pairing-first-warning-title"
-                .localized
+            String(localized: "ledger-pairing-first-warning-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -87,8 +86,7 @@ extension LedgerPairWarningViewTheme {
 
     private static func getSubtitle()  -> EditText {
         return .attributedString(
-            "ledger-pairing-first-warning-description"
-                .localized
+            String(localized: "ledger-pairing-first-warning-description")
                 .bodyRegular(
                     alignment: .center
                 )

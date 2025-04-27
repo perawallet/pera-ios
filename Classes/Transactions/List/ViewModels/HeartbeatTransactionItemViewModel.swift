@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import MacaroonUIKit
 
 struct HeartbeatTransactionItemViewModel: TransactionListItemViewModel {
     var id: String?
-    var title: MacaroonUIKit.EditText? = .string("transaction-detail-heartbeat".localized)
+    var title: MacaroonUIKit.EditText? = .string(String(localized: "transaction-detail-heartbeat"))
     var subtitle: MacaroonUIKit.EditText? = nil
     var transactionAmountViewModel: TransactionAmountViewModel? = nil
 }

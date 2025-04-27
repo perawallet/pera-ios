@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
             if !self.dataSource.verifyPassphrase() {
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "passphrase-verify-wrong-message".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "passphrase-verify-wrong-message")
                 )
                 self.contextView.reset()
                 self.dataSource.resetAndReloadData()

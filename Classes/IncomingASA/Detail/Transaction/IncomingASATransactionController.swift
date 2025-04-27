@@ -93,7 +93,7 @@ extension IncomingASATransactionController {
                 )
             case .failure(let error):
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
                 self.delegate?.incomingASATransactionController(
@@ -158,7 +158,7 @@ extension IncomingASATransactionController {
             error: &error
         ) else {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error?.localizedDescription ?? ""
             )
             delegate?.incomingASATransactionController(
@@ -215,7 +215,7 @@ extension IncomingASATransactionController {
             error: &error
         ) else {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error?.localizedDescription ?? ""
             )
             delegate?.incomingASATransactionController(
@@ -291,7 +291,7 @@ extension IncomingASATransactionController {
         
         if let signError {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: signError.localizedDescription
             )
             delegate?.incomingASATransactionController(
@@ -313,7 +313,7 @@ extension IncomingASATransactionController {
             
             guard let transactionID else {
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error?.localizedDescription ?? ""
                 )
                 
@@ -364,7 +364,7 @@ extension IncomingASATransactionController {
             self.ledgerTransactionOperation.stopScan()
 
             self.bannerController?.presentErrorBanner(
-                title: "ble-error-connection-title".localized,
+                title: String(localized: "ble-error-connection-title"),
                 message: ""
             )
 
@@ -415,28 +415,28 @@ extension IncomingASATransactionController {
         switch error {
         case .cancelled:
             bannerController?.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+                title: String(localized: "ble-error-transaction-cancelled-title"),
+                message: String(localized: "ble-error-fail-sign-transaction")
             )
         case .closedApp:
             bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"),
+                message: String(localized: "ble-error-ledger-connection-open-app-error")
             )
         case .unmatchedAddress:
             bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized,
-                message: "ledger-transaction-account-match-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"),
+                message: String(localized: "ledger-transaction-account-match-error")
             )
         case .failedToFetchAddress:
             bannerController?.presentErrorBanner(
-                title: "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
+                title: String(localized: "ble-error-transmission-title"),
+                message: String(localized: "ble-error-fail-fetch-account-address")
             )
         case .failedToFetchAccountFromIndexer:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-account-fetct-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "ledger-account-fetct-error")
             )
         case .failedBLEConnectionError(let state):
             guard let errorTitle = state.errorDescription.title,

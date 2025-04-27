@@ -19,7 +19,6 @@ import MacaroonUIKit
 
 struct MeldAccountSelectionListHeaderViewModel: ViewModel {
     let description: TextProvider =
-        "title-choose-account-to-proceed-with"
-            .localized
+        String(localized: "title-choose-account-to-proceed-with")
             .bodyRegular()
 }

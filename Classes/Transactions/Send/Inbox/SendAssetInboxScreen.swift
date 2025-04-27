@@ -291,7 +291,7 @@ extension SendAssetInboxScreen {
             case let .failure(error, _):
                 self.stopLoading()
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
                 self.didClose()
@@ -325,8 +325,8 @@ extension SendAssetInboxScreen {
             case let .didFailTransaction(id):
                 loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "send-inbox-transaction-failed".localized(id)
+                    title: String(localized: "title-error"),
+                    message: String(format: String(localized: "send-inbox-transaction-failed"), id)
                 )
             case let .didFailNetwork(error):
                 let message: String
@@ -343,7 +343,7 @@ extension SendAssetInboxScreen {
                 
                 loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: message
                 )
                 break
@@ -403,10 +403,8 @@ extension SendAssetInboxScreen {
         _ transactionId: String?
     ) {
         let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
-            title: "incoming-asas-detail-success-title"
-                .localized,
-            detail: "incoming-asas-detail-success-detail"
-                .localized
+            title: String(localized: "send-transaction-preview-success-title"),
+            detail: String(localized: "incoming-asas-detail-success-detail")
         )
         let successScreen = loadingScreen?.open(
             .successResultScreen(viewModel: successResultScreenViewModel),
@@ -483,8 +481,8 @@ extension SendAssetInboxScreen {
                     image: "icon-incoming-asa-yellow-error".uiImage,
                     title: inboxSendSummary.warningMessage?.title ?? "",
                     description: configuratorDescription,
-                    primaryActionButtonTitle: "title-i-understand".localized,
-                    secondaryActionButtonTitle: "title-cancel".localized,
+                    primaryActionButtonTitle: String(localized: "title-i-understand"),
+                    secondaryActionButtonTitle: String(localized: "title-cancel"),
                     primaryAction: { [weak self] in
                         guard let self else { return }
                         self.sendTransaction()
@@ -515,8 +513,8 @@ extension SendAssetInboxScreen {
                 guard let transactions = composeTransactions(params) else {
                     self.loadingScreen?.popScreen()
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-inbox-transaction-composing-failed".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "send-inbox-transaction-composing-failed")
                     )
                     return
                 }
@@ -525,7 +523,7 @@ extension SendAssetInboxScreen {
             case .failure(let error):
                 self.loadingScreen?.popScreen()
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
             }
@@ -573,15 +571,10 @@ extension SendAssetInboxScreen {
         let totalTransactionCountToSign = 3 // transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
         let title =
-            "swap-sign-with-ledger-title"
-                .localized
+            String(localized: "swap-sign-with-ledger-title")
                 .bodyLargeMedium(alignment: .center)
-        let highlightedBodyPart =
-            "swap-sign-with-ledger-body-highlighted"
-                .localized(params: "\(totalTransactionCountToSign)")
-        let body =
-            "swap-sign-with-ledger-body"
-                .localized(params: "\(totalTransactionCountToSign)")
+        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), "\(totalTransactionCountToSign)")
+        let body = String(format: String(localized: "swap-sign-with-ledger-body"), "\(totalTransactionCountToSign)")
                 .bodyRegular(alignment: .center)
                 .addAttributes(
                     to: highlightedBodyPart,
@@ -595,7 +588,7 @@ extension SendAssetInboxScreen {
         )
 
         let signTransactionsAction = UISheetAction(
-            title: "swap-sign-with-ledger-action-title".localized,
+            title: String(localized: "swap-sign-with-ledger-action-title"),
             style: .default
         ) { [weak self] in
             guard let self = self else { return }
@@ -652,9 +645,9 @@ extension SendAssetInboxScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -714,7 +707,7 @@ extension SendAssetInboxScreen {
         _ error: HIPTransactionError
     ) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: String(localized: "title-error"),
             message: error.debugDescription
         )
     }
@@ -724,23 +717,23 @@ extension SendAssetInboxScreen {
         switch ledgerError {
         case .cancelled:
             bannerController.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+                title: String(localized: "ble-error-transaction-cancelled-title"),
+                message: String(localized: "ble-error-fail-sign-transaction")
             )
         case .closedApp:
             bannerController.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"),
+                message: String(localized: "ble-error-ledger-connection-open-app-error")
             )
         case .failedToFetchAddress:
             bannerController.presentErrorBanner(
-                title: "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
+                title: String(localized: "ble-error-transmission-title"),
+                message: String(localized: "ble-error-fail-fetch-account-address")
             )
         case .failedToFetchAccountFromIndexer:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-account-fetct-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "ledger-account-fetct-error")
             )
         case .custom(let title, let message):
             bannerController.presentErrorBanner(
@@ -771,7 +764,7 @@ extension SendAssetInboxScreen {
         case .ledgerConnectionWarning:
             func showLedgerConnectionIssue() {
                 bannerController.presentErrorBanner(
-                    title: "ble-error-connection-title".localized,
+                    title: String(localized: "ble-error-connection-title"),
                     message: ""
                 )
 
@@ -798,7 +791,7 @@ extension SendAssetInboxScreen {
 
 extension SendAssetInboxScreen {
     private func startLoading() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
     }
 
     private func stopLoading() {

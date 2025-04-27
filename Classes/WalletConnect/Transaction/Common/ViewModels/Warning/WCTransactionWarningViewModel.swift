@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,16 +27,16 @@ class WCTransactionWarningViewModel {
     private func setTitle(from warning: WCTransactionWarning) {
         switch warning {
         case .rekeyed:
-            title = "wallet-connect-transaction-warning-rekey".localized
+            title = String(localized: "wallet-connect-transaction-warning-rekey")
         case .closeAlgos:
-            title = "wallet-connect-transaction-warning-close-algos".localized
+            title = String(localized: "wallet-connect-transaction-warning-close-algos")
         case let .closeAsset(asset):
             let assetDisplayName = asset.naming.displayNames.primaryName
-            title = "wallet-connect-transaction-warning-close-asset".localized(params: assetDisplayName, assetDisplayName)
+            title = String(format: String(localized: "wallet-connect-transaction-warning-close-asset"), assetDisplayName, assetDisplayName)
         case .fee:
-            title = "wallet-connect-transaction-warning-high-fee".localized
+            title = String(localized: "wallet-connect-transaction-warning-high-fee")
         case .assetDelete:
-            title = "wallet-connect-asset-deletion-warning-title".localized
+            title = String(localized: "wallet-connect-asset-deletion-warning-title")
         }
     }
 }

@@ -47,7 +47,7 @@ struct RekeyedAccountSelectionListScreenTheme:
             ])
         ]
         self.secondaryAction = [
-            .title("title-skip-for-now".localized),
+            .title(String(localized: "title-skip-for-now")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)

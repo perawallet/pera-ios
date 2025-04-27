@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,13 +50,13 @@ struct WatchAccountAdditionViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("watch-account-create".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "watch-account-create").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.description = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("watch-account-explanation-title".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "watch-account-explanation-title").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenDescriptionAndAddressInput = 40
         let textInputBaseStyle: TextInputStyle = [
@@ -69,8 +69,8 @@ struct WatchAccountAdditionViewControllerTheme:
         ]
         self.addressInput = MultilineTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "watch-account-input-placeholder".localized,
-            floatingPlaceholder:"watch-account-input-placeholder".localized
+            placeholder: String(localized: "watch-account-input-placeholder"),
+            floatingPlaceholder:String(localized: "watch-account-input-placeholder")
         )
         self.addressInputMinHeight = 48
         self.pasteFromClipboardAction = [
@@ -93,7 +93,7 @@ struct WatchAccountAdditionViewControllerTheme:
             position: .top((56, 0))
         )
         self.addAccountAction = [
-            .title("watch-account-button".localized),
+            .title(String(localized: "watch-account-button")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),

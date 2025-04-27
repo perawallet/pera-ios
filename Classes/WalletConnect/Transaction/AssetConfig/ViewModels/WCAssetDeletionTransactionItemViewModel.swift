@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-sender".localized,
+            title: String(localized: "transaction-detail-sender"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -89,7 +89,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         assetInformationViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: String(localized: "title-asset"),
             asset: asset
         )
     }
@@ -109,7 +109,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-close-asset-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-close-asset-title"),
             detail: closeAddress
         )
 
@@ -126,7 +126,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -161,7 +161,7 @@ class WCAssetDeletionTransactionViewModel {
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeViewModel = feeInformationViewModel
     }
 
@@ -181,7 +181,7 @@ class WCAssetDeletionTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
 

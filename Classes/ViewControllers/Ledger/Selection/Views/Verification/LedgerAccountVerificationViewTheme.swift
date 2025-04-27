@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ struct LedgerAccountVerificationViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(Colors.Text.main),
-            .text("ledger-verify-header-title".localized)
+            .text(String(localized: "ledger-verify-header-title"))
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.gray),
-            .text("ledger-verify-header-subtitle".localized)
+            .text(String(localized: "ledger-verify-header-subtitle"))
         ]
         self.image = [
             .image("icon-ledger"),

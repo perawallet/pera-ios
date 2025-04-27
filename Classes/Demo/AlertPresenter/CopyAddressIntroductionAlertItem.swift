@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,14 +39,12 @@ extension CopyAddressIntroductionAlertItem {
     func makeAlert() -> Alert {
         isSeen = true
 
-        let title = "story-copy-address-title"
-            .localized
+        let title = String(localized: "story-copy-address-title")
             .bodyLargeMedium(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
             )
-        let body = "story-copy-address-description"
-            .localized
+        let body = String(localized: "story-copy-address-description")
             .footnoteRegular(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
@@ -71,7 +69,7 @@ extension CopyAddressIntroductionAlertItem {
 extension CopyAddressIntroductionAlertItem {
     private func makeGotItAction() -> AlertAction {
         return AlertAction(
-            title: "title-got-it".localized,
+            title: String(localized: "title-got-it"),
             style: .secondary
         ) {
             [unowned self] in

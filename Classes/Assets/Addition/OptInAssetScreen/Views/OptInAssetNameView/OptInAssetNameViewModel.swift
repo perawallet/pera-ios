@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ struct OptInAssetNameViewModel: PrimaryTitleViewModel {
 
 extension OptInAssetNameViewModel {
     mutating func bindPrimaryTitle(asset: AssetDecoration) {
-        let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        let title = asset.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
         var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
 
@@ -52,7 +52,7 @@ extension OptInAssetNameViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

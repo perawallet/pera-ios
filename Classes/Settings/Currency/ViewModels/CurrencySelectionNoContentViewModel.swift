@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ struct CurrencySelectionNoContentViewModel: NoContentViewModel, Hashable {
 extension CurrencySelectionNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "settings-currency-not-found-title"
-                .localized
+            String(localized: "settings-currency-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -40,8 +39,7 @@ extension CurrencySelectionNoContentViewModel {
     
     private mutating func bindBody() {
         body =
-            "settings-currency-not-found-detail"
-                .localized
+            String(localized: "settings-currency-not-found-detail")
                 .bodyRegular(
                     alignment: .center
                 )

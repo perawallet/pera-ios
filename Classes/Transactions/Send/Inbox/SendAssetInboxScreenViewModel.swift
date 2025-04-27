@@ -44,11 +44,11 @@ struct SendAssetInboxScreenViewModel {
 
 extension SendAssetInboxScreenViewModel {
     private mutating func bindTitle() {
-        title = "send-inbox-title".localized.bodyMedium(alignment: .center)
+        title = String(localized: "send-inbox-title").bodyMedium(alignment: .center)
     }
     
     private mutating func bindSubtitle() {
-        subtitle = "send-inbox-description".localized.footnoteRegular(alignment: .center)
+        subtitle = String(localized: "send-inbox-description").footnoteRegular(alignment: .center)
     }
 
     private mutating func bindHighlightedSubtitleText() {
@@ -56,7 +56,7 @@ extension SendAssetInboxScreenViewModel {
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         highlightedSubtitleText = HighlightedText(
-            text: "send-inbox-read-more".localized,
+            text: String(localized: "title-read-more"),
             attributes: attributes
         )
     }
@@ -76,7 +76,7 @@ extension SendAssetInboxScreenViewModel {
     }
     
     private mutating func bindDescription() {
-        description = "send-inbox-fee-description".localized.footnoteRegular()
+        description = String(localized: "send-inbox-fee-description").footnoteRegular()
     }
 }
 

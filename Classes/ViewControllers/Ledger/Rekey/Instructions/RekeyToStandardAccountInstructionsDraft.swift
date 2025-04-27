@@ -67,8 +67,7 @@ extension RekeyToStandardAccountInstructionsDraft {
     private static func makeTitle(
         sourceAccount: Account
     ) -> TextProvider {
-        return "title-rekey-to-standard-account-capitalized-sentence"
-            .localized
+        return String(localized: "title-rekey-to-standard-account")
             .titleMedium()
     }
 }
@@ -95,20 +94,20 @@ extension RekeyToStandardAccountInstructionsDraft {
     }
 
     private static func makeRekeyStandardAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-standard-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-standard-to-standard-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-standard-to-standard-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyLedgerAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-ledger-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-ledger-to-standard-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-ledger-to-standard-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 
     private static func makeRekeyRekeyedAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = "rekey-rekeyed-to-standard-account-instructions-body".localized
-        let highlightedText = "rekey-rekeyed-to-standard-account-instructions-body-highlighted-text".localized
+        let text = String(localized: "rekey-rekeyed-to-standard-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
 }

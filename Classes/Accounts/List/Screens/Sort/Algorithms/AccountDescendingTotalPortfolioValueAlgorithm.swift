@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ struct AccountDescendingTotalPortfolioValueAlgorithm: AccountSortingAlgorithm {
         currency: CurrencyProvider
     ) {
         self.id = "cache.value.accountDescendingTotalPortfolioValueAlgorithm"
-        self.name = "title-highest-value-to-lowest".localized
+        self.name = String(localized: "title-highest-value-to-lowest")
         self.isCustom = false
         self.currency = currency
     }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,16 +74,14 @@ extension AssetQuickActionViewModel {
         case .optIn:
             if asset is CollectibleAsset {
                 self.title = .attributedString(
-                    "asset-quick-action-title-opt-in"
-                        .localized
+                    String(localized: "asset-quick-action-title-opt-in")
                         .footnoteRegular(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
 
             self.title = .attributedString(
-                "asset-quick-action-title-add"
-                    .localized
+                String(localized: "asset-quick-action-title-add")
                     .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         case .optInWithoutAccount:
@@ -91,22 +89,19 @@ extension AssetQuickActionViewModel {
 
             if asset is CollectibleAsset {
                 self.title = .attributedString(
-                    "asset-quick-action-title-add-nft-without-account"
-                        .localized
+                    String(localized: "asset-quick-action-title-add-nft-without-account")
                         .footnoteRegular(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
 
             self.title = .attributedString(
-                "asset-quick-action-title-add-asset-without-account"
-                    .localized
+                String(localized: "asset-quick-action-title-add-asset-without-account")
                     .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         case .optOut:
             self.title = .attributedString(
-                "asset-quick-action-title-remove"
-                    .localized
+                String(localized: "asset-quick-action-title-remove")
                     .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         }
@@ -137,16 +132,14 @@ extension AssetQuickActionViewModel {
 
             if asset is CollectibleAsset {
                 self.buttonTitle = .attributedString(
-                    "single-transaction-request-opt-in-title"
-                        .localized
+                    String(localized: "title-opt-in")
                         .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
 
             self.buttonTitle = .attributedString(
-                "asset-quick-action-button-add"
-                    .localized
+                String(localized: "asset-quick-action-button-add")
                     .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
         case .optInWithoutAccount:
@@ -156,23 +149,20 @@ extension AssetQuickActionViewModel {
 
             if asset is CollectibleAsset {
                 self.buttonTitle = .attributedString(
-                    "single-transaction-request-opt-in-title"
-                        .localized
+                    String(localized: "title-opt-in")
                         .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
 
             self.buttonTitle = .attributedString(
-                "asset-quick-action-button-add"
-                    .localized
+                String(localized: "asset-quick-action-button-add")
                     .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
         case .optOut:
             self.buttonIcon = img("icon-quick-action-remove")
             self.buttonTitle = .attributedString(
-                "title-remove"
-                    .localized
+                String(localized: "title-remove")
                     .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
             self.buttonTitleColor = Colors.Helpers.negative

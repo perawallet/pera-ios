@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,8 +47,7 @@ extension ManageAssetListViewController {
             self.horizontalPadding = 24
             
             let titleText =
-                "asset-opt-out-title"
-                    .localized
+                String(localized: "asset-opt-out-title")
                     .titleMedium(lineBreakMode: .byTruncatingTail)
             self.title = [
                 .text(titleText),
@@ -65,8 +64,7 @@ extension ManageAssetListViewController {
             subtitleAttributes.insert(.textColor(Colors.Text.gray))
 
             self.subtitleText = .attributedString(
-                "asset-remove-subtitle"
-                    .localized
+                String(localized: "asset-remove-subtitle")
                     .attributed(
                         subtitleAttributes
                     )
@@ -75,7 +73,7 @@ extension ManageAssetListViewController {
             self.subtitleTopPadding = 16
             
             self.searchInputTheme = SearchInputViewCommonTheme(
-                placeholder: "account-detail-assets-search".localized,
+                placeholder: String(localized: "account-detail-assets-search"),
                 family: family
             )
             self.searchInputTopPadding = 40

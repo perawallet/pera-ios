@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ extension AssetAdditionViewController {
             self.backgroundColor = Colors.Defaults.background
 
             self.searchInputTheme = SearchInputViewCommonTheme(
-                placeholder: "asset-search-placeholder".localized,
+                placeholder: String(localized: "asset-search-placeholder"),
                 family: family
             )
             self.searchInputHorizontalPadding = 24

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ final class SettingsViewController:
     }
 
     override func configureAppearance() {
-        title = "settings-title".localized
+        title = String(localized: "title-settings")
     }
     
     override func prepareLayout() {
@@ -226,10 +226,10 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     private func presentLogoutAlert() {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,
-            title: "settings-delete-data-title".localized,
-            description: .plain("settings-logout-detail".localized),
-            primaryActionButtonTitle: "settings-logout-button-delete".localized,
-            secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
+            title: String(localized: "settings-delete-data-title"),
+            description: .plain(String(localized: "settings-logout-detail")),
+            primaryActionButtonTitle: String(localized: "settings-logout-button-delete"),
+            secondaryActionButtonTitle: String(localized: "title-keep"),
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return
@@ -260,8 +260,8 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             }
 
             self.bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "pass-phrase-verify-sdk-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "pass-phrase-verify-sdk-error")
             )
         }
     }
@@ -269,8 +269,8 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     private func presentLogoutSuccessScreen() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
-            title: "settings-logout-success-message".localized,
-            secondaryActionButtonTitle: "title-close".localized
+            title: String(localized: "settings-logout-success-message"),
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
 
         bottomModalTransition.perform(

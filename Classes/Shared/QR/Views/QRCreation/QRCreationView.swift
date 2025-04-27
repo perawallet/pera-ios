@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -140,7 +140,7 @@ extension QRCreationView {
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(
             ButtonCommonViewModel(
-                title: "qr-creation-copy-address".localized,
+                title: String(localized: "title-copy-address").capitalized,
                 iconSet: [.normal("icon-qr-copy")])
         )
 
@@ -155,7 +155,7 @@ extension QRCreationView {
         shareButton.customize(theme.shareButtonTheme)
         shareButton.bindData(
             ButtonCommonViewModel(
-                title: "title-share-qr".localized,
+                title: String(localized: "title-share-qr"),
                 iconSet: [.normal("icon-qr-share")])
         )
 

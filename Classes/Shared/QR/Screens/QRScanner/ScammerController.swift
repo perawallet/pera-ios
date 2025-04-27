@@ -32,7 +32,7 @@ final class ScammerController: NSObject {
             case .success(let scammerControlResult):
                 completion(.success(scammerControlResult.isScammer))
             case .failure(_, let errorDetail):
-                completion(.failure(errorDetail?.message ?? "check-domain-default-error".localized))
+                completion(.failure(errorDetail?.message ?? String(localized: "check-domain-default-error")))
             }
         }
     }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ final class CollectibleReceiveSearchInputCell:
 
         contextView.customize(
             SearchInputViewCommonTheme(
-                placeholder: "collectibles-receive-asset-list-search-placeholder".localized,
+                placeholder: String(localized: "collectibles-receive-asset-list-search-placeholder"),
                 family: .current
             )
         )

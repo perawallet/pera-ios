@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ struct ConfirmSwapScreenTheme:
         self.infoItem = SwapInfoItemViewTheme()
         self.infoSectionItemSpacing = 16
         self.viewSummary = [
-            .title("swap-confirm-view-summary-title".localized),
+            .title(String(localized: "swap-confirm-view-summary-title")),
             .titleColor([
                 .normal(Colors.Helpers.positive)
             ]),
@@ -87,7 +87,7 @@ struct ConfirmSwapScreenTheme:
         self.warningTopInset = 28
         self.warning = SwapErrorViewTheme()
         self.confirmAction = [
-            .title("swap-confirm-title".localized),
+            .title(String(localized: "swap-confirm-title")),
             .titleColor(
                 [
                     .normal(Colors.Button.Primary.text),

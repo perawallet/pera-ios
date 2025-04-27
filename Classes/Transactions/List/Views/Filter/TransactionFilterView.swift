@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ final class TransactionFilterView: View {
     }()
 
     private lazy var closeButtonContainer = UIView()
-    private lazy var closeButton = ViewFactory.Button.makeSecondaryButton("title-close".localized)
+    private lazy var closeButton = ViewFactory.Button.makeSecondaryButton(String(localized: "title-close"))
 
     private var isLayoutFinalized = false
     

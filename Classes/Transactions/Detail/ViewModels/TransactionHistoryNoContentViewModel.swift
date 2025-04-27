@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,8 +32,7 @@ struct TransactionHistoryNoContentViewModel: NoContentViewModel {
 extension TransactionHistoryNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "accounts-tranaction-empty-text"
-                .localized
+            String(localized: "accounts-transaction-empty-text")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -41,8 +40,7 @@ extension TransactionHistoryNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "accounts-tranaction-empty-detail"
-                .localized
+            String(localized: "accounts-transaction-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

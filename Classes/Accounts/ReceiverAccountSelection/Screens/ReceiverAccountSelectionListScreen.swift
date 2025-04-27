@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -213,7 +213,7 @@ extension ReceiverAccountSelectionListScreen {
     private func addSearchInput() {
         searchInputView.customize(
             QRSearchInputViewTheme(
-                placeholder: "account-select-header-search-title".localized,
+                placeholder: String(localized: "account-select-header-search-title"),
                 family: .current
             )
         )
@@ -475,8 +475,8 @@ extension ReceiverAccountSelectionListScreen: QRScannerViewControllerDelegate {
         completionHandler: EmptyHandler?
     ) {
         displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "qr-scan-should-scan-valid-qr")
         ) { _ in
             completionHandler?()
         }

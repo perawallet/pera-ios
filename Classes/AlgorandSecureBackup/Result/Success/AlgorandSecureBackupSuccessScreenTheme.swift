@@ -41,7 +41,7 @@ struct AlgorandSecureBackupSuccessScreenTheme:
         self.spacingBetweenHeaderAndFileContent = 28
         self.fileInfo = FileInfoViewTheme(family)
         self.saveAction = [
-            .title("algorand-secure-backup-success-save-action-title".localized),
+            .title(String(localized: "algorand-secure-backup-success-save-action-title")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
@@ -54,7 +54,7 @@ struct AlgorandSecureBackupSuccessScreenTheme:
         ]
         self.saveActionLayout = .imageAtLeft(spacing: 12)
         self.doneAction = [
-            .title("title-done".localized),
+            .title(String(localized: "title-done")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)

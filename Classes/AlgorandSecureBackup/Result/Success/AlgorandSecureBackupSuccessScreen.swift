@@ -207,7 +207,7 @@ extension AlgorandSecureBackupSuccessScreen {
     private func copyBackup() {
         guard let backupData = backup.data else { return }
         let copyText = backupData.base64EncodedString()
-        let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
+        let copyInteraction = CopyToClipboardInteraction(title: String(localized: "algorand-secure-backup-success-copy-action-message"), body: nil)
         let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
 
         copyToClipboardController.copy(item)
@@ -220,7 +220,7 @@ extension AlgorandSecureBackupSuccessScreen {
             openShareSheet(url)
         } catch {
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.localizedDescription
             )
         }
@@ -230,10 +230,10 @@ extension AlgorandSecureBackupSuccessScreen {
     private func performDone() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green".uiImage,
-            title: "algorand-secure-backup-success-confirmation-title".localized,
-            description: .plain("algorand-secure-backup-success-confirmation-message".localized),
-            primaryActionButtonTitle: "algorand-secure-backup-success-confirmation-primary-action-title".localized,
-            secondaryActionButtonTitle: "algorand-secure-backup-success-confirmation-secondary-action-title".localized,
+            title: String(localized: "algorand-secure-backup-success-confirmation-title"),
+            description: .plain(String(localized: "algorand-secure-backup-success-confirmation-message")),
+            primaryActionButtonTitle: String(localized: "algorand-secure-backup-success-confirmation-primary-action-title"),
+            secondaryActionButtonTitle: String(localized: "algorand-secure-backup-success-confirmation-secondary-action-title"),
             primaryAction: { [weak self] in
                 guard let self else { return }
                 self.eventHandler?(.complete, self)

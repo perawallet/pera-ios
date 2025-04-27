@@ -29,7 +29,7 @@ final class WCKeyRegTransactionViewController:
     override func configureAppearance() {
         super.configureAppearance()
 
-        title = "transaction-details-title".localized
+        title = String(localized: "transaction-details-title")
 
         view.backgroundColor = Colors.Defaults.background.uiColor
     }

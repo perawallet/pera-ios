@@ -405,8 +405,8 @@ extension AlgorandSecureBackupRecoverMnemonicScreen {
 
     private func presentErrorBanner() {
         bannerController?.presentErrorBanner(
-            title: "algorand-secure-backup-mnemonics-error-title".localized,
-            message: "algorand-secure-backup-mnemonics-error-message".localized
+            title: String(localized: "algorand-secure-backup-mnemonics-error-title"),
+            message: String(localized: "algorand-secure-backup-mnemonics-error-message")
         )
     }
 }

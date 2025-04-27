@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,23 +56,19 @@ extension MoonPayTransactionViewModel {
         
         switch type {
         case .completed:
-            titleString = "moonpay-transaction-completed-title"
+            titleString = String(localized: "moonpay-transaction-completed-title")
         case .pending:
-            titleString = "moonpay-transaction-pending-title"
+            titleString = String(localized: "moonpay-transaction-pending-title")
         case .failed:
-            titleString = "moonpay-transaction-failed-title"
+            titleString = String(localized: "moonpay-transaction-failed-title")
         case .waitingAuthorization:
-            titleString = "moonpay-transaction-waitingAuthorization-title"
+            titleString = String(localized: "moonpay-transaction-waitingAuthorization-title")
         case .waitingPayment:
-            titleString = "moonpay-transaction-waitingPayment-title"
+            titleString = String(localized: "moonpay-transaction-waitingPayment-title")
             
         }
         
-        title = .attributedString(
-            titleString
-                .localized
-                .titleMedium()
-        )
+        title = .attributedString(titleString.titleMedium())
     }
     
     private mutating func bindDescription(_ type: MoonPayParams.TransactionStatus) {
@@ -80,31 +76,24 @@ extension MoonPayTransactionViewModel {
         
         switch type {
         case .completed:
-            descriptionString = "moonpay-transaction-completed-description"
+            descriptionString = String(localized: "moonpay-transaction-completed-description")
         case .pending:
-            descriptionString = "moonpay-transaction-pending-description"
+            descriptionString = String(localized: "moonpay-transaction-pending-description")
         case .failed:
-            descriptionString = "moonpay-transaction-failed-description"
+            descriptionString = String(localized: "moonpay-transaction-failed-description")
         case .waitingAuthorization:
-            descriptionString = "moonpay-transaction-waitingAuthorization-description"
+            descriptionString = String(localized: "moonpay-transaction-waitingAuthorization-description")
         case .waitingPayment:
-            descriptionString = "moonpay-transaction-waitingPayment-description"
+            descriptionString = String(localized: "moonpay-transaction-waitingPayment-description")
         }
 
-        description = .attributedString(
-            descriptionString
-                .localized
-                .bodyRegular()
-        )
+        description = .attributedString(descriptionString.bodyRegular())
     }
     
     private mutating func bindAccountName(_ account: Account) {
         let name = account.primaryDisplayName
         
-        accountName = .attributedString(
-            name
-                .bodyRegular()
-        )
+        accountName = .attributedString(name.bodyRegular())
     }
     
     private mutating func bindAccountIcon(_ account: Account) {

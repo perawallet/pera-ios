@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -131,7 +131,7 @@ final class Account: ALGEntityModel {
     ) {
         self.address = localAccount.address
         self.amountWithoutRewards = 0
-        self.authorization = localAccount.isWatchAccount ? .watch : .unknown
+        self.authorization = AccountAuthorization(accountType: localAccount.type)
         self.pendingRewards = 0
         self.status = .offline
         self.name = localAccount.name
@@ -689,5 +689,16 @@ extension AccountAuthorization {
             isStandardToNoAuthInLocalRekeyed ||
             isLedgerToNoAuthInLocalRekeyed ||
             isUnknownToNoAuthInLocalRekeyed
+    }
+}
+
+extension AccountAuthorization {
+    init(accountType: AccountInformation.AccountType) {
+        switch accountType {
+        case .standard: self = .standard
+        case .watch: self = .watch
+        case .ledger: self = .ledger
+        case .rekeyed: self = .standardToStandardRekeyed
+        }
     }
 }

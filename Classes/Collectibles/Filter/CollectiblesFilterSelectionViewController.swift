@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ final class CollectiblesFilterSelectionViewController: ScrollScreen {
         addBarButtons()
 
         navigationItem.largeTitleDisplayMode =  .never
-        navigationItem.title = "collectible-filter-selection-title".localized
+        navigationItem.title = String(localized: "collectible-filter-selection-title")
     }
 
     override func viewDidLoad() {

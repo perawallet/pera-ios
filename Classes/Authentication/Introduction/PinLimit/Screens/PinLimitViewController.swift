@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -129,10 +129,10 @@ extension PinLimitViewController {
     private func presentLogoutAlert() {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,
-            title: "settings-logout-title".localized,
-            description: .plain("settings-logout-detail".localized),
-            primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            title: String(localized: "settings-logout-title"),
+            description: .plain(String(localized: "settings-logout-detail")),
+            primaryActionButtonTitle: String(localized: "node-settings-action-delete-title"),
+            secondaryActionButtonTitle: String(localized: "title-cancel"),
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return

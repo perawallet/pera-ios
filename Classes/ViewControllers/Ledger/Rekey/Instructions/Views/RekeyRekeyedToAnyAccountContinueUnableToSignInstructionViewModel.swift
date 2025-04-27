@@ -24,6 +24,6 @@ struct RekeyRekeyedToAnyAccountContinueUnableToSignInstructionViewModel: Instruc
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "account-continue-unable-to-sign-transactions-itself".localized.bodyRegular()
+        self.title = String(localized: "account-continue-unable-to-sign-transactions-itself").bodyRegular()
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ extension ASAAboutScreenShowOnSecondaryListItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "asa-about-asa-show-on"
-                .localized
+            String(localized: "collectible-detail-show-on")
                 .attributed(attributes)
     }
 }
@@ -55,8 +54,7 @@ extension ASAAboutScreenShowOnListItemValueViewModel {
         attributes.insert(.textColor(Colors.Link.primary))
 
         title =
-            "asa-about-asa-show-on-pera-explorer"
-                .localized
+            String(localized: "collectible-detail-pera-explorer")
                 .attributed(attributes)
     }
 

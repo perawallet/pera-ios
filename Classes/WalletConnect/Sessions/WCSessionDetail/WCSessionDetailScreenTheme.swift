@@ -34,7 +34,7 @@ struct WCSessionDetailScreenTheme:
         ]
         self.spacingBetweenListAndPrimaryAction = 24
         self.primaryAction = [
-            .title("wc-session-extend-validty".localized),
+            .title(String(localized: "wc-session-extend-validty")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),
@@ -47,7 +47,7 @@ struct WCSessionDetailScreenTheme:
             ])
         ]
         self.secondaryAction = [
-            .title("node-settings-action-delete-title".localized),
+            .title(String(localized: "node-settings-action-delete-title")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)

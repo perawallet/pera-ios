@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ final class SecuritySettingsViewController: BaseViewController {
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        title = "security-settings-title".localized
+        title = String(localized: "security-settings-title")
     }
 
     override func linkInteractors() {
@@ -162,7 +162,7 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
     ) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let headerView = collectionView.dequeueHeader(SingleGrayTitleHeaderSuplementaryView.self, at: indexPath)
-            headerView.bindData(SingleGrayTitleHeaderViewModel("security-settings-section".localized))
+            headerView.bindData(SingleGrayTitleHeaderViewModel(String(localized: "security-settings-section")))
             return headerView
         }
         
@@ -238,8 +238,8 @@ extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
                 cell.contextView.setToggleOn(false, animated: true)
             } catch {
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "local-authentication-disabled-error-message".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "local-authentication-disabled-error-message")
                 )
                 cell.contextView.setToggleOn(true, animated: false)
             }
@@ -252,16 +252,16 @@ extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
 extension SecuritySettingsViewController {
     private func presentDisabledLocalAuthenticationAlert() {
         let alertController = UIAlertController(
-            title: "local-authentication-go-settings-title".localized,
-            message: "local-authentication-go-settings-text".localized,
+            title: String(localized: "local-authentication-go-settings-title"),
+            message: String(localized: "local-authentication-go-settings-text"),
             preferredStyle: .alert
         )
         
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+        let settingsAction = UIAlertAction(title: String(localized: "title-go-to-settings"), style: .default) { _ in
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { [weak self] _ in
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel) { [weak self] _ in
             guard let self = self else {
                 return
             }

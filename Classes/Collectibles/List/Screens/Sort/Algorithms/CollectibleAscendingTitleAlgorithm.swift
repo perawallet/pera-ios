@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ struct CollectibleAscendingTitleAlgorithm: CollectibleSortingAlgorithm {
 
     init() {
         self.id = "cache.value.collectibleAscendingTitleAlgorithm"
-        self.name = "title-alphabetically-a-to-z".localized
+        self.name = String(localized: "title-alphabetically-a-to-z")
     }
 }
 

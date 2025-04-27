@@ -191,20 +191,18 @@ extension LedgerConnectionScreen {
 
     private func bindTitle() {
         titleView.attributedText =
-            "ledger-approval-connection-title"
-                .localized
+            String(localized: "ledger-approval-connection-title")
                 .bodyLargeMedium(alignment: .center)
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "ledger-approval-connection-message"
-                .localized
+            String(localized: "ledger-approval-connection-message")
                 .bodyRegular(alignment: .center)
     }
 
     private func bindAction() {
-        actionView.editTitle = .string("title-cancel".localized)
+        actionView.editTitle = .string(String(localized: "title-cancel"))
     }
 }
 

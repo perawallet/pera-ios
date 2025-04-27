@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ final class SingleGrayTitleHeaderViewModel: ViewModel {
     private func setTitle(_ name: GeneralSettings) {
         switch name {
         case .account:
-            self.title = "settings-sections-account".localized
+            self.title = String(localized: "title-account")
         case .appPreferences:
-            self.title = "settings-sections-appPreferences".localized
+            self.title = String(localized: "settings-sections-appPreferences")
         case .support:
-            self.title = "settings-sections-support".localized
+            self.title = String(localized: "settings-sections-support")
         }
     }
     
     private func setTitle(_ name: String) {
-        self.title = name.localized
+        self.title = name
     }
 }
 

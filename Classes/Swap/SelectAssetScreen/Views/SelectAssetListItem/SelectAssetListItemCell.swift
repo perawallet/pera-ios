@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,38 +14,68 @@
 
 //   SelectAssetListItemCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
 
-final class SelectAssetListItemCell:
-    CollectionCell<PrimaryListItemView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return theme.contextEdgeInsets
-    }
-
+final class SelectAssetListItemCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
     static let theme = SelectAssetListItemCellTheme()
-
-    override func prepareLayout() {
-        addContext()
-        addSeparator()
+    
+    private let contextView: PrimaryListItemView = {
+        let view = PrimaryListItemView()
+        view.customize(SelectAssetListItemCell.theme.context)
+        return view
+    }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.Layer.grayLighter.uiColor
+        return view
+    }()
+    
+    // MARK: - Initialisers
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupConstraints()
     }
-
-    override func addContext() {
-        let theme = Self.theme
-
-        contextView.customize(theme.context)
-
-        contentView.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.top == theme.contextEdgeInsets.top
-            $0.leading == theme.contextEdgeInsets.leading
-            $0.bottom == theme.contextEdgeInsets.bottom
-            $0.trailing == theme.contextEdgeInsets.trailing
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Setups
+    
+    private func setupConstraints() {
+        
+        [contextView, separatorView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
         }
+        
+        let constraints = [
+            contextView.topAnchor.constraint(equalTo: topAnchor, constant: Self.theme.contextEdgeInsets.top),
+            contextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.theme.contextEdgeInsets.leading),
+            contextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.theme.contextEdgeInsets.trailing),
+            contextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.theme.contextEdgeInsets.bottom),
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80.0),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24.0),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
-
+    
+    // MARK: - Actions
+    
+    func bindData(_ viewModel: SelectAssetListItemViewModel) {
+        contextView.bindData(viewModel)
+    }
+    
+    // MARK: - Helpers
+    
     static func calculatePreferredSize(
         _ viewModel: SelectAssetListItemViewModel?,
         for theme: SelectAssetListItemCellTheme,
@@ -57,7 +87,7 @@ final class SelectAssetListItemCell:
             theme.contextEdgeInsets.leading -
             theme.contextEdgeInsets.trailing
         let maxContextSize = CGSize(width: contextWidth, height: .greatestFiniteMagnitude)
-        let contextSize = ContextView.calculatePreferredSize(
+        let contextSize = PrimaryListItemView.calculatePreferredSize(
             viewModel,
             for: theme.context,
             fittingIn: maxContextSize
@@ -67,11 +97,5 @@ final class SelectAssetListItemCell:
             contextSize.height +
             theme.contextEdgeInsets.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
-    }
-}
-
-extension SelectAssetListItemCell {
-    private func addSeparator() {
-        separatorStyle = .single(Self.theme.separator)
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,9 +40,9 @@ import MacaroonUIKit
              .textContentType(.name)
          ]
          self.nameInput = FloatingTextInputFieldViewCommonTheme(
-             textInput: textInputBaseStyle,
-             placeholder: "account-name-setup-placeholder".localized,
-             floatingPlaceholder: "account-name-setup-placeholder".localized
+            textInput: textInputBaseStyle,
+            placeholder: String(localized: "placeholder-account-name-setup"),
+            floatingPlaceholder: String(localized: "placeholder-account-name-setup")
          )
          self.nameInputMinHeight = 48
      }

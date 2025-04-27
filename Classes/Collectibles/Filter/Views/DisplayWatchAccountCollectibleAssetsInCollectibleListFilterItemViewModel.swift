@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ struct DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel:
     let description: TextProvider?
 
     init() {
-        self.title = "collectible-filter-selection-display-watch-account-collectible-assets-filter-title".localized.bodyRegular()
-        self.description = "collectible-filter-selection-display-watch-account-collectible-assets-filter-description".localized.footnoteRegular()
+        self.title = String(localized: "collectible-filter-selection-display-watch-account-collectible-assets-filter-title").bodyRegular()
+        self.description = String(localized: "collectible-filter-selection-display-watch-account-collectible-assets-filter-description").footnoteRegular()
     }
 }

@@ -24,7 +24,7 @@ struct CardsTransactionOptionListItemButtonViewModel: TransactionOptionListItemB
     
     init() {
         icon = "icon-transaction-option-list-cards"
-        title = Self.getTitle("transaction-option-list-cards-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-cards-subtitle".localized)
+        title = Self.getTitle(String(localized: "title-cards"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-cards-subtitle"))
     }
 }

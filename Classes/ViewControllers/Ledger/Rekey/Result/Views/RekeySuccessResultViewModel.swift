@@ -36,18 +36,14 @@ extension RekeySuccessResultViewModel {
 
     private mutating func bindTitle() {
         let aTitle =
-            "ledger-rekey-success-title"
-                .localized
+            String(localized: "ledger-rekey-success-title")
                 .titleMedium()
         title = aTitle
     }
 
     private mutating func bindBody(_ account: Account) {
         let accountName = account.primaryDisplayName
-        let text =
-            "ledger-rekey-success-message"
-                .localized(params: accountName)
-                .bodyRegular()
+        let text = String(format: String(localized: "ledger-rekey-success-message"), accountName).bodyRegular()
 
         let highlightedTextAttributes = Typography.bodyMediumAttributes()
         let aBody = text.addAttributes(

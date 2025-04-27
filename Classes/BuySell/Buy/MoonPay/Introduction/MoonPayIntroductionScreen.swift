@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ final class MoonPayIntroductionScreen: ScrollScreen {
         hidesCloseBarButtonItem = true
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "moonpay-introduction-title".localized
+        navigationItem.title = String(localized: "moonpay-introduction-title")
 
         addNavigationBarButtonItems()
     }
@@ -318,15 +318,13 @@ extension MoonPayIntroductionScreen {
 extension MoonPayIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "moonpay-buy-button-title"
-                .localized
+            String(localized: "quick-actions-buy-algo-title")
                 .titleMedium()
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "moonpay-introduction-description"
-                .localized
+            String(localized: "moonpay-introduction-description")
                 .bodyRegular()
     }
 
@@ -377,7 +375,7 @@ extension MoonPayIntroductionScreen {
         let deeplinkURL = "\(target.deeplinkConfig.moonpay.scheme)://\(address)"
         let moonPaySignDraft = MoonPaySignDraft(walletAddress: address, redirectUrl: deeplinkURL)
 
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         api?.getSignedMoonPayURL(moonPaySignDraft) {
             [weak self] response in
@@ -400,8 +398,8 @@ extension MoonPayIntroductionScreen {
 extension MoonPayIntroductionScreen {
     private func presentTestNetAlert() {
         displaySimpleAlertWith(
-            title: "title-not-available".localized,
-            message: "moonpay-transaction-testnet-not-available-description".localized
+            title: String(localized: "title-not-available"),
+            message: String(localized: "moonpay-transaction-testnet-not-available-description")
         )
     }
 }

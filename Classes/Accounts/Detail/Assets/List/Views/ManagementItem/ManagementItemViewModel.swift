@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,35 +42,21 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.title = .attributedString(
-                "accounts-title"
-                    .localized
+                String(localized: "title-accounts")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
             )
         case .asset:
             self.title = .attributedString(
-                "assets-title"
-                    .localized
+                String(localized: "title-assets")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
             )
         case .collectible(let count, _):
-            if count < 2 {
-                self.title = .attributedString(
-                    "title-plus-collectible-singular-count"
-                        .localized(params: "\(count)")
-                        .bodyMedium(
-                            lineBreakMode: .byTruncatingTail
-                        )
-                )
-                return
-            }
-
             self.title = .attributedString(
-                "title-plus-collectible-count"
-                    .localized(params: "\(count)")
+                String(format: String(localized: "title-plus-collectible-count"), count)
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
@@ -84,16 +70,14 @@ extension ManagementItemViewModel {
         switch type {
         case .account:
             self.primaryButtonTitle = .attributedString(
-                "options-sort-title"
-                    .localized
+                String(localized: "title-sort")
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
         case .asset,
              .collectible:
             self.primaryButtonTitle = .attributedString(
-                "asset-manage-button"
-                    .localized
+                String(localized: "asset-manage-button")
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-asset-manage")

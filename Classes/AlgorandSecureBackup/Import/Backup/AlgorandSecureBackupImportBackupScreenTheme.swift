@@ -40,12 +40,12 @@ struct AlgorandSecureBackupImportBackupScreenTheme: LayoutSheet, StyleSheet {
         ]
         defaultInset = 24
         navigationBarEdgeInset = (8, 24, .noMetric, 24)
-        navigationTitle = "algorand-secure-backup-import-backup-navigation-title".localized
+        navigationTitle = String(localized: "algorand-secure-backup-import-backup-navigation-title")
         header = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular()),
-            .text("algorand-secure-backup-import-backup-header".localized)
+            .text(String(localized: "algorand-secure-backup-import-backup-header"))
         ]
         uploadTopOffset = 102
         uploadHeight = 232
@@ -59,7 +59,7 @@ struct AlgorandSecureBackupImportBackupScreenTheme: LayoutSheet, StyleSheet {
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Helpers.positive) ]),
             .tintColor(Colors.Helpers.positive),
-            .title("algorand-secure-backup-import-backup-paste".localized)
+            .title(String(localized: "algorand-secure-backup-import-backup-paste"))
         ]
         pasteActionTitleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
         nextAction = [
@@ -71,7 +71,7 @@ struct AlgorandSecureBackupImportBackupScreenTheme: LayoutSheet, StyleSheet {
                 .selected("components/buttons/primary/bg-highlighted"),
                 .disabled("components/buttons/primary/bg-disabled")
             ]),
-            .title("title-next".localized)
+            .title(String(localized: "title-next"))
         ]
         nextActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)
         nextActionEdgeInsets = .init(top: 36, leading: 24, bottom: 16, trailing: 24)

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ extension AssetDetail {
         } else if let code = unitName, !code.isEmptyOrBlank {
             return ("\(code.uppercased())", nil)
         } else {
-            return ("title-unknown".localized, nil)
+            return (String(localized: "title-unknown"), nil)
         }
     }
     
@@ -163,14 +163,14 @@ extension AssetDetail {
         if let name = assetName, !name.isEmptyOrBlank {
             return name
         }
-        return "title-unknown".localized
+        return String(localized: "title-unknown")
     }
     
     func getAssetCode() -> String {
         if let code = unitName, !code.isEmptyOrBlank {
             return code.uppercased()
         }
-        return "title-unknown".localized
+        return String(localized: "title-unknown")
     }
 }
 

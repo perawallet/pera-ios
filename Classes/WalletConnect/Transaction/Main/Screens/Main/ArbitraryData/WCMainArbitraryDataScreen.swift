@@ -351,15 +351,15 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
 extension WCMainArbitraryDataScreen {
     private func displaySigningError(_ error: HIPTransactionError) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: String(localized: "title-error"),
             message: error.debugDescription
         )
     }
 
     private func displayGenericError() {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "title-generic-error".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "title-generic-error")
         )
     }
 }
@@ -403,9 +403,9 @@ extension WCMainArbitraryDataScreen {
     private func showRejectionReasonBottomSheet(_ reason: WCTransactionErrorResponse) {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "title-error".localized,
-            description: .plain("wallet-connect-no-account-for-transaction".localized(params: reason.message)),
-            secondaryActionButtonTitle: "title-ok".localized,
+            title: String(localized: "title-error"),
+            description: .plain(String(format: String(localized: "wallet-connect-no-account-for-transaction"), reason.message)),
+            secondaryActionButtonTitle: String(localized: "title-ok"),
             secondaryAction: {
                 [weak self] in
                 guard let self else { return  }
@@ -449,7 +449,7 @@ extension WCMainArbitraryDataScreen {
         asyncMain {
             [weak self] in
             guard let self else { return }
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         }
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -379,16 +379,16 @@ extension AssetListViewAPIDataController {
     }
 
     private func makeItem(for error: AssetListError) -> OptInAssetList.ErrorItem {
-        let fallbackTitle = "title-generic-api-error".localized
-        let fallbackBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
+        let fallbackTitle = String(localized: "title-generic-api-error")
+        let fallbackBody = "\(String(localized: "asset-search-not-found"))\n\(String(localized: "title-retry-later"))"
 
         let title: String
         let body: String
         switch error {
         case .connection(let connectionError):
             if connectionError.isNotConnectedToInternet {
-                title = "discover-error-connection-title".localized
-                body = "discover-error-connection-body".localized
+                title = String(localized: "discover-error-connection-title")
+                body = String(localized: "discover-error-connection-body")
             } else {
                 title = fallbackTitle
                 body = fallbackBody

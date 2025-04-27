@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ extension ContactDetailViewController {
             return
         }
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         api?.fetchAccount(
             AccountFetchDraft(publicKey: address),
@@ -295,8 +295,8 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
 
         guard !accountListDataSource.accounts.isEmpty else {
             bannerController?.presentErrorBanner(
-                title: "asset-support-your-add-title".localized,
-                message: "asset-support-your-add-message".localized
+                title: String(localized: "asset-support-your-add-title"),
+                message: String(localized: "asset-support-your-add-message")
             )
             return
         }

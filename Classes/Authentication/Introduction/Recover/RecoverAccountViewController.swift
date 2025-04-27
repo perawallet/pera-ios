@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -122,8 +122,8 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
     private func openQRScanner() {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(
-                title: "qr-scan-error-title".localized,
-                message: "qr-scan-error-message".localized
+                title: String(localized: "qr-scan-error-title"),
+                message: String(localized: "qr-scan-error-message")
             )
             return
         }
@@ -142,8 +142,8 @@ extension RecoverAccountViewController: QRScannerViewControllerDelegate {
         guard qrText.mode == .mnemonic,
             let mnemonics = qrText.mnemonic else {
             displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "qr-scan-should-scan-mnemonics-message".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "qr-scan-should-scan-mnemonics-message")
             ) { _ in
                 completionHandler?()
             }

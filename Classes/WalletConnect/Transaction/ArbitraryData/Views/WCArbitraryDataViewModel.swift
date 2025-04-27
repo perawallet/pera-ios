@@ -70,7 +70,7 @@ final class WCArbitraryDataViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
+            title: String(localized: "transaction-detail-from"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -89,7 +89,7 @@ final class WCArbitraryDataViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-to".localized,
+            title: String(localized: "title-to"),
             detail: dAppName
         )
         self.toInformationViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -113,7 +113,7 @@ final class WCArbitraryDataViewModel {
             currencyFormatter: currencyFormatter
         )
         let balanceViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        balanceViewModel.setTitle("title-account-balance".localized)
+        balanceViewModel.setTitle(String(localized: "title-balance"))
         self.balanceViewModel = balanceViewModel
     }
 
@@ -132,7 +132,7 @@ final class WCArbitraryDataViewModel {
             currencyFormatter: currencyFormatter
         )
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        amountInformationViewModel.setTitle("transaction-detail-amount".localized)
+        amountInformationViewModel.setTitle(String(localized: "transaction-detail-amount"))
         self.amountViewModel = amountInformationViewModel
     }
 
@@ -150,7 +150,7 @@ final class WCArbitraryDataViewModel {
             currencyFormatter: currencyFormatter
         )
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeViewModel = feeInformationViewModel
     }
 
@@ -162,7 +162,7 @@ final class WCArbitraryDataViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "title-data".localized,
+            title: String(localized: "title-data"),
             detail: message
         )
         self.dataInformationViewModel = TransactionTextInformationViewModel(titledInformation)

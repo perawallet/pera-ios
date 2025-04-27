@@ -73,8 +73,7 @@ final class IncomingASAAccountInboxViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "incoming-asa-account-inbox-screen-title"
-            .localized
+        self.title = String(localized: "incoming-asa-account-inbox-screen-title")
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -87,7 +86,7 @@ final class IncomingASAAccountInboxViewController:
                 )
             case .didReceiveError(let error):
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error
                 )
             }
@@ -141,16 +140,14 @@ extension IncomingASAAccountInboxViewController {
         let infoBarButton = ALGBarButtonItem(kind: .info) {
             [unowned self] in
             let uiSheet = UISheet(
-                title: "incoming-asa-account-inbox-screen-info-title"
-                    .localized
+                title: String(localized: "incoming-asa-account-inbox-screen-title")
                     .bodyLargeMedium(),
-                body: UISheetBodyTextProvider(text: "incoming-asa-account-inbox-screen-info-description-title"
-                    .localized
+                body: UISheetBodyTextProvider(text: String(localized: "incoming-asa-account-inbox-screen-info-description-title")
                     .bodyRegular())
             )
 
             let closeAction = UISheetAction(
-                title: "title-close".localized,
+                title: String(localized: "title-close"),
                 style: .cancel
             ) { [unowned self] in
                 self.dismiss(animated: true)
@@ -167,7 +164,7 @@ extension IncomingASAAccountInboxViewController {
     }
     
     private func bindNavigationItemTitle() {
-        title = "incoming-asa-account-inbox-screen-title".localized
+        title = String(localized: "incoming-asa-account-inbox-screen-title")
     }
 }
 

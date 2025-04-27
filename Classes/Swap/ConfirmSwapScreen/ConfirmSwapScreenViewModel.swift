@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var slippageInfo: SwapInfoItemViewModel?
     private(set) var priceImpactInfo: SwapInfoItemViewModel?
     private(set) var minimumReceivedInfo: SwapInfoItemViewModel?
-    private(set) var exchangeFeeInfo: SwapInfoItemViewModel?
     private(set) var peraFeeInfo: SwapInfoItemViewModel?
     private(set) var isConfirmActionEnabled: Bool = true
 
@@ -57,10 +56,6 @@ struct ConfirmSwapScreenViewModel: ViewModel {
         bindSlippageInfo(quote)
         bindPriceImpactInfo(quote)
         bindMinimumReceivedInfo(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
-        bindExchangeFeeInfo(
             quote: quote,
             currencyFormatter: currencyFormatter
         )
@@ -101,8 +96,7 @@ extension ConfirmSwapScreenViewModel {
 
     mutating func bindToSeparator() {
         toSeparator = TitleSeparatorViewModel(
-            "title-to"
-                .localized
+            String(localized: "title-to")
                 .uppercased()
         )
     }
@@ -150,16 +144,16 @@ extension ConfirmSwapScreenViewModel {
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
         case PriceImpactLimit.fivePercent...PriceImpactLimit.tenPercent:
-            message = "swap-price-impact-warning-message".localized
+            message = String(localized: "swap-price-impact-warning-message")
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
         case PriceImpactLimit.tenPercent...PriceImpactLimit.fifteenPercent:
-            message = "swap-price-impact-greater-than-10-warning-message".localized
+            message = String(localized: "swap-price-impact-greater-than-10-warning-message")
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
         default:
-            message = "swap-price-impact-greater-than-15-warning-message".localized
-            messageHighlightedText = "swap-price-impact-greater-than-15-warning-message-highlighted-text".localized
+            message = String(localized: "swap-price-impact-greater-than-15-warning-message")
+            messageHighlightedText = String(localized: "swap-price-impact-greater-than-15-warning-message-highlighted-text")
             messageHighlightedTextURL = AlgorandWeb.tinymanSwapPriceImpact.link
         }
 
@@ -202,16 +196,6 @@ extension ConfirmSwapScreenViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         minimumReceivedInfo = SwapConfirmMinimumReceivedInfoViewModel(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
-    }
-
-    mutating func bindExchangeFeeInfo(
-        quote: SwapQuote,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        exchangeFeeInfo = SwapConfirmExchangeFeeInfoViewModel(
             quote: quote,
             currencyFormatter: currencyFormatter
         )

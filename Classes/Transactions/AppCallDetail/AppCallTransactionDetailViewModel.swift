@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -102,11 +102,11 @@ extension AppCallTransactionDetailViewModel {
         _ transaction: Transaction
     ) {
         if transaction.isInner {
-            transactionIDTitle = "transaction-detail-parent-id".localized
+            transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
 
-        transactionIDTitle = "transaction-detail-id".localized
+        transactionIDTitle = String(localized: "transaction-detail-id")
     }
 
     private func bindTransactionID(

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,9 +70,7 @@ extension WCSessionShortListItemViewModel {
     private func bindDescription(_ wcV1Session: WCSession) {
         let dateFormat = "MMM d, yyyy, h:mm a"
         let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
-        description =
-            "wallet-connect-session-connected-on-date"
-                .localized(params: connectedOnDate)
+        description = String(format: String(localized: "wallet-connect-session-connected-on-date"), connectedOnDate)
     }
 }
 
@@ -104,8 +102,6 @@ extension WCSessionShortListItemViewModel {
     private func bindDescription(_ wcV2Session: WalletConnectV2Session) {
         let dateFormat = "MMM d, yyyy, h:mm a"
         let validUntilDate = wcV2Session.expiryDate.toFormat(dateFormat)
-        description =
-            "wallet-connect-v2-session-expires-on-date"
-                .localized(params: validUntilDate)
+        description = String(format: String(localized: "wallet-connect-v2-session-expires-on-date"), validUntilDate)
     }
 }

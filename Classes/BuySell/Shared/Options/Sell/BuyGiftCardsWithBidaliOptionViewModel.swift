@@ -23,7 +23,7 @@ struct BuyGiftCardsWithBidaliOptionViewModel: ListItemButtonViewModel {
 
     init() {
         self.icon = "icon-bidali-option"
-        self.title = .attributedString("buy-sell-options-buy-gift-cards-with-moonpay-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle".localized.footnoteRegular())
+        self.title = .attributedString(String(localized: "buy-sell-options-buy-gift-cards-with-moonpay-option-title").bodyMedium())
+        self.subtitle = .attributedString(String(localized: "buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle").footnoteRegular())
     }
 }

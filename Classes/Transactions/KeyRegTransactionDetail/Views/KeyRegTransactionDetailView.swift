@@ -102,7 +102,7 @@ extension KeyRegTransactionDetailView {
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: statusView)
         statusView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
 
-        statusView.bindData(TransactionStatusInformationViewModel(title: "transaction-detail-status".localized))
+        statusView.bindData(TransactionStatusInformationViewModel(title: String(localized: "transaction-detail-status")))
     }
 
     private func addRewardView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -110,7 +110,7 @@ extension KeyRegTransactionDetailView {
 
         verticalStackView.addArrangedSubview(rewardView)
 
-        rewardView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-reward".localized))
+        rewardView.bindData(TransactionAmountInformationViewModel(title: String(localized: "title-reward")))
     }
 
     private func addUserView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -124,7 +124,7 @@ extension KeyRegTransactionDetailView {
 
         verticalStackView.addArrangedSubview(feeView)
 
-        feeView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-fee".localized))
+        feeView.bindData(TransactionAmountInformationViewModel(title: String(localized: "transaction-detail-fee")))
     }
 
     private func addDateView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -132,7 +132,7 @@ extension KeyRegTransactionDetailView {
 
         verticalStackView.addArrangedSubview(dateView)
 
-        dateView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-date".localized))
+        dateView.bindData(TransactionTextInformationViewModel(title: String(localized: "transaction-detail-date")))
     }
 
     private func addRoundView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -140,7 +140,7 @@ extension KeyRegTransactionDetailView {
 
         verticalStackView.addArrangedSubview(roundView)
 
-        roundView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-round".localized))
+        roundView.bindData(TransactionTextInformationViewModel(title: String(localized: "transaction-detail-round")))
     }
 
     private func addIdView(_ theme: KeyRegTransactionDetailViewTheme) {
@@ -205,7 +205,7 @@ extension KeyRegTransactionDetailView {
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: noteView)
         noteView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
 
-        noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
+        noteView.bindData(TransactionTextInformationViewModel(title: String(localized: "title-note")))
     }
 
     private func addOpenInPeraExplorerButton(_ theme: KeyRegTransactionDetailViewTheme) {

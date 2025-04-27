@@ -24,7 +24,7 @@ struct AlgorandSecureBackupSaveBackupFileInstructionItemViewModel: AlgorandSecur
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "algorand-secure-backup-instruction-save-backup-file-instruction-title".localized.bodyMedium()
-        self.subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-save-backup-file-instruction-subtitle".localized.footnoteRegular())
+        self.title = String(localized: "algorand-secure-backup-instruction-save-backup-file-instruction-title").bodyMedium()
+        self.subtitle = SubtitleTextProvider(text: String(localized: "algorand-secure-backup-instruction-save-backup-file-instruction-subtitle").footnoteRegular())
     }
 }

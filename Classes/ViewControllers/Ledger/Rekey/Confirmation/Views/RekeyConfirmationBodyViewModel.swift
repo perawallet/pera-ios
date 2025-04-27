@@ -38,29 +38,20 @@ extension RekeyConfirmationBodyViewModel {
 
         let hasAuthAccount = authAccount != nil
         if hasAuthAccount {
-            aText = "rekey-rekeyed-to-any-account-confirmation-body".localized
+            aText = String(localized: "rekey-rekeyed-to-any-account-confirmation-body")
         } else {
-            aText = "rekey-any-to-any-account-confirmation-body".localized
+            aText = String(localized: "rekey-any-to-any-account-confirmation-body")
         }
 
         text = aText.bodyRegular()
     }
 
     private mutating func bindHighlightedText(_ authAccount: Account?) {
-        let aText: String
-        
-        let hasAuthAccount = authAccount != nil
-        if hasAuthAccount {
-            aText = "rekey-rekeyed-to-any-account-confirmation-body-highlighted-text".localized
-        } else {
-            aText = "rekey-any-to-any-account-confirmation-body-highlighted-text".localized
-        }
-
         var attributes = Typography.bodyMediumAttributes()
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         highlightedText = HighlightedText(
-            text: aText,
+            text: String(localized: "title-learn-more"),
             attributes: attributes
         )
     }

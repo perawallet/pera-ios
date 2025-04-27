@@ -24,6 +24,6 @@ struct RekeyAnyAccountToAnyAccountNoConfigurationChangeInstructionViewModel: Ins
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "rekey-instruction-third".localized.bodyRegular()
+        self.title = String(localized: "rekey-instruction-third").bodyRegular()
     }
 }

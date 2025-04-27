@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ struct Mail {
     init(_ type: MailType) {
         switch type {
         case .report(let assetId):
-            self.subject = "mail-report-subject".localized(params: assetId)
-            self.recipients = ["mail-report-address".localized]
+            self.subject = String(format: String(localized: "mail-report-subject"), assetId)
+            self.recipients = [String(localized: "mail-report-address")]
             self.message = nil
         }
     }

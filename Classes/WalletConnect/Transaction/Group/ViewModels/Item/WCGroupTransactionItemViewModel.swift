@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,14 +54,14 @@ final class WCGroupTransactionItemViewModel {
             with: asset,
             currencyFormatter: currencyFormatter
         )
-        showDetailLabelText = "title-show-transaction-detail".localized
+        showDetailLabelText = String(localized: "title-show-transaction-detail")
     }
 
     init(
         account: Account?,
         currencyFormatter: CurrencyFormatter
     ) {
-        title = "title-arbitrary-data".localized
+        title = String(localized: "title-arbitrary-data")
 
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
@@ -70,7 +70,7 @@ final class WCGroupTransactionItemViewModel {
             currencyFormatter: currencyFormatter
         )
 
-        showDetailLabelText = "title-show-details".localized
+        showDetailLabelText = String(localized: "title-show-details")
     }
 
     private func setHasWarning(
@@ -100,11 +100,11 @@ final class WCGroupTransactionItemViewModel {
             return
         case .assetAddition:
             if let assetId = transactionDetail.assetId {
-                title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-asset-addition-title"), assetId)
             }
         case .possibleAssetAddition:
             if let assetId = transactionDetail.assetId {
-                title = "wallet-connect-transaction-group-possible-asset-addition-title".localized(params: "\(assetId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-possible-asset-addition-title"), assetId)
             }
         case .appCall:
             guard let appCallId = transactionDetail.appCallId else {
@@ -112,26 +112,26 @@ final class WCGroupTransactionItemViewModel {
             }
 
             if transactionDetail.isAppCreateTransaction {
-                title = "wallet-connect-transaction-title-app-creation".localized
+                title = String(localized: "wallet-connect-transaction-title-app-creation")
                 return
             }
 
             guard let appCallOnComplete = transactionDetail.appCallOnComplete else {
-                title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-call-title"), appCallId)
                 return
             }
 
             switch appCallOnComplete {
             case .close:
-                title = "wallet-connect-transaction-group-app-close-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-close-title"), appCallId)
             case .optIn:
-                title = "wallet-connect-transaction-group-app-opt-in-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-opt-in-title"), appCallId)
             case .update:
-                title = "wallet-connect-transaction-group-app-update-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-update-title"), appCallId)
             case .delete:
-                title = "wallet-connect-transaction-group-app-delete-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-delete-title"), appCallId)
             default:
-                title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+                title = String(format: String(localized: "wallet-connect-transaction-group-app-call-title"), appCallId)
             }
         case .assetConfig:
             break

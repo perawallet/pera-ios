@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ struct SelectAssetScreenTheme:
     ) {
         self.listBackgroundColor = Colors.Defaults.background
         self.searchInputView = SearchInputViewCommonTheme(
-            placeholder: "asset-search-placeholder".localized,
+            placeholder: String(localized: "asset-search-placeholder"),
             family: family
         )
         self.searchInsets = NSDirectionalEdgeInsets((8, 24, .noMetric, 24))

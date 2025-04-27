@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,8 +64,8 @@ extension TransactionDetailViewModel {
         for account: Account
     ) {
         transactionStatus = transaction.status
-        userViewTitle = "transaction-detail-to".localized
-        opponentViewTitle = "transaction-detail-from".localized
+        userViewTitle = String(localized: "title-to")
+        opponentViewTitle = String(localized: "transaction-detail-from")
 
         let receiverAddress = transaction.getReceiver()
         let accountAddress = account.address
@@ -83,7 +83,7 @@ extension TransactionDetailViewModel {
         bindDate(for: transaction)
         bindRound(for: transaction)
         if let sender = transaction.sender {
-            opponentViewTitle = "transaction-detail-from".localized
+            opponentViewTitle = String(localized: "transaction-detail-from")
             bindOpponent(for: transaction, with: sender)
         }
 
@@ -148,8 +148,8 @@ extension TransactionDetailViewModel {
 
         bindReward(for: transaction)
 
-        userViewTitle = "transaction-detail-from".localized
-        opponentViewTitle = "transaction-detail-to".localized
+        userViewTitle = String(localized: "transaction-detail-from")
+        opponentViewTitle = String(localized: "title-to")
 
         let senderAddress = transaction.sender
         let accountAddress = account.address
@@ -170,7 +170,7 @@ extension TransactionDetailViewModel {
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
-            opponentViewTitle = "transaction-detail-to".localized
+            opponentViewTitle = String(localized: "title-to")
             bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
@@ -187,7 +187,7 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
         }  else if let payment = transaction.payment {
-            opponentViewTitle = "transaction-detail-to".localized
+            opponentViewTitle = String(localized: "title-to")
             bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
@@ -258,11 +258,11 @@ extension TransactionDetailViewModel {
         _ transaction: Transaction
     ) {
         if transaction.isInner {
-            transactionIDTitle = "transaction-detail-parent-id".localized
+            transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
 
-        transactionIDTitle = "transaction-detail-id".localized
+        transactionIDTitle = String(localized: "transaction-detail-id")
     }
 
     private func bindNote(for transaction: Transaction) {

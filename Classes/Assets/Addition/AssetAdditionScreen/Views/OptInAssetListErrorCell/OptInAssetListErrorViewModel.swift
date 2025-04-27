@@ -53,7 +53,7 @@ extension OptInAssetListErrorViewModel {
     }
 
     mutating func bindPrimaryAction() {
-        primaryAction = (.string("title-retry".localized), nil)
+        primaryAction = (.string(String(localized: "title-retry")), nil)
     }
 
     mutating func bindSecondaryAction() {

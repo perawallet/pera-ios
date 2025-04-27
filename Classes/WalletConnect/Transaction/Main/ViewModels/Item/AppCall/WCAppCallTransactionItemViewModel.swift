@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,26 +50,26 @@ class WCAppCallTransactionItemViewModel {
         }
 
         if transactionDetail.isAppCreateTransaction {
-            title = "wallet-connect-transaction-title-app-creation".localized
+            title = String(localized: "wallet-connect-transaction-title-app-creation")
             return
         }
 
         guard let appCallOnComplete = transaction.transactionDetail?.appCallOnComplete else {
-            title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-call-title"), appCallId)
             return
         }
 
         switch appCallOnComplete {
         case .close:
-            title = "wallet-connect-transaction-group-app-close-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-close-title"), appCallId)
         case .optIn:
-            title = "wallet-connect-transaction-group-app-opt-in-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-opt-in-title"), appCallId)
         case .update:
-            title = "wallet-connect-transaction-group-app-update-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-update-title"), appCallId)
         case .delete:
-            title = "wallet-connect-transaction-group-app-delete-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-delete-title"), appCallId)
         default:
-            title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+            title = String(format: String(localized: "wallet-connect-transaction-group-app-call-title"), appCallId)
         }
     }
 

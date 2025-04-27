@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -535,12 +535,12 @@ extension ASAAboutScreen {
 extension ASAAboutScreen {
     private func openTotalSupplyInfo() {
         let uiSheet = UISheet(
-            title: "title-total-supply".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "asset-total-supply-body".localized.bodyRegular())
+            title: String(localized: "title-total-supply").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "asset-total-supply-body").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [unowned self] in
             self.dismiss(animated: true)

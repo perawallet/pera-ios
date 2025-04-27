@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
     init() {
         self.id = "cache.value.accountAssetAscendingTitleAlgorithm"
-        self.name = "title-alphabetically-a-to-z".localized
+        self.name = String(localized: "title-alphabetically-a-to-z")
     }
 }
 
@@ -34,10 +34,10 @@ extension AccountAssetAscendingTitleAlgorithm {
     ) -> Bool {
         let assetTitle =
             asset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+            String(localized: "title-unknown")
         let otherAssetTitle =
             otherAsset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+            String(localized: "title-unknown")
         if assetTitle != otherAssetTitle {
             let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
             return result == .orderedAscending

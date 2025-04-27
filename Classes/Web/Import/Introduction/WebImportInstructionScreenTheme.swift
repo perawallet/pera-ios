@@ -39,7 +39,7 @@ struct WebImportInstructionScreenTheme: LayoutSheet, StyleSheet {
         self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
         self.title = [
             .font(Typography.bodyMedium()),
-            .text("web-import-instruction-title".localized),
+            .text(String(localized: "web-import-instruction-title")),
             .textColor(Colors.Text.main)
         ]
         self.titleEdgeInset = .init(top: 76, left: 24, bottom: 0, right: 24)
@@ -47,7 +47,7 @@ struct WebImportInstructionScreenTheme: LayoutSheet, StyleSheet {
         self.instructionEdgeInset = .init(top: 28, left: 24, bottom: 24, right: 24)
 
         self.startAction = [
-            .title("web-import-instruction-start-button-title".localized),
+            .title(String(localized: "title-start")),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

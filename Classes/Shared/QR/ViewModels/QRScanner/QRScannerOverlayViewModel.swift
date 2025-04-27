@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,14 +29,6 @@ extension QRScannerOverlayViewModel {
     private func bindTitle(_ dAppCount: UInt) {
         guard dAppCount != 0 else { return }
 
-        let title: String
-
-        if dAppCount > 1 {
-            title = "qr-scan-connected-app-count".localized(params: "\(dAppCount)")
-        } else {
-            title = "qr-scan-connected-app-singular-count".localized(params: "1")
-        }
-
-        self.connectedAppsButtonTitle = title
+        self.connectedAppsButtonTitle = String(format: String(localized: "qr-scan-connected-app-count"), dAppCount)
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,9 +40,7 @@ class WCMultipleTransactionItemViewModel {
 
         let id = getShortIDDisplay(from: groupId)
 
-        detail = transactions.count == 1 ?
-            "wallet-connect-transaction-count-singular".localized(params: id) :
-            "wallet-connect-transaction-count".localized(params: transactions.count, id)
+        detail = String(format: String(localized: "wallet-connect-transaction-count"), transactions.count, id)
     }
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ struct EditContactViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.deleteButton = [
-            .title("contacts-delete-contact-button".localized),
+            .title(String(localized: "contacts-delete-contact-button")),
             .backgroundColor(Colors.Helpers.negative),
             .titleColor([.normal(Colors.Defaults.background)]),
             .font(Fonts.DMSans.medium.make(15))

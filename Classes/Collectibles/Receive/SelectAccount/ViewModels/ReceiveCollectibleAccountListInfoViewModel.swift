@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ extension ReceiveCollectibleAccountListInfoViewModel {
     }
 
     private mutating func bindMessage() {
-        message = "collectible-receive-account-list-info".localized.footnoteMedium()
+        message = String(localized: "collectible-receive-account-list-info").footnoteMedium()
     }
 
     private mutating func bindStyle() {

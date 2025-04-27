@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -110,21 +110,21 @@ extension TransactionDetailView {
     
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
         amountView.customize(theme.transactionAmountInformationViewTheme)
-        amountView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-amount".localized))
+        amountView.bindData(TransactionAmountInformationViewModel(title: String(localized: "transaction-detail-amount")))
 
         verticalStackView.addArrangedSubview(amountView)
     }
     
     private func addCloseAmountView(_ theme: TransactionDetailViewTheme) {
         closeAmountView.customize(theme.commonTransactionAmountInformationViewTheme)
-        closeAmountView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-close-amount".localized))
+        closeAmountView.bindData(TransactionAmountInformationViewModel(title: String(localized: "transaction-detail-close-amount")))
 
         verticalStackView.addArrangedSubview(closeAmountView)
     }
 
     private func addStatusView(_ theme: TransactionDetailViewTheme) {
         statusView.customize(theme.transactionStatusInformationViewTheme)
-        statusView.bindData(TransactionStatusInformationViewModel(title: "transaction-detail-status".localized))
+        statusView.bindData(TransactionStatusInformationViewModel(title: String(localized: "transaction-detail-status")))
 
         verticalStackView.addArrangedSubview(statusView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: statusView)
@@ -133,7 +133,7 @@ extension TransactionDetailView {
 
     private func addRewardView(_ theme: TransactionDetailViewTheme) {
         rewardView.customize(theme.commonTransactionAmountInformationViewTheme)
-        rewardView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-reward".localized))
+        rewardView.bindData(TransactionAmountInformationViewModel(title: String(localized: "title-reward")))
 
         verticalStackView.addArrangedSubview(rewardView)
     }
@@ -153,7 +153,7 @@ extension TransactionDetailView {
     
     private func addCloseToView(_ theme: TransactionDetailViewTheme) {
         closeToView.customize(theme.transactionTextInformationViewCommonTheme)
-        closeToView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-close-to".localized))
+        closeToView.bindData(TransactionTextInformationViewModel(title: String(localized: "transaction-detail-close-to")))
         closeToView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(closeToView)
@@ -161,21 +161,21 @@ extension TransactionDetailView {
     
     private func addFeeView(_ theme: TransactionDetailViewTheme) {
         feeView.customize(theme.commonTransactionAmountInformationViewTheme)
-        feeView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-fee".localized))
+        feeView.bindData(TransactionAmountInformationViewModel(title: String(localized: "transaction-detail-fee")))
 
         verticalStackView.addArrangedSubview(feeView)
     }
     
     private func addDateView(_ theme: TransactionDetailViewTheme) {
         dateView.customize(theme.transactionTextInformationViewCommonTheme)
-        dateView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-date".localized))
+        dateView.bindData(TransactionTextInformationViewModel(title: String(localized: "transaction-detail-date")))
 
         verticalStackView.addArrangedSubview(dateView)
     }
     
     private func addRoundView(_ theme: TransactionDetailViewTheme) {
         roundView.customize(theme.transactionTextInformationViewCommonTheme)
-        roundView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-round".localized))
+        roundView.bindData(TransactionTextInformationViewModel(title: String(localized: "transaction-detail-round")))
 
         verticalStackView.addArrangedSubview(roundView)
     }
@@ -190,7 +190,7 @@ extension TransactionDetailView {
     
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
         noteView.customize(theme.transactionTextInformationViewCommonTheme)
-        noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
+        noteView.bindData(TransactionTextInformationViewModel(title: String(localized: "title-note")))
         noteView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(noteView)

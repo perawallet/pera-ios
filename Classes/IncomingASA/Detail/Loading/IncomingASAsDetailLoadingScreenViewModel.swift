@@ -36,14 +36,12 @@ extension IncomingASAsDetailLoadingScreenViewModel {
     }
 
     mutating func bindTitle() {
-        title = "incoming-asas-detail-loading-title"
-            .localized
+        title = String(localized: "sending-transaction-loading-title")
             .bodyLargeMedium(alignment: .center)
     }
 
     mutating func bindDetail() {
-        detail = "incoming-asas-detail-loading-detail"
-            .localized
+        detail = String(localized: "incoming-asas-detail-loading-detail")
             .bodyRegular(alignment: .center)
     }
 }

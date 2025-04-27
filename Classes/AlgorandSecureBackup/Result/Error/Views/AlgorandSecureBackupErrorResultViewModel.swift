@@ -35,17 +35,17 @@ extension AlgorandSecureBackupErrorResultViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "title-generic-error".localized.titleMedium()
+        title = String(localized: "title-generic-error").titleMedium()
     }
 
     private mutating func bindBody() {
-        let bodyText = "algorand-secure-backup-error-result-body".localized.bodyRegular()
+        let bodyText = String(localized: "algorand-secure-backup-error-result-body").bodyRegular()
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let bodyHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-error-result-body-highlighted-text".localized,
+            text: String(localized: "algorand-secure-backup-error-result-body-highlighted-text"),
             attributes: bodyHighlightedTextAttributes
         )
         body = BodyTextProvider(text: bodyText, highlightedText: bodyHighlightedText)
