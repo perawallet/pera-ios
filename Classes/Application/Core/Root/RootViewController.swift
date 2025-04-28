@@ -140,31 +140,16 @@ extension RootViewController {
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)
         )
-
-        let collectibleListQuery = CollectibleListQuery(
-            filteringBy: .init(),
-            sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
-        )
-        let collectibleListViewController = CollectiblesViewController(
-            query: collectibleListQuery,
-            dataController: CollectibleListLocalDataController(
-                galleryAccount: .all,
-                sharedDataController: appConfiguration.sharedDataController
-            ),
-            copyToClipboardController: ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            ),
-            configuration: configuration
-        )
         
+        let swapContainerVC = SwapContainerVC(configuration: configuration)
+        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapContainerVC))
         
-        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
+        let stakingVC = StakingScreen(configuration: configuration)
+        stakingVC.hideBackButtonInWebView = true
+        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))
         
-        let stakingViewController = StakingScreen(configuration: configuration)
-        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingViewController))
-        
-        let settingsViewController = SettingsViewController(configuration: configuration)
-        let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: settingsViewController))
+        let menuVC = MenuViewController(configuration: configuration)
+        let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
 
         mainContainer.items = [
             homeTab,

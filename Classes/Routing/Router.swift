@@ -775,6 +775,8 @@ final class Router:
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
+        case .settings:
+            viewController = SettingsViewController(configuration: configuration)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
