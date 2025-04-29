@@ -39,7 +39,7 @@ struct RecoverAddAccountViewTheme: RecoverAccountViewTheme {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .text(String("account-type-selection-import-wallet")),
+            .text(String(localized: "account-type-selection-import-wallet")),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
