@@ -171,7 +171,7 @@ extension SelectAddressViewController {
         actionView.bindData(
             ButtonCommonViewModel(title: String(localized: "account-name-setup-finish"))
         )
-        actionView.isEnabled = false
+        actionView.isEnabled = dataController.isFinishActionEnabled
 
         footerView.addSubview(actionView)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
@@ -248,18 +248,11 @@ extension SelectAddressViewController {
             }
         }
         
-        open(
-            .tutorial(
-                flow: .none,
-                tutorial:
-                        .accountVerified(
-                            flow: .none,
-                            address: nil,
-                            isMultipleAccounts: dataController.selectedAddresses.count > 1
-                        )
-            ),
-            by: .push
-        )
+        if dataController.selectedAddresses.isNonEmpty {
+            PeraUserDefaults.shouldShowNewAccountAnimation = true
+        }
+
+        launchMain()
     }
 }
 

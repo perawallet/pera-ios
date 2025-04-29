@@ -390,7 +390,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             /// Invalid copy/paste action for mnemonics.
             bannerController?.presentErrorBanner(
                 title: String(localized: "title-error"),
-                message: String(localized: "recover-copy-error")
+                message: walletFlowType == .bip39 ? String(localized: "recover-copy-error") : String(localized: "recover-copy-error-algo25")
             )
 
             return false
@@ -462,7 +462,7 @@ extension AccountRecoverViewController {
             /// Invalid copy/paste action for mnemonics.
             bannerController?.presentErrorBanner(
                 title: String(localized: "title-error"),
-                message: String(localized: "recover-copy-error")
+                message: walletFlowType == .bip39 ? String(localized: "recover-copy-error") : String(localized: "recover-copy-error-algo25")
             )
         }
     }
