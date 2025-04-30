@@ -492,6 +492,16 @@ final class Router:
                     )
                 )
             }
+        case .qrScanner:
+            guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
+                return
+            }
+            
+            route(
+                to: .qrScanner(canReadWCSession: true),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
     }
     
@@ -738,10 +748,15 @@ final class Router:
                 configuration: configuration
             )
         case let .qrScanner(canReadWCSession):
-            viewController = QRScannerViewController(
+            let qrScannerViewController = QRScannerViewController(
                 canReadWCSession: canReadWCSession,
                 configuration: configuration
             )
+            
+            let tabBarController = rootViewController.mainContainer
+            tabBarController.assignQRScannerCoordinator(viewController: qrScannerViewController)
+                         
+            viewController = qrScannerViewController
         case let .qrGenerator(title, draft, isTrackable):
             let qrCreationController = QRCreationViewController(
                 draft: draft,

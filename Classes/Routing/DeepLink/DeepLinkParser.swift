@@ -683,6 +683,7 @@ extension DeepLinkParser {
             address: String,
             requestsCount: Int
         )
+        case qrScanner
     }
     
     enum Error:
