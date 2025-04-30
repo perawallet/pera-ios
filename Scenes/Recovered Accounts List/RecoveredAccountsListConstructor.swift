@@ -16,9 +16,9 @@
 
 enum RecoveredAccountsListConstructor {
     
-    static func buildScene(authAccount: Account, rekeyedAccounts: [Account], legacyViewControllerConfiguration: ViewControllerConfiguration) -> BaseViewController {
-        let model = RecoveredAccountsListModel(authAccount: authAccount, rekeyedAccounts: rekeyedAccounts, legacyViewControllerConfiguration: legacyViewControllerConfiguration)
-        let controller = RecoveredAccountsListViewController(model: model)
+    static func buildScene(inputData: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep, legacyViewControllerConfiguration: ViewControllerConfiguration) -> BaseViewController {
+        let model = RecoveredAccountsListModel(inputData: inputData, legacyViewControllerConfiguration: legacyViewControllerConfiguration)
+        let controller = RecoveredAccountsListViewController(model: model, nextStep: nextStep)
         return SwiftUICompatibilityBaseViewController(configuration: legacyViewControllerConfiguration, hostingController: controller)
     }
 }

@@ -42,7 +42,7 @@ indirect enum Screen {
     case addressNameSetup(flow: AccountSetupFlow, mode: AccountSetupMode, nameServiceName: String? = nil, account: AccountInformation)
     case hdWalletSetup(flow: AccountSetupFlow, mode: AccountSetupMode)
     case selectAddress(recoveredAddresses: [RecoveredAddress], hdWalletId: String)
-    case rescanRekeyedAccountsSelectList(authAccount: Account, rekeyedAccounts: [Account])
+    case rescanRekeyedAccountsSelectList(inputData: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler, incomingASAsRequestsCount: Int)
