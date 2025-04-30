@@ -43,7 +43,7 @@ extension SelectAddressListDataController {
     }
 
     var isFinishActionEnabled: Bool {
-        return !selectedAddressesDictonary.isEmpty
+        return addressesDictonary.values.allSatisfy { $0.alreadyImported } || !selectedAddressesDictonary.isEmpty
     }
     
     func getAddress(at index: Index) -> RecoveredAddress? {

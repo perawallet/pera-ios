@@ -5700,6 +5700,17 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "The last copied text is not valid passphrase with 24 words. Please copy valid passphrase and try again."
+          }
+        }
+      }
+    },
+    "recover-copy-error-algo25" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again."
           }
         }

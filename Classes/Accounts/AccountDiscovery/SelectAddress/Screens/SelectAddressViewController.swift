@@ -172,7 +172,7 @@ extension SelectAddressViewController {
         actionView.bindData(
             ButtonCommonViewModel(title: String(localized: "account-name-setup-finish"))
         )
-        actionView.isEnabled = false
+        actionView.isEnabled = dataController.isFinishActionEnabled
 
         footerView.addSubview(actionView)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
