@@ -8066,6 +8066,17 @@
         }
       }
     },
+    "title-invite-friends" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite Friends"
+          }
+        }
+      }
+    },
     "title-keep" : {
       "extractionState" : "manual",
       "localizations" : {
