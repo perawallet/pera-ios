@@ -767,6 +767,8 @@ final class Router:
                 hdWalletId: hdWalletId,
                 configuration: configuration
             )
+        case let .rescanRekeyedAccountsSelectList(inputData, nextStep):
+            viewController = RecoveredAccountsListConstructor.buildScene(inputData: inputData, nextStep: nextStep, legacyViewControllerConfiguration: configuration)
         case let .accountRecover(flow, walletFlowType, initialMnemonic):
             viewController = AccountRecoverViewController(
                 accountSetupFlow: flow,

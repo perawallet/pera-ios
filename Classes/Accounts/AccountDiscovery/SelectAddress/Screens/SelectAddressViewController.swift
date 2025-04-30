@@ -51,6 +51,7 @@ final class SelectAddressViewController:
         return collectionView
     }()
     private lazy var actionView = Button()
+    private lazy var rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: self)
 
     init(
         recoveredAddresses: [RecoveredAddress],
@@ -215,6 +216,8 @@ extension SelectAddressViewController {
             return
         }
         
+        var accountsInfos: [AccountInformation] = []
+        
         for selectedAddress in dataController.selectedAddresses {
             let hdWalletAddressDetail = HDWalletAddressDetail(
                 walletId: wallet.id,
@@ -230,6 +233,8 @@ extension SelectAddressViewController {
                 isBackedUp: true,
                 hdWalletAddressDetail: hdWalletAddressDetail
             )
+            
+            accountsInfos.append(accountInformation)
             
             guard
                 let hdWalletAddress = try? hdWalletService.importAddress(selectedAddress, for: wallet),
@@ -248,11 +253,8 @@ extension SelectAddressViewController {
             }
         }
         
-        if dataController.selectedAddresses.isNonEmpty {
-            PeraUserDefaults.shouldShowNewAccountAnimation = true
-        }
-
-        launchMain()
+        let accounts = accountsInfos.map { Account(localAccount: $0) }
+        rescanRekeyedAccountsCoordinator.rescan(accounts: accounts, nextStep: .openAddAccountTutorial(isMultipleAccounts: dataController.selectedAddresses.count > 1))
     }
 }
 

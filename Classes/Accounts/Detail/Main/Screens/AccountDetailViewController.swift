@@ -15,7 +15,6 @@
 //
 //   AccountDetailViewController.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
@@ -107,6 +106,7 @@ final class AccountDetailViewController: PageContainer {
     }
 
     private let dataController: AccountDetailDataController
+    private lazy var rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: self)
 
     /// <todo>
     /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
@@ -545,6 +545,7 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
+    
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
         analytics.track(.showQRCopy(account: account))
@@ -658,6 +659,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         let account = accountHandle.value
         removeAccountFlowCoordinator.launch(account)
+    }
+    
+    func optionsViewControllerDidRescanRekeyedAccounts(_ optionsViewController: OptionsViewController) {
+        rescanRekeyedAccountsCoordinator.rescan(accounts: [accountHandle.value], nextStep: .dismiss)
     }
 }
 

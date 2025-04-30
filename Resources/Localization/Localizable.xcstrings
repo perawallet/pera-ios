@@ -5112,6 +5112,26 @@
         }
       }
     },
+    "options-rescan-accounts-subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import any rekeyed accounts"
+          }
+        }
+      }
+    },
+    "options-rescan-accounts-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Rekeyed Accounts"
+          }
+        }
+      }
+    },
     "options-unmute-notification" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6057,6 +6077,12 @@
                   "state" : "translated",
                   "value" : "You have %lld rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We have scanned the blockchain and were not able to find any accounts that have not been imported."
+                }
               }
             }
           }
@@ -6080,8 +6106,24 @@
                   "state" : "translated",
                   "value" : "%lld rekeyed accounts found"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "No Rekeyed Accounts Found"
+                }
               }
             }
+          }
+        }
+      }
+    },
+    "rekeyed-account-selection-list-loading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fetching rekeyed\naccounts..."
           }
         }
       }
@@ -6115,6 +6157,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add rekeyed account"
+          }
+        }
+      }
+    },
+    "rekeyed-account-selection-list-secondary-action-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip for now"
           }
         }
       }
