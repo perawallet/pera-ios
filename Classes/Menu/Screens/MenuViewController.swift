@@ -26,6 +26,14 @@ final class MenuViewController: BaseViewController {
         session: session
     )
     
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
+    
     override var prefersLargeTitle: Bool {
         return false
     }
@@ -109,13 +117,13 @@ extension MenuViewController: UICollectionViewDelegate {
             case .cards:
                 print("cards pressed")
             case .nfts:
-                print("nfts pressed")
+                open(.collectibleList, by: .push)
             case .transfer:
                 print("transfer pressed")
             case .buyAlgo:
-                print("buyAlgo pressed")
+                openBuySellOptions()
             case .receive:
-                print("receive pressed")
+                receiveTransactionFlowCoordinator.launch()
             case .inviteFriends:
                 print("inviteFriends pressed")
             }
@@ -123,5 +131,44 @@ extension MenuViewController: UICollectionViewDelegate {
         }
         
         fatalError("Index path is out of bounds")
+    }
+}
+
+extension MenuViewController {
+    private func openBuySellOptions() {
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyWithMeld:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyWithMeld()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyWithMeld() {
+        analytics.track(.recordHomeScreen(type: .buyAlgo))
+
+        meldFlowCoordinator.launch()
+    }
+}
+
+extension MenuViewController {
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
     }
 }

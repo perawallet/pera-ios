@@ -1352,6 +1352,23 @@ final class Router:
                 ),
                 configuration: configuration
             )
+        case .collectibleList:
+            let collectibleListQuery = CollectibleListQuery(
+                filteringBy: .init(),
+                sortingBy: configuration.sharedDataController.selectedCollectibleSortingAlgorithm
+            )
+            viewController = CollectiblesViewController(
+                query: collectibleListQuery,
+                dataController: CollectibleListLocalDataController(
+                    galleryAccount: .all,
+                    sharedDataController: configuration.sharedDataController
+                ),
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: configuration.toastPresentationController!
+                ),
+                configuration: configuration
+            )
+            
         case .collectibleDetail(let asset, let account, let thumbnailImage,  let quickAction, let eventHandler):
             let aViewController = CollectibleDetailViewController(
                 asset: asset,

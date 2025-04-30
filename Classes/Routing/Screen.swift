@@ -225,6 +225,7 @@ indirect enum Screen {
         dataController: ReceiveCollectibleAccountListDataController
     )
     case receiveCollectibleAssetList(account: AccountHandle)
+    case collectibleList
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
