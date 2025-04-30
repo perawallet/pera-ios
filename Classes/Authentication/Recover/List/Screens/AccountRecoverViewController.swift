@@ -248,14 +248,18 @@ extension AccountRecoverViewController {
                                 let newHDWallet = try? self.hdWalletService.createWallet(from: entropy),
                                 let _ = try? self.hdWalletStorage.save(wallet: newHDWallet)
                             else {
-                                self.showErrorScreen(error: ImportAccountScreenError.decryption, from: self)
+                                screen.dismissScreen() {
+                                    self.showErrorScreen(error: ImportAccountScreenError.decryption, from: self)
+                                }
                                 return
                             }
                             self.session?.authenticatedUser?.setWalletName(for: newHDWallet.id)
                             self.finishRecoverAccount(addresses: addresses, hdWalletId: newHDWallet.id, screen: screen)
                         }
                     case .didFailToImport(let error):
-                        self.showErrorScreen(error: error, from: self)
+                        screen.dismissScreen() {
+                            self.showErrorScreen(error: error, from: self)
+                        }
                     case .didCompleteImport:
                         fatalError("Shouldn't enter here")
                     }
@@ -277,14 +281,9 @@ extension AccountRecoverViewController {
         error: ImportAccountScreenError,
         from screen: UIViewController
     ) {
-        let errorScreen = Screen.importAccountError(error) { [weak self] event, errorScreen in
-            guard let self else {
-                return
-            }
-
+        let errorScreen = Screen.importAccountError(error) { event, errorScreen in
             screen.dismiss(animated: true)
         }
-
         screen.open(errorScreen, by: .push)
     }
 }
