@@ -106,7 +106,7 @@ final class AccountDetailViewController: PageContainer {
     }
 
     private let dataController: AccountDetailDataController
-    private lazy var rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: self, account: accountHandle.value)
+    private lazy var rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: self)
 
     /// <todo>
     /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
@@ -662,7 +662,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidRescanRekeyedAccounts(_ optionsViewController: OptionsViewController) {
-        rescanRekeyedAccountsCoordinator.rescan()
+        rescanRekeyedAccountsCoordinator.rescan(accounts: [accountHandle.value], nextStep: .dismiss)
     }
 }
 

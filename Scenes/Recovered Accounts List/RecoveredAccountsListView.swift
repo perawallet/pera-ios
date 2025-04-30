@@ -18,19 +18,27 @@ import SwiftUI
 
 struct RecoveredAccountsListView: View {
     
+    enum NextStep {
+        case dismiss
+        case openAddAccountTutorial(isMultipleAccounts: Bool)
+    }
+    
     // MARK: - Properties
     
+    private let nextStep: NextStep
     @ObservedObject private var model: RecoveredAccountsListModel
     
     // MARK: - UIKit Compatibility
     
     var dismiss: ((_ isSuccess: Bool) -> Void)?
     var openDetails: ((_ account: Account, _ authAccount: Account) -> Void)?
+    var openAddAccountTutorial: ((_ isMultipleAccounts: Bool) -> Void)?
     
     // MARK: - Initialisers
     
-    init(model: RecoveredAccountsListModel) {
+    init(model: RecoveredAccountsListModel, nextStep: NextStep) {
         self.model = model
+        self.nextStep = nextStep
     }
     
     // MARK: - Body
@@ -72,7 +80,7 @@ struct RecoveredAccountsListView: View {
                 FormButton(text: "rekeyed-account-selection-list-primary-action-title", style: model.isAddressSelected ? .primary : .disabled) { model.confirmSelection() }
                     .padding(.bottom, 12.0)
             }
-            FormButton(text: model.addressViewModels.isEmpty ? "title-continue" : "rekeyed-account-selection-list-secondary-action-title", style: .secondary) { dismiss?(false) }
+            FormButton(text: model.addressViewModels.isEmpty ? "title-continue" : "rekeyed-account-selection-list-secondary-action-title", style: .secondary) { skipScreen() }
                 .padding(.bottom, 16.0)
             
         }
@@ -89,9 +97,27 @@ struct RecoveredAccountsListView: View {
         
         switch action {
         case .endWithSuccess:
-            dismiss?(true)
+            handleSuccess()
         case let .showDetails(account, authAccount):
             openDetails?(account, authAccount)
+        }
+    }
+    
+    private func handleSuccess() {
+        switch nextStep {
+        case .dismiss:
+            dismiss?(true)
+        case let .openAddAccountTutorial(isMultipleAccounts):
+            openAddAccountTutorial?(isMultipleAccounts)
+        }
+    }
+    
+    private func skipScreen() {
+        switch nextStep {
+        case .dismiss:
+            dismiss?(false)
+        case let .openAddAccountTutorial(isMultipleAccounts):
+            openAddAccountTutorial?(isMultipleAccounts)
         }
     }
 }

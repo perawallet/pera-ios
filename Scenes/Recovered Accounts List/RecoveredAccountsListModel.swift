@@ -19,6 +19,11 @@ import SwiftUI
 // FIXME: Convert ObservableObject to @Observable macro when min. target will be updated to iOS 17+.
 final class RecoveredAccountsListModel: ObservableObject {
     
+    struct InputData {
+        let authAccount: Account
+        let rekeyedAccount: Account
+    }
+    
     struct AddressViewModel: Identifiable {
         let id: String
         let address: String
@@ -47,19 +52,15 @@ final class RecoveredAccountsListModel: ObservableObject {
     
     // MARK: - Properties
     
-    private let authAccount: Account
-    private let rekeyedAccounts: [Account]
+    private let inputData: [InputData]
     private let legacyViewControllerConfiguration: ViewControllerConfiguration
     
     // MARK: - Initialisers
     
-    init(authAccount: Account, rekeyedAccounts: [Account], legacyViewControllerConfiguration: ViewControllerConfiguration) {
-        
-        self.authAccount = authAccount
-        self.rekeyedAccounts = rekeyedAccounts
+    init(inputData: [InputData], legacyViewControllerConfiguration: ViewControllerConfiguration) {
+        self.inputData = inputData
         self.legacyViewControllerConfiguration = legacyViewControllerConfiguration
-        
-        updateViewModels(accounts: rekeyedAccounts)
+        updateViewModels(inputData: inputData)
     }
     
     // MARK: - View Model - Actions
@@ -84,7 +85,8 @@ final class RecoveredAccountsListModel: ObservableObject {
         addressViewModels
             .filter(\.isSelected)
             .map(\.address)
-            .compactMap { address in rekeyedAccounts.first { $0.address == address }}
+            .compactMap { accountData(address: $0) }
+            .map(\.rekeyedAccount)
             .forEach {
                 let accountInfo = AccountInformation(
                     address: $0.address,
@@ -103,27 +105,29 @@ final class RecoveredAccountsListModel: ObservableObject {
                 legacyViewControllerConfiguration.analytics.track(.registerAccount(registrationType: .rekeyed))
             }
         
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
         action = .endWithSuccess
     }
     
     func requestDetails(address: String) {
         
-        guard let account = rekeyedAccounts.first(where: { $0.address == address }) else {
+        guard let accountData = accountData(address: address) else {
             handle(error: .noAccountFound)
             return
         }
         
-        action = .showDetails(account: account, authAccount: authAccount)
+        action = .showDetails(account: accountData.rekeyedAccount, authAccount: accountData.authAccount)
     }
     
     // MARK: - Handlers
     
-    private func updateViewModels(accounts: [Account]) {
+    private func updateViewModels(inputData: [InputData]) {
         
         let addedAddresses = legacyViewControllerConfiguration.sharedDataController.sortedAccounts()
             .map(\.value.address)
         
-        addressViewModels = accounts
+        addressViewModels = inputData
+            .map(\.rekeyedAccount)
             .filter { !addedAddresses.contains($0.address) }
             .map { AddressViewModel(id: $0.address, address: $0.address, displayedAddress: $0.address.shortAddressDisplay, description: $0.typeTitle ?? "", isSelected: false, accountTypeImageName: $0.rawTypeImage) }
     }
@@ -131,5 +135,11 @@ final class RecoveredAccountsListModel: ObservableObject {
     private func handle(error: ModelError) {
         self.error = error
         legacyViewControllerConfiguration.bannerController?.presentErrorBanner(title: String(localized: "default-error-message"), message: "")
+    }
+    
+    // MARK: - Helpers
+    
+    private func accountData(address: String) -> InputData? {
+        inputData.first { $0.rekeyedAccount.address == address }
     }
 }

@@ -18,76 +18,107 @@ import MagpieCore
 
 final class RescanRekeyedAccountsCoordinator {
     
-    enum CoordinatorError {
-        case noAccount
+    enum CoordinatorError: Error {
         case apiError(_ error: APIError)
+        case unexpected(any Error)
     }
     
     // MARK: - Properties
     
     private weak var presenter: BaseViewController?
-    private weak var account: Account?
     
     // MARK: - Initialisers
     
-    init(presenter: BaseViewController, account: Account) {
+    init(presenter: BaseViewController) {
         self.presenter = presenter
-        self.account = account
     }
     
     // MARK: - Actions
     
-    func rescan() {
-        
-        guard let account else {
-            handle(error: .noAccount)
-            return
-        }
+    func rescan(accounts: [Account], nextStep: RecoveredAccountsListView.NextStep) {
         
         presenter?.loadingController?.startLoadingWithMessage(String(localized: "rekeyed-account-selection-list-loading"))
         
-        presenter?.api?.fetchRekeyedAccounts(account.address) { [weak self] response in
-            switch response {
-            case let .success(rekeyedAccountsResponse):
-                self?.handle(rekeyedAccountsResponse: rekeyedAccountsResponse, account: account)
-            case let .failure(error, _):
-                self?.handle(error: .apiError(error))
+        Task {
+            do {
+                let result = try await withThrowingTaskGroup(of: [RecoveredAccountsListModel.InputData].self) { taskGroup in
+                    
+                    accounts.forEach { account in
+                        taskGroup.addTask { try await self.fetchRekeyedAccounts(account: account) }
+                    }
+                    
+                    return try await taskGroup.reduce(into: [RecoveredAccountsListModel.InputData]()) { $0 += $1 }
+                }
+                
+                await handle(data: result, nextStep: nextStep)
+                
+            } catch let error as CoordinatorError { // FIXME: Please remove this workaround when typed throws will be added to the `withCheckedThrowingContinuation` and `withThrowingTaskGroup`.
+                await handle(error: error)
+            } catch {
+                await handle(error: .unexpected(error))
             }
         }
     }
     
-    private func openAccountsSelectionList(authAccount: Account, rekeyedAccounts: [Account]) {
+    @MainActor
+    private func fetchRekeyedAccounts(account: Account) async throws -> [RecoveredAccountsListModel.InputData] {
+        try await withCheckedThrowingContinuation { continuation in
+            
+            presenter?.api?.fetchRekeyedAccounts(account.address) { [weak self] response in
+                
+                guard let self else { return }
+                
+                switch response {
+                case let .success(rekeyedAccountsResponse):
+                    let dataModels = rekeyedAccounts(rekeyedAccountsResponse: rekeyedAccountsResponse, account: account)
+                        .map { RecoveredAccountsListModel.InputData(authAccount: account, rekeyedAccount: $0) }
+                    continuation.resume(returning: dataModels)
+                case let .failure(error, _):
+                    continuation.resume(throwing: CoordinatorError.apiError(error))
+                }
+            }
+        }
+    }
+    
+    private func openAccountsSelectionList(data: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep) {
         presenter?.open(
-            .rescanRekeyedAccountsSelectList(authAccount: authAccount, rekeyedAccounts: rekeyedAccounts),
+            .rescanRekeyedAccountsSelectList(inputData: data, nextStep: nextStep),
             by: .push
         )
     }
     
     // MARK: - Handlers
     
-    private func handle(rekeyedAccountsResponse: RekeyedAccountsResponse, account: Account) {
+    private func handle(data: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep) async {
+        await MainActor.run {
+            presenter?.loadingController?.stopLoading()
+            openAccountsSelectionList(data: data, nextStep: nextStep)
+        }
+    }
+    
+    private func handle(error: CoordinatorError) async {
         
-        presenter?.loadingController?.stopLoading()
-        
-        let rekeyedAccounts = rekeyedAccountsResponse.accounts
+        await MainActor.run {
+            
+            presenter?.loadingController?.stopLoading()
+            
+            switch error {
+            case .apiError:
+                presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "title-failed-to-fetch-rekeyed-accounts"), message: "")
+            case .unexpected:
+                presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "default-error-message"), message: "")
+            }
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func rekeyedAccounts(rekeyedAccountsResponse: RekeyedAccountsResponse, account: Account) -> [Account] {
+        rekeyedAccountsResponse.accounts
             .filter { !$0.isRekeyedToSelf }
             .map {
                 $0.authorization = account.authorization.isLedger ? .unknownToLedgerRekeyed : .unknownToStandardRekeyed
                 return $0
             }
-        
-        openAccountsSelectionList(authAccount: account, rekeyedAccounts: rekeyedAccounts)
-    }
-    
-    private func handle(error: CoordinatorError) {
-        
-        presenter?.loadingController?.stopLoading()
-        
-        switch error {
-        case .noAccount:
-            presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "default-error-message"), message: "")
-        case .apiError:
-            presenter?.configuration.bannerController?.presentErrorBanner(title: String(localized: "title-failed-to-fetch-rekeyed-accounts"), message: "")
-        }
     }
 }
