@@ -652,5 +652,9 @@ extension TabBarController {
         let screen = container?.viewControllers.first as? DiscoverHomeScreen
         screen?.destination = destination
     }
+    
+    func assignQRScannerCoordinator(viewController: QRScannerViewController) {
+        viewController.delegate = scanQRFlowCoordinator
+    }
 }
 

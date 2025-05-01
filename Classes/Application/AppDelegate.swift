@@ -243,6 +243,17 @@ class AppDelegate:
 
         return false
     }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        guard let actionType = ApplicationShortcutItemType(rawValue: shortcutItem.type) else {
+            return
+        }
+            
+        switch actionType {
+        case .scanQR:
+            router.launch(deeplink: .qrScanner)
+        }
+    }
 }
 
 extension AppDelegate {
@@ -719,5 +730,11 @@ extension AppDelegate {
     
     private func createHDWalletStorage() -> HDWalletStorage {
         HDWalletStorage()
+    }
+}
+
+extension AppDelegate {
+    enum ApplicationShortcutItemType: String {
+        case scanQR     = "QuickAction.ScanQR"
     }
 }
