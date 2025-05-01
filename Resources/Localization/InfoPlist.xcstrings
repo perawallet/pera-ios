@@ -79,6 +79,17 @@
           }
         }
       }
+    },
+    "QuickActionScanTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan QR Code"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
