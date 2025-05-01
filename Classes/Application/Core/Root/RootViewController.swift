@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -141,8 +141,25 @@ extension RootViewController {
             NavigationContainer(rootViewController: discoverViewController)
         )
         
-        let swapContainerVC = SwapContainerVC(configuration: configuration)
-        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapContainerVC))
+        let collectibleListQuery = CollectibleListQuery(
+            filteringBy: .init(),
+            sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
+        )
+        let collectibleListViewController = CollectiblesViewController(
+            query: collectibleListQuery,
+            dataController: CollectibleListLocalDataController(
+                galleryAccount: .all,
+                sharedDataController: appConfiguration.sharedDataController
+            ),
+            copyToClipboardController: ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            ),
+            configuration: configuration
+        )
+        let collectiblesTab = CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
+        
+//        let swapContainerVC = SwapContainerVC(configuration: configuration)
+//        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapContainerVC))
         
         let stakingVC = StakingScreen(configuration: configuration)
         stakingVC.hideBackButtonInWebView = true
@@ -154,7 +171,7 @@ extension RootViewController {
         mainContainer.items = [
             homeTab,
             discoverTab,
-            swapTab,
+            collectiblesTab,
             stakeTab,
             menuTab
         ]

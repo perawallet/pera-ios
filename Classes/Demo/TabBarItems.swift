@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,6 +85,28 @@ struct SwapTabBarItem: TabBarItem {
     }
 }
 
+struct CollectiblesTabBarItem: TabBarItem {
+    let id: String
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
+    let screen: UIViewController?
+
+    init(
+        _ screen: UIViewController
+    ) {
+        self.id = TabBarItemID.collectibles.rawValue
+        self.barButtonItem =
+            TabBarButtonItem(
+                icon: [
+                    .normal("tabbar-icon-collectibles"),
+                    .selected("tabbar-icon-collectibles-selected"),
+                    .disabled("tabbar-icon-collectibles-disabled")
+                ],
+                title: String(localized: "title-collectibles")
+            )
+        self.screen = screen
+    }
+}
+
 struct StakeTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
@@ -135,4 +157,5 @@ enum TabBarItemID: String {
     case swap
     case stake
     case menu
+    case collectibles
 }
