@@ -4142,6 +4142,17 @@
         }
       }
     },
+    "menu-card-banner-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get the world’s first web3 \nMastercard."
+          }
+        }
+      }
+    },
     "min-balance-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7747,6 +7758,17 @@
         }
       }
     },
+    "title-create-pera-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Pera Card"
+          }
+        }
+      }
+    },
     "title-csv" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8628,6 +8650,17 @@
         }
       }
     },
+    "title-recently-used-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently used Pera Card"
+          }
+        }
+      }
+    },
     "title-recover" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9229,6 +9262,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unselect all"
+          }
+        }
+      }
+    },
+    "title-view-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Cards"
           }
         }
       }

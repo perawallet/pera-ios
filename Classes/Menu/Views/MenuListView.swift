@@ -28,8 +28,9 @@ final class MenuListView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CellIdentifier")
         collectionView.register(MenuListViewCell.self)
+        collectionView.register(MenuListCardViewCell.self)
+        collectionView.register(MenuListCardEnabledViewCell.self)
         return collectionView
     }()
     
