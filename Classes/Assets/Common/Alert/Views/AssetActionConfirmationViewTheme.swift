@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,12 +86,12 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         ]
         self.copyIDButton = [
             .backgroundColor(Colors.Layer.grayLighter),
-            .title("asset-copy-id".localized),
+            .title(String(localized: "title-copy-id")),
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(Colors.Text.main)])
         ]
         self.transactionFeeTitleLabel = [
-            .text("collectible-approve-transaction-fee".localized),
+            .text(String(localized: "collectible-approve-transaction-fee")),
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),

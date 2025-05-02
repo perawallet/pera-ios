@@ -43,7 +43,7 @@ final class KeyRegTransactionDetailViewController: BaseScrollViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "transaction-detail-title".localized
+        title = String(localized: "transaction-detail-title")
 
         addUI()
     }

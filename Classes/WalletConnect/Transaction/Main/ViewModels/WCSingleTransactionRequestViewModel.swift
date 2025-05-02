@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ final class WCSingleTransactionRequestViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        title = "request-title".localized
+        title = String(localized: "title-request")
     }
 
     private func setTitle(transaction: WCTransaction, account: Account?) {
@@ -74,43 +74,43 @@ final class WCSingleTransactionRequestViewModel {
 
         switch type {
         case .algos, .asset:
-            self.title = "wallet-connect-transaction-title-transaction".localized
+            self.title = String(localized: "wallet-connect-transaction-title-transaction")
         case .assetAddition:
-            self.title = "wallet-connect-transaction-title-opt-in".localized
+            self.title = String(localized: "wallet-connect-transaction-title-opt-in")
         case .possibleAssetAddition:
-            self.title = "wallet-connect-transaction-title-possible-opt-in".localized
+            self.title = String(localized: "wallet-connect-transaction-title-possible-opt-in")
         case .appCall:
 
             let appCallOncomplete = transactionDetail.appCallOnComplete ?? .noOp
 
             switch appCallOncomplete {
             case .delete:
-                self.title = "wallet-connect-transaction-title-app-delete".localized
+                self.title = String(localized: "wallet-connect-transaction-title-app-delete")
             case .update:
-                self.title = "wallet-connect-transaction-title-app-update".localized
+                self.title = String(localized: "wallet-connect-transaction-title-app-update")
             default:
                 if transactionDetail.isAppCreateTransaction {
-                    self.title = "wallet-connect-transaction-title-app-create".localized
+                    self.title = String(localized: "wallet-connect-transaction-title-app-create")
                 } else {
-                    self.title = "wallet-connect-transaction-title-app-call".localized
+                    self.title = String(localized: "wallet-connect-transaction-title-app-call")
                 }
             }
 
         case .assetConfig(let type):
             switch type {
             case .create:
-                self.title = "wallet-connect-asset-creation-title".localized
+                self.title = String(localized: "wallet-connect-asset-creation-title")
             case .reconfig:
-                self.title = "wallet-connect-asset-reconfiguration-title".localized
+                self.title = String(localized: "wallet-connect-asset-reconfiguration-title")
             case .delete:
-                self.title = "wallet-connect-asset-deletion-title".localized
+                self.title = String(localized: "wallet-connect-asset-deletion-title")
             }
         case .keyReg:
-            self.title = "wallet-connect-transaction-title-transaction".localized
+            self.title = String(localized: "wallet-connect-transaction-title-transaction")
         }
 
         if self.title == nil {
-            self.title = "wallet-connect-transaction-title-transaction".localized
+            self.title = String(localized: "wallet-connect-transaction-title-transaction")
         }
     }
 }

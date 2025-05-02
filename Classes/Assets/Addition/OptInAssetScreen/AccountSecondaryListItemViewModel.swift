@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,8 +35,7 @@ extension AccountSecondaryListItemViewModel {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
-        title = "title-account"
-            .localized
+        title = String(localized: "title-account")
             .attributed(attributes)
     }
 }

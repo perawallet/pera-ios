@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -173,8 +173,7 @@ extension CollectibleGridItemViewModel {
 
     private mutating func bindPendingTitle() {
         pendingTitle = .attributedString(
-            "collectible-list-item-pending-title"
-                .localized
+            String(localized: "title-pending")
                 .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
     }
@@ -246,7 +245,7 @@ extension CollectibleGridItemViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

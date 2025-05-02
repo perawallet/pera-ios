@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ final class DeveloperSettingsViewController:
 
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        navigationItem.title = "settings-developer".localized
+        navigationItem.title = String(localized: "settings-developer")
     }
     
     override func linkInteractors() {

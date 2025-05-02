@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,8 +49,7 @@ extension SwapAssetSuccessScreenViewModel {
         let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
         let assetOutDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
         let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
-        title = "swap-success-title"
-            .localized(params: swapAssets)
+        title = String(format: String(localized: "swap-success-title"), swapAssets)
             .bodyLargeMedium(alignment: .center)
     }
 
@@ -84,7 +83,7 @@ extension SwapAssetSuccessScreenViewModel {
 
         let amountOutDisplay = "\(amountOutText) \(assetOutDisplayName)"
         let amountInDisplay = "\(amountInText) \(assetInDisplayName)"
-        let fullText = "swap-success-detail".localized(params: amountOutDisplay, amountInDisplay)
+        let fullText = String(format: String(localized: "swap-success-detail"), amountOutDisplay, amountInDisplay)
 
         let textAttributes = NSMutableAttributedString(
             attributedString: fullText.bodyRegular(alignment: .center, lineBreakMode: .byWordWrapping)

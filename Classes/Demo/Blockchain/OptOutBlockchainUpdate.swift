@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
         } else {
             name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
         }
-        self.notificationMessage = "asset-opt-out-successful-message".localized(params: name)
+        self.notificationMessage = String(format: String(localized: "asset-opt-out-successful-message"), name)
     }
 
     init(

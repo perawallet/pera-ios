@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-sender".localized,
+            title: String(localized: "transaction-detail-sender"),
             account: account,
             hasImage: account == senderAccount
         )
@@ -105,7 +105,7 @@ class WCAssetCreationTransactionViewModel {
         asset: Asset?
     ) {
         assetNameViewModel = WCAssetInformationViewModel(
-            title: "asset-title".localized,
+            title: String(localized: "title-asset"),
             asset: asset
         )
     }
@@ -117,7 +117,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-unit-title".localized,
+            title: String(localized: "wallet-connect-asset-unit-title"),
             detail: unitName
         )
 
@@ -131,7 +131,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-close-asset-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-close-asset-title"),
             detail: closeAddress
         )
 
@@ -149,7 +149,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            title: String(localized: "wallet-connect-transaction-warning-rekey-title"),
             detail: rekeyAddress
         )
 
@@ -181,7 +181,7 @@ class WCAssetCreationTransactionViewModel {
         )
 
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
-        amountInformationViewModel.setTitle("transaction-detail-amount".localized)
+        amountInformationViewModel.setTitle(String(localized: "transaction-detail-amount"))
         self.amountInformationViewModel = amountInformationViewModel
     }
 
@@ -207,7 +207,7 @@ class WCAssetCreationTransactionViewModel {
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
-        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        feeInformationViewModel.setTitle(String(localized: "transaction-detail-fee"))
         self.feeInformationViewModel = feeInformationViewModel
     }
 
@@ -224,7 +224,7 @@ class WCAssetCreationTransactionViewModel {
         let decimals = transaction.transactionDetail?.assetConfigParams?.decimal ?? 0
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-decimals-title".localized,
+            title: String(localized: "wallet-connect-asset-decimals-title"),
             detail: "\(decimals)"
         )
 
@@ -235,8 +235,8 @@ class WCAssetCreationTransactionViewModel {
         let isFrozen = transaction.transactionDetail?.assetConfigParams?.isFrozen ?? false
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-frozen-title".localized,
-            detail: isFrozen ? "title-on".localized : "title-off".localized
+            title: String(localized: "wallet-connect-asset-frozen-title"),
+            detail: isFrozen ? String(localized: "title-on") : String(localized: "title-off")
         )
 
         self.defaultFrozenViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -248,7 +248,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-manager-title".localized,
+            title: String(localized: "wallet-connect-asset-manager-title"),
             detail: manager
         )
 
@@ -261,7 +261,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-reserve-title".localized,
+            title: String(localized: "wallet-connect-asset-reserve-title"),
             detail: reserve
         )
 
@@ -274,7 +274,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-freeze-title".localized,
+            title: String(localized: "wallet-connect-asset-freeze-title"),
             detail: frozen
         )
 
@@ -287,7 +287,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-asset-clawback-title".localized,
+            title: String(localized: "wallet-connect-asset-clawback-title"),
             detail: clawback
         )
 
@@ -300,7 +300,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "transaction-detail-note".localized,
+            title: String(localized: "title-note"),
             detail: note
         )
 
@@ -313,7 +313,7 @@ class WCAssetCreationTransactionViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "wallet-connect-transaction-title-metadata".localized,
+            title: String(localized: "wallet-connect-transaction-title-metadata"),
             detail: metadataHash
         )
 

@@ -98,16 +98,14 @@ extension IncomingASAAccountsViewController {
         let infoBarButton = ALGBarButtonItem(kind: .info) {
             [unowned self] in
             let uiSheet = UISheet(
-                title: "incoming-asa-account-inbox-screen-info-title"
-                    .localized
+                title: String(localized: "incoming-asa-account-inbox-screen-title")
                     .bodyLargeMedium(),
-                body: UISheetBodyTextProvider(text: "incoming-asa-account-inbox-screen-info-description-title"
-                    .localized
+                body: UISheetBodyTextProvider(text: String(localized: "incoming-asa-account-inbox-screen-info-description-title")
                     .bodyRegular())
             )
 
             let closeAction = UISheetAction(
-                title: "title-close".localized,
+                title: String(localized: "title-close"),
                 style: .cancel
             ) { [unowned self] in
                 self.dismiss(animated: true)
@@ -124,7 +122,7 @@ extension IncomingASAAccountsViewController {
     }
     
     private func bindNavigationItemTitle() {
-        title = "incoming-asa-account-inbox-screen-title".localized
+        title = String(localized: "incoming-asa-account-inbox-screen-title")
     }
 }
 

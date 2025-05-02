@@ -185,10 +185,7 @@ extension RekeyedAccountInformationScreen {
 
 extension RekeyedAccountInformationScreen {
     private func bindTitle() {
-        titleView.attributedText =
-            "title-rekeyed-account-capitalized-sentence"
-                .localized
-                .titleSmallMedium(lineBreakMode: .byTruncatingTail)
+        titleView.attributedText = String(localized: "title-rekeyed-account").titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private func bindAccountItem() {

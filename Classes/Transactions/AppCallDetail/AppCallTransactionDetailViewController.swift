@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "title-app-call".localized
+        title = String(localized: "title-app-call")
     }
 
     override func prepareLayout() {

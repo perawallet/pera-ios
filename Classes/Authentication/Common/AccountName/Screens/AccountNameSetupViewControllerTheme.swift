@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,13 +40,13 @@ struct AccountNameSetupViewControllerTheme:
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("account-details-title".localized.titleMedium(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "title-name-your-account").titleMedium(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenTitleAndDescription = 16
         self.description = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
-            .text("account-name-setup-description".localized.bodyRegular(lineBreakMode: .byTruncatingTail))
+            .text(String(localized: "account-name-setup-description").bodyRegular(lineBreakMode: .byTruncatingTail))
         ]
         self.spacingBetweenDescriptionAndNameInput = 40
         let textInputBaseStyle: TextInputStyle = [
@@ -60,12 +60,12 @@ struct AccountNameSetupViewControllerTheme:
         ]
         self.nameInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "account-name-setup-placeholder".localized,
-            floatingPlaceholder: "account-name-setup-placeholder".localized
+            placeholder: String(localized: "placeholder-account-name-setup"),
+            floatingPlaceholder: String(localized: "placeholder-account-name-setup")
         )
         self.nameInputMinHeight = 48
         self.action = [
-            .title("account-name-setup-finish".localized),
+            .title(String(localized: "account-name-setup-finish")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),

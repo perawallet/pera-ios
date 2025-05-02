@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ class ContactsViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "contacts-title".localized
+        title = String(localized: "contacts-title")
         contactsView.contactsCollectionView.refreshControl = refreshControl
         fetchContacts()
     }

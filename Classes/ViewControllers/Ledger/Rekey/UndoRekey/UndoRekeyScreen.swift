@@ -110,7 +110,7 @@ final class UndoRekeyScreen:
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationBarLargeTitleController.title = "title-undo-rekey-capitalized-sentence".localized
+        navigationBarLargeTitleController.title = String(localized: "title-undo-rekey")
     }
 
     override func viewDidLoad() {
@@ -263,12 +263,11 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     private func bindBody() {
         let text =
-            "undo-any-account-rekey-body"
-                .localized
+            String(localized: "undo-any-account-rekey-body")
                 .bodyRegular()
 
         let hyperlink: ALGActiveType =
-            .word("undo-any-account-rekey-body-highlighted-text".localized)
+            .word(String(localized: "title-learn-more"))
 
         var attributes = Typography.bodyMediumAttributes()
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
@@ -292,7 +291,7 @@ extension UndoRekeyScreen {
     }
 
     private func bindPrimaryAction() {
-        primaryActionView.editTitle = .string("title-continue".localized)
+        primaryActionView.editTitle = .string(String(localized: "title-continue"))
     }
 }
 
@@ -335,7 +334,7 @@ extension UndoRekeyScreen {
     private func performUndoRekeying() {
         if !transactionController.canSignTransaction(for: sourceAccount) { return }
 
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
         let rekeyTransactionDraft = RekeyTransactionSendDraft(
             account: sourceAccount,
@@ -378,7 +377,7 @@ extension UndoRekeyScreen {
             displayTransactionError(from: transactionError)
         default:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.asAFError?.errorDescription ?? error.localizedDescription
             )
         }
@@ -392,9 +391,9 @@ extension UndoRekeyScreen {
 
         switch error {
         case let .network(apiError):
-            bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController.presentErrorBanner(title: String(localized: "title-error"), message: apiError.debugDescription)
         default:
-            bannerController.presentErrorBanner(title: "title-error".localized, message: error.debugDescription)
+            bannerController.presentErrorBanner(title: String(localized: "title-error"), message: error.debugDescription)
         }
     }
 
@@ -452,19 +451,17 @@ extension UndoRekeyScreen {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             bannerController.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "send-algos-minimum-amount-custom-error"), amountText.someString)
             )
         case .invalidAddress:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController.presentErrorBanner(
-                title: "title-error".localized, message: error.debugDescription
+                title: String(localized: "title-error"), message: error.debugDescription
             )
         case .ledgerConnection:
             ledgerConnectionScreen?.dismiss(animated: true) {
@@ -509,9 +506,9 @@ extension UndoRekeyScreen {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController

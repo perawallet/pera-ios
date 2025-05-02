@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ struct ReceiverAccountSelectionNoContentViewModel: NoContentViewModel {
 extension ReceiverAccountSelectionNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "account-select-search-empty-title".localized
+            String(localized: "account-select-search-empty-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -40,8 +40,7 @@ extension ReceiverAccountSelectionNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "account-select-search-empty-detail"
-                .localized
+            String(localized: "account-select-search-empty-detail")
                 .bodyRegular(
                     alignment: .center
                 )

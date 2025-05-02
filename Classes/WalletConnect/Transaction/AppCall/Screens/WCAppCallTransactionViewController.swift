@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ final class WCAppCallTransactionViewController: WCSingleTransactionViewControlle
 
         if let transactionDetail = transaction.transactionDetail,
            transactionDetail.isAppCreateTransaction {
-            title = "wallet-connect-transaction-title-app-creation".localized
+            title = String(localized: "wallet-connect-transaction-title-app-creation")
         } else {
-            title = "wallet-connect-transaction-title-app-call".localized
+            title = String(localized: "wallet-connect-transaction-title-app-call")
         }
     }
 

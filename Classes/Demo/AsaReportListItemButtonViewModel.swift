@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ struct AsaReportListItemButtonViewModel: ListItemButtonViewModel {
     init(_ asset: Asset) {
         icon = "icon-asset-report"
         title = Self.getTitle(
-            "asa-verification-suspicious-report".localized(params: asset.naming.unitName ?? ""),
+            String(format: String(localized: "asa-verification-suspicious-report"), asset.naming.unitName ?? ""),
             Colors.Helpers.negative
         )
         subtitle = nil

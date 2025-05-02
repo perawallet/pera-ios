@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -358,7 +358,7 @@ extension CollectibleDetailAPIDataController {
                     .information(
                         CollectibleTransactionInformation(
                             icon: nil,
-                            title: "title-total-supply".localized,
+                            title: String(localized: "title-total-supply"),
                             value: formattedTotalSupply,
                             isCollectibleSpecificValue: false
                         )
@@ -371,8 +371,8 @@ extension CollectibleDetailAPIDataController {
             .information(
                 CollectibleTransactionInformation(
                     icon: .custom(img("icon-pera-logo")),
-                    title: "collectible-detail-show-on".localized,
-                    value: "collectible-detail-pera-explorer".localized,
+                    title: String(localized: "collectible-detail-show-on"),
+                    value: String(localized: "collectible-detail-pera-explorer"),
                     isCollectibleSpecificValue: true,
                     actionURL: asset.explorerURL
                 )

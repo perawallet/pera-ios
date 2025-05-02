@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ struct SwapAssetSelectionEmptyViewTheme:
         self.emptyAsset = [
             .font(Typography.bodyMedium()),
             .titleColor([.normal(Colors.Text.main)]),
-            .title("swap-asset-choose-title".localized),
+            .title(String(localized: "swap-asset-choose-title")),
             .icon([.normal("icon-arrow-24")])
         ]
         self.emptyAssetLeadingInset = 16

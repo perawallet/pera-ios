@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ struct ContactDisplayViewTheme: LayoutSheet, StyleSheet {
             .backgroundColor(Colors.Layer.grayLighter),
             .font(Fonts.DMSans.regular.make(15)),
             .titleColor([.normal(Colors.Text.gray)]),
-            .title("transaction-detail-add".localized)
+            .title(String(localized: "transaction-detail-add"))
         ]
         self.addContactButtonEdgeInsets = (4, 12, 4, 12)
         self.addContactButtonCorner = Corner(radius: 16)

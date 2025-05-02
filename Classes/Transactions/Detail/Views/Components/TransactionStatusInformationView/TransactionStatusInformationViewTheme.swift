@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
     ) {
         self.contentPaddings = NSDirectionalEdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
         self.title = [
-            .text("transaction-detail-status".localized),
+            .text(String(localized: "transaction-detail-status")),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),

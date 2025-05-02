@@ -1,4 +1,4 @@
-	// Copyright 2022 Pera Wallet, LDA
+	// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ protocol AnnouncementViewTheme: StyleSheet, LayoutSheet {
     var stackViewButtonSpacing: LayoutMetric { get }
     var title: TextStyle { get }
     var subtitle: TextStyle { get }
+    var subtitleNumberOfLines: Int? { get }
     var action: ButtonStyle { get }
     var actionEdgeInsets: LayoutPaddings { get }
     var actionHeight: LayoutMetric { get }
@@ -46,6 +47,7 @@ struct StakingAnnouncementViewTheme: AnnouncementViewTheme {
     var stackViewButtonSpacing: LayoutMetric
     var title: TextStyle
     var subtitle: TextStyle
+    var subtitleNumberOfLines: Int? = nil
     var action: ButtonStyle
     var actionEdgeInsets: LayoutPaddings
     var actionHeight: LayoutMetric
@@ -100,6 +102,7 @@ struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
     var stackViewButtonSpacing: LayoutMetric
     var title: TextStyle
     var subtitle: TextStyle
+    var subtitleNumberOfLines: Int? = nil
     var action: ButtonStyle
     var actionEdgeInsets: LayoutPaddings
     var actionHeight: LayoutMetric
@@ -152,6 +155,7 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
     var stackViewButtonSpacing: LayoutMetric
     var title: TextStyle
     var subtitle: TextStyle
+    var subtitleNumberOfLines: Int? = nil
     var action: ButtonStyle
     var actionEdgeInsets: LayoutPaddings
     var actionHeight: LayoutMetric
@@ -189,6 +193,61 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
         self.actionHeight = 44
         self.close = [
             .backgroundImage([.normal("icon-governance-close-banner")])
+        ]
+        self.closeMargins = (8, .noMetric, .noMetric, 8)
+        self.closeSize = (24, 24)
+    }
+}
+
+struct CardAnnouncementViewTheme: AnnouncementViewTheme {
+    let background: ViewStyle
+    var backgroundImage: ImageSource? = nil
+    let corner: Corner
+    let stackViewEdgeInset: LayoutMargins
+    let stackViewLayoutMargins: LayoutMargins
+    let stackViewItemSpacing: LayoutMetric
+    let stackViewButtonSpacing: LayoutMetric
+    let title: TextStyle
+    let subtitle: TextStyle
+    var subtitleNumberOfLines: Int? = nil
+    let action: ButtonStyle
+    let actionEdgeInsets: LayoutPaddings
+    let actionHeight: LayoutMetric
+    let close: ButtonStyle
+    let closeMargins: LayoutMargins
+    let closeSize: LayoutSize
+    
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.background = [
+            .backgroundColor(Colors.Discover.main)
+        ]
+        self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-card-image"))
+        self.corner = Corner(radius: 4)
+        self.stackViewEdgeInset = (24, 24, 28, 124)
+        self.stackViewLayoutMargins = (0, 0, 0, 0)
+        self.stackViewItemSpacing = 12
+        self.stackViewButtonSpacing = 16
+        self.title = [
+            .font(Fonts.DMSans.medium.make(15)),
+            .textOverflow(FittingText()),
+            .textColor(Colors.Banner.text)
+        ]
+        self.subtitle = [
+            .font(Fonts.DMSans.regular.make(13)),
+            .textOverflow(FittingText()),
+            .textColor(Colors.Banner.text)
+        ]
+        self.subtitleNumberOfLines = 0
+        self.action = [
+            .backgroundImage([.normal("banner-cta-background")]),
+            .font(Fonts.DMSans.medium.make(13))
+        ]
+        self.actionEdgeInsets = (0, 20, 0, 20)
+        self.actionHeight = 44
+        self.close = [
+            .backgroundImage([.normal("icon-new-generic-close-banner")])
         ]
         self.closeMargins = (8, .noMetric, .noMetric, 8)
         self.closeSize = (24, 24)

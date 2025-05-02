@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,16 +39,16 @@ extension ContactsNoContentWithActionViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "contacts-empty-text".localized
+        title = String(localized: "contacts-empty-text")
     }
 
     private mutating func bindBody() {
-        body = "contacts-empty-detail-text".localized
+        body = String(localized: "contacts-empty-detail-text")
     }
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("contacts-add".localized),
+            title: .string(String(localized: "contacts-add")),
             image: nil
         )
     }

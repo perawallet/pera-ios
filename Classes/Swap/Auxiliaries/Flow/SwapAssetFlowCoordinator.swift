@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -190,8 +190,8 @@ extension SwapAssetFlowCoordinator {
 
                  if !draft.isOptedInToAssetIn {
                      bannerController.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "swap-asset-not-opted-in-error".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "swap-asset-not-opted-in-error")
                      )
                      return
                  }
@@ -456,8 +456,6 @@ extension SwapAssetFlowCoordinator {
                 self.openSlippageToleranceInfo()
             case .didTapSlippageAction:
                 self.openEditSlippage()
-            case .didTapExchangeFeeInfo:
-                self.openExchangeFeeInfo()
             }
         }
         let screen: Screen = .confirmSwap(
@@ -568,15 +566,10 @@ extension SwapAssetFlowCoordinator {
         let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
         let title =
-            "swap-sign-with-ledger-title"
-                .localized
+            String(localized: "swap-sign-with-ledger-title")
                 .bodyLargeMedium(alignment: .center)
-        let highlightedBodyPart =
-            "swap-sign-with-ledger-body-highlighted"
-                .localized(params: "\(totalTransactionCountToSign)")
-        let body =
-            "swap-sign-with-ledger-body"
-                .localized(params: "\(totalTransactionCountToSign)")
+        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), totalTransactionCountToSign)
+        let body = String(format: String(localized: "swap-sign-with-ledger-body"), totalTransactionCountToSign)
                 .bodyRegular(alignment: .center)
                 .addAttributes(
                     to: highlightedBodyPart,
@@ -590,7 +583,7 @@ extension SwapAssetFlowCoordinator {
         )
 
         let signTransactionsAction = UISheetAction(
-            title: "swap-sign-with-ledger-action-title".localized,
+            title: String(localized: "swap-sign-with-ledger-action-title"),
             style: .default
         ) { [weak self] in
             guard let self = self else { return }
@@ -650,9 +643,9 @@ extension SwapAssetFlowCoordinator {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -713,7 +706,7 @@ extension SwapAssetFlowCoordinator {
         _ error: HIPTransactionError
     ) {
         bannerController.presentErrorBanner(
-            title: "title-error".localized,
+            title: String(localized: "title-error"),
             message: error.debugDescription
         )
     }
@@ -725,23 +718,23 @@ extension SwapAssetFlowCoordinator {
         switch ledgerError {
         case .cancelled:
             bannerController.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+                title: String(localized: "ble-error-transaction-cancelled-title"),
+                message: String(localized: "ble-error-fail-sign-transaction")
             )
         case .closedApp:
             bannerController.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"),
+                message: String(localized: "ble-error-ledger-connection-open-app-error")
             )
         case .failedToFetchAddress:
             bannerController.presentErrorBanner(
-                title: "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
+                title: String(localized: "ble-error-transmission-title"),
+                message: String(localized: "ble-error-fail-fetch-account-address")
             )
         case .failedToFetchAccountFromIndexer:
             bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-account-fetct-error".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "ledger-account-fetct-error")
             )
         case .custom(let title, let message):
             bannerController.presentErrorBanner(
@@ -777,7 +770,7 @@ extension SwapAssetFlowCoordinator {
                 self.stopLoading()
 
                 self.bannerController.presentErrorBanner(
-                    title: "ble-error-connection-title".localized,
+                    title: String(localized: "ble-error-connection-title"),
                     message: ""
                 )
 
@@ -794,12 +787,12 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "swap-slippage-tolerance-info-body".localized.bodyRegular())
+            title: String(localized: "swap-slippage-title").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "swap-slippage-tolerance-info-body").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [unowned self] in
             self.visibleScreen.dismiss(animated: true)
@@ -840,12 +833,12 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "swap-price-impact-info-body".localized.bodyRegular())
+            title: String(localized: "swap-price-impact-title").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "swap-price-impact-info-body").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [unowned self] in
             self.visibleScreen.dismiss(animated: true)
@@ -858,30 +851,6 @@ extension SwapAssetFlowCoordinator {
         )
 
         transitionToPriceImpactInfo = transition
-    }
-
-    private func openExchangeFeeInfo() {
-        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-        let uiSheet = UISheet(
-            title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "swap-confirm-exchange-fee-detail".localized.bodyRegular())
-        )
-
-        let closeAction = UISheetAction(
-            title: "title-close".localized,
-            style: .cancel
-        ) { [unowned self] in
-            self.visibleScreen.dismiss(animated: true)
-        }
-        uiSheet.addAction(closeAction)
-
-        transition.perform(
-            .sheetAction(sheet: uiSheet),
-            by: .presentWithoutNavigationController
-        )
-
-        transitionToExchangeFeeInfo = transition
     }
 
     private func openPeraExplorerForSwapTransaction(
@@ -921,7 +890,7 @@ extension SwapAssetFlowCoordinator {
             .selectAsset(
                 dataController: dataController,
                 coordinator: self,
-                title: "swap-asset-from".localized
+                title: String(localized: "swap-asset-from")
             ),
             by: .push
         ) as? SelectAssetScreen
@@ -976,7 +945,7 @@ extension SwapAssetFlowCoordinator {
             .selectAsset(
                 dataController: dataController,
                 coordinator: self,
-                title: "swap-asset-to".localized
+                title: String(localized: "swap-asset-to")
             ),
             by: .push
         ) as? SelectAssetScreen
@@ -1116,7 +1085,7 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func startLoading() {
-        loadingController.startLoadingWithMessage("title-loading".localized)
+        loadingController.startLoadingWithMessage(String(localized: "title-loading"))
     }
 
     private func stopLoading() {

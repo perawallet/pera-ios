@@ -25,12 +25,10 @@ final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "back-up-before-removing-account-warning-title"
-                .localized
+            String(localized: "back-up-before-removing-account-warning-title")
                 .bodyLargeMedium(alignment: .center)
         let body =
-            "back-up-before-removing-account-warning-body"
-                .localized
+            String(localized: "back-up-before-removing-account-warning-body")
                 .bodyRegular(alignment: .center)
 
         super.init(
@@ -50,7 +48,7 @@ final class BackUpBeforeRemovingAccountWarningSheet: UISheet {
 extension BackUpBeforeRemovingAccountWarningSheet {
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-yes-continue".localized,
+            title: String(localized: "title-yes-continue").uppercased(),
             style: .default
         ) {
             [unowned self] in
@@ -60,7 +58,7 @@ extension BackUpBeforeRemovingAccountWarningSheet {
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "back-up-before-removing-account-warning-cancel-action".localized,
+            title: String(localized: "back-up-before-removing-account-warning-cancel-action"),
             style: .cancel
         ) {
             [unowned self] in

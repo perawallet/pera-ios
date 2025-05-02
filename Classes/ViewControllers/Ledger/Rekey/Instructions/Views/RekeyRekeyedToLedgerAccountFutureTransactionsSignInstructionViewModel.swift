@@ -24,6 +24,6 @@ struct RekeyRekeyedToLedgerAccountFutureTransactionsSignInstructionViewModel: In
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "rekey-rekeyed-to-ledger-account-future-transactions-sign-instruction-title".localized.bodyRegular()
+        self.title = String(localized: "rekey-rekeyed-to-ledger-account-future-transactions-sign-instruction-title").bodyRegular()
     }
 }

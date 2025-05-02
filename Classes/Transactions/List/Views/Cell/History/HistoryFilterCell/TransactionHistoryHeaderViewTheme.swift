@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,14 +41,14 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
         self.shareButton = [
             .icon([.normal("icon-csv")]),
             .backgroundImage([.normal("light-button-rect-background")]),
-            .title("title-csv".localized),
+            .title(String(localized: "title-csv")),
             .titleColor([.normal(Colors.Helpers.positive)]),
             .font(Fonts.DMSans.medium.make(13))
         ]
         self.filterButton = [
             .icon([.normal("icon-transaction-filter-primary")]),
             .titleColor([.normal(Colors.Helpers.positive)]),
-            .title("filter".localized),
+            .title(String(localized: "title-filter")),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.buttonHeight = 40

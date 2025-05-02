@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,14 +41,12 @@ extension SwapIntroductionAlertItem {
     func makeAlert() -> Alert {
         isSeen = true
 
-        let title = "swap-alert-title"
-            .localized
+        let title = String(localized: "swap-alert-title")
             .bodyLargeMedium(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
             )
-        let body = "swap-alert-body"
-            .localized
+        let body = String(localized: "swap-alert-body")
             .footnoteRegular(
                 alignment: .center,
                 lineBreakMode: .byTruncatingTail
@@ -75,7 +73,7 @@ extension SwapIntroductionAlertItem {
 extension SwapIntroductionAlertItem {
     private func makeTrySwapAction() -> AlertAction {
         return AlertAction(
-            title: "swap-alert-primary-action".localized,
+            title: String(localized: "swap-alert-primary-action"),
             style: .primary
         ) {
             [unowned self] in
@@ -85,7 +83,7 @@ extension SwapIntroductionAlertItem {
 
     private func makeLaterAction() -> AlertAction {
         return AlertAction(
-            title: "title-later".localized,
+            title: String(localized: "title-later"),
             style: .secondary
         ) {
             [unowned self] in

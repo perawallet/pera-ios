@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,15 +67,13 @@ extension CollectiblesNoContentWithActionViewModel {
 
     private mutating func bindTitle() {
         title =
-            "collectibles-empty-title"
-                .localized
+            String(localized: "title-collectibles")
                 .titleMedium(alignment: .center)
     }
 
     private mutating func bindBody() {
         body =
-            "collectibles-empty-body"
-                .localized
+            String(localized: "collectibles-empty-body")
                 .bodyRegular(alignment: .center)
     }
 }
@@ -83,7 +81,7 @@ extension CollectiblesNoContentWithActionViewModel {
 extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindPrimaryActionTitle() {
         primaryAction = Action(
-            title: .string("collectibles-receive-asset-title".localized),
+            title: .string(String(localized: "collectibles-receive-asset-title")),
             image: "icon-plus".uiImage
         )
     }
@@ -126,7 +124,7 @@ extension CollectiblesNoContentWithActionViewModel {
         }
 
         return .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
+            String(format: String(localized: "collectibles-empty-secondary-action-title"), hiddenCollectibleCount)
         )
     }
 }

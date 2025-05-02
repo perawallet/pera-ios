@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ struct SwapSummaryAccountViewTheme:
         self.title = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
-            .text("title-account".localized),
+            .text(String(localized: "title-account")),
             .font(Typography.bodyRegular())
         ]
         self.iconSize = (24, 24)

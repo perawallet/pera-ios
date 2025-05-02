@@ -60,7 +60,7 @@ final class AlgorandSecureBackupInstructionsScreen:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = "algorand-secure-backup-instruction-title".localized
+        navigationBarLargeTitleController.title = String(localized: "algorand-secure-backup-instruction-title")
     }
 
     override func customizeTabBarAppearence() {
@@ -168,18 +168,12 @@ extension AlgorandSecureBackupInstructionsScreen {
             $0.trailing == 0
         }
 
-        addSelectAccountsInstruction()
         addStoreKeysInstruction()
         addSaveBackupFileInstruction()
     }
 
-    private func addSelectAccountsInstruction() {
-        let viewModel = AlgorandSecureBackupSelectAccountsInstructionItemViewModel(order: 1)
-        addInstruction(viewModel)
-    }
-
     private func addStoreKeysInstruction() {
-        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(order: 2)
+        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(order: 1)
         let instruction = addInstruction(viewModel)
         instruction.startObserving(event: .performHyperlinkAction) {
             [unowned self] in
@@ -188,7 +182,7 @@ extension AlgorandSecureBackupInstructionsScreen {
     }
 
     private func addSaveBackupFileInstruction() {
-        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(order: 3)
+        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(order: 2)
         addInstruction(viewModel)
     }
 
@@ -227,14 +221,11 @@ extension AlgorandSecureBackupInstructionsScreen {
 
 extension AlgorandSecureBackupInstructionsScreen {
     private func bindHeader() {
-        headerView.attributedText =
-            "algorand-secure-backup-instruction-header-title"
-                .localized
-                .bodyRegular()
+        headerView.attributedText = String(localized: "algorand-secure-backup-instruction-header-title").bodyRegular()
     }
 
     private func bindStartAction() {
-        startActionView.editTitle = .string("title-start".localized)
+        startActionView.editTitle = .string(String(localized: "title-start"))
     }
 }
 
@@ -251,12 +242,12 @@ extension AlgorandSecureBackupInstructionsScreen {
 extension AlgorandSecureBackupInstructionsScreen {
     @objc
     private func performStartAction() {
-        eventHandler?(.performStart, self)
+        eventHandler?(.performStartASB, self)
     }
 }
 
 extension AlgorandSecureBackupInstructionsScreen {
     enum Event {
-        case performStart
+        case performStartASB
     }
 }

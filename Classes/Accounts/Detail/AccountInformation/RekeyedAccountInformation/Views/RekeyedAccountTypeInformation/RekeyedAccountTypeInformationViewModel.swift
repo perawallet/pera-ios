@@ -35,10 +35,7 @@ struct RekeyedAccountTypeInformationViewModel: AccountTypeInformationViewModel {
 
 extension RekeyedAccountTypeInformationViewModel {
     private mutating func bindTitle(_ sourceAccount: Account) {
-        title =
-            "title-account-type"
-                .localized
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+        title = String(localized: "title-account-type").footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindTypeIcon(_ sourceAccount: Account) {
@@ -136,13 +133,13 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-ledger-to-ledger-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-ledger-to-ledger-rekeyed"))
     }
 
     private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text:  "ledger-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "ledger-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            text:  String(localized: "ledger-to-ledger-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }
@@ -153,13 +150,13 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-ledger-to-standard-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-ledger-to-standard-rekeyed"))
     }
 
     private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text: "ledger-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "ledger-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            text: String(localized: "ledger-to-standard-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }
@@ -170,13 +167,13 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-standard-to-ledger-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-standard-to-ledger-rekeyed"))
     }
 
     private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text: "standard-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            text: String(localized: "standard-to-ledger-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }
@@ -187,13 +184,13 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-standard-to-standard-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-standard-to-standard-rekeyed"))
     }
 
     private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text: "standard-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            text: String(localized: "standard-to-standard-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }
@@ -204,17 +201,17 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-unknown-to-standard-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-unknown-to-standard-rekeyed"))
     }
 
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeFootnote() -> TextProvider {
-        return makeTypeFootnote(text: "no-record-of-original-account-type-footnote".localized)
+        return makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote"))
     }
 
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text: "standard-to-standard-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-standard-rekeyed-account-type-description-highlighted-text".localized
+            text: String(localized: "standard-to-standard-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }
@@ -225,17 +222,17 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 
     private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: "title-unknown-to-ledger-rekeyed".localized)
+        return makeTypeTitle(text: String(localized: "title-unknown-to-ledger-rekeyed"))
     }
 
     private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeFootnote() -> TextProvider {
-        return makeTypeFootnote(text: "no-record-of-original-account-type-footnote".localized)
+        return makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote"))
     }
 
     private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         return makeTypeDescription(
-            text: "standard-to-ledger-rekeyed-account-type-description".localized,
-            highlightedText: "standard-to-ledger-rekeyed-account-type-description-highlighted-text".localized
+            text: String(localized: "standard-to-ledger-rekeyed-account-type-description"),
+            highlightedText: String(localized: "title-learn-more")
         )
     }
 }

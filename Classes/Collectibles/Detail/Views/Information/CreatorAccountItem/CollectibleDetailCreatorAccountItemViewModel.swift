@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ extension CollectibleDetailCreatorAccountItemViewModel {
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =
-            "collectible-detail-creator-account"
-                .localized
+            String(localized: "collectible-detail-creator-account")
                 .attributed(attributes)
     }
 }

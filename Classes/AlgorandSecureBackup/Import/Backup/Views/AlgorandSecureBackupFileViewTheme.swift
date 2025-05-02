@@ -92,12 +92,12 @@ struct AlgorandSecureBackupFileViewTheme:
         self.action = [
             .font(Typography.bodyMedium()),
             .titleColor([.normal(Colors.Helpers.positive)]),
-            .title("algorand-secure-backup-import-backup-action-title".localized)
+            .title(String(localized: "algorand-secure-backup-import-backup-action-title"))
         ]
         self.replaceAction = [
             .font(Typography.bodyMedium()),
             .titleColor([.normal(Colors.Helpers.positive)]),
-            .title("algorand-secure-backup-import-backup-action-replace-title".localized)
+            .title(String(localized: "algorand-secure-backup-import-backup-action-replace-title"))
         ]
         self.actionBottomInset = 20
     }

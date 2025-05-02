@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -202,15 +202,13 @@ extension InsufficientAlgoBalanceScreen {
 
     private func bindTitle() {
         titleView.attributedText =
-            "required-min-balance-title"
-                .localized
+            String(localized: "required-min-balance-title")
                 .bodyLargeMedium(alignment: .center)
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "required-min-balance-description"
-                .localized
+            String(localized: "required-min-balance-description")
                 .bodyRegular(alignment: .center)
     }
 
@@ -219,7 +217,7 @@ extension InsufficientAlgoBalanceScreen {
     }
 
     private func bindAction() {
-        actionView.editTitle = .string("title-got-it".localized)
+        actionView.editTitle = .string(String(localized: "title-got-it"))
     }
 }
 

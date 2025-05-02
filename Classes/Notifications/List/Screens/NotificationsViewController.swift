@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -112,6 +112,8 @@ final class NotificationsViewController: BaseViewController {
                             requestsCount: requestsCount
                         )
                     }
+                case let .externalDeepLink(deepLink: deepLink):
+                    self.open(deepLink: deepLink)
                 default:
                     break
                 }
@@ -196,7 +198,7 @@ final class NotificationsViewController: BaseViewController {
     }
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        title = "notifications-title".localized
+        title = String(localized: "notifications-title")
         addBarButtons()
     }
 }
@@ -238,7 +240,7 @@ extension NotificationsViewController {
             return
         }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         api?.fetchAssetDetails(
             AssetFetchQuery(ids: [assetID]),
@@ -255,8 +257,8 @@ extension NotificationsViewController {
             case let .success(assetResponse):
                 if assetResponse.results.isEmpty {
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "asset-confirmation-not-found".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "asset-confirmation-not-found")
                     )
                     return
                 }
@@ -269,8 +271,8 @@ extension NotificationsViewController {
                 }
             case .failure:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "asset-confirmation-not-fetched".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "asset-confirmation-not-fetched")
                 )
             }
         }
@@ -354,10 +356,7 @@ extension NotificationsViewController {
             return
         }
 
-        let eventHandler: AccountDetailViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
+        let eventHandler: AccountDetailViewController.EventHandler = { event in
             switch event {
             case .didEdit: break
             case .didRemove: break
@@ -405,48 +404,56 @@ extension NotificationsViewController {
             }
         }
     }
+    
+    private func open(
+        deepLink: ExternalDeepLink
+    ) {
+        launchController.receive(
+            deeplinkWithSource: .externalDeepLink(deepLink)
+        )
+    }
 }
 
 extension NotificationsViewController {
     private func presentTryingToActForWatchAccountError() {
         bannerController?.presentErrorBanner(
-            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
-            message: "notifications-trying-to-opt-in-for-watch-account-description".localized
+            title: String(localized: "notifications-trying-to-opt-in-for-watch-account-title"),
+            message: String(localized: "notifications-trying-to-opt-in-for-watch-account-description")
         )
     }
 
     private func presentTryingToActForNoAuthInLocalAccountError() {
         bannerController?.presentErrorBanner(
-            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
-            message: "action-not-available-for-account-type".localized
+            title: String(localized: "notifications-trying-to-opt-in-for-watch-account-title"),
+            message: String(localized: "action-not-available-for-account-type")
         )
     }
 
     private func presentTryingToActForAssetWithPendingOptInRequestError(accountName: String) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "ongoing-opt-in-request-description".localized(params: accountName)
+            title: String(localized: "title-error"),
+            message: String(format: String(localized: "ongoing-opt-in-request-description"), accountName)
         )
     }
 
     private func presentTryingToActForAssetWithPendingOptOutRequestError(accountName: String) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "ongoing-opt-out-request-description".localized(params: accountName)
+            title: String(localized: "title-error"),
+            message: String(format: String(localized: "ongoing-opt-out-request-description"), accountName)
         )
     }
 
     private func presentAccountNotFoundError() {
         bannerController?.presentErrorBanner(
-            title: "notifications-account-not-found-title".localized,
-            message: "notifications-account-not-found-description".localized
+            title: String(localized: "notifications-account-not-found-title"),
+            message: String(localized: "notifications-account-not-found-description")
         )
     }
 
     private func presentAssetNotFoundError() {
         bannerController?.presentErrorBanner(
-            title: "notifications-asset-not-found-title".localized,
-            message: "notifications-asset-not-found-description".localized
+            title: String(localized: "notifications-asset-not-found-title"),
+            message: String(localized: "notifications-asset-not-found-description")
         )
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,10 +35,10 @@ extension NotificationsNoContentViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "notifications-empty-title".localized
+        title = String(localized: "notifications-empty-title")
     }
 
     private mutating func bindBody() {
-        body = "notifications-empty-subtitle".localized
+        body = String(localized: "notifications-empty-subtitle")
     }
 }

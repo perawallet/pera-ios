@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,15 +39,15 @@ struct AccountQuickActionsViewTheme:
         self.actionWidth = 64
         self.requestsAction = [
             .icon(Self.makeActionIcon(icon: "ASA-requests-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-asset-inbox-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-asset-inbox-title")))
         ]
         self.requestsBadgeAction = [
             .icon(Self.makeActionIcon(icon: "ASA-requests-icon-badge")),
-            .title(Self.makeActionTitle(title: "quick-actions-asset-inbox-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-asset-inbox-title")))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),
-            .title(Self.makeActionTitle(title: "title-swap".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-swap")))
         ]
         self.swapBadge = BadgeButtonTheme()
         self.swapBadgeEdgeInsets = NSDirectionalEdgeInsets(
@@ -58,11 +58,11 @@ struct AccountQuickActionsViewTheme:
         )
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
-            .title(Self.makeActionTitle(title: "title-buy-algo".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
         ]
         self.moreAction = [
             .icon(Self.makeActionIcon(icon: "more-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-more-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-more")))
         ]
     }
 }

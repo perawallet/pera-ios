@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,7 @@ struct SwapSummaryReceivedItemViewModel: SwapSummaryItemViewModel {
 
 extension SwapSummaryReceivedItemViewModel {
     mutating func bindTitle() {
-        title = "swap-summary-received-title"
-            .localized
+        title = String(localized: "swap-summary-received-title")
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

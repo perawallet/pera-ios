@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ extension OptInAssetListItemViewModel {
         /// <todo>
         /// Find a better way of formatting name
         let title = asset.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
             : asset.name
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholderImage =

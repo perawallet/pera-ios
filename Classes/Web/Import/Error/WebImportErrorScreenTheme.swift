@@ -37,7 +37,7 @@ struct WebImportErrorScreenTheme: LayoutSheet, StyleSheet {
         self.resultViewHorizontalInset = 24
 
         self.goToHomeAction = [
-            .title("web-import-error-action".localized),
+            .title(String(localized: "title-go-home")),
             .titleColor([
                 .normal(Colors.Button.Primary.text)
             ]),

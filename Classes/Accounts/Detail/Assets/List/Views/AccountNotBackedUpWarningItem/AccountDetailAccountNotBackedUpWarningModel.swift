@@ -49,16 +49,14 @@ extension AccountDetailAccountNotBackedUpWarningModel {
 
     private  mutating func bindTitle() {
         title = .attributedString(
-            "account-not-backed-up-warning-title"
-                .localized
+            String(localized: "account-not-backed-up-warning-title")
                 .footnoteMedium()
         )
     }
 
     private  mutating func bindActionTitle() {
         actionTitle = .attributedString(
-            "account-not-backed-up-warning-action-title"
-                .localized
+            String(localized: "account-not-backed-up-warning-action-title")
                 .footnoteMedium(lineBreakMode: .byTruncatingTail)
         )
     }

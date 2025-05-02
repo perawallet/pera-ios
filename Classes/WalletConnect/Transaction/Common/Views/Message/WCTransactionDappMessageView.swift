@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ final class WCTransactionDappMessageView: BaseView {
             .withLine(.single)
             .withTextColor(Colors.Helpers.positive.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
-            .withText("wallet-connect-transaction-dapp-show-more".localized)
+            .withText(String(localized: "title-read-more"))
     }()
 
     private lazy var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))

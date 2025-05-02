@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ final class NodeSettingsViewController: BaseViewController {
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        title = "node-settings-title".localized
+        title = String(localized: "node-settings-title")
     }
     
     override func prepareLayout() {
@@ -147,7 +147,7 @@ extension NodeSettingsViewController {
         onChange change: () -> Void,
         onComplete completion: @escaping (ALGAPI.Network) -> Void
     ) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         
         let oldNetwork = selectedNetwork
         
@@ -175,7 +175,7 @@ extension NodeSettingsViewController {
             self.sharedDataController.startPolling()
 
             self.bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.prettyDescription
             )
             
@@ -200,7 +200,7 @@ let mainNetNode = AlgorandNode(
     indexerAddress: Environment.current.mainNetAlgodHost,
     algodToken: Environment.current.algodToken,
     indexerToken: Environment.current.indexerToken,
-    name: "node-settings-default-node-name".localized,
+    name: String(localized: "node-settings-default-node-name"),
     network: .mainnet
 )
 
@@ -209,6 +209,6 @@ let testNetNode = AlgorandNode(
     indexerAddress: Environment.current.testNetIndexerHost,
     algodToken: Environment.current.algodToken,
     indexerToken: Environment.current.indexerToken,
-    name: "node-settings-default-test-node-name".localized,
+    name: String(localized: "node-settings-default-test-node-name"),
     network: .testnet
 )

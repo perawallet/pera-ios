@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -276,8 +276,7 @@ extension SwapIntroductionScreen {
 extension SwapIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "swap-introduction-title"
-                .localized
+            String(localized: "swap-alert-title")
                 .titleMedium(
                     lineBreakMode: .byTruncatingTail
                 )
@@ -285,15 +284,13 @@ extension SwapIntroductionScreen {
 
     private func bindBody() {
         bodyView.attributedText =
-            "swap-introduction-body"
-                .localized
+            String(localized: "swap-introduction-body")
                 .bodyRegular()
     }
 
     private func bindNewBadge() {
         newBadgeView.text =
-            "title-new-uppercased"
-                .localized
+            String(localized: "title-new-uppercased")
     }
 }
 

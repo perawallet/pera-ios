@@ -35,8 +35,7 @@ struct StandardAccountTypeInformationViewModel: AccountTypeInformationViewModel 
 extension StandardAccountTypeInformationViewModel {
     mutating func bindTitle() {
         title =
-            "title-account-type"
-                .localized
+            String(localized: "title-account-type")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
@@ -46,19 +45,18 @@ extension StandardAccountTypeInformationViewModel {
 
     mutating func bindTypeTitle() {
         typeTitle =
-            "title-standard"
-                .localized
+            String(localized: "title-standard")
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindTypeDescription() {
-        let descriptionText = "standard-account-type-description".localized.footnoteRegular()
+        let descriptionText = String(localized: "standard-account-type-description").footnoteRegular()
 
         var descriptionHighlightedTextAttributes = Typography.footnoteMediumAttributes(alignment: .center)
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let descriptionHighlightedText = HighlightedText(
-            text: "standard-account-type-description-highlighted-text".localized,
+            text: String(localized: "title-learn-more"),
             attributes: descriptionHighlightedTextAttributes
         )
 

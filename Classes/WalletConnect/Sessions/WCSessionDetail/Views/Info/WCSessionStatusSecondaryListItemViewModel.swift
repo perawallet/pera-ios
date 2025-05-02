@@ -33,8 +33,7 @@ struct WCSessionStatusSecondaryListItemViewModel: SecondaryListItemViewModel {
 extension WCSessionStatusSecondaryListItemViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-status"
-                .localized
+            String(localized: "wc-session-status")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
@@ -71,7 +70,7 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
     }
 
     private func getIdleTitle() -> TextProvider {
-        let aTitle = "wc-session-check-status".localized
+        let aTitle = String(localized: "wc-session-check-status")
         var attributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.positive))
         return aTitle.attributed(attributes)
@@ -79,7 +78,7 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
 
     private func getPingingTitle(_ progress: ALGProgress) -> TextProvider {
         let dotText = String(repeating: ".", count: progress.currentUnitCount)
-        let text = "tite-pinging".localized  + dotText
+        let text = String(localized: "tite-pinging")  + dotText
 
         var attributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
@@ -95,7 +94,7 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
     }
 
     private func getActiveTitle() -> TextProvider {
-        let aTitle = "title-active".localized
+        let aTitle = String(localized: "title-active")
         var attributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.positive))
         return aTitle.attributed(attributes)
@@ -110,7 +109,7 @@ extension WCSessionStatusSecondaryListItemValueViewModel {
     }
 
     private func getFailedTitle() -> TextProvider {
-        let aTitle = "transaction-detail-failed".localized
+        let aTitle = String(localized: "transaction-detail-failed")
         var attributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return aTitle.attributed(attributes)

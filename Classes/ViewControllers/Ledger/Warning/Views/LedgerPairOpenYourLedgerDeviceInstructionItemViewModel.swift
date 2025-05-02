@@ -35,8 +35,7 @@ extension LedgerPairOpenYourLedgerDeviceInstructionItemViewModel {
 
     private mutating func bindTitle() {
         title =
-            "ledger-pairing-first-warning-message-first-instruction"
-                .localized
+            String(localized: "ledger-pairing-first-warning-message-first-instruction")
                 .bodyRegular()
     }
 }

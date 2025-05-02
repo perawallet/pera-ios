@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,9 +42,9 @@ final class ManagementOptionsViewController:
         switch managementType {
         case .assets,
              .watchAccountAssets:
-            title = "options-manage-assets".localized
+            title = String(localized: "options-manage-assets")
         case .collectibles:
-            title = "options-manage-collectibles".localized
+            title = String(localized: "options-manage-collectibles")
         }
     }
 

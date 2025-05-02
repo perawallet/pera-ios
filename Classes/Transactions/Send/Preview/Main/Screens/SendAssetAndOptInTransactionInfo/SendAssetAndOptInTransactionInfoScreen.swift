@@ -198,9 +198,9 @@ extension SendAssetAndOptInTransactionInfoScreen {
     
    private func addButtons() {
        dontShowAgainButton.customize(theme.dontShowAgainButtonStyle)
-       dontShowAgainButton.bindData(ButtonCommonViewModel(title: "title-dont-show-again".localized))
+       dontShowAgainButton.bindData(ButtonCommonViewModel(title: String(localized: "title-dont-show-again")))
        continueButton.customize(theme.continueButtonStyle)
-       continueButton.bindData(ButtonCommonViewModel(title: "title-continue".localized))
+       continueButton.bindData(ButtonCommonViewModel(title: String(localized: "title-continue")))
        
        let stackView = UIStackView(arrangedSubviews: [continueButton, dontShowAgainButton])
        stackView.axis = .vertical

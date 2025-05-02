@@ -30,8 +30,7 @@ final class UndoRekeyConfirmationSheet: UISheet {
         self.eventHandler = eventHandler
 
         let title =
-            "undo-rekey-confirmation-title"
-                .localized
+            String(localized: "title-undo-rekey-confirmation")
                 .bodyLargeMedium(alignment: .center)
         let body = Self.makeBody(
             sourceAccount: sourceAccount,
@@ -60,9 +59,7 @@ extension UndoRekeyConfirmationSheet {
     ) -> UISheetBodyTextProvider {
         let sourceAccountName = sourceAccount.primaryDisplayName
         let authAccountName =  authAccount.primaryDisplayName
-        let text = "overwrite-undo-rekey-confirmation-body".localized(
-            params: authAccountName, sourceAccountName
-        )
+        let text = String(format: String(localized: "overwrite-undo-rekey-confirmation-body"), authAccountName, sourceAccountName)
         let attributedBody = NSMutableAttributedString(
             attributedString: text.bodyRegular(alignment: .center)
         )
@@ -85,7 +82,7 @@ extension UndoRekeyConfirmationSheet {
             )
         }
 
-        let bodyHighlightedText = "overwrite-undo-rekey-confirmation-body-highlighted-text".localized
+        let bodyHighlightedText = String(localized: "title-learn-more")
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
@@ -104,7 +101,7 @@ extension UndoRekeyConfirmationSheet {
 
     private func makeConfirmAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-confirm".localized,
+            title: String(localized: "title-confirm"),
             style: .default
         ) {
             [unowned self] in
@@ -114,7 +111,7 @@ extension UndoRekeyConfirmationSheet {
 
     private func makeCancelAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) {
             [unowned self] in

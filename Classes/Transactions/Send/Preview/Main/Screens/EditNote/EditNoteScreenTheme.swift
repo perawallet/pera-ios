@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ struct EditNoteScreenTheme:
         ]
         var noteInput = MultilineTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "edit-note-note-explanation".localized,
-            floatingPlaceholder: "edit-note-note-explanation".localized
+            placeholder: String(localized: "edit-note-note-explanation"),
+            floatingPlaceholder: String(localized: "edit-note-note-explanation")
         )
         noteInput.textContainerInsets.trailing = .zero
         self.noteInput = noteInput

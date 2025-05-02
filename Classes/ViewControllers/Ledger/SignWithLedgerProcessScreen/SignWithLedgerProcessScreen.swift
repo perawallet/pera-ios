@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -254,9 +254,7 @@ extension SignWithLedgerProcessScreen {
 
 extension SignWithLedgerProcessScreen {
     private func bindProgress(animated: Bool) {
-        title =
-            "swap-sign-with-ledger-process-title"
-                .localized(params: "\(progress.currentUnitCount)", "\(progress.totalUnitCount)")
+        title = String(format: String(localized: "swap-sign-with-ledger-process-title"), "\(progress.currentUnitCount)", "\(progress.totalUnitCount)")
 
         progressView.setProgress(
             progress.fractionCompleted,
@@ -274,26 +272,21 @@ extension SignWithLedgerProcessScreen {
 
     private func bindTitle() {
         titleView.attributedText =
-            "ledger-approval-title"
-                .localized
+            String(localized: "ledger-approval-title")
                 .bodyLargeMedium(alignment: .center)
     }
 
     private func bindBody() {
-        bodyView.attributedText =
-            "ledger-approval-sign-message"
-                .localized(params: "\(draft.ledgerDeviceName)")
-                .bodyRegular(alignment: .center)
+        bodyView.attributedText = String(format: String(localized: "ledger-approval-sign-message"), "\(draft.ledgerDeviceName)").bodyRegular(alignment: .center)
     }
 
     private func bindAction() {
-        actionView.editTitle = .string("title-close".localized)
+        actionView.editTitle = .string(String(localized: "title-close"))
     }
 
     private func bindInfo() {
         infoView.attributedText =
-            "ledger-approval-sign-info-message"
-                .localized
+            String(localized: "ledger-approval-sign-info-message")
                 .footnoteRegular(alignment: .center)
     }
 }

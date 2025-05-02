@@ -36,8 +36,7 @@ struct WCSessionConnectionDateSecondaryListItemViewModel: SecondaryListItemViewM
 extension WCSessionConnectionDateSecondaryListItemViewModel {
     private mutating func bindTitle() {
         title =
-            "wc-session-connection-date"
-                .localized
+            String(localized: "wc-session-connection-date")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 

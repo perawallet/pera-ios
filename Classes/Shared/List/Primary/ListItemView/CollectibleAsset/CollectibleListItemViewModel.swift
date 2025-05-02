@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ extension CollectibleListItemViewModel {
             .build()
         /// <todo>
         /// Find a better way of formatting name
-        let title = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        let title = asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         let placeholderImage = AssetImageSource(asset: "placeholder-bg".uiImage)
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholder = ImagePlaceholder.init(
@@ -242,7 +242,7 @@ extension CollectibleListItemViewModel {
         assetVerificationTier: AssetVerificationTier,
         isAssetDestroyed: Bool
     ) -> TextProvider {
-        let aTitle = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
+        let aTitle = assetName.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         if assetVerificationTier.isSuspicious {
@@ -262,7 +262,7 @@ extension CollectibleListItemViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

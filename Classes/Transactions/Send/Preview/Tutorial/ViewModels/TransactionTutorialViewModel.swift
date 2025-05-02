@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,7 @@ final class TransactionTutorialViewModel: ViewModel {
 extension TransactionTutorialViewModel {
     private func bindTitle() {
         title =
-            "transaction-tutorial-title"
-                .localized
+            String(localized: "transaction-tutorial-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -47,9 +46,9 @@ extension TransactionTutorialViewModel {
     private func bindSubtitle(from isInitialDisplay: Bool) {
         let subtitle: String
         if isInitialDisplay {
-            subtitle = "transaction-tutorial-subtitle".localized
+            subtitle = String(localized: "transaction-tutorial-subtitle")
         } else {
-            subtitle = "transaction-tutorial-subtitle-other".localized
+            subtitle = String(localized: "transaction-tutorial-subtitle-other")
         }
         
         self.subtitle =
@@ -68,13 +67,12 @@ extension TransactionTutorialViewModel {
     }
     
     private func bindTapToMoreText() {
-        let highlightedText = "transaction-tutorial-tap-to-more-highlighted".localized
+        let highlightedText = String(localized: "transaction-tutorial-tap-to-more-highlighted")
         var highlightedTextAttributes = Typography.footnoteMediumAttributes()
         highlightedTextAttributes.insert(.textColor(Colors.Link.primary))
 
         tapToMoreText =
-            "transaction-tutorial-tap-to-more"
-                .localized
+            String(localized: "transaction-tutorial-tap-to-more")
                 .footnoteRegular()
                 .addAttributes(
                     to: highlightedText,

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,6 +91,14 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     )
                     cell.bindData(item)
                     return cell
+                    
+                case .card:
+                    let cell = collectionView.dequeue(
+                        CardAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
 
                 }
             case .account(let item):
@@ -122,6 +130,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
             StakingAnnouncementCell.self,
+            CardAnnouncementCell.self,
             HomeAccountsHeader.self,
             TitleWithAccessorySupplementaryCell.self,
             HomeAccountCell.self

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,14 +60,14 @@ final class SendTransactionScreen: BaseViewController {
     private var note: String? {
         didSet {
             if draft.lockedNote != nil {
-                noteButton.setTitle("send-transaction-show-note-title".localized, for: .normal)
+                noteButton.setTitle(String(localized: "send-transaction-show-note-title"), for: .normal)
                 return
             }
 
             if !note.isNilOrEmpty {
-                noteButton.setTitle("send-transaction-edit-note-title".localized, for: .normal)
+                noteButton.setTitle(String(localized: "send-transaction-edit-note-title"), for: .normal)
             } else {
-                noteButton.setTitle("send-transaction-add-note-title".localized, for: .normal)
+                noteButton.setTitle(String(localized: "send-transaction-add-note-title"), for: .normal)
             }
         }
     }
@@ -310,7 +310,7 @@ extension SendTransactionScreen {
 
     private func addNextButton() {
         nextButton.customize(theme.nextButtonStyle)
-        nextButton.setTitle("title-next".localized, for: .normal)
+        nextButton.setTitle(String(localized: "title-next"), for: .normal)
 
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
@@ -415,8 +415,8 @@ extension SendTransactionScreen {
             make.height.equalTo(theme.buttonsHeight)
         }
 
-        noteButton.setTitle("send-transaction-add-note-title".localized, for: .normal)
-        maxButton.setTitle("send-transaction-max-button-title".localized, for: .normal)
+        noteButton.setTitle(String(localized: "send-transaction-add-note-title"), for: .normal)
+        maxButton.setTitle(String(localized: "send-transaction-max-button-title"), for: .normal)
 
         maxButton.customize(TransactionShadowButtonTheme())
         noteButton.customize(TransactionShadowButtonTheme())
@@ -498,7 +498,7 @@ extension SendTransactionScreen {
     }
 
     private func redirectToPreview(_ previewDraft: SendTransactionDraft) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         transactionSendController = TransactionSendController(
             draft: previewDraft,
@@ -564,14 +564,14 @@ extension SendTransactionScreen {
         case .algo(let algoTransactionAmountError):
             handleFailureAlgoAmountError(algoTransactionAmountError)
         case .transactionParamsMissing, .unexpected:
-            handleErrorMessage("default-error-message".localized)
+            handleErrorMessage(String(localized: "default-error-message"))
         }
     }
 
     private func handleFailureAssetAmountError(_ validation: TransactionAmountAssetError) {
         switch validation {
         case .exceededLimit:
-            handleErrorMessage("send-asset-amount-error".localized)
+            handleErrorMessage(String(localized: "send-asset-amount-error"))
         case .requiredMinimumBalance:
             displayRequiredMinAlgoWarning()
         }
@@ -580,7 +580,7 @@ extension SendTransactionScreen {
     private func handleFailureAlgoAmountError(_ validation: TransactionAmountAlgoError) {
         switch validation {
         case .exceededLimit:
-            handleErrorMessage("send-algos-amount-error".localized)
+            handleErrorMessage(String(localized: "send-algos-amount-error"))
         case .requiredMinimumBalance:
             displayMaxTransactionWarning()
         case .participationKey:
@@ -591,7 +591,7 @@ extension SendTransactionScreen {
     }
 
     private func handleErrorMessage(_ errorMessage: String) {
-        let errorTitle = "title-error".localized
+        let errorTitle = String(localized: "title-error")
 
         bannerController?.presentErrorBanner(
             title: errorTitle,
@@ -640,10 +640,10 @@ extension SendTransactionScreen {
 
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "min-balance-title".localized,
+            title: String(localized: "min-balance-title"),
             description: bottomWarningDescription,
-            primaryActionButtonTitle: "title-continue".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryActionButtonTitle: String(localized: "title-continue"),
+            secondaryActionButtonTitle: String(localized: "title-cancel"),
             primaryAction: {
                 [weak self] in
                 guard let self = self else {
@@ -731,14 +731,14 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
     private func presentParticipationKeyWarningForMaxTransaction() {
         let alertController = UIAlertController(
-            title: "send-algos-account-delete-title".localized,
-            message: "send-algos-account-delete-body".localized,
+            title: String(localized: "send-algos-account-delete-title"),
+            message: String(localized: "send-algos-account-delete-body"),
             preferredStyle: .alert
         )
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel)
 
-        let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .destructive) { _ in
+        let proceedAction = UIAlertAction(title: String(localized: "title-proceed"), style: .destructive) { _ in
             self.displayMaxTransactionWarning()
         }
 
@@ -755,7 +755,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
                 self.transactionParams = params
                 self.amountValidator.setTransactionParams(params)
             case .failure(let error):
-                self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+                self.bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
             }
         }
     }
@@ -824,27 +824,27 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             switch error {
             case .closingSameAccount:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "send-transaction-max-same-account-error".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "send-transaction-max-same-account-error")
                 )
             case .algo(let algoError):
                 switch algoError {
                 case .algoAddressNotSelected:
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-algos-address-not-selected".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "send-algos-address-not-selected")
                     )
                 case .invalidAddressSelected:
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-algos-receiver-address-validation".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "send-algos-receiver-address-validation")
                     )
                 case .minimumAmount:
                     let configurator = BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
-                        title: "send-algos-minimum-amount-error-new-account-title".localized,
-                        description: .plain("send-algos-minimum-amount-error-new-account-description".localized),
-                        secondaryActionButtonTitle: "title-i-understand".localized
+                        title: String(localized: "send-algos-minimum-amount-error-new-account-title"),
+                        description: .plain(String(localized: "send-algos-minimum-amount-error-new-account-description")),
+                        secondaryActionButtonTitle: String(localized: "title-i-understand")
                     )
 
                     self.modalTransition.perform(
@@ -875,19 +875,19 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                     self.openSendAssetInbox(address)
                 case .minimumAmount:
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-asset-amount-error".localized
+                        title: String(localized: "title-error"),
+                        message: String(localized: "send-asset-amount-error")
                     )
                 }
             case .amountNotSpecified, .mismatchReceiverAddress:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "send-algos-receiver-address-validation".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "send-algos-receiver-address-validation")
                 )
             case .internetConnection:
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "title-internet-connection".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "title-internet-connection")
                 )
             }
         }

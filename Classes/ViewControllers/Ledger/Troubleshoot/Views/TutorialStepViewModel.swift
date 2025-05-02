@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,35 +44,35 @@ extension TutorialStepViewModel {
         case .openApp:
             self.steps = [
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-open-app-first-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-open-app-first-html")
                 ),
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-open-app-second-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-open-app-second-html")
                 )
             ]
         case .installApp:
             self.steps = [
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-install-app-first-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-install-app-first-html")
                 ),
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-install-app-second-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-install-app-second-html")
                 )
             ]
         case .bluetoothConnection:
             self.steps = [
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-bluetooth-connection-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-bluetooth-connection-html")
                 )
             ]
 
         case .bluetooth:
             self.steps = [
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-ledger-bluetooth-connection-guide-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-ledger-bluetooth-connection-guide-html")
                 ),
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html".localized
+                    explanation: String(localized: "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html")
                 )
             ]
         }

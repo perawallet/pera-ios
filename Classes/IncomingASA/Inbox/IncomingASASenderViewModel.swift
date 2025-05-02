@@ -79,7 +79,7 @@ extension IncomingASASenderViewModel {
             }
             
             let difference = count - 1
-            let titleText = "+\(difference) \("title-more".localized)"
+            let titleText = "+\(difference) \(String(localized: "title-more"))"
             secondSecondaryTitle = getSecondaryTitle(titleText)
         default:
             secondSecondaryTitle = nil
@@ -129,7 +129,7 @@ extension IncomingASASenderViewModel {
         assetVerificationTier: AssetVerificationTier,
         isAssetDestroyed: Bool
     ) -> TextProvider {
-        let aTitle = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
+        let aTitle = assetName.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         if assetVerificationTier.isSuspicious {
@@ -149,7 +149,7 @@ extension IncomingASASenderViewModel {
             return nil
         }
 
-        let title = "title-deleted-with-parantheses".localized
+        let title = String(localized: "title-deleted-with-parantheses")
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)

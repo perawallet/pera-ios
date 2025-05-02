@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ struct AddAssetItemViewTheme: StyleSheet, LayoutSheet {
         self.button = [
             .icon([.normal("add-icon-40")]),
             .font(Fonts.DMSans.regular.make(15)),
-            .title("title-add-asset".localized),
+            .title(String(localized: "title-add-asset")),
             .titleColor([.normal(Colors.Text.main)])
         ]
 

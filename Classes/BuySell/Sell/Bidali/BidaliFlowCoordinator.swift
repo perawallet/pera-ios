@@ -124,8 +124,8 @@ extension BidaliFlowCoordinator {
 
     private func presentNotAvailableAlert(on screen: UIViewController) {
         screen.displaySimpleAlertWith(
-            title: "title-not-available".localized,
-            message: "bidali-not-available-description".localized
+            title: String(localized: "title-not-available"),
+            message: String(localized: "bidali-not-available-description")
         )
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ extension CollectiblesViewController {
     }
 
     private func bindNavigationItemTitle() {
-        title = "title-collectibles".localized
+        title = String(localized: "title-collectibles")
     }
 }
 
@@ -128,9 +128,9 @@ extension CollectiblesViewController {
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(
-                        title: "title-generic-error".localized,
-                        message: "title-generic-response-description".localized,
-                        actionTitle: "title-retry".localized,
+                        title: String(localized: "title-generic-error"),
+                        message: String(localized: "title-generic-response-description"),
+                        actionTitle: String(localized: "title-retry"),
                         actionHandler: {
                             [unowned self] in
                             self.bottomBannerController.dismissError()

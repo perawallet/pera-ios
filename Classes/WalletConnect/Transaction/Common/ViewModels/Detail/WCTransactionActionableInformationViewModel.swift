@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,26 +31,26 @@ final class WCTransactionActionableInformationViewModel {
     private func setTitle(from information: ActionableInformation) {
         switch information {
         case .rawTransaction:
-            title = "wallet-connect-transaction-title-raw".localized
+            title = String(localized: "wallet-connect-transaction-title-raw")
         case .peraExplorer:
-            title = "wallet-connect-transaction-title-explorer".localized
+            title = String(localized: "wallet-connect-transaction-title-explorer")
         case .assetUrl:
-            title = "wallet-connect-transaction-title-asset-url".localized
+            title = String(localized: "wallet-connect-transaction-title-asset-url")
         case .assetMetadata:
-            title = "wallet-connect-transaction-title-metadata".localized
+            title = String(localized: "wallet-connect-transaction-title-metadata")
         }
     }
 
     private func setDetail(from information: ActionableInformation) {
         switch information {
         case .rawTransaction:
-            detail = "wallet-connect-transaction-detail-raw".localized
+            detail = String(localized: "wallet-connect-transaction-detail-raw")
         case .peraExplorer:
-            detail = "wallet-connect-transaction-detail-explorer".localized
+            detail = String(localized: "wallet-connect-transaction-detail-explorer")
         case .assetUrl:
-            detail = "wallet-connect-transaction-detail-asset-url".localized
+            detail = String(localized: "wallet-connect-transaction-detail-asset-url")
         case .assetMetadata:
-            detail = "wallet-connect-transaction-detail-metadata".localized
+            detail = String(localized: "wallet-connect-transaction-detail-metadata")
         }
     }
 

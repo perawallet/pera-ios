@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -161,19 +161,19 @@ extension Account {
         }
 
         if authorization.isWatch {
-            return "title-watch-account".localized
+            return String(localized: "title-watch-account").capitalized
         }
 
         if authorization.isLedger {
-            return "title-ledger-account".localized
+            return String(localized: "title-ledger-account").capitalized
         }
 
         if authorization.isRekeyed {
-            return "title-rekeyed-account".localized
+            return String(localized: "title-rekeyed-account").capitalized
         }
 
         if authorization.isNoAuth {
-            return "title-no-auth".localized
+            return String(localized: "title-no-auth")
         }
 
         return nil

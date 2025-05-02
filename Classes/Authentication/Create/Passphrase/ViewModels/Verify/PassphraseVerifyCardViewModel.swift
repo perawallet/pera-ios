@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,8 +44,7 @@ extension PassphraseVerifyCardViewModel {
         }
         
         headerText = .attributedString(
-            "passphrase-verify-select-word"
-                .localized(params: "\(index + 1)")
+            String(format: String(localized: "passphrase-verify-select-word"), "\(index + 1)")
                 .bodyRegular(
                     alignment: .center
                 )

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ struct WCSessionListNoContentViewModel: NoContentWithActionViewModel {
 extension WCSessionListNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "wallet-connect-session-list-empty"
-                .localized
+            String(localized: "wallet-connect-session-list-empty")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -42,7 +41,7 @@ extension WCSessionListNoContentViewModel {
 
     private mutating func bindActionTitle() {
         primaryAction = Action(
-            title: .string("qr-scan-title".localized),
+            title: .string(String(localized: "qr-scan-title")),
             image: nil
         )
     }

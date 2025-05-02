@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ struct WCSessionShortListItemViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.nameLabel = [
             .isInteractable(false),
-            .text("wallet-connect-session-select-account".localized),
+            .text(String(localized: "title-select-account").capitalized),
             .textAlignment(.left),
             .textOverflow(SingleLineText()),
             .font(Fonts.DMSans.medium.make(15)),

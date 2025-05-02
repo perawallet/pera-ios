@@ -33,17 +33,17 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
 
     private mutating func bindTitle(isFirstBackup: Bool) {
         if isFirstBackup {
-            title = "algorand-secure-backup-mnemonics-title".localized
+            title = String(localized: "algorand-secure-backup-mnemonics-title")
         } else {
-            title = "algorand-secure-backup-mnemonics-second-backup-title".localized
+            title = String(localized: "algorand-secure-backup-mnemonics-second-backup-title")
         }
     }
 
     private mutating func bindHeader(isFirstBackup: Bool) {
         if isFirstBackup {
-            header = "algorand-secure-backup-mnemonics-header".localized.bodyRegular()
+            header = String(localized: "algorand-secure-backup-mnemonics-header").bodyRegular()
         } else {
-            header = "algorand-secure-backup-mnemonics-second-backup-header".localized.bodyRegular()
+            header = String(localized: "algorand-secure-backup-mnemonics-second-backup-header").bodyRegular()
         }
     }
 
@@ -52,11 +52,11 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
         let highlightedText: String
 
         if isFirstBackup {
-            text = "algorand-secure-backup-mnemonics-pera-learn".localized
-            highlightedText = "alogrand-secure-backup-mnemonics-pera-learn-highlighted-text".localized
+            text = String(localized: "algorand-secure-backup-mnemonics-pera-learn")
+            highlightedText = String(localized: "alogrand-secure-backup-mnemonics-pera-learn-highlighted-text")
         } else {
-            text = "algorand-secure-backup-mnemonics-second-backup-pera-learn".localized
-            highlightedText = "alogrand-secure-backup-mnemonics-second-backup-pera-learn-highlighted-text".localized
+            text = String(localized: "algorand-secure-backup-mnemonics-second-backup-pera-learn")
+            highlightedText = String(localized: "title-learn-more")
         }
 
         var subtitleHighlightedTextAttributes = Typography.bodyMediumAttributes()

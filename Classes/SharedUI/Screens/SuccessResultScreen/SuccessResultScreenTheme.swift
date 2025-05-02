@@ -98,7 +98,7 @@ struct SuccessResultScreenTheme: SuccessResultScreenViewTheme{
         self.detailHorizontalInset = 40
         self.spacingBetweenTitleAndDetail = 12
         self.doneAction = [
-            .title("title-done".localized),
+            .title(String(localized: "title-done")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -116,7 +116,7 @@ struct SuccessResultScreenTheme: SuccessResultScreenViewTheme{
         self.spacingBetweenSeparatorAndSummaryAction = 10
         self.viewDetailAction = [
             .font(Typography.bodyMedium()),
-            .title("incoming-asas-detail-success-view-explorer".localized),
+            .title(String(localized: "incoming-asas-detail-success-view-explorer")),
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.viewDetailActionHorizontalInset = 24

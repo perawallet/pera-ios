@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,11 +46,9 @@ extension OptOutAssetViewModel {
         let asset = draft.asset
 
         if draft.isOptingOutCollectibleAsset {
-            title =
-            "collectible-detail-opt-out-alert-title"
-                .localized(params: asset.naming.unitName ?? "title-unknown".localized)
+            title = String(format: String(localized: "collectible-detail-opt-out-alert-title"), asset.naming.unitName ?? String(localized: "title-unknown"))
         } else {
-            title = "asset-remove-confirmation-title".localized
+            title = String(localized: "asset-remove-confirmation-title")
         }
     }
 
@@ -83,19 +81,15 @@ extension OptOutAssetViewModel {
     ) {
         let asset = draft.asset
 
-        let assetName = asset.naming.unitName ?? "title-unknown".localized
+        let assetName = asset.naming.unitName ?? String(localized: "title-unknown")
         let accountName = draft.account.primaryDisplayName
 
         let aDescription: String
 
         if draft.isOptingOutCollectibleAsset {
-            aDescription =
-            "collectible-detail-opt-out-alert-message"
-                .localized(params: assetName, accountName)
+            aDescription = String(format: String(localized: "collectible-detail-opt-out-alert-message"), assetName, accountName)
         } else {
-            aDescription =
-            "asset-remove-transaction-warning"
-                .localized(params: assetName, accountName)
+            aDescription = String(format: String(localized: "asset-remove-transaction-warning"), assetName, accountName)
         }
 
         description =
@@ -109,12 +103,12 @@ extension OptOutAssetViewModel {
         let aTitle: String
 
         if draft.isOptingOutCollectibleAsset {
-            aTitle = "transaction-item-opt-out".localized
+            aTitle = String(localized: "title-opt-out")
         } else {
-            aTitle = "title-remove".localized
+            aTitle = String(localized: "title-remove")
         }
 
-        approveAction = aTitle.localized
+        approveAction = aTitle
     }
 
     private mutating func bindCloseAction(
@@ -123,11 +117,11 @@ extension OptOutAssetViewModel {
         let aTitle: String
 
         if draft.isOptingOutCollectibleAsset {
-            aTitle = "title-cancel".localized
+            aTitle = String(localized: "title-cancel")
         } else {
-            aTitle = "title-keep".localized
+            aTitle = String(localized: "title-keep")
         }
 
-        closeAction = aTitle.localized
+        closeAction = aTitle
     }
 }

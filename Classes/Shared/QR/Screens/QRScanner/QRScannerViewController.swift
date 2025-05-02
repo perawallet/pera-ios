@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -276,16 +276,16 @@ extension QRScannerViewController {
 
     private func presentDisabledCameraAlert() {
         let alertController = UIAlertController(
-            title: "qr-scan-go-settings-title".localized,
-            message: "qr-scan-go-settings-message".localized,
+            title: String(localized: "qr-scan-go-settings-title"),
+            message: String(localized: "qr-scan-go-settings-message"),
             preferredStyle: .alert
         )
 
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+        let settingsAction = UIAlertAction(title: String(localized: "title-go-to-settings"), style: .default) { _ in
             UIApplication.shared.openAppSettings()
         }
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel, handler: nil)
 
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
@@ -297,8 +297,8 @@ extension QRScannerViewController {
         captureSession = nil
       
         displaySimpleAlertWith(
-            title: "qr-scan-error-title".localized,
-            message: "qr-scan-error-message".localized
+            title: String(localized: "qr-scan-error-title"),
+            message: String(localized: "qr-scan-error-message")
         )
     }
 
@@ -370,8 +370,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         if peraConnect.isValidSession(qrString) {
             if !canReadWCSession {
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "qr-scan-invalid-wc-screen-error".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "qr-scan-invalid-wc-screen-error")
                 )
 
                 closeScreen()
@@ -556,8 +556,8 @@ extension QRScannerViewController {
 
     private func presentWCConnectionError() {
         bannerController?.presentErrorBanner(
-            title: "title-failed-connection".localized,
-            message: "wallet-connect-session-timeout-message".localized
+            title: String(localized: "title-failed-connection"),
+            message: String(localized: "wallet-connect-session-timeout-message")
         )
     }
 }

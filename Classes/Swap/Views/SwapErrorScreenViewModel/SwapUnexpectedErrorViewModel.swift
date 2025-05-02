@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,20 +41,17 @@ extension SwapUnexpectedErrorViewModel {
     }
 
     mutating func bindDetail() {
-        detail = "swap-error-unexpected-detail"
-            .localized
+        detail = String(localized: "swap-error-unexpected-detail")
             .bodyRegular(alignment: .center)
     }
 
     mutating func bindPrimaryAction() {
-        primaryAction = "title-try-again"
-            .localized
+        primaryAction = String(localized: "title-try-again")
             .bodyMedium(alignment: .center)
     }
 
     mutating func bindSecondaryAction() {
-        secondaryAction = "swap-error-go-home"
-            .localized
+        secondaryAction = String(localized: "swap-error-go-home")
             .bodyMedium(alignment: .center)
     }
 }

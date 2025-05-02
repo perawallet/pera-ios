@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ struct RecoverAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .text("introduction-recover-account-text".localized),
+            .text(String(localized: "account-type-selection-recover")),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),

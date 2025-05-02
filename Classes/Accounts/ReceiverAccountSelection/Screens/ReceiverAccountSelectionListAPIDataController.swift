@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -339,7 +339,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([ .accounts ])
 
-        let headerItem = makeHeaderItem("account-select-header-accounts-title".localized)
+        let headerItem = makeHeaderItem(String(localized: "account-select-header-accounts-title"))
 
         snapshot.appendItems(
             [ headerItem ],
@@ -378,7 +378,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([ .accounts ])
 
-        let headerItem = makeHeaderItem("title-account".localized)
+        let headerItem = makeHeaderItem(String(localized: "title-account"))
 
         snapshot.appendItems(
             [ headerItem ],
@@ -435,7 +435,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([.contacts])
 
-        let headerItem = makeHeaderItem("send-algos-contacts".localized)
+        let headerItem = makeHeaderItem(String(localized: "contacts-title"))
 
         snapshot.appendItems(
             [ headerItem ],
@@ -483,7 +483,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     ) {
         snapshot.appendSections([ .nameServiceAccounts ])
 
-        let headerItem = makeHeaderItem("account-select-header-matched-accounts-title".localized)
+        let headerItem = makeHeaderItem(String(localized: "account-select-header-matched-accounts-title"))
 
         snapshot.appendItems(
             [ headerItem ],
@@ -499,7 +499,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     private func addNameServiceSearchingContent(_ snapshot: inout Snapshot) {
         snapshot.appendSections([ .nameServiceAccounts ])
 
-        let headerItem = makeHeaderItem("account-select-header-matched-accounts-title".localized)
+        let headerItem = makeHeaderItem(String(localized: "account-select-header-matched-accounts-title"))
 
         snapshot.appendItems(
             [ headerItem ],
@@ -515,7 +515,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     private func addNameServiceNoContent(_ snapshot: inout Snapshot) {
         snapshot.appendSections([ .nameServiceAccounts ])
 
-        let headerItem = makeHeaderItem("account-select-header-matched-accounts-title".localized)
+        let headerItem = makeHeaderItem(String(localized: "account-select-header-matched-accounts-title"))
 
         snapshot.appendItems(
             [ headerItem ],

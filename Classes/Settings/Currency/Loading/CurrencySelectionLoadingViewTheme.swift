@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ struct CurrencySelectionLoadingViewTheme:
         self.subtitleTopPadding = 12
 
         self.searchInputTheme = SearchInputViewCommonTheme(
-            placeholder: "settings-currency-search".localized,
+            placeholder: String(localized: "settings-currency-search"),
             family: family
         )
         self.searchInputHeight = 40

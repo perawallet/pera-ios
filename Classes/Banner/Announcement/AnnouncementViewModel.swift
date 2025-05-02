@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ struct AnnouncementViewModel:
 
     var shouldDisplayAction: Bool {
         switch type {
-        case .backup:
+        case .backup, .card:
             return true
         case .governance, .generic, .staking:
             return ctaUrl != nil && ctaTitle != nil
@@ -41,7 +41,7 @@ struct AnnouncementViewModel:
         switch model.type {
         case .backup:
             configureForBackup()
-        case .generic, .staking:
+        case .generic, .staking, .card:
             configureForGeneric(model)
         case .governance:
             configureForGovernance(model)
@@ -49,9 +49,9 @@ struct AnnouncementViewModel:
     }
 
     private mutating func configureForBackup() {
-        title = "algorand-secure-backup-banner-title".localized
-        subtitle = "algorand-secure-backup-banner-subtitle".localized
-        ctaTitle = "algorand-secure-backup-banner-cta-title".localized
+        title = String(localized: "algorand-secure-backup-banner-title")
+        subtitle = String(localized: "algorand-secure-backup-banner-subtitle")
+        ctaTitle = String(localized: "algorand-secure-backup-banner-cta-title")
         ctaUrl = nil
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import SafariServices
 extension UIViewController {
     func displaySimpleAlertWith(title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "title-ok".localized, style: .default, handler: nil)
+        let okAction = UIAlertAction(title: String(localized: "title-ok"), style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
@@ -29,7 +29,7 @@ extension UIViewController {
     func displaySimpleAlertWith(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "title-ok".localized, style: .default, handler: handler)
+        let okAction = UIAlertAction(title: String(localized: "title-ok"), style: .default, handler: handler)
         alertController.addAction(okAction)
         
         present(alertController, animated: true)
@@ -38,10 +38,10 @@ extension UIViewController {
     func displayProceedAlertWith(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .default, handler: handler)
+        let proceedAction = UIAlertAction(title: String(localized: "title-proceed"), style: .default, handler: handler)
         alertController.addAction(proceedAction)
         
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "title-cancel"), style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true)

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,7 @@ struct AssetListSearchNoContentViewModel:
 extension AssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
         title =
-            "asset-not-found-title"
-                .localized
+            String(localized: "asset-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )
@@ -48,8 +47,7 @@ extension AssetListSearchNoContentViewModel {
 
     private mutating func bindBody() {
         body =
-            "asset-not-found-detail"
-                .localized
+            String(localized: "asset-not-found-detail")
                 .bodyRegular(
                     alignment: .center
                 )

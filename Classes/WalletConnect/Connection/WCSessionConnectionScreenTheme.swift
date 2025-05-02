@@ -36,7 +36,7 @@ struct WCSessionConnectionScreenTheme:
         ]
         self.spacingBetweenListAndPrimaryAction = 24
         self.primaryAction = [
-            .title("title-connect".localized),
+            .title(String(localized: "title-connect")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Primary.text),
@@ -49,7 +49,7 @@ struct WCSessionConnectionScreenTheme:
             ])
         ]
         self.secondaryAction = [
-            .title("title-cancel".localized),
+            .title(String(localized: "title-cancel")),
             .font(Typography.bodyMedium()),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)

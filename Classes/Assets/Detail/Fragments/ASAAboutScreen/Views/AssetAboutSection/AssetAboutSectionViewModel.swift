@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ final class AssetAboutSectionViewModel: ViewModel {
 extension AssetAboutSectionViewModel {
     func bindTitle(asset: Asset) {
         title = getAboutTitle(
-            param: asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+            param: asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
         )
     }
 }
@@ -51,8 +51,7 @@ extension AssetAboutSectionViewModel {
         
         attributes.insert(.textColor(textColor))
         
-        return "title-about-with-param"
-            .localized(params: param.uppercased())
+        return String(format: String(localized: "title-about-with-param"), param.uppercased())
             .attributed(
                 attributes
             )

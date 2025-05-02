@@ -142,6 +142,17 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemIconSymbolName</key>
+            <string>qrcode</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>QuickActionScanTitle</string>
+            <key>UIApplicationShortcutItemType</key>
+            <string>QuickAction.ScanQR</string>
+        </dict>
+    </array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

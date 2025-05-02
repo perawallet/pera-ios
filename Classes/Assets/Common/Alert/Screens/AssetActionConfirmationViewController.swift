@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ extension AssetActionConfirmationViewController {
             switch response {
             case let .success(assetResponse):
                 if assetResponse.results.isEmpty {
-                    self.bannerController.presentErrorBanner(title: "asset-confirmation-not-found".localized, message: "")
+                    self.bannerController.presentErrorBanner(title: String(localized: "asset-confirmation-not-found"), message: "")
                     self.closeScreen()
                     return
                 }
@@ -108,7 +108,7 @@ extension AssetActionConfirmationViewController {
                     self.performLayoutUpdates(animated: self.isViewAppeared)
                 }
             case .failure:
-                self.bannerController.presentErrorBanner(title: "asset-confirmation-not-fetched".localized, message: "")
+                self.bannerController.presentErrorBanner(title: String(localized: "asset-confirmation-not-fetched"), message: "")
                 self.closeScreen()
             }
         }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        bindTitle("title-app-call".localized)
+        bindTitle(String(localized: "title-app-call"))
     }
 
     private mutating func bindSubtitle(
@@ -57,7 +57,7 @@ struct AppCallTransactionItemViewModel:
         }
 
         if let appID = applicationCall.appID {
-            let appId = "transaction-item-app-id-title".localized(params: appID)
+            let appId = String(format: String(localized: "transaction-item-app-id-title"), appID)
             bindSubtitle(appId)
         }
     }

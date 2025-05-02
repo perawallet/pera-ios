@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,15 +49,15 @@ enum AccountSettings: Settings {
     var name: String {
         switch self {
         case .secureBackup, .secureBackupLoading:
-            return "settings-secure-backup-title".localized
+            return String(localized: "settings-secure-backup-title")
         case .security:
-            return "settings-security-title".localized
+            return String(localized: "security-settings-title")
         case .contacts:
-            return "contacts-title".localized
+            return String(localized: "contacts-title")
         case .notifications:
-            return "notifications-title".localized
+            return String(localized: "notifications-title")
         case .walletConnect:
-            return "settings-wallet-connect-title".localized
+            return String(localized: "settings-wallet-connect-title")
         }
     }
 
@@ -68,7 +68,7 @@ enum AccountSettings: Settings {
                 return nil
             }
             
-            return "settings-secure-backup-subtitle".localized(params: "\(numberOfAccountsNotBackedUp)")
+            return String(format: String(localized: "settings-secure-backup-subtitle"), numberOfAccountsNotBackedUp)
         default:
             return nil
         }
@@ -91,9 +91,9 @@ enum AppPreferenceSettings: Settings {
     var name: String {
         switch self {
         case .currency:
-            return "settings-currency".localized
+            return String(localized: "settings-currency")
         case .appearance:
-            return "settings-theme-set".localized
+            return String(localized: "settings-theme-set")
         }
     }
 
@@ -128,15 +128,15 @@ enum SupportSettings: Settings {
     var name: String {
         switch self {
         case .feedback:
-            return "settings-support-title".localized
+            return String(localized: "settings-support-title")
         case .appReview:
-            return "settings-rate-title".localized
+            return String(localized: "settings-rate-title")
         case .termsAndServices:
-            return "terms-and-services-title".localized
+            return String(localized: "title-terms-and-services")
         case .privacyPolicy:
-            return "privacy-policy-title".localized
+            return String(localized: "title-privacy-policy")
         case .developer:
-            return "settings-developer".localized
+            return String(localized: "settings-developer")
         }
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -162,7 +162,7 @@ extension AssetListItemViewModel {
         _ asset: Asset
     ) -> ImagePlaceholder? {
         let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
+            ? String(localized: "title-unknown")
         : asset.naming.name
 
         let aPlaceholder = TextFormatter.assetShortName.format(title)
@@ -199,7 +199,7 @@ extension AssetListItemViewModel {
     }
 
     mutating func bindPrimaryValue(_ update: OptInBlockchainUpdate) {
-        let statusText = "asset-add-confirmation-title".localized
+        let statusText = String(localized: "asset-add-confirmation-title")
         primaryValue = statusText.bodyRegular(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
@@ -217,7 +217,7 @@ extension AssetListItemViewModel {
     }
 
     mutating func bindPrimaryValue(_ update: OptOutBlockchainUpdate) {
-        let statusText = "asset-removing-status".localized
+        let statusText = String(localized: "asset-removing-status")
         primaryValue = statusText.bodyRegular(
             alignment: .right,
             lineBreakMode: .byTruncatingTail

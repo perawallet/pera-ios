@@ -35,17 +35,17 @@ extension AlgorandSecureBackupSuccessHeaderViewModel {
     }
 
     private mutating func bindTitle() {
-        title = "algorand-secure-backup-success-header-title".localized.titleMedium()
+        title = String(localized: "algorand-secure-backup-success-header-title").titleMedium()
     }
 
     private mutating func bindBody() {
-        let bodyText = "algorand-secure-backup-success-header-body".localized.bodyRegular()
+        let bodyText = String(localized: "algorand-secure-backup-success-header-body").bodyRegular()
 
         var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
         bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let bodyHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-success-header-body-highlighted-text".localized,
+            text: String(localized: "title-learn-more"),
             attributes: bodyHighlightedTextAttributes
         )
         body = BodyTextProvider(text: bodyText, highlightedText: bodyHighlightedText)

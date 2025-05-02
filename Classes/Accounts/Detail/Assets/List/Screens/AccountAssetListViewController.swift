@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -770,12 +770,12 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     private func openMinimumBalanceInfo() {
         let uiSheet = UISheet(
-            title: "minimum-balance-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "minimum-balance-description".localized.bodyRegular())
+            title: String(localized: "minimum-balance-title").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "minimum-balance-description").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [unowned self] in
             self.dismiss(animated: true)

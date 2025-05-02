@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ struct AlertScreenWithFillingImageTheme:
         ]
         self.imageEdgeInsets = (0, 0, 0, 0)
         self.newBadge = [
-            .text("title-new-uppercased".localized),
+            .text(String(localized: "title-new-uppercased")),
             .textColor(Colors.Helpers.positive),
             .font(Typography.captionBold()),
             .textAlignment(.center),

@@ -364,7 +364,7 @@ extension AlgorandSecureBackupMnemonicsScreen {
     private func performCopyAction() {
         guard let mnemonics else { return }
         let copyText = mnemonics.joined(separator: " ")
-        let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-mnemonics-copy-action-message".localized, body: nil)
+        let copyInteraction = CopyToClipboardInteraction(title: String(localized: "algorand-secure-backup-mnemonics-copy-action-message"), body: nil)
         let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
 
         copyToClipboardController.copy(item)
@@ -374,10 +374,10 @@ extension AlgorandSecureBackupMnemonicsScreen {
     private func performRegenerateKeyAction() {
         let configurator = BottomWarningViewConfigurator(
             image: "algorand-secure-backup-big-key".uiImage,
-            title: "algorand-secure-backup-mnemonics-regenerate-confirmation-title".localized,
-            description: .plain("algorand-secure-backup-mnemonics-regenerate-confirmation-message".localized),
-            primaryActionButtonTitle: "algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title".localized,
-            secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title".localized,
+            title: String(localized: "algorand-secure-backup-mnemonics-regenerate-confirmation-title"),
+            description: .plain(String(localized: "algorand-secure-backup-mnemonics-regenerate-confirmation-message")),
+            primaryActionButtonTitle: String(localized: "algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title"),
+            secondaryActionButtonTitle: String(localized: "title-cancel"),
             primaryAction: { [weak self] in
                 guard let self else { return }
                 self.generateNewKey()
@@ -403,10 +403,10 @@ extension AlgorandSecureBackupMnemonicsScreen {
     private func performStoreAction() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green".uiImage,
-            title: "algorand-secure-backup-mnemonics-confirmation-title".localized,
-            description: .plain("algorand-secure-backup-mnemonics-confirmation-message".localized),
-            primaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-primary-action-title".localized,
-            secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-secondary-action-title".localized,
+            title: String(localized: "algorand-secure-backup-mnemonics-confirmation-title"),
+            description: .plain(String(localized: "algorand-secure-backup-mnemonics-confirmation-message")),
+            primaryActionButtonTitle: String(localized: "algorand-secure-backup-mnemonics-confirmation-primary-action-title"),
+            secondaryActionButtonTitle: String(localized: "algorand-secure-backup-mnemonics-confirmation-secondary-action-title"),
             primaryAction: { [weak self] in
                 guard let self else { return }
                 self.generateBackup()

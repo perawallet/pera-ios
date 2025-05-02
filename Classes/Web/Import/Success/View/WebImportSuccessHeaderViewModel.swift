@@ -36,13 +36,11 @@ extension WebImportSuccessHeaderViewModel {
 
     private mutating func bindTitle(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
-        let resultTitle = isSingular ? "web-import-success-header-singular-title".localized : "web-import-success-header-title".localized
+        let resultTitle = isSingular ? String(localized: "web-import-success-header-singular-title") : String(localized: "web-import-success-header-title")
         title = resultTitle.titleMedium()
     }
 
     private mutating func bindBody(for importedAccountCount: Int) {
-        let isSingular = importedAccountCount == 1
-        let resultBody = isSingular ? "web-import-success-header-singular-body".localized(params: "\(importedAccountCount)") : "web-import-success-header-body".localized(params: "\(importedAccountCount)")
-        body = resultBody.bodyRegular()
+        body = String(format: String(localized: "web-import-success-header-body"), importedAccountCount).bodyRegular()
     }
 }

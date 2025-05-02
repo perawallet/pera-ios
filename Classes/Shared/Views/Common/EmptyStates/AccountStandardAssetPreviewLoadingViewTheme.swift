@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,18 +60,18 @@ struct AccountStandardAssetPreviewLoadingViewTheme:
         spacingBetweenImageAndTitle = 12
         spacingBetweenActions = 16
         sendAction = [
-            .title(Self.getActionTitle("quick-actions-send-title".localized)),
+            .title(Self.getActionTitle(String(localized: "quick-actions-send-title"))),
             .icon( [ .normal("send-icon") ]),
             .font(Fonts.DMSans.regular.make(13)),
             .titleColor([ .normal(Colors.Text.main) ])
         ]
         receiveAction = [
-            .title(Self.getActionTitle("quick-actions-receive-title".localized)),
+            .title(Self.getActionTitle(String(localized: "quick-actions-receive-title"))),
             .icon( [ .normal("receive-icon") ]),
             .font(Fonts.DMSans.regular.make(13)),
             .titleColor([ .normal(Colors.Text.main) ])
         ]
-        sendAction.title = "quick-actions-send-title".localized
+        sendAction.title = String(localized: "quick-actions-send-title")
     }
 
     static func getActionTitle(

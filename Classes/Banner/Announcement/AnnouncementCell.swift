@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -81,6 +81,17 @@ final class GenericAnnouncementCell: AnnouncementCell {
 
 final class GovernanceAnnouncementCell: AnnouncementCell {
     static let theme = GovernanceAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}
+
+final class CardAnnouncementCell: AnnouncementCell {
+    static let theme = CardAnnouncementViewTheme()
     
     override init(
         frame: CGRect

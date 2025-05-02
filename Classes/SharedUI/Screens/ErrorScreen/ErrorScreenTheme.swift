@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ struct ErrorScreenTheme:
         self.detailHorizontalInset = 40
         self.spacingBetweenTitleAndDetail = 12
         self.primaryAction = [
-            .title("swap-confirm-title".localized),
+            .title(String(localized: "swap-confirm-title")),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -79,7 +79,7 @@ struct ErrorScreenTheme:
         ]
         self.minimumSpacingBetweenDetailAndPrimaryAction = 12
         self.secondaryAction = [
-            .title("swap-confirm-title".localized),
+            .title(String(localized: "swap-confirm-title")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

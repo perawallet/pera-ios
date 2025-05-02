@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,79 +41,77 @@ enum WCTransactionErrorResponse: Error {
         case let .rejected(type):
             switch type {
             case .user:
-                return "wallet-connect-request-error-rejected-user".localized
+                return String(localized: "wallet-connect-request-error-rejected-user")
             case .failedValidation:
-                return "wallet-connect-transaction-error-group-validation".localized
+                return String(localized: "wallet-connect-transaction-error-group-validation")
             case .unsignable:
-                return "wallet-connect-transaction-error-group-unauthorized-user".localized
+                return String(localized: "wallet-connect-transaction-error-group-unauthorized-user")
             case .alreadyDisplayed:
-                return "wallet-connect-request-error-already-displayed".localized
+                return String(localized: "wallet-connect-request-error-already-displayed")
             case .none:
-                return "wallet-connect-transaction-error-rejected".localized
+                return String(localized: "wallet-connect-transaction-error-rejected")
             }
         case let .unauthorized(type):
             switch type {
             case .nodeMismatch:
-                return "wallet-connect-transaction-error-node".localized
+                return String(localized: "wallet-connect-transaction-error-node")
             case .dataSignerNotFound:
-                return "wallet-connect-data-error-invalid-signer".localized
+                return String(localized: "wallet-connect-data-error-invalid-signer")
             case .transactionSignerNotFound:
-                return "wallet-connect-transaction-error-invalid-signer".localized
+                return String(localized: "wallet-connect-transaction-error-invalid-signer")
             case .none:
-                return "wallet-connect-transaction-error-unauthorized".localized
+                return String(localized: "wallet-connect-transaction-error-unauthorized")
             }
         case let .unsupported(type):
             switch type {
             case .unknownTransaction:
-                return "wallet-connect-transaction-error-unsupported-type".localized
+                return String(localized: "wallet-connect-transaction-error-unsupported-type")
             case .multisig:
-                return "wallet-connect-transaction-error-multisig".localized
+                return String(localized: "wallet-connect-transaction-error-multisig")
             case .none:
-                return "wallet-connect-transaction-error-unsupported".localized
+                return String(localized: "wallet-connect-transaction-error-unsupported")
             }
         case let .invalidInput(type):
             switch type {
             case .dataCount:
-                return "wallet-connect-data-error-data-size".localized
+                return String(localized: "wallet-connect-data-error-data-size")
             case .transactionCount:
-                return "wallet-connect-transaction-error-transaction-size".localized
+                return String(localized: "wallet-connect-transaction-error-transaction-size")
             case .dataParse:
-                return "wallet-connect-data-error-parse".localized
+                return String(localized: "wallet-connect-data-error-parse")
             case .transactionParse:
-                return "wallet-connect-transaction-error-parse".localized
+                return String(localized: "wallet-connect-transaction-error-parse")
             case .publicKey:
-                return "wallet-connect-transaction-error-invalid-key".localized
+                return String(localized: "wallet-connect-transaction-error-invalid-key")
             case .asset:
-                return "wallet-connect-transaction-error-invalid-asset".localized
+                return String(localized: "wallet-connect-transaction-error-invalid-asset")
             case .unableToFetchAsset:
-                return "wallet-connect-transaction-error-unable-fetch-asset".localized
+                return String(localized: "wallet-connect-transaction-error-unable-fetch-asset")
             case .unsignable:
-                return "wallet-connect-transaction-error-unable-sign".localized
+                return String(localized: "wallet-connect-transaction-error-unable-sign")
             case .group:
-                return "wallet-connect-transaction-error-group".localized
+                return String(localized: "wallet-connect-transaction-error-group")
             case .signer:
-                return "wallet-connect-transaction-error-account-not-exist".localized
+                return String(localized: "wallet-connect-transaction-error-account-not-exist")
             case .session:
-                return "wallet-connect-transaction-error-session-not-found".localized
+                return String(localized: "wallet-connect-transaction-error-session-not-found")
             case .none:
-                return "wallet-connect-transaction-error-invalid".localized
+                return String(localized: "wallet-connect-transaction-error-invalid")
             }
         case .unauthorizedChain(let chain):
-            return "wallet-connect-v2-unauthorized-chain-error-message".localized(params: chain)
+            return String(format: String(localized: "wallet-connect-v2-unauthorized-chain-error-message"), chain)
         case .unauthorizedMethod(let method):
-            return "wallet-connect-v2-unauthorized-method-error-message".localized(params: method)
+            return String(format: String(localized: "wallet-connect-v2-unauthorized-method-error-message"), method)
         case .unsupportedNamespace:
-            return "wallet-connect-unsupported-namespace-error-message".localized
+            return String(localized: "wallet-connect-unsupported-namespace-error-message")
         case .unsupportedChains:
-            return "wallet-connect-unsupported-chains-error-message".localized
+            return String(localized: "wallet-connect-unsupported-chains-error-message")
         case .unsupportedMethods:
-            return "wallet-connect-unsupported-methods-error-message".localized
+            return String(localized: "wallet-connect-unsupported-methods-error-message")
         case .noSessionForTopic:
-            return "wallet-connect-no-session-for-topic-error-message".localized
+            return String(localized: "wallet-connect-no-session-for-topic-error-message")
         case .userRejectedChains(let requestedNetwork, let expectedNetwork):
-            return "wallet-connect-v2-user-rejected-chains-error-message".localized(
-                params: requestedNetwork, expectedNetwork
-            )
+            return String(format: String(localized: "wallet-connect-v2-user-rejected-chains-error-message"), requestedNetwork, expectedNetwork)
         case .generic(let error):
             return error.localizedDescription
         }

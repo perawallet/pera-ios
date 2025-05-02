@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,12 +42,12 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .text("ledger-device-list-looking".localized.bodyLargeMedium())
+            .text(String(localized: "ledger-device-list-looking").bodyLargeMedium())
         ]
         self.description = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
-            .text("ledger-device-list-body".localized.bodyRegular())
+            .text(String(localized: "ledger-device-list-body").bodyRegular())
         ]
         if let i = img("loading-indicator") {
             self.indicator = [

@@ -55,7 +55,7 @@ final class WCArbitraryDataViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
 
-        title = "wallet-connect-arbitrary-data-details-title".localized
+        title = String(localized: "wallet-connect-arbitrary-data-details-title")
 
         view.backgroundColor = Colors.Defaults.background.uiColor
     }

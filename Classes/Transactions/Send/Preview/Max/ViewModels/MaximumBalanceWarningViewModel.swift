@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,15 +40,11 @@ extension MaximumBalanceWarningViewModel {
         let minimumAmountForAccount = "\(calculateMininmumAmount(for: account, and: transactionParams).toAlgos)"
 
         if !account.hasAuthAccount() {
-            description =
-            "maximum-balance-standard-account-warning-description"
-                .localized(params: minimumAmountForAccount)
+            description = String(format: String(localized: "maximum-balance-standard-account-warning-description"), minimumAmountForAccount)
             return
         }
 
-        description =
-        "maximum-balance-warning-description"
-            .localized(params: minimumAmountForAccount)
+        description = String(format: String(localized: "maximum-balance-warning-description"), minimumAmountForAccount)
     }
 
     private func calculateMininmumAmount(

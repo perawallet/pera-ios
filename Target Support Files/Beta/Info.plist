@@ -145,5 +145,16 @@
 	<true/>
 	<key>WC_V2_PROJECT_ID</key>
  	<string>$(WC_V2_PROJECT_ID)</string>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemIconSymbolName</key>
+            <string>qrcode</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>QuickActionScanTitle</string>
+            <key>UIApplicationShortcutItemType</key>
+            <string>QuickAction.ScanQR</string>
+        </dict>
+    </array>
 </dict>
 </plist>

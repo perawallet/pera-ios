@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ struct SortListItemButtonViewModel: ListItemButtonViewModel {
 
     init() {
         icon = "icon-options-sort"
-        title = Self.getTitle("options-sort-title".localized)
+        title = Self.getTitle(String(localized: "title-sort"))
         subtitle = nil
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ final class SelectAccountViewController: BaseViewController {
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Defaults.background.uiColor
-        navigationItem.title = "send-algos-select".localized
+        navigationItem.title = String(localized: "title-select-account").capitalized
     }
 
     override func setListeners() {

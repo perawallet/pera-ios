@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,8 +43,7 @@ extension SwapAssetLoadingScreenViewModel {
     }
 
     mutating func bindTitle() {
-        title = "swap-loading-title"
-            .localized
+        title = String(localized: "sending-transaction-loading-title")
             .bodyLargeMedium(alignment: .center)
     }
 
@@ -72,7 +71,7 @@ extension SwapAssetLoadingScreenViewModel {
 
         let assetText = "\(amountText) \(assetOutDisplayName)"
 
-        let fullText = "swap-loading-detail".localized(params: assetText).localized
+        let fullText = String(format: String(localized: "swap-loading-detail"), assetText)
         let textAttributes = NSMutableAttributedString(
             attributedString: fullText.bodyRegular(alignment: .center, lineBreakMode: .byWordWrapping)
         )

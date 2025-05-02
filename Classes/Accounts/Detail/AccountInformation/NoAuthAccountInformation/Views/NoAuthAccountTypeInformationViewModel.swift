@@ -34,10 +34,7 @@ struct NoAuthAccountTypeInformationViewModel: AccountTypeInformationViewModel {
 
 extension NoAuthAccountTypeInformationViewModel {
     private mutating func bindTitle() {
-        title =
-            "title-account-type"
-                .localized
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+        title = String(localized: "title-account-type").footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindTypeIcon() {
@@ -45,20 +42,17 @@ extension NoAuthAccountTypeInformationViewModel {
     }
 
     private mutating func bindTypeTitle() {
-        typeTitle =
-            "title-no-auth"
-                .localized
-                .bodyMedium(lineBreakMode: .byTruncatingTail)
+        typeTitle = String(localized: "title-no-auth").bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindTypeDescription() {
-        let descriptionText = "no-auth-account-type-description".localized.footnoteRegular()
+        let descriptionText = String(localized: "no-auth-account-type-description").footnoteRegular()
 
         var descriptionHighlightedTextAttributes = Typography.footnoteMediumAttributes(alignment: .center)
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let descriptionHighlightedText = HighlightedText(
-            text: "no-auth-account-type-description-highlighted-text".localized,
+            text: String(localized: "title-learn-more"),
             attributes: descriptionHighlightedTextAttributes
         )
 

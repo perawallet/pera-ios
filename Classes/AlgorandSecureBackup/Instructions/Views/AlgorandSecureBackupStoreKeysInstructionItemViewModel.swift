@@ -35,20 +35,17 @@ extension AlgorandSecureBackupStoreKeysInstructionItemViewModel {
     }
 
     private mutating func bindTitle() {
-        title =
-            "algorand-secure-backup-instruction-store-keys-instruction-title"
-                .localized
-                .bodyMedium()
+        title = String(localized: "algorand-secure-backup-instruction-store-keys-instruction-title").bodyMedium()
     }
 
     private mutating func bindSubtitle() {
-        let subtitleText = "algorand-secure-backup-instruction-store-keys-instruction-subtitle".localized.footnoteRegular()
+        let subtitleText = String(localized: "algorand-secure-backup-instruction-store-keys-instruction-subtitle").footnoteRegular()
         var subtitleHighlightedTextAttributes = Typography.footnoteMediumAttributes(
             alignment: .center
         )
         subtitleHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
         let subtitleHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text".localized,
+            text: String(localized: "title-learn-more"),
             attributes: subtitleHighlightedTextAttributes
         )
 

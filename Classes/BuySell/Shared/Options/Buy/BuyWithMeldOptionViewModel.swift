@@ -23,7 +23,7 @@ struct BuyWithMeldOptionViewModel: ListItemButtonViewModel {
 
     init() {
         self.icon = "icon-meld-option"
-        self.title = .attributedString("buy-sell-options-buy-with-meld-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-algo-with-moonpay-option-subtitle".localized.footnoteRegular())
+        self.title = .attributedString(String(localized: "buy-sell-options-buy-with-meld-option-title").bodyMedium())
+        self.subtitle = .attributedString(String(localized: "buy-sell-options-buy-algo-with-moonpay-option-subtitle").footnoteRegular())
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ struct ScanQRCodeTransactionOptionListItemButtonViewModel: TransactionOptionList
 
     init() {
         icon = "icon-transaction-option-list-scan-qr-code"
-        title = Self.getTitle("qr-scan-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-scan-qr-code-subtitle".localized)
+        title = Self.getTitle(String(localized: "qr-scan-title"))
+        subtitle = Self.getSubtitle(String(localized: "transaction-option-list-scan-qr-code-subtitle"))
     }
 }

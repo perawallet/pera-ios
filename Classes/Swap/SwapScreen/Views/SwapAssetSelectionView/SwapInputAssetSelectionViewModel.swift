@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ extension SwapInputAssetSelectionViewModel {
     mutating func bindTitle(
         _ asset: Asset
     ) {
-        let unitName = asset.naming.unitName ?? "title-unknown".localized
+        let unitName = asset.naming.unitName ?? String(localized: "title-unknown")
         title = unitName.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

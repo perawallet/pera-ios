@@ -30,13 +30,13 @@ enum TransactionSignatureValidationError:
 /// Let's implement a generic apporach for error messages.
 extension TransactionSignatureValidationError {
     var title: String {
-        return "title-error".localized
+        return String(localized: "title-error")
     }
     var message: String {
         switch self {
         case .invalidAccountType: return ""
-        case .missingAuthAccount: return "ledger-rekey-error-not-found".localized
-        case .missingPrivateKey: return "ledger-rekey-error-not-found".localized
+        case .missingAuthAccount: return String(localized: "ledger-rekey-error-not-found")
+        case .missingPrivateKey: return String(localized: "ledger-rekey-error-not-found")
         }
     }
 }

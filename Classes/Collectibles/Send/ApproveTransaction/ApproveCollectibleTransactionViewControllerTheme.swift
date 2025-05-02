@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
         ]
         confirmActionViewTopPadding = 40
         confirmAction = [
-            .title(Self.getActionTitle("collectible-approve-transaction-action-title")),
+            .title(Self.getActionTitle(String(localized: "send-transaction-preview-button"))),
             .titleColor([
                 .normal(Colors.Button.Primary.text),
             ]),
@@ -111,7 +111,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
             .backgroundColor(Colors.Button.Primary.background)
         ]
         cancelAction = [
-            .title(Self.getActionTitle("title-cancel")),
+            .title(Self.getActionTitle(String(localized: "title-cancel"))),
             .titleColor([
                 .normal(Colors.Button.Secondary.text),
             ]),
@@ -126,24 +126,21 @@ struct ApproveCollectibleTransactionViewControllerTheme:
 extension ApproveCollectibleTransactionViewControllerTheme {
     private static func getTitle() -> EditText {
         return .attributedString(
-            "collectible-approve-transaction-title"
-                .localized
+            String(localized: "collectible-approve-transaction-title")
                 .titleSmallMedium()
         )
     }
 
     private static func getDescription() -> EditText {
         return .attributedString(
-            "collectible-approve-transaction-description"
-                .localized
+            String(localized: "collectible-approve-transaction-description")
                 .bodyRegular()
         )
     }
 
     private static func getOptOutTitle() -> EditText {
         return .attributedString(
-            "collectible-approve-transaction-opt-out"
-                .localized
+            String(localized: "collectible-opt-out-info-title")
                 .bodyRegular()
         )
     }
@@ -151,10 +148,6 @@ extension ApproveCollectibleTransactionViewControllerTheme {
     private static func getActionTitle(
         _ aTitle: String
     ) -> EditText {
-        return .attributedString(
-            aTitle
-                .localized
-                .bodyMedium()
-        )
+        return .attributedString(aTitle.bodyMedium())
     }
 }

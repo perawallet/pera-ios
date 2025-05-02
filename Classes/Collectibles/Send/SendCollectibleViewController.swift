@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -241,7 +241,7 @@ extension SendCollectibleViewController {
             if draft.fromAccount.address == receiverAddress,
                accountInShared.containsCollectibleAsset(draft.collectibleAsset.id) {
                 bannerController?.presentErrorBanner(
-                    title: "asset-you-already-own-message".localized,
+                    title: String(localized: "asset-you-already-own-message"),
                     message: .empty
                 )
                 return
@@ -286,7 +286,7 @@ extension SendCollectibleViewController {
                 }
 
                 self.bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.description
                 )
             }
@@ -318,12 +318,12 @@ extension SendCollectibleViewController {
         let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
         let to = draft.toContact?.address ?? draft.toNameService?.name ?? draft.toAccount?.address
 
-        let description = "collectible-recipient-opt-in-description".localized(params: title, to!)
+        let description = String(format: String(localized: "collectible-recipient-opt-in-description"), title, to!)
         let configuratorDescription =
         BottomWarningViewConfigurator.BottomWarningDescription.custom(
             description: (description, [title, to!]),
             markedWordWithHandler: (
-                word: "collectible-recipient-opt-in-description-marked".localized,
+                word: String(localized: "collectible-recipient-opt-in-description-marked"),
                 handler: {
                     [weak self] in
                     guard let self else { return }
@@ -340,10 +340,10 @@ extension SendCollectibleViewController {
 
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green".uiImage,
-            title: "collectible-recipient-opt-in-title".localized,
+            title: String(localized: "collectible-recipient-opt-in-title"),
             description: configuratorDescription,
-            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
-            secondaryActionButtonTitle: "title-close".localized,
+            primaryActionButtonTitle: String(localized: "collectible-recipient-opt-in-action-title"),
+            secondaryActionButtonTitle: String(localized: "title-close"),
             primaryAction: {
                 [weak self] in
                 guard let self = self else {
@@ -418,8 +418,8 @@ extension SendCollectibleViewController {
 
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(
-                title: "qr-scan-error-title".localized,
-                message: "qr-scan-error-message".localized
+                title: String(localized: "qr-scan-error-title"),
+                message: String(localized: "qr-scan-error-message")
             )
             return
         }
@@ -521,12 +521,12 @@ extension SendCollectibleViewController {
 
     private func openOptInInformation() {
         let uiSheet = UISheet(
-            title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
-            body: UISheetBodyTextProvider(text: "collectible-opt-in-info-description".localized.bodyRegular())
+            title: String(localized: "collectible-opt-in-info-title").bodyLargeMedium(),
+            body: UISheetBodyTextProvider(text: String(localized: "collectible-opt-in-info-description").bodyRegular())
         )
 
         let closeAction = UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) { [weak self] in
             guard let self else { return }
@@ -557,7 +557,7 @@ extension SendCollectibleViewController {
                     return
                 case let .failure(apiError, errorModel):
                     self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
+                        title: String(localized: "title-error"),
                         message: errorModel?.message() ?? apiError.description
                     )
                 }
@@ -593,8 +593,8 @@ extension SendCollectibleViewController {
         switch error {
         case .network:
             displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "title-internet-connection".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "title-internet-connection")
             )
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -612,19 +612,17 @@ extension SendCollectibleViewController {
             let amountText = currencyFormatter.format(amount.toAlgos)
 
             openTransferFailed(
-                title: "collectible-transfer-failed-title".localized,
-                description: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
+                title: String(localized: "collectible-transfer-failed-title"),
+                description: String(format: String(localized: "send-algos-minimum-amount-custom-error"), amountText.someString)
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "send-algos-receiver-address-validation")
             )
         case let .sdkError(error):
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.debugDescription
             )
         case .ledgerConnection:
@@ -635,8 +633,8 @@ extension SendCollectibleViewController {
             }
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "title-internet-connection".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "title-internet-connection")
             )
         }
     }
@@ -709,12 +707,12 @@ extension SendCollectibleViewController {
             switch apiError {
             case .connection:
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "title-internet-connection".localized
+                    title: String(localized: "title-error"),
+                    message: String(localized: "title-internet-connection")
                 )
             case .client(let error, _):
                 bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
+                    title: String(localized: "title-error"),
                     message: error.localizedDescription
                 )
             default:
@@ -722,7 +720,7 @@ extension SendCollectibleViewController {
             }
         default:
             bannerController?.presentErrorBanner(
-                title: "title-error".localized,
+                title: String(localized: "title-error"),
                 message: error.localizedDescription
             )
         }
@@ -768,9 +766,9 @@ extension SendCollectibleViewController {
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
-                    title: "ledger-pairing-issue-error-title".localized,
-                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                    secondaryActionButtonTitle: "title-ok".localized
+                    title: String(localized: "ledger-pairing-issue-error-title"),
+                    description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                    secondaryActionButtonTitle: String(localized: "title-ok")
                 )
             ),
             by: .presentWithoutNavigationController
@@ -833,7 +831,7 @@ extension SendCollectibleViewController {
         let configurator = BottomWarningViewConfigurator(
             title: title,
             description: .plain(description),
-            secondaryActionButtonTitle: "title-close".localized
+            secondaryActionButtonTitle: String(localized: "title-close")
         )
 
         transition.perform(
@@ -849,10 +847,10 @@ extension SendCollectibleViewController {
     private func openTransferFailedWithRetry() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "collectible-transfer-failed-title".localized,
-            description: .plain("collectible-transfer-failed-retry-desription".localized),
-            primaryActionButtonTitle: "title-retry".localized,
-            secondaryActionButtonTitle: "title-close".localized,
+            title: String(localized: "collectible-transfer-failed-title"),
+            description: .plain(String(localized: "collectible-transfer-failed-retry-desription")),
+            primaryActionButtonTitle: String(localized: "title-retry"),
+            secondaryActionButtonTitle: String(localized: "title-close"),
             primaryAction: {
                 [weak self] in
                 guard let self else { return }
@@ -888,8 +886,8 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
         guard qrText.mode == .address,
               let qrAddress = qrText.address else {
             displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "qr-scan-should-scan-address-message".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "qr-scan-should-scan-address-message")
             ) { _ in
                 completionHandler?()
             }
@@ -912,8 +910,8 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
         completionHandler: EmptyHandler?
     ) {
         displaySimpleAlertWith(
-            title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized
+            title: String(localized: "title-error"),
+            message: String(localized: "qr-scan-should-scan-valid-qr")
         ) { _ in
             completionHandler?()
         }

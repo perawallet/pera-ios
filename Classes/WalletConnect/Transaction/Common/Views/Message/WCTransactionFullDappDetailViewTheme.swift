@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,14 +47,14 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("screenshot-title".localized)
+            .text(String(localized: "screenshot-title"))
         ]
         self.description = [
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("screenshot-description".localized)
+            .text(String(localized: "screenshot-description"))
         ]
         self.primaryAction = [
             .titleColor([ .normal(Colors.Button.Primary.text) ]),

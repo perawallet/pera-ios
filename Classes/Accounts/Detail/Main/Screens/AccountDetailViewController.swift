@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -426,7 +426,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func presentActionsNotAvailableForAccountBanner() {
         bannerController?.presentErrorBanner(
-            title: "action-not-available-for-account-type".localized,
+            title: String(localized: "action-not-available-for-account-type"),
             message: ""
         )
     }
@@ -572,7 +572,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         }
 
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
+        open(.qrGenerator(title: String(localized: "options-auth-account"), draft: draft, isTrackable: true), by: .present)
     }
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
@@ -806,7 +806,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.assets.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-overview".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "accounts-title-overview"))
             self.screen = screen
         }
     }
@@ -818,7 +818,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.collectibles.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-collectibles".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "title-collectibles"))
             self.screen = screen
         }
     }
@@ -830,7 +830,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.transactions.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-history".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: String(localized: "accounts-title-history"))
             self.screen = screen
         }
     }

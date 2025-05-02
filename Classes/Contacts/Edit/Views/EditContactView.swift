@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ final class EditContactView: View {
 
     private(set) lazy var badgedImageView = BadgedImageView()
     private(set) lazy var nameInputView = createAccountNameTextInput(
-        placeholder: "contacts-input-name-placeholder".localized,
-        floatingPlaceholder: "contacts-input-name-placeholder".localized.capitalized
+        placeholder: String(localized: "contacts-input-name-placeholder"),
+        floatingPlaceholder: String(localized: "contacts-input-name-placeholder").capitalized
     )
     private(set) lazy var addressInputView = createAddressTextInput(
-        placeholder: "contact-input-address-placeholder".localized,
-        floatingPlaceholder: "contact-input-address-placeholder".localized.capitalized
+        placeholder: String(localized: "contact-input-address-placeholder"),
+        floatingPlaceholder: String(localized: "contact-input-address-placeholder").capitalized
     )
     private lazy var qrButton = Button()
     private(set) lazy var deleteContactButton = Button()

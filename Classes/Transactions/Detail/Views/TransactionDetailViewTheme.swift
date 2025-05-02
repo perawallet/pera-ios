@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.openInPeraExplorerButton = [
-            .title("transaction-id-open-peraexplorer".localized),
+            .title(String(localized: "transaction-id-open-peraexplorer")),
             .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
             .backgroundColor(Colors.Button.Secondary.background)

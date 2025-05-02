@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ struct DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel: Asse
     let description: TextProvider?
 
     init() {
-        self.title = "collectible-filter-selection-toggle-title".localized.bodyRegular()
-        self.description = "collectible-filter-selection-toggle-description".localized.footnoteRegular()
+        self.title = String(localized: "collectible-filter-selection-toggle-title").bodyRegular()
+        self.description = String(localized: "collectible-filter-selection-toggle-description").footnoteRegular()
     }
 }

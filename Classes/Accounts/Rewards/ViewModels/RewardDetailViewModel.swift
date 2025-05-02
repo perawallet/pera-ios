@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,8 +43,7 @@ struct RewardDetailViewModel:
 extension RewardDetailViewModel {
     private mutating func bindTitle() {
         title = .attributedString(
-            "rewards-title"
-                .localized
+            String(localized: "title-rewards")
                 .footnoteRegular()
         )
     }
@@ -78,15 +77,14 @@ extension RewardDetailViewModel {
 
     private mutating func bindDescription() {
         description = .attributedString(
-            "rewards-detail-subtitle"
-                .localized
+            String(localized: "rewards-detail-subtitle")
                 .bodyRegular()
         )
     }
 
     private mutating func bindFAQLabel() {
-        let title = "total-rewards-faq-title".localized
-        let FAQ = "total-rewards-faq".localized
+        let title = String(localized: "total-rewards-faq-title")
+        let FAQ = String(localized: "title-faq")
 
         let titleAttributes = NSMutableAttributedString(
             attributedString: title.bodyRegular()

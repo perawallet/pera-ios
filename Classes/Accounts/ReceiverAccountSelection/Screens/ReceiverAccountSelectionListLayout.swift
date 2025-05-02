@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -176,7 +176,7 @@ extension ReceiverAccountSelectionListLayout {
         let sampleAccountPreview = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
-            title: "title-unknown".localized,
+            title: String(localized: "title-unknown"),
             subtitle: nil
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountPreview)
@@ -229,8 +229,8 @@ extension ReceiverAccountSelectionListLayout {
         let sampleAccountPreview = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized
+            title: String(localized: "title-unknown"),
+            subtitle: String(localized: "title-unknown")
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountPreview)
         let newSize = ReceiverAccountSelectionPreviewCell.calculatePreferredSize(

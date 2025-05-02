@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,16 +46,14 @@ struct PortfolioCalculationInfoViewTheme:
 extension PortfolioCalculationInfoViewTheme {
     private static func getTitle() -> EditText {        
         return .attributedString(
-            "portfolio-calculation-title"
-                .localized
+            String(localized: "portfolio-calculation-title")
                 .bodyLargeMedium()
         )
     }
     
     private static func getBody() -> EditText {
         return .attributedString(
-            "portfolio-calculation-description"
-                .localized
+            String(localized: "portfolio-calculation-description")
                 .bodyRegular()
         )
     }

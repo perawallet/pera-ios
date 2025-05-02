@@ -33,7 +33,7 @@ extension IncomingASAsDetailScreen {
             self.backgroundColor = Colors.Defaults.background
             self.spacingBetweenListAndPrimaryAction = 24
             self.primaryAction = [
-                .title("incoming-asa-detail-screen-right-button-title".localized),
+                .title(String(localized: "incoming-asa-detail-screen-right-button-title")),
                 .font(Typography.bodyMedium()),
                 .titleColor([
                     .normal(Colors.Button.Primary.text),
@@ -46,7 +46,7 @@ extension IncomingASAsDetailScreen {
                 ])
             ]
             self.secondaryAction = [
-                .title("incoming-asa-detail-screen-left-button-title".localized),
+                .title(String(localized: "incoming-asa-detail-screen-left-button-title")),
                 .font(Typography.bodyMedium()),
                 .titleColor([
                     .normal(Colors.Button.Secondary.text)

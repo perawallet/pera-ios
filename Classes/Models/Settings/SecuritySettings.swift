@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ enum SecuritySettings: Settings {
     var name: String {
         switch self {
         case .pinCodeActivation:
-            return "security-settings-pinCode-activation".localized
+            return String(localized: "security-settings-pinCode-activation")
         case .pinCodeChange:
-            return "security-settings-pinCode-change".localized
+            return String(localized: "security-settings-pinCode-change")
         case .localAuthentication:
-            return "security-settings-localAuthentication".localized
+            return String(localized: "security-settings-localAuthentication")
         }
     }
 

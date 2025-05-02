@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -177,7 +177,7 @@ extension LedgerAccountDetailDataSource {
             return
         }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
         var assetsToBeFetched: [AssetID] = []
 

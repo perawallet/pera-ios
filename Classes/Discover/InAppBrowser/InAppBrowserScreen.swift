@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -268,7 +268,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         )
         
         let confirmAction = UIAlertAction(
-            title: "title-ok".localized,
+            title: String(localized: "title-ok"),
             style: .default
         ) { _ in
             completionHandler(true)
@@ -276,7 +276,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         controller.addAction(confirmAction)
         
         let cancelAction = UIAlertAction(
-            title: "title-cancel".localized,
+            title: String(localized: "title-cancel"),
             style: .cancel
         ) { _ in
             completionHandler(false)

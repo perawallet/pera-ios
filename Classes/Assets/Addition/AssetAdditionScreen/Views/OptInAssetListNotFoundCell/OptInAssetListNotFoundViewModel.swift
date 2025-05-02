@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,7 @@ extension OptInAssetListNotFoundViewModel {
 
     mutating func bindTitle() {
         title =
-            "asset-not-found-title"
-                .localized
+            String(localized: "asset-not-found-title")
                 .bodyLargeMedium(
                     alignment: .center
                 )

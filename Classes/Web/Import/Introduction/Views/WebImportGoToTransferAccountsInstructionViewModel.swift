@@ -35,8 +35,7 @@ extension WebImportGoToTransferAccountsInstructionViewModel {
 
     private mutating func bindTitle() {
         title =
-            "web-import-instruction-second-message"
-                .localized
+            String(localized: "web-import-instruction-second-message")
                 .bodyRegular()
     }
 }

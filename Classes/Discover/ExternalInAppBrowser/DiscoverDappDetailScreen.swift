@@ -149,8 +149,8 @@ extension DiscoverDappDetailScreen {
     ) {
         if hasExceededFavouritesLimit() {
             self.bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "discover-error-favorites-max-limit".localized
+                title: String(localized: "title-error"),
+                message: String(localized: "discover-error-favorites-max-limit")
             )
             return
         }

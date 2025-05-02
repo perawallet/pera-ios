@@ -59,7 +59,7 @@ extension KeyRegTransactionDetailViewModel {
 
         bindReward(for: transaction)
 
-        userViewTitle = "transaction-detail-from".localized
+        userViewTitle = String(localized: "transaction-detail-from")
 
         let senderAddress = transaction.sender
 
@@ -109,11 +109,11 @@ extension KeyRegTransactionDetailViewModel {
 
     private func bindTransactionIDTitle(for transaction: Transaction) {
         if transaction.isInner {
-            transactionIDTitle = "transaction-detail-parent-id".localized
+            transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
 
-        transactionIDTitle = "transaction-detail-id".localized
+        transactionIDTitle = String(localized: "transaction-detail-id")
     }
 
     private func bindNote(for transaction: Transaction) {
@@ -143,7 +143,7 @@ extension KeyRegTransactionDetailViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "vote-key-title".localized,
+            title: String(localized: "vote-key-title"),
             detail: voteKey
         )
         self.voteKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -159,7 +159,7 @@ extension KeyRegTransactionDetailViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "selection-key-title".localized,
+            title: String(localized: "title-selection-key"),
             detail: selectionKey
         )
         self.selectionKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -175,7 +175,7 @@ extension KeyRegTransactionDetailViewModel {
         }
 
         let titledInformation = TitledInformation(
-            title: "state-proof-key-title".localized,
+            title: String(localized: "title-state-proof-key"),
             detail: stateProofKey
         )
         self.stateProofKeyViewModel = TransactionTextInformationViewModel(titledInformation)
@@ -193,7 +193,7 @@ extension KeyRegTransactionDetailViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteFirstValidRound = formatter.string(from: NSNumber(value: voteFirstValidRound))
         let titledInformation = TitledInformation(
-            title: "valid-first-round-title".localized,
+            title: String(localized: "valid-first-round-title"),
             detail: formattedVoteFirstValidRound
         )
         voteFirstValidRoundViewModel = .init(titledInformation)
@@ -211,7 +211,7 @@ extension KeyRegTransactionDetailViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteLastValidRound = formatter.string(from: NSNumber(value: voteLastValidRound))
         let titledInformation = TitledInformation(
-            title: "valid-last-round-title".localized,
+            title: String(localized: "valid-last-round-title"),
             detail: formattedVoteLastValidRound
         )
         voteLastValidRoundViewModel = .init(titledInformation)
@@ -229,7 +229,7 @@ extension KeyRegTransactionDetailViewModel {
         let formatter = Formatter.decimalFormatter()
         let formattedVoteKeyDilution = formatter.string(from: NSNumber(value: voteKeyDilution))
         let titledInformation = TitledInformation(
-            title: "vote-key-dilution-title".localized,
+            title: String(localized: "vote-key-dilution-title"),
             detail: formattedVoteKeyDilution
         )
         voteKeyDilutionViewModel = .init(titledInformation)
@@ -244,10 +244,10 @@ extension KeyRegTransactionDetailViewModel {
         let nonParticipation = transactionDetail.nonParticipation
         let participationStatusTitle =
             nonParticipation
-            ? "not-participating-title".localized
-            : "participating-title".localized
+            ? String(localized: "not-participating-title")
+            : String(localized: "participating-title")
         let titledInformation = TitledInformation(
-            title: "participation-status-title".localized,
+            title: String(localized: "participation-status-title"),
             detail: participationStatusTitle
         )
         participationStatusViewModel = .init(titledInformation)

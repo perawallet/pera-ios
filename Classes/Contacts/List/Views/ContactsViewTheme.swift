@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.searchInputViewTheme = SearchInputViewCommonTheme(
-            placeholder: "contacts-search".localized,
+            placeholder: String(localized: "contacts-search"),
             family: family
         )
         self.topInset = 20

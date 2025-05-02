@@ -52,8 +52,7 @@ final class WCTransactionSignSuccessfulSheet: UISheet {
 extension WCTransactionSignSuccessfulSheet {
     private static func makeTitle(_ draft: WCSessionDraft) -> TextProvider? {
         return
-            "wc-transaction-request-signed-warning-title"
-                .localized
+            String(localized: "wc-transaction-request-signed-warning-title")
                 .bodyLargeMedium(alignment: .center)
     }
 
@@ -89,7 +88,7 @@ extension WCTransactionSignSuccessfulSheet {
 
     private func makeCloseAction() -> UISheetAction {
         return UISheetAction(
-            title: "title-close".localized,
+            title: String(localized: "title-close"),
             style: .cancel
         ) {
             [unowned self] in
@@ -101,16 +100,14 @@ extension WCTransactionSignSuccessfulSheet {
 extension WCTransactionSignSuccessfulSheet {
     private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
         let dAppName = wcV1Session.peerMeta.name
-        let aBody = "wc-transaction-request-signed-warning-message"
-            .localized(params: dAppName, dAppName)
+        let aBody = String(format: String(localized: "wc-transaction-request-signed-warning-message"), dAppName, dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
 
     private static func makeBodyForWCv2(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider {
         let dAppName = wcV2Session.peer.name
-        let aBody = "wc-transaction-request-signed-warning-message"
-            .localized(params: dAppName, dAppName)
+        let aBody = String(format: String(localized: "wc-transaction-request-signed-warning-message"), dAppName, dAppName)
             .bodyRegular(alignment: .left)
         return UISheetBodyTextProvider(text: aBody)
     }
@@ -136,9 +133,7 @@ extension WCTransactionSignSuccessfulSheet {
 
         var textAttributes = Typography.footnoteRegularAttributes(alignment: .left)
         textAttributes.insert(.textColor(Colors.Text.gray))
-        let text =
-            "wc-transaction-request-signed-warning-info"
-                .localized(params: formattedDate)
+        let text = String(format: String(localized: "wc-transaction-request-signed-warning-info"), formattedDate)
                 .attributed(textAttributes)
 
         let maxExtendableToDateAttributes = Typography.footnoteMediumAttributes(alignment: .left)

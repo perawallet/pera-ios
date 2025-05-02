@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ final class CardsDeeplinksTests: XCTestCase {
     
     func testCardsDeeplink() {
         let deepLinkToTest = URL(string: "perawallet://cards")!
-        let expectedURL = URL(string: "https://cards-mobile-staging.perawallet.app/")!
+        let expectedURL = URL(string: "https://cards-mobile-staging-testnet.perawallet.app/")!
         
         switch deepLinkToTest.externalDeepLink {
         case .cards(let path):
@@ -36,7 +36,7 @@ final class CardsDeeplinksTests: XCTestCase {
     
     func testCardsDeeplinkWithOnboardingPath() {
         let deepLinkToTest = URL(string: "perawallet://cards?path=onboarding/select-country")!
-        let expectedURL = URL(string: "https://cards-mobile-staging.perawallet.app/onboarding/select-country")!
+        let expectedURL = URL(string: "https://cards-mobile-staging-testnet.perawallet.app/onboarding/select-country")!
         
         switch deepLinkToTest.externalDeepLink {
         case .cards(let path):
@@ -51,7 +51,7 @@ final class CardsDeeplinksTests: XCTestCase {
     
     func testCardsDeeplinkWithDepositPath() {
         let deepLinkToTest = URL(string: "perawallet://cards?path=card/deposit")!
-        let expectedURL = URL(string: "https://cards-mobile-staging.perawallet.app/card/deposit")!
+        let expectedURL = URL(string: "https://cards-mobile-staging-testnet.perawallet.app/card/deposit")!
         
         switch deepLinkToTest.externalDeepLink {
         case .cards(let path):
@@ -66,7 +66,7 @@ final class CardsDeeplinksTests: XCTestCase {
     
     func testCardsDeeplinkWithWithdrawPath() {
         let deepLinkToTest = URL(string: "perawallet://cards?path=card/withdraw")!
-        let expectedURL = URL(string: "https://cards-mobile-staging.perawallet.app/card/withdraw")!
+        let expectedURL = URL(string: "https://cards-mobile-staging-testnet.perawallet.app/card/withdraw")!
         
         switch deepLinkToTest.externalDeepLink {
         case .cards(let path):
@@ -81,7 +81,7 @@ final class CardsDeeplinksTests: XCTestCase {
     
     func testCardsDeeplinkWithTransactionsPath() {
         let deepLinkToTest = URL(string: "perawallet://cards?path=card/transactions")!
-        let expectedURL = URL(string: "https://cards-mobile-staging.perawallet.app/card/transactions")!
+        let expectedURL = URL(string: "https://cards-mobile-staging-testnet.perawallet.app/card/transactions")!
         
         switch deepLinkToTest.externalDeepLink {
         case .cards(let path):

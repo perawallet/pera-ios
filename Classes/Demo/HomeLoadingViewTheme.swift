@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ struct HomeLoadingViewTheme:
         ]
         self.contentEdgeInsets = (16, 24, 0, 24)
         self.portfolioTitle = [
-            .text("portfolio-title".localized.bodyRegular()),
+            .text(String(localized: "portfolio-title").bodyRegular()),
             .textColor(Colors.Text.gray)
         ]
         self.portfolioTitleTopPadding = 8

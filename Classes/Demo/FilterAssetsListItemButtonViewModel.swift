@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ struct FilterAssetsListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         self.icon = "icon-asset-filter"
-        self.title = Self.getTitle("filter".localized)
+        self.title = Self.getTitle(String(localized: "title-filter"))
         self.subtitle = nil
     }
 }

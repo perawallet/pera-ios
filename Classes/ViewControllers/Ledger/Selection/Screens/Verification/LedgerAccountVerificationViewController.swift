@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ extension LedgerAccountVerificationViewController {
 
     private func addVerifyButton(_ theme: Theme) {
         verifyButton.customize(theme.verifyButtonTheme)
-        verifyButton.bindData(ButtonCommonViewModel(title: "ledger-verified-add".localized))
+        verifyButton.bindData(ButtonCommonViewModel(title: String(localized: "ledger-verified-add")))
 
         view.addSubview(verifyButton)
         verifyButton.snp.makeConstraints {
@@ -289,8 +289,8 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
         switch error {
         case .failedToFetchAddress:
             bannerController?.presentErrorBanner(
-                 title: "ble-error-transmission-title".localized,
-                 message: "ble-error-fail-fetch-account-address".localized
+                 title: String(localized: "ble-error-transmission-title"),
+                 message: String(localized: "ble-error-fail-fetch-account-address")
              )
             return
         case .cancelled:
@@ -315,17 +315,17 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
+                        title: String(localized: "ledger-pairing-issue-error-title"),
+                        description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+                        secondaryActionButtonTitle: String(localized: "title-ok")
                     )
                 ),
                 by: .presentWithoutNavigationController
             )
         default:
             bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+                title: String(localized: "ble-error-ledger-connection-title"),
+                message: String(localized: "ble-error-ledger-connection-open-app-error")
             )
             return
         }

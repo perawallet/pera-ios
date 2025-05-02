@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,14 +40,14 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("recover-passphrase-title".localized)
+            .text(String(localized: "title-recover-passphrase"))
         ]
         self.description = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("passphrase-bottom-title".localized)
+            .text(String(localized: "title-passphrase-bottom"))
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

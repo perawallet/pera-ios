@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ struct SwapSlippageTolerancePercentageInputViewModel: AdjustableSingleSelectionI
     let percentagesPreset: [SwapSlippageTolerancePercentage] = [
         PresetSwapSlippageTolerancePercentage(
             value: 0,
-            customTitle: "swap-slippage-percentage-custom".localized
+            customTitle: String(localized: "swap-slippage-percentage-custom")
         ),
         PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.halfPercent),
         PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.onePercent),

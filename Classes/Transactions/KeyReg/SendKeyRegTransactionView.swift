@@ -95,14 +95,14 @@ private extension SendKeyRegTransactionView {
                 spacing: theme.noteButtonSpacing
             ) {
                 if value.isEmpty {
-                    noteButton(title: "send-transaction-add-note-title".localized)
+                    noteButton(title: String(localized: "send-transaction-add-note-title"))
                 } else {
                     Text(value)
                         .foregroundColor(theme.valueColor)
                         .font(theme.valueFont)
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
-                    noteButton(title: "send-transaction-edit-note-title".localized)
+                    noteButton(title: String(localized: "send-transaction-edit-note-title"))
                 }
             }
         }
@@ -146,7 +146,7 @@ private extension SendKeyRegTransactionView {
         SwiftUI.Button(action: {
             eventHandler?(.didShowRawTransaction)
         }) {
-            Text("wallet-connect-raw-transaction-title".localized)
+            Text(String(localized: "wallet-connect-raw-transaction-title"))
                 .font(theme.rawTxnButtonFont)
                 .foregroundColor(theme.rawTxnButtonForegroundColor)
                 .frame(alignment: .leading)
@@ -162,7 +162,7 @@ private extension SendKeyRegTransactionView {
         SwiftUI.Button(action: {
             eventHandler?(.didConfirmTransaction)
         }) {
-            Text("send-transaction-preview-button".localized)
+            Text(String(localized: "send-transaction-preview-button"))
                 .font(theme.buttonFont)
                 .foregroundColor(theme.buttonForeground)
                 .frame(maxWidth: .infinity)

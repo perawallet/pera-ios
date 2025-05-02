@@ -35,8 +35,7 @@ extension WebImportSelectAccountsAndGenerateQRInstructionItemViewModel {
 
     private mutating func bindTitle() {
         title =
-            "web-import-instruction-third-message"
-                .localized
+            String(localized: "web-import-instruction-third-message")
                 .bodyRegular()
     }
 }

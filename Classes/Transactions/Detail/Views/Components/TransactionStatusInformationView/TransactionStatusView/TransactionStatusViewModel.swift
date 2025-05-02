@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,14 +34,14 @@ extension TransactionStatusViewModel {
     func bindStatus(_ status: Transaction.Status) {
         switch status {
         case .completed:
-            statusLabelTitle = "transaction-detail-completed".localized
+            statusLabelTitle = String(localized: "transaction-detail-completed")
             statusLabelTextColor = Colors.Helpers.positive
             backgroundColor = Colors.Helpers.positiveLighter
         case .pending:
-            statusLabelTitle = "transaction-detail-pending".localized
+            statusLabelTitle = String(localized: "title-pending")
             statusLabelTextColor = Colors.Text.gray
         case .failed:
-            statusLabelTitle = "transaction-detail-failed".localized
+            statusLabelTitle = String(localized: "transaction-detail-failed")
             statusLabelTextColor = Colors.Helpers.negative
             backgroundColor = Colors.Helpers.negativeLighter
         }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,16 +60,16 @@ struct AlgoTransactionItemViewModel:
         }
         
         if transaction.sender == draft.account.address && transaction.isSelfTransaction {
-            bindTitle("transaction-item-self-transfer".localized)
+            bindTitle(String(localized: "transaction-item-self-transfer"))
             return
         }
 
         if isReceivingTransaction(draft, for: payment) {
-            bindTitle("transaction-detail-receive".localized)
+            bindTitle(String(localized: "transaction-detail-receive"))
             return
         }
         
-        bindTitle("transaction-detail-send".localized)
+        bindTitle(String(localized: "transaction-detail-send"))
     }
 
     private mutating func bindSubtitle(

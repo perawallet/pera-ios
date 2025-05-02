@@ -35,12 +35,12 @@ extension UndoRekeyListItemButtonViewModel {
     }
 
     private mutating func bindTitle() {
-        let aTitle = "undo-rekey-title".localized
+        let aTitle = String(localized: "title-undo-rekey").capitalized
         title = Self.getTitle(aTitle)
     }
 
     private mutating func bindSubtitle(_ authAccount: Account) {
-        let aSubtitle = "title-rekeyed-to-with-param".localized(params: authAccount.primaryDisplayName)
+        let aSubtitle = String(format: String(localized: "title-rekeyed-to-with-param"), authAccount.primaryDisplayName)
         subtitle = .attributedString(
             aSubtitle.captionRegular(
                 lineBreakMode: .byTruncatingTail

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         ledgerAccountSelectionView.setLoadingState()
         dataSource.loadData()
     }
@@ -158,7 +158,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidTryAgain(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         ledgerAccountSelectionView.setLoadingState()
         dataSource.loadData()
     }

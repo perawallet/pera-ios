@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -117,18 +117,18 @@ extension TransactionResultScreen.Status {
     var title: String {
         switch self {
         case .started, .inProgress:
-            return "transaction-result-started-title".localized
+            return String(localized: "transaction-result-started-title")
         case .completed:
-            return "transaction-result-completed-title".localized
+            return String(localized: "transaction-result-completed-title")
         }
     }
 
     var subtitle: String {
         switch self {
         case .started, .inProgress:
-            return "transaction-result-started-subtitle".localized
+            return String(localized: "transaction-result-started-subtitle")
         case .completed:
-            return "transaction-result-completed-subtitle".localized
+            return String(localized: "transaction-result-completed-subtitle")
         }
     }
 }

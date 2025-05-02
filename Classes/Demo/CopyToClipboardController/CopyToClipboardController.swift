@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ extension CopyToClipboardController {
         _ url: String
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "url-copied".localized,
+            title: String(localized: "url-copied-to-clipboard"),
             body: url
         )
         let item = ClipboardItem(copy: url, interaction: interaction)
@@ -46,7 +46,7 @@ extension CopyToClipboardController {
         _ address: String
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "qr-creation-copied".localized,
+            title: String(localized: "address-copied-to-clipboard"),
             body: address.shortAddressDisplay
         )
         let item = ClipboardItem(copy: address, interaction: interaction)
@@ -58,7 +58,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(asset.id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -70,7 +70,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(asset.id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -82,7 +82,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(id)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -94,7 +94,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = (transaction.id ?? transaction.parentID).someString
         let interaction = CopyToClipboardInteraction(
-            title: "transaction-detail-id-copied-title".localized,
+            title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -106,7 +106,7 @@ extension CopyToClipboardController {
     ) {
         let noteCopy = transaction.noteRepresentation().someString
         let interaction = CopyToClipboardInteraction(
-            title: "transaction-detail-note-copied".localized,
+            title: String(localized: "note-copied-to-clipboard"),
             body: nil
         )
         let item = ClipboardItem(copy: noteCopy, interaction: interaction)
@@ -118,7 +118,7 @@ extension CopyToClipboardController {
     ) {
         let idCopy = String(transaction.applicationCall!.appID ?? .zero)
         let interaction = CopyToClipboardInteraction(
-            title: "asset-id-copied-title".localized,
+            title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
         )
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
@@ -129,7 +129,7 @@ extension CopyToClipboardController {
         _ someText: String
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "title-copied-to-clipboard".localized,
+            title: String(localized: "title-copied-to-clipboard"),
             body: nil
         )
         let item = ClipboardItem(copy: someText, interaction: interaction)
@@ -140,7 +140,7 @@ extension CopyToClipboardController {
         _ someImage: UIImage
     ) {
         let interaction = CopyToClipboardInteraction(
-            title: "image-copied-to-clipboard".localized,
+            title: String(localized: "image-copied-to-clipboard"),
             body: nil
         )
         let item = ClipboardItem(image: someImage, interaction: interaction)

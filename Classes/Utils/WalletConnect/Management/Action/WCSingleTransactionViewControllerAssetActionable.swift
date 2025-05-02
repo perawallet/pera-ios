@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
             return
         }
 
-        open(.jsonDisplay(jsonData: data, title: "wallet-connect-transaction-title-metadata".localized), by: .present)
+        open(.jsonDisplay(jsonData: data, title: String(localized: "wallet-connect-transaction-title-metadata")), by: .present)
     }
 
     func openAssetDiscovery(_ asset: Asset?) {

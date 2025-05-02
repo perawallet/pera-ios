@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     init() {
         icon = "icon-pera-solid"
         title = Self.getTitle(
-            "asa-verification-learn-more".localized,
+            String(localized: "asa-verification-learn-more"),
             Colors.Helpers.positive
         )
         subtitle = nil

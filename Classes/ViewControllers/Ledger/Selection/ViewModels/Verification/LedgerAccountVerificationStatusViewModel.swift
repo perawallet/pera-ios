@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,13 +46,13 @@ final class LedgerAccountVerificationStatusViewModel: ViewModel {
     var statusText: String {
         switch status {
         case .awaiting:
-            return "ledger-account-verification-status-awaiting".localized
+            return String(localized: "ledger-account-verification-status-awaiting")
         case .pending:
-            return "ledger-account-verification-status-pending".localized
+            return String(localized: "title-pending")
         case .verified:
-            return "ledger-account-verification-status-verified".localized
+            return String(localized: "ledger-account-verification-status-verified")
         case .unverified:
-            return "ledger-account-verification-status-not-verified".localized
+            return String(localized: "ledger-account-verification-status-not-verified")
         }
     }
     

@@ -50,9 +50,6 @@ struct RemoveAuthAccountAuthorizationError: RemoveAccountErrorDisplayable {
     private(set) var message: String
 
     init(rekeyedAccounts: [AccountHandle]) {
-        message =
-            rekeyedAccounts.isSingular
-            ? "remove-auth-account-rekeyed-account-error-title".localized
-            : "remove-auth-account-rekeyed-accounts-error-title".localized(params: "\(rekeyedAccounts.count)")
+        message = String(format: String(localized: "remove-auth-account-rekeyed-accounts-error-title"), rekeyedAccounts.count)
     }
 }

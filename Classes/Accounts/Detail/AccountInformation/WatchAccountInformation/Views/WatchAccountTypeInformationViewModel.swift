@@ -35,8 +35,7 @@ struct WatchAccountTypeInformationViewModel: AccountTypeInformationViewModel {
 extension WatchAccountTypeInformationViewModel {
     private mutating func bindTitle() {
         title =
-            "title-account-type"
-                .localized
+            String(localized: "title-account-type")
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
@@ -46,19 +45,18 @@ extension WatchAccountTypeInformationViewModel {
 
     private mutating func bindTypeTitle() {
         typeTitle =
-            "title-watch"
-                .localized
+            String(localized: "title-watch")
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindTypeDescription() {
-        let descriptionText = "watch-account-type-description".localized.footnoteRegular()
+        let descriptionText = String(localized: "watch-account-type-description").footnoteRegular()
 
         var descriptionHighlightedTextAttributes = Typography.footnoteMediumAttributes(alignment: .center)
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
         let descriptionHighlightedText = HighlightedText(
-            text: "watch-account-type-description-highlighted-text".localized,
+            text: String(localized: "title-learn-more"),
             attributes: descriptionHighlightedTextAttributes
         )
 

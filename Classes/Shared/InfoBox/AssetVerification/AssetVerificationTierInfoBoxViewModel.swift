@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,13 +54,13 @@ extension AssetVerificationTierInfoBoxViewModel {
     ) {
         switch verificationTier {
         case .trusted:
-            title = "asa-verification-title-trusted".localized
+            title = String(localized: "asa-verification-title-trusted")
                 .bodyMedium()
                 .add([
                     .textColor(Colors.ASABanners.trustedBannerContent.uiColor)
                 ])
         case .verified:
-            title = "asa-verification-title-verified".localized
+            title = String(localized: "asa-verification-title-verified")
                 .bodyMedium()
                 .add([
                     .textColor(Colors.ASABanners.verifiedBannerContent.uiColor)
@@ -68,7 +68,7 @@ extension AssetVerificationTierInfoBoxViewModel {
         case .unverified:
             break
         case .suspicious:
-            title = "asa-verification-title-suspicious".localized
+            title = String(localized: "asa-verification-title-suspicious")
                 .bodyMedium()
                 .add([
                     .textColor(Colors.ASABanners.suspiciousBannerContent.uiColor)
@@ -81,25 +81,25 @@ extension AssetVerificationTierInfoBoxViewModel {
     ) {
         switch verificationTier {
         case .trusted:
-            message = "asa-verification-detail-trusted".localized
+            message = String(localized: "asa-verification-detail-trusted")
                 .bodyRegular()
                 .add([
                     .textColor(Colors.ASABanners.trustedBannerContent.uiColor)
                 ])
                 .addAttributes(
-                    to: "asa-verification-detail-trusted-bold".localized,
+                    to: String(localized: "asa-verification-detail-trusted-bold"),
                     newAttributes: [
                         .font(Fonts.DMSans.medium.make(15).uiFont)
                     ]
                 )
         case .verified:
-            message = "asa-verification-detail-verified".localized
+            message = String(localized: "asa-verification-detail-verified")
                 .bodyRegular()
                 .add([
                     .textColor(Colors.ASABanners.verifiedBannerContent.uiColor)
                 ])
                 .addAttributes(
-                    to: "asa-verification-detail-verified-bold".localized,
+                    to: String(localized: "asa-verification-detail-verified-bold"),
                     newAttributes: [
                         .font(Fonts.DMSans.medium.make(15).uiFont)
                     ]
@@ -107,13 +107,13 @@ extension AssetVerificationTierInfoBoxViewModel {
         case .unverified:
             break
         case .suspicious:
-            message = "asa-verification-detail-suspicious".localized
+            message = String(localized: "asa-verification-detail-suspicious")
                 .bodyRegular()
                 .add([
                     .textColor(Colors.ASABanners.suspiciousBannerContent.uiColor)
                 ])
                 .addAttributes(
-                    to: "asa-verification-detail-suspicious-bold".localized,
+                    to: String(localized: "asa-verification-detail-suspicious-bold"),
                     newAttributes: [
                         .font(Fonts.DMSans.medium.make(15).uiFont)
                     ]

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ struct AlgoLocalCurrency: LocalCurrency {
         pairID: CurrencyID? = nil
     ) {
         self.id = CurrencyID.algo(pairID: pairID)
-        self.name = "title-algorand".localized
+        self.name = String(localized: "title-algo")
         self.symbol = "\u{00A6}"
     }
 }

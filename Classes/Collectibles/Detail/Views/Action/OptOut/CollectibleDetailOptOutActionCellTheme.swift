@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ struct CollectibleDetailOptOutActionCellTheme:
         let contextFont = Typography.bodyMedium()
         self.contextFont = contextFont
         self.context = [
-            .title("collectible-detail-opt-out".localized),
+            .title(String(localized: "title-opt-out")),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(contextFont),
             .backgroundImage([

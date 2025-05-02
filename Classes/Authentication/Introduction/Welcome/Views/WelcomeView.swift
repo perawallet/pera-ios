@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ extension WelcomeView {
         termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
         termsAndConditionsTextView.bindHTML(
-            "introduction-title-terms-and-services".localized(params: AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
+            String(format: String(localized: "introduction-title-terms-and-services"), AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
             attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
         )
 

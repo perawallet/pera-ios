@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ final class PortfolioCalculationInfoViewController:
 
     private lazy var closeActionViewContainer = UIView()
     private lazy var closeActionView =
-        ViewFactory.Button.makeSecondaryButton("title-close".localized)
+        ViewFactory.Button.makeSecondaryButton(String(localized: "title-close"))
     
     private let result: PortfolioValue?
 

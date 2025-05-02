@@ -34,15 +34,15 @@ struct CollectibleDetailQuickActionsViewTheme:
         self.actionWidth = 64
         self.sendAction = [
             .icon(Self.makeActionIcon(icon: "send-dark-icon")),
-            .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))
+            .title(Self.makeActionTitle(title: String(localized: "quick-actions-send-title")))
         ]
         self.copyAction = [
             .icon(Self.makeActionIcon(icon: "copy-collectible-icon")),
-            .title(Self.makeActionTitle(title: "title-copy".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-copy")))
         ]
         self.saveAction = [
             .icon(Self.makeActionIcon(icon: "save-icon")),
-            .title(Self.makeActionTitle(title: "title-save".localized))
+            .title(Self.makeActionTitle(title: String(localized: "title-save")))
         ]
     }
 }

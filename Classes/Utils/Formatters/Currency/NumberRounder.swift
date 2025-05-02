@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ struct ThousandNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -3
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-thousand".localized,
+        short: String(localized: "number-abbreviation-thousand"),
         long: ""
     )
 }
@@ -108,7 +108,7 @@ struct MillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -6
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-million".localized,
+        short: String(localized: "number-abbreviation-million"),
         long: ""
     )
 }
@@ -117,7 +117,7 @@ struct BillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -9
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-billion".localized,
+        short: String(localized: "number-abbreviation-billion"),
         long: ""
     )
 }
@@ -126,7 +126,7 @@ struct TrillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -12
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-trillion".localized,
+        short: String(localized: "number-abbreviation-trillion"),
         long: ""
     )
 }
@@ -135,7 +135,7 @@ struct QuadrillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -15
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-quadrillion".localized,
+        short: String(localized: "number-abbreviation-quadrillion"),
         long: ""
     )
 }
@@ -144,7 +144,7 @@ struct QuintillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -18
     let scale: Int16 = 2
     let abbreviation: NumberAbbreviation = .init(
-        short: "number-abbreviation-quintillion".localized,
+        short: String(localized: "number-abbreviation-quintillion"),
         long: ""
     )
 }

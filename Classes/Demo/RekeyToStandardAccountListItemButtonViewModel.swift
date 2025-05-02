@@ -24,7 +24,7 @@ struct RekeyToStandardAccountListItemButtonViewModel: ListItemButtonViewModel {
     
     init() {
         icon = "icon-options-rekey"
-        title = Self.getTitle("options-rekey-standard".localized)
+        title = Self.getTitle(String(localized: "title-rekey-to-standard-account"))
         subtitle = nil
     }
 }

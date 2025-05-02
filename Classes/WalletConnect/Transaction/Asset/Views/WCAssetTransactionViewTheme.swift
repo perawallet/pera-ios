@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ extension WCAssetTransactionView {
 
         init(_ family: LayoutFamily) {
             self.rawTransactionButtonStyle = [
-                .title("wallet-connect-raw-transaction-title".localized),
+                .title(String(localized: "wallet-connect-raw-transaction-title")),
                 .titleColor([.normal(Colors.Button.Secondary.text)]),
                 .font(Fonts.DMSans.medium.make(13)),
                 .backgroundColor(Colors.Button.Secondary.background)

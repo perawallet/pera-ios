@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,8 +47,7 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
         var titleAttributes = Typography.titleMediumAttributes()
         titleAttributes.insert(.textColor(Colors.Text.main))
         self.titleText = .attributedString(
-            "passphrase-verify-title"
-                .localized
+            String(localized: "title-passphrase-verify")
                 .attributed(
                     titleAttributes
                 )

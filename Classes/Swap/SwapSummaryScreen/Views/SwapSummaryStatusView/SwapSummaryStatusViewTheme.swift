@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ struct SwapSummaryStatusViewTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
-            .text("transaction-detail-status".localized),
+            .text(String(localized: "transaction-detail-status")),
             .font(Typography.bodyRegular())
         ]
         self.status = TransactionStatusViewTheme()
