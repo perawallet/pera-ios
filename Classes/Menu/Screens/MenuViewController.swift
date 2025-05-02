@@ -21,6 +21,17 @@ final class MenuViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var menuListView = MenuListView()
     
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController,
+        appLaunchController: configuration.launchController
+    )
+    
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
@@ -61,7 +72,8 @@ final class MenuViewController: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        menuOptions = [.cards(withCardCreated: true), .transfer, .buyAlgo, .receive, .inviteFriends]
+        let vm = MenuCardViewModel(cardNumber: "**** 2692", cardBalance: "20 USDC")
+        menuOptions = [.cards(cardVM: vm), .transfer, .buyAlgo, .receive, .inviteFriends]
     }
 }
 
@@ -77,7 +89,13 @@ extension MenuViewController {
 
 extension MenuViewController {
     private func configureNotificationBarButton() {
-        let notificationBarButtonItem = ALGBarButtonItem(kind: .settings) { [weak self] in
+        let qrScannerBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self else { return }
+            
+            self.scanQRFlowCoordinator.launch()
+        }
+        
+        let settingsBarButtonItem = ALGBarButtonItem(kind: .settings) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -88,7 +106,7 @@ extension MenuViewController {
             )
         }
 
-        rightBarButtonItems = [notificationBarButtonItem]
+        rightBarButtonItems = [settingsBarButtonItem, qrScannerBarButtonItem]
     }
 }
 
@@ -147,17 +165,17 @@ extension MenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let option = menuOptions[safe: indexPath.row] {
             switch option {
-            case .cards(withCardCreated: let isCardCreated):
-                if isCardCreated {
-                    let cell = collectionView.dequeue(MenuListCardEnabledViewCell.self, at: indexPath)
-                    cell.bindData(option)
-                    return cell
-                } else {
+            case .cards(cardVM: let viewModel):
+                guard let viewModel else {
                     let cell = collectionView.dequeue(MenuListCardViewCell.self, at: indexPath)
                     cell.delegate = self
                     cell.bindData(option)
                     return cell
                 }
+                let cell = collectionView.dequeue(MenuListCardEnabledViewCell.self, at: indexPath)
+                cell.delegate = self
+                cell.bindData(option, viewModel: viewModel)
+                return cell
             case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
                 let cell = collectionView.dequeue(MenuListViewCell.self, at: indexPath)
                 cell.bindData(option)
@@ -172,6 +190,16 @@ extension MenuViewController: UICollectionViewDataSource {
 extension MenuViewController: MenuListCardViewCellDelegate {
     func didPressActionButton(in cell: MenuListCardViewCell) {
         print("didPressActionButton")
+    }
+}
+
+extension MenuViewController: MenuListCardEnabledViewCellDelegate {
+    func didPressViewCardsButton(in cell: MenuListCardEnabledViewCell) {
+        print("didPressViewCardsButton")
+    }
+    
+    func didPressCardDetailButton(in cell: MenuListCardEnabledViewCell) {
+        print("didPressCardDetailButton")
     }
 }
 

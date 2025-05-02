@@ -171,8 +171,8 @@ extension RootViewController {
         mainContainer.items = [
             homeTab,
             discoverTab,
-            collectiblesTab,
             stakeTab,
+            collectiblesTab,
             menuTab
         ]
 

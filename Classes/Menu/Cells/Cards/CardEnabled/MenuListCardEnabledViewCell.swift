@@ -16,11 +16,17 @@
 
 import UIKit
 
+protocol MenuListCardEnabledViewCellDelegate: AnyObject {
+    func didPressViewCardsButton(in cell: MenuListCardEnabledViewCell)
+    func didPressCardDetailButton(in cell: MenuListCardEnabledViewCell)
+}
+
 final class MenuListCardEnabledViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let theme = MenuListCardEnabledViewTheme()
+    weak var delegate: MenuListCardEnabledViewCellDelegate?
     
     // MARK: - Subviews
     
@@ -49,8 +55,19 @@ final class MenuListCardEnabledViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(_ data: MenuOption) {
-        contextView.bindData(data)
+    func bindData(_ data: MenuOption, viewModel: MenuCardViewModel) {
+        contextView.bindData(data, viewModel: viewModel)
+        contextView.delegate = self
     }
     
+}
+
+extension MenuListCardEnabledViewCell: MenuListCardEnabledViewDelegate {
+    func didPressViewCardsButton(in view: MenuListCardEnabledView) {
+        delegate?.didPressViewCardsButton(in: self)
+    }
+    
+    func didPressCardDetailButton(in view: MenuListCardEnabledView) {
+        delegate?.didPressCardDetailButton(in: self)
+    }
 }

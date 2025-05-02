@@ -5515,6 +5515,9 @@
 		D465C7EE299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
 		D465C7F0299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
 		D465C7F1299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
+		D46663252DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46663242DC3E2A900A9EDC6 /* MenuCardViewModel.swift */; };
+		D46663262DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46663242DC3E2A900A9EDC6 /* MenuCardViewModel.swift */; };
+		D46663272DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46663242DC3E2A900A9EDC6 /* MenuCardViewModel.swift */; };
 		D46954A4296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A5296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A6296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
@@ -9756,6 +9759,7 @@
 		D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItem.swift; sourceTree = "<group>"; };
 		D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentParameters.swift; sourceTree = "<group>"; };
 		D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLParameters.swift; sourceTree = "<group>"; };
+		D46663242DC3E2A900A9EDC6 /* MenuCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardViewModel.swift; sourceTree = "<group>"; };
 		D46954A3296F3BF300D3D6C0 /* String+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
 		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
 		D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverInputViewTheme.swift; sourceTree = "<group>"; };
@@ -19170,6 +19174,7 @@
 		D41168852DC21924001F7A57 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D46663242DC3E2A900A9EDC6 /* MenuCardViewModel.swift */,
 				D41168922DC21EF8001F7A57 /* MenuOption.swift */,
 			);
 			path = Models;
@@ -25864,6 +25869,7 @@
 				D48F8C912AA29C85000F0C49 /* ManageAssetListLocalDataController.swift in Sources */,
 				2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */,
 				2BE93709245B38ED00322C1E /* QRCreationView.swift in Sources */,
+				D46663272DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */,
 				2B69BD922785A836008BD8D0 /* HomeListLayout.swift in Sources */,
 				D478AA9828AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
 				2B0322F4269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
@@ -26152,6 +26158,7 @@
 				2BB93BF525BEF3CF001F1D6C /* TransactionAPIConnector.swift in Sources */,
 				173C112C296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */,
 				D4BAABC92770D8BA00FF3D22 /* TransactionAmountViewBiggerTheme.swift in Sources */,
+				D46663252DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */,
 				2BC7DC2A286F3F7B00110A92 /* RewardDetailView.swift in Sources */,
 				17CE519629C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift in Sources */,
 				D411689C2DC22A54001F7A57 /* MenuListViewCell.swift in Sources */,
@@ -30962,6 +30969,7 @@
 				2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */,
 				D46954A4296F3BF300D3D6C0 /* String+Additions.swift in Sources */,
 				2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */,
+				D46663262DC3E2AD00A9EDC6 /* MenuCardViewModel.swift in Sources */,
 				F019285F29CCE51300DA66EF /* UIViewControllerCollectionCell.swift in Sources */,
 				2B0322F2269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
 				D48FDFA527CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift in Sources */,

@@ -17,7 +17,7 @@
 import UIKit
 
 enum MenuOption {
-    case cards(withCardCreated: Bool)
+    case cards(cardVM: MenuCardViewModel?)
     case nfts
     case transfer
     case buyAlgo

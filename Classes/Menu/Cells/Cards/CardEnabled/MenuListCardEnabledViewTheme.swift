@@ -32,8 +32,13 @@ struct MenuListCardEnabledViewTheme:
     var iconVerticalPadding: LayoutMetric
     let image: ImageStyle
     let imageVerticalPadding: LayoutMetric
+    let cardViewPaddings: LayoutPaddings
+    var cardNumber: TextStyle
+    var cardBalance: TextStyle
     let action: ButtonStyle
     let actionHeight: LayoutMetric
+    let separatorHeight: LayoutMetric
+    let separatorBottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -62,11 +67,24 @@ struct MenuListCardEnabledViewTheme:
         ]
         self.imageVerticalPadding = 25
         
+        self.cardViewPaddings = (16, 16, 20, 16)
+        self.cardNumber = [
+            .textColor(Colors.Text.main),
+            .font(Typography.bodyRegular())
+        ]
+        self.cardBalance = [
+            .textColor(Colors.Text.sonicSilver),
+            .font(Typography.footnoteRegular())
+        ]
+        
         self.action = [
             .titleColor([ .normal(Colors.Helpers.positive)]),
             .font(Typography.bodyMedium()),
             .title(String(localized: "title-view-cards"))
         ]
         self.actionHeight = 56
+        
+        self.separatorHeight = 1
+        self.separatorBottomPadding = 56
     }
 }
