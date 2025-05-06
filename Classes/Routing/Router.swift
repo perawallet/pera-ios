@@ -51,7 +51,8 @@ final class Router:
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private var meldFlowCoordinator: MeldFlowCoordinator?
-
+    
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(presentingScreen: findVisibleScreen(over: rootViewController), configuration: appConfiguration)
 
     init(
         rootViewController: RootViewController,
@@ -496,12 +497,8 @@ final class Router:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
                 return
             }
-            
-            route(
-                to: .qrScanner(canReadWCSession: true),
-                from: findVisibleScreen(over: rootViewController),
-                by: .present
-            )
+
+            scanQRFlowCoordinator.launch()
         }
     }
     
@@ -748,15 +745,10 @@ final class Router:
                 configuration: configuration
             )
         case let .qrScanner(canReadWCSession):
-            let qrScannerViewController = QRScannerViewController(
+            viewController = QRScannerViewController(
                 canReadWCSession: canReadWCSession,
                 configuration: configuration
             )
-            
-            let tabBarController = rootViewController.mainContainer
-            tabBarController.assignQRScannerCoordinator(viewController: qrScannerViewController)
-                         
-            viewController = qrScannerViewController
         case let .qrGenerator(title, draft, isTrackable):
             let qrCreationController = QRCreationViewController(
                 draft: draft,
@@ -2838,7 +2830,6 @@ extension Router {
             guard let self = self else { return }
 
             let visibleScreen = findVisibleScreen(over: rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
             
             guard let domain = draft.dappURL?.host else {
                 self.handleWalletConnectV2Session(
