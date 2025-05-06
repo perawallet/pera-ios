@@ -78,6 +78,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>perawallet-wc</string>
+				<string>wc</string>
 			</array>
 		</dict>
 	</array>
