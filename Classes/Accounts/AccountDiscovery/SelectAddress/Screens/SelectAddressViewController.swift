@@ -230,6 +230,7 @@ extension SelectAddressViewController {
                 address: selectedAddress.address,
                 name: selectedAddress.address.shortAddressDisplay,
                 isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
                 isBackedUp: true,
                 hdWalletAddressDetail: hdWalletAddressDetail
             )
