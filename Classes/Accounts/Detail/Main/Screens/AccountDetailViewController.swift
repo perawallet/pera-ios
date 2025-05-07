@@ -157,6 +157,10 @@ final class AccountDetailViewController: PageContainer {
         addNavigationTitle()
         addNavigationActions()
     }
+    
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
+    }
 
     override func customizePageBarAppearance() {
         super.customizePageBarAppearance()
