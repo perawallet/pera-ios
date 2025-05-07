@@ -67,6 +67,7 @@ final class MenuViewController: BaseViewController {
     
     override func configureAppearance() {
         title = String(localized: "title-menu")
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func prepareLayout() {
