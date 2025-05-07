@@ -1422,15 +1422,17 @@ final class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case let .shareActivity(items):
+        case let .shareActivity(items, excludedActivityTypes):
             let activityController = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil
             )
-
-            activityController.excludedActivityTypes = [
-                UIActivity.ActivityType.addToReadingList
-            ]
+            
+            if let excludedActivityTypes {
+                activityController.excludedActivityTypes = excludedActivityTypes
+            } else {
+                activityController.excludedActivityTypes = [.addToReadingList]
+            }
 
             viewController = activityController
         case .image3DCard(let image, let rendersContinuously):
