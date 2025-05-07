@@ -32,6 +32,8 @@ final class MenuViewController: BaseViewController {
         appLaunchController: configuration.launchController
     )
     
+    private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
+    
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
@@ -189,13 +191,13 @@ extension MenuViewController: UICollectionViewDataSource {
 
 extension MenuViewController: MenuListCardViewCellDelegate {
     func didPressActionButton(in cell: MenuListCardViewCell) {
-        print("didPressActionButton")
+        cardsFlowCoordinator.launch()
     }
 }
 
 extension MenuViewController: MenuListCardEnabledViewCellDelegate {
     func didPressViewCardsButton(in cell: MenuListCardEnabledViewCell) {
-        print("didPressViewCardsButton")
+        cardsFlowCoordinator.launch()
     }
     
     func didPressCardDetailButton(in cell: MenuListCardEnabledViewCell) {
