@@ -7282,7 +7282,14 @@
       }
     },
     "title-about" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "title-about-with-param" : {
       "extractionState" : "manual",
