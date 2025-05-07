@@ -242,7 +242,7 @@ indirect enum Screen {
         addressInputViewText: String?
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
-    case shareActivity(items: [Any])
+    case shareActivity(items: [Any], excludedActivityTypes: [UIActivity.ActivityType]?)
     case image3DCard(
         image: UIImage,
         rendersContinuously: Bool

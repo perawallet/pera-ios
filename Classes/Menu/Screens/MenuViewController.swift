@@ -73,7 +73,7 @@ final class MenuViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         let vm = MenuCardViewModel(cardNumber: "**** 2692", cardBalance: "20 USDC")
-        menuOptions = [.cards(cardVM: vm), .transfer, .buyAlgo, .receive, .inviteFriends]
+        menuOptions = [.cards(cardVM: vm), .nfts, .buyAlgo, .receive, .inviteFriends]
     }
 }
 
@@ -138,13 +138,13 @@ extension MenuViewController: UICollectionViewDelegate {
             case .nfts:
                 open(.collectibleList, by: .push)
             case .transfer:
-                print("transfer pressed")
+                fatalError("not implemented, shouldn't enter here")
             case .buyAlgo:
                 openBuySellOptions()
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
             case .inviteFriends:
-                print("inviteFriends pressed")
+                openShareMenu()
             }
             return
         }
@@ -234,10 +234,34 @@ extension MenuViewController {
 
         meldFlowCoordinator.launch()
     }
+    
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
+    }
 }
 
 extension MenuViewController {
-    private func openBuyGiftCardsWithBidali() {
-        bidaliFlowCoordinator.launch()
+    private func openShareMenu() {
+        guard
+            let urlString = Bundle.main.object(forInfoDictionaryKey: "AppDownloadURL") as? String,
+            let url = URL(string: urlString)
+        else {
+            return
+        }
+        let excludedActivityTypes: [UIActivity.ActivityType] = [
+            .addToReadingList,
+            .assignToContact,
+            .print,
+            .saveToCameraRoll,
+            .openInIBooks,
+            .markupAsPDF
+        ]
+        open(
+            .shareActivity(
+                items: [url],
+                excludedActivityTypes: excludedActivityTypes
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
