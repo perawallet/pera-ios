@@ -30,15 +30,17 @@ struct MenuListCardEnabledViewTheme:
     var spaceBetweenTitleAndDescription: LayoutMetric
     var iconHorizontalPadding: LayoutMetric
     var iconVerticalPadding: LayoutMetric
-    let image: ImageStyle
-    let imageVerticalPadding: LayoutMetric
-    let cardViewPaddings: LayoutPaddings
+    var image: ImageStyle
+    var imageVerticalPadding: LayoutMetric
+    var cardView: ImageStyle
+    var cardViewPaddings: LayoutPaddings
     var cardNumber: TextStyle
     var cardBalance: TextStyle
-    let action: ButtonStyle
-    let actionHeight: LayoutMetric
-    let separatorHeight: LayoutMetric
-    let separatorBottomPadding: LayoutMetric
+    var arrow: ImageStyle
+    var action: ButtonStyle
+    var actionHeight: LayoutMetric
+    var separatorHeight: LayoutMetric
+    var separatorBottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -57,7 +59,8 @@ struct MenuListCardEnabledViewTheme:
         
         self.description = [
             .textColor(Colors.Text.sonicSilver),
-            .font(Typography.footnoteRegular())
+            .font(Typography.footnoteRegular()),
+            .text(String(localized: "title-recently-used-card"))
         ]
         self.spaceBetweenTitleAndDescription = 20
         
@@ -67,6 +70,9 @@ struct MenuListCardEnabledViewTheme:
         ]
         self.imageVerticalPadding = 25
         
+        self.cardView = [
+            .image("menu-card-enabled-banner-image")
+        ]
         self.cardViewPaddings = (16, 16, 20, 16)
         self.cardNumber = [
             .textColor(Colors.Text.main),
@@ -75,6 +81,10 @@ struct MenuListCardEnabledViewTheme:
         self.cardBalance = [
             .textColor(Colors.Text.sonicSilver),
             .font(Typography.footnoteRegular())
+        ]
+        
+        self.arrow = [
+            .image("icon-arrow-24")
         ]
         
         self.action = [

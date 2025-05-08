@@ -14,3 +14,42 @@
 
 //   CarouselBannerCell.swift
 
+import UIKit
+
+final class CarouselBannerCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
+    static let theme = CarouselBannerViewTheme()
+    
+    // MARK: - Subviews
+    
+    let contextView: CarouselBannerView = {
+        let view = CarouselBannerView()
+        view.customize(CarouselBannerCell.theme)
+        return view
+    }()
+    
+    // MARK: - Initialisers
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupConstraints() {
+        addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    func bindData(_ data: CarouselBanner) {
+        contextView.bindData(data)
+    }
+    
+}

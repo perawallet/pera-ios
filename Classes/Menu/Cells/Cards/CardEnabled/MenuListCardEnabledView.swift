@@ -56,7 +56,6 @@ final class MenuListCardEnabledView:
     func bindData(_ option: MenuOption, viewModel: MenuCardViewModel) {
         icon.image = option.icon
         option.title.load(in: title)
-        String(localized: "title-recently-used-card").load(in: descriptionLabel)
         viewModel.cardNumber.load(in: cardViewNumber)
         viewModel.cardBalance.load(in: cardViewBalance)
     }
@@ -128,14 +127,18 @@ extension MenuListCardEnabledView {
     }
     
     private func addCardViewContent(_ theme: MenuListCardEnabledViewTheme) {
-        let cardImage = UIImageView(image: UIImage(named: "menu-card-enabled-banner-image"))
+        let cardImage = UIImageView()
+        cardImage.customizeAppearance(theme.cardView)
+        
         cardView.addSubview(cardImage)
         cardImage.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
         
-        let arrow = UIImageView(image: UIImage(named: "icon-arrow-24"))
+        let arrow = UIImageView()
+        arrow.customizeAppearance(theme.arrow)
+        
         cardView.addSubview(arrow)
         arrow.snp.makeConstraints {
             $0.trailing.equalToSuperview()

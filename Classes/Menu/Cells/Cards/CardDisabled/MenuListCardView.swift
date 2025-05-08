@@ -51,7 +51,6 @@ final class MenuListCardView:
     func bindData(_ option: MenuOption) {
         icon.image = option.icon
         option.title.load(in: title)
-        String(localized: "menu-card-banner-description").load(in: descriptionLabel)
     }
 
     func prepareForReuse() {

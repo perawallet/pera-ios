@@ -12,50 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MenuListItemViewTheme.swift
+//   CarouselBannerViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 
-struct MenuListItemViewTheme:
+struct CarouselBannerViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
     var contentViewRadius: LayoutMetric
-    var title: TextStyle
-    var titleHorizontalPadding: LayoutMetric
-    var iconHorizontalPadding: LayoutMetric
-    var newLabel: TextStyle
-    var newLabelSize: LayoutSize
-    var newLabelRadius: LayoutMetric
+    var contentHorizontalPadding: LayoutMetric
+    var text: TextStyle
+    var textHeight: LayoutMetric
+    var spacingBetweenTextAndIcon: LayoutMetric
+    var textHorizontalPadding: LayoutMetric
+    var iconViewHeight: LayoutMetric
+    var arrowView: ViewStyle
+    var arrowViewHeight: LayoutMetric
     var arrow: ImageStyle
 
     init(_ family: LayoutFamily) {
         self.background = [
-            .backgroundColor(Colors.Button.Ghost.focusBackground)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentViewRadius = 16
+        self.contentHorizontalPadding = 12
         
-        self.title = [
+        self.text = [
             .textColor(Colors.Text.main),
-            .font(Typography.bodyLargeMedium())
+            .font(Typography.bodyRegular())
         ]
-        self.titleHorizontalPadding = 12
+        self.textHeight = 40
+        self.spacingBetweenTextAndIcon = 12
+        self.textHorizontalPadding = 50
         
-        self.iconHorizontalPadding = 16
+        self.iconViewHeight = 48
         
-        self.newLabel = [
-            .backgroundColor(Colors.Wallet.wallet4),
-            .textColor(Colors.Wallet.wallet4Icon),
-            .font(Typography.captionMedium()),
-            .textAlignment(.center),
-            .text(String(localized: "title-new-uppercased"))
+        self.arrowView = [
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
-        self.newLabelSize = (41, 28)
-        self.newLabelRadius = 8
-        
+        self.arrowViewHeight = 36
         self.arrow = [
             .image("icon-arrow-24")
         ]
