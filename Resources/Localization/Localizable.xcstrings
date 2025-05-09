@@ -8073,6 +8073,16 @@
         }
       }
     },
+    "title-invite-friends" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite Friends"
+          }
+        }
+      }
+    },
     "title-keep" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8245,6 +8255,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manually"
+          }
+        }
+      }
+    },
+    "title-menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
           }
         }
       }

@@ -51,6 +51,7 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
+    case settings
     case transactionDetail(
         account: Account,
         transaction: Transaction,
@@ -224,6 +225,7 @@ indirect enum Screen {
         dataController: ReceiveCollectibleAccountListDataController
     )
     case receiveCollectibleAssetList(account: AccountHandle)
+    case collectibleList
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
@@ -240,7 +242,7 @@ indirect enum Screen {
         addressInputViewText: String?
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
-    case shareActivity(items: [Any])
+    case shareActivity(items: [Any], excludedActivityTypes: [UIActivity.ActivityType]?)
     case image3DCard(
         image: UIImage,
         rendersContinuously: Bool

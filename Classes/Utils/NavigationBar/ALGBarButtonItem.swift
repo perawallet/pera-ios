@@ -289,6 +289,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon, tintColor: Colors.Text.main.uiColor)
             }
             return nil
+        case .settings:
+            if let icon = img("tabbar-icon-settings-selected") {
+                return ImageContent(normal: icon, tintColor: Colors.Text.main.uiColor)
+            }
+            return nil
         }
         return nil
     }
@@ -416,6 +421,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .reload:
             return .explicit(CGSize(width: 40, height: 40))
+        case .settings:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -471,6 +478,7 @@ extension ALGBarButtonItem {
         case discoverHome
         case flexibleSpace
         case reload
+        case settings
     }
 }
 

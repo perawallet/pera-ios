@@ -266,7 +266,8 @@ extension AlgorandSecureBackupSuccessScreen {
     private func openShareSheet(_ url: URL) {
         open(
             .shareActivity(
-                items: [url]
+                items: [url],
+                excludedActivityTypes: nil
             ),
             by: .presentWithoutNavigationController
         )

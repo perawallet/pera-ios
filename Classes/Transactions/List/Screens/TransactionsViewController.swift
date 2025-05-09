@@ -341,7 +341,7 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
                 if file.isFault { return }
 
                 self.open(
-                    .shareActivity(items: [file.url]),
+                    .shareActivity(items: [file.url], excludedActivityTypes: nil),
                     by: .presentWithoutNavigationController
                 )
             case .failure(_, let errorModel):
