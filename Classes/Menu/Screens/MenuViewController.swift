@@ -32,6 +32,7 @@ final class MenuViewController: BaseViewController {
         appLaunchController: configuration.launchController
     )
     
+    private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!)
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
@@ -74,9 +75,32 @@ final class MenuViewController: BaseViewController {
         addMenuListView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let vm = MenuCardViewModel(cardNumber: "**** 2692", cardBalance: "20 USDC")
-        menuOptions = [.cards(cardVM: vm), .nfts, .buyAlgo, .receive, .inviteFriends]
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        menuOptions = [.cards(cardVM: nil), .nfts, .buyAlgo, .receive, .inviteFriends]
+        configure()
+    }
+}
+
+extension MenuViewController {
+    private func configure() {
+        cardsSupportedCountriesFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .success(let region):
+                if region.isAvailable {
+                    let vm = MenuCardViewModel(cardNumber: "**** 2692", cardBalance: "20 USDC")
+                    menuOptions = [.cards(cardVM: vm), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    menuListView.collectionView.reloadData()
+                }
+            case .error:
+               break
+            }
+        }
+        
+        cardsSupportedCountriesFlowCoordinator.launch()
     }
 }
 
