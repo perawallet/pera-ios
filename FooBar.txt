@@ -1,2 +1,2 @@
 FooBarBuzz
-FooBar
+FooBarBuzz
