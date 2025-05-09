@@ -16,7 +16,8 @@
         "wallet_connect": {
             "acceptedSchemes": [
                 "algorand-wc",
-                "perawallet-wc"
+                "perawallet-wc",
+                "wc"
             ],
             "preferredScheme": "algorand-wc"
         },

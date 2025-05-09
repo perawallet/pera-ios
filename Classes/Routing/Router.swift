@@ -51,7 +51,8 @@ final class Router:
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private var meldFlowCoordinator: MeldFlowCoordinator?
-
+    
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(presentingScreen: findVisibleScreen(over: rootViewController), configuration: appConfiguration)
 
     init(
         rootViewController: RootViewController,
@@ -492,6 +493,12 @@ final class Router:
                     )
                 )
             }
+        case .qrScanner:
+            guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
+                return
+            }
+
+            scanQRFlowCoordinator.launch()
         }
     }
     
@@ -2844,7 +2851,6 @@ extension Router {
             guard let self = self else { return }
 
             let visibleScreen = findVisibleScreen(over: rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
             
             guard let domain = draft.dappURL?.host else {
                 self.handleWalletConnectV2Session(
