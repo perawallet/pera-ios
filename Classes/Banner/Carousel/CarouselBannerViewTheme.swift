@@ -33,6 +33,9 @@ struct CarouselBannerViewTheme:
     var arrowView: ViewStyle
     var arrowViewHeight: LayoutMetric
     var arrow: ImageStyle
+    var closeButton: ButtonStyle
+    var closeButtonHeight: LayoutMetric
+    var closeButtonPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -58,5 +61,11 @@ struct CarouselBannerViewTheme:
         self.arrow = [
             .image("icon-arrow-24")
         ]
+        
+        self.closeButton = [
+            .backgroundImage([.normal("close-governance-icon")])
+        ]
+        self.closeButtonHeight = 24
+        self.closeButtonPadding  = 8
     }
 }

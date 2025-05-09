@@ -27,12 +27,14 @@ final class CarouselBannerView:
     private lazy var iconView = UIView()
     private lazy var textLabel = UILabel()
     private lazy var arrowView = UIView()
+    private lazy var closeButton = Button()
     
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
         addIcon(theme)
         addText(theme)
         addArrow(theme)
+        addCloseButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -47,6 +49,7 @@ final class CarouselBannerView:
             textLabel.textColor = Colors.Helpers.negative.uiColor
         }
         arrowView.isHidden = !banner.showNavigationButton
+        closeButton.isHidden = !banner.showCloseButton
     }
 
     func prepareForReuse() {
@@ -110,6 +113,19 @@ extension CarouselBannerView {
             $0.height.equalTo(theme.arrowViewHeight)
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(theme.contentHorizontalPadding)
+        }
+    }
+    
+    private func addCloseButton(_ theme: CarouselBannerViewTheme) {
+        closeButton.customizeAppearance(theme.closeButton)
+        closeButton.layer.cornerRadius = theme.closeButtonHeight / 2
+        
+        addSubview(closeButton)
+        closeButton.snp.makeConstraints {
+            $0.width.equalTo(theme.closeButtonHeight)
+            $0.height.equalTo(theme.closeButtonHeight)
+            $0.top.equalToSuperview().inset(theme.closeButtonPadding)
+            $0.trailing.equalToSuperview().inset(theme.closeButtonPadding)
         }
     }
 }
