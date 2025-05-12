@@ -46,7 +46,7 @@ struct CarouselBannerViewTheme:
         
         self.text = [
             .textColor(Colors.Text.main),
-            .font(Typography.bodyRegular())
+            .font(Typography.bodyMedium())
         ]
         self.textHeight = 40
         self.spacingBetweenTextAndIcon = 12
