@@ -214,16 +214,6 @@ extension MenuViewController: MenuListCardViewCellDelegate {
     }
 }
 
-extension MenuViewController: MenuListCardEnabledViewCellDelegate {
-    func didPressViewCardsButton(in cell: MenuListCardEnabledViewCell) {
-        cardsFlowCoordinator.launch()
-    }
-    
-    func didPressCardDetailButton(in cell: MenuListCardEnabledViewCell) {
-        print("didPressCardDetailButton")
-    }
-}
-
 extension MenuViewController {
     private func openBuySellOptions() {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
