@@ -18,7 +18,7 @@ import UIKit
 
 final class MenuDataSource: NSObject {
     private(set) lazy var menuOptions: [MenuOption] = [
-        .cards(withCardCreated: false), .nfts, .buyAlgo, .receive, .inviteFriends
+        .cards(withCardCreated: false), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends
     ]
 
     private let sharedDataController: SharedDataController

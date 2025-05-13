@@ -50,7 +50,26 @@ final class MenuListItemView:
         icon.image = option.icon
         option.title.load(in: title)
         newLabel.isHidden = !option.showNewLabel
-        nftsView.isHidden = !option.showNFTsSample
+        
+        switch option {
+        case .nfts(withThumbnails: let thumbnails):
+            
+            switch thumbnails.count {
+            case 0:
+                nftsView.isHidden = true
+            case 1:
+                nftImage2.isHidden = true
+                nftImage3.isHidden = true
+                nftsView.isHidden = false
+            case 2:
+                nftImage3.isHidden = true
+                nftsView.isHidden = false
+            default:
+                nftsView.isHidden = false
+            }
+        default:
+            nftsView.isHidden = true
+        }
     }
 
     func prepareForReuse() {

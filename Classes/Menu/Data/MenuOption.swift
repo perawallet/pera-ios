@@ -18,7 +18,7 @@ import UIKit
 
 enum MenuOption {
     case cards(withCardCreated: Bool)
-    case nfts
+    case nfts(withThumbnails: [String])
     case transfer
     case buyAlgo
     case receive
@@ -61,15 +61,6 @@ enum MenuOption {
     var showNewLabel: Bool {
         switch self {
         case .transfer:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var showNFTsSample: Bool {
-        switch self {
-        case .nfts:
             return true
         default:
             return false
