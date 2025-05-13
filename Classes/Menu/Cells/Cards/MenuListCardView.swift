@@ -32,6 +32,8 @@ final class MenuListCardView:
     private lazy var descriptionLabel = UILabel()
     private lazy var image = UIImageView()
     private lazy var actionView = MacaroonUIKit.Button()
+    private lazy var notSupportedCountryTitleLabel = UILabel()
+    private lazy var notSupportedCountryTextLabel = UILabel()
     
     weak var delegate: MenuListCardViewDelegate?
     
@@ -40,6 +42,7 @@ final class MenuListCardView:
         addIcon(theme)
         addTitle(theme)
         addDescription(theme)
+        addNotSupportedCountryInformation(theme)
         addImage(theme)
         addAction(theme)
     }
@@ -48,10 +51,35 @@ final class MenuListCardView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ option: MenuOption) {
+    func bindData(_ option: MenuOption, theme: MenuListCardViewTheme) {
         icon.image = option.icon
         option.title.load(in: title)
-        String(localized: "menu-card-banner-description").load(in: descriptionLabel)
+        option.description.load(in: descriptionLabel)
+        switch option {
+        case .cards(state: let state):
+            switch state {
+            case .inactive:
+                actionView.semanticContentAttribute = .unspecified
+                actionView.customizeAppearance(theme.actionInactive)
+                actionView.titleEdgeInsets = theme.actionInactiveTitleEdgeInsets
+                actionView.imageEdgeInsets = theme.actionInactiveImageEdgeInsets
+                notSupportedCountryTitleLabel.isHidden = true
+                notSupportedCountryTextLabel.isHidden = true
+            case .active:
+                actionView.semanticContentAttribute = .forceRightToLeft
+                actionView.customizeAppearance(theme.actionActive)
+                actionView.titleEdgeInsets = theme.actionActiveTitleEdgeInsets
+                actionView.imageEdgeInsets = theme.actionActiveImageEdgeInsets
+                notSupportedCountryTitleLabel.isHidden = true
+                notSupportedCountryTextLabel.isHidden = true
+            case .notSupported(userCountryName: let userCountryName):
+                actionView.isHidden = true
+                descriptionLabel.isHidden = true
+                notSupportedCountryTextLabel.text = String(format: String(localized: "cards-not-supported-country-text"), userCountryName)
+            }
+        default:
+            break
+        }
     }
 
     func prepareForReuse() {
@@ -95,6 +123,25 @@ extension MenuListCardView {
         }
     }
     
+    private func addNotSupportedCountryInformation(_ theme: MenuListCardViewTheme) {
+        notSupportedCountryTitleLabel.customizeAppearance(theme.notSupportedCountryTitle)
+        notSupportedCountryTextLabel.customizeAppearance(theme.notSupportedCountryText)
+        notSupportedCountryTextLabel.numberOfLines = 0
+
+        addSubview(notSupportedCountryTitleLabel)
+        notSupportedCountryTitleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.iconHorizontalPadding)
+            $0.top == title.snp.bottom + theme.spaceBetweenTitleAndDescription
+        }
+        
+        addSubview(notSupportedCountryTextLabel)
+        notSupportedCountryTextLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.iconHorizontalPadding)
+            $0.trailing.equalToSuperview().inset(theme.notSupportedCountryTextPadding)
+            $0.top == notSupportedCountryTitleLabel.snp.bottom + theme.iconVerticalPadding
+        }
+    }
+    
     private func addImage(_ theme: MenuListCardViewTheme) {
         image.customizeAppearance(theme.image)
         
@@ -106,11 +153,6 @@ extension MenuListCardView {
     }
     
     private func addAction(_ theme: MenuListCardViewTheme) {
-        
-        actionView.customizeAppearance(theme.action)
-        actionView.titleEdgeInsets = theme.actionTitleEdgeInsets
-        actionView.imageEdgeInsets = theme.actionImageEdgeInsets
-        
         addSubview(actionView)
         actionView.fitToHorizontalIntrinsicSize()
         

@@ -55,7 +55,7 @@ final class MenuListCardViewCell: UICollectionViewCell {
     }
     
     func bindData(_ data: MenuOption) {
-        contextView.bindData(data)
+        contextView.bindData(data, theme: MenuListCardViewCell.theme)
         contextView.delegate = self
     }
     
