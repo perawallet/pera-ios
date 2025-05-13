@@ -22,14 +22,15 @@ import UIKit
 struct MenuListItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
-    var contentViewRadius: LayoutMetric
-    var title: TextStyle
-    var titleHorizontalPadding: LayoutMetric
-    var iconHorizontalPadding: LayoutMetric
-    var newLabel: TextStyle
-    var newLabelSize: LayoutSize
-    var newLabelRadius: LayoutMetric
+    let background: ViewStyle
+    let contentViewRadius: LayoutMetric
+    let title: TextStyle
+    let titleHorizontalPadding: LayoutMetric
+    let iconHorizontalPadding: LayoutMetric
+    let arrow: ImageStyle
+    let newLabel: TextStyle
+    let newLabelSize: LayoutSize
+    let newLabelRadius: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -45,11 +46,16 @@ struct MenuListItemViewTheme:
         
         self.iconHorizontalPadding = 16
         
+        self.arrow = [
+            .image("icon-arrow-24")
+        ]
+        
         self.newLabel = [
             .backgroundColor(Colors.Wallet.wallet4),
             .textColor(Colors.Wallet.wallet4Icon),
             .font(Typography.captionMedium()),
-            .textAlignment(.center)
+            .textAlignment(.center),
+            .text(String(localized: "title-new-uppercased"))
         ]
         self.newLabelSize = (41, 28)
         self.newLabelRadius = 8
