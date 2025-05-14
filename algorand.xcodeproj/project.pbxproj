@@ -1403,9 +1403,6 @@
 		2B3A95E7238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E5238FF99C00A3DF44 /* TransactionControllerDelegate.swift */; };
 		2B3A95E9239011EB00A3DF44 /* AssetTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionSendDraft.swift */; };
 		2B3A95EA239011EB00A3DF44 /* AssetTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionSendDraft.swift */; };
-		2B3C72FF2898606600A0181F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B3C72FE2898606600A0181F /* Colors.xcassets */; };
-		2B3C73002898606600A0181F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B3C72FE2898606600A0181F /* Colors.xcassets */; };
-		2B3C73012898606600A0181F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B3C72FE2898606600A0181F /* Colors.xcassets */; };
 		2B3C73032898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
 		2B3C73042898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
 		2B3C73052898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
@@ -6664,6 +6661,9 @@
 		D4D09B7927EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
 		D4D09B7A27EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
 		D4D09B7B27EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
+		D4D2B5232DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
+		D4D2B5242DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
+		D4D2B5252DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		D4D3AE7D284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
 		D4D3AE7E284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
 		D4D3AE7F284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
@@ -8240,7 +8240,6 @@
 		2B3A95E5238FF99C00A3DF44 /* TransactionControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionControllerDelegate.swift; sourceTree = "<group>"; };
 		2B3A95E8239011EB00A3DF44 /* AssetTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B3BC385266FEBCD007D7107 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		2B3C72FE2898606600A0181F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		2B3C73022898627900A0181F /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetList.swift; sourceTree = "<group>"; };
 		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
@@ -10085,6 +10084,7 @@
 		D4D09B6E27EE43B900DEEECA /* SendCollectibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleView.swift; sourceTree = "<group>"; };
 		D4D09B7327EE6C2500DEEECA /* SendCollectibleViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendCollectibleViewController+Animation.swift"; sourceTree = "<group>"; };
 		D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendCollectibleViewController+Layout.swift"; sourceTree = "<group>"; };
+		D4D2B5222DD48D6C009286EC /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewTitleViewModel.swift; sourceTree = "<group>"; };
 		D4D56452298AA57200570610 /* BidaliDappDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliDappDetailScreen.swift; sourceTree = "<group>"; };
 		D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTextInformationViewModel.swift; sourceTree = "<group>"; };
@@ -13873,7 +13873,7 @@
 			isa = PBXGroup;
 			children = (
 				CBAD47492745595300C91946 /* Assets.xcassets */,
-				2B3C72FE2898606600A0181F /* Colors.xcassets */,
+				D4D2B5222DD48D6C009286EC /* Colors.xcassets */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -23141,6 +23141,7 @@
 				2B9541B525AF161C0098805B /* TransactionParams.json in Resources */,
 				2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */,
 				17B7E1DD27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
+				D4D2B5232DD48D6C009286EC /* Colors.xcassets in Resources */,
 				2B9540FB25A8617B0098805B /* AccountB.json in Resources */,
 				D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				D4CC470426DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
@@ -23150,7 +23151,6 @@
 				2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */,
 				2B95410B25A861870098805B /* User.json in Resources */,
 				D4CC471926DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
-				2B3C73012898606600A0181F /* Colors.xcassets in Resources */,
 				D4CC471626DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				2B9541D325AF1B8F0098805B /* Payment.json in Resources */,
@@ -23197,7 +23197,6 @@
 			files = (
 				17B7E1CC27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059126F0F0A1001D0D11 /* light-ledger.json in Resources */,
-				2B3C73002898606600A0181F /* Colors.xcassets in Resources */,
 				D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
 				2B0F633524EC129D00DA22A6 /* PublicSans-Medium.ttf in Resources */,
@@ -23211,6 +23210,7 @@
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
 				D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				F06FF4BC27E1BE780047A20E /* GoogleService-Info.plist in Resources */,
+				D4D2B5252DD48D6C009286EC /* Colors.xcassets in Resources */,
 				D446A74B272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479C26012E670083EFFA /* mnemonics.txt in Resources */,
 				17B7E1DC27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
@@ -23235,7 +23235,6 @@
 			files = (
 				17B7E1CB27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059026F0F0A1001D0D11 /* light-ledger.json in Resources */,
-				2B3C72FF2898606600A0181F /* Colors.xcassets in Resources */,
 				D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
@@ -23249,6 +23248,7 @@
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */,
+				D4D2B5242DD48D6C009286EC /* Colors.xcassets in Resources */,
 				D446A74A272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479B26012E670083EFFA /* mnemonics.txt in Resources */,
 				17B7E1DB27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
