@@ -21,20 +21,6 @@ import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
-    func fetchCardsAvailableCountries(
-        onCompleted handler: @escaping (Response.ModelResult<CardsSupportedCountries>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.cardsSupportedCountries)
-            .method(.get)
-            .completionHandler(handler)
-            .execute()
-    }
-}
-
-extension ALGAPI {
-    @discardableResult
     func fetchCardsCountryAvailability(
         deviceId: String? = nil,
         address: String? = nil,
@@ -50,3 +36,18 @@ extension ALGAPI {
     }
 }
 
+extension ALGAPI {
+    @discardableResult
+    func fetchCardsFundAddressesList(
+        addresses: [String],
+        onCompleted handler: @escaping (Response.ModelResult<CardsFundAddressesList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.cardsFundAddressesList)
+            .query(CardsFundAddressesListDraft(addresses: addresses))
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+}

@@ -47,7 +47,7 @@ enum MenuOption {
             switch state {
             case .inactive, .active:
                 return String(localized: "menu-card-banner-description")
-            case .notSupported:
+            case .addedToWailist:
                 return .empty
             }
         default:
@@ -94,5 +94,5 @@ enum MenuOption {
 enum MenuCardState {
     case inactive
     case active
-    case notSupported(userCountryName: String)
+    case addedToWailist
 }

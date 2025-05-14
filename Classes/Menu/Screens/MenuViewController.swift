@@ -93,15 +93,11 @@ extension MenuViewController {
             guard let self else { return }
             
             switch event {
-            case .success(let region, let isWaitlisted):
+            case .success(hasActiveCard: let hasActiveCard, isWaitlisted: let isWaitlisted):
                 if isWaitlisted {
-                    menuOptions = [.cards(state: .notSupported(userCountryName: region.country.countryName)), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    menuOptions = [.cards(state: .addedToWailist), .nfts, .buyAlgo, .receive, .inviteFriends]
                 } else {
-                    if region.isAvailable {
-                        menuOptions = [.cards(state: .active), .nfts, .buyAlgo, .receive, .inviteFriends]
-                    } else {
-                        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
-                    }
+                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
                 }
                 menuListView.collectionView.reloadData()
             case .error:

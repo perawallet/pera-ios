@@ -61,8 +61,8 @@ enum ALGAPIPath: String {
     case scammerDomainCheck = "/is-scammer-domain"
     case asaInboxesRequests = "/asa-inboxes/requests/"
     case asaInboxesRequest = "/asa-inboxes/requests/%@/"
-    case cardsSupportedCountries = "/cards/supported-countries/"
-    case cardsCountryAvailability = "/cards/country-availability-request"
+    case cardsCountryAvailability = "/cards/country-availability-request/"
+    case cardsFundAddressesList = "/cards/fund-addresses/"
 }
 
 extension EndpointBuilder {

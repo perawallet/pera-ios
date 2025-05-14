@@ -41,23 +41,7 @@ extension CardsSupportedCountriesFlowCoordinator {
             guard let self else { return }
             switch response {
             case .success(let result):
-                getCardsAvailableCountries(isWaitlisted: result.isWaitlisted)
-            case .failure:
-                getCardsAvailableCountries(isWaitlisted: false)
-            }
-        }
-    }
-    
-    private func getCardsAvailableCountries(isWaitlisted: Bool) {
-        api.fetchCardsAvailableCountries { [weak self] response in
-            guard let self else { return }
-            switch response {
-            case .success(let result):
-                guard let supportedRegion = result.regions.first(where: { $0.country.countryCode == result.currentRegion.countryCode })  else {
-                    self.eventHandler?(.error(nil))
-                    return
-                }
-                self.eventHandler?(.success(supportedRegion, isWaitlisted))
+                self.eventHandler?(.success(hasActiveCard: false, isWaitlisted: result.isWaitlisted))
             case .failure(let error, _):
                 self.eventHandler?(.error(error))
             }
@@ -67,7 +51,7 @@ extension CardsSupportedCountriesFlowCoordinator {
 
 extension CardsSupportedCountriesFlowCoordinator {
     enum Event {
-        case success(SupportedRegion, Bool)
+        case success(hasActiveCard: Bool, isWaitlisted: Bool)
         case error(Error?)
     }
 }

@@ -73,7 +73,7 @@ struct MenuListCardViewTheme:
         self.notSupportedCountryText = [
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular()),
-            .text(String(localized: ""))
+            .text(String(localized: "cards-not-supported-country-text"))
         ]
         self.notSupportedCountryTextPadding = 126
         

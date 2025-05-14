@@ -2288,7 +2288,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We will inform this device via a push notification when we launch in %@."
+            "value" : "We will inform this device via a push notification when we launch in your country."
           }
         }
       }

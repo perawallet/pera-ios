@@ -76,12 +76,11 @@ final class MenuListCardView:
                 descriptionLabel.isHidden = false
                 notSupportedCountryTitleLabel.isHidden = true
                 notSupportedCountryTextLabel.isHidden = true
-            case .notSupported(userCountryName: let userCountryName):
+            case .addedToWailist:
                 actionView.isHidden = true
                 descriptionLabel.isHidden = true
                 notSupportedCountryTitleLabel.isHidden = false
                 notSupportedCountryTextLabel.isHidden = false
-                notSupportedCountryTextLabel.text = String(format: String(localized: "cards-not-supported-country-text"), userCountryName)
             }
         default:
             break
