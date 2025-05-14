@@ -33,7 +33,24 @@ final class CardsSupportedCountriesFlowCoordinator {
 
 extension CardsSupportedCountriesFlowCoordinator {
     func launch() {
-        getCardsCountryAvailability()
+        getCardsFundAddressesList()
+    }
+    
+    private func getCardsFundAddressesList() {
+        let addresses = session.authenticatedUser?.accounts.filter { !$0.isWatchAccount }.map { $0.address } ?? []
+        api.fetchCardsFundAddressesList(addresses: addresses) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let result):
+                if result.results.contains(where: { $0.cardFundAddress != nil }) {
+                    self.eventHandler?(.success(hasActiveCard: true, isWaitlisted: false))
+                } else {
+                    getCardsCountryAvailability()
+                }
+            case .failure(let error, _):
+                self.eventHandler?(.error(error))
+            }
+        }
     }
     
     private func getCardsCountryAvailability() {
