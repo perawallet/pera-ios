@@ -32,3 +32,21 @@ extension ALGAPI {
             .execute()
     }
 }
+
+extension ALGAPI {
+    @discardableResult
+    func fetchCardsCountryAvailability(
+        deviceId: String? = nil,
+        address: String? = nil,
+        onCompleted handler: @escaping (Response.ModelResult<CardsCountryAvailability>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.cardsCountryAvailability)
+            .query(CardsCountryAvailabilityDraft(deviceId: deviceId, address: address))
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+}
+

@@ -23,14 +23,32 @@ final class CardsSupportedCountriesFlowCoordinator {
     var eventHandler: EventHandler?
 
     private let api: ALGAPI
+    private let session: Session
 
-    init(api: ALGAPI) {
+    init(api: ALGAPI, session: Session) {
         self.api = api
+        self.session = session
     }
 }
 
 extension CardsSupportedCountriesFlowCoordinator {
     func launch() {
+        getCardsCountryAvailability()
+    }
+    
+    private func getCardsCountryAvailability() {
+        api.fetchCardsCountryAvailability(deviceId: session.authenticatedUser?.getDeviceId(on: api.network))  { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let result):
+                getCardsAvailableCountries(isWaitlisted: result.isWaitlisted)
+            case .failure:
+                getCardsAvailableCountries(isWaitlisted: false)
+            }
+        }
+    }
+    
+    private func getCardsAvailableCountries(isWaitlisted: Bool) {
         api.fetchCardsAvailableCountries { [weak self] response in
             guard let self else { return }
             switch response {
@@ -39,7 +57,7 @@ extension CardsSupportedCountriesFlowCoordinator {
                     self.eventHandler?(.error(nil))
                     return
                 }
-                self.eventHandler?(.success(supportedRegion))
+                self.eventHandler?(.success(supportedRegion, isWaitlisted))
             case .failure(let error, _):
                 self.eventHandler?(.error(error))
             }
@@ -49,7 +67,7 @@ extension CardsSupportedCountriesFlowCoordinator {
 
 extension CardsSupportedCountriesFlowCoordinator {
     enum Event {
-        case success(SupportedRegion)
+        case success(SupportedRegion, Bool)
         case error(Error?)
     }
 }

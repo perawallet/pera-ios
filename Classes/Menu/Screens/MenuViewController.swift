@@ -32,7 +32,7 @@ final class MenuViewController: BaseViewController {
         appLaunchController: configuration.launchController
     )
     
-    private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!)
+    private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
@@ -77,31 +77,41 @@ final class MenuViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuOptions = [.cards(state: .notSupported(userCountryName: "Spain")), .nfts, .buyAlgo, .receive, .inviteFriends]
-//        configure()
+        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
     }
 }
 
-//extension MenuViewController {
-//    private func configure() {
-//        cardsSupportedCountriesFlowCoordinator.eventHandler = {
-//            [weak self] event in
-//            guard let self else { return }
-//            
-//            switch event {
-//            case .success(let region):
-//                if region.isAvailable {
-//                    menuOptions = [.cards(state: .active), .nfts, .buyAlgo, .receive, .inviteFriends]
-//                    menuListView.collectionView.reloadData()
-//                }
-//            case .error:
-//               break
-//            }
-//        }
-//        
-//        cardsSupportedCountriesFlowCoordinator.launch()
-//    }
-//}
+extension MenuViewController {
+    private func configure() {
+        cardsSupportedCountriesFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .success(let region, let isWaitlisted):
+                if isWaitlisted {
+                    menuOptions = [.cards(state: .notSupported(userCountryName: region.country.countryName)), .nfts, .buyAlgo, .receive, .inviteFriends]
+                } else {
+                    if region.isAvailable {
+                        menuOptions = [.cards(state: .active), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    } else {
+                        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    }
+                }
+                menuListView.collectionView.reloadData()
+            case .error:
+               break
+            }
+        }
+        
+        cardsSupportedCountriesFlowCoordinator.launch()
+    }
+}
 
 extension MenuViewController {
     private func addMenuListView() {

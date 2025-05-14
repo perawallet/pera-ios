@@ -6706,6 +6706,12 @@
 		D4D09B7927EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
 		D4D09B7A27EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
 		D4D09B7B27EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */; };
+		D4D2B5272DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B5262DD4CC24009286EC /* CardsCountryAvailability.swift */; };
+		D4D2B5282DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B5262DD4CC24009286EC /* CardsCountryAvailability.swift */; };
+		D4D2B5292DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B5262DD4CC24009286EC /* CardsCountryAvailability.swift */; };
+		D4D2B52C2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B52B2DD4DA8E009286EC /* CardsCountryAvailabilityDraft.swift */; };
+		D4D2B52D2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B52B2DD4DA8E009286EC /* CardsCountryAvailabilityDraft.swift */; };
+		D4D2B52E2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2B52B2DD4DA8E009286EC /* CardsCountryAvailabilityDraft.swift */; };
 		D4D3AE7D284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
 		D4D3AE7E284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
 		D4D3AE7F284A723200D51A08 /* AccountPreviewTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */; };
@@ -10141,6 +10147,8 @@
 		D4D09B6E27EE43B900DEEECA /* SendCollectibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleView.swift; sourceTree = "<group>"; };
 		D4D09B7327EE6C2500DEEECA /* SendCollectibleViewController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendCollectibleViewController+Animation.swift"; sourceTree = "<group>"; };
 		D4D09B7827EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendCollectibleViewController+Layout.swift"; sourceTree = "<group>"; };
+		D4D2B5262DD4CC24009286EC /* CardsCountryAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCountryAvailability.swift; sourceTree = "<group>"; };
+		D4D2B52B2DD4DA8E009286EC /* CardsCountryAvailabilityDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCountryAvailabilityDraft.swift; sourceTree = "<group>"; };
 		D4D3AE7C284A723200D51A08 /* AccountPreviewTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewTitleViewModel.swift; sourceTree = "<group>"; };
 		D4D56452298AA57200570610 /* BidaliDappDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliDappDetailScreen.swift; sourceTree = "<group>"; };
 		D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTextInformationViewModel.swift; sourceTree = "<group>"; };
@@ -11105,6 +11113,7 @@
 				2B4DF42C236C772300FF9551 /* Account */,
 				17A011CC27EB6D4F008C147D /* Announcement */,
 				D49D2E6A2A54194F00CE5384 /* AssetDetail */,
+				D4D2B52A2DD4DA7D009286EC /* Cards */,
 				2B4DF435236C77B200FF9551 /* Device */,
 				F01509D42926FB4C00988355 /* Discover */,
 				95CA71FA27CD5D6700424626 /* MoonPay */,
@@ -19533,6 +19542,7 @@
 		D420AFC82DCDFCD200257D3E /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				D4D2B5262DD4CC24009286EC /* CardsCountryAvailability.swift */,
 				D420AFC92DCDFCE400257D3E /* CardsSupportedCountries.swift */,
 			);
 			path = Cards;
@@ -21558,6 +21568,14 @@
 				D4E5365028CB470F00E04B6F /* InfoBox */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		D4D2B52A2DD4DA7D009286EC /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				D4D2B52B2DD4DA8E009286EC /* CardsCountryAvailabilityDraft.swift */,
+			);
+			path = Cards;
 			sourceTree = "<group>";
 		};
 		D4D56451298AA56100570610 /* DappDetail */ = {
@@ -23772,6 +23790,7 @@
 				D4588AE1294293EE0012C12C /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
 				2BC1827223D8DEFE00888476 /* AssetTransactionsDraft.swift in Sources */,
 				17707299290AAC2C009E02AE /* DiscoverSearchAPIDataController.swift in Sources */,
+				D4D2B5292DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */,
 				95779098278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift in Sources */,
 				2BD36DBA267CCB7100C57728 /* WCAssetAdditionTransactionView.swift in Sources */,
 				2BD6A06724A50D3E00D2D28D /* PinLimitView.swift in Sources */,
@@ -24514,6 +24533,7 @@
 				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				D4FD4546296070D10015AD34 /* CollectibleAmountFormattingStandaloneContextHandler.swift in Sources */,
 				D4C45BF52726C54800F4AE31 /* ContactInformationView.swift in Sources */,
+				D4D2B52D2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */,
 				D4E5E0582A82C056009B3194 /* WCSessionExpirationDateSecondaryListItemViewModel.swift in Sources */,
 				D45A93E32936536F000DFCC8 /* CollectibleListItemView.swift in Sources */,
 				D4194310273541140055EC70 /* PageBarButton.swift in Sources */,
@@ -27522,6 +27542,7 @@
 				D478D93F2B306362008C4A21 /* UpdateSwapQuoteDraft.swift in Sources */,
 				2B0F626D24EC129D00DA22A6 /* TransactionFilterOptionView.swift in Sources */,
 				2B835B7A27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
+				D4D2B5282DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */,
 				D4A647A327847A15009DE241 /* TransactionHistoryTitleContextView.swift in Sources */,
 				2B698269278DF652008EC669 /* TransactionsListLayout+Theme.swift in Sources */,
 				D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */,
@@ -28029,6 +28050,7 @@
 				D40BA4D12A819C2A00138BF7 /* WCSessionAdvancedPermissionCell.swift in Sources */,
 				2BAAF4B728E49C5100FC59AF /* SelectAssetNoContentItemViewModel.swift in Sources */,
 				0467679C2756A71B00C88F21 /* CurrencySelectionListDataSource.swift in Sources */,
+				D4D2B52C2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */,
 				D405058826F0D190001D0D11 /* LedgerDeviceCellViewTheme.swift in Sources */,
 				9577909F278B2E600061FB9C /* WCSingleTransactionRequestMiddleViewModel.swift in Sources */,
 				F0E7218A284F6A7B00865419 /* ReceiveTransactionFlowCoordinator.swift in Sources */,
@@ -28870,6 +28892,7 @@
 				D44B7C4728AD1F3200CE8788 /* Data+String.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
 				2BC1827123D8DEFE00888476 /* AssetTransactionsDraft.swift in Sources */,
+				D4D2B5272DD4CC39009286EC /* CardsCountryAvailability.swift in Sources */,
 				D43B8EAB27D0FF2200DF7EFB /* WCSessionShortListItemView.swift in Sources */,
 				D4714C4929EF50E6002ABA84 /* WatchAccountQuickActionsCell.swift in Sources */,
 				D40BA4FE2A81ACA600138BF7 /* WCSessionInfoViewTheme.swift in Sources */,
@@ -29612,6 +29635,7 @@
 				D46E5E1B26EA904B00EFEF66 /* LedgerTutorialInstructionListViewTheme.swift in Sources */,
 				2B344B17268A0F8200DA7B25 /* WCTransactionDetail.swift in Sources */,
 				D45A93E12936536F000DFCC8 /* CollectibleListItemView.swift in Sources */,
+				D4D2B52E2DD4DA8F009286EC /* CardsCountryAvailabilityDraft.swift in Sources */,
 				2BC647C129B89DD000DE5071 /* ManageAssetListItemLoadingView.swift in Sources */,
 				2B7E302D267A4A2400E89EE3 /* WCAlgosTransactionViewModel.swift in Sources */,
 				17F8BF6128A2BAC500992F91 /* ALGAnalytics.swift in Sources */,

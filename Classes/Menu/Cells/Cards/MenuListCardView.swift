@@ -63,6 +63,8 @@ final class MenuListCardView:
                 actionView.customizeAppearance(theme.actionInactive)
                 actionView.titleEdgeInsets = theme.actionInactiveTitleEdgeInsets
                 actionView.imageEdgeInsets = theme.actionInactiveImageEdgeInsets
+                actionView.isHidden = false
+                descriptionLabel.isHidden = false
                 notSupportedCountryTitleLabel.isHidden = true
                 notSupportedCountryTextLabel.isHidden = true
             case .active:
@@ -70,11 +72,15 @@ final class MenuListCardView:
                 actionView.customizeAppearance(theme.actionActive)
                 actionView.titleEdgeInsets = theme.actionActiveTitleEdgeInsets
                 actionView.imageEdgeInsets = theme.actionActiveImageEdgeInsets
+                actionView.isHidden = false
+                descriptionLabel.isHidden = false
                 notSupportedCountryTitleLabel.isHidden = true
                 notSupportedCountryTextLabel.isHidden = true
             case .notSupported(userCountryName: let userCountryName):
                 actionView.isHidden = true
                 descriptionLabel.isHidden = true
+                notSupportedCountryTitleLabel.isHidden = false
+                notSupportedCountryTextLabel.isHidden = false
                 notSupportedCountryTextLabel.text = String(format: String(localized: "cards-not-supported-country-text"), userCountryName)
             }
         default:
