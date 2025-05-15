@@ -281,12 +281,6 @@
 		17A766822909626400A8746C /* DiscoverDappParamaters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766812909626400A8746C /* DiscoverDappParamaters.swift */; };
 		17A766832909626400A8746C /* DiscoverDappParamaters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766812909626400A8746C /* DiscoverDappParamaters.swift */; };
 		17A766842909626400A8746C /* DiscoverDappParamaters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766812909626400A8746C /* DiscoverDappParamaters.swift */; };
-		17A766862909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */; };
-		17A766872909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */; };
-		17A766882909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */; };
-		17A7668A290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */; };
-		17A7668B290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */; };
-		17A7668C290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */; };
 		17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */; };
 		17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0722662BAB000B0BB0 /* String+Number.swift */; };
 		17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */; };
@@ -7964,8 +7958,6 @@
 		17A766772909586600A8746C /* DiscoverHomeScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverHomeScreenTheme.swift; sourceTree = "<group>"; };
 		17A7667D2909625800A8746C /* DiscoverAssetParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetParameters.swift; sourceTree = "<group>"; };
 		17A766812909626400A8746C /* DiscoverDappParamaters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDappParamaters.swift; sourceTree = "<group>"; };
-		17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverNavigationBarView.swift; sourceTree = "<group>"; };
-		17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverNavigationBarViewTheme.swift; sourceTree = "<group>"; };
 		17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formatter+Additions.swift"; sourceTree = "<group>"; };
 		17AA1B0722662BAB000B0BB0 /* String+Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Number.swift"; sourceTree = "<group>"; };
 		17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Additions.swift"; sourceTree = "<group>"; };
@@ -11094,15 +11086,6 @@
 				F0C27A622922EF19002401F8 /* NoContentView */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		17C932662934CBEC000EE03D /* NavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */,
-				17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */,
-			);
-			path = NavigationBar;
 			sourceTree = "<group>";
 		};
 		17C932672934CC88000EE03D /* Views */ = {
@@ -22777,7 +22760,6 @@
 			isa = PBXGroup;
 			children = (
 				F08A68DE2924588E0039B085 /* DiscoverErrorCell */,
-				17C932662934CBEC000EE03D /* NavigationBar */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -24831,7 +24813,6 @@
 				D4CA4EC229E00AE800E231EB /* RekeyAccountSelectionListHeaderTheme.swift in Sources */,
 				D4CF680728C87BDE0007A727 /* SwapAccountSelectionListDataSource.swift in Sources */,
 				2B343D05259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
-				17A7668C290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
 				F09608802796B7B500CFBB90 /* TransactionOptionsView.swift in Sources */,
 				F0C542F2291DE4F200596A0A /* DiscoverSearchNextListErrorViewModel.swift in Sources */,
 				17CE519C29C2D8FF00155489 /* AlgorandSecureBackupRecoverMnemonicScreen.swift in Sources */,
@@ -25814,7 +25795,6 @@
 				95BB6C2627A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
 				D4A553CD29CDBAA800C9C5EE /* AccountInformationCopyAccountItemViewModel.swift in Sources */,
 				D42DA4F62A8622C900442908 /* WCV1SessionBadgeViewModel.swift in Sources */,
-				17A766882909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */,
 				8B14E6812C0234FD0039B9EC /* IncomingASAsRequestsQuery.swift in Sources */,
 				D497945C287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
 				D4B6EA5C276F8E1A005E2D2C /* TransactionContactInformationViewTheme.swift in Sources */,
@@ -27381,7 +27361,6 @@
 				D44AFC4829D5A11B001F5E0F /* RekeyStandardToStandardAccountFutureTransactionsSignInstructionViewModel.swift in Sources */,
 				D43A0C292790D177007430B9 /* NoContentView.swift in Sources */,
 				D4E34CC127F71C5E00B0C3F4 /* SelectAssetViewControllerTheme.swift in Sources */,
-				17A7668B290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
 				D41EE4692A409DBD00FD03FD /* RekeyToLedgerAccountInstructionsDraft.swift in Sources */,
 				D40D5EB628772DC40051A92B /* AppCallTransactionDetailViewModel.swift in Sources */,
 				F0C542F1291DE4F200596A0A /* DiscoverSearchNextListErrorViewModel.swift in Sources */,
@@ -28353,7 +28332,6 @@
 				F0431F1E287577660004CB7E /* FiatCurrency.swift in Sources */,
 				2BE4D16425967F78005F5764 /* AccountResponse.swift in Sources */,
 				D497945B287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
-				17A766872909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */,
 				2B05A668251E23D7008A8791 /* ChangeCurrencyEvent.swift in Sources */,
 				D419AFA128D0A3A300673C39 /* AccountSelectionListLoadingAccountItemViewTheme.swift in Sources */,
 				2B0F631C24EC129D00DA22A6 /* NodeSettingsViewController.swift in Sources */,
@@ -29894,7 +29872,6 @@
 				2BA4B3FE267819F50041586B /* WCSessionListViewController.swift in Sources */,
 				D424BE632A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift in Sources */,
 				2BE4D054259371CC005F5764 /* ShowAssetDetailEvent.swift in Sources */,
-				17A7668A290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
 				173C1134296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */,
 				F0C542F0291DE4F200596A0A /* DiscoverSearchNextListErrorViewModel.swift in Sources */,
 				2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
@@ -30875,7 +30852,6 @@
 				2B36FCC728B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */,
 				2BE4D16325967F78005F5764 /* AccountResponse.swift in Sources */,
 				D497945A287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
-				17A766862909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */,
 				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,
 				D419710529925A2E003FEEB1 /* AlgorandSecureBackupSelectAccountsInstructionItemViewModel.swift in Sources */,
 				F063BE82290BFD1500AEAEF7 /* SwapSlippageTolerancePercentage.swift in Sources */,
