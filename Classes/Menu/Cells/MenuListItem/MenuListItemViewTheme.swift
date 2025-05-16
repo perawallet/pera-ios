@@ -31,6 +31,7 @@ struct MenuListItemViewTheme:
     let newLabel: TextStyle
     let newLabelSize: LayoutSize
     let newLabelRadius: LayoutMetric
+    var arrow: ImageStyle
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -59,5 +60,9 @@ struct MenuListItemViewTheme:
         ]
         self.newLabelSize = (41, 28)
         self.newLabelRadius = 8
+        
+        self.arrow = [
+            .image("icon-arrow-24")
+        ]
     }
 }

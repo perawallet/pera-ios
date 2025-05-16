@@ -158,9 +158,6 @@ extension RootViewController {
         )
         let collectiblesTab = CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
         
-//        let swapContainerVC = SwapContainerVC(configuration: configuration)
-//        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapContainerVC))
-        
         let stakingVC = StakingScreen(configuration: configuration)
         stakingVC.hideBackButtonInWebView = true
         let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))
@@ -171,8 +168,8 @@ extension RootViewController {
         mainContainer.items = [
             homeTab,
             discoverTab,
-            collectiblesTab,
             stakeTab,
+            collectiblesTab,
             menuTab
         ]
 

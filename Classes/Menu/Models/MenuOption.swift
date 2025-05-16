@@ -17,7 +17,7 @@
 import UIKit
 
 enum MenuOption {
-    case cards(withCardCreated: Bool)
+    case cards(state: MenuCardState)
     case nfts(withThumbnails: [String])
     case transfer
     case buyAlgo
@@ -38,6 +38,20 @@ enum MenuOption {
             return String(localized: "quick-actions-receive-title")
         case .inviteFriends:
             return String(localized: "title-invite-friends")
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .cards(state: let state):
+            switch state {
+            case .inactive, .active:
+                return String(localized: "menu-card-banner-description")
+            case .addedToWailist:
+                return .empty
+            }
+        default:
+            fatalError("Shouldn't enter here")
         }
     }
     
@@ -66,4 +80,10 @@ enum MenuOption {
             return false
         }
     }
+}
+
+enum MenuCardState {
+    case inactive
+    case active
+    case addedToWailist
 }

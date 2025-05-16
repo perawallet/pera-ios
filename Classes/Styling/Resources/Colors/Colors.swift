@@ -285,6 +285,14 @@ extension Colors {
 }
 
 extension Colors {
+    enum Separator:
+        String,
+        Color {
+        case grayLighter = "Separator/grayLighter"
+    }
+}
+
+extension Colors {
     enum Switches:
         String,
         Color {
