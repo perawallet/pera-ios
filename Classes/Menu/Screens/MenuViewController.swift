@@ -32,6 +32,7 @@ final class MenuViewController: BaseViewController {
         appLaunchController: configuration.launchController
     )
     
+    private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
@@ -74,9 +75,37 @@ final class MenuViewController: BaseViewController {
         addMenuListView()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        let vm = MenuCardViewModel(cardNumber: "**** 2692", cardBalance: "20 USDC")
-        menuOptions = [.cards(cardVM: vm), .nfts, .buyAlgo, .receive, .inviteFriends]
+        super.viewWillAppear(animated)
+        configure()
+    }
+}
+
+extension MenuViewController {
+    private func configure() {
+        cardsSupportedCountriesFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .success(hasActiveCard: let hasActiveCard, isWaitlisted: let isWaitlisted):
+                if isWaitlisted {
+                    menuOptions = [.cards(state: .addedToWailist), .nfts, .buyAlgo, .receive, .inviteFriends]
+                } else {
+                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+                }
+                menuListView.collectionView.reloadData()
+            case .error:
+               break
+            }
+        }
+        
+        cardsSupportedCountriesFlowCoordinator.launch()
     }
 }
 
@@ -168,17 +197,12 @@ extension MenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let option = menuOptions[safe: indexPath.row] {
             switch option {
-            case .cards(cardVM: let viewModel):
-                guard let viewModel else {
-                    let cell = collectionView.dequeue(MenuListCardViewCell.self, at: indexPath)
-                    cell.delegate = self
-                    cell.bindData(option)
-                    return cell
-                }
-                let cell = collectionView.dequeue(MenuListCardEnabledViewCell.self, at: indexPath)
+            case .cards:
+                let cell = collectionView.dequeue(MenuListCardViewCell.self, at: indexPath)
                 cell.delegate = self
-                cell.bindData(option, viewModel: viewModel)
+                cell.bindData(option)
                 return cell
+
             case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
                 let cell = collectionView.dequeue(MenuListViewCell.self, at: indexPath)
                 cell.bindData(option)
@@ -193,16 +217,6 @@ extension MenuViewController: UICollectionViewDataSource {
 extension MenuViewController: MenuListCardViewCellDelegate {
     func didPressActionButton(in cell: MenuListCardViewCell) {
         cardsFlowCoordinator.launch()
-    }
-}
-
-extension MenuViewController: MenuListCardEnabledViewCellDelegate {
-    func didPressViewCardsButton(in cell: MenuListCardEnabledViewCell) {
-        cardsFlowCoordinator.launch()
-    }
-    
-    func didPressCardDetailButton(in cell: MenuListCardEnabledViewCell) {
-        print("didPressCardDetailButton")
     }
 }
 

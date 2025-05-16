@@ -30,7 +30,6 @@ final class MenuListView: View {
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         collectionView.register(MenuListViewCell.self)
         collectionView.register(MenuListCardViewCell.self)
-        collectionView.register(MenuListCardEnabledViewCell.self)
         return collectionView
     }()
     

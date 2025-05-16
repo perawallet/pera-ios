@@ -12,9 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MenuCardViewModel.swift
+//   CardsFundAddressesListDraft.swift
 
-struct MenuCardViewModel {
-    let cardNumber: String
-    let cardBalance: String
+import MagpieCore
+
+struct CardsFundAddressesListDraft: ObjectQuery {
+    var addresses: [String]
+    
+    var queryParams: [APIQueryParam] {
+        [.init(.addresses, addresses)]
+    }
 }

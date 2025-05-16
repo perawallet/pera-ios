@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2275,6 +2278,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sell crypto"
+          }
+        }
+      }
+    },
+    "cards-not-supported-country-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We will inform this device via a push notification when we launch in your country."
           }
         }
       }
@@ -7293,7 +7307,14 @@
       }
     },
     "title-about" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "title-about-with-param" : {
       "extractionState" : "manual",
@@ -7445,6 +7466,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Algo"
+          }
+        }
+      }
+    },
+    "title-all-set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're all set!"
           }
         }
       }
@@ -8088,6 +8120,17 @@
         }
       }
     },
+    "title-go-to-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Cards"
+          }
+        }
+      }
+    },
     "title-go-to-settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8155,7 +8198,6 @@
       }
     },
     "title-invite-friends" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8342,7 +8384,6 @@
       }
     },
     "title-menu" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9328,17 +9369,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unselect all"
-          }
-        }
-      }
-    },
-    "title-view-cards" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View Cards"
           }
         }
       }

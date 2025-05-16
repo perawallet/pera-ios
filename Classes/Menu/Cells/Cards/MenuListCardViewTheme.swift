@@ -22,21 +22,27 @@ import UIKit
 struct MenuListCardViewTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
-    var contentViewRadius: LayoutMetric
-    var title: TextStyle
-    var titleHorizontalPadding: LayoutMetric
-    var description: TextStyle
-    var spaceBetweenTitleAndDescription: LayoutMetric
-    var iconHorizontalPadding: LayoutMetric
-    var iconVerticalPadding: LayoutMetric
+    let background: ViewStyle
+    let contentViewRadius: LayoutMetric
+    let title: TextStyle
+    let titleHorizontalPadding: LayoutMetric
+    let description: TextStyle
+    let spaceBetweenTitleAndDescription: LayoutMetric
+    let notSupportedCountryTitle: TextStyle
+    let notSupportedCountryText: TextStyle
+    let notSupportedCountryTextPadding: LayoutMetric
+    let iconHorizontalPadding: LayoutMetric
+    let iconVerticalPadding: LayoutMetric
     let image: ImageStyle
     let imageVerticalPadding: LayoutMetric
-    let action: ButtonStyle
+    let actionInactive: ButtonStyle
+    let actionInactiveTitleEdgeInsets: UIEdgeInsets
+    let actionInactiveImageEdgeInsets: UIEdgeInsets
+    let actionActive: ButtonStyle
+    let actionActiveTitleEdgeInsets: UIEdgeInsets
+    let actionActiveImageEdgeInsets: UIEdgeInsets
     let actionPadding: LayoutMetric
     let actionHeight: LayoutMetric
-    let actionTitleEdgeInsets: UIEdgeInsets
-    let actionImageEdgeInsets: UIEdgeInsets
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -60,13 +66,25 @@ struct MenuListCardViewTheme:
         ]
         self.spaceBetweenTitleAndDescription = 24
         
+        self.notSupportedCountryTitle = [
+            .textColor(Colors.Text.main),
+            .font(Typography.bodyMedium()),
+            .text(String(localized: "title-all-set"))
+        ]
+        self.notSupportedCountryText = [
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular()),
+            .text(String(localized: "cards-not-supported-country-text"))
+        ]
+        self.notSupportedCountryTextPadding = 126
+        
         self.image = [
             .image("menu-card-banner-image"),
             .contentMode(.scaleAspectFit)
         ]
         self.imageVerticalPadding = 25
         
-        self.action = [
+        self.actionInactive = [
             .titleColor([ .normal(Colors.Button.Primary.text), .disabled(Colors.Button.Primary.disabledText) ]),
             .icon([.normal("icon-plus")]),
             .font(Typography.bodyMedium()),
@@ -78,9 +96,27 @@ struct MenuListCardViewTheme:
             ]),
             .title(String(localized: "title-create-pera-card"))
         ]
+        self.actionInactiveTitleEdgeInsets = .init(top: 0, left: 6, bottom: 0, right: -6)
+        self.actionInactiveImageEdgeInsets = .init(top: 0, left: -6, bottom: 0, right: 6)
+        
+        self.actionActive = [
+            .titleColor([ .normal(Colors.Button.Primary.text), .disabled(Colors.Button.Primary.disabledText) ]),
+            .icon([.normal("icon-list-arrow".templateImage)]),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
+                .disabled("components/buttons/primary/bg-disabled")
+            ]),
+            .title(String(localized: "title-go-to-cards")),
+            .tintColor(Colors.Button.Primary.text)
+        ]
+        self.actionActiveTitleEdgeInsets = .init(top: 0, left: -6, bottom: 0, right: 6)
+        self.actionActiveImageEdgeInsets = .init(top: 0, left: 6, bottom: 0, right: -6)
+        
         self.actionPadding = 16
         self.actionHeight = 52
-        self.actionTitleEdgeInsets = .init(top: 0, left: 6, bottom: 0, right: -6)
-        self.actionImageEdgeInsets = .init(top: 0, left: -6, bottom: 0, right: 6)
+
     }
 }
