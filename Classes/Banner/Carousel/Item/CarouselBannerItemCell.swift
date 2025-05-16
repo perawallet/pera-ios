@@ -52,4 +52,8 @@ final class CarouselBannerItemCell: UICollectionViewCell {
         contextView.bindData(data)
     }
     
+    func bindData(_ data: CustomCarouselBannerItemModel) {
+        contextView.bindData(data)
+    }
+    
 }

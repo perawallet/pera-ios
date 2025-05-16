@@ -28,7 +28,8 @@ struct CustomCarouselBannerItemModel: Hashable {
         self.id = apiModel.id
         self.text = apiModel.text
         let imageView = UIImageView()
-        imageView.kf.setImage(with: URL(string: apiModel.image))
+        imageView.backgroundColor = .orange
+//        imageView.kf.setImage(with: URL(string: apiModel.image))
         self.image = imageView
         self.url = URL(string: apiModel.url)
         self.buttonUrlIsExternal = apiModel.buttonUrlIsExternal

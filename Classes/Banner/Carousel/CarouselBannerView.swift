@@ -23,10 +23,12 @@ final class CarouselBannerView:
     ViewComposable,
     ListReusable {
     
-    let textLabel = UILabel()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var banners: [CustomCarouselBannerItemModel] = []
 
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
+        addCollectionView(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -34,7 +36,8 @@ final class CarouselBannerView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ items: [CustomCarouselBannerItemModel]) {
-        textLabel.text = "Carousel Banner (\(items.count))"
+        self.banners = items
+        collectionView.reloadData()
     }
 
     func prepareForReuse() {
@@ -44,11 +47,52 @@ final class CarouselBannerView:
 extension CarouselBannerView {
     private func addBackground(_ theme: CarouselBannerViewTheme) {
         customizeAppearance(theme.background)
+    }
+    
+    private func addCollectionView(_ theme: CarouselBannerViewTheme) {
+
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isPagingEnabled = true
+        collectionView.flowLayout.scrollDirection = .horizontal
+        collectionView.register(CarouselBannerItemCell.self)
+        collectionView.backgroundColor = theme.background.backgroundColor?.uiColor
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        addSubview(textLabel)
-        textLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
+}
+
+extension CarouselBannerView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalHorizontalSpacing: CGFloat = 12 * 2 // 12pt peek on each side
+        let itemWidth = collectionView.bounds.width - totalHorizontalSpacing
+
+        return CGSize(width: itemWidth, height: 72)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 12
+    }
+}
+
+extension CarouselBannerView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return banners.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(CarouselBannerItemCell.self, at: indexPath)
+        cell.bindData(banners[indexPath.row])
+        return cell
+    }
 }

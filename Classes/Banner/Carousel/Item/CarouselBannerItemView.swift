@@ -42,14 +42,24 @@ final class CarouselBannerItemView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ banner: CarouselBanner) {
-        icon.image = banner.icon
-        iconView.backgroundColor = banner.iconBackground
+//        icon.image = banner.icon
+//        iconView.backgroundColor = banner.iconBackground
         textLabel.text = banner.title
         if banner == .backup {
             textLabel.textColor = Colors.Helpers.negative.uiColor
         }
         arrowView.isHidden = !banner.showNavigationButton
         closeButton.isHidden = !banner.showCloseButton
+    }
+    
+    func bindData(_ banner: CustomCarouselBannerItemModel) {
+        icon = banner.image
+//        iconView = banner.image
+//        iconView.backgroundColor = .red
+        iconView.backgroundColor = .orange
+        textLabel.text = banner.text
+        arrowView.isHidden = true
+        closeButton.isHidden = false
     }
 
     func prepareForReuse() {
@@ -72,7 +82,7 @@ extension CarouselBannerItemView {
         icon.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-        
+        iconView.backgroundColor = .red
         addSubview(iconView)
         iconView.snp.makeConstraints {
             $0.width.equalTo(theme.iconViewHeight)

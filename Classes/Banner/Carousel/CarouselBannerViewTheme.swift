@@ -26,7 +26,7 @@ struct CarouselBannerViewTheme:
 
     init(_ family: LayoutFamily) {
         self.background = [
-            .backgroundColor(Colors.Alert.negative)
+            .backgroundColor(Colors.Defaults.background)
         ]
     }
 }
