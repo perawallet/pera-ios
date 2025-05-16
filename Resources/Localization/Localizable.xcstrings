@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2279,6 +2282,17 @@
         }
       }
     },
+    "cards-not-supported-country-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We will inform this device via a push notification when we launch in your country."
+          }
+        }
+      }
+    },
     "check-domain-default-error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4138,6 +4152,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step."
+          }
+        }
+      }
+    },
+    "menu-card-banner-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get the world’s first web3 \nMastercard."
           }
         }
       }
@@ -7445,6 +7470,17 @@
         }
       }
     },
+    "title-all-set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're all set!"
+          }
+        }
+      }
+    },
     "title-alphabetically-a-to-z" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7754,6 +7790,17 @@
         }
       }
     },
+    "title-create-pera-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Pera Card"
+          }
+        }
+      }
+    },
     "title-csv" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8003,6 +8050,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to Accounts"
+          }
+        }
+      }
+    },
+    "title-go-to-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Cards"
           }
         }
       }
@@ -8629,6 +8687,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Receive"
+          }
+        }
+      }
+    },
+    "title-recently-used-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently used Pera Card"
           }
         }
       }
