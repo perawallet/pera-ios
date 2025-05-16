@@ -15,6 +15,25 @@
 //   CarouselBanner.swift
 
 import UIKit
+import Kingfisher
+
+struct CustomCarouselBannerModel {
+    let id: Int
+    let text: String
+    let image: UIImageView
+    let url: URL?
+    let buttonUrlIsExternal: Bool
+    
+    init(apiModel: SpotBannerListItem.APIModel) {
+        self.id = apiModel.id
+        self.text = apiModel.text
+        let imageView = UIImageView()
+        imageView.kf.setImage(with: URL(string: apiModel.image))
+        self.image = imageView
+        self.url = URL(string: apiModel.url)
+        self.buttonUrlIsExternal = apiModel.buttonUrlIsExternal
+    }
+}
 
 enum CarouselBanner {
     case backup
