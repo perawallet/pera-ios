@@ -321,11 +321,13 @@ extension ContactDetailViewController {
             return
         }
         
-        let sharedItem = [address]
-        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
-        
-        navigationController?.present(activityViewController, animated: true, completion: nil)
+        open(
+            .shareActivity(
+                items: [address],
+                excludedActivityTypes: nil
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

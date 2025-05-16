@@ -50,7 +50,7 @@ final class SettingsViewController:
     }
 
     override var prefersLargeTitle: Bool {
-        return true
+        return false
     }
 
     override func customizeTabBarAppearence() {

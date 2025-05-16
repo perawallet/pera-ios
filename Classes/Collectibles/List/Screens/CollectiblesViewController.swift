@@ -62,6 +62,7 @@ final class CollectiblesViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         bindNavigationItemTitle()
         setOptInBarButtonHidden(true)
+        navigationItem.backButtonTitle = .empty
     }
 
     override func customizeTabBarAppearence() {
@@ -71,6 +72,7 @@ final class CollectiblesViewController: BaseViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
+        view.backgroundColor = Colors.Defaults.background.uiColor
         add(collectibleListScreen)
     }
 
