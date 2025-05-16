@@ -8132,7 +8132,6 @@
       }
     },
     "title-invite-friends" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8319,7 +8318,6 @@
       }
     },
     "title-menu" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
