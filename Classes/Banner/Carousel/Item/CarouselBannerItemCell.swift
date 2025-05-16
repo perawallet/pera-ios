@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CarouselBannerCell.swift
+//   CarouselBannerItemCell.swift
 
 import UIKit
 
-final class CarouselBannerCell: UICollectionViewCell {
+final class CarouselBannerItemCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let theme = CarouselBannerViewTheme()
+    static let theme = CarouselBannerItemViewTheme()
     
     // MARK: - Subviews
     
-    let contextView: CarouselBannerView = {
-        let view = CarouselBannerView()
-        view.customize(CarouselBannerCell.theme)
+    let contextView: CarouselBannerItemView = {
+        let view = CarouselBannerItemView()
+        view.customize(CarouselBannerItemCell.theme)
         return view
     }()
     
@@ -48,7 +48,7 @@ final class CarouselBannerCell: UICollectionViewCell {
         }
     }
     
-    func bindData(_ data: [CustomCarouselBannerItemModel]) {
+    func bindData(_ data: CarouselBanner) {
         contextView.bindData(data)
     }
     

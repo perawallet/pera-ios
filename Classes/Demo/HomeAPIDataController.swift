@@ -27,9 +27,11 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
+    private let spotBannersDataController: SpotBannersAPIDataController
     private let incomingASAsAPIDataController: IncomingASAsAPIDataController
 
     private var visibleAnnouncement: Announcement?
+    private var spotBanners: [CustomCarouselBannerItemModel]?
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
@@ -46,11 +48,13 @@ final class HomeAPIDataController:
         sharedDataController: SharedDataController,
         session: Session,
         announcementDataController: AnnouncementAPIDataController,
+        spotBannersDataController: SpotBannersAPIDataController,
         incomingASAsAPIDataController: IncomingASAsAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
+        self.spotBannersDataController = spotBannersDataController
         self.incomingASAsAPIDataController = incomingASAsAPIDataController
         
         setupCallbacks()
@@ -78,6 +82,7 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
         announcementDataController.delegate = self
+        spotBannersDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
     }
     
@@ -87,6 +92,10 @@ extension HomeAPIDataController {
     
     func fetchAnnouncements() {
         announcementDataController.loadData()
+    }
+    
+    func fetchSpotBanners() {
+        spotBannersDataController.loadData()
     }
 
     func hideAnnouncement() {
@@ -225,6 +234,8 @@ extension HomeAPIDataController {
             if !shouldDisplayCriticalWarningForNotBackedUpAccounts {
                 appendAnnouncementItemsIfNeeded(into: &snapshot)
             }
+            
+            appendCarouselBannerItemsIfNeeded(into: &snapshot)
 
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItemIdentifier =
@@ -296,6 +307,12 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
     }
 }
 
+extension HomeAPIDataController: SpotBannersAPIDataControllerDelegate {
+    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFetch spotBanners: [CustomCarouselBannerItemModel]) {
+        self.spotBanners = spotBanners
+    }
+}
+
 extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
     func incomingASAsAPIDataController(
         _ dataController: IncomingASAsAPIDataController,
@@ -319,6 +336,20 @@ extension HomeAPIDataController {
         snapshot.appendItems(
             items,
             toSection: .announcement
+        )
+    }
+    
+    private func appendCarouselBannerItemsIfNeeded(
+        into snapshot: inout Snapshot
+    ) {
+        guard let spotBanners else { return  }
+
+        snapshot.appendSections([ .carouselBanner ])
+
+        let items = [ HomeItemIdentifier.carouselBanner(spotBanners) ]
+        snapshot.appendItems(
+            items,
+            toSection: .carouselBanner
         )
     }
 

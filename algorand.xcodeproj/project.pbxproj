@@ -4802,9 +4802,9 @@
 		D41F934D272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
 		D41F934E272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
 		D41F934F272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
-		D420AFBD2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerViewTheme.swift */; };
-		D420AFBE2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerViewTheme.swift */; };
-		D420AFBF2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerViewTheme.swift */; };
+		D420AFBD2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */; };
+		D420AFBE2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */; };
+		D420AFBF2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */; };
 		D420AFC52DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC62DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC72DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
@@ -5516,15 +5516,15 @@
 		D46432E028B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
 		D46432E128B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
 		D46432E228B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
-		D46576C72DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CarouselBannerModel.swift */; };
-		D46576C82DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CarouselBannerModel.swift */; };
-		D46576C92DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CarouselBannerModel.swift */; };
-		D46576CB2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerCell.swift */; };
-		D46576CC2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerCell.swift */; };
-		D46576CD2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerCell.swift */; };
-		D46576CF2DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerView.swift */; };
-		D46576D02DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerView.swift */; };
-		D46576D12DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerView.swift */; };
+		D46576C72DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CustomCarouselBannerItemModel.swift */; };
+		D46576C82DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CustomCarouselBannerItemModel.swift */; };
+		D46576C92DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576C62DCCFBE60076F3C4 /* CustomCarouselBannerItemModel.swift */; };
+		D46576CB2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerItemCell.swift */; };
+		D46576CC2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerItemCell.swift */; };
+		D46576CD2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CA2DCCFF010076F3C4 /* CarouselBannerItemCell.swift */; };
+		D46576CF2DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerItemView.swift */; };
+		D46576D02DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerItemView.swift */; };
+		D46576D12DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46576CE2DCCFF090076F3C4 /* CarouselBannerItemView.swift */; };
 		D465C7EC299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
 		D465C7ED299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
 		D465C7EE299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
@@ -6502,6 +6502,18 @@
 		D4BFA6022DD72FF7002F251E /* SpotBannerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6012DD72FF3002F251E /* SpotBannerListItem.swift */; };
 		D4BFA6032DD72FF7002F251E /* SpotBannerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6012DD72FF3002F251E /* SpotBannerListItem.swift */; };
 		D4BFA6042DD72FF7002F251E /* SpotBannerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6012DD72FF3002F251E /* SpotBannerListItem.swift */; };
+		D4BFA6092DD73FDC002F251E /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */; };
+		D4BFA60A2DD73FDC002F251E /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */; };
+		D4BFA60B2DD73FDC002F251E /* CarouselBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */; };
+		D4BFA60D2DD73FE7002F251E /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */; };
+		D4BFA60E2DD73FE7002F251E /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */; };
+		D4BFA60F2DD73FE7002F251E /* CarouselBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */; };
+		D4BFA6112DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */; };
+		D4BFA6122DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */; };
+		D4BFA6132DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */; };
+		D4BFA6152DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */; };
+		D4BFA6162DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */; };
+		D4BFA6172DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */; };
 		D4C19D4E273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
 		D4C19D4F273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
 		D4C19D50273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
@@ -9542,7 +9554,7 @@
 		D41F4F1E289417D200B59559 /* StandardAssetPreviewLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardAssetPreviewLoadingViewTheme.swift; sourceTree = "<group>"; };
 		D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Extension.swift"; sourceTree = "<group>"; };
 		D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemViewTheme.swift; sourceTree = "<group>"; };
-		D420AFBC2DCD25E000257D3E /* CarouselBannerViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerViewTheme.swift; sourceTree = "<group>"; };
+		D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerItemViewTheme.swift; sourceTree = "<group>"; };
 		D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Cards.swift"; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
@@ -9783,9 +9795,9 @@
 		D46432D328B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewTheme.swift; sourceTree = "<group>"; };
 		D46432DB28B614AC00BF4EC2 /* OptOutAssetListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewModel.swift; sourceTree = "<group>"; };
 		D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItem.swift; sourceTree = "<group>"; };
-		D46576C62DCCFBE60076F3C4 /* CarouselBannerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerModel.swift; sourceTree = "<group>"; };
-		D46576CA2DCCFF010076F3C4 /* CarouselBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerCell.swift; sourceTree = "<group>"; };
-		D46576CE2DCCFF090076F3C4 /* CarouselBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerView.swift; sourceTree = "<group>"; };
+		D46576C62DCCFBE60076F3C4 /* CustomCarouselBannerItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCarouselBannerItemModel.swift; sourceTree = "<group>"; };
+		D46576CA2DCCFF010076F3C4 /* CarouselBannerItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerItemCell.swift; sourceTree = "<group>"; };
+		D46576CE2DCCFF090076F3C4 /* CarouselBannerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerItemView.swift; sourceTree = "<group>"; };
 		D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentParameters.swift; sourceTree = "<group>"; };
 		D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLParameters.swift; sourceTree = "<group>"; };
 		D46954A3296F3BF300D3D6C0 /* String+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
@@ -10099,6 +10111,10 @@
 		D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewTheme.swift; sourceTree = "<group>"; };
 		D4BFA5FD2DD72F32002F251E /* ALGAPI+Banners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Banners.swift"; sourceTree = "<group>"; };
 		D4BFA6012DD72FF3002F251E /* SpotBannerListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotBannerListItem.swift; sourceTree = "<group>"; };
+		D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerCell.swift; sourceTree = "<group>"; };
+		D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerView.swift; sourceTree = "<group>"; };
+		D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerViewTheme.swift; sourceTree = "<group>"; };
+		D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotBannersAPIDataController.swift; sourceTree = "<group>"; };
 		D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseView.swift; sourceTree = "<group>"; };
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
 		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
@@ -20557,10 +20573,10 @@
 		D46576C52DCCFBE00076F3C4 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
-				D420AFBC2DCD25E000257D3E /* CarouselBannerViewTheme.swift */,
-				D46576CE2DCCFF090076F3C4 /* CarouselBannerView.swift */,
-				D46576CA2DCCFF010076F3C4 /* CarouselBannerCell.swift */,
-				D46576C62DCCFBE60076F3C4 /* CarouselBannerModel.swift */,
+				D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */,
+				D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */,
+				D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */,
+				D4BFA6072DD73FB5002F251E /* Item */,
 			);
 			path = Carousel;
 			sourceTree = "<group>";
@@ -21401,6 +21417,17 @@
 				D4BE32762DC36CFC002602F5 /* MenuListCardViewTheme.swift */,
 			);
 			path = Cards;
+			sourceTree = "<group>";
+		};
+		D4BFA6072DD73FB5002F251E /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				D46576CA2DCCFF010076F3C4 /* CarouselBannerItemCell.swift */,
+				D46576CE2DCCFF090076F3C4 /* CarouselBannerItemView.swift */,
+				D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */,
+				D46576C62DCCFBE60076F3C4 /* CustomCarouselBannerItemModel.swift */,
+			);
+			path = Item;
 			sourceTree = "<group>";
 		};
 		D4C51B4D27D0DD0D00F21981 /* AssetImage */ = {
@@ -22621,6 +22648,7 @@
 				F08708C7278C21D900BEE5C2 /* SharedDataController.swift */,
 				F0DB419A279496A600EA437D /* ShowQrCodeListItemButtonViewModel.swift */,
 				2BCE8F9E284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift */,
+				D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */,
 				F096087927962EF800CFBB90 /* TabBarButtonItem.swift */,
 				2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */,
 				F0DB41602793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift */,
@@ -23601,7 +23629,7 @@
 				F045BE3B286B9BC30069056B /* CurrencyFormattingContextHandling.swift in Sources */,
 				D4710B1A276A529D00F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
 				17AEC578297530D7002B3B23 /* WebImportSuccessScreenListLayout.swift in Sources */,
-				D46576D12DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */,
+				D46576D12DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */,
 				D411B37E26EA126D004FF980 /* AccountListItemViewTheme.swift in Sources */,
 				95C95914278A12A9003D0D78 /* WCSingleTransactionRequestBottomViewModel.swift in Sources */,
 				2B18432F29DF78E600264152 /* WalletConnectProtocolResolver.swift in Sources */,
@@ -24063,7 +24091,7 @@
 				D431506127EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
 				F063BE80290BFCBD00AEAEF7 /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
 				D4C601D62843705D00CDF6CB /* SortAccountListDataSource.swift in Sources */,
-				D46576CB2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */,
+				D46576CB2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */,
 				D4AC1FB8272D3AB10027353F /* AccountListViewTheme.swift in Sources */,
 				F01063AC28ADD32F00AB6873 /* ASADetailScreen+PageItems.swift in Sources */,
 				D47C63EE2AC43C780079A008 /* WCv2SessionList.swift in Sources */,
@@ -24282,6 +24310,7 @@
 				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
 				2BE09A4F28F609F60059EEF0 /* SwapSummaryItemViewModel.swift in Sources */,
 				D41EF10B2AB846780031A14C /* WCArbitraryDataValidator.swift in Sources */,
+				D4BFA60E2DD73FE7002F251E /* CarouselBannerView.swift in Sources */,
 				2B8DE82A2785116D00A4C538 /* AccountDetailViewController+Theme.swift in Sources */,
 				2B2AACD2250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
 				D43975332B0135270031D2D5 /* AccountAssetInformation.swift in Sources */,
@@ -25169,8 +25198,9 @@
 				D446A73F272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */,
 				2B99D42A28E9DA6D00323C11 /* TitleSeparatorViewTheme.swift in Sources */,
 				D4086988299990C400D5797D /* BidaliAccountSelectionListLocalDataController.swift in Sources */,
-				D420AFBE2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */,
+				D420AFBE2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */,
 				D41F4EF82892D13E00B59559 /* OptOutAssetScreenTheme.swift in Sources */,
+				D4BFA60B2DD73FDC002F251E /* CarouselBannerCell.swift in Sources */,
 				2B9FDEB428A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */,
 				953DEE29279F16EF00D76957 /* WCAssetAdditionTransactionViewTheme.swift in Sources */,
 				F045BE632873801C0069056B /* CurrencyExchanger.swift in Sources */,
@@ -25443,7 +25473,7 @@
 				D473CA6226E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				D4A70AFC2878363100FB52B0 /* AssetConfigInnerTransactionPreviewViewModel.swift in Sources */,
 				F010635628AAEBF700AB6873 /* ASAProfileView.swift in Sources */,
-				D46576C82DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */,
+				D46576C82DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */,
 				2BC483142CF1EE35006AB7CC /* SendKeyRegTransactionView.swift in Sources */,
 				2B834934296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */,
 				2BE9373C2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,
@@ -25518,6 +25548,7 @@
 				2BB93C1025BF2421001F1D6C /* TransactionSignable.swift in Sources */,
 				F03451F528B288B1009467A0 /* OptInAssetListItem.swift in Sources */,
 				D4BE32712DC36CE0002602F5 /* MenuListCardView.swift in Sources */,
+				D4BFA6132DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */,
 				2B4FD20427C642010097AB65 /* MoonPayTransactionViewModel.swift in Sources */,
 				2B99D49328F567AC00323C11 /* SwapAssetSuccessScreenTheme.swift in Sources */,
 				D405058926F0D190001D0D11 /* LedgerDeviceCellViewTheme.swift in Sources */,
@@ -25952,6 +25983,7 @@
 				8B7852EB2C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift in Sources */,
 				2BB6EE59239339E400CF7874 /* AssetPreviewActionCell.swift in Sources */,
 				D41F4F152893F19000B59559 /* StandardAssetPreviewLoadingView.swift in Sources */,
+				D4BFA6172DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */,
 				D439518F293549D00052FEB9 /* CollectibleGalleryUIActionsViewTheme.swift in Sources */,
 				2B0322EE269F3E0200C9B2F5 /* WCGroupTransactionHeaderViewModel.swift in Sources */,
 				D4BC640D26DE3D2C000CFD28 /* ButtonPrimaryTheme.swift in Sources */,
@@ -26373,6 +26405,7 @@
 				D453A5BA2AB0C7CB0079A7AB /* WCMainArbitraryDataLayout.swift in Sources */,
 				2BE09A4A28F6098F0059EEF0 /* SwapSummaryItemView.swift in Sources */,
 				D4BDD55B2AF5380900530F95 /* BackUpAccountSelectionListAccountListItemCellTheme.swift in Sources */,
+				D4BFA6122DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */,
 				F07C3C5228B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */,
 				2B2AACB9250AA5DE00B8C5C5 /* Settings.swift in Sources */,
 				D48FDFE427CF54D200C39FC7 /* ReceiveCollectibleAssetListLayout.swift in Sources */,
@@ -26394,7 +26427,7 @@
 				2BCE8F98284A4DFD00C6FD6C /* AssetManagementViewController+Theme.swift in Sources */,
 				2B384DB729A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift in Sources */,
 				17CADC68284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */,
-				D420AFBD2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */,
+				D420AFBD2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */,
 				2B4334C627CEEA4100A3D9D6 /* CollectibleListDataController.swift in Sources */,
 				2BF811C725E5B23400D6B406 /* TransactionTutorialView.swift in Sources */,
 				2BAAF4AE28E49C5100FC59AF /* SelectAssetListItemCell.swift in Sources */,
@@ -26596,7 +26629,7 @@
 				2B8AE425296863A200B18EE2 /* WCTransactionRequestValidatedLog.swift in Sources */,
 				F063BE7F290BFCBD00AEAEF7 /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
 				8BD567BD2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift in Sources */,
-				D46576C92DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */,
+				D46576C92DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */,
 				F08709232791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */,
 				2B69A9C528617B5B004014E2 /* QRScanOptionListItemButtonViewModel.swift in Sources */,
 				D4A1C61F2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift in Sources */,
@@ -28292,7 +28325,7 @@
 				F0431F22287643230004CB7E /* CurrencyID.swift in Sources */,
 				D459E27327DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
 				0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */,
-				D46576D02DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */,
+				D46576D02DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */,
 				2B968A8528869BD000184ED5 /* AsaVerificationInfoScreen.swift in Sources */,
 				2B0F62DB24EC129D00DA22A6 /* UIView+SafeArea.swift in Sources */,
 				F0CF6B6B285163D9007C30E4 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,
@@ -28337,6 +28370,7 @@
 				D45AF6F22A93AC9300FA9409 /* WCSessionConnectionHeaderViewTheme.swift in Sources */,
 				2B0F62E124EC129D00DA22A6 /* String+Attributes.swift in Sources */,
 				95AF1C5D27AD4E41001AB131 /* PreviewLoadingCell.swift in Sources */,
+				D4BFA6152DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */,
 				F010638F28AC7C6C00AB6873 /* ASAProfileNameViewModel.swift in Sources */,
 				2B0F62E224EC129D00DA22A6 /* ContactDetailViewController.swift in Sources */,
 				2B7E3032267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
@@ -28498,12 +28532,13 @@
 				8B6F2B262BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift in Sources */,
 				D40869832999908E00D5797D /* BidaliAccountSelectionListDataSource.swift in Sources */,
 				F08A81C6293E9EB600258184 /* CSVFile.swift in Sources */,
+				D4BFA6092DD73FDC002F251E /* CarouselBannerCell.swift in Sources */,
 				D4B6C09E2AE959BD00AD3C22 /* KeyRegTransactionDetailViewController.swift in Sources */,
 				D4F4C8B029D19D520069FB94 /* LedgerAccountTypeInformationViewModel.swift in Sources */,
 				2B99D42928E9DA6D00323C11 /* TitleSeparatorViewTheme.swift in Sources */,
 				D495D3F729A381DC00929635 /* MeldConfig.swift in Sources */,
 				D478AA9728AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
-				D46576CD2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */,
+				D46576CD2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */,
 				F00AA6FB2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */,
 				2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */,
 				D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
@@ -28528,6 +28563,7 @@
 				2B28DB65276B3E57005C5986 /* NodeSettingsViewController+Theme.swift in Sources */,
 				2B0F630924EC129D00DA22A6 /* CGFloat+Additions.swift in Sources */,
 				D44AFD5F2993DB9F00934998 /* AlgorandSecureBackupErrorScreen.swift in Sources */,
+				D4BFA60D2DD73FE7002F251E /* CarouselBannerView.swift in Sources */,
 				D40BA4F32A81AC7F00138BF7 /* WCSessionInfoCell.swift in Sources */,
 				2B4A8A7727D77D1F005F1EFA /* CollectibleTrait.swift in Sources */,
 				2B0F630A24EC129D00DA22A6 /* SettingsView.swift in Sources */,
@@ -28717,7 +28753,7 @@
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
 				2B288AE72693A5B700BC6FB6 /* WCSingleTransactionViewControllerAssetActionable.swift in Sources */,
 				D4BC63FF26DE22A3000CFD28 /* ButtonViewModel.swift in Sources */,
-				D46576CF2DCCFF0C0076F3C4 /* CarouselBannerView.swift in Sources */,
+				D46576CF2DCCFF0C0076F3C4 /* CarouselBannerItemView.swift in Sources */,
 				2B69AB2828BFA17B00A8D65D /* SwapTransactionGroup.swift in Sources */,
 				D4C3BD43278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */,
 				F063BE78290BF7BF00AEAEF7 /* EditSwapSlippageScreenTheme.swift in Sources */,
@@ -29179,7 +29215,7 @@
 				D4235E3F2A65AECD00BEBF67 /* WCSessionDetailLayout.swift in Sources */,
 				F08709222791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */,
 				2B5739E926F3F6AC007E0252 /* WCAssetDeletionTransactionItemViewModel.swift in Sources */,
-				D46576CC2DCCFF060076F3C4 /* CarouselBannerCell.swift in Sources */,
+				D46576CC2DCCFF060076F3C4 /* CarouselBannerItemCell.swift in Sources */,
 				D454904729590E110095E0D1 /* CollectibleGalleryListLoadingView.swift in Sources */,
 				D4F8F28E273EA74D003DCE1D /* PassphraseViewTheme.swift in Sources */,
 				2B7E3071267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift in Sources */,
@@ -29398,6 +29434,7 @@
 				2B2AACD0250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				95C9590E278A113A003D0D78 /* WCSingleTransactionRequestBottomViewTheme.swift in Sources */,
+				D4BFA60F2DD73FE7002F251E /* CarouselBannerView.swift in Sources */,
 				2BB0B11F277DAC8300A16494 /* HomeViewController.swift in Sources */,
 				2BAD6CBB27F907D00016E869 /* Collectible3DViewerTheme.swift in Sources */,
 				95AF1C8B27B13F38001AB131 /* TransactionHistoryLoadingItemViewCommonTheme.swift in Sources */,
@@ -30285,8 +30322,9 @@
 				D4F068BD26EF7FA600C26F43 /* LedgerDeviceListViewTheme.swift in Sources */,
 				F0454219287C00370081C01C /* AssetItem.swift in Sources */,
 				2B26272E284EBC6D00ADE371 /* AppCallTransactionItemViewModel.swift in Sources */,
-				D420AFBF2DCD25E500257D3E /* CarouselBannerViewTheme.swift in Sources */,
+				D420AFBF2DCD25E500257D3E /* CarouselBannerItemViewTheme.swift in Sources */,
 				2B71CBB1290091B900B1E1A0 /* SwapAvailableBalanceQuoteValidator.swift in Sources */,
+				D4BFA60A2DD73FDC002F251E /* CarouselBannerCell.swift in Sources */,
 				D40E8808294B9C2F00B46054 /* CollectibleDetailNameViewTheme.swift in Sources */,
 				17C93291293F2495000EE03D /* DiscoverSwapParameters.swift in Sources */,
 				D40650342A5B598000B05DBC /* RekeySuccessResultViewTheme.swift in Sources */,
@@ -30559,7 +30597,7 @@
 				2BC483152CF1EE35006AB7CC /* SendKeyRegTransactionView.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				F010635428AAEBF700AB6873 /* ASAProfileView.swift in Sources */,
-				D46576C72DCCFBF30076F3C4 /* CarouselBannerModel.swift in Sources */,
+				D46576C72DCCFBF30076F3C4 /* CustomCarouselBannerItemModel.swift in Sources */,
 				954DFF27279445060066FFF6 /* WCUnsignedRequestView.swift in Sources */,
 				2B4EEEBA24BDFFD500059A16 /* NotificationsView.swift in Sources */,
 				D41EE4582A40600D00FD03FD /* RekeyInstructionsScreenTheme.swift in Sources */,
@@ -30634,6 +30672,7 @@
 				D4DCD68329D6F90C007CA6B8 /* RekeyAnyAccountToLedgerAccountFutureTransactionsSignInstructionViewModel.swift in Sources */,
 				D4A8759B27C9433C00550935 /* ShimmerAnimatable.swift in Sources */,
 				D4BE326F2DC36CE0002602F5 /* MenuListCardView.swift in Sources */,
+				D4BFA6112DD7403E002F251E /* CarouselBannerViewTheme.swift in Sources */,
 				D4B93D6229E595BF0095875C /* RekeyedAccountSelectionListHeader.swift in Sources */,
 				D411B38926EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */,
 				D47930232AA29BC300AC07AF /* ManageAssetListDataController.swift in Sources */,
@@ -31068,6 +31107,7 @@
 				8B7852E92C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift in Sources */,
 				D4DC26B728B3A3860068152E /* ASAAboutScreenShowOnSecondaryListItem.swift in Sources */,
 				17CE518B29C0716B00155489 /* AlgorandSecureBackupImportFlowCoordinator.swift in Sources */,
+				D4BFA6162DD746EB002F251E /* SpotBannersAPIDataController.swift in Sources */,
 				D4F4C8A629D19CC50069FB94 /* LedgerAccountInformationScreen.swift in Sources */,
 				955B617D27848454005A5C7E /* BottomOverlayTheme.swift in Sources */,
 				D4588AE2294293EE0012C12C /* SelectContactView.swift in Sources */,

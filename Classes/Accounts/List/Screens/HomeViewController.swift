@@ -235,6 +235,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
+        dataController.fetchSpotBanners()
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
@@ -644,6 +645,25 @@ extension HomeViewController {
             self.triggerBannerCTA(item: item)
         }
     }
+    
+    private func linkInteractors(
+        _ cell: CarouselBannerCell,
+        for items: [CustomCarouselBannerItemModel]
+    ) {
+//        cell.startObserving(event: .close) {
+//            [weak self] in
+//            guard let self else { return }
+//
+//            self.dataController.hideAnnouncement()
+//        }
+//
+//        cell.startObserving(event: .action) {
+//            [weak self] in
+//            guard let self else { return }
+//
+//            self.triggerBannerCTA(item: item)
+//        }
+    }
 
     private func linkInteractors(
         _ cell: AccountNotBackedUpWarningCell
@@ -989,6 +1009,8 @@ extension HomeViewController {
             case .card:
                 linkInteractors(cell as! CardAnnouncementCell, for: item)
             }
+        case .carouselBanner(let items):
+            linkInteractors(cell as! CarouselBannerCell, for: items)
         case .account(let item):
             switch item {
             case .header(let headerItem):

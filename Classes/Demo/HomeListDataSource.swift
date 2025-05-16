@@ -101,6 +101,13 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     return cell
 
                 }
+            case .carouselBanner(let items):
+                let cell = collectionView.dequeue(
+                    CarouselBannerCell.self,
+                    at: indexPath
+                )
+                cell.bindData(items)
+                return cell
             case .account(let item):
                 switch item {
                 case .header(let headerItem):
@@ -133,7 +140,8 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             CardAnnouncementCell.self,
             HomeAccountsHeader.self,
             TitleWithAccessorySupplementaryCell.self,
-            HomeAccountCell.self
+            HomeAccountCell.self,
+            CarouselBannerCell.self,
         ].forEach {
             collectionView.register($0)
         }

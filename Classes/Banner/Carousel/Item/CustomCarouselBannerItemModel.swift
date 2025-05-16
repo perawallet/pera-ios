@@ -17,7 +17,7 @@
 import UIKit
 import Kingfisher
 
-struct CustomCarouselBannerModel {
+struct CustomCarouselBannerItemModel: Hashable {
     let id: Int
     let text: String
     let image: UIImageView

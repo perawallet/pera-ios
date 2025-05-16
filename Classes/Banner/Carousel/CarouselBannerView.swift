@@ -22,110 +22,33 @@ final class CarouselBannerView:
     UIView,
     ViewComposable,
     ListReusable {
-
-    private lazy var icon = UIImageView()
-    private lazy var iconView = UIView()
-    private lazy var textLabel = UILabel()
-    private lazy var arrowView = UIView()
-    private lazy var closeButton = Button()
     
+    let textLabel = UILabel()
+
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
-        addIcon(theme)
-        addText(theme)
-        addArrow(theme)
-        addCloseButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ banner: CarouselBanner) {
-        icon.image = banner.icon
-        iconView.backgroundColor = banner.iconBackground
-        textLabel.text = banner.title
-        if banner == .backup {
-            textLabel.textColor = Colors.Helpers.negative.uiColor
-        }
-        arrowView.isHidden = !banner.showNavigationButton
-        closeButton.isHidden = !banner.showCloseButton
+    func bindData(_ items: [CustomCarouselBannerItemModel]) {
+        textLabel.text = "Carousel Banner (\(items.count))"
     }
 
     func prepareForReuse() {
-        icon.image = nil
-        textLabel.clearText()
     }
 }
 
 extension CarouselBannerView {
     private func addBackground(_ theme: CarouselBannerViewTheme) {
         customizeAppearance(theme.background)
-        layer.cornerRadius = theme.contentViewRadius
-        layer.borderWidth = 1
-        layer.borderColor = Colors.Layer.gray.uiColor.cgColor
-    }
-    
-    private func addIcon(_ theme: CarouselBannerViewTheme) {
-        iconView.layer.cornerRadius = theme.iconViewHeight / 2
-        iconView.addSubview(icon)
-        icon.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        addSubview(iconView)
-        iconView.snp.makeConstraints {
-            $0.width.equalTo(theme.iconViewHeight)
-            $0.height.equalTo(theme.iconViewHeight)
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(theme.contentHorizontalPadding)
-        }
-    }
-
-    private func addText(_ theme: CarouselBannerViewTheme) {
-        textLabel.customizeAppearance(theme.text)
-        textLabel.numberOfLines = 0
         
         addSubview(textLabel)
         textLabel.snp.makeConstraints {
-            $0.leading == iconView.snp.trailing + theme.spacingBetweenTextAndIcon
-            $0.centerY.equalToSuperview()
-            $0.height.equalTo(theme.textHeight)
-            $0.trailing.equalToSuperview().inset(theme.textHorizontalPadding)
-        }
-    }
-    
-    private func addArrow(_ theme: CarouselBannerViewTheme) {
-        arrowView.customizeAppearance(theme.arrowView)
-        arrowView.layer.cornerRadius = theme.arrowViewHeight / 2
-        
-        let arrow = UIImageView()
-        arrow.customizeAppearance(theme.arrow)
-        
-        arrowView.addSubview(arrow)
-        arrow.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-        
-        addSubview(arrowView)
-        arrowView.snp.makeConstraints {
-            $0.width.equalTo(theme.arrowViewHeight)
-            $0.height.equalTo(theme.arrowViewHeight)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(theme.contentHorizontalPadding)
-        }
     }
     
-    private func addCloseButton(_ theme: CarouselBannerViewTheme) {
-        closeButton.customizeAppearance(theme.closeButton)
-        closeButton.layer.cornerRadius = theme.closeButtonHeight / 2
-        
-        addSubview(closeButton)
-        closeButton.snp.makeConstraints {
-            $0.width.equalTo(theme.closeButtonHeight)
-            $0.height.equalTo(theme.closeButtonHeight)
-            $0.top.equalToSuperview().inset(theme.closeButtonPadding)
-            $0.trailing.equalToSuperview().inset(theme.closeButtonPadding)
-        }
-    }
 }
