@@ -37,22 +37,22 @@ struct DiscoverErrorViewTheme:
     init(_ family: LayoutFamily) {
         self.contentVerticalEdgeInsets = (8, 8)
         self.icon = [
-            .backgroundColor(Colors.Discover.helperRed.uiColor.withAlphaComponent(0.1)),
+            .backgroundColor(Colors.Helpers.negative.uiColor.withAlphaComponent(0.1)),
             .contentMode(.center),
-            .tintColor(Colors.Discover.helperRed)
+            .tintColor(Colors.Helpers.negative)
         ]
         self.iconSize = .init(width: 48, height: 48)
         self.iconCorner = 16
         self.spacingBetweenIconAndTitle = 20
         self.title = [
             .textAlignment(.center),
-            .textColor(Colors.Discover.textMain),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenTitleAndBody = 8
         self.body = [
             .textAlignment(.center),
-            .textColor(Colors.Discover.textGray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenBodyAndRetryAction = 20
@@ -64,7 +64,7 @@ struct DiscoverErrorViewTheme:
             .font(Typography.footnoteMedium()),
             .title(String(localized: "title-try-again")),
             .titleColor([
-                .normal(Colors.Discover.buttonPrimaryText)
+                .normal(Colors.Button.Primary.newText)
             ])
         ]
         self.retryActionContentEdgeInsets = .init(top: 12, left: 16, bottom: 12, right: 16)

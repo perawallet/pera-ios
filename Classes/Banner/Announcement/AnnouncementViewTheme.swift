@@ -221,7 +221,7 @@ struct CardAnnouncementViewTheme: AnnouncementViewTheme {
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(Colors.Discover.main)
+            .backgroundColor(Colors.Button.Primary.newbackground)
         ]
         self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-card-image"))
         self.corner = Corner(radius: 4)
