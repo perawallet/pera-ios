@@ -23,6 +23,7 @@ struct CarouselBannerItemViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
+    var contentHorizontalInset: LayoutMetric
     var contentViewRadius: LayoutMetric
     var contentHorizontalPadding: LayoutMetric
     var text: TextStyle
@@ -41,6 +42,7 @@ struct CarouselBannerItemViewTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
+        self.contentHorizontalInset = 24
         self.contentViewRadius = 16
         self.contentHorizontalPadding = 12
         

@@ -4519,6 +4519,9 @@
 		D40E9DD629257A6F009DEE4F /* RenameAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */; };
 		D40E9DD729257A6F009DEE4F /* RenameAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */; };
 		D40E9DD829257A6F009DEE4F /* RenameAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */; };
+		D40F293F2DDB3007008D633C /* CarouselPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40F293E2DDB3004008D633C /* CarouselPageControl.swift */; };
+		D40F29402DDB3007008D633C /* CarouselPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40F293E2DDB3004008D633C /* CarouselPageControl.swift */; };
+		D40F29412DDB3007008D633C /* CarouselPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40F293E2DDB3004008D633C /* CarouselPageControl.swift */; };
 		D41168872DC2193A001F7A57 /* MenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41168862DC21935001F7A57 /* MenuListView.swift */; };
 		D41168882DC2193A001F7A57 /* MenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41168862DC21935001F7A57 /* MenuListView.swift */; };
 		D41168892DC2193A001F7A57 /* MenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41168862DC21935001F7A57 /* MenuListView.swift */; };
@@ -9454,6 +9457,7 @@
 		D40E881C294C59AB00B46054 /* CollectibleDetailAccountInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAccountInformationCell.swift; sourceTree = "<group>"; };
 		D40E8820294C621300B46054 /* CollectibleDetailAccountInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAccountInformationViewModel.swift; sourceTree = "<group>"; };
 		D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameAccountScreenTheme.swift; sourceTree = "<group>"; };
+		D40F293E2DDB3004008D633C /* CarouselPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselPageControl.swift; sourceTree = "<group>"; };
 		D41168862DC21935001F7A57 /* MenuListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListView.swift; sourceTree = "<group>"; };
 		D41168922DC21EF8001F7A57 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		D41168962DC22825001F7A57 /* MenuViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -19208,6 +19212,14 @@
 			path = AccountInformation;
 			sourceTree = "<group>";
 		};
+		D40F293D2DDB2FFC008D633C /* PageControl */ = {
+			isa = PBXGroup;
+			children = (
+				D40F293E2DDB3004008D633C /* CarouselPageControl.swift */,
+			);
+			path = PageControl;
+			sourceTree = "<group>";
+		};
 		D41168832DC218F2001F7A57 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -20573,6 +20585,7 @@
 		D46576C52DCCFBE00076F3C4 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
+				D40F293D2DDB2FFC008D633C /* PageControl */,
 				D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */,
 				D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */,
 				D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */,
@@ -25321,6 +25334,7 @@
 				2B0F635324ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */,
 				D419710F29925AC9003FEEB1 /* AlgorandSecureBackupSaveBackupFileInstructionItemViewModel.swift in Sources */,
 				D4F4C8DE29D1ABAD0069FB94 /* RekeyedAccountTypeInformationViewModel.swift in Sources */,
+				D40F29412DDB3007008D633C /* CarouselPageControl.swift in Sources */,
 				D4487AA727BD372C00B4B0AB /* RecoverAccountViewController+Theme.swift in Sources */,
 				2B5739FF26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				2B69AB2E28BFA94700A8D65D /* SwapTransactionPurpose.swift in Sources */,
@@ -26227,6 +26241,7 @@
 				1736FB8C28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift in Sources */,
 				D4B93D4D29E593370095875C /* RekeyedAccountSelectionListDataController.swift in Sources */,
 				D4BDD5672AF5389C00530F95 /* BackUpAccountSelectionListHeaderViewModel.swift in Sources */,
+				D40F293F2DDB3007008D633C /* CarouselPageControl.swift in Sources */,
 				2B8D383326B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B56B8342505013600AC7B8D /* LedgerAccountSelectionViewController.swift in Sources */,
 				D4588AE0294293EE0012C12C /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
@@ -30445,6 +30460,7 @@
 				953DEE2B279F37AB00D76957 /* WCAppCallTransactionViewTheme.swift in Sources */,
 				D4CBB90B2A8C0D7D003471D6 /* WCTransactionType.swift in Sources */,
 				17F8BF5D28A2BA9700992F91 /* ALGAnalyticsProvider.swift in Sources */,
+				D40F29402DDB3007008D633C /* CarouselPageControl.swift in Sources */,
 				95631BB5275E428B002FB831 /* SendTransactionScreen.swift in Sources */,
 				D435A93928AD2C94006B495A /* AlertScreen.swift in Sources */,
 				2B99D43928EC1C1300323C11 /* SwapInfoItemViewModel.swift in Sources */,

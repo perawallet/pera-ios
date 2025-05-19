@@ -32,4 +32,18 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    func updateSpotBannerClose(
+        deviceId: String,
+        bannerId: Int,
+        onCompleted handler: @escaping (Response.ModelResult<SpotBannerListItem>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.spotBannerClose, args: deviceId, bannerId)
+            .method(.patch)
+            .completionHandler(handler)
+            .execute()
+    }
 }

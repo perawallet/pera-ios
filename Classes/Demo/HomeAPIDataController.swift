@@ -97,6 +97,10 @@ extension HomeAPIDataController {
     func fetchSpotBanners() {
         spotBannersDataController.loadData()
     }
+    
+    func updateClose(for banner: CustomCarouselBannerItemModel) {
+        spotBannersDataController.updateClose(for: banner)
+    }
 
     func hideAnnouncement() {
         defer {
@@ -235,7 +239,9 @@ extension HomeAPIDataController {
                 appendAnnouncementItemsIfNeeded(into: &snapshot)
             }
             
-            appendCarouselBannerItemsIfNeeded(into: &snapshot)
+            if let spotBanners, spotBanners.isNonEmpty {
+                appendCarouselBannerItemsIfNeeded(into: &snapshot)
+            }
 
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItemIdentifier =
@@ -309,7 +315,15 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
 
 extension HomeAPIDataController: SpotBannersAPIDataControllerDelegate {
     func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFetch spotBanners: [CustomCarouselBannerItemModel]) {
-        self.spotBanners = spotBanners
+        self.spotBanners = spotBanners.sorted { $0.id < $1.id }
+    }
+    
+    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didUpdate spotBanner: CustomCarouselBannerItemModel) {
+        self.publish(.didUpdateSpotBanner(nil))
+    }
+    
+    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFail error: String) {
+        self.publish(.didUpdateSpotBanner(error))
     }
 }
 

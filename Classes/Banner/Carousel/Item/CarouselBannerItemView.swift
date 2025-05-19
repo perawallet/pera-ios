@@ -22,9 +22,11 @@ final class CarouselBannerItemView:
     UIView,
     ViewComposable,
     ListReusable {
-
-    private lazy var icon = UIImageView()
-    private lazy var iconView = UIView()
+    
+    weak var delegate: CarouselBannerDelegate?
+    private var banner: CustomCarouselBannerItemModel?
+    
+    private lazy var iconView = UIImageView()
     private lazy var textLabel = UILabel()
     private lazy var arrowView = UIView()
     private lazy var closeButton = Button()
@@ -36,14 +38,12 @@ final class CarouselBannerItemView:
         addArrow(theme)
         addCloseButton(theme)
     }
-
+    
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
+    
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-
+    
     func bindData(_ banner: CarouselBanner) {
-//        icon.image = banner.icon
-//        iconView.backgroundColor = banner.iconBackground
         textLabel.text = banner.title
         if banner == .backup {
             textLabel.textColor = Colors.Helpers.negative.uiColor
@@ -53,17 +53,15 @@ final class CarouselBannerItemView:
     }
     
     func bindData(_ banner: CustomCarouselBannerItemModel) {
-        icon = banner.image
-//        iconView = banner.image
-//        iconView.backgroundColor = .red
-        iconView.backgroundColor = .orange
+        self.banner = banner
+        iconView.kf.setImage(with: banner.image)
         textLabel.text = banner.text
         arrowView.isHidden = true
         closeButton.isHidden = false
     }
-
+    
     func prepareForReuse() {
-        icon.image = nil
+        iconView.image = nil
         textLabel.clearText()
     }
 }
@@ -78,11 +76,7 @@ extension CarouselBannerItemView {
     
     private func addIcon(_ theme: CarouselBannerItemViewTheme) {
         iconView.layer.cornerRadius = theme.iconViewHeight / 2
-        iconView.addSubview(icon)
-        icon.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        iconView.backgroundColor = .red
+        iconView.clipsToBounds = true
         addSubview(iconView)
         iconView.snp.makeConstraints {
             $0.width.equalTo(theme.iconViewHeight)
@@ -91,7 +85,7 @@ extension CarouselBannerItemView {
             $0.leading.equalToSuperview().inset(theme.contentHorizontalPadding)
         }
     }
-
+    
     private func addText(_ theme: CarouselBannerItemViewTheme) {
         textLabel.customizeAppearance(theme.text)
         textLabel.numberOfLines = 0
@@ -129,6 +123,7 @@ extension CarouselBannerItemView {
     private func addCloseButton(_ theme: CarouselBannerItemViewTheme) {
         closeButton.customizeAppearance(theme.closeButton)
         closeButton.layer.cornerRadius = theme.closeButtonHeight / 2
+        closeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         addSubview(closeButton)
         closeButton.snp.makeConstraints {
@@ -137,5 +132,9 @@ extension CarouselBannerItemView {
             $0.top.equalToSuperview().inset(theme.closeButtonPadding)
             $0.trailing.equalToSuperview().inset(theme.closeButtonPadding)
         }
+    }
+    
+    @objc private func buttonTapped() {
+        delegate?.didTapCloseButton(in: banner)
     }
 }

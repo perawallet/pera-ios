@@ -31,6 +31,7 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func fetchSpotBanners()
+    func updateClose(for banner: CustomCarouselBannerItemModel)
     func hideAnnouncement()
     func fetchIncomingASAsRequests()
 }
@@ -73,11 +74,13 @@ enum HomeAccountItemIdentifier: Hashable {
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
     case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
+    case didUpdateSpotBanner(String?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
-        case .deliverASARequestsContentUpdate(_): return .init()
+        case .deliverASARequestsContentUpdate: return .init()
+        case .didUpdateSpotBanner: return .init()
         }
     }
 }

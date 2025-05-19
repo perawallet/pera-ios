@@ -16,11 +16,22 @@
 
 import UIKit
 
+
+protocol CarouselBannerDelegate: AnyObject {
+    func didPressBanner(in banner: CustomCarouselBannerItemModel?)
+    func didTapCloseButton(in banner: CustomCarouselBannerItemModel?)
+}
+
 final class CarouselBannerCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let theme = CarouselBannerViewTheme()
+    weak var delegate: CarouselBannerDelegate? {
+        didSet {
+            contextView.delegate = delegate
+        }
+    }
     
     // MARK: - Subviews
     
@@ -51,5 +62,4 @@ final class CarouselBannerCell: UICollectionViewCell {
     func bindData(_ data: [CustomCarouselBannerItemModel]) {
         contextView.bindData(data)
     }
-    
 }

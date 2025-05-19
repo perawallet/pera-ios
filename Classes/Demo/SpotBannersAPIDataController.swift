@@ -48,11 +48,41 @@ final class SpotBannersAPIDataController {
             }
         }
     }
+    
+    func updateClose(for banner: CustomCarouselBannerItemModel) {
+        guard let deviceId = session.authenticatedUser?.getDeviceId(on: api.network) else {
+            return
+        }
+        
+        api.updateSpotBannerClose(deviceId: deviceId, bannerId: banner.id) { response in
+            switch response {
+            case .success:
+                self.delegate?.spotBannersAPIDataController(
+                    self,
+                    didUpdate: banner
+                )
+            case .failure(let apiError, _):
+                self.delegate?.spotBannersAPIDataController(
+                    self,
+                    didFail: apiError.localizedDescription
+                )
+            }
+        }
+        
+    }
 }
 
 protocol SpotBannersAPIDataControllerDelegate: AnyObject {
     func spotBannersAPIDataController(
         _ dataController: SpotBannersAPIDataController,
         didFetch spotBanners: [CustomCarouselBannerItemModel]
+    )
+    func spotBannersAPIDataController(
+        _ dataController: SpotBannersAPIDataController,
+        didUpdate spotBanner: CustomCarouselBannerItemModel
+    )
+    func spotBannersAPIDataController(
+        _ dataController: SpotBannersAPIDataController,
+        didFail error: String
     )
 }

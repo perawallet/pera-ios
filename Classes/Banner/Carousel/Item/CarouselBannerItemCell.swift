@@ -21,6 +21,11 @@ final class CarouselBannerItemCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let theme = CarouselBannerItemViewTheme()
+    weak var delegate: CarouselBannerDelegate? {
+        didSet {
+            contextView.delegate = delegate
+        }
+    }
     
     // MARK: - Subviews
     
@@ -44,7 +49,10 @@ final class CarouselBannerItemCell: UICollectionViewCell {
     private func setupConstraints() {
         addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(CarouselBannerItemCell.theme.contentHorizontalInset)
+            $0.trailing.equalToSuperview().inset(CarouselBannerItemCell.theme.contentHorizontalInset)
         }
     }
     

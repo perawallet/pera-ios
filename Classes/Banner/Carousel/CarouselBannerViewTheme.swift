@@ -23,10 +23,15 @@ struct CarouselBannerViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
+    var collectionViewHeight: LayoutMetric
+    var collectionViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
+
+        self.collectionViewHeight = 72
+        self.collectionViewTopPadding = 2
     }
 }

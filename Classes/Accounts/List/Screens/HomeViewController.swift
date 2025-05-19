@@ -192,6 +192,15 @@ final class HomeViewController:
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
+            case .didUpdateSpotBanner(let errorDescription):
+                guard let errorDescription else {
+                    dataController.fetchSpotBanners()
+                    return
+                }
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "There is something wrong. Please try again later."),
+                    message: errorDescription
+                )
             }
         }
         
@@ -602,9 +611,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
 
@@ -621,9 +629,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
     
@@ -640,29 +647,9 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
-    }
-    
-    private func linkInteractors(
-        _ cell: CarouselBannerCell,
-        for items: [CustomCarouselBannerItemModel]
-    ) {
-//        cell.startObserving(event: .close) {
-//            [weak self] in
-//            guard let self else { return }
-//
-//            self.dataController.hideAnnouncement()
-//        }
-//
-//        cell.startObserving(event: .action) {
-//            [weak self] in
-//            guard let self else { return }
-//
-//            self.triggerBannerCTA(item: item)
-//        }
     }
 
     private func linkInteractors(
@@ -688,9 +675,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
@@ -772,9 +758,8 @@ extension HomeViewController {
         }
     }
 
-    private func triggerBannerCTA(item: AnnouncementViewModel) {
-        guard let ctaUrl = item.ctaUrl else { return }
-        let url = ctaUrl.browserDeeplinkURL ?? ctaUrl
+    private func triggerBannerCTA(itemUrl: URL) {
+        let url = itemUrl.browserDeeplinkURL ?? itemUrl
         
         if let externalDeepLink = url.externalDeepLink {
             launchController.receive(
@@ -1009,8 +994,9 @@ extension HomeViewController {
             case .card:
                 linkInteractors(cell as! CardAnnouncementCell, for: item)
             }
-        case .carouselBanner(let items):
-            linkInteractors(cell as! CarouselBannerCell, for: items)
+        case .carouselBanner:
+            guard let cell = cell as? CarouselBannerCell else { return }
+            cell.delegate = self
         case .account(let item):
             switch item {
             case .header(let headerItem):
@@ -1315,6 +1301,18 @@ extension HomeViewController {
         }
 
         return dataController[item.address]
+    }
+}
+
+extension HomeViewController: CarouselBannerDelegate {
+    func didPressBanner(in banner: CustomCarouselBannerItemModel?) {
+        guard let itemUrl = banner?.url else { return }
+        triggerBannerCTA(itemUrl: itemUrl)
+    }
+    
+    func didTapCloseButton(in banner: CustomCarouselBannerItemModel?) {
+        guard let banner else { return }
+        dataController.updateClose(for: banner)
     }
 }
 

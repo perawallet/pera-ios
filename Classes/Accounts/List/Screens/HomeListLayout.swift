@@ -101,8 +101,8 @@ extension HomeListLayout {
                 sizeForAnnouncementCellItem: item,
                 atSection: indexPath.section
             )
-        case .carouselBanner(let items):
-            return CGSize((collectionView.bounds.width, 72))
+        case .carouselBanner:
+            return CGSize((collectionView.bounds.width, 90))
         }
     }
 }

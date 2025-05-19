@@ -20,17 +20,14 @@ import Kingfisher
 struct CustomCarouselBannerItemModel: Hashable {
     let id: Int
     let text: String
-    let image: UIImageView
+    let image: URL?
     let url: URL?
     let buttonUrlIsExternal: Bool
     
     init(apiModel: SpotBannerListItem.APIModel) {
         self.id = apiModel.id
         self.text = apiModel.text
-        let imageView = UIImageView()
-        imageView.backgroundColor = .orange
-//        imageView.kf.setImage(with: URL(string: apiModel.image))
-        self.image = imageView
+        self.image = URL(string: apiModel.image)
         self.url = URL(string: apiModel.url)
         self.buttonUrlIsExternal = apiModel.buttonUrlIsExternal
     }
