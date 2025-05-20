@@ -18,8 +18,8 @@ import UIKit
 
 
 protocol CarouselBannerDelegate: AnyObject {
-    func didPressBanner(in banner: CustomCarouselBannerItemModel?)
-    func didTapCloseButton(in banner: CustomCarouselBannerItemModel?)
+    func didPressBanner(in banner: CarouselBannerItemModel?)
+    func didTapCloseButton(in banner: CarouselBannerItemModel?)
 }
 
 final class CarouselBannerCell: UICollectionViewCell {
@@ -59,7 +59,7 @@ final class CarouselBannerCell: UICollectionViewCell {
         }
     }
     
-    func bindData(_ data: [CustomCarouselBannerItemModel]) {
+    func bindData(_ data: [CarouselBannerItemModel]) {
         contextView.bindData(data)
     }
 }

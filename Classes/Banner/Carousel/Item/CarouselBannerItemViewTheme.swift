@@ -52,7 +52,7 @@ struct CarouselBannerItemViewTheme:
         ]
         self.textHeight = 40
         self.spacingBetweenTextAndIcon = 12
-        self.textHorizontalPadding = 50
+        self.textHorizontalPadding = 60
         
         self.iconViewHeight = 48
         

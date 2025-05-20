@@ -653,16 +653,6 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
-        _ cell: AccountNotBackedUpWarningCell
-    ) {
-        cell.startObserving(event: .performBackup) {
-            [weak self] in
-            guard let self else { return }
-            openBackUpAccount()
-        }
-    }
-
-    private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
         for item: AnnouncementViewModel
     ) {
@@ -979,8 +969,6 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             }
-        case .accountNotBackedUpWarning:
-            linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
             switch item.type {
             case .governance:
@@ -1305,12 +1293,16 @@ extension HomeViewController {
 }
 
 extension HomeViewController: CarouselBannerDelegate {
-    func didPressBanner(in banner: CustomCarouselBannerItemModel?) {
-        guard let itemUrl = banner?.url else { return }
-        triggerBannerCTA(itemUrl: itemUrl)
+    func didPressBanner(in banner: CarouselBannerItemModel?) {
+        if let banner, banner.isBackupBanner {
+            openBackUpAccount()
+        } else {
+            guard let itemUrl = banner?.url else { return }
+            triggerBannerCTA(itemUrl: itemUrl)
+        }
     }
     
-    func didTapCloseButton(in banner: CustomCarouselBannerItemModel?) {
+    func didTapCloseButton(in banner: CarouselBannerItemModel?) {
         guard let banner else { return }
         dataController.updateClose(for: banner)
     }

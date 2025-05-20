@@ -31,7 +31,7 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func fetchSpotBanners()
-    func updateClose(for banner: CustomCarouselBannerItemModel)
+    func updateClose(for banner: CarouselBannerItemModel)
     func hideAnnouncement()
     func fetchIncomingASAsRequests()
 }
@@ -41,7 +41,6 @@ enum HomeSectionIdentifier:
     Hashable {
     case empty
     case portfolio
-    case accountNotBackedUpWarning
     case announcement
     case carouselBanner
     case accounts
@@ -50,9 +49,8 @@ enum HomeSectionIdentifier:
 enum HomeItemIdentifier: Hashable {
     case empty(HomeEmptyItemIdentifier)
     case portfolio(HomePortfolioItemIdentifier)
-    case accountNotBackedUpWarning(AccountNotBackedUpWarningViewModel)
     case announcement(AnnouncementViewModel)
-    case carouselBanner([CustomCarouselBannerItemModel])
+    case carouselBanner([CarouselBannerItemModel])
     case account(HomeAccountItemIdentifier)
 }
 

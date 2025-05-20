@@ -24,7 +24,7 @@ final class CarouselBannerItemView:
     ListReusable {
     
     weak var delegate: CarouselBannerDelegate?
-    private var banner: CustomCarouselBannerItemModel?
+    private var banner: CarouselBannerItemModel?
     
     private lazy var iconView = UIImageView()
     private lazy var textLabel = UILabel()
@@ -43,26 +43,30 @@ final class CarouselBannerItemView:
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
-    func bindData(_ banner: CarouselBanner) {
-        textLabel.text = banner.title
-        if banner == .backup {
-            textLabel.textColor = Colors.Helpers.negative.uiColor
-        }
-        arrowView.isHidden = !banner.showNavigationButton
-        closeButton.isHidden = !banner.showCloseButton
-    }
-    
-    func bindData(_ banner: CustomCarouselBannerItemModel) {
-        self.banner = banner
-        iconView.kf.setImage(with: banner.image)
+    func bindData(_ banner: CarouselBannerItemModel) {
+        prepareForReuse()
         textLabel.text = banner.text
-        arrowView.isHidden = true
-        closeButton.isHidden = false
+        if banner.isBackupBanner {
+            textLabel.textColor = Colors.Helpers.negative.uiColor
+            iconView.backgroundColor = Colors.Helpers.negativeLighter.uiColor
+            let icon = UIImageView(image: UIImage(named: "icon-backup-banner"))
+            iconView.addSubview(icon)
+            icon.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
+        } else {
+            iconView.kf.setImage(with: banner.image)
+        }
+        arrowView.isHidden = !banner.isBackupBanner
+        closeButton.isHidden = banner.isBackupBanner
+        self.banner = banner
     }
     
     func prepareForReuse() {
         iconView.image = nil
+        iconView.removeAllSubviews()
         textLabel.clearText()
+        textLabel.textColor = Colors.Text.main.uiColor
     }
 }
 

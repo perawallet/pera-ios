@@ -28,7 +28,7 @@ final class CarouselBannerView:
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     let pageControl = CarouselPageControl()
-    var banners: [CustomCarouselBannerItemModel] = []
+    var banners: [CarouselBannerItemModel] = []
 
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
@@ -40,7 +40,7 @@ final class CarouselBannerView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ items: [CustomCarouselBannerItemModel]) {
+    func bindData(_ items: [CarouselBannerItemModel]) {
         banners = items
         pageControl.numberOfPages = items.count
         pageControl.currentPage = 0
@@ -134,11 +134,11 @@ extension CarouselBannerView: UICollectionViewDataSource {
 }
 
 extension CarouselBannerView: CarouselBannerDelegate {
-    func didPressBanner(in banner: CustomCarouselBannerItemModel?) {
+    func didPressBanner(in banner: CarouselBannerItemModel?) {
         delegate?.didPressBanner(in: banner)
     }
     
-    func didTapCloseButton(in banner: CustomCarouselBannerItemModel?) {
+    func didTapCloseButton(in banner: CarouselBannerItemModel?) {
         delegate?.didTapCloseButton(in: banner)
     }
     

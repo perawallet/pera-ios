@@ -27,20 +27,27 @@ final class SpotBannersAPIDataController {
         self.session = session
     }
     
-    func loadData() {
+    func loadData(shouldAddBackupBanner: Bool) {
         guard let deviceId = session.authenticatedUser?.getDeviceId(on: api.network) else {
             return
+        }
+        var banners: [CarouselBannerItemModel] = []
+        if shouldAddBackupBanner {
+            banners.append(CarouselBannerItemModel())
         }
         
         api.fetchSpotBannersList(deviceId: deviceId) { [weak self] response in
             guard let self else { return }
             switch response {
-            case .failure:
-                /// note: Delegate won't called here because we won't show any error on ui side.
-                ///  If we support error handling necessary views, delegate will be called with errors
-                break
+            case .failure(let apiError, _):
+                self.delegate?.spotBannersAPIDataController(
+                    self,
+                    didFailFetch: apiError.localizedDescription,
+                    spotBanners: banners
+                )
             case .success(let spotBanners):
-                let banners = spotBanners.map { CustomCarouselBannerItemModel(apiModel: $0)}
+                banners.append(contentsOf: spotBanners.map { CarouselBannerItemModel(apiModel: $0)})
+
                 self.delegate?.spotBannersAPIDataController(
                     self,
                     didFetch: banners
@@ -49,7 +56,7 @@ final class SpotBannersAPIDataController {
         }
     }
     
-    func updateClose(for banner: CustomCarouselBannerItemModel) {
+    func updateClose(for banner: CarouselBannerItemModel) {
         guard let deviceId = session.authenticatedUser?.getDeviceId(on: api.network) else {
             return
         }
@@ -64,7 +71,7 @@ final class SpotBannersAPIDataController {
             case .failure(let apiError, _):
                 self.delegate?.spotBannersAPIDataController(
                     self,
-                    didFail: apiError.localizedDescription
+                    didFailUpdateClose: apiError.localizedDescription
                 )
             }
         }
@@ -75,14 +82,18 @@ final class SpotBannersAPIDataController {
 protocol SpotBannersAPIDataControllerDelegate: AnyObject {
     func spotBannersAPIDataController(
         _ dataController: SpotBannersAPIDataController,
-        didFetch spotBanners: [CustomCarouselBannerItemModel]
+        didFetch spotBanners: [CarouselBannerItemModel]
     )
     func spotBannersAPIDataController(
         _ dataController: SpotBannersAPIDataController,
-        didUpdate spotBanner: CustomCarouselBannerItemModel
+        didFailFetch error: String, spotBanners: [CarouselBannerItemModel]
     )
     func spotBannersAPIDataController(
         _ dataController: SpotBannersAPIDataController,
-        didFail error: String
+        didUpdate spotBanner: CarouselBannerItemModel
+    )
+    func spotBannersAPIDataController(
+        _ dataController: SpotBannersAPIDataController,
+        didFailUpdateClose error: String
     )
 }
