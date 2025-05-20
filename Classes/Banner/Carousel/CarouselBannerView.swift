@@ -44,6 +44,7 @@ final class CarouselBannerView:
         banners = items
         pageControl.numberOfPages = items.count
         pageControl.currentPage = 0
+        pageControl.isHidden = items.count == 1
         collectionView.reloadData()
     }
 
