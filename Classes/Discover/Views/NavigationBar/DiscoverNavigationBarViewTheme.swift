@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FeatureFlag.swift
+//   DiscoverNavigationBarViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
 
-enum FeatureFlag: String, CaseIterable {
-    case immersiveEnabled = "enable_immersve"
-    case discoverV5Enabled = "enable_discover_v5"
+struct DiscoverNavigationBarViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let titleInset: LayoutMargins
+    let searchButtonSize: LayoutSize
 
-    var defaultValue: RemoteConfigValue {
-        switch self {
-        case .immersiveEnabled:
-            return .bool(false)
-        case .discoverV5Enabled:
-            return .bool(false)
-        }
+    init(_ family: LayoutFamily) {
+        titleInset = (0, 0, 0, 60)
+        searchButtonSize = (40, 40)
     }
 }

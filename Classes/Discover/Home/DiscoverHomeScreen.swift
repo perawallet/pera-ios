@@ -21,6 +21,7 @@ import MacaroonUIKit
 
 final class DiscoverHomeScreen:
     DiscoverInAppBrowserScreen<DiscoverHomeScriptMessage>,
+    NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
         return webView.scrollView
@@ -32,11 +33,39 @@ final class DiscoverHomeScreen:
     
     private lazy var theme = DiscoverHomeScreenTheme()
 
+    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
+    private(set) lazy var navigationBarLargeTitleView = DiscoverNavigationBarView()
+
+    private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
+
+    private var isNavigationTitleHidden = true
+    private var isViewLayoutLoaded = false
+
+    deinit {
+        navigationBarLargeTitleController.deactivate()
+    }
+
     init(configuration: ViewControllerConfiguration) {
         super.init(
             destination: .home,
             configuration: configuration
         )
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationBarLargeTitleController.title = String(localized: "title-discover")
+            navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
+
+            navigationBarLargeTitleView.searchAction = {
+                [unowned self] in
+                self.navigateToSearch()
+            }
+
+            updateRightBarButtonsWhenNavigationTitleBecomeHidden(true)
+        }
     }
 
     override func customizeTabBarAppearence() {
@@ -46,8 +75,29 @@ final class DiscoverHomeScreen:
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationBarLargeTitleController.deactivate()
+        } else {
+            addNavigationBarLargeTitle()
+            navigationBarLargeTitleController.activate()
+        }
+
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            if isViewLayoutLoaded {
+                return
+            }
+
+            updateUIWhenViewDidLayout()
+
+            isViewLayoutLoaded = true
+        }
     }
 
     /// <mark>
@@ -70,6 +120,77 @@ final class DiscoverHomeScreen:
     }
 }
 
+/// <mark>
+/// UIScrollViewDelegate
+extension DiscoverHomeScreen {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateUIWhenWebContentDidScroll()
+    }
+
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        navigationBarLargeTitleController.scrollViewWillEndDragging(
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset,
+            contentOffsetDeltaYBelowLargeTitle: 0
+        )
+    }
+}
+
+extension DiscoverHomeScreen {
+    private func addNavigationBarLargeTitle() {
+        view.addSubview(navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(
+                theme.navigationBarEdgeInset
+            )
+        }
+    }
+
+    private func updateUIWhenWebContentDidScroll() {
+        updateNavigationRightBarButtonsWhenWebContentDidScroll()
+    }
+
+    private func updateNavigationRightBarButtonsWhenWebContentDidScroll() {
+        let isHidden = navigationBarLargeTitleView.frame.maxY >= 0
+        updateRightBarButtonsWhenNavigationTitleBecomeHidden(isHidden)
+    }
+
+    private func updateRightBarButtonsWhenNavigationTitleBecomeHidden(_ hidden: Bool) {
+        if isNavigationTitleHidden == hidden { return }
+
+        if hidden {
+            rightBarButtonItems = []
+        } else {
+            rightBarButtonItems = [ makeSearchBarButtonItem() ]
+        }
+
+        setNeedsRightBarButtonItemsUpdate()
+
+        isNavigationTitleHidden = hidden
+    }
+
+    private func makeSearchBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .search) {
+            [unowned self] in
+            self.navigateToSearch()
+        }
+    }
+}
+
+extension DiscoverHomeScreen {
+    private func updateUIWhenViewDidLayout() {
+        updateAdditionalSafeAreaInetsWhenViewDidLayout()
+    }
+
+    private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
+        webView.scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.webContentTopInset
+    }
+}
+
 extension DiscoverHomeScreen {
     private func handleTokenDetailAction(_ message: WKScriptMessage) {
         guard let jsonString = message.body as? String else { return }
@@ -82,6 +203,33 @@ extension DiscoverHomeScreen {
         open(
             .discoverAssetDetail(params),
             by: .push
+        )
+    }
+}
+
+extension DiscoverHomeScreen {
+    private func navigateToSearch() {
+        let screen = Screen.discoverSearch {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .selectAsset(let assetDetail):
+                screen.dismissScreen(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.navigateToAssetDetail(assetDetail)
+                }
+            }
+        }
+
+        open(
+            screen,
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
         )
     }
 }
