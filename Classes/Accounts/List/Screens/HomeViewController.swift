@@ -198,7 +198,7 @@ final class HomeViewController:
                     return
                 }
                 self.bannerController?.presentErrorBanner(
-                    title: String(localized: "There is something wrong. Please try again later."),
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
             }
