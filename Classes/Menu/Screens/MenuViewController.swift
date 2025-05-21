@@ -77,7 +77,7 @@ final class MenuViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,9 +95,9 @@ extension MenuViewController {
             switch event {
             case .success(hasActiveCard: let hasActiveCard, isWaitlisted: let isWaitlisted):
                 if isWaitlisted {
-                    menuOptions = [.cards(state: .addedToWailist), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    menuOptions = [.cards(state: .addedToWailist), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
                 } else {
-                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
                 }
                 menuListView.collectionView.reloadData()
             case .error:
