@@ -115,6 +115,10 @@ extension RootViewController {
             api: configuration.api!,
             session: configuration.session!
         )
+        let spotBannersAPIDataController = SpotBannersAPIDataController(
+            api: configuration.api!,
+            session: configuration.session!
+        )
         let incomingASAsAPIDataController = IncomingASAsAPIDataController(
             api: configuration.api!,
             session: configuration.session!
@@ -125,6 +129,7 @@ extension RootViewController {
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController,
+                spotBannersDataController: spotBannersAPIDataController,
                 incomingASAsAPIDataController: incomingASAsAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(

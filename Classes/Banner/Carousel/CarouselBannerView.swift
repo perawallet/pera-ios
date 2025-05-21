@@ -15,117 +15,136 @@
 //   CarouselBannerView.swift
 
 import MacaroonUIKit
-import MacaroonURLImage
 import UIKit
+
 
 final class CarouselBannerView:
     UIView,
     ViewComposable,
     ListReusable {
-
-    private lazy var icon = UIImageView()
-    private lazy var iconView = UIView()
-    private lazy var textLabel = UILabel()
-    private lazy var arrowView = UIView()
-    private lazy var closeButton = Button()
     
+    weak var delegate: CarouselBannerDelegate?
+    
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let pageControl = CarouselPageControl()
+    private(set) var banners: [CarouselBannerItemModel] = []
+
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
-        addIcon(theme)
-        addText(theme)
-        addArrow(theme)
-        addCloseButton(theme)
+        addCollectionView(theme)
+        addPageControl(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ banner: CarouselBanner) {
-        icon.image = banner.icon
-        iconView.backgroundColor = banner.iconBackground
-        textLabel.text = banner.title
-        if banner == .backup {
-            textLabel.textColor = Colors.Helpers.negative.uiColor
-        }
-        arrowView.isHidden = !banner.showNavigationButton
-        closeButton.isHidden = !banner.showCloseButton
+    func bindData(_ items: [CarouselBannerItemModel]) {
+        banners = items
+        pageControl.numberOfPages = items.count
+        pageControl.currentPage = 0
+        pageControl.isHidden = items.count <= 1
+        collectionView.reloadData()
     }
 
     func prepareForReuse() {
-        icon.image = nil
-        textLabel.clearText()
+        banners.removeAll()
+        pageControl.currentPage = 0
+        pageControl.numberOfPages = 0
     }
 }
 
 extension CarouselBannerView {
     private func addBackground(_ theme: CarouselBannerViewTheme) {
         customizeAppearance(theme.background)
-        layer.cornerRadius = theme.contentViewRadius
-        layer.borderWidth = 1
-        layer.borderColor = Colors.Layer.gray.uiColor.cgColor
     }
     
-    private func addIcon(_ theme: CarouselBannerViewTheme) {
-        iconView.layer.cornerRadius = theme.iconViewHeight / 2
-        iconView.addSubview(icon)
-        icon.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
+    private func addCollectionView(_ theme: CarouselBannerViewTheme) {
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isPagingEnabled = false
+        collectionView.clipsToBounds = false
+        collectionView.collectionViewLayout = CarouselFlowLayout(spacing: theme.collectionViewSpacing, insets: theme.collectionViewInsets)
+        collectionView.register(CarouselBannerItemCell.self)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.decelerationRate = .fast
         
-        addSubview(iconView)
-        iconView.snp.makeConstraints {
-            $0.width.equalTo(theme.iconViewHeight)
-            $0.height.equalTo(theme.iconViewHeight)
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(theme.contentHorizontalPadding)
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.collectionViewTopPadding)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(theme.collectionViewHeight)
         }
     }
+    
+    private func addPageControl(_ theme: CarouselBannerViewTheme) {
+        addSubview(pageControl)
+        pageControl.snp.makeConstraints {
+            $0.top == collectionView.snp.bottom
+            $0.bottom.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+        pageControl.addTarget(self, action: #selector(pageControlDidChange), for: .valueChanged)
+    }
+    
+    @objc private func pageControlDidChange(_ sender: UIPageControl) {
+        let indexPath = IndexPath(item: sender.currentPage, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+}
 
-    private func addText(_ theme: CarouselBannerViewTheme) {
-        textLabel.customizeAppearance(theme.text)
-        textLabel.numberOfLines = 0
-        
-        addSubview(textLabel)
-        textLabel.snp.makeConstraints {
-            $0.leading == iconView.snp.trailing + theme.spacingBetweenTextAndIcon
-            $0.centerY.equalToSuperview()
-            $0.height.equalTo(theme.textHeight)
-            $0.trailing.equalToSuperview().inset(theme.textHorizontalPadding)
-        }
+extension CarouselBannerView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didPressBanner(in: banners[indexPath.item])
+    }
+}
+
+extension CarouselBannerView: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
+        var targetX = targetContentOffset.pointee.x + scrollView.contentInset.left
+        let page = round(targetX / pageWidth)
+        targetX = page * pageWidth - scrollView.contentInset.left
+        targetContentOffset.pointee.x = targetX
     }
     
-    private func addArrow(_ theme: CarouselBannerViewTheme) {
-        arrowView.customizeAppearance(theme.arrowView)
-        arrowView.layer.cornerRadius = theme.arrowViewHeight / 2
-        
-        let arrow = UIImageView()
-        arrow.customizeAppearance(theme.arrow)
-        
-        arrowView.addSubview(arrow)
-        arrow.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        addSubview(arrowView)
-        arrowView.snp.makeConstraints {
-            $0.width.equalTo(theme.arrowViewHeight)
-            $0.height.equalTo(theme.arrowViewHeight)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(theme.contentHorizontalPadding)
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
+        let offsetX = scrollView.contentOffset.x + scrollView.contentInset.left
+        let page = Int(round(offsetX / pageWidth))
+
+        pageControl.currentPage = max(0, min(page, pageControl.numberOfPages - 1))
+    }
+}
+
+extension CarouselBannerView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        banners.count
     }
     
-    private func addCloseButton(_ theme: CarouselBannerViewTheme) {
-        closeButton.customizeAppearance(theme.closeButton)
-        closeButton.layer.cornerRadius = theme.closeButtonHeight / 2
-        
-        addSubview(closeButton)
-        closeButton.snp.makeConstraints {
-            $0.width.equalTo(theme.closeButtonHeight)
-            $0.height.equalTo(theme.closeButtonHeight)
-            $0.top.equalToSuperview().inset(theme.closeButtonPadding)
-            $0.trailing.equalToSuperview().inset(theme.closeButtonPadding)
-        }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(CarouselBannerItemCell.self, at: indexPath)
+        cell.bindData(banners[indexPath.item])
+        cell.delegate = self
+        return cell
+    }
+}
+
+extension CarouselBannerView: CarouselBannerDelegate {
+    func didPressBanner(in banner: CarouselBannerItemModel?) {
+        delegate?.didPressBanner(in: banner)
+    }
+    
+    func didTapCloseButton(in banner: CarouselBannerItemModel?) {
+        delegate?.didTapCloseButton(in: banner)
     }
 }

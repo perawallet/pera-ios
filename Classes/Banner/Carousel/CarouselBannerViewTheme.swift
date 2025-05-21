@@ -23,49 +23,19 @@ struct CarouselBannerViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var contentViewRadius: LayoutMetric
-    var contentHorizontalPadding: LayoutMetric
-    var text: TextStyle
-    var textHeight: LayoutMetric
-    var spacingBetweenTextAndIcon: LayoutMetric
-    var textHorizontalPadding: LayoutMetric
-    var iconViewHeight: LayoutMetric
-    var arrowView: ViewStyle
-    var arrowViewHeight: LayoutMetric
-    var arrow: ImageStyle
-    var closeButton: ButtonStyle
-    var closeButtonHeight: LayoutMetric
-    var closeButtonPadding: LayoutMetric
+    var collectionViewHeight: LayoutMetric
+    var collectionViewTopPadding: LayoutMetric
+    var collectionViewSpacing: LayoutMetric
+    var collectionViewInsets: UIEdgeInsets
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contentViewRadius = 16
-        self.contentHorizontalPadding = 12
-        
-        self.text = [
-            .textColor(Colors.Text.main),
-            .font(Typography.bodyMedium())
-        ]
-        self.textHeight = 40
-        self.spacingBetweenTextAndIcon = 12
-        self.textHorizontalPadding = 50
-        
-        self.iconViewHeight = 48
-        
-        self.arrowView = [
-            .backgroundColor(Colors.Layer.grayLighter)
-        ]
-        self.arrowViewHeight = 36
-        self.arrow = [
-            .image("icon-arrow-24")
-        ]
-        
-        self.closeButton = [
-            .backgroundImage([.normal("close-governance-icon")])
-        ]
-        self.closeButtonHeight = 24
-        self.closeButtonPadding  = 8
+
+        self.collectionViewHeight = 72
+        self.collectionViewTopPadding = 2
+        self.collectionViewSpacing = 12
+        self.collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
     }
 }

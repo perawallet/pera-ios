@@ -87,13 +87,6 @@ extension HomeListLayout {
                 sizeForAccountItem: item,
                 atSection: indexPath.section
             )
-        case .accountNotBackedUpWarning(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForAccountNotBackedUpWarningCellItem: item,
-                atSection: indexPath.section
-            )
         case .announcement(let item):
             return listView(
                 collectionView,
@@ -101,6 +94,8 @@ extension HomeListLayout {
                 sizeForAnnouncementCellItem: item,
                 atSection: indexPath.section
             )
+        case .carouselBanner:
+            return CGSize((collectionView.bounds.width, 90))
         }
     }
 }
@@ -288,33 +283,6 @@ extension HomeListLayout {
         
         sizeCache[sizeCacheIdentifier] = newSize
         
-        return newSize
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountNotBackedUpWarningCellItem item: AccountNotBackedUpWarningViewModel,
-        atSection section: Int
-    ) -> CGSize {
-        let sizeCacheIdentifier = AccountNotBackedUpWarningCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
-        let newSize = AccountNotBackedUpWarningCell.calculatePreferredSize(
-            item,
-            for: AccountNotBackedUpWarningCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
         return newSize
     }
 

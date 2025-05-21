@@ -12,21 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CarouselBannerCell.swift
+//   CarouselBannerItemCell.swift
 
 import UIKit
 
-
-protocol CarouselBannerDelegate: AnyObject {
-    func didPressBanner(in banner: CarouselBannerItemModel?)
-    func didTapCloseButton(in banner: CarouselBannerItemModel?)
-}
-
-final class CarouselBannerCell: UICollectionViewCell {
+final class CarouselBannerItemCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let theme = CarouselBannerViewTheme()
+    static let theme = CarouselBannerItemViewTheme()
     weak var delegate: CarouselBannerDelegate? {
         didSet {
             contextView.delegate = delegate
@@ -35,9 +29,9 @@ final class CarouselBannerCell: UICollectionViewCell {
     
     // MARK: - Subviews
     
-    let contextView: CarouselBannerView = {
-        let view = CarouselBannerView()
-        view.customize(CarouselBannerCell.theme)
+    let contextView: CarouselBannerItemView = {
+        let view = CarouselBannerItemView()
+        view.customize(CarouselBannerItemCell.theme)
         return view
     }()
     
@@ -55,11 +49,15 @@ final class CarouselBannerCell: UICollectionViewCell {
     private func setupConstraints() {
         addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
     }
     
-    func bindData(_ data: [CarouselBannerItemModel]) {
+    func bindData(_ data: CarouselBannerItemModel) {
         contextView.bindData(data)
     }
+    
 }
