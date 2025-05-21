@@ -51,8 +51,8 @@ final class CarouselBannerItemCell: UICollectionViewCell {
         contextView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(CarouselBannerItemCell.theme.contentHorizontalInset)
-            $0.trailing.equalToSuperview().inset(CarouselBannerItemCell.theme.contentHorizontalInset)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
     }
     

@@ -25,6 +25,8 @@ struct CarouselBannerViewTheme:
     var background: ViewStyle
     var collectionViewHeight: LayoutMetric
     var collectionViewTopPadding: LayoutMetric
+    var collectionViewSpacing: LayoutMetric
+    var collectionViewInsets: UIEdgeInsets
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -33,5 +35,7 @@ struct CarouselBannerViewTheme:
 
         self.collectionViewHeight = 72
         self.collectionViewTopPadding = 2
+        self.collectionViewSpacing = 12
+        self.collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
     }
 }

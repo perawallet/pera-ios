@@ -6661,6 +6661,9 @@
 		D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
 		D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
 		D4CC471F26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
+		D4CD2CC92DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD2CC82DDDF6AA00CAA47C /* CarouselFlowLayout.swift */; };
+		D4CD2CCA2DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD2CC82DDDF6AA00CAA47C /* CarouselFlowLayout.swift */; };
+		D4CD2CCB2DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD2CC82DDDF6AA00CAA47C /* CarouselFlowLayout.swift */; };
 		D4CDF92128B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
 		D4CDF92228B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
 		D4CDF92328B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
@@ -10156,6 +10159,7 @@
 		D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
 		D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Italic.ttf"; sourceTree = "<group>"; };
+		D4CD2CC82DDDF6AA00CAA47C /* CarouselFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselFlowLayout.swift; sourceTree = "<group>"; };
 		D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemAccessory.swift; sourceTree = "<group>"; };
 		D4CEEC10280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		D4CF67D928C7594E0007A727 /* AccountSelectionListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionListScreen.swift; sourceTree = "<group>"; };
@@ -20568,10 +20572,11 @@
 		D46576C52DCCFBE00076F3C4 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
-				D40F293D2DDB2FFC008D633C /* PageControl */,
 				D4BFA6082DD73FD9002F251E /* CarouselBannerCell.swift */,
 				D4BFA60C2DD73FE4002F251E /* CarouselBannerView.swift */,
 				D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */,
+				D4CD2CC72DDDF69300CAA47C /* FlowLayout */,
+				D40F293D2DDB2FFC008D633C /* PageControl */,
 				D4BFA6072DD73FB5002F251E /* Item */,
 			);
 			path = Carousel;
@@ -21563,6 +21568,14 @@
 				D4CC46EE26DD17D100AA1BFE /* Fonts */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		D4CD2CC72DDDF69300CAA47C /* FlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				D4CD2CC82DDDF6AA00CAA47C /* CarouselFlowLayout.swift */,
+			);
+			path = FlowLayout;
 			sourceTree = "<group>";
 		};
 		D4CF67D828C759310007A727 /* AccountSelection */ = {
@@ -25206,6 +25219,7 @@
 				8BA851642C790288008F37FE /* WalletConnectSessionRequestResponse.swift in Sources */,
 				2B7A1F3527DBF8040010F52E /* CollectibleDetailDataController.swift in Sources */,
 				D44AFC4929D5A11B001F5E0F /* RekeyStandardToStandardAccountFutureTransactionsSignInstructionViewModel.swift in Sources */,
+				D4CD2CCB2DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */,
 				2BCBBAE724A66ACF002CD56F /* TransactionFilterView.swift in Sources */,
 				17BD4EA72292F1260003E49A /* ContactsViewModel.swift in Sources */,
 				17BD4EAB2292F1260003E49A /* AsyncOperation.swift in Sources */,
@@ -27360,6 +27374,7 @@
 				F03A836D28C9772100443A2B /* CopyAddressListItemButtonViewModel.swift in Sources */,
 				D459E29027DE547100F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
 				8B2A18E02BC05789001B4AD0 /* ScammerControlQuery.swift in Sources */,
+				D4CD2CCA2DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */,
 				2B0F624124EC129D00DA22A6 /* Session.swift in Sources */,
 				17AEC554297044B9002B3B23 /* WebImportErrorScreen.swift in Sources */,
 				2B0F624324EC129D00DA22A6 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
@@ -30324,6 +30339,7 @@
 				D48933BC27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */,
 				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
 				2B1A1D5324AFAA2E00CB4E78 /* TransactionSignature.swift in Sources */,
+				D4CD2CC92DDDF6AC00CAA47C /* CarouselFlowLayout.swift in Sources */,
 				2BC7DC34286F3F9000110A92 /* RewardDetailViewModel.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				D4BC640326DE2DC9000CFD28 /* ButtonTheme.swift in Sources */,

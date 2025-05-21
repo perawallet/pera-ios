@@ -15,7 +15,6 @@
 //   CarouselBannerView.swift
 
 import MacaroonUIKit
-import MacaroonURLImage
 import UIKit
 
 
@@ -28,7 +27,7 @@ final class CarouselBannerView:
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     let pageControl = CarouselPageControl()
-    var banners: [CarouselBannerItemModel] = []
+    private(set) var banners: [CarouselBannerItemModel] = []
 
     func customize(_ theme: CarouselBannerViewTheme) {
         addBackground(theme)
@@ -44,16 +43,12 @@ final class CarouselBannerView:
         banners = items
         pageControl.numberOfPages = items.count
         pageControl.currentPage = 0
-        pageControl.isHidden = items.count == 1
+        pageControl.isHidden = items.count <= 1
         collectionView.reloadData()
     }
 
     func prepareForReuse() {
         banners.removeAll()
-        collectionView.setContentOffset(.zero, animated: false)
-        collectionView.reloadData()
-        collectionView.delegate = nil
-        collectionView.dataSource = nil
         pageControl.currentPage = 0
         pageControl.numberOfPages = 0
     }
@@ -65,21 +60,20 @@ extension CarouselBannerView {
     }
     
     private func addCollectionView(_ theme: CarouselBannerViewTheme) {
-
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isPagingEnabled = true
-        collectionView.flowLayout.scrollDirection = .horizontal
+        collectionView.isPagingEnabled = false
+        collectionView.clipsToBounds = false
+        collectionView.collectionViewLayout = CarouselFlowLayout(spacing: theme.collectionViewSpacing, insets: theme.collectionViewInsets)
         collectionView.register(CarouselBannerItemCell.self)
-        collectionView.backgroundColor = theme.background.backgroundColor?.uiColor
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.decelerationRate = .fast
         
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.collectionViewTopPadding)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(theme.collectionViewHeight)
         }
     }
@@ -91,44 +85,55 @@ extension CarouselBannerView {
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
+        pageControl.addTarget(self, action: #selector(pageControlDidChange), for: .valueChanged)
+    }
+    
+    @objc private func pageControlDidChange(_ sender: UIPageControl) {
+        let indexPath = IndexPath(item: sender.currentPage, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
 }
 
-extension CarouselBannerView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalHorizontalSpacing: CGFloat = 12 * 2 // 12pt peek on each side
-        let itemWidth = collectionView.bounds.width - totalHorizontalSpacing
-
-        return CGSize(width: collectionView.bounds.width, height: 72)
+extension CarouselBannerView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didPressBanner(in: banners[indexPath.item])
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+}
+
+extension CarouselBannerView: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
+        var targetX = targetContentOffset.pointee.x + scrollView.contentInset.left
+        let page = round(targetX / pageWidth)
+        targetX = page * pageWidth - scrollView.contentInset.left
+        targetContentOffset.pointee.x = targetX
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
-        let itemWidth = layout?.itemSize.width ?? 1
-        let spacing = layout?.minimumLineSpacing ?? 0
-        let pageWidth = collectionView.bounds.width
-        let currentPage = Int((scrollView.contentOffset.x + (pageWidth / 2)) / pageWidth)
-        pageControl.currentPage = currentPage
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
 
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didPressBanner(in: banners[indexPath.row])
+        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
+        let offsetX = scrollView.contentOffset.x + scrollView.contentInset.left
+        let page = Int(round(offsetX / pageWidth))
+
+        pageControl.currentPage = max(0, min(page, pageControl.numberOfPages - 1))
     }
 }
 
 extension CarouselBannerView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return banners.count
+        banners.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(CarouselBannerItemCell.self, at: indexPath)
-        cell.bindData(banners[indexPath.row])
+        cell.bindData(banners[indexPath.item])
         cell.delegate = self
         return cell
     }
@@ -142,5 +147,4 @@ extension CarouselBannerView: CarouselBannerDelegate {
     func didTapCloseButton(in banner: CarouselBannerItemModel?) {
         delegate?.didTapCloseButton(in: banner)
     }
-    
 }
