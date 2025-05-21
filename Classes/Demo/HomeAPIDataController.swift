@@ -313,7 +313,12 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
 
 extension HomeAPIDataController: SpotBannersAPIDataControllerDelegate {
     func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFetch spotBanners: [CarouselBannerItemModel]) {
-        self.spotBanners = spotBanners.sorted { $0.id < $1.id }
+        self.spotBanners = spotBanners.sorted {
+            if $0.isBackupBanner != $1.isBackupBanner {
+                return $0.isBackupBanner
+            }
+            return $0.id < $1.id
+        }
     }
     
     func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFailFetch error: String, spotBanners: [CarouselBannerItemModel]) {
