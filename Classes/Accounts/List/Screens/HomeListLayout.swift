@@ -95,7 +95,7 @@ extension HomeListLayout {
                 atSection: indexPath.section
             )
         case .carouselBanner:
-            return CGSize((collectionView.bounds.width, 90))
+            return CGSize(width: collectionView.bounds.width, height: 90)
         }
     }
 }
