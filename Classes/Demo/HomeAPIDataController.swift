@@ -82,8 +82,8 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
         announcementDataController.delegate = self
-        spotBannersDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
+        setSpotsBannersClosures()
     }
     
     func reload() {
@@ -140,6 +140,26 @@ extension HomeAPIDataController {
     private func stopASAsLoadTimer() {
         asasLoadRepeater?.invalidate()
         asasLoadRepeater = nil
+    }
+    
+    private func setSpotsBannersClosures() {
+        spotBannersDataController.onFetch = { [weak self] error, banners in
+            guard let self = self else { return }
+            spotBanners = banners.sorted {
+                if $0.isBackupBanner != $1.isBackupBanner {
+                    return $0.isBackupBanner
+                }
+                return $0.id < $1.id
+            }
+            if let error {
+                publish(.didUpdateSpotBanner(error))
+            }
+        }
+        
+        spotBannersDataController.onUpdateClose = { [weak self] error in
+            guard let self = self else { return }
+            publish(.didUpdateSpotBanner(error))
+        }
     }
 }
 
@@ -308,29 +328,6 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         didFetch announcements: [Announcement]
     ) {
         self.visibleAnnouncement = announcements.first
-    }
-}
-
-extension HomeAPIDataController: SpotBannersAPIDataControllerDelegate {
-    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFetch spotBanners: [CarouselBannerItemModel]) {
-        self.spotBanners = spotBanners.sorted {
-            if $0.isBackupBanner != $1.isBackupBanner {
-                return $0.isBackupBanner
-            }
-            return $0.id < $1.id
-        }
-    }
-    
-    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFailFetch error: String, spotBanners: [CarouselBannerItemModel]) {
-        self.spotBanners = spotBanners
-    }
-    
-    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didUpdate spotBanner: CarouselBannerItemModel) {
-        self.publish(.didUpdateSpotBanner(nil))
-    }
-    
-    func spotBannersAPIDataController(_ dataController: SpotBannersAPIDataController, didFailUpdateClose error: String) {
-        self.publish(.didUpdateSpotBanner(error))
     }
 }
 

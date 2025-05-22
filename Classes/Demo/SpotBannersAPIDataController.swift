@@ -17,7 +17,8 @@
 import Foundation
 
 final class SpotBannersAPIDataController {
-    weak var delegate: SpotBannersAPIDataControllerDelegate?
+    var onFetch: ((String?, [CarouselBannerItemModel]) -> Void)?
+    var onUpdateClose: ((String?) -> Void)?
     
     private let api: ALGAPI
     private let session: Session
@@ -40,18 +41,10 @@ final class SpotBannersAPIDataController {
             guard let self else { return }
             switch response {
             case .failure(let apiError, _):
-                self.delegate?.spotBannersAPIDataController(
-                    self,
-                    didFailFetch: apiError.localizedDescription,
-                    spotBanners: banners
-                )
+                onFetch?(apiError.localizedDescription, banners)
             case .success(let spotBanners):
                 banners.append(contentsOf: spotBanners.map { CarouselBannerItemModel(apiModel: $0)})
-
-                self.delegate?.spotBannersAPIDataController(
-                    self,
-                    didFetch: banners
-                )
+                onFetch?(nil, banners)
             }
         }
     }
@@ -61,39 +54,15 @@ final class SpotBannersAPIDataController {
             return
         }
         
-        api.updateSpotBannerClose(deviceId: deviceId, bannerId: banner.id) { response in
+        api.updateSpotBannerClose(deviceId: deviceId, bannerId: banner.id) { [weak self] response in
+            guard let self else { return }
             switch response {
             case .success:
-                self.delegate?.spotBannersAPIDataController(
-                    self,
-                    didUpdate: banner
-                )
+                onUpdateClose?(nil)
             case .failure(let apiError, _):
-                self.delegate?.spotBannersAPIDataController(
-                    self,
-                    didFailUpdateClose: apiError.localizedDescription
-                )
+                onUpdateClose?(apiError.localizedDescription)
             }
         }
         
     }
-}
-
-protocol SpotBannersAPIDataControllerDelegate: AnyObject {
-    func spotBannersAPIDataController(
-        _ dataController: SpotBannersAPIDataController,
-        didFetch spotBanners: [CarouselBannerItemModel]
-    )
-    func spotBannersAPIDataController(
-        _ dataController: SpotBannersAPIDataController,
-        didFailFetch error: String, spotBanners: [CarouselBannerItemModel]
-    )
-    func spotBannersAPIDataController(
-        _ dataController: SpotBannersAPIDataController,
-        didUpdate spotBanner: CarouselBannerItemModel
-    )
-    func spotBannersAPIDataController(
-        _ dataController: SpotBannersAPIDataController,
-        didFailUpdateClose error: String
-    )
 }
