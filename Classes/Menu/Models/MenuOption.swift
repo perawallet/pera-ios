@@ -18,7 +18,7 @@ import UIKit
 
 enum MenuOption {
     case cards(state: MenuCardState)
-    case nfts(withThumbnails: [String])
+    case nfts(withThumbnails: [URL])
     case transfer
     case buyAlgo
     case receive

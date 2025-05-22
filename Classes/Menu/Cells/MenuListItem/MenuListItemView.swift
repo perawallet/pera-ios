@@ -15,7 +15,6 @@
 //   MenuListItemView.swift
 
 import MacaroonUIKit
-import MacaroonURLImage
 import UIKit
 
 final class MenuListItemView:
@@ -53,19 +52,15 @@ final class MenuListItemView:
         
         switch option {
         case .nfts(withThumbnails: let thumbnails):
-            
-            switch thumbnails.count {
-            case 0:
-                nftsView.isHidden = true
-            case 1:
-                nftImage2.isHidden = true
-                nftImage3.isHidden = true
-                nftsView.isHidden = false
-            case 2:
-                nftImage3.isHidden = true
-                nftsView.isHidden = false
-            default:
-                nftsView.isHidden = false
+            nftsView.isHidden = thumbnails.isEmpty
+            let nftImageViews = [nftImage1, nftImage2, nftImage3]
+            for (index, imageView) in nftImageViews.enumerated() {
+                if index < thumbnails.count {
+                    imageView.kf.setImage(with: thumbnails[index])
+                    imageView.isHidden = false
+                } else {
+                    imageView.isHidden = true
+                }
             }
         default:
             nftsView.isHidden = true
@@ -75,6 +70,7 @@ final class MenuListItemView:
     func prepareForReuse() {
         icon.image = nil
         title.clearText()
+        [nftImage1, nftImage2, nftImage3].forEach { $0.image = nil }
     }
 }
 
@@ -113,36 +109,27 @@ extension MenuListItemView {
     }
     
     private func addNFTsView(_ theme: MenuListItemViewTheme) {
-        nftImage1.backgroundColor = .cyan
-        nftImage1.clipsToBounds = true
-        nftImage1.layer.cornerRadius = 8
-        nftImage1.layer.borderWidth = 2
-        nftImage1.layer.borderColor = Colors.Layer.grayLighter.uiColor.cgColor
-        nftsView.addSubview(nftImage1)
+        [nftImage1, nftImage2, nftImage3].forEach { nftImage in
+            nftImage.clipsToBounds = true
+            nftImage.layer.cornerRadius = 8
+            nftImage.layer.borderWidth = 2
+            nftImage.layer.borderColor = Colors.Layer.grayLighter.uiColor.cgColor
+            nftImage.contentMode = .scaleAspectFill
+            nftsView.addSubview(nftImage)
+        }
+        
         nftImage1.snp.makeConstraints {
             $0.height.equalTo(40)
             $0.width.equalTo(40)
             $0.trailing.equalToSuperview()
         }
         
-        nftImage2.backgroundColor = .orange
-        nftImage2.clipsToBounds = true
-        nftImage2.layer.cornerRadius = 8
-        nftImage2.layer.borderWidth = 2
-        nftImage2.layer.borderColor = Colors.Layer.grayLighter.uiColor.cgColor
-        nftsView.addSubview(nftImage2)
         nftImage2.snp.makeConstraints {
             $0.height.equalTo(40)
             $0.width.equalTo(40)
             $0.trailing == nftImage1.snp.leading + 16
         }
         
-        nftImage3.backgroundColor = .green
-        nftImage3.clipsToBounds = true
-        nftImage3.layer.cornerRadius = 8
-        nftImage3.layer.borderWidth = 2
-        nftImage3.layer.borderColor = Colors.Layer.grayLighter.uiColor.cgColor
-        nftsView.addSubview(nftImage3)
         nftImage3.snp.makeConstraints {
             $0.height.equalTo(40)
             $0.width.equalTo(40)

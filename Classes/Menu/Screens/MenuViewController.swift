@@ -35,6 +35,8 @@ final class MenuViewController: BaseViewController {
     private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     
+    private lazy var collectibleDataController = CollectibleListLocalDataController(galleryAccount: .all, sharedDataController: sharedDataController)
+    
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
@@ -77,7 +79,7 @@ final class MenuViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
+        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,17 +97,56 @@ extension MenuViewController {
             switch event {
             case .success(hasActiveCard: let hasActiveCard, isWaitlisted: let isWaitlisted):
                 if isWaitlisted {
-                    menuOptions = [.cards(state: .addedToWailist), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
+                    self.getNFTsThumbnails(cardsOption: .cards(state: .addedToWailist))
                 } else {
-                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts(withThumbnails: ["", "", ""]), .buyAlgo, .receive, .inviteFriends]
+                    self.getNFTsThumbnails(cardsOption: .cards(state: hasActiveCard ? .active : .inactive))
                 }
-                menuListView.collectionView.reloadData()
             case .error:
-               break
+                self.getNFTsThumbnails(cardsOption: .cards(state: .inactive))
             }
         }
         
         cardsSupportedCountriesFlowCoordinator.launch()
+    }
+    
+    private func getNFTsThumbnails(cardsOption: MenuOption) {
+        let query = CollectibleListQuery(
+            filteringBy: .init(),
+            sortingBy: CollectibleDescendingOptedInRoundAlgorithm()
+        )
+        
+        collectibleDataController.eventHandler = { [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didUpdate(let updates):
+                self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buyAlgo, .receive, .inviteFriends]
+            case .didFinishRunning(hasError: let hasError):
+                if hasError {
+                    self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
+                }
+            }
+            self.menuListView.collectionView.reloadData()
+        }
+        collectibleDataController.load(query: query)
+    }
+    
+    private func parseCollectionData(from itemIdentifiers: [CollectibleListItem]) -> [URL] {
+        let imageAssets: [CollectibleAsset] = itemIdentifiers.compactMap { item in
+            if case let .collectibleAsset(viewModel) = item,
+               viewModel.asset.mediaType == .image,
+               !viewModel.asset.media.contains(where: { $0.isGIF })
+            {
+                return viewModel.asset
+            }
+            return nil
+        }
+        
+        let thumbnails: [URL] = imageAssets.compactMap { asset in
+            asset.media.first { $0.previewURL != nil }?.previewURL ??
+            asset.media.first { $0.downloadURL != nil }?.downloadURL ?? asset.thumbnailImage
+        }.prefix(3).map { $0 }
+        
+        return thumbnails
     }
 }
 
