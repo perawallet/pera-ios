@@ -14,7 +14,6 @@
 
 //   CarouselBannerItemViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit

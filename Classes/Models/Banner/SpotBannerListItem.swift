@@ -28,11 +28,11 @@ final class SpotBannerListItem: ALGEntityModel, Codable {
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.id = apiModel.id
-        self.text = apiModel.text
-        self.image = apiModel.image
-        self.url = apiModel.url
-        self.buttonUrlIsExternal = apiModel.buttonUrlIsExternal
+        id = apiModel.id
+        text = apiModel.text
+        image = apiModel.image
+        url = apiModel.url
+        buttonUrlIsExternal = apiModel.buttonUrlIsExternal
     }
 
     func encode() -> APIModel {

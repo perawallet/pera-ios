@@ -25,7 +25,7 @@ extension ALGAPI {
         deviceId: String,
         onCompleted handler: @escaping (Response.ModelResult<[SpotBannerListItem.APIModel]>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.spotBannersList, args: deviceId)
             .method(.get)
@@ -39,7 +39,7 @@ extension ALGAPI {
         bannerId: Int,
         onCompleted handler: @escaping (Response.ModelResult<SpotBannerListItem>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.spotBannerClose, args: deviceId, bannerId)
             .method(.patch)

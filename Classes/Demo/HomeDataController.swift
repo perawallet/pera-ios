@@ -77,8 +77,7 @@ enum HomeDataControllerEvent {
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
-        case .deliverASARequestsContentUpdate: return .init()
-        case .didUpdateSpotBanner: return .init()
+        case .deliverASARequestsContentUpdate, .didUpdateSpotBanner: return HomeDataController.Snapshot()
         }
     }
 }
