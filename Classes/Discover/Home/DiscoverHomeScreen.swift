@@ -93,7 +93,6 @@ final class DiscoverHomeScreen:
             if isViewLayoutLoaded {
                 return
             }
-
             updateUIWhenViewDidLayout()
             isViewLayoutLoaded = true
         }
