@@ -99,6 +99,20 @@ final class DiscoverHomeScreen:
             isViewLayoutLoaded = true
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
+    }
 
     /// <mark>
     /// WKScriptMessageHandler
