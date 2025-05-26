@@ -41,13 +41,11 @@ final class RescanRekeyedAccountsCoordinator {
         
         Task {
             do {
-                let result = try await withThrowingTaskGroup(of: [RecoveredAccountsListModel.InputData].self) { taskGroup in
-                    
-                    accounts.forEach { account in
-                        taskGroup.addTask { try await self.fetchRekeyedAccounts(account: account) }
-                    }
-                    
-                    return try await taskGroup.reduce(into: [RecoveredAccountsListModel.InputData]()) { $0 += $1 }
+                let accountsChunks = accounts.chunked(by: 50)
+                var result: [RecoveredAccountsListModel.InputData] = []
+                
+                for chunk in accountsChunks {
+                    result += try await fetchRekeyedAccountsInParallel(accounts: chunk)
                 }
                 
                 await handle(data: result, nextStep: nextStep)
@@ -57,6 +55,17 @@ final class RescanRekeyedAccountsCoordinator {
             } catch {
                 await handle(error: .unexpected(error))
             }
+        }
+    }
+    
+    private func fetchRekeyedAccountsInParallel(accounts: [Account]) async throws -> [RecoveredAccountsListModel.InputData] {
+        try await withThrowingTaskGroup(of: [RecoveredAccountsListModel.InputData].self) { taskGroup in
+            
+            accounts.forEach { account in
+                taskGroup.addTask { try await self.fetchRekeyedAccounts(account: account) }
+            }
+            
+            return try await taskGroup.reduce(into: [RecoveredAccountsListModel.InputData]()) { $0 += $1 }
         }
     }
     
