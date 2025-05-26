@@ -25,7 +25,7 @@ enum FeatureFlag: String, CaseIterable {
         case .immersiveEnabled:
             return .bool(false)
         case .discoverV5Enabled:
-            return .bool(true)
+            return .bool(false)
         }
     }
 }
