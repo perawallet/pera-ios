@@ -968,6 +968,8 @@ extension HomeViewController {
                 cell.isSwapBadgeVisible = !isOnboardedToSwap
 
                 linkInteractors(cell)
+            case .charts:
+                break
             }
         case .announcement(let item):
             switch item.type {

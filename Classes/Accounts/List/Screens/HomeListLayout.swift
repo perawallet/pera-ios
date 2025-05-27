@@ -138,6 +138,8 @@ extension HomeListLayout {
                 sizeForPortfolioValueItem: portfolioItem,
                 atSection: section
             )
+        case .charts:
+            return CGSize(width: UIScreen.main.bounds.width, height: 150)
         case .quickActions:
             return self.listView(
                 listView,

@@ -239,6 +239,11 @@ extension HomeAPIDataController {
                 [.portfolio(.portfolio(totalPortfolioViewModel))],
                 toSection: .portfolio
             )
+            
+            snapshot.appendItems(
+                [.portfolio(.charts(ChartViewModel(chartValues: [])))],
+                toSection: .portfolio
+            )
 
             /// <note>
             /// If accounts empty which means there is no any authenticated account, quick actions will be hidden.
