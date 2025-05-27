@@ -21,10 +21,19 @@ final class MenuViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var menuListView = MenuListView()
     
-    private lazy var dataSource = MenuDataSource(
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
         sharedDataController: sharedDataController,
-        session: session
+        appLaunchController: configuration.launchController
     )
+    
+    private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)
+    private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
@@ -33,6 +42,8 @@ final class MenuViewController: BaseViewController {
         presentingScreen: self
     )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
+    
+    private(set) var menuOptions: [MenuOption] = []
     
     override var prefersLargeTitle: Bool {
         return false
@@ -52,15 +63,49 @@ final class MenuViewController: BaseViewController {
     
     override func linkInteractors() {
         menuListView.collectionView.delegate = self
-        menuListView.collectionView.dataSource = dataSource
+        menuListView.collectionView.dataSource = self
     }
     
     override func configureAppearance() {
         title = String(localized: "title-menu")
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func prepareLayout() {
         addMenuListView()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        menuOptions = [.cards(state: .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
+    }
+}
+
+extension MenuViewController {
+    private func configure() {
+        cardsSupportedCountriesFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .success(hasActiveCard: let hasActiveCard, isWaitlisted: let isWaitlisted):
+                if isWaitlisted {
+                    menuOptions = [.cards(state: .addedToWailist), .nfts, .buyAlgo, .receive, .inviteFriends]
+                } else {
+                    menuOptions = [.cards(state: hasActiveCard ? .active : .inactive), .nfts, .buyAlgo, .receive, .inviteFriends]
+                }
+                menuListView.collectionView.reloadData()
+            case .error:
+               break
+            }
+        }
+        
+        cardsSupportedCountriesFlowCoordinator.launch()
     }
 }
 
@@ -76,7 +121,13 @@ extension MenuViewController {
 
 extension MenuViewController {
     private func configureNotificationBarButton() {
-        let notificationBarButtonItem = ALGBarButtonItem(kind: .settings) { [weak self] in
+        let qrScannerBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self else { return }
+            
+            self.scanQRFlowCoordinator.launch()
+        }
+        
+        let settingsBarButtonItem = ALGBarButtonItem(kind: .settings) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -87,7 +138,7 @@ extension MenuViewController {
             )
         }
 
-        rightBarButtonItems = [notificationBarButtonItem]
+        rightBarButtonItems = [settingsBarButtonItem, qrScannerBarButtonItem]
     }
 }
 
@@ -97,7 +148,7 @@ extension MenuViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if let option = dataSource.menuOptions[safe: indexPath.row] {
+        if let option = menuOptions[safe: indexPath.row] {
             let width = collectionView.frame.width - theme.listItemTheme.collectionViewEdgeInsets.leading - theme.listItemTheme.collectionViewEdgeInsets.trailing
             switch option {
             case .cards:
@@ -112,7 +163,7 @@ extension MenuViewController: UICollectionViewDelegateFlowLayout {
 
 extension MenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let option = dataSource.menuOptions[safe: indexPath.row] {
+        if let option = menuOptions[safe: indexPath.row] {
             switch option {
             case .cards:
                 print("cards pressed")
@@ -131,6 +182,41 @@ extension MenuViewController: UICollectionViewDelegate {
         }
         
         fatalError("Index path is out of bounds")
+    }
+}
+
+extension MenuViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return menuOptions.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let option = menuOptions[safe: indexPath.row] {
+            switch option {
+            case .cards:
+                let cell = collectionView.dequeue(MenuListCardViewCell.self, at: indexPath)
+                cell.delegate = self
+                cell.bindData(option)
+                return cell
+
+            case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
+                let cell = collectionView.dequeue(MenuListViewCell.self, at: indexPath)
+                cell.bindData(option)
+                return cell
+            }
+        }
+
+        fatalError("Index path is out of bounds")
+    }
+}
+
+extension MenuViewController: MenuListCardViewCellDelegate {
+    func didPressActionButton(in cell: MenuListCardViewCell) {
+        cardsFlowCoordinator.launch()
     }
 }
 

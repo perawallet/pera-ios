@@ -36,11 +36,7 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var assetListScreen = createAssetListScreen()
     private lazy var collectibleListScreen = createCollectibleListScreen()
-    private lazy var transactionListScreen = AccountTransactionListViewController(
-        draft: AccountTransactionListing(accountHandle: accountHandle),
-        copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    )
+    private lazy var transactionListScreen = createTransactionListScreen()
 
     private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
         presentingScreen: self,
@@ -156,6 +152,10 @@ final class AccountDetailViewController: PageContainer {
     override func configureNavigationBarAppearance() {
         addNavigationTitle()
         addNavigationActions()
+    }
+    
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
     }
 
     override func customizePageBarAppearance() {
@@ -774,13 +774,15 @@ extension AccountDetailViewController {
             filteringBy: .init(),
             sortingBy: sharedDataController.selectedAccountAssetSortingAlgorithm
         )
-        return AccountAssetListViewController(
+        let vc = AccountAssetListViewController(
             query: query,
             dataController: dataController.assetListDataController,
             copyToClipboardController: copyToClipboardController,
             configuration: configuration,
             incomingASAsRequestsCount: incomingASAsRequestsCount
         )
+        vc.tabBarHidden = false
+        return vc
     }
 
     private func createCollectibleListScreen() -> AccountCollectibleListViewController {
@@ -788,13 +790,25 @@ extension AccountDetailViewController {
             filteringBy: .init(),
             sortingBy: sharedDataController.selectedCollectibleSortingAlgorithm
         )
-        return AccountCollectibleListViewController(
+        let vc = AccountCollectibleListViewController(
             account: accountHandle,
             query: query,
             dataController: dataController.collectibleListDataController,
             copyToClipboardController: copyToClipboardController,
             configuration: configuration
         )
+        vc.tabBarHidden = false
+        return vc
+    }
+    
+    private func createTransactionListScreen() -> AccountTransactionListViewController {
+        let vc = AccountTransactionListViewController(
+           draft: AccountTransactionListing(accountHandle: accountHandle),
+           copyToClipboardController: copyToClipboardController,
+           configuration: configuration
+       )
+        vc.tabBarHidden = false
+        return vc
     }
 }
 
