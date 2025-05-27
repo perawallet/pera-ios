@@ -70,7 +70,7 @@ extension NavigationContainer {
 
         navigationBar.customizeAppearance(
             [
-                .backgroundColor(Colors.Helpers.heroBackground),
+                .backgroundColor(Colors.Defaults.background),
                 .backImage("icon-back"),
                 .isOpaque(true),
                 .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),

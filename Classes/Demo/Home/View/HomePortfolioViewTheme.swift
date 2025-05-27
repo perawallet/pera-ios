@@ -33,7 +33,9 @@ struct HomePortfolioViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.title = []
+        self.title = [
+            .font(Typography.bodyRegular())
+        ]
         self.titleTopPadding = 8
         self.infoAction = [
             .icon([ .normal("icon-info-20".templateImage) ])
@@ -41,12 +43,13 @@ struct HomePortfolioViewTheme:
         self.value = [
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.center)
+            .textAlignment(.natural),
+            .font(Typography.largeTitleMedium())
         ]
         self.secondaryValue = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.center)
+            .textAlignment(.natural)
         ]
         self.spacingBetweenTitleAndInfoAction = 8
         self.spacingBetweenTitleAndValue = 8

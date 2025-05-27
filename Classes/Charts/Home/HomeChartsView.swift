@@ -25,6 +25,7 @@ final class HomeChartsView:
     ListReusable {
     
     private var hostingController: UIHostingController<SUIChartView>?
+    private var chartView: SUIChartView?
 
     func customize(_ theme: HomeChartsViewTheme) {
         addBackground(theme)
@@ -36,6 +37,7 @@ final class HomeChartsView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ items: [CarouselBannerItemModel]) {
+//        chartView?.chartValues = [0.0, 0.1, 0.2]
     }
 
     func prepareForReuse() {
@@ -48,8 +50,8 @@ extension HomeChartsView {
     }
     
     private func addChartView(_ theme: HomeChartsViewTheme) {
-        let chartView = SUIChartView()
-        let controller = UIHostingController(rootView: chartView)
+        let suiChartView = SUIChartView()
+        let controller = UIHostingController(rootView: suiChartView)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(controller.view)
@@ -58,6 +60,7 @@ extension HomeChartsView {
         }
 
         hostingController = controller
+        chartView = suiChartView
     }
 }
 

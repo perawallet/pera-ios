@@ -429,7 +429,7 @@ extension HomeViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(Colors.Helpers.heroBackground)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
 
