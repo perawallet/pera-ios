@@ -4811,6 +4811,9 @@
 		D420AFC52DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC62DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC72DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
+		D420AFC52DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
+		D420AFC62DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
+		D420AFC72DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178026D8D3D100C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
@@ -9550,6 +9553,7 @@
 		D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Extension.swift"; sourceTree = "<group>"; };
 		D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemViewTheme.swift; sourceTree = "<group>"; };
 		D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerItemViewTheme.swift; sourceTree = "<group>"; };
+		D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Cards.swift"; sourceTree = "<group>"; };
 		D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Cards.swift"; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
