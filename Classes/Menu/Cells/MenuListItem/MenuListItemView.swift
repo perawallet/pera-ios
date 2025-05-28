@@ -42,9 +42,7 @@ final class MenuListItemView:
 
     func bindData(_ option: MenuOption) {
         icon.image = option.icon
-        arrow.image = UIImage(named: "icon-arrow-24")
         option.title.load(in: title)
-        String(localized: "title-new-uppercased").load(in: newLabel)
         newLabel.isHidden = !option.showNewLabel
     }
 
@@ -79,6 +77,7 @@ extension MenuListItemView {
     }
     
     private func addArrow(_ theme: MenuListItemViewTheme) {
+        arrow.customizeAppearance(theme.arrow)
         addSubview(arrow)
         arrow.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.iconHorizontalPadding)

@@ -30,6 +30,7 @@ struct MenuListItemViewTheme:
     var newLabel: TextStyle
     var newLabelSize: LayoutSize
     var newLabelRadius: LayoutMetric
+    var arrow: ImageStyle
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -49,9 +50,14 @@ struct MenuListItemViewTheme:
             .backgroundColor(Colors.Wallet.wallet4),
             .textColor(Colors.Wallet.wallet4Icon),
             .font(Typography.captionMedium()),
-            .textAlignment(.center)
+            .textAlignment(.center),
+            .text(String(localized: "title-new-uppercased"))
         ]
         self.newLabelSize = (41, 28)
         self.newLabelRadius = 8
+        
+        self.arrow = [
+            .image("icon-arrow-24")
+        ]
     }
 }
