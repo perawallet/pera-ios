@@ -153,7 +153,7 @@ extension HomePortfolioView {
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == theme.titleTopPadding
-            $0.leading == 24
+            $0.leading == 0
         }
     }
     
@@ -187,7 +187,7 @@ extension HomePortfolioView {
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
-            $0.leading == 24
+            $0.leading == 0
         }
         
         valueButton.snp.makeConstraints {
@@ -207,7 +207,7 @@ extension HomePortfolioView {
         secondaryValueView.fitToIntrinsicSize()
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
-            $0.leading == 24
+            $0.leading == 0
             $0.bottom == 0
         }
     }

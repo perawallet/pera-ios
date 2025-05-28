@@ -29,7 +29,6 @@ struct HomeQuickActionsViewTheme:
     var swapBadge: BadgeButtonTheme
     var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
     var sendAction: ButtonStyle
-    var transferAction: ButtonStyle
     var buyAction: ButtonStyle
 
     init(_ family: LayoutFamily) {
@@ -39,10 +38,6 @@ struct HomeQuickActionsViewTheme:
         self.stakeAction = [
             .icon(Self.makeActionIcon(icon: "stake-quick-icon")),
             .title(Self.makeActionTitle(title: String(localized: "title-staking")))
-        ]
-        self.transferAction = [
-            .icon(Self.makeActionIcon(icon: "transfer-icon")),
-            .title(Self.makeActionTitle(title: String(localized: "collectible-send-action")))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),

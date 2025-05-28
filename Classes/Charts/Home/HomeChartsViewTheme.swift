@@ -20,10 +20,13 @@ struct HomeChartsViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
+    var spacingBetweenChartAndSegControl: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
-            .backgroundColor(Colors.Helpers.positive)
+            .backgroundColor(Colors.Defaults.background)
         ]
+        
+        self.spacingBetweenChartAndSegControl = 8
     }
 }

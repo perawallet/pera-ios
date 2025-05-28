@@ -24,12 +24,14 @@ final class HomeChartsView:
     ViewComposable,
     ListReusable {
     
-    private var hostingController: UIHostingController<SUIChartView>?
-    private var chartView: SUIChartView?
+    private lazy var hostingController: UIHostingController<SUIChartView> = UIHostingController(rootView: chartView)
+    private lazy var chartView: SUIChartView = SUIChartView()
+    private lazy var segmentedControl = ChartSegmentedControl()
 
     func customize(_ theme: HomeChartsViewTheme) {
         addBackground(theme)
         addChartView(theme)
+        addSegmentedControl(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -50,17 +52,25 @@ extension HomeChartsView {
     }
     
     private func addChartView(_ theme: HomeChartsViewTheme) {
-        let suiChartView = SUIChartView()
-        let controller = UIHostingController(rootView: suiChartView)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(controller.view)
-        controller.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        addSubview(hostingController.view)
+        hostingController.view.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview().inset(-2)
+            $0.top.equalToSuperview()
+            $0.height.equalTo(136)
         }
-
-        hostingController = controller
-        chartView = suiChartView
+    }
+    
+    private func addSegmentedControl(_ theme: HomeChartsViewTheme) {
+        addSubview(segmentedControl)
+        segmentedControl.snp.makeConstraints {
+            $0.top == hostingController.view.snp.bottom + theme.spacingBetweenChartAndSegControl
+            $0.trailing.equalToSuperview().inset(92)
+            $0.leading.equalToSuperview().inset(92)
+            $0.bottom.equalToSuperview()
+        }
     }
 }
 

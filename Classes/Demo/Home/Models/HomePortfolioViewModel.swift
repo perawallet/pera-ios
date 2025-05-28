@@ -81,6 +81,7 @@ extension HomePortfolioViewModel {
             portfolioValue: portfolioItem.portfolioValue,
             currencyValue: portfolioItem.currency.secondaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
+            addApproximatelyEqualChar: true,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = text.bodyMedium(
