@@ -33,7 +33,7 @@ final class HomeQuickActionsView:
     private lazy var contentView = HStackView()
     private lazy var swapActionView = makeBadgeActionView()
     private lazy var buyActionView = makeActionView()
-    private lazy var stakeActionView = makeActionView()
+    private lazy var transferActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
 
     private var theme: HomeQuickActionsViewTheme!
@@ -159,17 +159,17 @@ extension HomeQuickActionsView {
     }
 
     private func addStakeAction(_ theme: HomeQuickActionsViewTheme) {
-        stakeActionView.customizeAppearance(theme.stakeAction)
+        transferActionView.customizeAppearance(theme.transferAction)
         customizeAction(
-            stakeActionView,
+            transferActionView,
             theme
         )
 
-        contentView.addArrangedSubview(stakeActionView)
+        contentView.addArrangedSubview(transferActionView)
 
         startPublishing(
-            event: .stake,
-            for: stakeActionView
+            event: .transfer,
+            for: transferActionView
         )
     }
 
@@ -226,5 +226,6 @@ extension HomeQuickActionsView {
         case buy
         case stake
         case send
+        case transfer
     }
 }
