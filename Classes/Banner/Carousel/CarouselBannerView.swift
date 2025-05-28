@@ -25,8 +25,8 @@ final class CarouselBannerView:
     
     weak var delegate: CarouselBannerDelegate?
     
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    let pageControl = CarouselPageControl()
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var pageControl = CarouselPageControl()
     private(set) var banners: [CarouselBannerItemModel] = []
 
     func customize(_ theme: CarouselBannerViewTheme) {
