@@ -140,7 +140,7 @@ extension RootViewController {
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)
         )
-
+        
         let collectibleListQuery = CollectibleListQuery(
             filteringBy: .init(),
             sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
@@ -156,19 +156,21 @@ extension RootViewController {
             ),
             configuration: configuration
         )
-        let collectiblesTab =
-            CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
-
-        let settingsViewController = SettingsViewController(configuration: configuration)
-        let settingsTab =
-            SettingsTabBarItem(NavigationContainer(rootViewController: settingsViewController))
+        let collectiblesTab = CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
+        
+        let stakingVC = StakingScreen(configuration: configuration)
+        stakingVC.hideBackButtonInWebView = true
+        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))
+        
+        let menuVC = MenuViewController(configuration: configuration)
+        let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
 
         mainContainer.items = [
             homeTab,
             discoverTab,
-            FixedSpaceTabBarItem(width: .noMetric),
+            stakeTab,
             collectiblesTab,
-            settingsTab
+            menuTab
         ]
 
         setNeedsDiscoverTabBarItemUpdateIfNeeded()
