@@ -217,7 +217,7 @@ extension MenuViewController: UICollectionViewDelegate {
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
             case .inviteFriends:
-                openShareMenu()
+                openInviteFriends()
             }
             return
         }
@@ -299,7 +299,28 @@ extension MenuViewController {
 }
 
 extension MenuViewController {
-    private func openShareMenu() {
+    private func openInviteFriends() {
+        let eventHandler: InviteFriendsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .close:
+                self.dismiss(animated: true)
+            case .share:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openShare()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .inviteFriends(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func openShare() {
         guard
             let urlString = Bundle.main.object(forInfoDictionaryKey: "AppDownloadURL") as? String,
             let url = URL(string: urlString)
