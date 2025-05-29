@@ -7509,13 +7509,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lldAsset Request"
+                  "value" : "%lld Asset Request"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lldAsset Requests"
+                  "value" : "%lld Asset Requests"
                 }
               }
             }
