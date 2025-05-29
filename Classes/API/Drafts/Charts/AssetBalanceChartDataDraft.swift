@@ -12,5 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   Charts.swift
+//   AssetBalanceChartDataDraft.swift
 
+import MagpieCore
+
+struct AssetBalanceChartDataDraft: ObjectQuery {
+    var period: ChartDataPeriod
+    var currency: String?
+    
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
+
+        params.append(.init(.period, period.rawValue))
+        
+        if let currency {
+            params.append(.init(.currency, currency))
+        }
+
+        return params
+    }
+}

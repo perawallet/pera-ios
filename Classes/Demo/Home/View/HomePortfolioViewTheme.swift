@@ -49,7 +49,8 @@ struct HomePortfolioViewTheme:
         self.secondaryValue = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.natural)
+            .textAlignment(.natural),
+            .font(Typography.bodyMedium())
         ]
         self.spacingBetweenTitleAndInfoAction = 8
         self.spacingBetweenTitleAndValue = 8
