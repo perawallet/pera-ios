@@ -619,9 +619,26 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
+        let eventHandler: PassphraseWarningScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .close:
+                self.dismiss(animated: true)
+            case .reveal:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    transitionToPassphraseDisplay.perform(
+                        .passphraseDisplay(address: accountHandle.value.address),
+                        by: .present
+                    )
+                }
+            }
+        }
+
         transitionToPassphraseDisplay.perform(
-            .passphraseDisplay(address: accountHandle.value.address),
-            by: .present
+            .passphraseWarning(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
         )
     }
 

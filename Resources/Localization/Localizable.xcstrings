@@ -4868,6 +4868,17 @@
         }
       }
     },
+    "passphrase-warning-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm and acknowledge the following:"
+          }
+        }
+      }
+    },
     "password-change-new-subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8480,6 +8491,17 @@
         }
       }
     },
+    "title-passphrase-warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep it secret. Keep it safe."
+          }
+        }
+      }
+    },
     "title-paste-passphrase" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8741,6 +8763,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please try later."
+          }
+        }
+      }
+    },
+    "title-reveal-passphrase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reveal Passphrase"
           }
         }
       }

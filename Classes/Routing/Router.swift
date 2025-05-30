@@ -2185,6 +2185,10 @@ final class Router:
             )
         case .staking:
             viewController = StakingScreen(configuration: configuration)
+        case .passphraseWarning(eventHandler: let eventHandler):
+            let screen = PassphraseWarningScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
         return viewController as? T
     }
