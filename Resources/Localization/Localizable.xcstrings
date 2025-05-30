@@ -7648,12 +7648,26 @@
       }
     },
     "swap-sign-with-ledger-body-highlighted" : {
-      "extractionState" : "manual",
+
+    },
+    "swap-sign-with-ledger-body-highlighted-%lld" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You will need to sign %d transactions one by one"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You will need to sign %lld transaction"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You will need to sign %lld transactions one by one"
+                }
+              }
+            }
           }
         }
       }
