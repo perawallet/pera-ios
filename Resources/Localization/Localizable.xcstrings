@@ -7636,19 +7636,27 @@
         }
       }
     },
-    "swap-sign-with-ledger-body" : {
-      "extractionState" : "manual",
+    "swap-sign-with-ledger-body-%lld" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %d transactions one by one using your hardware token."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %lld transaction."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %lld transactions one by one using your hardware token."
+                }
+              }
+            }
           }
         }
       }
-    },
-    "swap-sign-with-ledger-body-highlighted" : {
-
     },
     "swap-sign-with-ledger-body-highlighted-%lld" : {
       "localizations" : {

@@ -573,7 +573,7 @@ extension SendAssetInboxScreen {
         let title = String(localized: "swap-sign-with-ledger-title")
             .bodyLargeMedium(alignment: .center)
         let highlightedBodyPart = String(localized: "swap-sign-with-ledger-body-highlighted-\(totalTransactionCountToSign)")
-        let body = String(format: String(localized: "swap-sign-with-ledger-body"), "\(totalTransactionCountToSign)")
+        let body = String(localized: "swap-sign-with-ledger-body-\(totalTransactionCountToSign)")
             .bodyRegular(alignment: .center)
             .addAttributes(
                 to: highlightedBodyPart,
