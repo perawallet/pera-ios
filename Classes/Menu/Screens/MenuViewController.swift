@@ -38,7 +38,7 @@ final class MenuViewController: BaseViewController {
     private lazy var collectibleDataController = CollectibleListLocalDataController(galleryAccount: .all, sharedDataController: sharedDataController)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToBottomSheet = BottomSheetTransition(presentingViewController: self)
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
         analytics: analytics,
         presentingScreen: self
@@ -281,7 +281,7 @@ extension MenuViewController {
             }
         }
 
-        transitionToBuySellOptions.perform(
+        transitionToBottomSheet.perform(
             .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
@@ -314,7 +314,7 @@ extension MenuViewController {
             }
         }
 
-        transitionToBuySellOptions.perform(
+        transitionToBottomSheet.perform(
             .inviteFriends(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
