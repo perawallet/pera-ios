@@ -3462,6 +3462,17 @@
         }
       }
     },
+    "invite-screen-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the Pera Wallet download link with your friends."
+          }
+        }
+      }
+    },
     "key-reg-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8984,6 +8995,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        }
+      }
+    },
+    "title-share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
           }
         }
       }
