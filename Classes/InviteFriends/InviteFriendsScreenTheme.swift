@@ -62,7 +62,7 @@ struct InviteFriendsScreenTheme:
             .font(Typography.bodyRegular()),
             .textAlignment(.center)
         ]
-        self.descriptionHorizontalPadding = 70
+        self.descriptionHorizontalPadding = 50
         self.spacingBetweendDescriptionAndMainButton = 55
         
         self.buttonHeight = 52
