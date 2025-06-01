@@ -246,6 +246,8 @@ extension RootViewController {
             }
 
             if isCompleted {
+                self.appConfiguration.sharedDataController.currentInboxRequestCount = 0
+                
                 self.appConfiguration.session.reset(includingContacts: true)
 
                 self.appConfiguration.peraConnect.disconnectFromAllSessions()

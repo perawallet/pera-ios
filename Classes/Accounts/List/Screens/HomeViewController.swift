@@ -125,7 +125,6 @@ final class HomeViewController:
     private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
-    private var asasRequestsCount: Int?
     private var incomingASAsRequestList: IncomingASAsRequestList?
     private var listWasScrolled = false
     
@@ -187,9 +186,9 @@ final class HomeViewController:
                     self.alertPresenter.presentIfNeeded()
                 }
             case .deliverASARequestsContentUpdate(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.sharedDataController.currentInboxRequestCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +) ?? 0
                 self.incomingASAsRequestList = asasReqUpdate
-                if self.asasRequestsCount == 0 {
+                if self.sharedDataController.currentInboxRequestCount == 0 {
                     self.leftBarButtonItems = []
                     self.setNeedsNavigationBarAppearanceUpdate()
                 }
@@ -366,8 +365,8 @@ extension HomeViewController {
     }
     
     private func configureASARequestBarButton() {
-        guard let asasRequestsCount,
-              asasRequestsCount > 0 else {
+        let asasRequestsCount = sharedDataController.currentInboxRequestCount
+        guard asasRequestsCount > 0 else {
             self.leftBarButtonItems = []
             self.setNeedsNavigationBarAppearanceUpdate()
             return
@@ -413,8 +412,7 @@ extension HomeViewController {
             guard let self else { return }
             
             if isVisible {
-                guard let asasRequestsCount = self.asasRequestsCount,
-                      asasRequestsCount > 0 else {
+                guard self.sharedDataController.currentInboxRequestCount > 0 else {
                     return
                 }
                 
