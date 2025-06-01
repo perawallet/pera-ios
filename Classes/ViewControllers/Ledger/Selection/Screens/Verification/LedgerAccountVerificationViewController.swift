@@ -184,6 +184,7 @@ extension LedgerAccountVerificationViewController {
             )
         ) as? TutorialViewController
         controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            PeraUserDefaults.shouldShowNewAccountAnimation = true
             self.launchHome {
                 [weak self] in
                 guard let self = self else { return }
@@ -193,6 +194,7 @@ extension LedgerAccountVerificationViewController {
             }
         }
         controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+            PeraUserDefaults.shouldShowNewAccountAnimation = true
             self.launchHome()
         }
     }
