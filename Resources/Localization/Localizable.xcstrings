@@ -7087,7 +7087,6 @@
       }
     },
     "standard-account-hd-type-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10950,7 +10949,6 @@
       }
     },
     "wallet-address" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
