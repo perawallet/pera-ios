@@ -793,6 +793,13 @@ extension HomeViewController {
     private func triggerBannerCTA(item: AnnouncementViewModel) {
         guard let ctaUrl = item.ctaUrl else { return }
         let url = ctaUrl.browserDeeplinkURL ?? ctaUrl
+        
+        if let externalDeepLink = url.externalDeepLink {
+            launchController.receive(
+                deeplinkWithSource: .externalDeepLink(externalDeepLink)
+            )
+            return
+        }
 
         let inAppBrowser = open(
             .externalInAppBrowser(destination: .url(url)),

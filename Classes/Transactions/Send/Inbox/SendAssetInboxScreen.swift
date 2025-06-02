@@ -1,4 +1,4 @@
-// Copyright 2024 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -570,11 +570,9 @@ extension SendAssetInboxScreen {
 
         let totalTransactionCountToSign = 3 // transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
-        let title =
-            String(localized: "swap-sign-with-ledger-title")
-                .bodyLargeMedium(alignment: .center)
-        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), "\(totalTransactionCountToSign)")
-        let body = String(format: String(localized: "swap-sign-with-ledger-body"), "\(totalTransactionCountToSign)")
+        let title = String(localized: "swap-sign-with-ledger-title").bodyLargeMedium(alignment: .center)
+        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), totalTransactionCountToSign)
+        let body = String(format: String(localized: "swap-sign-with-ledger-body"), totalTransactionCountToSign)
                 .bodyRegular(alignment: .center)
                 .addAttributes(
                     to: highlightedBodyPart,

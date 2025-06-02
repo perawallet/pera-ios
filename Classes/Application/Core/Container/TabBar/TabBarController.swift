@@ -318,8 +318,7 @@ extension TabBarController {
     }
     
     private func isCardsFeatureEnabled() -> Bool {
-        featureFlagService.isEnabled(.immersiveEnabled) &&
-            Environment.current.isCardsFeatureEnabled(for: api.network)
+        Environment.current.isCardsFeatureEnabled(for: api.network)
     }
 }
 
@@ -651,10 +650,6 @@ extension TabBarController {
         let container = selectedScreen as? NavigationContainer
         let screen = container?.viewControllers.first as? DiscoverHomeScreen
         screen?.destination = destination
-    }
-    
-    func assignQRScannerCoordinator(viewController: QRScannerViewController) {
-        viewController.delegate = scanQRFlowCoordinator
     }
 }
 

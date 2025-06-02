@@ -77,6 +77,20 @@ final class ScanQRFlowCoordinator:
         self.appLaunchController = appLaunchController
         self.hdWalletStorage = hdWalletStorage
     }
+    
+    init(
+        presentingScreen: UIViewController,
+        configuration: AppConfiguration
+    ) {
+        self.analytics = configuration.analytics
+        self.api = configuration.api
+        self.bannerController = configuration.bannerController
+        self.loadingController = configuration.loadingController
+        self.presentingScreen = presentingScreen
+        self.session = configuration.session
+        self.sharedDataController = configuration.sharedDataController
+        self.appLaunchController = configuration.launchController
+    }
 }
 
 extension ScanQRFlowCoordinator {
@@ -904,7 +918,7 @@ extension ScanQRFlowCoordinator {
             return
         }
         
-        var transactionDraft = KeyRegTransactionSendDraft(
+        let transactionDraft = KeyRegTransactionSendDraft(
             account: account,
             qrText: qr
         )

@@ -147,7 +147,8 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         let generatedURL = DiscoverURLGenerator.generateURL(
             destination: .external(destination),
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled)
         )
         load(url: generatedURL)
     }
