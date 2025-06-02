@@ -7111,7 +7111,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token."
+            "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %d transactions one by one using your hardware token."
           }
         }
       }
@@ -7122,7 +7122,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You will need to sign %@ transactions one by one"
+            "value" : "You will need to sign %d transactions one by one"
           }
         }
       }
