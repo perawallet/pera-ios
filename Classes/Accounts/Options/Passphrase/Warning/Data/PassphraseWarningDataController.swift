@@ -31,27 +31,23 @@ final class PassphraseWarningDataController {
     init(warningRowsArray: [String]) {
         self.warningCheckRows = OrderedDictionary(uniqueKeysWithValues: warningRowsArray.enumerated().map{ ($0.offset, $0.element) })
     }
-}
-
-extension PassphraseWarningDataController {
+    
     func isRowSelected(at index: Index) -> Bool {
-        return selectedwarningCheckRows[index] != nil
+        selectedwarningCheckRows[index] != nil
     }
 
     var isFinishActionEnabled: Bool {
-        return warningCheckRows.count == selectedwarningCheckRows.count
+        warningCheckRows.count == selectedwarningCheckRows.count
     }
     
     func row(at index: Index) -> String? {
-        return warningCheckRows[index]
+        warningCheckRows[index]
     }
     
     var rows: [String] {
-        return warningCheckRows.values.elements
+        warningCheckRows.values.elements
     }
-}
-
-extension PassphraseWarningDataController {
+    
     func updateSelectionWithItem(at index: Index) {
         if isRowSelected(at: index) {
             unselectAddressItem(at: index)
@@ -73,5 +69,4 @@ extension PassphraseWarningDataController {
     private func unselectAddressItem(at index: Index ) {
         selectedwarningCheckRows[index] = nil
     }
-
 }

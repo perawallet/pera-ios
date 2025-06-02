@@ -22,6 +22,9 @@ import MacaroonBottomSheet
 final class PassphraseWarningScreen:
     BaseScrollViewController,
     BottomSheetScrollPresentable {
+    
+    // MARK: - Properties
+    
     typealias EventHandler = (Event) -> Void
     
     fileprivate let dataController: PassphraseWarningDataController
@@ -42,6 +45,7 @@ final class PassphraseWarningScreen:
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .clear
         collectionView.contentInset = .zero
         collectionView.register(WarningCheckCell.self)
@@ -51,6 +55,8 @@ final class PassphraseWarningScreen:
     }()
 
     private let theme: PassphraseWarningScreenTheme
+    
+    // MARK: - Initialisers
 
     init(
         theme: PassphraseWarningScreenTheme = .init(),
@@ -65,6 +71,8 @@ final class PassphraseWarningScreen:
         ])
         super.init(configuration: configuration)
     }
+    
+    // MARK: - Setups
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,9 +89,7 @@ final class PassphraseWarningScreen:
         collectionView.reloadItems(at: indexPaths)
         mainButton.isEnabled = dataController.isFinishActionEnabled
     }
-}
 
-extension PassphraseWarningScreen {
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
@@ -103,9 +109,6 @@ extension PassphraseWarningScreen {
         addCollectionView()
         addButtons()
     }
-}
-
-extension PassphraseWarningScreen {
     
     private func addIcon() {
         iconImageView.customizeAppearance(theme.icon)
@@ -177,6 +180,8 @@ extension PassphraseWarningScreen {
         }
     }
     
+    // MARK: - Action
+    
     @objc private func mainButtonTapped() {
         eventHandler?(.reveal)
     }
@@ -200,7 +205,7 @@ extension PassphraseWarningScreen: UICollectionViewDelegateFlowLayout {
 
 extension PassphraseWarningScreen: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataController.rows.count
+        dataController.rows.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -21,9 +21,14 @@ final class WarningCheckView:
     View,
     ViewModelBindable,
     ListReusable {
+    
+    // MARK: - Properties
+    
     private lazy var titleView = UILabel()
     private lazy var mainCurrencyView = UILabel()
     private lazy var secondaryCurrencyView = UILabel()
+    
+    // MARK: - Setups
 
     func customize(
         _ theme: WarningCheckViewTheme
@@ -44,10 +49,7 @@ final class WarningCheckView:
     ) {
         titleView.text = title
     }
-}
-
-extension WarningCheckView {
-
+    
     private func addTitle(
         _ theme: WarningCheckViewTheme
     ) {

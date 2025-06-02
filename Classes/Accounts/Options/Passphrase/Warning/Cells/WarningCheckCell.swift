@@ -20,17 +20,22 @@ import MacaroonUIKit
 final class WarningCheckCell:
     CollectionCell<WarningCheckView>,
     ViewModelBindable  {
+    
+    // MARK: - Properties
+    
     var accessory: WarningCheckViewAccessory = .unselected {
         didSet { updateAccessoryIfNeeded(old: oldValue) }
     }
 
     override class var contextPaddings: LayoutPaddings {
-        return theme.contextEdgeInsets
+        theme.contextEdgeInsets
     }
 
     static let theme = WarningCheckViewTheme()
 
     private lazy var accessoryView = UIImageView()
+    
+    // MARK: - Setups
 
     override func prepareLayout() {
         addContext()
@@ -50,9 +55,7 @@ final class WarningCheckCell:
             $0.bottom == theme.contextEdgeInsets.bottom
         }
     }
-}
-
-extension WarningCheckCell {
+    
     private func addAccessory() {
         let theme = Self.theme
 

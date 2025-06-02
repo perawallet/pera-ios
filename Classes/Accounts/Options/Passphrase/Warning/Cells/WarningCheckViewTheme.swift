@@ -51,9 +51,9 @@ struct WarningCheckViewTheme:
 
     subscript (accessory: WarningCheckViewAccessory) -> ImageStyle {
         switch accessory {
-        case .selected: return selectedAccessory
-        case .unselected: return unselectedAccessory
-        case .none: return []
+        case .selected: selectedAccessory
+        case .unselected: unselectedAccessory
+        case .none: []
         }
     }
 }
