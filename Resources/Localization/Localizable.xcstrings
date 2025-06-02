@@ -4869,7 +4869,6 @@
       }
     },
     "passphrase-warning-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4880,7 +4879,6 @@
       }
     },
     "passphrase-warning-row1-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4891,7 +4889,6 @@
       }
     },
     "passphrase-warning-row2-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4902,7 +4899,6 @@
       }
     },
     "passphrase-warning-row3-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4913,7 +4909,6 @@
       }
     },
     "passphrase-warning-row4-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8536,7 +8531,6 @@
       }
     },
     "title-passphrase-warning" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8812,7 +8806,6 @@
       }
     },
     "title-reveal-passphrase" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
