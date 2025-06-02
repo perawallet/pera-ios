@@ -172,31 +172,8 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func openSuccessScreen(_ verifiedAccounts: [Account]) {
-        let controller = open(
-            .tutorial(
-                flow: .none,
-                tutorial: .ledgerSuccessfullyConnected(flow: accountSetupFlow)
-            ),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            PeraUserDefaults.shouldShowNewAccountAnimation = true
-            self.launchHome {
-                [weak self] in
-                guard let self = self else { return }
-
-                let draft = MeldDraft(accounts: verifiedAccounts)
-                self.launchBuyAlgoWithMeld(draft: draft)
-            }
-        }
-        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
-            PeraUserDefaults.shouldShowNewAccountAnimation = true
-            self.launchHome()
-        }
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
+        launchHome()
     }
 
     private func saveVerifiedAccounts() {
