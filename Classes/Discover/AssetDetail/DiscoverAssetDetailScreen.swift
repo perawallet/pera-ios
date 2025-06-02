@@ -64,14 +64,12 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name)
+        guard let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name) else {
+            super.userContentController(userContentController, didReceive: message)
+            return
+        }
 
         switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
         case .handleTokenDetailActionButtonClick:
             handleTokenAction(message)
         }

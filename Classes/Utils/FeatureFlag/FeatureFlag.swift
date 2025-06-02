@@ -22,7 +22,7 @@ enum FeatureFlag: String, CaseIterable {
     var defaultValue: RemoteConfigValue {
         switch self {
         case .discoverV5Enabled:
-            return .bool(false)
+            return .bool(true)
         }
     }
 }
