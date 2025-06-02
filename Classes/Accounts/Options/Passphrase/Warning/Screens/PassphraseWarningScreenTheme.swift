@@ -28,8 +28,12 @@ struct PassphraseWarningScreenTheme:
     let title: TextStyle
     let spacingBetweenTitleAndDescription: LayoutMetric
     let description: TextStyle
-    let spacingBetweendDescriptionAndMainButton: LayoutMetric
+    let spacingBetweendDescriptionAndCollectionView: LayoutMetric
+    let collectionViewHorizontalPadding: LayoutMetric
+    let collectionViewRowHeight: LayoutMetric
+    let spacingBetweenCollectionViewAndMainButton: LayoutMetric
     let buttonHeight: LayoutMetric
+    let buttonsHorizontalInset: LayoutMetric
     let mainButtonTheme: ButtonTheme
     let spacingBetweendMainAndSecondaryButtons: LayoutMetric
     let secondaryButtonTheme: ButtonTheme
@@ -63,9 +67,14 @@ struct PassphraseWarningScreenTheme:
             .font(Typography.bodyRegular()),
             .textAlignment(.center)
         ]
-        self.spacingBetweendDescriptionAndMainButton = 55
+        
+        self.spacingBetweendDescriptionAndCollectionView = 16
+        self.collectionViewHorizontalPadding = 24
+        self.collectionViewRowHeight = 76
+        self.spacingBetweenCollectionViewAndMainButton = 32
         
         self.buttonHeight = 52
+        self.buttonsHorizontalInset = 4
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.spacingBetweendMainAndSecondaryButtons = 12
         self.secondaryButtonTheme = ButtonSecondaryTheme()
