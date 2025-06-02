@@ -620,12 +620,13 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     private func presentPassphraseView() {
         let eventHandler: PassphraseWarningScreen.EventHandler = {
-            [unowned self] event in
+            [weak self] event in
+            guard let self else { return }
             switch event {
             case .close:
-                self.dismiss(animated: true)
+                dismiss(animated: true)
             case .reveal:
-                self.dismiss(animated: true) {
+                dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
                     transitionToPassphraseDisplay.perform(
