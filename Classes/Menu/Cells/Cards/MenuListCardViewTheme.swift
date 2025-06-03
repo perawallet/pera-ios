@@ -61,7 +61,8 @@ struct MenuListCardViewTheme:
         
         self.description = [
             .textColor(Colors.Text.sonicSilver),
-            .font(Typography.bodyRegular())
+            .font(Typography.bodyRegular()),
+            .text(String(localized: "menu-card-banner-description"))
         ]
         self.spaceBetweenTitleAndDescription = 24
         

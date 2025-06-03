@@ -2206,6 +2206,10 @@ final class Router:
             )
         case .staking:
             viewController = StakingScreen(configuration: configuration)
+        case .inviteFriends(let eventHandler):
+            let screen = InviteFriendsScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
         return viewController as? T
     }

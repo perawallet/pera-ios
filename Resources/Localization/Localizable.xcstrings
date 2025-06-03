@@ -3462,6 +3462,17 @@
         }
       }
     },
+    "invite-screen-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the Pera Wallet download link with your friends."
+          }
+        }
+      }
+    },
     "key-reg-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7669,6 +7680,72 @@
         }
       }
     },
+    "title-carousel-banner-algo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy ALGO with Apple Pay, credit cards or bank transfer"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cards: Get the world’s first web3 Mastercard"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-discover" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discover: Use browser to interact with dApps"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receive Algo by sharing your account address"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-swap" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap: Convert between popular ASA pairs"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-transfer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer: Accept any crypto across all chains"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8918,6 +8995,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        }
+      }
+    },
+    "title-share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
           }
         }
       }

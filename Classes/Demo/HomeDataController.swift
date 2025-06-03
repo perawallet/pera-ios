@@ -30,6 +30,8 @@ protocol HomeDataController: AnyObject {
     func load()
     func reload()
     func fetchAnnouncements()
+    func fetchSpotBanners()
+    func updateClose(for banner: CarouselBannerItemModel)
     func hideAnnouncement()
     func fetchIncomingASAsRequests()
 }
@@ -39,16 +41,16 @@ enum HomeSectionIdentifier:
     Hashable {
     case empty
     case portfolio
-    case accountNotBackedUpWarning
     case announcement
+    case carouselBanner
     case accounts
 }
 
 enum HomeItemIdentifier: Hashable {
     case empty(HomeEmptyItemIdentifier)
     case portfolio(HomePortfolioItemIdentifier)
-    case accountNotBackedUpWarning(AccountNotBackedUpWarningViewModel)
     case announcement(AnnouncementViewModel)
+    case carouselBanner([CarouselBannerItemModel])
     case account(HomeAccountItemIdentifier)
 }
 
@@ -70,11 +72,12 @@ enum HomeAccountItemIdentifier: Hashable {
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
     case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
+    case didUpdateSpotBanner(String?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
-        case .deliverASARequestsContentUpdate(_): return .init()
+        case .deliverASARequestsContentUpdate, .didUpdateSpotBanner: return HomeDataController.Snapshot()
         }
     }
 }

@@ -440,6 +440,7 @@ indirect enum Screen {
         account: Account,
         transactionDraft: KeyRegTransactionSendDraft
     )
+    case inviteFriends(eventHandler: InviteFriendsScreen.EventHandler)
 }
 
 extension Screen {
