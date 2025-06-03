@@ -90,6 +90,7 @@ final class ScanQRFlowCoordinator:
         self.session = configuration.session
         self.sharedDataController = configuration.sharedDataController
         self.appLaunchController = configuration.launchController
+        self.hdWalletStorage = configuration.hdWalletStorage
     }
 }
 
