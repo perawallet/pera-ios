@@ -449,7 +449,11 @@ final class Router:
                 case let path where path.contains("token-detail") || path.contains("news"):
                     rootViewController.mainContainer.launchDiscover(with: .home)
                     let visibleScreen = findVisibleScreen(over: rootViewController)
-                    guard let url = DiscoverURLGenerator.generateURL(path: path, theme: visibleScreen.traitCollection.userInterfaceStyle, session: nil) else {
+                    guard let url = DiscoverURLGenerator.generateURL(path: path,
+                                                                     theme: visibleScreen.traitCollection.userInterfaceStyle,
+                                                                     session: nil,
+                                                                     enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled)
+                    ) else {
                         return
                     }
                     visibleScreen.open(

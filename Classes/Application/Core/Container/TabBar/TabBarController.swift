@@ -389,8 +389,7 @@ extension TabBarController {
     }
     
     private func isCardsFeatureEnabled() -> Bool {
-        featureFlagService.isEnabled(.immersiveEnabled) &&
-            Environment.current.isCardsFeatureEnabled(for: api.network)
+        Environment.current.isCardsFeatureEnabled(for: api.network)
     }
 }
 
