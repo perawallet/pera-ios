@@ -15,7 +15,6 @@
 //   MenuListItemView.swift
 
 import MacaroonUIKit
-import MacaroonURLImage
 import UIKit
 
 final class MenuListItemView:
@@ -26,14 +25,20 @@ final class MenuListItemView:
     private lazy var icon = UIImageView()
     private lazy var title = UILabel()
     private lazy var arrow = UIImageView()
+    private lazy var nftsView = UIView()
     private lazy var newLabel = UILabel()
+    private lazy var nftImage1 = UIImageView()
+    private lazy var nftImage2 = UIImageView()
+    private lazy var nftImage3 = UIImageView()
     
     func customize(_ theme: MenuListItemViewTheme) {
         addBackground(theme)
         addIcon(theme)
         addTitle(theme)
         addArrow(theme)
+        addNFTsView(theme)
         addNewLabel(theme)
+
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -44,11 +49,28 @@ final class MenuListItemView:
         icon.image = option.icon
         option.title.load(in: title)
         newLabel.isHidden = !option.showNewLabel
+        
+        switch option {
+        case .nfts(withThumbnails: let thumbnails):
+            nftsView.isHidden = thumbnails.isEmpty
+            let nftImageViews = [nftImage1, nftImage2, nftImage3]
+            for (index, imageView) in nftImageViews.enumerated() {
+                if index < thumbnails.count {
+                    imageView.kf.setImage(with: thumbnails[index])
+                    imageView.isHidden = false
+                } else {
+                    imageView.isHidden = true
+                }
+            }
+        default:
+            nftsView.isHidden = true
+        }
     }
 
     func prepareForReuse() {
         icon.image = nil
         title.clearText()
+        [nftImage1, nftImage2, nftImage3].forEach { $0.image = nil }
     }
 }
 
@@ -78,9 +100,49 @@ extension MenuListItemView {
     
     private func addArrow(_ theme: MenuListItemViewTheme) {
         arrow.customizeAppearance(theme.arrow)
+        
         addSubview(arrow)
         arrow.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.iconHorizontalPadding)
+            $0.centerY.equalToSuperview()
+        }
+    }
+    
+    private func addNFTsView(_ theme: MenuListItemViewTheme) {
+        [nftImage1, nftImage2, nftImage3].forEach { nftImage in
+            nftImage.clipsToBounds = true
+            nftImage.layer.cornerRadius = 8
+            nftImage.layer.borderWidth = 2
+            nftImage.layer.borderColor = Colors.Layer.grayLighter.uiColor.cgColor
+            nftImage.contentMode = .scaleAspectFill
+            nftsView.addSubview(nftImage)
+        }
+        
+        nftImage1.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.width.equalTo(40)
+            $0.trailing.equalToSuperview()
+        }
+        
+        nftImage2.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.width.equalTo(40)
+            $0.trailing == nftImage1.snp.leading + 16
+        }
+        
+        nftImage3.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.width.equalTo(40)
+            $0.trailing == nftImage2.snp.leading + 16
+        }
+        
+        nftsView.bringSubviewToFront(nftImage2)
+        nftsView.bringSubviewToFront(nftImage1)
+        
+        addSubview(nftsView)
+        nftsView.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.trailing == arrow.snp.leading - 12
             $0.centerY.equalToSuperview()
         }
     }

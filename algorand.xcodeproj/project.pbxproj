@@ -4811,9 +4811,6 @@
 		D420AFC52DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC62DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D420AFC72DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
-		D420AFC52DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
-		D420AFC62DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
-		D420AFC72DCDFBFC00257D3E /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178026D8D3D100C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
@@ -4988,6 +4985,15 @@
 		D435A94528AD2E18006B495A /* AlertScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A94428AD2E18006B495A /* AlertScreenTheme.swift */; };
 		D435A94628AD2E18006B495A /* AlertScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A94428AD2E18006B495A /* AlertScreenTheme.swift */; };
 		D435A94728AD2E18006B495A /* AlertScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435A94428AD2E18006B495A /* AlertScreenTheme.swift */; };
+		D435F9B32DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */; };
+		D435F9B42DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */; };
+		D435F9B52DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */; };
+		D435F9B72DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */; };
+		D435F9B82DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */; };
+		D435F9B92DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */; };
+		D435F9BC2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
+		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
+		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D4372B0D28D1CF110057532B /* TransactionOptionsListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4372B0C28D1CF110057532B /* TransactionOptionsListAction.swift */; };
 		D4372B0E28D1CF110057532B /* TransactionOptionsListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4372B0C28D1CF110057532B /* TransactionOptionsListAction.swift */; };
 		D4372B0F28D1CF110057532B /* TransactionOptionsListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4372B0C28D1CF110057532B /* TransactionOptionsListAction.swift */; };
@@ -9554,7 +9560,6 @@
 		D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemViewTheme.swift; sourceTree = "<group>"; };
 		D420AFBC2DCD25E000257D3E /* CarouselBannerItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerItemViewTheme.swift; sourceTree = "<group>"; };
 		D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Cards.swift"; sourceTree = "<group>"; };
-		D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Cards.swift"; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
 		D421178B26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicatorTheme.swift; sourceTree = "<group>"; };
@@ -9615,6 +9620,9 @@
 		D435A93C28AD2D4F006B495A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D435A94028AD2D9F006B495A /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
 		D435A94428AD2E18006B495A /* AlertScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreenTheme.swift; sourceTree = "<group>"; };
+		D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsScreen.swift; sourceTree = "<group>"; };
+		D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsScreenTheme.swift; sourceTree = "<group>"; };
+		D435F9BB2DE88F1B004B7D61 /* share.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = share.json; sourceTree = "<group>"; };
 		D4372B0C28D1CF110057532B /* TransactionOptionsListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOptionsListAction.swift; sourceTree = "<group>"; };
 		D4372B1228D206DC0057532B /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		D4372B1628D207040057532B /* SwapIntroductionAlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapIntroductionAlertItem.swift; sourceTree = "<group>"; };
@@ -13934,6 +13942,7 @@
 				1710831C29066B7800A80CC0 /* Discover */,
 				8B68BAA92C85E14300498812 /* Cards */,
 				8BE5AB962CDE034C007D9527 /* Stake */,
+				D435F9B12DE877AC004B7D61 /* InviteFriends */,
 				2B567155240074F60037FCFA /* Ledger */,
 				D444881C2DBF7C0200A561E1 /* Menu */,
 				174A0F3128EF162F00D44019 /* Migrations */,
@@ -18346,6 +18355,7 @@
 				2B4E85AA260A6A7300FC04BB /* Ledger */,
 				2B99D48628F5606300323C11 /* Loader */,
 				D446A748272ABEC90081D60B /* Rekey */,
+				D435F9BA2DE88F02004B7D61 /* Share */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -19789,6 +19799,23 @@
 				179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		D435F9B12DE877AC004B7D61 /* InviteFriends */ = {
+			isa = PBXGroup;
+			children = (
+				D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */,
+				D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */,
+			);
+			path = InviteFriends;
+			sourceTree = "<group>";
+		};
+		D435F9BA2DE88F02004B7D61 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				D435F9BB2DE88F1B004B7D61 /* share.json */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 		D4372B2228D232750057532B /* AlertPresenter */ = {
@@ -23383,6 +23410,7 @@
 				2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				F02F19E427DF52D70085521C /* Assets.xcassets in Resources */,
 				2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */,
+				D435F9BC2DE88F1B004B7D61 /* share.json in Resources */,
 				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
 				F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */,
@@ -23425,6 +23453,7 @@
 				2B3C73002898606600A0181F /* Colors.xcassets in Resources */,
 				D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
+				D435F9BE2DE88F1B004B7D61 /* share.json in Resources */,
 				2B0F633524EC129D00DA22A6 /* PublicSans-Medium.ttf in Resources */,
 				2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
@@ -23463,6 +23492,7 @@
 				2B3C72FF2898606600A0181F /* Colors.xcassets in Resources */,
 				D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
+				D435F9BD2DE88F1B004B7D61 /* share.json in Resources */,
 				2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				2B516175243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
@@ -24120,6 +24150,7 @@
 				173C112D296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */,
 				2BEF0B46294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				1736FB8528ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift in Sources */,
+				D435F9B72DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */,
 				17BD4E242292F1260003E49A /* APIParamKey.swift in Sources */,
 				D41F4F1D2893FB0700B59559 /* AccountStandardAssetPreviewLoadingViewTheme.swift in Sources */,
 				2B7747A926026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
@@ -24758,6 +24789,7 @@
 				17CE518429AF707900155489 /* AlgorandSecureBackupMnemonicsScreen.swift in Sources */,
 				F07C3C3E28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */,
 				D421178226D8D3D500C032B2 /* BottomSheetTransitionController.swift in Sources */,
+				D435F9B32DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */,
 				F01264352835A46F00380C4E /* DeeplinkConfig.swift in Sources */,
 				2BD36E072681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B88CC882618A509000027B4 /* Array+View.swift in Sources */,
@@ -27135,6 +27167,7 @@
 				2B0F620D24EC129D00DA22A6 /* ContactDetailView.swift in Sources */,
 				D497943F287CC2C5004FBF8E /* AppCallAssetPreviewView.swift in Sources */,
 				D4D729A22CFDCCF700293451 /* SendAssetAndOptInTransactionInfoScreenViewModel.swift in Sources */,
+				D435F9B92DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */,
 				2B9A3E7826E7C7A200B050ED /* ALGAPIModel.swift in Sources */,
 				D43A0C2D2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
 				2B99D43A28EC1C1300323C11 /* SwapInfoItemViewModel.swift in Sources */,
@@ -27976,6 +28009,7 @@
 				F03451DA28B27B87009467A0 /* OptInAssetListItemViewModel.swift in Sources */,
 				2BA4B41A267911010041586B /* WCSessionList.swift in Sources */,
 				D4DC26B428B3A3230068152E /* ASAAboutScreenASACreatorSecondaryListItem.swift in Sources */,
+				D435F9B52DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */,
 				2B9FDE8E28A4F9AF00C8117D /* AssetVerificationInfoViewTheme.swift in Sources */,
 				2BA4B4062678A9400041586B /* WCSessionListDataSource.swift in Sources */,
 				2BB93BFE25BF1BF8001F1D6C /* TransactionFeeCalculator.swift in Sources */,
@@ -29240,6 +29274,7 @@
 				D419712529938EE7003FEEB1 /* AlgorandSecureBackupSuccessHeaderViewModel.swift in Sources */,
 				1736FB8328ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift in Sources */,
 				2B59F15E22552845005203DD /* DBStorable.swift in Sources */,
+				D435F9B82DE878D7004B7D61 /* InviteFriendsScreenTheme.swift in Sources */,
 				179B187129F169E7000A4341 /* SettingsLoadingViewTheme.swift in Sources */,
 				D4CA4ECC29E00B6B00E231EB /* RekeyAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				D41F4F1B2893FB0700B59559 /* AccountStandardAssetPreviewLoadingViewTheme.swift in Sources */,
@@ -29878,6 +29913,7 @@
 				955B617527848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
 				D4979482287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
 				2BF65837290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
+				D435F9B42DE877CD004B7D61 /* InviteFriendsScreen.swift in Sources */,
 				D4FC5F5D27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
 				9511C297242E2B3C003211ED /* BaseControl.swift in Sources */,
 				D4979486287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
@@ -31325,7 +31361,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31338,7 +31374,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31354,7 +31390,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31366,7 +31402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31382,7 +31418,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31394,7 +31430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31411,7 +31447,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -31424,7 +31460,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31441,7 +31477,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31453,7 +31489,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31470,7 +31506,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31482,7 +31518,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31623,7 +31659,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
@@ -31637,7 +31673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31656,7 +31692,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31668,7 +31704,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31815,7 +31851,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = develop;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -31827,7 +31863,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 91.11.2048;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
