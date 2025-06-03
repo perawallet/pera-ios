@@ -307,14 +307,20 @@ extension IncomingASATransactionController {
         account: Account,
         transactions: [Data]
     ) {
-        guard let hdWalletAddressDetail = account.hdWalletAddressDetail else { return }
-        
         do {
-            var authWalletId = hdWalletAddressDetail.walletId
+            var hdWalletAddressDetail = account.hdWalletAddressDetail
+            var authWalletId = hdWalletAddressDetail?.walletId
+            
             if let authAddress = account.authAddress,
-               let accountAccount = sharedDataController.accountCollection[authAddress]?.value,
-               let hdWalletAddressDetail = accountAccount.hdWalletAddressDetail {
-                authWalletId = hdWalletAddressDetail.walletId
+               let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+               let authHDWalletAddressDetail = authAccount.hdWalletAddressDetail {
+                hdWalletAddressDetail = authHDWalletAddressDetail
+                authWalletId = authHDWalletAddressDetail.walletId
+            }
+            
+            guard let hdWalletAddressDetail,
+                  let authWalletId else {
+                return
             }
             
             guard let seed = try hdWalletStorage.wallet(id: authWalletId) else { return }

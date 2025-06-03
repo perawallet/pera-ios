@@ -185,6 +185,10 @@ extension Account {
            authorization.isStandardToStandardRekeyed ||
            authorization.isStandardToLedgerRekeyed ||
            authorization.isStandardToNoAuthInLocalRekeyed {
+            if isHDAccount {
+                return "icon-hd-account".uiImage
+            }
+
             return "icon-standard-account".uiImage
         }
 

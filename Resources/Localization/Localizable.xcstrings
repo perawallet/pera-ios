@@ -7086,6 +7086,17 @@
         }
       }
     },
+    "standard-account-hd-type-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet that lets you derive new wallets, all using the same key. Learn more"
+          }
+        }
+      }
+    },
     "standard-account-type-description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10934,6 +10945,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vote Key"
+          }
+        }
+      }
+    },
+    "wallet-address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet Address"
           }
         }
       }

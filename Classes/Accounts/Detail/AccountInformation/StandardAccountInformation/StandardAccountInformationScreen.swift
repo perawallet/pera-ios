@@ -185,7 +185,16 @@ extension StandardAccountInformationScreen {
 
 extension StandardAccountInformationScreen {
     private func bindTitle() {
-        titleView.attributedText = String(localized: "title-standard-account-capitalized-sentence").titleSmallMedium(lineBreakMode: .byTruncatingTail)
+        if account.isHDAccount {
+            titleView.attributedText = String(
+                localized: "wallet-address"
+            ).titleSmallMedium(lineBreakMode: .byTruncatingTail)
+            return
+        }
+        
+        titleView.attributedText = String(
+            localized: "title-standard-account-capitalized-sentence"
+        ).titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private func bindAccountItem() {
@@ -194,7 +203,7 @@ extension StandardAccountInformationScreen {
     }
 
     private func bindAccountTypeInformation() {
-        let viewModel = StandardAccountTypeInformationViewModel()
+        let viewModel = StandardAccountTypeInformationViewModel(isHDWallet: account.isHDAccount)
         accountTypeInformationView.bindData(viewModel)
     }
 }

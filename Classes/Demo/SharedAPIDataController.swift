@@ -29,6 +29,8 @@ final class SharedAPIDataController:
 
     var assetDetailCollection: AssetDetailCollection = []
 
+    var currentInboxRequestCount = 0
+    
     var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? {
         didSet { cache.accountSortingAlgorithmName = selectedAccountSortingAlgorithm?.name }
     }
