@@ -565,19 +565,20 @@ extension SendAssetInboxScreen {
 }
 
 extension SendAssetInboxScreen {
-     private func openSignWithLedgerConfirmation() {
+    private func openSignWithLedgerConfirmation() {
         let transition = BottomSheetTransition(presentingViewController: self)
 
         let totalTransactionCountToSign = 3 // transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
-        let title = String(localized: "swap-sign-with-ledger-title").bodyLargeMedium(alignment: .center)
-        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), totalTransactionCountToSign)
-        let body = String(format: String(localized: "swap-sign-with-ledger-body"), totalTransactionCountToSign)
-                .bodyRegular(alignment: .center)
-                .addAttributes(
-                    to: highlightedBodyPart,
-                    newAttributes: Typography.bodyMediumAttributes(alignment: .center)
-                )
+        let title = String(localized: "swap-sign-with-ledger-title")
+            .bodyLargeMedium(alignment: .center)
+        let highlightedBodyPart = String(localized: "swap-sign-with-ledger-body-highlighted-\(totalTransactionCountToSign)")
+        let body = String(localized: "swap-sign-with-ledger-body-\(totalTransactionCountToSign)")
+            .bodyRegular(alignment: .center)
+            .addAttributes(
+                to: highlightedBodyPart,
+                newAttributes: Typography.bodyMediumAttributes(alignment: .center)
+            )
 
         let uiSheet = UISheet(
             image: "icon-ledger-48",
@@ -595,10 +596,10 @@ extension SendAssetInboxScreen {
             self.openLedgerConnection()
             self.getTransactionParamsAndComposeRelatedTransactions()
         }
-         
+        
         uiSheet.addAction(signTransactionsAction)
 
-         transition.perform(
+        transition.perform(
             .sheetAction(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()

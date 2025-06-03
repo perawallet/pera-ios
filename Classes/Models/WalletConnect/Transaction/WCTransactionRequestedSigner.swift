@@ -35,14 +35,16 @@ final class WCTransactionRequestedSigner {
         on session: Session,
         transactionDetail: WCTransactionDetail?,
         authAddress: String?,
-        signer: WCTransaction.Signer
+        signer: WCTransaction.Signer,
+        hdWalletStorage: HDWalletStorable
     ) {
         if let authAddress = authAddress {
             address = authAddress
             account = findAccount(
                 transactionAuthAddress: authAddress,
                 in: accountCollection,
-                on: session
+                on: session,
+                hdWalletStorage: hdWalletStorage
             )
             return
         }
@@ -54,7 +56,8 @@ final class WCTransactionRequestedSigner {
                 account = findAccount(
                     sender,
                     in: accountCollection,
-                    on: session
+                    on: session,
+                    hdWalletStorage: hdWalletStorage
                 )
                 return
             }
@@ -64,7 +67,8 @@ final class WCTransactionRequestedSigner {
                 account = findAccount(
                     address,
                     in: accountCollection,
-                    on: session
+                    on: session,
+                    hdWalletStorage: hdWalletStorage
                 )
                 return
             }
@@ -79,7 +83,8 @@ final class WCTransactionRequestedSigner {
         _ address: String? = nil,
         transactionAuthAddress: String? = nil,
         in accountCollection: AccountCollection,
-        on session: Session
+        on session: Session,
+        hdWalletStorage: HDWalletStorable
     ) -> Account? {
         if let transactionAuthAddress {
             guard let account = accountCollection.account(for: transactionAuthAddress) else {
@@ -87,6 +92,12 @@ final class WCTransactionRequestedSigner {
             }
 
             if account.hasLedgerDetail() {
+                return account
+            }
+            
+            if let hdWalletAddressDetail = account.hdWalletAddressDetail,
+               let seed = try? hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId),
+               !seed.entropy.isEmpty {
                 return account
             }
 
@@ -109,6 +120,12 @@ final class WCTransactionRequestedSigner {
 
         if account.authorization.isRekeyed {
             return findRekeyedAccount(for: account, among: accountCollection)
+        }
+        
+        if let hdWalletAddressDetail = account.hdWalletAddressDetail,
+           let seed = try? hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId),
+           !seed.entropy.isEmpty {
+            return account
         }
         
         if session.privateData(for: address) != nil {
@@ -144,26 +161,35 @@ extension WCTransactionRequestedSigner {
     func findSignerAccount(
         signer: String,
         in accountCollection: AccountCollection,
-        on session: Session
+        on session: Session,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.address = signer
         self.account = findAccount(
             signer: signer,
             in: accountCollection,
-            on: session
+            on: session,
+            hdWalletStorage: hdWalletStorage
         )
     }
 
     private func findAccount(
         signer: String,
         in accountCollection: AccountCollection,
-        on session: Session
+        on session: Session,
+        hdWalletStorage: HDWalletStorable
     ) -> Account? {
         guard let account = accountCollection.account(for: signer) else {
             return nil
         }
 
         if account.hasLedgerDetail() {
+            return account
+        }
+        
+        if let hdWalletAddressDetail = account.hdWalletAddressDetail,
+           let seed = try? hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId),
+           !seed.entropy.isEmpty {
             return account
         }
 

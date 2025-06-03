@@ -40,6 +40,8 @@ protocol SharedDataController: AnyObject {
 
     var blockchainUpdatesMonitor: BlockchainUpdatesMonitor { get }
     
+    var currentInboxRequestCount: Int { get set }
+    
     /// <note>
     /// Returns true if the shared data is ready to use.
     var isAvailable: Bool { get }

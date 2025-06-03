@@ -131,13 +131,11 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
         var unimportedAccounts: [AccountInformation] = []
 
         for transferAccount in transferAccounts {
-            let accountAddress = transferAccount.accountInformation.address
-
-            if sharedDataController.accountCollection[accountAddress] != nil {
+            if sharedDataController.accountCollection[transferAccount.accountInformation.address] != nil {
                 unimportedAccounts.append(transferAccount.accountInformation)
             } else {
                 if let privateKey = transferAccount.privateKey {
-                    session.savePrivate(privateKey, for: accountAddress)
+                    session.savePrivate(privateKey, for: transferAccount.accountInformation.address)
                 }
                 importableAccounts.append(transferAccount.accountInformation)
             }
