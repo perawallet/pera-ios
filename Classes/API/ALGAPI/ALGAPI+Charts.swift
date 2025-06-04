@@ -16,10 +16,18 @@
 
 import MagpieCore
 
-enum ChartDataPeriod: String {
+enum ChartDataPeriod: String, Hashable, CaseIterable {
     case oneWeek = "one-week"
     case oneMonth = "one-month"
     case oneYear = "one-year"
+    
+    var title: String {
+        switch self {
+        case .oneWeek: return String(localized: "chart-segcontrol-week")
+        case .oneMonth: return String(localized: "chart-segcontrol-month")
+        case .oneYear: return String(localized: "chart-segcontrol-year")
+        }
+    }
 }
 
 extension ALGAPI {
@@ -65,7 +73,7 @@ extension ALGAPI {
         addresses: [String],
         period: ChartDataPeriod,
         ordering: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<CardsCountryAvailability>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))

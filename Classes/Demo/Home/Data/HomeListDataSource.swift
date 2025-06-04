@@ -54,12 +54,12 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     )
                     cell.bindData(portfolioItem)
                     return cell
-                case .charts:
+                case .charts(let viewModel):
                     let cell = collectionView.dequeue(
                         HomeChartsCell.self,
                         at: indexPath
                     )
-                    cell.bindData([])
+                    cell.bindData(viewModel)
                     return cell
                 case .quickActions:
                     let cell = collectionView.dequeue(

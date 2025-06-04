@@ -15,25 +15,21 @@
 //   HomeChartsCell.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class HomeChartsCell: UICollectionViewCell {
+final class HomeChartsCell:
+    CollectionCell<HomeChartsView>,
+    UIInteractable {
     
     // MARK: - Properties
     
-    static let theme = HomeChartsViewTheme()
-    
-    // MARK: - Subviews
-    
-    let contextView: HomeChartsView = {
-        let view = HomeChartsView()
-        view.customize(HomeChartsCell.theme)
-        return view
-    }()
+    let theme = HomeChartsViewTheme()
     
     // MARK: - Initialisers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contextView.customize(theme)
         setupConstraints()
     }
     
@@ -48,7 +44,7 @@ final class HomeChartsCell: UICollectionViewCell {
         }
     }
     
-    func bindData(_ data: [CarouselBannerItemModel]) {
+    func bindData(_ data: ChartViewModel) {
         contextView.bindData(data)
     }
 }

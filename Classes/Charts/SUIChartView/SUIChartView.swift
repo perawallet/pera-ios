@@ -17,24 +17,30 @@
 import SwiftUI
 import Charts
 
-struct DataPoint: Identifiable {
+struct DataPoint: Identifiable, Hashable {
     let id = UUID()
     let day: String
     let value: Double
 }
 
-let mockData: [DataPoint] = (1...10).map { i in
-    DataPoint(day: "Day \(i)", value: Double.random(in: 10...100))
-}
-
 struct SUIChartView: View {
+    let isLoading: Bool
+    var chartData: [DataPoint]
+    
     var body: some View {
-        LineChartView(data: mockData)
+        ZStack {
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else {
+                LineChartView(data: chartData)
+            }
+        }
     }
 }
 
 #Preview {
-    SUIChartView()
+    SUIChartView(isLoading: false, chartData: [])
 }
 
 struct LineChartView: View {

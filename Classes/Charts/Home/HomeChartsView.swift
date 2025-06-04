@@ -18,14 +18,26 @@ import MacaroonUIKit
 import UIKit
 import SwiftUI
 
-
 final class HomeChartsView:
     UIView,
     ViewComposable,
+    UIInteractable,
     ListReusable {
     
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .weekChartSelected: TargetActionInteraction(),
+        .monthChartSelected: TargetActionInteraction(),
+        .yearChartSelected: TargetActionInteraction()
+    ]
+    
+    private var isLoading = false {
+        didSet {
+            updateChart()
+        }
+    }
+    
     private lazy var hostingController: UIHostingController<SUIChartView> = UIHostingController(rootView: chartView)
-    private lazy var chartView: SUIChartView = SUIChartView()
+    private lazy var chartView: SUIChartView = SUIChartView(isLoading: true, chartData: [])
     private lazy var segmentedControl = ChartSegmentedControl()
 
     func customize(_ theme: HomeChartsViewTheme) {
@@ -38,12 +50,21 @@ final class HomeChartsView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ items: [CarouselBannerItemModel]) {
-//        chartView?.chartValues = [0.0, 0.1, 0.2]
+    func bindData(_ viewModel: ChartViewModel) {
+        segmentedControl.selectedSegment = viewModel.period
+        isLoading = false
+        updateChart(with: viewModel.chartValues)
     }
-
-    func prepareForReuse() {
+    
+    private func updateChart(with data: [DataPoint] = []) {
+        hostingController.rootView = SUIChartView(isLoading: isLoading, chartData: data)
     }
+    
+    override func didMoveToWindow() {
+        segmentedControl.selectedSegment = .oneWeek
+        isLoading = true
+    }
+    
 }
 
 extension HomeChartsView {
@@ -71,6 +92,28 @@ extension HomeChartsView {
             $0.leading.equalToSuperview().inset(92)
             $0.bottom.equalToSuperview()
         }
+        
+        segmentedControl.selectionChanged = { [weak self] _ in
+            guard let self = self else { return }
+            isLoading = true
+        }
+        
+        for (index, button) in segmentedControl.buttons.enumerated() {
+            let event: Event
+            switch ChartDataPeriod.allCases[index] {
+            case .oneWeek: event = .weekChartSelected
+            case .oneMonth: event = .monthChartSelected
+            case .oneYear: event = .yearChartSelected
+            }
+            startPublishing(event: event, for: button)
+        }
     }
 }
 
+extension HomeChartsView {
+    enum Event {
+        case weekChartSelected
+        case monthChartSelected
+        case yearChartSelected
+    }
+}

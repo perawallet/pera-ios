@@ -14,6 +14,16 @@
 
 //   ChartViewModel.swift
 
-struct ChartViewModel: Hashable {
-    let chartValues: [Double]
+struct ChartViewModel: Hashable, Equatable {
+    let period: ChartDataPeriod
+    let chartValues: [DataPoint]
+    
+    static func == (lhs: ChartViewModel, rhs: ChartViewModel) -> Bool {
+        lhs.period == rhs.period && lhs.chartValues == rhs.chartValues
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(period)
+        hasher.combine(chartValues)
+    }
 }

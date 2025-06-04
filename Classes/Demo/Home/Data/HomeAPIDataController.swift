@@ -28,10 +28,12 @@ final class HomeAPIDataController:
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
     private let spotBannersDataController: SpotBannersAPIDataController
+    private let chartsDataController: ChartAPIDataController
     private let incomingASAsAPIDataController: IncomingASAsAPIDataController
 
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
+    private var chartViewModel: ChartViewModel?
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
@@ -49,12 +51,14 @@ final class HomeAPIDataController:
         session: Session,
         announcementDataController: AnnouncementAPIDataController,
         spotBannersDataController: SpotBannersAPIDataController,
+        chartsDataController: ChartAPIDataController,
         incomingASAsAPIDataController: IncomingASAsAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
         self.spotBannersDataController = spotBannersDataController
+        self.chartsDataController = chartsDataController
         self.incomingASAsAPIDataController = incomingASAsAPIDataController
         
         setupCallbacks()
@@ -84,6 +88,7 @@ extension HomeAPIDataController {
         announcementDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
         setSpotsBannersClosures()
+        setChartDataClosures()
     }
     
     func reload() {
@@ -98,6 +103,11 @@ extension HomeAPIDataController {
         let accounts = self.sharedDataController.sortedAccounts()
         let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
+    }
+    
+    func fetchChartData(period: ChartDataPeriod) {
+        chartViewModel = ChartViewModel(period: period, chartValues: [])
+        chartsDataController.loadData(screen: .home, period: period)
     }
     
     func updateClose(for banner: CarouselBannerItemModel) {
@@ -159,6 +169,20 @@ extension HomeAPIDataController {
         spotBannersDataController.onUpdateClose = { [weak self] error in
             guard let self = self else { return }
             publish(.didUpdateSpotBanner(error))
+        }
+    }
+    
+    private func setChartDataClosures() {
+        chartsDataController.onFetch = { [weak self] error, period, chartsData in
+            guard let self = self else { return }
+            if error != nil {
+                return
+            }
+            let chartDataPoints: [DataPoint] = chartsData.enumerated().compactMap { index, item in
+                guard let value = Double(item.algo_value) else { return nil }
+                return DataPoint(day: "Day \(index)", value: value)
+            }
+            chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints)
         }
     }
 }
@@ -240,10 +264,12 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
             
-            snapshot.appendItems(
-                [.portfolio(.charts(ChartViewModel(chartValues: [])))],
-                toSection: .portfolio
-            )
+            if let chartViewModel {
+                snapshot.appendItems(
+                    [.portfolio(.charts(chartViewModel))],
+                    toSection: .portfolio
+                )
+            }
 
             /// <note>
             /// If accounts empty which means there is no any authenticated account, quick actions will be hidden.

@@ -18,28 +18,17 @@ import UIKit
 
 class ChartSegmentedControl: UIStackView {
 
-    enum Segment: CaseIterable {
-        case oneWeek, oneMonth, oneYear
-
-        var title: String {
-            switch self {
-            case .oneWeek: return String(localized: "chart-segcontrol-week")
-            case .oneMonth: return String(localized: "chart-segcontrol-month")
-            case .oneYear: return String(localized: "chart-segcontrol-year")
-            }
-        }
-    }
-
-    private var buttons: [UIButton] = []
-    private var segments: [Segment] = Segment.allCases
-    var selectedSegment: Segment = .oneWeek {
+    private(set) var buttons: [UIButton] = []
+    private var segments: [ChartDataPeriod] = ChartDataPeriod.allCases
+    
+    var selectedSegment: ChartDataPeriod = .oneWeek {
         didSet {
             updateSelection()
             selectionChanged?(selectedSegment)
         }
     }
 
-    var selectionChanged: ((Segment) -> Void)?
+    var selectionChanged: ((ChartDataPeriod) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

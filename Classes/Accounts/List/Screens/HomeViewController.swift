@@ -245,6 +245,7 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
+        dataController.fetchChartData(period: .oneWeek)
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
@@ -596,6 +597,29 @@ extension HomeViewController {
             self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
         }
+    }
+    
+    private func linkInteractors(
+        _ cell: HomeChartsCell
+    ) {
+        cell.startObserving(event: .weekChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.fetchChartData(period: .oneWeek)
+        }
+        
+        cell.startObserving(event: .monthChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.fetchChartData(period: .oneMonth)
+        }
+        
+        cell.startObserving(event: .yearChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.fetchChartData(period: .oneYear)
+        }
+
     }
 
     private func linkInteractors(
@@ -969,7 +993,9 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             case .charts:
-                break
+                let cell = cell as! HomeChartsCell
+                
+                linkInteractors(cell)
             }
         case .announcement(let item):
             switch item.type {
