@@ -316,7 +316,8 @@ extension WCMainTransactionScreen {
         let signer = WCTransactionSigner(
             api: api!,
             sharedDataController: sharedDataController,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
         signer.delegate = self
         return signer
@@ -407,7 +408,8 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             transactions.forEach {
                 $0.findSignerAccount(
                     in: sharedDataController.accountCollection,
-                    on: session
+                    on: session,
+                    hdWalletStorage: hdWalletStorage
                 )
             }
         }

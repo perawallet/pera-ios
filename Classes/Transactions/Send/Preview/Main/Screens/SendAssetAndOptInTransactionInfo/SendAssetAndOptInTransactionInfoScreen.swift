@@ -51,7 +51,8 @@ final class SendAssetAndOptInTransactionInfoScreen: BaseScrollViewController {
          api: api,
          sharedDataController: sharedDataController,
          bannerController: bannerController,
-         analytics: analytics
+         analytics: analytics,
+         hdWalletStorage: hdWalletStorage
       )
    }()
 

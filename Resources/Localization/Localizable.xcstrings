@@ -12,6 +12,29 @@
         }
       }
     },
+    "account-count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld account"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld accounts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "account-detail-assets-search" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -30,6 +53,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account Value"
+          }
+        }
+      }
+    },
+    "account-details-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name your account"
+          }
+        }
+      }
+    },
+    "account-details-wallet-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name your wallet"
           }
         }
       }
@@ -74,6 +119,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finish Account Creation"
+          }
+        }
+      }
+    },
+    "account-name-setup-placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account name"
           }
         }
       }
@@ -210,6 +266,17 @@
         }
       }
     },
+    "account-type-selection-add-account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a new account"
+          }
+        }
+      }
+    },
     "account-type-selection-add-detail" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -232,6 +299,50 @@
         }
       }
     },
+    "account-type-selection-create-universal-wallet-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new account for an existing Universal Wallet"
+          }
+        }
+      }
+    },
+    "account-type-selection-create-wallet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new wallet"
+          }
+        }
+      }
+    },
+    "account-type-selection-create-wallet-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new Algorand wallet with a new address and recovery passphrase"
+          }
+        }
+      }
+    },
+    "account-type-selection-create-wallet-detail-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New to Algorand?"
+          }
+        }
+      }
+    },
     "account-type-selection-import-secure-backup" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -250,6 +361,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I want to restore my accounts using an Algorand Secure Backup file and 12-word key"
+          }
+        }
+      }
+    },
+    "account-type-selection-import-wallet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import a wallet"
           }
         }
       }
@@ -315,6 +437,17 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "I want to recover an Algorand wallet."
+          }
+        }
+      }
+    },
+    "account-type-selection-passphrase-detail-algo25" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "I want to recover an Algorand account using my 25-word passphrase"
           }
         }
@@ -364,6 +497,50 @@
         }
       }
     },
+    "account-type-selection-recover-detail-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already have an account?"
+          }
+        }
+      }
+    },
+    "account-type-selection-recover-wallet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recover a wallet"
+          }
+        }
+      }
+    },
+    "account-type-selection-recover-wallet-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import an existing wallet with various methods or pair your Ledger"
+          }
+        }
+      }
+    },
+    "account-type-selection-universal-wallet-warning-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Because you have already a Universal Wallet"
+          }
+        }
+      }
+    },
     "account-type-selection-watch" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -371,6 +548,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watch an account"
+          }
+        }
+      }
+    },
+    "account-type-selection-watch-address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch an address"
+          }
+        }
+      }
+    },
+    "account-type-selection-watch-address-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor an Algorand address by providing its address"
           }
         }
       }
@@ -386,6 +585,17 @@
         }
       }
     },
+    "account-wallet-name-setup-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name your wallet to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you."
+          }
+        }
+      }
+    },
     "account-welcome-add-account-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -393,6 +603,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add an account"
+          }
+        }
+      }
+    },
+    "account-welcome-add-wallet-or-account-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a wallet\nor account"
           }
         }
       }
@@ -441,6 +662,7 @@
       }
     },
     "accounts-transaction-empty-text" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -926,6 +1148,17 @@
         }
       }
     },
+    "algorand-secure-backup-instruction-save-backup-file-instruction-warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please note: We currently do not support the backing up of Universal and Ledger Wallets"
+          }
+        }
+      }
+    },
     "algorand-secure-backup-instruction-select-accounts-instruction-subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1285,6 +1518,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Find out how"
+          }
+        }
+      }
+    },
+    "already-imported-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "already imported"
           }
         }
       }
@@ -3159,6 +3403,50 @@
         }
       }
     },
+    "hd-account-discovery-loading-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching your accounts"
+          }
+        }
+      }
+    },
+    "hd-wallet-setup-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your new account under a Universal Wallet you already have"
+          }
+        }
+      }
+    },
+    "hd-wallet-setup-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Universal Wallet"
+          }
+        }
+      }
+    },
+    "hd-wallet-setup-wallet-name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet #%@"
+          }
+        }
+      }
+    },
     "id-copied-to-clipboard" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3444,6 +3732,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "By creating an account, you agree to Pera Wallet's<br><a href=\\\"%@\\\">Terms and Conditions</a> and <a href=\\\"%@\\\">Privacy Policy</a>"
+          }
+        }
+      }
+    },
+    "introduction-title-terms-and-services-wallet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\"%@\\\">Terms and Conditions</a> and <a href=\\\"%@\\\">Privacy Policy</a>"
           }
         }
       }
@@ -4175,6 +4474,83 @@
         }
       }
     },
+    "mnemonic-types-algo25-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legacy format that is specific to Algorand ecosystem"
+          }
+        }
+      }
+    },
+    "mnemonic-types-algo25-info" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "25 key mnemonic keys"
+          }
+        }
+      }
+    },
+    "mnemonic-types-algo25-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ALGO25"
+          }
+        }
+      }
+    },
+    "mnemonic-types-bip39-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet that lets you derive new accounts, all using the same mnemonic"
+          }
+        }
+      }
+    },
+    "mnemonic-types-bip39-info" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "24 key mnemonic keys"
+          }
+        }
+      }
+    },
+    "mnemonic-types-bip39-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Universal Wallet"
+          }
+        }
+      }
+    },
+    "mnemonic-types-screen-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select your Mnemonic type"
+          }
+        }
+      }
+    },
     "moonpay-introduction-description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4736,6 +5112,26 @@
         }
       }
     },
+    "options-rescan-accounts-subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import any rekeyed accounts"
+          }
+        }
+      }
+    },
+    "options-rescan-accounts-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rescan Rekeyed Accounts"
+          }
+        }
+      }
+    },
     "options-unmute-notification" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4754,6 +5150,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View Passphrase"
+          }
+        }
+      }
+    },
+    "options-view-root-wallet-passphrase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View root wallet passphrase"
           }
         }
       }
@@ -4831,6 +5238,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "There is something wrong. Please try again later."
+          }
+        }
+      }
+    },
+    "passphrase-bottom-title-alg25" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legacy format that is specific to Algorand ecosystem"
+          }
+        }
+      }
+    },
+    "passphrase-bottom-title-bip39" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Inter-operable format that enables important features like HD Wallet"
           }
         }
       }
@@ -5271,6 +5700,17 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "The last copied text is not valid passphrase with 24 words. Please copy valid passphrase and try again."
+          }
+        }
+      }
+    },
+    "recover-copy-error-algo25" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again."
           }
         }
@@ -5353,6 +5793,17 @@
         }
       }
     },
+    "recover-from-seed-verify-pop-up-explanation-already-added-plural" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Congratulations, your accounts are ready to use."
+          }
+        }
+      }
+    },
     "recover-from-seed-verify-pop-up-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5363,6 +5814,20 @@
           }
         }
       }
+    },
+    "recover-from-seed-verify-pop-up-title-plural" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accounts have been added!"
+          }
+        }
+      }
+    },
+    "recover-passphrase-title" : {
+
     },
     "rekey-account-selection-list-header" : {
       "extractionState" : "manual",
@@ -5612,6 +6077,12 @@
                   "state" : "translated",
                   "value" : "You have %lld rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We have scanned the blockchain and were not able to find any accounts that have not been imported."
+                }
               }
             }
           }
@@ -5635,8 +6106,24 @@
                   "state" : "translated",
                   "value" : "%lld rekeyed accounts found"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "No Rekeyed Accounts Found"
+                }
               }
             }
+          }
+        }
+      }
+    },
+    "rekeyed-account-selection-list-loading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fetching rekeyed\naccounts..."
           }
         }
       }
@@ -5670,6 +6157,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add rekeyed account"
+          }
+        }
+      }
+    },
+    "rekeyed-account-selection-list-secondary-action-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip for now"
           }
         }
       }
@@ -5803,6 +6300,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Security"
+          }
+        }
+      }
+    },
+    "select-address-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We found that there is %lld address registered to this wallet."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We found that there are %lld addresses registered to this wallet."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "select-address-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select addresses\nto add"
           }
         }
       }
@@ -6555,6 +7086,17 @@
         }
       }
     },
+    "standard-account-hd-type-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet that lets you derive new wallets, all using the same key. Learn more"
+          }
+        }
+      }
+    },
     "standard-account-type-description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7105,24 +7647,46 @@
         }
       }
     },
-    "swap-sign-with-ledger-body" : {
-      "extractionState" : "manual",
+    "swap-sign-with-ledger-body-%lld" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %lld transaction."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We’ve detected that you are using a Ledger device with this account. You will need to sign %lld transactions one by one using your hardware token."
+                }
+              }
+            }
           }
         }
       }
     },
-    "swap-sign-with-ledger-body-highlighted" : {
-      "extractionState" : "manual",
+    "swap-sign-with-ledger-body-highlighted-%lld" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You will need to sign %@ transactions one by one"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You will need to sign %lld transaction"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You will need to sign %lld transactions one by one"
+                }
+              }
+            }
           }
         }
       }
@@ -7509,13 +8073,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lldAsset Request"
+                  "value" : "%lld Asset Request"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lldAsset Requests"
+                  "value" : "%lld Asset Requests"
                 }
               }
             }
@@ -8212,6 +8776,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rekeyed (Ledger to Standard)"
+          }
+        }
+      }
+    },
+    "title-legacy-uppercased" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LEGACY"
           }
         }
       }
@@ -9240,17 +9815,6 @@
         }
       }
     },
-    "title-yes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yes"
-          }
-        }
-      }
-    },
     "title-yes-continue" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9978,6 +10542,17 @@
         }
       }
     },
+    "tutorial-description-back-up-bip39" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating a passphrase backup will allow you to recover your wallet. Without the passphrase, if you lose your device, remove the wallet or delete the app, you can permanently lose access to your Algorand wallet!"
+          }
+        }
+      }
+    },
     "tutorial-description-failed-to-import-ledger-accounts" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10029,6 +10604,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin."
+          }
+        }
+      }
+    },
+    "tutorial-description-recover-bip39" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the following steps, you'll enter your recovery passphrase to recover an Algorand wallet. Have your recovery phrase handy before you begin."
           }
         }
       }
@@ -10132,6 +10718,17 @@
         }
       }
     },
+    "tutorial-title-back-up-bip39" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a passphrase backup for your wallet"
+          }
+        }
+      }
+    },
     "tutorial-title-failed-to-import-ledger-accounts" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10161,6 +10758,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recover an Algorand Account"
+          }
+        }
+      }
+    },
+    "tutorial-title-recover-bip39" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recover an Algorand Wallet"
           }
         }
       }
@@ -10337,6 +10945,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vote Key"
+          }
+        }
+      }
+    },
+    "wallet-address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet Address"
           }
         }
       }
