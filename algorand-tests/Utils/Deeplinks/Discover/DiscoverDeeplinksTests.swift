@@ -27,7 +27,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNil(path)
-            let url = DiscoverURLGenerator.generateURL(destination: .home, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(destination: .home, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
         default:
             XCTFail()
@@ -41,7 +41,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
@@ -56,7 +56,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
@@ -71,7 +71,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
@@ -86,7 +86,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
@@ -101,7 +101,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
@@ -116,7 +116,7 @@ final class DiscoverDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .discover(let path):
             XCTAssertNotNil(path)
-            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil, enableDiscoverV5: false)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
             XCTAssertEqual(expectedURL.path, url?.path)
         default:
