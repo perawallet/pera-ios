@@ -442,6 +442,7 @@ indirect enum Screen {
         account: Account,
         transactionDraft: KeyRegTransactionSendDraft
     )
+    case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
 }
 
 extension Screen {

@@ -5297,6 +5297,56 @@
         }
       }
     },
+    "passphrase-warning-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm and acknowledge the following:"
+          }
+        }
+      }
+    },
+    "passphrase-warning-row1-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nobody can see my screen."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row2-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I risk losing all my funds if I share my Recovery Phrase with anyone."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row3-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My funds are permanently lost if I lose my Recovery Phrase and lose access to my wallet."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row4-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pera employees will NEVER ask for my Recovery Phrase."
+          }
+        }
+      }
+    },
     "password-change-new-subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9055,6 +9105,16 @@
         }
       }
     },
+    "title-passphrase-warning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep it secret. Keep it safe."
+          }
+        }
+      }
+    },
     "title-paste-passphrase" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9316,6 +9376,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please try later."
+          }
+        }
+      }
+    },
+    "title-reveal-passphrase" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reveal Passphrase"
           }
         }
       }
