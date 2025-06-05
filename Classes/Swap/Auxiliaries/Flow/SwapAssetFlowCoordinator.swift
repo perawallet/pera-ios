@@ -571,16 +571,16 @@ extension SwapAssetFlowCoordinator {
         let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
         
         let title =
-            String(localized: "swap-sign-with-ledger-title")
-                .bodyLargeMedium(alignment: .center)
-        let highlightedBodyPart = String(format: String(localized: "swap-sign-with-ledger-body-highlighted"), totalTransactionCountToSign)
-        let body = String(format: String(localized: "swap-sign-with-ledger-body"), totalTransactionCountToSign)
-                .bodyRegular(alignment: .center)
-                .addAttributes(
-                    to: highlightedBodyPart,
-                    newAttributes: Typography.bodyMediumAttributes(alignment: .center)
-                )
-
+        String(localized: "swap-sign-with-ledger-title")
+            .bodyLargeMedium(alignment: .center)
+        let highlightedBodyPart = String(localized: "swap-sign-with-ledger-body-highlighted-\(totalTransactionCountToSign)")
+        let body = String(localized: "swap-sign-with-ledger-body-\(totalTransactionCountToSign)")
+            .bodyRegular(alignment: .center)
+            .addAttributes(
+                to: highlightedBodyPart,
+                newAttributes: Typography.bodyMediumAttributes(alignment: .center)
+            )
+        
         let uiSheet = UISheet(
             image: "icon-ledger-48",
             title: title,

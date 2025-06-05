@@ -7544,8 +7544,7 @@
         }
       }
     },
-    "swap-sign-with-ledger-body" : {
-      "extractionState" : "manual",
+    "swap-sign-with-ledger-body-%lld" : {
       "localizations" : {
         "en" : {
           "variations" : {
@@ -7567,11 +7566,7 @@
         }
       }
     },
-    "swap-sign-with-ledger-body-%lld" : {
-
-    },
-    "swap-sign-with-ledger-body-highlighted" : {
-      "extractionState" : "manual",
+    "swap-sign-with-ledger-body-highlighted-%lld" : {
       "localizations" : {
         "en" : {
           "variations" : {
@@ -7592,9 +7587,6 @@
           }
         }
       }
-    },
-    "swap-sign-with-ledger-body-highlighted-%lld" : {
-
     },
     "swap-sign-with-ledger-process-title" : {
       "extractionState" : "manual",
