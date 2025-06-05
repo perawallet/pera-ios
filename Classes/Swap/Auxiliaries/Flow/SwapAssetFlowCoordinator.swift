@@ -64,6 +64,7 @@ final class SwapAssetFlowCoordinator:
     private let sharedDataController: SharedDataController
     private let loadingController: LoadingController
     private let bannerController: BannerController
+    private let hdWalletStorage: HDWalletStorable
     private unowned let presentingScreen: UIViewController
 
     init(
@@ -74,6 +75,7 @@ final class SwapAssetFlowCoordinator:
         sharedDataController: SharedDataController,
         loadingController: LoadingController,
         bannerController: BannerController,
+        hdWalletStorage: HDWalletStorable,
         presentingScreen: UIViewController
     ) {
         self.dataStore = dataStore
@@ -82,6 +84,7 @@ final class SwapAssetFlowCoordinator:
         self.sharedDataController = sharedDataController
         self.loadingController = loadingController
         self.bannerController = bannerController
+        self.hdWalletStorage = hdWalletStorage
         self.presentingScreen = presentingScreen
         self.draft = draft
     }
@@ -242,7 +245,9 @@ extension SwapAssetFlowCoordinator {
 
         let transactionSigner = SwapTransactionSigner(
             api: api,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage,
+            sharedDataController: sharedDataController
         )
         let swapControllerDraft = ALGSwapControllerDraft(
             account: account,
@@ -557,14 +562,14 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-     private func openSignWithLedgerConfirmation(
+    private func openSignWithLedgerConfirmation(
         swapController: SwapController,
         transactionGroups: [SwapTransactionGroup]
-     ) {
+    ) {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
+        
         let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
-
+        
         let title =
             String(localized: "swap-sign-with-ledger-title")
                 .bodyLargeMedium(alignment: .center)
@@ -598,7 +603,7 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(signTransactionsAction)
 
-         transition.perform(
+        transition.perform(
             .sheetAction(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()

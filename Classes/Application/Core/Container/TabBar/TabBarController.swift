@@ -89,6 +89,7 @@ final class TabBarController: TabBarContainer {
         sharedDataController: sharedDataController,
         loadingController: loadingController,
         bannerController: bannerController,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -104,7 +105,8 @@ final class TabBarController: TabBarContainer {
         presentingScreen: self,
         session: session,
         sharedDataController: sharedDataController,
-        appLaunchController: appLaunchController
+        appLaunchController: appLaunchController,
+        hdWalletStorage: hdWalletStorage
     )
 
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
@@ -126,6 +128,7 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let appLaunchController: AppLaunchController
     private let featureFlagService: FeatureFlagServicing
+    private let hdWalletStorage: HDWalletStorable
 
     init(
         swapDataStore: SwapDataStore,
@@ -136,7 +139,8 @@ final class TabBarController: TabBarContainer {
         session: Session,
         sharedDataController: SharedDataController,
         appLaunchController: AppLaunchController,
-        featureFlagService: FeatureFlagServicing
+        featureFlagService: FeatureFlagServicing,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.swapDataStore = swapDataStore
         self.analytics = analytics
@@ -147,6 +151,7 @@ final class TabBarController: TabBarContainer {
         self.sharedDataController = sharedDataController
         self.appLaunchController = appLaunchController
         self.featureFlagService = featureFlagService
+        self.hdWalletStorage = hdWalletStorage
         super.init()
     }
 

@@ -29,7 +29,8 @@ final class MenuViewController: BaseViewController {
         presentingScreen: self,
         session: session!,
         sharedDataController: sharedDataController,
-        appLaunchController: configuration.launchController
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: hdWalletStorage
     )
     
     private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)

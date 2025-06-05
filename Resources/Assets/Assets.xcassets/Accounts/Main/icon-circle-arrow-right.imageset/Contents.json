@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon-circle-arrow-right.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
