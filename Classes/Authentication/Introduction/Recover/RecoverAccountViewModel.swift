@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 struct RecoverAccountViewModel: ViewModel {
     private(set) var recoverWithPassphraseViewModel: AccountTypeViewModel?
+    private(set) var recoverWithPassphraseAlgo25ViewModel: AccountTypeViewModel?
     private(set) var importFromSecureBackupViewModel: AccountTypeViewModel?
     private(set) var recoverWithQRViewModel: AccountTypeViewModel?
     private(set) var recoverWithLedgerViewModel: AccountTypeViewModel?
@@ -32,6 +33,7 @@ struct RecoverAccountViewModel: ViewModel {
 extension RecoverAccountViewModel {
     private mutating func bind() {
         bindRecoverWithPassphraseViewModel()
+        bindRecoverWithPassphraseAlgo25ViewModel()
         bindImportFromSecureBackupViewModel()
         bindRecoverWithQRViewModel()
         bindRecoverWithLedgerViewModel()
@@ -40,6 +42,10 @@ extension RecoverAccountViewModel {
 
     private mutating func bindRecoverWithPassphraseViewModel() {
         recoverWithPassphraseViewModel = AccountTypeViewModel(.recover(type: .passphrase))
+    }
+    
+    private mutating func bindRecoverWithPassphraseAlgo25ViewModel() {
+        recoverWithPassphraseAlgo25ViewModel = AccountTypeViewModel(.recover(type: .passphraseAlgo25))
     }
     
     private mutating func bindRecoverWithQRViewModel() {

@@ -50,6 +50,8 @@ enum ALGAnalyticsEventName:
     case discoverDappDetail
     case manageAsset
     case onboardCreateAccountNew
+    case onboardCreateAccountRecoverAlgo25
+    case onboardCreateAccountRecoverOneKey
     case onboardCreateAccountSkip
     case onboardCreateAccountWatch
     case onboardCreateAccountWatchComplete
@@ -187,6 +189,8 @@ extension ALGAnalyticsEventName {
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .onboardCreateAccountNew: rawName = "onb_createacc_recover"
+        case .onboardCreateAccountRecoverAlgo25: rawName = "onb_createacc_recover_25"
+        case .onboardCreateAccountRecoverOneKey: rawName = "onb_createacc_recover_24"
         case .onboardCreateAccountBeginPassphrase: rawName = "onb_createacc_pass_begin"
         case .onboardCreateAccountCopyPassphrase: rawName = "onb_createacc_pass_copy"
         case .onboardCreateAccountUnderstandPassphrase: rawName = "onb_createacc_pass_understand"

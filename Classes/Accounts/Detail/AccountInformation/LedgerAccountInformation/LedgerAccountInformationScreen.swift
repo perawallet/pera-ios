@@ -174,6 +174,12 @@ extension LedgerAccountInformationScreen {
             self.eventHandler?(.performRekeyToStandard)
         }
     }
+    
+    private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
+        AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
+            self?.eventHandler?(.performRescanRekeyedAccounts)
+        }
+    }
 }
 
 extension LedgerAccountInformationScreen {
@@ -196,5 +202,6 @@ extension LedgerAccountInformationScreen {
     enum Event {
         case performRekeyToLedger
         case performRekeyToStandard
+        case performRescanRekeyedAccounts
     }
 }

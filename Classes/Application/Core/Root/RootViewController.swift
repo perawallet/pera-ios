@@ -55,7 +55,8 @@ final class RootViewController:
         session: appConfiguration.session,
         sharedDataController: appConfiguration.sharedDataController,
         appLaunchController: appConfiguration.launchController,
-        featureFlagService: appConfiguration.featureFlagService
+        featureFlagService: appConfiguration.featureFlagService,
+        hdWalletStorage: appConfiguration.hdWalletStorage
     )
 
     private lazy var pushNotificationController = PushNotificationController(
@@ -251,6 +252,8 @@ extension RootViewController {
             }
 
             if isCompleted {
+                self.appConfiguration.sharedDataController.currentInboxRequestCount = 0
+                
                 self.appConfiguration.session.reset(includingContacts: true)
 
                 self.appConfiguration.peraConnect.disconnectFromAllSessions()

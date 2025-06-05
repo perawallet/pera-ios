@@ -45,7 +45,8 @@ final class SendKeyRegTransactionScreen:
             api: api!,
             sharedDataController: sharedDataController,
             bannerController: bannerController,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
     }()
     

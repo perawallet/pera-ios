@@ -44,7 +44,8 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
         background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        passphraseBackUpViewTheme = PassphraseBackUpViewTheme(family)
+        // TODO: - HDWalletFeature check if wallet is Bip39 or not
+        passphraseBackUpViewTheme = PassphraseBackUpViewCommonTheme(family)
         cellHeight = 24
         defaultInset = 24
         navigationBarEdgeInset = (8, 24, .noMetric, 24)

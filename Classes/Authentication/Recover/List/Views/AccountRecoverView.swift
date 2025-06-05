@@ -28,19 +28,11 @@ final class AccountRecoverView: View {
     private lazy var secondColumnStackView = UIStackView()
 
     private(set) var recoverInputViews = [RecoverInputView]()
-
-    lazy var constants = Constants()
-
-    static func mnemonicsForSecureBackup() -> AccountRecoverView {
-        let recoverView = AccountRecoverView()
-        recoverView.constants = Constants(firstColumnCount: 6, secondColumnCount: 6)
-        return recoverView
-    }
-
+    
     func customize(_ theme: AccountRecoverViewTheme) {
         addTitle(theme)
         addHorizontalStackView(theme)
-        addInputViews()
+        addInputViews(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -70,7 +62,7 @@ extension AccountRecoverView {
         horizontalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.horizontalStackViewTopInset)
-            $0.bottom.lessThanOrEqualToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomInset)
         }
 
         configureVerticalStackViews(firstColumnStackView, secondColumnStackView, with: theme)
@@ -92,14 +84,14 @@ extension AccountRecoverView {
 }
 
 extension AccountRecoverView {
-    private func addInputViews() {
-        fillTheFirstColumnOfInputViews()
-        fillTheSecondColumnOfInputViews()
+    private func addInputViews(_ theme: AccountRecoverViewTheme) {
+        fillTheFirstColumnOfInputViews(theme)
+        fillTheSecondColumnOfInputViews(theme)
     }
 
-    private func fillTheFirstColumnOfInputViews() {
-        for index in 0..<constants.firstColumnCount {
-            let inputView = composeInputView()
+    private func fillTheFirstColumnOfInputViews(_ theme: AccountRecoverViewTheme) {
+        for index in 0..<theme.firstColumnCount {
+            let inputView = composeInputView(theme)
 
             if index == 0 {
                 currentInputView = inputView
@@ -109,20 +101,20 @@ extension AccountRecoverView {
         }
     }
 
-    private func fillTheSecondColumnOfInputViews() {
-        for _ in 0..<constants.secondColumnCount {
-            let inputView = composeInputView()
+    private func fillTheSecondColumnOfInputViews(_ theme: AccountRecoverViewTheme) {
+        for _ in 0..<theme.secondColumnCount {
+            let inputView = composeInputView(theme)
             secondColumnStackView.addArrangedSubview(inputView)
         }
     }
 
-    private func composeInputView() -> RecoverInputView {
+    private func composeInputView(_ theme: AccountRecoverViewTheme) -> RecoverInputView {
         let inputView = RecoverInputView()
         inputView.delegate = self
         inputView.bindData(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
         recoverInputViews.append(inputView)
 
-        if recoverInputViews.count == constants.firstColumnCount + constants.secondColumnCount {
+        if recoverInputViews.count == theme.firstColumnCount + theme.secondColumnCount {
             inputView.returnKey = .go
         } else {
             inputView.returnKey = .next
@@ -170,23 +162,6 @@ extension AccountRecoverView: RecoverInputViewDelegate {
         }
 
         return delegate.accountRecoverView(self, shouldChange: recoverInputView, charactersIn: range, replacementString: string)
-    }
-}
-
-extension AccountRecoverView {
-    struct Constants {
-        let firstColumnCount: Int
-        let secondColumnCount: Int
-
-        init() {
-            firstColumnCount = 13
-            secondColumnCount = 12
-        }
-
-        init(firstColumnCount: Int, secondColumnCount: Int) {
-            self.firstColumnCount = firstColumnCount
-            self.secondColumnCount = secondColumnCount
-        }
     }
 }
 

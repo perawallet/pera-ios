@@ -32,7 +32,8 @@ final class ScanQRFlowCoordinator:
         api: api,
         sharedDataController: sharedDataController,
         bannerController: bannerController,
-        analytics: analytics
+        analytics: analytics,
+        hdWalletStorage: hdWalletStorage
     )
 
     private var assetConfirmationTransition: BottomSheetTransition?
@@ -53,6 +54,7 @@ final class ScanQRFlowCoordinator:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let appLaunchController: AppLaunchController
+    private let hdWalletStorage: HDWalletStorable
     
     init(
         analytics: ALGAnalytics,
@@ -62,7 +64,8 @@ final class ScanQRFlowCoordinator:
         presentingScreen: UIViewController,
         session: Session,
         sharedDataController: SharedDataController,
-        appLaunchController: AppLaunchController
+        appLaunchController: AppLaunchController,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.analytics = analytics
         self.api = api
@@ -72,6 +75,7 @@ final class ScanQRFlowCoordinator:
         self.session = session
         self.sharedDataController = sharedDataController
         self.appLaunchController = appLaunchController
+        self.hdWalletStorage = hdWalletStorage
     }
     
     init(
@@ -86,6 +90,7 @@ final class ScanQRFlowCoordinator:
         self.session = configuration.session
         self.sharedDataController = configuration.sharedDataController
         self.appLaunchController = configuration.launchController
+        self.hdWalletStorage = configuration.hdWalletStorage
     }
 }
 

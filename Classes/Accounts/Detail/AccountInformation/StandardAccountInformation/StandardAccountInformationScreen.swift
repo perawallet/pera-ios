@@ -115,8 +115,8 @@ extension StandardAccountInformationScreen {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
 
-        accountItemView.startObserving(event: .performAction) {
-            [unowned self] in
+        accountItemView.startObserving(event: .performAction) { [weak self] in
+            guard let self else { return }
             self.copyToClipboardController.copyAddress(self.account)
         }
 
@@ -133,9 +133,9 @@ extension StandardAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountTypeInformationView.startObserving(event: .performHyperlinkAction) {
-            [unowned self] in
-            self.open(AlgorandWeb.rekey.link)
+        accountTypeInformationView.startObserving(event: .performHyperlinkAction) { [weak self] in
+            guard let self else { return }
+            self.open(account.supportLink)
         }
 
         bindAccountTypeInformation()
@@ -154,7 +154,8 @@ extension StandardAccountInformationScreen {
 
         let options = [
             makeRekeyToLedgerAccountItem(),
-            makeRekeyToStandardAccountItem()
+            makeRekeyToStandardAccountItem(),
+            makeRescanRekeyedAccountsItem()
         ]
         options.forEach(optionsView.addOption)
     }
@@ -162,23 +163,38 @@ extension StandardAccountInformationScreen {
 
 extension StandardAccountInformationScreen {
     private func makeRekeyToLedgerAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToLedger) {
-            [unowned self] in
+        return AccountInformationOptionItem(viewModel: .rekeyToLedger) { [weak self] in
+            guard let self else { return }
             self.eventHandler?(.performRekeyToLedger)
         }
     }
 
     private func makeRekeyToStandardAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToStandard) {
-            [unowned self] in
+        return AccountInformationOptionItem(viewModel: .rekeyToStandard) { [weak self] in
+            guard let self else { return }
             self.eventHandler?(.performRekeyToStandard)
+        }
+    }
+    
+    private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
+        AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
+            self?.eventHandler?(.performRescanRekeyedAccounts)
         }
     }
 }
 
 extension StandardAccountInformationScreen {
     private func bindTitle() {
-        titleView.attributedText = String(localized: "title-standard-account-capitalized-sentence").titleSmallMedium(lineBreakMode: .byTruncatingTail)
+        if account.isHDAccount {
+            titleView.attributedText = String(
+                localized: "wallet-address"
+            ).titleSmallMedium(lineBreakMode: .byTruncatingTail)
+            return
+        }
+        
+        titleView.attributedText = String(
+            localized: "title-standard-account-capitalized-sentence"
+        ).titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
     private func bindAccountItem() {
@@ -187,7 +203,7 @@ extension StandardAccountInformationScreen {
     }
 
     private func bindAccountTypeInformation() {
-        let viewModel = StandardAccountTypeInformationViewModel()
+        let viewModel = StandardAccountTypeInformationViewModel(isHDWallet: account.isHDAccount)
         accountTypeInformationView.bindData(viewModel)
     }
 }
@@ -196,5 +212,6 @@ extension StandardAccountInformationScreen {
     enum Event {
         case performRekeyToLedger
         case performRekeyToStandard
+        case performRescanRekeyedAccounts
     }
 }

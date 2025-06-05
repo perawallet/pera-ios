@@ -77,7 +77,8 @@ final class SendCollectibleViewController:
         api: api!,
         sharedDataController: sharedDataController,
         bannerController: bannerController,
-        analytics: analytics
+        analytics: analytics,
+        hdWalletStorage: hdWalletStorage
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()

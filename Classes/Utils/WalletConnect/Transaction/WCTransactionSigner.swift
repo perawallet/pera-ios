@@ -31,6 +31,7 @@ final class WCTransactionSigner {
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let analytics: ALGAnalytics
+    private let hdWalletStorage: HDWalletStorable
 
     private var account: Account?
     private var transaction: WCTransaction?
@@ -38,11 +39,13 @@ final class WCTransactionSigner {
     init(
         api: ALGAPI,
         sharedDataController: SharedDataController,
-        analytics: ALGAnalytics
+        analytics: ALGAnalytics,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
         self.analytics = analytics
+        self.hdWalletStorage = hdWalletStorage
     }
 
     func signTransaction(_ transaction: WCTransaction, for account: Account) {
@@ -81,6 +84,14 @@ extension WCTransactionSigner {
             )
             return
         }
+        
+        if account.hdWalletAddressDetail != nil {
+            signTransactionForHDWalletAccount(
+                transaction,
+                for: account
+            )
+            return
+        }
 
         let signerAddress = account.address
         guard let signature = api.session.privateData(for: signerAddress) else { return }
@@ -104,6 +115,80 @@ extension WCTransactionSigner {
             signer: signer,
             for: transaction
         )
+    }
+    
+    private func signTransactionForHDWalletAccount(
+        _ transaction: WCTransaction,
+        for account: Account
+    ) {
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail,
+              let unsignedTransaction = transaction.unparsedTransactionDetail else {
+            delegate?.wcTransactionSigner(
+                self,
+                didFailedWith: .missingUnparsedTransactionDetail
+            )
+            return
+        }
+        
+        do {
+            var authWalletId = hdWalletAddressDetail.walletId
+            if let authAddress = account.authAddress,
+               let accountAccount = sharedDataController.accountCollection[authAddress]?.value,
+               let hdWalletAddressDetail = accountAccount.hdWalletAddressDetail {
+                authWalletId = hdWalletAddressDetail.walletId
+            }
+            
+            guard let seed = try hdWalletStorage.wallet(id: authWalletId) else {
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: .inapp(.other))
+                )
+                return
+            }
+            
+            let sdk = AlgorandSDK()
+            
+            var error: NSError?
+            guard let rawTxn = sdk.rawTransactionToSign(
+                unsignedTransaction,
+                error: &error
+            ) else {
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: .inapp(.sdkError(error: error)))
+                )
+                return
+            }
+            
+            let signer = HDWalletTransactionSigner(wallet: seed)
+            let signature = try signer.signTransaction(
+                rawTxn,
+                with: hdWalletAddressDetail
+            )
+            guard let signedTransaction = sdk.getSignedTransaction(
+                unsignedTransaction,
+                from: signature,
+                for: account.authAddress,
+                error: &error
+            ) else {
+                delegate?.wcTransactionSigner(
+                    self,
+                    didFailedWith: .api(error: .inapp(.sdkError(error: error)))
+                )
+                return
+            }
+            
+            delegate?.wcTransactionSigner(
+                self,
+                didSign: transaction,
+                signedTransaction: signedTransaction
+            )
+        } catch {
+            delegate?.wcTransactionSigner(
+                self,
+                didFailedWith: .api(error: .inapp(.other))
+            )
+        }
     }
 }
 
@@ -150,6 +235,25 @@ extension WCTransactionSigner {
         _ transaction: WCTransaction,
         for account: Account
     ) {
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(
+                transaction,
+                for: account
+            )
+            return
+        }
+        
+        if account.isHDAccount,
+           !account.hasAuthAccount() {
+            signTransactionForHDWalletAccount(
+                transaction,
+                for: account
+            )
+            return
+        }
+        
         let signerAddress = account.signerAddress
         guard let signature = api.session.privateData(for: signerAddress) else { return }
         
@@ -200,6 +304,16 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
     ) {
         guard let account,
               let transaction else {
+            return
+        }
+        
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(
+                transaction,
+                for: account
+            )
             return
         }
 

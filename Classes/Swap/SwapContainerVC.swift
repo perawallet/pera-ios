@@ -27,6 +27,7 @@ final class SwapContainerVC: BaseViewController {
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     

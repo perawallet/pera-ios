@@ -35,6 +35,13 @@ extension AccountAuthorizationDeterminer {
            !accountHandle.isAvailable {
             return .unknown
         }
+        
+        if account.isHDAccount {
+            return determineAccountAuthorizationForHDWallet(
+                account: account,
+                accountCollection: accountCollection
+            )
+        }
 
         if account.hasAuthAccount() {
             return determineAccountAuthorizationForRekeyedAccount(
@@ -57,6 +64,51 @@ extension AccountAuthorizationDeterminer {
 }
 
 extension AccountAuthorizationDeterminer {
+    private func determineAccountAuthorizationForHDWallet(
+        account: Account,
+        accountCollection: AccountCollection
+    ) -> AccountAuthorization {
+        guard let hdWalletAddressDetail = account.hdWalletAddressDetail else {
+            return .noAuthInLocal
+        }
+        
+        if let authAddress = account.authAddress {
+            return determineAccountAuthorizationForRekeyedHDWallet(
+                account: account,
+                authAddress: authAddress,
+                accountCollection: accountCollection
+            )
+        }
+        
+        return determineAccountAuthorizationForNonRekeyedHDWallet(walletId: hdWalletAddressDetail.walletId)
+    }
+    
+    private func determineAccountAuthorizationForRekeyedHDWallet(
+        account: Account,
+        authAddress: String,
+        accountCollection: AccountCollection
+    ) -> AccountAuthorization {
+        
+        if let authAccount = accountCollection[authAddress], let authAccountHDWalletDetail = authAccount.value.hdWalletAddressDetail {
+            return determineAccountAuthorizationForRekeyedToHDWallet(walletId: authAccountHDWalletDetail.walletId)
+        }
+        
+        return determineAccountAuthorizationForRekeyedAccount(
+            account: account,
+            accountCollection: accountCollection
+        )
+    }
+    
+    private func determineAccountAuthorizationForRekeyedToHDWallet(walletId: String) -> AccountAuthorization {
+        let hasWallet = session.authenticatedUser?.accounts(withWalletId: walletId).isNonEmpty ?? false
+        return hasWallet ? .standardToStandardRekeyed : .standardToNoAuthInLocalRekeyed
+    }
+    
+    private func determineAccountAuthorizationForNonRekeyedHDWallet(walletId: String) -> AccountAuthorization {
+        let hasWallet = session.authenticatedUser?.accounts(withWalletId: walletId).isNonEmpty ?? false
+        return hasWallet ? .standard : .noAuthInLocal
+    }
+    
     private func determineAccountAuthorizationForRekeyedAccount(
         account: Account,
         accountCollection: AccountCollection
@@ -81,7 +133,7 @@ extension AccountAuthorizationDeterminer {
     }
 
     private func determineAccountAuthorizationForRekeyedToLedgerAccount(_ account: Account) -> AccountAuthorization {
-        let hasPrivateData = session.hasPrivateData(for: account.address)
+        let hasPrivateData = hasPrivateData(for: account)
         if hasPrivateData { return .standardToLedgerRekeyed }
 
         let hasLedgerDetail = account.hasLedgerDetail()
@@ -91,7 +143,7 @@ extension AccountAuthorizationDeterminer {
     }
 
     private func determineAccountAuthorizationForRekeyedToStandardAccount(_ account: Account) -> AccountAuthorization {
-        let hasPrivateData = session.hasPrivateData(for: account.address)
+        let hasPrivateData = hasPrivateData(for: account)
         if hasPrivateData { return .standardToStandardRekeyed }
 
         let hasLedgerDetail = account.hasLedgerDetail()
@@ -101,7 +153,7 @@ extension AccountAuthorizationDeterminer {
     }
 
     private func determineAccountAuthorizationForRekeyedToNoAuthInLocalAccount(_ account: Account) -> AccountAuthorization {
-        let hasPrivateData = session.hasPrivateData(for: account.address)
+        let hasPrivateData = hasPrivateData(for: account)
         if hasPrivateData { return .standardToNoAuthInLocalRekeyed }
 
         let hasLedgerDetail = account.hasLedgerDetail()
@@ -146,9 +198,18 @@ extension AccountAuthorizationDeterminer {
         account: Account,
         accountCollection: AccountCollection
     ) -> Bool {
-        guard let authAddress = account.authAddress else { return false }
-        guard let authAccount = accountCollection[authAddress] else { return false }
+        guard let authAddress = account.authAddress, let authAccount = accountCollection[authAddress] else { return false }
 
-        return session.hasPrivateData(for: authAccount.value.address)
+        return hasPrivateData(for: authAccount.value)
+    }
+}
+
+extension AccountAuthorizationDeterminer {
+    private func hasPrivateData(for account: Account) -> Bool {
+        if let hdWalletAddressDetail = account.hdWalletAddressDetail {
+            return session.authenticatedUser?.accounts(withWalletId: hdWalletAddressDetail.walletId).isNonEmpty ?? false
+        }
+        
+        return session.hasPrivateData(for: account.address)
     }
 }

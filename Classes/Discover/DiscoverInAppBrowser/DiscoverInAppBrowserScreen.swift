@@ -135,7 +135,8 @@ extension DiscoverInAppBrowserScreen {
         DiscoverURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled)
         )
     }
 

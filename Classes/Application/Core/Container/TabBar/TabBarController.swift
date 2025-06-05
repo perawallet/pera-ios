@@ -89,6 +89,7 @@ final class TabBarController: TabBarContainer {
         sharedDataController: sharedDataController,
         loadingController: loadingController,
         bannerController: bannerController,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -104,7 +105,8 @@ final class TabBarController: TabBarContainer {
         presentingScreen: self,
         session: session,
         sharedDataController: sharedDataController,
-        appLaunchController: appLaunchController
+        appLaunchController: appLaunchController,
+        hdWalletStorage: hdWalletStorage
     )
 
     private lazy var cardsFlowCoordinator = CardsFlowCoordinator(presentingScreen: self)
@@ -126,6 +128,7 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let appLaunchController: AppLaunchController
     private let featureFlagService: FeatureFlagServicing
+    private let hdWalletStorage: HDWalletStorable
 
     init(
         swapDataStore: SwapDataStore,
@@ -136,7 +139,8 @@ final class TabBarController: TabBarContainer {
         session: Session,
         sharedDataController: SharedDataController,
         appLaunchController: AppLaunchController,
-        featureFlagService: FeatureFlagServicing
+        featureFlagService: FeatureFlagServicing,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.swapDataStore = swapDataStore
         self.analytics = analytics
@@ -147,6 +151,7 @@ final class TabBarController: TabBarContainer {
         self.sharedDataController = sharedDataController
         self.appLaunchController = appLaunchController
         self.featureFlagService = featureFlagService
+        self.hdWalletStorage = hdWalletStorage
         super.init()
     }
 
@@ -163,6 +168,20 @@ final class TabBarController: TabBarContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeViewAppearance([.backgroundColor(Colors.Defaults.background)])
+        
+        itemDidSelect = { [weak self] index in
+            guard let self else { return }
+            guard
+                selectedIndex == index,
+                let nav = selectedScreen as? UINavigationController,
+                nav.viewControllers.count > 1 else
+            {
+                selectedIndex = index
+                return
+            }
+                
+            nav.popToRootViewController(animated: true)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -191,6 +210,8 @@ final class TabBarController: TabBarContainer {
             analytics.track(.tabBarPressed(type: .tapMenu))
         case .stake:
             analytics.track(.tabBarPressed(type: .tapStake))
+        case .collectibles:
+            analytics.track(.tabBarPressed(type: .tapNFTs))
         default:
             break
         }
@@ -389,8 +410,7 @@ extension TabBarController {
     }
     
     private func isCardsFeatureEnabled() -> Bool {
-        featureFlagService.isEnabled(.immersiveEnabled) &&
-            Environment.current.isCardsFeatureEnabled(for: api.network)
+        Environment.current.isCardsFeatureEnabled(for: api.network)
     }
 }
 
