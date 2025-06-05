@@ -21,6 +21,7 @@ struct HomeChartsViewTheme:
     LayoutSheet {
     var background: ViewStyle
     var spacingBetweenChartAndSegControl: LayoutMetric
+    var contentHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -28,5 +29,6 @@ struct HomeChartsViewTheme:
         ]
         
         self.spacingBetweenChartAndSegControl = 8
+        self.contentHeight = 172
     }
 }

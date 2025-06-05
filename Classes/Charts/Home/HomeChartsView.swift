@@ -39,6 +39,8 @@ final class HomeChartsView:
     private lazy var hostingController: UIHostingController<SUIChartView> = UIHostingController(rootView: chartView)
     private lazy var chartView: SUIChartView = SUIChartView(isLoading: true, chartData: [])
     private lazy var segmentedControl = ChartSegmentedControl()
+    
+    // MARK: - Setups
 
     func customize(_ theme: HomeChartsViewTheme) {
         addBackground(theme)
@@ -65,9 +67,6 @@ final class HomeChartsView:
         isLoading = true
     }
     
-}
-
-extension HomeChartsView {
     private func addBackground(_ theme: HomeChartsViewTheme) {
         customizeAppearance(theme.background)
     }

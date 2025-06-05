@@ -139,7 +139,7 @@ extension HomeListLayout {
                 atSection: section
             )
         case .charts:
-            return CGSize(width: UIScreen.main.bounds.width, height: 172)
+            return CGSize(width: UIScreen.main.bounds.width, height: HomeChartsCell.theme.contentHeight)
         case .quickActions:
             return self.listView(
                 listView,

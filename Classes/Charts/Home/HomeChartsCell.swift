@@ -23,13 +23,13 @@ final class HomeChartsCell:
     
     // MARK: - Properties
     
-    let theme = HomeChartsViewTheme()
+    static let theme = HomeChartsViewTheme()
     
     // MARK: - Initialisers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contextView.customize(theme)
+        contextView.customize(Self.theme)
         setupConstraints()
     }
     
