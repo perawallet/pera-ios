@@ -61,7 +61,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          api: api,
          sharedDataController: sharedDataController,
          bannerController: bannerController,
-         analytics: analytics
+         analytics: analytics,
+         hdWalletStorage: hdWalletStorage
       )
    }()
 
@@ -350,7 +351,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 extension SendTransactionPreviewScreen {
    @objc
    private func didTapNext() {
-      if !transactionController.canSignTransaction(for: draft.from) { return }
+      if !transactionController.canSignTransaction(for: draft.from) {
+         assertionFailure("Can't sign transaction")
+         return
+      }
       
       let composedTransacation = composeTransaction()
       let transactionType = composedTransactionType(draft: composedTransacation)
@@ -381,6 +385,7 @@ extension SendTransactionPreviewScreen {
                   draft.toNameService?.address,
                let receiverAccount = sharedDataController.accountCollection[receiver]?.value,
                receiverAccount.authorization.isAuthorized else {
+            assertionFailure("Not authorized to send transaction")
             return
          }
 

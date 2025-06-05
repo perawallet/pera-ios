@@ -111,6 +111,7 @@ extension ScreenLoadingIndicator {
         _ theme: ScreenLoadingIndicatorTheme
     ) {
         titleView.customizeAppearance(theme.title)
+        titleView.numberOfLines = 0
 
         contentView.addSubview(titleView)
         titleView.contentEdgeInsets = (theme.titleTopMargin, 0, 0, 0)

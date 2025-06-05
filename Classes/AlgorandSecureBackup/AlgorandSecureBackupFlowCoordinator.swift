@@ -81,7 +81,9 @@ extension AlgorandSecureBackupFlowCoordinator {
     }
     
     private func createASBMnmonicScreen() -> Screen {
-        let accounts = configuration.session?.authenticatedUser?.accounts.map { Account(localAccount: $0)} ?? []
+        let accounts = configuration.session?.authenticatedUser?.accounts
+            .filter { $0.hdWalletAddressDetail == nil && $0.ledgerDetail == nil}
+            .map { Account(localAccount: $0)} ?? []
         return .algorandSecureBackupMnemonic(accounts: accounts) { [weak self] event, screen in
             guard let self else { return }
 

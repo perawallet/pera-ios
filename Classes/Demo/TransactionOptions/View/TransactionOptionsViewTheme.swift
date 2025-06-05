@@ -50,7 +50,7 @@ struct TransactionOptionsViewTheme:
                 .layerMaxXMinYCorner
             ]
         )
-        self.contentPaddings = (32, 20, 44, 20)
+        self.contentPaddings = (30, 20, 30, 20)
         self.contentSafeAreaInsets = .zero
         self.spacingBetweenActions = 20
         var action = ListItemButtonTheme()

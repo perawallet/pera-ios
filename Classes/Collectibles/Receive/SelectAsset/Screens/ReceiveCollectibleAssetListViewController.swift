@@ -800,7 +800,8 @@ extension ReceiveCollectibleAssetListViewController {
             api: api!,
             sharedDataController: sharedDataController,
             bannerController: bannerController,
-            analytics: analytics
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage
         )
         optInTransactions[asset.id] = AssetOptInTransaction(
             asset: asset,

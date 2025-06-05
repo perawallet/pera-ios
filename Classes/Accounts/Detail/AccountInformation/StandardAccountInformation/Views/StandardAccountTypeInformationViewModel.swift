@@ -24,11 +24,11 @@ struct StandardAccountTypeInformationViewModel: AccountTypeInformationViewModel 
     private(set) var typeFootnote: TextProvider?
     private(set) var typeDescription: TypeDescriptionTextProvider?
 
-    init() {
+    init(isHDWallet: Bool) {
         bindTitle()
-        bindTypeIcon()
-        bindTypeTitle()
-        bindTypeDescription()
+        bindTypeIcon(isHDWallet)
+        bindTypeTitle(isHDWallet)
+        bindTypeDescription(isHDWallet)
     }
 }
 
@@ -39,18 +39,36 @@ extension StandardAccountTypeInformationViewModel {
                 .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindTypeIcon() {
+    mutating func bindTypeIcon(_ isHDWallet: Bool) {
+        if isHDWallet {
+            typeIcon = "icon-hd-account".uiImage
+            return
+        }
+        
         typeIcon = "icon-standard-account".uiImage
     }
 
-    mutating func bindTypeTitle() {
+    mutating func bindTypeTitle(_ isHDWallet: Bool) {
+        if isHDWallet {
+            typeTitle =
+                String(localized: "mnemonic-types-bip39-title")
+                    .bodyMedium(lineBreakMode: .byTruncatingTail)
+            return
+        }
+        
         typeTitle =
             String(localized: "title-standard")
                 .bodyMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindTypeDescription() {
-        let descriptionText = String(localized: "standard-account-type-description").footnoteRegular()
+    mutating func bindTypeDescription(_ isHDWallet: Bool) {
+        let descriptionText: NSAttributedString
+        
+        if isHDWallet {
+            descriptionText = String(localized: "standard-account-hd-type-description").footnoteRegular()
+        } else {
+            descriptionText = String(localized: "standard-account-type-description").footnoteRegular()
+        }
 
         var descriptionHighlightedTextAttributes = Typography.footnoteMediumAttributes(alignment: .center)
         descriptionHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))

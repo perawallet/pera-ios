@@ -30,21 +30,25 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var theme = Theme()
 
     private lazy var dataSource: PassphraseVerifyDataSource = {
-        if let privateKey = session?.privateData(for: address) {
-            return PassphraseVerifyDataSource(privateKey: privateKey)
-        }
-        fatalError("Private key should be set.")
+        return PassphraseVerifyDataSource(
+            address: address,
+            walletFlowType: walletFlowType,
+            configuration: configuration
+        )
     }()
 
-    private let address: String
+    private let address: PublicKey
+    private let walletFlowType: WalletFlowType
     private let flow: AccountSetupFlow
 
     init(
-        address: String,
+        address: PublicKey,
+        walletFlowType: WalletFlowType,
         flow: AccountSetupFlow,
         configuration: ViewControllerConfiguration
     ) {
         self.address = address
+        self.walletFlowType = walletFlowType
         self.flow = flow
 
         super.init(configuration: configuration)
@@ -75,7 +79,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
                 self.open(
                     .tutorial(
                         flow: self.flow,
-                        tutorial: .passphraseVerified(account: localAccount)
+                        tutorial: .passphraseVerified(account: localAccount, walletFlowType: walletFlowType)
                     ),
                     by: .push
                 )
@@ -91,7 +95,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
             self.open(
                 .tutorial(
                     flow: self.flow,
-                    tutorial: .passphraseVerified(account: account)
+                    tutorial: .passphraseVerified(account: account, walletFlowType: walletFlowType)
                 ),
                 by: .push
             )
@@ -124,6 +128,11 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource.loadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dataSource.cleanData()
     }
 }
 
@@ -178,31 +187,67 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
 
 extension PassphraseVerifyViewController {
     private func createAccount() -> AccountInformation? {
-        guard let tempPrivateKey = session?.privateData(for: "temp"),
-            let address = session?.address(for: "temp") else {
-                return nil
-        }
-
         analytics.track(.registerAccount(registrationType: .create))
 
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay,
-            isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(), 
-            isBackedUp: true
-        )
-        session?.savePrivate(tempPrivateKey, for: account.address)
-        session?.removePrivateData(for: "temp")
+        switch walletFlowType {
+        case .bip39:
+            let (hdWalletAddressDetail, address) = configuration.hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+                session: session,
+                storage: hdWalletStorage,
+                entropy: session?.privateData(for: "temp")
+            )
+            
+            guard let hdWalletAddressDetail, let address else {
+                assertionFailure("Could not create HD wallet")
+                return nil
+            }
+            
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: true,
+                hdWalletAddressDetail: hdWalletAddressDetail
+            )
+            
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+            session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
 
-        if let authenticatedUser = session?.authenticatedUser {
-            authenticatedUser.addAccount(account)
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            let user = User(accounts: [account])
-            session?.authenticatedUser = user
+            return account
+        case .algo25:
+            guard let tempPrivateKey = session?.privateData(for: "temp"),
+                let address = session?.address(for: "temp") else {
+                    return nil
+            }
+            
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: true
+            )
+            session?.savePrivate(tempPrivateKey, for: address)
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+
+            return account
         }
-
-        return account
     }
 }
