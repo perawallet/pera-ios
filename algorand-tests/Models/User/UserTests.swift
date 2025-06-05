@@ -33,7 +33,7 @@ class UserTests: XCTestCase {
 
     func testRemoveAccount() {
         let accountCount = user.accounts.count
-        user.removeAccount(accountInformationA)
+        user.removeAccount(accountInformationA, storage: MockHDWalletStorage())
         XCTAssertNotEqual(accountCount, user.accounts.count)
     }
 
@@ -58,4 +58,35 @@ class UserTests: XCTestCase {
         let preferredNetwork = user.preferredAlgorandNetwork()
         XCTAssertEqual(preferredNetwork?.rawValue, "testnet")
     }
+}
+
+final class MockHDWalletStorage: HDWalletStorable {
+    func save(wallet: pera_staging.HDWalletSeed) throws {
+        print("saveWallet")
+    }
+    
+    func wallet(id: String) throws -> HDWalletSeed? {
+        return nil
+    }
+    
+    func deleteWallet(id: String) throws {
+        print("deleteWallet")
+    }
+    
+    func save(address: pera_staging.HDWalletAddress) throws {
+        print("saveAddress")
+    }
+    
+    func address(walletId: String, address: String) throws -> HDWalletAddress? {
+        return nil
+    }
+    
+    func addresses(walletId: String) throws -> [HDWalletAddress] {
+        return []
+    }
+    
+    func deleteAddress(walletId: String, address: String) throws {
+        print("deleteAddress")
+    }
+    
 }

@@ -272,6 +272,14 @@ extension BaseViewController {
     var peraConnect: PeraConnect {
         return configuration.peraConnect
     }
+    
+    var hdWalletStorage: HDWalletStorable {
+        return configuration.hdWalletStorage
+    }
+    
+    var hdWalletService: HDWalletServicing {
+        return configuration.hdWalletService
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

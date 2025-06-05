@@ -71,6 +71,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
             switch event {
             case .didGoToHome:
                 asyncMain {
+                    PeraUserDefaults.shouldShowNewAccountAnimation = true
+                    
                     AppDelegate.shared?.launchMain()
                 }
             }

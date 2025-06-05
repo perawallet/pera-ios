@@ -1,5 +1,5 @@
 {
-  "originHash" : "dc8893ef7511cd21e14e0dc184ea7e8faa3ad7b8f4ff308929587873ba9091fc",
+  "originHash" : "2f9267f031c17985746fb3fbf3437795f1ef0a976ae3a99d52a8abe360de7795",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "114343a705df4725dfe7ab8a2a326b8883cfd79c",
+        "version" : "5.5.1"
       }
     },
     {
@@ -119,6 +128,15 @@
       }
     },
     {
+      "identity" : "jsonschema.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algorandfoundation/JSONSchema.swift.git",
+      "state" : {
+        "revision" : "92385c024dee684e0b6b9dee6ee067844bf61f38",
+        "version" : "0.7.0"
+      }
+    },
+    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
@@ -191,6 +209,15 @@
       }
     },
     {
+      "identity" : "messagepack.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/a2/MessagePack.swift.git",
+      "state" : {
+        "revision" : "27b35fd49e92fcae395bf8ccb233499d89cc7890",
+        "version" : "4.0.0"
+      }
+    },
+    {
       "identity" : "mixpanel-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mixpanel/mixpanel-swift.git",
@@ -200,12 +227,30 @@
       }
     },
     {
+      "identity" : "mnemonicswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Electric-Coin-Company/MnemonicSwift",
+      "state" : {
+        "revision" : "716a2c32ac2bbd8a1499ac834077df42b75edc85",
+        "version" : "2.2.4"
+      }
+    },
+    {
       "identity" : "nanopb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/nanopb.git",
       "state" : {
         "revision" : "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
         "version" : "2.30910.0"
+      }
+    },
+    {
+      "identity" : "pathkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/PathKit.git",
+      "state" : {
+        "revision" : "3bfd2737b700b9a36565a8c94f4ad2b050a5e574",
+        "version" : "1.0.1"
       }
     },
     {
@@ -245,6 +290,15 @@
       }
     },
     {
+      "identity" : "spectre",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/Spectre.git",
+      "state" : {
+        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
+        "version" : "0.10.1"
+      }
+    },
+    {
       "identity" : "starscream",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daltoniam/Starscream",
@@ -263,6 +317,15 @@
       }
     },
     {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-crypto.git",
+      "state" : {
+        "revision" : "60f13f60c4d093691934dc6cfdf5f508ada1f894",
+        "version" : "2.6.0"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
@@ -278,6 +341,15 @@
       "state" : {
         "revision" : "5ca09b6a2ad190f94aa3d6ddef45b187f8c0343b",
         "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swift-sodium-full",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algorandfoundation/swift-sodium-full.git",
+      "state" : {
+        "revision" : "4859e76668cdf80e0b01d76eaf0c70d50e1f1bd9",
+        "version" : "1.0.0"
       }
     },
     {
@@ -332,6 +404,15 @@
       "state" : {
         "revision" : "58d2b49eeac5cf94432e2647b9107577c156a25c",
         "version" : "1.9.9"
+      }
+    },
+    {
+      "identity" : "xhd-wallet-api-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/perawallet/xHD-Wallet-API-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4895ec3740c2cf164ce2c58ad970800279e55fc3"
       }
     }
   ],

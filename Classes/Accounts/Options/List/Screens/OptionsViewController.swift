@@ -15,7 +15,6 @@
 //
 //  OptionsViewController.swift
 
-import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
 import MagpieExceptions
@@ -50,7 +49,8 @@ final class OptionsViewController:
         self.account = account
         self.optionGroup = OptionGroup.makeOptionGroup(
             for: account,
-            session: configuration.session!
+            session: configuration.session!,
+            configuration: configuration
         )
         self.theme = theme
         
@@ -216,15 +216,18 @@ extension OptionsViewController {
                     #selector(rekeyToStandardAccount),
                     to: stackView
                 )
+            case .rescanRekeyedAccount:
+                addButton(RescanAccountsListItemViewModel(), #selector(onRescanRekeyedAccountsAction), to: stackView)
             case .rekeyInformation:
                 addButton(
                     RekeyAccountInformationListActionViewModel(),
                     #selector(showRekeyInformation),
                     to: stackView
                 )
-            case .viewPassphrase:
+            case let .viewPassphrase(isRootPassphrase):
+                let model: ListItemButtonViewModel = isRootPassphrase ? ViewRootWalletPassphraseListItemButtonViewModel() : ViewPassphraseListItemButtonViewModel()
                 addButton(
-                    ViewPassphraseListItemButtonViewModel(),
+                    model,
                     #selector(viewPassphrase),
                     to: stackView
                 )
@@ -306,6 +309,14 @@ extension OptionsViewController {
             guard let self = self else { return }
             
             self.delegate?.optionsViewControllerDidOpenRekeyingToStandardAccount(self)
+        }
+    }
+    
+    
+    @objc private func onRescanRekeyedAccountsAction() {
+        closeScreen(by: .dismiss) { [weak self] in
+            guard let self else { return }
+            self.delegate?.optionsViewControllerDidRescanRekeyedAccounts(self)
         }
     }
     
@@ -426,15 +437,13 @@ extension OptionsViewController {
         let secondaryOptions: [Option]
         let tertiaryOptions: [Option]
 
-        static func makeOptionGroup(
-            for account: Account,
-            session: Session
-        ) -> OptionGroup {
+        static func makeOptionGroup(for account: Account, session: Session, configuration: ViewControllerConfiguration) -> OptionGroup {
             return account.authorization.isWatch
             ? makeOptionGroup(forWatchAccount: account)
             : makeOptionGroup(
                 forNonWatchAccount: account,
-                session: session
+                session: session,
+                configuration: configuration
             )
         }
 
@@ -462,25 +471,23 @@ extension OptionsViewController {
             )
         }
 
-        private static func makeOptionGroup(
-            forNonWatchAccount account: Account,
-            session: Session
-        ) -> OptionGroup {
+        private static func makeOptionGroup(forNonWatchAccount account: Account, session: Session, configuration: ViewControllerConfiguration) -> OptionGroup {
+            
             var primaryOptions: [Option] = []
-
-            primaryOptions.append(.copyAddress)
-            primaryOptions.append(.showAddress)
+            var secondaryOptions: [Option] = []
+            var tertiaryOptions: [Option] = []
+            
+            primaryOptions += [.copyAddress, .showAddress]
 
             if account.hasAuthAccount() {
                 primaryOptions.append(.rekeyInformation)
             }
             
-            if session.hasPrivateData(for: account.address) {
-                primaryOptions.append(.viewPassphrase)
+            if PassphraseUtils.isHDWallet(account: account, hdWalletStorage: configuration.hdWalletStorage) {
+                primaryOptions.append(.viewPassphrase(isRootPassphrase: true))
+            } else if session.hasPrivateData(for: account.address) {
+                primaryOptions.append(.viewPassphrase(isRootPassphrase: false))
             }
-
-            var secondaryOptions: [Option] = []
-            var tertiaryOptions: [Option] = []
 
             if account.authorization.isNoAuth {
                 secondaryOptions = [
@@ -492,10 +499,9 @@ extension OptionsViewController {
                 if account.authorization.isRekeyed {
                     secondaryOptions.append(.undoRekey)
                 }
-
-                secondaryOptions.append(.rekeyToLedger)
-                secondaryOptions.append(.rekeyToStandardAccount)
-
+                
+                secondaryOptions += [.rekeyToLedger, .rekeyToStandardAccount, .rescanRekeyedAccount]
+                
                 tertiaryOptions = [
                     .renameAccount,
                     .muteNotifications,
@@ -518,7 +524,8 @@ extension OptionsViewController {
         case rekeyToLedger
         case rekeyToStandardAccount
         case rekeyInformation
-        case viewPassphrase
+        case rescanRekeyedAccount
+        case viewPassphrase(isRootPassphrase: Bool)
         case muteNotifications
         case renameAccount
         case removeAccount
@@ -536,6 +543,9 @@ protocol OptionsViewControllerDelegate: AnyObject {
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeyingToLedger(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidRescanRekeyedAccounts(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeyingToStandardAccount(

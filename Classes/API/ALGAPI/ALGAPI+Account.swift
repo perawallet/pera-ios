@@ -106,4 +106,17 @@ extension ALGAPI {
             .responseDispatcher(queue)
             .execute()
     }
+    
+    @discardableResult
+    func fetchAccountFastLookup(
+        _ address: String,
+        onCompleted handler: @escaping (Response.ModelResult<AccountFastLookup>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.fastLookup, args: address)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
 }

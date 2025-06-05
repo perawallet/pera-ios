@@ -33,6 +33,7 @@ final class ImportAccountScreen: BaseViewController {
 
     private lazy var loadingView = UIView()
     private lazy var imageView = ImageView()
+    private lazy var animationImageView = LottieImageView()
     private lazy var titleView = Label()
     private lazy var theme = ImportAccountScreenTheme()
 
@@ -42,10 +43,10 @@ final class ImportAccountScreen: BaseViewController {
         api: api!
     )
 
-    private let backupParameters: QRBackupParameters
+    private let importAccountRequest: ImportAccountRequest
 
-    init(configuration: ViewControllerConfiguration, backupParameters: QRBackupParameters) {
-        self.backupParameters = backupParameters
+    init(configuration: ViewControllerConfiguration, request: ImportAccountRequest) {
+        self.importAccountRequest = request
         super.init(configuration: configuration)
     }
 
@@ -63,8 +64,18 @@ final class ImportAccountScreen: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        fetchAccounts()
+        
+        switch importAccountRequest {
+        case .qr(let qrBackupParameters):
+            fetchAccounts(backupParameters: qrBackupParameters)
+        case .recoverHDWallet(let mnemonic):
+            recoverHDWalletAccounts(with: mnemonic)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        playAnimation()
     }
     
     private func addLoading() {
@@ -84,6 +95,14 @@ final class ImportAccountScreen: BaseViewController {
         imageView.snp.makeConstraints {
             $0.top.leading.trailing == 0
         }
+        
+        if let image = getAnimationName() {
+            animationImageView.setAnimation(image)
+            imageView.addSubview(animationImageView)
+            animationImageView.snp.makeConstraints {
+                $0.center == imageView.snp.center
+            }
+        }
     }
     
     private func addTitle() {
@@ -94,15 +113,39 @@ final class ImportAccountScreen: BaseViewController {
             $0.leading.trailing.bottom == 0
         }
     }
+    
+    private func getAnimationName() -> String? {
+        let suffix: String = "dots"
+        let root: String
+        switch traitCollection.userInterfaceStyle {
+        case .dark: root = "dark"
+        default: root = "light"
+        }
+        return root + "-" + suffix
+    }
+    
+    private func playAnimation() {
+        animationImageView.play(with: LottieImageView.Configuration())
+    }
+    
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        if let image = getAnimationName() {
+            animationImageView.setAnimation(image)
+            playAnimation()
+        }
+    }
 }
 
 extension ImportAccountScreen {
-    private func fetchAccounts() {
+    private func fetchAccounts(
+        backupParameters: QRBackupParameters
+    ) {
         api?.fetchBackupDetail(backupParameters.id) { [weak self] apiResponse in
             guard let self else { return }
             switch apiResponse {
             case .success(let encryptedBackup):
-                self.decryptAccounts(from: encryptedBackup)
+                self.decryptAccounts(from: encryptedBackup, backupParameters: backupParameters)
             case .failure(_, let model):
                 self.eventHandler?(.didFailToImport(.networkFailed(model)), self)
             }
@@ -110,13 +153,18 @@ extension ImportAccountScreen {
     }
 
     private func decryptAccounts(
-        from backup: Backup
+        from backup: Backup,
+        backupParameters: QRBackupParameters
     ) {
         asyncBackground {
             [weak self] in
-            guard let self else { return }
+            guard
+                let self
+            else {
+                return
+            }
 
-            let encryptionKey = self.backupParameters.encryptionKey
+            let encryptionKey = backupParameters.encryptionKey
             let encryptedData = self.extractEncryptedData(from: backup)
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
@@ -165,13 +213,11 @@ extension ImportAccountScreen {
             )
 
             for transferAccount in transferAccounts {
-                let accountAddress = transferAccount.accountInformation.address
-
-                if sharedDataController.accountCollection[accountAddress] != nil {
+                if sharedDataController.accountCollection[transferAccount.accountInformation.address] != nil {
                     unimportedAccounts.append(transferAccount.accountInformation)
                 } else {
                     if let privateKey = transferAccount.privateKey {
-                        session.savePrivate(privateKey, for: accountAddress)
+                        session.savePrivate(privateKey, for: transferAccount.accountInformation.address)
                     }
                     importableAccounts.append(transferAccount.accountInformation)
                 }
@@ -262,8 +308,43 @@ extension ImportAccountScreen {
 }
 
 extension ImportAccountScreen {
+    private func recoverHDWalletAccounts(with mnemonics: String) {
+        Task { @MainActor in
+            do {
+                var hdWalletId: String?
+                let accounts: [RecoveredAddress] = try await hdWalletService
+                    .recoverAccounts(fromMnemonic: mnemonics, api: api)
+                    .map {
+                        let alreadyImported = session?.authenticatedUser?.account(address: $0.address) != nil
+                        if alreadyImported {
+                            hdWalletId = session?.authenticatedUser?.account(address: $0.address)?.hdWalletAddressDetail?.walletId
+                        }
+                        return RecoveredAddress(address: $0.address, accountIndex: $0.accountIndex, addressIndex: $0.addressIndex, mainCurrency: Double($0.algoValue) ?? 0.0, secondaryCurrency: Double($0.usdValue) ?? 0.0, alreadyImported: alreadyImported)
+                    }
+                
+                eventHandler?(
+                    .didCompleteHDWalletImport(accounts, hdWalletId),
+                    self
+                )
+            } catch {
+                eventHandler?(
+                    .didFailToImport(.invalidSeed),
+                    self
+                )
+            }
+        }
+    }
+}
+
+extension ImportAccountScreen {
+    enum ImportAccountRequest {
+        case qr(QRBackupParameters)
+        case recoverHDWallet(String)
+    }
+    
     enum Event {
         case didCompleteImport(Result)
+        case didCompleteHDWalletImport([RecoveredAddress], String?)
         case didFailToImport(ImportAccountScreenError)
     }
 
@@ -280,6 +361,7 @@ enum ImportAccountScreenError: Error {
     case serialization(Error)
     case notImportableAccountFound
     case invalidPrivateKey
+    case invalidSeed
     case unsupportedVersion(version: String)
     case unsupportedAction
 }

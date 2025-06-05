@@ -20,9 +20,8 @@ import MacaroonUIKit
 
 struct WelcomeViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var createAccountViewModel: AccountTypeViewModel?
-    private(set) var importAccountViewModel: AccountTypeViewModel?
-    private(set) var watchAccountViewModel: AccountTypeViewModel?
+    private(set) var createWalletViewModel: WelcomeTypeViewModel?
+    private(set) var importWalletViewModel: WelcomeTypeViewModel?
 
     init(
         with flow: AccountSetupFlow
@@ -34,9 +33,8 @@ struct WelcomeViewModel: ViewModel {
 extension WelcomeViewModel {
     private mutating func bind(_ flow: AccountSetupFlow) {
         bindTitle(flow)
-        bindCreateAccountViewModel()
-        bindImportAccountViewModel()
-        bindWatchAccountViewModel()
+        bindCreateWalletViewModel()
+        bindImportWalletViewModel()
     }
 
     private mutating func bindTitle(_ flow: AccountSetupFlow) {
@@ -44,23 +42,17 @@ extension WelcomeViewModel {
         case .initializeAccount,
              .none:
             title = String(localized: "account-welcome-wallet-title")
-        case .addNewAccount:
-            title = String(localized: "account-welcome-add-account-title")
-        case .backUpAccount:
-            title = nil
+        case .addNewAccount, .backUpAccount:
+            fatalError("Shouldn't enter here")
         }
     }
 
-    private mutating func bindCreateAccountViewModel() {
-        createAccountViewModel = AccountTypeViewModel(.add)
+    private mutating func bindCreateWalletViewModel() {
+        createWalletViewModel = WelcomeTypeViewModel(.addBip39Wallet)
     }
 
-    private mutating func bindImportAccountViewModel() {
-        importAccountViewModel = AccountTypeViewModel(.recover(type: .none))
-    }
-    
-    private mutating func bindWatchAccountViewModel() {
-        watchAccountViewModel = AccountTypeViewModel(.watch)
+    private mutating func bindImportWalletViewModel() {
+        importWalletViewModel = WelcomeTypeViewModel(.recover(type: .title))
     }
 }
 
