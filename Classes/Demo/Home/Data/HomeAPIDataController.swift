@@ -34,6 +34,7 @@ final class HomeAPIDataController:
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
     private var chartViewModel: ChartViewModel?
+    private var chartDataCache: [ChartDataPeriod: ChartViewModel] = [:]
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
@@ -105,9 +106,17 @@ extension HomeAPIDataController {
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
     }
     
-    func fetchChartData(period: ChartDataPeriod) {
-        chartViewModel = ChartViewModel(period: period, chartValues: [])
+    func fetchInitialChartData(period: ChartDataPeriod) {
+        chartDataCache.removeAll()
         chartsDataController.loadData(screen: .home, period: period)
+    }
+    
+    func updateChartData(period: ChartDataPeriod) {
+        guard let viewModel = chartDataCache[period] else {
+            chartsDataController.loadData(screen: .home, period: period)
+            return
+        }
+        chartViewModel = viewModel
     }
     
     func updateClose(for banner: CarouselBannerItemModel) {
@@ -183,6 +192,7 @@ extension HomeAPIDataController {
                 return DataPoint(day: "Day \(index)", value: value)
             }
             chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints)
+            chartDataCache[period] = chartViewModel
         }
     }
 }

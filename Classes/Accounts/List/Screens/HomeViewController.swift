@@ -245,7 +245,7 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
-        dataController.fetchChartData(period: .oneWeek)
+        dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
     }
@@ -605,19 +605,19 @@ extension HomeViewController {
         cell.startObserving(event: .weekChartSelected) {
             [weak self] in
             guard let self else { return }
-            dataController.fetchChartData(period: .oneWeek)
+            dataController.updateChartData(period: .oneWeek)
         }
         
         cell.startObserving(event: .monthChartSelected) {
             [weak self] in
             guard let self else { return }
-            dataController.fetchChartData(period: .oneMonth)
+            dataController.updateChartData(period: .oneMonth)
         }
         
         cell.startObserving(event: .yearChartSelected) {
             [weak self] in
             guard let self else { return }
-            dataController.fetchChartData(period: .oneYear)
+            dataController.updateChartData(period: .oneYear)
         }
 
     }

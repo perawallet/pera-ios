@@ -93,7 +93,7 @@ extension HomeLoadingView {
         portfolioTitleView.fitToIntrinsicSize()
         portfolioTitleView.snp.makeConstraints {
             $0.top == theme.portfolioTitleTopPadding
-            $0.centerX == 0
+            $0.leading == 0
         }
 
         portfolioInfoView.customizeAppearance(theme.portfolioInfoAction)
@@ -115,7 +115,7 @@ extension HomeLoadingView {
             $0.fitToSize(theme.primaryPortfolioValueSize)
             $0.top == portfolioTitleView.snp.bottom +
                 theme.spacingBetweenPortfolioTitleAndPrimaryPortfolioValue
-            $0.centerX == 0
+            $0.leading == 0
         }
 
         portfolioSecondaryValueView.draw(corner: theme.portfolioValueCorner)
@@ -125,7 +125,7 @@ extension HomeLoadingView {
             $0.fitToSize(theme.secondaryPortfolioValueSize)
             $0.top == portfolioPrimaryValueView.snp.bottom +
                 theme.spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue
-            $0.centerX == 0
+            $0.leading == 0
         }
     }
 
