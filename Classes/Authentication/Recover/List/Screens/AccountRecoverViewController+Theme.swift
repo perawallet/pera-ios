@@ -18,26 +18,57 @@
 import MacaroonUIKit
 import UIKit
 
-extension AccountRecoverViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let accountRecoverViewTheme: AccountRecoverViewTheme
-        let backgroundColor: Color
+protocol AccountRecoverViewControllerTheme: StyleSheet, LayoutSheet {
+    var backgroundColor: Color { get }
+    var accountRecoverViewTheme: AccountRecoverViewTheme { get }
+    var bottomInset: LayoutMetric { get }
+    var horizontalPadding: LayoutMetric { get }
+    var inputSuggestionsFrame: CGRect { get }
+    var keyboardInset: LayoutMetric { get }
+    var inputViewHeight: LayoutMetric { get }
+    var mnemonicsParserWordCount: Int { get }
+}
 
-        let bottomInset: LayoutMetric
-        let horizontalPadding: LayoutMetric
-        let inputSuggestionsFrame: CGRect
-        let keyboardInset: LayoutMetric
-        let inputViewHeight: LayoutMetric
+struct AccountRecoverViewControllerCommonTheme: AccountRecoverViewControllerTheme {
+    let backgroundColor: Color
+    let accountRecoverViewTheme: AccountRecoverViewTheme
+    let bottomInset: LayoutMetric
+    let horizontalPadding: LayoutMetric
+    let inputSuggestionsFrame: CGRect
+    let keyboardInset: LayoutMetric
+    let inputViewHeight: LayoutMetric
+    let mnemonicsParserWordCount: Int
+    
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = Colors.Defaults.background
+        self.accountRecoverViewTheme = AccountRecoverViewAlgo25Theme()
+        self.horizontalPadding = 24
+        self.bottomInset = 16
+        self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
+        self.keyboardInset = 92
+        self.inputViewHeight = 732
+        self.mnemonicsParserWordCount = 25
+    }
+}
 
-        init(_ family: LayoutFamily) {
-            self.accountRecoverViewTheme = AccountRecoverViewCommonTheme()
-            self.backgroundColor = Colors.Defaults.background
-
-            self.horizontalPadding = 24
-            self.bottomInset = 16
-            self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
-            self.keyboardInset = 92
-            self.inputViewHeight = 732
-        }
+struct AccountRecoverViewControllerBip39Theme: AccountRecoverViewControllerTheme {
+    let backgroundColor: Color
+    let accountRecoverViewTheme: AccountRecoverViewTheme
+    let bottomInset: LayoutMetric
+    let horizontalPadding: LayoutMetric
+    let inputSuggestionsFrame: CGRect
+    let keyboardInset: LayoutMetric
+    let inputViewHeight: LayoutMetric
+    let mnemonicsParserWordCount: Int
+    
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = Colors.Defaults.background
+        self.accountRecoverViewTheme = AccountRecoverViewBip39Theme()
+        self.horizontalPadding = 24
+        self.bottomInset = 16
+        self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
+        self.keyboardInset = 92
+        self.inputViewHeight = 732
+        self.mnemonicsParserWordCount = 24
     }
 }

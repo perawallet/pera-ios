@@ -75,12 +75,17 @@ extension WCTransaction {
         return try? JSONDecoder().decode(WCTransactionDetail.self, from: jsonData)
     }
 
-    func findSignerAccount(in accountCollection: AccountCollection, on session: Session) {
+    func findSignerAccount(
+        in accountCollection: AccountCollection,
+        on session: Session,
+        hdWalletStorage: HDWalletStorable
+    ) {
         requestedSigner.findSignerAccount(
             in: accountCollection,
             on: session, transactionDetail: transactionDetail,
             authAddress: authAddress,
-            signer: signer()
+            signer: signer(),
+            hdWalletStorage: hdWalletStorage
         )
     }
 

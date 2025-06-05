@@ -19,17 +19,21 @@ import UIKit
 
 final class WelcomeViewController: BaseViewController {
     private lazy var welcomeView = WelcomeView()
+    private lazy var peraWelcomeLogo = UIImageView()
     private lazy var theme = Theme()
 
     private let flow: AccountSetupFlow
+    private let featureFlagService: FeatureFlagServicing
+    private lazy var transitionToMnemonicTypeSelection = BottomSheetTransition(presentingViewController: self)
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
+        self.featureFlagService = configuration.featureFlagService
         super.init(configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
+        hidesCloseBarButtonItem = true
     }
 
     override func bindData() {
@@ -44,63 +48,138 @@ final class WelcomeViewController: BaseViewController {
     override func setListeners() {
         welcomeView.setListeners()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
 
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let defaultAppearance = UINavigationBarAppearance()
+        defaultAppearance.configureWithOpaqueBackground()
+        defaultAppearance.backgroundColor = theme.backgroundColor.uiColor
+        defaultAppearance.shadowColor = theme.backgroundColor.uiColor
+        
+        navigationController?.navigationBar.standardAppearance = defaultAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = defaultAppearance
+    }
+    
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func prepareLayout() {
-        welcomeView.customize(theme.welcomeViewTheme)
+        welcomeView.customize(theme.welcomeViewTheme, configuration: configuration)
 
         prepareWholeScreenLayoutFor(welcomeView)
+        
+        addPeraWelcomeLogo(theme.welcomeViewTheme)
     }
-}
-
-extension WelcomeViewController {
-    private func addBarButtons() {
-        switch flow {
-        case .initializeAccount:
-            hidesCloseBarButtonItem = true
-            
-        case .addNewAccount,
-             .backUpAccount,
-             .none:
-            break
+    
+    private func addPeraWelcomeLogo(_ theme: WelcomeViewTheme) {
+        peraWelcomeLogo.customizeAppearance(theme.peraWelcomeLogo)
+        view.addSubview(peraWelcomeLogo)
+        
+        peraWelcomeLogo.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(theme.peraWelcomeLogoTopInset)
+            $0.trailing.equalToSuperview()
         }
     }
 }
 
 extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView) {
-        analytics.track(.onboardWelcomeScreen(type: .create))
-        open(.tutorial(flow: flow, tutorial: .backUp(flow: flow, address: "temp")), by: .push)
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView) {
+        guard let account = createAccount() else { return }
+        navigateToSetupAddressNameScreen(account)
     }
     
     func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
         analytics.track(.onboardWelcomeScreen(type: .recover))
         open(.recoverAccount(flow: flow), by: .push)
     }
-    
-    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView) {
-        analytics.track(.onboardWelcomeScreen(type: .watch))
-
-        let routingScreen: Screen
-        let tutorial: Tutorial = .watchAccount
-
-        switch flow {
-        case .initializeAccount:
-            routingScreen = .tutorial(flow: .initializeAccount(mode: .watch), tutorial: tutorial)
-        default:
-            routingScreen = .tutorial(flow: .addNewAccount(mode: .watch), tutorial: tutorial)
-        }
-
-        open(
-            routingScreen,
-            by: .push
-        )
-    }
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {
         open(url)
+    }
+    
+    private func navigateToSetupAddressNameScreen(_ account: AccountInformation) {
+        let screen = open(
+            .addressNameSetup(
+                flow: flow,
+                mode: .addBip39Wallet,
+                account: account
+            ),
+            by: .push
+        ) as? AddressNameSetupViewController
+        screen?.hidesCloseBarButtonItem = true
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+    
+    private func openTutorialScreen(walletFlowType: WalletFlowType) {
+        analytics.track(.onboardWelcomeScreen(type: .create))
+        switch walletFlowType {
+        case .algo25:
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .backUp(
+                        flow: flow,
+                        address: "temp"
+                    ),
+                    walletFlowType: walletFlowType
+                ),
+                by: .push
+            )
+        case .bip39:
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .backUpBip39(
+                        flow: flow,
+                        address: "temp"
+                    ),
+                    walletFlowType: walletFlowType
+                ),
+                by: .push
+            )
+        }
+
+    }
+    
+    private func createAccount() -> AccountInformation? {
+        let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+            session: session,
+            storage: hdWalletStorage,
+            entropy: nil
+        )
+        
+        guard let hdWalletAddressDetail, let address else {
+            assertionFailure("Could not create HD wallet")
+            return nil
+        }
+        
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: false,
+            hdWalletAddressDetail: hdWalletAddressDetail
+        )
+        
+        let user = User(accounts: [account])
+        session?.authenticatedUser = user
+        session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
+
+        return account
     }
 }

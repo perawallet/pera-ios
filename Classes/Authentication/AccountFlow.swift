@@ -48,18 +48,36 @@ extension AccountSetupFlow {
 }
 
 enum AccountSetupMode: Equatable {
-    case add
+    case addAlgo25Account
+    case addBip39Address(newAddress: HDWalletAddress?)
+    case addBip39Wallet
     case recover(type: RecoverType)
     case rekey(account: Account)
     case watch
     case none
 }
 
+extension AccountSetupMode {
+    var shouldShowNewAccountWarning: Bool {
+        switch self {
+        case .addBip39Address:
+            return true
+        case .addAlgo25Account, .addBip39Wallet, .recover, .rekey, .watch:
+            return false
+        case .none:
+            assertionFailure("Should not happen")
+            return false
+        }
+    }
+}
+
 enum RecoverType: Equatable {
+    case passphraseAlgo25
     case passphrase
     case importFromSecureBackup
     case qr
     case ledger
     case importFromWeb
-    case none
+    case titleAlgo25
+    case title
 }

@@ -61,17 +61,20 @@ final class TransactionController {
     private let sharedDataController: SharedDataController
     private let bannerController: BannerController?
     private let analytics: ALGAnalytics
+    private let hdWalletStorage: HDWalletStorable
     
     init(
         api: ALGAPI,
         sharedDataController: SharedDataController,
         bannerController: BannerController?,
-        analytics: ALGAnalytics
+        analytics: ALGAnalytics,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
         self.bannerController = bannerController
         self.analytics = analytics
+        self.hdWalletStorage = hdWalletStorage
     }
 }
 
@@ -501,7 +504,23 @@ extension TransactionController {
             return
         }
         
-        let address = sharedDataController.accountCollection[accountAddress]?.value.authAddress ?? accountAddress
+        let account = sharedDataController.accountCollection[accountAddress]?.value
+        
+        if let authAddress = account?.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(index: index)
+            return
+        }
+        
+        if let account,
+           account.isHDAccount,
+           !account.hasAuthAccount() {
+            signTransactionForHDWalletAccount(index: index)
+            return
+        }
+        
+        let address = account?.authAddress ?? accountAddress
         guard let privateData = api.session.privateData(for: address) else { return }
 
         let signer = SDKTransactionSigner()
@@ -520,6 +539,71 @@ extension TransactionController {
             with: signer,
             index: index
         )
+    }
+    
+    private func signTransactionForHDWalletAccount(index: Int) {
+        guard
+            let accountAddress = transactions[safe: index]?.sender,
+            var account = sharedDataController.accountCollection[accountAddress]?.value,
+            let unsignedTransactionData = transactions[index].unsignedTransaction
+        else {
+            return
+        }
+        
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value
+        {
+            account = authAccount
+        }
+        
+        do {
+            guard
+                let hdWalletAddressDetail = account.hdWalletAddressDetail,
+                let seed = try hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId) else {
+                assertionFailure("Wallet not found")
+                return
+            }
+            
+            let sdk = AlgorandSDK()
+            
+            var error: NSError?
+            guard let rawTxn = sdk.rawTransactionToSign(
+                unsignedTransactionData,
+                error: &error
+            ) else {
+                delegate?.transactionController(
+                    self,
+                    didFailedComposing: .inapp(.sdkError(error: error))
+                )
+                return
+            }
+            
+            let signer = HDWalletTransactionSigner(wallet: seed)
+            let signature = try signer.signTransaction(
+                rawTxn,
+                with: hdWalletAddressDetail
+            )
+            
+            guard let signedTransaction = sdk.getSignedTransaction(
+                unsignedTransactionData,
+                from: signature,
+                for: account.address,
+                error: &error
+            ) else {
+                delegate?.transactionController(
+                    self,
+                    didFailedComposing: .inapp(.sdkError(error: error))
+                )
+                return
+            }
+                    
+            transactions[index].setSignedTransaction(signedTransaction)
+        } catch {
+            delegate?.transactionController(
+                self,
+                didFailedComposing: .inapp(.other)
+            )
+        }
     }
 
     private func sign(
@@ -559,6 +643,31 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         }
         
         updateLedgerDetailOfRekeyedAccountIfNeeded(of: &account)
+        
+        if let authAddress = account.authAddress,
+           let authAccount = sharedDataController.accountCollection[authAddress]?.value,
+           authAccount.isHDAccount {
+            signTransactionForHDWalletAccount(index: index)
+            
+            calculateTransactionFee(
+                for: transactionType,
+                index: index
+            )
+            if transactionDraft?.fee != nil {
+                if isTransactionSigned {
+                    completeLedgerTransaction(
+                        for: transactionType,
+                        index: index
+                    )
+                } else {
+                    startSigningProcess(
+                        for: transactionType,
+                        index: index + 1
+                    )
+                }
+            }
+            return
+        }
         
         let signer = LedgerTransactionSigner(signerAddress: account.authAddress)
         signer.eventHandler = {

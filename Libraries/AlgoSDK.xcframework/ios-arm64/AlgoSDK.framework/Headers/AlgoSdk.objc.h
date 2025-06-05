@@ -878,6 +878,8 @@ FOUNDATION_EXPORT AlgoSdkAtomicTransactionComposer* _Nullable AlgoSdkNewAtomicTr
  */
 FOUNDATION_EXPORT AlgoSdkABIType* _Nullable AlgoSdkParseABIType(NSString* _Nullable typeString, NSError* _Nullable* _Nullable error);
 
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkRawTransactionBytesToSign(NSData* _Nullable encodedTxn, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignBid(NSData* _Nullable sk, NSData* _Nullable encodedBid, NSError* _Nullable* _Nullable error);
 
 /**

@@ -30,9 +30,12 @@ final class RecoverAccountView:
     private lazy var recoverWithQRView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
     private lazy var importFromWebView = AccountTypeView()
+    
+    private var featureFlagService: FeatureFlagServicing?
 
-    func customize(_ theme: RecoverAccountViewTheme) {
+    func customize(_ theme: RecoverAccountViewTheme, configuration: ViewControllerConfiguration) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        featureFlagService = configuration.featureFlagService
 
         addTitleLabel(theme)
         addStackView(theme)
@@ -74,7 +77,11 @@ final class RecoverAccountView:
     }
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
-        recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        if featureFlagService?.isEnabled(.hdWalletEnabled) ?? false {
+            recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        } else {
+            recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseAlgo25ViewModel)
+        }
         importFromSecureBackupView.bindData(viewModel?.importFromSecureBackupViewModel)
         recoverWithQRView.bindData(viewModel?.recoverWithQRViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)

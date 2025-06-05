@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct CollectiblePropertyViewModel:
     ViewModel,
     Hashable {
+    private let id = UUID()
     private(set) var name: EditText?
     private(set) var value: EditText?
 

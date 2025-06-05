@@ -69,3 +69,42 @@ extension Session {
         return algorandSDK.generatePrivateKey()
     }
 }
+
+
+extension Session {
+    
+    /// Generates a BIP39 mnemonic phrase for a given address.
+    ///
+    /// This function creates a 256-bit entropy, generates a mnemonic phrase from it,
+    /// and then stores the corresponding private key (entropy) associated with the provided address.
+    ///
+    /// - Parameter address: The address for which the mnemonic phrase is generated.
+    ///
+    /// - Returns: An array of strings representing the BIP39 mnemonic phrase. If mnemonic generation fails,
+    ///           an empty array is returned.
+    ///
+    /// - Note: The generated mnemonic is stored securely in association with the address.
+    ///
+    /// Example:
+    /// ```
+    /// let mnemonic = makeMnemonicsBIP39(forAddress: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789012345")
+    /// ```
+    func makeMnemonicsBIP39(forAddress address: String) -> [String] {
+        do {
+            let entropy = HDWalletUtils.generate256BitEntropy()
+
+            guard
+                let mnemonic = HDWalletUtils.generateMnemonic(fromEntropy: entropy)
+            else {
+                throw MnemonicsError.missingWords
+            }
+
+            savePrivate(entropy, for: address)
+            
+            return mnemonic.components(separatedBy: " ")
+        } catch {
+            assertionFailure("Failed to generate mnemonic: \(error)")
+            return []
+        }
+    }
+}

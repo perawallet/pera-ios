@@ -29,7 +29,8 @@ final class MenuViewController: BaseViewController {
         presentingScreen: self,
         session: session!,
         sharedDataController: sharedDataController,
-        appLaunchController: configuration.launchController
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: hdWalletStorage
     )
     
     private lazy var cardsSupportedCountriesFlowCoordinator = CardsSupportedCountriesFlowCoordinator(api: api!, session: session!)
@@ -38,7 +39,7 @@ final class MenuViewController: BaseViewController {
     private lazy var collectibleDataController = CollectibleListLocalDataController(galleryAccount: .all, sharedDataController: sharedDataController)
     
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToBottomSheet = BottomSheetTransition(presentingViewController: self)
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
         analytics: analytics,
         presentingScreen: self
@@ -217,7 +218,7 @@ extension MenuViewController: UICollectionViewDelegate {
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
             case .inviteFriends:
-                openShareMenu()
+                openInviteFriends()
             }
             return
         }
@@ -281,7 +282,7 @@ extension MenuViewController {
             }
         }
 
-        transitionToBuySellOptions.perform(
+        transitionToBottomSheet.perform(
             .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
@@ -299,7 +300,28 @@ extension MenuViewController {
 }
 
 extension MenuViewController {
-    private func openShareMenu() {
+    private func openInviteFriends() {
+        let eventHandler: InviteFriendsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .close:
+                self.dismiss(animated: true)
+            case .share:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openShare()
+                }
+            }
+        }
+
+        transitionToBottomSheet.perform(
+            .inviteFriends(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func openShare() {
         guard
             let urlString = Bundle.main.object(forInfoDictionaryKey: "AppDownloadURL") as? String,
             let url = URL(string: urlString)

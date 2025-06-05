@@ -91,17 +91,36 @@ extension BackUpAccountFlowCoordinator {
 
 extension BackUpAccountFlowCoordinator {
     private func openIntroduction(_ account: AccountHandle) {
-        openIntroduction(account.value.address)
+        openIntroduction(account.value)
     }
 
-    private func openIntroduction(_ address: String? = nil) {
-        let needsAccountSelection = address == nil
+    private func openIntroduction(_ account: Account? = nil) {
+        let needsAccountSelection = account == nil
+        
+        if let account, account.isHDAccount {
+            presentingScreen.open(
+                .tutorial(
+                    flow: .addNewAccount(mode: .addBip39Wallet),
+                    tutorial: .backUpBip39(
+                        flow: .backUpAccount(needsAccountSelection: needsAccountSelection),
+                        address: account.address
+                    )
+                ),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+            return
+        }
+        
         presentingScreen.open(
             .tutorial(
-                flow: .addNewAccount(mode: .add),
+                flow: .addNewAccount(mode: .addAlgo25Account),
                 tutorial: .backUp(
                     flow: .backUpAccount(needsAccountSelection: needsAccountSelection),
-                    address: address
+                    address: account?.address
                 )
             ),
             by: .customPresent(

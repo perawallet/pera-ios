@@ -26,17 +26,14 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
 
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
 
-    private var mnemonics: [String]? {
-        guard let session = session else {
-            return nil
-        }
-        let mnemonics = session.mnemonics(forAccount: address)
-        return mnemonics
+    private var viewModel: PassphraseUtils.MnemonicsData {
+        guard let session else { return .empty }
+        return PassphraseUtils.mnemonics(account: address, hdWalletStorage: configuration.hdWalletStorage, session: session)
     }
 
-    private var address: String
+    private let address: Account
 
-    init(address: String, configuration: ViewControllerConfiguration) {
+    init(address: Account, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
     }
@@ -79,7 +76,7 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        passphraseDisplayView.customize(theme.passphraseDisplayViewTheme)
+        passphraseDisplayView.customize(theme.passphraseDisplayViewTheme, isHdWallet: viewModel.isHDWallet)
         contentView.addSubview(passphraseDisplayView)
         passphraseDisplayView.pinToSuperview()
     }
@@ -92,13 +89,12 @@ extension PassphraseDisplayViewController: BottomSheetScrollPresentable {
 }
 
 extension PassphraseDisplayViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mnemonics?.count ?? 0
-    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { viewModel.mnemonics.count }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(PassphraseCell.self, at: indexPath)
-        cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: mnemonics)))
+        cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: viewModel.mnemonics)))
         return cell
     }
 }

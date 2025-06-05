@@ -70,6 +70,7 @@ final class HomeViewController:
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -85,7 +86,8 @@ final class HomeViewController:
         presentingScreen: self,
         session: session!,
         sharedDataController: sharedDataController,
-        appLaunchController: configuration.launchController
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: configuration.hdWalletStorage
     )
     private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
         configuration: configuration,
@@ -100,6 +102,8 @@ final class HomeViewController:
     override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .accountList)
     }
+    
+    private lazy var successAnimationImageView = LottieImageView()
 
     private lazy var listView =
         UICollectionView(frame: .zero, collectionViewLayout: HomeListLayout.build())
@@ -121,7 +125,6 @@ final class HomeViewController:
     private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
-    private var asasRequestsCount: Int?
     private var incomingASAsRequestList: IncomingASAsRequestList?
     private var listWasScrolled = false
     
@@ -183,9 +186,9 @@ final class HomeViewController:
                     self.alertPresenter.presentIfNeeded()
                 }
             case .deliverASARequestsContentUpdate(let asasReqUpdate):
-                self.asasRequestsCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +)
+                self.sharedDataController.currentInboxRequestCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +) ?? 0
                 self.incomingASAsRequestList = asasReqUpdate
-                if self.asasRequestsCount == 0 {
+                if self.sharedDataController.currentInboxRequestCount == 0 {
                     self.leftBarButtonItems = []
                     self.setNeedsNavigationBarAppearanceUpdate()
                 }
@@ -248,6 +251,11 @@ final class HomeViewController:
         dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
+        
+        if PeraUserDefaults.shouldShowNewAccountAnimation ?? false {
+            Task { await playAnimation() }
+            PeraUserDefaults.shouldShowNewAccountAnimation = false
+        }
     }
 
     override func viewWillDisappear(
@@ -277,6 +285,18 @@ final class HomeViewController:
             }
 
             self.configureNewNotificationBarButton()
+        }
+    }
+    
+    private func playAnimation() async {
+        successAnimationImageView.isHidden = false
+        var configuration = LottieImageView.Configuration()
+        configuration.loopMode = .playOnce
+        
+        let isFinished = await successAnimationImageView.play(with: configuration)
+        
+        if isFinished {
+            successAnimationImageView.isHidden = true
         }
     }
     
@@ -356,8 +376,8 @@ extension HomeViewController {
     }
     
     private func configureASARequestBarButton() {
-        guard let asasRequestsCount,
-              asasRequestsCount > 0 else {
+        let asasRequestsCount = sharedDataController.currentInboxRequestCount
+        guard asasRequestsCount > 0 else {
             self.leftBarButtonItems = []
             self.setNeedsNavigationBarAppearanceUpdate()
             return
@@ -383,6 +403,7 @@ extension HomeViewController {
     private func addUI() {
         addListBackground()
         addList()
+        addSuccessAnimation()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -402,8 +423,7 @@ extension HomeViewController {
             guard let self else { return }
             
             if isVisible {
-                guard let asasRequestsCount = self.asasRequestsCount,
-                      asasRequestsCount > 0 else {
+                guard self.sharedDataController.currentInboxRequestCount > 0 else {
                     return
                 }
                 
@@ -497,6 +517,22 @@ extension HomeViewController {
         listView.alwaysBounceVertical = true
         listView.delegate = self
     }
+    
+    private func addSuccessAnimation() {
+        guard let navView = navigationController?.view else { return }
+        successAnimationImageView.isHidden = true
+        successAnimationImageView.contentMode = .top
+        successAnimationImageView.isUserInteractionEnabled = false
+        successAnimationImageView.setAnimation("pera-confetti")
+        
+        navView.addSubview(successAnimationImageView)
+        successAnimationImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(500)
+        }
+    }
 }
 
 extension HomeViewController {
@@ -517,7 +553,7 @@ extension HomeViewController {
             guard let self else { return }
             
             self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
+                .addAccount(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,
@@ -762,7 +798,7 @@ extension HomeViewController {
 
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
+                .addAccount(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,
@@ -1285,7 +1321,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
 
     private func presentPassphraseView(_ accountHandle: AccountHandle) {
         transitionToPassphraseDisplay.perform(
-            .passphraseDisplay(address: accountHandle.value.address),
+            .passphraseDisplay(address: accountHandle.value),
             by: .present
         )
     }

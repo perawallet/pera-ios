@@ -27,12 +27,14 @@ final class WelcomeView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var termsAndConditionsTextView = UITextView()
-    private lazy var createAccountView = AccountTypeView()
-    private lazy var importAccountView = AccountTypeView()
-    private lazy var watchAccountView = AccountTypeView()
+    private lazy var createWalletView = WelcomeTypeView()
+    private lazy var importWalletView = WelcomeTypeView()
+    
+    private var session: Session?
 
-    func customize(_ theme: WelcomeViewTheme) {
+    func customize(_ theme: WelcomeViewTheme, configuration: ViewControllerConfiguration) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        session = configuration.session
 
         addTitle(theme)
         addTermsAndConditionsTextView(theme)
@@ -44,21 +46,15 @@ final class WelcomeView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        createAccountView.addTarget(
+        createWalletView.addTarget(
             self,
-            action: #selector(notifyDelegateToCreateAccount),
+            action: #selector(notifyDelegateToCreateWallet),
             for: .touchUpInside
         )
 
-        importAccountView.addTarget(
+        importWalletView.addTarget(
             self,
             action: #selector(notifyDelegateToImportAccount),
-            for: .touchUpInside
-        )
-        
-        watchAccountView.addTarget(
-            self,
-            action: #selector(notifyDelegateToWatchAccount),
             for: .touchUpInside
         )
     }
@@ -69,16 +65,15 @@ final class WelcomeView:
 
     func bindData(_ viewModel: WelcomeViewModel?) {
         titleLabel.text = viewModel?.title
-        createAccountView.bindData(viewModel?.createAccountViewModel)
-        importAccountView.bindData(viewModel?.importAccountViewModel)
-        watchAccountView.bindData(viewModel?.watchAccountViewModel)
+        createWalletView.bindData(viewModel?.createWalletViewModel)
+        importWalletView.bindData(viewModel?.importWalletViewModel)
     }
 }
 
 extension WelcomeView {
     @objc
-    private func notifyDelegateToCreateAccount() {
-        delegate?.welcomeViewDidSelectCreate(self)
+    private func notifyDelegateToCreateWallet() {
+        delegate?.welcomeViewDidSelectCreateWallet(self)
     }
 
     @objc
@@ -86,10 +81,6 @@ extension WelcomeView {
         delegate?.welcomeViewDidSelectImport(self)
     }
     
-    @objc
-    private func notifyDelegateToWatchAccount() {
-        delegate?.welcomeViewDidSelectWatch(self)
-    }
 }
 
 extension WelcomeView {
@@ -125,6 +116,7 @@ extension WelcomeView {
 
     private func addStackView(_ theme: WelcomeViewTheme) {
         stackView.axis = .vertical
+        stackView.spacing = 40
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
@@ -132,13 +124,10 @@ extension WelcomeView {
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
-
-        createAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(createAccountView)
-        importAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(importAccountView)
-        watchAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(watchAccountView)
+        createWalletView.customize(theme.welcomeTypeViewTheme)
+        stackView.addArrangedSubview(createWalletView)
+        importWalletView.customize(theme.welcomeTypeViewTheme)
+        stackView.addArrangedSubview(importWalletView)
     }
 }
 
@@ -155,8 +144,7 @@ extension WelcomeView: UITextViewDelegate {
 }
 
 protocol WelcomeViewDelegate: AnyObject {
-    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView)
     func welcomeViewDidSelectImport(_ welcomeView: WelcomeView)
-    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView)
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
 }
