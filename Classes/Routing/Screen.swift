@@ -30,15 +30,19 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
+    case addAccount(flow: AccountSetupFlow)
+    case mnemonicTypeSelection(eventHandler: MnemonicTypeSelectionScreen.EventHandler)
     case recoverAccount(flow: AccountSetupFlow)
+    case recoverAccountsLoadingScreen
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
-    case passphraseView(flow: AccountSetupFlow, address: String)
-    case passphraseVerify(flow: AccountSetupFlow, address: String)
+    case passphraseView(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)
+    case passphraseVerify(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)
     case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
-    case accountRecover(
-        flow: AccountSetupFlow,
-        initialMnemonic: String? = nil
-    )
+    case accountRecover(flow: AccountSetupFlow, walletFlowType: WalletFlowType = .algo25, initialMnemonic: String? = nil)
+    case addressNameSetup(flow: AccountSetupFlow, mode: AccountSetupMode, nameServiceName: String? = nil, account: AccountInformation)
+    case hdWalletSetup(flow: AccountSetupFlow, mode: AccountSetupMode)
+    case selectAddress(recoveredAddresses: [RecoveredAddress], hdWalletId: String)
+    case rescanRekeyedAccountsSelectList(inputData: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler, incomingASAsRequestsCount: Int)
@@ -83,7 +87,7 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
-    case passphraseDisplay(address: String)
+    case passphraseDisplay(address: Account)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
@@ -112,7 +116,7 @@ indirect enum Screen {
     case ledgerAccountDetail(account: Account, authAccount: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
-    case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
+    case tutorial(flow: AccountSetupFlow, tutorial: Tutorial, walletFlowType: WalletFlowType? = nil)
     case tutorialSteps(step: Troubleshoot.Step)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
@@ -354,7 +358,7 @@ indirect enum Screen {
     case discoverGeneric(DiscoverGenericParameters)
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
-    case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
+    case importAccount(ImportAccountScreen.ImportAccountRequest, ImportAccountScreen.EventHandler)
     case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
     case importAccountSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
@@ -438,6 +442,7 @@ indirect enum Screen {
         account: Account,
         transactionDraft: KeyRegTransactionSendDraft
     )
+    case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
 }
 
 extension Screen {

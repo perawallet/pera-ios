@@ -87,14 +87,12 @@ where ScriptMessage: InAppBrowserScriptMessage {
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        let inAppMessage = DiscoverInAppBrowserScriptMessage(rawValue: message.name)
+        guard let inAppMessage = DiscoverInAppBrowserScriptMessage(rawValue: message.name) else {
+            super.userContentController(userContentController, didReceive: message)
+            return
+        }
 
         switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
         case .pushNewScreen:
             handleNewScreenAction(message)
         case .requestDeviceID:
@@ -135,7 +133,8 @@ extension DiscoverInAppBrowserScreen {
         DiscoverURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled)
         )
     }
 

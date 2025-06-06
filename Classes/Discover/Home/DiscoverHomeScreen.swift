@@ -31,6 +31,22 @@ final class DiscoverHomeScreen:
         return isViewAppeared
     }
     
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
+        dataStore: SwapDataLocalStore(),
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        loadingController: loadingController!,
+        bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
+        presentingScreen: self
+    )
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
+    
     private lazy var theme = DiscoverHomeScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
@@ -55,15 +71,17 @@ final class DiscoverHomeScreen:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = String(localized: "title-discover")
-        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
+        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationBarLargeTitleController.title = String(localized: "title-discover")
+            navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
 
-        navigationBarLargeTitleView.searchAction = {
-            [unowned self] in
-            self.navigateToSearch()
+            navigationBarLargeTitleView.searchAction = {
+                [unowned self] in
+                self.navigateToSearch()
+            }
+
+            updateRightBarButtonsWhenNavigationTitleBecomeHidden(true)
         }
-
-        updateRightBarButtonsWhenNavigationTitleBecomeHidden(true)
     }
 
     override func customizeTabBarAppearence() {
@@ -73,9 +91,12 @@ final class DiscoverHomeScreen:
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addNavigationBarLargeTitle()
-
-        navigationBarLargeTitleController.activate()
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationBarLargeTitleController.deactivate()
+        } else {
+            addNavigationBarLargeTitle()
+            navigationBarLargeTitleController.activate()
+        }
 
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
@@ -83,14 +104,28 @@ final class DiscoverHomeScreen:
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        if isViewLayoutLoaded {
-            return
+        
+        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            if isViewLayoutLoaded {
+                return
+            }
+            updateUIWhenViewDidLayout()
+            isViewLayoutLoaded = true
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
 
-        updateUIWhenViewDidLayout()
-
-        isViewLayoutLoaded = true
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
     }
 
     /// <mark>
@@ -99,16 +134,16 @@ final class DiscoverHomeScreen:
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name)
+        guard let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name) else {
+            super.userContentController(userContentController, didReceive: message)
+            return
+        }
 
         switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
         case .pushTokenDetailScreen:
             handleTokenDetailAction(message)
+        case .swap, .handleTokenDetailActionButtonClick:
+            handleTokenAction(message)
         }
     }
 }
@@ -198,6 +233,55 @@ extension DiscoverHomeScreen {
             by: .push
         )
     }
+    
+    private func handleTokenAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
+        guard let params = try? DiscoverSwapParameters.decoded(jsonData) else { return }
+        
+        switch params.action {
+        case .buyAlgo:
+            navigateToBuyAlgo()
+        default:
+            navigateToSwap(with: params)
+        }
+        
+        sendAnalyticsEvent(with: params)
+    }
+    
+    private func navigateToBuyAlgo() {
+        meldFlowCoordinator.launch()
+    }
+
+    private func navigateToSwap(with parameters: DiscoverSwapParameters) {
+        let draft = SwapAssetFlowDraft()
+        if let assetInID = parameters.assetIn {
+            draft.assetInID = assetInID
+        }
+        if let assetOutID = parameters.assetOut {
+            draft.assetOutID = assetOutID
+        }
+
+        swapAssetFlowCoordinator.updateDraft(draft)
+        swapAssetFlowCoordinator.launch()
+    }
+    
+    private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {
+        let assetInID = parameters.assetIn
+        let assetOutID = parameters.assetOut
+
+        switch parameters.action {
+        case .buyAlgo:
+            self.analytics.track(.buyAssetFromDiscover(assetOutID: 0, assetInID: nil))
+        case .swapFromAlgo:
+            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: 0))
+        case .swapToAsset:
+            guard let assetOutID else { return }
+            self.analytics.track(.buyAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        case .swapFromAsset:
+            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        }
+    }
 }
 
 extension DiscoverHomeScreen {
@@ -231,4 +315,6 @@ enum DiscoverHomeScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case pushTokenDetailScreen
+    case swap
+    case handleTokenDetailActionButtonClick
 }

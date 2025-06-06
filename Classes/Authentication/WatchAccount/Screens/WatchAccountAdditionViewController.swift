@@ -627,7 +627,7 @@ extension WatchAccountAdditionViewController {
                 flow: accountSetupFlow,
                 mode: .watch,
                 nameServiceName: selectedNameService?.name,
-                accountAddress: account.address
+                accountAddress: address
             ),
             by: .push
         )

@@ -15,7 +15,6 @@
 //
 //   AccountDetailViewController.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
@@ -65,6 +64,7 @@ final class AccountDetailViewController: PageContainer {
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -106,6 +106,7 @@ final class AccountDetailViewController: PageContainer {
     }
 
     private let dataController: AccountDetailDataController
+    private lazy var rescanRekeyedAccountsCoordinator = RescanRekeyedAccountsCoordinator(presenter: self)
 
     /// <todo>
     /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
@@ -544,6 +545,7 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
+    
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
         analytics.track(.showQRCopy(account: account))
@@ -619,9 +621,27 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
+        let eventHandler: PassphraseWarningScreen.EventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .close:
+                dismiss(animated: true)
+            case .reveal:
+                dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    transitionToPassphraseDisplay.perform(
+                        .passphraseDisplay(address: accountHandle.value),
+                        by: .present
+                    )
+                }
+            }
+        }
+
         transitionToPassphraseDisplay.perform(
-            .passphraseDisplay(address: accountHandle.value.address),
-            by: .present
+            .passphraseWarning(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
         )
     }
 
@@ -657,6 +677,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         let account = accountHandle.value
         removeAccountFlowCoordinator.launch(account)
+    }
+    
+    func optionsViewControllerDidRescanRekeyedAccounts(_ optionsViewController: OptionsViewController) {
+        rescanRekeyedAccountsCoordinator.rescan(accounts: [accountHandle.value], nextStep: .dismiss)
     }
 }
 

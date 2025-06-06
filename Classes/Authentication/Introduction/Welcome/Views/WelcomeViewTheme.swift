@@ -22,12 +22,14 @@ import UIKit
 struct WelcomeViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let peraWelcomeLogo: ImageStyle
     let termsOfConditionsAttributes: [AttributedTextBuilder.Attribute]
     let termsOfConditionsLinkAttributes: [AttributedTextBuilder.Attribute]
-    let accountTypeViewTheme: AccountTypeViewTheme
+    let welcomeTypeViewTheme: WelcomeTypeViewTheme
 
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
+    let peraWelcomeLogoTopInset: LayoutMetric
     let verticalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
@@ -36,7 +38,11 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(32))
+            .font(Typography.titleMedium())
+        ]
+        self.peraWelcomeLogo = [
+            .image("icon-welcome-pera"),
+            .contentMode(.scaleAspectFit)
         ]
 
         self.termsOfConditionsLinkAttributes = [
@@ -51,10 +57,11 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
                 .alignment(.center)
             ])
         ]
-        self.accountTypeViewTheme = AccountTypeViewTheme()
+        self.welcomeTypeViewTheme = WelcomeTypeViewTheme()
         
         self.horizontalInset = 24
-        self.topInset = 2
+        self.topInset = 70
+        self.peraWelcomeLogoTopInset = -122
         self.verticalInset = 16
     }
 }

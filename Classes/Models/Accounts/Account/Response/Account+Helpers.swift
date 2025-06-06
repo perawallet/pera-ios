@@ -185,6 +185,10 @@ extension Account {
            authorization.isStandardToStandardRekeyed ||
            authorization.isStandardToLedgerRekeyed ||
            authorization.isStandardToNoAuthInLocalRekeyed {
+            if isHDAccount {
+                return "icon-hd-account".uiImage
+            }
+
             return "icon-standard-account".uiImage
         }
 
@@ -209,31 +213,30 @@ extension Account {
         return "icon-no-auth-account".uiImage
     }
     
-    var typeImage: UIImage {
+    var rawTypeImage: String {
         if authorization.isStandard {
-            return "icon-standard-account".uiImage
+            guard hdWalletAddressDetail != nil else {
+                return "icon-standard-account"
+            }
+            return "icon-hd-account"
         }
-
         if authorization.isWatch {
-            return "icon-watch-account".uiImage
+            return "icon-watch-account"
         }
-
         if authorization.isLedger {
-            return "icon-ledger-account".uiImage
+            return "icon-ledger-account"
         }
-
         if authorization.isRekeyedToStandard {
-            return "icon-any-to-standard-rekeyed-account".uiImage
+            return "icon-any-to-standard-rekeyed-account"
         }
-
         if authorization.isRekeyedToLedger {
-            return "icon-any-to-ledger-rekeyed-account".uiImage
+            return "icon-any-to-ledger-rekeyed-account"
         }
-
         if authorization.isNoAuth {
-            return "icon-no-auth-account".uiImage
+            return "icon-no-auth-account"
         }
-
-        return "icon-unknown-account".uiImage
+        return "icon-unknown-account"
     }
+    
+    var typeImage: UIImage { rawTypeImage.uiImage }
 }

@@ -31,6 +31,8 @@ final class AppConfiguration {
     let peraConnect: PeraConnect
     let scammerController: ScammerController
     let featureFlagService: FeatureFlagServicing
+    let hdWalletService: HDWalletServicing
+    let hdWalletStorage: HDWalletStorable
 
     init(
         api: ALGAPI,
@@ -45,7 +47,9 @@ final class AppConfiguration {
         launchController: AppLaunchController,
         peraConnect: PeraConnect,
         scammerController: ScammerController,
-        featureFlagService: FeatureFlagServicing
+        featureFlagService: FeatureFlagServicing,
+        hdWalletService: HDWalletServicing,
+        hdWalletStorage: HDWalletStorable
     ) {
         self.api = api
         self.session = session
@@ -60,6 +64,8 @@ final class AppConfiguration {
         self.peraConnect = peraConnect
         self.scammerController = ScammerController(api: api)
         self.featureFlagService = featureFlagService
+        self.hdWalletService = hdWalletService
+        self.hdWalletStorage = hdWalletStorage
     }
     
     func all() -> ViewControllerConfiguration {
@@ -76,7 +82,9 @@ final class AppConfiguration {
             launchController: launchController,
             peraConnect: peraConnect,
             scammerController: scammerController,
-            featureFlagService: featureFlagService
+            featureFlagService: featureFlagService,
+            hdWalletService: hdWalletService,
+            hdWalletStorage: hdWalletStorage
         )
         return configuration
     }

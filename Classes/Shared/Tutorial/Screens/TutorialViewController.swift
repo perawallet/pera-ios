@@ -22,7 +22,6 @@ final class TutorialViewController: BaseScrollViewController {
 
     private lazy var tutorialView = TutorialView()
     private lazy var theme = Theme()
-
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
@@ -31,16 +30,19 @@ final class TutorialViewController: BaseScrollViewController {
     
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
-
+    private let walletFlowType: WalletFlowType?
     private lazy var localAuthenticator = LocalAuthenticator(session: session!)
-
+    
     init(
         flow: AccountSetupFlow,
         tutorial: Tutorial,
+        walletFlowType: WalletFlowType?,
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
         self.tutorial = tutorial
+        self.walletFlowType = walletFlowType
+        
         super.init(configuration: configuration)
 
         switch tutorial {
@@ -169,17 +171,40 @@ extension TutorialViewController: TutorialViewDelegate {
                     tutorial: .writePassphrase(
                         flow: flow,
                         address: address
-                    )
+                    ),
+                    walletFlowType: .algo25
+                ),
+                by: .push
+            )
+        case .backUpBip39(flow: let flow, address: let address):
+            analytics.track(.onboardCreateAccountPassphrase(type: .understand))
+
+            if case .backUpAccount(let needsAccountSelection) = flow,
+               needsAccountSelection {
+                openAccountSelectionForBackingUp(flow: flow)
+                return
+            }
+
+            guard let address else { return }
+            
+            open(
+                .tutorial(
+                    flow: flow,
+                    tutorial: .writePassphrase(
+                        flow: flow,
+                        address: address
+                    ),
+                    walletFlowType: .bip39
                 ),
                 by: .push
             )
         case .writePassphrase(let flow, let address):
             analytics.track(.onboardCreateAccountPassphrase(type: .begin))
-            open(.passphraseView(flow: flow, address: address), by: .push)
+            open(.passphraseView(flow: flow, address: address, walletFlowType: walletFlowType ?? .algo25), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
         case .recoverWithPassphrase:
-            open(.accountRecover(flow: flow), by: .push)
+            open(.accountRecover(flow: flow, walletFlowType: walletFlowType ?? .algo25), by: .push)
         case .passcode:
             analytics.track(.onboardSetPinCode(type: .create))
             open(.choosePassword(mode: .setup, flow: flow), by: .push)
@@ -187,7 +212,7 @@ extension TutorialViewController: TutorialViewDelegate {
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
-        case let .passphraseVerified(account):
+        case let .passphraseVerified(account, walletType):
             analytics.track(.onboardCreateAccountPassphrase(type: .verify))
 
             if case .backUpAccount = flow {
@@ -195,15 +220,33 @@ extension TutorialViewController: TutorialViewDelegate {
                 return
             }
 
-            open(
-                .accountNameSetup(
-                    flow: flow,
-                    mode: .add,
-                    accountAddress: account.address
-                ),
-                by: .push
-            )
-        case .accountVerified(let flow, let address):
+            switch walletType {
+            case .algo25:
+                let screen = open(
+                    .accountNameSetup(
+                        flow: flow,
+                        mode: .addAlgo25Account,
+                        accountAddress: account.address
+                    ),
+                    by: .push
+                ) as? AccountNameSetupViewController
+                screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                screen?.hidesCloseBarButtonItem = true
+            case .bip39:
+                let screen = open(
+                    .addressNameSetup(
+                        flow: flow,
+                        mode: .addBip39Wallet,
+                        account: account
+                    ),
+                    by: .push
+                ) as? AddressNameSetupViewController
+                screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                screen?.hidesCloseBarButtonItem = true
+            }
+            
+
+        case .accountVerified(let flow, let address, _):
             analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
            
             routeBuyAlgo(
@@ -234,15 +277,42 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
-        case .backUp(flow: let flow, address: _):
+        case .backUp,
+             .writePassphrase:
+            guard
+                let newAccount = createAccount() else {
+                return
+            }
+            
+            switch walletFlowType {
+            case .bip39:
+                let screen = open(
+                    .addressNameSetup(
+                        flow: flow,
+                        mode: .addBip39Wallet,
+                        account: newAccount
+                    ),
+                    by: .push
+                ) as? AddressNameSetupViewController
+                screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                screen?.hidesCloseBarButtonItem = true
+            default:
+                let screen = open(
+                    .accountNameSetup(
+                        flow: flow,
+                        mode: .addAlgo25Account,
+                        accountAddress: newAccount.address
+                    ),
+                    by: .push
+                ) as? AccountNameSetupViewController
+                screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                screen?.hidesCloseBarButtonItem = true
+            }
+
             analytics.track(.onboardCreateAccountPassphrase(type: .skipCreate))
-            createAccount(flow: flow)
-        case .writePassphrase(flow: let flow, address: _):
-            analytics.track(.onboardCreateAccountPassphrase(type: .skipWrite))
-            createAccount(flow: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapSecondaryActionButton?(self)
-        case .accountVerified(let flow, _):
+        case .accountVerified(let flow, _, _):
             if case .initializeAccount(mode: .watch) = flow {
                 analytics.track(.onboardWatchAccount(type: .verified))
             } else if case .addNewAccount(mode: .watch) = flow {
@@ -250,36 +320,20 @@ extension TutorialViewController: TutorialViewDelegate {
             } else {
                 analytics.track(.onboardCreateAccountVerified(type: .start))
             }
+            
+            PeraUserDefaults.shouldShowNewAccountAnimation = true
 
             launchMain()
         default:
             break
         }
     }
-    
-    private func createAccount(
-        flow: AccountSetupFlow
-    ) {
-        guard let newAccount = createAccount() else {
-            return
-        }
-
-        let screen = open(
-            .accountNameSetup(
-                flow: flow,
-                mode: .add,
-                accountAddress: newAccount.address
-            ),
-            by: .push
-        ) as? AccountNameSetupViewController
-        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        screen?.hidesCloseBarButtonItem = true
-    }
 
     private func routeBuyAlgo(
         flow: AccountSetupFlow,
         address: PublicKey?
     ) {
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
         if case .initializeAccount(mode: .watch) = flow {
             launchMain()
             return
@@ -312,7 +366,8 @@ extension TutorialViewController {
                         tutorial: .writePassphrase(
                             flow: flow,
                             address: account.value.address
-                        )
+                        ),
+                        walletFlowType: account.value.isHDAccount ? .bip39 : .algo25
                     ),
                     by: .push
                 )
@@ -330,6 +385,13 @@ extension TutorialViewController {
         if let localAccount = session?.accountInformation(from: account.address) {
             localAccount.isBackedUp = true
             session?.authenticatedUser?.updateAccount(localAccount)
+        }
+        
+        if let walletId = account.hdWalletAddressDetail?.walletId {
+            session?.authenticatedUser?.accounts(withWalletId: walletId).forEach { account in
+                account.isBackedUp = true
+                session?.authenticatedUser?.updateAccount(account)
+            }
         }
 
         if let cachedAccount = sharedDataController.accountCollection[account.address]?.value {
@@ -406,6 +468,7 @@ extension TutorialViewController {
             if case .none = self.flow {
                 self.dismissScreen()
             } else {
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
                 tutorialViewController.launchMain()
             }
         }
@@ -420,14 +483,15 @@ struct TutorialViewControllerUIHandlers {
 
 enum Tutorial: Equatable {
     case backUp(flow: AccountSetupFlow, address: String?)
+    case backUpBip39(flow: AccountSetupFlow, address: String?)
     case writePassphrase(flow: AccountSetupFlow, address: String)
     case watchAccount
-    case recoverWithPassphrase
+    case recoverWithPassphrase (walletFlowType: WalletFlowType)
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled
-    case passphraseVerified(account: AccountInformation)
-    case accountVerified(flow: AccountSetupFlow, address: String? = nil)
+    case passphraseVerified(account: AccountInformation, walletFlowType: WalletFlowType)
+    case accountVerified(flow: AccountSetupFlow, address: String? = nil, isMultipleAccounts: Bool = false)
     case recoverWithLedger
     case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case failedToImportLedgerAccounts
@@ -436,36 +500,72 @@ enum Tutorial: Equatable {
 
 extension TutorialViewController {
     private func createAccount() -> AccountInformation? {
-        generatePrivateKey()
-
-        guard 
-            let tempPrivateKey = session?.privateData(for: "temp"),
-            let address = session?.address(for: "temp")
-        else {
-            return nil
-        }
 
         analytics.track(.registerAccount(registrationType: .create))
 
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay,
-            isWatchAccount: false,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
-            isBackedUp: false
-        )
-        session?.savePrivate(tempPrivateKey, for: account.address)
-        session?.removePrivateData(for: "temp")
+        switch walletFlowType {
+        case .bip39:
+            let (hdWalletAddressDetail, address) = hdWalletService.saveHDWalletAndComposeHDWalletAddressDetail(
+                session: session,
+                storage: hdWalletStorage,
+                entropy: session?.privateData(for: "temp")
+            )
+            
+            guard let hdWalletAddressDetail, let address else {
+                assertionFailure("Could not create HD wallet")
+                return nil
+            }
+            
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: false,
+                hdWalletAddressDetail: hdWalletAddressDetail
+            )
+            
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+            session?.authenticatedUser?.setWalletName(for: hdWalletAddressDetail.walletId)
 
-        if let authenticatedUser = session?.authenticatedUser {
-            authenticatedUser.addAccount(account)
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            let user = User(accounts: [account])
-            session?.authenticatedUser = user
+            return account
+        default:
+            generatePrivateKey()
+
+            guard
+                let tempPrivateKey = session?.privateData(for: "temp"),
+                let address = session?.address(for: "temp")
+            else {
+                return nil
+            }
+            let account = AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay,
+                isWatchAccount: false,
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: false
+            )
+            session?.savePrivate(tempPrivateKey, for: address)
+            session?.removePrivateData(for: "temp")
+            
+            if let authenticatedUser = session?.authenticatedUser {
+                authenticatedUser.addAccount(account)
+                pushNotificationController.sendDeviceDetails()
+            } else {
+                let user = User(accounts: [account])
+                session?.authenticatedUser = user
+            }
+
+            return account
         }
-
-        return account
     }
 
     private func generatePrivateKey() {

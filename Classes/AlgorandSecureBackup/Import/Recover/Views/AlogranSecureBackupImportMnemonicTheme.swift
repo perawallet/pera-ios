@@ -24,8 +24,11 @@ struct AlogranSecureBackupImportMnemonicTheme: AccountRecoverViewTheme {
     let horizontalStackViewSpacing: LayoutMetric
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
+    let bottomInset: LayoutMetric
     let verticalStackViewSpacing: LayoutMetric
-
+    let firstColumnCount: Int
+    let secondColumnCount: Int
+    
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
@@ -38,7 +41,10 @@ struct AlogranSecureBackupImportMnemonicTheme: AccountRecoverViewTheme {
         self.horizontalStackViewTopInset = 37
         self.horizontalInset = 24
         self.topInset = 2
+        self.bottomInset = 100
         self.horizontalStackViewSpacing = 8
         self.verticalStackViewSpacing = 12
+        self.firstColumnCount = 6
+        self.secondColumnCount = 6
     }
 }

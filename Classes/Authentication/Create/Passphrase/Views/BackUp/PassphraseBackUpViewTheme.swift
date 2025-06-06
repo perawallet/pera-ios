@@ -19,7 +19,20 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
+protocol PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
+    var backgroundColor: Color { get }
+    var title: TextStyle { get }
+    var description: TextStyle { get }
+    var mainButtonTheme: ButtonTheme { get }
+    var passphraseViewTheme: PassphraseViewTheme { get }
+    var topInset: LayoutMetric { get }
+    var containerTopInset: LayoutMetric { get }
+    var collectionViewHeight: LayoutMetric { get }
+    var bottomInset: LayoutMetric { get }
+    var horizontalInset: LayoutMetric { get }
+}
+
+struct PassphraseBackUpViewCommonTheme: PassphraseBackUpViewTheme {
     let backgroundColor: Color
     let title: TextStyle
     let description: TextStyle
@@ -44,7 +57,7 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
         ]
         self.description = [
             .textColor(Colors.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
+            .font(Typography.bodyRegular()),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .text(String(localized: "title-passphrase-bottom"))
@@ -56,6 +69,48 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
         self.topInset = 2
         self.containerTopInset = 33
         self.collectionViewHeight = 456
+        self.bottomInset = 16
+        self.horizontalInset = 24
+    }
+}
+
+struct PassphraseBackUpViewBip39Theme: PassphraseBackUpViewTheme {
+    let backgroundColor: Color
+    let title: TextStyle
+    let description: TextStyle
+
+    let mainButtonTheme: ButtonTheme
+    let passphraseViewTheme: PassphraseViewTheme
+
+    let topInset: LayoutMetric
+    let containerTopInset: LayoutMetric
+    let collectionViewHeight: LayoutMetric
+    let bottomInset: LayoutMetric
+    let horizontalInset: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = Colors.Defaults.background
+        self.title = [
+            .textColor(Colors.Text.main),
+            .font(Fonts.DMSans.medium.make(32)),
+            .textAlignment(.left),
+            .textOverflow(FittingText()),
+            .text(String(localized: "recover-passphrase-title"))
+        ]
+        self.description = [
+            .textColor(Colors.Text.gray),
+            .font(Typography.bodyRegular()),
+            .textAlignment(.left),
+            .textOverflow(FittingText()),
+            .text(String(localized: "passphrase-bottom-title-bip39"))
+            ]
+
+        self.mainButtonTheme = ButtonPrimaryTheme()
+        self.passphraseViewTheme = PassphraseViewTheme()
+
+        self.topInset = 2
+        self.containerTopInset = 33
+        self.collectionViewHeight = 426
         self.bottomInset = 16
         self.horizontalInset = 24
     }

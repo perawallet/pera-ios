@@ -58,6 +58,7 @@ final class ASADetailScreen:
         sharedDataController: sharedDataController,
         loadingController: loadingController!,
         bannerController: bannerController!,
+        hdWalletStorage: hdWalletStorage,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
