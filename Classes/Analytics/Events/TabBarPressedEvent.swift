@@ -36,6 +36,9 @@ extension TabBarPressedEvent {
         case tapQuickConnect
         case tapNFTs
         case tapSettings
+        case tapMenu
+        case tapSwap
+        case tapStake
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -49,6 +52,12 @@ extension TabBarPressedEvent {
                 return .tapBarPressedNFTsEvent
             case .tapSettings:
                 return .tapBarPressedSettingsEvent
+            case .tapMenu:
+                return .tapBarPressedMenuEvent
+            case .tapSwap:
+                return .tapBarPressedSwapEvent
+            case .tapStake:
+                return .tapBarPressedStakeEvent
             }
         }
     }

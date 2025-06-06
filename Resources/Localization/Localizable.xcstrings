@@ -2,7 +2,6 @@
   "sourceLanguage" : "en",
   "strings" : {
     "account-continue-unable-to-sign-transactions-itself" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13,7 +12,6 @@
       }
     },
     "account-count" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -36,7 +34,6 @@
       }
     },
     "account-detail-assets-search" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -47,7 +44,6 @@
       }
     },
     "account-detail-portfolio-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -58,7 +54,6 @@
       }
     },
     "account-details-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -69,7 +64,6 @@
       }
     },
     "account-details-wallet-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -80,7 +74,6 @@
       }
     },
     "account-listing-error-message" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -91,7 +84,6 @@
       }
     },
     "account-listing-partial-error-message" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -102,7 +94,6 @@
       }
     },
     "account-name-setup-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -113,7 +104,6 @@
       }
     },
     "account-name-setup-finish" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -124,7 +114,6 @@
       }
     },
     "account-name-setup-placeholder" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -135,7 +124,6 @@
       }
     },
     "account-not-backed-up-warning-action-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -146,7 +134,7 @@
       }
     },
     "account-not-backed-up-warning-subtitle" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -157,7 +145,6 @@
       }
     },
     "account-not-backed-up-warning-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -168,7 +155,6 @@
       }
     },
     "account-options-add-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -179,7 +165,6 @@
       }
     },
     "account-options-arrange-list-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -190,7 +175,6 @@
       }
     },
     "account-select-clipboard-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -201,7 +185,6 @@
       }
     },
     "account-select-header-accounts-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -212,7 +195,6 @@
       }
     },
     "account-select-header-matched-accounts-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -223,7 +205,6 @@
       }
     },
     "account-select-header-search-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -234,7 +215,6 @@
       }
     },
     "account-select-search-empty-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -245,7 +225,6 @@
       }
     },
     "account-select-search-empty-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -256,7 +235,7 @@
       }
     },
     "account-type-selection-add" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -267,7 +246,6 @@
       }
     },
     "account-type-selection-add-account" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -278,7 +256,6 @@
       }
     },
     "account-type-selection-add-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -289,7 +266,6 @@
       }
     },
     "account-type-selection-create" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -300,7 +276,6 @@
       }
     },
     "account-type-selection-create-universal-wallet-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -311,7 +286,6 @@
       }
     },
     "account-type-selection-create-wallet" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -322,7 +296,6 @@
       }
     },
     "account-type-selection-create-wallet-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -333,7 +306,6 @@
       }
     },
     "account-type-selection-create-wallet-detail-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -344,7 +316,6 @@
       }
     },
     "account-type-selection-import-secure-backup" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -355,7 +326,6 @@
       }
     },
     "account-type-selection-import-secure-backup-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -366,7 +336,6 @@
       }
     },
     "account-type-selection-import-wallet" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -377,7 +346,6 @@
       }
     },
     "account-type-selection-import-web" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -388,7 +356,6 @@
       }
     },
     "account-type-selection-import-web-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -399,7 +366,6 @@
       }
     },
     "account-type-selection-ledger" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -410,7 +376,6 @@
       }
     },
     "account-type-selection-ledger-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -421,7 +386,6 @@
       }
     },
     "account-type-selection-passphrase" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -432,18 +396,16 @@
       }
     },
     "account-type-selection-passphrase-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to recover an Algorand wallet."
+            "value" : "I want to recover an Algorand account using my 25-word passphrase"
           }
         }
       }
     },
     "account-type-selection-passphrase-detail-algo25" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -454,7 +416,6 @@
       }
     },
     "account-type-selection-qr" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -465,7 +426,6 @@
       }
     },
     "account-type-selection-qr-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -476,7 +436,6 @@
       }
     },
     "account-type-selection-recover" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -487,7 +446,6 @@
       }
     },
     "account-type-selection-recover-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -498,7 +456,6 @@
       }
     },
     "account-type-selection-recover-detail-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -508,19 +465,7 @@
         }
       }
     },
-    "account-type-selection-recover-wallet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recover a wallet"
-          }
-        }
-      }
-    },
     "account-type-selection-recover-wallet-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -531,7 +476,6 @@
       }
     },
     "account-type-selection-universal-wallet-warning-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -542,7 +486,7 @@
       }
     },
     "account-type-selection-watch" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -553,7 +497,6 @@
       }
     },
     "account-type-selection-watch-address" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -575,7 +518,6 @@
       }
     },
     "account-type-selection-watch-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -586,7 +528,6 @@
       }
     },
     "account-wallet-name-setup-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -597,7 +538,6 @@
       }
     },
     "account-welcome-add-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -608,7 +548,6 @@
       }
     },
     "account-welcome-add-wallet-or-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -619,7 +558,6 @@
       }
     },
     "account-welcome-wallet-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -630,7 +568,6 @@
       }
     },
     "accounts-title-history" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -641,7 +578,6 @@
       }
     },
     "accounts-title-overview" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -673,7 +609,6 @@
       }
     },
     "action-not-available-for-account-type" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -684,7 +619,6 @@
       }
     },
     "address-copied-to-clipboard" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -695,7 +629,6 @@
       }
     },
     "algo-statistics-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -706,7 +639,7 @@
       }
     },
     "algorand-secure-backup-account-list-action-title" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -717,7 +650,7 @@
       }
     },
     "algorand-secure-backup-account-list-no-content-body" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -728,7 +661,7 @@
       }
     },
     "algorand-secure-backup-account-list-restore-action-title" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -739,7 +672,7 @@
       }
     },
     "algorand-secure-backup-account-list-restore-title" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -750,7 +683,7 @@
       }
     },
     "algorand-secure-backup-account-list-title" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -761,7 +694,6 @@
       }
     },
     "algorand-secure-backup-banner-cta-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -772,7 +704,6 @@
       }
     },
     "algorand-secure-backup-banner-subtitle" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -783,7 +714,6 @@
       }
     },
     "algorand-secure-backup-banner-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -794,7 +724,6 @@
       }
     },
     "algorand-secure-backup-error-result-body" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -805,7 +734,6 @@
       }
     },
     "algorand-secure-backup-error-result-body-highlighted-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -816,7 +744,6 @@
       }
     },
     "algorand-secure-backup-import-backup-action-replace-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -827,7 +754,6 @@
       }
     },
     "algorand-secure-backup-import-backup-action-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -838,7 +764,6 @@
       }
     },
     "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -849,7 +774,6 @@
       }
     },
     "algorand-secure-backup-import-backup-clipboard-failed-subtitle" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1138,7 +1062,6 @@
       }
     },
     "algorand-secure-backup-instruction-save-backup-file-instruction-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1149,7 +1072,6 @@
       }
     },
     "algorand-secure-backup-instruction-save-backup-file-instruction-warning" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1160,7 +1082,6 @@
       }
     },
     "algorand-secure-backup-instruction-select-accounts-instruction-subtitle" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1523,7 +1444,6 @@
       }
     },
     "already-imported-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2523,6 +2443,17 @@
         }
       }
     },
+    "cards-not-supported-country-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We will inform this device via a push notification when we launch in your country."
+          }
+        }
+      }
+    },
     "check-domain-default-error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3404,7 +3335,6 @@
       }
     },
     "hd-account-discovery-loading-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3415,7 +3345,6 @@
       }
     },
     "hd-wallet-setup-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3426,7 +3355,6 @@
       }
     },
     "hd-wallet-setup-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3437,7 +3365,6 @@
       }
     },
     "hd-wallet-setup-wallet-name" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3737,12 +3664,21 @@
       }
     },
     "introduction-title-terms-and-services-wallet" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\"%@\\\">Terms and Conditions</a> and <a href=\\\"%@\\\">Privacy Policy</a>"
+            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\\\\\"%@\\\\\\\">Terms and Conditions</a> and <a href=\\\\\\\"%@\\\\\\\">Privacy Policy</a>"
+          }
+        }
+      }
+    },
+    "invite-screen-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the Pera Wallet download link with your friends."
           }
         }
       }
@@ -3881,7 +3817,6 @@
       }
     },
     "ledger-account-verification-status-awaiting" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3892,7 +3827,6 @@
       }
     },
     "ledger-account-verification-status-not-verified" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3903,7 +3837,6 @@
       }
     },
     "ledger-account-verification-status-verified" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3914,7 +3847,6 @@
       }
     },
     "ledger-approval-connection-message" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3925,7 +3857,6 @@
       }
     },
     "ledger-approval-connection-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3936,7 +3867,6 @@
       }
     },
     "ledger-approval-sign-info-message" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3947,7 +3877,6 @@
       }
     },
     "ledger-approval-sign-message" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4441,6 +4370,17 @@
         }
       }
     },
+    "menu-card-banner-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get the world’s first web3 \nMastercard."
+          }
+        }
+      }
+    },
     "min-balance-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4475,7 +4415,6 @@
       }
     },
     "mnemonic-types-algo25-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4486,7 +4425,6 @@
       }
     },
     "mnemonic-types-algo25-info" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4497,7 +4435,6 @@
       }
     },
     "mnemonic-types-algo25-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4508,7 +4445,6 @@
       }
     },
     "mnemonic-types-bip39-detail" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4519,7 +4455,6 @@
       }
     },
     "mnemonic-types-bip39-info" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4530,7 +4465,6 @@
       }
     },
     "mnemonic-types-bip39-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4541,7 +4475,6 @@
       }
     },
     "mnemonic-types-screen-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5155,7 +5088,6 @@
       }
     },
     "options-view-root-wallet-passphrase" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5242,19 +5174,7 @@
         }
       }
     },
-    "passphrase-bottom-title-alg25" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legacy format that is specific to Algorand ecosystem"
-          }
-        }
-      }
-    },
     "passphrase-bottom-title-bip39" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5756,7 +5676,6 @@
       }
     },
     "recover-copy-error-algo25" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5844,7 +5763,6 @@
       }
     },
     "recover-from-seed-verify-pop-up-explanation-already-added-plural" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5866,7 +5784,6 @@
       }
     },
     "recover-from-seed-verify-pop-up-title-plural" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5877,7 +5794,14 @@
       }
     },
     "recover-passphrase-title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account."
+          }
+        }
+      }
     },
     "rekey-account-selection-list-header" : {
       "extractionState" : "manual",
@@ -6173,7 +6097,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fetching rekeyed\naccounts..."
+            "value" : "Fetching rekeyed\\naccounts..."
           }
         }
       }
@@ -6355,7 +6279,6 @@
       }
     },
     "select-address-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -6378,7 +6301,6 @@
       }
     },
     "select-address-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7137,7 +7059,6 @@
       }
     },
     "standard-account-hd-type-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8059,6 +7980,17 @@
         }
       }
     },
+    "title-all-set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're all set!"
+          }
+        }
+      }
+    },
     "title-alphabetically-a-to-z" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8247,6 +8179,72 @@
         }
       }
     },
+    "title-carousel-banner-algo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy ALGO with Apple Pay, credit cards or bank transfer"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cards: Get the world’s first web3 Mastercard"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-discover" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discover: Use browser to interact with dApps"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receive Algo by sharing your account address"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-swap" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap: Convert between popular ASA pairs"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-transfer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer: Accept any crypto across all chains"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8364,6 +8362,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy ID"
+          }
+        }
+      }
+    },
+    "title-create-pera-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Pera Card"
           }
         }
       }
@@ -8621,6 +8630,17 @@
         }
       }
     },
+    "title-go-to-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Cards"
+          }
+        }
+      }
+    },
     "title-go-to-settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8683,6 +8703,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The internet connection appears to be offline."
+          }
+        }
+      }
+    },
+    "title-invite-friends" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite Friends"
           }
         }
       }
@@ -8831,7 +8861,6 @@
       }
     },
     "title-legacy-uppercased" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8870,6 +8899,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manually"
+          }
+        }
+      }
+    },
+    "title-menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
           }
         }
       }
@@ -9248,6 +9287,17 @@
         }
       }
     },
+    "title-recently-used-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently used Pera Card"
+          }
+        }
+      }
+    },
     "title-recover" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9474,6 +9524,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        }
+      }
+    },
+    "title-share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
           }
         }
       }
@@ -10613,7 +10674,6 @@
       }
     },
     "tutorial-description-back-up-bip39" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10679,7 +10739,6 @@
       }
     },
     "tutorial-description-recover-bip39" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10789,7 +10848,6 @@
       }
     },
     "tutorial-title-back-up-bip39" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10833,7 +10891,6 @@
       }
     },
     "tutorial-title-recover-bip39" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11020,7 +11077,6 @@
       }
     },
     "wallet-address" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

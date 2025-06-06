@@ -624,7 +624,8 @@ extension CollectibleDetailViewController {
     ) {
         open(
             .shareActivity(
-                items: items
+                items: items,
+                excludedActivityTypes: nil
             ),
             by: .presentWithoutNavigationController
         )

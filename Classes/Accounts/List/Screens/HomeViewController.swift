@@ -195,6 +195,15 @@ final class HomeViewController:
                 if !listWasScrolled {
                     self.configureASARequestBarButton()
                 }
+            case .didUpdateSpotBanner(let errorDescription):
+                guard let errorDescription else {
+                    dataController.fetchSpotBanners()
+                    return
+                }
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
             }
         }
         
@@ -238,6 +247,7 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
+        dataController.fetchSpotBanners()
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
@@ -637,9 +647,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
 
@@ -656,9 +665,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
     
@@ -675,19 +683,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
-        }
-    }
-
-    private func linkInteractors(
-        _ cell: AccountNotBackedUpWarningCell
-    ) {
-        cell.startObserving(event: .performBackup) {
-            [weak self] in
-            guard let self else { return }
-            openBackUpAccount()
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
 
@@ -704,9 +701,8 @@ extension HomeViewController {
 
         cell.startObserving(event: .action) {
             [weak self] in
-            guard let self else { return }
-
-            self.triggerBannerCTA(item: item)
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
@@ -788,9 +784,8 @@ extension HomeViewController {
         }
     }
 
-    private func triggerBannerCTA(item: AnnouncementViewModel) {
-        guard let ctaUrl = item.ctaUrl else { return }
-        let url = ctaUrl.browserDeeplinkURL ?? ctaUrl
+    private func triggerBannerCTA(itemUrl: URL) {
+        let url = itemUrl.browserDeeplinkURL ?? itemUrl
         
         if let externalDeepLink = url.externalDeepLink {
             launchController.receive(
@@ -1010,8 +1005,6 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             }
-        case .accountNotBackedUpWarning:
-            linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
             switch item.type {
             case .governance:
@@ -1025,6 +1018,9 @@ extension HomeViewController {
             case .card:
                 linkInteractors(cell as! CardAnnouncementCell, for: item)
             }
+        case .carouselBanner:
+            guard let cell = cell as? CarouselBannerCell else { return }
+            cell.delegate = self
         case .account(let item):
             switch item {
             case .header(let headerItem):
@@ -1313,7 +1309,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 }
             }
         }
-
+        
         transitionToPassphraseDisplay.perform(
             .passphraseWarning(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
@@ -1347,6 +1343,22 @@ extension HomeViewController {
         }
 
         return dataController[item.address]
+    }
+}
+
+extension HomeViewController: CarouselBannerDelegate {
+    func didPressBanner(in banner: CarouselBannerItemModel?) {
+        if let banner, banner.isBackupBanner {
+            openBackUpAccount()
+        } else {
+            guard let itemUrl = banner?.url else { return }
+            triggerBannerCTA(itemUrl: itemUrl)
+        }
+    }
+    
+    func didTapCloseButton(in banner: CarouselBannerItemModel?) {
+        guard let banner else { return }
+        dataController.updateClose(for: banner)
     }
 }
 
