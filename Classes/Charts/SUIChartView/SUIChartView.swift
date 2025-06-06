@@ -17,7 +17,7 @@
 import SwiftUI
 import Charts
 
-struct DataPoint: Identifiable, Hashable {
+struct ChartDataPoint: Identifiable, Hashable {
     let id = UUID()
     let day: String
     let value: Double
@@ -25,7 +25,7 @@ struct DataPoint: Identifiable, Hashable {
 
 struct SUIChartView: View {
     let isLoading: Bool
-    var chartData: [DataPoint]
+    var chartData: [ChartDataPoint]
     
     var body: some View {
         ZStack {
@@ -44,7 +44,7 @@ struct SUIChartView: View {
 }
 
 struct LineChartView: View {
-    let data: [DataPoint]
+    let data: [ChartDataPoint]
     let lineColor = Color(red: 31/255, green: 142/255, blue: 157/255)
     let gradientColor = Color(red: 40/255, green: 167/255, blue: 155/255)
     let interpolationMethod: InterpolationMethod = .monotone

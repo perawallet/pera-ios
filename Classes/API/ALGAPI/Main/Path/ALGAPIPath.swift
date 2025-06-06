@@ -67,7 +67,7 @@ enum ALGAPIPath: String {
     case spotBannersList = "/devices/%@/spot-banners/"
     case spotBannerClose = "/devices/%@/spot-banners/%d/close/"
     case assetBalanceChartData = "/accounts/%@/assets/%@/balance-history/"
-    case wealthBalanceChartData = "/accounts/%@/wealth/"
+    case addressWealthBalanceChartData = "/accounts/%@/wealth/"
     case walletWealthBalanceChartData = "/wallet/wealth/"
 }
 

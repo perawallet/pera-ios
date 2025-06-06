@@ -37,7 +37,7 @@ extension ALGAPI {
         assetId: String,
         period: ChartDataPeriod,
         currency: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<CardsCountryAvailability>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
@@ -51,16 +51,16 @@ extension ALGAPI {
 
 extension ALGAPI {
     @discardableResult
-    func fetchWealthBalanceChartData(
+    func fetchAddressWealthBalanceChartData(
         address: String,
         period: ChartDataPeriod,
         ordering: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<CardsCountryAvailability>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
-            .path(.wealthBalanceChartData, args: address)
-            .query(WealthBalanceChartDataDraft(period: period, ordering: ordering))
+            .path(.addressWealthBalanceChartData, args: address)
+            .query(AddressWealthBalanceChartDataDraft(period: period, ordering: ordering))
             .method(.get)
             .completionHandler(handler)
             .execute()

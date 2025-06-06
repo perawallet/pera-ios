@@ -16,7 +16,7 @@
 
 struct ChartViewModel: Hashable, Equatable {
     let period: ChartDataPeriod
-    let chartValues: [DataPoint]
+    let chartValues: [ChartDataPoint]
     
     static func == (lhs: ChartViewModel, rhs: ChartViewModel) -> Bool {
         lhs.period == rhs.period && lhs.chartValues == rhs.chartValues

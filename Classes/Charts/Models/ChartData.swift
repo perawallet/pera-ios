@@ -47,51 +47,58 @@ extension ChartDataResult {
 final class ChartData: ALGEntityModel, Codable, Equatable, Hashable {
     
     let datetime: String
-    let usd_value: String
-    let algo_value: String
+    let usdValue: String
+    let algoValue: String
     let round: Int
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.datetime = apiModel.datetime
-        self.usd_value = apiModel.usd_value
-        self.algo_value = apiModel.algo_value
+        self.usdValue = apiModel.usdValue
+        self.algoValue = apiModel.algoValue
         self.round = apiModel.round
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.datetime = datetime
-        apiModel.usd_value = usd_value
-        apiModel.algo_value = algo_value
+        apiModel.usdValue = usdValue
+        apiModel.algoValue = algoValue
         apiModel.round = round
         return apiModel
     }
     
     static func == (lhs: ChartData, rhs: ChartData) -> Bool {
-        return lhs.datetime == rhs.datetime && lhs.usd_value == rhs.usd_value && lhs.algo_value == rhs.algo_value && lhs.round == rhs.round
+        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(datetime)
-        hasher.combine(usd_value)
-        hasher.combine(algo_value)
+        hasher.combine(usdValue)
+        hasher.combine(algoValue)
         hasher.combine(round)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case datetime
+        case usdValue = "usd_value"
+        case algoValue = "algo_value"
+        case round
     }
 }
 
 extension ChartData {
     struct APIModel: ALGAPIModel {
         var datetime: String
-        var usd_value: String
-        var algo_value: String
+        var usdValue: String
+        var algoValue: String
         var round: Int
 
         init() {
             self.datetime = .empty
-            self.usd_value = .empty
-            self.algo_value = .empty
+            self.usdValue = .empty
+            self.algoValue = .empty
             self.round = 0
         }
     }

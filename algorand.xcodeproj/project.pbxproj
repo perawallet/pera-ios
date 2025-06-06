@@ -5288,13 +5288,13 @@
 		D443A07A27E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */; };
 		D443A07B27E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */; };
 		D443C3D92DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D52DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift */; };
-		D443C3DA2DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift */; };
+		D443C3DA2DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift */; };
 		D443C3DB2DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D62DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift */; };
 		D443C3DC2DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D52DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift */; };
-		D443C3DD2DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift */; };
+		D443C3DD2DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift */; };
 		D443C3DE2DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D62DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift */; };
 		D443C3DF2DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D52DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift */; };
-		D443C3E02DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift */; };
+		D443C3E02DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D72DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift */; };
 		D443C3E12DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443C3D62DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift */; };
 		D443C3E22DF1D59200705B1D /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
 		D443C3E32DF1D5A100705B1D /* ALGAPI+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D420AFC42DCDFBF800257D3E /* ALGAPI+Cards.swift */; };
@@ -10039,7 +10039,7 @@
 		D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleActionViewTheme.swift; sourceTree = "<group>"; };
 		D443C3D52DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetBalanceChartDataDraft.swift; sourceTree = "<group>"; };
 		D443C3D62DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletWealthBalanceChartDataDraft.swift; sourceTree = "<group>"; };
-		D443C3D72DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WealthBalanceChartDataDraft.swift; sourceTree = "<group>"; };
+		D443C3D72DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressWealthBalanceChartDataDraft.swift; sourceTree = "<group>"; };
 		D44488182DBF76A300A561E1 /* SwapContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapContainerVC.swift; sourceTree = "<group>"; };
 		D444881D2DBF7C0C00A561E1 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		D444EE8B2946B670008AD374 /* AssetFilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFilterOptions.swift; sourceTree = "<group>"; };
@@ -20814,7 +20814,7 @@
 			children = (
 				D443C3D52DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift */,
 				D443C3D62DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift */,
-				D443C3D72DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift */,
+				D443C3D72DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -26154,7 +26154,7 @@
 				17BD4E8E2292F1260003E49A /* AccountRecoverView.swift in Sources */,
 				D4F4C8FC29D1B5670069FB94 /* AccountInformationNoAuthAccountItemViewModel.swift in Sources */,
 				D443C3DF2DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */,
-				D443C3E02DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */,
+				D443C3E02DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */,
 				D443C3E12DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */,
 				2BAD6CB527F88CDF0016E869 /* Collectible3DVideoViewController.swift in Sources */,
 				2B99D42128E9D91800323C11 /* SwapInfoItemView.swift in Sources */,
@@ -29666,7 +29666,7 @@
 				2B7E305A267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
 				2B69AB1D28BF9CFD00A8D65D /* SwapProvider.swift in Sources */,
 				D443C3DC2DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */,
-				D443C3DD2DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */,
+				D443C3DD2DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */,
 				D443C3DE2DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */,
 				D4DCD68C29D6FB37007CA6B8 /* RekeyAnyAccountToAnyAccountNoConfigurationChangeInstructionViewModel.swift in Sources */,
 				2B288AC7268E375D00BC6FB6 /* WCPeerMeta.swift in Sources */,
@@ -31468,7 +31468,7 @@
 				F034521228B2CD9B009467A0 /* OptInAssetNameViewModel.swift in Sources */,
 				2BD36DB0267CCB4D00C57728 /* WCAlgosTransactionView.swift in Sources */,
 				D443C3D92DF1D46F00705B1D /* AssetBalanceChartDataDraft.swift in Sources */,
-				D443C3DA2DF1D46F00705B1D /* WealthBalanceChartDataDraft.swift in Sources */,
+				D443C3DA2DF1D46F00705B1D /* AddressWealthBalanceChartDataDraft.swift in Sources */,
 				D443C3DB2DF1D46F00705B1D /* WalletWealthBalanceChartDataDraft.swift in Sources */,
 				2B5F6F982768DA0700C9B780 /* SettingsFooterViewTheme.swift in Sources */,
 				D4389355280428460038F7AD /* URLImageViewNoStyleLayoutSheet.swift in Sources */,

@@ -58,7 +58,7 @@ final class HomeChartsView:
         updateChart(with: viewModel.chartValues)
     }
     
-    private func updateChart(with data: [DataPoint] = []) {
+    private func updateChart(with data: [ChartDataPoint] = []) {
         hostingController.rootView = SUIChartView(isLoading: isLoading, chartData: data)
     }
     

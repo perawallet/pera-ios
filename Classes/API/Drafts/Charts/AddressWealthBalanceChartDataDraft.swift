@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WealthBalanceChartDataDraft.swift
+//   AddressWealthBalanceChartDataDraft.swift
 
 import MagpieCore
 
-struct WealthBalanceChartDataDraft: ObjectQuery {
+struct AddressWealthBalanceChartDataDraft: ObjectQuery {
     var period: ChartDataPeriod
     var ordering: String?
     
