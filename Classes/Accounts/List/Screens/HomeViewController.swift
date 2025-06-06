@@ -248,6 +248,7 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
+        dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
@@ -449,7 +450,7 @@ extension HomeViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(Colors.Helpers.heroBackground)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
 
@@ -632,6 +633,29 @@ extension HomeViewController {
             self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
         }
+    }
+    
+    private func linkInteractors(
+        _ cell: HomeChartsCell
+    ) {
+        cell.startObserving(event: .weekChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.updateChartData(period: .oneWeek)
+        }
+        
+        cell.startObserving(event: .monthChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.updateChartData(period: .oneMonth)
+        }
+        
+        cell.startObserving(event: .yearChartSelected) {
+            [weak self] in
+            guard let self else { return }
+            dataController.updateChartData(period: .oneYear)
+        }
+
     }
 
     private func linkInteractors(
@@ -1003,6 +1027,10 @@ extension HomeViewController {
 
                 cell.isSwapBadgeVisible = !isOnboardedToSwap
 
+                linkInteractors(cell)
+            case .charts:
+                let cell = cell as! HomeChartsCell
+                
                 linkInteractors(cell)
             }
         case .announcement(let item):

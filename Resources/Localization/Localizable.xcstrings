@@ -2442,6 +2442,39 @@
         }
       }
     },
+    "chart-segcontrol-month" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1M"
+          }
+        }
+      }
+    },
+    "chart-segcontrol-week" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1W"
+          }
+        }
+      }
+    },
+    "chart-segcontrol-year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1Y"
+          }
+        }
+      }
+    },
     "check-domain-default-error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3167,6 +3200,9 @@
           }
         }
       }
+    },
+    "Day" : {
+
     },
     "default-error-message" : {
       "extractionState" : "manual",
@@ -10915,6 +10951,9 @@
           }
         }
       }
+    },
+    "Value" : {
+
     },
     "verification-info-body" : {
       "extractionState" : "manual",
