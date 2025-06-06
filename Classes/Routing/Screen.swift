@@ -445,6 +445,7 @@ indirect enum Screen {
         transactionDraft: KeyRegTransactionSendDraft
     )
     case inviteFriends(eventHandler: InviteFriendsScreen.EventHandler)
+    case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
 }
 
 extension Screen {

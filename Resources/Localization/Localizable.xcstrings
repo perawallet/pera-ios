@@ -506,6 +506,17 @@
         }
       }
     },
+    "account-type-selection-watch-address-detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor an Algorand address by providing its address"
+          }
+        }
+      }
+    },
     "account-type-selection-watch-detail" : {
       "localizations" : {
         "en" : {
@@ -587,6 +598,7 @@
       }
     },
     "accounts-transaction-empty-text" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5205,6 +5217,56 @@
         }
       }
     },
+    "passphrase-warning-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm and acknowledge the following:"
+          }
+        }
+      }
+    },
+    "passphrase-warning-row1-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nobody can see my screen."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row2-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I risk losing all my funds if I share my Recovery Phrase with anyone."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row3-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My funds are permanently lost if I lose my Recovery Phrase and lose access to my wallet."
+          }
+        }
+      }
+    },
+    "passphrase-warning-row4-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pera employees will NEVER ask for my Recovery Phrase."
+          }
+        }
+      }
+    },
     "password-change-new-subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5608,7 +5670,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again."
+            "value" : "The last copied text is not valid passphrase with 24 words. Please copy valid passphrase and try again."
           }
         }
       }
@@ -5989,6 +6051,12 @@
                   "state" : "translated",
                   "value" : "You have %lld rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We have scanned the blockchain and were not able to find any accounts that have not been imported."
+                }
               }
             }
           }
@@ -6011,6 +6079,12 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld rekeyed accounts found"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "No Rekeyed Accounts Found"
                 }
               }
             }
@@ -9070,6 +9144,16 @@
         }
       }
     },
+    "title-passphrase-warning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep it secret. Keep it safe."
+          }
+        }
+      }
+    },
     "title-paste-passphrase" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9342,6 +9426,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please try later."
+          }
+        }
+      }
+    },
+    "title-reveal-passphrase" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reveal Passphrase"
           }
         }
       }
@@ -9848,17 +9942,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watch account"
-          }
-        }
-      }
-    },
-    "title-yes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yes"
           }
         }
       }

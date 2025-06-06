@@ -2139,7 +2139,6 @@
 		2B7E3044267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3042267A524D00E89EE3 /* WCTransactionDappMessageView.swift */; };
 		2B7E3045267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3042267A524D00E89EE3 /* WCTransactionDappMessageView.swift */; };
 		2B7E3047267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
-		2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
 		2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
 		2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */; };
 		2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */; };
@@ -5302,6 +5301,27 @@
 		D4462D2D2DA91601007154E7 /* WelcomeLegacyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4462D2C2DA915FC007154E7 /* WelcomeLegacyViewTheme.swift */; };
 		D4462D2E2DA91601007154E7 /* WelcomeLegacyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4462D2C2DA915FC007154E7 /* WelcomeLegacyViewTheme.swift */; };
 		D4462D2F2DA91601007154E7 /* WelcomeLegacyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4462D2C2DA915FC007154E7 /* WelcomeLegacyViewTheme.swift */; };
+		D446A2272DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2232DF3122E0044A7DC /* PassphraseWarningScreen.swift */; };
+		D446A2282DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2242DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift */; };
+		D446A2292DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21E2DF3122E0044A7DC /* WarningCheckViewAccessory.swift */; };
+		D446A22A2DF3122E0044A7DC /* WarningCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21D2DF3122E0044A7DC /* WarningCheckView.swift */; };
+		D446A22B2DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21F2DF3122E0044A7DC /* WarningCheckViewTheme.swift */; };
+		D446A22C2DF3122E0044A7DC /* WarningCheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21C2DF3122E0044A7DC /* WarningCheckCell.swift */; };
+		D446A22D2DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2212DF3122E0044A7DC /* PassphraseWarningDataController.swift */; };
+		D446A22E2DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2232DF3122E0044A7DC /* PassphraseWarningScreen.swift */; };
+		D446A22F2DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2242DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift */; };
+		D446A2302DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21E2DF3122E0044A7DC /* WarningCheckViewAccessory.swift */; };
+		D446A2312DF3122E0044A7DC /* WarningCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21D2DF3122E0044A7DC /* WarningCheckView.swift */; };
+		D446A2322DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21F2DF3122E0044A7DC /* WarningCheckViewTheme.swift */; };
+		D446A2332DF3122E0044A7DC /* WarningCheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21C2DF3122E0044A7DC /* WarningCheckCell.swift */; };
+		D446A2342DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2212DF3122E0044A7DC /* PassphraseWarningDataController.swift */; };
+		D446A2352DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2232DF3122E0044A7DC /* PassphraseWarningScreen.swift */; };
+		D446A2362DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2242DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift */; };
+		D446A2372DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21E2DF3122E0044A7DC /* WarningCheckViewAccessory.swift */; };
+		D446A2382DF3122E0044A7DC /* WarningCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21D2DF3122E0044A7DC /* WarningCheckView.swift */; };
+		D446A2392DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21F2DF3122E0044A7DC /* WarningCheckViewTheme.swift */; };
+		D446A23A2DF3122E0044A7DC /* WarningCheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A21C2DF3122E0044A7DC /* WarningCheckCell.swift */; };
+		D446A23B2DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A2212DF3122E0044A7DC /* PassphraseWarningDataController.swift */; };
 		D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73E272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73F272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
@@ -10011,6 +10031,13 @@
 		D4462D182DA912C8007154E7 /* WelcomeTypeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTypeViewTheme.swift; sourceTree = "<group>"; };
 		D4462D1C2DA91352007154E7 /* WelcomeTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTypeViewModel.swift; sourceTree = "<group>"; };
 		D4462D2C2DA915FC007154E7 /* WelcomeLegacyViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeLegacyViewTheme.swift; sourceTree = "<group>"; };
+		D446A21C2DF3122E0044A7DC /* WarningCheckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckCell.swift; sourceTree = "<group>"; };
+		D446A21D2DF3122E0044A7DC /* WarningCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckView.swift; sourceTree = "<group>"; };
+		D446A21E2DF3122E0044A7DC /* WarningCheckViewAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckViewAccessory.swift; sourceTree = "<group>"; };
+		D446A21F2DF3122E0044A7DC /* WarningCheckViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckViewTheme.swift; sourceTree = "<group>"; };
+		D446A2212DF3122E0044A7DC /* PassphraseWarningDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningDataController.swift; sourceTree = "<group>"; };
+		D446A2232DF3122E0044A7DC /* PassphraseWarningScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningScreen.swift; sourceTree = "<group>"; };
+		D446A2242DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningScreenTheme.swift; sourceTree = "<group>"; };
 		D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionView.swift; sourceTree = "<group>"; };
 		D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionViewTheme.swift; sourceTree = "<group>"; };
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -10129,6 +10156,11 @@
 		D45FD9B22A92222300F3ECB0 /* WCSessionConnectionProfileViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionProfileViewTheme.swift; sourceTree = "<group>"; };
 		D45FD9B62A92223E00F3ECB0 /* WCSessionConnectionProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionProfileViewModel.swift; sourceTree = "<group>"; };
 		D45FD9BA2A92224B00F3ECB0 /* WCSessionConnectionProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionProfileCell.swift; sourceTree = "<group>"; };
+		D46057DB2DEDA28A00B1342C /* PassphraseWarningDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningDataController.swift; sourceTree = "<group>"; };
+		D46057E02DEDA85500B1342C /* WarningCheckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckCell.swift; sourceTree = "<group>"; };
+		D46057E42DEDA8A500B1342C /* WarningCheckViewAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckViewAccessory.swift; sourceTree = "<group>"; };
+		D46057E82DEDA8EA00B1342C /* WarningCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckView.swift; sourceTree = "<group>"; };
+		D46057EC2DEDA91B00B1342C /* WarningCheckViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCheckViewTheme.swift; sourceTree = "<group>"; };
 		D4609BBE293F6C6E00F4D0D0 /* OptOutCollectibleAssetListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutCollectibleAssetListItemCellTheme.swift; sourceTree = "<group>"; };
 		D4624C9D28C9ED3200EBF858 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		D462DED32857435E0092DF5A /* SortCollectibleListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortCollectibleListLocalDataController.swift; sourceTree = "<group>"; };
@@ -10487,6 +10519,8 @@
 		D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerViewTheme.swift; sourceTree = "<group>"; };
 		D4BFA6142DD746E3002F251E /* SpotBannersAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotBannersAPIDataController.swift; sourceTree = "<group>"; };
 		D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseView.swift; sourceTree = "<group>"; };
+		D4C19FAA2DE99D0C00D8A98F /* PassphraseWarningScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningScreen.swift; sourceTree = "<group>"; };
+		D4C19FAE2DE99D7F00D8A98F /* PassphraseWarningScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseWarningScreenTheme.swift; sourceTree = "<group>"; };
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
 		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
 		D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewTheme.swift; sourceTree = "<group>"; };
@@ -12871,6 +12905,7 @@
 		2B4DF422236C757300FF9551 /* Passphrase */ = {
 			isa = PBXGroup;
 			children = (
+				D446A2262DF3122E0044A7DC /* Warning */,
 				2BA71317274853D500B8A907 /* Screens */,
 				2BA71318274853DA00B8A907 /* Views */,
 			);
@@ -20725,6 +20760,44 @@
 			path = Tooltip;
 			sourceTree = "<group>";
 		};
+		D446A2202DF3122E0044A7DC /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D446A21C2DF3122E0044A7DC /* WarningCheckCell.swift */,
+				D446A21D2DF3122E0044A7DC /* WarningCheckView.swift */,
+				D446A21E2DF3122E0044A7DC /* WarningCheckViewAccessory.swift */,
+				D446A21F2DF3122E0044A7DC /* WarningCheckViewTheme.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		D446A2222DF3122E0044A7DC /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D446A2212DF3122E0044A7DC /* PassphraseWarningDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D446A2252DF3122E0044A7DC /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D446A2232DF3122E0044A7DC /* PassphraseWarningScreen.swift */,
+				D446A2242DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		D446A2262DF3122E0044A7DC /* Warning */ = {
+			isa = PBXGroup;
+			children = (
+				D446A2202DF3122E0044A7DC /* Cells */,
+				D446A2222DF3122E0044A7DC /* Data */,
+				D446A2252DF3122E0044A7DC /* Screens */,
+			);
+			path = Warning;
+			sourceTree = "<group>";
+		};
 		D446A748272ABEC90081D60B /* Rekey */ = {
 			isa = PBXGroup;
 			children = (
@@ -21587,9 +21660,16 @@
 				D40F293E2DDB3004008D633C /* CarouselPageControl.swift */,
 				D46576C62DCCFBE60076F3C4 /* CarouselBannerItemModel.swift */,
 				D4BFA6102DD7403A002F251E /* CarouselBannerViewTheme.swift */,
+				D4C19FAA2DE99D0C00D8A98F /* PassphraseWarningScreen.swift */,
+				D46057DB2DEDA28A00B1342C /* PassphraseWarningDataController.swift */,
+				D46057E42DEDA8A500B1342C /* WarningCheckViewAccessory.swift */,
 				D49901BE2DF194A500D3875D /* CarouselBannerViewTheme.swift */,
 				D49901B72DF194A500D3875D /* CarouselBannerItemView.swift */,
 				D49901BC2DF194A500D3875D /* CarouselBannerCell.swift */,
+				D46057E82DEDA8EA00B1342C /* WarningCheckView.swift */,
+				D4C19FAE2DE99D7F00D8A98F /* PassphraseWarningScreenTheme.swift */,
+				D46057E02DEDA85500B1342C /* WarningCheckCell.swift */,
+				D46057EC2DEDA91B00B1342C /* WarningCheckViewTheme.swift */,
 				D49901B52DF194A500D3875D /* CarouselBannerItemCell.swift */,
 				D49901BA2DF194A500D3875D /* CarouselPageControl.swift */,
 				D49901B62DF194A500D3875D /* CarouselBannerItemModel.swift */,
@@ -24911,6 +24991,13 @@
 				2B262702284D4DE500ADE371 /* AllTransactionListGrouping.swift in Sources */,
 				F08708D6278C275400BEE5C2 /* ALGBlockProcessor.swift in Sources */,
 				2B2AACBA250AA5DE00B8C5C5 /* Settings.swift in Sources */,
+				D446A2272DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */,
+				D446A2282DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */,
+				D446A2292DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */,
+				D446A22A2DF3122E0044A7DC /* WarningCheckView.swift in Sources */,
+				D446A22B2DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */,
+				D446A22C2DF3122E0044A7DC /* WarningCheckCell.swift in Sources */,
+				D446A22D2DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */,
 				2BE937482464B04900322C1E /* TransactionAmountInformationView.swift in Sources */,
 				2BC63631288A96CC00507AEA /* AssetListItemViewModel.swift in Sources */,
 				17BD4E122292F1260003E49A /* DeepLinkParser.swift in Sources */,
@@ -28442,6 +28529,13 @@
 				D46432D528B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift in Sources */,
 				D422943E29D3773A00C25E64 /* TransactionSmallTestTransactionInstructionItemViewModel.swift in Sources */,
 				F0DB415E2793839B00EA437D /* TitleWithAccessoryView.swift in Sources */,
+				D446A2352DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */,
+				D446A2362DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */,
+				D446A2372DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */,
+				D446A2382DF3122E0044A7DC /* WarningCheckView.swift in Sources */,
+				D446A2392DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */,
+				D446A23A2DF3122E0044A7DC /* WarningCheckCell.swift in Sources */,
+				D446A23B2DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */,
 				2B26270A284D640D00ADE371 /* AlgoTransactionItemDraftComposer.swift in Sources */,
 				D4822736272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
 				2B0F623824EC129D00DA22A6 /* UserDefaults+Additions.swift in Sources */,
@@ -29432,7 +29526,6 @@
 				F07DAAA4290A746000DDBCF2 /* EditSwapAmountDataProvider.swift in Sources */,
 				D4A2E48828A11B120053B654 /* GradientView.swift in Sources */,
 				95631BBA27608E74002FB831 /* TripleShadowView.swift in Sources */,
-				2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				F040FE08285777D500A74993 /* CopyToClipboardController.swift in Sources */,
 				D454905029597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */,
 				2BB0B120277DAC8300A16494 /* HomeViewController.swift in Sources */,
@@ -30201,6 +30294,13 @@
 				2B9FDEA028A524EC00C8117D /* GroupedListItemButton.swift in Sources */,
 				F0C542D7291D9C1E00596A0A /* DiscoverErrorCell.swift in Sources */,
 				2BE9374A2464B06A00322C1E /* TransactionStatusInformationView.swift in Sources */,
+				D446A22E2DF3122E0044A7DC /* PassphraseWarningScreen.swift in Sources */,
+				D446A22F2DF3122E0044A7DC /* PassphraseWarningScreenTheme.swift in Sources */,
+				D446A2302DF3122E0044A7DC /* WarningCheckViewAccessory.swift in Sources */,
+				D446A2312DF3122E0044A7DC /* WarningCheckView.swift in Sources */,
+				D446A2322DF3122E0044A7DC /* WarningCheckViewTheme.swift in Sources */,
+				D446A2332DF3122E0044A7DC /* WarningCheckCell.swift in Sources */,
+				D446A2342DF3122E0044A7DC /* PassphraseWarningDataController.swift in Sources */,
 				D40D9C212964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift in Sources */,
 				2BAAF4A728E49C5100FC59AF /* SelectLocalAssetDataController.swift in Sources */,
 				2BD36DE1267E649A00C57728 /* TitledTransactionAccountNameView.swift in Sources */,
@@ -32565,7 +32665,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -32578,7 +32678,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -32594,7 +32694,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -32606,7 +32706,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32622,7 +32722,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -32634,7 +32734,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32651,7 +32751,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -32664,7 +32764,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32681,7 +32781,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -32693,7 +32793,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32710,7 +32810,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -32722,7 +32822,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32863,7 +32963,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
@@ -32877,7 +32977,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32896,7 +32996,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -32908,7 +33008,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -33055,7 +33155,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -33067,7 +33167,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 91.11.2048;
+				MARKETING_VERSION = 6.1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
