@@ -31,7 +31,7 @@ struct DiscoverSearchNextListErrorViewTheme:
         self.contentVerticalEdgeInsets = (20, 16)
         self.body = [
             .textAlignment(.center),
-            .textColor(Colors.Discover.textGray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenBodyAndRetryAction = 20
@@ -43,7 +43,7 @@ struct DiscoverSearchNextListErrorViewTheme:
             .font(Typography.footnoteMedium()),
             .title(String(localized: "title-try-again")),
             .titleColor([
-                .normal(Colors.Discover.buttonPrimaryText)
+                .normal(Colors.Button.Primary.newText)
             ])
         ]
         self.retryActionContentEdgeInsets = .init(top: 10, left: 16, bottom: 10, right: 16)

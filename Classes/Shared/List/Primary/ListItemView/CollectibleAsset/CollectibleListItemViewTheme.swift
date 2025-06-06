@@ -48,7 +48,7 @@ struct CollectibleListItemViewTheme:
         self.iconBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
         self.loadingIndicator = [
             .image("loading-indicator".templateImage),
-            .tintColor(Colors.Other.Global.gray400),
+            .tintColor(Colors.Text.grayLighter),
             .contentMode(.scaleAspectFit)
         ]
         self.loadingIndicatorSize = (15, 15)

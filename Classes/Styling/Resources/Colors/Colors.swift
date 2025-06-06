@@ -134,10 +134,12 @@ extension Colors {
             String,
             Color {
             case background = "ButtonPrimary/bg"
+            case newbackground = "ButtonPrimary/newBg"
             case disabledBackground = "ButtonPrimary/disabledBg"
             case disabledText = "ButtonPrimary/disabledText"
             case focusBackground = "ButtonPrimary/focusBg"
             case text = "ButtonPrimary/text"
+            case newText = "ButtonPrimary/newText"
         }
 
         enum Secondary:
@@ -353,43 +355,5 @@ extension Colors {
         case wallet4IconGovernor = "Wallet/wallet4IconGovernor"
         case wallet5 = "Wallet/wallet5"
         case wallet5Icon = "Wallet/wallet5Icon"
-    }
-}
-
-extension Colors {
-    /// <todo>
-    /// The groups below are temporary. If the cases are renamed in the design side, they will be
-    /// removed from this list. Also, the new colors shouldn't be added in this group.
-    /// <note>
-    /// Sort:
-    /// Alphabetical order.
-
-    enum Discover:
-        String,
-        Color {
-        case buttonPrimaryText = "Discover/buttonPrimaryText"
-        case helperGray = "Discover/helperGray"
-        case helperRed = "Discover/helperRed"
-        case layer1 = "Discover/layer1"
-        case main = "Discover/main"
-        case textGray = "Discover/textGray"
-        case textGrayLighter = "Discover/textGrayLighter"
-        case textMain = "Discover/textMain"
-    }
-
-    enum Other:
-        String,
-        Color {
-        case loadingGradient1 = "Other/loadingGradient1"
-        case loadingGradient2 = "Other/loadingGradient2"
-
-        enum Global:
-            String,
-            Color {
-            case gray98 = "Other/Global/gray98"
-            case gray400 = "Other/Global/gray400"
-            case gray800 = "Other/Global/gray800"
-            case yellow600 = "Other/Global/yellow600"
-        }
     }
 }

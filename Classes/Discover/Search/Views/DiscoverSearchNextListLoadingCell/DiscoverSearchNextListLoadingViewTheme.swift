@@ -24,7 +24,7 @@ struct DiscoverSearchNextListLoadingViewTheme: LoadingViewTheme {
     init(_ family: LayoutFamily) {
         self.loadingIndicator = [
             .image("List/Accessories/loading".templateImage),
-            .tintColor(Colors.Discover.main)
+            .tintColor(Colors.Button.Primary.newbackground)
         ]
     }
 }

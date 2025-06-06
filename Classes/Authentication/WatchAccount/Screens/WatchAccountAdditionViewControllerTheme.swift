@@ -74,7 +74,7 @@ struct WatchAccountAdditionViewControllerTheme:
         )
         self.addressInputMinHeight = 48
         self.pasteFromClipboardAction = [
-            .backgroundColor(Colors.Other.Global.gray800),
+            .backgroundColor(Colors.TabBar.button),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.pasteFromClipboardActionContentEdgeInsets = (10, 16, 10, 16)

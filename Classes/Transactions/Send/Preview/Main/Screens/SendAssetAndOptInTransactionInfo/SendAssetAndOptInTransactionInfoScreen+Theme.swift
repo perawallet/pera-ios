@@ -46,7 +46,7 @@ extension SendAssetAndOptInTransactionInfoScreen {
             self.background = Colors.Defaults.background
             
             // Header view
-            self.headerViewBackground = Colors.Other.Global.gray98
+            self.headerViewBackground = Colors.Layer.grayLightest
             self.headerViewHeight = 340
             self.headerViewImageTopConstraint = 64
             self.headerViewLabelConstraint = 24
