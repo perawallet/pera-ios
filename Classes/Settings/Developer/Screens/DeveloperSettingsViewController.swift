@@ -26,6 +26,12 @@ final class DeveloperSettingsViewController:
     private lazy var theme = Theme()
     private lazy var developerSettingsView = DeveloperSettingsView()
     
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!
+    )
+    
     private var settings: [DeveloperSettings] = [.nodeSettings]
 
     deinit {
@@ -64,9 +70,9 @@ extension DeveloperSettingsViewController {
     private func reload() {
         switch api?.network {
         case .mainnet, .none:
-            settings = [.nodeSettings]
+            settings = [.nodeSettings, .createAlgo25Account]
         case .testnet:
-            settings = [.nodeSettings, .dispenser]
+            settings = [.nodeSettings, .dispenser, .createAlgo25Account]
         }
 
         developerSettingsView.collectionView.reloadData()
@@ -134,7 +140,69 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
                     from: self
                 )
             }
+        case .createAlgo25Account:
+            guard
+                let newAccount = createAccount() else {
+                return
+            }
+            let screen = open(
+                .accountNameSetup(
+                    flow: .addNewAccount(mode: .addAlgo25Account),
+                    mode: .addAlgo25Account,
+                    accountAddress: newAccount.address
+                ),
+                by: .push
+            ) as? AccountNameSetupViewController
+            
+            screen?.onAccountCreated = { [weak self] in
+                guard let self else { return }
+                guard let rootViewController = UIApplication.shared.rootViewController() else {
+                    return
+                }
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
+                rootViewController.launch(tab: .home)
+                navigationController?.popToRootViewController(animated: true)
+            }
         }
+    }
+    
+    private func createAccount() -> AccountInformation? {
+        generatePrivateKey()
+
+        guard
+            let tempPrivateKey = session?.privateData(for: "temp"),
+            let address = session?.address(for: "temp")
+        else {
+            return nil
+        }
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: false
+        )
+        session?.savePrivate(tempPrivateKey, for: address)
+        session?.removePrivateData(for: "temp")
+        
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+
+        return account
+    }
+    
+    private func generatePrivateKey() {
+        guard let session = session,
+              let privateKey = session.generatePrivateKey() else {
+            return
+        }
+
+        session.savePrivate(privateKey, for: "temp")
     }
 }
 

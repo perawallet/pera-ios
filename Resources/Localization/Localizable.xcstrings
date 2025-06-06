@@ -3260,6 +3260,27 @@
         }
       }
     },
+    "dev-settings-create-algo25-account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Legacy Algo25 Account"
+          }
+        }
+      }
+    },
+    "dev-settings-create-algo25-title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Legacy Algo25 Account"
+          }
+        }
+      }
+    },
     "discover-error-connection-body" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -20,6 +20,7 @@ import UIKit
 enum DeveloperSettings: Settings {
     case nodeSettings
     case dispenser
+    case createAlgo25Account
     
     var image: UIImage? {
         switch self {
@@ -27,6 +28,8 @@ enum DeveloperSettings: Settings {
             return img("icon-settings-node")
         case .dispenser:
             return img("icon-settings-dispenser")
+        case .createAlgo25Account:
+            return img("icon-settings-create-algo25")
         }
     }
     
@@ -36,6 +39,8 @@ enum DeveloperSettings: Settings {
             return String(localized: "node-settings-title")
         case .dispenser:
             return String(localized: "settings-developer-dispenser")
+        case .createAlgo25Account:
+            return String(localized: "dev-settings-create-algo25-account")
         }
     }
 
