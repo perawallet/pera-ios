@@ -446,7 +446,7 @@ extension AccountListItemViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.insert(.textColor(Colors.Other.Global.yellow600))
+        attributes.insert(.textColor(Colors.Testnet.background))
 
         let text =  "• TESTNET".attributed(attributes)
         return .attributedString(text)

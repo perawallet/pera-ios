@@ -81,7 +81,7 @@ extension WCSessionNetworkRequestedPermissionValueViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.insert(.textColor(Colors.Other.Global.yellow600))
+        attributes.insert(.textColor(Colors.Testnet.background))
 
         return "• TESTNET".attributed(attributes)
     }
