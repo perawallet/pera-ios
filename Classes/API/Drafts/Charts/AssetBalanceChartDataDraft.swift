@@ -23,10 +23,10 @@ struct AssetBalanceChartDataDraft: ObjectQuery {
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
-        params.append(.init(.period, period.rawValue))
+        params.append(APIQueryParam(.period, period.rawValue))
         
         if let currency {
-            params.append(.init(.currency, currency))
+            params.append(APIQueryParam(.currency, currency))
         }
 
         return params

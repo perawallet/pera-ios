@@ -24,12 +24,12 @@ struct WalletWealthBalanceChartDataDraft: ObjectQuery {
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
-        params.append(.init(.accountAddresses, accountAddresses))
+        params.append(APIQueryParam(.accountAddresses, accountAddresses))
         
-        params.append(.init(.period, period.rawValue))
+        params.append(APIQueryParam(.period, period.rawValue))
         
         if let ordering {
-            params.append(.init(.ordering, ordering))
+            params.append(APIQueryParam(.ordering, ordering))
         }
 
         return params

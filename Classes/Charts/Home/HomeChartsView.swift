@@ -17,35 +17,43 @@
 import MacaroonUIKit
 import UIKit
 import SwiftUI
+import Combine
 
 final class HomeChartsView:
     UIView,
     ViewComposable,
-    UIInteractable,
     ListReusable {
     
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .weekChartSelected: TargetActionInteraction(),
-        .monthChartSelected: TargetActionInteraction(),
-        .yearChartSelected: TargetActionInteraction()
-    ]
+    class ChartDataModel: ObservableObject {
+        @Published var isLoading: Bool = true
+        @Published var data: [ChartDataPoint] = []
+    }
+    private let chartDataModel = ChartDataModel()
+    private lazy var observer = SelectedPeriodObserver(selected: .oneWeek)
     
-    private var isLoading = false {
-        didSet {
-            updateChart()
-        }
+    private var chartView: ChartView {
+        ChartView(dataModel: chartDataModel, observer: observer)
     }
     
-    private lazy var hostingController: UIHostingController<SUIChartView> = UIHostingController(rootView: chartView)
-    private lazy var chartView: SUIChartView = SUIChartView(isLoading: true, chartData: [])
-    private lazy var segmentedControl = ChartSegmentedControl()
+    var onChange: ((ChartDataPeriod) -> Void)?
+    
+    
+    private lazy var hostingController = UIHostingController(rootView: chartView)
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    private var currentData: [ChartDataPoint] = []
+    private var currentLoading: Bool = true
     
     // MARK: - Setups
 
     func customize(_ theme: HomeChartsViewTheme) {
         addBackground(theme)
         addChartView(theme)
-        addSegmentedControl(theme)
+        observer.onChange = { [weak self] newSelected in
+//            self?.chartDataModel.isLoading = true
+            self?.onChange?(newSelected)
+        }
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -53,18 +61,13 @@ final class HomeChartsView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: ChartViewModel) {
-        segmentedControl.selectedSegment = viewModel.period
-        isLoading = false
-        updateChart(with: viewModel.chartValues)
-    }
-    
-    private func updateChart(with data: [ChartDataPoint] = []) {
-        hostingController.rootView = SUIChartView(isLoading: isLoading, chartData: data)
-    }
-    
-    override func didMoveToWindow() {
-        segmentedControl.selectedSegment = .oneWeek
-        isLoading = true
+        print("---bindData called with \(viewModel.chartValues.count) points, period: \(viewModel.period)")
+        print("---bindData called on thread:", Thread.isMainThread)
+        DispatchQueue.main.async {
+            self.chartDataModel.data = viewModel.chartValues
+            self.chartDataModel.isLoading = false
+            self.observer.selected = viewModel.period
+        }
     }
     
     private func addBackground(_ theme: HomeChartsViewTheme) {
@@ -79,40 +82,7 @@ final class HomeChartsView:
             $0.trailing.equalToSuperview()
             $0.leading.equalToSuperview().inset(-2)
             $0.top.equalToSuperview()
-            $0.height.equalTo(136)
+            $0.height.equalToSuperview()
         }
-    }
-    
-    private func addSegmentedControl(_ theme: HomeChartsViewTheme) {
-        addSubview(segmentedControl)
-        segmentedControl.snp.makeConstraints {
-            $0.top == hostingController.view.snp.bottom + theme.spacingBetweenChartAndSegControl
-            $0.trailing.equalToSuperview().inset(92)
-            $0.leading.equalToSuperview().inset(92)
-            $0.bottom.equalToSuperview()
-        }
-        
-        segmentedControl.selectionChanged = { [weak self] _ in
-            guard let self = self else { return }
-            isLoading = true
-        }
-        
-        for (index, button) in segmentedControl.buttons.enumerated() {
-            let event: Event
-            switch ChartDataPeriod.allCases[index] {
-            case .oneWeek: event = .weekChartSelected
-            case .oneMonth: event = .monthChartSelected
-            case .oneYear: event = .yearChartSelected
-            }
-            startPublishing(event: event, for: button)
-        }
-    }
-}
-
-extension HomeChartsView {
-    enum Event {
-        case weekChartSelected
-        case monthChartSelected
-        case yearChartSelected
     }
 }

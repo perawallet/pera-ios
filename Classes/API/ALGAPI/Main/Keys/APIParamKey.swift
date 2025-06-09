@@ -77,7 +77,7 @@ enum APIParamKey: String, CodingKey {
     case offset = "offset"
     case ordering = "ordering"
     case paginator = "paginator"
-    case period = "period"
+    case period
     case platform = "platform"
     case privateKey = "private_key"
     case providers = "providers"

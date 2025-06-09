@@ -12,57 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SUIChartView.swift
+//   ChartView.swift
 
 import SwiftUI
 import Charts
 
-struct ChartDataPoint: Identifiable, Hashable {
+struct ChartDataPoint: Identifiable, Hashable, Equatable {
     let id = UUID()
-    let day: String
+    let day: Int
     let value: Double
 }
 
-struct SUIChartView: View {
-    let isLoading: Bool
-    var chartData: [ChartDataPoint]
+class SelectedPeriodObserver: ObservableObject {
+    @Published var selected: ChartDataPeriod {
+        didSet {
+            onChange?(selected)
+        }
+    }
+    var onChange: ((ChartDataPeriod) -> Void)?
+    init(selected: ChartDataPeriod) { self.selected = selected }
+}
+
+struct ChartView: View {
+    @ObservedObject var dataModel: HomeChartsView.ChartDataModel
+    @ObservedObject var observer: SelectedPeriodObserver
     
     var body: some View {
-        ZStack {
-            if isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-            } else {
-                LineChartView(data: chartData)
+        if dataModel.isLoading {
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+        } else {
+            VStack {
+                LineChartView(data: dataModel.data)
+                ChartSegmentedControlView(selected: $observer.selected)
             }
         }
     }
 }
 
-#Preview {
-    SUIChartView(isLoading: false, chartData: [])
-}
-
 struct LineChartView: View {
     let data: [ChartDataPoint]
-    let lineColor = Color(red: 31/255, green: 142/255, blue: 157/255)
-    let gradientColor = Color(red: 40/255, green: 167/255, blue: 155/255)
-    let interpolationMethod: InterpolationMethod = .monotone
+    private let lineColor = Color("Chart/chartLine")
+    private let gradientColor = Color("Chart/chartGradient")
+    private let interpolationMethod: InterpolationMethod = .monotone
 
     var body: some View {
         let maxValue = data.map(\.value).max() ?? 100
 
         Chart(data) { point in
             LineMark(
-                x: .value("Day", point.day),
-                y: .value("Value", point.value)
+                x: .value("Date", point.day),
+                y: .value("Amount", point.value)
             )
             .foregroundStyle(lineColor)
             .interpolationMethod(interpolationMethod)
 
             AreaMark(
-                x: .value("Day", point.day),
-                y: .value("Value", point.value)
+                x: .value("Date", point.day),
+                y: .value("Amount", point.value)
             )
             .foregroundStyle(
                 .linearGradient(

@@ -17,13 +17,13 @@
 import UIKit
 import MacaroonUIKit
 
-final class HomeChartsCell:
-    CollectionCell<HomeChartsView>,
-    UIInteractable {
+final class HomeChartsCell: CollectionCell<HomeChartsView> {
     
     // MARK: - Properties
     
     static let theme = HomeChartsViewTheme()
+    
+    var onChange: ((ChartDataPeriod) -> Void)?
     
     // MARK: - Initialisers
     
@@ -45,6 +45,9 @@ final class HomeChartsCell:
     }
     
     func bindData(_ data: ChartViewModel) {
+        contextView.onChange = { [weak self] newSelected in
+            self?.onChange?(newSelected)
+        }
         contextView.bindData(data)
     }
 }

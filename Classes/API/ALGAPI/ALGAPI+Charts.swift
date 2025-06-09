@@ -16,7 +16,7 @@
 
 import MagpieCore
 
-enum ChartDataPeriod: String, Hashable, CaseIterable {
+enum ChartDataPeriod: String, Hashable, Equatable, CaseIterable {
     case oneWeek = "one-week"
     case oneMonth = "one-month"
     case oneYear = "one-year"
@@ -39,7 +39,7 @@ extension ALGAPI {
         currency: String? = nil,
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.assetBalanceChartData, args: address, assetId)
             .query(AssetBalanceChartDataDraft(period: period, currency: currency))
@@ -57,7 +57,7 @@ extension ALGAPI {
         ordering: String? = nil,
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.addressWealthBalanceChartData, args: address)
             .query(AddressWealthBalanceChartDataDraft(period: period, ordering: ordering))
@@ -75,7 +75,7 @@ extension ALGAPI {
         ordering: String? = nil,
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResult>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.walletWealthBalanceChartData)
             .query(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period, ordering: ordering))

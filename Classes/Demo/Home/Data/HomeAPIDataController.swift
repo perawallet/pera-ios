@@ -88,8 +88,8 @@ extension HomeAPIDataController {
         sharedDataController.add(self)
         announcementDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
-        setSpotsBannersClosures()
-        setChartDataClosures()
+        setupSpotsBannersClosures()
+        setupChartDataClosures()
     }
     
     func reload() {
@@ -161,7 +161,7 @@ extension HomeAPIDataController {
         asasLoadRepeater = nil
     }
     
-    private func setSpotsBannersClosures() {
+    private func setupSpotsBannersClosures() {
         spotBannersDataController.onFetch = { [weak self] error, banners in
             guard let self = self else { return }
             spotBanners = banners.sorted {
@@ -181,15 +181,15 @@ extension HomeAPIDataController {
         }
     }
     
-    private func setChartDataClosures() {
+    private func setupChartDataClosures() {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
-            guard let self = self else { return }
-            if error != nil {
+            guard let self else { return }
+            guard error == nil else {
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item in
                 guard let value = Double(item.algoValue) else { return nil }
-                return ChartDataPoint(day: "Day \(index)", value: value)
+                return ChartDataPoint(day: index, value: value)
             }
             chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints)
             chartDataCache[period] = chartViewModel

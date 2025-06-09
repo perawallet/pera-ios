@@ -638,22 +638,9 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeChartsCell
     ) {
-        cell.startObserving(event: .weekChartSelected) {
-            [weak self] in
+        cell.onChange = { [weak self] newSelected in
             guard let self else { return }
-            dataController.updateChartData(period: .oneWeek)
-        }
-        
-        cell.startObserving(event: .monthChartSelected) {
-            [weak self] in
-            guard let self else { return }
-            dataController.updateChartData(period: .oneMonth)
-        }
-        
-        cell.startObserving(event: .yearChartSelected) {
-            [weak self] in
-            guard let self else { return }
-            dataController.updateChartData(period: .oneYear)
+            dataController.updateChartData(period: newSelected)
         }
 
     }
@@ -1023,13 +1010,12 @@ extension HomeViewController {
                     for: portfolioItem
                 )
             case .quickActions:
-                let cell = cell as! HomeQuickActionsCell
-
+                guard let cell = cell as? HomeQuickActionsCell else { return }
                 cell.isSwapBadgeVisible = !isOnboardedToSwap
 
                 linkInteractors(cell)
             case .charts:
-                let cell = cell as! HomeChartsCell
+                guard let cell = cell as? HomeChartsCell else { return }
                 
                 linkInteractors(cell)
             }
