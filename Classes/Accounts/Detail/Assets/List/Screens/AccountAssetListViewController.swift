@@ -204,7 +204,7 @@ final class AccountAssetListViewController:
     private func handleSwipeAction(indexPath: IndexPath) -> SwipeMenuConfiguration? {
         let account = dataController.account.value
         guard let asset = getAsset(at: indexPath), optOutAssetCoordinator.isAssetOptOutable(asset: asset, account: account) else { return nil }
-        return SwipeMenuConfiguration(icon: UIImage(named: "Swipe Actions/Image"), backgroundColor: Colors.ASACellBackground.optOut.uiColor, onAction: { [weak self] in
+        return SwipeMenuConfiguration(icon: UIImage(named: "Swipe Actions/Image"), backgroundColor: Colors.Alert.negative.uiColor, onAction: { [weak self] in
             self?.optOutAssetCoordinator.optOut(asset: asset, account: account)
         })
     }

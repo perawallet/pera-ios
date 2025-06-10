@@ -51,8 +51,8 @@ extension Colors {
         case trustedIconInline = "ASA/trustedIconInline"
         case verifiedIconBackground = "ASA/verifiedIconBg"
         case verifiedIconInline = "ASA/verifiedIconInline"
-        case verifiedIconSolidBackground = "ASA/verifiedSolidBackground"
-        case verifiedIconSolidInline = "ASA/verifiedSolidInline"
+        case verifiedIconSolidBackground = "ASA/verifiedIconSolidBg"
+        case verifiedIconSolidInline = "ASA/verifiedIconSolidInline"
         case asaBarButton = "ASA/asaBarButton"
     }
 }
@@ -115,7 +115,6 @@ extension Colors {
             case disabledBackground = "ButtonGhost/disabledBg"
             case disabledText = "ButtonGhost/disabledText"
             case focusBackground = "ButtonGhost/focusBg"
-            case focusBackgroundDark = "ButtonGhost/focusBgDark"
             case text = "ButtonGhost/text"
         }
 
@@ -165,12 +164,6 @@ extension Colors {
 }
 
 extension Colors {
-    enum ASACellBackground: String, Color {
-        case optOut = "ASA/OptOutCellSideMenuBackground"
-    }
-}
-
-extension Colors {
     enum Dapp:
         String,
         Color {
@@ -185,7 +178,6 @@ extension Colors {
         Color {
         case background = "Defaults/bg"
         case systemElements = "Defaults/systemElements"
-        case black = "Defaults/black"
     }
 }
 
@@ -207,8 +199,8 @@ extension Colors {
     enum Keyboard:
         String,
         Color {
-        case accessoryBackground = "Keyboard/accessoryBg"
-        case accessoryLine = "Keyboard/accessoryLine"
+        case accessoryBackground = "Keyboard/bg"
+        case accessoryLine = "Keyboard/line"
     }
 }
 
@@ -303,7 +295,6 @@ extension Colors {
         case button = "TabBar/button"
         case iconActive = "TabBar/iconActive"
         case iconDisabled = "TabBar/iconDisabled"
-        case iconNonActive = "TabBar/iconNonActive"
     }
 }
 
