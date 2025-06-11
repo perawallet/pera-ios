@@ -14,10 +14,7 @@
 
 //   ALGAPI+Banners.swift
 
-import Foundation
 import MagpieCore
-import MagpieHipo
-import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult

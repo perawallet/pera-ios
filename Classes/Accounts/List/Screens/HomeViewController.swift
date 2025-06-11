@@ -204,6 +204,14 @@ final class HomeViewController:
                     title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
+            case .didFailWithError(let errorDescription):
+                guard let errorDescription else {
+                    return
+                }
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
             }
         }
         
@@ -248,6 +256,7 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
+        dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
@@ -449,7 +458,7 @@ extension HomeViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(Colors.Helpers.heroBackground)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
 
@@ -632,6 +641,16 @@ extension HomeViewController {
             self.analytics.track(.recordHomeScreen(type: .send))
             self.sendTransactionFlowCoordinator.launch()
         }
+    }
+    
+    private func linkInteractors(
+        _ cell: HomeChartsCell
+    ) {
+        cell.onChange = { [weak self] newSelected in
+            guard let self else { return }
+            dataController.updateChartData(period: newSelected)
+        }
+
     }
 
     private func linkInteractors(
@@ -979,44 +998,52 @@ extension HomeViewController {
             switch item {
             case .loading:
                 setListBackgroundVisible(true)
-
-                let cell = cell as! HomeLoadingCell
+                guard let cell = cell as? HomeLoadingCell else { return }
 
                 cell.isSwapBadgeVisible = !isOnboardedToSwap
-
                 cell.startAnimating()
             case .noContent:
                 setListBackgroundVisible(false)
-                linkInteractors(cell as! NoContentWithActionCell)
+                guard let cell = cell as? NoContentWithActionCell else { return }
+                linkInteractors(cell)
             }
         case .portfolio(let item):
             setListBackgroundVisible(true)
 
             switch item {
             case .portfolio(let portfolioItem):
+                guard let cell = cell as? HomePortfolioCell else { return }
                 linkInteractors(
-                    cell as! HomePortfolioCell,
+                    cell,
                     for: portfolioItem
                 )
             case .quickActions:
-                let cell = cell as! HomeQuickActionsCell
-
+                guard let cell = cell as? HomeQuickActionsCell else { return }
                 cell.isSwapBadgeVisible = !isOnboardedToSwap
 
+                linkInteractors(cell)
+            case .charts:
+                guard let cell = cell as? HomeChartsCell else { return }
+                
                 linkInteractors(cell)
             }
         case .announcement(let item):
             switch item.type {
             case .governance:
-                linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+                guard let cell = cell as? GovernanceAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
             case .generic:
-                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+                guard let cell = cell as? GenericAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
             case .backup:
-                linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
+                guard let cell = cell as? GenericAnnouncementCell else { return }
+                linkBackupInteractors(cell, for: item)
             case .staking:
-                linkInteractors(cell as! StakingAnnouncementCell, for: item)
+                guard let cell = cell as? StakingAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
             case .card:
-                linkInteractors(cell as! CardAnnouncementCell, for: item)
+                guard let cell = cell as? CardAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
             }
         case .carouselBanner:
             guard let cell = cell as? CarouselBannerCell else { return }
@@ -1024,8 +1051,9 @@ extension HomeViewController {
         case .account(let item):
             switch item {
             case .header(let headerItem):
+                guard let cell = cell as? HomeAccountsHeader else { return }
                 linkInteractors(
-                    cell as! HomeAccountsHeader,
+                    cell,
                     for: headerItem
                 )
             default:

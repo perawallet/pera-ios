@@ -119,6 +119,10 @@ extension RootViewController {
             api: appConfiguration.api,
             session: appConfiguration.session
         )
+        let chartsDataController = ChartAPIDataController(
+            api: appConfiguration.api,
+            session: appConfiguration.session
+        )
         let incomingASAsAPIDataController = IncomingASAsAPIDataController(
             api: appConfiguration.api,
             session: appConfiguration.session
@@ -130,6 +134,7 @@ extension RootViewController {
                 session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController,
                 spotBannersDataController: spotBannersAPIDataController,
+                chartsDataController: chartsDataController,
                 incomingASAsAPIDataController: incomingASAsAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(

@@ -1453,6 +1453,9 @@
         }
       }
     },
+    "Amount" : {
+
+    },
     "any-to-no-auth-rekeyed-account-type-description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2454,6 +2457,39 @@
         }
       }
     },
+    "chart-segcontrol-month" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1M"
+          }
+        }
+      }
+    },
+    "chart-segcontrol-week" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1W"
+          }
+        }
+      }
+    },
+    "chart-segcontrol-year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1Y"
+          }
+        }
+      }
+    },
     "check-domain-default-error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3179,6 +3215,9 @@
           }
         }
       }
+    },
+    "Date" : {
+
     },
     "default-error-message" : {
       "extractionState" : "manual",
