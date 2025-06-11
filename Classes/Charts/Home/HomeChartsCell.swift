@@ -48,7 +48,11 @@ final class HomeChartsCell: UICollectionViewCell {
     
     private func addChartView(_ theme: HomeChartsViewTheme) {
         observer.onChange = { [weak self] newSelected in
-            self?.onChange?(newSelected)
+            guard let self else { return }
+            if newSelected != chartDataModel.period {
+                self.chartDataModel.isLoading = true
+            }
+            onChange?(newSelected)
         }
         
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +68,7 @@ final class HomeChartsCell: UICollectionViewCell {
     
     func bindData(_ data: ChartViewModel) {
         self.chartDataModel.data = data.chartValues
-        self.chartDataModel.isLoading = data.isLoading
+        self.chartDataModel.isLoading = false
         self.chartDataModel.period = data.period
         self.observer.selected = data.period
     }
