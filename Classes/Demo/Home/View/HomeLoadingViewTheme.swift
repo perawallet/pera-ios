@@ -48,7 +48,7 @@ struct HomeLoadingViewTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(Colors.Helpers.heroBackground)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentEdgeInsets = (16, 24, 0, 24)
         self.portfolioTitle = [

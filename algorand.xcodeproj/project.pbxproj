@@ -9877,7 +9877,6 @@
 		D4176C2426F340590017A4AB /* LedgerAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountViewTheme.swift; sourceTree = "<group>"; };
 		D41868DE287F0D8C0066DDC0 /* ManagementItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementItemCell.swift; sourceTree = "<group>"; };
 		D418A3BA2DE5AE110009747E /* HomeChartsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChartsCell.swift; sourceTree = "<group>"; };
-		D418A3BE2DE5AE230009747E /* HomeChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChartsView.swift; sourceTree = "<group>"; };
 		D418A3C22DE5AED80009747E /* HomeChartsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChartsViewTheme.swift; sourceTree = "<group>"; };
 		D418A3C92DE5B23D0009747E /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		D418A3CE2DE5B9590009747E /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
@@ -20281,7 +20280,6 @@
 			isa = PBXGroup;
 			children = (
 				D418A3BA2DE5AE110009747E /* HomeChartsCell.swift */,
-				D418A3BE2DE5AE230009747E /* HomeChartsView.swift */,
 				D418A3C22DE5AED80009747E /* HomeChartsViewTheme.swift */,
 			);
 			path = Home;

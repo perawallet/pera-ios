@@ -44,15 +44,18 @@ struct ChartView: View {
     @ObservedObject var observer: SelectedPeriodObserver
     
     var body: some View {
-        if dataModel.isLoading {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-        } else {
-            VStack {
-                LineChartView(data: dataModel.data)
-                ChartSegmentedControlView(selected: $observer.selected)
+        Group {
+            if dataModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else {
+                VStack {
+                    LineChartView(data: dataModel.data)
+                    ChartSegmentedControlView(selected: $observer.selected)
+                }
             }
         }
+        .background(Color("Defaults/bg"))
     }
 }
 

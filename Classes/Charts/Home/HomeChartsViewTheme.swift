@@ -19,16 +19,11 @@ import MacaroonUIKit
 struct HomeChartsViewTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
-    var spacingBetweenChartAndSegControl: LayoutMetric
     var contentHeight: LayoutMetric
+    var chartViewLeadingInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        
-        self.spacingBetweenChartAndSegControl = 8
         self.contentHeight = 172
+        self.chartViewLeadingInset = -2
     }
 }
