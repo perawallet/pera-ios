@@ -204,6 +204,14 @@ final class HomeViewController:
                     title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
+            case .didFailWithError(let errorDescription):
+                guard let errorDescription else {
+                    return
+                }
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
             }
         }
         

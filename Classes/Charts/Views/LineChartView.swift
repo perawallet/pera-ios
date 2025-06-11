@@ -12,43 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartView.swift
+//   LineChartView.swift
 
 import SwiftUI
 import Charts
-
-struct ChartDataPoint: Identifiable, Hashable, Equatable {
-    let id = UUID()
-    let day: Int
-    let value: Double
-}
-
-class SelectedPeriodObserver: ObservableObject {
-    @Published var selected: ChartDataPeriod {
-        didSet {
-            onChange?(selected)
-        }
-    }
-    var onChange: ((ChartDataPeriod) -> Void)?
-    init(selected: ChartDataPeriod) { self.selected = selected }
-}
-
-struct ChartView: View {
-    @ObservedObject var dataModel: HomeChartsView.ChartDataModel
-    @ObservedObject var observer: SelectedPeriodObserver
-    
-    var body: some View {
-        if dataModel.isLoading {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-        } else {
-            VStack {
-                LineChartView(data: dataModel.data)
-                ChartSegmentedControlView(selected: $observer.selected)
-            }
-        }
-    }
-}
 
 struct LineChartView: View {
     let data: [ChartDataPoint]

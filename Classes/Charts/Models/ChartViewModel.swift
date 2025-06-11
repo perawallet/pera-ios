@@ -17,4 +17,5 @@
 struct ChartViewModel: Hashable, Equatable {
     let period: ChartDataPeriod
     let chartValues: [ChartDataPoint]
+    let isLoading: Bool
 }

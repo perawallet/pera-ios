@@ -185,13 +185,15 @@ extension HomeAPIDataController {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
+                chartViewModel = ChartViewModel(period: period, chartValues: [], isLoading: false)
+                publish(.didFailWithError(error))
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item in
                 guard let value = Double(item.algoValue) else { return nil }
                 return ChartDataPoint(day: index, value: value)
             }
-            chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints)
+            chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewModel
         }
     }

@@ -26,9 +26,10 @@ final class HomeChartsView:
     
     class ChartDataModel: ObservableObject {
         @Published var isLoading: Bool = true
+        @Published var period: ChartDataPeriod = .oneWeek
         @Published var data: [ChartDataPoint] = []
     }
-    private let chartDataModel = ChartDataModel()
+    private let chartDataModel = HomeChartsCell.ChartDataModel()
     private lazy var observer = SelectedPeriodObserver(selected: .oneWeek)
     
     private var chartView: ChartView {
@@ -51,7 +52,6 @@ final class HomeChartsView:
         addBackground(theme)
         addChartView(theme)
         observer.onChange = { [weak self] newSelected in
-//            self?.chartDataModel.isLoading = true
             self?.onChange?(newSelected)
         }
     }
@@ -61,13 +61,10 @@ final class HomeChartsView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: ChartViewModel) {
-        print("---bindData called with \(viewModel.chartValues.count) points, period: \(viewModel.period)")
-        print("---bindData called on thread:", Thread.isMainThread)
-        DispatchQueue.main.async {
-            self.chartDataModel.data = viewModel.chartValues
-            self.chartDataModel.isLoading = false
-            self.observer.selected = viewModel.period
-        }
+        self.chartDataModel.data = viewModel.chartValues
+        self.chartDataModel.isLoading = viewModel.isLoading
+        self.chartDataModel.period = viewModel.period
+        self.observer.selected = viewModel.period
     }
     
     private func addBackground(_ theme: HomeChartsViewTheme) {

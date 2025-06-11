@@ -16,38 +16,56 @@
 
 import UIKit
 import MacaroonUIKit
+import SwiftUI
+import Combine
 
-final class HomeChartsCell: CollectionCell<HomeChartsView> {
+final class HomeChartsCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let theme = HomeChartsViewTheme()
-    
     var onChange: ((ChartDataPeriod) -> Void)?
+    
+    private let chartDataModel = ChartDataModel()
+    private lazy var observer = SelectedPeriodObserver(selected: .oneWeek)
+    
+    private var chartView: ChartView {
+        ChartView(dataModel: chartDataModel, observer: observer)
+    }
+    
+    private lazy var hostingController = UIHostingController(rootView: chartView)
     
     // MARK: - Initialisers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contextView.customize(Self.theme)
-        setupConstraints()
+        addChartView(Self.theme)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupConstraints() {
-        addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+    private func addChartView(_ theme: HomeChartsViewTheme) {
+        observer.onChange = { [weak self] newSelected in
+            self?.onChange?(newSelected)
+        }
+        
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(hostingController.view)
+        
+        hostingController.view.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview().inset(-2)
+            $0.top.equalToSuperview()
+            $0.height.equalToSuperview()
         }
     }
     
     func bindData(_ data: ChartViewModel) {
-        contextView.onChange = { [weak self] newSelected in
-            self?.onChange?(newSelected)
-        }
-        contextView.bindData(data)
+        self.chartDataModel.data = data.chartValues
+        self.chartDataModel.isLoading = data.isLoading
+        self.chartDataModel.period = data.period
+        self.observer.selected = data.period
     }
 }

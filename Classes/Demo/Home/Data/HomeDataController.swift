@@ -76,11 +76,12 @@ enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
     case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
     case didUpdateSpotBanner(String?)
+    case didFailWithError(String?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
         case .didUpdate(let updates): return updates.snapshot
-        case .deliverASARequestsContentUpdate, .didUpdateSpotBanner: return HomeDataController.Snapshot()
+        case .deliverASARequestsContentUpdate, .didUpdateSpotBanner, .didFailWithError: return HomeDataController.Snapshot()
         }
     }
 }
