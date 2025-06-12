@@ -24,10 +24,11 @@ final class HomeChartsCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let theme = HomeChartsViewTheme()
-    var onChange: ((ChartDataPeriod) -> Void)?
+    var onPeriodChange: ((ChartDataPeriod) -> Void)?
+    var onPointSelected: ((ChartDataPoint?) -> Void)?
     
     private let chartDataModel = ChartDataModel()
-    private lazy var observer = SelectedPeriodObserver(selected: .oneWeek)
+    private lazy var observer = ChartSelectionObserver(selected: .oneWeek)
     
     private var chartView: ChartView {
         ChartView(dataModel: chartDataModel, observer: observer)
@@ -47,12 +48,17 @@ final class HomeChartsCell: UICollectionViewCell {
     }
     
     private func addChartView(_ theme: HomeChartsViewTheme) {
-        observer.onChange = { [weak self] newSelected in
+        observer.onPeriodChange = { [weak self] newPeriodSelected in
             guard let self else { return }
-            if newSelected != chartDataModel.period {
-                self.chartDataModel.isLoading = true
+            if newPeriodSelected != chartDataModel.period {
+                chartDataModel.isLoading = true
             }
-            onChange?(newSelected)
+            onPeriodChange?(newPeriodSelected)
+        }
+        
+        observer.onPointSelected = { [weak self] pointSelected in
+            guard let self else { return }
+            onPointSelected?(pointSelected)
         }
         
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false

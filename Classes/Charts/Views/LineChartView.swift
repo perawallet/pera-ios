@@ -20,7 +20,13 @@ import Charts
 struct LineChartView: View {
     let data: [ChartDataPoint]
 
-    @State private var selectedPoint: ChartDataPoint?
+    @State private var selectedPoint: ChartDataPoint? {
+        didSet {
+            onPointSelectionChanged?(selectedPoint)
+        }
+    }
+    
+    var onPointSelectionChanged: ((ChartDataPoint?) -> Void)? = nil
 
     private let chartLineColor = Color("Chart/chartLine")
     private let borderColor = Color("Defaults/bg")

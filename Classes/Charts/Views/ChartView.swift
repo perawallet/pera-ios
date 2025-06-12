@@ -30,19 +30,25 @@ class ChartDataModel: ObservableObject {
     @Published var data: [ChartDataPoint] = []
 }
 
-class SelectedPeriodObserver: ObservableObject {
+class ChartSelectionObserver: ObservableObject {
     @Published var selected: ChartDataPeriod {
         didSet {
-            onChange?(selected)
+            onPeriodChange?(selected)
         }
     }
-    var onChange: ((ChartDataPeriod) -> Void)?
+    @Published var selectedChartPoint: ChartDataPoint? {
+        didSet {
+            onPointSelected?(selectedChartPoint)
+        }
+    }
+    var onPeriodChange: ((ChartDataPeriod) -> Void)?
+    var onPointSelected: ((ChartDataPoint?) -> Void)?
     init(selected: ChartDataPeriod) { self.selected = selected }
 }
 
 struct ChartView: View {
     @ObservedObject var dataModel: ChartDataModel
-    @ObservedObject var observer: SelectedPeriodObserver
+    @ObservedObject var observer: ChartSelectionObserver
     
     var body: some View {
         Group {
@@ -51,7 +57,9 @@ struct ChartView: View {
                     .progressViewStyle(CircularProgressViewStyle())
             } else {
                 VStack {
-                    LineChartView(data: dataModel.data)
+                    LineChartView(data: dataModel.data) { point in
+                        observer.selectedChartPoint = point
+                    }
                     ChartSegmentedControlView(selected: $observer.selected)
                 }
             }

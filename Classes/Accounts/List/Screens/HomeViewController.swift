@@ -646,9 +646,17 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeChartsCell
     ) {
-        cell.onChange = { [weak self] newSelected in
+        cell.onPeriodChange = { [weak self] newPeriodSelected in
             guard let self else { return }
-            dataController.updateChartData(period: newSelected)
+            dataController.updateChartData(period: newPeriodSelected)
+        }
+        cell.onPointSelected = { [weak self] pointSelected in
+            guard let self else { return }
+            guard let pointSelected else {
+                print("---reset")
+                return
+            }
+            print("---\(pointSelected)")
         }
 
     }
