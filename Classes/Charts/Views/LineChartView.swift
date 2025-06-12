@@ -35,15 +35,15 @@ struct LineChartView: View {
             let chart = Chart {
                 ForEach(data) { point in
                     LineMark(
-                        x: .value("Day", point.day),
-                        y: .value("Amount", point.value)
+                        x: .value("Date", point.day),
+                        y: .value("Value", point.value)
                     )
                     .foregroundStyle(chartLineColor)
                     .interpolationMethod(interpolationMethod)
 
                     AreaMark(
-                        x: .value("Day", point.day),
-                        y: .value("Amount", point.value)
+                        x: .value("Date", point.day),
+                        y: .value("Value", point.value)
                     )
                     .foregroundStyle(
                         .linearGradient(
@@ -59,13 +59,13 @@ struct LineChartView: View {
                 }
 
                 if let selected = selectedPoint {
-                    RuleMark(x: .value("Day", selected.day))
+                    RuleMark(x: .value("Date", selected.day))
                         .foregroundStyle(selectedPointLineColor)
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
 
                     PointMark(
-                        x: .value("Day", selected.day),
-                        y: .value("Amount", selected.value)
+                        x: .value("Date", selected.day),
+                        y: .value("Value", selected.value)
                     )
                     .symbol {
                         Circle()
@@ -89,40 +89,28 @@ struct LineChartView: View {
                         .fill(Color.clear)
                         .contentShape(Rectangle())
                         .gesture(
-                            DragGesture(minimumDistance: 0)
+                            LongPressGesture(minimumDuration: 0.1)
+                                .sequenced(before: DragGesture(minimumDistance: 0))
                                 .onChanged { value in
-                                    let origin = geo[proxy.plotAreaFrame].origin
-                                    let location = value.location
-                                    let xPosition = location.x - origin.x
-                                    let yPosition = location.y - origin.y
+                                    switch value {
+                                    case .second(true, let drag?):
+                                        let origin = geo[proxy.plotAreaFrame].origin
+                                        let plotWidth = geo[proxy.plotAreaFrame].width
+                                        var xPosition = drag.location.x - origin.x
+                                        xPosition = min(max(0, xPosition), plotWidth)
 
-                                    guard let day: Int = proxy.value(atX: xPosition) else {
-                                        selectedPoint = nil
-                                        print("---Reset")
-                                        return
-                                    }
-
-                                    guard let nearest = data.min(by: { abs($0.day - day) < abs($1.day - day) }) else {
-                                        selectedPoint = nil
-                                        print("---Reset")
-                                        return
-                                    }
-
-                                    if let xPos = proxy.position(forX: nearest.day),
-                                       let yPos = proxy.position(forY: nearest.value) {
-                                        let pointPosition = CGPoint(x: xPos, y: yPos)
-                                        let verticalTolerance: CGFloat = 20
-                                        if abs(pointPosition.y - yPosition) <= verticalTolerance {
-                                            selectedPoint = nearest
-                                            print("---Day: \(nearest.day), Value: \(nearest.value)")
-                                        } else {
+                                        guard let day: Int = proxy.value(atX: xPosition),
+                                              let nearest = data.min(by: { abs($0.day - day) < abs($1.day - day) }) else {
                                             selectedPoint = nil
-                                            print("---Reset")
+                                            return
                                         }
-                                    } else {
-                                        selectedPoint = nil
-                                        print("---Reset")
+                                        selectedPoint = nearest
+                                    default:
+                                        break
                                     }
+                                }
+                                .onEnded { _ in
+                                    selectedPoint = nil
                                 }
                         )
                 }
