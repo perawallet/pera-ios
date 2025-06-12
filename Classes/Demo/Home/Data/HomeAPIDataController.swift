@@ -191,7 +191,7 @@ extension HomeAPIDataController {
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item in
                 guard let value = Double(item.algoValue) else { return nil }
-                return ChartDataPoint(day: index, value: value)
+                return ChartDataPoint(day: index, value: value, timestamp: item.datetime)
             }
             chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewModel

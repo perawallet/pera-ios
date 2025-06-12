@@ -59,7 +59,7 @@ final class HomeChartsCell: UICollectionViewCell {
         addSubview(hostingController.view)
         
         hostingController.view.snp.makeConstraints {
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(theme.chartViewTrailingInset)
             $0.leading.equalToSuperview().inset(theme.chartViewLeadingInset)
             $0.top.equalToSuperview()
             $0.height.equalToSuperview()

@@ -21,9 +21,11 @@ struct HomeChartsViewTheme:
     LayoutSheet {
     var contentHeight: LayoutMetric
     var chartViewLeadingInset: LayoutMetric
+    var chartViewTrailingInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.contentHeight = 172
         self.chartViewLeadingInset = -2
+        self.chartViewTrailingInset = 16
     }
 }

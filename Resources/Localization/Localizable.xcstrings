@@ -3216,9 +3216,6 @@
         }
       }
     },
-    "Date" : {
-
-    },
     "default-error-message" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -21,6 +21,7 @@ struct ChartDataPoint: Identifiable, Hashable, Equatable {
     let id = UUID()
     let day: Int
     let value: Double
+    let timestamp: String
 }
 
 class ChartDataModel: ObservableObject {
