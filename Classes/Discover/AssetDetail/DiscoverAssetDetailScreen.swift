@@ -20,7 +20,7 @@ import MacaroonUtils
 
 final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
+        draft: SwapAssetFlowDraft(network: api?.network ?? .mainnet),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
@@ -98,7 +98,7 @@ extension DiscoverAssetDetailScreen {
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {
-        let draft = SwapAssetFlowDraft()
+        let draft = SwapAssetFlowDraft(network: api?.network ?? .mainnet)
         if let assetInID = parameters.assetIn {
             draft.assetInID = assetInID
         }

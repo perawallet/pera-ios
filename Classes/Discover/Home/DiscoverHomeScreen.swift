@@ -32,7 +32,7 @@ final class DiscoverHomeScreen:
     }
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
+        draft: SwapAssetFlowDraft(network: api?.network ?? .mainnet),
         dataStore: SwapDataLocalStore(),
         analytics: analytics,
         api: api!,
@@ -254,7 +254,7 @@ extension DiscoverHomeScreen {
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {
-        let draft = SwapAssetFlowDraft()
+        let draft = SwapAssetFlowDraft(network: api?.network ?? .mainnet)
         if let assetInID = parameters.assetIn {
             draft.assetInID = assetInID
         }

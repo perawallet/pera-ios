@@ -82,7 +82,7 @@ final class TabBarController: TabBarContainer {
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
+        draft: SwapAssetFlowDraft(network: api.network),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api,
@@ -226,9 +226,7 @@ extension TabBarController {
     }
     
     private func navigateToSwapAssetFlow() {
-        swapAssetFlowCoordinator.resetDraft()
         swapAssetFlowCoordinator.launch()
-
         analytics.track(.tapInQuickAction(type: .tapSwap))
     }
 
