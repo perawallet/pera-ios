@@ -21,8 +21,9 @@ struct RekeyedAccountQuery: ObjectQuery {
     let authAddress: String
     
     var queryParams: [APIQueryParam] {
-        var params: [APIQueryParam] = []
-        params.append(.init(.authAddress, authAddress))
-        return params
+        [
+            APIQueryParam(.authAddress, authAddress),
+            APIQueryParam(.exclude, "assets,created-assets,apps-local-state,created-apps")
+        ]
     }
 }
