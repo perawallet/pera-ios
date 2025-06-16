@@ -27,7 +27,7 @@ final class SwapAssetFlowDraft {
     var assetOutID: AssetID
 
     var assetIn: Asset? {
-        guard let account = account else {
+        guard let account else {
             return nil
         }
 
@@ -35,7 +35,7 @@ final class SwapAssetFlowDraft {
     }
 
     var assetOut: Asset? {
-        guard let account = account else {
+        guard let account else {
             return nil
         }
 
@@ -52,7 +52,7 @@ final class SwapAssetFlowDraft {
         self.assetInID = assetInID
         
         // Set intelligent default for assetOutID if not provided
-        if let assetOutID = assetOutID {
+        if let assetOutID {
             self.assetOutID = assetOutID
         } else {
             // If assetInID is Algo (0), default to USDC
@@ -68,14 +68,14 @@ final class SwapAssetFlowDraft {
 
 extension SwapAssetFlowDraft {
     var isOptedInToAssetIn: Bool {
-        return assetIn != nil
+        assetIn != nil
     }
 
     var shouldOptInToAssetOut: Bool {
-        return assetOut == nil
+        assetOut == nil
     }
 
     var isOptedInToAssetOut: Bool {
-        return assetOut != nil
+        assetOut != nil
     }
 }
