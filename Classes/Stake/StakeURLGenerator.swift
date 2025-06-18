@@ -21,35 +21,40 @@ final class StakingURLGenerator {
     static func generateURL(
         destination: StakingDestination,
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        hideBackButton: Bool
     ) -> URL? {
         switch destination {
         case .list:
             return generateURLForList(
                 theme: theme,
-                session: session
+                session: session,
+                hideBackButton: hideBackButton
             )
         }
     }
 
     private static func generateURLForList(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        hideBackButton: Bool
     ) -> URL? {
         var components = URLComponents(string: Environment.current.stakingBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session
+            session: session,
+            hideBackButton: hideBackButton
         )
         return components?.url
     }
 
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        hideBackButton: Bool
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "4"))
+        queryItems.append(.init(name: "version", value: hideBackButton ? "5" : "4"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))

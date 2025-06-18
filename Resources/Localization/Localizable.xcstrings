@@ -398,7 +398,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to recover an Algorand wallet."
+            "value" : "I want to recover an Algorand account using my 25-word passphrase"
           }
         }
       }
@@ -2299,6 +2299,17 @@
         }
       }
     },
+    "cards-not-supported-country-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We will inform this device via a push notification when we launch in your country."
+          }
+        }
+      }
+    },
     "check-domain-default-error" : {
       "localizations" : {
         "en" : {
@@ -3431,7 +3442,17 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\"%@\\\">Terms and Conditions</a> and <a href=\\\"%@\\\">Privacy Policy</a>"
+            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\\\\\"%@\\\\\\\">Terms and Conditions</a> and <a href=\\\\\\\"%@\\\\\\\">Privacy Policy</a>"
+          }
+        }
+      }
+    },
+    "invite-screen-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the Pera Wallet download link with your friends."
           }
         }
       }
@@ -4064,6 +4085,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step."
+          }
+        }
+      }
+    },
+    "menu-card-banner-description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get the world’s first web3 \nMastercard."
           }
         }
       }
@@ -4798,16 +4830,6 @@
         }
       }
     },
-    "passphrase-bottom-title-alg25" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legacy format that is specific to Algorand ecosystem"
-          }
-        }
-      }
-    },
     "passphrase-bottom-title-bip39" : {
       "localizations" : {
         "en" : {
@@ -5381,7 +5403,14 @@
       }
     },
     "recover-passphrase-title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account."
+          }
+        }
+      }
     },
     "rekey-account-selection-list-header" : {
       "localizations" : {
@@ -5654,7 +5683,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fetching rekeyed\naccounts..."
+            "value" : "Fetching rekeyed\\naccounts..."
           }
         }
       }
@@ -7377,6 +7406,17 @@
         }
       }
     },
+    "title-all-set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're all set!"
+          }
+        }
+      }
+    },
     "title-alphabetically-a-to-z" : {
       "localizations" : {
         "en" : {
@@ -7549,6 +7589,72 @@
         }
       }
     },
+    "title-carousel-banner-algo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy ALGO with Apple Pay, credit cards or bank transfer"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cards: Get the world’s first web3 Mastercard"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-discover" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discover: Use browser to interact with dApps"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receive Algo by sharing your account address"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-swap" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap: Convert between popular ASA pairs"
+          }
+        }
+      }
+    },
+    "title-carousel-banner-transfer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer: Accept any crypto across all chains"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "localizations" : {
         "en" : {
@@ -7655,6 +7761,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy ID"
+          }
+        }
+      }
+    },
+    "title-create-pera-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Pera Card"
           }
         }
       }
@@ -7889,6 +8006,17 @@
         }
       }
     },
+    "title-go-to-cards" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Cards"
+          }
+        }
+      }
+    },
     "title-go-to-settings" : {
       "localizations" : {
         "en" : {
@@ -7945,6 +8073,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The internet connection appears to be offline."
+          }
+        }
+      }
+    },
+    "title-invite-friends" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite Friends"
           }
         }
       }
@@ -8115,6 +8253,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manually"
+          }
+        }
+      }
+    },
+    "title-menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
           }
         }
       }
@@ -8463,6 +8611,17 @@
         }
       }
     },
+    "title-recently-used-card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recently used Pera Card"
+          }
+        }
+      }
+    },
     "title-recover" : {
       "localizations" : {
         "en" : {
@@ -8669,6 +8828,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        }
+      }
+    },
+    "title-share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
           }
         }
       }

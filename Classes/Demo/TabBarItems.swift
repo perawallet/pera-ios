@@ -63,6 +63,28 @@ struct DiscoverTabBarItem: TabBarItem {
     }
 }
 
+struct SwapTabBarItem: TabBarItem {
+    let id: String
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
+    let screen: UIViewController?
+
+    init(
+        _ screen: UIViewController
+    ) {
+        self.id = TabBarItemID.swap.rawValue
+        self.barButtonItem =
+            TabBarButtonItem(
+                icon: [
+                    .normal("tabbar-icon-swap"),
+                    .selected("tabbar-icon-swap-selected"),
+                    .disabled("tabbar-icon-swap-disabled")
+                ],
+                title: String(localized: "title-swap")
+            )
+        self.screen = screen
+    }
+}
+
 struct CollectiblesTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
@@ -85,7 +107,7 @@ struct CollectiblesTabBarItem: TabBarItem {
     }
 }
 
-struct SettingsTabBarItem: TabBarItem {
+struct StakeTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
@@ -93,15 +115,37 @@ struct SettingsTabBarItem: TabBarItem {
     init(
         _ screen: UIViewController
     ) {
-        self.id = TabBarItemID.settings.rawValue
+        self.id = TabBarItemID.stake.rawValue
         self.barButtonItem =
             TabBarButtonItem(
                 icon: [
-                    .normal("tabbar-icon-settings"),
-                    .selected("tabbar-icon-settings-selected"),
-                    .disabled("tabbar-icon-settings-disabled")
+                    .normal("tabbar-icon-stake"),
+                    .selected("tabbar-icon-stake-selected"),
+                    .disabled("tabbar-icon-stake-disabled")
                 ],
-                title: String(localized: "title-settings")
+                title: String(localized: "title-staking")
+            )
+        self.screen = screen
+    }
+}
+
+struct MenuTabBarItem: TabBarItem {
+    let id: String
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
+    let screen: UIViewController?
+
+    init(
+        _ screen: UIViewController
+    ) {
+        self.id = TabBarItemID.menu.rawValue
+        self.barButtonItem =
+            TabBarButtonItem(
+                icon: [
+                    .normal("tabbar-icon-menu"),
+                    .selected("tabbar-icon-menu-selected"),
+                    .disabled("tabbar-icon-menu-disabled")
+                ],
+                title: String(localized: "title-menu")
             )
         self.screen = screen
     }
@@ -110,6 +154,8 @@ struct SettingsTabBarItem: TabBarItem {
 enum TabBarItemID: String {
     case home
     case discover
+    case swap
+    case stake
+    case menu
     case collectibles
-    case settings
 }
