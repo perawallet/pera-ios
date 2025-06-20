@@ -53,7 +53,7 @@ final class AccountDetailViewController: PageContainer {
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(account: accountHandle.value),
+        draft: SwapAssetFlowDraft(account: accountHandle.value, network: api?.network ?? .mainnet),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,

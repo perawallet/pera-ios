@@ -24,10 +24,10 @@ final class SwapAssetFlowDraft {
     var assetInID: AssetID = 0
     /// <note>
     /// If assetOutID is set, user should opt-in to the asset out if the selected account is not opted in to the asset.
-    var assetOutID: AssetID?
+    var assetOutID: AssetID
 
     var assetIn: Asset? {
-        guard let account = account else {
+        guard let account else {
             return nil
         }
 
@@ -35,8 +35,7 @@ final class SwapAssetFlowDraft {
     }
 
     var assetOut: Asset? {
-        guard let account = account,
-              let assetOutID = assetOutID else {
+        guard let account else {
             return nil
         }
 
@@ -46,30 +45,37 @@ final class SwapAssetFlowDraft {
     init(
         account: Account? = nil,
         assetInID: AssetID = 0,
-        assetOutID: AssetID? = nil
+        assetOutID: AssetID? = nil,
+        network: ALGAPI.Network = .mainnet
     ) {
         self.account = account
         self.assetInID = assetInID
-        self.assetOutID = assetOutID
+        
+        // Set intelligent default for assetOutID if not provided
+        if let assetOutID {
+            self.assetOutID = assetOutID
+        } else {
+            // If assetInID is Algo (0), default to USDC
+            // If assetInID is an ASA (non-zero), default to Algo (0)
+            if assetInID == 0 {
+                self.assetOutID = ALGAsset.usdcAssetID(network)
+            } else {
+                self.assetOutID = 0
+            }
+        }
     }
 }
 
 extension SwapAssetFlowDraft {
     var isOptedInToAssetIn: Bool {
-        return assetIn != nil
+        assetIn != nil
     }
 
     var shouldOptInToAssetOut: Bool {
-        return assetOut == nil && assetOutID != nil
+        assetOut == nil
     }
 
     var isOptedInToAssetOut: Bool {
-        return assetOut != nil
-    }
-
-    func reset() {
-        self.account = nil
-        self.assetInID = 0
-        self.assetOutID = nil
+        assetOut != nil
     }
 }

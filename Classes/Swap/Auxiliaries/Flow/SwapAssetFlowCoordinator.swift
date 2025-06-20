@@ -93,10 +93,6 @@ final class SwapAssetFlowCoordinator:
         sharedDataController.remove(self)
     }
 
-    func resetDraft() {
-        draft.reset()
-    }
-
     func updateDraft(_ draft: SwapAssetFlowDraft) {
         self.draft = draft
     }
