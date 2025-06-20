@@ -101,6 +101,9 @@ where ScriptMessage: InAppBrowserScriptMessage {
             handleDappDetailAction(message)
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
+        case .requestAuthorizedAddresses:
+            let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
+            handler.returnAuthorizedAccounts(message, in: webView)
         }
     }
 }
@@ -275,6 +278,7 @@ extension UIUserInterfaceStyle {
 enum DiscoverInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
+    case requestAuthorizedAddresses = "getAuthorizedAddresses"
     case pushNewScreen
     case requestDeviceID = "getDeviceId"
     case pushDappViewerScreen

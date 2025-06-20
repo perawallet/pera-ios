@@ -1549,6 +1549,9 @@
 		2B51A83D288AE9C6004E004C /* AssetQuickActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B51A83C288AE9C6004E004C /* AssetQuickActionView.swift */; };
 		2B51A83E288AE9C6004E004C /* AssetQuickActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B51A83C288AE9C6004E004C /* AssetQuickActionView.swift */; };
 		2B51A83F288AE9C6004E004C /* AssetQuickActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B51A83C288AE9C6004E004C /* AssetQuickActionView.swift */; };
+		2B54132E2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54132D2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift */; };
+		2B54132F2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54132D2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift */; };
+		2B5413302E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54132D2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift */; };
 		2B54DC882887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
 		2B54DC892887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
 		2B54DC8A2887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
@@ -8675,6 +8678,7 @@
 		2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Bold.ttf"; sourceTree = "<group>"; };
 		2B51A83C288AE9C6004E004C /* AssetQuickActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetQuickActionView.swift; sourceTree = "<group>"; };
+		2B54132D2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAuthorizedAddressEventHandler.swift; sourceTree = "<group>"; };
 		2B54DC872887E5200023F6DD /* MailComposing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposing.swift; sourceTree = "<group>"; };
 		2B56714023F7E87A0037FCFA /* TransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B5671562400751C0037FCFA /* LedgerTutorialInstructionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTutorialInstructionListViewController.swift; sourceTree = "<group>"; };
@@ -23777,6 +23781,7 @@
 		F0877F73299AD06900CD8D8A /* DiscoverInAppBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				2B54132D2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift */,
 				17D7F3BA294C96320011D9DA /* DiscoverInAppBrowserScreen.swift */,
 			);
 			path = DiscoverInAppBrowser;
@@ -26599,6 +26604,7 @@
 				D431505D27EA249A0084CA41 /* ALGActiveLabel.swift in Sources */,
 				2BA015892636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift in Sources */,
 				2BCCB5C027D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */,
+				2B5413302E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */,
 				D450DE692701C131008CC094 /* LedgerAccountVerificationViewTheme.swift in Sources */,
 				D46B5F5A2D5C97AC0016EBDF /* HDWalletUtils.swift in Sources */,
 				2B7A1FD727DFF1A10010F52E /* CollectibleExternalSource.swift in Sources */,
@@ -29465,6 +29471,7 @@
 				D422EFC229E8C988001B7502 /* RekeyedAccountSelectionListHeaderViewModel.swift in Sources */,
 				2B5739EE26F3F701007E0252 /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
 				D44AFD522993D73100934998 /* ResultWithHyperlinkView.swift in Sources */,
+				2B54132F2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */,
 				F0454216287B767B0081C01C /* TotalPortfolioItem.swift in Sources */,
 				D48FDFE027CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift in Sources */,
 				D4DC26B028B3A22F0068152E /* ASAAboutScreenASAIDSecondaryListItem.swift in Sources */,
@@ -31902,6 +31909,7 @@
 				D450DE672701C131008CC094 /* LedgerAccountVerificationViewTheme.swift in Sources */,
 				F0877F7A299ADA8400CD8D8A /* DiscoverGenericParameters.swift in Sources */,
 				D46B5F592D5C97AC0016EBDF /* HDWalletUtils.swift in Sources */,
+				2B54132E2E0351CA001AA6EF /* BrowserAuthorizedAddressEventHandler.swift in Sources */,
 				D46432E028B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */,
 				D4CF683128C8E9CC0007A727 /* InfoBoxHeaderViewTheme.swift in Sources */,
 				2B7A1FD527DFF1A10010F52E /* CollectibleExternalSource.swift in Sources */,
