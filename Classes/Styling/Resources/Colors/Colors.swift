@@ -299,10 +299,10 @@ extension Colors {
     enum TabBar:
         String,
         Color {
-        case background = "TabBar/bg"
-        case button = "TabBar/button"
-        case iconActive = "TabBar/iconActive"
-        case iconDisabled = "TabBar/iconDisabled"
+        case background = "Tabbar/bg"
+        case button = "Tabbar/button"
+        case iconActive = "Tabbar/iconActive"
+        case iconDisabled = "Tabbar/iconDisabled"
     }
 }
 
