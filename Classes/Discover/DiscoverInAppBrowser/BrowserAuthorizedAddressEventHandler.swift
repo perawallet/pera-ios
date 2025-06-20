@@ -27,8 +27,11 @@ public struct BrowserAuthorizedAddressEventHandler {
     }
     
     func returnAuthorizedAccounts(_ message: WKScriptMessage, in webView: WKWebView) {
-        if !isAcceptableMessage(message) { return }
-        guard let cardAccountsBase64 = makeEncodedAccountDetails() else { return }
+        guard isAcceptableMessage(message),
+              let cardAccountsBase64 = makeEncodedAccountDetails() else {
+            return
+        }
+        
         let scriptString = "var message = '\(cardAccountsBase64)'; handleMessage(message);"
         webView.evaluateJavaScript(scriptString)
     }
@@ -38,7 +41,7 @@ private extension BrowserAuthorizedAddressEventHandler {
     func makeEncodedAccountDetails() -> String? {
         let sortedAccounts = sharedDataController.sortedAccounts(by: AccountDescendingTotalPortfolioValueAlgorithm(currency: sharedDataController.currency))
         let authorizedAccounts = sortedAccounts.filter { $0.value.authorization.isAuthorized }
-        let accountsArray: [[String: String]] = authorizedAccounts.compactMap {
+        let accountsArray: [[String: String]] = authorizedAccounts.map {
             return [$0.value.address: $0.value.name ?? ""]
         }
         
@@ -54,10 +57,12 @@ private extension BrowserAuthorizedAddressEventHandler {
 
     func isAcceptableMessage(_ message: WKScriptMessage) -> Bool {
         let frameInfo = message.frameInfo
-
-        if !frameInfo.isMainFrame { return false }
-        if frameInfo.request.url.unwrap(where: \.isPeraURL) == nil { return false }
-
+        
+        guard frameInfo.isMainFrame,
+              frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else {
+            return false
+        }
+        
         return true
     }
 }
