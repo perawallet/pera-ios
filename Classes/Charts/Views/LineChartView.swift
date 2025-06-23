@@ -19,7 +19,7 @@ import Charts
 
 struct LineChartView: View {
     let data: [ChartDataPoint]
-
+    
     @State private var selectedPoint: ChartDataPoint? {
         didSet {
             onPointSelectionChanged?(selectedPoint)
@@ -27,29 +27,31 @@ struct LineChartView: View {
     }
     
     var onPointSelectionChanged: ((ChartDataPoint?) -> Void)? = nil
-
-    private let chartLineColor = Color("Chart/chartLine")
-    private let borderColor = Color("Defaults/bg")
-    private let gradientColor = Color("Chart/chartGradient")
-    private let selectedPointLineColor = Color("Text/grayLighter")
+    
+    private let xAxisLabel = "Date"
+    private let yAxisLabel = "Value"
+    private let lineColor = Color.Chart.line
+    private let gradientColor = Color.Chart.gradient
+    private let selectedPointLineColor = Color.Text.grayLighter
+    private let borderColor = Color.Defaults.bg
     private let interpolationMethod: InterpolationMethod = .monotone
-
+    
     var body: some View {
         let maxValue = data.map(\.value).max() ?? 100
-
+        
         GeometryReader { geo in
             let chart = Chart {
                 ForEach(data) { point in
                     LineMark(
-                        x: .value("Date", point.day),
-                        y: .value("Value", point.value)
+                        x: .value(xAxisLabel, point.day),
+                        y: .value(yAxisLabel, point.value)
                     )
-                    .foregroundStyle(chartLineColor)
+                    .foregroundStyle(lineColor)
                     .interpolationMethod(interpolationMethod)
-
+                    
                     AreaMark(
-                        x: .value("Date", point.day),
-                        y: .value("Value", point.value)
+                        x: .value(xAxisLabel, point.day),
+                        y: .value(yAxisLabel, point.value)
                     )
                     .foregroundStyle(
                         .linearGradient(
@@ -63,32 +65,32 @@ struct LineChartView: View {
                     )
                     .interpolationMethod(interpolationMethod)
                 }
-
+                
                 if let selected = selectedPoint {
-                    RuleMark(x: .value("Date", selected.day))
+                    RuleMark(x: .value(xAxisLabel, selected.day))
                         .foregroundStyle(selectedPointLineColor)
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
-
+                    
                     PointMark(
-                        x: .value("Date", selected.day),
-                        y: .value("Value", selected.value)
+                        x: .value(xAxisLabel, selected.day),
+                        y: .value(yAxisLabel, selected.value)
                     )
                     .symbol {
                         Circle()
                             .strokeBorder(borderColor, lineWidth: 2)
-                            .background(Circle().fill(chartLineColor))
+                            .background(Circle().fill(lineColor))
                             .frame(width: 12, height: 12)
                     }
                 }
             }
-            .chartYScale(domain: 0...(maxValue + 10))
-            .chartXAxis(.hidden)
-            .chartYAxis(.hidden)
-            .chartPlotStyle { plotArea in
-                plotArea
-                    .background(Color.clear)
-            }
-
+                .chartYScale(domain: 0...(maxValue + 10))
+                .chartXAxis(.hidden)
+                .chartYAxis(.hidden)
+                .chartPlotStyle { plotArea in
+                    plotArea
+                        .background(Color.clear)
+                }
+            
             let overlay = chart.chartOverlay { proxy in
                 GeometryReader { geo in
                     Rectangle()
@@ -104,7 +106,7 @@ struct LineChartView: View {
                                         let plotWidth = geo[proxy.plotAreaFrame].width
                                         var xPosition = drag.location.x - origin.x
                                         xPosition = min(max(0, xPosition), plotWidth)
-
+                                        
                                         guard let day: Int = proxy.value(atX: xPosition),
                                               let nearest = data.min(by: { abs($0.day - day) < abs($1.day - day) }) else {
                                             selectedPoint = nil

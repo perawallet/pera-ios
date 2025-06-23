@@ -23,7 +23,7 @@ enum ChartDataScreen: String {
 }
 
 final class ChartAPIDataController {
-    var onFetch: ((String?, ChartDataPeriod, [ChartData]) -> Void)?
+    var onFetch: ((String?, ChartDataPeriod, [ChartDataDTO]) -> Void)?
     
     private let api: ALGAPI
     private let session: Session

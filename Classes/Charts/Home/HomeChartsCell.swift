@@ -27,55 +27,45 @@ final class HomeChartsCell: UICollectionViewCell {
     var onPeriodChange: ((ChartDataPeriod) -> Void)?
     var onPointSelected: ((ChartDataPoint?) -> Void)?
     
-    private let chartDataModel = ChartDataModel()
-    private lazy var observer = ChartSelectionObserver(selected: .oneWeek)
-    
-    private var chartView: ChartView {
-        ChartView(dataModel: chartDataModel, observer: observer)
-    }
-    
-    private lazy var hostingController = UIHostingController(rootView: chartView)
+    private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
+    private lazy var hostingController = UIHostingController(rootView: makeChartView())
     
     // MARK: - Initialisers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addChartView(Self.theme)
+        setupViewModelCallback()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func makeChartView() -> ChartView {
+        ChartView(viewModel: chartViewModel)
+    }
+    
     private func addChartView(_ theme: HomeChartsViewTheme) {
-        observer.onPeriodChange = { [weak self] newPeriodSelected in
-            guard let self else { return }
-            if newPeriodSelected != chartDataModel.period {
-                chartDataModel.isLoading = true
-            }
-            onPeriodChange?(newPeriodSelected)
-        }
-        
-        observer.onPointSelected = { [weak self] pointSelected in
-            guard let self else { return }
-            onPointSelected?(pointSelected)
-        }
-        
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(hostingController.view)
         
         hostingController.view.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(theme.chartViewTrailingInset)
+            $0.trailing.equalToSuperview()
             $0.leading.equalToSuperview().inset(theme.chartViewLeadingInset)
             $0.top.equalToSuperview()
-            $0.height.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
-    func bindData(_ data: ChartViewModel) {
-        self.chartDataModel.data = data.chartValues
-        self.chartDataModel.isLoading = false
-        self.chartDataModel.period = data.period
-        self.observer.selected = data.period
+    private func setupViewModelCallback() {
+        chartViewModel.onSelectedPeriodChanged = { [weak self] newPeriod in
+            self?.onPeriodChange?(newPeriod)
+        }
+    }
+    
+    func bindData(_ data: ChartViewData) {
+        chartViewModel.refresh(with: data.model)
+        hostingController.rootView = makeChartView()
     }
 }

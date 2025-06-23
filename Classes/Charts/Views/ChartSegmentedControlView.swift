@@ -22,14 +22,16 @@ struct ChartSegmentedControlView: View {
     var body: some View {
         HStack(spacing: 16) {
             ForEach(ChartDataPeriod.allCases, id: \.self) { segment in
+                let isSelected = selected == segment
+                
                 Text(segment.title)
                     .font(Typography.bodyMedium().font)
-                    .foregroundColor(selected == segment ? Color("Text/main") : Color("Text/grayLighter"))
+                    .foregroundColor(isSelected ? .Text.main : .Text.grayLighter)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 16)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(selected == segment ? Color("ButtonGhost/focusBg") : Color.clear)
+                            .fill(isSelected ? .ButtonGhost.focusBg : Color.clear)
                     )
                     .onTapGesture {
                         selected = segment

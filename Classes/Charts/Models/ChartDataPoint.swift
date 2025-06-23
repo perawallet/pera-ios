@@ -12,26 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartView.swift
+//   ChartDataPoint.swift
 
-import SwiftUI
-import Charts
+import Foundation
 
-struct ChartView: View {
-    @ObservedObject var viewModel: ChartViewModel
-    
-    var body: some View {
-        Group {
-            if viewModel.isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-            } else {
-                VStack {
-                    LineChartView(data: viewModel.data)
-                    ChartSegmentedControlView(selected: $viewModel.selectedPeriod)
-                }
-            }
-        }
-        .background(Color.Defaults.bg)
-    }
+struct ChartDataPoint: Identifiable, Hashable, Equatable {
+    let id = UUID()
+    let day: Int
+    let value: Double
+    let timestamp: String
 }

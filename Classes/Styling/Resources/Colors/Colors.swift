@@ -169,15 +169,6 @@ extension Colors {
 }
 
 extension Colors {
-    enum Charts:
-        String,
-        Color {
-        case line = "Charts/line"
-        case gradient = "Charts/gradient"
-    }
-}
-
-extension Colors {
     enum Dapp:
         String,
         Color {

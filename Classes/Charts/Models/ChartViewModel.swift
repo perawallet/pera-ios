@@ -14,8 +14,58 @@
 
 //   ChartViewModel.swift
 
-struct ChartViewModel: Hashable, Equatable {
-    let period: ChartDataPeriod
-    let chartValues: [ChartDataPoint]
-    let isLoading: Bool
+import Combine
+
+class ChartViewModel: ObservableObject {
+    @Published var isLoading: Bool = true
+    @Published var data: [ChartDataPoint] = []
+    @Published var selectedPeriod: ChartDataPeriod = .oneWeek
+    
+    var onSelectedPeriodChanged: ((ChartDataPeriod) -> Void)?
+
+    private var dataModel: ChartDataModel
+    private var cancellables = Set<AnyCancellable>()
+
+    init(dataModel: ChartDataModel) {
+        self.dataModel = dataModel
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        dataModel.$data
+            .assign(to: &$data)
+
+        dataModel.$isLoading
+            .assign(to: &$isLoading)
+
+        dataModel.$period
+            .removeDuplicates()
+            .sink { [weak self] period in
+                guard let self = self else { return }
+                if selectedPeriod != period {
+                    selectedPeriod = period
+                }
+            }
+            .store(in: &cancellables)
+
+        $selectedPeriod
+            .removeDuplicates()
+            .sink { [weak self] newPeriod in
+                guard let self = self else { return }
+                if dataModel.period != newPeriod {
+                    isLoading = true
+                    dataModel.period = newPeriod
+                    onSelectedPeriodChanged?(newPeriod)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func refresh(with newDataModel: ChartDataModel) {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        
+        dataModel = newDataModel
+        setupBindings()
+    }
 }

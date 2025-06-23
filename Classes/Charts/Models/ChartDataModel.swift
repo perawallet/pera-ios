@@ -12,26 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartView.swift
+//   ChartDataModel.swift
 
 import SwiftUI
-import Charts
 
-struct ChartView: View {
-    @ObservedObject var viewModel: ChartViewModel
-    
-    var body: some View {
-        Group {
-            if viewModel.isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-            } else {
-                VStack {
-                    LineChartView(data: viewModel.data)
-                    ChartSegmentedControlView(selected: $viewModel.selectedPeriod)
-                }
-            }
-        }
-        .background(Color.Defaults.bg)
-    }
+final class ChartDataModel: ObservableObject {
+    @Published var isLoading: Bool = true
+    @Published var period: ChartDataPeriod = .oneWeek
+    @Published var data: [ChartDataPoint] = []
 }
