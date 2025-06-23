@@ -63,7 +63,7 @@ final class HomeViewController:
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
+        draft: SwapAssetFlowDraft(network: api?.network ?? .mainnet),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
@@ -605,7 +605,6 @@ extension HomeViewController {
             [weak self] in
             guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .swap))
-            self.swapAssetFlowCoordinator.resetDraft()
             self.swapAssetFlowCoordinator.launch()
         }
         

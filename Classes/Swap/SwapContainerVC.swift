@@ -20,7 +20,7 @@ final class SwapContainerVC: BaseViewController {
     }
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
+        draft: SwapAssetFlowDraft(network: api?.network ?? .mainnet),
         dataStore: SwapDataLocalStore(),
         analytics: analytics,
         api: api!,
@@ -41,8 +41,6 @@ final class SwapContainerVC: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        swapAssetFlowCoordinator.resetDraft()
         swapAssetFlowCoordinator.launch()
-    }
-    
+    }    
 }

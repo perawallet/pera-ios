@@ -50,7 +50,8 @@ final class ASADetailScreen:
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
             account: dataController.account,
-            assetInID: dataController.asset.id
+            assetInID: dataController.asset.id,
+            network: api?.network ?? .mainnet
         ),
         dataStore: swapDataStore,
         analytics: analytics,
