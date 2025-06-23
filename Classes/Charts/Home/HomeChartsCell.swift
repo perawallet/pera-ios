@@ -26,10 +26,7 @@ final class HomeChartsCell: UICollectionViewCell {
     static let theme = HomeChartsViewTheme()
     var onChange: ((ChartDataPeriod) -> Void)?
     
-    private let dataModel = ChartDataModel()
-    private lazy var chartViewModel = ChartViewModel(dataModel: dataModel)
-    private lazy var observer = SelectedPeriodObserver(selected: .oneWeek)
-    
+    private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var hostingController = UIHostingController(rootView: makeChartView())
     
     // MARK: - Initialisers
@@ -37,7 +34,7 @@ final class HomeChartsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addChartView(Self.theme)
-        setupObserver()
+        setupViewModelCallback()
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +42,7 @@ final class HomeChartsCell: UICollectionViewCell {
     }
     
     private func makeChartView() -> ChartView {
-        ChartView(viewModel: chartViewModel, observer: observer)
+        ChartView(viewModel: chartViewModel)
     }
     
     private func addChartView(_ theme: HomeChartsViewTheme) {
@@ -60,22 +57,14 @@ final class HomeChartsCell: UICollectionViewCell {
         }
     }
     
-    private func setupObserver() {
-        observer.onChange = { [weak self] newSelected in
-            guard let self = self else { return }
-            if newSelected != self.dataModel.period {
-                self.dataModel.isLoading = true
-            }
-            self.onChange?(newSelected)
+    private func setupViewModelCallback() {
+        chartViewModel.onSelectedPeriodChanged = { [weak self] newPeriod in
+            self?.onChange?(newPeriod)
         }
     }
     
     func bindData(_ data: ChartViewData) {
-        dataModel.data = data.chartValues
-        dataModel.isLoading = false
-        dataModel.period = data.period
-        observer.selected = data.period
-
+        chartViewModel.refresh(with: data.model)
         hostingController.rootView = makeChartView()
     }
 }

@@ -17,19 +17,8 @@
 import SwiftUI
 import Charts
 
-class SelectedPeriodObserver: ObservableObject {
-    @Published var selected: ChartDataPeriod {
-        didSet {
-            onChange?(selected)
-        }
-    }
-    var onChange: ((ChartDataPeriod) -> Void)?
-    init(selected: ChartDataPeriod) { self.selected = selected }
-}
-
 struct ChartView: View {
     @ObservedObject var viewModel: ChartViewModel
-    @ObservedObject var observer: SelectedPeriodObserver
     
     var body: some View {
         Group {
@@ -39,7 +28,7 @@ struct ChartView: View {
             } else {
                 VStack {
                     LineChartView(data: viewModel.data)
-                    ChartSegmentedControlView(selected: $observer.selected)
+                    ChartSegmentedControlView(selected: $viewModel.selectedPeriod)
                 }
             }
         }

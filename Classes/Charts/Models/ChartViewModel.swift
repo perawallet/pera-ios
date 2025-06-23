@@ -20,14 +20,18 @@ class ChartViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var data: [ChartDataPoint] = []
     @Published var selectedPeriod: ChartDataPeriod = .oneWeek
+    
+    var onSelectedPeriodChanged: ((ChartDataPeriod) -> Void)?
 
     private var dataModel: ChartDataModel
     private var cancellables = Set<AnyCancellable>()
 
     init(dataModel: ChartDataModel) {
         self.dataModel = dataModel
-
-        // Forward data and loading from dataModel
+        setupBindings()
+    }
+    
+    private func setupBindings() {
         dataModel.$data
             .assign(to: &$data)
 
@@ -38,20 +42,30 @@ class ChartViewModel: ObservableObject {
             .removeDuplicates()
             .sink { [weak self] period in
                 guard let self = self else { return }
-                if self.selectedPeriod != period {
-                    self.selectedPeriod = period
+                if selectedPeriod != period {
+                    selectedPeriod = period
                 }
             }
             .store(in: &cancellables)
 
         $selectedPeriod
             .removeDuplicates()
-            .sink { [weak self] period in
+            .sink { [weak self] newPeriod in
                 guard let self = self else { return }
-                if self.dataModel.period != period {
-                    self.dataModel.period = period
+                if dataModel.period != newPeriod {
+                    isLoading = true
+                    dataModel.period = newPeriod
+                    onSelectedPeriodChanged?(newPeriod)
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func refresh(with newDataModel: ChartDataModel) {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        
+        dataModel = newDataModel
+        setupBindings()
     }
 }

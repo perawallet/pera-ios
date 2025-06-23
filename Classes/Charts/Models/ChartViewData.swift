@@ -18,4 +18,12 @@ struct ChartViewData: Hashable, Equatable {
     let period: ChartDataPeriod
     let chartValues: [ChartDataPoint]
     let isLoading: Bool
+    
+    var model: ChartDataModel {
+        let chartDataModel = ChartDataModel()
+        chartDataModel.period = period
+        chartDataModel.data = chartValues
+        chartDataModel.isLoading = isLoading
+        return chartDataModel
+    }
 }

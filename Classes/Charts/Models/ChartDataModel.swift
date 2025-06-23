@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-class ChartDataModel: ObservableObject {
+final class ChartDataModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var period: ChartDataPeriod = .oneWeek
     @Published var data: [ChartDataPoint] = []
