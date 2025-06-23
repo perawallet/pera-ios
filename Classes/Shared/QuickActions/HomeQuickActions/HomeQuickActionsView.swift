@@ -226,5 +226,6 @@ extension HomeQuickActionsView {
         case buy
         case stake
         case send
+        case transfer
     }
 }

@@ -26,6 +26,7 @@ extension PortfolioViewModel {
         portfolioValue: PortfolioValue?,
         currencyValue: RemoteCurrencyValue?,
         isAmountHidden: Bool,
+        addApproximatelyEqualChar: Bool = false,
         in context: CurrencyFormattingContext
     ) -> String? {
         guard
@@ -46,7 +47,13 @@ extension PortfolioViewModel {
             formatter.formattingContext = context
             formatter.currency =  rawCurrency
             formatter.isValueHidden = isAmountHidden
-            return formatter.format(amount)
+            guard
+                addApproximatelyEqualChar,
+                let string = formatter.format(amount)
+            else {
+                return formatter.format(amount)
+            }
+           return "≈ " + string
         } catch {
             return nil
         }
