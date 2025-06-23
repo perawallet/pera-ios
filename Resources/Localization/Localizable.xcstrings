@@ -1453,9 +1453,6 @@
         }
       }
     },
-    "Amount" : {
-
-    },
     "any-to-no-auth-rekeyed-account-type-description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3215,9 +3212,6 @@
           }
         }
       }
-    },
-    "Date" : {
-
     },
     "default-error-message" : {
       "extractionState" : "manual",

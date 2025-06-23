@@ -14,8 +14,44 @@
 
 //   ChartViewModel.swift
 
-struct ChartViewModel: Hashable, Equatable {
-    let period: ChartDataPeriod
-    let chartValues: [ChartDataPoint]
-    let isLoading: Bool
+import Combine
+
+class ChartViewModel: ObservableObject {
+    @Published var isLoading: Bool = true
+    @Published var data: [ChartDataPoint] = []
+    @Published var selectedPeriod: ChartDataPeriod = .oneWeek
+
+    private var dataModel: ChartDataModel
+    private var cancellables = Set<AnyCancellable>()
+
+    init(dataModel: ChartDataModel) {
+        self.dataModel = dataModel
+
+        // Forward data and loading from dataModel
+        dataModel.$data
+            .assign(to: &$data)
+
+        dataModel.$isLoading
+            .assign(to: &$isLoading)
+
+        dataModel.$period
+            .removeDuplicates()
+            .sink { [weak self] period in
+                guard let self = self else { return }
+                if self.selectedPeriod != period {
+                    self.selectedPeriod = period
+                }
+            }
+            .store(in: &cancellables)
+
+        $selectedPeriod
+            .removeDuplicates()
+            .sink { [weak self] period in
+                guard let self = self else { return }
+                if self.dataModel.period != period {
+                    self.dataModel.period = period
+                }
+            }
+            .store(in: &cancellables)
+    }
 }

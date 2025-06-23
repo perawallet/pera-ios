@@ -19,8 +19,11 @@ import Charts
 
 struct LineChartView: View {
     let data: [ChartDataPoint]
-    private let lineColor = Color("Chart/chartLine")
-    private let gradientColor = Color("Chart/chartGradient")
+    
+    private let xAxisLabel = "Date"
+    private let yAxisLabel = "Value"
+    private let lineColor = Color.Chart.line
+    private let gradientColor = Color.Chart.gradient
     private let interpolationMethod: InterpolationMethod = .monotone
 
     var body: some View {
@@ -28,15 +31,15 @@ struct LineChartView: View {
 
         Chart(data) { point in
             LineMark(
-                x: .value("Date", point.day),
-                y: .value("Amount", point.value)
+                x: .value(xAxisLabel, point.day),
+                y: .value(yAxisLabel, point.value)
             )
             .foregroundStyle(lineColor)
             .interpolationMethod(interpolationMethod)
 
             AreaMark(
-                x: .value("Date", point.day),
-                y: .value("Amount", point.value)
+                x: .value(xAxisLabel, point.day),
+                y: .value(yAxisLabel, point.value)
             )
             .foregroundStyle(
                 .linearGradient(

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartData.swift
+//   ChartDataDTO.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class ChartDataResult: ALGEntityModel {
-    let results: [ChartData]
+final class ChartDataResultDTO: ALGEntityModel {
+    let results: [ChartDataDTO]
     
     init(
         _ apiModel: APIModel = APIModel()
@@ -34,9 +34,9 @@ final class ChartDataResult: ALGEntityModel {
     }
 }
 
-extension ChartDataResult {
+extension ChartDataResultDTO {
     struct APIModel: ALGAPIModel {
-        var results: [ChartData]
+        var results: [ChartDataDTO]
 
         init() {
             self.results = []
@@ -44,7 +44,7 @@ extension ChartDataResult {
     }
 }
 
-final class ChartData: ALGEntityModel, Codable, Equatable, Hashable {
+final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
     
     let datetime: String
     let usdValue: String
@@ -69,7 +69,7 @@ final class ChartData: ALGEntityModel, Codable, Equatable, Hashable {
         return apiModel
     }
     
-    static func == (lhs: ChartData, rhs: ChartData) -> Bool {
+    static func == (lhs: ChartDataDTO, rhs: ChartDataDTO) -> Bool {
         return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
     }
     
@@ -88,7 +88,7 @@ final class ChartData: ALGEntityModel, Codable, Equatable, Hashable {
     }
 }
 
-extension ChartData {
+extension ChartDataDTO {
     struct APIModel: ALGAPIModel {
         var datetime: String
         var usdValue: String

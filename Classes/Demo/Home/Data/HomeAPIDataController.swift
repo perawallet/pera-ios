@@ -33,8 +33,8 @@ final class HomeAPIDataController:
 
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
-    private var chartViewModel: ChartViewModel?
-    private var chartDataCache: [ChartDataPeriod: ChartViewModel] = [:]
+    private var chartViewData: ChartViewData?
+    private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
@@ -116,7 +116,7 @@ extension HomeAPIDataController {
             chartsDataController.loadData(screen: .home, period: period)
             return
         }
-        chartViewModel = viewModel
+        chartViewData = viewModel
     }
     
     func updateClose(for banner: CarouselBannerItemModel) {
@@ -185,7 +185,7 @@ extension HomeAPIDataController {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
-                chartViewModel = ChartViewModel(period: period, chartValues: [], isLoading: false)
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
                 publish(.didFailWithError(error))
                 return
             }
@@ -193,8 +193,8 @@ extension HomeAPIDataController {
                 guard let value = Double(item.algoValue) else { return nil }
                 return ChartDataPoint(day: index, value: value)
             }
-            chartViewModel = ChartViewModel(period: period, chartValues: chartDataPoints, isLoading: false)
-            chartDataCache[period] = chartViewModel
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            chartDataCache[period] = chartViewData
         }
     }
 }
@@ -276,9 +276,9 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
             
-            if let chartViewModel {
+            if let chartViewData {
                 snapshot.appendItems(
-                    [.portfolio(.charts(chartViewModel))],
+                    [.portfolio(.charts(chartViewData))],
                     toSection: .portfolio
                 )
             }

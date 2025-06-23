@@ -63,7 +63,7 @@ enum HomeEmptyItemIdentifier: Hashable {
 
 enum HomePortfolioItemIdentifier: Hashable {
     case portfolio(HomePortfolioViewModel)
-    case charts(ChartViewModel)
+    case charts(ChartViewData)
     case quickActions
 }
 

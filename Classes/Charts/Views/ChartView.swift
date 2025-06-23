@@ -17,18 +17,6 @@
 import SwiftUI
 import Charts
 
-struct ChartDataPoint: Identifiable, Hashable, Equatable {
-    let id = UUID()
-    let day: Int
-    let value: Double
-}
-
-class ChartDataModel: ObservableObject {
-    @Published var isLoading: Bool = true
-    @Published var period: ChartDataPeriod = .oneWeek
-    @Published var data: [ChartDataPoint] = []
-}
-
 class SelectedPeriodObserver: ObservableObject {
     @Published var selected: ChartDataPeriod {
         didSet {
@@ -40,22 +28,21 @@ class SelectedPeriodObserver: ObservableObject {
 }
 
 struct ChartView: View {
-    @ObservedObject var dataModel: ChartDataModel
+    @ObservedObject var viewModel: ChartViewModel
     @ObservedObject var observer: SelectedPeriodObserver
     
     var body: some View {
         Group {
-            if dataModel.isLoading {
+            if viewModel.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
             } else {
                 VStack {
-                    LineChartView(data: dataModel.data)
+                    LineChartView(data: viewModel.data)
                     ChartSegmentedControlView(selected: $observer.selected)
                 }
             }
         }
-        .background(Color("Defaults/bg"))
+        .background(Color.Defaults.bg)
     }
 }
-
