@@ -60,7 +60,14 @@ final class HomeChartsCell: UICollectionViewCell {
     
     private func setupViewModelCallback() {
         chartViewModel.onSelectedPeriodChanged = { [weak self] newPeriod in
-            self?.onPeriodChange?(newPeriod)
+            guard let self else { return }
+            onPeriodChange?(newPeriod)
+        }
+        
+        chartViewModel.onPointSelected = { [weak self] selectedPoint in
+            guard let self else { return }
+            onPointSelected?(selectedPoint)
+            
         }
     }
     

@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartDataPoint.swift
+//   ChartSelectedPointViewModel.swift
 
-import Foundation
-
-struct ChartDataPoint: Identifiable, Hashable, Equatable {
-    let id = UUID()
-    let day: Int
+struct ChartSelectedPointViewModel: Hashable {
     let primaryValue: Double
     let secondaryValue: Double
-    let timestamp: String
+    let dateValue: String
 }

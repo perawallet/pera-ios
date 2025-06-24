@@ -25,14 +25,20 @@ struct HomePortfolioViewModel:
     private(set) var titleColor: UIColor?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+    private(set) var selectedPointDateValue: TextProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
     
     init(
-        _ model: TotalPortfolioItem
+        _ model: TotalPortfolioItem,
+        _ selectedPointModel: ChartSelectedPointViewModel?
     ) {
+        if let selectedPointModel {
+            let x = selectedPointModel
+        }
         bind(model)
     }
+    
 }
 
 extension HomePortfolioViewModel {

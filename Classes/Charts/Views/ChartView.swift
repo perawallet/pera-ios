@@ -27,7 +27,7 @@ struct ChartView: View {
                     .progressViewStyle(CircularProgressViewStyle())
             } else {
                 VStack {
-                    LineChartView(data: viewModel.data)
+                    LineChartView(data: viewModel.data, selectedPoint: $viewModel.selectedPoint)
                     ChartSegmentedControlView(selected: $viewModel.selectedPeriod)
                 }
             }

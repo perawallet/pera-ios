@@ -5879,6 +5879,9 @@
 		D47509BE2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47509BD2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift */; };
 		D47509BF2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47509BD2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift */; };
 		D47509C02AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47509BD2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift */; };
+		D4757EB22E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */; };
+		D4757EB32E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */; };
+		D4757EB42E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */; };
 		D47742B927A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
 		D47742BA27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
 		D47742BB27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
@@ -10273,6 +10276,7 @@
 		D47509B52AB1DB060091F0B9 /* WCArbitraryDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewController.swift; sourceTree = "<group>"; };
 		D47509B92AB1DE210091F0B9 /* WCArbitraryDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewModel.swift; sourceTree = "<group>"; };
 		D47509BD2AB1E85E0091F0B9 /* WCArbitraryDataSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataSigner.swift; sourceTree = "<group>"; };
+		D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSelectedPointViewModel.swift; sourceTree = "<group>"; };
 		D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewTheme.swift; sourceTree = "<group>"; };
 		D477A74827FB8CB700E2D790 /* CollectibleListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListViewControllerTheme.swift; sourceTree = "<group>"; };
 		D478404529DCC5A60070AB46 /* MultipleSelectionLedgerAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionLedgerAccountCell.swift; sourceTree = "<group>"; };
@@ -20310,6 +20314,7 @@
 		D418A3CD2DE5B93F0009747E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */,
 				D4C283762E09537B009A4F53 /* ChartViewModel.swift */,
 				D4C283722E095305009A4F53 /* ChartDataModel.swift */,
 				D4C2836E2E0951ED009A4F53 /* ChartDataPoint.swift */,
@@ -25668,6 +25673,7 @@
 				8B6F2B232BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift in Sources */,
 				D4822743272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				D41168A62DC22B58001F7A57 /* MenuListItemViewTheme.swift in Sources */,
+				D4757EB32E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */,
 				D45D7686299FB2A50081735E /* MeldAccountSelectionListHeaderViewModel.swift in Sources */,
 				D40650362A5B598000B05DBC /* RekeySuccessResultViewTheme.swift in Sources */,
 				95189D7F2778DD6200094107 /* UIPasteboard+Address.swift in Sources */,
@@ -28019,6 +28025,7 @@
 				D4A9954C290C255300E2D105 /* TitledToggleLoadingView.swift in Sources */,
 				D4023E2D29A6C69300DFB5E8 /* MoonPayAccountSelectionListHeaderTheme.swift in Sources */,
 				2B0F61B724EC129D00DA22A6 /* LedgerBLEController.swift in Sources */,
+				D4757EB22E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */,
 				D4027C0D299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
 				2B65602625CE1DDD0028FE12 /* PassphraseCellViewModel.swift in Sources */,
 				F011FCF928593B6200E42EA2 /* HomeAccountsHeader.swift in Sources */,
@@ -31001,6 +31008,7 @@
 				2B1336D92576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
 				D4150DD227C4D87A0064F736 /* CollectibleGridItemLoadingView.swift in Sources */,
 				D41168A42DC22B58001F7A57 /* MenuListItemViewTheme.swift in Sources */,
+				D4757EB42E0AD8C7009C9B91 /* ChartSelectedPointViewModel.swift in Sources */,
 				2BC1826B23D8DED600888476 /* TransactionDraft.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2BB93C2F25BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,

@@ -19,14 +19,7 @@ import Charts
 
 struct LineChartView: View {
     let data: [ChartDataPoint]
-    
-    @State private var selectedPoint: ChartDataPoint? {
-        didSet {
-            onPointSelectionChanged?(selectedPoint)
-        }
-    }
-    
-    var onPointSelectionChanged: ((ChartDataPoint?) -> Void)? = nil
+    @Binding var selectedPoint: ChartDataPoint?
     
     private let xAxisLabel = "Date"
     private let yAxisLabel = "Value"
@@ -37,21 +30,21 @@ struct LineChartView: View {
     private let interpolationMethod: InterpolationMethod = .monotone
     
     var body: some View {
-        let maxValue = data.map(\.value).max() ?? 100
+        let maxValue = data.map(\.primaryValue).max() ?? 100
         
         GeometryReader { geo in
             let chart = Chart {
                 ForEach(data) { point in
                     LineMark(
                         x: .value(xAxisLabel, point.day),
-                        y: .value(yAxisLabel, point.value)
+                        y: .value(yAxisLabel, point.primaryValue)
                     )
                     .foregroundStyle(lineColor)
                     .interpolationMethod(interpolationMethod)
                     
                     AreaMark(
                         x: .value(xAxisLabel, point.day),
-                        y: .value(yAxisLabel, point.value)
+                        y: .value(yAxisLabel, point.primaryValue)
                     )
                     .foregroundStyle(
                         .linearGradient(
@@ -73,7 +66,7 @@ struct LineChartView: View {
                     
                     PointMark(
                         x: .value(xAxisLabel, selected.day),
-                        y: .value(yAxisLabel, selected.value)
+                        y: .value(yAxisLabel, selected.primaryValue)
                     )
                     .symbol {
                         Circle()

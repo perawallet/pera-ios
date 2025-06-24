@@ -652,11 +652,7 @@ extension HomeViewController {
         }
         cell.onPointSelected = { [weak self] pointSelected in
             guard let self else { return }
-            guard let pointSelected else {
-                print("---reset")
-                return
-            }
-            print("---\(pointSelected)")
+            dataController.updatePortfolio(with: pointSelected)
         }
 
     }

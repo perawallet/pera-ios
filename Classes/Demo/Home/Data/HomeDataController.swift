@@ -31,6 +31,7 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func fetchSpotBanners()
+    func updatePortfolio(with selectedPoint: ChartDataPoint?)
     func fetchInitialChartData(period: ChartDataPeriod)
     func updateChartData(period: ChartDataPeriod)
     func updateClose(for banner: CarouselBannerItemModel)

@@ -34,6 +34,7 @@ final class HomeAPIDataController:
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
     private var chartViewData: ChartViewData?
+    private var chartSelectedPointViewModel: ChartSelectedPointViewModel?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
@@ -104,6 +105,25 @@ extension HomeAPIDataController {
         let accounts = self.sharedDataController.sortedAccounts()
         let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
+    }
+    
+    func updatePortfolio(with selectedPoint: ChartDataPoint?) {
+        guard let point = selectedPoint else {
+            chartSelectedPointViewModel = nil
+            return
+        }
+
+        guard let date = point.timestamp.toDate(.fullNumericWithTimezone) else {
+            return
+        }
+        let displayFormatter = DateFormatter()
+        displayFormatter.locale = .current
+        displayFormatter.dateFormat = "MMM d, yyyy hh:mm a"
+        
+        let dateValue = displayFormatter.string(from: date)
+        print(dateValue)
+        let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
+        chartSelectedPointViewModel = viewModel
     }
     
     func fetchInitialChartData(period: ChartDataPeriod) {
@@ -190,8 +210,11 @@ extension HomeAPIDataController {
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
-                guard let value = Double(item.algoValue) else { return nil }
-                return ChartDataPoint(day: index, value: value, timestamp: item.datetime)
+                guard
+                    let primaryValue = Double(item.algoValue),
+                    let secondaryValue = Double(item.usdValue)
+                else { return nil }
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: primaryValue, timestamp: item.datetime)
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData
@@ -269,7 +292,7 @@ extension HomeAPIDataController {
                 currencyFormatter: CurrencyFormatter(),
                 isAmountHidden: isAmountHidden
             )
-            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem)
+            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, chartSelectedPointViewModel)
 
             snapshot.appendItems(
                 [.portfolio(.portfolio(totalPortfolioViewModel))],

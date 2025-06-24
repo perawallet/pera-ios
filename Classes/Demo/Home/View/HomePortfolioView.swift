@@ -37,6 +37,7 @@ final class HomePortfolioView:
     private lazy var valueView = Label()
     private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = Label()
+    private lazy var selectedPointDateValueView = Label()
     
     private lazy var tooltipController = TooltipUIController(presentingView: self)
     
@@ -60,6 +61,7 @@ final class HomePortfolioView:
         addInfoAction(theme)
         addValue(theme)
         addSecondaryValue(theme)
+        addSelectedPointDateValue(theme)
     }
     
     func customizeAppearance(
@@ -95,6 +97,13 @@ final class HomePortfolioView:
         } else {
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
+        }
+        
+        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
+            selectedPointDateValue.load(in: selectedPointDateValueView)
+        } else {
+            selectedPointDateValueView.text = nil
+            selectedPointDateValueView.attributedText = nil
         }
     }
     
@@ -208,6 +217,23 @@ extension HomePortfolioView {
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0
+            $0.bottom == 0
+        }
+    }
+    
+    private func addSelectedPointDateValue(
+        _ theme: HomePortfolioViewTheme
+    ) {
+        selectedPointDateValueView.customizeAppearance(theme.secondaryValue)
+        
+        selectedPointDateValueView.adjustsFontSizeToFitWidth = true
+        selectedPointDateValueView.minimumScaleFactor = 14/36
+        
+        addSubview(selectedPointDateValueView)
+        selectedPointDateValueView.fitToIntrinsicSize()
+        selectedPointDateValueView.snp.makeConstraints {
+            $0.centerY == secondaryValueView.snp.centerY
+            $0.trailing == 0
             $0.bottom == 0
         }
     }
