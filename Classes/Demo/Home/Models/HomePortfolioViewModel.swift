@@ -31,12 +31,13 @@ struct HomePortfolioViewModel:
     
     init(
         _ model: TotalPortfolioItem,
-        _ selectedPointModel: ChartSelectedPointViewModel?
+        _ selectedPointViewModel: ChartSelectedPointViewModel?
     ) {
-        if let selectedPointModel {
-            let x = selectedPointModel
+        guard let selectedPointViewModel else {
+            bind(model)
+            return
         }
-        bind(model)
+        bind(model, selectedPointViewModel)
     }
     
 }
@@ -50,6 +51,18 @@ extension HomePortfolioViewModel {
         bindTitle(portfolioItem)
         bindPrimaryValue(portfolioItem)
         bindSecondaryValue(portfolioItem)
+    }
+    
+    mutating func bind(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        self.currencyFormatter = portfolioItem.currencyFormatter
+
+        bindTitle(portfolioItem)
+        bindPrimaryValue(portfolioItem)
+        bindSecondaryValue(portfolioItem)
+        bindSelectedPointDateValue(selectedPointViewModel)
     }
 
     mutating func bindTitle(
@@ -91,6 +104,15 @@ extension HomePortfolioViewModel {
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSelectedPointDateValue(
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        selectedPointDateValue = selectedPointViewModel.dateValue.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

@@ -212,6 +212,12 @@ final class HomeViewController:
                     title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
+            case .didSelectChartPoint(let chartSelectedPointViewModel, let totalPortfolioItem):
+                guard let totalPortfolioItem else {
+                    return
+                }
+                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, chartSelectedPointViewModel)
+                self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }
         
@@ -654,6 +660,8 @@ extension HomeViewController {
             guard let self else { return }
             dataController.updatePortfolio(with: pointSelected)
         }
+        
+        
 
     }
 

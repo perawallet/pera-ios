@@ -34,6 +34,7 @@ final class HomeAPIDataController:
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
     private var chartViewData: ChartViewData?
+    private var totalPortfolioItem: TotalPortfolioItem?
     private var chartSelectedPointViewModel: ChartSelectedPointViewModel?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var incomingASAsRequestList: IncomingASAsRequestList?
@@ -110,6 +111,7 @@ extension HomeAPIDataController {
     func updatePortfolio(with selectedPoint: ChartDataPoint?) {
         guard let point = selectedPoint else {
             chartSelectedPointViewModel = nil
+            publish(.didSelectChartPoint(nil, totalPortfolioItem))
             return
         }
 
@@ -124,6 +126,7 @@ extension HomeAPIDataController {
         print(dateValue)
         let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
         chartSelectedPointViewModel = viewModel
+        publish(.didSelectChartPoint(chartSelectedPointViewModel, totalPortfolioItem))
     }
     
     func fetchInitialChartData(period: ChartDataPeriod) {
@@ -214,7 +217,7 @@ extension HomeAPIDataController {
                     let primaryValue = Double(item.algoValue),
                     let secondaryValue = Double(item.usdValue)
                 else { return nil }
-                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: primaryValue, timestamp: item.datetime)
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, timestamp: item.datetime)
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData
@@ -292,6 +295,7 @@ extension HomeAPIDataController {
                 currencyFormatter: CurrencyFormatter(),
                 isAmountHidden: isAmountHidden
             )
+            self.totalPortfolioItem = totalPortfolioItem
             let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, chartSelectedPointViewModel)
 
             snapshot.appendItems(
