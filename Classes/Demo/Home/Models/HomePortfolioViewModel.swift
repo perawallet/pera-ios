@@ -60,8 +60,8 @@ extension HomePortfolioViewModel {
         self.currencyFormatter = portfolioItem.currencyFormatter
 
         bindTitle(portfolioItem)
-        bindPrimaryValue(portfolioItem)
-        bindSecondaryValue(portfolioItem)
+        bindPrimaryValue(portfolioItem, selectedPointViewModel)
+        bindSecondaryValue(portfolioItem, selectedPointViewModel)
         bindSelectedPointDateValue(selectedPointViewModel)
     }
 
@@ -93,12 +93,45 @@ extension HomePortfolioViewModel {
         )
     }
     
+    mutating func bindPrimaryValue(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.primaryValue,
+            selectedPointValue: selectedPointViewModel.primaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
     mutating func bindSecondaryValue(
         _ portfolioItem: TotalPortfolioItem
     ) {
         let text = format(
             portfolioValue: portfolioItem.portfolioValue,
             currencyValue: portfolioItem.currency.secondaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            addApproximatelyEqualChar: true,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSecondaryValue(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.secondaryValue,
+            selectedPointValue: selectedPointViewModel.secondaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             addApproximatelyEqualChar: true,
             in: .standalone()
