@@ -57,6 +57,11 @@ final class FeatureFlagService: ObservableObject, FeatureFlagServicing {
     
     func isEnabled(_ flag: FeatureFlag) -> Bool {
         let value = remoteConfig.configValue(forKey: flag.rawValue)
+        
+        if flag == .discoverV5Enabled {
+            return true
+        }
+        
         return value.boolValue
     }
 }
