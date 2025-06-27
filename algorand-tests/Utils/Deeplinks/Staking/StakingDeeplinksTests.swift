@@ -27,7 +27,7 @@ final class StakingDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .staking(let path):
             XCTAssertNil(path)
-            let url = StakingURLGenerator.generateURL(destination: .list, theme: .unspecified, session: nil, hideBackButton: false)
+            let url = StakingURLGenerator.generateURL(destination: .list, theme: .unspecified, session: nil, hideBackButton: false, network: .mainnet)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
         default:
             XCTFail()
@@ -41,7 +41,7 @@ final class StakingDeeplinksTests: XCTestCase {
         switch deepLinkToTest.externalDeepLink {
         case .staking(let path):
             XCTAssertNotNil(path)
-            let url = StakingURLGenerator.generateURL(destination: .list, theme: .unspecified, session: nil, hideBackButton: false)
+            let url = StakingURLGenerator.generateURL(destination: .list, theme: .unspecified, session: nil, hideBackButton: false, network: .mainnet)
             XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
         default:
             XCTFail()
