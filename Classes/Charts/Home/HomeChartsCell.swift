@@ -24,7 +24,8 @@ final class HomeChartsCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let theme = HomeChartsViewTheme()
-    var onChange: ((ChartDataPeriod) -> Void)?
+    var onPeriodChange: ((ChartDataPeriod) -> Void)?
+    var onPointSelected: ((ChartDataPoint?) -> Void)?
     
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var hostingController = UIHostingController(rootView: makeChartView())
@@ -59,7 +60,14 @@ final class HomeChartsCell: UICollectionViewCell {
     
     private func setupViewModelCallback() {
         chartViewModel.onSelectedPeriodChanged = { [weak self] newPeriod in
-            self?.onChange?(newPeriod)
+            guard let self else { return }
+            onPeriodChange?(newPeriod)
+        }
+        
+        chartViewModel.onPointSelected = { [weak self] selectedPoint in
+            guard let self else { return }
+            onPointSelected?(selectedPoint)
+            
         }
     }
     

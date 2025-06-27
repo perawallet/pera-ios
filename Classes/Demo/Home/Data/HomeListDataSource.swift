@@ -146,4 +146,28 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             collectionView.register($0)
         }
     }
+    
+    func reloadPortfolio(with viewModel: HomePortfolioViewModel) {
+        let newItem = HomeItemIdentifier.portfolio(.portfolio(viewModel))
+        var snapshot = snapshot()
+
+        guard let oldItemIndex = snapshot.itemIdentifiers.firstIndex(where: {
+            if case .portfolio(.portfolio) = $0 { return true } else { return false }
+        }) else {
+            return
+        }
+        
+        let oldItem = snapshot.itemIdentifiers[oldItemIndex]
+        snapshot.deleteItems([oldItem])
+        
+        if oldItemIndex < snapshot.itemIdentifiers.count {
+            let beforeItem = snapshot.itemIdentifiers[oldItemIndex]
+            snapshot.insertItems([newItem], beforeItem: beforeItem)
+        } else {
+            let afterItem = snapshot.itemIdentifiers[oldItemIndex - 1]
+            snapshot.insertItems([newItem], afterItem: afterItem)
+        }
+        snapshot.reloadItems([newItem])
+        apply(snapshot, animatingDifferences: false)
+    }
 }

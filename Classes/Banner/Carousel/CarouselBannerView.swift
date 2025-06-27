@@ -69,6 +69,7 @@ extension CarouselBannerView {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .fast
+        collectionView.backgroundColor = theme.background.backgroundColor?.uiColor
         
         addSubview(collectionView)
         collectionView.snp.makeConstraints {

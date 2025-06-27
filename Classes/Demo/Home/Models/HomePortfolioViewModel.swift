@@ -25,14 +25,21 @@ struct HomePortfolioViewModel:
     private(set) var titleColor: UIColor?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+    private(set) var selectedPointDateValue: TextProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
     
     init(
-        _ model: TotalPortfolioItem
+        _ model: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel?
     ) {
-        bind(model)
+        guard let selectedPointViewModel else {
+            bind(model)
+            return
+        }
+        bind(model, selectedPointViewModel)
     }
+    
 }
 
 extension HomePortfolioViewModel {
@@ -44,6 +51,18 @@ extension HomePortfolioViewModel {
         bindTitle(portfolioItem)
         bindPrimaryValue(portfolioItem)
         bindSecondaryValue(portfolioItem)
+    }
+    
+    mutating func bind(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        self.currencyFormatter = portfolioItem.currencyFormatter
+
+        bindTitle(portfolioItem)
+        bindPrimaryValue(portfolioItem, selectedPointViewModel)
+        bindSecondaryValue(portfolioItem, selectedPointViewModel)
+        bindSelectedPointDateValue(selectedPointViewModel)
     }
 
     mutating func bindTitle(
@@ -74,6 +93,22 @@ extension HomePortfolioViewModel {
         )
     }
     
+    mutating func bindPrimaryValue(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.primaryValue,
+            selectedPointValue: selectedPointViewModel.primaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
     mutating func bindSecondaryValue(
         _ portfolioItem: TotalPortfolioItem
     ) {
@@ -85,6 +120,32 @@ extension HomePortfolioViewModel {
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSecondaryValue(
+        _ portfolioItem: TotalPortfolioItem,
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.secondaryValue,
+            selectedPointValue: selectedPointViewModel.secondaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            addApproximatelyEqualChar: true,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSelectedPointDateValue(
+        _ selectedPointViewModel: ChartSelectedPointViewModel
+    ) {
+        selectedPointDateValue = selectedPointViewModel.dateValue.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
