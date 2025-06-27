@@ -22,14 +22,16 @@ final class StakingURLGenerator {
         destination: StakingDestination,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool
+        hideBackButton: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         switch destination {
         case .list:
             return generateURLForList(
                 theme: theme,
                 session: session,
-                hideBackButton: hideBackButton
+                hideBackButton: hideBackButton,
+                network: network
             )
         }
     }
@@ -37,13 +39,15 @@ final class StakingURLGenerator {
     private static func generateURLForList(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool
+        hideBackButton: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(string: Environment.current.stakingBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            hideBackButton: hideBackButton
+            hideBackButton: hideBackButton,
+            network: network
         )
         return components?.url
     }
@@ -51,12 +55,14 @@ final class StakingURLGenerator {
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool
+        hideBackButton: Bool,
+        network: ALGAPI.Network
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: hideBackButton ? "5" : "4"))
+        queryItems.append(.init(name: "version", value: "1"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
+        queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         if #available(iOS 16, *) {
             queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))

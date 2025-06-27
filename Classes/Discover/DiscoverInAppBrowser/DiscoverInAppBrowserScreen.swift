@@ -103,7 +103,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
             handleOpenSystemBrowser(message)
         case .requestAuthorizedAddresses:
             let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
-            handler.returnAuthorizedAccounts(message, in: webView)
+            handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: false)
         }
     }
 }
@@ -137,7 +137,8 @@ extension DiscoverInAppBrowserScreen {
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
             session: session,
-            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled)
+            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled),
+            network: configuration.api?.network ?? .mainnet
         )
     }
 

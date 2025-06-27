@@ -22,40 +22,46 @@ final class DiscoverURLGenerator {
         destination: DiscoverDestination,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         switch destination {
         case .home:
             return generateURLForHome(
                 theme: theme,
                 session: session,
-                enableDiscoverV5: enableDiscoverV5
+                enableDiscoverV5: enableDiscoverV5,
+                network: network
             )
         case .browser:
             return generateURLForBrowser(
                 theme: theme,
                 session: session,
-                enableDiscoverV5: enableDiscoverV5
+                enableDiscoverV5: enableDiscoverV5,
+                network: network
             )
         case .markets:
             return generateURLForMarket(
                 theme: theme,
                 session: session,
-                enableDiscoverV5: enableDiscoverV5
+                enableDiscoverV5: enableDiscoverV5,
+                network: network
             )
         case .assetDetail(let params):
             return generateURLForAssetDetail(
                 params: params,
                 theme: theme,
                 session: session,
-                enableDiscoverV5: enableDiscoverV5
+                enableDiscoverV5: enableDiscoverV5,
+                network: network
             )
         case .generic(let params):
             return generateGenericURL(
                 params: params,
                 theme: theme,
                 session: session,
-                enableDiscoverV5: enableDiscoverV5
+                enableDiscoverV5: enableDiscoverV5,
+                network: network
             )
         case .external(let externalDestination):
             switch externalDestination {
@@ -72,13 +78,15 @@ final class DiscoverURLGenerator {
         path: String,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBaseUrl + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         return components?.url
     }
@@ -86,13 +94,15 @@ final class DiscoverURLGenerator {
     private static func generateURLForHome(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         return components?.url
     }
@@ -100,13 +110,15 @@ final class DiscoverURLGenerator {
     private static func generateURLForBrowser(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBrowserURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         return components?.url
     }
@@ -114,13 +126,15 @@ final class DiscoverURLGenerator {
     private static func generateURLForMarket(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverMarketURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         return components?.url
     }
@@ -129,12 +143,14 @@ final class DiscoverURLGenerator {
         params: DiscoverAssetParameters,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         if let poolID = params.poolID {
             queryItems.append(.init(name: "poolId", value: poolID))
@@ -150,7 +166,8 @@ final class DiscoverURLGenerator {
         params: DiscoverGenericParameters,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> URL? {
         var components = URLComponents(url: params.url, resolvingAgainstBaseURL: false)
 
@@ -158,7 +175,8 @@ final class DiscoverURLGenerator {
         let additionalQueryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            enableDiscoverV5: enableDiscoverV5
+            enableDiscoverV5: enableDiscoverV5,
+            network: network
         )
         components?.queryItems = presentQueryItems + additionalQueryItems
 
@@ -168,13 +186,15 @@ final class DiscoverURLGenerator {
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        enableDiscoverV5: Bool
+        enableDiscoverV5: Bool,
+        network: ALGAPI.Network
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
         queryItems.append(.init(name: "version", value: enableDiscoverV5 ? "5" : "4"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
+        queryItems.append(.init(name: "network", value: network.rawValue))
         if #available(iOS 16, *) {
             queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
         } else {

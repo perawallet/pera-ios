@@ -100,7 +100,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
             )
         case .requestAuthorizedAddresses:
             let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
-            handler.returnAuthorizedAccounts(message, in: webView)
+            handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: true)
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
         case .closePeraCards:
