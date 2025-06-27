@@ -23,8 +23,13 @@ struct ChartView: View {
     var body: some View {
         Group {
             if viewModel.isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
+                ZStack {
+                    Color.Defaults.bg
+                        .ignoresSafeArea()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .offset(y: -20)
+                }
             } else {
                 VStack {
                     LineChartView(data: viewModel.data, selectedPoint: $viewModel.selectedPoint)
