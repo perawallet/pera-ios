@@ -66,13 +66,14 @@ extension PortfolioViewModel {
         addApproximatelyEqualChar: Bool = false,
         in context: CurrencyFormattingContext
     ) -> String? {
-        guard let currencyValue = currencyValue else { return nil }
+        guard let currencyValue else { return nil }
 
         do {
-            let formatter = currencyFormatter ?? CurrencyFormatter()
+            let formatter = CurrencyFormatter()
             formatter.formattingContext = context
             formatter.currency =  try currencyValue.unwrap()
             formatter.isValueHidden = isAmountHidden
+
             guard
                 addApproximatelyEqualChar,
                 let string = formatter.format(Decimal(selectedPointValue))

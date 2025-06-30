@@ -118,12 +118,9 @@ extension HomeAPIDataController {
         guard let date = point.timestamp.toDate(.fullNumericWithTimezone) else {
             return
         }
-        let displayFormatter = DateFormatter()
-        displayFormatter.locale = .current
-        displayFormatter.dateFormat = "MMM d, yyyy hh:mm a"
         
-        let dateValue = displayFormatter.string(from: date)
-        print(dateValue)
+        let dateValue = DateFormatter.chartDisplay.string(from: date)
+
         let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
         chartSelectedPointViewModel = viewModel
         publish(.didSelectChartPoint(chartSelectedPointViewModel, totalPortfolioItem))
@@ -296,7 +293,7 @@ extension HomeAPIDataController {
                 isAmountHidden: isAmountHidden
             )
             self.totalPortfolioItem = totalPortfolioItem
-            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, chartSelectedPointViewModel)
+            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel)
 
             snapshot.appendItems(
                 [.portfolio(.portfolio(totalPortfolioViewModel))],

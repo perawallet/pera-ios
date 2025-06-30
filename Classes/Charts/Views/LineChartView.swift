@@ -23,11 +23,6 @@ struct LineChartView: View {
     
     private let xAxisLabel = "Date"
     private let yAxisLabel = "Value"
-    private let lineColor = Color.Chart.line
-    private let gradientColor = Color.Chart.gradient
-    private let selectedPointLineColor = Color.Text.grayLighter
-    private let borderColor = Color.Defaults.bg
-    private let interpolationMethod: InterpolationMethod = .monotone
     
     var body: some View {
         let maxValue = data.map(\.primaryValue).max() ?? 100
@@ -39,8 +34,8 @@ struct LineChartView: View {
                         x: .value(xAxisLabel, point.day),
                         y: .value(yAxisLabel, point.primaryValue)
                     )
-                    .foregroundStyle(lineColor)
-                    .interpolationMethod(interpolationMethod)
+                    .foregroundStyle(Color.Chart.line)
+                    .interpolationMethod(.monotone)
                     
                     AreaMark(
                         x: .value(xAxisLabel, point.day),
@@ -49,19 +44,19 @@ struct LineChartView: View {
                     .foregroundStyle(
                         .linearGradient(
                             colors: [
-                                gradientColor.opacity(0.15),
-                                gradientColor.opacity(0)
+                                Color.Chart.gradient.opacity(0.15),
+                                Color.Chart.gradient.opacity(0)
                             ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                     )
-                    .interpolationMethod(interpolationMethod)
+                    .interpolationMethod(.monotone)
                 }
                 
                 if let selected = selectedPoint {
                     RuleMark(x: .value(xAxisLabel, selected.day))
-                        .foregroundStyle(selectedPointLineColor)
+                        .foregroundStyle(Color.Text.grayLighter)
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
                     
                     PointMark(
@@ -70,8 +65,8 @@ struct LineChartView: View {
                     )
                     .symbol {
                         Circle()
-                            .strokeBorder(borderColor, lineWidth: 2)
-                            .background(Circle().fill(lineColor))
+                            .strokeBorder(Color.Defaults.bg, lineWidth: 2)
+                            .background(Circle().fill(Color.Chart.line))
                             .frame(width: 12, height: 12)
                     }
                 }
@@ -84,39 +79,10 @@ struct LineChartView: View {
                         .background(Color.clear)
                 }
             
-            let overlay = chart.chartOverlay { proxy in
-                GeometryReader { geo in
-                    Rectangle()
-                        .fill(Color.clear)
-                        .contentShape(Rectangle())
-                        .gesture(
-                            LongPressGesture(minimumDuration: 0.1)
-                                .sequenced(before: DragGesture(minimumDistance: 0))
-                                .onChanged { value in
-                                    switch value {
-                                    case .second(true, let drag?):
-                                        let origin = geo[proxy.plotAreaFrame].origin
-                                        let plotWidth = geo[proxy.plotAreaFrame].width
-                                        var xPosition = drag.location.x - origin.x
-                                        xPosition = min(max(0, xPosition), plotWidth)
-                                        
-                                        guard let day: Int = proxy.value(atX: xPosition),
-                                              let nearest = data.min(by: { abs($0.day - day) < abs($1.day - day) }) else {
-                                            selectedPoint = nil
-                                            return
-                                        }
-                                        selectedPoint = nearest
-                                    default:
-                                        break
-                                    }
-                                }
-                                .onEnded { _ in
-                                    selectedPoint = nil
-                                }
-                        )
+            chart
+                .chartOverlay { proxy in
+                    LineChartOverlayView(data: data, proxy: proxy, geo: geo, selectedPoint: $selectedPoint)
                 }
-            }
-            overlay
                 .padding(.trailing, 16)
         }
     }

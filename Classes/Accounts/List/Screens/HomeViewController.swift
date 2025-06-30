@@ -216,7 +216,7 @@ final class HomeViewController:
                 guard let totalPortfolioItem else {
                     return
                 }
-                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, chartSelectedPointViewModel)
+                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel)
                 self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }

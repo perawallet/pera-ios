@@ -31,13 +31,13 @@ struct HomePortfolioViewModel:
     
     init(
         _ model: TotalPortfolioItem,
-        _ selectedPointViewModel: ChartSelectedPointViewModel?
+        selectedPoint: ChartSelectedPointViewModel?
     ) {
-        guard let selectedPointViewModel else {
+        guard let selectedPoint else {
             bind(model)
             return
         }
-        bind(model, selectedPointViewModel)
+        bind(model, selectedPoint: selectedPoint)
     }
     
 }
@@ -55,14 +55,14 @@ extension HomePortfolioViewModel {
     
     mutating func bind(
         _ portfolioItem: TotalPortfolioItem,
-        _ selectedPointViewModel: ChartSelectedPointViewModel
+        selectedPoint: ChartSelectedPointViewModel
     ) {
         self.currencyFormatter = portfolioItem.currencyFormatter
 
         bindTitle(portfolioItem)
-        bindPrimaryValue(portfolioItem, selectedPointViewModel)
-        bindSecondaryValue(portfolioItem, selectedPointViewModel)
-        bindSelectedPointDateValue(selectedPointViewModel)
+        bindPrimaryValue(portfolioItem, selectedPoint: selectedPoint)
+        bindSecondaryValue(portfolioItem, selectedPoint: selectedPoint)
+        bindSelectedPointDateValue(selectedPoint: selectedPoint)
     }
 
     mutating func bindTitle(
@@ -95,11 +95,11 @@ extension HomePortfolioViewModel {
     
     mutating func bindPrimaryValue(
         _ portfolioItem: TotalPortfolioItem,
-        _ selectedPointViewModel: ChartSelectedPointViewModel
+        selectedPoint: ChartSelectedPointViewModel
     ) {
         let text = format(
             currencyValue: portfolioItem.currency.primaryValue,
-            selectedPointValue: selectedPointViewModel.primaryValue,
+            selectedPointValue: selectedPoint.primaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
@@ -127,11 +127,11 @@ extension HomePortfolioViewModel {
     
     mutating func bindSecondaryValue(
         _ portfolioItem: TotalPortfolioItem,
-        _ selectedPointViewModel: ChartSelectedPointViewModel
+        selectedPoint: ChartSelectedPointViewModel
     ) {
         let text = format(
             currencyValue: portfolioItem.currency.secondaryValue,
-            selectedPointValue: selectedPointViewModel.secondaryValue,
+            selectedPointValue: selectedPoint.secondaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             addApproximatelyEqualChar: true,
             in: .standalone()
@@ -143,9 +143,9 @@ extension HomePortfolioViewModel {
     }
     
     mutating func bindSelectedPointDateValue(
-        _ selectedPointViewModel: ChartSelectedPointViewModel
+        selectedPoint: ChartSelectedPointViewModel
     ) {
-        selectedPointDateValue = selectedPointViewModel.dateValue.bodyMedium(
+        selectedPointDateValue = selectedPoint.dateValue.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

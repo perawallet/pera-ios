@@ -69,3 +69,12 @@ extension String {
         return toDate(format.raw)?.date
     }
 }
+
+extension DateFormatter {
+    static var chartDisplay: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "MMM d, yyyy hh:mm a"
+        return formatter
+    }
+}
