@@ -134,6 +134,7 @@
       }
     },
     "account-not-backed-up-warning-subtitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -234,6 +235,7 @@
       }
     },
     "account-type-selection-add" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -464,6 +466,7 @@
       }
     },
     "account-type-selection-recover-wallet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -494,6 +497,7 @@
       }
     },
     "account-type-selection-watch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -514,6 +518,7 @@
       }
     },
     "account-type-selection-watch-address-detail" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -644,6 +649,7 @@
       }
     },
     "algorand-secure-backup-account-list-action-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -654,6 +660,7 @@
       }
     },
     "algorand-secure-backup-account-list-no-content-body" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -664,6 +671,7 @@
       }
     },
     "algorand-secure-backup-account-list-restore-action-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -674,6 +682,7 @@
       }
     },
     "algorand-secure-backup-account-list-restore-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -684,6 +693,7 @@
       }
     },
     "algorand-secure-backup-account-list-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2796,6 +2806,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opt-in to NFT"
+          }
+        }
+      }
+    },
+    "common-not-now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
           }
         }
       }
@@ -5263,6 +5283,7 @@
       }
     },
     "quick-actions-scan-qr-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5622,6 +5643,66 @@
         }
       }
     },
+    "rekey-support-blocked-overlay-button-primary" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Advanced Settings"
+          }
+        }
+      }
+    },
+    "rekey-support-blocked-overlay-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekey transactions can cause you to lose control of your account. In order to confirm this transaction, you need to enable the “Rekey Support” via app settings."
+          }
+        }
+      }
+    },
+    "rekey-support-blocked-overlay-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Rekey Support"
+          }
+        }
+      }
+    },
+    "rekey-support-warning-overlay-button-primary" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "rekey-support-warning-overlay-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This signature includes rekey transaction, giving control over your accounts to another address. Please make sure that you understand the implications before proceeding."
+          }
+        }
+      }
+    },
+    "rekey-support-warning-overlay-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure?"
+          }
+        }
+      }
+    },
     "rekeyed-account-selection-list-header-body" : {
       "localizations" : {
         "en" : {
@@ -5830,7 +5911,27 @@
         }
       }
     },
-    "security-settings-section" : {
+    "security-settings-rekey-support" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Rekey Support"
+          }
+        }
+      }
+    },
+    "security-settings-section-footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once you enable this, you can confirm transaction request to rekey your account. This will give the control of your account to another address."
+          }
+        }
+      }
+    },
+    "security-settings-section-header" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5933,6 +6034,7 @@
       }
     },
     "send-algos-minimum-amount-error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6813,6 +6915,7 @@
       }
     },
     "swap-confirm-exchange-fee-detail" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6823,6 +6926,7 @@
       }
     },
     "swap-confirm-exchange-fee-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7337,6 +7441,7 @@
       }
     },
     "title-action-required" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10346,6 +10451,7 @@
       }
     },
     "wallet-connect-asset-name-title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

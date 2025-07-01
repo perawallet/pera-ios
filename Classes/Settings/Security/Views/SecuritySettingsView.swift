@@ -24,7 +24,7 @@ final class SecuritySettingsView: View {
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
-        flowLayout.sectionInset = UIEdgeInsets(theme.sectionInset)
+        flowLayout.sectionInset = .zero
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
@@ -33,6 +33,7 @@ final class SecuritySettingsView: View {
         collectionView.register(SettingsDetailCell.self)
         collectionView.register(SettingsToggleCell.self)
         collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
+        collectionView.register(footer: SecuritySettingsFooterView.self)
         return collectionView
     }()
     
