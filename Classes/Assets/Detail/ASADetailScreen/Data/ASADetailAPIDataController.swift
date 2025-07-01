@@ -34,18 +34,24 @@ final class ASADetailScreenAPIDataController:
 
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let chartsDataController: ChartAPIDataController
+    
+    private var chartViewData: ChartViewData?
+    private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
 
     init(
         account: Account,
         asset: Asset,
         api: ALGAPI,
         sharedDataController: SharedDataController,
+        chartsDataController: ChartAPIDataController,
         configuration: ASADetailScreenConfiguration?
     ) {
         self.account = account
         self.asset = asset
         self.api = api
         self.sharedDataController = sharedDataController
+        self.chartsDataController = chartsDataController
 
         lazy var defaultConfiguration = ASADetailScreenConfiguration(
             shouldDisplayAccountActionsBarButtonItem: true,
@@ -61,6 +67,8 @@ final class ASADetailScreenAPIDataController:
 
 extension ASADetailScreenAPIDataController {
     func loadData() {
+        setupChartDataClosures()
+        
         if asset.isAlgo {
             didLoadData()
             return
@@ -93,6 +101,37 @@ extension ASADetailScreenAPIDataController {
     private func didLoadData() {
         self.eventHandler?(.didLoadData)
         self.sharedDataController.add(self)
+    }
+    
+    func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod) {
+        chartDataCache.removeAll()
+        chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
+    }
+    
+    func updateChartData(address: String, assetId: String, period: ChartDataPeriod) {
+        guard let viewModel = chartDataCache[period] else {
+            chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
+            return
+        }
+        chartViewData = viewModel
+        eventHandler?(.didFetchChartData(data: chartViewData, error: nil, period: period))
+    }
+    
+    private func setupChartDataClosures() {
+        chartsDataController.onAssetFetch = { [weak self] error, period, chartsData in
+            guard let self else { return }
+            guard error == nil else {
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                eventHandler?(.didFetchChartData(data: nil, error: error, period: period))
+                return
+            }
+            let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
+                return ChartDataPoint(day: index, primaryValue: item.amount, secondaryValue: item.usdValue, timestamp: item.datetime)
+            }
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            chartDataCache[period] = chartViewData
+            eventHandler?(.didFetchChartData(data: chartViewData, error: nil, period: period))
+        }
     }
 }
 

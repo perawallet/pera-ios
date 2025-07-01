@@ -24,4 +24,5 @@ protocol ASAProfileViewModel: ViewModel {
     var id: TextProvider? { get }
     var primaryValue: TextProvider? { get }
     var secondaryValue: TextProvider? { get }
+    var selectedPointDateValue: TextProvider? { get }
 }
