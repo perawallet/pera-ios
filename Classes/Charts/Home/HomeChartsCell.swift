@@ -67,7 +67,6 @@ final class HomeChartsCell: UICollectionViewCell {
         chartViewModel.onPointSelected = { [weak self] selectedPoint in
             guard let self else { return }
             onPointSelected?(selectedPoint)
-            
         }
     }
     

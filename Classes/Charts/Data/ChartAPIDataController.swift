@@ -16,14 +16,15 @@
 
 import Foundation
 
-enum ChartDataScreen: String {
+enum ChartDataScreen {
     case home
     case account
-    case asset
+    case asset(address: String, assetId: String)
 }
 
 final class ChartAPIDataController {
-    var onFetch: ((String?, ChartDataPeriod, [ChartDataDTO]) -> Void)?
+    var onHomeFetch: ((String?, ChartDataPeriod, [HomeChartDataDTO]) -> Void)?
+    var onAssetFetch: ((String?, ChartDataPeriod, [AssetChartDataDTO]) -> Void)?
     
     private let api: ALGAPI
     private let session: Session
@@ -37,6 +38,8 @@ final class ChartAPIDataController {
         switch screen {
         case .home:
             loadHomeData(period: period)
+        case .asset(address: let address, assetId: let assetId):
+            loadAssetData(address: address, assetId: assetId, period: period)
         default:
             break
         }
@@ -51,9 +54,25 @@ final class ChartAPIDataController {
             guard let self else { return }
             switch response {
             case .success(let values):
-                onFetch?(nil, period, values.results.sorted(by: { $0.round < $1.round }))
+                onHomeFetch?(nil, period, values.results.sorted(by: { $0.round < $1.round }))
             case .failure(let apiError, _):
-                onFetch?(apiError.localizedDescription, period, [])
+                onHomeFetch?(apiError.localizedDescription, period, [])
+            }
+        }
+    }
+    
+    private func loadAssetData(address: String, assetId: String, period: ChartDataPeriod) {
+        guard let addresses = session.authenticatedUser?.accounts.map({ $0.address }), addresses.isNonEmpty else {
+            return
+        }
+        
+        api.fetchAssetBalanceChartData(address: address, assetId: assetId, period: period) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let values):
+                onAssetFetch?(nil, period, values.results)
+            case .failure(let apiError, _):
+                onAssetFetch?(apiError.localizedDescription, period, [])
             }
         }
     }

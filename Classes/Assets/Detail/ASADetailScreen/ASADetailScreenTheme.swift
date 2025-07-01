@@ -37,7 +37,7 @@ struct ASADetailScreenTheme:
 
     init(_ family: LayoutFamily) {
         self.background = [
-            .backgroundColor(Colors.Helpers.heroBackground)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.navigationTitle = AccountNameTitleViewTheme(family)
         self.loading = ASADetailLoadingViewTheme()

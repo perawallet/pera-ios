@@ -422,17 +422,37 @@ extension ASADetailScreen {
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
         }
+        
+        profileView.onPeriodChange = { [weak self] newPeriodSelected in
+            guard let self else { return }
+            dataController.updateChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: newPeriodSelected)
+        }
+        
+        profileView.onPointSelected = { [weak self] pointSelected in
+            guard let self else { return }
 
+            guard
+                let pointSelected,
+                let date = pointSelected.timestamp.toDate(.fullNumericWithTimezone)
+            else {
+                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                return
+            }
+            
+            bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(primaryValue: pointSelected.primaryValue, secondaryValue: pointSelected.secondaryValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
+        }
+        
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
     }
 
-    private func bindProfileData(isAmountHidden: Bool) {
+    private func bindProfileData(isAmountHidden: Bool, chartPointSelected: ChartSelectedPointViewModel? = nil) {
         let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: CurrencyFormatter(),
-            isAmountHidden: isAmountHidden
+            isAmountHidden: isAmountHidden,
+            selectedPointVM: chartPointSelected
         )
         profileView.bindData(viewModel)
     }
@@ -725,9 +745,20 @@ extension ASADetailScreen {
             case .didLoadData: self.updateUIWhenDataDidLoad()
             case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
             case .didUpdateAccount(let old): self.updateNavigationItemsIfNeededWhenAccountDidUpdate(old: old)
+            case .didFetchChartData(data: let chartData, error: let errorDescription, period: let period):
+                guard let chartData else {
+                    self.bannerController?.presentErrorBanner(
+                        title: String(localized: "pass-phrase-verify-sdk-error"),
+                        message: errorDescription ?? ""
+                    )
+                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false))
+                    return
+                }
+                profileView.updateChart(with: chartData)
             }
         }
         dataController.loadData()
+        dataController.fetchInitialChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: .oneWeek)
     }
 }
 

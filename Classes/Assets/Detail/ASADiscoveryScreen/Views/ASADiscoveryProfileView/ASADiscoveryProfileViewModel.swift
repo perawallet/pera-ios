@@ -28,6 +28,7 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
     private(set) var id: TextProvider?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+    private(set) var selectedPointDateValue: TextProvider?
 
     init() {}
 

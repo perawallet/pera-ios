@@ -202,7 +202,7 @@ extension HomeAPIDataController {
     }
     
     private func setupChartDataClosures() {
-        chartsDataController.onFetch = { [weak self] error, period, chartsData in
+        chartsDataController.onHomeFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
                 chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)

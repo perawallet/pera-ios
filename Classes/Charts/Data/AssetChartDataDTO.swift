@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartDataDTO.swift
+//   AssetChartDataDTO.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class ChartDataResultDTO: ALGEntityModel {
-    let results: [ChartDataDTO]
+final class AssetChartDataResultDTO: ALGEntityModel {
+    let results: [AssetChartDataDTO]
     
     init(
         _ apiModel: APIModel = APIModel()
@@ -34,9 +34,9 @@ final class ChartDataResultDTO: ALGEntityModel {
     }
 }
 
-extension ChartDataResultDTO {
+extension AssetChartDataResultDTO {
     struct APIModel: ALGAPIModel {
-        var results: [ChartDataDTO]
+        var results: [AssetChartDataDTO]
 
         init() {
             self.results = []
@@ -44,62 +44,55 @@ extension ChartDataResultDTO {
     }
 }
 
-final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
+final class AssetChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
     
     let datetime: String
-    let usdValue: String
-    let algoValue: String
-    let round: Int
+    let usdValue: Double
+    let amount: Double
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.datetime = apiModel.datetime
         self.usdValue = apiModel.usdValue
-        self.algoValue = apiModel.algoValue
-        self.round = apiModel.round
+        self.amount = apiModel.amount
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.datetime = datetime
         apiModel.usdValue = usdValue
-        apiModel.algoValue = algoValue
-        apiModel.round = round
+        apiModel.amount = amount
         return apiModel
     }
     
-    static func == (lhs: ChartDataDTO, rhs: ChartDataDTO) -> Bool {
-        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
+    static func == (lhs: AssetChartDataDTO, rhs: AssetChartDataDTO) -> Bool {
+        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.amount == rhs.amount
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(datetime)
         hasher.combine(usdValue)
-        hasher.combine(algoValue)
-        hasher.combine(round)
+        hasher.combine(amount)
     }
     
     private enum CodingKeys: String, CodingKey {
         case datetime
         case usdValue = "usd_value"
-        case algoValue = "algo_value"
-        case round
+        case amount
     }
 }
 
-extension ChartDataDTO {
+extension AssetChartDataDTO {
     struct APIModel: ALGAPIModel {
         var datetime: String
-        var usdValue: String
-        var algoValue: String
-        var round: Int
+        var usdValue: Double
+        var amount: Double
 
         init() {
             self.datetime = .empty
-            self.usdValue = .empty
-            self.algoValue = .empty
-            self.round = 0
+            self.usdValue = 0
+            self.amount = 0
         }
     }
 }

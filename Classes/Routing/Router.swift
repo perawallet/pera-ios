@@ -46,6 +46,11 @@ final class Router:
         analytics: appConfiguration.analytics,
         hdWalletStorage: appConfiguration.hdWalletStorage
     )
+    
+    private lazy var chartsDataController = ChartAPIDataController(
+        api: appConfiguration.api,
+        session: appConfiguration.session
+    )
 
     /// <todo>
     /// Change after refactoring routing
@@ -682,6 +687,7 @@ final class Router:
                 asset: asset,
                 api: appConfiguration.api,
                 sharedDataController: appConfiguration.sharedDataController,
+                chartsDataController: chartsDataController,
                 configuration: screenConfiguration
             )
             let copyToClipboardController = ALGCopyToClipboardController(

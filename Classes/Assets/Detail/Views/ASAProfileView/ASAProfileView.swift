@@ -14,10 +14,10 @@
 
 //   ASAProfileView.swift
 
-import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
+import SwiftUI
 
 final class ASAProfileView:
     UIView,
@@ -28,6 +28,9 @@ final class ASAProfileView:
         .copyAssetID: GestureInteraction(gesture: .longPress),
         .onAmountTap: TargetActionInteraction()
     ]
+    
+    var onPeriodChange: ((ChartDataPeriod) -> Void)?
+    var onPointSelected: ((ChartDataPoint?) -> Void)?
 
     private(set) var intrinsicExpandedContentSize: CGSize = .zero
     private(set) var intrinsicCompressedContentSize: CGSize = .zero
@@ -43,7 +46,12 @@ final class ASAProfileView:
     private lazy var idView = UILabel()
     private lazy var primaryValueView = UILabel()
     private lazy var primaryValueButton = MacaroonUIKit.Button()
+    private lazy var secondaryValueAndSelectedPointView = UIStackView()
     private lazy var secondaryValueView = UILabel()
+    private lazy var selectedPointDateValueView = Label()
+    
+    private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
+    private lazy var chartHostingController = UIHostingController(rootView: makeChartView())
     
     private var theme = ASAProfileViewTheme()
     
@@ -52,16 +60,34 @@ final class ASAProfileView:
     @MainActor init() {
         super.init(frame: .zero)
         setupGestures()
+        setupViewModelCallback()
     }
     
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func makeChartView() -> ChartView {
+        ChartView(viewModel: chartViewModel)
+    }
+    
     // MARK: - Setups
     
     private func setupGestures() {
         startPublishing(event: .onAmountTap, for: primaryValueButton)
+    }
+    
+    private func setupViewModelCallback() {
+        chartViewModel.onSelectedPeriodChanged = { [weak self] newPeriod in
+            guard let self else { return }
+            onPeriodChange?(newPeriod)
+        }
+        
+        chartViewModel.onPointSelected = { [weak self] selectedPoint in
+            guard let self else { return }
+            onPointSelected?(selectedPoint)
+            
+        }
     }
 
     func customize(_ theme: ASAProfileViewTheme) {
@@ -103,6 +129,18 @@ final class ASAProfileView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
+        
+        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
+            selectedPointDateValue.load(in: selectedPointDateValueView)
+        } else {
+            selectedPointDateValueView.text = nil
+            selectedPointDateValueView.attributedText = nil
+        }
+    }
+    
+    func updateChart(with data: ChartViewData) {
+        chartViewModel.refresh(with: data.model)
+        chartHostingController.rootView = makeChartView()
     }
 
     func bindIcon(_ viewModel: ASAProfileViewModel?) {
@@ -145,6 +183,10 @@ extension ASAProfileView {
         primaryValueView.alpha = 1
 
         secondaryValueView.alpha = 1
+        
+        selectedPointDateValueView.alpha = 1
+        
+        chartHostingController.view.alpha = 1
     }
 
     func compress() {
@@ -160,13 +202,17 @@ extension ASAProfileView {
         primaryValueView.alpha = 0
 
         secondaryValueView.alpha = 0
+        
+        selectedPointDateValueView.alpha = 0
+        
+        chartHostingController.view.alpha = 0
     }
 }
 
 extension ASAProfileView {
     private func addExpandedContent(_ theme: ASAProfileViewTheme) {
         addSubview(expandedContentView)
-        expandedContentView.alignment = .center
+        expandedContentView.alignment = .leading
         expandedContentView.distribution = .fill
         expandedContentView.snp.makeConstraints {
             $0.top == 0
@@ -177,7 +223,8 @@ extension ASAProfileView {
 
         addCompressedContent(theme)
         addPrimaryValue(theme)
-        addSecondaryValue(theme)
+        addSecondaryValueAndSelectPointDate(theme)
+        addChartView(theme)
     }
 
     private func addCompressedContent(_ theme: ASAProfileViewTheme) {
@@ -261,15 +308,46 @@ extension ASAProfileView {
         }
     }
 
-    private func addSecondaryValue(_ theme: ASAProfileViewTheme) {
+    private func addSecondaryValueAndSelectPointDate(_ theme: ASAProfileViewTheme) {
+        secondaryValueAndSelectedPointView.alignment = .center
+        secondaryValueAndSelectedPointView.distribution = .equalSpacing
+        
         secondaryValueView.customizeAppearance(theme.secondaryValue)
+        selectedPointDateValueView.customizeAppearance(theme.secondaryValue)
+        
+        [secondaryValueView, selectedPointDateValueView].forEach {
+            secondaryValueAndSelectedPointView.addArrangedSubview($0)
+        }
 
-        expandedContentView.addArrangedSubview(secondaryValueView)
-        secondaryValueView.fitToVerticalIntrinsicSize()
+        expandedContentView.addArrangedSubview(secondaryValueAndSelectedPointView)
+        
+        secondaryValueAndSelectedPointView.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        
+        secondaryValueAndSelectedPointView.fitToVerticalIntrinsicSize()
         expandedContentView.setCustomSpacing(
             theme.spacingBetweenPrimaryValueAndSecondValue,
             after: primaryValueView
         )
+    }
+    
+    private func addChartView(_ theme: ASAProfileViewTheme) {
+        expandedContentView.addArrangedSubview(chartHostingController.view)
+        
+        chartHostingController.view.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.height.equalTo(172)
+        }
+        
+        chartHostingController.view.fitToVerticalIntrinsicSize()
+        expandedContentView.setCustomSpacing(
+            theme.spacingBetweenPrimaryValueAndSecondValue,
+            after: secondaryValueAndSelectedPointView
+        )
+        
+        expandedContentView.layoutIfNeeded()
     }
 }
 
@@ -298,6 +376,7 @@ extension ASAProfileView {
         let titleSize = titleView.bounds.size
         let primaryValueSize = primaryValueView.bounds.size
         let secondaryValueSize = secondaryValueView.bounds.size
+        let chartViewSize = chartHostingController.view.bounds.size
         let preferredHeight =
             iconSize.height +
             theme.expandedSpacingBetweenIconAndTitle +
@@ -305,7 +384,9 @@ extension ASAProfileView {
             theme.spacingBetweenTitleAndPrimaryValue +
             primaryValueSize.height +
             theme.spacingBetweenPrimaryValueAndSecondValue +
-            secondaryValueSize.height
+            secondaryValueSize.height +
+            theme.spacingBetweenPrimaryValueAndSecondValue +
+            chartViewSize.height
         /// <warning>
         /// The bounds of subviews can be zero when it is called for the first time.
         let height = max(preferredHeight, bounds.height)
