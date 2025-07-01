@@ -38,6 +38,8 @@ final class AccountNameSetupViewController:
     private let mode: AccountSetupMode
     private let nameServiceName: String?
     private let accountAddress: PublicKey
+    
+    var onAccountCreated: (() -> Void)?
 
     init(
         flow: AccountSetupFlow,
@@ -199,7 +201,12 @@ extension AccountNameSetupViewController {
         case .initializeAccount:
             openPasscode()
         case .addNewAccount:
-            openAccountVerifiedTutorial()
+            if let onAccountCreated {
+                onAccountCreated()
+            } else {
+                openAccountVerifiedTutorial()
+            }
+            
         default:
             break
         }

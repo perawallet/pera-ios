@@ -55,7 +55,7 @@ struct DiscoverSearchScreenTheme:
         self.cancelAction = [
             .font(Fonts.DMSans.medium.make(13)),
             .title(String(localized: "title-cancel")),
-            .titleColor([ .normal(Colors.Discover.main) ])
+            .titleColor([ .normal(Colors.Button.Primary.newbackground) ])
         ]
         self.cancelActionContentEdgeInsets = .init(top: 10, left: 12, bottom: 10, right: 12)
         self.list = [
@@ -87,13 +87,13 @@ struct DiscoverSearchInputViewTheme: SearchInputViewTheme {
             .autocorrectionType(.no),
             .font(Fonts.DMSans.regular.make(13)),
             .placeholder(placeholder),
-            .placeholderColor(Colors.Discover.textGrayLighter),
+            .placeholderColor(Colors.Text.grayLighter),
             .returnKeyType(.done),
-            .textColor(Colors.Discover.textMain),
-            .tintColor(Colors.Discover.main)
+            .textColor(Colors.Text.main),
+            .tintColor(Colors.Button.Primary.newbackground)
         ]
         self.textInputBackground = [
-            .backgroundColor(Colors.Discover.layer1)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.textLeftInputAccessory = [
             .image("icon-input-search")

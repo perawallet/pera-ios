@@ -825,6 +825,8 @@ final class Router:
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
+        case .settings:
+            viewController = SettingsViewController(configuration: configuration)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
@@ -1404,6 +1406,23 @@ final class Router:
                 ),
                 configuration: configuration
             )
+        case .collectibleList:
+            let collectibleListQuery = CollectibleListQuery(
+                filteringBy: .init(),
+                sortingBy: configuration.sharedDataController.selectedCollectibleSortingAlgorithm
+            )
+            viewController = CollectiblesViewController(
+                query: collectibleListQuery,
+                dataController: CollectibleListLocalDataController(
+                    galleryAccount: .all,
+                    sharedDataController: configuration.sharedDataController
+                ),
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: configuration.toastPresentationController!
+                ),
+                configuration: configuration
+            )
+            
         case .collectibleDetail(let asset, let account, let thumbnailImage,  let quickAction, let eventHandler):
             let aViewController = CollectibleDetailViewController(
                 asset: asset,
@@ -1457,15 +1476,17 @@ final class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case let .shareActivity(items):
+        case let .shareActivity(items, excludedActivityTypes):
             let activityController = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil
             )
-
-            activityController.excludedActivityTypes = [
-                UIActivity.ActivityType.addToReadingList
-            ]
+            
+            if let excludedActivityTypes {
+                activityController.excludedActivityTypes = excludedActivityTypes
+            } else {
+                activityController.excludedActivityTypes = [.addToReadingList]
+            }
 
             viewController = activityController
         case .image3DCard(let image, let rendersContinuously):
@@ -2230,6 +2251,14 @@ final class Router:
             )
         case .staking:
             viewController = StakingScreen(configuration: configuration)
+        case .passphraseWarning(eventHandler: let eventHandler):
+            let screen = PassphraseWarningScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .inviteFriends(let eventHandler):
+            let screen = InviteFriendsScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
         return viewController as? T
     }

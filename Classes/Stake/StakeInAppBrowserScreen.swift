@@ -30,6 +30,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
     var destination: StakingDestination {
         didSet { loadStakingURL() }
     }
+    
+    var hideBackButtonInWebView: Bool = false
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
@@ -131,7 +133,8 @@ extension StakingInAppBrowserScreen {
         StakingURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            hideBackButton: hideBackButtonInWebView
         )
     }
 

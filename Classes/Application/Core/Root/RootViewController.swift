@@ -111,37 +111,41 @@ extension RootViewController {
             return
         }
 
-        let configuration = appConfiguration.all()
         let announcementAPIDataController = AnnouncementAPIDataController(
-            api: configuration.api!,
-            session: configuration.session!
+            api: appConfiguration.api,
+            session: appConfiguration.session
+        )
+        let spotBannersAPIDataController = SpotBannersAPIDataController(
+            api: appConfiguration.api,
+            session: appConfiguration.session
         )
         let incomingASAsAPIDataController = IncomingASAsAPIDataController(
-            api: configuration.api!,
-            session: configuration.session!
-        )        
+            api: appConfiguration.api,
+            session: appConfiguration.session
+        )
         let homeViewController = HomeViewController(
             swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController,
+                spotBannersDataController: spotBannersAPIDataController,
                 incomingASAsAPIDataController: incomingASAsAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             ),
-            configuration: configuration
+            configuration: appConfiguration.all()
         )
         let homeTab = HomeTabBarItem(
             NavigationContainer(rootViewController: homeViewController)
         )
         
-        let discoverViewController = DiscoverHomeScreen(configuration: configuration)
+        let discoverViewController = DiscoverHomeScreen(configuration: appConfiguration.all())
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)
         )
-
+        
         let collectibleListQuery = CollectibleListQuery(
             filteringBy: .init(),
             sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
@@ -155,21 +159,23 @@ extension RootViewController {
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             ),
-            configuration: configuration
+            configuration: appConfiguration.all()
         )
-        let collectiblesTab =
-            CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
-
-        let settingsViewController = SettingsViewController(configuration: configuration)
-        let settingsTab =
-            SettingsTabBarItem(NavigationContainer(rootViewController: settingsViewController))
+        let collectiblesTab = CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
+        
+        let stakingVC = StakingScreen(configuration: appConfiguration.all())
+        stakingVC.hideBackButtonInWebView = true
+        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))
+        
+        let menuVC = MenuViewController(configuration: appConfiguration.all())
+        let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
 
         mainContainer.items = [
             homeTab,
             discoverTab,
-            FixedSpaceTabBarItem(width: .noMetric),
+            stakeTab,
             collectiblesTab,
-            settingsTab
+            menuTab
         ]
 
         setNeedsDiscoverTabBarItemUpdateIfNeeded()

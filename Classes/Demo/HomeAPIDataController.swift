@@ -27,9 +27,11 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
+    private let spotBannersDataController: SpotBannersAPIDataController
     private let incomingASAsAPIDataController: IncomingASAsAPIDataController
 
     private var visibleAnnouncement: Announcement?
+    private var spotBanners: [CarouselBannerItemModel]?
     private var incomingASAsRequestList: IncomingASAsRequestList?
     
     private var lastSnapshot: Snapshot?
@@ -46,11 +48,13 @@ final class HomeAPIDataController:
         sharedDataController: SharedDataController,
         session: Session,
         announcementDataController: AnnouncementAPIDataController,
+        spotBannersDataController: SpotBannersAPIDataController,
         incomingASAsAPIDataController: IncomingASAsAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
+        self.spotBannersDataController = spotBannersDataController
         self.incomingASAsAPIDataController = incomingASAsAPIDataController
         
         setupCallbacks()
@@ -79,6 +83,7 @@ extension HomeAPIDataController {
         sharedDataController.add(self)
         announcementDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
+        setSpotsBannersClosures()
     }
     
     func reload() {
@@ -87,6 +92,16 @@ extension HomeAPIDataController {
     
     func fetchAnnouncements() {
         announcementDataController.loadData()
+    }
+    
+    func fetchSpotBanners() {
+        let accounts = self.sharedDataController.sortedAccounts()
+        let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
+        spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
+    }
+    
+    func updateClose(for banner: CarouselBannerItemModel) {
+        spotBannersDataController.updateClose(for: banner)
     }
 
     func hideAnnouncement() {
@@ -125,6 +140,26 @@ extension HomeAPIDataController {
     private func stopASAsLoadTimer() {
         asasLoadRepeater?.invalidate()
         asasLoadRepeater = nil
+    }
+    
+    private func setSpotsBannersClosures() {
+        spotBannersDataController.onFetch = { [weak self] error, banners in
+            guard let self = self else { return }
+            spotBanners = banners.sorted {
+                if $0.isBackupBanner != $1.isBackupBanner {
+                    return $0.isBackupBanner
+                }
+                return $0.id < $1.id
+            }
+            if let error {
+                publish(.didUpdateSpotBanner(error))
+            }
+        }
+        
+        spotBannersDataController.onUpdateClose = { [weak self] error in
+            guard let self = self else { return }
+            publish(.didUpdateSpotBanner(error))
+        }
     }
 }
 
@@ -215,15 +250,15 @@ extension HomeAPIDataController {
             }
 
             let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
-            
-            if shouldDisplayCriticalWarningForNotBackedUpAccounts {
-                appendAccountNotBackedUpItems(into: &snapshot)
-            }
 
             /// <note>
             /// If there is a critical warning, announcements section should not be displayed.
             if !shouldDisplayCriticalWarningForNotBackedUpAccounts {
                 appendAnnouncementItemsIfNeeded(into: &snapshot)
+            }
+            
+            if let spotBanners, spotBanners.isNonEmpty {
+                appendCarouselBannerItemsIfNeeded(into: &snapshot)
             }
 
             if !accounts.isEmpty {
@@ -321,17 +356,18 @@ extension HomeAPIDataController {
             toSection: .announcement
         )
     }
-
-    private func appendAccountNotBackedUpItems(
+    
+    private func appendCarouselBannerItemsIfNeeded(
         into snapshot: inout Snapshot
     ) {
-        snapshot.appendSections([ .accountNotBackedUpWarning ])
+        guard let spotBanners else { return  }
 
-        let viewModel = AccountNotBackedUpWarningViewModel()
-        let items = [ HomeItemIdentifier.accountNotBackedUpWarning(viewModel) ]
+        snapshot.appendSections([ .carouselBanner ])
+
+        let items = [ HomeItemIdentifier.carouselBanner(spotBanners) ]
         snapshot.appendItems(
             items,
-            toSection: .accountNotBackedUpWarning
+            toSection: .carouselBanner
         )
     }
 
