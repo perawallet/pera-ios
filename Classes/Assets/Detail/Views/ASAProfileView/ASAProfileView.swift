@@ -172,7 +172,7 @@ final class ASAProfileView:
 extension ASAProfileView {
     func expand() {
         compressedContentView.axis = .vertical
-        compressedContentView.alignment = .center
+        compressedContentView.alignment = .leading
         compressedContentView.distribution = .fill
         compressedContentView.spacing = theme.expandedSpacingBetweenIconAndTitle
 
@@ -245,6 +245,10 @@ extension ASAProfileView {
 
     private func addTitle(_ theme: ASAProfileViewTheme) {
         compressedContentView.addArrangedSubview(titleView)
+        
+        titleView.snp.makeConstraints {
+            $0.height.equalTo(theme.titleViewHeight)
+        }
 
         addName(theme)
         addTitleSeparator(theme)
@@ -337,8 +341,9 @@ extension ASAProfileView {
         expandedContentView.addArrangedSubview(chartHostingController.view)
         
         chartHostingController.view.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.height.equalTo(172)
+            $0.leading.equalToSuperview().offset(theme.chartViewLeadingOffset)
+            $0.trailing.equalToSuperview().offset(theme.chartViewTrailingOffset)
+            $0.height.equalTo(theme.chartViewHeight)
         }
         
         chartHostingController.view.fitToVerticalIntrinsicSize()

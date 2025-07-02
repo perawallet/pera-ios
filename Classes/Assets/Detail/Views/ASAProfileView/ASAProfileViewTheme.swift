@@ -28,6 +28,7 @@ struct ASAProfileViewTheme:
     var expandedSpacingBetweenIconAndTitle: LayoutMetric
     var compressedSpacingBetweenIconAndTitle: LayoutMetric
     var name: RightAccessorizedLabelStyle
+    var titleViewHeight: LayoutMetric
     var titleSeparator: TextStyle
     var titleSeparatorContentEdgeInsets: LayoutPaddings
     var id: TextStyle
@@ -35,6 +36,9 @@ struct ASAProfileViewTheme:
     var primaryValue: TextStyle
     var spacingBetweenPrimaryValueAndSecondValue: LayoutMetric
     var secondaryValue: TextStyle
+    var chartViewHeight: LayoutMetric
+    var chartViewLeadingOffset: LayoutMetric
+    var chartViewTrailingOffset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.icon = ASAProfileIconViewTheme(family)
@@ -51,6 +55,7 @@ struct ASAProfileViewTheme:
         ]
         name.accessoryContentOffset = (6, 0)
         self.name = name
+        self.titleViewHeight = 20
 
         self.titleSeparator = [
             .textColor(Colors.Text.grayLighter),
@@ -74,6 +79,10 @@ struct ASAProfileViewTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText())
         ]
+        
+        self.chartViewHeight = 172
+        self.chartViewLeadingOffset = -24
+        self.chartViewTrailingOffset = 20
     }
 }
 

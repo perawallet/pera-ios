@@ -44,8 +44,7 @@ extension HomeChartDataResultDTO {
     }
 }
 
-final class HomeChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
-    
+final class HomeChartDataDTO: ALGEntityModel, Codable {
     let datetime: String
     let usdValue: String
     let algoValue: String
@@ -69,17 +68,6 @@ final class HomeChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
         return apiModel
     }
     
-    static func == (lhs: HomeChartDataDTO, rhs: HomeChartDataDTO) -> Bool {
-        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(datetime)
-        hasher.combine(usdValue)
-        hasher.combine(algoValue)
-        hasher.combine(round)
-    }
-    
     private enum CodingKeys: String, CodingKey {
         case datetime
         case usdValue = "usd_value"
@@ -101,5 +89,21 @@ extension HomeChartDataDTO {
             self.algoValue = .empty
             self.round = 0
         }
+    }
+}
+
+extension HomeChartDataDTO: Equatable {
+    static func == (lhs: HomeChartDataDTO, rhs: HomeChartDataDTO) -> Bool {
+        lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
+    }
+}
+
+
+extension HomeChartDataDTO: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(datetime)
+        hasher.combine(usdValue)
+        hasher.combine(algoValue)
+        hasher.combine(round)
     }
 }

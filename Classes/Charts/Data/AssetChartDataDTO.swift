@@ -44,8 +44,7 @@ extension AssetChartDataResultDTO {
     }
 }
 
-final class AssetChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
-    
+final class AssetChartDataDTO: ALGEntityModel, Codable {
     let datetime: String
     let usdValue: Double
     let amount: Double
@@ -66,16 +65,6 @@ final class AssetChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
         return apiModel
     }
     
-    static func == (lhs: AssetChartDataDTO, rhs: AssetChartDataDTO) -> Bool {
-        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.amount == rhs.amount
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(datetime)
-        hasher.combine(usdValue)
-        hasher.combine(amount)
-    }
-    
     private enum CodingKeys: String, CodingKey {
         case datetime
         case usdValue = "usd_value"
@@ -94,5 +83,19 @@ extension AssetChartDataDTO {
             self.usdValue = 0
             self.amount = 0
         }
+    }
+}
+
+extension AssetChartDataDTO: Equatable {
+    static func == (lhs: AssetChartDataDTO, rhs: AssetChartDataDTO) -> Bool {
+        lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.amount == rhs.amount
+    }
+}
+
+extension AssetChartDataDTO: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(datetime)
+        hasher.combine(usdValue)
+        hasher.combine(amount)
     }
 }
