@@ -20,8 +20,10 @@ class ChartViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var data: [ChartDataPoint] = []
     @Published var selectedPeriod: ChartDataPeriod = .oneWeek
+    @Published var selectedPoint: ChartDataPoint?
     
     var onSelectedPeriodChanged: ((ChartDataPeriod) -> Void)?
+    var onPointSelected: ((ChartDataPoint?) -> Void)?
 
     private var dataModel: ChartDataModel
     private var cancellables = Set<AnyCancellable>()
@@ -41,7 +43,7 @@ class ChartViewModel: ObservableObject {
         dataModel.$period
             .removeDuplicates()
             .sink { [weak self] period in
-                guard let self = self else { return }
+                guard let self else { return }
                 if selectedPeriod != period {
                     selectedPeriod = period
                 }
@@ -51,12 +53,20 @@ class ChartViewModel: ObservableObject {
         $selectedPeriod
             .removeDuplicates()
             .sink { [weak self] newPeriod in
-                guard let self = self else { return }
+                guard let self else { return }
                 if dataModel.period != newPeriod {
                     isLoading = true
                     dataModel.period = newPeriod
                     onSelectedPeriodChanged?(newPeriod)
                 }
+            }
+            .store(in: &cancellables)
+        
+        $selectedPoint
+            .removeDuplicates()
+            .sink { [weak self] point in
+                guard let self else { return }
+                onPointSelected?(point)
             }
             .store(in: &cancellables)
     }

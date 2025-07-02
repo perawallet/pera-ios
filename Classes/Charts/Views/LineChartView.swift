@@ -19,48 +19,71 @@ import Charts
 
 struct LineChartView: View {
     let data: [ChartDataPoint]
+    @Binding var selectedPoint: ChartDataPoint?
     
     private let xAxisLabel = "Date"
     private let yAxisLabel = "Value"
-    private let lineColor = Color.Chart.line
-    private let gradientColor = Color.Chart.gradient
-    private let interpolationMethod: InterpolationMethod = .monotone
-
+    
     var body: some View {
-        let maxValue = data.map(\.value).max() ?? 100
-
-        Chart(data) { point in
-            LineMark(
-                x: .value(xAxisLabel, point.day),
-                y: .value(yAxisLabel, point.value)
-            )
-            .foregroundStyle(lineColor)
-            .interpolationMethod(interpolationMethod)
-
-            AreaMark(
-                x: .value(xAxisLabel, point.day),
-                y: .value(yAxisLabel, point.value)
-            )
-            .foregroundStyle(
-                .linearGradient(
-                    colors: [
-                        gradientColor.opacity(0.15),
-                        gradientColor.opacity(0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .interpolationMethod(interpolationMethod)
+        let maxValue = data.map(\.primaryValue).max() ?? 100
+        
+        GeometryReader { geo in
+            let chart = Chart {
+                ForEach(data) { point in
+                    LineMark(
+                        x: .value(xAxisLabel, point.day),
+                        y: .value(yAxisLabel, point.primaryValue)
+                    )
+                    .foregroundStyle(Color.Chart.line)
+                    .interpolationMethod(.monotone)
+                    
+                    AreaMark(
+                        x: .value(xAxisLabel, point.day),
+                        y: .value(yAxisLabel, point.primaryValue)
+                    )
+                    .foregroundStyle(
+                        .linearGradient(
+                            colors: [
+                                Color.Chart.gradient.opacity(0.15),
+                                Color.Chart.gradient.opacity(0)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .interpolationMethod(.monotone)
+                }
+                
+                if let selected = selectedPoint {
+                    RuleMark(x: .value(xAxisLabel, selected.day))
+                        .foregroundStyle(Color.Text.grayLighter)
+                        .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    
+                    PointMark(
+                        x: .value(xAxisLabel, selected.day),
+                        y: .value(yAxisLabel, selected.primaryValue)
+                    )
+                    .symbol {
+                        Circle()
+                            .strokeBorder(Color.Defaults.bg, lineWidth: 2)
+                            .background(Circle().fill(Color.Chart.line))
+                            .frame(width: 12, height: 12)
+                    }
+                }
+            }
+                .chartYScale(domain: 0...(maxValue + 10))
+                .chartXAxis(.hidden)
+                .chartYAxis(.hidden)
+                .chartPlotStyle { plotArea in
+                    plotArea
+                        .background(Color.clear)
+                }
+            
+            chart
+                .chartOverlay { proxy in
+                    LineChartOverlayView(data: data, proxy: proxy, geo: geo, selectedPoint: $selectedPoint)
+                }
+                .padding(.trailing, 16)
         }
-        .chartYScale(domain: 0...(maxValue + 10))
-        .chartXAxis(.hidden)
-        .chartYAxis(.hidden)
-        .chartPlotStyle { plotArea in
-            plotArea
-                .background(Color.clear)
-                .padding(.horizontal, -20)
-        }
-        .padding(.trailing, 16)
     }
 }

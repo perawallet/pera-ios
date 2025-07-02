@@ -19,5 +19,7 @@ import Foundation
 struct ChartDataPoint: Identifiable, Hashable, Equatable {
     let id = UUID()
     let day: Int
-    let value: Double
+    let primaryValue: Double
+    let secondaryValue: Double
+    let timestamp: String
 }

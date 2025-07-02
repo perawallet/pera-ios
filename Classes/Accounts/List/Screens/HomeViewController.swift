@@ -212,6 +212,12 @@ final class HomeViewController:
                     title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
+            case .didSelectChartPoint(let chartSelectedPointViewModel, let totalPortfolioItem):
+                guard let totalPortfolioItem else {
+                    return
+                }
+                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel)
+                self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }
         
@@ -646,10 +652,16 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeChartsCell
     ) {
-        cell.onChange = { [weak self] newSelected in
+        cell.onPeriodChange = { [weak self] newPeriodSelected in
             guard let self else { return }
-            dataController.updateChartData(period: newSelected)
+            dataController.updateChartData(period: newPeriodSelected)
         }
+        cell.onPointSelected = { [weak self] pointSelected in
+            guard let self else { return }
+            dataController.updatePortfolio(with: pointSelected)
+        }
+        
+        
 
     }
 

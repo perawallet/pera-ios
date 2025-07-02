@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   HomeChartsViewTheme.swift
+//   ChartSelectedPointViewModel.swift
 
-import MacaroonUIKit
-
-struct HomeChartsViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var contentHeight: LayoutMetric
-    var chartViewLeadingInset: LayoutMetric
-    var chartViewTrailingInset: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.contentHeight = 172
-        self.chartViewLeadingInset = -2
-        self.chartViewTrailingInset = 16
-    }
+struct ChartSelectedPointViewModel: Hashable {
+    let primaryValue: Double
+    let secondaryValue: Double
+    let dateValue: String
 }
