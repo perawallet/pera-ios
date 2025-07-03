@@ -64,7 +64,8 @@ struct CarouselBannerItemViewTheme:
         ]
         
         self.closeButton = [
-            .backgroundImage([.normal("close-governance-icon")])
+            .backgroundImage([.normal("close-button-banner")]),
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.closeButtonHeight = 24
         self.closeButtonPadding  = 8

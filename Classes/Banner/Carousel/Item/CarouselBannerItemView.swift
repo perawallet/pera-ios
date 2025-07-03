@@ -68,6 +68,14 @@ final class CarouselBannerItemView:
         textLabel.clearText()
         textLabel.textColor = Colors.Text.main.uiColor
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            layer.borderColor = Colors.Layer.gray.uiColor.cgColor
+        }
+    }
 }
 
 extension CarouselBannerItemView {
