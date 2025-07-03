@@ -22,16 +22,14 @@ final class StakingURLGenerator {
         destination: StakingDestination,
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool,
-        network: ALGAPI.Network
+        hideBackButton: Bool
     ) -> URL? {
         switch destination {
         case .list:
             return generateURLForList(
                 theme: theme,
                 session: session,
-                hideBackButton: hideBackButton,
-                network: network
+                hideBackButton: hideBackButton
             )
         }
     }
@@ -39,15 +37,13 @@ final class StakingURLGenerator {
     private static func generateURLForList(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool,
-        network: ALGAPI.Network
+        hideBackButton: Bool
     ) -> URL? {
         var components = URLComponents(string: Environment.current.stakingBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
-            hideBackButton: hideBackButton,
-            network: network
+            hideBackButton: hideBackButton
         )
         return components?.url
     }
@@ -55,8 +51,7 @@ final class StakingURLGenerator {
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
         session: Session?,
-        hideBackButton: Bool,
-        network: ALGAPI.Network
+        hideBackButton: Bool
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
         queryItems.append(.init(name: "version", value: "1"))

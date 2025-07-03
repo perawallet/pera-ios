@@ -148,8 +148,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
             destination: .external(destination),
             theme: traitCollection.userInterfaceStyle,
             session: session,
-            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled),
-            network: configuration.api?.network ?? .mainnet
+            enableDiscoverV5: configuration.featureFlagService.isEnabled(.discoverV5Enabled)
         )
         load(url: generatedURL)
     }

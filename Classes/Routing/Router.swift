@@ -455,8 +455,7 @@ final class Router:
                         path: path,
                         theme: visibleScreen.traitCollection.userInterfaceStyle,
                         session: nil,
-                        enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled),
-                        network: appConfiguration.api.network
+                        enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled)
                     ) else {
                         return
                     }

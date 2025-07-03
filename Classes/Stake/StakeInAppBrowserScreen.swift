@@ -134,8 +134,7 @@ extension StakingInAppBrowserScreen {
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
             session: session,
-            hideBackButton: hideBackButtonInWebView,
-            network: api?.network ?? .mainnet
+            hideBackButton: hideBackButtonInWebView
         )
     }
 
