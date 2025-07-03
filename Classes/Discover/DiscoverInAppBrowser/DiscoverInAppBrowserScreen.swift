@@ -30,7 +30,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
 
-    
+    private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
     
     var destination: DiscoverDestination {
@@ -81,6 +81,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
+        controller.addUserScript(navigationScript)
         controller.addUserScript(peraConnectScript)
         return controller
     }
@@ -165,6 +166,18 @@ extension DiscoverInAppBrowserScreen {
         }
         let script = "updateCurrency('\(newCurrency)')"
         webView.evaluateJavaScript(script)
+    }
+    
+    func createNavigationScript() -> WKUserScript {
+        let navigationScript = """
+!function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
+"""
+
+        return WKUserScript(
+            source: navigationScript,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false
+        )
     }
     
     func createPeraConnectScript() -> WKUserScript {
