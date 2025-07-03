@@ -44,7 +44,7 @@ final class AccountAssetListAPIDataController:
     private let sharedDataController: SharedDataController
     private let chartsDataController: ChartAPIDataController
     
-    private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
+    private var chartViewData: ChartViewData?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var portfolioItem: AccountPortfolioItem?
 
@@ -337,11 +337,14 @@ extension AccountAssetListAPIDataController {
     }
     
     private func appendSectionsForCharts(into snapshot: inout Snapshot) {
-        snapshot.appendSections([ .charts ])
-        snapshot.appendItems(
-            [.charts(chartViewData)],
-            toSection: .charts
-        )
+        let items = makeItemsForCharts()
+        if items.isNonEmpty {
+            snapshot.appendSections([ .charts ])
+            snapshot.appendItems(
+                items,
+                toSection: .charts
+            )
+        }
     }
 
     private func appendSectionsIfNeededForQuickActions(into snapshot: inout Snapshot) {
@@ -446,6 +449,13 @@ extension AccountAssetListAPIDataController {
         self.portfolioItem = portfolio
         let viewModel = AccountPortfolioViewModel(portfolio, selectedPoint: nil)
         return [ .portfolio(viewModel) ]
+    }
+    
+    private func makeItemsForCharts() -> [AccountAssetsItem] {
+        guard let chartViewData else {
+            return []
+        }
+        return [.charts(chartViewData)]
     }
 
     private func makeItemsForQuickActions() -> [AccountAssetsItem] {
