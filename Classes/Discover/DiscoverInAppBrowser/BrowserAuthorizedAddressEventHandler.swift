@@ -88,6 +88,10 @@ private extension BrowserAuthorizedAddressEventHandler {
             return "HdKey"
         }
         
+        if account.isWatchAccount {
+            return "NoAuth"
+        }
+        
         if account.authorization.isRekeyedToNoAuthInLocal {
             return "RekeyedNoAuth"
         }
