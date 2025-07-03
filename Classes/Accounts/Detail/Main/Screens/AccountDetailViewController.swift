@@ -221,7 +221,7 @@ extension AccountDetailViewController {
                 self.openSwapAssetIfPossible()
             case .buy:
                 self.assetListScreen.endEditing()
-                self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
+                self.analytics.track(.recordAccountDetailScreen(type: .tapBuyAlgo))
                 
                 self.openBuySellOptionsIfPossible()
             case .send:
@@ -389,7 +389,7 @@ extension AccountDetailViewController {
     }
 
     private func openBuyWithMeld() {
-        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
+        analytics.track(.recordAccountDetailScreen(type: .tapBuyAlgo))
 
         meldFlowCoordinator.launch(accountHandle.value)
     }
@@ -407,7 +407,7 @@ extension AccountDetailViewController {
             return
         }
 
-        analytics.track(.recordAccountDetailScreen(type: .swap))
+        analytics.track(.recordAccountDetailScreen(type: .tapSwap))
         swapAssetFlowCoordinator.launch()
     }
 }

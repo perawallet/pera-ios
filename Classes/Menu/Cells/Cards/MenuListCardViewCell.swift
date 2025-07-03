@@ -17,7 +17,7 @@
 import UIKit
 
 protocol MenuListCardViewCellDelegate: AnyObject {
-    func didPressActionButton(in cell: MenuListCardViewCell)
+    func didPressActionButton(in cell: MenuListCardViewCell, with option: MenuOption)
 }
 
 final class MenuListCardViewCell: UICollectionViewCell {
@@ -26,6 +26,7 @@ final class MenuListCardViewCell: UICollectionViewCell {
     
     static let theme = MenuListCardViewTheme()
     weak var delegate: MenuListCardViewCellDelegate?
+    private var menuOption: MenuOption = .cards(state: .inactive)
     
     // MARK: - Subviews
     
@@ -55,6 +56,7 @@ final class MenuListCardViewCell: UICollectionViewCell {
     }
     
     func bindData(_ data: MenuOption) {
+        self.menuOption = data
         contextView.bindData(data, theme: MenuListCardViewCell.theme)
         contextView.delegate = self
     }
@@ -63,6 +65,6 @@ final class MenuListCardViewCell: UICollectionViewCell {
 
 extension MenuListCardViewCell: MenuListCardViewDelegate {
     func didPressActionButton(in view: MenuListCardView) {
-        delegate?.didPressActionButton(in: self)
+        delegate?.didPressActionButton(in: self, with: menuOption)
     }
 }

@@ -659,6 +659,7 @@ extension HomeViewController {
         cell.onPointSelected = { [weak self] pointSelected in
             guard let self else { return }
             dataController.updatePortfolio(with: pointSelected)
+            analytics.track(.recordHomeScreen(type: .tapChart))
         }
     }
 
@@ -1391,11 +1392,13 @@ extension HomeViewController: CarouselBannerDelegate {
             guard let itemUrl = banner?.url else { return }
             triggerBannerCTA(itemUrl: itemUrl)
         }
+        analytics.track(.spotBannerPressed(type: .tapBanner, name: banner?.text ?? .unavailable))
     }
     
     func didTapCloseButton(in banner: CarouselBannerItemModel?) {
         guard let banner else { return }
         dataController.updateClose(for: banner)
+        analytics.track(.spotBannerPressed(type: .tapClose, name: banner.text))
     }
 }
 

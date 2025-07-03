@@ -491,6 +491,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 item.onPointSelected = { [weak self] pointSelected in
                     guard let self else { return }
                     dataController.updatePortfolio(with: pointSelected)
+                    analytics.track(.recordAccountDetailScreen(type: .tapChart))
                 }
             default:
                 return
