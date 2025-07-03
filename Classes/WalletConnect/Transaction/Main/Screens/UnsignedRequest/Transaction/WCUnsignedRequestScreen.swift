@@ -15,7 +15,6 @@
 //
 //   WCUnsignedRequestScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 
@@ -143,7 +142,11 @@ extension WCUnsignedRequestScreen: WCUnsignedRequestViewDelegate {
     }
 
     func wcUnsignedRequestViewDidTapConfirm(_ requestView: WCUnsignedRequestView) {
-        delegate?.wcUnsignedRequestScreenDidConfirm(self)
+        guard let transaction = dataSource.transactions(at: 0)?.first else { return }
+        RekeySupportHandler.handle(walletConnectTransaction: transaction, presenter: self) { [weak self] in
+            guard let self else { return }
+            self.delegate?.wcUnsignedRequestScreenDidConfirm(self)
+        }
     }
 }
 

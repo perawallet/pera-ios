@@ -15,7 +15,6 @@
 //
 //   WCSingleTransactionRequestScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 
@@ -202,10 +201,12 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
         delegate?.wcSingleTransactionRequestScreenDidReject(self)
     }
 
-    func wcSingleTransactionRequestViewDidTapConfirm(
-        _ requestView: WCSingleTransactionRequestView
-    ) {
-        delegate?.wcSingleTransactionRequestScreenDidConfirm(self)
+    func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView) {
+        guard let transaction = transactions.first else { return }
+        RekeySupportHandler.handle(walletConnectTransaction: transaction, presenter: self) { [weak self] in
+            guard let self else { return }
+            self.delegate?.wcSingleTransactionRequestScreenDidConfirm(self)
+        }
     }
 
     func wcSingleTransactionRequestViewDidTapShowTransaction(

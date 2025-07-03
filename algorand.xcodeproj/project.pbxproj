@@ -3605,6 +3605,12 @@
 		543447762D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447772D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447782D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
+		5435EC702E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */; };
+		5435EC712E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */; };
+		5435EC722E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */; };
+		5435EC742E126B210056A49D /* RekeySupportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */; };
+		5435EC752E126B210056A49D /* RekeySupportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */; };
+		5435EC762E126B210056A49D /* RekeySupportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */; };
 		547CA66C2D66363800714338 /* ObservableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547CA66B2D66363800714338 /* ObservableUserDefaults.swift */; };
 		547CA66D2D66363800714338 /* ObservableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547CA66B2D66363800714338 /* ObservableUserDefaults.swift */; };
 		547CA66E2D66363800714338 /* ObservableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547CA66B2D66363800714338 /* ObservableUserDefaults.swift */; };
@@ -3620,6 +3626,12 @@
 		548EF17B2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
 		548EF17C2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
 		548EF17D2D4A5D9500BF8B07 /* AssetListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */; };
+		549C5DDE2E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */; };
+		549C5DDF2E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */; };
+		549C5DE02E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */; };
+		549C5DE32E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */; };
+		549C5DE42E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */; };
+		549C5DE52E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */; };
 		54B9FABE2DA7D6E300869DEA /* RescanAccountsListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */; };
 		54B9FABF2DA7D6E300869DEA /* RescanAccountsListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */; };
 		54B9FAC02DA7D6E300869DEA /* RescanAccountsListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */; };
@@ -9468,11 +9480,15 @@
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
+		5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayViewController.swift; sourceTree = "<group>"; };
+		5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayView.swift; sourceTree = "<group>"; };
 		547CA66B2D66363800714338 /* ObservableUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableUserDefaults.swift; sourceTree = "<group>"; };
 		547CA66F2D663BA600714338 /* PeraUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraUserDefaults.swift; sourceTree = "<group>"; };
 		547CA6732D663BC200714338 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
+		549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportHandler.swift; sourceTree = "<group>"; };
+		549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsFooterView.swift; sourceTree = "<group>"; };
 		54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanAccountsListItemViewModel.swift; sourceTree = "<group>"; };
 		54B9FAC12DA7D77500869DEA /* RescanRekeyedAccountsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanRekeyedAccountsCoordinator.swift; sourceTree = "<group>"; };
 		54C477BC2D6F03AB00072E01 /* PassphraseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseUtils.swift; sourceTree = "<group>"; };
@@ -12297,7 +12313,6 @@
 		2B2AACB6250AA5CF00B8C5C5 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				2B5BE14C251B731300324BEE /* Currency */,
 				2B2AACB7250AA5DE00B8C5C5 /* Settings.swift */,
 				2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */,
 				2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */,
@@ -12829,6 +12844,7 @@
 		2B4DF413236C6A6400FF9551 /* Footer */ = {
 			isa = PBXGroup;
 			children = (
+				549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */,
 				2B3A34D3246D71BB001C8F22 /* SettingsFooterView.swift */,
 				2B3A34D6246D71E6001C8F22 /* SettingsFooterSupplementaryView.swift */,
 				2B5F6F972768DA0700C9B780 /* SettingsFooterViewTheme.swift */,
@@ -13248,13 +13264,6 @@
 				D45B19752936ABAD003058CA /* OptOutCollectibleAssetListItem.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		2B5BE14C251B731300324BEE /* Currency */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Currency;
 			sourceTree = "<group>";
 		};
 		2B5C58DF23AC363400B907E3 /* URL */ = {
@@ -18469,6 +18478,7 @@
 		2BF7280027471BCD00CCAC30 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5435EC6E2E126A870056A49D /* Rekey Support */,
 				955B61842784A9EF005A5C7E /* Request */,
 				2B68A22926A5D8B40076BD82 /* Item */,
 				955B617C27848454005A5C7E /* BottomOverlayTheme.swift */,
@@ -18909,6 +18919,16 @@
 				543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */,
 			);
 			path = "View Coordinators";
+			sourceTree = "<group>";
+		};
+		5435EC6E2E126A870056A49D /* Rekey Support */ = {
+			isa = PBXGroup;
+			children = (
+				549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */,
+				5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */,
+				5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */,
+			);
+			path = "Rekey Support";
 			sourceTree = "<group>";
 		};
 		547CA66A2D66361D00714338 /* User Defaults */ = {
@@ -25475,6 +25495,7 @@
 				D41168A62DC22B58001F7A57 /* MenuListItemViewTheme.swift in Sources */,
 				D45D7686299FB2A50081735E /* MeldAccountSelectionListHeaderViewModel.swift in Sources */,
 				D40650362A5B598000B05DBC /* RekeySuccessResultViewTheme.swift in Sources */,
+				549C5DE52E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */,
 				95189D7F2778DD6200094107 /* UIPasteboard+Address.swift in Sources */,
 				2B69AAC428BE1E4400A8D65D /* SwapAssetSelectionViewTheme.swift in Sources */,
 				2B7E303B267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
@@ -25989,6 +26010,7 @@
 				F09608742795E36B00CFBB90 /* SingleLineIconTitleViewTheme.swift in Sources */,
 				2BD063E625CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
 				2B69AAE028BE276300A8D65D /* SwapAssetAmountViewTheme.swift in Sources */,
+				5435EC722E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */,
 				2B69AB2628BFA16B00A8D65D /* SwapTransactionPreparation.swift in Sources */,
 				2B0F0B7929C08E5C00DDE607 /* RekeyingValidator.swift in Sources */,
 				D4061A382961F35B00EC9AE5 /* CollectibleDescriptionView.swift in Sources */,
@@ -26546,6 +26568,7 @@
 				D48B033928869532009AF715 /* AddAssetTransactionOptionListActionViewModel.swift in Sources */,
 				F0600E3128A46ED70043B834 /* ALGAnalyticsEvent.swift in Sources */,
 				F034521828B2CD9F009467A0 /* OptInAssetNameViewTheme.swift in Sources */,
+				5435EC752E126B210056A49D /* RekeySupportOverlayView.swift in Sources */,
 				D4487AAB27BD373100B4B0AB /* RecoverAccountViewTheme.swift in Sources */,
 				958416F627B3B19A005B1627 /* OptInAssetListNotFoundViewModel.swift in Sources */,
 				2BCBBADF24A60A02002CD56F /* PinLimitStore.swift in Sources */,
@@ -26578,6 +26601,7 @@
 				D424BE652A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift in Sources */,
 				D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				174A0F3528EF163D00D44019 /* PasswordMigration.swift in Sources */,
+				549C5DDF2E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */,
 				D4FC47552714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				D41EE45A2A40600D00FD03FD /* RekeyInstructionsScreenTheme.swift in Sources */,
 				8BE7D1FD2C5F993900C2D779 /* CardsURLGenerator.swift in Sources */,
@@ -27435,6 +27459,7 @@
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
 				D40ADD832944C28D004C74E3 /* DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel.swift in Sources */,
 				2B0F616624EC129D00DA22A6 /* Snapkit+SafeArea.swift in Sources */,
+				549C5DE32E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */,
 				D444EE912946BCED008AD374 /* HideAssetsWithNoBalanceInAssetListFilterItemViewModel.swift in Sources */,
 				D49B40E12AF03231008C1883 /* AccountDetailAccountNotBackedUpWarningCell.swift in Sources */,
 				D4E34CBD27F7162B00B0C3F4 /* SelectAssetViewControllerListLayout.swift in Sources */,
@@ -29031,6 +29056,7 @@
 				D4241FBF26E7639B0064CDD0 /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
 				2B5739FE26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				04F153B5274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
+				549C5DE02E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */,
 				2B32A2602552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				D40E8809294B9C2F00B46054 /* CollectibleDetailNameViewTheme.swift in Sources */,
 				D401FCAB28E640D100FBA85C /* CollectibleDetailAssetIDItemCellTheme.swift in Sources */,
@@ -29527,6 +29553,7 @@
 				2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2B83D04826C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2BA4B3F1267819840041586B /* WCSessionItemViewModel.swift in Sources */,
+				5435EC762E126B210056A49D /* RekeySupportOverlayView.swift in Sources */,
 				95BFE78F2840AEBA00A972A5 /* HomeQuickActionsView.swift in Sources */,
 				2BCFD6792791A35900406A2A /* AccountAssetListDataController.swift in Sources */,
 				17C9331729470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */,
@@ -29674,6 +29701,7 @@
 				8BE1ED182C4AF76D0006DFC9 /* SuccessResultScreen.swift in Sources */,
 				2B0F62FB24EC129D00DA22A6 /* PushNotificationController.swift in Sources */,
 				2B8200082C0D2B5C001DD73F /* ARC59SendAssetTransactionDraft.swift in Sources */,
+				5435EC712E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */,
 				2B7A1F5127DD26D40010F52E /* CollectibleMediaPreviewCell.swift in Sources */,
 				2B85F3F2257A721D00C871A5 /* LedgerTransactionOperation.swift in Sources */,
 				959672E627BA4E3A00BFDE5D /* NotificationLoadingViewCommonTheme.swift in Sources */,
@@ -30780,6 +30808,7 @@
 				D41168A42DC22B58001F7A57 /* MenuListItemViewTheme.swift in Sources */,
 				2BC1826B23D8DED600888476 /* TransactionDraft.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
+				549C5DE42E13D3510025B1A4 /* SecuritySettingsFooterView.swift in Sources */,
 				2BB93C2F25BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
 				2BBC2D4B278B6EDE0091B6FC /* ErrorViewTheme.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
@@ -31294,6 +31323,7 @@
 				D4FC47572714940600FC5E3B /* LedgerAccountDetailDataSource.swift in Sources */,
 				2BC6360C28899F9E00507AEA /* AssetNameViewTheme.swift in Sources */,
 				D4E9E274298816850008C4D5 /* CollectibleListQuery.swift in Sources */,
+				5435EC702E126A9F0056A49D /* RekeySupportOverlayViewController.swift in Sources */,
 				D4822739272BFC3F004CB9BF /* BadgedImageVIew.swift in Sources */,
 				D4CF67DA28C7594E0007A727 /* AccountSelectionListScreen.swift in Sources */,
 				2B6B423D27BECCA00036BF9E /* RenameAccountListItemButtonViewModel.swift in Sources */,
@@ -31851,6 +31881,7 @@
 				D473CA6026E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				175CE59822955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
 				955B61872784AA13005A5C7E /* WCSingleTransactionRequestView.swift in Sources */,
+				5435EC742E126B210056A49D /* RekeySupportOverlayView.swift in Sources */,
 				958416F427B3B19A005B1627 /* OptInAssetListNotFoundViewModel.swift in Sources */,
 				958416F427B3B19A005B1627 /* OptInAssetListNotFoundViewModel.swift in Sources */,
 				D4F4C89929D189640069FB94 /* RekeyedAccountInformationAccountItemView.swift in Sources */,
@@ -31883,6 +31914,7 @@
 				D41EE4602A4092E900FD03FD /* RekeyToStandardAccountInstructionsDraft.swift in Sources */,
 				D473B8442B0264AA00027D96 /* AccountAssetFetchDraft.swift in Sources */,
 				F0877F76299AD68800CD8D8A /* DiscoverGenericScreen.swift in Sources */,
+				549C5DDE2E13CA5A0025B1A4 /* RekeySupportHandler.swift in Sources */,
 				F0DB41AF2794C64600EA437D /* AddAccountListItemButtonViewModel.swift in Sources */,
 				D48FDFF727CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
@@ -32628,6 +32660,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -32657,6 +32690,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -32685,6 +32719,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -32714,6 +32749,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -32744,6 +32780,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -32773,6 +32810,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -32926,6 +32964,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -32958,6 +32997,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -33117,6 +33157,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
