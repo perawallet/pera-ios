@@ -44,11 +44,14 @@ enum ALGAnalyticsEventName:
     case changeNotificationFilter
     case completeTransaction
     case createAccountInHomeScreen
+    case createNewWallet
     case discoverSearch
     case discoverAssetBuy
     case discoverAssetSell
     case discoverDappDetail
+    case importAccount
     case manageAsset
+    case nameAccount
     case onboardCreateAccountNew
     case onboardCreateAccountRecoverAlgo25
     case onboardCreateAccountRecoverOneKey
@@ -186,6 +189,9 @@ extension ALGAnalyticsEventName {
         case .tapBuyAlgoInMeld: rawName = "meldscr_algo_buy_tap"
         case .tapBuyAlgoInMoonPay: rawName = "moonpayscr_algo_buy_tap"
         case .buyAlgoFromMoonPayCompleted: rawName = "moonpaycom_algo_buy_completed"
+        case .createNewWallet: rawName = "new_onb_welcome_create_wallet"
+        case .importAccount: rawName = "new_onb_welcome_import_wallet"
+        case .nameAccount: rawName = "new_onb_welcome_name_wallet"
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .onboardCreateAccountNew: rawName = "onb_createacc_recover"
