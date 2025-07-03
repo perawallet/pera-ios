@@ -23,12 +23,10 @@ struct SecuritySettingsViewTheme: LayoutSheet, StyleSheet {
     
     let cellSpacing: LayoutMetric
     let topInset: LayoutMetric
-    let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.topInset = 16
-        self.sectionInset = (8, 0, 36, 0)
     }
 }

@@ -17,10 +17,14 @@
 
 import UIKit
 
-enum SecuritySettings: Settings {
+enum SecuritySettings {
     case pinCodeActivation
     case pinCodeChange
     case localAuthentication
+    case rekeySupport
+}
+    
+extension SecuritySettings: Settings {
     
     var image: UIImage? {
         switch self {
@@ -30,6 +34,8 @@ enum SecuritySettings: Settings {
             return img("icon-settings-pinCode")
         case .localAuthentication:
             return img("icon-settings-localAuthentication")
+        case .rekeySupport:
+            return .iconSettingsRekey
         }
     }
     
@@ -41,10 +47,10 @@ enum SecuritySettings: Settings {
             return String(localized: "security-settings-pinCode-change")
         case .localAuthentication:
             return String(localized: "security-settings-localAuthentication")
+        case .rekeySupport:
+            return String(localized: "security-settings-rekey-support")
         }
     }
 
-    var subtitle: String? {
-        return nil
-    }
+    var subtitle: String? { nil }
 }

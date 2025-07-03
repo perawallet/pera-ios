@@ -2259,6 +2259,10 @@ final class Router:
             let screen = InviteFriendsScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
+        case let .rekeyTransactionOverlay(variant, onPrimaryAction):
+            let screen = RekeySupportOverlayViewController(configuration: configuration, variant: variant)
+            screen.onPrimaryButtonTap = onPrimaryAction
+            viewController = screen
         }
         return viewController as? T
     }

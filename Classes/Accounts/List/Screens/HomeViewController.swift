@@ -238,14 +238,11 @@ final class HomeViewController:
         }
     }
 
-    override func viewWillAppear(
-        _ animated: Bool
-    ) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         startAnimatingLoadingIfNeededWhenViewWillAppear()
-
         switchToHighlightedNavigationBarAppearance()
+        configureNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
