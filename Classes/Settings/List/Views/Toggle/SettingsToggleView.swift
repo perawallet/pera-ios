@@ -23,7 +23,13 @@ final class SettingsToggleView: View {
     
     private lazy var theme = SettingsToggleViewTheme()
     
-    private lazy var imageView = UIImageView()
+    private let imageView: UIImageView = {
+        let view = UIImageView()
+        view.tintColor = .Text.main
+        view.contentMode = .scaleAspectFit
+        return view
+    }()
+    
     private lazy var nameLabel = UILabel()
     private lazy var toggle = Toggle()
     
