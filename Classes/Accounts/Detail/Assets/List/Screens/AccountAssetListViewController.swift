@@ -129,6 +129,8 @@ final class AccountAssetListViewController:
                         )
                     }
                 }
+            case .didSelectChartPoint(let viewModel):
+                listDataSource.reloadPortfolio(with: viewModel)
             }
         }
         dataController.load(query: query)
@@ -150,6 +152,7 @@ final class AccountAssetListViewController:
         if !isViewFirstAppeared {
             reloadIfNeededForPendingAssetRequests()
         }
+        dataController.fetchInitialChartData(period: .oneWeek)
 
         analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
@@ -471,6 +474,26 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 }
             default:
                 break
+            }
+        case .charts:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+            switch itemIdentifier {
+            case .charts:
+                guard let item = cell as? AccountChartsCell else {
+                    return
+                }
+                item.onPeriodChange = { [weak self] newPeriodSelected in
+                    guard let self else { return }
+                    dataController.updateChartData(period: newPeriodSelected)
+                }
+                item.onPointSelected = { [weak self] pointSelected in
+                    guard let self else { return }
+                    dataController.updatePortfolio(with: pointSelected)
+                }
+            default:
+                return
             }
         case .assets:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {

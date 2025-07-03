@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioCell.swift
+//   AccountChartsViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-class AccountPortfolioCell:
-    CollectionCell<AccountPortfolioView>,
-    UIInteractable,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (36, 24, 36, 24)
-    }
-    
-    static let theme = AccountPortfolioViewTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
+struct AccountChartsViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var contentHeight: LayoutMetric
+    var chartViewLeadingInset: LayoutMetric
+    var chartViewTrailingInset: LayoutMetric
+    var chartViewBottomInset: LayoutMetric
 
-        contentView.backgroundColor = Colors.Defaults.background.uiColor
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.contentHeight = 172
+        self.chartViewLeadingInset = -2
+        self.chartViewTrailingInset = 16
+        self.chartViewBottomInset = 34
     }
 }

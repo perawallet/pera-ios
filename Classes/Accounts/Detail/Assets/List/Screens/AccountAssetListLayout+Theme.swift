@@ -24,11 +24,13 @@ extension AccountAssetListLayout {
         let assetManagementItemSize: LayoutSize
         let searchItemSize: LayoutSize
         let assetLoadingItemSize: LayoutSize
+        let chartViewHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 40)
             self.searchItemSize = (UIScreen.main.bounds.width, 72)
             self.assetLoadingItemSize = (UIScreen.main.bounds.width - 48, 75)
+            self.chartViewHeight = 172
         }
     }
 }
