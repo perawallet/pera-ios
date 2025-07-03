@@ -58,7 +58,7 @@ private extension BrowserAuthorizedAddressEventHandler {
             return AccountItem(
                 address: account.value.address,
                 name: account.value.primaryDisplayName,
-                type: account.value.authorization.rawValue
+                type: getAccountAuthValue(account.value)
             )
         }
 
@@ -81,5 +81,33 @@ private extension BrowserAuthorizedAddressEventHandler {
         }
         
         return true
+    }
+    
+    func getAccountAuthValue(_ account: Account) -> String {
+        if account.isHDAccount {
+            return "HdKey"
+        }
+        
+        if account.authorization.isRekeyedToNoAuthInLocal {
+            return "RekeyedNoAuth"
+        }
+        
+        if account.authorization.isRekeyedToNoAuthInLocal {
+            return "Rekeyed"
+        }
+        
+        if account.authorization.isLedger {
+            return "LedgerBle"
+        }
+        
+        if account.authorization.isStandard {
+            return "Algo25"
+        }
+        
+        if account.authorization.isNoAuth {
+            return "NoAuth"
+        }
+        
+        return ""
     }
 }
