@@ -32,7 +32,7 @@ final class WatchAccountQuickActionsCell:
     ) {
         super.init(frame: frame)
 
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+        contentView.backgroundColor = Colors.Defaults.background.uiColor
 
         contextView.customize(Self.theme)
     }

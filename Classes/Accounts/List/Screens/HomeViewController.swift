@@ -657,9 +657,6 @@ extension HomeViewController {
             guard let self else { return }
             dataController.updatePortfolio(with: pointSelected)
         }
-        
-        
-
     }
 
     private func linkInteractors(

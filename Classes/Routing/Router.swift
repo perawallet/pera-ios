@@ -46,6 +46,11 @@ final class Router:
         analytics: appConfiguration.analytics,
         hdWalletStorage: appConfiguration.hdWalletStorage
     )
+    
+    private lazy var chartsDataController = ChartAPIDataController(
+        api: appConfiguration.api,
+        session: appConfiguration.session
+    )
 
     /// <todo>
     /// Change after refactoring routing
@@ -881,7 +886,8 @@ final class Router:
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
                     account: accountHandle,
-                    sharedDataController: appConfiguration.sharedDataController
+                    sharedDataController: appConfiguration.sharedDataController,
+                    chartsDataController: chartsDataController
                 ),
                 swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(

@@ -16,7 +16,7 @@
 
 import UIKit
 
-extension NSDiffableDataSourceSnapshot where ItemIdentifierType: Equatable {
+extension NSDiffableDataSourceSnapshot {
     mutating func replaceItem(
         matching predicate: (ItemIdentifierType) -> Bool,
         with newItem: ItemIdentifierType

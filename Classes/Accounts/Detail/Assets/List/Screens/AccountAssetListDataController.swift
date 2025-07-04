@@ -26,6 +26,9 @@ protocol AccountAssetListDataController: AnyObject {
     func load(query: AccountAssetListQuery?)
     func reload()
     func reloadIfNeededForPendingAssetRequests()
+    func fetchInitialChartData(period: ChartDataPeriod)
+    func updateChartData(period: ChartDataPeriod)
+    func updatePortfolio(with selectedPoint: ChartDataPoint?)
 }
 
 enum AccountAssetsSection:
@@ -33,6 +36,7 @@ enum AccountAssetsSection:
     Hashable {
     case accountNotBackedUpWarning
     case portfolio
+    case charts
     case quickActions
     case assets
     case empty
@@ -41,6 +45,7 @@ enum AccountAssetsSection:
 enum AccountAssetsItem: Hashable {
     case accountNotBackedUpWarning(AccountDetailAccountNotBackedUpWarningModel)
     case portfolio(AccountPortfolioViewModel)
+    case charts(ChartViewData)
     case watchPortfolio(WatchAccountPortfolioViewModel)
     case search
     case assetLoading
@@ -183,6 +188,7 @@ struct AccountAssetsPendingAssetListItem: Hashable {
 
 enum AccountAssetListDataControllerEvent {
     case didUpdate(AccountAssetListUpdates)
+    case didSelectChartPoint(PortfolioViewModel)
 }
 
 struct AccountAssetListUpdates {
