@@ -22,17 +22,17 @@ final class AccountDetailAPIDataController: AccountDetailDataController {
 
     init(
         account: AccountHandle,
-        sharedDataController: SharedDataController,
+        configuration: AppConfiguration,
         chartsDataController: ChartAPIDataController
     ) {
         self.assetListDataController = AccountAssetListAPIDataController(
             account: account,
-            sharedDataController: sharedDataController,
+            configuration: configuration,
             chartsDataController: chartsDataController
         )
         self.collectibleListDataController = CollectibleListLocalDataController(
            galleryAccount: .single(account),
-           sharedDataController: sharedDataController
+           sharedDataController: configuration.sharedDataController
        )
     }
 }

@@ -43,6 +43,7 @@ final class AccountAssetListAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let chartsDataController: ChartAPIDataController
+    private let featureFlagService: FeatureFlagServicing
     
     private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
@@ -50,12 +51,13 @@ final class AccountAssetListAPIDataController:
 
     init(
         account: AccountHandle,
-        sharedDataController: SharedDataController,
+        configuration: AppConfiguration,
         chartsDataController: ChartAPIDataController
     ) {
         self.account = account
-        self.sharedDataController = sharedDataController
+        self.sharedDataController = configuration.sharedDataController
         self.chartsDataController = chartsDataController
+        self.featureFlagService = configuration.featureFlagService
         setupCallbacks()
     }
     
@@ -74,7 +76,9 @@ final class AccountAssetListAPIDataController:
 
 extension AccountAssetListAPIDataController {
     func load(query: AccountAssetListQuery?) {
-        setupChartDataClosures()
+        if featureFlagService.isEnabled(.accountsChartsEnabled) {
+            setupChartDataClosures()
+        }
         nextQuery = query
 
         if canDeliverUpdatesForAssets {
@@ -304,7 +308,9 @@ extension AccountAssetListAPIDataController {
     ) -> Updates {
         var snapshot = Snapshot()
         appendSectionsForPortfolio(into: &snapshot)
-        appendSectionsForCharts(into: &snapshot)
+        if featureFlagService.isEnabled(.accountsChartsEnabled) {
+            appendSectionsForCharts(into: &snapshot)
+        }
         appendSectionsIfNeededForQuickActions(into: &snapshot)
         appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssets(
