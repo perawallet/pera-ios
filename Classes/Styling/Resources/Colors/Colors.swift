@@ -51,8 +51,8 @@ extension Colors {
         case trustedIconInline = "ASA/trustedIconInline"
         case verifiedIconBackground = "ASA/verifiedIconBg"
         case verifiedIconInline = "ASA/verifiedIconInline"
-        case verifiedIconSolidBackground = "ASA/verifiedSolidBackground"
-        case verifiedIconSolidInline = "ASA/verifiedSolidInline"
+        case verifiedIconSolidBackground = "ASA/verifiedIconSolidBg"
+        case verifiedIconSolidInline = "ASA/verifiedIconSolidInline"
         case asaBarButton = "ASA/asaBarButton"
     }
 }
@@ -115,7 +115,6 @@ extension Colors {
             case disabledBackground = "ButtonGhost/disabledBg"
             case disabledText = "ButtonGhost/disabledText"
             case focusBackground = "ButtonGhost/focusBg"
-            case focusBackgroundDark = "ButtonGhost/focusBgDark"
             case text = "ButtonGhost/text"
         }
 
@@ -134,10 +133,12 @@ extension Colors {
             String,
             Color {
             case background = "ButtonPrimary/bg"
+            case newbackground = "ButtonPrimary/newBg"
             case disabledBackground = "ButtonPrimary/disabledBg"
             case disabledText = "ButtonPrimary/disabledText"
             case focusBackground = "ButtonPrimary/focusBg"
             case text = "ButtonPrimary/text"
+            case newText = "ButtonPrimary/newText"
         }
 
         enum Secondary:
@@ -163,12 +164,6 @@ extension Colors {
 }
 
 extension Colors {
-    enum ASACellBackground: String, Color {
-        case optOut = "ASA/OptOutCellSideMenuBackground"
-    }
-}
-
-extension Colors {
     enum Dapp:
         String,
         Color {
@@ -183,7 +178,6 @@ extension Colors {
         Color {
         case background = "Defaults/bg"
         case systemElements = "Defaults/systemElements"
-        case black = "Defaults/black"
     }
 }
 
@@ -205,8 +199,8 @@ extension Colors {
     enum Keyboard:
         String,
         Color {
-        case accessoryBackground = "Keyboard/accessoryBg"
-        case accessoryLine = "Keyboard/accessoryLine"
+        case accessoryBackground = "Keyboard/bg"
+        case accessoryLine = "Keyboard/line"
     }
 }
 
@@ -305,11 +299,10 @@ extension Colors {
     enum TabBar:
         String,
         Color {
-        case background = "TabBar/bg"
-        case button = "TabBar/button"
-        case iconActive = "TabBar/iconActive"
-        case iconDisabled = "TabBar/iconDisabled"
-        case iconNonActive = "TabBar/iconNonActive"
+        case background = "Tabbar/bg"
+        case button = "Tabbar/button"
+        case iconActive = "Tabbar/iconActive"
+        case iconDisabled = "Tabbar/iconDisabled"
     }
 }
 
@@ -361,43 +354,5 @@ extension Colors {
         case wallet4IconGovernor = "Wallet/wallet4IconGovernor"
         case wallet5 = "Wallet/wallet5"
         case wallet5Icon = "Wallet/wallet5Icon"
-    }
-}
-
-extension Colors {
-    /// <todo>
-    /// The groups below are temporary. If the cases are renamed in the design side, they will be
-    /// removed from this list. Also, the new colors shouldn't be added in this group.
-    /// <note>
-    /// Sort:
-    /// Alphabetical order.
-
-    enum Discover:
-        String,
-        Color {
-        case buttonPrimaryText = "Discover/buttonPrimaryText"
-        case helperGray = "Discover/helperGray"
-        case helperRed = "Discover/helperRed"
-        case layer1 = "Discover/layer1"
-        case main = "Discover/main"
-        case textGray = "Discover/textGray"
-        case textGrayLighter = "Discover/textGrayLighter"
-        case textMain = "Discover/textMain"
-    }
-
-    enum Other:
-        String,
-        Color {
-        case loadingGradient1 = "Other/loadingGradient1"
-        case loadingGradient2 = "Other/loadingGradient2"
-
-        enum Global:
-            String,
-            Color {
-            case gray98 = "Other/Global/gray98"
-            case gray400 = "Other/Global/gray400"
-            case gray800 = "Other/Global/gray800"
-            case yellow600 = "Other/Global/yellow600"
-        }
     }
 }

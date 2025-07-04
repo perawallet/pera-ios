@@ -31,16 +31,16 @@ struct DiscoverSearchListNotFoundViewTheme:
     init(_ family: LayoutFamily) {
         self.contentVerticalEdgeInsets = (8, 8)
         self.icon = [
-            .backgroundColor(Colors.Discover.helperGray.uiColor.withAlphaComponent(0.1)),
+            .backgroundColor(Colors.Text.gray.uiColor.withAlphaComponent(0.1)),
             .contentMode(.center),
-            .tintColor(Colors.Discover.textGrayLighter)
+            .tintColor(Colors.Text.grayLighter)
         ]
         self.iconSize = .init(width: 48, height: 48)
         self.iconCorner = 16
         self.spacingBetweenIconAndTitle = 20
         self.title = [
             .textAlignment(.center),
-            .textColor(Colors.Discover.textMain),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
     }
