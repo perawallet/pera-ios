@@ -251,7 +251,7 @@ extension AddressNameSetupViewController {
     private func setupAddressName() {
         nameInputView.endEditing()
 
-        analytics.track(.onboardWatchAccount(type: .create))
+        analytics.track(.nameAccount())
 
         switch mode {
         case .addBip39Wallet:

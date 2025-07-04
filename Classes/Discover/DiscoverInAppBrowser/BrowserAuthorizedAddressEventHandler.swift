@@ -26,9 +26,9 @@ public struct BrowserAuthorizedAddressEventHandler {
         self.sharedDataController = sharedDataController
     }
     
-    func returnAuthorizedAccounts(_ message: WKScriptMessage, in webView: WKWebView) {
+    func returnAuthorizedAccounts(_ message: WKScriptMessage, in webView: WKWebView, isAuthorizedAccountsOnly: Bool) {
         guard isAcceptableMessage(message),
-              let cardAccountsBase64 = makeEncodedAccountDetails() else {
+              let cardAccountsBase64 = makeEncodedAccountDetails(isAuthorizedAccountsOnly) else {
             return
         }
         
@@ -38,13 +38,30 @@ public struct BrowserAuthorizedAddressEventHandler {
 }
 
 private extension BrowserAuthorizedAddressEventHandler {
-    func makeEncodedAccountDetails() -> String? {
+    func makeEncodedAccountDetails(_ isAuthorizedAccountsOnly: Bool) -> String? {
         let sortedAccounts = sharedDataController.sortedAccounts(by: AccountDescendingTotalPortfolioValueAlgorithm(currency: sharedDataController.currency))
-        let authorizedAccounts = sortedAccounts.filter { $0.value.authorization.isAuthorized }
-        let accountsArray: [[String: String]] = authorizedAccounts.map {
-            return [$0.value.address: $0.value.name ?? ""]
+        let accounts = sortedAccounts.filter { account in
+            if isAuthorizedAccountsOnly {
+                return account.value.authorization.isAuthorized
+            }
+            
+            return true
         }
         
+        struct AccountItem: Codable {
+            let address: String
+            let name: String
+            let type: String
+        }
+        
+        let accountsArray: [AccountItem] = accounts.map { account in
+            return AccountItem(
+                address: account.value.address,
+                name: account.value.primaryDisplayName,
+                type: getAccountAuthValue(account.value)
+            )
+        }
+
         do {
             let jsonData = try JSONEncoder().encode(accountsArray)
             let accountsStringBase64 = jsonData.base64EncodedString()
@@ -64,5 +81,37 @@ private extension BrowserAuthorizedAddressEventHandler {
         }
         
         return true
+    }
+    
+    func getAccountAuthValue(_ account: Account) -> String {
+        if account.isHDAccount {
+            return "HdKey"
+        }
+        
+        if account.isWatchAccount {
+            return "NoAuth"
+        }
+        
+        if account.authorization.isRekeyedToNoAuthInLocal {
+            return "RekeyedNoAuth"
+        }
+        
+        if account.authorization.isRekeyedToNoAuthInLocal {
+            return "Rekeyed"
+        }
+        
+        if account.authorization.isLedger {
+            return "LedgerBle"
+        }
+        
+        if account.authorization.isStandard {
+            return "Algo25"
+        }
+        
+        if account.authorization.isNoAuth {
+            return "NoAuth"
+        }
+        
+        return ""
     }
 }
