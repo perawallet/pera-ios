@@ -130,8 +130,7 @@ extension RootViewController {
         let homeViewController = HomeViewController(
             swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
-                sharedDataController: appConfiguration.sharedDataController,
-                session: appConfiguration.session,
+                configuration: appConfiguration,
                 announcementDataController: announcementAPIDataController,
                 spotBannersDataController: spotBannersAPIDataController,
                 chartsDataController: chartsDataController,

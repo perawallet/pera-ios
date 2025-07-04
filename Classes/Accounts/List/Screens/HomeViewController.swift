@@ -262,7 +262,9 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
-        dataController.fetchInitialChartData(period: .oneWeek)
+        if configuration.featureFlagService.isEnabled(.portfolioChartsEnabled) {
+            dataController.fetchInitialChartData(period: .oneWeek)
+        }
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
