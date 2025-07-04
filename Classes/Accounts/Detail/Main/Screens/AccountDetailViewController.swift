@@ -163,7 +163,7 @@ final class AccountDetailViewController: PageContainer {
         super.customizePageBarAppearance()
 
         pageBar.customizeAppearance([
-            .backgroundColor(Colors.Helpers.heroBackground)
+            .backgroundColor(Colors.Defaults.background)
         ])
     }
 
