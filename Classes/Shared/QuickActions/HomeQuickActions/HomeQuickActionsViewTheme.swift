@@ -55,7 +55,7 @@ struct HomeQuickActionsViewTheme:
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-send-title")))
         ]
         self.buyAction = [
-            .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
+            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
         ]
     }

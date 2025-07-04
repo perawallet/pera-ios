@@ -19,18 +19,23 @@ import MacaroonUIKit
 
 struct WatchAccountPortfolioViewModel:
     PortfolioViewModel,
-    PairedViewModel,
     Hashable {
     private(set) var title: TextProvider?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+    private(set) var selectedPointDateValue: TextProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
     init(
-        _ portfolioItem: AccountPortfolioItem
+        _ portfolioItem: AccountPortfolioItem,
+        selectedPoint: ChartSelectedPointViewModel?
     ) {
-        bind(portfolioItem)
+        guard let selectedPoint else {
+            bind(portfolioItem)
+            return
+        }
+        bind(portfolioItem, selectedPoint: selectedPoint)
     }
 }
 
@@ -40,19 +45,19 @@ extension WatchAccountPortfolioViewModel {
     ) {
         self.currencyFormatter = portfolioItem.currencyFormatter
 
-        bindTitle(portfolioItem)
         bindPrimaryValue(portfolioItem)
         bindSecondaryValue(portfolioItem)
     }
-
-    mutating func bindTitle(
-        _ portfolioItem: AccountPortfolioItem
+    
+    mutating func bind(
+        _ portfolioItem: AccountPortfolioItem,
+        selectedPoint: ChartSelectedPointViewModel
     ) {
-        title = String(localized: "account-detail-portfolio-title")
-            .bodyRegular(
-                alignment: .center,
-                lineBreakMode: .byTruncatingTail
-            )
+        self.currencyFormatter = portfolioItem.currencyFormatter
+
+        bindPrimaryValue(portfolioItem, selectedPoint: selectedPoint)
+        bindSecondaryValue(portfolioItem, selectedPoint: selectedPoint)
+        bindSelectedPointDateValue(selectedPoint: selectedPoint)
     }
 
     mutating func bindPrimaryValue(
@@ -61,6 +66,22 @@ extension WatchAccountPortfolioViewModel {
         let text = format(
             portfolioValue: portfolioItem.portfolioValue,
             currencyValue: portfolioItem.currency.primaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindPrimaryValue(
+        _ portfolioItem: AccountPortfolioItem,
+        selectedPoint: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.primaryValue,
+            selectedPointValue: selectedPoint.primaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
@@ -80,6 +101,32 @@ extension WatchAccountPortfolioViewModel {
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSecondaryValue(
+        _ portfolioItem: AccountPortfolioItem,
+        selectedPoint: ChartSelectedPointViewModel
+    ) {
+        let text = format(
+            currencyValue: portfolioItem.currency.secondaryValue,
+            selectedPointValue: selectedPoint.secondaryValue,
+            isAmountHidden: portfolioItem.isAmountHidden,
+            addApproximatelyEqualChar: true,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = text.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSelectedPointDateValue(
+        selectedPoint: ChartSelectedPointViewModel
+    ) {
+        selectedPointDateValue = selectedPoint.dateValue.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

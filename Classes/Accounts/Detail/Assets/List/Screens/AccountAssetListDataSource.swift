@@ -50,6 +50,13 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 )
                 cell.bindData(item)
                 return cell
+            case .charts(let item):
+                let cell = collectionView.dequeue(
+                    AccountChartsCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
             case .assetManagement(let item):
                 let cell = collectionView.dequeue(
                     ManagementItemWithSecondaryActionCell.self,
@@ -142,10 +149,28 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             PendingCollectibleAssetListItemCell.self,
             AccountQuickActionsCell.self,
             WatchAccountQuickActionsCell.self,
-            NoContentCell.self
+            NoContentCell.self,
+            AccountChartsCell.self
         ].forEach {
             collectionView.register($0)
         }
+    }
+    
+    func reloadPortfolio(with viewModel: PortfolioViewModel) {
+        var snapshot = snapshot()
+        
+        if let accountViewModel = viewModel as? AccountPortfolioViewModel {
+            let newItem = AccountAssetsItem.portfolio(accountViewModel)
+            snapshot.replaceItem(matching: {
+                if case .portfolio = $0 { return true } else { return false }
+            }, with: newItem)
+        } else if let watchViewModel = viewModel as? WatchAccountPortfolioViewModel {
+            let newItem = AccountAssetsItem.watchPortfolio(watchViewModel)
+            snapshot.replaceItem(matching: {
+                if case .watchPortfolio = $0 { return true } else { return false }
+            }, with: newItem)
+        }
+        apply(snapshot, animatingDifferences: false)
     }
 }
 

@@ -43,6 +43,7 @@ extension RecordHomeScreenEvent {
         case tapAccounts
         case visitGovernance
         case notification
+        case tapChart
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -70,6 +71,8 @@ extension RecordHomeScreenEvent {
                 return .tapGovernanceBanner
             case .notification:
                 return .tapNotifictionInHome
+            case .tapChart:
+                return .tapChartInHome
             }
         }
     }

@@ -98,6 +98,8 @@ extension AccountAssetListLayout {
                 sizeForPortfolioItem: item,
                 atSection: indexPath.section
             )
+        case .charts:
+            return CGSize(width: collectionView.bounds.width, height: theme.chartViewHeight)
         case .watchPortfolio(let item):
             return listView(
                 collectionView,

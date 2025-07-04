@@ -30,6 +30,7 @@ extension SwiftDate {
 
 enum DateFormat {
     case fullNumeric
+    case fullNumericWithTimezone
     case fullNumericWithoutTimezone
     case shortNumeric(separator: String = "/")
     case shortNumericReversed(separator: String = "-")
@@ -43,6 +44,7 @@ extension DateFormat {
         switch self {
         case .fullNumeric: return "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         case .fullNumericWithoutTimezone: return "yyyy-MM-dd HH:mm:ss"
+        case .fullNumericWithTimezone: return "yyyy-MM-dd'T'HH:mm:ssZ"
         case .shortNumeric(let separator): return "MM\(separator)dd\(separator)yyyy"
         case .shortNumericReversed(let separator): return "yyyy\(separator)MM\(separator)dd"
         case .dateAndTime: return "dd/MM/yyyy, hh:mm:ss a"
@@ -65,5 +67,14 @@ extension Date {
 extension String {
     func toDate(_ format: DateFormat) -> Date? {
         return toDate(format.raw)?.date
+    }
+}
+
+extension DateFormatter {
+    static var chartDisplay: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "MMM d, yyyy hh:mm a"
+        return formatter
     }
 }
