@@ -886,7 +886,7 @@ final class Router:
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
                     account: accountHandle,
-                    sharedDataController: appConfiguration.sharedDataController,
+                    configuration: appConfiguration,
                     chartsDataController: chartsDataController
                 ),
                 swapDataStore: SwapDataLocalStore(),

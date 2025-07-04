@@ -152,7 +152,9 @@ final class AccountAssetListViewController:
         if !isViewFirstAppeared {
             reloadIfNeededForPendingAssetRequests()
         }
-        dataController.fetchInitialChartData(period: .oneWeek)
+        if configuration.featureFlagService.isEnabled(.accountsChartsEnabled) {
+            dataController.fetchInitialChartData(period: .oneWeek)
+        }
 
         analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
@@ -491,6 +493,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 item.onPointSelected = { [weak self] pointSelected in
                     guard let self else { return }
                     dataController.updatePortfolio(with: pointSelected)
+                    analytics.track(.recordAccountDetailScreen(type: .tapChart))
                 }
             default:
                 return

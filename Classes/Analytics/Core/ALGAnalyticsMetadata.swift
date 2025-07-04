@@ -76,4 +76,5 @@ enum ALGAnalyticsMetadataKey:
     case scriptMessageHandler = "script_message_handler"
     case scriptMessage = "script_message"
     case screenName = "screen"
+    case bannerName = "banner_name"
 }
