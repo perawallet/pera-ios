@@ -121,7 +121,7 @@ extension AlgorandSecureBackupFlowCoordinator {
     private func dismissScreen(from: UIViewController) {
         if launchTransition == .push {
             guard let navController = from.navigationController else {
-                from.dismiss(animated: true)
+                from.dismissScreen()
                 return
             }
             if let settingsVC = navController.viewControllers.first(where: { $0 === presentingScreen }) {
