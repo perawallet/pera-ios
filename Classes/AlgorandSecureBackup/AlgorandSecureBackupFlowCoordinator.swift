@@ -105,7 +105,7 @@ extension AlgorandSecureBackupFlowCoordinator {
                 self.dismissScreen(from: screen)
             }
         }
-        viewController.open(successScreen, by: .root)
+        viewController.open(successScreen, by: .push)
     }
 
     private func openErrorScreen(from viewController: UIViewController) {
@@ -120,7 +120,15 @@ extension AlgorandSecureBackupFlowCoordinator {
 
     private func dismissScreen(from: UIViewController) {
         if launchTransition == .push {
-            from.navigationController?.setViewControllers([presentingScreen], animated: true)
+            guard let navController = from.navigationController else {
+                from.dismiss(animated: true)
+                return
+            }
+            if let settingsVC = navController.viewControllers.first(where: { $0 === presentingScreen }) {
+                navController.popToViewController(settingsVC, animated: true)
+            } else {
+                navController.setViewControllers([presentingScreen], animated: true)
+            }
         } else {
             from.dismissScreen()
         }
