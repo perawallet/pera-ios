@@ -124,8 +124,8 @@ extension AlgorandSecureBackupFlowCoordinator {
                 from.dismissScreen()
                 return
             }
-            if let settingsVC = navController.viewControllers.first(where: { $0 === presentingScreen }) {
-                navController.popToViewController(settingsVC, animated: true)
+            if navController.viewControllers.contains(presentingScreen) {
+                navController.popToViewController(presentingScreen, animated: true)
             } else {
                 navController.setViewControllers([presentingScreen], animated: true)
             }
