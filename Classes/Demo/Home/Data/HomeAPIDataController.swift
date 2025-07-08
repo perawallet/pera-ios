@@ -30,6 +30,7 @@ final class HomeAPIDataController:
     private let spotBannersDataController: SpotBannersAPIDataController
     private let chartsDataController: ChartAPIDataController
     private let incomingASAsAPIDataController: IncomingASAsAPIDataController
+    private let featureFlagService: FeatureFlagServicing
 
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
@@ -50,19 +51,19 @@ final class HomeAPIDataController:
     private var cancellables = Set<AnyCancellable>()
     
     init(
-        sharedDataController: SharedDataController,
-        session: Session,
+        configuration: AppConfiguration,
         announcementDataController: AnnouncementAPIDataController,
         spotBannersDataController: SpotBannersAPIDataController,
         chartsDataController: ChartAPIDataController,
         incomingASAsAPIDataController: IncomingASAsAPIDataController
     ) {
-        self.sharedDataController = sharedDataController
-        self.session = session
+        self.sharedDataController = configuration.sharedDataController
+        self.session = configuration.session
         self.announcementDataController = announcementDataController
         self.spotBannersDataController = spotBannersDataController
         self.chartsDataController = chartsDataController
         self.incomingASAsAPIDataController = incomingASAsAPIDataController
+        self.featureFlagService = configuration.featureFlagService
         
         setupCallbacks()
     }
@@ -91,7 +92,9 @@ extension HomeAPIDataController {
         announcementDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
         setupSpotsBannersClosures()
-        setupChartDataClosures()
+        if featureFlagService.isEnabled(.portfolioChartsEnabled) {
+            setupChartDataClosures()
+        }
     }
     
     func reload() {
@@ -202,7 +205,7 @@ extension HomeAPIDataController {
     }
     
     private func setupChartDataClosures() {
-        chartsDataController.onHomeFetch = { [weak self] error, period, chartsData in
+        chartsDataController.onFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
                 chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
@@ -300,7 +303,10 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
             
-            if let chartViewData {
+            if
+                featureFlagService.isEnabled(.portfolioChartsEnabled),
+                let chartViewData
+            {
                 snapshot.appendItems(
                     [.portfolio(.charts(chartViewData))],
                     toSection: .portfolio

@@ -30,6 +30,9 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
 
+    private lazy var navigationScript = createNavigationScript()
+    private lazy var peraConnectScript = createPeraConnectScript()
+    
     var destination: DiscoverDestination {
         didSet { loadPeraURL() }
     }
@@ -78,6 +81,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
+        controller.addUserScript(navigationScript)
+        controller.addUserScript(peraConnectScript)
         return controller
     }
 
@@ -101,6 +106,11 @@ where ScriptMessage: InAppBrowserScriptMessage {
             handleDappDetailAction(message)
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
+        case .peraconnect:
+            handlePeraConnectAction(message)
+        case .requestAuthorizedAddresses:
+            let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
+            handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: false)
         }
     }
 }
@@ -157,6 +167,29 @@ extension DiscoverInAppBrowserScreen {
         }
         let script = "updateCurrency('\(newCurrency)')"
         webView.evaluateJavaScript(script)
+    }
+    
+    func createNavigationScript() -> WKUserScript {
+        let navigationScript = """
+!function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
+"""
+
+        return WKUserScript(
+            source: navigationScript,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false
+        )
+    }
+    
+    func createPeraConnectScript() -> WKUserScript {
+        let peraConnectScript = """
+function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
+"""
+        return WKUserScript(
+            source: peraConnectScript,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: false
+        )
     }
 }
 
@@ -261,6 +294,17 @@ extension DiscoverInAppBrowserScreen {
     }
 }
 
+extension DiscoverInAppBrowserScreen {
+    func handlePeraConnectAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let url = URL(string: jsonString) else { return }
+        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
+
+        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
+        launchController.receive(deeplinkWithSource: src)
+    }
+}
+
 extension UIUserInterfaceStyle {
     var peraRawValue: String {
         switch self {
@@ -275,8 +319,10 @@ extension UIUserInterfaceStyle {
 enum DiscoverInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
+    case requestAuthorizedAddresses = "getAuthorizedAddresses"
     case pushNewScreen
     case requestDeviceID = "getDeviceId"
     case pushDappViewerScreen
     case openSystemBrowser
+    case peraconnect
 }

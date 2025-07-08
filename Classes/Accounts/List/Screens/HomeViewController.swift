@@ -238,14 +238,11 @@ final class HomeViewController:
         }
     }
 
-    override func viewWillAppear(
-        _ animated: Bool
-    ) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         startAnimatingLoadingIfNeededWhenViewWillAppear()
-
         switchToHighlightedNavigationBarAppearance()
+        configureNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -262,7 +259,9 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
-        dataController.fetchInitialChartData(period: .oneWeek)
+        if configuration.featureFlagService.isEnabled(.portfolioChartsEnabled) {
+            dataController.fetchInitialChartData(period: .oneWeek)
+        }
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
@@ -659,6 +658,7 @@ extension HomeViewController {
         cell.onPointSelected = { [weak self] pointSelected in
             guard let self else { return }
             dataController.updatePortfolio(with: pointSelected)
+            analytics.track(.recordHomeScreen(type: .tapChart))
         }
     }
 
@@ -1391,11 +1391,13 @@ extension HomeViewController: CarouselBannerDelegate {
             guard let itemUrl = banner?.url else { return }
             triggerBannerCTA(itemUrl: itemUrl)
         }
+        analytics.track(.spotBannerPressed(type: .tapBanner, name: banner?.text ?? .unavailable))
     }
     
     func didTapCloseButton(in banner: CarouselBannerItemModel?) {
         guard let banner else { return }
         dataController.updateClose(for: banner)
+        analytics.track(.spotBannerPressed(type: .tapClose, name: banner.text))
     }
 }
 

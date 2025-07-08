@@ -99,7 +99,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 didReceive: message
             )
         case .requestAuthorizedAddresses:
-            returnAuthorizedAccounts(message)
+            let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
+            handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: true)
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
         case .closePeraCards:
@@ -112,12 +113,12 @@ where ScriptMessage: InAppBrowserScriptMessage {
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func startObservingNotifications() {
+private extension CardsInAppBrowserScreen {
+    func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
     }
 
-    private func startObservingAppLifeCycleNotifications() {
+    func startObservingAppLifeCycleNotifications() {
         observeWhenApplicationDidBecomeActive {
             [weak self] _ in
             guard let self else { return }
@@ -126,8 +127,8 @@ extension CardsInAppBrowserScreen {
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func generatePeraURL() -> URL? {
+private extension CardsInAppBrowserScreen {
+    func generatePeraURL() -> URL? {
         CardsURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
@@ -136,22 +137,22 @@ extension CardsInAppBrowserScreen {
         )
     }
 
-    private func loadCardsURL() {
+    func loadCardsURL() {
         let generatedUrl = generatePeraURL()
         load(url: generatedUrl)
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func updateTheme(_ style: UIUserInterfaceStyle) {
+private extension CardsInAppBrowserScreen {
+    func updateTheme(_ style: UIUserInterfaceStyle) {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func createNavigationScript() -> WKUserScript {
+private extension CardsInAppBrowserScreen {
+    func createNavigationScript() -> WKUserScript {
         let navigationScript = """
 !function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
 """
@@ -163,7 +164,7 @@ extension CardsInAppBrowserScreen {
         )
     }
 
-    private func createPeraConnectScript() -> WKUserScript {
+    func createPeraConnectScript() -> WKUserScript {
         let peraConnectScript = """
 function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverExternalInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
 """
@@ -175,33 +176,8 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
     }
 }
 
-
-extension CardsInAppBrowserScreen {
-
-    private func returnAuthorizedAccounts(_ message: WKScriptMessage) {
-        if !isAcceptableMessage(message) { return }
-        guard let cardAccountsBase64 = makeEncodedAccountDetails() else { return }
-        let scriptString = "var message = '\(cardAccountsBase64)'; handleMessage(message);"
-        self.webView.evaluateJavaScript(scriptString)
-    }
-    
-    private func makeEncodedAccountDetails() -> String? {
-        let sortedAccounts = sharedDataController.sortedAccounts(by: AccountDescendingTotalPortfolioValueAlgorithm(currency: sharedDataController.currency))
-        let authorizedAccounts = sortedAccounts.filter { $0.value.authorization.isAuthorized }
-        let accountsArray: [[String: String]] = authorizedAccounts.compactMap {
-            return [$0.value.address: $0.value.name ?? ""]
-        }
-        do {
-            let jsonData = try JSONEncoder().encode(accountsArray)
-            let accountsStringBase64 = jsonData.base64EncodedString()
-            let cardsAccountsModel = try? CardsAccounts(accounts: accountsStringBase64).encodedString()
-            return cardsAccountsModel
-        } catch {
-            return nil
-        }
-    }
-
-    private func isAcceptableMessage(_ message: WKScriptMessage) -> Bool {
+private extension CardsInAppBrowserScreen {
+    func isAcceptableMessage(_ message: WKScriptMessage) -> Bool {
         let frameInfo = message.frameInfo
 
         if !frameInfo.isMainFrame { return false }
@@ -211,8 +187,8 @@ extension CardsInAppBrowserScreen {
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
+private extension CardsInAppBrowserScreen {
+    func handleOpenSystemBrowser(_ message: WKScriptMessage) {
         if !isAcceptableMessage(message) { return }
       
         guard let jsonString = message.body as? String else { return }
@@ -223,8 +199,8 @@ extension CardsInAppBrowserScreen {
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func handlePeraConnectAction(_ message: WKScriptMessage) {
+private extension CardsInAppBrowserScreen {
+    func handlePeraConnectAction(_ message: WKScriptMessage) {
         guard let jsonString = message.body as? String else { return }
         guard let url = URL(string: jsonString) else { return }
         guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
@@ -234,8 +210,8 @@ extension CardsInAppBrowserScreen {
     }
 }
 
-extension CardsInAppBrowserScreen {
-    private func handleDeviceIDRequest(_ message: WKScriptMessage) {
+private extension CardsInAppBrowserScreen {
+    func handleDeviceIDRequest(_ message: WKScriptMessage) {
         if !isAcceptableMessage(message) { return }
         guard let deviceIDDetails = makeDeviceIDDetails() else { return }
 
@@ -243,7 +219,7 @@ extension CardsInAppBrowserScreen {
         self.webView.evaluateJavaScript(scriptString)
     }
 
-    private func makeDeviceIDDetails() -> String? {
+    func makeDeviceIDDetails() -> String? {
         guard let api else { return nil }
         guard let deviceID = session?.authenticatedUser?.getDeviceId(on: api.network) else { return nil }
         return try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()

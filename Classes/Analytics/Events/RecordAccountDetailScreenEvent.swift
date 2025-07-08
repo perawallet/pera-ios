@@ -41,8 +41,9 @@ extension RecordAccountDetailScreenEvent {
         case tapTransactionDownload
         case addAssets
         case manageAssets
-        case buyAlgo
-        case swap
+        case tapBuyAlgo
+        case tapSwap
+        case tapChart
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -66,10 +67,12 @@ extension RecordAccountDetailScreenEvent {
                 return .addAsset
             case .manageAssets:
                 return .manageAsset
-            case .buyAlgo:
+            case .tapBuyAlgo:
                 return .tapBuyAlgoInAccountDetail
-            case .swap:
+            case .tapSwap:
                 return .tapSwapInAccountDetail
+            case .tapChart:
+                return .tapChartInAccountDetail
             }
         }
     }

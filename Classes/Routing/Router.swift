@@ -456,10 +456,11 @@ final class Router:
                 case let path where path.contains("token-detail") || path.contains("news"):
                     rootViewController.mainContainer.launchDiscover(with: .home)
                     let visibleScreen = findVisibleScreen(over: rootViewController)
-                    guard let url = DiscoverURLGenerator.generateURL(path: path,
-                                                                     theme: visibleScreen.traitCollection.userInterfaceStyle,
-                                                                     session: nil,
-                                                                     enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled)
+                    guard let url = DiscoverURLGenerator.generateURL(
+                        path: path,
+                        theme: visibleScreen.traitCollection.userInterfaceStyle,
+                        session: nil,
+                        enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled)
                     ) else {
                         return
                     }
@@ -685,8 +686,7 @@ final class Router:
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
-                api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController,
+                appConfiguration: appConfiguration,
                 chartsDataController: chartsDataController,
                 configuration: screenConfiguration
             )
@@ -887,7 +887,8 @@ final class Router:
                 accountHandle: accountHandle,
                 dataController: AccountDetailAPIDataController(
                     account: accountHandle,
-                    sharedDataController: appConfiguration.sharedDataController
+                    configuration: appConfiguration,
+                    chartsDataController: chartsDataController
                 ),
                 swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
@@ -2265,6 +2266,10 @@ final class Router:
             let screen = InviteFriendsScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
+        case let .rekeyTransactionOverlay(variant, onPrimaryAction):
+            let screen = RekeySupportOverlayViewController(configuration: configuration, variant: variant)
+            screen.onPrimaryButtonTap = onPrimaryAction
+            viewController = screen
         }
         return viewController as? T
     }
@@ -2677,13 +2682,18 @@ extension Router {
     
     private func isAutoConnectionEnabled(draft: WCSessionConnectionDraft) -> Bool {
         let characterSet: CharacterSet = CharacterSet(charactersIn: "/")
-        let dappURL = draft.dappURL?.absoluteString
+        guard let dappURL = draft.dappURL?.absoluteString else {
+            return false
+        }
         let cardsBaseUrl = URL(
             string: Environment.current.cardsBaseUrl(
                 network: appConfiguration.api.network
             )
         )?.absoluteString
-        return dappURL?.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet)
+        let discoverBaseUrl = URL(string: Environment.current.discoverBaseUrl)?.absoluteString
+        return
+            dappURL.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet) ||
+            dappURL.trimmingCharacters(in: characterSet) == discoverBaseUrl?.trimmingCharacters(in: characterSet)
     }
     
     private func handleWalletConnectV1ConnectEvent(

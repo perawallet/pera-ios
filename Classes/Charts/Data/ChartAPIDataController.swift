@@ -18,12 +18,12 @@ import Foundation
 
 enum ChartDataScreen {
     case home
-    case account
+    case account(address: String)
     case asset(address: String, assetId: String)
 }
 
 final class ChartAPIDataController {
-    var onHomeFetch: ((String?, ChartDataPeriod, [HomeChartDataDTO]) -> Void)?
+    var onFetch: ((String?, ChartDataPeriod, [ChartDataDTO]) -> Void)?
     var onAssetFetch: ((String?, ChartDataPeriod, [AssetChartDataDTO]) -> Void)?
     
     private let api: ALGAPI
@@ -54,9 +54,9 @@ final class ChartAPIDataController {
             guard let self else { return }
             switch response {
             case .success(let values):
-                onHomeFetch?(nil, period, values.results.sorted(by: { $0.round < $1.round }))
+                onFetch?(nil, period, values.results.sorted(by: { $0.round < $1.round }))
             case .failure(let apiError, _):
-                onHomeFetch?(apiError.localizedDescription, period, [])
+                onFetch?(apiError.localizedDescription, period, [])
             }
         }
     }

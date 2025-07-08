@@ -37,7 +37,7 @@
       }
     },
     "NSBluetoothAlwaysUsageDescription" : {
-      "extractionState" : "manual",
+      "comment" : "Privacy - Bluetooth Always Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -48,7 +48,7 @@
       }
     },
     "NSBluetoothPeripheralUsageDescription" : {
-      "extractionState" : "manual",
+      "comment" : "Privacy - Bluetooth Peripheral Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -59,7 +59,7 @@
       }
     },
     "NSCameraUsageDescription" : {
-      "extractionState" : "manual",
+      "comment" : "Privacy - Camera Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -70,7 +70,7 @@
       }
     },
     "NSFaceIDUsageDescription" : {
-      "extractionState" : "manual",
+      "comment" : "Privacy - Face ID Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -81,7 +81,7 @@
       }
     },
     "NSPhotoLibraryAddUsageDescription" : {
-      "extractionState" : "manual",
+      "comment" : "Privacy - Photo Library Additions Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -92,7 +92,6 @@
       }
     },
     "QuickActionScanTitle" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

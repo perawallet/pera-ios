@@ -35,6 +35,7 @@ final class ASADetailScreenAPIDataController:
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let chartsDataController: ChartAPIDataController
+    private let featureFlagService: FeatureFlagServicing
     
     private var chartViewData: ChartViewData?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
@@ -42,16 +43,16 @@ final class ASADetailScreenAPIDataController:
     init(
         account: Account,
         asset: Asset,
-        api: ALGAPI,
-        sharedDataController: SharedDataController,
+        appConfiguration: AppConfiguration,
         chartsDataController: ChartAPIDataController,
         configuration: ASADetailScreenConfiguration?
     ) {
         self.account = account
         self.asset = asset
-        self.api = api
-        self.sharedDataController = sharedDataController
+        self.api = appConfiguration.api
+        self.sharedDataController = appConfiguration.sharedDataController
         self.chartsDataController = chartsDataController
+        self.featureFlagService = appConfiguration.featureFlagService
 
         lazy var defaultConfiguration = ASADetailScreenConfiguration(
             shouldDisplayAccountActionsBarButtonItem: true,
@@ -67,7 +68,9 @@ final class ASADetailScreenAPIDataController:
 
 extension ASADetailScreenAPIDataController {
     func loadData() {
-        setupChartDataClosures()
+        if featureFlagService.isEnabled(.assetsChartsEnabled) {
+            setupChartDataClosures()
+        }
         
         if asset.isAlgo {
             didLoadData()

@@ -55,7 +55,7 @@ extension ALGAPI {
         address: String,
         period: ChartDataPeriod,
         ordering: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<HomeChartDataResultDTO>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
             .base(.mobileV1(network))
@@ -73,7 +73,7 @@ extension ALGAPI {
         addresses: [String],
         period: ChartDataPeriod,
         ordering: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<HomeChartDataResultDTO>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
             .base(.mobileV1(network))

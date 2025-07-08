@@ -129,6 +129,8 @@ final class AccountAssetListViewController:
                         )
                     }
                 }
+            case .didSelectChartPoint(let viewModel):
+                listDataSource.reloadPortfolio(with: viewModel)
             }
         }
         dataController.load(query: query)
@@ -149,6 +151,9 @@ final class AccountAssetListViewController:
 
         if !isViewFirstAppeared {
             reloadIfNeededForPendingAssetRequests()
+        }
+        if configuration.featureFlagService.isEnabled(.accountsChartsEnabled) {
+            dataController.fetchInitialChartData(period: .oneWeek)
         }
 
         analytics.track(.recordAccountDetailScreen(type: .tapAssets))
@@ -204,7 +209,7 @@ final class AccountAssetListViewController:
     private func handleSwipeAction(indexPath: IndexPath) -> SwipeMenuConfiguration? {
         let account = dataController.account.value
         guard let asset = getAsset(at: indexPath), optOutAssetCoordinator.isAssetOptOutable(asset: asset, account: account) else { return nil }
-        return SwipeMenuConfiguration(icon: UIImage(named: "Swipe Actions/Image"), backgroundColor: Colors.ASACellBackground.optOut.uiColor, onAction: { [weak self] in
+        return SwipeMenuConfiguration(icon: UIImage(named: "Swipe Actions/Image"), backgroundColor: Colors.Alert.negative.uiColor, onAction: { [weak self] in
             self?.optOutAssetCoordinator.optOut(asset: asset, account: account)
         })
     }
@@ -471,6 +476,27 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 }
             default:
                 break
+            }
+        case .charts:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+            switch itemIdentifier {
+            case .charts:
+                guard let item = cell as? AccountChartsCell else {
+                    return
+                }
+                item.onPeriodChange = { [weak self] newPeriodSelected in
+                    guard let self else { return }
+                    dataController.updateChartData(period: newPeriodSelected)
+                }
+                item.onPointSelected = { [weak self] pointSelected in
+                    guard let self else { return }
+                    dataController.updatePortfolio(with: pointSelected)
+                    analytics.track(.recordAccountDetailScreen(type: .tapChart))
+                }
+            default:
+                return
             }
         case .assets:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {

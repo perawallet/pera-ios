@@ -44,11 +44,14 @@ enum ALGAnalyticsEventName:
     case changeNotificationFilter
     case completeTransaction
     case createAccountInHomeScreen
+    case createNewWallet
     case discoverSearch
     case discoverAssetBuy
     case discoverAssetSell
     case discoverDappDetail
+    case importAccount
     case manageAsset
+    case nameAccount
     case onboardCreateAccountNew
     case onboardCreateAccountRecoverAlgo25
     case onboardCreateAccountRecoverOneKey
@@ -105,6 +108,7 @@ enum ALGAnalyticsEventName:
     case tapBuyAlgoInMoonPay
     case tapBuyAlgoInMeld
     case tapBuyAlgoTab
+    case tapChartInHome
     case tapCollectiblesInAccountDetail
     case tapConfirmSwap
     case tapDownloadTransactionInHistory
@@ -121,8 +125,11 @@ enum ALGAnalyticsEventName:
     case tapSendInHome
     case tapSendTab
     case tapSortInHome
+    case tapSpotBanner
+    case tapSpotBannerCloseButton
     case tapStakeInHome
     case tapStakeInQuickAction
+    case tapChartInAccountDetail
     case tapSwapInAccountDetail
     case tapSwapInAlgoDetail
     case tapSwapInHome
@@ -139,6 +146,16 @@ enum ALGAnalyticsEventName:
     case wcTransactionRequestReceived
     case wcTransactionRequestSDKError
     case wcTransactionRequestValidated
+    case tapQRInMenu
+    case tapCreateCardInMenu
+    case tapGoToCardsInMenu
+    case tapNftsInMenu
+    case tapTransferInMenu
+    case tapBuyAlgoInMenu
+    case tapReceiveInMenu
+    case tapInviteFriendsInMenu
+    case tapCloseInviteFriendsInMenu
+    case tapShareInviteFriendsInMenu
 }
 
 extension ALGAnalyticsEventName {
@@ -150,7 +167,7 @@ extension ALGAnalyticsEventName {
         case .tapAssetsInAccountDetail: rawName = "accountscr_assets_tap"
         case .tapCollectiblesInAccountDetail: rawName = "accountscr_collectibles_tap"
         case .tapHistoryInAccountDetail: rawName = "accountscr_history_tap"
-        case .tapBuyAlgoInAccountDetail: rawName = "accountscr_tapmenu_algo_buy_tap"
+        case .tapBuyAlgoInAccountDetail: rawName = "acccountscr_buysell_click"
         case .tapSwapInAccountDetail: rawName = "accountscr_swap_click"
         case .tapAssetInboxInAccountDetail: rawName = "accountscr_tapmenu_asset_inbox_tap"
         case .tapSendInAccountDetail: rawName = "accountscr_tapmenu_send_tap"
@@ -172,12 +189,13 @@ extension ALGAnalyticsEventName {
         case .tapDownloadTransactionInHistory: rawName = "historyscr_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
         case .createAccountInHomeScreen: rawName = "homescr_account_add"
-        case .tapBuyAlgoInHome: rawName = "homescr_algo_buy_tap"
+        case .tapBuyAlgoInHome: rawName = "homescr_buysell_click"
         case .tapNotifictionInHome: rawName = "homescr_notification_tap"
-        case .tapSwapInHome: rawName = "homescr_swap_tap"
+        case .tapSwapInHome: rawName = "homescr_swap_click"
         case .tapSortInHome: rawName = "homescr_sort_tap"
-        case .tapStakeInHome: rawName = "homescr_stake_tap"
-        case .tapSendInHome: rawName = "homescr_send_tap"
+        case .tapStakeInHome: rawName = "homescr_stake_click"
+        case .tapSendInHome: rawName = "homescr_send_click"
+        case .tapChartInHome: rawName = "homescr_chart_tap"
         case .tapAssetInboxInHome: rawName = "homescr_asset_inbox_tap"
         case .tapQRInHome: rawName = "homescr_qr_scan"
         case .qrConnectedInHome: rawName = "homescr_qr_scan_connected"
@@ -186,6 +204,9 @@ extension ALGAnalyticsEventName {
         case .tapBuyAlgoInMeld: rawName = "meldscr_algo_buy_tap"
         case .tapBuyAlgoInMoonPay: rawName = "moonpayscr_algo_buy_tap"
         case .buyAlgoFromMoonPayCompleted: rawName = "moonpaycom_algo_buy_completed"
+        case .createNewWallet: rawName = "new_onb_welcome_create_wallet"
+        case .importAccount: rawName = "new_onb_welcome_import_wallet"
+        case .nameAccount: rawName = "new_onb_welcome_name_wallet"
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .onboardCreateAccountNew: rawName = "onb_createacc_recover"
@@ -252,6 +273,19 @@ extension ALGAnalyticsEventName {
         case .wcTransactionRequestValidated: rawName = "wc_transaction_request_Validated"
         case .buyCryptoMeldSelected: rawName = "meldscr_algo_select_wallet_tap"
         case .buyCryptoBidaliSelected: rawName = "bidscr_algo_sell_tap"
+        case .tapSpotBanner: rawName = "homescr_banner_click"
+        case .tapSpotBannerCloseButton: rawName = "homescr_banner_close_click"
+        case .tapChartInAccountDetail: rawName = "accountscr_chart_tap"
+        case .tapQRInMenu: rawName = "menuscr_qr_scan"
+        case .tapCreateCardInMenu: rawName = "menuscr_create_card_tap"
+        case .tapGoToCardsInMenu: rawName = "menuscr_cards_tap"
+        case .tapNftsInMenu: rawName = "menuscr_nfts_tap"
+        case .tapTransferInMenu: rawName = "menuscr_transfer_tap"
+        case .tapBuyAlgoInMenu: rawName = "menuscr_buyalgo_tap"
+        case .tapReceiveInMenu: rawName = "menuscr_receive_tap"
+        case .tapInviteFriendsInMenu: rawName = "menuscr_invite_friends_tap"
+        case .tapCloseInviteFriendsInMenu: rawName = "menuscr_invite_close_tap"
+        case .tapShareInviteFriendsInMenu: rawName = "menuscr_invite_share_tap"
         }
 
         let isTestnet = UIApplication.shared.appConfiguration?.api.isTestNet ?? false
