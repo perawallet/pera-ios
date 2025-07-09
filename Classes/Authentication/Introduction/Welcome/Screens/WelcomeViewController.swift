@@ -98,12 +98,13 @@ final class WelcomeViewController: BaseViewController {
 
 extension WelcomeViewController: WelcomeViewDelegate {
     func welcomeViewDidSelectCreateWallet(_ welcomeView: WelcomeView) {
+        analytics.track(.createNewWallet())
         guard let account = createAccount() else { return }
         navigateToSetupAddressNameScreen(account)
     }
     
     func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
-        analytics.track(.onboardWelcomeScreen(type: .recover))
+        analytics.track(.importAccount())
         open(.recoverAccount(flow: flow), by: .push)
     }
 

@@ -119,7 +119,7 @@ extension AccountQuickActionsView {
         addSubview(contentBackgroundView)
         contentBackgroundView.addSubview(contentView)
         
-        contentBackgroundView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+        contentBackgroundView.backgroundColor = Colors.Defaults.background.uiColor
         
         contentView.distribution = .fillEqually
         contentView.alignment = .top

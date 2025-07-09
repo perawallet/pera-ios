@@ -42,13 +42,22 @@ final class AccountAssetListAPIDataController:
     private var cancellables = Set<AnyCancellable>()
 
     private let sharedDataController: SharedDataController
+    private let chartsDataController: ChartAPIDataController
+    private let featureFlagService: FeatureFlagServicing
+    
+    private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
+    private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
+    private var portfolioItem: AccountPortfolioItem?
 
     init(
         account: AccountHandle,
-        sharedDataController: SharedDataController
+        configuration: AppConfiguration,
+        chartsDataController: ChartAPIDataController
     ) {
         self.account = account
-        self.sharedDataController = sharedDataController
+        self.sharedDataController = configuration.sharedDataController
+        self.chartsDataController = chartsDataController
+        self.featureFlagService = configuration.featureFlagService
         setupCallbacks()
     }
     
@@ -67,6 +76,9 @@ final class AccountAssetListAPIDataController:
 
 extension AccountAssetListAPIDataController {
     func load(query: AccountAssetListQuery?) {
+        if featureFlagService.isEnabled(.accountsChartsEnabled) {
+            setupChartDataClosures()
+        }
         nextQuery = query
 
         if canDeliverUpdatesForAssets {
@@ -181,6 +193,61 @@ extension AccountAssetListAPIDataController {
     private func cancelOngoingLoading() {
         asyncLoadingQueue.cancel()
     }
+    
+    func fetchInitialChartData(period: ChartDataPeriod) {
+        chartDataCache.removeAll()
+        chartsDataController.loadData(screen: .account(address: account.value.address), period: period)
+    }
+    
+    func updateChartData(period: ChartDataPeriod) {
+        guard let viewModel = chartDataCache[period] else {
+            chartsDataController.loadData(screen: .account(address: account.value.address), period: period)
+            return
+        }
+        chartViewData = viewModel
+    }
+    
+    func updatePortfolio(with selectedPoint: ChartDataPoint?) {
+        guard let portfolioItem else { return }
+        guard
+            let point = selectedPoint,
+            let date = point.timestamp.toDate(.fullNumericWithTimezone)
+        else {
+            publish(event: .didSelectChartPoint(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil)))
+            return
+        }
+        
+        let dateValue = DateFormatter.chartDisplay.string(from: date)
+
+        let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
+        
+        if account.value.authorization.isWatch {
+            publish(event: .didSelectChartPoint(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))
+        } else {
+            publish(event: .didSelectChartPoint(AccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))
+        }
+        
+
+    }
+    
+    private func setupChartDataClosures() {
+        chartsDataController.onFetch = { [weak self] error, period, chartsData in
+            guard let self else { return }
+            guard error == nil else {
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                return
+            }
+            let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
+                guard
+                    let primaryValue = Double(item.algoValue),
+                    let secondaryValue = Double(item.usdValue)
+                else { return nil }
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, timestamp: item.datetime)
+            }
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            chartDataCache[period] = chartViewData
+        }
+    }
 }
 
 extension AccountAssetListAPIDataController {
@@ -241,6 +308,9 @@ extension AccountAssetListAPIDataController {
     ) -> Updates {
         var snapshot = Snapshot()
         appendSectionsForPortfolio(into: &snapshot)
+        if featureFlagService.isEnabled(.accountsChartsEnabled) {
+            appendSectionsForCharts(into: &snapshot)
+        }
         appendSectionsIfNeededForQuickActions(into: &snapshot)
         appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssets(
@@ -269,6 +339,14 @@ extension AccountAssetListAPIDataController {
         snapshot.appendItems(
             items,
             toSection: .portfolio
+        )
+    }
+    
+    private func appendSectionsForCharts(into snapshot: inout Snapshot) {
+        snapshot.appendSections([ .charts ])
+        snapshot.appendItems(
+            [.charts(chartViewData)],
+            toSection: .charts
         )
     }
 
@@ -351,7 +429,8 @@ extension AccountAssetListAPIDataController {
             isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
             
         )
-        let viewModel = WatchAccountPortfolioViewModel(portfolio)
+        self.portfolioItem = portfolio
+        let viewModel = WatchAccountPortfolioViewModel(portfolio, selectedPoint: nil)
         return [ .watchPortfolio(viewModel) ]
     }
 
@@ -370,7 +449,8 @@ extension AccountAssetListAPIDataController {
             minimumBalance: calculatedMinimumBalance,
             isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
         )
-        let viewModel = AccountPortfolioViewModel(portfolio)
+        self.portfolioItem = portfolio
+        let viewModel = AccountPortfolioViewModel(portfolio, selectedPoint: nil)
         return [ .portfolio(viewModel) ]
     }
 

@@ -167,6 +167,7 @@ extension MenuViewController {
             guard let self else { return }
             
             self.scanQRFlowCoordinator.launch()
+            analytics.track(.recordMenuScreen(type: .tapQRScan))
         }
         
         let settingsBarButtonItem = ALGBarButtonItem(kind: .settings) { [weak self] in
@@ -178,6 +179,7 @@ extension MenuViewController {
                 .settings,
                 by: .push
             )
+            analytics.track(.recordMenuScreen(type: .tapSettings))
         }
 
         rightBarButtonItems = [settingsBarButtonItem, qrScannerBarButtonItem]
@@ -211,14 +213,18 @@ extension MenuViewController: UICollectionViewDelegate {
                 print("cards pressed")
             case .nfts:
                 open(.collectibleList, by: .push)
+                analytics.track(.recordMenuScreen(type: .tapNfts))
             case .transfer:
                 fatalError("not implemented, shouldn't enter here")
             case .buyAlgo:
                 openBuySellOptions()
+                analytics.track(.recordMenuScreen(type: .tapBuyAlgo))
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
+                analytics.track(.recordMenuScreen(type: .tapReceive))
             case .inviteFriends:
                 openInviteFriends()
+                analytics.track(.recordMenuScreen(type: .tapInviteFriends))
             }
             return
         }
@@ -257,8 +263,21 @@ extension MenuViewController: UICollectionViewDataSource {
 }
 
 extension MenuViewController: MenuListCardViewCellDelegate {
-    func didPressActionButton(in cell: MenuListCardViewCell) {
+    func didPressActionButton(in cell: MenuListCardViewCell, with option: MenuOption) {
         cardsFlowCoordinator.launch()
+        switch option {
+        case .cards(state: let cardState):
+            switch cardState {
+            case .inactive:
+                analytics.track(.recordMenuScreen(type: .tapCreateCard))
+            case .active:
+                analytics.track(.recordMenuScreen(type: .tapGoToCards))
+            default:
+                break
+            }
+        default:
+            assertionFailure("Shouldn't enter here")
+        }
     }
 }
 
@@ -289,8 +308,6 @@ extension MenuViewController {
     }
 
     private func openBuyWithMeld() {
-        analytics.track(.recordHomeScreen(type: .buyAlgo))
-
         meldFlowCoordinator.launch()
     }
     
@@ -305,12 +322,17 @@ extension MenuViewController {
             [unowned self] event in
             switch event {
             case .close:
-                self.dismiss(animated: true)
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    analytics.track(.recordMenuScreen(type: .tapCloseInviteFriends))
+                }
             case .share:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openShare()
+                    openShare()
+                    analytics.track(.recordMenuScreen(type: .tapShareInviteFriends))
                 }
             }
         }

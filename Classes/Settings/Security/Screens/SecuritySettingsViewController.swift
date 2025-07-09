@@ -18,13 +18,23 @@
 import UIKit
 
 final class SecuritySettingsViewController: BaseViewController {
+    
+    private let rekeySupportFooterText = String(localized: "security-settings-section-footer")
+    
     private lazy var theme = Theme()
     private lazy var securitySettingsView = SecuritySettingsView()
     
-    private lazy var settings: [[SecuritySettings]] = [[.pinCodeActivation]]
-    private lazy var pinActiveSettings: [SecuritySettings] = [.pinCodeChange, .localAuthentication]
-
+    private var settings: [[SecuritySettings]] = [[.pinCodeActivation, .rekeySupport]]
+    private var pinActiveSettings: [SecuritySettings] = [.pinCodeChange, .localAuthentication]
+    private var sectionHeaderTitles: [Int: String] = [:]
+    private var sectionFooterTitles: [Int: String] = [:]
+    
     private lazy var localAuthenticator = LocalAuthenticator(session: session!)
+    
+    private var isRekeySupported: Bool {
+        get { PeraUserDefaults.isRekeySupported ?? false }
+        set { PeraUserDefaults.isRekeySupported = newValue }
+    }
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -80,30 +90,33 @@ extension SecuritySettingsViewController {
     }
     
     private func createSettingsWithPreferences() {
-        settings = [[.pinCodeActivation], [.pinCodeChange, .localAuthentication]]
+        settings = [[.pinCodeActivation, .rekeySupport], [.pinCodeChange, .localAuthentication]]
+        sectionHeaderTitles = [1 : String(localized: "security-settings-section-header")]
+        sectionFooterTitles = [0 : rekeySupportFooterText]
         securitySettingsView.collectionView.reloadData()
     }
     
     private func createSettingsWithoutPreferences() {
-        settings = [[.pinCodeActivation]]
+        settings = [[.pinCodeActivation, .rekeySupport]]
+        sectionHeaderTitles = [:]
+        sectionFooterTitles = [0 : rekeySupportFooterText]
         securitySettingsView.collectionView.reloadData()
     }
 }
 
 extension SecuritySettingsViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(theme.cellSize)
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        if section == 1 {
-            return CGSize(theme.headerSize)
-        }
-        return .zero
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        sectionHeaderTitles.keys.contains(section) ? CGSize(theme.headerSize) : .zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let footerHeight = rekeySupportFooterText.height(withConstrained: collectionView.bounds.width, font: SecuritySettingsFooterView.usedFont)
+        return sectionFooterTitles.keys.contains(section) ? CGSize(width: collectionView.bounds.width, height: footerHeight) : .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -131,42 +144,53 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let section = settings[safe: indexPath.section], let setting = section[safe: indexPath.item] {
-            switch setting {
-            case .pinCodeActivation:
-                let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
-                cell.delegate = self
-                let hasPassword = session?.hasPassword() ?? false
-                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasPassword))
-                return cell
-            case .pinCodeChange:
-                let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-                cell.bindData(SettingsDetailViewModel(settingsItem: setting))
-                return cell
-            case .localAuthentication:
-                let hasBiometricAuthentication = localAuthenticator.hasAuthentication()
-                let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
-                cell.delegate = self
-                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasBiometricAuthentication))
-                return cell
-            }
+        
+        guard let section = settings[safe: indexPath.section], let setting = section[safe: indexPath.item] else {
+            fatalError("Index path is out of bounds")
         }
         
-        fatalError("Index path is out of bounds")
+        switch setting {
+        case .pinCodeActivation:
+            let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
+            cell.delegate = self
+            let hasPassword = session?.hasPassword() ?? false
+            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasPassword))
+            return cell
+        case .pinCodeChange:
+            let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
+            cell.bindData(SettingsDetailViewModel(settingsItem: setting))
+            return cell
+        case .localAuthentication:
+            let hasBiometricAuthentication = localAuthenticator.hasAuthentication()
+            let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
+            cell.delegate = self
+            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasBiometricAuthentication))
+            return cell
+        case .rekeySupport:
+            let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
+            cell.delegate = self
+            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isRekeySupported))
+            return cell
+        }
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let headerView = collectionView.dequeueHeader(SingleGrayTitleHeaderSuplementaryView.self, at: indexPath)
-            headerView.bindData(SingleGrayTitleHeaderViewModel(String(localized: "security-settings-section")))
-            return headerView
-        }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        fatalError("Unexpected element kind")
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let title = sectionHeaderTitles[indexPath.section] else { fatalError("No title") }
+            let headerView = collectionView.dequeueHeader(SingleGrayTitleHeaderSuplementaryView.self, at: indexPath)
+            headerView.bindData(SingleGrayTitleHeaderViewModel(title))
+            headerView.contextView.topPadding = 32.0
+            return headerView
+        case UICollectionView.elementKindSectionFooter:
+            guard let title = sectionFooterTitles[indexPath.section] else { fatalError("No title") }
+            let footerView = collectionView.dequeueFooter(SecuritySettingsFooterView.self, at: indexPath)
+            footerView.title = title
+            return footerView
+        default:
+            fatalError("Unexpected element kind")
+        }
     }
 }
 
@@ -212,8 +236,9 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
                 presentDisabledLocalAuthenticationAlert()
                 settingsToggleCell.contextView.setToggleOn(false, animated: true)
             }
-
-        default:
+        case .rekeySupport:
+            isRekeySupported = value
+        case .pinCodeChange:
             return
         }
     }

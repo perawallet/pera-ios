@@ -27,7 +27,7 @@ extension SecuritySettingsViewController {
         init(_ family: LayoutFamily) {
             self.backgroundColor = Colors.Defaults.background
             self.cellSize = (UIScreen.main.bounds.width, 64.0)
-            self.headerSize = (UIScreen.main.bounds.width, 28.0)
+            self.headerSize = (UIScreen.main.bounds.width, 60.0)
         }
     }
 }

@@ -24,7 +24,6 @@ struct AccountPortfolioViewTheme:
     LayoutSheet {
     let contentHorizontalPaddings: LayoutHorizontalPaddings
     let title: TextStyle
-    let titleTopPadding: LayoutMetric
     let value: TextStyle
     let secondaryValue: TextStyle
     let spacingBetweenTitleAndValue: LayoutMetric
@@ -43,16 +42,15 @@ struct AccountPortfolioViewTheme:
         self.title = [
             .textColor(Colors.Text.gray)
         ]
-        self.titleTopPadding = 8
         self.value = [
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.center)
+            .textAlignment(.natural)
         ]
         self.secondaryValue = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.center)
+            .textAlignment(.natural)
         ]
         self.spacingBetweenTitleAndValue = 8
         self.spacingBetweenSecondaryValueAndMinimumBalanceContent = 12

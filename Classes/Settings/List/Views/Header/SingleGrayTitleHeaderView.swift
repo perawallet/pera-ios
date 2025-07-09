@@ -28,7 +28,15 @@ final class SingleGrayTitleHeaderView: View {
         customize(theme)
     }
     
-    func customize(_ theme: SingleGrayTitleHeaderViewTheme) {
+    var topPadding: CGFloat = 0.0 {
+        didSet {
+            titleLabel.snp.updateConstraints {
+                $0.top.equalToSuperview().offset(topPadding)
+            }
+        }
+    }
+    
+    private func customize(_ theme: SingleGrayTitleHeaderViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addTitle()
