@@ -33,7 +33,7 @@ struct CarouselBannerViewTheme:
         ]
 
         self.collectionViewHeight = 72
-        self.collectionViewTopPadding = 2
+        self.collectionViewTopPadding = 12
         self.collectionViewSpacing = 12
         self.collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
     }
