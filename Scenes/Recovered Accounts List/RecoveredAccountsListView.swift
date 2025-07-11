@@ -33,6 +33,7 @@ struct RecoveredAccountsListView: View {
     var dismiss: ((_ isSuccess: Bool) -> Void)?
     var openDetails: ((_ account: Account, _ authAccount: Account) -> Void)?
     var openAddAccountTutorial: ((_ isMultipleAccounts: Bool) -> Void)?
+    var fininshRecoveringAccounts: (() -> Void)?
     
     // MARK: - Initialisers
     
@@ -107,8 +108,8 @@ struct RecoveredAccountsListView: View {
         switch nextStep {
         case .dismiss:
             dismiss?(true)
-        case let .openAddAccountTutorial(isMultipleAccounts):
-            openAddAccountTutorial?(isMultipleAccounts)
+        case .openAddAccountTutorial:
+            fininshRecoveringAccounts?()
         }
     }
     
@@ -116,8 +117,8 @@ struct RecoveredAccountsListView: View {
         switch nextStep {
         case .dismiss:
             dismiss?(false)
-        case let .openAddAccountTutorial(isMultipleAccounts):
-            openAddAccountTutorial?(isMultipleAccounts)
+        case .openAddAccountTutorial:
+            fininshRecoveringAccounts?()
         }
     }
 }
