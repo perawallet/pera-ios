@@ -25,6 +25,7 @@ final class RecoveredAccountsListViewController: UIHostingController<RecoveredAc
         rootView.dismiss = { [weak self] in self?.dismiss(isSuccess: $0) }
         rootView.openDetails = { [weak self] in self?.openAccountDetails(account: $0, authAccount: $1) }
         rootView.openAddAccountTutorial = { [weak self] in self?.openAddAccountTutorial(isMultipleAccounts: $0) }
+        rootView.fininshRecoveringAccounts = { [weak self] in self?.fininshRecoveringAccounts() }
     }
     
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
@@ -47,5 +48,11 @@ final class RecoveredAccountsListViewController: UIHostingController<RecoveredAc
     
     private func openAddAccountTutorial(isMultipleAccounts: Bool) {
         open(.tutorial(flow: .none, tutorial: .accountVerified(flow: .none, address: nil, isMultipleAccounts: isMultipleAccounts)), by: .push)
+    }
+    
+    private func fininshRecoveringAccounts() {
+        PeraUserDefaults.shouldShowNewAccountAnimation = true
+        launchMain()
+
     }
 }

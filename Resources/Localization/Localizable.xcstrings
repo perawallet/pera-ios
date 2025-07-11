@@ -5787,7 +5787,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fetching rekeyed\\naccounts..."
+            "value" : "Fetching rekeyed\naccounts..."
           }
         }
       }
