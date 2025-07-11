@@ -53,6 +53,5 @@ final class RecoveredAccountsListViewController: UIHostingController<RecoveredAc
     private func fininshRecoveringAccounts() {
         PeraUserDefaults.shouldShowNewAccountAnimation = true
         launchMain()
-
     }
 }
