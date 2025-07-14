@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//  Environment.swift
+//  AppEnvironment.swift
 
 import Foundation
 import UIKit
@@ -22,11 +22,11 @@ private enum AppTarget {
     case staging, prod
 }
 
-class Environment {
+class AppEnvironment {
     
-    private static let instance = Environment()
+    private static let instance = AppEnvironment()
     
-    static var current: Environment {
+    static var current: AppEnvironment {
         return instance
     }
     
