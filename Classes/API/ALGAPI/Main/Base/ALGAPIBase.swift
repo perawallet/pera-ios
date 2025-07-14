@@ -60,27 +60,27 @@ extension ALGAPIBase {
             switch self {
             case let .algod(network):
                 if network == .testnet {
-                    return Environment.current.testNetAlgodApi
+                    return AppEnvironment.current.testNetAlgodApi
                 } else {
-                    return Environment.current.mainNetAlgodApi
+                    return AppEnvironment.current.mainNetAlgodApi
                 }
             case let .indexer(network):
                 if network == .testnet {
-                    return Environment.current.testNetIndexerApi
+                    return AppEnvironment.current.testNetIndexerApi
                 } else {
-                    return Environment.current.mainNetIndexerApi
+                    return AppEnvironment.current.mainNetIndexerApi
                 }
             case let .mobileV1(network):
                 if network == .testnet {
-                    return Environment.current.testNetMobileAPIV1
+                    return AppEnvironment.current.testNetMobileAPIV1
                 } else {
-                    return Environment.current.mainNetMobileAPIV1
+                    return AppEnvironment.current.mainNetMobileAPIV1
                 }
             case let .mobileV2(network):
                 if network == .testnet {
-                    return Environment.current.testNetMobileAPIV2
+                    return AppEnvironment.current.testNetMobileAPIV2
                 } else {
-                    return Environment.current.mainNetMobileAPIV2
+                    return AppEnvironment.current.mainNetMobileAPIV2
                 }
             }
         }
@@ -89,19 +89,19 @@ extension ALGAPIBase {
 
 fileprivate extension String {
     var isAlgodApiBase: Bool {
-        return self == Environment.current.testNetAlgodApi || self == Environment.current.mainNetAlgodApi
+        return self == AppEnvironment.current.testNetAlgodApi || self == AppEnvironment.current.mainNetAlgodApi
     }
 
     var isIndexerApiBase: Bool {
-        return self == Environment.current.testNetIndexerApi || self == Environment.current.mainNetIndexerApi
+        return self == AppEnvironment.current.testNetIndexerApi || self == AppEnvironment.current.mainNetIndexerApi
     }
 
     var isMobileApiV1Base: Bool {
-        return self == Environment.current.testNetMobileAPIV1 || self == Environment.current.mainNetMobileAPIV1
+        return self == AppEnvironment.current.testNetMobileAPIV1 || self == AppEnvironment.current.mainNetMobileAPIV1
     }
 
     var isMobileApiV2Base: Bool {
-        return self == Environment.current.testNetMobileAPIV2 || self == Environment.current.mainNetMobileAPIV2
+        return self == AppEnvironment.current.testNetMobileAPIV2 || self == AppEnvironment.current.mainNetMobileAPIV2
     }
 }
 

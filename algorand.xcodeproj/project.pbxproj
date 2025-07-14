@@ -365,7 +365,7 @@
 		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
 		17B7D8A82240DFFC00A6FF9E /* ALGAPI+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */; };
 		17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */; };
-		17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
+		17B7D8AE2240F25000A6FF9E /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* AppEnvironment.swift */; };
 		17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */; };
 		17B7E1CB27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */; };
 		17B7E1CC27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */; };
@@ -449,7 +449,7 @@
 		17BD4E862292F1260003E49A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
 		17BD4E882292F1260003E49A /* ALGAPI+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */; };
 		17BD4E8A2292F1260003E49A /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
-		17BD4E8C2292F1260003E49A /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
+		17BD4E8C2292F1260003E49A /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* AppEnvironment.swift */; };
 		17BD4E8E2292F1260003E49A /* AccountRecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */; };
 		17BD4E8F2292F1260003E49A /* PassphraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseCell.swift */; };
 		17BD4E902292F1260003E49A /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F50225FAD920051BC43 /* Double.swift */; };
@@ -944,7 +944,7 @@
 		2B0F625A24EC129D00DA22A6 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B0F625D24EC129D00DA22A6 /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
 		2B0F625E24EC129D00DA22A6 /* BaseSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */; };
-		2B0F626024EC129D00DA22A6 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
+		2B0F626024EC129D00DA22A6 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* AppEnvironment.swift */; };
 		2B0F626324EC129D00DA22A6 /* AccountRecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */; };
 		2B0F626424EC129D00DA22A6 /* PassphraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseCell.swift */; };
 		2B0F626524EC129D00DA22A6 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F50225FAD920051BC43 /* Double.swift */; };
@@ -8456,7 +8456,7 @@
 		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Account.swift"; sourceTree = "<group>"; };
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
-		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		17B7D8AD2240F25000A6FF9E /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
 		17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Regular.ttf"; sourceTree = "<group>"; };
 		17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Medium.ttf"; sourceTree = "<group>"; };
@@ -11692,7 +11692,7 @@
 			isa = PBXGroup;
 			children = (
 				F06FF4DC27E8A8130047A20E /* Target */,
-				17B7D8AD2240F25000A6FF9E /* Environment.swift */,
+				17B7D8AD2240F25000A6FF9E /* AppEnvironment.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -26246,7 +26246,7 @@
 				8B047C472C034C2B00851DF5 /* IncomingASAsRequestDetail.swift in Sources */,
 				D4092BB3276B55D40009722D /* WCSessionShortListItemView.swift in Sources */,
 				17BD4E8A2292F1260003E49A /* ContactCell.swift in Sources */,
-				17BD4E8C2292F1260003E49A /* Environment.swift in Sources */,
+				17BD4E8C2292F1260003E49A /* AppEnvironment.swift in Sources */,
 				2B57BC59280EF45A00F958C4 /* CurrencySelectionDataController.swift in Sources */,
 				2B288AE32693A56900BC6FB6 /* WCSingleTransactionViewControllerAssetManagable.swift in Sources */,
 				D43A0C472790D777007430B9 /* NoContentWithActionViewModel.swift in Sources */,
@@ -28938,7 +28938,7 @@
 				2B0F625E24EC129D00DA22A6 /* BaseSupplementaryView.swift in Sources */,
 				D4133D6628856DEF003EFB4F /* UISheetActionScreen.swift in Sources */,
 				2B99D42028E9D91800323C11 /* SwapInfoItemView.swift in Sources */,
-				2B0F626024EC129D00DA22A6 /* Environment.swift in Sources */,
+				2B0F626024EC129D00DA22A6 /* AppEnvironment.swift in Sources */,
 				2B0F626324EC129D00DA22A6 /* AccountRecoverView.swift in Sources */,
 				2B0F626424EC129D00DA22A6 /* PassphraseCell.swift in Sources */,
 				2BF3B0CF2D1D7F3C00E78ADA /* FeatureFlagService.swift in Sources */,
@@ -31625,7 +31625,7 @@
 				CB3AEBDB27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */,
 				2B99D41F28E9D91800323C11 /* SwapInfoItemView.swift in Sources */,
 				2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,
-				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
+				17B7D8AE2240F25000A6FF9E /* AppEnvironment.swift in Sources */,
 				D4133D6528856DEF003EFB4F /* UISheetActionScreen.swift in Sources */,
 				2B288AE12693A56900BC6FB6 /* WCSingleTransactionViewControllerAssetManagable.swift in Sources */,
 				D4A5335329F6744E00CBC1A9 /* RekeyedAccountSelectionListAccountLoadingCell.swift in Sources */,
