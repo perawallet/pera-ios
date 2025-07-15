@@ -39,7 +39,8 @@ struct LineChartView: View {
                     
                     AreaMark(
                         x: .value(xAxisLabel, point.day),
-                        y: .value(yAxisLabel, point.primaryValue)
+                        yStart: .value(yAxisLabel, point.primaryValue),
+                        yEnd: .value(yAxisLabel, -15)
                     )
                     .foregroundStyle(
                         .linearGradient(
@@ -71,7 +72,7 @@ struct LineChartView: View {
                     }
                 }
             }
-                .chartYScale(domain: 0...(maxValue + 10))
+                .chartYScale(domain: -15...(maxValue + 10))
                 .chartXAxis(.hidden)
                 .chartYAxis(.hidden)
                 .chartPlotStyle { plotArea in
