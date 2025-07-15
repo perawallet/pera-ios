@@ -22,8 +22,7 @@ import Combine
 
 final class ASADetailScreen:
     BaseViewController,
-    Container,
-    UICollectionViewDelegate {
+    Container {
     
     // MARK: - Data Source
     
@@ -75,6 +74,7 @@ final class ASADetailScreen:
         collectionView.showsVerticalScrollIndicator = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.backgroundColor = Colors.Defaults.background.uiColor
         return collectionView
     }()
 
@@ -230,15 +230,15 @@ final class ASADetailScreen:
             $0.edges.equalToSuperview()
         }
         
-        // Configure the collection view
-        collectionView.backgroundColor = .clear
-        collectionView.delegate = self
-        
         // Register cell types
-        collectionView.register(ASADetailProfileCell.self, forCellWithReuseIdentifier: "ProfileCell")
-        collectionView.register(ASADetailQuickActionsCell.self, forCellWithReuseIdentifier: "QuickActionsCell")
-        collectionView.register(ASADetailMarketInfoCell.self, forCellWithReuseIdentifier: "MarketInfoCell")
-        collectionView.register(ASADetailPageContainerCell.self, forCellWithReuseIdentifier: "PageContainerCell")
+        [
+            ASADetailProfileCell.self,
+            ASADetailQuickActionsCell.self,
+            ASADetailMarketInfoCell.self,
+            ASADetailPageContainerCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
         
         collectionView.dataSource = dataSource
     }
@@ -387,19 +387,31 @@ final class ASADetailScreen:
     private func cell(for itemIdentifier: ItemIdentifier, at indexPath: IndexPath) -> UICollectionViewCell {
         switch itemIdentifier {
         case .profile:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCell", for: indexPath) as! ASADetailProfileCell
+            let cell = collectionView.dequeue(
+                ASADetailProfileCell.self,
+                at: indexPath
+            )
             cell.configure(with: profileView)
             return cell
         case .quickActions:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "QuickActionsCell", for: indexPath) as! ASADetailQuickActionsCell
+            let cell = collectionView.dequeue(
+                ASADetailQuickActionsCell.self,
+                at: indexPath
+            )
             cell.configure(with: quickActionsView)
             return cell
         case .marketInfo:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MarketInfoCell", for: indexPath) as! ASADetailMarketInfoCell
+            let cell = collectionView.dequeue(
+                ASADetailMarketInfoCell.self,
+                at: indexPath
+            )
             cell.configure(with: marketInfoView)
             return cell
         case .pageContainer:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageContainerCell", for: indexPath) as! ASADetailPageContainerCell
+            let cell = collectionView.dequeue(
+                ASADetailPageContainerCell.self,
+                at: indexPath
+            )
             cell.configure(with: pagesScreen.view)
             return cell
         }
