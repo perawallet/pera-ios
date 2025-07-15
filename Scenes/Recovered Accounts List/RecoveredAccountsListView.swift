@@ -32,7 +32,6 @@ struct RecoveredAccountsListView: View {
     
     var dismiss: ((_ isSuccess: Bool) -> Void)?
     var openDetails: ((_ account: Account, _ authAccount: Account) -> Void)?
-    var openAddAccountTutorial: ((_ isMultipleAccounts: Bool) -> Void)?
     var fininshRecoveringAccounts: (() -> Void)?
     
     // MARK: - Initialisers

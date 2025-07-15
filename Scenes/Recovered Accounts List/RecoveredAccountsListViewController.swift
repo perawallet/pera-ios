@@ -24,7 +24,6 @@ final class RecoveredAccountsListViewController: UIHostingController<RecoveredAc
         super.init(rootView: RecoveredAccountsListView(model: model, nextStep: nextStep))
         rootView.dismiss = { [weak self] in self?.dismiss(isSuccess: $0) }
         rootView.openDetails = { [weak self] in self?.openAccountDetails(account: $0, authAccount: $1) }
-        rootView.openAddAccountTutorial = { [weak self] in self?.openAddAccountTutorial(isMultipleAccounts: $0) }
         rootView.fininshRecoveringAccounts = { [weak self] in self?.fininshRecoveringAccounts() }
     }
     
@@ -44,10 +43,6 @@ final class RecoveredAccountsListViewController: UIHostingController<RecoveredAc
     
     private func openAccountDetails(account: Account, authAccount: Account) {
         open(.ledgerAccountDetail(account: account, authAccount: authAccount, ledgerIndex: nil, rekeyedAccounts: nil), by: .present)
-    }
-    
-    private func openAddAccountTutorial(isMultipleAccounts: Bool) {
-        open(.tutorial(flow: .none, tutorial: .accountVerified(flow: .none, address: nil, isMultipleAccounts: isMultipleAccounts)), by: .push)
     }
     
     private func fininshRecoveringAccounts() {
