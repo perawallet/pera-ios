@@ -53,7 +53,7 @@ final class ASADetailScreen:
     private lazy var profileView = ASAProfileView(shouldShowCharts: configuration.featureFlagService.isEnabled(.assetsChartsEnabled))
     private lazy var quickActionsView = ASADetailQuickActionsView()
     private lazy var marketInfoView = ASADetailMarketView()
-    private lazy var pagesScreen = PageContainer(configuration: configuration)
+    private lazy var pagesScreen = PageContainer(configuration: configuration, hidePageBar: true)
     
     private lazy var activityFragmentScreen = ASAActivityScreen(
         account: dataController.account,
@@ -230,6 +230,7 @@ final class ASADetailScreen:
             $0.edges.equalToSuperview()
         }
         
+        
         // Register cell types
         [
             ASADetailProfileCell.self,
@@ -238,6 +239,38 @@ final class ASADetailScreen:
             ASADetailPageContainerCell.self
         ].forEach {
             collectionView.register($0)
+        }
+        
+        collectionView.register(
+            ASADetailPageContainerHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ASADetailPageContainerHeader.reuseIdentifier
+        )
+        
+        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            if kind == UICollectionView.elementKindSectionHeader,
+               let section = self.dataSource.snapshot().sectionIdentifiers[safe: indexPath.section],
+               section == .pageContainer {
+
+                guard let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: ASADetailPageContainerHeader.reuseIdentifier,
+                    for: indexPath
+                ) as? ASADetailPageContainerHeader else {
+                    return nil
+                }
+                header.onActivityButtonPressed = { [weak self] in
+                    guard let self else { return }
+                    pagesScreen.selectedIndex = 0
+                }
+                header.onAboutButtonPressed = { [weak self] in
+                    guard let self else { return }
+                    pagesScreen.selectedIndex = 1
+                }
+                return header
+            }
+
+            return nil
         }
         
         collectionView.dataSource = dataSource
@@ -370,6 +403,18 @@ final class ASADetailScreen:
             bottom: 20,
             trailing: 0
         )
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(76)
+        )
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        header.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [header]
         
         return section
     }
