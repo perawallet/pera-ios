@@ -370,7 +370,7 @@ final class ASADetailScreen:
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
-            top: 20,
+            top: 0,
             leading: 0,
             bottom: 20,
             trailing: 0
