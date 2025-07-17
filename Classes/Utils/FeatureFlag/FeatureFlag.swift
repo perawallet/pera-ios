@@ -30,7 +30,7 @@ enum FeatureFlag: String, CaseIterable {
         case .hdWalletEnabled:
             return .bool(true)
         case .portfolioChartsEnabled:
-            return .bool(true)
+            return .bool(false)
         case .accountsChartsEnabled:
             return .bool(false)
         case .assetsChartsEnabled:

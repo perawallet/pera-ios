@@ -224,14 +224,11 @@ final class ASADetailScreen:
     }
     
     private func setupCollectionView() {
-        // Set up the collection view
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        
-        // Register cell types
         [
             ASADetailProfileCell.self,
             ASADetailQuickActionsCell.self,
@@ -241,24 +238,13 @@ final class ASADetailScreen:
             collectionView.register($0)
         }
         
-        collectionView.register(
-            ASADetailPageContainerHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: ASADetailPageContainerHeader.reuseIdentifier
-        )
+        collectionView.register(header: ASADetailPageContainerHeader.self)
         
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             if kind == UICollectionView.elementKindSectionHeader,
                let section = self.dataSource.snapshot().sectionIdentifiers[safe: indexPath.section],
                section == .pageContainer {
-
-                guard let header = collectionView.dequeueReusableSupplementaryView(
-                    ofKind: kind,
-                    withReuseIdentifier: ASADetailPageContainerHeader.reuseIdentifier,
-                    for: indexPath
-                ) as? ASADetailPageContainerHeader else {
-                    return nil
-                }
+                let header = collectionView.dequeueHeader(ASADetailPageContainerHeader.self, at: indexPath)
                 header.onActivityButtonPressed = { [weak self] in
                     guard let self else { return }
                     pagesScreen.selectedIndex = 0

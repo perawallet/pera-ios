@@ -19,13 +19,12 @@ import SnapKit
 import MacaroonUIKit
 
 final class ASADetailPageContainerHeader: UICollectionReusableView {
-    static let reuseIdentifier = "PageContainerHeader"
     private lazy var containerView = UIStackView()
     private lazy var activityButton = Button()
     private lazy var aboutButton = Button()
     private lazy var selectedMarkerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.Text.main.uiColor
+        view.customizeAppearance(theme.selectedMarkerBackground)
         return view
     }()
     
@@ -36,7 +35,7 @@ final class ASADetailPageContainerHeader: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = Colors.Defaults.background.uiColor
+        customizeAppearance(theme.background)
         addContainer()
     }
     
@@ -51,17 +50,17 @@ final class ASADetailPageContainerHeader: UICollectionReusableView {
         
         addSubview(containerView)
         containerView.snp.makeConstraints {
-            $0.top == 24
+            $0.top == theme.buttonsViewTopPadding
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
         let separatorView = UIView()
-        separatorView.backgroundColor = Colors.Layer.grayLighter.uiColor
+        separatorView.customizeAppearance(theme.separatorBackground)
         
         addSubview(separatorView)
         separatorView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(theme.separatorHeight)
         }
         
         addButtons()
@@ -92,11 +91,12 @@ final class ASADetailPageContainerHeader: UICollectionReusableView {
         default:
             fatalError("Shouldn't enter here")
         }
+
         selectedMarkerView.removeFromSuperview()
         button.addSubview(selectedMarkerView)
         selectedMarkerView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(2)
+            $0.height.equalTo(theme.selectedMarkerHeight)
         }
     }
     

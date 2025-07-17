@@ -21,12 +21,34 @@ import UIKit
 struct ASADetailPageContainerHeaderTheme:
     StyleSheet,
     LayoutSheet {
+    var background: ViewStyle
+    var selectedMarkerBackground: ViewStyle
+    var selectedMarkerHeight: LayoutMetric
+    var separatorBackground: ViewStyle
+    var separatorHeight: LayoutMetric
+    var buttonsViewTopPadding: LayoutMetric
     var activityButton: ButtonStyle
     var aboutButton: ButtonStyle
     var activityButtonSelected: ButtonStyle
     var aboutButtonSelected: ButtonStyle
 
     init(_ family: LayoutFamily) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.selectedMarkerBackground = [
+            .backgroundColor(Colors.Text.main)
+        ]
+        self.selectedMarkerHeight = 2
+        
+        self.separatorBackground = [
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
+        self.separatorHeight = 1
+        
+        self.buttonsViewTopPadding = 24
+        
+        
         self.activityButton = [
             .title(String(localized: "title-activity")),
             .font(Typography.bodyRegular()),
