@@ -204,7 +204,8 @@ extension AccountNameSetupViewController {
             if let onAccountCreated {
                 onAccountCreated()
             } else {
-                openAccountVerifiedTutorial()
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
+                launchMain()
             }
             
         default:
