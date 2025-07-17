@@ -6317,7 +6317,7 @@
         }
       }
     },
-    "settings-app-version" : {
+    "settings-app-version-%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6547,7 +6547,7 @@
         }
       }
     },
-    "settings-secure-backup-subtitle" : {
+    "settings-secure-backup-subtitle-%lld" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {

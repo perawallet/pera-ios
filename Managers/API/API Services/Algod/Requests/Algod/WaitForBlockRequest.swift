@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   WaitForBlockRequest.swift
 
-import MacaroonUIKit
+// MARK: - Request
 
-final class SingleGrayTitleHeaderViewModel: ViewModel {
-    
-    let title: String
-    
-    init(_ name: String) {
-        self.title = name
-    }
+struct WaitForBlockRequest {
+    var blockNumber: Int
 }
 
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
+extension WaitForBlockRequest: Requestable {
     
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
-    }
+    typealias ResponseType = WaitForBlockResponse
+    
+    var path: String { "/status/wait-for-block-after/\(blockNumber)" }
+    var method: RequestMethod { .get }
+}
+
+// MARK: - Response
+
+struct WaitForBlockResponse: Decodable {
+    /// The last round seen
+    let lastRound: Int
 }

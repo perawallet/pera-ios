@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   ReadOnlyPublisher.swift
 
-import MacaroonUIKit
+import Combine
 
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+final class ReadOnlyPublisher<Output> {
     
-    let title: String
+    // MARK: - Properties
     
-    init(_ name: String) {
-        self.title = name
-    }
-}
-
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
+    var value: Output { currentValuePublisher.value }
+    var publisher: AnyPublisher<Output, Never> { currentValuePublisher.eraseToAnyPublisher() }
     
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
+    private let currentValuePublisher: CurrentValueSubject<Output, Never>
+    
+    // MARK: - Initialisers
+    
+    init(currentValuePublisher: CurrentValueSubject<Output, Never>) {
+        self.currentValuePublisher = currentValuePublisher
     }
 }

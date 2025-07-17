@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   PeraAccount.swift
 
-import MacaroonUIKit
-
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+struct PeraAccount {
     
-    let title: String
-    
-    init(_ name: String) {
-        self.title = name
+    enum AccountType {
+        case algo25
+        case universalWallet
+        case watch
+        case invalid
     }
+
+    enum AuthorizedAccountType {
+        case wallet
+        case ledger
+        case invalid
+    }
+    
+    let address: String
+    let type: AccountType
+    let authType: AuthorizedAccountType?
 }
 
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-    
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
-    }
+extension PeraAccount {
+    var isBackupable: Bool { type != .invalid && authType != .invalid }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SettingsLoadingCell.swift
+//   RequestMethod.swift
 
-import Foundation
-import UIKit
-
-final class SettingsLoadingCell: BaseCollectionViewCell<SettingsLoadingView> {
-    func bindData(_ viewModel: SettingsDetailViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func startAnimating() {
-        contextView.startAnimating()
-    }
-
-    func stopAnimating() {
-        contextView.stopAnimating()
-    }
+enum RequestMethod: String {
+    case get
+    case post
+    case put
+    case delete
 }
