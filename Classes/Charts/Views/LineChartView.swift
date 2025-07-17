@@ -26,6 +26,8 @@ struct LineChartView: View {
     
     var body: some View {
         let maxValue = data.map(\.primaryValue).max() ?? 100
+        let minValue = data.map(\.primaryValue).min() ?? 0
+        let yDomain = (minValue - 10)...(maxValue + 10)
         
         GeometryReader { geo in
             let chart = Chart {
@@ -40,12 +42,12 @@ struct LineChartView: View {
                     AreaMark(
                         x: .value(xAxisLabel, point.day),
                         yStart: .value(yAxisLabel, point.primaryValue),
-                        yEnd: .value(yAxisLabel, -15)
+                        yEnd: .value(yAxisLabel, yDomain.lowerBound)
                     )
                     .foregroundStyle(
                         .linearGradient(
                             colors: [
-                                Color.Chart.gradient.opacity(0.15),
+                                Color.Chart.gradient.opacity(0.4),
                                 Color.Chart.gradient.opacity(0)
                             ],
                             startPoint: .top,
@@ -72,7 +74,7 @@ struct LineChartView: View {
                     }
                 }
             }
-                .chartYScale(domain: -15...(maxValue + 10))
+                .chartYScale(domain: yDomain)
                 .chartXAxis(.hidden)
                 .chartYAxis(.hidden)
                 .chartPlotStyle { plotArea in
@@ -84,6 +86,7 @@ struct LineChartView: View {
                 .chartOverlay { proxy in
                     LineChartOverlayView(data: data, proxy: proxy, geo: geo, selectedPoint: $selectedPoint)
                 }
+                .clipped()
                 .padding(.trailing, 16)
         }
     }
