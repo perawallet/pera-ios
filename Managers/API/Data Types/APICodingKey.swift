@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsViewController+Theme.swift
+//   APICodingKey.swift
 
-import MacaroonUIKit
-import UIKit
+struct APICodingKey: CodingKey {
+    
+    // MARK: - Properties
 
-extension SettingsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let cellSize: LayoutSize
-        let footerSize: LayoutSize
-        let headerSize: LayoutSize
-        
-        init(_ family: LayoutFamily) {
-            self.cellSize = (UIScreen.main.bounds.width, 64.0)
-            self.footerSize = (UIScreen.main.bounds.width, 144.0)
-            self.headerSize = (UIScreen.main.bounds.width, 28.0)
-        }
+    var stringValue: String
+    var intValue: Int? { return nil }
+    
+    // MARK: - Initialisers
+    
+    init(stringValue: String) {
+        self.stringValue = stringValue
     }
+    
+    init?(intValue: Int) { nil }
 }

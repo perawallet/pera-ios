@@ -192,6 +192,13 @@ extension NodeSettingsViewController {
             name: Self.didUpdateNetwork,
             object: self
         )
+        
+        switch selectedNetwork {
+        case .mainnet:
+            PeraCoreManager.shared.network = .mainNet
+        case .testnet:
+            PeraCoreManager.shared.network = .testNet
+        }
     }
 }
 

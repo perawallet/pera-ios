@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   CancellableTask.swift
 
-import MacaroonUIKit
-
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+final class CancellableTask {
     
-    let title: String
+    // MARK: - Properties
     
-    init(_ name: String) {
-        self.title = name
-    }
-}
-
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
+    private var onCancel: () -> Void
+    
+    // MARK: - Initialisers
+    
+    init<Result, TaskError: Error>(task: Task<Result, TaskError>) {
+        onCancel = { task.cancel() }
     }
     
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
+    // MARK: - Actions
+    
+    func cancel() {
+        onCancel()
     }
 }

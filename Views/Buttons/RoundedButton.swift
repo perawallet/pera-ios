@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   RoundedButton.swift
 
-import MacaroonUIKit
+import SwiftUI
 
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+struct RoundedButton: View {
     
-    let title: String
+    // MARK: - Properties
     
-    init(_ name: String) {
-        self.title = name
-    }
-}
-
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
+    let text: LocalizedStringKey
+    let onTap: () -> Void
     
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
+    // MARK: - Body
+    
+    var body: some View {
+        Text(text)
+            .frame(maxWidth: .infinity)
+            .frame(height: 52.0)
+            .background(Color.ButtonSecondary.bg)
+            .foregroundStyle(Color.ButtonSecondary.text)
+            .font(.dmSans.medium.size(15.0))
+            .cornerRadius(4.0)
+            .onTapGesture { onTap() }
     }
 }

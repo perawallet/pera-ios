@@ -824,7 +824,7 @@ final class Router:
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case .settings:
-            viewController = SettingsViewController(configuration: configuration)
+            viewController = SettingsListConstructor.buildScene(legacyAppConfiguration: appConfiguration)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address

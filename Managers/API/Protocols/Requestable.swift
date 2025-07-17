@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   Requestable.swift
 
-import MacaroonUIKit
-
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+protocol Requestable: Encodable {
     
-    let title: String
+    associatedtype ResponseType: Decodable
     
-    init(_ name: String) {
-        self.title = name
-    }
+    var path: String { get }
+    var method: RequestMethod { get }
 }
 
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-    
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
-    }
+extension Requestable {
+    var responseType: ResponseType.Type { ResponseType.self }
 }

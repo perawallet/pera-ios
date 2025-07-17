@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   JSONDecoder+Utils.swift
 
-import MacaroonUIKit
+import Foundation
 
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+extension JSONDecoder.KeyDecodingStrategy {
     
-    let title: String
-    
-    init(_ name: String) {
-        self.title = name
-    }
-}
-
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-    
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
+    static var kebabCase: Self {
+        .custom {
+            
+            let key = $0
+                .last?
+                .stringValue
+                .split(separator: "-")
+                .enumerated()
+                .map { $0.offset > 0 ? $0.element.capitalized : String($0.element) }
+                .joined()
+            
+            return APICodingKey(stringValue: key ?? "")
+        }
     }
 }

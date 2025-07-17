@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsHeaderViewModel.swift
+//   View+Styles.swift
 
-import MacaroonUIKit
+import SwiftUI
 
-final class SingleGrayTitleHeaderViewModel: ViewModel {
+extension View {
     
-    let title: String
-    
-    init(_ name: String) {
-        self.title = name
-    }
-}
-
-extension SingleGrayTitleHeaderViewModel: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-    
-    static func == (
-        lhs: SingleGrayTitleHeaderViewModel,
-        rhs: SingleGrayTitleHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
+    func settingsViewRowStyle() -> some View {
+        listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
     }
 }

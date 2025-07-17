@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SettingsViewTheme.swift
+//   RequestMethod.swift
 
-import Foundation
-import MacaroonUIKit
-
-struct SettingsViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    
-    let cellSpacing: LayoutMetric
-    let collectionViewEdgeInsets: LayoutPaddings
-    let sectionInset: LayoutPaddings
-    
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.cellSpacing = 0
-        self.collectionViewEdgeInsets = (36, 0, 0, 0)
-        self.sectionInset = (8, 0, 36, 0)
-    }
+enum RequestMethod: String {
+    case get
+    case post
+    case put
+    case delete
 }
