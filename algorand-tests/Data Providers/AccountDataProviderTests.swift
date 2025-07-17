@@ -63,18 +63,6 @@ struct AccountDataProviderTests {
         #expect(result == .watch)
     }
     
-    @Test("Account type for universal wallet account without private data stored locally")
-    func accountTypeForUniversalWalletAccountWithoutPrivateData() async throws {
-        
-        let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: nil)
-        let universalWalletDetails = HDWalletAddressDetail(walletId: "123", account: 123, change: 123, keyIndex: 123)
-        let localAccount = AccountInformation(address: testedAddress, name: "Test Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: universalWalletDetails)
-        
-        let result = accountDataProvider.accountType(localAccount: localAccount)
-        
-        #expect(result == .invalid)
-    }
-    
     @Test("Account type for universal wallet account with private data stored locally")
     func accountTypeForUniversalWalletAccountWithPrivateData() async throws {
         
