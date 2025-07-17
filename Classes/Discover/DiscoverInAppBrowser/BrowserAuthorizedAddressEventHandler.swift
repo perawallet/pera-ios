@@ -116,7 +116,7 @@ private extension BrowserAuthorizedAddressEventHandler {
             return "RekeyedNoAuth"
         }
         
-        if account.authorization.isRekeyedToNoAuthInLocal {
+        if account.authorization.isRekeyed {
             return "Rekeyed"
         }
         
