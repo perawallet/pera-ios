@@ -21,16 +21,16 @@ import UIKit
 struct ASADetailPageContainerHeaderTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
-    var selectedMarkerBackground: ViewStyle
-    var selectedMarkerHeight: LayoutMetric
-    var separatorBackground: ViewStyle
-    var separatorHeight: LayoutMetric
-    var buttonsViewTopPadding: LayoutMetric
-    var activityButton: ButtonStyle
-    var aboutButton: ButtonStyle
-    var activityButtonSelected: ButtonStyle
-    var aboutButtonSelected: ButtonStyle
+    let background: ViewStyle
+    let selectedMarkerBackground: ViewStyle
+    let selectedMarkerHeight: LayoutMetric
+    let separatorBackground: ViewStyle
+    let separatorHeight: LayoutMetric
+    let buttonsViewTopPadding: LayoutMetric
+    let activityButton: ButtonStyle
+    let aboutButton: ButtonStyle
+    let activityButtonSelected: ButtonStyle
+    let aboutButtonSelected: ButtonStyle
 
     init(_ family: LayoutFamily) {
         self.background = [
