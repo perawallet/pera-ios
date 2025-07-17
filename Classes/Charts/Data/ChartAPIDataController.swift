@@ -38,10 +38,10 @@ final class ChartAPIDataController {
         switch screen {
         case .home:
             loadHomeData(period: period)
+        case .account(address: let address):
+            loadAccountData(address: address, period: period)
         case .asset(address: let address, assetId: let assetId):
             loadAssetData(address: address, assetId: assetId, period: period)
-        default:
-            break
         }
     }
     
@@ -51,6 +51,18 @@ final class ChartAPIDataController {
         }
         
         api.fetchWalletWealthBalanceChartData(addresses: addresses, period: period) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let values):
+                onFetch?(nil, period, values.results.sorted(by: { $0.round < $1.round }))
+            case .failure(let apiError, _):
+                onFetch?(apiError.localizedDescription, period, [])
+            }
+        }
+    }
+    
+    private func loadAccountData(address: String, period: ChartDataPeriod) {
+        api.fetchAddressWealthBalanceChartData(address: address, period: period) { [weak self] response in
             guard let self else { return }
             switch response {
             case .success(let values):

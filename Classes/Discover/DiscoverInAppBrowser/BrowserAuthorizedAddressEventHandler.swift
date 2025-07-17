@@ -48,6 +48,22 @@ private extension BrowserAuthorizedAddressEventHandler {
             return true
         }
         
+        if isAuthorizedAccountsOnly {
+            return returnOnlyAuthorizedAccounts(accounts)
+        }
+        
+        return returnAllAccounts(accounts)
+    }
+    
+    private func returnOnlyAuthorizedAccounts(_ accounts: [AccountHandle]) -> String? {
+        let accountsArray: [[String: String]] = accounts.map {
+            return [$0.value.address: $0.value.name ?? ""]
+        }
+        
+        return returnAccounts(accountsArray)
+    }
+    
+    private func returnAllAccounts(_ accounts: [AccountHandle]) -> String? {
         struct AccountItem: Codable {
             let address: String
             let name: String
@@ -62,8 +78,12 @@ private extension BrowserAuthorizedAddressEventHandler {
             )
         }
 
+        return returnAccounts(accountsArray)
+    }
+    
+    private func returnAccounts(_ values: Encodable) -> String? {
         do {
-            let jsonData = try JSONEncoder().encode(accountsArray)
+            let jsonData = try JSONEncoder().encode(values)
             let accountsStringBase64 = jsonData.base64EncodedString()
             let accounts = try? CardsAccounts(accounts: accountsStringBase64).encodedString()
             return accounts

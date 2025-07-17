@@ -1,2 +1,0 @@
-apple_id(ENV["FASTLANE_USER"])
-team_id(ENV["TEAM_ID"])
