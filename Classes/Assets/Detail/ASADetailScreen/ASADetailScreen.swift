@@ -26,21 +26,7 @@ final class ASADetailScreen:
     
     // MARK: - Data Source
     
-    private enum SectionIdentifier: Hashable {
-        case profile
-        case quickActions
-        case marketInfo
-        case pageContainer
-    }
-    
-    private enum ItemIdentifier: Hashable {
-        case profile
-        case quickActions
-        case marketInfo
-        case pageContainer
-    }
-    
-    private lazy var dataSource = UICollectionViewDiffableDataSource<SectionIdentifier, ItemIdentifier>(
+    private lazy var dataSource = UICollectionViewDiffableDataSource<ASADetailScreenSection, ASADetailScreenItem>(
         collectionView: collectionView
     ) { [weak self] collectionView, indexPath, itemIdentifier in
         guard let self = self else { return UICollectionViewCell() }
@@ -284,7 +270,7 @@ final class ASADetailScreen:
         return layout
     }
     
-    private func createLayoutSection(for section: SectionIdentifier, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+    private func createLayoutSection(for section: ASADetailScreenSection, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         switch section {
         case .profile:
             return createProfileSection(environment: environment)
@@ -415,7 +401,7 @@ final class ASADetailScreen:
         _ = pagesScreen.view
     }
 
-    private func cell(for itemIdentifier: ItemIdentifier, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cell(for itemIdentifier: ASADetailScreenItem, at indexPath: IndexPath) -> UICollectionViewCell {
         switch itemIdentifier {
         case .profile:
             let cell = collectionView.dequeue(
@@ -449,7 +435,7 @@ final class ASADetailScreen:
     }
     
     private func updateSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<SectionIdentifier, ItemIdentifier>()
+        var snapshot = NSDiffableDataSourceSnapshot<ASADetailScreenSection, ASADetailScreenItem>()
         
         // Profile section
         snapshot.appendSections([.profile])

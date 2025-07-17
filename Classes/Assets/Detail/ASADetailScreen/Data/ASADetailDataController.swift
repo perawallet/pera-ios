@@ -45,3 +45,17 @@ struct ASADetailScreenConfiguration {
     let shouldDisplayAccountActionsBarButtonItem: Bool
     let shouldDisplayQuickActions: Bool
 }
+
+enum ASADetailScreenSection: Hashable {
+    case profile
+    case quickActions
+    case marketInfo
+    case pageContainer
+}
+
+enum ASADetailScreenItem: Hashable {
+    case profile
+    case quickActions
+    case marketInfo
+    case pageContainer
+}
