@@ -113,11 +113,11 @@ private extension BrowserAuthorizedAddressEventHandler {
         }
         
         if account.authorization.isRekeyedToNoAuthInLocal {
-            return "RekeyedNoAuth"
+            return "Rekeyed"
         }
         
-        if account.authorization.isRekeyedToNoAuthInLocal {
-            return "Rekeyed"
+        if account.authorization.isRekeyed {
+            return "RekeyedAuth"
         }
         
         if account.authorization.isLedger {
