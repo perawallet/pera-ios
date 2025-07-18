@@ -37,6 +37,7 @@
       }
     },
     "NSBluetoothAlwaysUsageDescription" : {
+      "comment" : "Privacy - Bluetooth Always Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -47,6 +48,7 @@
       }
     },
     "NSBluetoothPeripheralUsageDescription" : {
+      "comment" : "Privacy - Bluetooth Peripheral Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -57,6 +59,7 @@
       }
     },
     "NSCameraUsageDescription" : {
+      "comment" : "Privacy - Camera Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -67,6 +70,7 @@
       }
     },
     "NSFaceIDUsageDescription" : {
+      "comment" : "Privacy - Face ID Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -77,6 +81,7 @@
       }
     },
     "NSPhotoLibraryAddUsageDescription" : {
+      "comment" : "Privacy - Photo Library Additions Usage Description",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -23,14 +23,24 @@ import Combine
 final class ASADetailScreen:
     BaseViewController,
     Container {
+    
+    // MARK: - Data Source
+    
+    private lazy var dataSource = UICollectionViewDiffableDataSource<ASADetailScreenSection, ASADetailScreenItem>(
+        collectionView: collectionView
+    ) { [weak self] collectionView, indexPath, itemIdentifier in
+        guard let self = self else { return UICollectionViewCell() }
+        return self.cell(for: itemIdentifier, at: indexPath)
+    }
+    
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
-    private lazy var profileView = ASAProfileView()
+    private lazy var profileView = ASAProfileView(shouldShowCharts: configuration.featureFlagService.isEnabled(.assetsChartsEnabled))
     private lazy var quickActionsView = ASADetailQuickActionsView()
     private lazy var marketInfoView = ASADetailMarketView()
-
-    private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
+    private lazy var pagesScreen = PageContainer(configuration: configuration, hidePageBar: true)
+    
     private lazy var activityFragmentScreen = ASAActivityScreen(
         account: dataController.account,
         asset: dataController.asset,
@@ -42,6 +52,17 @@ final class ASADetailScreen:
         copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
+
+    private lazy var collectionView: UICollectionView = {
+        let layout = createCompositionalLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.backgroundColor = Colors.Defaults.background.uiColor
+        return collectionView
+    }()
 
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
         analytics: analytics,
@@ -92,24 +113,8 @@ final class ASADetailScreen:
     )
 
     private var lastDisplayState = DisplayState.normal
-    private var lastFrameOfFoldableArea = CGRect.zero
-
-    private var isDisplayStateInteractiveTransitionInProgress = false
-    private var displayStateInteractiveTransitionInitialFractionComplete: CGFloat = 0
-    private var displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY: CGFloat = 0
-    private var displayStateInteractiveTransitionAnimator: UIViewPropertyAnimator?
-
-    private var pagesFragmentHeightConstraint: Constraint!
-    private var pagesFragmentTopEdgeConstraint: Constraint!
     private var isViewLayoutLoaded = false
-
-    private var selectedPageFragmentScreen: ASADetailPageFragmentScreen? {
-        return pagesFragmentScreen.selectedScreen as? ASADetailPageFragmentScreen
-    }
-
-    private var isDisplayStateTransitionAnimationInProgress: Bool {
-        return displayStateInteractiveTransitionAnimator?.state == .active
-    }
+    private var selectedPageIndex = 0
 
     private var shouldDisplayMarketInfo: Bool {
         dataController.asset.isAvailableOnDiscover
@@ -147,9 +152,12 @@ final class ASADetailScreen:
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addUI()
+        setupCollectionView()
+        setupViews()
         loadData()
         setupCallbacks()
+        
+        updateSnapshot()
     }
 
     override func viewDidLayoutSubviews() {
@@ -158,16 +166,26 @@ final class ASADetailScreen:
         if view.bounds.isEmpty { return }
 
         if !isViewLayoutLoaded {
-            updateUIWhenViewLayoutDidChangeIfNeeded()
             isViewLayoutLoaded = true
         }
-
-        updateUIWhenViewDidLayoutSubviewsIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         switchToHighlightedNavigationBarAppearance()
+        activityFragmentScreen.scrollView.isScrollEnabled = false
+        aboutFragmentScreen.scrollView.isScrollEnabled = false
+        
+        // Set up the page items after the view hierarchy is established
+        if !isPagesScreenConfigured {
+            UIView.performWithoutAnimation {
+                pagesScreen.items = [
+                    ActivityPageBarItem(screen: activityFragmentScreen),
+                    AboutPageBarItem(screen: aboutFragmentScreen)
+                ]
+                isPagesScreenConfigured = true
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -189,6 +207,257 @@ final class ASADetailScreen:
         ObservableUserDefaults.shared.$isPrivacyModeEnabled
             .sink { [weak self] in self?.bindProfileData(isAmountHidden: $0) }
             .store(in: &cancellables)
+    }
+    
+    private func setupCollectionView() {
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        [
+            ASADetailProfileCell.self,
+            ASADetailQuickActionsCell.self,
+            ASADetailMarketInfoCell.self,
+            ASADetailPageContainerCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
+        
+        collectionView.register(header: ASADetailPageContainerHeader.self)
+        
+        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            if kind == UICollectionView.elementKindSectionHeader,
+               let section = self.dataSource.snapshot().sectionIdentifiers[safe: indexPath.section],
+               section == .pageContainer {
+                let header = collectionView.dequeueHeader(ASADetailPageContainerHeader.self, at: indexPath)
+                header.onActivityButtonPressed = { [weak self] in
+                    guard let self else { return }
+                    pagesScreen.selectedIndex = 0
+                }
+                header.onAboutButtonPressed = { [weak self] in
+                    guard let self else { return }
+                    pagesScreen.selectedIndex = 1
+                }
+                return header
+            }
+
+            return nil
+        }
+        
+        collectionView.dataSource = dataSource
+    }
+    
+    private func setupViews() {
+        view.customizeAppearance(theme.background)
+        setupProfileView()
+        setupQuickActionsView()
+        setupMarketInfoView()
+        setupPageFragments()
+    }
+    
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            guard let self = self else { return nil }
+            
+            let sectionIdentifiers = self.dataSource.snapshot().sectionIdentifiers
+            guard sectionIndex < sectionIdentifiers.count else { return nil }
+            
+            let section = sectionIdentifiers[sectionIndex]
+            return self.createLayoutSection(for: section, environment: layoutEnvironment)
+        }
+        
+        return layout
+    }
+    
+    private func createLayoutSection(for section: ASADetailScreenSection, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        switch section {
+        case .profile:
+            return createProfileSection(environment: environment)
+        case .quickActions:
+            return createQuickActionsSection(environment: environment)
+        case .marketInfo:
+            return createMarketInfoSection(environment: environment)
+        case .pageContainer:
+            return createPageContainerSection(environment: environment)
+        }
+    }
+    
+    private func createProfileSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(200)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(200)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 20,
+            leading: 24,
+            bottom: 0,
+            trailing: 24
+        )
+        
+        return section
+    }
+    
+    private func createQuickActionsSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(60)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(60)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 20,
+            leading: 24,
+            bottom: 0,
+            trailing: 24
+        )
+        
+        return section
+    }
+    
+    private func createMarketInfoSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(80)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(80)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 20,
+            leading: 24,
+            bottom: 0,
+            trailing: 24
+        )
+        
+        return section
+    }
+    
+    private func createPageContainerSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(600)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(600)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 20,
+            trailing: 0
+        )
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(76)
+        )
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        header.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
+    private var isPagesScreenConfigured = false
+
+    private func setupPageFragments() {
+        addChild(pagesScreen)
+        pagesScreen.didMove(toParent: self)
+        
+        // Force view loading to establish the view hierarchy
+        _ = pagesScreen.view
+    }
+
+    private func cell(for itemIdentifier: ASADetailScreenItem, at indexPath: IndexPath) -> UICollectionViewCell {
+        switch itemIdentifier {
+        case .profile:
+            let cell = collectionView.dequeue(
+                ASADetailProfileCell.self,
+                at: indexPath
+            )
+            cell.configure(with: profileView)
+            return cell
+        case .quickActions:
+            let cell = collectionView.dequeue(
+                ASADetailQuickActionsCell.self,
+                at: indexPath
+            )
+            cell.configure(with: quickActionsView)
+            return cell
+        case .marketInfo:
+            let cell = collectionView.dequeue(
+                ASADetailMarketInfoCell.self,
+                at: indexPath
+            )
+            cell.configure(with: marketInfoView)
+            return cell
+        case .pageContainer:
+            let cell = collectionView.dequeue(
+                ASADetailPageContainerCell.self,
+                at: indexPath
+            )
+            cell.configure(with: pagesScreen.view)
+            return cell
+        }
+    }
+    
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<ASADetailScreenSection, ASADetailScreenItem>()
+        
+        // Profile section
+        snapshot.appendSections([.profile])
+        snapshot.appendItems([.profile], toSection: .profile)
+        
+        // Quick actions section (if should display)
+        if dataController.configuration.shouldDisplayQuickActions {
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems([.quickActions], toSection: .quickActions)
+        }
+        
+        // Market info section (if should display)
+        if shouldDisplayMarketInfo {
+            snapshot.appendSections([.marketInfo])
+            snapshot.appendItems([.marketInfo], toSection: .marketInfo)
+        }
+        
+        // PageContainer section
+        snapshot.appendSections([.pageContainer])
+        snapshot.appendItems([.pageContainer], toSection: .pageContainer)
+        
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
 
@@ -261,43 +530,10 @@ extension ASADetailScreen {
         accountInformationFlowCoordinator.launch(sourceAccount)
     }
 
-    private func addUI() {
-        addBackground()
-        addProfile()
-
-        if dataController.configuration.shouldDisplayQuickActions {
-            addQuickActions()
-        }
-
-        addMarketInfo()
-
-        addPagesFragment()
-    }
-
     private func updateUIWhenViewLayoutDidChangeIfNeeded() {
-        if isDisplayStateInteractiveTransitionInProgress { return }
-        if isDisplayStateTransitionAnimationInProgress { return }
         if !isViewLayoutLoaded { return }
-        if !profileView.isLayoutLoaded { return }
-
-        if dataController.configuration.shouldDisplayQuickActions && !quickActionsView.isLayoutLoaded {
-            return
-        }
-
-        lastFrameOfFoldableArea = calculateFrameOfFoldableArea()
-
-        updatePagesFragmentWhenViewLayoutDidChange()
-
-        if pagesFragmentScreen.items.isEmpty {
-            addPages()
-        }
-    }
-
-    private func updateUIWhenViewDidLayoutSubviewsIfNeeded() {
-        if isDisplayStateInteractiveTransitionInProgress { return }
-        if isDisplayStateTransitionAnimationInProgress { return }
-
-        updatePagesWhenViewDidLayoutSubviews()
+        // Remove updateSnapshot() call from here since it's now called in viewDidLoad
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
     private func updateUIWhenAccountDidRename() {
@@ -313,8 +549,7 @@ extension ASADetailScreen {
         bindUIData()
         removeLoading()
         removeError()
-        removeMarketInfoIfNeeded()
-        updateUIWhenViewLayoutDidChangeIfNeeded()
+        updateSnapshot() // Keep this call to refresh data when loaded
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
@@ -323,10 +558,7 @@ extension ASADetailScreen {
     }
 
     private func updateUI(for state: DisplayState) {
-        updateProfile(for: state)
-        updateQuickActions(for: state)
-        updateMarketInfo(for: state)
-        updatePagesFragment(for: state)
+        collectionView.reloadData()
     }
 
     private func bindUIData() {
@@ -339,10 +571,6 @@ extension ASADetailScreen {
         bindProfileDataWhenPreferredUserInterfaceStyleDidChange()
     }
 
-    private func addBackground() {
-        view.customizeAppearance(theme.background)
-    }
-
     private func makeLoading() -> ASADetailLoadingView {
         let loadingView = ASADetailLoadingView()
         loadingView.customize(theme.loading)
@@ -352,10 +580,7 @@ extension ASADetailScreen {
     private func addLoading() {
         view.addSubview(loadingView)
         loadingView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+            $0.edges.equalToSuperview()
         }
 
         loadingView.startAnimating()
@@ -376,10 +601,7 @@ extension ASADetailScreen {
     private func addError() {
         view.addSubview(errorView)
         errorView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+            $0.edges.equalToSuperview()
         }
 
         errorView.startObserving(event: .performPrimaryAction) {
@@ -389,8 +611,6 @@ extension ASADetailScreen {
             self.dataController.loadData()
         }
 
-        /// <todo>
-        /// Why don't we take as a reference the error for the view.
         errorView.bindData(ListErrorViewModel())
     }
 
@@ -398,41 +618,50 @@ extension ASADetailScreen {
         errorView.removeFromSuperview()
     }
 
-    private func addProfile() {
+    private func setupProfileView() {
         profileView.customize(theme.profile)
 
-        view.addSubview(profileView)
-        profileView.snp.makeConstraints {
-            $0.top == theme.normalProfileVerticalEdgeInsets.top
-            $0.leading == theme.profileHorizontalEdgeInsets.leading
-            $0.trailing == theme.profileHorizontalEdgeInsets.trailing
-        }
-
-        profileView.startObserving(event: .layoutChanged) {
-            [unowned self] in
-
-            self.updateUIWhenViewLayoutDidChangeIfNeeded()
-        }
         profileView.startObserving(event: .copyAssetID) {
             [unowned self] in
-
             self.copyToClipboardController.copyID(self.dataController.asset)
         }
         
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
         }
+        
+        if configuration.featureFlagService.isEnabled(.assetsChartsEnabled) {
+            profileView.onPeriodChange = { [weak self] newPeriodSelected in
+                guard let self else { return }
+                dataController.updateChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: newPeriodSelected)
+            }
+            
+            profileView.onPointSelected = { [weak self] pointSelected in
+                guard let self else { return }
 
+                guard
+                    let pointSelected,
+                    let date = pointSelected.timestamp.toDate(.fullNumericWithTimezone)
+                else {
+                    bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                    return
+                }
+                
+                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(primaryValue: pointSelected.primaryValue, secondaryValue: pointSelected.secondaryValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
+            }
+        }
+        
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
     }
 
-    private func bindProfileData(isAmountHidden: Bool) {
+    private func bindProfileData(isAmountHidden: Bool, chartPointSelected: ChartSelectedPointViewModel? = nil) {
         let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: CurrencyFormatter(),
-            isAmountHidden: isAmountHidden
+            isAmountHidden: isAmountHidden,
+            selectedPointVM: chartPointSelected
         )
         profileView.bindData(viewModel)
     }
@@ -445,35 +674,12 @@ extension ASADetailScreen {
         profileView.bindIcon(viewModel)
     }
 
-    private func updateProfile(for state: DisplayState) {
-        switch state {
-        case .normal:
-            profileView.expand()
-            profileView.snp.updateConstraints {
-                $0.top == theme.normalProfileVerticalEdgeInsets.top
-            }
-        case .folded:
-            profileView.compress()
-            profileView.snp.updateConstraints {
-                $0.top == theme.foldedProfileVerticalEdgeInsets.top
-            }
-        }
-    }
-
-    private func addQuickActions() {
+    private func setupQuickActionsView() {
         if !dataController.configuration.shouldDisplayQuickActions {
             return
         }
 
         quickActionsView.customize(theme.quickActions)
-
-        view.addSubview(quickActionsView)
-        quickActionsView.snp.makeConstraints {
-            $0.top == profileView.snp.bottom + theme.spacingBetweenProfileAndQuickActions
-            $0.leading >= theme.profileHorizontalEdgeInsets.leading
-            $0.trailing <= theme.profileHorizontalEdgeInsets.trailing
-            $0.centerX == 0
-        }
 
         let asset = dataController.asset
         let swapDisplayStore = SwapDisplayStore()
@@ -483,11 +689,6 @@ extension ASADetailScreen {
             isSwapBadgeVisible: !isOnboardedToSwap
         )
 
-        quickActionsView.startObserving(event: .layoutChanged) {
-            [unowned self] in
-
-            self.updateUIWhenViewLayoutDidChangeIfNeeded()
-        }
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
             self.navigateToBuyAlgoIfPossible()
@@ -504,132 +705,18 @@ extension ASADetailScreen {
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
-
             self.navigateToSendTransactionIfPossible()
         }
         quickActionsView.startObserving(event: .receive) {
             [unowned self] in
-
             self.navigateToReceiveTransaction()
         }
 
         quickActionsView.bindData(viewModel)
     }
 
-    private func updateQuickActions(for state: DisplayState) {
-        quickActionsView.alpha = state.isFolded ? 0 : 1
-    }
-
-    private func updateMarketInfo(for state: DisplayState) {
-        marketInfoView.alpha = state.isFolded ? 0 : 1
-    }
-
-    private func addPagesFragment() {
-        pagesFragmentScreen.view.customizeAppearance(theme.pagesFragmentBackground)
-
-        addContent(pagesFragmentScreen) {
-            fragmentView in
-
-            view.addSubview(fragmentView)
-            fragmentView.snp.makeConstraints {
-                $0.leading == 0
-                $0.trailing == 0
-
-                pagesFragmentHeightConstraint = $0.matchToHeight(of: view)
-                pagesFragmentTopEdgeConstraint = $0.top == 0
-            }
-        }
-    }
-
-    private func updatePagesFragmentWhenViewLayoutDidChange() {
-        updatePagesFragment(for: lastDisplayState)
-    }
-
-    private func updatePagesFragment(for state: DisplayState) {
-        let normalTopEdgeInset = calculateSpacingOverPagesFragment(for: .folded)
-        pagesFragmentHeightConstraint.update(offset: -normalTopEdgeInset)
-
-        updatePagesFragmentPosition(for: state)
-    }
-
-    private func updatePagesFragmentPosition(for state: DisplayState) {
-        let topEdgeInset = calculateSpacingOverPagesFragment(for: state)
-        pagesFragmentTopEdgeConstraint.update(inset: topEdgeInset)
-    }
-
-    private func bindPagesFragmentData() {
-        bindPagesData()
-    }
-
-    private func addPages() {
-        pagesFragmentScreen.items = [
-            ActivityPageBarItem(screen: activityFragmentScreen),
-            AboutPageBarItem(screen: aboutFragmentScreen)
-        ]
-
-        activityFragmentScreen.scrollView.panGestureRecognizer.addTarget(
-            self,
-            action: #selector(updateUIWhenPagesScrollableAreaDidChange(_:))
-        )
-        aboutFragmentScreen.scrollView.panGestureRecognizer.addTarget(
-            self,
-            action: #selector(updateUIWhenPagesScrollableAreaDidChange(_:))
-        )
-    }
-
-    private func updatePagesWhenPagesScrollableAreaDidChange() {
-        updatePagesWhenViewDidLayoutSubviews()
-    }
-
-    private func updatePagesWhenViewDidLayoutSubviews() {
-        /// <note>
-        /// The area within the last point means the pages fragment is folded. So, the pages can be
-        /// scrolled inside.
-        var frameOfFoldingArea = lastFrameOfFoldableArea
-        frameOfFoldingArea.origin.y += 1
-
-        /// <note>
-        /// If the pages fragment is being animated, then `presentation()` gives us its actual frame
-        /// which the animations are applied.
-        let frameOfPagesFragment =
-            pagesFragmentScreen.view.layer.presentation()?.frame ?? pagesFragmentScreen.view.frame
-        let positionOfPagesFragment = frameOfPagesFragment.origin
-        let isFolding = frameOfFoldingArea.contains(positionOfPagesFragment)
-
-        setPagesScrollAnchoredOnTop(!isFolding)
-    }
-
-    private func setPagesScrollAnchoredOnTop(_ enabled: Bool) {
-        activityFragmentScreen.isScrollAnchoredOnTop = !enabled
-        aboutFragmentScreen.isScrollAnchoredOnTop = !enabled
-    }
-
-    private func bindPagesData() {
-        bindAboutPageData()
-    }
-
-    private func bindAboutPageData() {
-        let asset = dataController.asset
-        aboutFragmentScreen.bindData(asset: asset)
-    }
-
-    private func addMarketInfo() {
+    private func setupMarketInfoView() {
         marketInfoView.customize(theme.marketInfo)
-
-        let topView: UIView
-
-        if dataController.configuration.shouldDisplayQuickActions {
-            topView = quickActionsView
-        } else {
-            topView = profileView
-        }
-
-        view.addSubview(marketInfoView)
-        marketInfoView.snp.makeConstraints {
-            $0.top == topView.snp.bottom + theme.spacingBetweenProfileAndQuickActions
-            $0.leading == theme.profileHorizontalEdgeInsets.leading
-            $0.trailing == theme.profileHorizontalEdgeInsets.trailing
-        }
 
         marketInfoView.startObserving(event: .market) {
             [unowned self] in
@@ -658,50 +745,17 @@ extension ASADetailScreen {
         marketInfoView.bindData(viewModel)
     }
 
-    private func removeMarketInfoIfNeeded() {
-        guard !shouldDisplayMarketInfo else {
-            return
-        }
-        marketInfoView.removeFromSuperview()
-    }
-}
-
-extension ASADetailScreen {
-    private func calculateSpacingOverPagesFragment(for state: DisplayState) -> CGFloat {
-        switch state {
-        case .normal: return lastFrameOfFoldableArea.maxY
-        case .folded: return lastFrameOfFoldableArea.minY
-        }
+    private func bindPagesFragmentData() {
+        bindAboutPageData()
     }
 
-    private func calculateFrameOfFoldableArea() -> CGRect {
-        let width = view.bounds.width
-        let minHeight =
-            theme.foldedProfileVerticalEdgeInsets.top +
-            profileView.intrinsicCompressedContentSize.height +
-            theme.foldedProfileVerticalEdgeInsets.bottom
-        var maxHeight =
-            theme.normalProfileVerticalEdgeInsets.top +
-            profileView.intrinsicExpandedContentSize.height +
-            theme.normalProfileVerticalEdgeInsets.bottom
-
-        if dataController.configuration.shouldDisplayQuickActions {
-            let quickActionsHeight =
-                theme.spacingBetweenProfileAndQuickActions +
-                quickActionsView.bounds.height
-            maxHeight += quickActionsHeight
+    private func bindAboutPageData() {
+        let asset = dataController.asset
+        
+        // Get the about screen from the page container (second screen)
+        if let aboutScreen = pagesScreen.screens.last as? ASAAboutScreen {
+            aboutScreen.bindData(asset: asset)
         }
-
-        if shouldDisplayMarketInfo {
-            let marketInfoHeight =
-                theme.spacingBetweenProfileAndQuickActions +
-                marketInfoView.bounds.height
-            maxHeight += marketInfoHeight
-        }
-
-        let height = maxHeight - minHeight
-
-        return CGRect(x: 0, y: minHeight, width: width, height: height)
     }
 }
 
@@ -725,9 +779,22 @@ extension ASADetailScreen {
             case .didLoadData: self.updateUIWhenDataDidLoad()
             case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
             case .didUpdateAccount(let old): self.updateNavigationItemsIfNeededWhenAccountDidUpdate(old: old)
+            case .didFetchChartData(data: let chartData, error: let errorDescription, period: let period):
+                guard let chartData else {
+                    self.bannerController?.presentErrorBanner(
+                        title: String(localized: "pass-phrase-verify-sdk-error"),
+                        message: errorDescription ?? ""
+                    )
+                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false))
+                    return
+                }
+                profileView.updateChart(with: chartData)
             }
         }
         dataController.loadData()
+        if configuration.featureFlagService.isEnabled(.assetsChartsEnabled) {
+            dataController.fetchInitialChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: .oneWeek)
+        }
     }
 }
 
@@ -740,231 +807,6 @@ extension ASADetailScreen {
         addNavigationActions()
         bindNavigationTitle()
         setNeedsRightBarButtonItemsUpdate()
-    }
-}
-
-extension ASADetailScreen {
-    @objc
-    private func updateUIWhenPagesScrollableAreaDidChange(_ recognizer: UIPanGestureRecognizer) {
-        updatePagesWhenPagesScrollableAreaDidChange()
-
-        switch recognizer.state {
-        case .began: startDisplayStateInteractiveTransition(recognizer)
-        case .changed: updateDisplayStateInteractiveTransition(recognizer)
-        case .ended: completeDisplayStateInteractiveTransition(recognizer)
-        case .failed: reverseDisplayStateInteractiveTransition(recognizer)
-        case .cancelled: reverseDisplayStateInteractiveTransition(recognizer)
-        default: break
-        }
-    }
-
-    private func startDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
-        isDisplayStateInteractiveTransitionInProgress = true
-
-        if !isDisplayStateTransitionAnimationInProgress {
-            let nextDisplayState = lastDisplayState.reversed()
-            displayStateInteractiveTransitionAnimator =
-                startDisplayStateTransitionAnimation(to: nextDisplayState)
-        }
-
-        displayStateInteractiveTransitionAnimator?.pauseAnimation()
-
-        let fractionComplete = displayStateInteractiveTransitionAnimator?.fractionComplete ?? 0
-        displayStateInteractiveTransitionInitialFractionComplete = fractionComplete
-
-        let scrollView = selectedPageFragmentScreen?.scrollView
-        let contentOffsetY = scrollView?.contentOffset.y ?? 0
-        let contentInsetTop = scrollView?.adjustedContentInset.top ?? 0
-        displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY = contentOffsetY + contentInsetTop
-    }
-
-    private func updateDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
-        guard let animator = displayStateInteractiveTransitionAnimator else { return }
-
-        animator.pauseAnimation()
-
-        let translation = recognizer.translation(in: view)
-        let normalSpacing = calculateSpacingOverPagesFragment(for: .normal)
-        let foldedSpacing = calculateSpacingOverPagesFragment(for: .folded)
-        let distance = normalSpacing - foldedSpacing
-        let initialContentOffsetY = displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY
-        /// <note>
-        /// In order to switch between the normal and folded states, the scroll should be on top for
-        /// the selected page; therefore, the translation is projected on the content offset of the
-        /// page, and determine whether or not there is still space to be scrolled over before
-        /// switching the next display state.
-        let scrollFraction = (translation.y - initialContentOffsetY) / distance
-        let nextDisplayState = lastDisplayState.reversed()
-        let scrollDirectionMultiplier: CGFloat = nextDisplayState.isFolded ? -1 : 1
-        let reverseMultiplier: CGFloat = animator.isReversed ? -1 : 1
-        /// <note>
-        /// While the translation is negative, the fraction should be positive on scrolling down.
-        let fraction =
-            scrollFraction *
-            scrollDirectionMultiplier *
-            reverseMultiplier
-
-        var fractionComplete: CGFloat = 0
-        fractionComplete += displayStateInteractiveTransitionInitialFractionComplete
-        fractionComplete += fraction
-
-        animator.fractionComplete = fractionComplete.clamped(0...1)
-    }
-
-    private func completeDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
-        guard let animator = displayStateInteractiveTransitionAnimator else { return }
-
-        let isReversed = isDisplayStateInteractiveTransitionReversed(recognizer)
-        if isReversed == animator.isReversed {
-            animator.startAnimation()
-        } else {
-            reverseDisplayStateInteractiveTransition(recognizer)
-        }
-    }
-
-    private func reverseDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
-        guard let animator = displayStateInteractiveTransitionAnimator else { return }
-
-        animator.isReversed.toggle()
-        animator.continueAnimation(
-            withTimingParameters: nil,
-            durationFactor: 0
-        )
-    }
-
-    private func isDisplayStateInteractiveTransitionReversed(_ recognizer: UIPanGestureRecognizer) -> Bool {
-        guard let animator = displayStateInteractiveTransitionAnimator else {
-            return false
-        }
-
-        let nextDisplayState = lastDisplayState.reversed()
-        let contentOffsetYOnTop = -(selectedPageFragmentScreen?.scrollView.adjustedContentInset.top ?? 0)
-        let contentOffsetY = selectedPageFragmentScreen?.scrollView.contentOffset.y ?? 0
-        let velocityY = recognizer.velocity(in: recognizer.view).y
-
-        /// <note>
-        /// If there is still space to be scrolled over before switching the next display state,
-        /// the animation should be reversed so that the pages fragment can't change its position.
-        switch nextDisplayState {
-        case .normal:
-            if contentOffsetY > contentOffsetYOnTop {
-                return true
-            }
-
-            if velocityY == 0 {
-                return animator.isReversed
-            }
-
-            return velocityY < 0
-        case .folded:
-            if contentOffsetY < contentOffsetYOnTop {
-                return true
-            }
-
-            if velocityY == 0 {
-                return animator.isReversed
-            }
-
-            return velocityY > 0
-        }
-    }
-}
-
-extension ASADetailScreen {
-    private func startDisplayStateTransitionAnimation(to state: DisplayState) -> UIViewPropertyAnimator {
-        let animator = makeTransitionAnimator(for: state)
-        animator.startAnimation()
-        return animator
-    }
-
-    private func makeTransitionAnimator(for state: DisplayState) -> UIViewPropertyAnimator {
-        switch state {
-        case .normal: return makeTransitionAnimatorForNormalDisplayState()
-        case .folded: return makeTransitionAnimatorForFoldedDisplayState()
-        }
-    }
-
-    private func makeTransitionAnimatorForNormalDisplayState() -> UIViewPropertyAnimator {
-        let animator = makeTransitionAnimatorForAnyDisplayState()
-        animator.addAnimations {
-            [unowned self] in
-
-            let state = DisplayState.normal
-
-            self.updateProfile(for: state)
-            self.updatePagesFragment(for: state)
-
-            UIView.animateKeyframes(
-                withDuration: 0,
-                delay: 0
-            ) {
-                UIView.addKeyframe(
-                    withRelativeStartTime: 0.75,
-                    relativeDuration: 0.25
-                ) { [unowned self] in
-                    self.updateQuickActions(for: state)
-                    self.updateMarketInfo(for: state)
-                }
-            }
-
-            self.view.layoutIfNeeded()
-        }
-        return animator
-    }
-
-    private func makeTransitionAnimatorForFoldedDisplayState() -> UIViewPropertyAnimator {
-        let animator = makeTransitionAnimatorForAnyDisplayState()
-        animator.addAnimations {
-            [unowned self] in
-
-            let state = DisplayState.folded
-
-            self.updateProfile(for: state)
-            self.updatePagesFragment(for: state)
-
-            UIView.animateKeyframes(
-                withDuration: 0,
-                delay: 0
-            ) {
-                UIView.addKeyframe(
-                    withRelativeStartTime: 0,
-                    relativeDuration: 0.25
-                ) { [unowned self] in
-                    self.updateQuickActions(for: state)
-                    self.updateMarketInfo(for: state)
-                }
-            }
-
-            self.view.layoutIfNeeded()
-        }
-        return animator
-    }
-
-    private func makeTransitionAnimatorForAnyDisplayState() -> UIViewPropertyAnimator {
-        let timingParameters = UISpringTimingParameters(
-            mass: 1.8,
-            stiffness: 707,
-            damping: 56,
-            initialVelocity: .zero
-        )
-        let animator = UIViewPropertyAnimator(duration: 0.386, timingParameters: timingParameters)
-        animator.addCompletion {
-            [weak self] position in
-            guard let self = self else { return }
-
-            if position == .end {
-                self.lastDisplayState.reverse()
-            }
-
-            self.updateUI(for: self.lastDisplayState)
-            self.view.setNeedsLayout()
-
-            self.displayStateInteractiveTransitionInitialFractionComplete = 0
-            self.displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY =
-            self.selectedPageFragmentScreen?.scrollView.contentOffset.y ?? 0
-            self.isDisplayStateInteractiveTransitionInProgress = false
-        }
-        return animator
     }
 }
 
@@ -1034,6 +876,128 @@ extension ASADetailScreen {
             case .normal: return .folded
             case .folded: return .normal
             }
+        }
+    }
+}
+
+// MARK: - Collection View Cells
+
+class ASADetailProfileCell: UICollectionViewCell {
+    private var containerView: UIView?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        containerView?.removeFromSuperview()
+        containerView = nil
+    }
+    
+    func configure(with view: UIView) {
+        containerView?.removeFromSuperview()
+        containerView = view
+        
+        contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+class ASADetailQuickActionsCell: UICollectionViewCell {
+    private var containerView: UIView?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        containerView?.removeFromSuperview()
+        containerView = nil
+    }
+    
+    func configure(with view: UIView) {
+        containerView?.removeFromSuperview()
+        containerView = view
+        
+        contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+class ASADetailMarketInfoCell: UICollectionViewCell {
+    private var containerView: UIView?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        containerView?.removeFromSuperview()
+        containerView = nil
+    }
+    
+    func configure(with view: UIView) {
+        containerView?.removeFromSuperview()
+        containerView = view
+        
+        contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+class ASADetailPageContainerCell: UICollectionViewCell {
+    private var containerView: UIView?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        containerView?.removeFromSuperview()
+        containerView = nil
+    }
+    
+    func configure(with view: UIView) {
+        containerView?.removeFromSuperview()
+        containerView = view
+        
+        contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }

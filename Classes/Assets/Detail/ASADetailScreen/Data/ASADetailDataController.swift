@@ -29,6 +29,8 @@ protocol ASADetailScreenDataController: AnyObject {
     var asset: Asset { get }
 
     func loadData()
+    func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod)
+    func updateChartData(address: String, assetId: String, period: ChartDataPeriod)
 }
 
 enum ASADetailScreenDataControllerEvent {
@@ -36,9 +38,24 @@ enum ASADetailScreenDataControllerEvent {
     case didLoadData
     case didFailToLoadData(ASADiscoveryScreenDataController.Error)
     case didUpdateAccount(old: Account)
+    case didFetchChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
 }
 
 struct ASADetailScreenConfiguration {
     let shouldDisplayAccountActionsBarButtonItem: Bool
     let shouldDisplayQuickActions: Bool
+}
+
+enum ASADetailScreenSection: Hashable {
+    case profile
+    case quickActions
+    case marketInfo
+    case pageContainer
+}
+
+enum ASADetailScreenItem: Hashable {
+    case profile
+    case quickActions
+    case marketInfo
+    case pageContainer
 }

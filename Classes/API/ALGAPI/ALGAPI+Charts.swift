@@ -37,7 +37,7 @@ extension ALGAPI {
         assetId: String,
         period: ChartDataPeriod,
         currency: String? = nil,
-        onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<AssetChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
             .base(.mobileV1(network))

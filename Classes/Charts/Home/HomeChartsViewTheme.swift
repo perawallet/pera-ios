@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASAProfileViewModel.swift
+//   HomeChartsViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
 
-protocol ASAProfileViewModel: ViewModel {
-    var icon: ImageSource? { get }
-    var name: RightAccessorizedLabelModel? { get }
-    var titleSeparator: TextProvider? { get }
-    var id: TextProvider? { get }
-    var primaryValue: TextProvider? { get }
-    var secondaryValue: TextProvider? { get }
-    var selectedPointDateValue: TextProvider? { get }
+struct HomeChartsViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var contentHeight: LayoutMetric
+    var chartViewLeadingInset: LayoutMetric
+    var chartViewTrailingInset: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.contentHeight = 172
+        self.chartViewLeadingInset = -2
+        self.chartViewTrailingInset = 16
+    }
 }

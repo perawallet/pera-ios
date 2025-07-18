@@ -686,8 +686,8 @@ final class Router:
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
-                api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController,
+                appConfiguration: appConfiguration,
+                chartsDataController: chartsDataController,
                 configuration: screenConfiguration
             )
             let copyToClipboardController = ALGCopyToClipboardController(
