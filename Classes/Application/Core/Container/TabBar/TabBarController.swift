@@ -410,7 +410,7 @@ extension TabBarController {
     }
     
     private func isCardsFeatureEnabled() -> Bool {
-        Environment.current.isCardsFeatureEnabled(for: api.network)
+        AppEnvironment.current.isCardsFeatureEnabled(for: api.network)
     }
 }
 

@@ -74,7 +74,7 @@ final class DiscoverURLGenerator {
         session: Session?,
         enableDiscoverV5: Bool
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.discoverBaseUrl + path)
+        var components = URLComponents(string: AppEnvironment.current.discoverBaseUrl + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
@@ -88,7 +88,7 @@ final class DiscoverURLGenerator {
         session: Session?,
         enableDiscoverV5: Bool
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        var components = URLComponents(string: AppEnvironment.current.discoverBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
@@ -102,7 +102,7 @@ final class DiscoverURLGenerator {
         session: Session?,
         enableDiscoverV5: Bool
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.discoverBrowserURL)
+        var components = URLComponents(string: AppEnvironment.current.discoverBrowserURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
@@ -116,7 +116,7 @@ final class DiscoverURLGenerator {
         session: Session?,
         enableDiscoverV5: Bool
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.discoverMarketURL)
+        var components = URLComponents(string: AppEnvironment.current.discoverMarketURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
@@ -140,7 +140,7 @@ final class DiscoverURLGenerator {
             queryItems.append(.init(name: "poolId", value: poolID))
         }
 
-        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        var components = URLComponents(string: AppEnvironment.current.discoverBaseUrl)
         components?.path = "/token-detail/\(params.assetID)/"
         components?.queryItems = queryItems
         return components?.url
@@ -203,9 +203,9 @@ final class DiscoverURLGenerator {
 
         switch network {
         case .testnet:
-            base = Environment.current.testNetMobileAPIV1
+            base = AppEnvironment.current.testNetMobileAPIV1
         case .mainnet:
-            base = Environment.current.mainNetMobileAPIV1
+            base = AppEnvironment.current.mainNetMobileAPIV1
         }
 
         var urlComponents = URLComponents(string: base)

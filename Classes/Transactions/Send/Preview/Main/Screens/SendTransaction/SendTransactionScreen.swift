@@ -936,11 +936,11 @@ extension SendTransactionScreen {
         let appID: Int64
         let appAddress: String
         if isTestNet {
-            appID = Environment.current.testNetARC59AppID
-            appAddress = Environment.current.testNetARC59AppAddress
+            appID = AppEnvironment.current.testNetARC59AppID
+            appAddress = AppEnvironment.current.testNetARC59AppAddress
         } else {
-            appID = Environment.current.mainNetARC59AppID
-            appAddress = Environment.current.mainNetARC59AppAddress
+            appID = AppEnvironment.current.mainNetARC59AppID
+            appAddress = AppEnvironment.current.mainNetARC59AppAddress
         }
         
         let draft = SendAssetInboxDraft(

@@ -41,7 +41,7 @@ final class ALGAPI: API {
         self.session = session
 
         super.init(
-            base: Environment.current.serverApi,
+            base: AppEnvironment.current.serverApi,
             networking: AlamofireNetworking(),
             interceptor: ALGAPIInterceptor(),
             networkMonitor: networkMonitor
