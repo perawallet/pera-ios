@@ -45,7 +45,10 @@ final class ChartAPIDataController {
     }
     
     private func loadHomeData(period: ChartDataPeriod) {
-        guard let addresses = session.authenticatedUser?.accounts.map({ $0.address }), addresses.isNonEmpty else {
+        guard let addresses = session.authenticatedUser?.accounts
+            .filter({ !$0.isWatchAccount })
+            .map({ $0.address }),
+            addresses.isNonEmpty else {
             return
         }
         
