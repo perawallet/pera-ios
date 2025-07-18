@@ -51,6 +51,13 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
 
     private var pageSize: CGSize?
     private var isLayoutFinalized = false
+    
+    private var hidePageBar: Bool
+    
+    init(configuration: ViewControllerConfiguration, hidePageBar: Bool = false) {
+        self.hidePageBar = hidePageBar
+        super.init(configuration: configuration)
+    }
 
     func customizePageBarAppearance() {
         pageBar.customizeAppearance(PageBarCommonStyleSheet())
@@ -64,6 +71,8 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
     }
 
     func addPageBar() {
+        guard !hidePageBar else { return }
+        
         view.addSubview(pageBar)
         pageBar.prepareLayout(PageBarCommonLayoutSheet())
         pageBar.snp.makeConstraints {
@@ -80,7 +89,11 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
         pagesView.flowLayout.minimumInteritemSpacing = 0
         pagesView.flowLayout.sectionInset = .zero
         pagesView.snp.makeConstraints {
-            $0.top == pageBar.snp.bottom
+            if hidePageBar {
+                $0.top.equalToSuperview()
+            } else {
+                $0.top.equalTo(pageBar.snp.bottom)
+            }
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
@@ -98,6 +111,11 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
 
         addPageBar()
         addPages()
+        
+        if hidePageBar {
+            pageBar.isHidden = true
+            pageBar.isUserInteractionEnabled = false
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -159,12 +177,16 @@ extension PageContainer {
 
         items.forEach {
             preparePageForUse($0)
-
-            newBarButtonItems.append($0.barButtonItem)
+            if !hidePageBar {
+                newBarButtonItems.append($0.barButtonItem)
+            }
             newScreens.append($0.screen)
         }
-
-        pageBar.items = newBarButtonItems
+        
+        if !hidePageBar {
+            pageBar.items = newBarButtonItems
+        }
+        
         screens = newScreens
 
         if !isLayoutFinalized {
@@ -195,7 +217,7 @@ extension PageContainer {
 
         /// <note>
         /// If `isViewAppeared=true`, then scroll delegate will handle the selected page bar item.
-        if !isViewAppeared {
+        if !isViewAppeared, !hidePageBar {
             pageBar.scrollToItem(at: selectedIndex, animated: false)
         }
 

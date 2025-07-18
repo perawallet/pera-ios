@@ -74,10 +74,6 @@ final class ChartAPIDataController {
     }
     
     private func loadAssetData(address: String, assetId: String, period: ChartDataPeriod) {
-        guard let addresses = session.authenticatedUser?.accounts.map({ $0.address }), addresses.isNonEmpty else {
-            return
-        }
-        
         api.fetchAssetBalanceChartData(address: address, assetId: assetId, period: period) { [weak self] response in
             guard let self else { return }
             switch response {
