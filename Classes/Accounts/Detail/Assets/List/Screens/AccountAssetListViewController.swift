@@ -335,7 +335,7 @@ extension AccountAssetListViewController {
 
             $0.fitToSize(theme.accountActionsMenuActionSize)
             $0.trailing == theme.accountActionsMenuActionTrailingPadding
-            $0.bottom == bottom
+            $0.bottom == bottom + theme.accountActionsMenuActionBottomInset
         }
 
         accountActionsMenuActionView.addTouch(
