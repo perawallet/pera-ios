@@ -26,6 +26,7 @@ extension AccountAssetListViewController {
         let accountActionsMenuActionSize: LayoutSize
         let accountActionsMenuActionTrailingPadding: LayoutMetric
         let accountActionsMenuActionBottomPadding: LayoutMetric
+        let accountActionsMenuActionBottomInset: LayoutMetric
         let spacingBetweenListAndAccountActionsMenuAction: LayoutMetric
         let minSpacingBetweenSearchInputFieldAndKeyboard: LayoutMetric
 
@@ -36,7 +37,8 @@ extension AccountAssetListViewController {
             self.accountActionsMenuActionIcon = "icon-account-detail-quick".uiImage
             self.accountActionsMenuActionSize = (64, 64)
             self.accountActionsMenuActionTrailingPadding = 24
-            self.accountActionsMenuActionBottomPadding = 8
+            self.accountActionsMenuActionBottomPadding = 35
+            self.accountActionsMenuActionBottomInset = 65
             self.spacingBetweenListAndAccountActionsMenuAction = 4
             self.minSpacingBetweenSearchInputFieldAndKeyboard = 8
         }
