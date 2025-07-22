@@ -79,9 +79,16 @@ extension WatchAccountPortfolioViewModel {
         _ portfolioItem: AccountPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel
     ) {
+        
+        var selectedPointPrimaryValue = selectedPoint.primaryValue
+        
+        if let currency = try? portfolioItem.currency.primaryValue?.unwrap(), !currency.isAlgo {
+            selectedPointPrimaryValue = selectedPoint.secondaryValue
+        }
+        
         let text = format(
             currencyValue: portfolioItem.currency.primaryValue,
-            selectedPointValue: selectedPoint.primaryValue,
+            selectedPointValue: selectedPointPrimaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
@@ -110,9 +117,16 @@ extension WatchAccountPortfolioViewModel {
         _ portfolioItem: AccountPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel
     ) {
+        
+        var selectedPointSecondaryValue = selectedPoint.secondaryValue
+        
+        if let currency = try? portfolioItem.currency.secondaryValue?.unwrap(), currency.isAlgo {
+            selectedPointSecondaryValue = selectedPoint.primaryValue
+        }
+        
         let text = format(
             currencyValue: portfolioItem.currency.secondaryValue,
-            selectedPointValue: selectedPoint.secondaryValue,
+            selectedPointValue: selectedPointSecondaryValue,
             isAmountHidden: portfolioItem.isAmountHidden,
             addApproximatelyEqualChar: true,
             in: .standalone()
