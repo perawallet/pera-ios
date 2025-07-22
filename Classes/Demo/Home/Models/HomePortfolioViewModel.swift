@@ -98,15 +98,9 @@ extension HomePortfolioViewModel {
         _ portfolioItem: TotalPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel
     ) {
-        var selectedPointPrimaryValue = selectedPoint.primaryValue
-        
-        if let currency = try? portfolioItem.currency.primaryValue?.unwrap(), !currency.isAlgo {
-            selectedPointPrimaryValue = selectedPoint.secondaryValue
-        }
-        
         let text = format(
             currencyValue: portfolioItem.currency.primaryValue,
-            selectedPointValue: selectedPointPrimaryValue,
+            selectedPointValue: selectedPoint.primaryValue(for: portfolioItem.currency.primaryValue),
             isAmountHidden: portfolioItem.isAmountHidden,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
@@ -138,16 +132,9 @@ extension HomePortfolioViewModel {
         _ portfolioItem: TotalPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel
     ) {
-        
-        var selectedPointSecondaryValue = selectedPoint.secondaryValue
-        
-        if let currency = try? portfolioItem.currency.secondaryValue?.unwrap(), currency.isAlgo {
-            selectedPointSecondaryValue = selectedPoint.primaryValue
-        }
-        
         let text = format(
             currencyValue: portfolioItem.currency.secondaryValue,
-            selectedPointValue: selectedPointSecondaryValue,
+            selectedPointValue: selectedPoint.secondaryValue(for: portfolioItem.currency.secondaryValue),
             isAmountHidden: portfolioItem.isAmountHidden,
             addApproximatelyEqualChar: true,
             in: .standalone()

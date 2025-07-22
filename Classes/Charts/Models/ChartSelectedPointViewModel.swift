@@ -15,7 +15,29 @@
 //   ChartSelectedPointViewModel.swift
 
 struct ChartSelectedPointViewModel: Hashable {
-    let primaryValue: Double
-    let secondaryValue: Double
+    private let primaryValue: Double
+    private let secondaryValue: Double
     let dateValue: String
+    
+    init(primaryValue: Double, secondaryValue: Double, dateValue: String) {
+        self.primaryValue = primaryValue
+        self.secondaryValue = secondaryValue
+        self.dateValue = dateValue
+    }
+    
+    func primaryValue(for remoteCurrency: RemoteCurrencyValue? = nil) -> Double {
+        guard  let currency = try? remoteCurrency?.unwrap(), !currency.isAlgo else {
+            return primaryValue
+        }
+        
+        return secondaryValue
+    }
+    
+    func secondaryValue(for remoteCurrency: RemoteCurrencyValue? = nil) -> Double {
+        guard  let currency = try? remoteCurrency?.unwrap(), currency.isAlgo else {
+            return secondaryValue
+        }
+        
+        return primaryValue
+    }
 }
