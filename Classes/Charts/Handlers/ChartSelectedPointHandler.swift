@@ -12,10 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ChartSelectedPointViewModel.swift
+//   ChartSelectedPointHandler.swift
 
-struct ChartSelectedPointViewModel: Hashable {
-    let primaryValue: Double
-    let secondaryValue: Double
-    let dateValue: String
+struct ChartSelectedPointHandler {
+    static func resolveValues(
+        primaryValue: Double,
+        secondaryValue: Double,
+        currency: RemoteCurrencyValue?
+    ) -> (primary: Double, secondary: Double) {
+        guard let currency = try? currency?.unwrap() else {
+            return (primaryValue, secondaryValue)
+        }
+
+        if currency.isAlgo {
+            return (primaryValue, secondaryValue)
+        } else {
+            return (secondaryValue, primaryValue)
+        }
+    }
 }

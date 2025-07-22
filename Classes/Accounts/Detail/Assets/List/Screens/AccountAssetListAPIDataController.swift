@@ -218,8 +218,14 @@ extension AccountAssetListAPIDataController {
         }
         
         let dateValue = DateFormatter.chartDisplay.string(from: date)
+        
+        let (resolvedPrimaryValue, resolvedSecondaryValue) = ChartSelectedPointHandler.resolveValues(
+            primaryValue: point.primaryValue,
+            secondaryValue: point.secondaryValue,
+            currency: portfolioItem.currency.primaryValue
+        )
 
-        let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
+        let viewModel = ChartSelectedPointViewModel(primaryValue: resolvedPrimaryValue, secondaryValue: resolvedSecondaryValue, dateValue: dateValue)
         
         if account.value.authorization.isWatch {
             publish(event: .didSelectChartPoint(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))

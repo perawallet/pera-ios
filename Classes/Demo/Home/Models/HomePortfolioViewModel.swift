@@ -98,9 +98,10 @@ extension HomePortfolioViewModel {
         _ portfolioItem: TotalPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel
     ) {
+        
         let text = format(
+            selectedPointValue: selectedPoint.primaryValue,
             currencyValue: portfolioItem.currency.primaryValue,
-            selectedPointValue: selectedPoint.primaryValue(for: portfolioItem.currency.primaryValue),
             isAmountHidden: portfolioItem.isAmountHidden,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
@@ -133,8 +134,8 @@ extension HomePortfolioViewModel {
         selectedPoint: ChartSelectedPointViewModel
     ) {
         let text = format(
+            selectedPointValue: selectedPoint.secondaryValue,
             currencyValue: portfolioItem.currency.secondaryValue,
-            selectedPointValue: selectedPoint.secondaryValue(for: portfolioItem.currency.secondaryValue),
             isAmountHidden: portfolioItem.isAmountHidden,
             addApproximatelyEqualChar: true,
             in: .standalone()
