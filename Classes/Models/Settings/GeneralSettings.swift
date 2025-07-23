@@ -24,8 +24,6 @@ enum GeneralSettings {
 }
 
 enum AccountSettings: Settings {
-    case secureBackup(numberOfAccountsNotBackedUp: Int?)
-    case secureBackupLoading
     case security
     case contacts
     case notifications
@@ -33,8 +31,6 @@ enum AccountSettings: Settings {
     
     var image: UIImage? {
         switch self {
-        case .secureBackup, .secureBackupLoading:
-            return img("icon-backup")
         case .security:
             return img("icon-settings-security")
         case .contacts:
@@ -48,8 +44,6 @@ enum AccountSettings: Settings {
     
     var name: String {
         switch self {
-        case .secureBackup, .secureBackupLoading:
-            return String(localized: "settings-secure-backup-title")
         case .security:
             return String(localized: "security-settings-title")
         case .contacts:
@@ -61,18 +55,7 @@ enum AccountSettings: Settings {
         }
     }
 
-    var subtitle: String? {
-        switch self {
-        case .secureBackup(let numberOfAccountsNotBackedUp):
-            guard let numberOfAccountsNotBackedUp else {
-                return nil
-            }
-            
-            return String(format: String(localized: "settings-secure-backup-subtitle"), numberOfAccountsNotBackedUp)
-        default:
-            return nil
-        }
-    }
+    var subtitle: String? { nil }
 }
 
 enum AppPreferenceSettings: Settings {

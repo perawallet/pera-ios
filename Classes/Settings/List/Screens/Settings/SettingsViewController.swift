@@ -66,7 +66,6 @@ final class SettingsViewController:
     override func setListeners() {
         observe(notification: .backupCreated) { [weak self] _ in
             guard let self else { return }
-            self.dataSource.updateAccountSettings()
             self.settingsView.collectionView.reloadData()
         }
 
@@ -144,31 +143,9 @@ extension SettingsViewController {
             }
         }
     }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        if let loadingCell = cell as? SettingsLoadingCell {
-            loadingCell.startAnimating()
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didEndDisplaying cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        if let loadingCell = cell as? SettingsLoadingCell {
-            loadingCell.stopAnimating()
-        }
-    }
     
     private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
-        case .secureBackup:
-            algorandSecureBackupFlowCoordinator.launch(by: .push)
         case .security:
             open(.securitySettings, by: .push)
         case .contacts:
@@ -177,8 +154,6 @@ extension SettingsViewController {
             open(.notificationFilter, by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
-        case .secureBackupLoading:
-            break
         }
     }
     
