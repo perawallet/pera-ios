@@ -20,7 +20,6 @@ struct SettingsListView: View {
     
     enum LegacyNavigationOption {
         case back
-        case backup
         case security
         case contacts
         case notifications
@@ -71,7 +70,7 @@ struct SettingsListView: View {
                 ForEach(viewModel.sections) { section in
                     Section(header: ListSectionHeader(text: section.title)) {
                         ForEach(section.rows) { row in
-                            SettingsListCell(icon: row.icon, title: row.title, subtitle: row.subtitle)
+                            SettingsListCell(icon: row.icon, title: row.title)
                                 .settingsViewRowStyle()
                                 .contentShape(Rectangle())
                                 .onTapGesture { handleTapOnRow(row: row) }
@@ -122,8 +121,6 @@ struct SettingsListView: View {
     
     private func handleTapOnRow(row: SettingsListViewModel.Row) {
         switch row {
-        case .secureBackup:
-            onLegacyNavigationOptionSelected?(.backup)
         case .security:
             onLegacyNavigationOptionSelected?(.security)
         case .contacts:
@@ -187,7 +184,7 @@ final class MockedSettingsListModel: SettingsListModelMockable {
     
     init() {
         update(sections: [
-            .accountSection(accountsNeedBackupCount: 123),
+            .accountSection,
             .appPreferencesSection,
             .supportSection
         ])

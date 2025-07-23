@@ -22,7 +22,6 @@ struct SettingsListCell: View {
     
     let icon: ImageResource
     let title: String
-    let subtitle: String?
     
     // MARK: - Body
     
@@ -37,11 +36,6 @@ struct SettingsListCell: View {
                 Text(title)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
-                if let subtitle {
-                    Text(subtitle)
-                        .font(.dmSans.regular.size(13.0))
-                        .foregroundStyle(Color.Text.grayLighter)
-                }
             }
             Spacer()
             Image(.iconListArrow)
@@ -54,7 +48,7 @@ struct SettingsListCell: View {
 struct SettingsListCell_Preview: PreviewProvider {
     
     static var previews: some View {
-        SettingsListCell(icon: .iconWallet, title: "Hello, World!", subtitle: "I'm subtitle")
+        SettingsListCell(icon: .iconWallet, title: "Hello, World!")
             .previewLayout(.fixed(width: 400.0, height: 64.0))
     }
 }
