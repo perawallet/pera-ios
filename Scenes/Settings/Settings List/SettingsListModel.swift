@@ -15,7 +15,6 @@
 //   SettingsListModel.swift
 
 import Foundation
-import Combine
 
 // MARK: - View Model
 
@@ -28,7 +27,6 @@ final class SettingsListViewModel: ObservableObject {
     }
     
     enum Row {
-        case secureBackup(accountsNeedBackupCount: Int)
         case security
         case contacts
         case notifications
@@ -58,56 +56,27 @@ final class SettingsListModel: SettingsListModelable {
     
     var viewModel = SettingsListViewModel()
     
-    // MARK: - Properties
-    
-    private let accountsService: AccountsServicable
-    private var cancellables: Set<AnyCancellable> = []
-    
-    // MARK: - Legacy Properties
-    
-    private let legacySessionManager: Session
-    
     // MARK: - Initialisers
     
-    init(accountsService: AccountsServicable, appVersion: String, legacySessionManager: Session) {
-        self.accountsService = accountsService
-        self.legacySessionManager = legacySessionManager
-        viewModel.appVersion = appVersion
-        setupCallbacks()
+    init(appVersion: String) {
+        setupData(appVersion: appVersion)
     }
     
     // MARK: - Setups
     
-    private func setupCallbacks() {
-        
-        accountsService.accounts.publisher
-            .map { $0.filter(\.isBackupable) }
-            .map { $0.filter { [weak self] in self?.legacySessionManager.backups[$0.address] == nil }}
-            .map(\.count)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in self?.handle(accountsNeedBackupCount: $0) }
-            .store(in: &cancellables)
-    }
-    
-    // MARK: - Handlers
-    
-    private func handle(accountsNeedBackupCount: Int) {
-        viewModel.sections = [
-            .accountSection(accountsNeedBackupCount: accountsNeedBackupCount),
-            .appPreferencesSection,
-            .supportSection
-        ]
+    private func setupData(appVersion: String) {
+        viewModel.sections = [.accountSection, .appPreferencesSection, .supportSection]
+        viewModel.appVersion = appVersion
     }
 }
 
 extension SettingsListViewModel.Section {
     
-    static func accountSection(accountsNeedBackupCount: Int) -> Self {
+    static var accountSection: Self {
         Self(
             id: 0,
             title: String(localized: "title-account"),
             rows: [
-                .secureBackup(accountsNeedBackupCount: accountsNeedBackupCount),
                 .security,
                 .contacts,
                 .notifications,
@@ -146,8 +115,6 @@ extension SettingsListViewModel.Row: Identifiable {
     
     var id: String {
         switch self {
-        case let .secureBackup(accountsNeedBackupCount):
-            return "secureBackup-\(accountsNeedBackupCount)"
         case .security:
             return "security"
         case .contacts:
@@ -178,8 +145,6 @@ extension SettingsListViewModel.Row {
     
     var icon: ImageResource {
         switch self {
-        case .secureBackup:
-            return .Settings.Icon.backup
         case .security:
             return .Settings.Icon.security
         case .contacts:
@@ -205,8 +170,6 @@ extension SettingsListViewModel.Row {
     
     var title: String {
         switch self {
-        case .secureBackup:
-            return String(localized: "settings-secure-backup-title")
         case .security:
             return String(localized: "security-settings-title")
         case .contacts:
@@ -229,15 +192,6 @@ extension SettingsListViewModel.Row {
             return String(localized: "title-privacy-policy")
         case .developer:
             return String(localized: "settings-developer")
-        }
-    }
-    
-    var subtitle: String? {
-        switch self {
-        case let .secureBackup(accountsNeedBackupCount):
-            return String(localized: "settings-secure-backup-subtitle-\(accountsNeedBackupCount)")
-        case .security, .contacts, .notifications, .walletConnect, .currency, .theme, .help, .rateApp, .termsAndServices, .privacyPolicy, .developer:
-            return nil
         }
     }
 }

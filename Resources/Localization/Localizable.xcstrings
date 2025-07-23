@@ -6394,26 +6394,6 @@
         }
       }
     },
-    "settings-secure-backup-subtitle-%lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not backed up (%lld)"
-          }
-        }
-      }
-    },
-    "settings-secure-backup-title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Algorand Secure Backup"
-          }
-        }
-      }
-    },
     "settings-support-title" : {
       "localizations" : {
         "en" : {

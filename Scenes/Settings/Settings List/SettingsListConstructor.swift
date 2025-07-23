@@ -21,7 +21,7 @@ enum SettingsListConstructor {
     static func buildScene(legacyAppConfiguration: AppConfiguration) -> BaseViewController {
         
         let appVersion = Bundle.main.appVersion ?? ""
-        let model = SettingsListModel(accountsService: PeraCoreManager.shared.accounts, appVersion: appVersion, legacySessionManager: legacyAppConfiguration.session)
+        let model = SettingsListModel(appVersion: appVersion)
         let controller = SettingsListViewController(model: model)
         let compatibilityController = SettingsListCompatibilityController(configuration: legacyAppConfiguration.all(), hostingController: controller)
         

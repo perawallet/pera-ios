@@ -42,8 +42,6 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
         switch option {
         case .back:
             navigationController?.popViewController(animated: true)
-        case .backup:
-            algorandSecureBackupFlowCoordinator.launch(by: .push)
         case .security:
             open(.securitySettings, by: .push)
         case .contacts:
