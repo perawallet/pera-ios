@@ -126,18 +126,10 @@ extension AddAccountView {
         termsAndConditionsTextView.textContainerInset = .zero
         termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
-        if featureFlagService?.isEnabled(.hdWalletEnabled) ?? false {
-            termsAndConditionsTextView.bindHTML(
-                String(format: String(localized: "introduction-title-terms-and-services-wallet"), AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
-                attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
-            )
-        } else {
-            termsAndConditionsTextView.bindHTML(
-                String(format: String(localized: "introduction-title-terms-and-services"), AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
-                attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
-            )
-        }
-
+        termsAndConditionsTextView.bindHTML(
+            String(format: String(localized: "introduction-title-terms-and-services-wallet"), AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
+            attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
+        )
 
         addSubview(termsAndConditionsTextView)
         termsAndConditionsTextView.snp.makeConstraints {
@@ -156,10 +148,7 @@ extension AddAccountView {
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
-        if
-            featureFlagService?.isEnabled(.hdWalletEnabled) ?? false,
-            session?.authenticatedUser?.hasHDWalletsAccounts ?? false
-        {
+        if session?.authenticatedUser?.hasHDWalletsAccounts ?? false {
             createAddressView.customize(theme.accountTypeViewTheme)
             stackView.addArrangedSubview(createAddressView)
         }

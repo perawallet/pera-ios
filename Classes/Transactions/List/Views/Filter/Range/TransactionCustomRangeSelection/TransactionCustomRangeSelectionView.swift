@@ -89,10 +89,7 @@ extension TransactionCustomRangeSelectionView {
     private func addDatePickerView(_ theme: TransactionCustomRangeSelectionViewTheme) {
         datePickerView.datePickerMode = .date
         datePickerView.maximumDate = Date()
-
-        if #available(iOS 13.4, *) {
-            datePickerView.preferredDatePickerStyle = .wheels
-        }
+        datePickerView.preferredDatePickerStyle = .wheels
 
         addSubview(datePickerView)
         datePickerView.snp.makeConstraints {

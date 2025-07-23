@@ -17,23 +17,20 @@
 import Foundation
 
 enum FeatureFlag: String, CaseIterable {
-    case discoverV5Enabled = "enable_discover_v5"
-    case hdWalletEnabled = "enable_hd_wallet"
     case portfolioChartsEnabled = "enable_charts_portfolio"
     case accountsChartsEnabled = "enable_charts_accounts"
     case assetsChartsEnabled = "enable_charts_assets"
+    case swapV2Enabled = "enable_swap_v2"
 
     var defaultValue: RemoteConfigValue {
         switch self {
-        case .discoverV5Enabled:
-            return .bool(false)
-        case .hdWalletEnabled:
-            return .bool(true)
         case .portfolioChartsEnabled:
             return .bool(false)
         case .accountsChartsEnabled:
             return .bool(false)
         case .assetsChartsEnabled:
+            return .bool(false)
+        case .swapV2Enabled:
             return .bool(false)
         }
     }

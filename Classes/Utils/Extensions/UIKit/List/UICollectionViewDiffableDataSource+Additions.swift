@@ -25,18 +25,10 @@ extension UICollectionViewDiffableDataSource {
         animatingDifferences: Bool = true,
         completion: (() -> Void)? = nil
     ) {
-        if #available(iOS 15, *) {
-            applySnapshotUsingReloadData(
-                snapshot,
-                completion: completion
-            )
-        } else {
-            apply(
-                snapshot,
-                animatingDifferences: animatingDifferences,
-                completion: completion
-            )
-        }
+        applySnapshotUsingReloadData(
+            snapshot,
+            completion: completion
+        )
     }
 }
 

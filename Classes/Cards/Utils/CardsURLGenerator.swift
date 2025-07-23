@@ -78,16 +78,8 @@ final class CardsURLGenerator {
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
-        if #available(iOS 16, *) {
-            queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
-        } else {
-            queryItems.append(.init(name: "language", value: Locale.preferred.languageCode))
-        }
-        if #available(iOS 16, *) {
-            queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
-        } else {
-            queryItems.append(.init(name: "region", value: Locale.current.regionCode))
-        }
+        queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
+        queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
         return queryItems
     }
 }

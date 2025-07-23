@@ -43,17 +43,6 @@
         }
       }
     },
-    "account-detail-portfolio-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account Value"
-          }
-        }
-      }
-    },
     "account-details-title" : {
       "localizations" : {
         "en" : {
@@ -130,17 +119,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Backup now"
-          }
-        }
-      }
-    },
-    "account-not-backed-up-warning-subtitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You need to backup the passphrase of your account"
           }
         }
       }
@@ -231,17 +209,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Account Found"
-          }
-        }
-      }
-    },
-    "account-type-selection-add" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "I want to create an account"
           }
         }
       }
@@ -486,34 +453,12 @@
         }
       }
     },
-    "account-type-selection-watch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Watch an account"
-          }
-        }
-      }
-    },
     "account-type-selection-watch-address" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watch an address"
-          }
-        }
-      }
-    },
-    "account-type-selection-watch-address-detail" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitor an Algorand address by providing its address"
           }
         }
       }
@@ -534,16 +479,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name your wallet to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you."
-          }
-        }
-      }
-    },
-    "account-welcome-add-account-title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add an account"
           }
         }
       }
@@ -634,61 +569,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Statistics"
-          }
-        }
-      }
-    },
-    "algorand-secure-backup-account-list-action-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Backup account"
-          }
-        }
-      }
-    },
-    "algorand-secure-backup-account-list-no-content-body" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We couldn't find any accounts\neligible for backup."
-          }
-        }
-      }
-    },
-    "algorand-secure-backup-account-list-restore-action-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restore account"
-          }
-        }
-      }
-    },
-    "algorand-secure-backup-account-list-restore-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose accounts to restore"
-          }
-        }
-      }
-    },
-    "algorand-secure-backup-account-list-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose accounts to backup"
           }
         }
       }
@@ -3033,17 +2913,6 @@
         }
       }
     },
-    "dev-settings-create-algo25-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create Legacy Algo25 Account"
-          }
-        }
-      }
-    },
     "discover-error-connection-body" : {
       "localizations" : {
         "en" : {
@@ -5305,17 +5174,6 @@
         }
       }
     },
-    "quick-actions-scan-qr-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan QR"
-          }
-        }
-      }
-    },
     "quick-actions-send-title" : {
       "localizations" : {
         "en" : {
@@ -6052,17 +5910,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo."
-          }
-        }
-      }
-    },
-    "send-algos-minimum-amount-error" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transaction amount results in a balance below the minimum account balance of 0.1 Algo."
           }
         }
       }
@@ -6937,28 +6784,6 @@
         }
       }
     },
-    "swap-confirm-exchange-fee-detail" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top."
-          }
-        }
-      }
-    },
-    "swap-confirm-exchange-fee-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exchange Fee"
-          }
-        }
-      }
-    },
     "swap-confirm-failed-title" : {
       "localizations" : {
         "en" : {
@@ -7459,17 +7284,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accounts"
-          }
-        }
-      }
-    },
-    "title-action-required" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ACTION REQUIRED"
           }
         }
       }
@@ -10469,17 +10283,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manager Account"
-          }
-        }
-      }
-    },
-    "wallet-connect-asset-name-title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Asset Name"
           }
         }
       }

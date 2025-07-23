@@ -77,11 +77,7 @@ final class RecoverAccountView:
     }
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
-        if featureFlagService?.isEnabled(.hdWalletEnabled) ?? false {
-            recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
-        } else {
-            recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseAlgo25ViewModel)
-        }
+        recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
         importFromSecureBackupView.bindData(viewModel?.importFromSecureBackupViewModel)
         recoverWithQRView.bindData(viewModel?.recoverWithQRViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
