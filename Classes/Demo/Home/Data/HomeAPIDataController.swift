@@ -123,8 +123,14 @@ extension HomeAPIDataController {
         }
         
         let dateValue = DateFormatter.chartDisplay.string(from: date)
+        
+        let (resolvedPrimaryValue, resolvedSecondaryValue) = ChartSelectedPointHandler.resolveValues(
+            primaryValue: point.primaryValue,
+            secondaryValue: point.secondaryValue,
+            currency: totalPortfolioItem?.currency.primaryValue
+        )
 
-        let viewModel = ChartSelectedPointViewModel(primaryValue: point.primaryValue, secondaryValue: point.secondaryValue, dateValue: dateValue)
+        let viewModel = ChartSelectedPointViewModel(primaryValue: resolvedPrimaryValue, secondaryValue: resolvedSecondaryValue, dateValue: dateValue)
         chartSelectedPointViewModel = viewModel
         publish(.didSelectChartPoint(chartSelectedPointViewModel, totalPortfolioItem))
     }

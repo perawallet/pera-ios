@@ -472,14 +472,7 @@ final class Router:
                     launch(tab: .discover)
                 }
             case .staking:
-                findVisibleScreen(over: rootViewController).open(
-                    .staking,
-                    by: .customPresentWithoutNavigationController(
-                        presentationStyle: .fullScreen,
-                        transitionStyle: nil,
-                        transitioningDelegate: nil
-                    )
-                )
+                launch(tab: .stake)
             case .cards(path: let path):
                 let isCardsFeatureEnabled = Environment.current.isCardsFeatureEnabled(
                     for: appConfiguration.api.network
