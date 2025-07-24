@@ -124,11 +124,24 @@ final class DiscoverDeeplinksTests: XCTestCase {
         }
     }
     
+    func testDiscoverDeeplinkWithFullPath() {
+        let deepLinkToTest = URL(string: "perawallet://discover?path=main/game/a3d5effc-bbf5-4f33-aef5-177788d9efda")!
+        let expectedURL = URL(string: "https://discover-mobile-staging.perawallet.app/main/game/a3d5effc-bbf5-4f33-aef5-177788d9efda")!
+        
+        switch deepLinkToTest.externalDeepLink {
+        case .discover(let path):
+            XCTAssertNotNil(path)
+            let url = DiscoverURLGenerator.generateURL(path: path!, theme: .unspecified, session: nil)
+            XCTAssertEqual(expectedURL.extractBaseURL(), url?.extractBaseURL())
+            XCTAssertEqual(expectedURL.path, url?.path)
+        default:
+            XCTFail()
+        }
+    }
+    
     func testDiscoverDeeplinkWithError() {
         let deepLinkToTest = URL(string: "perawallet://discove")!
         
         XCTAssertNil(deepLinkToTest.externalDeepLink)
     }
-    
-
 }
