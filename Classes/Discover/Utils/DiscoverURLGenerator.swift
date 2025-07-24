@@ -21,41 +21,35 @@ final class DiscoverURLGenerator {
     static func generateURL(
         destination: DiscoverDestination,
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         switch destination {
         case .home:
             return generateURLForHome(
                 theme: theme,
-                session: session,
-                enableDiscoverV5: enableDiscoverV5
+                session: session
             )
         case .browser:
             return generateURLForBrowser(
                 theme: theme,
-                session: session,
-                enableDiscoverV5: enableDiscoverV5
+                session: session
             )
         case .markets:
             return generateURLForMarket(
                 theme: theme,
-                session: session,
-                enableDiscoverV5: enableDiscoverV5
+                session: session
             )
         case .assetDetail(let params):
             return generateURLForAssetDetail(
                 params: params,
                 theme: theme,
-                session: session,
-                enableDiscoverV5: enableDiscoverV5
+                session: session
             )
         case .generic(let params):
             return generateGenericURL(
                 params: params,
                 theme: theme,
-                session: session,
-                enableDiscoverV5: enableDiscoverV5
+                session: session
             )
         case .external(let externalDestination):
             switch externalDestination {
@@ -71,56 +65,48 @@ final class DiscoverURLGenerator {
     static func generateURL(
         path: String,
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBaseUrl + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         return components?.url
     }
 
     private static func generateURLForHome(
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         return components?.url
     }
 
     private static func generateURLForBrowser(
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverBrowserURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         return components?.url
     }
     
     private static func generateURLForMarket(
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var components = URLComponents(string: Environment.current.discoverMarketURL)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         return components?.url
     }
@@ -128,13 +114,11 @@ final class DiscoverURLGenerator {
     private static func generateURLForAssetDetail(
         params: DiscoverAssetParameters,
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         if let poolID = params.poolID {
             queryItems.append(.init(name: "poolId", value: poolID))
@@ -149,16 +133,14 @@ final class DiscoverURLGenerator {
     private static func generateGenericURL(
         params: DiscoverGenericParameters,
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> URL? {
         var components = URLComponents(url: params.url, resolvingAgainstBaseURL: false)
 
         let presentQueryItems = (components?.queryItems).someArray
         let additionalQueryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session,
-            enableDiscoverV5: enableDiscoverV5
+            session: session
         )
         components?.queryItems = presentQueryItems + additionalQueryItems
 
@@ -167,24 +149,15 @@ final class DiscoverURLGenerator {
 
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
-        session: Session?,
-        enableDiscoverV5: Bool
+        session: Session?
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: enableDiscoverV5 ? "5" : "4"))
+        queryItems.append(.init(name: "version", value: "5"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
-        if #available(iOS 16, *) {
-            queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
-        } else {
-            queryItems.append(.init(name: "language", value: Locale.preferred.languageCode))
-        }
-        if #available(iOS 16, *) {
-            queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
-        } else {
-            queryItems.append(.init(name: "region", value: Locale.current.regionCode))
-        }
+        queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
+        queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
         return queryItems
     }
 

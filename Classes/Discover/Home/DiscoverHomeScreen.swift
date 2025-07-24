@@ -68,22 +68,6 @@ final class DiscoverHomeScreen:
         )
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-
-        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
-            navigationBarLargeTitleController.title = String(localized: "title-discover")
-            navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
-
-            navigationBarLargeTitleView.searchAction = {
-                [unowned self] in
-                self.navigateToSearch()
-            }
-
-            updateRightBarButtonsWhenNavigationTitleBecomeHidden(true)
-        }
-    }
-
     override func customizeTabBarAppearence() {
         tabBarHidden = false
     }
@@ -91,41 +75,20 @@ final class DiscoverHomeScreen:
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
-            navigationBarLargeTitleController.deactivate()
-        } else {
-            addNavigationBarLargeTitle()
-            navigationBarLargeTitleController.activate()
-        }
+        navigationBarLargeTitleController.deactivate()
 
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if !configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
-            if isViewLayoutLoaded {
-                return
-            }
-            updateUIWhenViewDidLayout()
-            isViewLayoutLoaded = true
-        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
-            navigationController?.setNavigationBarHidden(true, animated: false)
-        }
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if configuration.featureFlagService.isEnabled(.discoverV5Enabled) {
-            navigationController?.setNavigationBarHidden(false, animated: false)
-        }
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     /// <mark>

@@ -38,12 +38,7 @@ final class AddAccountViewController: BaseViewController {
     }
 
     override func bindData() {
-        addAccountView.bindData(
-            AddAccountViewModel(
-                with: flow,
-                and: featureFlagService.isEnabled(.hdWalletEnabled)
-            )
-        )
+        addAccountView.bindData(AddAccountViewModel(with: flow))
     }
 
     override func linkInteractors() {
@@ -109,25 +104,21 @@ extension AddAccountViewController: AddAccountViewDelegate {
     
     func addAccountViewDidSelectCreateWallet(_ addAccountView: AddAccountView) {
         analytics.track(.registerAccount(registrationType: .create))
-        if featureFlagService.isEnabled(.hdWalletEnabled) {
-            guard
-                let account = createAccount() else {
-                return
-            }
-            
-            let screen = open(
-                .addressNameSetup(
-                    flow: flow,
-                    mode: .addBip39Wallet,
-                    account: account
-                ),
-                by: .push
-            ) as? AddressNameSetupViewController
-            screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-            screen?.hidesCloseBarButtonItem = true
-        } else {
-            self.openTutorialScreen()
+        guard
+            let account = createAccount() else {
+            return
         }
+        
+        let screen = open(
+            .addressNameSetup(
+                flow: flow,
+                mode: .addBip39Wallet,
+                account: account
+            ),
+            by: .push
+        ) as? AddressNameSetupViewController
+        screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        screen?.hidesCloseBarButtonItem = true
     }
     
     func addAccountViewDidSelectImport(_ addAccountView: AddAccountView) {
@@ -146,20 +137,6 @@ extension AddAccountViewController: AddAccountViewDelegate {
 
     func addAccountView(_ addAccountView: AddAccountView, didOpen url: URL) {
         open(url)
-    }
-    
-    private func openTutorialScreen() {
-        open(
-            .tutorial(
-                flow: flow,
-                tutorial: .backUp(
-                    flow: flow,
-                    address: "temp"
-                ),
-                walletFlowType: .algo25
-            ),
-            by: .push
-        )
     }
     
     private func createAccount() -> AccountInformation? {

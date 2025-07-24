@@ -459,8 +459,7 @@ final class Router:
                     guard let url = DiscoverURLGenerator.generateURL(
                         path: path,
                         theme: visibleScreen.traitCollection.userInterfaceStyle,
-                        session: nil,
-                        enableDiscoverV5: appConfiguration.featureFlagService.isEnabled(.discoverV5Enabled)
+                        session: nil
                     ) else {
                         return
                     }
@@ -714,11 +713,7 @@ final class Router:
 
             viewController = aViewController
         case let .welcome(flow):
-            if configuration.featureFlagService.isEnabled(.hdWalletEnabled) {
-                viewController = WelcomeViewController(flow: flow, configuration: configuration)
-            } else {
-                viewController = WelcomeLegacyViewController(flow: flow, configuration: configuration)
-            }
+            viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .mnemonicTypeSelection(eventHandler):
@@ -1829,11 +1824,7 @@ final class Router:
             viewController = screen
         case .importTextDocumentPicker(let delegate):
             let documentPicker: UIDocumentPickerViewController
-            if #available(iOS 14.0, *) {
-                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
-            } else {
-                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
-            }
+            documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
             documentPicker.allowsMultipleSelection = false
             documentPicker.shouldShowFileExtensions = true
             documentPicker.delegate = delegate

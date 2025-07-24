@@ -69,11 +69,6 @@ final class RecoverAccountViewController: BaseViewController {
         case .initializeAccount:
             addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
         default:
-            guard featureFlagService.isEnabled(.hdWalletEnabled) else {
-                addAccountView.customize(theme.recoverWelcomeViewTheme, configuration: configuration)
-                prepareWholeScreenLayoutFor(addAccountView)
-                return
-            }
             addAccountView.customize(theme.recoverAddAccountViewTheme, configuration: configuration)
         }
 
@@ -105,13 +100,6 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
     func recoverAccountView(_ recoverAccountView: RecoverAccountView, didSelect type: RecoverType) {
         switch type {
         case .passphrase:
-            
-            guard featureFlagService.isEnabled(.hdWalletEnabled) else {
-                open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase(walletFlowType: .algo25), walletFlowType:
-                        .algo25), by: .push)
-                return
-            }
-            
             let eventHandler: MnemonicTypeSelectionScreen.EventHandler = {
                 [unowned self] event in
                 switch event {
