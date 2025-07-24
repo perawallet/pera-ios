@@ -453,7 +453,7 @@ final class Router:
                     break
                 case "main/markets":
                     rootViewController.mainContainer.launchDiscover(with: .markets)
-                case let path where path.contains("token-detail") || path.contains("news"):
+                case let path where isValidDiscoverPath(path):
                     rootViewController.mainContainer.launchDiscover(with: .home)
                     let visibleScreen = findVisibleScreen(over: rootViewController)
                     guard let url = DiscoverURLGenerator.generateURL(
@@ -503,6 +503,10 @@ final class Router:
             }
 
             scanQRFlowCoordinator.launch()
+        }
+        
+        func isValidDiscoverPath(_ path: String) -> Bool {
+            path.contains("main") || path.contains("token-detail") || path.contains("news")
         }
     }
     
