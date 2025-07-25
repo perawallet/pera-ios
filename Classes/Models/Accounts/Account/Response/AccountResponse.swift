@@ -19,7 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AccountResponse: ALGEntityModel {
+final class AccountApiResponse: ALGEntityModel {
     let account: Account
     let currentRound: UInt64
 
@@ -38,7 +38,7 @@ final class AccountResponse: ALGEntityModel {
     }
 }
 
-extension AccountResponse {
+extension AccountApiResponse {
     struct APIModel: ALGAPIModel {
         var account: Account.APIModel
         var currentRound: UInt64

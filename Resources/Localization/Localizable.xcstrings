@@ -6164,7 +6164,7 @@
         }
       }
     },
-    "settings-app-version" : {
+    "settings-app-version-%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6390,26 +6390,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
-          }
-        }
-      }
-    },
-    "settings-secure-backup-subtitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not backed up (%lld)"
-          }
-        }
-      }
-    },
-    "settings-secure-backup-title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Algorand Secure Backup"
           }
         }
       }

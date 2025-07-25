@@ -16,7 +16,7 @@
 
 import UIKit
 
-final class SwiftUICompatibilityBaseViewController: BaseViewController {
+class SwiftUICompatibilityBaseViewController: BaseViewController {
     
     // MARK: - Properties
     

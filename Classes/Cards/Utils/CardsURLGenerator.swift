@@ -47,7 +47,7 @@ final class CardsURLGenerator {
         session: Session?,
         network: ALGAPI.Network
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.cardsBaseUrl(network: network))
+        var components = URLComponents(string: AppEnvironment.current.cardsBaseUrl(network: network))
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
@@ -61,7 +61,7 @@ final class CardsURLGenerator {
         session: Session?,
         network: ALGAPI.Network
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.cardsBaseUrl(network: network) + path)
+        var components = URLComponents(string: AppEnvironment.current.cardsBaseUrl(network: network) + path)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
