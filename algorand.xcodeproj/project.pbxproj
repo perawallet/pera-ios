@@ -7254,6 +7254,9 @@
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
+		D498BD102E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
+		D498BD112E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
+		D498BD122E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9575,6 +9578,7 @@
 		D4979489287D92FD004FBF8E /* AppCallAssetListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCallAssetListLocalDataController.swift; sourceTree = "<group>"; };
 		D497E2682AA0A7F800872EAA /* WCSessionMethodsRequestedPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionMethodsRequestedPermissionViewModel.swift; sourceTree = "<group>"; };
 		D49835952A59934200A0FDA1 /* AccountInformationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformationFlowCoordinator.swift; sourceTree = "<group>"; };
+		D498BD0F2E338D6700833208 /* SwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewController.swift; sourceTree = "<group>"; };
 		D49901B32DF194A500D3875D /* CarouselFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselFlowLayout.swift; sourceTree = "<group>"; };
 		D49901BD2DF194A500D3875D /* CarouselBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselBannerView.swift; sourceTree = "<group>"; };
 		D4998D4B2E2F82F70010996D /* ChartSelectedPointHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSelectedPointHandler.swift; sourceTree = "<group>"; };
@@ -13325,6 +13329,7 @@
 				F010637A28AC531700AB6873 /* SharedUI */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
 				D478AA9328AB8027001958C8 /* Swap */,
+				D498BD0E2E338D1600833208 /* SwapV2 */,
 				2B56F7D2225B3B0500E58737 /* Transactions */,
 				D41F4F012892E1F800B59559 /* TransferAssetBalance */,
 				5916785E2E460BBE002184C2 /* Utils */,
@@ -21539,6 +21544,14 @@
 			path = DappDetail;
 			sourceTree = "<group>";
 		};
+		D498BD0E2E338D1600833208 /* SwapV2 */ = {
+			isa = PBXGroup;
+			children = (
+				D498BD0F2E338D6700833208 /* SwapViewController.swift */,
+			);
+			path = SwapV2;
+			sourceTree = "<group>";
+		};
 		D49901B42DF194A500D3875D /* FlowLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -26526,6 +26539,7 @@
 				591680BF2E464C76002184C2 /* WCGroupAnotherAccountTransactionItemCell.swift in Sources */,
 				591680C02E464C76002184C2 /* WCAccountInformationNameView.swift in Sources */,
 				591680C12E464C76002184C2 /* WCGroupTransactionView.swift in Sources */,
+				D498BD102E338D6B00833208 /* SwapViewController.swift in Sources */,
 				591680C22E464C76002184C2 /* WCGroupTransactionViewTheme.swift in Sources */,
 				591680C32E464C76002184C2 /* WCScrollOverlayFragment.swift in Sources */,
 				591680C42E464C76002184C2 /* WCDetailOverlayFragment.swift in Sources */,
@@ -28384,6 +28398,7 @@
 				59E6052A2E4A712500CCA99B /* InsufficientAlgoBalanceDraft.swift in Sources */,
 				59E6052B2E4A712500CCA99B /* InsufficientAlgoBalanceScreen.swift in Sources */,
 				59E6052C2E4A712500CCA99B /* InsufficientAlgoBalanceScreenTheme.swift in Sources */,
+				D498BD112E338D6B00833208 /* SwapViewController.swift in Sources */,
 				59E6052D2E4A712500CCA99B /* SendTransactionScreen.swift in Sources */,
 				59E6052E2E4A712500CCA99B /* SendTransactionScreen+Theme.swift in Sources */,
 				59E6052F2E4A712500CCA99B /* TransactionAmountValidator.swift in Sources */,
@@ -30794,6 +30809,7 @@
 				59E60EB62E4A71D000CCA99B /* WCGroupAnotherAccountTransactionItemCell.swift in Sources */,
 				59E60EB72E4A71D000CCA99B /* WCAccountInformationNameView.swift in Sources */,
 				59E60EB82E4A71D000CCA99B /* WCGroupTransactionView.swift in Sources */,
+				D498BD122E338D6B00833208 /* SwapViewController.swift in Sources */,
 				59E60EB92E4A71D000CCA99B /* WCGroupTransactionViewTheme.swift in Sources */,
 				59E60EBA2E4A71D000CCA99B /* WCScrollOverlayFragment.swift in Sources */,
 				59E60EBB2E4A71D000CCA99B /* WCDetailOverlayFragment.swift in Sources */,

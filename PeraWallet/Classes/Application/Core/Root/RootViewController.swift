@@ -138,6 +138,9 @@ extension RootViewController {
             NavigationContainer(rootViewController: discoverViewController)
         )
         
+        let swapVC = SwapViewController(configuration: appConfiguration.all())
+        let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapVC))
+        
         let collectibleListQuery = CollectibleListQuery(
             filteringBy: .init(),
             sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
@@ -162,14 +165,24 @@ extension RootViewController {
         let menuVC = MenuViewController(configuration: appConfiguration.all())
         let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
 
+        guard appConfiguration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            mainContainer.items = [
+                homeTab,
+                discoverTab,
+                stakeTab,
+                collectiblesTab,
+                menuTab
+            ]
+            setNeedsDiscoverTabBarItemUpdateIfNeeded()
+            return
+        }
         mainContainer.items = [
             homeTab,
             discoverTab,
+            swapTab,
             stakeTab,
-            collectiblesTab,
             menuTab
         ]
-
         setNeedsDiscoverTabBarItemUpdateIfNeeded()
     }
 
