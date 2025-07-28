@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11099,6 +11099,10 @@
 		F0FA692A29E7A4D100593F38 /* OptInAssetListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListQuery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5493801B2E375D35001DE83A /* Tracking */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Tracking; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		17BD4F072292F1260003E49A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -18589,6 +18593,7 @@
 		2BF7280227471E4700CCAC30 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5493801B2E375D35001DE83A /* Tracking */,
 				2BE4D0F82594D328005F5764 /* AppStoreReview */,
 				2B9148572C21E997005DC1B7 /* ARC59 */,
 				2B288ACD268F157500BC6FB6 /* Assets */,
@@ -24321,6 +24326,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				5493801B2E375D35001DE83A /* Tracking */,
+			);
 			name = "pera-staging";
 			packageProductDependencies = (
 				2B187DD126E54C6D005BEDFD /* MagpieAlamofire */,
@@ -24375,6 +24383,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				5493801B2E375D35001DE83A /* Tracking */,
+			);
 			name = "pera-beta";
 			packageProductDependencies = (
 				2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */,
@@ -24428,6 +24439,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5493801B2E375D35001DE83A /* Tracking */,
 			);
 			name = pera;
 			packageProductDependencies = (
