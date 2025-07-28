@@ -244,9 +244,6 @@
 		1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1793FBCF289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift */; };
-		179B186929F169D1000A4341 /* SettingsLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186829F169D1000A4341 /* SettingsLoadingCell.swift */; };
-		179B186A29F169D1000A4341 /* SettingsLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186829F169D1000A4341 /* SettingsLoadingCell.swift */; };
-		179B186B29F169D1000A4341 /* SettingsLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186829F169D1000A4341 /* SettingsLoadingCell.swift */; };
 		179B186D29F169DA000A4341 /* SettingsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186C29F169DA000A4341 /* SettingsLoadingView.swift */; };
 		179B186E29F169DA000A4341 /* SettingsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186C29F169DA000A4341 /* SettingsLoadingView.swift */; };
 		179B186F29F169DA000A4341 /* SettingsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B186C29F169DA000A4341 /* SettingsLoadingView.swift */; };
@@ -8412,7 +8409,6 @@
 		1793FBC8289403A5009E6F90 /* BadgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButton.swift; sourceTree = "<group>"; };
 		1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButtonTheme.swift; sourceTree = "<group>"; };
 		1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaRouterTests.swift; sourceTree = "<group>"; };
-		179B186829F169D1000A4341 /* SettingsLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLoadingCell.swift; sourceTree = "<group>"; };
 		179B186C29F169DA000A4341 /* SettingsLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLoadingView.swift; sourceTree = "<group>"; };
 		179B187029F169E7000A4341 /* SettingsLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLoadingViewTheme.swift; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -11512,7 +11508,6 @@
 		179B186729F169C0000A4341 /* Loading */ = {
 			isa = PBXGroup;
 			children = (
-				179B186829F169D1000A4341 /* SettingsLoadingCell.swift */,
 				179B186C29F169DA000A4341 /* SettingsLoadingView.swift */,
 				179B187029F169E7000A4341 /* SettingsLoadingViewTheme.swift */,
 			);
@@ -27104,7 +27099,6 @@
 				D497946C287D88F8004FBF8E /* AppCallAssetPreviewViewWithImageTheme.swift in Sources */,
 				17899E0829A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */,
 				D48281BE27A00470004412D5 /* PinLimitViewModel.swift in Sources */,
-				179B186B29F169D1000A4341 /* SettingsLoadingCell.swift in Sources */,
 				D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2B13F6832C29A46900A1408E /* ARC59SendAssetInformationViewModel.swift in Sources */,
 				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
@@ -27540,7 +27534,6 @@
 				2B69AB1928BF9CE500A8D65D /* SwapQuote.swift in Sources */,
 				2B0322E3269F1DE900C9B2F5 /* WCMainTransactionLayout.swift in Sources */,
 				2BDDF18828F5693E00CA626F /* TransactionActionInformationViewModel.swift in Sources */,
-				179B186A29F169D1000A4341 /* SettingsLoadingCell.swift in Sources */,
 				95BB6C2127A2D0A500F2A2F1 /* TransactionMultipleAmountInformationViewTheme.swift in Sources */,
 				F0C542D3291C6E0D00596A0A /* DiscoverSearchListNotFoundViewModel.swift in Sources */,
 				D4BC640826DE3CD6000CFD28 /* ButtonCommonViewModel.swift in Sources */,
@@ -30534,7 +30527,6 @@
 				2BAD559723A29C9C0037079F /* String+Empty.swift in Sources */,
 				2BAAF4C528E4B63000FC59AF /* ConfirmSwapDataController.swift in Sources */,
 				D4BF4A2426F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */,
-				179B186929F169D1000A4341 /* SettingsLoadingCell.swift in Sources */,
 				2B7A1F2B27DBD3B80010F52E /* CollectibleDetailLayout.swift in Sources */,
 				D4FFDCB727E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */,
 				95BB6C2427A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
