@@ -255,7 +255,7 @@ extension SelectAddressViewController {
         }
         
         let accounts = accountsInfos.map { Account(localAccount: $0) }
-        rescanRekeyedAccountsCoordinator.rescan(accounts: accounts, nextStep: .openAddAccountTutorial(isMultipleAccounts: dataController.selectedAddresses.count > 1))
+        rescanRekeyedAccountsCoordinator.rescan(accounts: accounts, nextStep: .returnToHomeScreen)
     }
 }
 
