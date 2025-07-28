@@ -138,7 +138,7 @@ extension RootViewController {
             NavigationContainer(rootViewController: discoverViewController)
         )
         
-        let swapVC = SwapViewController(configuration: appConfiguration.all())
+        let swapVC = SwapViewController()
         let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapVC))
         
         let collectibleListQuery = CollectibleListQuery(

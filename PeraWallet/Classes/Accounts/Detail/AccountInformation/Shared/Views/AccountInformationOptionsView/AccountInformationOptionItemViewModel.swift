@@ -44,7 +44,7 @@ struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOpt
             String(localized: "title-rekey-to-ledger-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-list-arrow".templateImage
+        accessory = "icon-arrow-24".templateImage
     }
 }
 
@@ -59,7 +59,7 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
             String(localized: "title-rekey-to-standard-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-list-arrow".templateImage
+        accessory = "icon-arrow-24".templateImage
     }
 }
 
@@ -70,5 +70,5 @@ struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOp
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     )
     let subtitle: EditText? = nil
-    var accessory: Image? = "icon-list-arrow".templateImage
+    var accessory: Image? = "icon-arrow-24".templateImage
 }

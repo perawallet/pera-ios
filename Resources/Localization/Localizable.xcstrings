@@ -8401,6 +8401,17 @@
         }
       }
     },
+    "title-main-account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main Account"
+          }
+        }
+      }
+    },
     "title-manually" : {
       "localizations" : {
         "en" : {

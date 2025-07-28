@@ -58,6 +58,6 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
     }
 
     mutating func bindAction() {
-        action = "icon-list-arrow"
+        action = "icon-arrow-24"
     }
 }
