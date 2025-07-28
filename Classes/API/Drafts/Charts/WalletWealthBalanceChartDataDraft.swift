@@ -21,11 +21,10 @@ struct WalletWealthBalanceChartDataDraft: JSONObjectBody {
     var period: ChartDataPeriod
     
     var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-
-        params.append(APIBodyParam(.accountAddresses, accountAddresses))
-        params.append(APIBodyParam(.period, period.rawValue))
-
+        var params: [APIBodyParam] = [
+            APIBodyParam(.accountAddresses, accountAddresses),
+            APIBodyParam(.period, period.rawValue)
+        ]
         return params
     }
 }
