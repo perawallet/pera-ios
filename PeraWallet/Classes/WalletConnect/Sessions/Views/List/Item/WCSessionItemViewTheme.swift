@@ -77,7 +77,7 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         self.spacingBetweenContentAndDisclosureIcon = 16
         self.disclosureIconTopPadding = 8
         self.disclosureIcon = [
-            .image("icon-list-arrow"),
+            .image("icon-arrow-24"),
             .contentMode(.scaleAspectFit)
         ]
     }

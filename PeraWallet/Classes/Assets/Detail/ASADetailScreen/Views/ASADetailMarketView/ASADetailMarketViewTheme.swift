@@ -52,7 +52,7 @@ struct ASADetailMarketViewTheme:
             .textColor(Colors.Text.main)
         ]
         self.detailImage = [
-            .image("icon-list-arrow")
+            .image("icon-arrow-24")
         ]
         self.height = 48
     }

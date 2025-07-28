@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "right.pdf",
+      "filename" : "down-arrow.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "right-1.pdf",
+      "filename" : "down-arrow (1).pdf",
       "idiom" : "universal"
     }
   ],
