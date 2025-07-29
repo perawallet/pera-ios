@@ -78,8 +78,8 @@ extension ALGAPI {
         EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.walletWealthBalanceChartData)
-            .query(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period, ordering: ordering))
-            .method(.get)
+            .method(.post)
+            .body(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period))
             .completionHandler(handler)
             .execute()
     }

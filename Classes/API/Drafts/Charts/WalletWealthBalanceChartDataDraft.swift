@@ -16,22 +16,14 @@
 
 import MagpieCore
 
-struct WalletWealthBalanceChartDataDraft: ObjectQuery {
+struct WalletWealthBalanceChartDataDraft: JSONObjectBody {
     var accountAddresses: [String]
     var period: ChartDataPeriod
-    var ordering: String?
     
-    var queryParams: [APIQueryParam] {
-        var params: [APIQueryParam] = []
-
-        params.append(APIQueryParam(.accountAddresses, accountAddresses))
-        
-        params.append(APIQueryParam(.period, period.rawValue))
-        
-        if let ordering {
-            params.append(APIQueryParam(.ordering, ordering))
-        }
-
-        return params
+    var bodyParams: [APIBodyParam] {
+        [
+            APIBodyParam(.accountAddresses, accountAddresses),
+            APIBodyParam(.period, period.rawValue)
+        ]
     }
 }
