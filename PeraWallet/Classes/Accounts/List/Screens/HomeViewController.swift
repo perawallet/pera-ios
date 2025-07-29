@@ -627,8 +627,15 @@ extension HomeViewController {
             [weak self] in
             guard let self else { return }
             self.analytics.track(.recordHomeScreen(type: .swap))
-            self.swapAssetFlowCoordinator.resetDraft()
-            self.swapAssetFlowCoordinator.launch()
+            guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+                self.swapAssetFlowCoordinator.resetDraft()
+                self.swapAssetFlowCoordinator.launch()
+                return
+            }
+            guard let rootViewController = UIApplication.shared.rootViewController() else {
+                return
+            }
+            rootViewController.launch(tab: .swap)
         }
         
         cell.startObserving(event: .buy) {
