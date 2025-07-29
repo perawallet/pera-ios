@@ -18,16 +18,39 @@ import SwiftUI
 import MacaroonUIKit
 
 final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurable {
+    
+    // MARK: - Properties
     var tabBarHidden: Bool
     var tabBarSnapshot: UIView?
     let configuration: ViewControllerConfiguration
     
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
+        dataStore: SwapDataLocalStore(),
+        configuration: configuration,
+        presentingScreen: self
+    )
+    
     // MARK: - Initialisers
     
     init(configuration: ViewControllerConfiguration) {
-        tabBarHidden = false
         self.configuration = configuration
+        tabBarHidden = false
         super.init(rootView: SwapView())
+
+        rootView.onTap = { [weak self] action in
+            guard let self = self else { return }
+            switch action {
+            case .info:
+                open(AlgorandWeb.tinymanSwap.link)
+            case .accountSelection:
+                swapAssetFlowCoordinator.openSelectAccount()
+            case .payAssetSelection:
+                print("payAssetSelection")
+            case .receiveAssetSelection:
+                print("receiveAssetSelection")
+            }
+        }
     }
     
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
@@ -36,6 +59,7 @@ final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurabl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarHidden = false
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     

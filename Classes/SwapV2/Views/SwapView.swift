@@ -16,6 +16,25 @@
 
 import SwiftUI
 
+enum SwapViewAction {
+    case info
+    case accountSelection
+    case payAssetSelection
+    case receiveAssetSelection
+}
+
+enum SwapViewSheet: Identifiable {
+    case settings
+    case provider
+
+    var id: String {
+        switch self {
+        case .settings: return "settings"
+        case .provider: return "provider"
+        }
+    }
+}
+
 struct SwapView: View {
     
     // MARK: - Properties
@@ -25,6 +44,10 @@ struct SwapView: View {
     @State private var accountDefaultText = String(localized: "title-main-account")
     @State private var payingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "62,045.00")
     @State private var receivingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "3,495.00 USDC")
+    @State private var providerIcon = Image("icon-shield-16")
+    @State private var providerText = "Vestige.fi"
+    @State private var exchangeRateText = "1 ALGO ≈ 0.17 USDC"
+    
     @State private var isPayingView = true
     private var isReceivingView: Binding<Bool> {
         Binding(
@@ -32,6 +55,12 @@ struct SwapView: View {
             set: { isPayingView = !$0 }
         )
     }
+    @State private var shouldShowProvider = false
+    @State private var shouldShowSwapButton = false
+    
+    @State private var activeSheet: SwapViewSheet?
+    
+    var onTap: ((SwapViewAction) -> Void)?
     
     // MARK: - Body
     var body: some View {
@@ -39,18 +68,18 @@ struct SwapView: View {
             SwapTitleView(accountSelectionIcon: $accountDefaultIcon, accountSelectionText: $accountDefaultText) { action in
                 switch action {
                 case .accountSelection:
-                    print("onAccountSelectionTap")
+                    onTap?(.accountSelection)
                 case .info:
-                    print("onInfoTap")
+                    onTap?(.info)
                 }
             }
             ZStack {
                 VStack (spacing: 0) {
                     AssetSelectionView(isPayingView: $isPayingView, balanceText: $payingBalanceText, icon: $assetDefaultIcon, text: $assetDefaultText) {
-                        print("AssetSelectionView")
+                        onTap?(.payAssetSelection)
                     }
                     AssetSelectionView(isPayingView: isReceivingView, balanceText: $receivingBalanceText, icon: $assetDefaultIcon, text: $assetDefaultText) {
-                        print("AssetSelectionView")
+                        onTap?(.receiveAssetSelection)
                     }
                 }
                 .padding(.horizontal, 8)
@@ -62,7 +91,7 @@ struct SwapView: View {
                     SettingsSwapButton { action in
                         switch action {
                         case .settings:
-                            print("SettingsSwapButton-settings")
+                            activeSheet = .settings
                         case .max:
                             print("SettingsSwapButton-max")
                         }
@@ -70,7 +99,27 @@ struct SwapView: View {
                 }
                 .padding(.horizontal, 16)
             }
+            if shouldShowProvider {
+                ProviderSelectionView(providerIcon: $providerIcon, providerName: $providerText, exchangeRateText: $exchangeRateText) {
+                    print("openProviderSelectionList")
+                    activeSheet = .provider
+                }
+                .padding(.top, 16)
+            }
+            if shouldShowSwapButton {
+                SwapButton {
+                    print("swap!!")
+                }
+            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .sheet(item: $activeSheet) { sheet in
+            switch sheet {
+            case .settings:
+                SwapSettingsSheet()
+            case .provider:
+                fatalError()
+            }
+        }
     }
 }
