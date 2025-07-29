@@ -16,13 +16,13 @@
 
 import Combine
 
-protocol AccountsServicable {
+protocol AccountsServiceable {
     var accounts: ReadOnlyPublisher<[PeraAccount]> { get }
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
     var network: CoreApiManager.BaseURL.Network { get set }
 }
 
-final class AccountsService: AccountsServicable {
+final class AccountsService: AccountsServiceable {
     
     enum ServiceError: Error {
         case failedToFetchAccounts(error: CoreApiManager.ApiError)
@@ -52,14 +52,14 @@ final class AccountsService: AccountsServicable {
     
     // MARK: - Initialisers
     
-    init(services: CoreServicable, legacySessionManager: Session) {
+    init(services: CoreServiceable, legacySessionManager: Session) {
         accountDataProvider = AccountDataProvider(legacySessionManager: legacySessionManager)
         setupCallbacks(blockchainService: services.blockchain)
     }
     
     // MARK: - Setups
     
-    private func setupCallbacks(blockchainService: BlockchainServicable) {
+    private func setupCallbacks(blockchainService: BlockchainServiceable) {
         blockchainService.lastBlockNumber.publisher
             .sink { [weak self] _ in self?.fetchAccounts() }
             .store(in: &cancellables)

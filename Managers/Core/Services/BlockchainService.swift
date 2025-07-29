@@ -16,13 +16,13 @@
 
 import Combine
 
-protocol BlockchainServicable {
+protocol BlockchainServiceable {
     var lastBlockNumber: ReadOnlyPublisher<Int> { get }
     var error: AnyPublisher<BlockchainService.ServiceError?, Never> { get }
     var network: CoreApiManager.BaseURL.Network { get set }
 }
 
-final class BlockchainService: BlockchainServicable {
+final class BlockchainService: BlockchainServiceable {
     
     enum ServiceError: Error {
         case failedToFetchLastBlockNumber(blockNumber: Int)

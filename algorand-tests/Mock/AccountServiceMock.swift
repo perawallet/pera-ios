@@ -17,9 +17,9 @@
 @testable import pera_staging
 import Combine
 
-final class AccountServiceMock: AccountsServicable {
+final class AccountServiceMock: AccountsServiceable {
     
-    // MARK: - AccountsServicable
+    // MARK: - AccountsServiceable
     
     var accounts: ReadOnlyPublisher<[PeraAccount]> { accountsPublisher.readOnlyPublisher() }
     var error: AnyPublisher<AccountsService.ServiceError, Never> { errorPublisher.eraseToAnyPublisher() }

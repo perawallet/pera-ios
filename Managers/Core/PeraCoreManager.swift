@@ -14,11 +14,11 @@
 
 //   PeraCoreManager.swift
 
-protocol CoreServicable {
-    var blockchain: BlockchainServicable { get }
+protocol CoreServiceable {
+    var blockchain: BlockchainServiceable { get }
 }
 
-final class PeraCoreManager: CoreServicable {
+final class PeraCoreManager: CoreServiceable {
     
     // MARK: - Properties
     
@@ -34,8 +34,8 @@ final class PeraCoreManager: CoreServicable {
     
     // MARK: - Services
     
-    private(set) lazy var accounts: AccountsServicable = AccountsService(services: self, legacySessionManager: legacySessionManager)
-    private(set) lazy var blockchain: BlockchainServicable = BlockchainService()
+    private(set) lazy var accounts: AccountsServiceable = AccountsService(services: self, legacySessionManager: legacySessionManager)
+    private(set) lazy var blockchain: BlockchainServiceable = BlockchainService()
     
     // MARK: - Initialisers
     
