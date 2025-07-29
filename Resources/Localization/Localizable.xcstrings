@@ -7593,6 +7593,17 @@
         }
       }
     },
+    "title-apply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
+    },
     "title-approve" : {
       "localizations" : {
         "en" : {
@@ -9203,6 +9214,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Swap"
+          }
+        }
+      }
+    },
+    "title-swap-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider (Best price available)"
+          }
+        }
+      }
+    },
+    "title-swap-settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap Settings"
           }
         }
       }

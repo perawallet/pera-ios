@@ -845,7 +845,15 @@ extension ASADetailScreen {
         }
 
         analytics.track(.tapSwapInAlgoDetail())
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            self.swapAssetFlowCoordinator.launch()
+            return
+        }
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return
+        }
+        // TODO: send selected account and asset to swap vc
+        rootViewController.launch(tab: .stake)
     }
 
     private func navigateToSendTransactionIfPossible() {

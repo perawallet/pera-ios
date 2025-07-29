@@ -226,8 +226,16 @@ extension DiscoverHomeScreen {
             draft.assetOutID = assetOutID
         }
 
-        swapAssetFlowCoordinator.updateDraft(draft)
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            swapAssetFlowCoordinator.updateDraft(draft)
+            swapAssetFlowCoordinator.launch()
+            return
+        }
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return
+        }
+        // TODO: send draft to swap vc
+        rootViewController.launch(tab: .swap)
     }
     
     private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {

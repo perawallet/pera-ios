@@ -409,7 +409,15 @@ extension AccountDetailViewController {
         }
 
         analytics.track(.recordAccountDetailScreen(type: .tapSwap))
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            self.swapAssetFlowCoordinator.launch()
+            return
+        }
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return
+        }
+        // TODO: send selected account to swap vc
+        rootViewController.launch(tab: .swap)
     }
 }
 

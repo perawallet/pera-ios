@@ -89,6 +89,23 @@ final class SwapAssetFlowCoordinator:
         self.presentingScreen = presentingScreen
         self.draft = draft
     }
+    
+    init(
+        draft: SwapAssetFlowDraft,
+        dataStore: SwapDataStore,
+        configuration: ViewControllerConfiguration,
+        presentingScreen: UIViewController
+    ) {
+        self.draft = draft
+        self.dataStore = dataStore
+        self.analytics = configuration.analytics
+        self.api = configuration.api!
+        self.sharedDataController = configuration.sharedDataController
+        self.loadingController = configuration.loadingController!
+        self.bannerController = configuration.bannerController!
+        self.hdWalletStorage = configuration.hdWalletStorage
+        self.presentingScreen = presentingScreen
+    }
 
     deinit {
         sharedDataController.remove(self)
@@ -184,7 +201,7 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSelectAccount() {
+    func openSelectAccount() {
         let screen = Screen.swapAccountSelection(swapAssetFlowCoordinator: self) {
              [unowned self] event, screen in
              switch event {
