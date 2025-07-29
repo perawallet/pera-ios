@@ -9387,6 +9387,28 @@
         }
       }
     },
+    "title-you-pay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You pay"
+          }
+        }
+      }
+    },
+    "title-you-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You receive"
+          }
+        }
+      }
+    },
     "tooltip-privacy-mode" : {
       "localizations" : {
         "en" : {
