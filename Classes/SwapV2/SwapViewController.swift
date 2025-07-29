@@ -20,16 +20,27 @@ import MacaroonUIKit
 final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurable {
     var tabBarHidden: Bool
     var tabBarSnapshot: UIView?
-    
+    let configuration: ViewControllerConfiguration
     
     // MARK: - Initialisers
     
-    init() {
+    init(configuration: ViewControllerConfiguration) {
         tabBarHidden = false
+        self.configuration = configuration
         super.init(rootView: SwapView())
     }
     
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }

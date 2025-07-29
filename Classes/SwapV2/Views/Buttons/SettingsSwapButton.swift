@@ -16,16 +16,22 @@
 
 import SwiftUI
 
+enum SettingsSwapButtonAction {
+    case settings
+    case max
+}
+
 struct SettingsSwapButton: View {
 
     // MARK: - Properties
-    let onSettingsTap: () -> Void
-    let onMaxTap: () -> Void
+    let onTap: (SettingsSwapButtonAction) -> Void
 
     // MARK: - Body
     var body: some View {
         HStack(spacing: 0) {
-            SwiftUI.Button(action: onSettingsTap) {
+            SwiftUI.Button {
+                onTap(.settings)
+            } label: {
                 Image("icon-asset-manage")
                     .resizable()
                     .frame(width: 16, height: 16)
@@ -37,7 +43,9 @@ struct SettingsSwapButton: View {
                 .fill(Color.Layer.grayLighter)
                 .frame(width: 1)
                 .padding(.vertical, 8)
-            SwiftUI.Button(action: onMaxTap) {
+            SwiftUI.Button {
+                onTap(.max)
+            } label: {
                 Text("send-transaction-max-button-title")
                     .font(.dmSans.bold.size(11.0))
                     .foregroundStyle(Color.Helpers.positive)
