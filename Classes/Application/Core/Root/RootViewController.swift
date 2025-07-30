@@ -46,18 +46,7 @@ final class RootViewController:
         return areTabsVisible ? mainContainer : nil
     }
 
-    private(set) lazy var mainContainer = TabBarController(
-        swapDataStore: SwapDataLocalStore(),
-        analytics: appConfiguration.analytics,
-        api: appConfiguration.api,
-        bannerController: appConfiguration.bannerController,
-        loadingController: appConfiguration.loadingController,
-        session: appConfiguration.session,
-        sharedDataController: appConfiguration.sharedDataController,
-        appLaunchController: appConfiguration.launchController,
-        featureFlagService: appConfiguration.featureFlagService,
-        hdWalletStorage: appConfiguration.hdWalletStorage
-    )
+    private(set) lazy var mainContainer = TabBarController(configuration: appConfiguration)
 
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
