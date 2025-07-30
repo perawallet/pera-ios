@@ -18,9 +18,9 @@ import SwiftUI
 
 struct RecoveredAccountsListView: View {
     
-    enum NextStep {
+    enum NextStep: Equatable {
         case dismiss
-        case openAddAccountTutorial(isMultipleAccounts: Bool)
+        case returnToHomeScreen
     }
     
     // MARK: - Properties
@@ -80,7 +80,7 @@ struct RecoveredAccountsListView: View {
                 FormButton(text: "rekeyed-account-selection-list-primary-action-title", style: model.isAddressSelected ? .primary : .disabled) { model.confirmSelection() }
                     .padding(.bottom, 12.0)
             }
-            FormButton(text: model.addressViewModels.isEmpty ? "title-continue" : "rekeyed-account-selection-list-secondary-action-title", style: .secondary) { skipScreen() }
+            FormButton(text: model.addressViewModels.isEmpty ? "title-continue" : "rekeyed-account-selection-list-secondary-action-title", style: .secondary) { moveToNextStep(success: false) }
                 .padding(.bottom, 16.0)
             
         }
@@ -97,26 +97,17 @@ struct RecoveredAccountsListView: View {
         
         switch action {
         case .endWithSuccess:
-            handleSuccess()
+            moveToNextStep(success: true)
         case let .showDetails(account, authAccount):
             openDetails?(account, authAccount)
         }
     }
     
-    private func handleSuccess() {
+    private func moveToNextStep(success: Bool) {
         switch nextStep {
         case .dismiss:
-            dismiss?(true)
-        case .openAddAccountTutorial:
-            fininshRecoveringAccounts?()
-        }
-    }
-    
-    private func skipScreen() {
-        switch nextStep {
-        case .dismiss:
-            dismiss?(false)
-        case .openAddAccountTutorial:
+            dismiss?(success)
+        case .returnToHomeScreen:
             fininshRecoveringAccounts?()
         }
     }

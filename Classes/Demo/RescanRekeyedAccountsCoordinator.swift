@@ -100,8 +100,15 @@ final class RescanRekeyedAccountsCoordinator {
     
     private func handle(data: [RecoveredAccountsListModel.InputData], nextStep: RecoveredAccountsListView.NextStep) async {
         await MainActor.run {
+            
             presenter?.loadingController?.stopLoading()
-            openAccountsSelectionList(data: data, nextStep: nextStep)
+            
+            if data.isEmpty, nextStep == .returnToHomeScreen {
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
+                presenter?.launchMain()
+            } else {
+                openAccountsSelectionList(data: data, nextStep: nextStep)
+            }
         }
     }
     
