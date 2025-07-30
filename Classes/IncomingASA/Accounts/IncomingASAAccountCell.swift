@@ -14,7 +14,6 @@
 
 //   IncomingASAAccountCell.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -22,12 +21,13 @@ final class IncomingASAAccountCell:
     CollectionCell<IncomingASAAccountView>,
     ViewModelBindable {
     
-    override static var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
-    }
+    // MARK: - Properties
     
+    override static var contextPaddings: LayoutPaddings { (16.0, 24.0, 16.0, 24.0) }
     static let theme = IncomingASAAccountViewTheme()
 
+    // MARK: - Initialisers
+    
     override init(
         frame: CGRect
     ) {

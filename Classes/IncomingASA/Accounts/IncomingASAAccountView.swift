@@ -14,7 +14,6 @@
 
 //   IncomingASAAccountView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -97,8 +96,9 @@ extension IncomingASAAccountView {
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
-            $0.centerY == 0
+            $0.top == 0
             $0.leading == 0
+            $0.bottom == 0
             $0.fitToSize(theme.iconSize)
         }
     }
