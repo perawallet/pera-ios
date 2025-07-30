@@ -169,6 +169,9 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
+        
+        UTMCampaingnHandler.handle(url: url)
+        
         if let moonPayParams = url.extractMoonPayParams() {
             NotificationCenter.default.post(
                 name: .didRedirectFromMoonPay,
