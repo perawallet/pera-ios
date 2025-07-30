@@ -164,5 +164,15 @@ extension TabBarController {
         let screen = container?.viewControllers.first as? DiscoverHomeScreen
         screen?.destination = destination
     }
+    
+    func launchSwap(with draft: SwapAssetFlowDraft? = nil) {
+        selectedTab = .swap
+
+        let container = selectedScreen as? NavigationContainer
+        guard let screen = container?.viewControllers.first as? SwapViewController, let draft else {
+            return
+        }
+        screen.launchDraft = draft
+    }
 }
 

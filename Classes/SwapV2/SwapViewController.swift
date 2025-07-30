@@ -17,12 +17,11 @@
 import SwiftUI
 import MacaroonUIKit
 
-final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurable {
+final class SwapViewController: BaseViewController {
     
     // MARK: - Properties
-    var tabBarHidden: Bool
-    var tabBarSnapshot: UIView?
-    let configuration: ViewControllerConfiguration
+    
+    var launchDraft: SwapAssetFlowDraft?
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
@@ -31,13 +30,27 @@ final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurabl
         presentingScreen: self
     )
     
+    private lazy var swapHostingController = UIHostingController(rootView: makeSwapView())
+    
     // MARK: - Initialisers
     
-    init(configuration: ViewControllerConfiguration) {
-        self.configuration = configuration
-        tabBarHidden = false
-        super.init(rootView: SwapView())
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addSwapView()
+    }
+    
+    private func addSwapView() {
+        swapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(swapHostingController.view)
+        
+        swapHostingController.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    private func makeSwapView() -> SwapView {
+        var rootView = SwapView()
+        
         rootView.onTap = { [weak self] action in
             guard let self = self else { return }
             switch action {
@@ -51,10 +64,12 @@ final class SwapViewController: UIHostingController<SwapView>, TabBarConfigurabl
                 print("receiveAssetSelection")
             }
         }
+        
+        return rootView
     }
     
-    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
