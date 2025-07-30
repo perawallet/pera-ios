@@ -852,8 +852,8 @@ extension ASADetailScreen {
         guard let rootViewController = UIApplication.shared.rootViewController() else {
             return
         }
-        // TODO: send selected account and asset to swap vc
-        rootViewController.launch(tab: .stake)
+
+        rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: account, assetInID: dataController.asset.id))
     }
 
     private func navigateToSendTransactionIfPossible() {

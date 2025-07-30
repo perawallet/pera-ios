@@ -416,8 +416,8 @@ extension AccountDetailViewController {
         guard let rootViewController = UIApplication.shared.rootViewController() else {
             return
         }
-        // TODO: send selected account to swap vc
-        rootViewController.launch(tab: .swap)
+
+        rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: aRawAccount))
     }
 }
 
