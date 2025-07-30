@@ -47,7 +47,7 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
         case .contacts:
             open(.contacts, by: .push)
         case .notifications:
-            open(.notifications, by: .push)
+            open(.notificationFilter, by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
         case .currency:
