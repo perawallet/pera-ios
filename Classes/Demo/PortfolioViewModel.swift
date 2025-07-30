@@ -71,8 +71,11 @@ extension PortfolioViewModel {
         do {
             let rawCurrency = try currencyValue.unwrap()
             
-            let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(amount: Decimal(selectedPointValue))
+            let amount: Decimal = try {
+                guard !rawCurrency.isAlgo else { return Decimal(selectedPointValue) }
+                let exchanger = CurrencyExchanger(currency: rawCurrency)
+                return try exchanger.exchange(amount: Decimal(selectedPointValue))
+            }()
             
             let formatter = currencyFormatter ?? CurrencyFormatter()
             formatter.formattingContext = context
