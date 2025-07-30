@@ -22,7 +22,7 @@ struct SwapSettingsSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             Capsule()
-                .fill(Color.gray.opacity(0.4))
+                .fill(Color.BottomSheet.line)
                 .frame(width: 40, height: 5)
                 .padding(.top, 12)
                 .padding(.bottom, 8)
