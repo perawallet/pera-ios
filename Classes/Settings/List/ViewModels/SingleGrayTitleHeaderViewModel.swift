@@ -15,32 +15,13 @@
 //
 //   SettingsHeaderViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 
 final class SingleGrayTitleHeaderViewModel: ViewModel {
-    private(set) var title: String?
     
-    init(_ name: GeneralSettings) {
-        setTitle(name)
-    }
+    let title: String
     
     init(_ name: String) {
-        setTitle(name)
-    }
-    
-    private func setTitle(_ name: GeneralSettings) {
-        switch name {
-        case .account:
-            self.title = String(localized: "title-account")
-        case .appPreferences:
-            self.title = String(localized: "settings-sections-appPreferences")
-        case .support:
-            self.title = String(localized: "settings-sections-support")
-        }
-    }
-    
-    private func setTitle(_ name: String) {
         self.title = name
     }
 }

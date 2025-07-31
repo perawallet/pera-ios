@@ -48,6 +48,6 @@ extension WalletRatingViewController: BottomSheetPresentable {
 
 extension WalletRatingViewController: WalletRatingViewDelegate {
     func walletRatingViewDidTapButton(_ walletRatingView: WalletRatingView) {
-        AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+        AlgorandAppStoreReviewer().requestManualReview(forAppWith: AppEnvironment.current.appID)
     }
 }
