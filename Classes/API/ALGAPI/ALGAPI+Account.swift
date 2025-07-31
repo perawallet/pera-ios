@@ -28,7 +28,7 @@ extension ALGAPI {
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
         queryFilterOptions: AccountQueryOptions = [.assets],
-        onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<AccountApiResponse>) -> Void
     ) -> EndpointOperatable {
         var filterOptions = queryFilterOptions
         if includesClosedAccounts {

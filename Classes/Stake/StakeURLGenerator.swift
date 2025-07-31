@@ -39,7 +39,7 @@ final class StakingURLGenerator {
         session: Session?,
         hideBackButton: Bool
     ) -> URL? {
-        var components = URLComponents(string: Environment.current.stakingBaseUrl)
+        var components = URLComponents(string: AppEnvironment.current.stakingBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session,
