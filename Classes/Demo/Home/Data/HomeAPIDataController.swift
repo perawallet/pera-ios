@@ -137,14 +137,12 @@ extension HomeAPIDataController {
     
     func fetchInitialChartData(period: ChartDataPeriod) {
         chartDataCache.removeAll()
-        let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-        chartsDataController.loadData(screen: .home, period: period, currency: fiatCurrency ?? "USD")
+        chartsDataController.loadData(screen: .home, period: period, currency: sharedDataController.fiatCurrencyId)
     }
     
     func updateChartData(period: ChartDataPeriod) {
         guard let viewModel = chartDataCache[period] else {
-            let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-            chartsDataController.loadData(screen: .home, period: period, currency: fiatCurrency ?? "USD")
+            chartsDataController.loadData(screen: .home, period: period, currency: sharedDataController.fiatCurrencyId)
             return
         }
         chartViewData = viewModel

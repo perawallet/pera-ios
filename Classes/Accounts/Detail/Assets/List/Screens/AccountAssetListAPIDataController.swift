@@ -196,14 +196,12 @@ extension AccountAssetListAPIDataController {
     
     func fetchInitialChartData(period: ChartDataPeriod) {
         chartDataCache.removeAll()
-        let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-        chartsDataController.loadData(screen: .account(address: account.value.address), period: period, currency: fiatCurrency ?? "USD")
+        chartsDataController.loadData(screen: .account(address: account.value.address), period: period, currency: sharedDataController.fiatCurrencyId)
     }
     
     func updateChartData(period: ChartDataPeriod) {
         guard let viewModel = chartDataCache[period] else {
-            let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-            chartsDataController.loadData(screen: .account(address: account.value.address), period: period, currency: fiatCurrency ?? "USD")
+            chartsDataController.loadData(screen: .account(address: account.value.address), period: period, currency: sharedDataController.fiatCurrencyId)
             return
         }
         chartViewData = viewModel

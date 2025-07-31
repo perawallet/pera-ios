@@ -108,14 +108,12 @@ extension ASADetailScreenAPIDataController {
     
     func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod) {
         chartDataCache.removeAll()
-        let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-        chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: fiatCurrency ?? "USD")
+        chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: sharedDataController.fiatCurrencyId)
     }
     
     func updateChartData(address: String, assetId: String, period: ChartDataPeriod) {
         guard let viewModel = chartDataCache[period] else {
-            let fiatCurrency = try? sharedDataController.currency.fiatValue?.unwrap().id.localValue
-            chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: fiatCurrency ?? "USD")
+            chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: sharedDataController.fiatCurrencyId)
             return
         }
         chartViewData = viewModel
