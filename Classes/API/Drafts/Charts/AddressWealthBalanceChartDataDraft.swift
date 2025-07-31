@@ -18,12 +18,14 @@ import MagpieCore
 
 struct AddressWealthBalanceChartDataDraft: ObjectQuery {
     var period: ChartDataPeriod
+    var currency: String
     var ordering: String?
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
         params.append(APIQueryParam(.period, period.rawValue))
+        params.append(APIQueryParam(.currency, currency))
         
         if let ordering {
             params.append(APIQueryParam(.ordering, ordering))

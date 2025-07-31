@@ -62,6 +62,7 @@ extension PortfolioViewModel {
     func format(
         selectedPointValue: Double,
         currencyValue: RemoteCurrencyValue?,
+        isSecondaryValue: Bool,
         isAmountHidden: Bool,
         addApproximatelyEqualChar: Bool = false,
         in context: CurrencyFormattingContext
@@ -71,12 +72,15 @@ extension PortfolioViewModel {
         do {
             let rawCurrency = try currencyValue.unwrap()
             
-            let amount: Decimal = try {
-                guard !rawCurrency.isAlgo else { return Decimal(selectedPointValue) }
-                let exchanger = CurrencyExchanger(currency: rawCurrency)
-                return try exchanger.exchange(amount: Decimal(selectedPointValue))
-            }()
-            
+            var amount = Decimal(selectedPointValue)
+            if isSecondaryValue {
+                amount = try {
+                    guard !rawCurrency.isAlgo else { return Decimal(selectedPointValue) }
+                    let exchanger = CurrencyExchanger(currency: rawCurrency)
+                    return try exchanger.exchange(amount: Decimal(selectedPointValue))
+                }()
+            }
+
             let formatter = currencyFormatter ?? CurrencyFormatter()
             formatter.formattingContext = context
             formatter.currency =  rawCurrency
