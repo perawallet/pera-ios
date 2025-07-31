@@ -130,9 +130,10 @@ extension ASADetailScreenAPIDataController {
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
                 guard
-                    let primaryValue = Double(item.valueInCurrency)
+                    let primaryValue = Double(item.valueInCurrency),
+                    let secondaryValue = Double(item.usdValue)
                 else { return nil }
-                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: item.usdValue, timestamp: item.datetime)
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, timestamp: item.datetime)
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData

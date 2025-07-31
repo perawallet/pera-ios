@@ -46,8 +46,8 @@ extension AssetChartDataResultDTO {
 
 final class AssetChartDataDTO: ALGEntityModel, Codable {
     let datetime: String
-    let usdValue: Double
-    let amount: Double
+    let usdValue: String
+    let amount: String
     let valueInCurrency: String
 
     init(
@@ -79,14 +79,14 @@ final class AssetChartDataDTO: ALGEntityModel, Codable {
 extension AssetChartDataDTO {
     struct APIModel: ALGAPIModel {
         var datetime: String
-        var usdValue: Double
-        var amount: Double
+        var usdValue: String
+        var amount: String
         var valueInCurrency: String
 
         init() {
             self.datetime = .empty
-            self.usdValue = 0
-            self.amount = 0
+            self.usdValue = .empty
+            self.amount = .empty
             self.valueInCurrency = .empty
         }
     }

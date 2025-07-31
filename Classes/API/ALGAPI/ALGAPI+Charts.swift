@@ -40,7 +40,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.assetBalanceChartData, args: address, assetId)
             .query(AssetBalanceChartDataDraft(period: period, currency: currency))
             .method(.get)
@@ -59,7 +59,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.addressWealthBalanceChartData, args: address)
             .query(AddressWealthBalanceChartDataDraft(period: period, currency: currency, ordering: ordering))
             .method(.get)
@@ -78,7 +78,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.walletWealthBalanceChartData)
             .method(.post)
             .body(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period, currency: currency))
