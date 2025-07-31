@@ -6164,7 +6164,7 @@
         }
       }
     },
-    "settings-app-version" : {
+    "settings-app-version-%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
