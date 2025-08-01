@@ -37,8 +37,6 @@ protocol SharedDataController: AnyObject {
     var accountCollection: AccountCollection { get }
 
     var currency: CurrencyProvider { get }
-    
-    var fiatCurrencyId: String { get }
 
     var blockchainUpdatesMonitor: BlockchainUpdatesMonitor { get }
     

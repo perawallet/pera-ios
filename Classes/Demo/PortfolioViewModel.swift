@@ -60,9 +60,9 @@ extension PortfolioViewModel {
     }
     
     func format(
-        selectedPointValue: Double,
+        selectedPoint: ChartSelectedPointViewModel,
         currencyValue: RemoteCurrencyValue?,
-        isSecondaryValue: Bool,
+        isPrimaryValue: Bool,
         isAmountHidden: Bool,
         addApproximatelyEqualChar: Bool = false,
         in context: CurrencyFormattingContext
@@ -71,14 +71,12 @@ extension PortfolioViewModel {
 
         do {
             let rawCurrency = try currencyValue.unwrap()
+            var amount: Decimal
             
-            var amount = Decimal(selectedPointValue)
-            if isSecondaryValue {
-                amount = try {
-                    guard !rawCurrency.isAlgo else { return Decimal(selectedPointValue) }
-                    let exchanger = CurrencyExchanger(currency: rawCurrency)
-                    return try exchanger.exchange(amount: Decimal(selectedPointValue))
-                }()
+            if isPrimaryValue {
+                amount = rawCurrency.isAlgo ? Decimal(selectedPoint.primaryValue) : Decimal(selectedPoint.currencyValue)
+            } else {
+                amount = Decimal(selectedPoint.secondaryValue)
             }
 
             let formatter = currencyFormatter ?? CurrencyFormatter()

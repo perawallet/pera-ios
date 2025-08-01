@@ -647,7 +647,7 @@ extension ASADetailScreen {
                     return
                 }
                 
-                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(primaryValue: pointSelected.primaryValue, secondaryValue: pointSelected.secondaryValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
+                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(primaryValue: pointSelected.primaryValue, secondaryValue: pointSelected.secondaryValue, currencyValue: pointSelected.currencyValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
             }
         }
         

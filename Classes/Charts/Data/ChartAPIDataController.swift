@@ -28,13 +28,22 @@ final class ChartAPIDataController {
     
     private let api: ALGAPI
     private let session: Session
+    private let sharedDataController: SharedDataController
     
-    init(api: ALGAPI, session: Session) {
-        self.api = api
-        self.session = session
+    init(configuration: AppConfiguration) {
+        self.api = configuration.api
+        self.session = configuration.session
+        self.sharedDataController = configuration.sharedDataController
     }
     
-    func loadData(screen: ChartDataScreen, period: ChartDataPeriod, currency: String) {
+    func loadData(screen: ChartDataScreen, period: ChartDataPeriod) {
+        var currency = "USD" ///USD is the default currency
+
+        if let fiatValue = sharedDataController.currency.fiatValue,
+           let unwrappedFiatValue = try? fiatValue.unwrap() {
+            currency = unwrappedFiatValue.id.localValue
+        }
+
         switch screen {
         case .home:
             loadHomeData(period: period, currency: currency)

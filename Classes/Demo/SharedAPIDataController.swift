@@ -44,8 +44,6 @@ final class SharedAPIDataController:
     private(set) var accountCollection: AccountCollection = []
 
     private(set) var currency: CurrencyProvider
-    
-    private(set) var fiatCurrencyId: String
 
     private(set) var blockchainUpdatesMonitor: BlockchainUpdatesMonitor = .init()
 
@@ -122,12 +120,6 @@ final class SharedAPIDataController:
         self.hdWalletStorage = storage
         self.api = api
         self.cache = Cache()
-        
-        if let fiatCurrency = try? currency.fiatValue?.unwrap() {
-            self.fiatCurrencyId = fiatCurrency.id.localValue
-        } else {
-            self.fiatCurrencyId = "USD"
-        }
 
         self.selectedAccountSortingAlgorithm = accountSortingAlgorithms.first {
             $0.name == cache.accountSortingAlgorithmName

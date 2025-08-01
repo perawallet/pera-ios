@@ -108,12 +108,12 @@ extension ASADetailScreenAPIDataController {
     
     func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod) {
         chartDataCache.removeAll()
-        chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: sharedDataController.fiatCurrencyId)
+        chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
     }
     
     func updateChartData(address: String, assetId: String, period: ChartDataPeriod) {
         guard let viewModel = chartDataCache[period] else {
-            chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period, currency: sharedDataController.fiatCurrencyId)
+            chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
             return
         }
         chartViewData = viewModel
@@ -130,10 +130,11 @@ extension ASADetailScreenAPIDataController {
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
                 guard
-                    let primaryValue = Double(item.valueInCurrency),
-                    let secondaryValue = Double(item.usdValue)
+                    let primaryValue = Double(item.amount),
+                    let secondaryValue = Double(item.usdValue),
+                    let currencyValue = Double(item.valueInCurrency)
                 else { return nil }
-                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, timestamp: item.datetime)
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, currencyValue: currencyValue, timestamp: item.datetime)
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData
