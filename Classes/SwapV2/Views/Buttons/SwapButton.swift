@@ -24,6 +24,10 @@ struct SwapButton: View {
     // MARK: - Body
     var body: some View {
         VStack(spacing: 0) {
+            Rectangle()
+                .fill(Color.Layer.grayLighter)
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
             Spacer().frame(height: 8)
             SwiftUI.Button(action: onTap) {
                 Text("title-swap")
