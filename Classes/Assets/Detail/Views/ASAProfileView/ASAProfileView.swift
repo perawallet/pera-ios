@@ -50,6 +50,7 @@ final class ASAProfileView:
     private lazy var secondaryValueView = UILabel()
     private lazy var selectedPointDateValueView = Label()
     
+    private var chartData: ChartViewData?
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var chartHostingController = UIHostingController(rootView: makeChartView())
     
@@ -88,10 +89,13 @@ final class ASAProfileView:
             onPeriodChange?(newPeriod)
         }
         
-        chartViewModel.onPointSelected = { [weak self] selectedPoint in
+        chartViewModel.onPointSelected = { [weak self] selectedPointVM in
             guard let self else { return }
-            onPointSelected?(selectedPoint)
-            
+            guard let selectedPointVM else {
+                onPointSelected?(nil)
+                return
+            }
+            onPointSelected?(chartData?.chartValues[selectedPointVM.day])
         }
     }
 
@@ -144,6 +148,7 @@ final class ASAProfileView:
     }
     
     func updateChart(with data: ChartViewData) {
+        chartData = data
         chartViewModel.refresh(with: data.model)
         chartHostingController.rootView = makeChartView()
     }

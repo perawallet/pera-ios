@@ -45,7 +45,7 @@ final class AccountAssetListAPIDataController:
     private let chartsDataController: ChartAPIDataController
     private let featureFlagService: FeatureFlagServicing
     
-    private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
+    private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true, isAlgoCurrency: true)
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var portfolioItem: AccountPortfolioItem?
 
@@ -240,7 +240,7 @@ extension AccountAssetListAPIDataController {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
-                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false, isAlgoCurrency: true)
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
@@ -251,7 +251,8 @@ extension AccountAssetListAPIDataController {
                 else { return nil }
                 return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, currencyValue: currencyValue, timestamp: item.datetime)
             }
-            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            let isAlgoCurrency = try? sharedDataController.currency.primaryValue?.unwrap().isAlgo
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false, isAlgoCurrency: isAlgoCurrency ?? true)
             chartDataCache[period] = chartViewData
         }
     }

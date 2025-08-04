@@ -19,5 +19,11 @@ import SwiftUI
 final class ChartDataModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var period: ChartDataPeriod = .oneWeek
-    @Published var data: [ChartDataPoint] = []
+    @Published var data: [ChartDataPointViewModel] = []
+}
+
+struct ChartDataPointViewModel: Identifiable, Equatable, Hashable {
+    let id = UUID()
+    let value: Double
+    let day: Int
 }

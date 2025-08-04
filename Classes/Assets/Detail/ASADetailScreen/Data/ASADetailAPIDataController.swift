@@ -124,7 +124,7 @@ extension ASADetailScreenAPIDataController {
         chartsDataController.onAssetFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
-                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false, isAlgoCurrency: true)
                 eventHandler?(.didFetchChartData(data: nil, error: error, period: period))
                 return
             }
@@ -136,7 +136,8 @@ extension ASADetailScreenAPIDataController {
                 else { return nil }
                 return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, currencyValue: currencyValue, timestamp: item.datetime)
             }
-            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            let isAlgoCurrency = try? sharedDataController.currency.primaryValue?.unwrap().isAlgo
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false, isAlgoCurrency: isAlgoCurrency ?? true)
             chartDataCache[period] = chartViewData
             eventHandler?(.didFetchChartData(data: chartViewData, error: nil, period: period))
         }

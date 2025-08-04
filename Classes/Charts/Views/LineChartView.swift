@@ -18,15 +18,15 @@ import SwiftUI
 import Charts
 
 struct LineChartView: View {
-    let data: [ChartDataPoint]
-    @Binding var selectedPoint: ChartDataPoint?
+    let data: [ChartDataPointViewModel]
+    @Binding var selectedPoint: ChartDataPointViewModel?
     
     private let xAxisLabel = "Date"
     private let yAxisLabel = "Value"
     
     var body: some View {
-        let maxValue = data.map(\.primaryValue).max() ?? 100
-        let minValue = data.map(\.primaryValue).min() ?? 0
+        let maxValue = data.map(\.value).max() ?? 100
+        let minValue = data.map(\.value).min() ?? 0
         let yDomain = (minValue - 10)...(maxValue + 10)
         
         GeometryReader { geo in
@@ -34,14 +34,14 @@ struct LineChartView: View {
                 ForEach(data) { point in
                     LineMark(
                         x: .value(xAxisLabel, point.day),
-                        y: .value(yAxisLabel, point.primaryValue)
+                        y: .value(yAxisLabel, point.value)
                     )
                     .foregroundStyle(Color.Chart.line)
                     .interpolationMethod(.monotone)
                     
                     AreaMark(
                         x: .value(xAxisLabel, point.day),
-                        yStart: .value(yAxisLabel, point.primaryValue),
+                        yStart: .value(yAxisLabel, point.value),
                         yEnd: .value(yAxisLabel, yDomain.lowerBound)
                     )
                     .foregroundStyle(
@@ -64,7 +64,7 @@ struct LineChartView: View {
                     
                     PointMark(
                         x: .value(xAxisLabel, selected.day),
-                        y: .value(yAxisLabel, selected.primaryValue)
+                        y: .value(yAxisLabel, selected.value)
                     )
                     .symbol {
                         Circle()
