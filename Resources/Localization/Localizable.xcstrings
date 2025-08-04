@@ -7812,6 +7812,17 @@
         }
       }
     },
+    "title-change-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Provider"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "localizations" : {
         "en" : {

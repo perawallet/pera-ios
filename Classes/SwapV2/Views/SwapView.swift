@@ -26,11 +26,13 @@ enum SwapViewAction {
 enum SwapViewSheet: Identifiable {
     case settings
     case provider
+    case confirmSwap
 
     var id: String {
         switch self {
         case .settings: return "settings"
         case .provider: return "provider"
+        case .confirmSwap: return "confirmSwap"
         }
     }
 }
@@ -47,6 +49,11 @@ struct SwapView: View {
     @State private var providerIcon = Image("icon-shield-16")
     @State private var providerText = "Vestige.fi"
     @State private var exchangeRateText = "1 ALGO ≈ 0.17 USDC"
+    
+    private var safeAreaTopInset: CGFloat {
+        (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
+            .windows.first?.safeAreaInsets.top ?? 44
+    }
     
     @State private var isPayingView = true
     private var isReceivingView: Binding<Bool> {
@@ -101,24 +108,27 @@ struct SwapView: View {
             }
             if shouldShowProvider {
                 ProviderSelectionView(providerIcon: $providerIcon, providerName: $providerText, exchangeRateText: $exchangeRateText) {
-                    print("openProviderSelectionList")
                     activeSheet = .provider
                 }
                 .padding(.top, 16)
+                .padding(.bottom, 12)
             }
             if shouldShowSwapButton {
                 SwapButton {
-                    print("swap!!")
+                    activeSheet = .confirmSwap
                 }
             }
         }
+        .padding(.top, safeAreaTopInset)
         .frame(maxHeight: .infinity, alignment: .top)
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .settings:
                 SwapSettingsSheet()
             case .provider:
-                fatalError()
+                ProviderSheet()
+            case .confirmSwap:
+                ConfirmSwapView(accountIcon: accountDefaultIcon, accountText: accountDefaultText)
             }
         }
     }

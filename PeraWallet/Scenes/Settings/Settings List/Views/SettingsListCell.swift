@@ -38,7 +38,7 @@ struct SettingsListCell: View {
                     .foregroundStyle(Color.Text.main)
             }
             Spacer()
-            Image(.iconListArrow)
+            Image(.iconArrow24)
         }
         .padding(.horizontal, 24.0)
         .frame(height: 64.0)

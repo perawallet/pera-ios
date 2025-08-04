@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapSettingsSheet.swift
+//   ProviderSheet.swift
 
 import SwiftUI
 
-struct SwapSettingsSheet: View {
+struct ProviderSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: 0) {
-            SheetTitleView(title: "title-swap-settings") { action in
+            SheetTitleView(title: "title-change-provider") { action in
                 switch action {
                 case .dismiss:
                     dismiss()
@@ -33,7 +33,7 @@ struct SwapSettingsSheet: View {
             Spacer()
         }
         .background(Color.Defaults.bg)
-        .presentationDetents([.height(600)])
+        .presentationDetents([.height(450)])
         .presentationDragIndicator(.hidden)
     }
 }
