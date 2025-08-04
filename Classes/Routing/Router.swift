@@ -473,7 +473,7 @@ final class Router:
             case .staking:
                 launch(tab: .stake)
             case .cards(path: let path):
-                let isCardsFeatureEnabled = Environment.current.isCardsFeatureEnabled(
+                let isCardsFeatureEnabled = AppEnvironment.current.isCardsFeatureEnabled(
                     for: appConfiguration.api.network
                 )
                 
@@ -824,7 +824,7 @@ final class Router:
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case .settings:
-            viewController = SettingsViewController(configuration: configuration)
+            viewController = SettingsListConstructor.buildScene(legacyAppConfiguration: appConfiguration)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
@@ -2674,11 +2674,11 @@ extension Router {
             return false
         }
         let cardsBaseUrl = URL(
-            string: Environment.current.cardsBaseUrl(
+            string: AppEnvironment.current.cardsBaseUrl(
                 network: appConfiguration.api.network
             )
         )?.absoluteString
-        let discoverBaseUrl = URL(string: Environment.current.discoverBaseUrl)?.absoluteString
+        let discoverBaseUrl = URL(string: AppEnvironment.current.discoverBaseUrl)?.absoluteString
         return
             dappURL.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet) ||
             dappURL.trimmingCharacters(in: characterSet) == discoverBaseUrl?.trimmingCharacters(in: characterSet)

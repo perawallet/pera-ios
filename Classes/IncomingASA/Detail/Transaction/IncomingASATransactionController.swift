@@ -140,9 +140,9 @@ extension IncomingASATransactionController {
         
         let appID: Int64
         if api.isTestNet {
-            appID = Environment.current.testNetARC59AppID
+            appID = AppEnvironment.current.testNetARC59AppID
         } else {
-            appID = Environment.current.mainNetARC59AppID
+            appID = AppEnvironment.current.mainNetARC59AppID
         }
         
         let transactionDraft = ARC59ClaimAssetTransactionDraft(
@@ -197,9 +197,9 @@ extension IncomingASATransactionController {
     ) {
         let appID: Int64
         if api.isTestNet {
-            appID = Environment.current.testNetARC59AppID
+            appID = AppEnvironment.current.testNetARC59AppID
         } else {
-            appID = Environment.current.mainNetARC59AppID
+            appID = AppEnvironment.current.mainNetARC59AppID
         }
         
         let transactionDraft = ARC59RejectAssetTransactionDraft(

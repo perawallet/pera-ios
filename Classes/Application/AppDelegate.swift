@@ -79,6 +79,7 @@ class AppDelegate:
 
         makeWindow()
         makeNetworkBanner()
+        setupLegacyBridge()
 
         launch(with: launchOptions)
         
@@ -482,6 +483,18 @@ extension AppDelegate {
 
         let biometricAuthenticationMigration = BiometricAuthenticationMigration(session: session)
         biometricAuthenticationMigration.migratePasswordToKeychain()
+    }
+    
+    private func setupLegacyBridge() {
+        
+        PeraCoreManager.shared.legacySessionManager = session
+        
+        switch api.network {
+        case .mainnet:
+            PeraCoreManager.shared.network = .mainNet
+        case .testnet:
+            PeraCoreManager.shared.network = .testNet
+        }
     }
 }
 

@@ -122,7 +122,7 @@ struct APIKeyHeader: Header {
 
     init() {
         self.key = "X-API-Key"
-        self.value = Environment.current.apiKey
+        self.value = AppEnvironment.current.apiKey
     }
 }
 

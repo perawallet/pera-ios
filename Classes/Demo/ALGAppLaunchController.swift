@@ -274,7 +274,7 @@ extension ALGAppLaunchController {
     }
     
     private func setupTargetNetwork() {
-        let network: ALGAPI.Network = Environment.current.isTestNet ? .testnet : .mainnet
+        let network: ALGAPI.Network = AppEnvironment.current.isTestNet ? .testnet : .mainnet
         setup(network: network)
     }
     
