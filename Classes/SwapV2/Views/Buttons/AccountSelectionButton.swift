@@ -17,25 +17,35 @@
 import SwiftUI
 
 struct AccountSelectionButton: View {
-
+    
     // MARK: - Properties
-    @Binding var icon: Image
-    @Binding var text: String
+    @Binding var account: AccountInformation?
+    private var accountIconName: String {
+        guard let account else { return "icon-unknown-account" }
+        return account.hdWalletAddressDetail != nil ? "icon-hd-account" : "icon-standard-account"
+    }
+    
     let onTap: () -> Void
-
+    
     // MARK: - Body
     var body: some View {
         SwiftUI.Button(action: onTap) {
             HStack(spacing: 0) {
-                icon
+                Image(accountIconName)
                     .resizable()
                     .frame(width: 28, height: 28)
                     .clipShape(Circle())
                 Spacer().frame(width: 8)
-                Text(text)
-                    .font(.dmSans.medium.size(13.0))
-                    .foregroundStyle(Color.Text.gray)
-                    .frame(width: 85, alignment: .leading)
+                Group {
+                    if let name = account?.name {
+                        Text(name)
+                    } else {
+                        Text("title-select-account")
+                    }
+                }
+                .font(.dmSans.medium.size(13.0))
+                .foregroundStyle(Color.Text.gray)
+                .frame(minWidth: 85, alignment: .leading)
                 Spacer().frame(width: 8)
                 Image("icon-dropdown-arrow")
                     .resizable()
@@ -46,6 +56,7 @@ struct AccountSelectionButton: View {
             .padding(.trailing, 12)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(height: 40)
         .background(
             RoundedRectangle(cornerRadius: 60)
                 .fill(Color.Defaults.bg)
@@ -54,6 +65,8 @@ struct AccountSelectionButton: View {
                         .stroke(Color.Helpers.Gray.gray200, lineWidth: 1)
                 )
         )
-        .frame(width: 161, height: 40)
+        .frame(maxWidth: 250)
+        .fixedSize(horizontal: true, vertical: false)
+        
     }
 }

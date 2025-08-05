@@ -30,7 +30,7 @@ final class SwapViewController: BaseViewController {
         presentingScreen: self
     )
     
-    private lazy var swapHostingController = UIHostingController(rootView: makeSwapView())
+    private lazy var swapHostingController = UIHostingController(rootView: makeSwapView(with: nil))
     
     // MARK: - Initialisers
     
@@ -39,17 +39,25 @@ final class SwapViewController: BaseViewController {
         addSwapView()
     }
     
-    private func addSwapView() {
+    private func addSwapView(with selectedAccount: AccountInformation? = nil) {
+        if swapHostingController.parent != nil {
+            swapHostingController.willMove(toParent: nil)
+            swapHostingController.view.removeFromSuperview()
+            swapHostingController.removeFromParent()
+        }
+        
+        swapHostingController = UIHostingController(rootView: makeSwapView(with: selectedAccount))
+        addChild(swapHostingController)
         swapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(swapHostingController.view)
-        
         swapHostingController.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        swapHostingController.didMove(toParent: self)
     }
     
-    private func makeSwapView() -> SwapView {
-        var rootView = SwapView()
+    private func makeSwapView(with selectedAccount: AccountInformation?) -> SwapView {
+        var rootView = SwapView(selectedAccount: .constant(selectedAccount))
         
         rootView.onTap = { [weak self] action in
             guard let self = self else { return }
@@ -57,6 +65,13 @@ final class SwapViewController: BaseViewController {
             case .info:
                 open(AlgorandWeb.tinymanSwap.link)
             case .accountSelection:
+                swapAssetFlowCoordinator.onAccountSelected = { [weak self] selectedAccount in
+                    guard let self = self else { return }
+                    guard let account = configuration.session?.authenticatedUser?.account(address: selectedAccount.address) else {
+                        return
+                    }
+                    addSwapView(with: account)
+                }
                 swapAssetFlowCoordinator.openSelectAccount()
             case .payAssetSelection:
                 print("payAssetSelection")
@@ -81,5 +96,23 @@ final class SwapViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard
+            let launchDraft,
+            let launchDraftAccountAddress = launchDraft.account?.address,
+            let launchDraftAccount = configuration.session?.authenticatedUser?.account(address: launchDraftAccountAddress)
+        else {
+            let account = configuration.session?.authenticatedUser?.accounts
+                .filter { !$0.isWatchAccount }
+                .first
+            addSwapView(with: account)
+            return
+        }
+        addSwapView(with: launchDraftAccount)
+        self.launchDraft = nil
     }
 }
