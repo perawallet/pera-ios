@@ -7356,6 +7356,9 @@
 		D4DD4F5D2E37B949002A0CA4 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD4F5C2E37B943002A0CA4 /* AssetSelectionView.swift */; };
 		D4DD4F5E2E37B949002A0CA4 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD4F5C2E37B943002A0CA4 /* AssetSelectionView.swift */; };
 		D4DD4F5F2E37B949002A0CA4 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD4F5C2E37B943002A0CA4 /* AssetSelectionView.swift */; };
+		D4EDBA072E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
+		D4EDBA082E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
+		D4EDBA092E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
 		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
@@ -10011,6 +10014,7 @@
 		D4E9E273298816850008C4D5 /* CollectibleListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListQuery.swift; sourceTree = "<group>"; };
 		D4EAEC9F2846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListTitleSupplementaryHeader.swift; sourceTree = "<group>"; };
 		D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetChartDataDTO.swift; sourceTree = "<group>"; };
+		D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSlideButton.swift; sourceTree = "<group>"; };
 		D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
 		D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewModel.swift; sourceTree = "<group>"; };
 		D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsViewTheme.swift; sourceTree = "<group>"; };
@@ -22731,6 +22735,7 @@
 		D4DD4F4F2E378613002A0CA4 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */,
 				D402DA262E390C6A00C62C0D /* SwapButton.swift */,
 				D4DD4F542E378F12002A0CA4 /* SwitchSwapButton.swift */,
 				D4DD4F502E3787A2002A0CA4 /* SettingsSwapButton.swift */,
@@ -24998,6 +25003,7 @@
 				59167A072E464C76002184C2 /* AsaVerificationInfoScreenTheme.swift in Sources */,
 				59167A082E464C76002184C2 /* AssetActionConfirmationViewController.swift in Sources */,
 				59167A092E464C76002184C2 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
+				D4EDBA072E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				59167A0A2E464C76002184C2 /* AssetActionConfirmationViewModel.swift in Sources */,
 				59167A0B2E464C76002184C2 /* AssetDisplayViewModel.swift in Sources */,
 				59167A0C2E464C76002184C2 /* AssetActionConfirmationLoadingView.swift in Sources */,
@@ -28682,6 +28688,7 @@
 				59E6056F2E4A712500CCA99B /* UILabel+Extensions.swift in Sources */,
 				59E605702E4A712500CCA99B /* UIImage+UIPasteboard.swift in Sources */,
 				59E605712E4A712500CCA99B /* UIApplication+Additions.swift in Sources */,
+				D4EDBA092E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				59E605722E4A712500CCA99B /* UIView+Additions.swift in Sources */,
 				59E605732E4A712500CCA99B /* UIButton+Factory.swift in Sources */,
 				59E605742E4A712500CCA99B /* UILabel+Factory.swift in Sources */,
@@ -29316,6 +29323,7 @@
 				59E607FF2E4A71D000CCA99B /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				59E608002E4A71D000CCA99B /* AssetActionConfirmationViewModel.swift in Sources */,
 				59E608012E4A71D000CCA99B /* AssetDisplayViewModel.swift in Sources */,
+				D4EDBA082E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				59E608022E4A71D000CCA99B /* AssetActionConfirmationLoadingView.swift in Sources */,
 				59E608032E4A71D000CCA99B /* AssetActionConfirmationLoadingViewModel.swift in Sources */,
 				59E608042E4A71D000CCA99B /* AssetActionConfirmationLoadingViewTheme.swift in Sources */,
