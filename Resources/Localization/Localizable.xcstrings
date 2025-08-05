@@ -7649,6 +7649,17 @@
         }
       }
     },
+    "title-confirmed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmed!"
+          }
+        }
+      }
+    },
     "title-connect" : {
       "localizations" : {
         "en" : {
@@ -7846,6 +7857,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error: %@"
+          }
+        }
+      }
+    },
+    "title-exchange-fee" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exchange Fee"
           }
         }
       }
@@ -8546,6 +8568,17 @@
         }
       }
     },
+    "title-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider"
+          }
+        }
+      }
+    },
     "title-read-more" : {
       "localizations" : {
         "en" : {
@@ -8884,6 +8917,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skip for now"
+          }
+        }
+      }
+    },
+    "title-slide-to-confirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slide To Confirm"
           }
         }
       }

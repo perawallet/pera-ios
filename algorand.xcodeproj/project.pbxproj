@@ -7257,6 +7257,9 @@
 		D4EBA7622E13E75600899FF3 /* AssetChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */; };
 		D4EBA7632E13E75600899FF3 /* AssetChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */; };
 		D4EBA7642E13E75600899FF3 /* AssetChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */; };
+		D4EDBA072E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
+		D4EDBA082E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
+		D4EDBA092E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
 		D4F068A126EF1F8500C26F43 /* TutorialStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */; };
 		D4F068A226EF1F8500C26F43 /* TutorialStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */; };
 		D4F068A326EF1F8500C26F43 /* TutorialStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */; };
@@ -10726,6 +10729,7 @@
 		D4E9E273298816850008C4D5 /* CollectibleListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListQuery.swift; sourceTree = "<group>"; };
 		D4EAEC9F2846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListTitleSupplementaryHeader.swift; sourceTree = "<group>"; };
 		D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetChartDataDTO.swift; sourceTree = "<group>"; };
+		D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSlideButton.swift; sourceTree = "<group>"; };
 		D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
 		D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewModel.swift; sourceTree = "<group>"; };
 		D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsViewTheme.swift; sourceTree = "<group>"; };
@@ -22949,6 +22953,7 @@
 		D4DD4F4F2E378613002A0CA4 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */,
 				D402DA262E390C6A00C62C0D /* SwapButton.swift */,
 				D4DD4F542E378F12002A0CA4 /* SwitchSwapButton.swift */,
 				D4DD4F502E3787A2002A0CA4 /* SettingsSwapButton.swift */,
@@ -25201,6 +25206,7 @@
 				D48FDFCF27CEBA1500C39FC7 /* TitleView.swift in Sources */,
 				2BAAF4A928E49C5100FC59AF /* SelectLocalAssetDataController.swift in Sources */,
 				8B14E6792C0217AB0039B9EC /* ALGAPI+IncominASA.swift in Sources */,
+				D4EDBA072E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				D48A5F882841256F0009E6DB /* AssetPreviewWithRemoveActionViewModel.swift in Sources */,
 				D4592905276B933700862B21 /* WCSessionShortListDataSource.swift in Sources */,
 				2B262702284D4DE500ADE371 /* AllTransactionListGrouping.swift in Sources */,
@@ -29390,6 +29396,7 @@
 				F063BE75290BF7BA00AEAEF7 /* EditSwapSlippageScreen.swift in Sources */,
 				2B80C544277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				F045BE46286C91D40069056B /* NumberRounder.swift in Sources */,
+				D4EDBA092E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				2BD95B21291552FC005337E5 /* SwapStatusEventMapper.swift in Sources */,
 				2B0F629E24EC129D00DA22A6 /* PinLimitViewController.swift in Sources */,
 				2B0F629F24EC129D00DA22A6 /* PendingTransactionList.swift in Sources */,
@@ -30550,6 +30557,7 @@
 				D40BA50E2A81AD5100138BF7 /* WCV1SessionBadgeCell.swift in Sources */,
 				8B14E6772C0217AB0039B9EC /* ALGAPI+IncominASA.swift in Sources */,
 				F0B5B0D327A1CBE100BC3E2D /* ALGAppLaunchController.swift in Sources */,
+				D4EDBA082E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */,
 				D497948A287D92FD004FBF8E /* AppCallAssetListLocalDataController.swift in Sources */,
 				2BE937472464B04900322C1E /* TransactionAmountInformationView.swift in Sources */,
 				2B9FDEA028A524EC00C8117D /* GroupedListItemButton.swift in Sources */,
