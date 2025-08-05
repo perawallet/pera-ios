@@ -57,6 +57,8 @@ final class SwapAssetFlowCoordinator:
     )
 
     private var loadingScreen: LoadingScreen?
+    
+    var onAccountSelected: ((Account) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -66,7 +68,6 @@ final class SwapAssetFlowCoordinator:
     private let loadingController: LoadingController
     private let bannerController: BannerController
     private let hdWalletStorage: HDWalletStorable
-    private var featureFlagService: FeatureFlagServicing?
     private unowned let presentingScreen: UIViewController
 
     init(
@@ -105,7 +106,6 @@ final class SwapAssetFlowCoordinator:
         self.loadingController = configuration.loadingController!
         self.bannerController = configuration.bannerController!
         self.hdWalletStorage = configuration.hdWalletStorage
-        self.featureFlagService = configuration.featureFlagService
         self.presentingScreen = presentingScreen
     }
 
@@ -224,20 +224,18 @@ extension SwapAssetFlowCoordinator {
                      return
                  }
                  
-                 guard let featureFlagService, featureFlagService.isEnabled(.swapV2Enabled) else {
+                 guard let onAccountSelected else {
                      self.openSwapAsset(by: .push)
                      return
                  }
-
                  
+                 onAccountSelected(account)
+                 self.visibleScreen.dismissScreen()
              case .didOptInToAsset(let asset):
                  let asset = StandardAsset(decoration: asset)
                  self.draft.account?.append(asset)
 
-                 guard let featureFlagService, featureFlagService.isEnabled(.swapV2Enabled) else {
-                     self.openSwapAsset(by: .push)
-                     return
-                 }
+                 self.openSwapAsset(by: .push)
              }
          }
 

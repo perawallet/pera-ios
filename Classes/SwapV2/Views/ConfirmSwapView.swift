@@ -18,8 +18,8 @@ import SwiftUI
 
 struct ConfirmSwapView: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
-    var accountIcon: Image
-    var accountText: String
+    
+    var account: AccountInformation
 
     var body: some View {
         VStack(spacing: 0) {
@@ -41,11 +41,11 @@ struct ConfirmSwapView: View {
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(height: 2)
                     HStack {
-                        accountIcon
+                        Image(account.hdWalletAddressDetail != nil ? "icon-hd-account" : "icon-standard-account")
                             .resizable()
                             .frame(width: 16, height: 16)
                         Spacer().frame(width: 6)
-                        Text(accountText)
+                        Text(account.name)
                             .font(.dmSans.regular.size(13))
                             .foregroundStyle(Color.Text.gray)
                     }
