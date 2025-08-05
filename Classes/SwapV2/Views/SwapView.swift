@@ -40,7 +40,7 @@ enum SwapViewSheet: Identifiable {
 struct SwapView: View {
     
     // MARK: - Properties
-    @Binding var selectedAccount: AccountInformation?
+    @Binding var selectedAccount: Account?
     
     @State private var assetDefaultIcon = Image("icon-algo-circle")
     @State private var assetDefaultText = String(localized: "title-algo")

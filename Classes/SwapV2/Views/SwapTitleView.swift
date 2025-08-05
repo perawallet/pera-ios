@@ -24,7 +24,7 @@ enum SwapTitleViewAction {
 struct SwapTitleView: View {
     
     // MARK: - Properties
-    @Binding var account: AccountInformation?
+    @Binding var account: Account?
     let onTap: (SwapTitleViewAction) -> Void
     
     // MARK: - Body

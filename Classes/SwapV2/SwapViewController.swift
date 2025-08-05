@@ -39,7 +39,7 @@ final class SwapViewController: BaseViewController {
         addSwapView()
     }
     
-    private func addSwapView(with selectedAccount: AccountInformation? = nil) {
+    private func addSwapView(with selectedAccount: Account? = nil) {
         if swapHostingController.parent != nil {
             swapHostingController.willMove(toParent: nil)
             swapHostingController.view.removeFromSuperview()
@@ -56,7 +56,7 @@ final class SwapViewController: BaseViewController {
         swapHostingController.didMove(toParent: self)
     }
     
-    private func makeSwapView(with selectedAccount: AccountInformation?) -> SwapView {
+    private func makeSwapView(with selectedAccount: Account?) -> SwapView {
         var rootView = SwapView(selectedAccount: .constant(selectedAccount))
         
         rootView.onTap = { [weak self] action in
@@ -67,10 +67,7 @@ final class SwapViewController: BaseViewController {
             case .accountSelection:
                 swapAssetFlowCoordinator.onAccountSelected = { [weak self] selectedAccount in
                     guard let self = self else { return }
-                    guard let account = configuration.session?.authenticatedUser?.account(address: selectedAccount.address) else {
-                        return
-                    }
-                    addSwapView(with: account)
+                    addSwapView(with: selectedAccount)
                 }
                 swapAssetFlowCoordinator.openSelectAccount()
             case .payAssetSelection:
@@ -101,18 +98,14 @@ final class SwapViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard
-            let launchDraft,
-            let launchDraftAccountAddress = launchDraft.account?.address,
-            let launchDraftAccount = configuration.session?.authenticatedUser?.account(address: launchDraftAccountAddress)
-        else {
+        guard let launchDraft else {
             let account = configuration.session?.authenticatedUser?.accounts
                 .filter { !$0.isWatchAccount }
                 .first
-            addSwapView(with: account)
+            addSwapView(with: account != nil ? Account(localAccount: account!) : nil)
             return
         }
-        addSwapView(with: launchDraftAccount)
+        addSwapView(with: launchDraft.account)
         self.launchDraft = nil
     }
 }
