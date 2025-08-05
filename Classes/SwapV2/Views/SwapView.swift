@@ -40,10 +40,10 @@ enum SwapViewSheet: Identifiable {
 struct SwapView: View {
     
     // MARK: - Properties
+    @Binding var selectedAccount: AccountInformation?
+    
     @State private var assetDefaultIcon = Image("icon-algo-circle")
     @State private var assetDefaultText = String(localized: "title-algo")
-    @State private var accountDefaultIcon = Image("icon-standard-account")
-    @State private var accountDefaultText = String(localized: "title-main-account")
     @State private var payingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "62,045.00")
     @State private var receivingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "3,495.00 USDC")
     @State private var providerIcon = Image("icon-shield-16")
@@ -63,7 +63,7 @@ struct SwapView: View {
         )
     }
     @State private var shouldShowProvider = false
-    @State private var shouldShowSwapButton = false
+    @State private var shouldShowSwapButton = true
     
     @State private var activeSheet: SwapViewSheet?
     
@@ -72,7 +72,7 @@ struct SwapView: View {
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
-            SwapTitleView(accountSelectionIcon: $accountDefaultIcon, accountSelectionText: $accountDefaultText) { action in
+            SwapTitleView(account: $selectedAccount) { action in
                 switch action {
                 case .accountSelection:
                     onTap?(.accountSelection)
@@ -128,7 +128,7 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                ConfirmSwapView(accountIcon: accountDefaultIcon, accountText: accountDefaultText)
+                ConfirmSwapView(account: selectedAccount!)
             }
         }
     }

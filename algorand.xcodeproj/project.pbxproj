@@ -21613,6 +21613,7 @@
 		D498BD0E2E338D1600833208 /* SwapV2 */ = {
 			isa = PBXGroup;
 			children = (
+				D4EDBA0A2E42160A00B6FBDA /* Models */,
 				D4DD4F422E3761F4002A0CA4 /* Views */,
 				D498BD0F2E338D6700833208 /* SwapViewController.swift */,
 			);
@@ -22643,10 +22644,10 @@
 				D402DA2A2E390FB600C62C0D /* BottomSheets */,
 				D4DD4F4F2E378613002A0CA4 /* Buttons */,
 				D4A9E75F2E40E37200C3939A /* ConfirmSwapView.swift */,
-				D4DD4F432E376616002A0CA4 /* SwapView.swift */,
 				D4DD4F5C2E37B943002A0CA4 /* AssetSelectionView.swift */,
 				D402DA222E39066F00C62C0D /* ProviderSelectionView.swift */,
 				D4DD4F582E37ACA6002A0CA4 /* SwapTitleView.swift */,
+				D4DD4F432E376616002A0CA4 /* SwapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -22710,6 +22711,13 @@
 				2B4FD1F427C63F3A0097AB65 /* Transaction */,
 			);
 			path = MoonPay;
+			sourceTree = "<group>";
+		};
+		D4EDBA0A2E42160A00B6FBDA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D4F4C88529D16FA70069FB94 /* Views */ = {
