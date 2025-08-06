@@ -59,6 +59,8 @@ final class SwapAssetFlowCoordinator:
     private var loadingScreen: LoadingScreen?
     
     var onAccountSelected: ((Account) -> Void)?
+    var onAssetInSelected: ((Asset) -> Void)?
+    var onAssetOutSelected: ((Asset) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -585,6 +587,124 @@ extension SwapAssetFlowCoordinator {
         }
 
         return lastVC as? T
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    func openSelectAssetIn(account: Account) {
+        let transactionSigner = SwapTransactionSigner(
+            api: api,
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage,
+            sharedDataController: sharedDataController
+        )
+        
+        let swapControllerDraft = ALGSwapControllerDraft(
+            account: account,
+            assetIn: draft.assetIn ?? account.algo,
+            assetOut: draft.assetOut
+        )
+        
+        let swapController = ALGSwapController(
+            draft: swapControllerDraft,
+            api: api,
+            transactionSigner: transactionSigner
+        )
+        
+        var filters: [AssetFilterAlgorithm] = [AssetZeroBalanceFilterAlgorithm()]
+
+        if let poolAsset = swapController.poolAsset {
+            filters.append(AssetExcludeFilterAlgorithm(excludedList: [poolAsset]))
+        }
+
+        let dataController = SelectLocalAssetDataController(
+            account: swapController.account,
+            filters: filters,
+            api: api,
+            sharedDataController: sharedDataController
+        )
+
+        let selectAssetScreen = visibleScreen.open(
+            .selectAsset(
+                dataController: dataController,
+                coordinator: self,
+                title: String(localized: "swap-asset-from")
+            ),
+            by: .present
+        ) as? SelectAssetScreen
+
+        selectAssetScreen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectAsset(let asset):
+                guard let onAssetInSelected else { return }
+                onAssetInSelected(asset)
+                selectAssetScreen?.dismissScreen()
+            case .didOptInToAsset: break
+            }
+        }
+    }
+    
+    func openSelectAssetOut(account: Account) {
+        let transactionSigner = SwapTransactionSigner(
+            api: api,
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage,
+            sharedDataController: sharedDataController
+        )
+        
+        let swapControllerDraft = ALGSwapControllerDraft(
+            account: account,
+            assetIn: draft.assetIn ?? account.algo,
+            assetOut: draft.assetOut
+        )
+        
+        let swapController = ALGSwapController(
+            draft: swapControllerDraft,
+            api: api,
+            transactionSigner: transactionSigner
+        )
+        
+        let dataController = SelectSwapPoolAssetDataController(
+            account: swapController.account,
+            userAsset: swapController.userAsset.id,
+            swapProviders: swapController.providers,
+            api: api,
+            sharedDataController: sharedDataController
+        )
+
+        let selectAssetScreen = visibleScreen.open(
+            .selectAsset(
+                dataController: dataController,
+                coordinator: self,
+                title: String(localized: "swap-asset-to")
+            ),
+            by: .present
+        ) as? SelectAssetScreen
+
+        selectAssetScreen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectAsset(let asset):
+                if swapController.account.isOptedIn(to: asset.id) {
+                    guard let onAssetOutSelected else { return }
+                    onAssetOutSelected(asset)
+                    selectAssetScreen?.dismissScreen()
+                    return
+                }
+
+                let assetDecoration = AssetDecoration(asset: asset)
+                self.openOptInAsset(assetDecoration)
+            case .didOptInToAsset(let asset):
+                guard let onAssetOutSelected else { return }
+                onAssetOutSelected(asset)
+                selectAssetScreen?.dismissScreen()
+            }
+        }
     }
 }
 

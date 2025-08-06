@@ -24,7 +24,7 @@ enum SwapTitleViewAction {
 struct SwapTitleView: View {
     
     // MARK: - Properties
-    @Binding var account: Account?
+    @Binding var selectedAccount: Account
     let onTap: (SwapTitleViewAction) -> Void
     
     // MARK: - Body
@@ -43,7 +43,7 @@ struct SwapTitleView: View {
                 }
             }
             Spacer()
-            AccountSelectionButton(account: $account) { onTap(.accountSelection) }
+            AccountSelectionButton(selectedAccount: $selectedAccount) { onTap(.accountSelection) }
         }
         .padding(.horizontal, 24)
         .frame(height: 60)
