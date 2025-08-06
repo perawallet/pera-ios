@@ -19,7 +19,7 @@ import SwiftUI
 struct AccountSelectionButton: View {
     
     // MARK: - Properties
-    @Binding var account: Account?
+    @Binding var selectedAccount: Account
     
     let onTap: () -> Void
     
@@ -27,25 +27,12 @@ struct AccountSelectionButton: View {
     var body: some View {
         SwiftUI.Button(action: onTap) {
             HStack(spacing: 0) {
-                Group {
-                    if let account {
-                        Image(uiImage: account.typeImage)
-                            .resizable()
-                    } else {
-                        Image("icon-unknown-account")
-                            .resizable()
-                    }
-                }
+                Image(uiImage: selectedAccount.typeImage)
+                    .resizable()
                 .frame(width: 28, height: 28)
                 .clipShape(Circle())
                 Spacer().frame(width: 8)
-                Group {
-                    if let account {
-                        Text(account.primaryDisplayName)
-                    } else {
-                        Text("title-select-account")
-                    }
-                }
+                Text(selectedAccount.primaryDisplayName)
                 .font(.dmSans.medium.size(13.0))
                 .foregroundStyle(Color.Text.gray)
                 .frame(minWidth: 85, alignment: .leading)
@@ -70,6 +57,5 @@ struct AccountSelectionButton: View {
         )
         .frame(maxWidth: 250)
         .fixedSize(horizontal: true, vertical: false)
-        
     }
 }
