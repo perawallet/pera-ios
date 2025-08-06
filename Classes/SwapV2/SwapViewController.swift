@@ -23,6 +23,8 @@ final class SwapViewController: BaseViewController {
     
     var launchDraft: SwapAssetFlowDraft?
     
+    private var selectedAccount: Account?
+    
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: SwapDataLocalStore(),
@@ -30,23 +32,24 @@ final class SwapViewController: BaseViewController {
         presentingScreen: self
     )
     
-    private lazy var swapHostingController = UIHostingController(rootView: makeSwapView(with: nil))
     
     // MARK: - Initialisers
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSwapView()
     }
     
-    private func addSwapView(with selectedAccount: Account? = nil) {
-        if swapHostingController.parent != nil {
-            swapHostingController.willMove(toParent: nil)
-            swapHostingController.view.removeFromSuperview()
-            swapHostingController.removeFromParent()
+    private func addSwapView(with selectedAccount: Account, assetIn: Asset? = nil, assetOut: Asset? = nil) {
+        let swapHostingController = UIHostingController(
+            rootView: makeSwapView(with: selectedAccount, selectedAssetIn: assetIn, selectedAssetOut: assetOut)
+        )
+
+        if let existingController = children.first(where: { $0 is UIHostingController<SwapView> }) {
+            existingController.willMove(toParent: nil)
+            existingController.view.removeFromSuperview()
+            existingController.removeFromParent()
         }
-        
-        swapHostingController = UIHostingController(rootView: makeSwapView(with: selectedAccount))
+
         addChild(swapHostingController)
         swapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(swapHostingController.view)
@@ -55,25 +58,52 @@ final class SwapViewController: BaseViewController {
         }
         swapHostingController.didMove(toParent: self)
     }
+
     
-    private func makeSwapView(with selectedAccount: Account?) -> SwapView {
-        var rootView = SwapView(selectedAccount: .constant(selectedAccount))
+    private func makeSwapView(with selectedAccount: Account, selectedAssetIn: Asset? = nil, selectedAssetOut: Asset? = nil) -> SwapView {
+        let defaultAsset = selectedAccount[0]!
+        
+        var assetIn: Asset {
+            guard let selectedAssetIn else {
+                return defaultAsset
+            }
+            return selectedAssetIn
+        }
+        
+        var assetOut: Asset {
+            guard let selectedAssetOut else {
+                return defaultAsset
+            }
+            return selectedAssetOut
+        }
+        
+        var rootView = SwapView(selectedAccount: .constant(selectedAccount), selectedAssetIn: .constant(assetIn), selectedAssetOut: .constant(assetOut))
         
         rootView.onTap = { [weak self] action in
             guard let self = self else { return }
             switch action {
-            case .info:
+            case .showInfo:
                 open(AlgorandWeb.tinymanSwap.link)
-            case .accountSelection:
+            case .selectAccount:
                 swapAssetFlowCoordinator.onAccountSelected = { [weak self] selectedAccount in
                     guard let self = self else { return }
                     addSwapView(with: selectedAccount)
+                    self.selectedAccount = selectedAccount
                 }
                 swapAssetFlowCoordinator.openSelectAccount()
-            case .payAssetSelection:
+            case .selectAssetIn(for: let account):
                 print("payAssetSelection")
-            case .receiveAssetSelection:
-                print("receiveAssetSelection")
+                swapAssetFlowCoordinator.onAssetInSelected = { [weak self] selectedAssetIn in
+                    guard let self = self else { return }
+                    addSwapView(with: selectedAccount, assetIn: selectedAssetIn)
+                }
+                swapAssetFlowCoordinator.openSelectAssetIn(account: account)
+            case .selectAssetOut(for: let account):
+                swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] selectedAssetOut in
+                    guard let self = self else { return }
+                    addSwapView(with: selectedAccount, assetOut: selectedAssetOut)
+                }
+                swapAssetFlowCoordinator.openSelectAssetOut(account: account)
             }
         }
         
@@ -98,14 +128,24 @@ final class SwapViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let launchDraft else {
-            let account = configuration.session?.authenticatedUser?.accounts
+        if
+            let launchDraft,
+            let account = launchDraft.account
+        {
+            addSwapView(with: account, assetIn: launchDraft.assetIn)
+            self.launchDraft = nil
+            self.selectedAccount = account
+        } else {
+            let localAccount = configuration.session?.authenticatedUser?.accounts
                 .filter { !$0.isWatchAccount }
                 .first
-            addSwapView(with: account != nil ? Account(localAccount: account!) : nil)
-            return
+            guard let localAccount else {
+                // TODO: show no account warning and a button to create it
+                return
+            }
+            let account = Account(localAccount: localAccount)
+            addSwapView(with: account)
+            self.selectedAccount = account
         }
-        addSwapView(with: launchDraft.account)
-        self.launchDraft = nil
     }
 }

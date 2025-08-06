@@ -20,8 +20,7 @@ struct AssetSelectionView: View {
     // MARK: - Properties
     @Binding var isPayingView: Bool
     @Binding var balanceText: String
-    @Binding var icon: Image
-    @Binding var text: String
+    @Binding var asset: Asset
     let onTap: () -> Void
     
     @State private var payingText = ""
@@ -54,7 +53,7 @@ struct AssetSelectionView: View {
                         .frame(maxWidth: 200, alignment: .leading)
                 }
                 Spacer()
-                AssetSwapButton(icon: $icon, text: $text, onTap: onTap)
+                AssetSwapButton(asset: $asset, onTap: onTap)
             }
             Spacer()
         }

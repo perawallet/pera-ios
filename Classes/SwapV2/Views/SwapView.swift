@@ -17,10 +17,10 @@
 import SwiftUI
 
 enum SwapViewAction {
-    case info
-    case accountSelection
-    case payAssetSelection
-    case receiveAssetSelection
+    case showInfo
+    case selectAccount
+    case selectAssetIn(for: Account)
+    case selectAssetOut(for: Account)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -40,7 +40,10 @@ enum SwapViewSheet: Identifiable {
 struct SwapView: View {
     
     // MARK: - Properties
-    @Binding var selectedAccount: Account?
+    @Binding var selectedAccount: Account
+    @Binding var selectedAssetIn: Asset
+    @Binding var selectedAssetOut: Asset
+    
     
     @State private var assetDefaultIcon = Image("icon-algo-circle")
     @State private var assetDefaultText = String(localized: "title-algo")
@@ -72,21 +75,21 @@ struct SwapView: View {
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
-            SwapTitleView(account: $selectedAccount) { action in
+            SwapTitleView(selectedAccount: $selectedAccount) { action in
                 switch action {
                 case .accountSelection:
-                    onTap?(.accountSelection)
+                    onTap?(.selectAccount)
                 case .info:
-                    onTap?(.info)
+                    onTap?(.showInfo)
                 }
             }
             ZStack {
                 VStack (spacing: 0) {
-                    AssetSelectionView(isPayingView: $isPayingView, balanceText: $payingBalanceText, icon: $assetDefaultIcon, text: $assetDefaultText) {
-                        onTap?(.payAssetSelection)
+                    AssetSelectionView(isPayingView: $isPayingView, balanceText: $payingBalanceText, asset: $selectedAssetIn) {
+                        onTap?(.selectAssetIn(for: selectedAccount))
                     }
-                    AssetSelectionView(isPayingView: isReceivingView, balanceText: $receivingBalanceText, icon: $assetDefaultIcon, text: $assetDefaultText) {
-                        onTap?(.receiveAssetSelection)
+                    AssetSelectionView(isPayingView: isReceivingView, balanceText: $receivingBalanceText, asset: $selectedAssetOut) {
+                        onTap?(.selectAssetOut(for: selectedAccount))
                     }
                 }
                 .padding(.horizontal, 8)
@@ -128,7 +131,7 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                ConfirmSwapView(account: selectedAccount!)
+                ConfirmSwapView(account: selectedAccount)
             }
         }
     }

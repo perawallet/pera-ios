@@ -19,22 +19,34 @@ import SwiftUI
 struct AssetSwapButton: View {
 
     // MARK: - Properties
-    @Binding var icon: Image
-    @Binding var text: String
+    @Binding var asset: Asset
+    private let iconSize: CGFloat = 24
+    
     let onTap: () -> Void
 
     // MARK: - Body
     var body: some View {
         SwiftUI.Button(action: onTap) {
             HStack(spacing: 0) {
-                icon
-                    .resizable()
-                    .frame(width: 24, height: 24)
+                Group {
+                    if asset.isAlgo {
+                        Image("icon-algo-circle").resizable()
+                    } else if let url = asset.logoURL {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                        } placeholder: {
+                            Image("icon-swap-empty").resizable()
+                        }
+                    } else {
+                        Image("icon-swap-empty").resizable()
+                    }
+                }
+                .frame(width: iconSize, height: iconSize)
                 Spacer().frame(width: 6)
-                Text(text.uppercased())
+                Text(asset.naming.displayNames.primaryName)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
-                    .frame(width: 40, alignment: .leading)
+                    .lineLimit(1)
                 Spacer().frame(width: 8)
                 Image("icon-arrow-24")
                     .resizable()
@@ -43,10 +55,12 @@ struct AssetSwapButton: View {
             .padding(12)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(height: 48)
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.Layer.grayLightest)
         )
-        .frame(width: 126, height: 48)
+        .frame(maxWidth: 250)
+        .fixedSize(horizontal: true, vertical: false)
     }
 }
