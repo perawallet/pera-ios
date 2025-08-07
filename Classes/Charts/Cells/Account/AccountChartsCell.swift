@@ -27,6 +27,7 @@ final class AccountChartsCell: UICollectionViewCell {
     var onPeriodChange: ((ChartDataPeriod) -> Void)?
     var onPointSelected: ((ChartDataPoint?) -> Void)?
     
+    private var chartData: ChartViewData?
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var hostingController = UIHostingController(rootView: makeChartView())
     
@@ -65,13 +66,18 @@ final class AccountChartsCell: UICollectionViewCell {
             onPeriodChange?(newPeriod)
         }
         
-        chartViewModel.onPointSelected = { [weak self] selectedPoint in
+        chartViewModel.onPointSelected = { [weak self] selectedPointVM in
             guard let self else { return }
-            onPointSelected?(selectedPoint)
+            guard let selectedPointVM else {
+                onPointSelected?(nil)
+                return
+            }
+            onPointSelected?(chartData?.chartValues[selectedPointVM.day])
         }
     }
     
     func bindData(_ data: ChartViewData) {
+        self.chartData = data
         chartViewModel.refresh(with: data.model)
         hostingController.rootView = makeChartView()
     }

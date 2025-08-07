@@ -108,10 +108,8 @@ extension RootViewController {
             api: appConfiguration.api,
             session: appConfiguration.session
         )
-        let chartsDataController = ChartAPIDataController(
-            api: appConfiguration.api,
-            session: appConfiguration.session
-        )
+        let chartsDataController = ChartAPIDataController(configuration: appConfiguration)
+        
         let incomingASAsAPIDataController = IncomingASAsAPIDataController(
             api: appConfiguration.api,
             session: appConfiguration.session

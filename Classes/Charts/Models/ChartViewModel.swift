@@ -18,12 +18,12 @@ import Combine
 
 class ChartViewModel: ObservableObject {
     @Published var isLoading: Bool = true
-    @Published var data: [ChartDataPoint] = []
+    @Published var data: [ChartDataPointViewModel] = []
     @Published var selectedPeriod: ChartDataPeriod = .oneWeek
-    @Published var selectedPoint: ChartDataPoint?
+    @Published var selectedPoint: ChartDataPointViewModel?
     
     var onSelectedPeriodChanged: ((ChartDataPeriod) -> Void)?
-    var onPointSelected: ((ChartDataPoint?) -> Void)?
+    var onPointSelected: ((ChartDataPointViewModel?) -> Void)?
 
     private var dataModel: ChartDataModel
     private var cancellables = Set<AnyCancellable>()

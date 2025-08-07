@@ -130,7 +130,7 @@ extension HomeAPIDataController {
             currency: totalPortfolioItem?.currency.primaryValue
         )
 
-        let viewModel = ChartSelectedPointViewModel(primaryValue: resolvedPrimaryValue, secondaryValue: resolvedSecondaryValue, dateValue: dateValue)
+        let viewModel = ChartSelectedPointViewModel(primaryValue: resolvedPrimaryValue, secondaryValue: resolvedSecondaryValue, currencyValue: point.currencyValue, dateValue: dateValue)
         chartSelectedPointViewModel = viewModel
         publish(.didSelectChartPoint(chartSelectedPointViewModel, totalPortfolioItem))
     }
@@ -214,18 +214,20 @@ extension HomeAPIDataController {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
             guard let self else { return }
             guard error == nil else {
-                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false, isAlgoCurrency: true)
                 publish(.didFailWithError(error))
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
                 guard
                     let primaryValue = Double(item.algoValue),
-                    let secondaryValue = Double(item.usdValue)
+                    let secondaryValue = Double(item.usdValue),
+                    let currencyValue = Double(item.valueInCurrency)
                 else { return nil }
-                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, timestamp: item.datetime)
+                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, currencyValue: currencyValue, timestamp: item.datetime)
             }
-            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            let isAlgoCurrency = try? sharedDataController.currency.primaryValue?.unwrap().isAlgo
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false, isAlgoCurrency: isAlgoCurrency ?? true)
             chartDataCache[period] = chartViewData
         }
     }

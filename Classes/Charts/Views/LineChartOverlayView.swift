@@ -18,10 +18,10 @@ import SwiftUI
 import Charts
 
 struct LineChartOverlayView: View {
-    let data: [ChartDataPoint]
+    let data: [ChartDataPointViewModel]
     let proxy: ChartProxy
     let geo: GeometryProxy
-    @Binding var selectedPoint: ChartDataPoint?
+    @Binding var selectedPoint: ChartDataPointViewModel?
     
     var body: some View {
         Rectangle()

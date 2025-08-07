@@ -36,11 +36,11 @@ extension ALGAPI {
         address: String,
         assetId: String,
         period: ChartDataPeriod,
-        currency: String? = nil,
+        currency: String,
         onCompleted handler: @escaping (Response.ModelResult<AssetChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.assetBalanceChartData, args: address, assetId)
             .query(AssetBalanceChartDataDraft(period: period, currency: currency))
             .method(.get)
@@ -54,13 +54,14 @@ extension ALGAPI {
     func fetchAddressWealthBalanceChartData(
         address: String,
         period: ChartDataPeriod,
+        currency: String,
         ordering: String? = nil,
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.addressWealthBalanceChartData, args: address)
-            .query(AddressWealthBalanceChartDataDraft(period: period, ordering: ordering))
+            .query(AddressWealthBalanceChartDataDraft(period: period, currency: currency, ordering: ordering))
             .method(.get)
             .completionHandler(handler)
             .execute()
@@ -72,14 +73,15 @@ extension ALGAPI {
     func fetchWalletWealthBalanceChartData(
         addresses: [String],
         period: ChartDataPeriod,
+        currency: String,
         ordering: String? = nil,
         onCompleted handler: @escaping (Response.ModelResult<ChartDataResultDTO>) -> Void
     ) -> EndpointOperatable {
         EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.walletWealthBalanceChartData)
             .method(.post)
-            .body(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period))
+            .body(WalletWealthBalanceChartDataDraft(accountAddresses: addresses, period: period, currency: currency))
             .completionHandler(handler)
             .execute()
     }

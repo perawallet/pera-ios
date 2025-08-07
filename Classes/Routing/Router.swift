@@ -47,10 +47,7 @@ final class Router:
         hdWalletStorage: appConfiguration.hdWalletStorage
     )
     
-    private lazy var chartsDataController = ChartAPIDataController(
-        api: appConfiguration.api,
-        session: appConfiguration.session
-    )
+    private lazy var chartsDataController = ChartAPIDataController(configuration: appConfiguration)
 
     /// <todo>
     /// Change after refactoring routing

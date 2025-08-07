@@ -46,8 +46,9 @@ extension AssetChartDataResultDTO {
 
 final class AssetChartDataDTO: ALGEntityModel, Codable {
     let datetime: String
-    let usdValue: Double
-    let amount: Double
+    let usdValue: String
+    let amount: String
+    let valueInCurrency: String
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -55,6 +56,7 @@ final class AssetChartDataDTO: ALGEntityModel, Codable {
         self.datetime = apiModel.datetime
         self.usdValue = apiModel.usdValue
         self.amount = apiModel.amount
+        self.valueInCurrency = apiModel.valueInCurrency
     }
 
     func encode() -> APIModel {
@@ -62,6 +64,7 @@ final class AssetChartDataDTO: ALGEntityModel, Codable {
         apiModel.datetime = datetime
         apiModel.usdValue = usdValue
         apiModel.amount = amount
+        apiModel.valueInCurrency = valueInCurrency
         return apiModel
     }
     
@@ -69,26 +72,29 @@ final class AssetChartDataDTO: ALGEntityModel, Codable {
         case datetime
         case usdValue = "usd_value"
         case amount
+        case valueInCurrency = "value_in_currency"
     }
 }
 
 extension AssetChartDataDTO {
     struct APIModel: ALGAPIModel {
         var datetime: String
-        var usdValue: Double
-        var amount: Double
+        var usdValue: String
+        var amount: String
+        var valueInCurrency: String
 
         init() {
             self.datetime = .empty
-            self.usdValue = 0
-            self.amount = 0
+            self.usdValue = .empty
+            self.amount = .empty
+            self.valueInCurrency = .empty
         }
     }
 }
 
 extension AssetChartDataDTO: Equatable {
     static func == (lhs: AssetChartDataDTO, rhs: AssetChartDataDTO) -> Bool {
-        lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.amount == rhs.amount
+        lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.amount == rhs.amount && lhs.valueInCurrency == rhs.valueInCurrency
     }
 }
 
@@ -97,5 +103,6 @@ extension AssetChartDataDTO: Hashable {
         hasher.combine(datetime)
         hasher.combine(usdValue)
         hasher.combine(amount)
+        hasher.combine(valueInCurrency)
     }
 }

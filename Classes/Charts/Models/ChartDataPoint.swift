@@ -21,5 +21,6 @@ struct ChartDataPoint: Identifiable, Hashable, Equatable {
     let day: Int
     let primaryValue: Double
     let secondaryValue: Double
+    let currencyValue: Double
     let timestamp: String
 }
