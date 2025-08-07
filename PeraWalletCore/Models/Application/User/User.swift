@@ -242,8 +242,8 @@ extension User {
         guard CoreAppConfiguration.shared?.session.authenticatedUser != nil else {
             return
         }
-        
         CoreAppConfiguration.shared?.session.authenticatedUser = self
+        NotificationCenter.default.post(name: .userAccountsChanged, object: nil)
     }
     
     // Sets the default node for blockchain interactions
