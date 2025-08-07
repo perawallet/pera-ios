@@ -19,11 +19,12 @@ import SwiftUI
 struct AssetSelectionView: View {
     // MARK: - Properties
     @Binding var isPayingView: Bool
-    @Binding var balanceText: String
-    @Binding var asset: Asset
-    let onTap: () -> Void
+    @Binding var assetItem: AssetItem
+    @Binding var balanceText: String?
     
-    @State private var payingText = ""
+    private let defaultValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
+    
+    let onTap: () -> Void
     
     // MARK: - Body
     var body: some View {
@@ -33,7 +34,7 @@ struct AssetSelectionView: View {
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
-                Text(balanceText)
+                Text(assetItem.balance ?? defaultValue)
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
@@ -41,19 +42,24 @@ struct AssetSelectionView: View {
             Spacer().frame(height: 12)
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    TextField("0.00", text: $payingText)
+                    TextField(defaultValue, text: Binding(
+                        get: { balanceText ?? defaultValue },
+                        set: { balanceText = $0.isEmpty ? defaultValue : $0 }
+                    ))
+                        .keyboardType(.decimalPad)
                         .font(.dmSans.medium.size(19.0))
                         .foregroundStyle(Color.Text.gray)
                         .disabled(!isPayingView)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.leading)
-                    Text("$0.0")
+                    Text(defaultValue)
+                        .keyboardType(.decimalPad)
                         .font(.dmSans.regular.size(13.0))
                         .foregroundStyle(Color.Text.gray)
                         .frame(maxWidth: 200, alignment: .leading)
                 }
                 Spacer()
-                AssetSwapButton(asset: $asset, onTap: onTap)
+                AssetSwapButton(assetItem: $assetItem, onTap: onTap)
             }
             Spacer()
         }
@@ -64,5 +70,22 @@ struct AssetSelectionView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(isPayingView ? Color.Defaults.bg : Color.Layer.grayLighter)
         )
+    }
+}
+
+extension AssetItem {
+    var balance: String? {
+        let asset = asset
+
+        let formatter = currencyFormatter
+        formatter.formattingContext = currencyFormattingContext ?? .listItem
+        formatter.isValueHidden = isAmountHidden
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+            return formatter.format(asset.decimalAmount)
+        } else {
+            formatter.currency = nil
+            return formatter.format(asset.decimalAmount)?.appending(" \(asset.naming.unitName ?? asset.naming.displayNames.primaryName)")
+        }
     }
 }

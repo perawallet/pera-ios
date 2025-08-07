@@ -19,7 +19,7 @@ import SwiftUI
 struct AssetSwapButton: View {
 
     // MARK: - Properties
-    @Binding var asset: Asset
+    @Binding var assetItem: AssetItem
     private let iconSize: CGFloat = 24
     
     let onTap: () -> Void
@@ -29,9 +29,9 @@ struct AssetSwapButton: View {
         SwiftUI.Button(action: onTap) {
             HStack(spacing: 0) {
                 Group {
-                    if asset.isAlgo {
+                    if assetItem.asset.isAlgo {
                         Image("icon-algo-circle").resizable()
-                    } else if let url = asset.logoURL {
+                    } else if let url = assetItem.asset.logoURL {
                         AsyncImage(url: url) { image in
                             image.resizable()
                         } placeholder: {
@@ -43,7 +43,7 @@ struct AssetSwapButton: View {
                 }
                 .frame(width: iconSize, height: iconSize)
                 Spacer().frame(width: 6)
-                Text(asset.naming.displayNames.primaryName)
+                Text(assetItem.asset.naming.displayNames.primaryName)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
                     .lineLimit(1)

@@ -379,27 +379,6 @@ extension Session {
     }
 }
 
-//extension Session {
-//    func saveTempMnemonic(_ mnemonic: String, for account: String) throws {
-//        let key = tempMnemonicKey.appending(".\(account)")
-//        try privateStorage.set(mnemonic, key: key)
-//    }
-//    
-//    func tempMnemonic(for account: String) -> String? {
-//        let key = tempMnemonicKey.appending(".\(account)")
-//        return privateStorage.string(for: key)
-//    }
-//    
-//    func removeTempMnemonic(for account: String) {
-//        let key = tempMnemonicKey.appending(".\(account)")
-//        privateStorage.remove(for: key)
-//    }
-//    
-//    func hasTempMnemonic(for account: PublicKey) -> Bool {
-//        return tempMnemonic(for: account) != nil
-//    }
-//}
-
 extension Session {
     func hasAlreadyCreatedBackupPrivateKey() -> Bool {
         privateDataForBackup() != nil
