@@ -49,6 +49,7 @@ final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
     let datetime: String
     let usdValue: String
     let algoValue: String
+    let valueInCurrency: String
     let round: Int
 
     init(
@@ -57,6 +58,7 @@ final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
         self.datetime = apiModel.datetime
         self.usdValue = apiModel.usdValue
         self.algoValue = apiModel.algoValue
+        self.valueInCurrency = apiModel.valueInCurrency
         self.round = apiModel.round
     }
 
@@ -65,18 +67,20 @@ final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
         apiModel.datetime = datetime
         apiModel.usdValue = usdValue
         apiModel.algoValue = algoValue
+        apiModel.valueInCurrency = valueInCurrency
         apiModel.round = round
         return apiModel
     }
     
     static func == (lhs: ChartDataDTO, rhs: ChartDataDTO) -> Bool {
-        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.round == rhs.round
+        return lhs.datetime == rhs.datetime && lhs.usdValue == rhs.usdValue && lhs.algoValue == rhs.algoValue && lhs.valueInCurrency == rhs.valueInCurrency && lhs.round == rhs.round
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(datetime)
         hasher.combine(usdValue)
         hasher.combine(algoValue)
+        hasher.combine(valueInCurrency)
         hasher.combine(round)
     }
     
@@ -84,6 +88,7 @@ final class ChartDataDTO: ALGEntityModel, Codable, Equatable, Hashable {
         case datetime
         case usdValue = "usd_value"
         case algoValue = "algo_value"
+        case valueInCurrency = "value_in_currency"
         case round
     }
 }
@@ -93,12 +98,14 @@ extension ChartDataDTO {
         var datetime: String
         var usdValue: String
         var algoValue: String
+        var valueInCurrency: String
         var round: Int
 
         init() {
             self.datetime = .empty
             self.usdValue = .empty
             self.algoValue = .empty
+            self.valueInCurrency = .empty
             self.round = 0
         }
     }

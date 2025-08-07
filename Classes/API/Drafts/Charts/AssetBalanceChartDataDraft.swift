@@ -18,16 +18,13 @@ import MagpieCore
 
 struct AssetBalanceChartDataDraft: ObjectQuery {
     var period: ChartDataPeriod
-    var currency: String?
+    var currency: String
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
         params.append(APIQueryParam(.period, period.rawValue))
-        
-        if let currency {
-            params.append(APIQueryParam(.currency, currency))
-        }
+        params.append(APIQueryParam(.currency, currency))
 
         return params
     }

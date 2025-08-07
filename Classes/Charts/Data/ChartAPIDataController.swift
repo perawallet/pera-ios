@@ -28,24 +28,33 @@ final class ChartAPIDataController {
     
     private let api: ALGAPI
     private let session: Session
+    private let sharedDataController: SharedDataController
     
-    init(api: ALGAPI, session: Session) {
-        self.api = api
-        self.session = session
+    init(configuration: AppConfiguration) {
+        self.api = configuration.api
+        self.session = configuration.session
+        self.sharedDataController = configuration.sharedDataController
     }
     
     func loadData(screen: ChartDataScreen, period: ChartDataPeriod) {
+        var currency = "USD" ///USD is the default currency
+
+        if let fiatValue = sharedDataController.currency.fiatValue,
+           let unwrappedFiatValue = try? fiatValue.unwrap() {
+            currency = unwrappedFiatValue.id.localValue
+        }
+
         switch screen {
         case .home:
-            loadHomeData(period: period)
+            loadHomeData(period: period, currency: currency)
         case .account(address: let address):
-            loadAccountData(address: address, period: period)
+            loadAccountData(address: address, period: period, currency: currency)
         case .asset(address: let address, assetId: let assetId):
-            loadAssetData(address: address, assetId: assetId, period: period)
+            loadAssetData(address: address, assetId: assetId, period: period, currency: currency)
         }
     }
     
-    private func loadHomeData(period: ChartDataPeriod) {
+    private func loadHomeData(period: ChartDataPeriod, currency: String) {
         guard let addresses = session.authenticatedUser?.accounts
             .filter({ !$0.isWatchAccount })
             .map({ $0.address }),
@@ -53,7 +62,7 @@ final class ChartAPIDataController {
             return
         }
         
-        api.fetchWalletWealthBalanceChartData(addresses: addresses, period: period) { [weak self] response in
+        api.fetchWalletWealthBalanceChartData(addresses: addresses, period: period, currency: currency) { [weak self] response in
             guard let self else { return }
             switch response {
             case .success(let values):
@@ -64,8 +73,8 @@ final class ChartAPIDataController {
         }
     }
     
-    private func loadAccountData(address: String, period: ChartDataPeriod) {
-        api.fetchAddressWealthBalanceChartData(address: address, period: period) { [weak self] response in
+    private func loadAccountData(address: String, period: ChartDataPeriod, currency: String) {
+        api.fetchAddressWealthBalanceChartData(address: address, period: period, currency: currency) { [weak self] response in
             guard let self else { return }
             switch response {
             case .success(let values):
@@ -76,8 +85,8 @@ final class ChartAPIDataController {
         }
     }
     
-    private func loadAssetData(address: String, assetId: String, period: ChartDataPeriod) {
-        api.fetchAssetBalanceChartData(address: address, assetId: assetId, period: period) { [weak self] response in
+    private func loadAssetData(address: String, assetId: String, period: ChartDataPeriod, currency: String) {
+        api.fetchAssetBalanceChartData(address: address, assetId: assetId, period: period, currency: currency) { [weak self] response in
             guard let self else { return }
             switch response {
             case .success(let values):

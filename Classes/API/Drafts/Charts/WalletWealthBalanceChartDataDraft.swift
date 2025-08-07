@@ -19,11 +19,13 @@ import MagpieCore
 struct WalletWealthBalanceChartDataDraft: JSONObjectBody {
     var accountAddresses: [String]
     var period: ChartDataPeriod
+    var currency: String
     
     var bodyParams: [APIBodyParam] {
         [
             APIBodyParam(.accountAddresses, accountAddresses),
-            APIBodyParam(.period, period.rawValue)
+            APIBodyParam(.period, period.rawValue),
+            APIBodyParam(.currency, currency)
         ]
     }
 }
