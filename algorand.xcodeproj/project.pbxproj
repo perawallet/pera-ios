@@ -647,9 +647,6 @@
 		17D0F89628EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F88C28EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift */; };
 		17D0F89728EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F88C28EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift */; };
 		17D0F89828EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F88C28EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift */; };
-		17D0F89F28EC07D30061B55D /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 17D0F89E28EC07D30061B55D /* OrderedCollections */; };
-		17D0F8A128EC08080061B55D /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 17D0F8A028EC08080061B55D /* OrderedCollections */; };
-		17D0F8A328EC08130061B55D /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 17D0F8A228EC08130061B55D /* OrderedCollections */; };
 		17D0FA2C28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
 		17D0FA2D28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
 		17D0FA2E28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
@@ -2337,7 +2334,6 @@
 		2B8F179628B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */; };
 		2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */; };
 		2B8F179828B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */; };
-		2B8F78D1296D810B0013F7FF /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B8F78D0296D810B0013F7FF /* WalletConnectSwift */; };
 		2B8F78D3296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
 		2B8F78D4296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
 		2B8F78D5296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
@@ -2549,9 +2545,6 @@
 		2B9DDA35297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
 		2B9DDA36297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
 		2B9DDA37297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
-		2B9DFCE72D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
-		2B9DFCE82D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
-		2B9DFCE92D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
 		2B9E2F3D26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
 		2B9E2F3E26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
 		2B9E2F3F26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
@@ -2958,8 +2951,6 @@
 		2BC1827523D8DF1100888476 /* AssetAdditionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827323D8DF1100888476 /* AssetAdditionDraft.swift */; };
 		2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827623D8DF2400888476 /* AssetRemovalDraft.swift */; };
 		2BC1827823D8DF2400888476 /* AssetRemovalDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827623D8DF2400888476 /* AssetRemovalDraft.swift */; };
-		2BC1D3FF29703E7B001E4572 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */; };
-		2BC1D40129703E8F001E4572 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BC1D40029703E8F001E4572 /* WalletConnectSwift */; };
 		2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC45DED225253A1000CDCE2 /* ImagePicker.swift */; };
 		2BC483142CF1EE35006AB7CC /* SendKeyRegTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC483132CF1EE35006AB7CC /* SendKeyRegTransactionView.swift */; };
 		2BC483152CF1EE35006AB7CC /* SendKeyRegTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC483132CF1EE35006AB7CC /* SendKeyRegTransactionView.swift */; };
@@ -3421,11 +3412,6 @@
 		2BEEBF7429952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
 		2BEEBF7529952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
 		2BEEBF7629952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
-		2BEEBF79299AA5B000DDD988 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF78299AA5B000DDD988 /* WalletConnect */; };
-		2BEEBF7B299AA5B000DDD988 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */; };
-		2BEEBF7D299AA5B000DDD988 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */; };
-		2BEEBF7F299AA5B000DDD988 /* Web3Wallet in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7E299AA5B000DDD988 /* Web3Wallet */; };
-		2BEEBF82299AB81700DDD988 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF81299AB81700DDD988 /* Starscream */; };
 		2BEEBF84299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
 		2BEEBF85299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
 		2BEEBF86299BBA6100DDD988 /* WalletConnectV2Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectV2Protocol.swift */; };
@@ -3443,16 +3429,6 @@
 		2BEEBF9829A3B44B00DDD988 /* WalletConnectV1SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9529A3B44B00DDD988 /* WalletConnectV1SessionValidator.swift */; };
 		2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9B29A3BD9900DDD988 /* WalletConnectV1SessionValidatorTests.swift */; };
 		2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9F29A3CD7800DDD988 /* WalletConnectV2SessionValidatorTests.swift */; };
-		2BEEBFA629A3D10400DDD988 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFA529A3D10400DDD988 /* Starscream */; };
-		2BEEBFA829A3D11200DDD988 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFA729A3D11200DDD988 /* Starscream */; };
-		2BEEBFAA29A3D12C00DDD988 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFA929A3D12C00DDD988 /* WalletConnectPairing */; };
-		2BEEBFAC29A3D15200DDD988 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFAB29A3D15200DDD988 /* WalletConnectNetworking */; };
-		2BEEBFAE29A3D15B00DDD988 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFAD29A3D15B00DDD988 /* WalletConnect */; };
-		2BEEBFB029A3D17600DDD988 /* Web3Wallet in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFAF29A3D17600DDD988 /* Web3Wallet */; };
-		2BEEBFB229A3D18200DDD988 /* Web3Wallet in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFB129A3D18200DDD988 /* Web3Wallet */; };
-		2BEEBFB429A3D1B400DDD988 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFB329A3D1B400DDD988 /* WalletConnect */; };
-		2BEEBFB629A3D1BF00DDD988 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFB529A3D1BF00DDD988 /* WalletConnectPairing */; };
-		2BEEBFB829A3D1C700DDD988 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBFB729A3D1C700DDD988 /* WalletConnectNetworking */; };
 		2BEF0B44294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
 		2BEF0B45294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
 		2BEF0B46294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
@@ -3481,9 +3457,6 @@
 		2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */; };
 		2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBE223A8E740052CAD3 /* NavigationController.swift */; };
 		2BF34CC2223A95A50052CAD3 /* ALGAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */; };
-		2BF3B0C12D1D7E1100E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */; };
-		2BF3B0C32D1D7E1D00E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */; };
-		2BF3B0C52D1D7E2300E78ADA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */; };
 		2BF3B0C62D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
 		2BF3B0C72D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
 		2BF3B0C82D1D7EF200E78ADA /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3B0BE2D1D793800E78ADA /* FeatureFlag.swift */; };
@@ -3619,6 +3592,94 @@
 		591635852E44CA1A002184C2 /* Bundle+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */; };
 		591635862E44CA1A002184C2 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
 		5916358A2E44CA3D002184C2 /* Bundle+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */; };
+		591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; };
+		5916359A2E44D162002184C2 /* pera_wallet_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		591635B22E44D1A7002184C2 /* pera_wallet_staging_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */; };
+		591635B32E44D1A7002184C2 /* pera_wallet_staging_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		591635B72E44D1AD002184C2 /* pera_wallet_staging_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */; };
+		591635B82E44D1AD002184C2 /* pera_wallet_staging_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		591635BD2E44D1BB002184C2 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 591635BC2E44D1BB002184C2 /* MagpieAlamofire */; };
+		591635BE2E44D1BB002184C2 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
+		591635C22E44D1DB002184C2 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C12E44D1DB002184C2 /* MagpieCore */; };
+		591635C42E44D1DB002184C2 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C32E44D1DB002184C2 /* MagpieExceptions */; };
+		591635C62E44D1DB002184C2 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C52E44D1DB002184C2 /* MagpieHipo */; };
+		591635C82E44D1DB002184C2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C72E44D1DB002184C2 /* FirebaseAnalytics */; };
+		591635CA2E44D1DB002184C2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C92E44D1DB002184C2 /* FirebaseCrashlytics */; };
+		591635CC2E44D1DB002184C2 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 591635CB2E44D1DB002184C2 /* FirebaseRemoteConfig */; };
+		591635CE2E44D1DB002184C2 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 591635CD2E44D1DB002184C2 /* SwiftDate */; };
+		591635D02E44D1DB002184C2 /* MacaroonApplication in Frameworks */ = {isa = PBXBuildFile; productRef = 591635CF2E44D1DB002184C2 /* MacaroonApplication */; };
+		591635D22E44D1DB002184C2 /* MacaroonBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 591635D12E44D1DB002184C2 /* MacaroonBanner */; };
+		591635D42E44D1DB002184C2 /* MacaroonBiometrics in Frameworks */ = {isa = PBXBuildFile; productRef = 591635D32E44D1DB002184C2 /* MacaroonBiometrics */; };
+		591635D62E44D1DB002184C2 /* MacaroonBottomOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 591635D52E44D1DB002184C2 /* MacaroonBottomOverlay */; };
+		591635D82E44D1DB002184C2 /* MacaroonBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 591635D72E44D1DB002184C2 /* MacaroonBottomSheet */; };
+		591635DA2E44D1DC002184C2 /* MacaroonCamera in Frameworks */ = {isa = PBXBuildFile; productRef = 591635D92E44D1DC002184C2 /* MacaroonCamera */; };
+		591635DC2E44D1DC002184C2 /* MacaroonForm in Frameworks */ = {isa = PBXBuildFile; productRef = 591635DB2E44D1DC002184C2 /* MacaroonForm */; };
+		591635DE2E44D1DC002184C2 /* MacaroonMap in Frameworks */ = {isa = PBXBuildFile; productRef = 591635DD2E44D1DC002184C2 /* MacaroonMap */; };
+		591635E02E44D1DC002184C2 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 591635DF2E44D1DC002184C2 /* MacaroonMedia */; };
+		591635E22E44D1DC002184C2 /* MacaroonMixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 591635E12E44D1DC002184C2 /* MacaroonMixpanel */; };
+		591635E42E44D1DC002184C2 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 591635E32E44D1DC002184C2 /* MacaroonResources */; };
+		591635E62E44D1DC002184C2 /* MacaroonRouter in Frameworks */ = {isa = PBXBuildFile; productRef = 591635E52E44D1DC002184C2 /* MacaroonRouter */; };
+		591635E82E44D1DC002184C2 /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = 591635E72E44D1DC002184C2 /* MacaroonStorySheet */; };
+		591635EA2E44D1DC002184C2 /* MacaroonSVGImage in Frameworks */ = {isa = PBXBuildFile; productRef = 591635E92E44D1DC002184C2 /* MacaroonSVGImage */; };
+		591635EC2E44D1DC002184C2 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 591635EB2E44D1DC002184C2 /* MacaroonSwiftUI */; };
+		591635EE2E44D1DC002184C2 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 591635ED2E44D1DC002184C2 /* MacaroonToastUIKit */; };
+		591635F02E44D1DC002184C2 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 591635EF2E44D1DC002184C2 /* MacaroonUIKit */; };
+		591635F22E44D1DC002184C2 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 591635F12E44D1DC002184C2 /* MacaroonURLImage */; };
+		591635F42E44D1DC002184C2 /* MacaroonUserNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 591635F32E44D1DC002184C2 /* MacaroonUserNotifications */; };
+		591635F62E44D1DC002184C2 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 591635F52E44D1DC002184C2 /* MacaroonVendors */; };
+		591635F82E44D1DC002184C2 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = 591635F72E44D1DC002184C2 /* Prism */; };
+		591635FA2E44D1DC002184C2 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 591635F92E44D1DC002184C2 /* ActiveLabel */; };
+		591635FC2E44D1DC002184C2 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 591635FB2E44D1DC002184C2 /* OrderedCollections */; };
+		591635FE2E44D1DC002184C2 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 591635FD2E44D1DC002184C2 /* WalletConnectSwift */; };
+		591636002E44D1DD002184C2 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 591635FF2E44D1DD002184C2 /* WalletConnect */; };
+		591636022E44D1DD002184C2 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 591636012E44D1DD002184C2 /* WalletConnectNetworking */; };
+		591636042E44D1DD002184C2 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 591636032E44D1DD002184C2 /* WalletConnectPairing */; };
+		591636062E44D1DD002184C2 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 591636052E44D1DD002184C2 /* Starscream */; };
+		591636082E44D1DD002184C2 /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = 591636072E44D1DD002184C2 /* x-hd-wallet-api */; };
+		5916360A2E44D1DD002184C2 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 591636092E44D1DD002184C2 /* MnemonicSwift */; };
+		591636102E44D256002184C2 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5916360F2E44D256002184C2 /* MagpieAlamofire */; };
+		591636122E44D256002184C2 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 591636112E44D256002184C2 /* MagpieCore */; };
+		591636142E44D256002184C2 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 591636132E44D256002184C2 /* MagpieExceptions */; };
+		591636162E44D256002184C2 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 591636152E44D256002184C2 /* MagpieHipo */; };
+		591636182E44D256002184C2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 591636172E44D256002184C2 /* FirebaseAnalytics */; };
+		5916361A2E44D256002184C2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 591636192E44D256002184C2 /* FirebaseCrashlytics */; };
+		5916361C2E44D256002184C2 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5916361B2E44D256002184C2 /* FirebaseRemoteConfig */; };
+		5916361E2E44D256002184C2 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 5916361D2E44D256002184C2 /* SwiftDate */; };
+		591636202E44D256002184C2 /* MacaroonApplication in Frameworks */ = {isa = PBXBuildFile; productRef = 5916361F2E44D256002184C2 /* MacaroonApplication */; };
+		591636222E44D256002184C2 /* MacaroonBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 591636212E44D256002184C2 /* MacaroonBanner */; };
+		591636242E44D256002184C2 /* MacaroonBiometrics in Frameworks */ = {isa = PBXBuildFile; productRef = 591636232E44D256002184C2 /* MacaroonBiometrics */; };
+		591636262E44D256002184C2 /* MacaroonBottomOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 591636252E44D256002184C2 /* MacaroonBottomOverlay */; };
+		591636282E44D256002184C2 /* MacaroonBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 591636272E44D256002184C2 /* MacaroonBottomSheet */; };
+		5916362A2E44D256002184C2 /* MacaroonCamera in Frameworks */ = {isa = PBXBuildFile; productRef = 591636292E44D256002184C2 /* MacaroonCamera */; };
+		5916362C2E44D256002184C2 /* MacaroonForm in Frameworks */ = {isa = PBXBuildFile; productRef = 5916362B2E44D256002184C2 /* MacaroonForm */; };
+		5916362E2E44D256002184C2 /* MacaroonMap in Frameworks */ = {isa = PBXBuildFile; productRef = 5916362D2E44D256002184C2 /* MacaroonMap */; };
+		591636302E44D256002184C2 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 5916362F2E44D256002184C2 /* MacaroonMedia */; };
+		591636322E44D256002184C2 /* MacaroonMixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 591636312E44D256002184C2 /* MacaroonMixpanel */; };
+		591636342E44D256002184C2 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 591636332E44D256002184C2 /* MacaroonResources */; };
+		591636362E44D256002184C2 /* MacaroonRouter in Frameworks */ = {isa = PBXBuildFile; productRef = 591636352E44D256002184C2 /* MacaroonRouter */; };
+		591636382E44D256002184C2 /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = 591636372E44D256002184C2 /* MacaroonStorySheet */; };
+		5916363A2E44D256002184C2 /* MacaroonSVGImage in Frameworks */ = {isa = PBXBuildFile; productRef = 591636392E44D256002184C2 /* MacaroonSVGImage */; };
+		5916363C2E44D256002184C2 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5916363B2E44D256002184C2 /* MacaroonSwiftUI */; };
+		5916363E2E44D256002184C2 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5916363D2E44D256002184C2 /* MacaroonToastUIKit */; };
+		591636402E44D256002184C2 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5916363F2E44D256002184C2 /* MacaroonUIKit */; };
+		591636422E44D257002184C2 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 591636412E44D257002184C2 /* MacaroonURLImage */; };
+		591636442E44D257002184C2 /* MacaroonUserNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 591636432E44D257002184C2 /* MacaroonUserNotifications */; };
+		591636462E44D257002184C2 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 591636452E44D257002184C2 /* MacaroonVendors */; };
+		591636482E44D257002184C2 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = 591636472E44D257002184C2 /* Prism */; };
+		5916364A2E44D257002184C2 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 591636492E44D257002184C2 /* ActiveLabel */; };
+		5916364C2E44D257002184C2 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 5916364B2E44D257002184C2 /* OrderedCollections */; };
+		5916364E2E44D257002184C2 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5916364D2E44D257002184C2 /* WalletConnectSwift */; };
+		591636502E44D257002184C2 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 5916364F2E44D257002184C2 /* WalletConnect */; };
+		591636522E44D257002184C2 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 591636512E44D257002184C2 /* WalletConnectNetworking */; };
+		591636542E44D257002184C2 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 591636532E44D257002184C2 /* WalletConnectPairing */; };
+		591636562E44D257002184C2 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 591636552E44D257002184C2 /* Starscream */; };
+		591636582E44D257002184C2 /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = 591636572E44D257002184C2 /* x-hd-wallet-api */; };
+		5916365A2E44D257002184C2 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 591636592E44D257002184C2 /* MnemonicSwift */; };
+		5916365B2E44D257002184C2 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
+		5916365F2E44D374002184C2 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5916365E2E44D374002184C2 /* Lottie */; };
+		591636612E44D374002184C2 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 591636602E44D374002184C2 /* KeychainAccess */; };
+		591636632E44D37F002184C2 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 591636622E44D37F002184C2 /* Lottie */; };
+		591636652E44D37F002184C2 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 591636642E44D37F002184C2 /* KeychainAccess */; };
 		8B00DD652C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
 		8B00DD662C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
 		8B00DD672C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */; };
@@ -4197,66 +4258,6 @@
 		CB3AEBD927452B4700F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
 		CB3AEBDA27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
 		CB3AEBDB27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
-		CBAD46F82745434A00C91946 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9826E546CE005BEDFD /* MagpieAlamofire */; };
-		CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9A26E546CE005BEDFD /* MagpieCore */; };
-		CBAD46FA2745434A00C91946 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9C26E546CE005BEDFD /* MagpieExceptions */; };
-		CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9E26E546CE005BEDFD /* MagpieHipo */; };
-		CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA426E5486E005BEDFD /* FirebaseAnalytics */; };
-		CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */; };
-		CBAD46FF2745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA926E548C2005BEDFD /* SwiftDate */; };
-		CBAD47002745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DAC26E54AFA005BEDFD /* Lottie */; };
-		CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB826E54B9C005BEDFD /* KeychainAccess */; };
-		CBAD47052745434A00C91946 /* MacaroonApplication in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E2C26E6077000B050ED /* MacaroonApplication */; };
-		CBAD47062745434A00C91946 /* MacaroonBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E2E26E6077000B050ED /* MacaroonBanner */; };
-		CBAD47072745434A00C91946 /* MacaroonBottomOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3026E6077000B050ED /* MacaroonBottomOverlay */; };
-		CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3226E6077000B050ED /* MacaroonBottomSheet */; };
-		CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3426E6077000B050ED /* MacaroonForm */; };
-		CBAD470A2745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3626E6077000B050ED /* MacaroonMedia */; };
-		CBAD470B2745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3826E6077000B050ED /* MacaroonResources */; };
-		CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */; };
-		CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4026E6077000B050ED /* MacaroonUIKit */; };
-		CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4226E6077000B050ED /* MacaroonURLImage */; };
-		CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4426E6077000B050ED /* MacaroonVendors */; };
-		CBAD47112745434A00C91946 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */; };
-		CBAD47122745434A00C91946 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBD26E54C4F005BEDFD /* MagpieCore */; };
-		CBAD47132745434A00C91946 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBF26E54C4F005BEDFD /* MagpieExceptions */; };
-		CBAD47142745434A00C91946 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC126E54C4F005BEDFD /* MagpieHipo */; };
-		CBAD47162745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC526E54C4F005BEDFD /* SwiftDate */; };
-		CBAD47172745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC726E54C4F005BEDFD /* Lottie */; };
-		CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCF26E54C4F005BEDFD /* KeychainAccess */; };
-		CBAD471C2745434A00C91946 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */; };
-		CBAD471D2745434A00C91946 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */; };
-		CBAD471E2745434A00C91946 /* MacaroonApplication in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4626E607BD00B050ED /* MacaroonApplication */; };
-		CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4826E607BD00B050ED /* MacaroonBanner */; };
-		CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4A26E607BD00B050ED /* MacaroonBottomOverlay */; };
-		CBAD47212745434A00C91946 /* MacaroonBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4C26E607BD00B050ED /* MacaroonBottomSheet */; };
-		CBAD47222745434A00C91946 /* MacaroonForm in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4E26E607BD00B050ED /* MacaroonForm */; };
-		CBAD47232745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5026E607BD00B050ED /* MacaroonMedia */; };
-		CBAD47242745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5226E607BD00B050ED /* MacaroonResources */; };
-		CBAD47252745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */; };
-		CBAD47272745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5826E607BD00B050ED /* MacaroonUIKit */; };
-		CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */; };
-		CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5C26E607BD00B050ED /* MacaroonVendors */; };
-		CBAD472A2745434A00C91946 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD126E54C6D005BEDFD /* MagpieAlamofire */; };
-		CBAD472B2745434A00C91946 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD326E54C6D005BEDFD /* MagpieCore */; };
-		CBAD472C2745434A00C91946 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD526E54C6D005BEDFD /* MagpieExceptions */; };
-		CBAD472D2745434A00C91946 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD726E54C6D005BEDFD /* MagpieHipo */; };
-		CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDB26E54C6D005BEDFD /* SwiftDate */; };
-		CBAD47302745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDD26E54C6D005BEDFD /* Lottie */; };
-		CBAD47342745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE526E54C6D005BEDFD /* KeychainAccess */; };
-		CBAD47352745434A00C91946 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */; };
-		CBAD47362745434A00C91946 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */; };
-		CBAD47372745434A00C91946 /* MacaroonApplication in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5E26E607D800B050ED /* MacaroonApplication */; };
-		CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6026E607D800B050ED /* MacaroonBanner */; };
-		CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6226E607D800B050ED /* MacaroonBottomOverlay */; };
-		CBAD473A2745434A00C91946 /* MacaroonBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6426E607D800B050ED /* MacaroonBottomSheet */; };
-		CBAD473B2745434A00C91946 /* MacaroonForm in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6626E607D800B050ED /* MacaroonForm */; };
-		CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6826E607D800B050ED /* MacaroonMedia */; };
-		CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6A26E607D800B050ED /* MacaroonResources */; };
-		CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */; };
-		CBAD47402745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7026E607D800B050ED /* MacaroonUIKit */; };
-		CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7226E607D800B050ED /* MacaroonURLImage */; };
-		CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7426E607D800B050ED /* MacaroonVendors */; };
 		CBAD47452745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
 		CBAD47462745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
 		CBAD47472745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
@@ -6210,7 +6211,6 @@
 		D4999E252891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4999E242891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift */; };
 		D4999E262891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4999E242891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift */; };
 		D4999E272891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4999E242891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift */; };
-		D499D27E27C7D40B00641FF5 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = D499D27D27C7D40B00641FF5 /* Prism */; };
 		D499D27F27C7DA6200641FF5 /* CollectibleGalleryGridLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCD27C4D3750064F736 /* CollectibleGalleryGridLoadingView.swift */; };
 		D499D28027C7DA6200641FF5 /* CollectibleGalleryGridLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCD27C4D3750064F736 /* CollectibleGalleryGridLoadingView.swift */; };
 		D499D28127C7DA6C00641FF5 /* CollectibleGalleryGridLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCF27C4D7630064F736 /* CollectibleGalleryGridLoadingViewTheme.swift */; };
@@ -6346,8 +6346,6 @@
 		D4A1C61E2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A1C61D2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift */; };
 		D4A1C61F2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A1C61D2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift */; };
 		D4A1C6202AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A1C61D2AC6EEC4006E6FF4 /* WalletConnectRequestDraft.swift */; };
-		D4A241DE27D2BF1300641FF0 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = D4A241DD27D2BF1300641FF0 /* Prism */; };
-		D4A241E027D2BF1C00641FF0 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = D4A241DF27D2BF1C00641FF0 /* Prism */; };
 		D4A241E227D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
 		D4A241E327D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
 		D4A241E427D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */; };
@@ -6525,21 +6523,12 @@
 		D4AEC3B827CAED1C00507965 /* ShimmerAnimationDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */; };
 		D4AEC3BF27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3BD27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift */; };
 		D4AEC3C027CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3BD27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift */; };
-		D4B004782D65E2410098AB1A /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = D4B004772D65E2410098AB1A /* x-hd-wallet-api */; };
-		D4B0047B2D65E2500098AB1A /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4B0047A2D65E2500098AB1A /* MnemonicSwift */; };
-		D4B0047D2D65E30A0098AB1A /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = D4B0047C2D65E30A0098AB1A /* x-hd-wallet-api */; };
-		D4B0047F2D65E3110098AB1A /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4B0047E2D65E3110098AB1A /* MnemonicSwift */; };
-		D4B004812D65E31C0098AB1A /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = D4B004802D65E31C0098AB1A /* x-hd-wallet-api */; };
-		D4B004832D65E3220098AB1A /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4B004822D65E3220098AB1A /* MnemonicSwift */; };
 		D4B0528F28AEB5E100D53B20 /* SwapIntroductionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0528E28AEB5E100D53B20 /* SwapIntroductionDraft.swift */; };
 		D4B0529028AEB5E100D53B20 /* SwapIntroductionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0528E28AEB5E100D53B20 /* SwapIntroductionDraft.swift */; };
 		D4B0529128AEB5E100D53B20 /* SwapIntroductionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0528E28AEB5E100D53B20 /* SwapIntroductionDraft.swift */; };
 		D4B1524626F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */; };
 		D4B1524726F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */; };
 		D4B1524826F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */; };
-		D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AAC27F1E63000523CEA /* ActiveLabel */; };
-		D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AAE27F1E64600523CEA /* ActiveLabel */; };
-		D4B33AB127F1E65900523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AB027F1E65900523CEA /* ActiveLabel */; };
 		D4B33AB827F2229A00523CEA /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B33AB727F2229A00523CEA /* AssetType.swift */; };
 		D4B33AB927F2229A00523CEA /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B33AB727F2229A00523CEA /* AssetType.swift */; };
 		D4B33ABA27F2229A00523CEA /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B33AB727F2229A00523CEA /* AssetType.swift */; };
@@ -7674,9 +7663,6 @@
 		F045421D287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
 		F045421E287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
 		F045421F287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
-		F0454221287D8C820081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454220287D8C820081C01C /* MacaroonStorySheet */; };
-		F0454223287D8C8D0081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454222287D8C8D0081C01C /* MacaroonStorySheet */; };
-		F0454225287D8C940081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454224287D8C940081C01C /* MacaroonStorySheet */; };
 		F045BE222869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
 		F045BE232869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
 		F045BE242869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
@@ -7732,9 +7718,6 @@
 		F05E6C5128617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
 		F05E6C5228617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
 		F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
-		F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C542863009C004E33D6 /* MacaroonToastUIKit */; };
-		F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */; };
-		F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */; };
 		F0600E2F28A46ED70043B834 /* ALGAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0600E2E28A46ED70043B834 /* ALGAnalyticsEvent.swift */; };
 		F0600E3028A46ED70043B834 /* ALGAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0600E2E28A46ED70043B834 /* ALGAnalyticsEvent.swift */; };
 		F0600E3128A46ED70043B834 /* ALGAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0600E2E28A46ED70043B834 /* ALGAnalyticsEvent.swift */; };
@@ -8253,7 +8236,64 @@
 			remoteGlobalIDString = 17BD4DEE2292F1260003E49A;
 			remoteInfo = "algorand-staging";
 		};
+		591635962E44D162002184C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B8BE4C622391C38005D8565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 591635912E44D162002184C2;
+			remoteInfo = "pera-wallet-core";
+		};
+		591635B42E44D1A7002184C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B8BE4C622391C38005D8565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 591635A42E44D18E002184C2;
+			remoteInfo = "pera-wallet-staging-core";
+		};
+		591635B92E44D1AD002184C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B8BE4C622391C38005D8565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 591635A42E44D18E002184C2;
+			remoteInfo = "pera-wallet-staging-core";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		591635992E44D162002184C2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5916359A2E44D162002184C2 /* pera_wallet_core.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635B62E44D1A7002184C2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				591635B32E44D1A7002184C2 /* pera_wallet_staging_core.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635BB2E44D1AD002184C2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				591635B82E44D1AD002184C2 /* pera_wallet_staging_core.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0414ACC52721691100475F8E /* QRCreationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewTheme.swift; sourceTree = "<group>"; };
@@ -9493,6 +9533,10 @@
 		54B9FAC12DA7D77500869DEA /* RescanRekeyedAccountsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanRekeyedAccountsCoordinator.swift; sourceTree = "<group>"; };
 		54C477BC2D6F03AB00072E01 /* PassphraseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseUtils.swift; sourceTree = "<group>"; };
 		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
+		591635922E44D162002184C2 /* pera_wallet_core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pera_wallet_core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pera_wallet_staging_core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5916360D2E44D216002184C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5916360E2E44D217002184C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B00DD642C53E97B00D832DC /* IncomingASAsDetailSuccessResultScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailSuccessResultScreenViewModel.swift; sourceTree = "<group>"; };
 		8B00DD682C53EA8900D832DC /* AssetInboxSendSummaryWarningMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInboxSendSummaryWarningMessage.swift; sourceTree = "<group>"; };
 		8B047C152C02548300851DF5 /* IncomingASAsRequestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsRequestList.swift; sourceTree = "<group>"; };
@@ -11124,6 +11168,20 @@
 			);
 			target = 2B95407625A75FB20098805B /* pera-tests */;
 		};
+		5916359F2E44D162002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				pera_wallet_core.h,
+			);
+			target = 591635912E44D162002184C2 /* pera-wallet-core */;
+		};
+		591635B12E44D18E002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				pera_wallet_staging_core.h,
+			);
+			target = 591635A42E44D18E002184C2 /* pera-wallet-staging-core */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -11136,6 +11194,8 @@
 		545CAA892E28CE1400D0C9A0 /* Testing Tools */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA8C2E28CEAC00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Testing Tools"; sourceTree = "<group>"; };
 		545CAA932E28F41000D0C9A0 /* Mock */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Mock; sourceTree = "<group>"; };
 		54C7260E2E27920B00E08B4C /* Data Providers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Data Providers"; sourceTree = "<group>"; };
+		591635932E44D162002184C2 /* pera-wallet-core */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5916359F2E44D162002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "pera-wallet-core"; sourceTree = "<group>"; };
+		591635A62E44D18E002184C2 /* pera-wallet-staging-core */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (591635B12E44D18E002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "pera-wallet-staging-core"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -11143,41 +11203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
-				CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */,
-				D4A241E027D2BF1C00641FF0 /* Prism in Frameworks */,
-				CBAD47352745434A00C91946 /* FirebaseAnalytics in Frameworks */,
-				17D0F8A328EC08130061B55D /* OrderedCollections in Frameworks */,
-				CBAD472C2745434A00C91946 /* MagpieExceptions in Frameworks */,
-				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
-				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
-				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
-				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
-				2BC1D3FF29703E7B001E4572 /* WalletConnectSwift in Frameworks */,
-				CBAD47342745434A00C91946 /* KeychainAccess in Frameworks */,
-				CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */,
-				CBAD47372745434A00C91946 /* MacaroonApplication in Frameworks */,
-				2BEEBFAC29A3D15200DDD988 /* WalletConnectNetworking in Frameworks */,
-				CBAD47402745434A00C91946 /* MacaroonUIKit in Frameworks */,
-				2B9DFCE82D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */,
-				CBAD473A2745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
-				D4B33AB127F1E65900523CEA /* ActiveLabel in Frameworks */,
-				CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				2BF3B0C52D1D7E2300E78ADA /* FirebaseRemoteConfig in Frameworks */,
-				2BEEBFAE29A3D15B00DDD988 /* WalletConnect in Frameworks */,
-				CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */,
-				D4B004832D65E3220098AB1A /* MnemonicSwift in Frameworks */,
-				2BEEBFA629A3D10400DDD988 /* Starscream in Frameworks */,
-				D4B004812D65E31C0098AB1A /* x-hd-wallet-api in Frameworks */,
-				CBAD472B2745434A00C91946 /* MagpieCore in Frameworks */,
-				2BEEBFAA29A3D12C00DDD988 /* WalletConnectPairing in Frameworks */,
-				CBAD472A2745434A00C91946 /* MagpieAlamofire in Frameworks */,
-				F0454225287D8C940081C01C /* MacaroonStorySheet in Frameworks */,
-				CBAD473B2745434A00C91946 /* MacaroonForm in Frameworks */,
-				CBAD47362745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
-				2BEEBFB029A3D17600DDD988 /* Web3Wallet in Frameworks */,
-				CBAD472D2745434A00C91946 /* MagpieHipo in Frameworks */,
+				591635B22E44D1A7002184C2 /* pera_wallet_staging_core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11185,41 +11211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BEEBFB429A3D1B400DDD988 /* WalletConnect in Frameworks */,
-				CBAD47252745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
-				CBAD47232745434A00C91946 /* MacaroonMedia in Frameworks */,
-				CBAD471C2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
-				CBAD47132745434A00C91946 /* MagpieExceptions in Frameworks */,
-				17D0F8A128EC08080061B55D /* OrderedCollections in Frameworks */,
-				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
-				2BEEBFB629A3D1BF00DDD988 /* WalletConnectPairing in Frameworks */,
-				2BEEBFB829A3D1C700DDD988 /* WalletConnectNetworking in Frameworks */,
-				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
-				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
-				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
-				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
-				2BC1D40129703E8F001E4572 /* WalletConnectSwift in Frameworks */,
-				CBAD47242745434A00C91946 /* MacaroonResources in Frameworks */,
-				CBAD471E2745434A00C91946 /* MacaroonApplication in Frameworks */,
-				2B9DFCE72D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */,
-				D4A241DE27D2BF1300641FF0 /* Prism in Frameworks */,
-				CBAD47272745434A00C91946 /* MacaroonUIKit in Frameworks */,
-				CBAD47212745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
-				2BF3B0C32D1D7E1D00E78ADA /* FirebaseRemoteConfig in Frameworks */,
-				D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */,
-				CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				D4B0047F2D65E3110098AB1A /* MnemonicSwift in Frameworks */,
-				CBAD47162745434A00C91946 /* SwiftDate in Frameworks */,
-				D4B0047D2D65E30A0098AB1A /* x-hd-wallet-api in Frameworks */,
-				2BEEBFB229A3D18200DDD988 /* Web3Wallet in Frameworks */,
-				2BEEBFA829A3D11200DDD988 /* Starscream in Frameworks */,
-				CBAD47122745434A00C91946 /* MagpieCore in Frameworks */,
-				CBAD47112745434A00C91946 /* MagpieAlamofire in Frameworks */,
-				F0454223287D8C8D0081C01C /* MacaroonStorySheet in Frameworks */,
-				CBAD47222745434A00C91946 /* MacaroonForm in Frameworks */,
-				CBAD471D2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
-				CBAD47142745434A00C91946 /* MagpieHipo in Frameworks */,
+				591635B72E44D1AD002184C2 /* pera_wallet_staging_core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11227,41 +11219,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBAD47072745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
-				CBAD470A2745434A00C91946 /* MacaroonMedia in Frameworks */,
-				CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */,
-				D499D27E27C7D40B00641FF5 /* Prism in Frameworks */,
-				2BEEBF7F299AA5B000DDD988 /* Web3Wallet in Frameworks */,
-				17D0F89F28EC07D30061B55D /* OrderedCollections in Frameworks */,
-				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
-				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
-				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
-				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
-				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
-				2B8F78D1296D810B0013F7FF /* WalletConnectSwift in Frameworks */,
-				CBAD47062745434A00C91946 /* MacaroonBanner in Frameworks */,
-				CBAD46FA2745434A00C91946 /* MagpieExceptions in Frameworks */,
-				CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
-				2BEEBF7D299AA5B000DDD988 /* WalletConnectPairing in Frameworks */,
-				2B9DFCE92D8357BC0089AACF /* AlgoSDK.xcframework in Frameworks */,
-				CBAD46F82745434A00C91946 /* MagpieAlamofire in Frameworks */,
-				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
-				CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				2BF3B0C12D1D7E1100E78ADA /* FirebaseRemoteConfig in Frameworks */,
-				D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */,
-				CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */,
-				D4B0047B2D65E2500098AB1A /* MnemonicSwift in Frameworks */,
-				CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
-				D4B004782D65E2410098AB1A /* x-hd-wallet-api in Frameworks */,
-				CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
-				2BEEBF7B299AA5B000DDD988 /* WalletConnectNetworking in Frameworks */,
-				CBAD47052745434A00C91946 /* MacaroonApplication in Frameworks */,
-				2BEEBF79299AA5B000DDD988 /* WalletConnect in Frameworks */,
-				F0454221287D8C820081C01C /* MacaroonStorySheet in Frameworks */,
-				CBAD470B2745434A00C91946 /* MacaroonResources in Frameworks */,
-				CBAD46FF2745434A00C91946 /* SwiftDate in Frameworks */,
-				2BEEBF82299AB81700DDD988 /* Starscream in Frameworks */,
+				591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11269,6 +11227,102 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5916358F2E44D162002184C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				591635DC2E44D1DC002184C2 /* MacaroonForm in Frameworks */,
+				591635C62E44D1DB002184C2 /* MagpieHipo in Frameworks */,
+				591635EC2E44D1DC002184C2 /* MacaroonSwiftUI in Frameworks */,
+				591635D02E44D1DB002184C2 /* MacaroonApplication in Frameworks */,
+				591636002E44D1DD002184C2 /* WalletConnect in Frameworks */,
+				591635C22E44D1DB002184C2 /* MagpieCore in Frameworks */,
+				591636062E44D1DD002184C2 /* Starscream in Frameworks */,
+				591635F02E44D1DC002184C2 /* MacaroonUIKit in Frameworks */,
+				591635D62E44D1DB002184C2 /* MacaroonBottomOverlay in Frameworks */,
+				591635D22E44D1DB002184C2 /* MacaroonBanner in Frameworks */,
+				591636022E44D1DD002184C2 /* WalletConnectNetworking in Frameworks */,
+				591635C82E44D1DB002184C2 /* FirebaseAnalytics in Frameworks */,
+				591635DE2E44D1DC002184C2 /* MacaroonMap in Frameworks */,
+				591635F42E44D1DC002184C2 /* MacaroonUserNotifications in Frameworks */,
+				591636042E44D1DD002184C2 /* WalletConnectPairing in Frameworks */,
+				5916365F2E44D374002184C2 /* Lottie in Frameworks */,
+				591635CA2E44D1DB002184C2 /* FirebaseCrashlytics in Frameworks */,
+				5916360A2E44D1DD002184C2 /* MnemonicSwift in Frameworks */,
+				591635FA2E44D1DC002184C2 /* ActiveLabel in Frameworks */,
+				591635C42E44D1DB002184C2 /* MagpieExceptions in Frameworks */,
+				591635DA2E44D1DC002184C2 /* MacaroonCamera in Frameworks */,
+				591635E62E44D1DC002184C2 /* MacaroonRouter in Frameworks */,
+				591635BD2E44D1BB002184C2 /* MagpieAlamofire in Frameworks */,
+				591635D82E44D1DB002184C2 /* MacaroonBottomSheet in Frameworks */,
+				591635EA2E44D1DC002184C2 /* MacaroonSVGImage in Frameworks */,
+				591635F82E44D1DC002184C2 /* Prism in Frameworks */,
+				591635E82E44D1DC002184C2 /* MacaroonStorySheet in Frameworks */,
+				591635FE2E44D1DC002184C2 /* WalletConnectSwift in Frameworks */,
+				591636612E44D374002184C2 /* KeychainAccess in Frameworks */,
+				591635EE2E44D1DC002184C2 /* MacaroonToastUIKit in Frameworks */,
+				591636082E44D1DD002184C2 /* x-hd-wallet-api in Frameworks */,
+				591635FC2E44D1DC002184C2 /* OrderedCollections in Frameworks */,
+				591635BE2E44D1BB002184C2 /* AlgoSDK.xcframework in Frameworks */,
+				591635E22E44D1DC002184C2 /* MacaroonMixpanel in Frameworks */,
+				591635F62E44D1DC002184C2 /* MacaroonVendors in Frameworks */,
+				591635CC2E44D1DB002184C2 /* FirebaseRemoteConfig in Frameworks */,
+				591635E42E44D1DC002184C2 /* MacaroonResources in Frameworks */,
+				591635E02E44D1DC002184C2 /* MacaroonMedia in Frameworks */,
+				591635F22E44D1DC002184C2 /* MacaroonURLImage in Frameworks */,
+				591635CE2E44D1DB002184C2 /* SwiftDate in Frameworks */,
+				591635D42E44D1DB002184C2 /* MacaroonBiometrics in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635A22E44D18E002184C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				591636582E44D257002184C2 /* x-hd-wallet-api in Frameworks */,
+				5916363C2E44D256002184C2 /* MacaroonSwiftUI in Frameworks */,
+				591636142E44D256002184C2 /* MagpieExceptions in Frameworks */,
+				591636162E44D256002184C2 /* MagpieHipo in Frameworks */,
+				591636342E44D256002184C2 /* MacaroonResources in Frameworks */,
+				591636382E44D256002184C2 /* MacaroonStorySheet in Frameworks */,
+				591636362E44D256002184C2 /* MacaroonRouter in Frameworks */,
+				591636122E44D256002184C2 /* MagpieCore in Frameworks */,
+				5916365B2E44D257002184C2 /* AlgoSDK.xcframework in Frameworks */,
+				5916364A2E44D257002184C2 /* ActiveLabel in Frameworks */,
+				591636522E44D257002184C2 /* WalletConnectNetworking in Frameworks */,
+				5916361C2E44D256002184C2 /* FirebaseRemoteConfig in Frameworks */,
+				5916363A2E44D256002184C2 /* MacaroonSVGImage in Frameworks */,
+				591636322E44D256002184C2 /* MacaroonMixpanel in Frameworks */,
+				591636242E44D256002184C2 /* MacaroonBiometrics in Frameworks */,
+				591636632E44D37F002184C2 /* Lottie in Frameworks */,
+				591636302E44D256002184C2 /* MacaroonMedia in Frameworks */,
+				591636282E44D256002184C2 /* MacaroonBottomSheet in Frameworks */,
+				5916361E2E44D256002184C2 /* SwiftDate in Frameworks */,
+				591636202E44D256002184C2 /* MacaroonApplication in Frameworks */,
+				591636402E44D256002184C2 /* MacaroonUIKit in Frameworks */,
+				591636462E44D257002184C2 /* MacaroonVendors in Frameworks */,
+				591636542E44D257002184C2 /* WalletConnectPairing in Frameworks */,
+				5916364E2E44D257002184C2 /* WalletConnectSwift in Frameworks */,
+				5916361A2E44D256002184C2 /* FirebaseCrashlytics in Frameworks */,
+				5916362E2E44D256002184C2 /* MacaroonMap in Frameworks */,
+				5916365A2E44D257002184C2 /* MnemonicSwift in Frameworks */,
+				591636422E44D257002184C2 /* MacaroonURLImage in Frameworks */,
+				591636652E44D37F002184C2 /* KeychainAccess in Frameworks */,
+				591636262E44D256002184C2 /* MacaroonBottomOverlay in Frameworks */,
+				591636502E44D257002184C2 /* WalletConnect in Frameworks */,
+				591636482E44D257002184C2 /* Prism in Frameworks */,
+				5916364C2E44D257002184C2 /* OrderedCollections in Frameworks */,
+				591636182E44D256002184C2 /* FirebaseAnalytics in Frameworks */,
+				5916363E2E44D256002184C2 /* MacaroonToastUIKit in Frameworks */,
+				5916362C2E44D256002184C2 /* MacaroonForm in Frameworks */,
+				5916362A2E44D256002184C2 /* MacaroonCamera in Frameworks */,
+				591636222E44D256002184C2 /* MacaroonBanner in Frameworks */,
+				591636442E44D257002184C2 /* MacaroonUserNotifications in Frameworks */,
+				591636102E44D256002184C2 /* MagpieAlamofire in Frameworks */,
+				591636562E44D257002184C2 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14497,9 +14551,12 @@
 			isa = PBXGroup;
 			children = (
 				5916357D2E44C9B2002184C2 /* PeraWallet */,
+				5916358B2E44CAE4002184C2 /* PeraWalletCore */,
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
 				2B95407825A75FB20098805B /* algorand-tests */,
+				591635932E44D162002184C2 /* pera-wallet-core */,
+				591635A62E44D18E002184C2 /* pera-wallet-staging-core */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
 				2B8BE4CF22391C38005D8565 /* Products */,
@@ -14516,6 +14573,8 @@
 				17BD4F252292F1260003E49A /* pera-staging.app */,
 				2B0F634E24EC129D00DA22A6 /* pera-beta.app */,
 				2B95407725A75FB20098805B /* pera-tests.xctest */,
+				591635922E44D162002184C2 /* pera_wallet_core.framework */,
+				591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -19036,6 +19095,29 @@
 				5458D88D2DEDB35E00DADA06 /* Views */,
 			);
 			path = PeraWallet;
+			sourceTree = "<group>";
+		};
+		5916358B2E44CAE4002184C2 /* PeraWalletCore */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PeraWalletCore;
+			sourceTree = "<group>";
+		};
+		5916360B2E44D1E9002184C2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5916360D2E44D216002184C2 /* Info.plist */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		5916360C2E44D1F4002184C2 /* CoreStaging */ = {
+			isa = PBXGroup;
+			children = (
+				5916360E2E44D217002184C2 /* Info.plist */,
+			);
+			path = CoreStaging;
 			sourceTree = "<group>";
 		};
 		8B047C3F2C034BED00851DF5 /* IncomingASA */ = {
@@ -23602,6 +23684,8 @@
 				F060AD0927D7636D00511615 /* Beta */,
 				F060AD0727D7636000511615 /* Staging */,
 				F060AD0827D7636600511615 /* Store */,
+				5916360B2E44D1E9002184C2 /* Core */,
+				5916360C2E44D1F4002184C2 /* CoreStaging */,
 			);
 			path = "Target Support Files";
 			sourceTree = "<group>";
@@ -24257,6 +24341,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		5916358D2E44D162002184C2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635A02E44D18E002184C2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		17BD4DEE2292F1260003E49A /* pera-staging */ = {
 			isa = PBXNativeTarget;
@@ -24265,11 +24366,13 @@
 				17BD4DF02292F1260003E49A /* Sources */,
 				17BD4F072292F1260003E49A /* Frameworks */,
 				17BD4F0A2292F1260003E49A /* Resources */,
+				591635B62E44D1A7002184C2 /* Embed Frameworks */,
 				17BD4F202292F1260003E49A /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				591635B52E44D1A7002184C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
@@ -24278,40 +24381,6 @@
 			);
 			name = "pera-staging";
 			packageProductDependencies = (
-				2B187DD126E54C6D005BEDFD /* MagpieAlamofire */,
-				2B187DD326E54C6D005BEDFD /* MagpieCore */,
-				2B187DD526E54C6D005BEDFD /* MagpieExceptions */,
-				2B187DD726E54C6D005BEDFD /* MagpieHipo */,
-				2B187DDB26E54C6D005BEDFD /* SwiftDate */,
-				2B187DDD26E54C6D005BEDFD /* Lottie */,
-				2B187DE526E54C6D005BEDFD /* KeychainAccess */,
-				2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */,
-				2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */,
-				2B9A3E5E26E607D800B050ED /* MacaroonApplication */,
-				2B9A3E6026E607D800B050ED /* MacaroonBanner */,
-				2B9A3E6226E607D800B050ED /* MacaroonBottomOverlay */,
-				2B9A3E6426E607D800B050ED /* MacaroonBottomSheet */,
-				2B9A3E6626E607D800B050ED /* MacaroonForm */,
-				2B9A3E6826E607D800B050ED /* MacaroonMedia */,
-				2B9A3E6A26E607D800B050ED /* MacaroonResources */,
-				2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */,
-				2B9A3E7026E607D800B050ED /* MacaroonUIKit */,
-				2B9A3E7226E607D800B050ED /* MacaroonURLImage */,
-				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
-				D4A241DF27D2BF1C00641FF0 /* Prism */,
-				D4B33AB027F1E65900523CEA /* ActiveLabel */,
-				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
-				F0454224287D8C940081C01C /* MacaroonStorySheet */,
-				17D0F8A228EC08130061B55D /* OrderedCollections */,
-				2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */,
-				2BEEBFA529A3D10400DDD988 /* Starscream */,
-				2BEEBFA929A3D12C00DDD988 /* WalletConnectPairing */,
-				2BEEBFAB29A3D15200DDD988 /* WalletConnectNetworking */,
-				2BEEBFAD29A3D15B00DDD988 /* WalletConnect */,
-				2BEEBFAF29A3D17600DDD988 /* Web3Wallet */,
-				2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */,
-				D4B004802D65E31C0098AB1A /* x-hd-wallet-api */,
-				D4B004822D65E3220098AB1A /* MnemonicSwift */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -24324,11 +24393,13 @@
 				2B0F615C24EC129D00DA22A6 /* Sources */,
 				2B0F632824EC129D00DA22A6 /* Frameworks */,
 				2B0F632C24EC129D00DA22A6 /* Resources */,
+				591635BB2E44D1AD002184C2 /* Embed Frameworks */,
 				2B0F634924EC129D00DA22A6 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				591635BA2E44D1AD002184C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
@@ -24337,40 +24408,6 @@
 			);
 			name = "pera-beta";
 			packageProductDependencies = (
-				2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */,
-				2B187DBD26E54C4F005BEDFD /* MagpieCore */,
-				2B187DBF26E54C4F005BEDFD /* MagpieExceptions */,
-				2B187DC126E54C4F005BEDFD /* MagpieHipo */,
-				2B187DC526E54C4F005BEDFD /* SwiftDate */,
-				2B187DC726E54C4F005BEDFD /* Lottie */,
-				2B187DCF26E54C4F005BEDFD /* KeychainAccess */,
-				2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */,
-				2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */,
-				2B9A3E4626E607BD00B050ED /* MacaroonApplication */,
-				2B9A3E4826E607BD00B050ED /* MacaroonBanner */,
-				2B9A3E4A26E607BD00B050ED /* MacaroonBottomOverlay */,
-				2B9A3E4C26E607BD00B050ED /* MacaroonBottomSheet */,
-				2B9A3E4E26E607BD00B050ED /* MacaroonForm */,
-				2B9A3E5026E607BD00B050ED /* MacaroonMedia */,
-				2B9A3E5226E607BD00B050ED /* MacaroonResources */,
-				2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */,
-				2B9A3E5826E607BD00B050ED /* MacaroonUIKit */,
-				2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */,
-				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
-				D4A241DD27D2BF1300641FF0 /* Prism */,
-				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
-				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
-				F0454222287D8C8D0081C01C /* MacaroonStorySheet */,
-				17D0F8A028EC08080061B55D /* OrderedCollections */,
-				2BC1D40029703E8F001E4572 /* WalletConnectSwift */,
-				2BEEBFA729A3D11200DDD988 /* Starscream */,
-				2BEEBFB129A3D18200DDD988 /* Web3Wallet */,
-				2BEEBFB329A3D1B400DDD988 /* WalletConnect */,
-				2BEEBFB529A3D1BF00DDD988 /* WalletConnectPairing */,
-				2BEEBFB729A3D1C700DDD988 /* WalletConnectNetworking */,
-				2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */,
-				D4B0047C2D65E30A0098AB1A /* x-hd-wallet-api */,
-				D4B0047E2D65E3110098AB1A /* MnemonicSwift */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -24383,11 +24420,13 @@
 				2B8BE4CA22391C38005D8565 /* Sources */,
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
 				2B8BE4CC22391C38005D8565 /* Resources */,
+				591635992E44D162002184C2 /* Embed Frameworks */,
 				2B096039225795170005BE27 /* Run Script */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				591635972E44D162002184C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
@@ -24396,40 +24435,6 @@
 			);
 			name = pera;
 			packageProductDependencies = (
-				2B187D9826E546CE005BEDFD /* MagpieAlamofire */,
-				2B187D9A26E546CE005BEDFD /* MagpieCore */,
-				2B187D9C26E546CE005BEDFD /* MagpieExceptions */,
-				2B187D9E26E546CE005BEDFD /* MagpieHipo */,
-				2B187DA426E5486E005BEDFD /* FirebaseAnalytics */,
-				2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */,
-				2B187DA926E548C2005BEDFD /* SwiftDate */,
-				2B187DAC26E54AFA005BEDFD /* Lottie */,
-				2B187DB826E54B9C005BEDFD /* KeychainAccess */,
-				2B9A3E2C26E6077000B050ED /* MacaroonApplication */,
-				2B9A3E2E26E6077000B050ED /* MacaroonBanner */,
-				2B9A3E3026E6077000B050ED /* MacaroonBottomOverlay */,
-				2B9A3E3226E6077000B050ED /* MacaroonBottomSheet */,
-				2B9A3E3426E6077000B050ED /* MacaroonForm */,
-				2B9A3E3626E6077000B050ED /* MacaroonMedia */,
-				2B9A3E3826E6077000B050ED /* MacaroonResources */,
-				2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */,
-				2B9A3E4026E6077000B050ED /* MacaroonUIKit */,
-				2B9A3E4226E6077000B050ED /* MacaroonURLImage */,
-				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
-				D499D27D27C7D40B00641FF5 /* Prism */,
-				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
-				F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */,
-				F0454220287D8C820081C01C /* MacaroonStorySheet */,
-				17D0F89E28EC07D30061B55D /* OrderedCollections */,
-				2B8F78D0296D810B0013F7FF /* WalletConnectSwift */,
-				2BEEBF78299AA5B000DDD988 /* WalletConnect */,
-				2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */,
-				2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */,
-				2BEEBF7E299AA5B000DDD988 /* Web3Wallet */,
-				2BEEBF81299AB81700DDD988 /* Starscream */,
-				2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */,
-				D4B004772D65E2410098AB1A /* x-hd-wallet-api */,
-				D4B0047A2D65E2500098AB1A /* MnemonicSwift */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -24455,6 +24460,132 @@
 			productName = "algorand-tests";
 			productReference = 2B95407725A75FB20098805B /* pera-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		591635912E44D162002184C2 /* pera-wallet-core */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5916359B2E44D162002184C2 /* Build configuration list for PBXNativeTarget "pera-wallet-core" */;
+			buildPhases = (
+				5916358D2E44D162002184C2 /* Headers */,
+				5916358E2E44D162002184C2 /* Sources */,
+				5916358F2E44D162002184C2 /* Frameworks */,
+				591635902E44D162002184C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				591635932E44D162002184C2 /* pera-wallet-core */,
+			);
+			name = "pera-wallet-core";
+			packageProductDependencies = (
+				591635BC2E44D1BB002184C2 /* MagpieAlamofire */,
+				591635C12E44D1DB002184C2 /* MagpieCore */,
+				591635C32E44D1DB002184C2 /* MagpieExceptions */,
+				591635C52E44D1DB002184C2 /* MagpieHipo */,
+				591635C72E44D1DB002184C2 /* FirebaseAnalytics */,
+				591635C92E44D1DB002184C2 /* FirebaseCrashlytics */,
+				591635CB2E44D1DB002184C2 /* FirebaseRemoteConfig */,
+				591635CD2E44D1DB002184C2 /* SwiftDate */,
+				591635CF2E44D1DB002184C2 /* MacaroonApplication */,
+				591635D12E44D1DB002184C2 /* MacaroonBanner */,
+				591635D32E44D1DB002184C2 /* MacaroonBiometrics */,
+				591635D52E44D1DB002184C2 /* MacaroonBottomOverlay */,
+				591635D72E44D1DB002184C2 /* MacaroonBottomSheet */,
+				591635D92E44D1DC002184C2 /* MacaroonCamera */,
+				591635DB2E44D1DC002184C2 /* MacaroonForm */,
+				591635DD2E44D1DC002184C2 /* MacaroonMap */,
+				591635DF2E44D1DC002184C2 /* MacaroonMedia */,
+				591635E12E44D1DC002184C2 /* MacaroonMixpanel */,
+				591635E32E44D1DC002184C2 /* MacaroonResources */,
+				591635E52E44D1DC002184C2 /* MacaroonRouter */,
+				591635E72E44D1DC002184C2 /* MacaroonStorySheet */,
+				591635E92E44D1DC002184C2 /* MacaroonSVGImage */,
+				591635EB2E44D1DC002184C2 /* MacaroonSwiftUI */,
+				591635ED2E44D1DC002184C2 /* MacaroonToastUIKit */,
+				591635EF2E44D1DC002184C2 /* MacaroonUIKit */,
+				591635F12E44D1DC002184C2 /* MacaroonURLImage */,
+				591635F32E44D1DC002184C2 /* MacaroonUserNotifications */,
+				591635F52E44D1DC002184C2 /* MacaroonVendors */,
+				591635F72E44D1DC002184C2 /* Prism */,
+				591635F92E44D1DC002184C2 /* ActiveLabel */,
+				591635FB2E44D1DC002184C2 /* OrderedCollections */,
+				591635FD2E44D1DC002184C2 /* WalletConnectSwift */,
+				591635FF2E44D1DD002184C2 /* WalletConnect */,
+				591636012E44D1DD002184C2 /* WalletConnectNetworking */,
+				591636032E44D1DD002184C2 /* WalletConnectPairing */,
+				591636052E44D1DD002184C2 /* Starscream */,
+				591636072E44D1DD002184C2 /* x-hd-wallet-api */,
+				591636092E44D1DD002184C2 /* MnemonicSwift */,
+				5916365E2E44D374002184C2 /* Lottie */,
+				591636602E44D374002184C2 /* KeychainAccess */,
+			);
+			productName = "pera-wallet-core";
+			productReference = 591635922E44D162002184C2 /* pera_wallet_core.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		591635A42E44D18E002184C2 /* pera-wallet-staging-core */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 591635AD2E44D18E002184C2 /* Build configuration list for PBXNativeTarget "pera-wallet-staging-core" */;
+			buildPhases = (
+				591635A02E44D18E002184C2 /* Headers */,
+				591635A12E44D18E002184C2 /* Sources */,
+				591635A22E44D18E002184C2 /* Frameworks */,
+				591635A32E44D18E002184C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				591635A62E44D18E002184C2 /* pera-wallet-staging-core */,
+			);
+			name = "pera-wallet-staging-core";
+			packageProductDependencies = (
+				5916360F2E44D256002184C2 /* MagpieAlamofire */,
+				591636112E44D256002184C2 /* MagpieCore */,
+				591636132E44D256002184C2 /* MagpieExceptions */,
+				591636152E44D256002184C2 /* MagpieHipo */,
+				591636172E44D256002184C2 /* FirebaseAnalytics */,
+				591636192E44D256002184C2 /* FirebaseCrashlytics */,
+				5916361B2E44D256002184C2 /* FirebaseRemoteConfig */,
+				5916361D2E44D256002184C2 /* SwiftDate */,
+				5916361F2E44D256002184C2 /* MacaroonApplication */,
+				591636212E44D256002184C2 /* MacaroonBanner */,
+				591636232E44D256002184C2 /* MacaroonBiometrics */,
+				591636252E44D256002184C2 /* MacaroonBottomOverlay */,
+				591636272E44D256002184C2 /* MacaroonBottomSheet */,
+				591636292E44D256002184C2 /* MacaroonCamera */,
+				5916362B2E44D256002184C2 /* MacaroonForm */,
+				5916362D2E44D256002184C2 /* MacaroonMap */,
+				5916362F2E44D256002184C2 /* MacaroonMedia */,
+				591636312E44D256002184C2 /* MacaroonMixpanel */,
+				591636332E44D256002184C2 /* MacaroonResources */,
+				591636352E44D256002184C2 /* MacaroonRouter */,
+				591636372E44D256002184C2 /* MacaroonStorySheet */,
+				591636392E44D256002184C2 /* MacaroonSVGImage */,
+				5916363B2E44D256002184C2 /* MacaroonSwiftUI */,
+				5916363D2E44D256002184C2 /* MacaroonToastUIKit */,
+				5916363F2E44D256002184C2 /* MacaroonUIKit */,
+				591636412E44D257002184C2 /* MacaroonURLImage */,
+				591636432E44D257002184C2 /* MacaroonUserNotifications */,
+				591636452E44D257002184C2 /* MacaroonVendors */,
+				591636472E44D257002184C2 /* Prism */,
+				591636492E44D257002184C2 /* ActiveLabel */,
+				5916364B2E44D257002184C2 /* OrderedCollections */,
+				5916364D2E44D257002184C2 /* WalletConnectSwift */,
+				5916364F2E44D257002184C2 /* WalletConnect */,
+				591636512E44D257002184C2 /* WalletConnectNetworking */,
+				591636532E44D257002184C2 /* WalletConnectPairing */,
+				591636552E44D257002184C2 /* Starscream */,
+				591636572E44D257002184C2 /* x-hd-wallet-api */,
+				591636592E44D257002184C2 /* MnemonicSwift */,
+				591636622E44D37F002184C2 /* Lottie */,
+				591636642E44D37F002184C2 /* KeychainAccess */,
+			);
+			productName = "pera-wallet-staging-core";
+			productReference = 591635A52E44D18E002184C2 /* pera_wallet_staging_core.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -24485,6 +24616,12 @@
 					2B95407625A75FB20098805B = {
 						CreatedOnToolsVersion = 12.2;
 						TestTargetID = 17BD4DEE2292F1260003E49A;
+					};
+					591635912E44D162002184C2 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					591635A42E44D18E002184C2 = {
+						CreatedOnToolsVersion = 16.2;
 					};
 				};
 			};
@@ -24521,6 +24658,8 @@
 				2B0F615A24EC129D00DA22A6 /* pera-beta */,
 				17BD4DEE2292F1260003E49A /* pera-staging */,
 				2B95407625A75FB20098805B /* pera-tests */,
+				591635912E44D162002184C2 /* pera-wallet-core */,
+				591635A42E44D18E002184C2 /* pera-wallet-staging-core */,
 			);
 		};
 /* End PBXProject section */
@@ -24703,6 +24842,20 @@
 				2B9541CC25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				2B95420825B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
 				2B9541D425AF1B8F0098805B /* Payment.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635902E44D162002184C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635A32E44D18E002184C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32790,6 +32943,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5916358E2E44D162002184C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		591635A12E44D18E002184C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -32797,6 +32964,21 @@
 			isa = PBXTargetDependency;
 			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
 			targetProxy = 2B95407C25A75FB20098805B /* PBXContainerItemProxy */;
+		};
+		591635972E44D162002184C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 591635912E44D162002184C2 /* pera-wallet-core */;
+			targetProxy = 591635962E44D162002184C2 /* PBXContainerItemProxy */;
+		};
+		591635B52E44D1A7002184C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 591635A42E44D18E002184C2 /* pera-wallet-staging-core */;
+			targetProxy = 591635B42E44D1A7002184C2 /* PBXContainerItemProxy */;
+		};
+		591635BA2E44D1AD002184C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 591635A42E44D18E002184C2 /* pera-wallet-staging-core */;
+			targetProxy = 591635B92E44D1AD002184C2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -32822,7 +33004,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = Develop;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
@@ -33250,6 +33432,279 @@
 			};
 			name = "App Store";
 		};
+		5916359C2E44D162002184C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 87QL82XC78;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.pera-wallet-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5916359D2E44D162002184C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 87QL82XC78;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.pera-wallet-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5916359E2E44D162002184C2 /* App Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 87QL82XC78;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 87QL82XC78;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.pera-wallet-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "App Store";
+		};
+		591635AE2E44D18E002184C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = KHH37325LN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.pera-wallet-staging-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		591635AF2E44D18E002184C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KHH37325LN;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = KHH37325LN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.pera-wallet-staging-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		591635B02E44D18E002184C2 /* App Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KHH37325LN;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = KHH37325LN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.pera-wallet-staging-core";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "App Store";
+		};
 		EC6B733422541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B3BC385266FEBCD007D7107 /* Config.xcconfig */;
@@ -33394,6 +33849,26 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		5916359B2E44D162002184C2 /* Build configuration list for PBXNativeTarget "pera-wallet-core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5916359C2E44D162002184C2 /* Debug */,
+				5916359D2E44D162002184C2 /* Release */,
+				5916359E2E44D162002184C2 /* App Store */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		591635AD2E44D18E002184C2 /* Build configuration list for PBXNativeTarget "pera-wallet-staging-core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				591635AE2E44D18E002184C2 /* Debug */,
+				591635AF2E44D18E002184C2 /* Release */,
+				591635B02E44D18E002184C2 /* App Store */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -33512,515 +33987,405 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		17D0F89E28EC07D30061B55D /* OrderedCollections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */;
-			productName = OrderedCollections;
-		};
-		17D0F8A028EC08080061B55D /* OrderedCollections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */;
-			productName = OrderedCollections;
-		};
-		17D0F8A228EC08130061B55D /* OrderedCollections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */;
-			productName = OrderedCollections;
-		};
-		2B187D9826E546CE005BEDFD /* MagpieAlamofire */ = {
+		591635BC2E44D1BB002184C2 /* MagpieAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieAlamofire;
 		};
-		2B187D9A26E546CE005BEDFD /* MagpieCore */ = {
+		591635C12E44D1DB002184C2 /* MagpieCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieCore;
 		};
-		2B187D9C26E546CE005BEDFD /* MagpieExceptions */ = {
+		591635C32E44D1DB002184C2 /* MagpieExceptions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieExceptions;
 		};
-		2B187D9E26E546CE005BEDFD /* MagpieHipo */ = {
+		591635C52E44D1DB002184C2 /* MagpieHipo */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieHipo;
 		};
-		2B187DA426E5486E005BEDFD /* FirebaseAnalytics */ = {
+		591635C72E44D1DB002184C2 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */ = {
+		591635C92E44D1DB002184C2 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
 		};
-		2B187DA926E548C2005BEDFD /* SwiftDate */ = {
+		591635CB2E44D1DB002184C2 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		591635CD2E44D1DB002184C2 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
 			productName = SwiftDate;
 		};
-		2B187DAC26E54AFA005BEDFD /* Lottie */ = {
+		591635CF2E44D1DB002184C2 /* MacaroonApplication */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonApplication;
 		};
-		2B187DB826E54B9C005BEDFD /* KeychainAccess */ = {
+		591635D12E44D1DB002184C2 /* MacaroonBanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBanner;
 		};
-		2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */ = {
+		591635D32E44D1DB002184C2 /* MacaroonBiometrics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBiometrics;
+		};
+		591635D52E44D1DB002184C2 /* MacaroonBottomOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomOverlay;
+		};
+		591635D72E44D1DB002184C2 /* MacaroonBottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomSheet;
+		};
+		591635D92E44D1DC002184C2 /* MacaroonCamera */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonCamera;
+		};
+		591635DB2E44D1DC002184C2 /* MacaroonForm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonForm;
+		};
+		591635DD2E44D1DC002184C2 /* MacaroonMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMap;
+		};
+		591635DF2E44D1DC002184C2 /* MacaroonMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMedia;
+		};
+		591635E12E44D1DC002184C2 /* MacaroonMixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMixpanel;
+		};
+		591635E32E44D1DC002184C2 /* MacaroonResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonResources;
+		};
+		591635E52E44D1DC002184C2 /* MacaroonRouter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonRouter;
+		};
+		591635E72E44D1DC002184C2 /* MacaroonStorySheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonStorySheet;
+		};
+		591635E92E44D1DC002184C2 /* MacaroonSVGImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonSVGImage;
+		};
+		591635EB2E44D1DC002184C2 /* MacaroonSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonSwiftUI;
+		};
+		591635ED2E44D1DC002184C2 /* MacaroonToastUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonToastUIKit;
+		};
+		591635EF2E44D1DC002184C2 /* MacaroonUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUIKit;
+		};
+		591635F12E44D1DC002184C2 /* MacaroonURLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonURLImage;
+		};
+		591635F32E44D1DC002184C2 /* MacaroonUserNotifications */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUserNotifications;
+		};
+		591635F52E44D1DC002184C2 /* MacaroonVendors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonVendors;
+		};
+		591635F72E44D1DC002184C2 /* Prism */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
+			productName = Prism;
+		};
+		591635F92E44D1DC002184C2 /* ActiveLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			productName = ActiveLabel;
+		};
+		591635FB2E44D1DC002184C2 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		591635FD2E44D1DC002184C2 /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		591635FF2E44D1DD002184C2 /* WalletConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnect;
+		};
+		591636012E44D1DD002184C2 /* WalletConnectNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectNetworking;
+		};
+		591636032E44D1DD002184C2 /* WalletConnectPairing */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectPairing;
+		};
+		591636052E44D1DD002184C2 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		591636072E44D1DD002184C2 /* x-hd-wallet-api */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B004762D65E2410098AB1A /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
+			productName = "x-hd-wallet-api";
+		};
+		591636092E44D1DD002184C2 /* MnemonicSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
+			productName = MnemonicSwift;
+		};
+		5916360F2E44D256002184C2 /* MagpieAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieAlamofire;
 		};
-		2B187DBD26E54C4F005BEDFD /* MagpieCore */ = {
+		591636112E44D256002184C2 /* MagpieCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieCore;
 		};
-		2B187DBF26E54C4F005BEDFD /* MagpieExceptions */ = {
+		591636132E44D256002184C2 /* MagpieExceptions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieExceptions;
 		};
-		2B187DC126E54C4F005BEDFD /* MagpieHipo */ = {
+		591636152E44D256002184C2 /* MagpieHipo */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
 			productName = MagpieHipo;
 		};
-		2B187DC526E54C4F005BEDFD /* SwiftDate */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
-			productName = SwiftDate;
-		};
-		2B187DC726E54C4F005BEDFD /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
-		};
-		2B187DCF26E54C4F005BEDFD /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
-		};
-		2B187DD126E54C6D005BEDFD /* MagpieAlamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
-			productName = MagpieAlamofire;
-		};
-		2B187DD326E54C6D005BEDFD /* MagpieCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
-			productName = MagpieCore;
-		};
-		2B187DD526E54C6D005BEDFD /* MagpieExceptions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
-			productName = MagpieExceptions;
-		};
-		2B187DD726E54C6D005BEDFD /* MagpieHipo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
-			productName = MagpieHipo;
-		};
-		2B187DDB26E54C6D005BEDFD /* SwiftDate */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
-			productName = SwiftDate;
-		};
-		2B187DDD26E54C6D005BEDFD /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
-		};
-		2B187DE526E54C6D005BEDFD /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
-		};
-		2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */ = {
+		591636172E44D256002184C2 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */ = {
+		591636192E44D256002184C2 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
 		};
-		2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		2B8F78D0296D810B0013F7FF /* WalletConnectSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
-			productName = WalletConnectSwift;
-		};
-		2B9A3E2C26E6077000B050ED /* MacaroonApplication */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonApplication;
-		};
-		2B9A3E2E26E6077000B050ED /* MacaroonBanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBanner;
-		};
-		2B9A3E3026E6077000B050ED /* MacaroonBottomOverlay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomOverlay;
-		};
-		2B9A3E3226E6077000B050ED /* MacaroonBottomSheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomSheet;
-		};
-		2B9A3E3426E6077000B050ED /* MacaroonForm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonForm;
-		};
-		2B9A3E3626E6077000B050ED /* MacaroonMedia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonMedia;
-		};
-		2B9A3E3826E6077000B050ED /* MacaroonResources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonResources;
-		};
-		2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonSwiftUI;
-		};
-		2B9A3E4026E6077000B050ED /* MacaroonUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonUIKit;
-		};
-		2B9A3E4226E6077000B050ED /* MacaroonURLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonURLImage;
-		};
-		2B9A3E4426E6077000B050ED /* MacaroonVendors */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonVendors;
-		};
-		2B9A3E4626E607BD00B050ED /* MacaroonApplication */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonApplication;
-		};
-		2B9A3E4826E607BD00B050ED /* MacaroonBanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBanner;
-		};
-		2B9A3E4A26E607BD00B050ED /* MacaroonBottomOverlay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomOverlay;
-		};
-		2B9A3E4C26E607BD00B050ED /* MacaroonBottomSheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomSheet;
-		};
-		2B9A3E4E26E607BD00B050ED /* MacaroonForm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonForm;
-		};
-		2B9A3E5026E607BD00B050ED /* MacaroonMedia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonMedia;
-		};
-		2B9A3E5226E607BD00B050ED /* MacaroonResources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonResources;
-		};
-		2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonSwiftUI;
-		};
-		2B9A3E5826E607BD00B050ED /* MacaroonUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonUIKit;
-		};
-		2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonURLImage;
-		};
-		2B9A3E5C26E607BD00B050ED /* MacaroonVendors */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonVendors;
-		};
-		2B9A3E5E26E607D800B050ED /* MacaroonApplication */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonApplication;
-		};
-		2B9A3E6026E607D800B050ED /* MacaroonBanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBanner;
-		};
-		2B9A3E6226E607D800B050ED /* MacaroonBottomOverlay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomOverlay;
-		};
-		2B9A3E6426E607D800B050ED /* MacaroonBottomSheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonBottomSheet;
-		};
-		2B9A3E6626E607D800B050ED /* MacaroonForm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonForm;
-		};
-		2B9A3E6826E607D800B050ED /* MacaroonMedia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonMedia;
-		};
-		2B9A3E6A26E607D800B050ED /* MacaroonResources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonResources;
-		};
-		2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonSwiftUI;
-		};
-		2B9A3E7026E607D800B050ED /* MacaroonUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonUIKit;
-		};
-		2B9A3E7226E607D800B050ED /* MacaroonURLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonURLImage;
-		};
-		2B9A3E7426E607D800B050ED /* MacaroonVendors */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonVendors;
-		};
-		2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
-			productName = WalletConnectSwift;
-		};
-		2BC1D40029703E8F001E4572 /* WalletConnectSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
-			productName = WalletConnectSwift;
-		};
-		2BEEBF78299AA5B000DDD988 /* WalletConnect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnect;
-		};
-		2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectNetworking;
-		};
-		2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectPairing;
-		};
-		2BEEBF7E299AA5B000DDD988 /* Web3Wallet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = Web3Wallet;
-		};
-		2BEEBF81299AB81700DDD988 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
-		};
-		2BEEBFA529A3D10400DDD988 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
-		};
-		2BEEBFA729A3D11200DDD988 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
-		};
-		2BEEBFA929A3D12C00DDD988 /* WalletConnectPairing */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectPairing;
-		};
-		2BEEBFAB29A3D15200DDD988 /* WalletConnectNetworking */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectNetworking;
-		};
-		2BEEBFAD29A3D15B00DDD988 /* WalletConnect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnect;
-		};
-		2BEEBFAF29A3D17600DDD988 /* Web3Wallet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = Web3Wallet;
-		};
-		2BEEBFB129A3D18200DDD988 /* Web3Wallet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = Web3Wallet;
-		};
-		2BEEBFB329A3D1B400DDD988 /* WalletConnect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnect;
-		};
-		2BEEBFB529A3D1BF00DDD988 /* WalletConnectPairing */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectPairing;
-		};
-		2BEEBFB729A3D1C700DDD988 /* WalletConnectNetworking */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnectNetworking;
-		};
-		2BF3B0C02D1D7E1100E78ADA /* FirebaseRemoteConfig */ = {
+		5916361B2E44D256002184C2 /* FirebaseRemoteConfig */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
 		};
-		2BF3B0C22D1D7E1D00E78ADA /* FirebaseRemoteConfig */ = {
+		5916361D2E44D256002184C2 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseRemoteConfig;
+			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
 		};
-		2BF3B0C42D1D7E2300E78ADA /* FirebaseRemoteConfig */ = {
+		5916361F2E44D256002184C2 /* MacaroonApplication */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseRemoteConfig;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonApplication;
 		};
-		D499D27D27C7D40B00641FF5 /* Prism */ = {
+		591636212E44D256002184C2 /* MacaroonBanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
-			productName = Prism;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBanner;
 		};
-		D4A241DD27D2BF1300641FF0 /* Prism */ = {
+		591636232E44D256002184C2 /* MacaroonBiometrics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
-			productName = Prism;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBiometrics;
 		};
-		D4A241DF27D2BF1C00641FF0 /* Prism */ = {
+		591636252E44D256002184C2 /* MacaroonBottomOverlay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
-			productName = Prism;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomOverlay;
 		};
-		D4B004772D65E2410098AB1A /* x-hd-wallet-api */ = {
+		591636272E44D256002184C2 /* MacaroonBottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004762D65E2410098AB1A /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
-			productName = "x-hd-wallet-api";
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomSheet;
 		};
-		D4B0047A2D65E2500098AB1A /* MnemonicSwift */ = {
+		591636292E44D256002184C2 /* MacaroonCamera */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
-			productName = MnemonicSwift;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonCamera;
 		};
-		D4B0047C2D65E30A0098AB1A /* x-hd-wallet-api */ = {
+		5916362B2E44D256002184C2 /* MacaroonForm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004762D65E2410098AB1A /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
-			productName = "x-hd-wallet-api";
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonForm;
 		};
-		D4B0047E2D65E3110098AB1A /* MnemonicSwift */ = {
+		5916362D2E44D256002184C2 /* MacaroonMap */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
-			productName = MnemonicSwift;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMap;
 		};
-		D4B004802D65E31C0098AB1A /* x-hd-wallet-api */ = {
+		5916362F2E44D256002184C2 /* MacaroonMedia */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004762D65E2410098AB1A /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
-			productName = "x-hd-wallet-api";
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMedia;
 		};
-		D4B004822D65E3220098AB1A /* MnemonicSwift */ = {
+		591636312E44D256002184C2 /* MacaroonMixpanel */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
-			productName = MnemonicSwift;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMixpanel;
 		};
-		D4B33AAC27F1E63000523CEA /* ActiveLabel */ = {
+		591636332E44D256002184C2 /* MacaroonResources */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonResources;
 		};
-		D4B33AAE27F1E64600523CEA /* ActiveLabel */ = {
+		591636352E44D256002184C2 /* MacaroonRouter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonRouter;
 		};
-		D4B33AB027F1E65900523CEA /* ActiveLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
-		};
-		F0454220287D8C820081C01C /* MacaroonStorySheet */ = {
+		591636372E44D256002184C2 /* MacaroonStorySheet */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonStorySheet;
 		};
-		F0454222287D8C8D0081C01C /* MacaroonStorySheet */ = {
+		591636392E44D256002184C2 /* MacaroonSVGImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonStorySheet;
+			productName = MacaroonSVGImage;
 		};
-		F0454224287D8C940081C01C /* MacaroonStorySheet */ = {
+		5916363B2E44D256002184C2 /* MacaroonSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonStorySheet;
+			productName = MacaroonSwiftUI;
 		};
-		F05E6C542863009C004E33D6 /* MacaroonToastUIKit */ = {
+		5916363D2E44D256002184C2 /* MacaroonToastUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonToastUIKit;
 		};
-		F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */ = {
+		5916363F2E44D256002184C2 /* MacaroonUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonToastUIKit;
+			productName = MacaroonUIKit;
 		};
-		F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */ = {
+		591636412E44D257002184C2 /* MacaroonURLImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonToastUIKit;
+			productName = MacaroonURLImage;
+		};
+		591636432E44D257002184C2 /* MacaroonUserNotifications */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUserNotifications;
+		};
+		591636452E44D257002184C2 /* MacaroonVendors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonVendors;
+		};
+		591636472E44D257002184C2 /* Prism */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
+			productName = Prism;
+		};
+		591636492E44D257002184C2 /* ActiveLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			productName = ActiveLabel;
+		};
+		5916364B2E44D257002184C2 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		5916364D2E44D257002184C2 /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		5916364F2E44D257002184C2 /* WalletConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnect;
+		};
+		591636512E44D257002184C2 /* WalletConnectNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectNetworking;
+		};
+		591636532E44D257002184C2 /* WalletConnectPairing */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectPairing;
+		};
+		591636552E44D257002184C2 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		591636572E44D257002184C2 /* x-hd-wallet-api */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B004762D65E2410098AB1A /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
+			productName = "x-hd-wallet-api";
+		};
+		591636592E44D257002184C2 /* MnemonicSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
+			productName = MnemonicSwift;
+		};
+		5916365E2E44D374002184C2 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		591636602E44D374002184C2 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		591636622E44D37F002184C2 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		591636642E44D37F002184C2 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 
