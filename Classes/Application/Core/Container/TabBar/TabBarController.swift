@@ -37,10 +37,13 @@ final class TabBarController: TabBarContainer {
     /// routing approach hasn't been refactored yet.
     private let analytics: ALGAnalytics
     private let api: ALGAPI
+    private let session: Session
 
     init(configuration: AppConfiguration) {
         self.analytics = configuration.analytics
         self.api = configuration.api
+        self.session = configuration.session
+        
         super.init()
     }
 
@@ -84,6 +87,7 @@ final class TabBarController: TabBarContainer {
         super.setListeners()
 
         self.observeNetworkChanges()
+        self.observeAccountChanges()
     }
     
     override func selectedIndexDidChange() {
@@ -125,6 +129,27 @@ extension TabBarController {
         setTabBarItemEnabled(
             isDiscoverEnabled,
             forItemID: .discover
+        )
+    }
+}
+
+extension TabBarController {
+    private func observeAccountChanges() {
+        observe(notification: .userAccountsChanged) {
+            [unowned self] _ in
+            setNeedsSwapTabBarItemUpdateIfNeeded()
+        }
+    }
+    /// <note>
+    /// The swap tab will only be disabled if user has no accounts
+    private var isSwapEnabled: Bool {
+        return session.authenticatedUser?.accounts.count ?? 0 > 0
+    }
+
+    func setNeedsSwapTabBarItemUpdateIfNeeded() {
+        setTabBarItemEnabled(
+            isSwapEnabled,
+            forItemID: .swap
         )
     }
 }
