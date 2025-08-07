@@ -21,6 +21,7 @@ enum SwapViewAction {
     case selectAccount
     case selectAssetIn(for: Account)
     case selectAssetOut(for: Account)
+    case switchAssets
 }
 
 enum SwapViewSheet: Identifiable {
@@ -40,13 +41,8 @@ enum SwapViewSheet: Identifiable {
 struct SwapView: View {
     
     // MARK: - Properties
-    @Binding var selectedAccount: Account
-    @Binding var selectedAssetIn: Asset
-    @Binding var selectedAssetOut: Asset
+    let bindings: SwapViewBindings
     
-    
-    @State private var assetDefaultIcon = Image("icon-algo-circle")
-    @State private var assetDefaultText = String(localized: "title-algo")
     @State private var payingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "62,045.00")
     @State private var receivingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "3,495.00 USDC")
     @State private var providerIcon = Image("icon-shield-16")
@@ -65,6 +61,10 @@ struct SwapView: View {
             set: { isPayingView = !$0 }
         )
     }
+    @State private var payingText: String?
+    @State private var receivingText: String?
+    
+    @State private var applyMaxBalance = false
     @State private var shouldShowProvider = false
     @State private var shouldShowSwapButton = true
     
@@ -75,7 +75,7 @@ struct SwapView: View {
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
-            SwapTitleView(selectedAccount: $selectedAccount) { action in
+            SwapTitleView(selectedAccount: bindings.selectedAccount) { action in
                 switch action {
                 case .accountSelection:
                     onTap?(.selectAccount)
@@ -85,17 +85,17 @@ struct SwapView: View {
             }
             ZStack {
                 VStack (spacing: 0) {
-                    AssetSelectionView(isPayingView: $isPayingView, balanceText: $payingBalanceText, asset: $selectedAssetIn) {
-                        onTap?(.selectAssetIn(for: selectedAccount))
+                    AssetSelectionView(isPayingView: $isPayingView, assetItem: bindings.selectedAssetIn, balanceText: $payingText) {
+                        onTap?(.selectAssetIn(for: bindings.selectedAccount.wrappedValue))
                     }
-                    AssetSelectionView(isPayingView: isReceivingView, balanceText: $receivingBalanceText, asset: $selectedAssetOut) {
-                        onTap?(.selectAssetOut(for: selectedAccount))
+                    AssetSelectionView(isPayingView: isReceivingView, assetItem: bindings.selectedAssetOut, balanceText: $receivingText) {
+                        onTap?(.selectAssetOut(for: bindings.selectedAccount.wrappedValue))
                     }
                 }
                 .padding(.horizontal, 8)
                 HStack {
                     SwitchSwapButton {
-                        print("SwitchSwapButton")
+                        onTap?(.switchAssets)
                     }
                     Spacer()
                     SettingsSwapButton { action in
@@ -103,7 +103,7 @@ struct SwapView: View {
                         case .settings:
                             activeSheet = .settings
                         case .max:
-                            print("SettingsSwapButton-max")
+                            print("max")
                         }
                     }
                 }
@@ -131,7 +131,7 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                ConfirmSwapView(account: selectedAccount)
+                ConfirmSwapView(account: bindings.selectedAccount.wrappedValue)
             }
         }
     }

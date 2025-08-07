@@ -7250,6 +7250,9 @@
 		D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */; };
 		D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */; };
 		D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */; };
+		D434A9802E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
+		D434A9812E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
+		D434A9822E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
 		D435F9BC2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
@@ -9288,6 +9291,7 @@
 		D431505E27EA62DF0084CA41 /* SendCollectibleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewModel.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D4330DC82B2A49450031FAF6 /* MeldDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldDraft.swift; sourceTree = "<group>"; };
+		D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewBindings.swift; sourceTree = "<group>"; };
 		D435A93828AD2C94006B495A /* AlertScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreen.swift; sourceTree = "<group>"; };
 		D435A93C28AD2D4F006B495A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D435A94028AD2D9F006B495A /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
@@ -22716,6 +22720,7 @@
 		D4EDBA0A2E42160A00B6FBDA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -24804,6 +24809,7 @@
 				591679912E464C76002184C2 /* AccountClipboardViewModel.swift in Sources */,
 				591679922E464C76002184C2 /* AccountClipboardViewTheme.swift in Sources */,
 				591679932E464C76002184C2 /* ReceiverAccountSelectionListContactCell.swift in Sources */,
+				D434A9802E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				591679942E464C76002184C2 /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				591679952E464C76002184C2 /* ReceiverAccountSelectionListTitleSupplementaryCell.swift in Sources */,
 				591679962E464C76002184C2 /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
@@ -28078,6 +28084,7 @@
 				59E6036F2E4A712500CCA99B /* QRScannerOverlayViewTheme.swift in Sources */,
 				59E603702E4A712500CCA99B /* AccountQuickActionsCell.swift in Sources */,
 				59E603712E4A712500CCA99B /* AccountQuickActionsView.swift in Sources */,
+				D434A9822E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				59E603722E4A712500CCA99B /* AccountQuickActionsViewTheme.swift in Sources */,
 				59E603732E4A712500CCA99B /* WatchAccountQuickActionsCell.swift in Sources */,
 				59E603742E4A712500CCA99B /* WatchAccountQuickActionsView.swift in Sources */,
@@ -29102,6 +29109,7 @@
 				59E607892E4A71D000CCA99B /* ReceiverAccountSelectionListContactCell.swift in Sources */,
 				59E6078A2E4A71D000CCA99B /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				59E6078B2E4A71D000CCA99B /* ReceiverAccountSelectionListTitleSupplementaryCell.swift in Sources */,
+				D434A9812E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				59E6078C2E4A71D000CCA99B /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
 				59E6078D2E4A71D000CCA99B /* ReceiverAccountSelectionPreviewCell.swift in Sources */,
 				59E6078E2E4A71D000CCA99B /* SelectContactView.swift in Sources */,
