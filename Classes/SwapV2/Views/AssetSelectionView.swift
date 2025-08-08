@@ -20,7 +20,8 @@ struct AssetSelectionView: View {
     // MARK: - Properties
     @Binding var isPayingView: Bool
     @Binding var assetItem: AssetItem
-    @Binding var balanceText: String?
+    @Binding var payingText: String?
+    @FocusState private var isPayingFocused: Bool
     
     private let defaultValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
@@ -43,15 +44,21 @@ struct AssetSelectionView: View {
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
                     TextField(defaultValue, text: Binding(
-                        get: { balanceText ?? defaultValue },
-                        set: { balanceText = $0.isEmpty ? defaultValue : $0 }
+                        get: { payingText ?? defaultValue },
+                        set: { payingText = $0.isEmpty ? defaultValue : $0 }
                     ))
-                        .keyboardType(.decimalPad)
-                        .font(.dmSans.medium.size(19.0))
-                        .foregroundStyle(Color.Text.gray)
-                        .disabled(!isPayingView)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.leading)
+                    .keyboardType(.decimalPad)
+                    .font(.dmSans.medium.size(19.0))
+                    .foregroundStyle(Color.Text.gray)
+                    .disabled(!isPayingView)
+                    .frame(maxWidth: 200)
+                    .multilineTextAlignment(.leading)
+                    .focused($isPayingFocused)
+                    .onChange(of: isPayingFocused) { focused in
+                        if focused && (payingText == "0" || payingText == "0.0" || payingText == "0,0") {
+                            payingText = ""
+                        }
+                    }
                     Text(defaultValue)
                         .keyboardType(.decimalPad)
                         .font(.dmSans.regular.size(13.0))
@@ -76,7 +83,7 @@ struct AssetSelectionView: View {
 extension AssetItem {
     var balance: String? {
         let asset = asset
-
+        
         let formatter = currencyFormatter
         formatter.formattingContext = currencyFormattingContext ?? .listItem
         formatter.isValueHidden = isAmountHidden

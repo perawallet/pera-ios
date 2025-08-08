@@ -26,6 +26,8 @@ final class SwapViewController: BaseViewController {
     private var selectedAccount: Account?
     private var selectedAssetIn: AssetItem?
     private var selectedAssetOut: AssetItem?
+    private var payAmount: String?
+    private var receiveAmount: String?
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
@@ -110,6 +112,7 @@ final class SwapViewController: BaseViewController {
             }
             return selectedAssetIn
         }
+        self.selectedAssetIn = assetIn
         
         var assetOut: AssetItem {
             guard let selectedAssetOut else {
@@ -117,8 +120,15 @@ final class SwapViewController: BaseViewController {
             }
             return selectedAssetOut
         }
+        self.selectedAssetOut = assetOut
         
-        var rootView = SwapView(bindings: SwapViewBindings(selectedAccount: .constant(selectedAccount), selectedAssetIn: .constant(assetIn), selectedAssetOut: .constant(assetOut)))
+        let viewModel = SwapSharedViewModel(
+            selectedAccount: selectedAccount,
+            selectedAssetIn: assetIn,
+            selectedAssetOut: assetOut
+        )
+        
+        var rootView = SwapView(viewModel: viewModel)
         
         rootView.onTap = { [weak self] action in
             guard let self = self else { return }
@@ -153,6 +163,23 @@ final class SwapViewController: BaseViewController {
                 selectedAssetIn = selectedAssetOut
                 selectedAssetOut = temp
                 loadSwapView()
+            case .getQuote(for: let value):
+                swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quote, error in
+                    guard let self = self else { return }
+                    if let error {
+                        print(error)
+                        return
+                    }
+                    receiveAmount = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 4).string(for: quote?.amountOutUSDValue)
+                    loadSwapView()
+                }
+                guard let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
+                    // error
+                    return
+                }
+                payAmount = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 4).string(for: value)
+                swapAssetFlowCoordinator.getQoute(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
+                print("---quote for \(value)")
             }
         }
         
