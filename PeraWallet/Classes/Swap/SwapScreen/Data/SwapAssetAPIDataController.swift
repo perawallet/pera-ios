@@ -119,7 +119,9 @@ extension SwapAssetAPIDataController {
         
         quoteThrottler.performNext {
             [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
 
             self.loadData(draft)
         }
@@ -130,7 +132,9 @@ extension SwapAssetAPIDataController {
     ) {
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+        }
 
             self.currentQuoteEndpoint = nil
 
