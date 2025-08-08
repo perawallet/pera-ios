@@ -182,6 +182,23 @@ class AppDelegate:
 
             return true
         }
+        print("ynyn")
+        if let scheme = url.scheme,
+            scheme.caseInsensitiveCompare("perawallet") == .orderedSame {
+            
+            let urlString = "https:" + url
+                .absoluteString
+                .replacingOccurrences(
+                    of: "perawallet:",
+                    with: ""
+                )
+ 
+            if let externalURL = URL(string: urlString) {
+                let destination = DiscoverExternalDestination.url(externalURL)
+                receive(deeplinkWithSource: .externalInAppBrowser(destination))
+                return true
+            }
+        }
         
         if let browserURL = url.browserDeeplinkURL {
             let destination = DiscoverExternalDestination.url(browserURL)
