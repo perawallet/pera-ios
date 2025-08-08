@@ -182,7 +182,7 @@ class AppDelegate:
 
             return true
         }
-        print("ynyn")
+
         if let scheme = url.scheme,
             scheme.caseInsensitiveCompare("perawallet") == .orderedSame {
             
