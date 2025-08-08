@@ -15,6 +15,7 @@
 //   SwapView.swift
 
 import SwiftUI
+import Combine
 
 enum SwapViewAction {
     case showInfo
@@ -22,6 +23,7 @@ enum SwapViewAction {
     case selectAssetIn(for: Account)
     case selectAssetOut(for: Account)
     case switchAssets
+    case getQuote(for: Double)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -41,28 +43,14 @@ enum SwapViewSheet: Identifiable {
 struct SwapView: View {
     
     // MARK: - Properties
-    let bindings: SwapViewBindings
-    
-    @State private var payingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "62,045.00")
-    @State private var receivingBalanceText = String(format: String(localized: "swap-asset-amount-title-balance"), "3,495.00 USDC")
-    @State private var providerIcon = Image("icon-shield-16")
-    @State private var providerText = "Vestige.fi"
-    @State private var exchangeRateText = "1 ALGO ≈ 0.17 USDC"
+    @ObservedObject var viewModel: SwapSharedViewModel
+
     
     private var safeAreaTopInset: CGFloat {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
             .windows.first?.safeAreaInsets.top ?? 44
     }
-    
-    @State private var isPayingView = true
-    private var isReceivingView: Binding<Bool> {
-        Binding(
-            get: { !isPayingView },
-            set: { isPayingView = !$0 }
-        )
-    }
-    @State private var payingText: String?
-    @State private var receivingText: String?
+    @State private var debounceWorkItem: DispatchWorkItem?
     
     @State private var applyMaxBalance = false
     @State private var shouldShowProvider = false
@@ -75,7 +63,7 @@ struct SwapView: View {
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
-            SwapTitleView(selectedAccount: bindings.selectedAccount) { action in
+            SwapTitleView(selectedAccount: $viewModel.selectedAccount) { action in
                 switch action {
                 case .accountSelection:
                     onTap?(.selectAccount)
@@ -85,14 +73,28 @@ struct SwapView: View {
             }
             ZStack {
                 VStack (spacing: 0) {
-                    AssetSelectionView(isPayingView: $isPayingView, assetItem: bindings.selectedAssetIn, balanceText: $payingText) {
-                        onTap?(.selectAssetIn(for: bindings.selectedAccount.wrappedValue))
+                    AssetSelectionView(isPayingView: $viewModel.isPayingView, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText) {
+                        onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                     }
-                    AssetSelectionView(isPayingView: isReceivingView, assetItem: bindings.selectedAssetOut, balanceText: $receivingText) {
-                        onTap?(.selectAssetOut(for: bindings.selectedAccount.wrappedValue))
+                    .onChange(of: viewModel.payingText ?? "") { newValue in
+                        debounceWorkItem?.cancel()
+                        let task = DispatchWorkItem {
+                            if
+                                let doubleValue = Double(newValue),
+                                doubleValue > 0
+                            {
+                                onTap?(.getQuote(for: doubleValue))
+                            }
+                        }
+                        debounceWorkItem = task
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+                    }
+                    AssetSelectionView(isPayingView: $viewModel.isPayingView.inverted, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText) {
+                        onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                     }
                 }
                 .padding(.horizontal, 8)
+
                 HStack {
                     SwitchSwapButton {
                         onTap?(.switchAssets)
@@ -110,7 +112,7 @@ struct SwapView: View {
                 .padding(.horizontal, 16)
             }
             if shouldShowProvider {
-                ProviderSelectionView(providerIcon: $providerIcon, providerName: $providerText, exchangeRateText: $exchangeRateText) {
+                ProviderSelectionView(selectedProvider: $viewModel.provider) {
                     activeSheet = .provider
                 }
                 .padding(.top, 16)
@@ -131,7 +133,7 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                ConfirmSwapView(account: bindings.selectedAccount.wrappedValue)
+                ConfirmSwapView(account: $viewModel.selectedAccount.wrappedValue)
             }
         }
     }

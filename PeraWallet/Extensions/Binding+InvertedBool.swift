@@ -12,22 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapViewBindings.swift
+//   Binding+InvertedBool.swift
 
 import SwiftUI
 
-struct SwapViewBindings {
-    var selectedAccount: Binding<Account>
-    var selectedAssetIn: Binding<AssetItem>
-    var selectedAssetOut: Binding<AssetItem>
-}
-
-extension SwapViewBindings {
-    func switchAssets() -> SwapViewBindings {
-        SwapViewBindings(
-            selectedAccount: selectedAccount,
-            selectedAssetIn: selectedAssetOut,
-            selectedAssetOut: selectedAssetIn
+extension Binding where Value == Bool {
+    var inverted: Binding<Bool> {
+        Binding(
+            get: { !self.wrappedValue },
+            set: { self.wrappedValue = !$0 }
         )
     }
 }

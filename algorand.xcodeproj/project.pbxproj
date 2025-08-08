@@ -7250,9 +7250,6 @@
 		D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */; };
 		D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */; };
 		D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */; };
-		D434A9802E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
-		D434A9812E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
-		D434A9822E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */; };
 		D435F9BC2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
@@ -7326,6 +7323,9 @@
 		D4EDBA072E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
 		D4EDBA082E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
 		D4EDBA092E42057B00B6FBDA /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */; };
+		D4F0154D2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
+		D4F0154E2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
+		D4F0154F2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
 		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
@@ -9291,7 +9291,6 @@
 		D431505E27EA62DF0084CA41 /* SendCollectibleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewModel.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D4330DC82B2A49450031FAF6 /* MeldDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldDraft.swift; sourceTree = "<group>"; };
-		D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewBindings.swift; sourceTree = "<group>"; };
 		D435A93828AD2C94006B495A /* AlertScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreen.swift; sourceTree = "<group>"; };
 		D435A93C28AD2D4F006B495A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D435A94028AD2D9F006B495A /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
@@ -9969,6 +9968,7 @@
 		D4EAEC9F2846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListTitleSupplementaryHeader.swift; sourceTree = "<group>"; };
 		D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetChartDataDTO.swift; sourceTree = "<group>"; };
 		D4EDBA062E42057600B6FBDA /* ConfirmSlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSlideButton.swift; sourceTree = "<group>"; };
+		D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSharedViewModel.swift; sourceTree = "<group>"; };
 		D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
 		D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewModel.swift; sourceTree = "<group>"; };
 		D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsViewTheme.swift; sourceTree = "<group>"; };
@@ -22720,7 +22720,7 @@
 		D4EDBA0A2E42160A00B6FBDA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D434A97F2E44BFE90029CFE6 /* SwapViewBindings.swift */,
+				D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -24809,7 +24809,6 @@
 				591679912E464C76002184C2 /* AccountClipboardViewModel.swift in Sources */,
 				591679922E464C76002184C2 /* AccountClipboardViewTheme.swift in Sources */,
 				591679932E464C76002184C2 /* ReceiverAccountSelectionListContactCell.swift in Sources */,
-				D434A9802E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				591679942E464C76002184C2 /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				591679952E464C76002184C2 /* ReceiverAccountSelectionListTitleSupplementaryCell.swift in Sources */,
 				591679962E464C76002184C2 /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
@@ -26073,6 +26072,7 @@
 				59167E772E464C76002184C2 /* ErrorScreenTheme.swift in Sources */,
 				59167E782E464C76002184C2 /* ErrorScreenViewModel.swift in Sources */,
 				59167E792E464C76002184C2 /* LoadingScreen.swift in Sources */,
+				D4F0154F2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */,
 				59167E7A2E464C76002184C2 /* LoadingScreenTheme.swift in Sources */,
 				59167E7B2E464C76002184C2 /* LoadingScreenViewModel.swift in Sources */,
 				59167E7C2E464C76002184C2 /* SuccessResultScreen.swift in Sources */,
@@ -27143,6 +27143,7 @@
 				59E6FFC82E4A712500CCA99B /* ManageAssetListLayout.swift in Sources */,
 				59E6FFC92E4A712500CCA99B /* ManageAssetListViewController.swift in Sources */,
 				59E6FFCA2E4A712500CCA99B /* ManageAssetListViewController+Theme.swift in Sources */,
+				D4F0154D2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */,
 				59E6FFCB2E4A712500CCA99B /* ManagementOptionsViewController.swift in Sources */,
 				59E6FFCC2E4A712500CCA99B /* ManageAssetListDataController.swift in Sources */,
 				59E6FFCD2E4A712500CCA99B /* ManageAssetListDataSource.swift in Sources */,
@@ -28084,7 +28085,6 @@
 				59E6036F2E4A712500CCA99B /* QRScannerOverlayViewTheme.swift in Sources */,
 				59E603702E4A712500CCA99B /* AccountQuickActionsCell.swift in Sources */,
 				59E603712E4A712500CCA99B /* AccountQuickActionsView.swift in Sources */,
-				D434A9822E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				59E603722E4A712500CCA99B /* AccountQuickActionsViewTheme.swift in Sources */,
 				59E603732E4A712500CCA99B /* WatchAccountQuickActionsCell.swift in Sources */,
 				59E603742E4A712500CCA99B /* WatchAccountQuickActionsView.swift in Sources */,
@@ -29109,7 +29109,6 @@
 				59E607892E4A71D000CCA99B /* ReceiverAccountSelectionListContactCell.swift in Sources */,
 				59E6078A2E4A71D000CCA99B /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				59E6078B2E4A71D000CCA99B /* ReceiverAccountSelectionListTitleSupplementaryCell.swift in Sources */,
-				D434A9812E44BFF20029CFE6 /* SwapViewBindings.swift in Sources */,
 				59E6078C2E4A71D000CCA99B /* ReceiverAccountSelectionNoContentViewModel.swift in Sources */,
 				59E6078D2E4A71D000CCA99B /* ReceiverAccountSelectionPreviewCell.swift in Sources */,
 				59E6078E2E4A71D000CCA99B /* SelectContactView.swift in Sources */,
@@ -30376,6 +30375,7 @@
 				59E60C732E4A71D000CCA99B /* SuccessResultScreen.swift in Sources */,
 				59E60C742E4A71D000CCA99B /* SuccessResultScreenTheme.swift in Sources */,
 				59E60C752E4A71D000CCA99B /* SuccessResultScreenViewModel.swift in Sources */,
+				D4F0154E2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */,
 				59E60C762E4A71D000CCA99B /* InfoBoxHeaderView.swift in Sources */,
 				59E60C772E4A71D000CCA99B /* InfoBoxHeaderViewModel.swift in Sources */,
 				59E60C782E4A71D000CCA99B /* InfoBoxHeaderViewTheme.swift in Sources */,

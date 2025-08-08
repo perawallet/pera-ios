@@ -18,9 +18,7 @@ import SwiftUI
 
 struct ProviderSelectionView: View {
     // MARK: - Properties
-    @Binding var providerIcon: Image
-    @Binding var providerName: String
-    @Binding var exchangeRateText: String
+    @Binding var selectedProvider: Provider
     let onTap: () -> Void
     
     // MARK: - Body
@@ -32,15 +30,15 @@ struct ProviderSelectionView: View {
             SwiftUI.Button(action: onTap) {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {
-                        providerIcon
+                        $selectedProvider.wrappedValue.icon
                             .frame(width: 16, height: 16)
                         Spacer().frame(width: 4)
-                        Text(providerName)
+                        Text($selectedProvider.wrappedValue.name)
                             .font(.dmSans.regular.size(15))
                             .foregroundStyle(Color.Text.main)
                     }
                     Spacer()
-                    Text(exchangeRateText)
+                    Text($selectedProvider.wrappedValue.exchangeRate)
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 3)

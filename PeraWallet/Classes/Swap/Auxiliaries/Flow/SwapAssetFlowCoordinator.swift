@@ -61,6 +61,7 @@ final class SwapAssetFlowCoordinator:
     var onAccountSelected: ((Account) -> Void)?
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
+    var onQuoteLoaded: ((SwapQuote?, SwapAssetDataController.Error?) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -71,6 +72,8 @@ final class SwapAssetFlowCoordinator:
     private let bannerController: BannerController
     private let hdWalletStorage: HDWalletStorable
     private unowned let presentingScreen: UIViewController
+    
+    private var swapDataController: SwapAssetAPIDataController?
 
     init(
         draft: SwapAssetFlowDraft,
@@ -705,6 +708,67 @@ extension SwapAssetFlowCoordinator {
                 selectAssetScreen?.dismissScreen()
             }
         }
+    }
+}
+
+
+
+extension SwapAssetFlowCoordinator {
+    func getQoute(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
+        let transactionSigner = SwapTransactionSigner(
+            api: api,
+            analytics: analytics,
+            hdWalletStorage: hdWalletStorage,
+            sharedDataController: sharedDataController
+        )
+        
+        let swapControllerDraft = ALGSwapControllerDraft(
+            account: account,
+            assetIn: assetIn,
+            assetOut: assetOut
+        )
+        
+        let swapController = ALGSwapController(
+            draft: swapControllerDraft,
+            api: api,
+            transactionSigner: transactionSigner
+        )
+        
+        swapDataController = SwapAssetAPIDataController(
+            dataStore: dataStore,
+            swapController: swapController,
+            api: api,
+            sharedDataController: sharedDataController
+        )
+        
+        swapDataController?.eventHandler = { [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .willLoadQuote:
+                print("loading...")
+            case .didLoadQuote(let quote):
+                onQuoteLoaded?(quote, nil)
+            case .didFailToLoadQuote(let error):
+                onQuoteLoaded?(nil, error)
+            }
+        }
+        
+        guard let swapAmount = doubleToUInt64(amount: amount, decimals: assetIn.decimals) else {
+            // create error
+            return
+        }
+        swapDataController?.loadQuote(swapAmount: swapAmount)
+    }
+    
+    private func doubleToUInt64(amount: Double, decimals: Int) -> UInt64? {
+        let formatter = Formatter.decimalFormatter(maximumFractionDigits: decimals)
+        let amountString = formatter.string(for: amount) ?? "\(amount)"
+        
+        guard let number = formatter.number(from: amountString)?.decimalValue else {
+            return nil
+        }
+        
+        return number.toFraction(of: decimals)
     }
 }
 
