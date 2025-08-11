@@ -15,6 +15,7 @@
 //   MeldConfig.swift
 
 import Foundation
+import pera_wallet_core
 
 struct MeldConfig {
     let url: String

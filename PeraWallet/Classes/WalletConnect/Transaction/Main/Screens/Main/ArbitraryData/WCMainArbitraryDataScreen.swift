@@ -21,6 +21,7 @@ import MagpieHipo
 import MacaroonBottomOverlay
 import UIKit
 import SnapKit
+import pera_wallet_core
 
 /// <todo>
 /// Refactor.

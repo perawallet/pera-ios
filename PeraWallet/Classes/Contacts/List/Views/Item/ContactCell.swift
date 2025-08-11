@@ -16,6 +16,7 @@
 //  ContactCell.swift
 
 import UIKit
+import pera_wallet_core
 
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
     weak var delegate: ContactCellDelegate?

@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 struct RekeyConfirmationBodyViewModel {
     private(set) var text: TextProvider?

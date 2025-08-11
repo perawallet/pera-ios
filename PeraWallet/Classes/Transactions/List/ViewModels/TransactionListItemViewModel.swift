@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 protocol TransactionListItemViewModel: ViewModel {
     var id: String? { get set }

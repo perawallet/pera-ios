@@ -19,6 +19,7 @@ import UIKit
 import SafariServices
 import MacaroonBottomSheet
 import MacaroonUIKit
+import pera_wallet_core
 
 final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()

@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import OrderedCollections
+import pera_wallet_core
 
 protocol RekeyedAccountSelectionListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<RekeyedAccountSelectionListSectionIdentifier, RekeyedAccountSelectionListItemIdentifier>

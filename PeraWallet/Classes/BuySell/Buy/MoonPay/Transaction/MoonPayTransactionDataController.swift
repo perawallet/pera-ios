@@ -15,6 +15,7 @@
 //   MoonPayTransactionDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class MoonPayTransactionDataController: NSObject {
     weak var delegate: MoonPayTransactionDataControllerDelegate?

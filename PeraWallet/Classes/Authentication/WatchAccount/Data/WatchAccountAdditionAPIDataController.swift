@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 import MacaroonForm
+import pera_wallet_core
 
 final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataController {
     var eventHandler: EventHandler?

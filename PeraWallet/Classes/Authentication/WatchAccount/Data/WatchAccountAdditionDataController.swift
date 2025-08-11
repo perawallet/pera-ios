@@ -15,6 +15,7 @@
 //   WatchAccountAdditionDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol WatchAccountAdditionDataController: AnyObject {
     typealias EventHandler = (WatchAccountAdditionDataControllerEvent) -> Void

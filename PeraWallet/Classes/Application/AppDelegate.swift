@@ -26,6 +26,7 @@ import SwiftDate
 import UIKit
 import UserNotifications
 import Kingfisher
+import pera_wallet_core
 
 @UIApplicationMain
 class AppDelegate:
@@ -41,7 +42,7 @@ class AppDelegate:
     var window: UIWindow?
 
     var notificationObservations: [NSObjectProtocol] = []
-
+    
     private(set) lazy var persistentContainer = createPersistentContainer()
     private(set) lazy var appConfiguration = createAppConfiguration()
 
@@ -629,7 +630,7 @@ extension AppDelegate {
 
     private func createAppConfiguration() -> AppConfiguration {
         let walletConnector = walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV1Protocol
-        return AppConfiguration(
+        let config = AppConfiguration(
             api: api,
             session: session,
             sharedDataController: sharedDataController,
@@ -646,6 +647,14 @@ extension AppDelegate {
             hdWalletService: hdWalletService,
             hdWalletStorage: hdWalletStorage
         )
+        
+        CoreAppConfiguration.shared = config
+        
+        if let shared = CoreAppConfiguration.shared {
+            shared.persistentContainer = self.persistentContainer
+        }
+        
+        return config;
     }
     
     private func createAppLaunchController() -> AppLaunchController {
@@ -660,11 +669,11 @@ extension AppDelegate {
     }
 
     private func createSession() -> Session {
-        return Session()
+        Session()
     }
 
     private func createAPI() -> ALGAPI {
-        return ALGAPI(session: session)
+        ALGAPI(session: session)
     }
 
     private func createSharedDataController() -> SharedDataController {
@@ -686,42 +695,48 @@ extension AppDelegate {
     }
 
     private func createLoadingController() -> LoadingController {
-        return BlockingLoadingController(presentingView: window!)
+        BlockingLoadingController(presentingView: window!)
     }
 
     private func createToastPresentationController() -> ToastPresentationController {
-        return ToastPresentationController(presentingView: window!)
+        ToastPresentationController(presentingView: window!)
     }
 
     private func createBannerController() -> BannerController {
-        return BannerController(presentingView: window!)
+        BannerController(presentingView: window!)
     }
 
     private func createAnalytics() -> ALGAnalytics {
-        return ALGAnalyticsCoordinator(providers: [ FirebaseAnalyticsProvider() ])
+        ALGAnalyticsCoordinator()
     }
 
     private func createPeraConnect() -> PeraConnect {
-        return ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
+        ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
     }
 
     private func createRouter() -> Router {
-        return Router(
+        Router(
             rootViewController: rootViewController,
             appConfiguration: appConfiguration
         )
     }
 
     private func createRootViewController() -> RootViewController {
-        return RootViewController(
+        let controller = RootViewController(
             target: ALGAppTarget.current,
             appConfiguration: appConfiguration,
             launchController: appLaunchController
         )
+        
+        if let shared = CoreAppConfiguration.shared {
+            shared.wcDelegate = controller
+        }
+        
+        return controller
     }
 
     private func createPushNotificationController() -> PushNotificationController {
-        return PushNotificationController(
+        PushNotificationController(
             target: ALGAppTarget.current,
             session: session,
             api: api
@@ -729,7 +744,7 @@ extension AppDelegate {
     }
 
     private func createLastSeenNotificationController() -> LastSeenNotificationController {
-        return LastSeenNotificationController(api: api)
+        LastSeenNotificationController(api: api)
     }
     
     private func createScammerController() -> ScammerController {

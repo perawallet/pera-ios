@@ -16,6 +16,7 @@
 
 import Foundation
 import MagpieCore
+import pera_wallet_core
 
 final class IncomingASAsAPIDataController {
     weak var delegate: IncomingASAsAPIDataControllerDelegate?

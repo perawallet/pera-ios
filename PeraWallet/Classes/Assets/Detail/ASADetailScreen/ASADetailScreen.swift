@@ -19,6 +19,7 @@ import MacaroonUtils
 import SnapKit
 import UIKit
 import Combine
+import pera_wallet_core
 
 final class ASADetailScreen:
     BaseViewController,

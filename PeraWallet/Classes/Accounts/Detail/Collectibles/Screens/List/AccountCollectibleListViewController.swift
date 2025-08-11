@@ -18,6 +18,7 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class AccountCollectibleListViewController: BaseViewController {
     private lazy var theme = Theme()

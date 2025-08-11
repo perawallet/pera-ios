@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct SwapSummaryScreenViewModel: ViewModel {
     private(set) var receivedInfo: SwapSummaryItemViewModel?

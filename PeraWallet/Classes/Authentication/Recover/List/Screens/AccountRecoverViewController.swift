@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class AccountRecoverViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(

@@ -18,6 +18,7 @@ import Foundation
 import MagpieCore
 import MagpieExceptions
 import MagpieHipo
+import pera_wallet_core
 
 protocol ConfirmSwapDataController: AnyObject {
     typealias EventHandler = (ConfirmSwapDataControllerEvent) -> Void

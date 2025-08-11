@@ -16,6 +16,7 @@
 //  TransactionDataBuildable.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol TransactionDataBuildable: AnyObject {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)? { get set }

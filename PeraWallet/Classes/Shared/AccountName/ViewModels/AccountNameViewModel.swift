@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 final class AccountNameViewModel {
     private(set) var image: ImageSource?

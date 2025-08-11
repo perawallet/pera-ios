@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class SelectAccountListLayout: NSObject {
     private let listDataSource: SelectAccountDataSource

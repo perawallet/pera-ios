@@ -18,6 +18,7 @@
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class AccountDetailViewController: PageContainer {
     typealias EventHandler = (Event) -> Void

@@ -15,6 +15,7 @@
 //   KeyRegTransactionDetailViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class KeyRegTransactionDetailViewController: BaseScrollViewController {
     override var analyticsScreen: ALGAnalyticsScreen? {

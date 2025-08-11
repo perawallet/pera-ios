@@ -20,6 +20,7 @@ import MacaroonURLImage
 import MacaroonUtils
 import Prism
 import UIKit
+import pera_wallet_core
 
 struct DiscoverSearchAssetListItemViewModel: PrimaryListItemViewModel {
     private(set) var imageSource: ImageSource?

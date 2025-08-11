@@ -20,6 +20,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
+import pera_wallet_core
 
 protocol PrimaryImageViewModel {
     var imageSource: DefaultURLImageSource? { get }

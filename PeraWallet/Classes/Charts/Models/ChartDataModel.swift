@@ -15,6 +15,7 @@
 //   ChartDataModel.swift
 
 import SwiftUI
+import pera_wallet_core
 
 final class ChartDataModel: ObservableObject {
     @Published var isLoading: Bool = true

@@ -16,6 +16,7 @@
 //   WCGroupTransactionAccountInformationView.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCGroupTransactionAccountInformationView: BaseView {
     private let layout = Layout<LayoutConstants>()

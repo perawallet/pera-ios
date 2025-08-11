@@ -16,6 +16,7 @@
 //   WCAssetReconfigurationTransactionViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewController {
     private lazy var assetReconfigurationTransactionView = WCAssetReconfigurationTransactionView()

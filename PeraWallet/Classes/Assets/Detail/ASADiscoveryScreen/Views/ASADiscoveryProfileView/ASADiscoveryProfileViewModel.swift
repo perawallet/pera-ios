@@ -20,6 +20,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 import UIKit
+import pera_wallet_core
 
 struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
     private(set) var icon: ImageSource?

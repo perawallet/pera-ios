@@ -15,6 +15,7 @@
 //   AssetCache.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol AssetCache {
     typealias EventHandler = (AssetCacheEvent) -> Void

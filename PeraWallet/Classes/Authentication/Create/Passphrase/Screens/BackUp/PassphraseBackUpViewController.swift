@@ -17,6 +17,7 @@
 
 import UIKit
 import AVFoundation
+import pera_wallet_core
 
 final class PassphraseBackUpViewController: BaseScrollViewController {
     private var mnemonics: [String]?

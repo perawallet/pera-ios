@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
+import pera_wallet_core
 
 struct CollectibleGridItemViewModel: ViewModel {
     private(set) var image: ImageSource?

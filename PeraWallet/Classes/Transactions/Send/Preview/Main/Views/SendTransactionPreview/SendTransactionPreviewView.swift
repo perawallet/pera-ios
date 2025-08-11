@@ -19,6 +19,7 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class SendTransactionPreviewView:
     View,

@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import WebKit
+import pera_wallet_core
 
 class CardsInAppBrowserScreen<ScriptMessage>: InAppBrowserScreen<ScriptMessage>
 where ScriptMessage: InAppBrowserScriptMessage {

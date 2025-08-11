@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 protocol NumpadViewTheme: StyleSheet, LayoutSheet {
     var backgroundColor: Color { get }

@@ -15,6 +15,7 @@
 //   ScammerController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class ScammerController: NSObject {
     let api: ALGAPI?

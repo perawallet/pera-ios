@@ -16,6 +16,7 @@
 //  KeyboardController.swift
 
 import UIKit
+import pera_wallet_core
 
 protocol KeyboardControllerDataSource: AnyObject {
     

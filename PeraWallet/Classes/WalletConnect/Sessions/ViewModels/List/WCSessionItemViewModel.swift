@@ -20,6 +20,7 @@ import MacaroonUIKit
 import SwiftDate
 import MacaroonURLImage
 import Foundation
+import pera_wallet_core
 
 struct WCSessionItemViewModel: ViewModel {
     private(set) var image: ImageSource?

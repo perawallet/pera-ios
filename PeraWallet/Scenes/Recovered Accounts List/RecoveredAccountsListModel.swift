@@ -15,6 +15,7 @@
 //   RecoveredAccountsListModel.swift
 
 import SwiftUI
+import pera_wallet_core
 
 // FIXME: Convert ObservableObject to @Observable macro when min. target will be updated to iOS 17+.
 final class RecoveredAccountsListModel: ObservableObject {

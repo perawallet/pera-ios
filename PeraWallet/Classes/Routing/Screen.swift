@@ -16,6 +16,7 @@
 //  Screen.swift
 
 import UIKit
+import pera_wallet_core
 
 indirect enum Screen {
     case asaDetail(

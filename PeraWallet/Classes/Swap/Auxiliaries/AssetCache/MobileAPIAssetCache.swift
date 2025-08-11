@@ -16,6 +16,7 @@
 
 import Foundation
 import MagpieCore
+import pera_wallet_core
 
 struct MobileAPIAssetCache: AssetCache {
     var eventHandler: EventHandler?

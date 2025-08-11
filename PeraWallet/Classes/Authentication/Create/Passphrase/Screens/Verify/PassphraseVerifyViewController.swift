@@ -17,6 +17,7 @@
 
 import UIKit
 import AVFoundation
+import pera_wallet_core
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(

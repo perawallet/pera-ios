@@ -16,6 +16,7 @@
 //   WCTransactionWarningViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 class WCTransactionWarningViewModel {
     private(set) var title: String?

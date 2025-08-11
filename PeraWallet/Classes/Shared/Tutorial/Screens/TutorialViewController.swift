@@ -16,6 +16,7 @@
 //  TutorialViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class TutorialViewController: BaseScrollViewController {
     lazy var uiHandlers = TutorialViewControllerUIHandlers()

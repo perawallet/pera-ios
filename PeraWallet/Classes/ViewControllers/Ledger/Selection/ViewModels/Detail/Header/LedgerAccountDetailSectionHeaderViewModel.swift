@@ -16,6 +16,7 @@
 //   LedgerAccountDetailSectionHeaderViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 final class LedgerAccountDetailSectionHeaderViewModel: ViewModel {
     private(set) var headerTitle: String?

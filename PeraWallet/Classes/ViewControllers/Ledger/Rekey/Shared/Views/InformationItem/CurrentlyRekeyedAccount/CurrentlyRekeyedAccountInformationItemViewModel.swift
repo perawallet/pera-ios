@@ -16,6 +16,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct CurrentlyRekeyedAccountInformationItemViewModel: SecondaryListItemViewModel {
     private(set) var title: TextProvider?

@@ -18,8 +18,7 @@
 import MagpieHipo
 import MagpieExceptions
 import MacaroonUtils
-
-typealias HIPTransactionError = HIPError<TransactionError, PrintableErrorDetail>
+import pera_wallet_core
 
 protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
@@ -59,11 +58,5 @@ extension TransactionControllerDelegate where Self: BaseViewController {
 
     func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
         transactionControllerDidResetLedgerOperation(transactionController)
-    }
-}
-
-class PrintableErrorDetail: DebugPrintable {
-    var debugDescription: String {
-        return ""
     }
 }

@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class LedgerAccountVerificationStatusViewModel: ViewModel {
     private(set) var address: String?

@@ -15,6 +15,7 @@
 //   ARC59SendTransactionDataBuilder.swift
 
 import Foundation
+import pera_wallet_core
 
 final class ARC59SendTransactionDataBuilder: NSObject {
     typealias EventHandler = (ARC59SendTransactionDataBuilderEvent) -> Void

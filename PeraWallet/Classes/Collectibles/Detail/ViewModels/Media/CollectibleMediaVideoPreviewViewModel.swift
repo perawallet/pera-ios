@@ -18,6 +18,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?

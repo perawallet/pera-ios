@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class DeveloperSettingsViewController:
     BaseViewController,

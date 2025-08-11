@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color

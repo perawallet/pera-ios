@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUtils
 import Combine
+import pera_wallet_core
 
 final class AccountAssetListAPIDataController:
     AccountAssetListDataController,

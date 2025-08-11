@@ -18,6 +18,7 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class AssetDetailTitleViewModel: ViewModel {
     private(set) var image: AssetImageSmallViewModel?

@@ -18,6 +18,7 @@
 import UIKit
 import MagpieCore
 import MagpieExceptions
+import pera_wallet_core
 
 final class NotificationFilterDataSource: NSObject {
     weak var delegate: NotificationFilterDataSourceDelegate?

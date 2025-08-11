@@ -19,6 +19,7 @@ import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class RootViewController:
     UIViewController,

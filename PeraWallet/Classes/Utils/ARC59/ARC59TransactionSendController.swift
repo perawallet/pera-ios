@@ -19,6 +19,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieExceptions
 import MagpieHipo
+import pera_wallet_core
 
 final class ARC59TransactionSendController: NSObject {
     typealias EventHandler = (ARC59TransactionSendControllerEvent) -> Void

@@ -23,6 +23,7 @@ import MagpieHipo
 import Alamofire
 import MacaroonUIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class SendTransactionScreen: BaseViewController {
     typealias EventHandler = (Event) -> Void

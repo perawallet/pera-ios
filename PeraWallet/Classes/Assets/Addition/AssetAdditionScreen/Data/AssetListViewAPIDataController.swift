@@ -19,6 +19,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
+import pera_wallet_core
 
 final class AssetListViewAPIDataController:
     AssetListViewDataController,

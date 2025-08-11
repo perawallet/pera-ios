@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct SwapUnexpectedErrorViewModel: ErrorScreenViewModel {
     private(set) var title: TextProvider?

@@ -16,6 +16,7 @@
 //  RekeyTransactionDataBuilder.swift
 
 import Foundation
+import pera_wallet_core
 
 final class RekeyTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?

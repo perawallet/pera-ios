@@ -15,6 +15,7 @@
 //   RescanRekeyedAccountsCoordinator.swift
 
 import MagpieCore
+import pera_wallet_core
 
 final class RescanRekeyedAccountsCoordinator {
     

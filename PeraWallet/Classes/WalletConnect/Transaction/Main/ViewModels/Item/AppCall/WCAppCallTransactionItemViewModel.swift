@@ -16,6 +16,7 @@
 //   WCAppCallTransactionItemViewModel.swift
 
 import Foundation
+import pera_wallet_core
 
 class WCAppCallTransactionItemViewModel {
     private(set) var hasWarning = false

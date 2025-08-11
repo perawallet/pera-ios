@@ -15,6 +15,7 @@
 //   AppCallAssetListDataController.swift
 
 import UIKit
+import pera_wallet_core
 
 protocol AppCallAssetListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<AppCallAssetListSection, AppCallAssetListItem>

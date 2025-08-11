@@ -16,6 +16,7 @@
 
 import Foundation
 import MessageUI
+import pera_wallet_core
 
 protocol MailComposing {
     func configureMail(for type: MailType)

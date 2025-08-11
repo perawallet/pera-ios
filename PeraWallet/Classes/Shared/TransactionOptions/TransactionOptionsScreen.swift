@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonBottomSheet
 import UIKit
+import pera_wallet_core
 
 final class TransactionOptionsScreen:
     BaseScrollViewController,

@@ -16,6 +16,7 @@
 //   WCMainTransactionDataSource.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCMainTransactionDataSource: NSObject {
     weak var delegate: WCMainTransactionDataSourceDelegate?
@@ -119,8 +120,8 @@ extension WCMainTransactionDataSource {
 
         if let wcV2TransactionRequest = transactionRequest.wcV2Request {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: reason,
-                v2Request: wcV2TransactionRequest
+                v2Request: wcV2TransactionRequest,
+                error: reason
             )
             peraConnect.rejectTransactionRequest(params)
             return

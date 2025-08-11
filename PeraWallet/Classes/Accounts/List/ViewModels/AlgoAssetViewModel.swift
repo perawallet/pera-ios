@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 struct AlgoAssetViewModel: ViewModel {
     private(set) var amount: String?

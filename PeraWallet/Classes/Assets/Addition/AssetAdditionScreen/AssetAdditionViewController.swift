@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MagpieHipo
 import MagpieExceptions
+import pera_wallet_core
 
 final class AssetAdditionViewController:
     BaseViewController,

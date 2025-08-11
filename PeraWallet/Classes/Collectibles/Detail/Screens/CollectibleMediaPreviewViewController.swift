@@ -18,6 +18,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 import AVFoundation
+import pera_wallet_core
 
 final class CollectibleMediaPreviewViewController:
     BaseViewController,

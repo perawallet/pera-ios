@@ -15,6 +15,7 @@
 //   OptInAssetDraft.swift
 
 import Foundation
+import pera_wallet_core
 
 struct OptInAssetDraft {
     let account: Account

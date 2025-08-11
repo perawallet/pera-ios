@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 final class WebImportErrorScreen: ScrollScreen {
     typealias EventHandler = (Event, WebImportErrorScreen) -> Void

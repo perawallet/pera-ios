@@ -16,6 +16,7 @@
 //   WCSessionShortListDataSource.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCSessionShortListDataSource: NSObject {
     weak var delegate: WCSessionShortListDataSourceDelegate?

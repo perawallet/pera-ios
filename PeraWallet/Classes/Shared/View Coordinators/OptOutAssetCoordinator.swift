@@ -15,6 +15,7 @@
 //   OptOutAssetCoordinator.swift
 
 import Foundation
+import pera_wallet_core
 
 final class OptOutAssetCoordinator {
     

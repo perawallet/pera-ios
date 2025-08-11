@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 final class TransactionStatusViewModel: ViewModel {
     private(set) var status: Transaction.Status

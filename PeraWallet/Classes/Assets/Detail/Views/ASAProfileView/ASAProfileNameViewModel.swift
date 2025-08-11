@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct ASAProfileNameViewModel: RightAccessorizedLabelModel {
     private(set) var text: TextProvider?

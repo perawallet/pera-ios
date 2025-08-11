@@ -16,6 +16,7 @@
 //  PassphraseVerifyDataSource.swift
 
 import UIKit
+import pera_wallet_core
 
 final class PassphraseVerifyDataSource: NSObject {
     weak var delegate: PassphraseVerifyDataSourceDelegate?

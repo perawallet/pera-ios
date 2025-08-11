@@ -16,6 +16,7 @@
 //  LedgerAccountDetailViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class LedgerAccountDetailViewController: BaseScrollViewController {
     private lazy var theme = Theme()

@@ -16,6 +16,7 @@
 
 import SwiftUI
 import Charts
+import pera_wallet_core
 
 struct ChartView: View {
     @ObservedObject var viewModel: ChartViewModel

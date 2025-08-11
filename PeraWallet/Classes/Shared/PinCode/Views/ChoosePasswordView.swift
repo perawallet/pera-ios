@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import Foundation
+import pera_wallet_core
 
 final class ChoosePasswordView: View {
     weak var delegate: ChoosePasswordViewDelegate?

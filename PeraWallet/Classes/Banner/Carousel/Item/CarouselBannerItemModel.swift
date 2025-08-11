@@ -15,6 +15,7 @@
 //   CarouselBannerItemModel.swift
 
 import UIKit
+import pera_wallet_core
 
 struct CarouselBannerItemModel: Hashable {
     let id: Int

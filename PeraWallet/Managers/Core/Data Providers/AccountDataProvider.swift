@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   AccountDataProvider.swift
+import pera_wallet_core
 
 final class AccountDataProvider {
     

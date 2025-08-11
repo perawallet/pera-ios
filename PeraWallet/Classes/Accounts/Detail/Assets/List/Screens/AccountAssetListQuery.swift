@@ -15,6 +15,7 @@
 // AccountAssetListQuery.swift
 
 import Foundation
+import pera_wallet_core
 
 struct AccountAssetListQuery: Equatable {
     var keyword: String?

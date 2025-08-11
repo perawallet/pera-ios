@@ -15,6 +15,7 @@
 //   ARC59SendFeeInformationViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 struct ARC59SendFeeInformationViewModel: SecondaryListItemViewModel {
     var title: TextProvider?

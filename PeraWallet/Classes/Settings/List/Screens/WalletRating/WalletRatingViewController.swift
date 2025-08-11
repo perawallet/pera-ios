@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
+import pera_wallet_core
 
 final class WalletRatingViewController: BaseViewController {
     private lazy var theme = Theme()

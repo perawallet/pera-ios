@@ -16,6 +16,7 @@
 //   LedgerAccountVerificationDataController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class LedgerAccountVerificationDataController {
     private let selectedAccounts: [Account]

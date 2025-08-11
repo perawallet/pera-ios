@@ -16,6 +16,7 @@
 //   WCAssetConfigTransactionItemViewModel.swift
 
 import Foundation
+import pera_wallet_core
 
 class WCAssetConfigTransactionItemViewModel {
     private(set) var hasWarning = false

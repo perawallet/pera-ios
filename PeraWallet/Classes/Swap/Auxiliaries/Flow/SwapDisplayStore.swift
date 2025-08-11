@@ -15,6 +15,7 @@
 //   SwapDisplayStore.swift
 
 import Foundation
+import pera_wallet_core
 
 final class SwapDisplayStore: Storable {
     typealias Object = Any

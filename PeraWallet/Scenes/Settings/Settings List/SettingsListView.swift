@@ -15,6 +15,7 @@
 //   SettingsListView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct SettingsListView: View {
     

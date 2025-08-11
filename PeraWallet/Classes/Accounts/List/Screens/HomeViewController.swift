@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 import Combine
+import pera_wallet_core
 
 final class HomeViewController:
     BaseViewController,

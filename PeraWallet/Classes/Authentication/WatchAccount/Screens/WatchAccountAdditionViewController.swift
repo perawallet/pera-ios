@@ -21,6 +21,7 @@ import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
 import SnapKit
+import pera_wallet_core
 
 final class WatchAccountAdditionViewController:
     BaseScrollViewController,

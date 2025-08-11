@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import pera_wallet_core
 
 class WCSingleTransactionViewController: BaseScrollViewController {
     private let layout = Layout<LayoutConstants>()

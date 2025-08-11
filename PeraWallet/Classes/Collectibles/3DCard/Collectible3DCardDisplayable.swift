@@ -18,6 +18,7 @@ import SceneKit
 import UIKit
 import MacaroonUIKit
 import MacaroonUtils
+import pera_wallet_core
 
 protocol Collectible3DCardDisplayable: AnyObject {
     var sceneMaterial: SCNMaterial? { get set }

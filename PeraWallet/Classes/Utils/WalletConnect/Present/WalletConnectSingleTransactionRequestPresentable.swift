@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUtils
+import pera_wallet_core
 
 protocol WalletConnectSingleTransactionRequestPresentable: AnyObject {
     func presentSingleWCTransaction(
@@ -53,8 +54,8 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
 
             if let wcV2Request = request.wcV2Request {
                 let params = WalletConnectV2RejectTransactionRequestParams(
-                    error: .unsupported(.unknownTransaction),
-                    v2Request: wcV2Request
+                    v2Request: wcV2Request,
+                    error: .unsupported(.unknownTransaction)
                 )
                 configuration.peraConnect.rejectTransactionRequest(params)
                 dismissScreen()

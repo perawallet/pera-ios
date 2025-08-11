@@ -15,6 +15,7 @@
 //   WCSessionListDataController.swift
 
 import UIKit
+import pera_wallet_core
 
 protocol WCSessionListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<WCSessionListSection, WCSessionListItem>

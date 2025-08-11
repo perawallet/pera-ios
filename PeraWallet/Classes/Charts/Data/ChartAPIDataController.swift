@@ -15,6 +15,7 @@
 //   ChartAPIDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 enum ChartDataScreen {
     case home

@@ -17,6 +17,7 @@
 
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class LedgerAccountDetailViewDataSource: NSObject {
     weak var delegate: LedgerAccountDetailViewDataSourceDelegate?

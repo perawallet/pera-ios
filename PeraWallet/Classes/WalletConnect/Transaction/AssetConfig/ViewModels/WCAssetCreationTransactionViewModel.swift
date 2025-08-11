@@ -16,6 +16,7 @@
 //   WCAssetCreationTransactionViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 class WCAssetCreationTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?

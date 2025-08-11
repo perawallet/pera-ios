@@ -20,6 +20,7 @@ import UIKit
 import MacaroonUtils
 import MagpieCore
 import Combine
+import pera_wallet_core
 
 final class TransactionsAPIDataController:
     TransactionsDataController,

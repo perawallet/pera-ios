@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct SwapSummaryAlgorandFeeItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?

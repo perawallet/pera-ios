@@ -19,6 +19,7 @@ import MacaroonForm
 import MacaroonUtils
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class AlgorandSecureBackupRecoverMnemonicScreen:
     BaseScrollViewController,

@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 import MacaroonStorySheet
+import pera_wallet_core
 
  /// <todo>:
  /// Refactor when `UISheetActionScreen` is refactored.

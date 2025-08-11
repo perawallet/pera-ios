@@ -16,6 +16,7 @@
 //  OptInTransactionDataBuilder.swift
 
 import Foundation
+import pera_wallet_core
 
 final class OptInTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?

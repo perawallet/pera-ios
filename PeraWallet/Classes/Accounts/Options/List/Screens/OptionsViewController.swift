@@ -19,6 +19,7 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 import MagpieExceptions
 import UIKit
+import pera_wallet_core
 
 final class OptionsViewController:
     BaseScrollViewController,

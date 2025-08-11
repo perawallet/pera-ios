@@ -15,6 +15,7 @@
 //   MeldDraft.swift
 
 import Foundation
+import pera_wallet_core
 
 struct MeldDraft {
     let address: PublicKey?

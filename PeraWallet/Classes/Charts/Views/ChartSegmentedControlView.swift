@@ -15,6 +15,7 @@
 //   ChartSegmentedControlView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct ChartSegmentedControlView: View {
     @Binding var selected: ChartDataPeriod

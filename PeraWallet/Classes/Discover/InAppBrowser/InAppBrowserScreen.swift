@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 import WebKit
+import pera_wallet_core
 
 /// @abstract
 /// <todo>

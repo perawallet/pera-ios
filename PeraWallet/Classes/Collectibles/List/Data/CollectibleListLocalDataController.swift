@@ -17,6 +17,7 @@
 import Foundation
 import CoreGraphics
 import MacaroonUtils
+import pera_wallet_core
 
 final class CollectibleListLocalDataController:
     CollectibleListDataController,

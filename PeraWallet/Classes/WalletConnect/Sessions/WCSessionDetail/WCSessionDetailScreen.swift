@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class WCSessionDetailScreen:
     BaseViewController,

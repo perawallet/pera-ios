@@ -16,6 +16,7 @@
 //   WCSingleTransactionViewControllerAssetActionable.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol WCSingleTransactionViewControllerAssetActionable: WCSingleTransactionViewControllerActionable {
     func openInExplorer(_ asset: Asset?)

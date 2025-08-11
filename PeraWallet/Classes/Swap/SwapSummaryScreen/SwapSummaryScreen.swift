@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class SwapSummaryScreen: ScrollScreen {
     private lazy var receivedInfoView = SwapSummaryItemView()

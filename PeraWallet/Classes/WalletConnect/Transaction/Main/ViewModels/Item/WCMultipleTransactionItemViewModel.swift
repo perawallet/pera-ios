@@ -16,6 +16,7 @@
 //   WCMultipleTransactionItemViewModel.swift
 
 import Foundation
+import pera_wallet_core
 
 class WCMultipleTransactionItemViewModel {
     private(set) var hasWarning = false

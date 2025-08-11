@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   ChartSelectedPointHandler.swift
+import pera_wallet_core
 
 struct ChartSelectedPointHandler {
     static func resolveValues(

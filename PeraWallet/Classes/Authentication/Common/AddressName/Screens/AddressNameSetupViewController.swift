@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonForm
+import pera_wallet_core
 
 final class AddressNameSetupViewController:
     BaseScrollViewController,

@@ -15,6 +15,7 @@
 //   ReceiveCollectibleAccountListDataController.swift
 
 import UIKit
+import pera_wallet_core
 
 protocol ReceiveCollectibleAccountListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<ReceiveCollectibleAccountListSection, ReceiveCollectibleAccountListItem>

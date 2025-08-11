@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 struct UndoRekeyInfoViewModel: RekeyInfoViewModel {
     private(set) var title: TextProvider?

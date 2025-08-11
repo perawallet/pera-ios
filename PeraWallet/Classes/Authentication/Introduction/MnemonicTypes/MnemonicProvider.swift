@@ -15,6 +15,7 @@
 //   MnemonicProvider.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol MnemonicProvider {
     func mnemonics(forAccount account: String, with session: Session?) -> [String]?

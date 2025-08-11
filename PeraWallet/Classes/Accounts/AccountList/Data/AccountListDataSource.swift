@@ -16,6 +16,7 @@
 //  AccountListDataSource.swift
 
 import UIKit
+import pera_wallet_core
 
 final class AccountListDataSource: NSObject {
     private(set) var accounts = [AccountHandle]()

@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 struct IncomingASAsDetailViewModel: ViewModel {
     private(set) var accountItem: AccountListItemViewModel?

@@ -15,6 +15,7 @@
 //   RemoveAuthAccountAuthorizationValidator.swift
 
 import Foundation
+import pera_wallet_core
 
 final class RemoveAuthAccountAuthorizationValidator: RemoveAccountAuthorizationValidator {
     var nextValidator: RemoveAccountAuthorizationValidator?

@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 protocol WebImportSuccessScreenDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<WebImportSuccessListViewSection, WebImportSuccessListViewItem>

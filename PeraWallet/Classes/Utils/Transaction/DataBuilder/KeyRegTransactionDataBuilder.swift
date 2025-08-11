@@ -15,6 +15,7 @@
 //   KeyRegTransactionDataBuilder.swift
 
 import Foundation
+import pera_wallet_core
 
 final class KeyRegTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?

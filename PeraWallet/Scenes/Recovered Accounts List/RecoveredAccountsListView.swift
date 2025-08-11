@@ -15,6 +15,7 @@
 //   RecoveredAccountsListView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct RecoveredAccountsListView: View {
     

@@ -16,6 +16,7 @@
 //  LedgerAccountViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 final class LedgerAccountViewModel: PairedViewModel {
     private(set) var accountItem: AccountListItemViewModel?

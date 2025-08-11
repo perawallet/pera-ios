@@ -15,6 +15,7 @@
 //   AccountsService.swift
 
 import Combine
+import pera_wallet_core
 
 protocol AccountsServiceable {
     var accounts: ReadOnlyPublisher<[PeraAccount]> { get }

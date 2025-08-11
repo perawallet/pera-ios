@@ -15,6 +15,7 @@
 //   CollectiblesViewController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class CollectiblesViewController: BaseViewController {
     override var prefersLargeTitle: Bool {

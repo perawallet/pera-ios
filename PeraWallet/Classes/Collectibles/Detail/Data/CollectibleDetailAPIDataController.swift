@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 import UIKit
+import pera_wallet_core
 
 final class CollectibleDetailAPIDataController:
     CollectibleDetailDataController,

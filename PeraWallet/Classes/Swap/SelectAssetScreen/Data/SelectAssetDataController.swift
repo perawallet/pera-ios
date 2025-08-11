@@ -19,6 +19,7 @@ import MagpieCore
 import MagpieExceptions
 import MagpieHipo
 import UIKit
+import pera_wallet_core
 
 protocol SelectAssetDataController: AnyObject {
     typealias EventHandler = (SelectAssetDataControllerEvent) -> Void

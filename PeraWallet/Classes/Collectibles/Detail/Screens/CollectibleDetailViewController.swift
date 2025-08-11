@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 final class CollectibleDetailViewController:
     BaseViewController,

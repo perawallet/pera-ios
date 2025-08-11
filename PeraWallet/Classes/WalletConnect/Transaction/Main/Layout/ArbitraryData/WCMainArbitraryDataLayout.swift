@@ -15,6 +15,7 @@
 //   WCMainArbitraryDataLayout.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCMainArbitraryDataLayout: NSObject {
     weak var delegate: WCMainArbitraryDataLayoutDelegate?

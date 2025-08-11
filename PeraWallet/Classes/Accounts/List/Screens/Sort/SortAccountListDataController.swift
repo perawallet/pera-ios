@@ -15,6 +15,7 @@
 //   SortAccountListDataController.swift
 
 import UIKit
+import pera_wallet_core
 
 protocol SortAccountListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SortAccountListSection, SortAccountListItem>

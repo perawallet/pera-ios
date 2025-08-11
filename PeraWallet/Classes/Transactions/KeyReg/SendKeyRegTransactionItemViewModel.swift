@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import SwiftUI
+import pera_wallet_core
 
 final class SendKeyRegTransactionItemViewModel: ViewModel, ObservableObject {
     @Published var items: [KeyRegTransactionItem] = []

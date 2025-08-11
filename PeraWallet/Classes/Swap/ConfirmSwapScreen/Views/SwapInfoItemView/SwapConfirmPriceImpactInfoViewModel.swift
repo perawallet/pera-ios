@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct SwapConfirmPriceImpactInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?

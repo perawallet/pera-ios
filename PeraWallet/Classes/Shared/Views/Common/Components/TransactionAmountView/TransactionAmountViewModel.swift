@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct TransactionAmountViewModel: Hashable {
     private(set) var signLabelText: EditText?

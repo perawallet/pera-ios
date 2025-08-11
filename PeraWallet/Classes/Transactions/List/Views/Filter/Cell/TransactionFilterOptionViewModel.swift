@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class TransactionFilterOptionViewModel: ViewModel {
     private(set) var title: String?

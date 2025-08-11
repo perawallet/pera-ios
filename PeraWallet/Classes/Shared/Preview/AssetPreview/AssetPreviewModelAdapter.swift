@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 enum AssetPreviewModelAdapter {
     static func adapt(

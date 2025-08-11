@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUtils
 import Combine
+import pera_wallet_core
 
 final class HomeAPIDataController:
     HomeDataController,

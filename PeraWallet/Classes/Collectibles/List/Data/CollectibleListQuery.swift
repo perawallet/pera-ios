@@ -15,6 +15,7 @@
 //   CollectibleListQuery.swift
 
 import Foundation
+import pera_wallet_core
 
 struct CollectibleListQuery: Equatable {
     var keyword: String?

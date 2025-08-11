@@ -18,6 +18,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class AlgorandSecureBackupImportFlowCoordinator {
     private unowned let presentingScreen: UIViewController

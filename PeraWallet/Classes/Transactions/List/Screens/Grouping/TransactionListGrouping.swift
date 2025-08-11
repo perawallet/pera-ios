@@ -15,6 +15,7 @@
 //   TransactionListGrouping.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol TransactionListGrouping {
     func groupTransactions(

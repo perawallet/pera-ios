@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import pera_wallet_core
 
 final class NotificationsViewController: BaseViewController {
     private var isInitialFetchCompleted = false

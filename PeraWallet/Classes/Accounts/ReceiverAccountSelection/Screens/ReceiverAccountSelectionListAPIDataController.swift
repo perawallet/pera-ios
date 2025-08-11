@@ -20,6 +20,7 @@ import CoreGraphics
 import MacaroonURLImage
 import MacaroonForm
 import MagpieCore
+import pera_wallet_core
 
 final class ReceiverAccountSelectionListAPIDataController:
     ReceiverAccountSelectionListDataController,

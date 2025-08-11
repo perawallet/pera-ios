@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
+import pera_wallet_core
 
 final class TransferAssetBalanceScreen:
     ScrollScreen,

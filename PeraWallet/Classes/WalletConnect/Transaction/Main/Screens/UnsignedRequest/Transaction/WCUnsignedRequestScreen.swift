@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class WCUnsignedRequestScreen: BaseViewController {
     weak var delegate: WCUnsignedRequestScreenDelegate?

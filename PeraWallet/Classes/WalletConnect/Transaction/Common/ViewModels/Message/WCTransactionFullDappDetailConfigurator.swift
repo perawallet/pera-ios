@@ -19,6 +19,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 final class WCTransactionFullDappDetailConfigurator {
     private(set) var image: ImageSource?

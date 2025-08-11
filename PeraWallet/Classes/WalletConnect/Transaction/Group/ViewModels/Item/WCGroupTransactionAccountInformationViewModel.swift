@@ -16,6 +16,7 @@
 //   WCGroupTransactionAccountInformationViewModel.swift
 
 import Foundation
+import pera_wallet_core
 
 final class WCGroupTransactionAccountInformationViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?

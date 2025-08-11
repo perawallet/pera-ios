@@ -15,6 +15,7 @@
 //   TransferAssetBalanceDraft.swift
 
 import Foundation
+import pera_wallet_core
 
 struct TransferAssetBalanceDraft {
     let account: Account

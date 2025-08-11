@@ -21,6 +21,7 @@ import MacaroonUtils
 import MagpieExceptions
 import MagpieHipo
 import UIKit
+import pera_wallet_core
 
 final class SelectAssetScreen:
     BaseViewController,

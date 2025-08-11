@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class NodeSettingsViewController: BaseViewController {
     static var didUpdateNetwork: Notification.Name {
@@ -201,21 +202,3 @@ extension NodeSettingsViewController {
         }
     }
 }
-
-let mainNetNode = AlgorandNode(
-    algodAddress: AppEnvironment.current.mainNetAlgodHost,
-    indexerAddress: AppEnvironment.current.mainNetAlgodHost,
-    algodToken: AppEnvironment.current.algodToken,
-    indexerToken: AppEnvironment.current.indexerToken,
-    name: String(localized: "node-settings-default-node-name"),
-    network: .mainnet
-)
-
-let testNetNode = AlgorandNode(
-    algodAddress: AppEnvironment.current.testNetAlgodHost,
-    indexerAddress: AppEnvironment.current.testNetIndexerHost,
-    algodToken: AppEnvironment.current.algodToken,
-    indexerToken: AppEnvironment.current.indexerToken,
-    name: String(localized: "node-settings-default-test-node-name"),
-    network: .testnet
-)

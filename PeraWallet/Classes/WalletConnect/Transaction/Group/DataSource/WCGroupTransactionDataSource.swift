@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class WCGroupTransactionDataSource: NSObject {
     private let sharedDataController: SharedDataController
@@ -204,5 +205,15 @@ extension WCGroupTransactionDataSource {
 
         let asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
         return asset
+    }
+}
+
+// NB This is here to resolve an ambiguous reference to an extension
+extension Array {
+    public subscript (safe index: Index?) -> Element? {
+        if let index = index, indices.contains(index) {
+            return self[index]
+        }
+        return nil
     }
 }

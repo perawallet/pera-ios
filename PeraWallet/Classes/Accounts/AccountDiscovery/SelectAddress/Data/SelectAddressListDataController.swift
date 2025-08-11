@@ -16,15 +16,7 @@
 
 import Foundation
 import OrderedCollections
-
-struct RecoveredAddress {
-    let address: String
-    let accountIndex: UInt32
-    let addressIndex: UInt32
-    let mainCurrency: Double
-    let secondaryCurrency: Double
-    let alreadyImported: Bool
-}
+import pera_wallet_core
 
 final class SelectAddressListDataController {
     typealias Index = Int

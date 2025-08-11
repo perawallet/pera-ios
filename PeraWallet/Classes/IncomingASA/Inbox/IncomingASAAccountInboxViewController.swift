@@ -20,6 +20,7 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 import WalletConnectSwift
+import pera_wallet_core
 
 final class IncomingASAAccountInboxViewController:
     BaseViewController,

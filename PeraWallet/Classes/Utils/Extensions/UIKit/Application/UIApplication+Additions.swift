@@ -16,6 +16,7 @@
 //  UIApplication+Additions.swift
 
 import UIKit
+import pera_wallet_core
 
 extension UIApplication {
     
@@ -62,20 +63,20 @@ extension UIApplication {
         return nil
     }
     
-    var appDelegate: AppDelegate? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        
-        return appDelegate
-    }
-    
     var window: UIWindow? {
         return windowScene?.windows.first(where: \.isKeyWindow)
     }
 
     var windowScene: UIWindowScene? {
         return connectedScenes.first as? UIWindowScene
+    }
+    
+    var appDelegate: AppDelegate? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        
+        return appDelegate
     }
     
     var appConfiguration: AppConfiguration? {

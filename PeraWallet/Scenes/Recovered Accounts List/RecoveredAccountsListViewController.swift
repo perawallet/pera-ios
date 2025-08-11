@@ -15,6 +15,7 @@
 //   RecoveredAccountsListViewController.swift
 
 import SwiftUI
+import pera_wallet_core
 
 final class RecoveredAccountsListViewController: UIHostingController<RecoveredAccountsListView> {
     

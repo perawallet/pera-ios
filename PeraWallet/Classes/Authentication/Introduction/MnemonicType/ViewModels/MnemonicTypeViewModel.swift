@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUIKit
 import Foundation
+import pera_wallet_core
 
 struct MnemonicTypeViewModel: ViewModel {
     private(set) var image: UIImage?

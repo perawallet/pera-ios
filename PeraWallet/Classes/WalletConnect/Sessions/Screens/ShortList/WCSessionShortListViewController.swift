@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 import MacaroonBottomSheet
+import pera_wallet_core
 
 final class WCSessionShortListViewController:
     BaseViewController,

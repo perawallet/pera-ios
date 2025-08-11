@@ -16,6 +16,7 @@
 //   WCAppCallTransactionViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCAppCallTransactionViewController: WCSingleTransactionViewController {
     private lazy var appCallTransactionView = WCAppCallTransactionView()

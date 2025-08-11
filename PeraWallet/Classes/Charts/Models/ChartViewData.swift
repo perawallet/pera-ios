@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   ChartViewData.swift
+import pera_wallet_core
 
 struct ChartViewData: Hashable, Equatable {
     let period: ChartDataPeriod

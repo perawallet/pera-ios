@@ -20,6 +20,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonForm
 import MacaroonUIKit
+import pera_wallet_core
 
 final class RenameAccountScreen:
     BaseScrollViewController,

@@ -15,6 +15,7 @@
 //   AddAccountViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class AddAccountViewController: BaseViewController {
     private lazy var addAccountView = AddAccountView()

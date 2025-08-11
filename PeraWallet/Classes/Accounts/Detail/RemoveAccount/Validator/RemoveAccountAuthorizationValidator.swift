@@ -15,6 +15,7 @@
 //   RemoveAccountAuthorizationValidator.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol RemoveAccountAuthorizationValidator: AnyObject {
     var nextValidator: RemoveAccountAuthorizationValidator? { get set }

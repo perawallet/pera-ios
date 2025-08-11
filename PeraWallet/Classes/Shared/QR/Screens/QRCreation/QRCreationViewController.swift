@@ -16,6 +16,7 @@
 //  QRCreationViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class QRCreationViewController: BaseScrollViewController {
     private lazy var qrCreationView = QRCreationView(draft: draft)
@@ -123,12 +124,3 @@ extension QRCreationViewController: QRCreationViewDelegate {
         }
     }
 } 
-
-enum QRMode {
-    case address
-    case mnemonic
-    case algosRequest
-    case assetRequest
-    case optInRequest
-    case keyregRequest
-}

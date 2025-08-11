@@ -16,23 +16,16 @@
 //  AppConfiguration.swift
 
 import Foundation
+import CoreData
+import pera_wallet_core
 
-final class AppConfiguration {
-    let api: ALGAPI
-    let session: Session
-    let sharedDataController: SharedDataController
-    let walletConnector: WalletConnectV1Protocol
+final class AppConfiguration : CoreAppConfiguration {
+    let launchController: AppLaunchController
     let loadingController: LoadingController
     let bannerController: BannerController
     let toastPresentationController: ToastPresentationController
     let lastSeenNotificationController: LastSeenNotificationController
-    let analytics: ALGAnalytics
-    let launchController: AppLaunchController
-    let peraConnect: PeraConnect
     let scammerController: ScammerController
-    let featureFlagService: FeatureFlagServicing
-    let hdWalletService: HDWalletServicing
-    let hdWalletStorage: HDWalletStorable
 
     init(
         api: ALGAPI,
@@ -51,21 +44,13 @@ final class AppConfiguration {
         hdWalletService: HDWalletServicing,
         hdWalletStorage: HDWalletStorable
     ) {
-        self.api = api
-        self.session = session
-        self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
+        self.launchController = launchController
         self.loadingController = loadingController
         self.bannerController = bannerController
         self.toastPresentationController = toastPresentationController
         self.lastSeenNotificationController = lastSeenNotificationController
-        self.analytics = analytics
-        self.launchController = launchController
-        self.peraConnect = peraConnect
         self.scammerController = ScammerController(api: api)
-        self.featureFlagService = featureFlagService
-        self.hdWalletService = hdWalletService
-        self.hdWalletStorage = hdWalletStorage
+        super.init(api: api, session: session, sharedDataController: sharedDataController, walletConnector: walletConnector, analytics: analytics, peraConnect: peraConnect, featureFlagService: featureFlagService, hdWalletService: hdWalletService, hdWalletStorage: hdWalletStorage)
     }
     
     func all() -> ViewControllerConfiguration {

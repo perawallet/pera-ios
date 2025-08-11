@@ -16,6 +16,7 @@
 //   LedgerAccountSelectionViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 final class LedgerAccountSelectionViewModel: ViewModel {
     private(set) var detail: TextProvider?

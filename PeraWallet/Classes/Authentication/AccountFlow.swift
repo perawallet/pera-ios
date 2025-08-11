@@ -16,6 +16,7 @@
 //  AccountFlow.swift
 
 import UIKit
+import pera_wallet_core
 
 enum AccountSetupFlow: Equatable {
     case initializeAccount(mode: AccountSetupMode)

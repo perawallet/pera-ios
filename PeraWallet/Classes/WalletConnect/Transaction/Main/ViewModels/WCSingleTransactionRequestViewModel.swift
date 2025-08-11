@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 final class WCSingleTransactionRequestViewModel {
     private(set) var title: String?

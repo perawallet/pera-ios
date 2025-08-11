@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
+import pera_wallet_core
 
 final class MoonPayTransactionViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {

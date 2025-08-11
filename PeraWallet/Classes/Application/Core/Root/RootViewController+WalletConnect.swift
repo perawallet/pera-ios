@@ -15,6 +15,7 @@
 //   RootViewController+WalletConnect.swift
 
 import Foundation
+import pera_wallet_core
 
 // MARK: WalletConnectRequestHandlerDelegate
 
@@ -133,8 +134,8 @@ extension RootViewController: PeraConnectObserver {
             }
 
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unsupportedMethods,
-                v2Request: request
+                v2Request: request,
+                error: .unsupportedMethods
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
         default: break
@@ -173,8 +174,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         didInvalidateArbitraryDataRequest request: WalletConnectV2Request
     ) {
         let params = WalletConnectV2RejectTransactionRequestParams(
-            error: .invalidInput(.transactionParse),
-            v2Request: request
+            v2Request: request,
+            error: .invalidInput(.transactionParse)
         )
         appConfiguration.peraConnect.rejectTransactionRequest(params)
     }
@@ -208,8 +209,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         didInvalidateTransactionRequest request: WalletConnectV2Request
     ) {
         let params = WalletConnectV2RejectTransactionRequestParams(
-            error: .invalidInput(.transactionParse),
-            v2Request: request
+            v2Request: request,
+            error: .invalidInput(.transactionParse)
         )
         appConfiguration.peraConnect.rejectTransactionRequest(params)
     }
@@ -222,8 +223,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         let topic = request.topic
         guard let session = sessions.first(matching: (\WalletConnectV2Session.topic, topic)) else {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .noSessionForTopic,
-                v2Request: request
+                v2Request: request,
+                error: .noSessionForTopic
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return nil
@@ -240,8 +241,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         guard let requiredNamespaces,
               request.chainId.namespace == WalletConnectNamespaceKey.algorand else {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unsupportedNamespace,
-                v2Request: request
+                v2Request: request,
+                error: .unsupportedNamespace
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
@@ -251,8 +252,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         let requestedMethod = request.method
         guard authorizedMethods.contains(requestedMethod) else {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unauthorizedMethod(requestedMethod),
-                v2Request: request
+                v2Request: request,
+                error: .unauthorizedMethod(requestedMethod)
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
@@ -264,8 +265,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
             let network = ALGAPI.Network(blockchain: requestedChain)
             let networkTitle = network.unwrap(\.rawValue.capitalized) ?? requestedChain.reference
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unauthorizedChain(networkTitle),
-                v2Request: request
+                v2Request: request,
+                error: .unauthorizedChain(networkTitle)
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
@@ -277,8 +278,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
             requestedChainReference == algorandWalletConnectV2MainNetChainReference
         else {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unsupportedChains,
-                v2Request: request
+                v2Request: request,
+                error: .unsupportedChains
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
@@ -287,8 +288,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
         let supportedMethods =  WalletConnectMethod.allCases.map(\.rawValue)
         guard supportedMethods.contains(requestedMethod) else {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .unsupportedMethods,
-                v2Request: request
+                v2Request: request,
+                error: .unsupportedMethods
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
@@ -296,8 +297,8 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
 
         if hasOngoingWCRequest(for: request.topic) {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: .rejected(.alreadyDisplayed),
-                v2Request: request
+                v2Request: request,
+                error: .rejected(.alreadyDisplayed)
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false

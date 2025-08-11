@@ -19,6 +19,7 @@ import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class InvalidAccountOptionsViewController:
     BaseScrollViewController,

@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 final class RekeyToStandardAccountInstructionsDraft: RekeyInstructionsDraft {
     init(sourceAccount: Account) {

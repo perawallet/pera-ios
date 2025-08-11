@@ -18,6 +18,7 @@ import Foundation
 import MagpieCore
 import MagpieHipo
 import UIKit
+import pera_wallet_core
 
 protocol DiscoverSearchDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<DiscoverSearchListSection, DiscoverSearchListItem>

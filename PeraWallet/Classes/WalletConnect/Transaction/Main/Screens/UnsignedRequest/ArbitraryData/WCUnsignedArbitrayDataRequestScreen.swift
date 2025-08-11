@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class WCUnsignedArbitrayDataRequestScreen: BaseViewController {
     weak var delegate: WCUnsignedArbitraryDataRequestScreenDelegate?

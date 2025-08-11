@@ -15,6 +15,7 @@
 //   SwapConfirmPeraFeeInfoViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 struct SwapConfirmPeraFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?

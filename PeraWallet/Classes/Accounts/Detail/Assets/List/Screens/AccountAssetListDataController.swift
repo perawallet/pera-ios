@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 protocol AccountAssetListDataController: AnyObject {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }

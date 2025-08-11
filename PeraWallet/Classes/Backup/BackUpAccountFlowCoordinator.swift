@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class BackUpAccountFlowCoordinator: NotificationObserver {
     static let didBackupAccount =  Notification.Name(rawValue: "didBackUpAccount")

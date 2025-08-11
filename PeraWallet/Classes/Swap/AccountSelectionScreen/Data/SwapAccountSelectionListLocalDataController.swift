@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUtils
+import pera_wallet_core
 
 protocol SwapAccountSelectionListItemDataSource: AnyObject {
     var noContentItem: NoContentViewModel { get }

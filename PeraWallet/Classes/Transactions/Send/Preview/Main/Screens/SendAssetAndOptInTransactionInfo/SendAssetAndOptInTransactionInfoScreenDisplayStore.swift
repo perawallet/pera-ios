@@ -14,6 +14,7 @@
 
 //
 //   SendAssetAndOptInTransactionInfoScreenDisplayStore.swift
+import pera_wallet_core
 
 struct SendAssetAndOptInTransactionInfoScreenDisplayStore: Storable {
     typealias Object = Any

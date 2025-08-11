@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 /// <todo>
 /// Get rid of this object.

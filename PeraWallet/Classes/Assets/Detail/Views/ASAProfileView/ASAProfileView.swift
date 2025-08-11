@@ -18,6 +18,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 import SwiftUI
+import pera_wallet_core
 
 final class ASAProfileView:
     UIView,

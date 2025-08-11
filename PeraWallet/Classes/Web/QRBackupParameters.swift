@@ -15,6 +15,7 @@
 //   QRBackupParameters.swift
 
 import Foundation
+import pera_wallet_core
 
 enum QRBackupAction: RawRepresentable, ALGAPIModel {
     var rawValue: String {

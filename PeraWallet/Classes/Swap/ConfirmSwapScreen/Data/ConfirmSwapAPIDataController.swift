@@ -16,6 +16,7 @@
 
 import Foundation
 import MagpieHipo
+import pera_wallet_core
 
 final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
     var eventHandler: EventHandler?

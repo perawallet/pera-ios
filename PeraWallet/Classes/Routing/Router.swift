@@ -21,6 +21,7 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 import SwiftUI
+import pera_wallet_core
 
 final class Router:
     AssetActionConfirmationViewControllerDelegate,

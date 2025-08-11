@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import SwiftDate
 import MacaroonURLImage
+import pera_wallet_core
 
 final class WCSessionShortListItemViewModel: PairedViewModel {
     private(set) var image: ImageSource?

@@ -15,6 +15,7 @@
 //   CopyAddressTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 struct CopyAddressTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?

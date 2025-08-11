@@ -19,6 +19,7 @@ import UIKit
 import MagpieCore
 import MagpieExceptions
 import MacaroonUIKit
+import pera_wallet_core
 
 class TransactionsViewController:
     BaseViewController,

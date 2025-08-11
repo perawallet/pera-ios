@@ -20,6 +20,7 @@ import MagpieCore
 import MagpieHipo
 import MagpieExceptions
 import MacaroonUtils
+import pera_wallet_core
 
 final class NotificationFilterViewController:
     BaseViewController,

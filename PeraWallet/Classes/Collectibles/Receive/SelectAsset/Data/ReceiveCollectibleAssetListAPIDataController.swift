@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import pera_wallet_core
 
 final class ReceiveCollectibleAssetListAPIDataController:
     ReceiveCollectibleAssetListDataController,

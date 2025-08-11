@@ -15,6 +15,7 @@
 //   ARC59SendTransactionSigner.swift
 
 import Foundation
+import pera_wallet_core
 
 final class ARC59SendTransactionSigner: NSObject {
     typealias EventHandler = (Event) -> Void

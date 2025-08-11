@@ -20,6 +20,7 @@ import MacaroonURLImage
 import Prism
 import SwiftDate
 import UIKit
+import pera_wallet_core
 
 final class NotificationsViewModel: Hashable {
     private(set) var icon: ImageSource?

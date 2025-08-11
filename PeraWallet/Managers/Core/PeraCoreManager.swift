@@ -14,6 +14,8 @@
 
 //   PeraCoreManager.swift
 
+import pera_wallet_core
+
 protocol CoreServiceable {
     var blockchain: BlockchainServiceable { get }
 }

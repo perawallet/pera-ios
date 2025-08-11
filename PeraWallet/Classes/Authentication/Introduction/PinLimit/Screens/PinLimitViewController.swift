@@ -16,6 +16,7 @@
 //  PinLimitViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class PinLimitViewController: BaseViewController {
     weak var delegate: PinLimitViewControllerDelegate?

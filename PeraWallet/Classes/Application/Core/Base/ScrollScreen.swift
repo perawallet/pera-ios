@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var hidesCloseBarButtonItem: Bool = false

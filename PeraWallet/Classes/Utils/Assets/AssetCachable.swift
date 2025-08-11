@@ -17,6 +17,7 @@
 
 import Foundation
 import MagpieCore
+import pera_wallet_core
 
 protocol AssetCachable {
     func cacheAssetDetail(with id: Int64, completion: @escaping (AssetDecoration?) -> Void)

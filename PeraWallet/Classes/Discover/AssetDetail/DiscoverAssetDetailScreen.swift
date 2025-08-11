@@ -17,6 +17,7 @@
 import Foundation
 import WebKit
 import MacaroonUtils
+import pera_wallet_core
 
 final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(

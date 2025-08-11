@@ -17,6 +17,7 @@
 
 import MagpieHipo
 import UIKit
+import pera_wallet_core
 
 final class TransactionController {
     weak var delegate: TransactionControllerDelegate?

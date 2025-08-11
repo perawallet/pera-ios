@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import MagpieHipo
+import pera_wallet_core
 
 final class ManageAssetListViewController:
     BaseViewController,

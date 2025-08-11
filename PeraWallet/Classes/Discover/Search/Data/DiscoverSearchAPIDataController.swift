@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
+import pera_wallet_core
 
 final class DiscoverSearchAPIDataController:
     DiscoverSearchDataController {
@@ -193,7 +194,7 @@ extension DiscoverSearchAPIDataController {
 
     private typealias GetTrendingAssetsCompletion = (Result<[AssetDecoration.APIModel], GetAssetsError>) -> Void
     private func getTrendingAssets(completion: @escaping GetTrendingAssetsCompletion) {
-        if !trendingAssets.isNilOrEmpty {
+        if !trendingAssets.isNilOrEmptyPera {
             completion(.success(trendingAssets.someArray))
             return
         }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   BuyGiftCardsWithCryptoIntroductionAlertItem.swift
+import pera_wallet_core
 
 final class BuyGiftCardsWithCryptoIntroductionAlertItem:
     AlertItem,

@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class QRView: View {
     private lazy var theme = QRViewTheme()

@@ -19,6 +19,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 import UIKit
+import pera_wallet_core
 
 struct OptInAssetListItemViewModel: ViewModel {
     private(set) var icon: ImageSource?

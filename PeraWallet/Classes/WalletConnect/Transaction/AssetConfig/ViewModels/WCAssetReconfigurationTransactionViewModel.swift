@@ -16,6 +16,7 @@
 //   WCAssetReconfigurationTransactionViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 class WCAssetReconfigurationTransactionViewModel {
 

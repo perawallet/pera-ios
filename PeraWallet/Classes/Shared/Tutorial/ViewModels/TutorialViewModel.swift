@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import Foundation
+import pera_wallet_core
 
 final class TutorialViewModel: ViewModel {
     private(set) var image: UIImage?

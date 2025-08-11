@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class WCGroupTransactionItemView: TripleShadowView {
     private let layout = Layout<LayoutConstants>()

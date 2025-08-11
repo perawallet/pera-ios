@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   RekeySupportHandler.swift
+import pera_wallet_core
 
 enum RekeySupportHandler {
     

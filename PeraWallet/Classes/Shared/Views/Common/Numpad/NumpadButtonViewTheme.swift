@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
     let deleteImage: ImageStyle

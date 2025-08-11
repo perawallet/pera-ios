@@ -16,6 +16,7 @@
 //   WCSingleTransactionViewControllerAssetManagable.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol WCSingleTransactionViewControllerAssetManagable:
     WCSingleTransactionViewControllerAssetActionable,
@@ -46,8 +47,8 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
 
             if let wcV2Request = transactionRequest.wcV2Request {
                 let params = WalletConnectV2RejectTransactionRequestParams(
-                    error: .invalidInput(.asset),
-                    v2Request: wcV2Request
+                    v2Request: wcV2Request,
+                    error: .invalidInput(.asset)
                 )
                 configuration.peraConnect.rejectTransactionRequest(params)
                 completion()
@@ -75,8 +76,8 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
 
                 if let wcV2Request = transactionRequest.wcV2Request {
                     let params = WalletConnectV2RejectTransactionRequestParams(
-                        error: .invalidInput(.unableToFetchAsset),
-                        v2Request: wcV2Request
+                        v2Request: wcV2Request,
+                        error: .invalidInput(.unableToFetchAsset)
                     )
                     configuration.peraConnect.rejectTransactionRequest(params)
                     completion()

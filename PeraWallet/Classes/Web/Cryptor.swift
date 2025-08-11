@@ -18,6 +18,7 @@ import Foundation
 import CommonCrypto
 import CryptoSwift
 import AlgoSDK
+import pera_wallet_core
 
 final class Cryptor {
     typealias EncryptionData = (data: Data?, error: EncryptionError?)

@@ -18,6 +18,7 @@ import UIKit
 import MacaroonUIKit
 import SwiftUI
 import Combine
+import pera_wallet_core
 
 final class AccountChartsCell: UICollectionViewCell {
     

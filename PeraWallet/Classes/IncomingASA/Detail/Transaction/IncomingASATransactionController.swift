@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUtils
 import MagpieHipo
+import pera_wallet_core
 
 final class IncomingASATransactionController: LedgerTransactionOperationDelegate {
     weak var delegate: IncomingASATransactionControllerDelegate?

@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 /// <todo>
 /// Maybe, we should only one view model for this transformation.

@@ -15,6 +15,7 @@
 //   ChartViewModel.swift
 
 import Combine
+import pera_wallet_core
 
 class ChartViewModel: ObservableObject {
     @Published var isLoading: Bool = true

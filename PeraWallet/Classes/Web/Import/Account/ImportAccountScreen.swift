@@ -21,6 +21,7 @@ import MagpieCore
 import MagpieHipo
 import MagpieExceptions
 import UIKit
+import pera_wallet_core
 
 final class ImportAccountScreen: BaseViewController {
     typealias EventHandler = (Event, ImportAccountScreen) -> Void

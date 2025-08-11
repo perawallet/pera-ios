@@ -16,6 +16,7 @@
 //   WCAlgosTransactionViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCAlgosTransactionViewController: WCSingleTransactionViewController {
     private lazy var algosTransactionView = WCAlgosTransactionView()

@@ -16,6 +16,7 @@
 //  TransactionFeeCalculator.swift
 
 import Foundation
+import pera_wallet_core
 
 class TransactionFeeCalculator: NSObject {
 

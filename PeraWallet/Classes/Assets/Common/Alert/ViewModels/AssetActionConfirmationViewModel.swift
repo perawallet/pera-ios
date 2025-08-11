@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: NSAttributedString?

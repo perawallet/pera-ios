@@ -19,6 +19,7 @@ import UIKit
 import AVFoundation
 import MacaroonBottomSheet
 import MacaroonUIKit
+import pera_wallet_core
 
 final class PassphraseDisplayViewController: BaseScrollViewController {
     private lazy var theme = Theme()

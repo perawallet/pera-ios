@@ -15,6 +15,7 @@
 //   InsufficientAlgoBalanceDraft.swift
 
 import Foundation
+import pera_wallet_core
 
  struct InsufficientAlgoBalanceDraft {
      let algoAssetItem: AssetItem

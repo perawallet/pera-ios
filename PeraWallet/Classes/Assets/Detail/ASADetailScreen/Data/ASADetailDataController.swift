@@ -17,6 +17,7 @@
 import Foundation
 import MagpieCore
 import MagpieHipo
+import pera_wallet_core
 
 protocol ASADetailScreenDataController: AnyObject {
     typealias EventHandler = (ASADetailScreenDataControllerEvent) -> Void

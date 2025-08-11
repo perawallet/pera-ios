@@ -15,6 +15,7 @@
 //   WCKeyRegTransactionViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCKeyRegTransactionViewModel {
     private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?

@@ -18,6 +18,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class WCAssetInformationViewModel: ViewModel {
     private(set) var title: TextProvider?

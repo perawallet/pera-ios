@@ -15,6 +15,7 @@
 //   AssetStatisticsSectionPriceViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 struct AssetStatisticsSectionPriceViewModel: PrimaryTitleViewModel {
     var primaryTitle: TextProvider?

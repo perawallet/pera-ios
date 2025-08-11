@@ -16,8 +16,9 @@
 //   BannerViewLayoutSheet.swift
 
 import Foundation
-import Macaroon
 import UIKit
+import MacaroonUIKit
+import pera_wallet_core
 
 struct BannerViewCommonLayoutSheet: BannerViewLayoutSheet {
     let iconSize: LayoutSize

@@ -18,6 +18,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 import WebKit
+import pera_wallet_core
 
 struct DiscoverExternalInAppBrowserNavigationViewModel: ViewModel {
     private(set) var title: TextProvider?

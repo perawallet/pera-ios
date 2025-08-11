@@ -15,6 +15,7 @@
 //   BackupParameters.swift
 
 import Foundation
+import pera_wallet_core
 
 final class BackupParameters: ALGAPIModel {
     let accounts: [AccountImportParameters]

@@ -16,6 +16,7 @@
 //   WCGroupTransactionItemViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCGroupTransactionItemViewModel {
     private(set) var hasWarning = false

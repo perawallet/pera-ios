@@ -16,6 +16,7 @@
 //   WCTransactionWarningView.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCTransactionWarningView: BaseView {
     private let layout = Layout<LayoutConstants>()

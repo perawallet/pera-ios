@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import OrderedCollections
+import pera_wallet_core
 
 final class WCSessionConnectionLocalDataController: WCSessionConnectionDataController {
     var eventHandler: EventHandler?

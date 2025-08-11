@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 final class ContactInformationViewModel {
     private(set) var image: UIImage?

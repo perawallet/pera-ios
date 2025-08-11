@@ -16,6 +16,7 @@
 //  SingleSelectionViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 final class SingleSelectionViewModel: Hashable {
     private(set) var title: String?

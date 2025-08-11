@@ -15,6 +15,7 @@
 //   SwapAvailableBalanceQuoteValidator.swift
 
 import Foundation
+import pera_wallet_core
 
 struct SwapAvailableBalanceQuoteValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?

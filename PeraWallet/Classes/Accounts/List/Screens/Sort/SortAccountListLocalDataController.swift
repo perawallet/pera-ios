@@ -15,6 +15,7 @@
 //   SortAccountListLocalDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class SortAccountListLocalDataController: SortAccountListDataController {
     var eventHandler: ((SortAccountListDataControllerEvent) -> Void)?

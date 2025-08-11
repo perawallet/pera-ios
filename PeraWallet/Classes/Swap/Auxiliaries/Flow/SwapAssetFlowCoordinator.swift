@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 /// <todo>
 /// This should be removed after the routing refactor.

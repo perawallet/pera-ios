@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 struct HomePortfolioNavigationViewModel: PortfolioViewModel {
     private(set) var primaryValue: TextProvider?

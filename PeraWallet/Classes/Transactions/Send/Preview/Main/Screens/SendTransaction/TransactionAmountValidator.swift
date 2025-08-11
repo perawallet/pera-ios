@@ -15,6 +15,7 @@
 //   TransactionAmountValidator.swift
 
 import Foundation
+import pera_wallet_core
 
 extension Result where Success == Void {
     public static var success: Result { .success(()) }

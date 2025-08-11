@@ -16,6 +16,7 @@
 //   TitledTransactionAccountNameViewModel.swift
 
 import Foundation
+import pera_wallet_core
 
 class TitledTransactionAccountNameViewModel {
     private(set) var title: String?

@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class CollectibleDetailLayout: NSObject {
     private static let theme = Theme()

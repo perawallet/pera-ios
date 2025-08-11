@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class InnerTransactionListLayout: NSObject {
     private var sizeCache: [String: CGSize] = [:]

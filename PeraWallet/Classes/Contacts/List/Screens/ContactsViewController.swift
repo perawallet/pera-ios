@@ -16,6 +16,7 @@
 //  ContactsViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 class ContactsViewController: BaseViewController {
     weak var delegate: ContactsViewControllerDelegate?

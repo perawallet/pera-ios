@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUtils
+import pera_wallet_core
 
 protocol MeldAccountSelectionListItemDataSource: AnyObject {
     var noContentItem: NoContentViewModel { get }

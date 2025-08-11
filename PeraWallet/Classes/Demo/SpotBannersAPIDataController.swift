@@ -15,6 +15,7 @@
 //   SpotBannersAPIDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class SpotBannersAPIDataController {
     var onFetch: ((String?, [CarouselBannerItemModel]) -> Void)?

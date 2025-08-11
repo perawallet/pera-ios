@@ -15,6 +15,7 @@
 //   SecureBackup.swift
 
 import Foundation
+import pera_wallet_core
 
 final class SecureBackup: ALGAPIModel {
     let cipherText: Data?

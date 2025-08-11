@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 final class UndoRekeyFlowCoordinator {
     private unowned let presentingScreen: UIViewController

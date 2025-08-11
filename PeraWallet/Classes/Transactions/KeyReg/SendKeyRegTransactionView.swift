@@ -15,6 +15,7 @@
 //   SendKeyRegTransactionView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct SendKeyRegTransactionView: View {
     typealias EventHandler = (Event) -> Void

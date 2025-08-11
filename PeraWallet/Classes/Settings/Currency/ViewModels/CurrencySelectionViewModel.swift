@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import MacaroonUIKit
+import pera_wallet_core
 
 struct CurrencySelectionViewModel: ViewModel {
     private(set) var title: TextProvider?

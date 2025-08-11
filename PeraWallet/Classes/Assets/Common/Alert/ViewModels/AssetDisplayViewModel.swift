@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class AssetDisplayViewModel: PairedViewModel {
     private(set) var isVerified: Bool = false

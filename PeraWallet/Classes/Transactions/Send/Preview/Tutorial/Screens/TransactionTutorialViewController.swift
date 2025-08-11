@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
+import pera_wallet_core
 
 final class TransactionTutorialViewController: BaseScrollViewController {
     private lazy var transactionTutorialView = TransactionTutorialView()

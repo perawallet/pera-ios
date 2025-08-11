@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 struct WCSessionConnectionProfileViewModel: ViewModel {
     private(set) var icon: ImageSource?

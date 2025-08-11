@@ -16,6 +16,7 @@
 //  OptOutTransactionDataBuilder.swift
 
 import Foundation
+import pera_wallet_core
 
 final class OptOutTransactionDataBuilder: TransactionDataBuildable {
     var eventHandler: ((TransactionDataBuildableEvent) -> Void)?

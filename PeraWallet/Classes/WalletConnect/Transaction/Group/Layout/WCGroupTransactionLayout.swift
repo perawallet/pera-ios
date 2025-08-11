@@ -16,6 +16,7 @@
 //   WCGroupTransactionLayout.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCGroupTransactionLayout: NSObject {
     private let layout = Layout<LayoutConstants>()

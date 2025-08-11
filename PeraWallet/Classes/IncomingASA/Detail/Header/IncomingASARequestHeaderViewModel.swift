@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 struct IncomingASARequestHeaderViewModel: ViewModel {
     private(set) var title: TextProvider?

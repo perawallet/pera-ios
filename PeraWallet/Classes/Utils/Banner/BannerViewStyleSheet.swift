@@ -16,12 +16,12 @@
 //   BannerViewStyleSheet.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 protocol BannerViewStyleSheet: StyleSheet {
     var background: ViewStyle { get }
-    var backgroundShadow: Macaroon.Shadow? { get }
+    var backgroundShadow: MacaroonUIKit.Shadow? { get }
     var title: TextStyle { get }
     var message: TextStyle? { get }
     var icon: ImageStyle? { get }

@@ -16,6 +16,7 @@
 //  AddContactViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class AddContactViewController: BaseScrollViewController {
     weak var delegate: AddContactViewControllerDelegate?

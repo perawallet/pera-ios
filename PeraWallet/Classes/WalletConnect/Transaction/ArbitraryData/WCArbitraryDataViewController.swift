@@ -15,6 +15,7 @@
 //   WCArbitraryDataViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCArbitraryDataViewController: BaseScrollViewController {
     private let layout = Layout<LayoutConstants>()

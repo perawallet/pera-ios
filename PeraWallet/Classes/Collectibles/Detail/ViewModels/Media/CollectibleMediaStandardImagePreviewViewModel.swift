@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
+import pera_wallet_core
 
 struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?

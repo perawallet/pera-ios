@@ -15,6 +15,7 @@
 //   TransactionDataItem.swift
 
 import Foundation
+import pera_wallet_core
 
 struct TransactionDataItem {
     let sender: PublicKey

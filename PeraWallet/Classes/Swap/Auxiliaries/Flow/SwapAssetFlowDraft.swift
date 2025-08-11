@@ -15,6 +15,7 @@
 //   SwapAssetFlowDraft.swift
 
 import Foundation
+import pera_wallet_core
 
 final class SwapAssetFlowDraft {
     var account: Account?

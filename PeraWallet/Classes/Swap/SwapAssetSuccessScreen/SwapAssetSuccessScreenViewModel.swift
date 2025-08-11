@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 struct SwapAssetSuccessScreenViewModel {
     private(set) var title: TextProvider?

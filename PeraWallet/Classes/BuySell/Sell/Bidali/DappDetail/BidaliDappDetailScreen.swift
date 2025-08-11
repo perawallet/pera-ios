@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import WebKit
+import pera_wallet_core
 
 final class BidaliDappDetailScreen:
     DiscoverExternalInAppBrowserScreen,

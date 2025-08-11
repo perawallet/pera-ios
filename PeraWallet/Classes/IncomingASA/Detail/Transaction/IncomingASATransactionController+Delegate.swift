@@ -15,6 +15,7 @@
 //   IncomingASATransactionController+Delegate.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol IncomingASATransactionControllerDelegate: AnyObject {
     func incomingASATransactionController(

@@ -16,6 +16,7 @@
 //   WCGroupTransactionViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCGroupTransactionViewController: BaseViewController {
     private lazy var groupTransactionView = WCGroupTransactionView()

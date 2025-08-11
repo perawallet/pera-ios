@@ -16,6 +16,7 @@
 //  AccountCellViewModel.swift
 
 import UIKit
+import pera_wallet_core
 
 final class AccountCellViewModel {
     private(set) var accountImageTypeImage: UIImage?

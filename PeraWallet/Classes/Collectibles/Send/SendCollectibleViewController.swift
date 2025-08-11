@@ -19,6 +19,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import SnapKit
 import MagpieCore
+import pera_wallet_core
 
 final class SendCollectibleViewController:
     BaseScrollViewController,

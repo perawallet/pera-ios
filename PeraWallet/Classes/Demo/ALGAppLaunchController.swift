@@ -19,6 +19,7 @@ import Foundation
 import MacaroonApplication
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class ALGAppLaunchController:
     AppLaunchController,

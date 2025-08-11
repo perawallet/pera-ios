@@ -17,6 +17,7 @@
 
 import UIKit
 import CoreBluetooth
+import pera_wallet_core
 
 final class LedgerDeviceListViewController: BaseViewController {
     private lazy var ledgerDeviceListView = LedgerDeviceListView()

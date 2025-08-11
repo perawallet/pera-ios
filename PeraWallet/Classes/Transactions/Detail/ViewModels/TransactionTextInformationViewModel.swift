@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 final class TransactionTextInformationViewModel: ViewModel {
     private(set) var title: String?

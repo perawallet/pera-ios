@@ -16,6 +16,7 @@
 
 import Foundation
 import OrderedCollections
+import pera_wallet_core
 
 final class RekeyedAccountSelectionListLocalDataController: RekeyedAccountSelectionListDataController {
     var eventHandler: ((RekeyedAccountSelectionListDataControllerEvent) -> Void)?

@@ -18,6 +18,7 @@
 import MacaroonUIKit
 import UIKit
 import MacaroonURLImage
+import pera_wallet_core
 
 struct AccountListItemViewModel:
     PortfolioViewModel,

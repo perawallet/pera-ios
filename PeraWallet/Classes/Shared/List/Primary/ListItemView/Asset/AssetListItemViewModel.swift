@@ -18,6 +18,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 import UIKit
+import pera_wallet_core
 
 struct AssetListItemViewModel: PrimaryListItemViewModel {
     private(set) var imageSource: ImageSource?

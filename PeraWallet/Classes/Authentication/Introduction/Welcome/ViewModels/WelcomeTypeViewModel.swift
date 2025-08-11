@@ -17,6 +17,7 @@
 import UIKit
 import MacaroonUIKit
 import Foundation
+import pera_wallet_core
 
 struct WelcomeTypeViewModel: PairedViewModel {
     private(set) var image: UIImage?

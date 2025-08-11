@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 struct OptInAssetNameListItemViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?

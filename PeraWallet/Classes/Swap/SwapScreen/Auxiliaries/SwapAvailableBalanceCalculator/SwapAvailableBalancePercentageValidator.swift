@@ -17,6 +17,7 @@
 import Foundation
 import MagpieCore
 import MagpieHipo
+import pera_wallet_core
 
 struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?

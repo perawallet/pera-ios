@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 /// <todo>
 /// Just one of these view models is enough to cover all, i.e. TransferAssetBalanceNameViewModel etc.

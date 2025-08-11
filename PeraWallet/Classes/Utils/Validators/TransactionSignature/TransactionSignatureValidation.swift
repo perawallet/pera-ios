@@ -15,6 +15,7 @@
 //   TransactionSignatureValidationError.swift
 
 import Foundation
+import pera_wallet_core
 
 typealias TransactionSignatureValidation = Result<Void, TransactionSignatureValidationError>
 

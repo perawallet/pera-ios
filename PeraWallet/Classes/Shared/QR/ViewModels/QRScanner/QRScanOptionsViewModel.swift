@@ -15,6 +15,7 @@
 //   QRScanOptionsViewModel.swift
 
 import MacaroonUIKit
+import pera_wallet_core
 
 struct QRScanOptionsViewModel: ViewModel {
     private(set) var title: EditText?

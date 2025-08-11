@@ -17,6 +17,7 @@
 
 import UIKit
 import SafariServices
+import pera_wallet_core
 
 extension UIViewController {
     func displaySimpleAlertWith(title: String) {

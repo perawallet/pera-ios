@@ -16,6 +16,7 @@
 //   WCAssetConfigTransactionViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class WCAssetCreationTransactionViewController: WCSingleTransactionViewController {
     private lazy var assetCreationTransactionView = WCAssetCreationTransactionView()

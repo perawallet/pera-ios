@@ -19,6 +19,7 @@ import Foundation
 import MacaroonApplication
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 protocol AppLaunchController: AnyObject {
     func prepareForLaunch()

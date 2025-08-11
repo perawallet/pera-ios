@@ -16,6 +16,7 @@
 
 import UIKit
 import SwiftUI
+import pera_wallet_core
 
 final class SendKeyRegTransactionScreen:
     BaseViewController,

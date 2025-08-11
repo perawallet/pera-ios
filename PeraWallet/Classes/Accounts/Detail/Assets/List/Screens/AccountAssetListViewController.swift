@@ -19,6 +19,7 @@ import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
+import pera_wallet_core
 
 final class AccountAssetListViewController:
     BaseViewController,

@@ -19,6 +19,7 @@ import Foundation
 import MacaroonBanner
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class BannerController: MacaroonBanner.BannerController {
     init(
@@ -139,16 +140,5 @@ extension BannerController {
         theme.configureForInfo()
         view.customize(theme)
         return view
-    }
-}
-
-protocol ErrorDisplayable {
-    var title: String { get }
-    var message: String { get }
-}
-
-extension ErrorDisplayable {
-    var isValid: Bool {
-        return !message.isEmpty
     }
 }

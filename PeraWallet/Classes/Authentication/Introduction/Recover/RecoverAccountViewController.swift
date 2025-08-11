@@ -15,6 +15,7 @@
 //   RecoverAccountViewController.swift
 
 import UIKit
+import pera_wallet_core
 
 final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()

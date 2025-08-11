@@ -16,6 +16,7 @@
 //   WCMainTransactionLayout.swift
 
 import UIKit
+import pera_wallet_core
 
 class WCMainTransactionLayout: NSObject {
 

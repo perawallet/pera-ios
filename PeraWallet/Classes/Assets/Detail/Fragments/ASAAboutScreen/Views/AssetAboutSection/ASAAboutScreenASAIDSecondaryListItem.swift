@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import pera_wallet_core
 
 struct ASAAboutScreenASAIDSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?

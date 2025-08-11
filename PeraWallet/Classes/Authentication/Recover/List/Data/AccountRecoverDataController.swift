@@ -16,6 +16,7 @@
 //   AccountRecoverDataController.swift
 
 import Foundation
+import pera_wallet_core
 
 final class AccountRecoverDataController: NSObject {
     weak var delegate: AccountRecoverDataControllerDelegate?

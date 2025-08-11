@@ -20,6 +20,7 @@ import MagpieCore
 import MagpieHipo
 import SnapKit
 import UIKit
+import pera_wallet_core
 
 final class ASADiscoveryScreen:
     BaseViewController,

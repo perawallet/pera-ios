@@ -15,6 +15,7 @@
 //   AppCallTransactionItemDraftComposer.swift
 
 import Foundation
+import pera_wallet_core
 
 struct AppCallTransactionItemDraftComposer: TransactionListItemDraftComposer {
     let draft: TransactionListing

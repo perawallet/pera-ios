@@ -19,6 +19,7 @@ import UIKit
 import AVFoundation
 import MacaroonUtils
 import MacaroonUIKit
+import pera_wallet_core
 
 final class QRScannerViewController:
     BaseViewController,

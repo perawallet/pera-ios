@@ -17,6 +17,7 @@
 import Foundation
 import UIKit
 import MagpieCore
+import pera_wallet_core
 
 protocol CollectibleDetailDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleDetailSection, CollectibleDetailItem>

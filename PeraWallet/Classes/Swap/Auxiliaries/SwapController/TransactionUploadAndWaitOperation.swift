@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
+import pera_wallet_core
 
 final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
     typealias EventHandler = (Event) -> Void

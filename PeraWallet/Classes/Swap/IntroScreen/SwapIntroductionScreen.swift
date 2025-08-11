@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class SwapIntroductionScreen: ScrollScreen {
     var eventHandler: Screen.EventHandler<SwapIntroductionEvent>?

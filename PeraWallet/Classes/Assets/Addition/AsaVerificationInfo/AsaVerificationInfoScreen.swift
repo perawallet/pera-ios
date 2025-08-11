@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import pera_wallet_core
 
 final class AsaVerificationInfoScreen: ScrollScreen {
     var eventHandler: Screen.EventHandler<AsaVerificationInfoEvent>?

@@ -15,6 +15,7 @@
 //   TransactionListItemDraftComposer.swift
 
 import Foundation
+import pera_wallet_core
 
 protocol TransactionListItemDraftComposer {
     var draft: TransactionListing { get }

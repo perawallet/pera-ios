@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import pera_wallet_core
 
 final class WCMainArbitraryDataDataSource: NSObject {
     let wcSession: WCSessionDraft
@@ -58,8 +59,8 @@ extension WCMainArbitraryDataDataSource {
 
         if let wcV2TransactionRequest = wcRequest.wcV2Request {
             let params = WalletConnectV2RejectTransactionRequestParams(
-                error: reason,
-                v2Request: wcV2TransactionRequest
+                v2Request: wcV2TransactionRequest,
+                error: reason
             )
             peraConnect.rejectTransactionRequest(params)
             return
