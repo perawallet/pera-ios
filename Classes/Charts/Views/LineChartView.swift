@@ -27,7 +27,7 @@ struct LineChartView: View {
     var body: some View {
         let maxValue = data.map(\.value).max() ?? 100
         let minValue = data.map(\.value).min() ?? 0
-        let yDomain = (minValue - 10)...(maxValue + 10)
+        let yDomain = (minValue * 0.99)...(maxValue * 1.01)
         
         GeometryReader { geo in
             let chart = Chart {

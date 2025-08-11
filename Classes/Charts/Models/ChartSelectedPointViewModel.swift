@@ -15,8 +15,8 @@
 //   ChartSelectedPointViewModel.swift
 
 struct ChartSelectedPointViewModel: Hashable {
-    let primaryValue: Double
-    let secondaryValue: Double
-    let currencyValue: Double
+    let algoValue: Double
+    let fiatValue: Double
+    let usdValue: Double
     let dateValue: String
 }

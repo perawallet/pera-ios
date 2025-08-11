@@ -9974,9 +9974,6 @@
 		D435A94028AD2D9F006B495A /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
 		D435A94428AD2E18006B495A /* AlertScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertScreenTheme.swift; sourceTree = "<group>"; };
 		D435F9A02DE86212004B7D61 /* ALGAPI+Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Charts.swift"; sourceTree = "<group>"; };
-		D435F9A52DE865C4004B7D61 /* AssetBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetBalanceChartDataDraft.swift; sourceTree = "<group>"; };
-		D435F9A92DE869A7004B7D61 /* WealthBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WealthBalanceChartDataDraft.swift; sourceTree = "<group>"; };
-		D435F9AD2DE86C1D004B7D61 /* WalletWealthBalanceChartDataDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletWealthBalanceChartDataDraft.swift; sourceTree = "<group>"; };
 		D435F9B22DE877C7004B7D61 /* InviteFriendsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsScreen.swift; sourceTree = "<group>"; };
 		D435F9B62DE878D6004B7D61 /* InviteFriendsScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsScreenTheme.swift; sourceTree = "<group>"; };
 		D435F9BB2DE88F1B004B7D61 /* share.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = share.json; sourceTree = "<group>"; };
@@ -21850,11 +21847,8 @@
 				D49901B92DF194A500D3875D /* Item */,
 				D49901BB2DF194A500D3875D /* PageControl */,
 				D49901BD2DF194A500D3875D /* CarouselBannerView.swift */,
-				D435F9A52DE865C4004B7D61 /* AssetBalanceChartDataDraft.swift */,
-				D435F9A92DE869A7004B7D61 /* WealthBalanceChartDataDraft.swift */,
 				D4D2166B2E16B9FC002FA6D0 /* CarouselBannerCell.swift */,
 				D4D2166F2E16BA02002FA6D0 /* CarouselBannerViewTheme.swift */,
-				D435F9AD2DE86C1D004B7D61 /* WalletWealthBalanceChartDataDraft.swift */,
 			);
 			path = Carousel;
 			sourceTree = "<group>";
