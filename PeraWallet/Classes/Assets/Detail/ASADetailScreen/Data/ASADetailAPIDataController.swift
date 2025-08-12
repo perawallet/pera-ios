@@ -131,11 +131,11 @@ extension ASADetailScreenAPIDataController {
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
                 guard
-                    let primaryValue = Double(item.amount),
-                    let secondaryValue = Double(item.usdValue),
-                    let currencyValue = Double(item.valueInCurrency)
+                    let algoValue = Double(item.amount),
+                    let fiatValue = Double(item.valueInCurrency),
+                    let usdValue = Double(item.usdValue)
                 else { return nil }
-                return ChartDataPoint(day: index, primaryValue: primaryValue, secondaryValue: secondaryValue, currencyValue: currencyValue, timestamp: item.datetime)
+                return ChartDataPoint(day: index, algoValue: algoValue, fiatValue: fiatValue, usdValue: usdValue, timestamp: item.datetime)
             }
             let isAlgoCurrency = try? sharedDataController.currency.primaryValue?.unwrap().isAlgo
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false, isAlgoCurrency: isAlgoCurrency ?? true)

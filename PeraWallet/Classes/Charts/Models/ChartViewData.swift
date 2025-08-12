@@ -24,7 +24,7 @@ struct ChartViewData: Hashable, Equatable {
     var model: ChartDataModel {
         let chartDataModel = ChartDataModel()
         chartDataModel.period = period
-        chartDataModel.data = chartValues.map { return ChartDataPointViewModel(value: isAlgoCurrency ? $0.primaryValue : $0.currencyValue, day: $0.day) }
+        chartDataModel.data = chartValues.map { return ChartDataPointViewModel(value: isAlgoCurrency ? $0.algoValue : $0.fiatValue, day: $0.day) }
         chartDataModel.isLoading = isLoading
         return chartDataModel
     }
