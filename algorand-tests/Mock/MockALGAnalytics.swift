@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonVendors
+@testable import pera_wallet_core
 @testable import pera_staging
 
 final class MockALGAnalytics: ALGAnalytics {
