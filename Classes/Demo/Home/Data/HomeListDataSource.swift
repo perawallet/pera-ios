@@ -99,7 +99,13 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     )
                     cell.bindData(item)
                     return cell
-
+                case .retain:
+                    let cell = collectionView.dequeue(
+                        RetainCampaignAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
                 }
             case .carouselBanner(let items):
                 let cell = collectionView.dequeue(
@@ -141,7 +147,8 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             TitleWithAccessorySupplementaryCell.self,
             HomeAccountCell.self,
             CarouselBannerCell.self,
-            HomeChartsCell.self
+            HomeChartsCell.self,
+            RetainCampaignAnnouncementCell.self
         ].forEach {
             collectionView.register($0)
         }

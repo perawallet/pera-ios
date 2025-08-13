@@ -718,6 +718,24 @@ extension HomeViewController {
             self.triggerBannerCTA(itemUrl: ctaUrl)
         }
     }
+    
+    private func linkInteractors(
+        _ cell: RetainCampaignAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
+        }
+    }
 
     private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
@@ -1055,6 +1073,9 @@ extension HomeViewController {
                 linkInteractors(cell, for: item)
             case .card:
                 guard let cell = cell as? CardAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
+            case .retain:
+                guard let cell = cell as? RetainCampaignAnnouncementCell else { return }
                 linkInteractors(cell, for: item)
             }
         case .carouselBanner:

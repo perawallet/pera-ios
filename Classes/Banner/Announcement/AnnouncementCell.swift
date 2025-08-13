@@ -100,3 +100,14 @@ final class CardAnnouncementCell: AnnouncementCell {
         contextView.customize(Self.theme)
     }
 }
+
+final class RetainCampaignAnnouncementCell: AnnouncementCell {
+    static let theme = RetainCampaignAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}

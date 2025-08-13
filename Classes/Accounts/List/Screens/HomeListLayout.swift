@@ -324,6 +324,12 @@ extension HomeListLayout {
                 for: CardAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
+        case .retain:
+            return RetainCampaignAnnouncementCell.calculatePreferredSize(
+                item,
+                for: RetainCampaignAnnouncementCell.theme,
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
         }
     }
 }
