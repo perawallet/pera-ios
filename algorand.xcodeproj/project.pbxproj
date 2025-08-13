@@ -7305,6 +7305,12 @@
 		D498BD102E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
 		D498BD112E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
 		D498BD122E338D6B00833208 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498BD0F2E338D6700833208 /* SwapViewController.swift */; };
+		D49EE0CA2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0C92E4C8DFB0078AFB3 /* SwapConfirmViewModel.swift */; };
+		D49EE0CB2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0C92E4C8DFB0078AFB3 /* SwapConfirmViewModel.swift */; };
+		D49EE0CC2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0C92E4C8DFB0078AFB3 /* SwapConfirmViewModel.swift */; };
+		D49EE0CE2E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0CD2E4CABAD0078AFB3 /* ConfirmSwapInfoSheet.swift */; };
+		D49EE0CF2E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0CD2E4CABAD0078AFB3 /* ConfirmSwapInfoSheet.swift */; };
+		D49EE0D02E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49EE0CD2E4CABAD0078AFB3 /* ConfirmSwapInfoSheet.swift */; };
 		D4A9E75C2E40DED600C3939A /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A9E75B2E40DED000C3939A /* ProviderSheet.swift */; };
 		D4A9E75D2E40DED600C3939A /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A9E75B2E40DED000C3939A /* ProviderSheet.swift */; };
 		D4A9E75E2E40DED600C3939A /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A9E75B2E40DED000C3939A /* ProviderSheet.swift */; };
@@ -9719,6 +9725,8 @@
 		D49E273627D620DF00A326FC /* NoContentWithActionIllustratedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentWithActionIllustratedCell.swift; sourceTree = "<group>"; };
 		D49EC06D2AE965ED00498D9B /* AlgoExplorerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoExplorerType.swift; sourceTree = "<group>"; };
 		D49EC0712AE9660900498D9B /* TransferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferType.swift; sourceTree = "<group>"; };
+		D49EE0C92E4C8DFB0078AFB3 /* SwapConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapConfirmViewModel.swift; sourceTree = "<group>"; };
+		D49EE0CD2E4CABAD0078AFB3 /* ConfirmSwapInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSwapInfoSheet.swift; sourceTree = "<group>"; };
 		D4A0DE992898037300CE3895 /* AssetStatisticsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetStatisticsSectionView.swift; sourceTree = "<group>"; };
 		D4A0DE9D289803BC00CE3895 /* AssetStatisticsSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetStatisticsSectionViewTheme.swift; sourceTree = "<group>"; };
 		D4A0DEA1289803F600CE3895 /* AssetStatisticsSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetStatisticsSectionViewModel.swift; sourceTree = "<group>"; };
@@ -19592,6 +19600,7 @@
 		D402DA2A2E390FB600C62C0D /* BottomSheets */ = {
 			isa = PBXGroup;
 			children = (
+				D49EE0CD2E4CABAD0078AFB3 /* ConfirmSwapInfoSheet.swift */,
 				D4A9E75B2E40DED000C3939A /* ProviderSheet.swift */,
 				D455D32B2E40C26E009EFCCA /* SheetTitleView.swift */,
 				D402DA2B2E390FC200C62C0D /* SwapSettingsSheet.swift */,
@@ -22801,6 +22810,7 @@
 		D4EDBA0A2E42160A00B6FBDA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D49EE0C92E4C8DFB0078AFB3 /* SwapConfirmViewModel.swift */,
 				D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */,
 			);
 			path = Models;
@@ -24693,6 +24703,7 @@
 				591678CF2E464C76002184C2 /* AlgorandSecureBackupImportBackupScreen.swift in Sources */,
 				591678D02E464C76002184C2 /* AlgorandSecureBackupImportBackupScreenTheme.swift in Sources */,
 				591678D12E464C76002184C2 /* AlgorandSecureBackupMnemonicViewModel.swift in Sources */,
+				D49EE0CE2E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */,
 				591678D22E464C76002184C2 /* AlgorandSecureBackupMnemonicsScreen.swift in Sources */,
 				591678D32E464C76002184C2 /* AlgorandSecureBackupMnemonicsScreenTheme.swift in Sources */,
 				591678D42E464C76002184C2 /* AlgorandSecureBackupInstructionsScreen.swift in Sources */,
@@ -24889,6 +24900,7 @@
 				591679882E464C76002184C2 /* PassphraseDisplayView.swift in Sources */,
 				591679892E464C76002184C2 /* PassphraseDisplayViewTheme.swift in Sources */,
 				5916798A2E464C76002184C2 /* ReceiverAccountSelectionListDataController.swift in Sources */,
+				D49EE0CB2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */,
 				5916798B2E464C76002184C2 /* ReceiverAccountSelectionListDataSource.swift in Sources */,
 				5916798C2E464C76002184C2 /* ReceiverAccountSelectionListAPIDataController.swift in Sources */,
 				5916798D2E464C76002184C2 /* ReceiverAccountSelectionListLayout.swift in Sources */,
@@ -26937,6 +26949,7 @@
 				59E6FE992E4A712500CCA99B /* WatchAccountInformationScreenTheme.swift in Sources */,
 				59E6FE9A2E4A712500CCA99B /* WatchAccountTypeInformationViewModel.swift in Sources */,
 				59E6FE9B2E4A712500CCA99B /* AccountAssetListViewController.swift in Sources */,
+				D49EE0CA2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */,
 				59E6FE9C2E4A712500CCA99B /* AccountAssetListViewController+Theme.swift in Sources */,
 				59E6FE9D2E4A712500CCA99B /* AccountAssetListLayout.swift in Sources */,
 				59E6FE9E2E4A712500CCA99B /* AccountAssetListLayout+Theme.swift in Sources */,
@@ -27846,6 +27859,7 @@
 				59E6021C2E4A712500CCA99B /* RekeyToStandardAccountInstructionsDraft.swift in Sources */,
 				59E6021D2E4A712500CCA99B /* RekeyAnyAccountToAnyAccountNoConfigurationChangeInstructionViewModel.swift in Sources */,
 				59E6021E2E4A712500CCA99B /* RekeyAnyAccountToAnyAccountNoLongerAbleToSignInstructionViewModel.swift in Sources */,
+				D49EE0CF2E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */,
 				59E6021F2E4A712500CCA99B /* RekeyAnyAccountToAnyAccountOpenBluetoothInstructionViewModel.swift in Sources */,
 				59E602202E4A712500CCA99B /* RekeyAnyAccountToLedgerAccountFutureTransactionsSignInstructionViewModel.swift in Sources */,
 				59E602212E4A712500CCA99B /* RekeyRekeyedToAnyAccountContinueUnableToSignInstructionViewModel.swift in Sources */,
@@ -29015,6 +29029,7 @@
 				59E606C72E4A71D000CCA99B /* AlgorandSecureBackupMnemonicViewModel.swift in Sources */,
 				59E606C82E4A71D000CCA99B /* AlgorandSecureBackupMnemonicsScreen.swift in Sources */,
 				59E606C92E4A71D000CCA99B /* AlgorandSecureBackupMnemonicsScreenTheme.swift in Sources */,
+				D49EE0D02E4CABB80078AFB3 /* ConfirmSwapInfoSheet.swift in Sources */,
 				59E606CA2E4A71D000CCA99B /* AlgorandSecureBackupInstructionsScreen.swift in Sources */,
 				59E606CB2E4A71D000CCA99B /* AlgorandSecureBackupInstructionsScreenTheme.swift in Sources */,
 				59E606CC2E4A71D000CCA99B /* AlgorandSecureBackupSelectAccountsInstructionItemViewModel.swift in Sources */,
@@ -29211,6 +29226,7 @@
 				59E607802E4A71D000CCA99B /* ReceiverAccountSelectionListDataController.swift in Sources */,
 				59E607812E4A71D000CCA99B /* ReceiverAccountSelectionListDataSource.swift in Sources */,
 				59E607822E4A71D000CCA99B /* ReceiverAccountSelectionListAPIDataController.swift in Sources */,
+				D49EE0CC2E4C8E030078AFB3 /* SwapConfirmViewModel.swift in Sources */,
 				59E607832E4A71D000CCA99B /* ReceiverAccountSelectionListLayout.swift in Sources */,
 				59E607842E4A71D000CCA99B /* ReceiverAccountSelectionListScreen.swift in Sources */,
 				59E607852E4A71D000CCA99B /* ReceiverAccountSelectionListScreenTheme.swift in Sources */,
