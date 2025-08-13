@@ -254,7 +254,7 @@ struct CardAnnouncementViewTheme: AnnouncementViewTheme {
     }
 }
 
-struct RetainCampaignAnnouncementViewTheme: AnnouncementViewTheme {
+struct RetailCampaignAnnouncementViewTheme: AnnouncementViewTheme {
     let background: ViewStyle
     var backgroundImage: ImageSource? = nil
     let corner: Corner
@@ -278,7 +278,7 @@ struct RetainCampaignAnnouncementViewTheme: AnnouncementViewTheme {
         self.background = [
             .backgroundColor(Colors.Button.Primary.newbackground)
         ]
-        self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-retain-image"))
+        self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-retail-image"))
         self.corner = Corner(radius: 4)
         self.stackViewEdgeInset = (24, 24, 28, 124)
         self.stackViewLayoutMargins = (0, 0, 0, 0)

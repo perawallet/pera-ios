@@ -101,8 +101,8 @@ final class CardAnnouncementCell: AnnouncementCell {
     }
 }
 
-final class RetainCampaignAnnouncementCell: AnnouncementCell {
-    static let theme = RetainCampaignAnnouncementViewTheme()
+final class RetailCampaignAnnouncementCell: AnnouncementCell {
+    static let theme = RetailCampaignAnnouncementViewTheme()
     
     override init(
         frame: CGRect

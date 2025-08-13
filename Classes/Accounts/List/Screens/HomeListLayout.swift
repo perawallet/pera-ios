@@ -324,10 +324,10 @@ extension HomeListLayout {
                 for: CardAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
-        case .retain:
-            return RetainCampaignAnnouncementCell.calculatePreferredSize(
+        case .retail:
+            return RetailCampaignAnnouncementCell.calculatePreferredSize(
                 item,
-                for: RetainCampaignAnnouncementCell.theme,
+                for: RetailCampaignAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
         }

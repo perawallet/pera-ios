@@ -720,7 +720,7 @@ extension HomeViewController {
     }
     
     private func linkInteractors(
-        _ cell: RetainCampaignAnnouncementCell,
+        _ cell: RetailCampaignAnnouncementCell,
         for item: AnnouncementViewModel
     ) {
         cell.startObserving(event: .close) {
@@ -1074,8 +1074,8 @@ extension HomeViewController {
             case .card:
                 guard let cell = cell as? CardAnnouncementCell else { return }
                 linkInteractors(cell, for: item)
-            case .retain:
-                guard let cell = cell as? RetainCampaignAnnouncementCell else { return }
+            case .retail:
+                guard let cell = cell as? RetailCampaignAnnouncementCell else { return }
                 linkInteractors(cell, for: item)
             }
         case .carouselBanner:
