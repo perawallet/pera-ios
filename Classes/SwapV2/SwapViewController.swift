@@ -23,11 +23,10 @@ final class SwapViewController: BaseViewController {
     
     var launchDraft: SwapAssetFlowDraft?
     
+    private var sharedViewModel: SwapSharedViewModel?
     private var selectedAccount: Account?
     private var selectedAssetIn: AssetItem?
     private var selectedAssetOut: AssetItem?
-    private var payAmount: String?
-    private var receiveAmount: String?
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
@@ -67,6 +66,7 @@ final class SwapViewController: BaseViewController {
             self.selectedAccount = account
             self.selectedAssetIn = assetItem(from: launchDraft.assetIn)
             self.selectedAssetOut = nil
+            self.sharedViewModel = nil
             loadSwapView()
             self.launchDraft = nil
         } else {
@@ -76,6 +76,7 @@ final class SwapViewController: BaseViewController {
             self.selectedAccount = defaultAccount
             self.selectedAssetIn = nil
             self.selectedAssetOut = nil
+            self.sharedViewModel = nil
             loadSwapView()
         }
     }
@@ -122,13 +123,41 @@ final class SwapViewController: BaseViewController {
         }
         self.selectedAssetOut = assetOut
         
-        let viewModel = SwapSharedViewModel(
-            selectedAccount: selectedAccount,
-            selectedAssetIn: assetIn,
-            selectedAssetOut: assetOut
-        )
+        var rootView: SwapView
         
-        var rootView = SwapView(viewModel: viewModel)
+        if let sharedViewModel {
+            if
+                let account = self.selectedAccount,
+                account.address != sharedViewModel.selectedAccount.address
+            {
+                sharedViewModel.selectedAccount = account
+            }
+            
+            if
+                let assetIn = self.selectedAssetIn,
+                assetIn.asset.id != sharedViewModel.selectedAssetIn.asset.id
+            {
+                sharedViewModel.selectedAssetIn = assetIn
+            }
+               
+            if
+                let assetOut = self.selectedAssetOut,
+                assetOut.asset.id != sharedViewModel.selectedAssetOut.asset.id
+            {
+                sharedViewModel.selectedAssetOut = assetOut
+            }
+            
+            rootView = SwapView(viewModel: sharedViewModel)
+        } else {
+            let viewModel = SwapSharedViewModel(
+                selectedAccount: selectedAccount,
+                selectedAssetIn: assetIn,
+                selectedAssetOut: assetOut
+            )
+            self.sharedViewModel = viewModel
+            
+            rootView = SwapView(viewModel: viewModel)
+        }
         
         rootView.onTap = { [weak self] action in
             guard let self = self else { return }
@@ -170,16 +199,15 @@ final class SwapViewController: BaseViewController {
                         print(error)
                         return
                     }
-                    receiveAmount = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 4).string(for: quote?.amountOutUSDValue)
+                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: quote?.amountOutUSDValue)
+                    sharedViewModel?.quote = quote
                     loadSwapView()
                 }
                 guard let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
                     // error
                     return
                 }
-                payAmount = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 4).string(for: value)
                 swapAssetFlowCoordinator.getQoute(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
-                print("---quote for \(value)")
             }
         }
         
