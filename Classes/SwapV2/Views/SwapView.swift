@@ -83,6 +83,7 @@ struct SwapView: View {
                                 let doubleValue = Double(newValue),
                                 doubleValue > 0
                             {
+                                viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue)
                                 onTap?(.getQuote(for: doubleValue))
                             }
                         }
@@ -91,6 +92,14 @@ struct SwapView: View {
                     }
                     AssetSelectionView(isPayingView: $viewModel.isPayingView.inverted, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText) {
                         onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
+                    }
+                    .onChange(of: viewModel.receivingText ?? "") { newValue in
+                        if
+                            let doubleValue = Double(newValue),
+                            doubleValue > 0
+                        {
+                            shouldShowSwapButton = true
+                        }
                     }
                 }
                 .padding(.horizontal, 8)
@@ -120,6 +129,9 @@ struct SwapView: View {
             }
             if shouldShowSwapButton {
                 SwapButton {
+                    guard viewModel.payingText != nil, viewModel.receivingText != nil else {
+                        return
+                    }
                     activeSheet = .confirmSwap
                 }
             }
@@ -133,7 +145,8 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                ConfirmSwapView(account: $viewModel.selectedAccount.wrappedValue)
+                let viewModel = SwapConfirmViewModel(selectedAccount: viewModel.selectedAccount, selectedAssetIn: viewModel.selectedAssetIn, selectedAssetOut: viewModel.selectedAssetOut, selectedAssetInAmount: viewModel.payingText!, selectedAssetOutAmount: viewModel.receivingText!, price: "0.17809 ALGO per AKTA", provider: viewModel.provider, slippageTolerance: viewModel.slippageTolerance, priceImpact: viewModel.priceImpact, minimumReceived: "", exchangeFee: "", peraFee: "")
+                ConfirmSwapView(viewModel: viewModel)
             }
         }
     }

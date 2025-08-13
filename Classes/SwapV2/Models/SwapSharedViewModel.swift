@@ -20,6 +20,29 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedAccount: Account
     @Published var selectedAssetIn: AssetItem
     @Published var selectedAssetOut: AssetItem
+    var quote: SwapQuote?
+    
+    var slippageTolerance: String {
+        guard
+            let slippageTolerance = quote?.slippage,
+            slippageTolerance > 0
+        else {
+            return Formatter.percentageFormatter.string(from: 0)!
+        }
+        return Formatter.percentageWith(fraction: 10).string(from: NSDecimalNumber(decimal: slippageTolerance / 100)) ?? Formatter.percentageFormatter.string(from: 0)!
+    }
+    
+    var priceImpact: String {
+        guard
+            let priceImpact = quote?.priceImpact,
+            priceImpact > 0
+        else {
+            return Formatter.percentageFormatter.string(from: 0)!
+        }
+        return Formatter.percentageWith(fraction: 10).string(from: NSDecimalNumber(decimal: priceImpact / 100)) ?? Formatter.percentageFormatter.string(from: 0)!
+    }
+    
+    
     
     @Published var provider: Provider = Provider(
         name: "Vestige.fi",
