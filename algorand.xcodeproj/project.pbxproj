@@ -10634,6 +10634,7 @@
 				2BA4B40F2678D8CE0041586B /* WalletConnect */,
 				173C1125296C10E300FF6217 /* Web */,
 				8B047C3F2C034BED00851DF5 /* IncomingASA */,
+				59166F542E46096B002184C2 /* Charts */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -10646,6 +10647,7 @@
 				D49D2E6A2A54194F00CE5384 /* AssetDetail */,
 				D4D2B52A2DD4DA7D009286EC /* Cards */,
 				D443C3D82DF1D46F00705B1D /* Charts */,
+				59166F0B2E460613002184C2 /* Collectibles */,
 				2B4DF435236C77B200FF9551 /* Device */,
 				F01509D42926FB4C00988355 /* Discover */,
 				95CA71FA27CD5D6700424626 /* MoonPay */,
@@ -10654,6 +10656,7 @@
 				2B4DF42F236C773500FF9551 /* Settings */,
 				2B69AB2F28BFCF0B00A8D65D /* Swap */,
 				F0D3371028F6269B003D2E01 /* Transactions */,
+				59166F0C2E460633002184C2 /* WalletConnect */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -17001,8 +17004,6 @@
 				2BF7280327471E5200CCAC30 /* API */,
 				59166F012E460529002184C2 /* Application */,
 				591678BC2E46498B002184C2 /* AlgorandSecureBackup */,
-				59166F542E46096B002184C2 /* Charts */,
-				59166F0B2E460613002184C2 /* Collectibles */,
 				5916785F2E460CC3002184C2 /* Data */,
 				5916646F2E460021002184C2 /* Demo */,
 				59166F4D2E460902002184C2 /* Discover */,
@@ -17011,8 +17012,6 @@
 				174A0F3128EF162F00D44019 /* Migrations */,
 				17B7D8A42240D79200A6FF9E /* Models */,
 				59166F462E460790002184C2 /* Swap */,
-				591678AC2E462E10002184C2 /* Transactions */,
-				59166F0C2E460633002184C2 /* WalletConnect */,
 			);
 			path = PeraWalletCore;
 			sourceTree = "<group>";
@@ -18424,14 +18423,6 @@
 				591678AB2E462D4B002184C2 /* Session+UI.swift */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		591678AC2E462E10002184C2 /* Transactions */ = {
-			isa = PBXGroup;
-			children = (
-				953EEE2F276C8E5400BACF7A /* SendTransactionDraft.swift */,
-			);
-			path = Transactions;
 			sourceTree = "<group>";
 		};
 		591678AE2E462E8E002184C2 /* Banner */ = {
@@ -23371,6 +23362,7 @@
 		F0D3371028F6269B003D2E01 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
+				953EEE2F276C8E5400BACF7A /* SendTransactionDraft.swift */,
 				F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */,
 			);
 			path = Transactions;
