@@ -180,12 +180,12 @@ final class ASADetailScreen:
         activityFragmentScreen.onContentHeightUpdated = { [weak self] height in
             guard let self else { return }
             if height > activityContentHeight {
-                print("---height:\(height)")
-                activityContentHeight = height
-                //TODO: reload view to use the new activityContentHeight
+                activityContentHeight = height + 100 /// add 100px to leave some bottom padding and garantee the last row is not cut
                 
-    //            self.collectionView.collectionViewLayout.invalidateLayout()
-    //            self.updateSnapshot()
+                collectionView.performBatchUpdates(nil)
+                pagesScreen.pagesView.collectionViewLayout.invalidateLayout()
+                pagesScreen.pagesView.layoutIfNeeded()
+                activityFragmentScreen.onContentHeightUpdated = nil
             }
         }
         
