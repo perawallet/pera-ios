@@ -108,6 +108,21 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
+    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data {
+        do {
+            return try api.rawSign(
+                context: draft.context.toKeyContext,
+                account: draft.account,
+                change: draft.change,
+                keyIndex: draft.keyIndex,
+                message: draft.data,
+                derivationType: draft.derivationType.toBIP32DerivationType
+            )
+        } catch {
+            throw HDWalletSDKError.sdkError(error.localizedDescription)
+        }
+    }
+    
     func verifySignature(_ draft: HDWalletVerifySignatureDraft) -> Bool {
         api.verifyWithPublicKey(
             signature: draft.signature,

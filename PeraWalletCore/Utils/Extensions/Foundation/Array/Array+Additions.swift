@@ -103,6 +103,18 @@ extension Array {
         }
 }
 
+extension Array {
+    func splitToChuncks(_ chunkSize: Int) -> AnyIterator<ArraySlice<Element>> {
+      var offset = 0
+      return AnyIterator {
+        let end = Swift.min(chunkSize, self.count - offset)
+        let result = self[offset ..< offset + end]
+        offset += result.count
+        return !result.isEmpty ? result : nil
+      }
+    }
+}
+
 extension Array where Element == Data? {
     public func findEmptyElementIndexes() -> [Index] {
         var indexes = [Index]()

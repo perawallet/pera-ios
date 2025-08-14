@@ -243,6 +243,10 @@ private class MockHDWalletSDK: HDWalletSDK {
         fatalError("Not implemented")
     }
     
+    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data {
+        fatalError("Not implemented")
+    }
+    
     func verifySignature(_ draft: HDWalletVerifySignatureDraft) -> Bool {
         lastVerifiedSignature = draft
         return verifySignatureResult

@@ -68,6 +68,13 @@ extension ALGAppTarget {
             .store
         ]
         
+        public var appGroupIdentifier: String {
+            switch self {
+            case .staging: return "group.com.peralda.perawallet.staging"
+            default: return "group.com.algorandllc.algorand"
+            }
+        }
+        
         public init?(
             rawValue: String
         ) {

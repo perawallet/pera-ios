@@ -430,6 +430,10 @@ extension Session {
     private enum Cache {
         static var configuration: ApplicationConfiguration?
     }
+    
+    public static func clearConfigurationCache() {
+        Cache.configuration = nil
+    }
 }
 
 extension Session {

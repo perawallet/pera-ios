@@ -31,7 +31,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "pera-staging"
+            "value" : "Pera Wallet Autofill Staging"
           }
         }
       }
@@ -76,6 +76,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pera will use Face ID to log you in securely."
+          }
+        }
+      }
+    },
+    "NSHumanReadableCopyright" : {
+      "comment" : "Copyright (human-readable)",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copyright © 2025 PeraWallet PDA. All rights reserved."
           }
         }
       }

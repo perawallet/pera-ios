@@ -20,8 +20,68 @@ import WalletConnectRelay
 
 struct DefaultSocketFactory: WebSocketFactory {
     func create(with url: URL) -> WebSocketConnecting {
-        return WebSocket(url: url)
+        let request = URLRequest(url: url)
+        return WebSocketWrapper(webSocket: WebSocket(request: request))
     }
 }
 
-extension WebSocket: WebSocketConnecting { }
+class WebSocketWrapper {
+    var webSocket: WebSocket;
+    
+    var connected = false
+    
+    init(webSocket: WebSocket) {
+        self.webSocket = webSocket
+    }
+}
+
+extension WebSocketWrapper: WebSocketConnecting {
+    
+    public var isConnected: Bool {
+        get {
+            connected
+        }
+    }
+    
+    public var onConnect: (() -> Void)? {
+        get {
+            nil
+        }
+        set {}
+    }
+    
+    public var onDisconnect: ((Error?) -> Void)? {
+        get {
+            nil
+        }
+        set {}
+    }
+    
+    public var onText: ((String) -> Void)? {
+        get {
+            nil
+        }
+        set {}
+    }
+    
+    public var request: URLRequest {
+        get {
+            return webSocket.request
+        }
+        set {}
+    }
+    
+    public func connect() {
+        webSocket.connect()
+        self.connected = true
+    }
+    
+    public func disconnect() {
+        webSocket.disconnect()
+        self.connected = false
+    }
+    
+    public func write(string: String, completion: (() -> Void)?) {
+        webSocket.write(string: string, completion: completion)
+    }
+}

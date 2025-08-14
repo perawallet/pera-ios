@@ -484,6 +484,9 @@ extension AppDelegate {
 
         let biometricAuthenticationMigration = BiometricAuthenticationMigration(session: session)
         biometricAuthenticationMigration.migratePasswordToKeychain()
+        
+        let dataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.current.app.appGroupIdentifier)
+        dataStoreMigration.moveDatabaseToAppGroup()
     }
     
     private func setupLegacyBridge() {
@@ -607,27 +610,6 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func createPersistentContainer() -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: "algorand")
-        container.loadPersistentStores { storeDescription, error in
-            if var url = storeDescription.url {
-                var resourceValues = URLResourceValues()
-                resourceValues.isExcludedFromBackup = true
-
-                do {
-                    try url.setResourceValues(resourceValues)
-                } catch {
-                }
-            }
-
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-
-        return container
-    }
-
     private func createAppConfiguration() -> AppConfiguration {
         let walletConnector = walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV1Protocol
         let config = AppConfiguration(
@@ -655,6 +637,11 @@ extension AppDelegate {
         }
         
         return config;
+    }
+    
+    private func createPersistentContainer() -> NSPersistentContainer {
+        return NSPersistentContainer.createPersistentContainer(
+            group: ALGAppTarget.current.app.appGroupIdentifier)
     }
     
     private func createAppLaunchController() -> AppLaunchController {

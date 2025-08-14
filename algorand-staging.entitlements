@@ -9,5 +9,15 @@
 		<string>applinks:perawallet.app</string>
 		<string>applinks:perawallet</string>
 	</array>
+	<key>com.apple.developer.authentication-services.autofill-credential-provider</key>
+	<true/>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.peralda.perawallet.staging</string>
+	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)com.peralda.perawallet.staging</string>
+	</array>
 </dict>
 </plist>

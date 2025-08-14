@@ -123,6 +123,10 @@ final class HDWalletSDKMock: HDWalletSDK {
         }
     }
     
+    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data {
+        fatalError("Not implemented")
+    }
+    
     func verifySignature(_ draft: HDWalletVerifySignatureDraft) -> Bool {
         verifySignatureCalled = true
         lastVerifySignatureDraft = draft

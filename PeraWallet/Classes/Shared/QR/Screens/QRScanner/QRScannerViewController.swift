@@ -20,6 +20,7 @@ import AVFoundation
 import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
+import LiquidAuthSDK
 
 final class QRScannerViewController:
     BaseViewController,
@@ -427,6 +428,18 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                   let qrText = CoinbaseQR.parseQRText(url) {
             closeScreen()
             delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+        } else if let url = URL(string: qrString),
+                  let request = LiquidAuthService.getRequestForURL(url) {
+            closeScreen()
+            if self.configuration.featureFlagService.isEnabled(.liquidConnectEnabled) {
+                self.handleLiquidAuthRequest(request: request)
+            }
+        } else if let url = URL(string: qrString), PassKeyService.isPassKeyURL(url) {
+            closeScreen()
+            if self.configuration.featureFlagService.isEnabled(.liquidAuthEnabled) {
+                // Just launch the URL which will open the iOS fido:/ flow and hand off to the autofill extension
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         } else if qrString.isValidatedAddress {
             let qrText = QRText(mode: .address, address: qrString)
             closeScreen()
@@ -452,6 +465,45 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         }
         let keyValue = param.split(separator: "=")
         return keyValue[safe: 1].map {String($0)}
+    }
+    
+    private func handleLiquidAuthRequest(request: LiquidAuthRequest) {
+        guard let session = self.session else {
+            self.showErrorAlert(message: "Failed to start LiquidAuth session")
+            return
+        }
+        let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: self.hdWalletStorage, session: session)
+        let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: self.configuration.featureFlagService)
+        Task {
+            let response = await liquidAuthManager.handleAuthRequest(request: request)
+            if let error = response.error {
+                self.showErrorAlert(message: error)
+                return
+            } else {
+                do {
+                    try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { message in
+                        Task {
+                            //TODO: Implement incoming message handling here...
+                            //This will be done when we implement liquid connect
+                            let response = "pong"
+                            SignalService.shared.sendMessage(response)
+                        }
+                    }
+                } catch {
+                    self.showErrorAlert(message: "Failed to establish LiquidAuth communcations: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func showErrorAlert(message: String) {
+        displaySimpleAlertWith(
+            title: String(localized: "liquid-auth-title-error"),
+            message: message
+        ) { [weak self] _ in
+            self?.cameraResetHandler()
+        }
+        
     }
 }
 
@@ -652,4 +704,5 @@ extension QRScannerViewControllerDelegate {
 enum QRScannerError: Swift.Error {
     case jsonSerialization
     case invalidData
+    case liquidAuthError(String)
 }
