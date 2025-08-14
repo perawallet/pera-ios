@@ -38,7 +38,7 @@ class AnnouncementCell:
 
 extension AnnouncementCell {
     private func addTopBackgroundView() {
-        topBackgroundView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+        topBackgroundView.backgroundColor = Colors.Defaults.background.uiColor
 
         contentView.insertSubview(
             topBackgroundView,
