@@ -28,7 +28,7 @@ struct AnnouncementViewModel:
 
     var shouldDisplayAction: Bool {
         switch type {
-        case .backup, .card:
+        case .backup, .card, .retail:
             return true
         case .governance, .generic, .staking:
             return ctaUrl != nil && ctaTitle != nil
@@ -41,7 +41,7 @@ struct AnnouncementViewModel:
         switch model.type {
         case .backup:
             configureForBackup()
-        case .generic, .staking, .card:
+        case .generic, .staking, .card, .retail:
             configureForGeneric(model)
         case .governance:
             configureForGovernance(model)
