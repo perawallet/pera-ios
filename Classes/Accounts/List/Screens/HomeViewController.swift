@@ -680,6 +680,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitGeneric))
         }
     }
 
@@ -698,6 +700,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitStaking))
         }
     }
     
@@ -716,6 +720,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitCard))
         }
     }
     
@@ -734,6 +740,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitRetail))
         }
     }
 
