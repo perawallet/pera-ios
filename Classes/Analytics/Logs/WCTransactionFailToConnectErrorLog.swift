@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,41 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionRequestSDKErrorEvent.swift
+//   WCTransactionFailToConnectErrorLog.swift
 
 import Foundation
-import MacaroonVendors
 
-struct WCTransactionRequestSDKErrorEvent: ALGAnalyticsEvent {
-    let name: ALGAnalyticsEventName
+struct WCTransactionFailToConnectErrorLog: ALGAnalyticsLog {
+    let name: ALGAnalyticsLogName
     let metadata: ALGAnalyticsMetadata
     
     fileprivate init(
-        error: Error?,
         url: WalletConnectURL
     ) {
-        self.name = .wcTransactionRequestSDKError
+        self.name = .walletConnectTransactionFailToConnectError
         
-        var metadata: ALGAnalyticsMetadata = [
+        self.metadata  = [
             .wcVersion: WalletConnectProtocolID.v1.rawValue,
             .wcRequestURL: Self.regulate(url.absoluteString)
         ]
-        if let error {
-            metadata[.wcRequestError] = Self.regulate(error.localizedDescription)
-        }
-
-        self.metadata = metadata
     }
 }
 
-extension AnalyticsEvent where Self == WCTransactionRequestSDKErrorEvent {
-    static func wcTransactionRequestSDKError(
-        error: Error?,
+extension ALGAnalyticsLog where Self == WCTransactionFailToConnectErrorLog {
+    static func wcTransactionFailToConnectError(
         url: WalletConnectURL
     ) -> Self {
-        return WCTransactionRequestSDKErrorEvent(
-            error: error,
-            url: url
-        )
+        return WCTransactionFailToConnectErrorLog(url: url)
     }
 }
