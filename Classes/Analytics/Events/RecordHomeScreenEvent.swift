@@ -42,6 +42,10 @@ extension RecordHomeScreenEvent {
         case swap
         case tapAccounts
         case visitGovernance
+        case visitRetail
+        case visitStaking
+        case visitCard
+        case visitGeneric
         case notification
         case tapChart
 
@@ -69,6 +73,14 @@ extension RecordHomeScreenEvent {
                 return .createAccountInHomeScreen /// <todo>: It will be replaced the actual event when event created
             case .visitGovernance:
                 return .tapGovernanceBanner
+            case .visitRetail:
+                return .tapRetailBanner
+            case .visitStaking:
+                return .tapStakingBanner
+            case .visitCard:
+                return .tapCardBanner
+            case .visitGeneric:
+                return .tapGenericBanner
             case .notification:
                 return .tapNotifictionInHome
             case .tapChart:

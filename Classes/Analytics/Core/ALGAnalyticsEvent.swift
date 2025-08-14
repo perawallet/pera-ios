@@ -114,6 +114,10 @@ enum ALGAnalyticsEventName:
     case tapDownloadTransactionInHistory
     case tapFilterTransactionInHistory
     case tapGovernanceBanner
+    case tapRetailBanner
+    case tapStakingBanner
+    case tapCardBanner
+    case tapGenericBanner
     case tapHistoryInAccountDetail
     case tapMoreInAccountDetail
     case tapNftReceive
@@ -186,6 +190,10 @@ extension ALGAnalyticsEventName {
         case .discoverAssetBuy: rawName = "discover_token_detail_buy"
         case .discoverAssetSell: rawName = "discover_token_detail_sell"
         case .tapGovernanceBanner: rawName = "homescr_visitgovernance"
+        case .tapRetailBanner: rawName = "homescr_visitretail"
+        case .tapStakingBanner: rawName = "homescr_visitstaking"
+        case .tapCardBanner: rawName = "homescr_visitcard"
+        case .tapGenericBanner: rawName = "homescr_visitgeneric"
         case .tapDownloadTransactionInHistory: rawName = "historyscr_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
         case .createAccountInHomeScreen: rawName = "homescr_account_add"

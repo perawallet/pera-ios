@@ -77,6 +77,8 @@ class TransactionsViewController:
         dataController.stopPendingTransactionPolling()
     }
     
+    var onContentHeightUpdated: ((CGFloat) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,7 +95,10 @@ class TransactionsViewController:
                 self.transactionsDataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
-                )
+                ) { [weak self] in
+                    guard let self = self else { return }
+                    onContentHeightUpdated?(self.listView.contentSize.height)
+                }
             }
         }
 

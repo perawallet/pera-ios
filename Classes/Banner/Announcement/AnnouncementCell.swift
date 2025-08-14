@@ -38,7 +38,7 @@ class AnnouncementCell:
 
 extension AnnouncementCell {
     private func addTopBackgroundView() {
-        topBackgroundView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+        topBackgroundView.backgroundColor = Colors.Defaults.background.uiColor
 
         contentView.insertSubview(
             topBackgroundView,
@@ -92,6 +92,17 @@ final class GovernanceAnnouncementCell: AnnouncementCell {
 
 final class CardAnnouncementCell: AnnouncementCell {
     static let theme = CardAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}
+
+final class RetailCampaignAnnouncementCell: AnnouncementCell {
+    static let theme = RetailCampaignAnnouncementViewTheme()
     
     override init(
         frame: CGRect
