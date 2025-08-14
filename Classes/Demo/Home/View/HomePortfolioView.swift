@@ -148,7 +148,11 @@ final class HomePortfolioView:
             return
         }
         
-        tooltipController.present(on: valueView, title: String(localized: "tooltip-privacy-mode"))
+        asyncMain(afterDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
+            tooltipController.present(on: valueView, title: String(localized: "tooltip-privacy-mode"))
+        }
     }
 }
 
