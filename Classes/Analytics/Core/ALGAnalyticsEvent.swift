@@ -148,7 +148,6 @@ enum ALGAnalyticsEventName:
     case wcTransactionRequestDidAppear
     case wcTransactionRequestDidLoad
     case wcTransactionRequestReceived
-    case wcTransactionRequestSDKError
     case wcTransactionRequestValidated
     case tapQRInMenu
     case tapCreateCardInMenu
@@ -277,7 +276,6 @@ extension ALGAnalyticsEventName {
         case .wcTransactionRequestDidAppear: rawName = "wc_transaction_request_DidAppear"
         case .wcTransactionRequestDidLoad: rawName = "wc_transaction_request_DidLoad"
         case .wcTransactionRequestReceived: rawName = "wc_transaction_request_Received"
-        case .wcTransactionRequestSDKError: rawName = "wc_transaction_request_SDKError"
         case .wcTransactionRequestValidated: rawName = "wc_transaction_request_Validated"
         case .buyCryptoMeldSelected: rawName = "meldscr_algo_select_wallet_tap"
         case .buyCryptoBidaliSelected: rawName = "bidscr_algo_sell_tap"

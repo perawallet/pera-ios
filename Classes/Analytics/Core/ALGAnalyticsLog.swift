@@ -35,10 +35,13 @@ enum ALGAnalyticsLogName:
     case ledgerTransactionError = "LedgerTransactionError"
     case mismatchAccountError = "MismatchAccountFound"
     case recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed = "recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed"
+    case walletConnectTransactionFailToConnectError = "WCTransactionFailToConnectError"
     case wcSessionSaveError = "WCSessionNotSaved"
+    case walletConnectTransactionApprovalFailedError = "WCTransactionRequestApprovalFailedError"
     case walletConnectTransactionRequestDidAppear = "WCTransactionRequestDidAppear"
     case walletConnectTransactionRequestDidLoad = "WCTransactionRequestDidLoad"
     case walletConnectTransactionRequestReceived = "WCTransactionRequestReceived"
+    case walletConnectTransactionRejectionFailedError = "WCTransactionRequestRejectionFailedError"
     case walletConnectTransactionRequestSDKError = "WCTransactionRequestSDKError"
     case walletConnectTransactionRequestValidated = "WCTransactionRequestValidated"
     case walletConnectV2SessionConnectionApprovalFailed = "WCv2SessionConnectionApprovalFailed"
@@ -69,6 +72,9 @@ extension ALGAnalyticsLogName {
         case .walletConnectV2SessionDisconnectionFailed: return 13
         case .walletConnectV2TransactionRequestApprovalFailed: return 14
         case .walletConnectV2TransactionRequestRejectionFailed: return 15
+        case .walletConnectTransactionFailToConnectError: return 16
+        case .walletConnectTransactionApprovalFailedError: return 17
+        case .walletConnectTransactionRejectionFailedError: return 18
         }
     }
 }

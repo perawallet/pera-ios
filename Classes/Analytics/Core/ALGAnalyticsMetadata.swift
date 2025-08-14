@@ -77,4 +77,5 @@ enum ALGAnalyticsMetadataKey:
     case scriptMessage = "script_message"
     case screenName = "screen"
     case bannerName = "banner_name"
+    case wcActionError = "wc_action_error"
 }
