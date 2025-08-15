@@ -18,15 +18,15 @@
 import Foundation
 
 extension WalletConnectResponse {
-    static func signature(_ signature: [Data?], for request: WalletConnectRequest) -> WalletConnectResponse? {
+    static func signature(_ signature: [Data?], for request: WalletConnectRequest) throws -> WalletConnectResponse? {
         guard let id = request.id else {
             return nil
         }
 
-        return try? WalletConnectResponse(url: request.url, value: signature, id: id)
+        return try WalletConnectResponse(url: request.url, value: signature, id: id)
     }
 
-    static func rejection(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) -> WalletConnectResponse? {
-        return try? WalletConnectResponse(url: request.url, errorCode: error.rawValue, message: error.message, id: request.id)
+    static func rejection(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) throws -> WalletConnectResponse? {
+        return try WalletConnectResponse(url: request.url, errorCode: error.rawValue, message: error.message, id: request.id)
     }
 }

@@ -681,6 +681,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitGeneric))
         }
     }
 
@@ -699,6 +701,8 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitStaking))
         }
     }
     
@@ -717,6 +721,28 @@ extension HomeViewController {
             [weak self] in
             guard let self, let ctaUrl = item.ctaUrl else { return }
             self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitCard))
+        }
+    }
+    
+    private func linkInteractors(
+        _ cell: RetailCampaignAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self, let ctaUrl = item.ctaUrl else { return }
+            self.triggerBannerCTA(itemUrl: ctaUrl)
+            
+            self.analytics.track(.recordHomeScreen(type: .visitRetail))
         }
     }
 
@@ -1056,6 +1082,9 @@ extension HomeViewController {
                 linkInteractors(cell, for: item)
             case .card:
                 guard let cell = cell as? CardAnnouncementCell else { return }
+                linkInteractors(cell, for: item)
+            case .retail:
+                guard let cell = cell as? RetailCampaignAnnouncementCell else { return }
                 linkInteractors(cell, for: item)
             }
         case .carouselBanner:

@@ -73,12 +73,17 @@ final class TransactionDetailViewController: BaseScrollViewController {
 
         if !tooltipDisplayStore.isDisplayedCopyAddressTooltip {
             tooltipDisplayStore.isDisplayedCopyAddressTooltip = true
-
-            tooltipController.present(
-                on: transactionDetailView.userView.detailLabel,
-                title: String(localized: "title-press-hold-copy-address"),
-                duration: .default
-            )
+            
+            asyncMain(afterDuration: 0.3) { [weak self] in
+                guard let self else { return }
+                
+                tooltipController.present(
+                    on: transactionDetailView.userView.detailLabel,
+                    title: String(localized: "title-press-hold-copy-address"),
+                    duration: .default
+                )
+            }
+            
             return
         }
     }

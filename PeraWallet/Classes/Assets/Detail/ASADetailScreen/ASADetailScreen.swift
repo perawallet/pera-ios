@@ -116,6 +116,7 @@ final class ASADetailScreen:
     private var lastDisplayState = DisplayState.normal
     private var isViewLayoutLoaded = false
     private var selectedPageIndex = 0
+    private var activityContentHeight: CGFloat = 600
 
     private var shouldDisplayMarketInfo: Bool {
         dataController.asset.isAvailableOnDiscover
@@ -177,6 +178,18 @@ final class ASADetailScreen:
         activityFragmentScreen.scrollView.isScrollEnabled = false
         aboutFragmentScreen.scrollView.isScrollEnabled = false
         
+        activityFragmentScreen.onContentHeightUpdated = { [weak self] height in
+            guard let self else { return }
+            if height > activityContentHeight {
+                activityContentHeight = height + 100 /// add 100px to leave some bottom padding and garantee the last row is not cut
+                
+                collectionView.performBatchUpdates(nil)
+                pagesScreen.pagesView.collectionViewLayout.invalidateLayout()
+                pagesScreen.pagesView.layoutIfNeeded()
+                activityFragmentScreen.onContentHeightUpdated = nil
+            }
+        }
+        
         // Set up the page items after the view hierarchy is established
         if !isPagesScreenConfigured {
             UIView.performWithoutAnimation {
@@ -195,6 +208,8 @@ final class ASADetailScreen:
         if presentedViewController == nil {
             switchToDefaultNavigationBarAppearance()
         }
+        
+        activityFragmentScreen.onContentHeightUpdated = nil
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
@@ -359,13 +374,13 @@ final class ASADetailScreen:
     private func createPageContainerSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(600)
+            heightDimension: .estimated(activityContentHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(600)
+            heightDimension: .estimated(activityContentHeight)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
