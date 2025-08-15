@@ -14,18 +14,26 @@
 
 import Foundation
 import DeveloperToolsSupport
+import AuthenticationServices
 import pera_wallet_core
 
 final class PasskeyListViewModel: ObservableObject {
     
         
     @Published fileprivate(set) var passkeys: [PassKey] = []
+    @Published var settingNotEnabled = false
     private let passKeyManager: PassKeyService?
     
     
     init() {
         if let appConfig = AppDelegate.shared?.appConfiguration {
             self.passKeyManager = PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
+            let store = ASCredentialIdentityStore.shared
+            store.getState { [weak self] state in
+                if let self = self {
+                    self.settingNotEnabled = !state.isEnabled
+                }
+            }
             reloadPasskeys()
         } else {
             self.passKeyManager = nil
