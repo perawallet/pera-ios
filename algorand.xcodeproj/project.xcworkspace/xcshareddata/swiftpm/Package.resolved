@@ -1,5 +1,5 @@
 {
-  "originHash" : "2f9267f031c17985746fb3fbf3437795f1ef0a976ae3a99d52a8abe360de7795",
+  "originHash" : "54108131067780c41f54e636d49f8573f2f8a35daf495882776abc464069f07d",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -47,6 +47,15 @@
       }
     },
     {
+      "identity" : "base32",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/norio-nomura/Base32.git",
+      "state" : {
+        "revision" : "c4bc0a49689999ae2c7c778f3830a6a6e694efb8",
+        "version" : "0.9.0"
+      }
+    },
+    {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/attaswift/BigInt.git",
@@ -62,6 +71,15 @@
       "state" : {
         "revision" : "039f56c5d7960f277087a0be51f5eb04ed0ec073",
         "version" : "1.5.1"
+      }
+    },
+    {
+      "identity" : "deterministic-p256-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algorandfoundation/deterministic-P256-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4fe03ee04894cb3dcf706b9e70a39588c1cec1c9"
       }
     },
     {
@@ -161,6 +179,15 @@
       "state" : {
         "revision" : "a0bc79961d7be727d258d33d5a6b2f1023270ba1",
         "version" : "1.22.5"
+      }
+    },
+    {
+      "identity" : "liquid-auth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algorandfoundation/liquid-auth-ios",
+      "state" : {
+        "branch" : "fix/ios-versioning",
+        "revision" : "1208ee035f446bbc09605acb810afcbff4ec4be8"
       }
     },
     {
@@ -281,12 +308,29 @@
       }
     },
     {
+      "identity" : "scout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bgerstle/Scout",
+      "state" : {
+        "revision" : "b9d1b5724ea208044d37edb2d723c1fa072ab70c",
+        "version" : "0.0.1"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "socket.io-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/socketio/socket.io-client-swift.git",
+      "state" : {
+        "revision" : "42da871d9369f290d6ec4930636c40672143905b"
       }
     },
     {
@@ -303,8 +347,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daltoniam/Starscream",
       "state" : {
-        "revision" : "a063fda2b8145a231953c20e7a646be254365396",
-        "version" : "3.1.2"
+        "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
+        "version" : "4.0.8"
       }
     },
     {
@@ -350,6 +394,14 @@
       "state" : {
         "revision" : "4859e76668cdf80e0b01d76eaf0c70d50e1f1bd9",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swiftcbor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/valpackett/SwiftCBOR.git",
+      "state" : {
+        "revision" : "ea5ece79b0efde241495bfaa74eccceeffc382bc"
       }
     },
     {
@@ -407,12 +459,21 @@
       }
     },
     {
+      "identity" : "webrtc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stasel/WebRTC.git",
+      "state" : {
+        "revision" : "820d216010b6bb5695139852ec6740edd6f790ff",
+        "version" : "138.0.0"
+      }
+    },
+    {
       "identity" : "xhd-wallet-api-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/perawallet/xHD-Wallet-API-swift",
       "state" : {
-        "branch" : "main",
-        "revision" : "4895ec3740c2cf164ce2c58ad970800279e55fc3"
+        "branch" : "wjbeau/expose-raw-sign",
+        "revision" : "838463d0b203f92d75cedaf344f3ad24857fcfc4"
       }
     }
   ],

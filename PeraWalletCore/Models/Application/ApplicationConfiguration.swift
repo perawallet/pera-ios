@@ -33,7 +33,7 @@ public final class ApplicationConfiguration: NSManagedObject {
 }
 
 extension ApplicationConfiguration {
-    enum DBKeys: String {
+    public enum DBKeys: String {
         case password = "password"
         case userData = "authenticatedUserData"
         case isDefaultNodeActive = "isDefaultNodeActive"

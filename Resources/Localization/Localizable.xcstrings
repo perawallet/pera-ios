@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -1889,6 +1892,9 @@
         }
       }
     },
+    "Back" : {
+
+    },
     "back-up-before-removing-account-warning-body" : {
       "localizations" : {
         "en" : {
@@ -2903,6 +2909,9 @@
         }
       }
     },
+    "Delete" : {
+
+    },
     "dev-settings-create-algo25-account" : {
       "localizations" : {
         "en" : {
@@ -3002,6 +3011,9 @@
           }
         }
       }
+    },
+    "Error" : {
+
     },
     "express-send-explanation" : {
       "localizations" : {
@@ -3881,6 +3893,126 @@
         }
       }
     },
+    "liquid-auth-authentication-required-auth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User verification is required for authentication."
+          }
+        }
+      }
+    },
+    "liquid-auth-authentication-required-prompt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User verification is required"
+          }
+        }
+      }
+    },
+    "liquid-auth-authentication-required-registration" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User verification is required for registration"
+          }
+        }
+      }
+    },
+    "liquid-auth-autofill-disabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoFill Passwords & Passkeys is not enabled for Pera Wallet. Please enable it in Settings > General > AutoFill & Passwords."
+          }
+        }
+      }
+    },
+    "liquid-auth-error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error has occurred when trying to authenticate.  Please try again and contact support if the problem persists."
+          }
+        }
+      }
+    },
+    "liquid-auth-invalid-passkey-found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A problem was found with the stored passkey."
+          }
+        }
+      }
+    },
+    "liquid-auth-no-account-found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Universal Wallet found.  A Universal Wallet is required to use LiquidAuth or Passkeys."
+          }
+        }
+      }
+    },
+    "liquid-auth-no-passkey-found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching passkey found."
+          }
+        }
+      }
+    },
+    "liquid-auth-not-implemented" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liquid Auth support is not currently enabled."
+          }
+        }
+      }
+    },
+    "liquid-auth-passkey-already-exists" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A passkey for this app or site already exists."
+          }
+        }
+      }
+    },
+    "liquid-auth-title-error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
     "local-authentication-disabled-error-message" : {
       "localizations" : {
         "en" : {
@@ -3917,6 +4049,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometric\nAuthentication\nEnabled"
+          }
+        }
+      }
+    },
+    "local-authentication-failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to authenticate using FaceID/Touch ID, pPlease try again."
           }
         }
       }
@@ -6344,6 +6487,71 @@
         }
       }
     },
+    "settings-passkeys-delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "settings-passkeys-delete-confirm-message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete this passkey?"
+          }
+        }
+      }
+    },
+    "settings-passkeys-delete-confirm-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure?"
+          }
+        }
+      }
+    },
+    "settings-passkeys-empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You currently have no passkeys saved."
+          }
+        }
+      }
+    },
+    "settings-passkeys-last-used" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last used: %@"
+          }
+        }
+      }
+    },
+    "settings-passkeys-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkeys"
+          }
+        }
+      }
+    },
     "settings-rate-modal-description" : {
       "localizations" : {
         "en" : {
@@ -6453,6 +6661,9 @@
           }
         }
       }
+    },
+    "Signing request..." : {
+
     },
     "single-transaction-request-opt-in-subtitle" : {
       "localizations" : {
@@ -8375,6 +8586,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your previous rekey will be replaced"
+          }
+        }
+      }
+    },
+    "title-passkeys" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkeys"
           }
         }
       }
