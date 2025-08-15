@@ -36,8 +36,8 @@ class CredentialProviderService {
         
         do {
             self.initializeExtension()
-            guard let enabled = CoreAppConfiguration.shared?.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-                return RegistrationOutcome("")
+            guard let _ = CoreAppConfiguration.shared?.featureFlagService.isEnabled(.liquidAuthEnabled) else {
+                return RegistrationOutcome("liquid-auth-not-implemented".localized())
             }
                     
             
@@ -60,7 +60,7 @@ class CredentialProviderService {
                 return RegistrationOutcome("liquid-auth-error".localized())
             }
             
-            if let error = response.error {
+            if response.error != nil {
                 self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                         username: credentialIdentity.userName)
                 return RegistrationOutcome("liquid-auth-error".localized())
@@ -85,7 +85,7 @@ class CredentialProviderService {
                 attestationObject: attestationObject
             )
             return RegistrationOutcome(credential)
-        } catch let error as NSError {
+        } catch {
             self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                     username: credentialIdentity.userName)
             return RegistrationOutcome("liquid-auth-error".localized())

@@ -60,7 +60,7 @@ final class PassKeyServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_getSigningAddress_returnsAddress() async throws {
+    func test_getSigningAccounts_returnsAddresses() async throws {
         let detail = HDWalletAddressDetail(walletId: "ABC", account: 0, change: 0, keyIndex: 0)
         let info = AccountInformation(address: "addr", name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
         let info2 = AccountInformation(address: "nothd", name: "My NonHD Account", isWatchAccount: false, isBackedUp: false)
@@ -75,8 +75,9 @@ final class PassKeyServiceTests: XCTestCase {
         mockSession.authenticatedUser = user
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
             
-        let result = try await service.getSigningAddress()
-        XCTAssertEqual(result?.address, address.address)
+        let result = try await service.getSigningAccounts()
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first?.address, info.address)
     }
 
     func test_createAndSavePassKey_success() async throws {
@@ -92,7 +93,7 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         
-        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_success.com", displayName: "TestPass")
+        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_success.com", displayName: "TestPass", username: "myuser")
 
         let response = try await service.createAndSavePassKey(request: request)
 
@@ -106,7 +107,7 @@ final class PassKeyServiceTests: XCTestCase {
         let user = User(accounts: [])
         mockSession.authenticatedUser = user
 
-        let request = PassKeyCreationRequest(origin: "origin.com", displayName: "test")
+        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_fails_whenAccountMissing.com", displayName: "test", username: "myuser")
 
         let response = try await service.createAndSavePassKey(request: request)
         XCTAssertEqual(response.error, "liquid-auth-no-account-found".localized())
@@ -125,9 +126,9 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         
-        _ = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test"))
+        _ = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test", username: "myuser"))
 
-        let response = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test"))
+        let response = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test", username: "myuser"))
         XCTAssertEqual(response.error, "liquid-auth-passkey-already-exists".localized())
     }
 
@@ -145,42 +146,43 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
-        _ = try await service.createAndSavePassKey(request: .init(origin: "test_getAuthenticationData_success.com", displayName: "test"))
+        _ = try await service.createAndSavePassKey(request: .init(origin: "test_getAuthenticationData_success.com", displayName: "test", username: "myuser"))
 
-        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_success.com"))
+        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_success.com", username: "myuser"))
 
         XCTAssertNil(response.error)
-        XCTAssertEqual(response.address?.address, address.address)
+        XCTAssertEqual(response.address, address.address)
         XCTAssertNotNil(response.credentialId)
         XCTAssertNotNil(response.keyPair)
     }
 
-    func test_getAuthenticationData_fails_whenNoAccount() async throws {
+    func test_getAuthenticationData_fails_whenNoMatchingPasskey() async throws {
         let info = AccountInformation(address: "nothd", name: "My NonHD Account", isWatchAccount: false, isBackedUp: false)
         let expectedAccounts = [
             info
         ]
         let user = User(accounts: expectedAccounts)
         mockSession.authenticatedUser = user
-        let response = try await service.getAuthenticationData(request: .init(origin: "origin.com"))
+        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoAccount.com", username: "myuser"))
 
-        XCTAssertEqual(response.error, "liquid-auth-no-account-found".localized())
+        XCTAssertEqual(response.error, "liquid-auth-no-passkey-found".localized())
     }
 
-    func test_getAuthenticationData_fails_whenNoMatchingPasskey() async throws {
+    func test_getAuthenticationData_fails_whenNoMatchingAccount() async throws {
         let seed = generateSeed()
         let address = generateAddress(seed: seed)
-        let detail = HDWalletAddressDetail(walletId: address.walletId, account: 0, change: 0, keyIndex: 0)
-        let info = AccountInformation(address: address.address, name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
-        let expectedAccounts = [
-            info
-        ]
-        let user = User(accounts: expectedAccounts)
+        let user = User(accounts: [])
         mockSession.authenticatedUser = user
-        mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
-        mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         
-        let response = try await service.getAuthenticationData(request: .init(origin: "other.com"))
+        // tamper passkey data
+        PassKey.create(entity: PassKey.entityName, with: [
+            PassKey.DBKeys.origin.rawValue: "test_getAuthenticationData_fails_whenNoMatchingAccount.com",
+            PassKey.DBKeys.username.rawValue: address.address,
+            PassKey.DBKeys.address.rawValue: address.address,
+            PassKey.DBKeys.credentialId.rawValue: "fake_id",
+        ])
+        
+        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoMatchingPasskey.com", username: "myuser"))
         XCTAssertEqual(response.error, "liquid-auth-no-passkey-found".localized())
     }
 
@@ -200,12 +202,12 @@ final class PassKeyServiceTests: XCTestCase {
         // tamper passkey data
         PassKey.create(entity: PassKey.entityName, with: [
             PassKey.DBKeys.origin.rawValue: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com",
-            PassKey.DBKeys.username.rawValue: address.address,
+            PassKey.DBKeys.username.rawValue: "myuser",
             PassKey.DBKeys.address.rawValue: address.address,
             PassKey.DBKeys.credentialId.rawValue: "fake_id",
         ])
 
-        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com"))
+        let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com", username: "myuser"))
         XCTAssertEqual(response.error, "liquid-auth-invalid-passkey-found".localized())
     }
 

@@ -16,13 +16,15 @@ import Foundation
 
 public struct PassKeyCreationRequest {
     public var origin: String
-    public var username: String?
+    public var username: String
     public var displayName: String
+    public var address: String?
     
-    public init(origin: String, displayName: String, username: String? = nil) {
+    public init(origin: String, displayName: String, username: String, address: String? = nil) {
         self.origin = origin
         self.username = username
         self.displayName = displayName
+        self.address = address
     }
 }
 

@@ -23,12 +23,12 @@ class MockPassKeyService : PassKeyServicing, Mockable {
     
     var mock = Mock()
     
-    func getSigningAddress() async throws -> HDWalletAddress? {
-        try! mock.call.getSigningAddress() as! HDWalletAddress?
+    func getSigningAccounts() async throws -> [AccountInformation] {
+        try! mock.call.getSigningAccounts() as! [AccountInformation]
     }
     
-    func getSigningWallet() async throws -> (HDWalletSDK, HDWalletAddressDetail)? {
-        try! mock.call.getSigningWallet() as! (HDWalletSDK, HDWalletAddressDetail)?
+    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
+        try! mock.call.getSigningSDK(account: account) as! HDWalletSDK?
     }
     
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {

@@ -39,10 +39,10 @@ public enum PassphraseUtils {
         return MnemonicsData(mnemonics: mnemonics, isHDWallet: true)
     }
     
-    public static func mnemonics(address: HDWalletAddress, hdWalletStorage: HDWalletStorable, session: Session) -> MnemonicsData {
+    public static func mnemonics(info: AccountInformation, hdWalletStorage: HDWalletStorable, session: Session) -> MnemonicsData {
         
-        guard let hdWallet = try? hdWalletStorage.wallet(id: address.walletId) else {
-            let mnemonics = session.mnemonics(forAccount: address.address)
+        guard let walletId = info.hdWalletAddressDetail?.walletId, let hdWallet = try? hdWalletStorage.wallet(id: walletId) else {
+            let mnemonics = session.mnemonics(forAccount: info.address)
             return MnemonicsData(mnemonics: mnemonics, isHDWallet: false)
         }
         

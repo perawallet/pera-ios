@@ -65,8 +65,8 @@ final class LiquidAuthServiceTests: XCTestCase {
 
     func test_handleAuthRequest_returnsError_whenNoAccount() async {
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
-        let result: HDWalletAddress? = nil
-        mockPassKeyService.expect.getSigningAddress().to(`return`(result))
+        let result: [AccountInformation] = []
+        mockPassKeyService.expect.getSigningAccounts().to(`return`(result))
 
         let response = await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
 
@@ -79,16 +79,17 @@ final class LiquidAuthServiceTests: XCTestCase {
         let detail = HDWalletAddressDetail(walletId: "ABC", account: 0, change: 0, keyIndex: 0)
         let seed = generateSeed()
         let address = generateAddress(seed: seed)
+        let info = AccountInformation(address: address.address, name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
 
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
-        mockPassKeyService.expect.getSigningAddress().to(`return`(address))
-        mockPassKeyService.expect.getSigningWallet().to(`return`((mockHDWalletSDK, detail)))
+        mockPassKeyService.expect.getSigningAccounts().to(`return`([info]))
+        mockPassKeyService.expect.getSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
         mockPassKeyService.expect.hasPassKey(origin: equalTo("origin.com"), username: equalTo(address.address)).to(`return`(true))
         
         mockHDWalletSDK.expect.rawSign(draft: any()).to(`return`("authData".data(using: .utf8)))
 
         let keyPair = try! getPrivateKey(origin: "origin.com")
-        let authResponse = PassKeyAuthenticationResponse(credentialId: "cred", address: address, keyPair: keyPair)
+        let authResponse = PassKeyAuthenticationResponse(credentialId: "cred", address: address.address, keyPair: keyPair)
         mockPassKeyService.expect.getAuthenticationData(request: any()).to(`return`(authResponse))
 
         mockLiquidAuthSDK.expect.postAssertionOptions(origin: any(), credentialId: any()).to(`return`(try! JSONSerialization.data(withJSONObject: [
@@ -118,11 +119,11 @@ final class LiquidAuthServiceTests: XCTestCase {
         let seed = generateSeed()
         let address = generateAddress(seed: seed)
         let detail = HDWalletAddressDetail(walletId: "ABC", account: 0, change: 0, keyIndex: 0)
-        let info = AccountInformation(address: "addr", name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
+        let info = AccountInformation(address: address.address, name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
         
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
-        mockPassKeyService.expect.getSigningAddress().to(`return`(address))
-        mockPassKeyService.expect.getSigningWallet().to(`return`((mockHDWalletSDK, detail)))
+        mockPassKeyService.expect.getSigningAccounts().to(`return`([info]))
+        mockPassKeyService.expect.getSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
         mockPassKeyService.expect.hasPassKey(origin: equalTo("origin.com"), username: equalTo(address.address)).to(`return`(false))
         mockPassKeyService.expect.createAndSavePassKey(
             request: any()

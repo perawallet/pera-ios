@@ -18,7 +18,7 @@ import CryptoKit
 public struct PassKeyAuthenticationResponse {
     public var credentialId: String?
     public var error: String?
-    public var address: HDWalletAddress?
+    public var address: String?
     public var keyPair: P256.Signing.PrivateKey?
     
     public var success: Bool {

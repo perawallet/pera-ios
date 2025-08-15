@@ -16,9 +16,9 @@ import Foundation
 
 public struct PassKeyAuthenticationRequest {
     public var origin: String
-    public var username: String?
+    public var username: String
     
-    public init(origin: String, username: String? = nil) {
+    public init(origin: String, username: String) {
         self.origin = origin
         self.username = username
     }

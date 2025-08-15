@@ -19,8 +19,8 @@ import SwiftCBOR
 import x_hd_wallet_api
 
 public protocol PassKeyServicing {
-    func getSigningAddress() async throws -> HDWalletAddress?
-    func getSigningWallet() async throws -> (HDWalletSDK, HDWalletAddressDetail)?
+    func getSigningAccounts() async throws -> [AccountInformation]
+    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK?
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse
     func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse
     
@@ -34,7 +34,7 @@ public final class PassKeyService: PassKeyServicing {
     
     let hdWalletStorage: HDWalletStorable
     let session: Session
-    var signingAddress: HDWalletAddress?
+    var signingAccounts: [AccountInformation]? = nil
     private let liquidAuthSDK: LiquidAuthSDKAPI
     
     public init(hdWalletStorage: HDWalletStorable,
@@ -52,86 +52,71 @@ public extension PassKeyService {
         url.scheme?.lowercased() == "fido"
     }
     
-    func getSigningAddress() async throws -> HDWalletAddress? {
-        if let signingAddress = self.signingAddress {
-            return signingAddress
+    func getSigningAccounts() async throws -> [AccountInformation] {
+        if let signingAccounts = self.signingAccounts {
+            return signingAccounts
         }
         
-        guard let info = self.session.authenticatedUser?.accounts.first(where:{ $0.hdWalletAddressDetail != nil && $0.type == .standard }),
-              let walletId = info.hdWalletAddressDetail?.walletId else {
-            return nil
-        }
-        
-        
-        self.signingAddress = try self.hdWalletStorage.address(walletId: walletId, address: info.address)
-        return self.signingAddress
+        self.signingAccounts = self.session.authenticatedUser?.accounts.filter({ $0.hdWalletAddressDetail != nil && $0.type == .standard})
+        return self.signingAccounts ?? []
     }
     
-    func getSigningWallet() async throws -> (HDWalletSDK, HDWalletAddressDetail)? {
+    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
         // We're going to need access to the wallet seed for signing later
-        
-        guard let signingAddress = try await getSigningAddress(),
-              let detail = self.session.authenticatedUser?.hdWalletsAccounts.first(where: { $0.address == signingAddress.address })?.hdWalletAddressDetail,
-              let wallet = try hdWalletStorage.wallet(id: signingAddress.walletId),
+        guard let walletId = account.hdWalletAddressDetail?.walletId,
+              let wallet = try self.hdWalletStorage.wallet(id: walletId),
               let seed = HDWalletUtils.generateSeed(fromEntropy: wallet.entropy),
               let sdk = HDWalletSDKImp(seed: seed.toHexString())
         else {
             return nil
         }
         
-        return (sdk, detail)
+        return sdk
     }
     
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {
         let origin = request.origin
-        
-        guard let signingAddress = try await getSigningAddress() else {
+        let signingAccounts = try await getSigningAccounts()
+        guard let signingAccount = signingAccounts.first(where: { request.address == nil || $0.address == request.address })  else {
             return PassKeyCreationResponse(error: "liquid-auth-no-account-found".localized())
         }
         
-        let address = signingAddress.address
-        let username = request.username ?? address
-        
-        if findPassKeyForRequest(origin: origin, username: username) != nil {
+        if findPassKeyForRequest(origin: origin, username: request.username) != nil {
             return PassKeyCreationResponse(error: "liquid-auth-passkey-already-exists".localized())
         }
         
-        let keyPair = try getDP256KeyPair(address: signingAddress, origin: request.origin, username: request.username ?? address)
+        let keyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
         let credentialId = keyPair.publicKey.rawRepresentation.sha256()
         
         
         PassKey.create(entity: PassKey.entityName, with: [
-            PassKey.DBKeys.username.rawValue: username,
+            PassKey.DBKeys.username.rawValue: request.username,
             PassKey.DBKeys.displayName.rawValue: request.displayName,
             PassKey.DBKeys.origin.rawValue: request.origin,
             PassKey.DBKeys.credentialId.rawValue: credentialId.base64URLEncodedString(),
-            PassKey.DBKeys.address.rawValue: signingAddress.address,
+            PassKey.DBKeys.address.rawValue: signingAccount.address,
         ])
         
         return PassKeyCreationResponse(
             credentialId: credentialId,
-            address: address,
+            address: signingAccount.address,
             keyPair: keyPair
         )
     }
     
     func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
-        
-        guard let signingAddress = try await getSigningAddress() else {
+        guard let passkey = findPassKeyForRequest(origin: request.origin, username: request.username) else {
+            return PassKeyAuthenticationResponse(error: "liquid-auth-no-passkey-found".localized())
+        }
+        let signingAccounts = try await getSigningAccounts()
+        guard let signingAccount = signingAccounts.first(where: { passkey.address == $0.address }) else {
             return PassKeyAuthenticationResponse(error: "liquid-auth-no-account-found".localized())
         }
         
-        let address = signingAddress.address
-        let username = request.username ?? address
-        
-        guard let passkey = findPassKeyForRequest(origin: request.origin, username: username) else {
-            return PassKeyAuthenticationResponse(error: "liquid-auth-no-passkey-found".localized())
-        }
-        
-        let p256KeyPair = try getDP256KeyPair(address: signingAddress, origin: request.origin, username: username)
+        let p256KeyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
         let credentialId = Data([UInt8](p256KeyPair.publicKey.rawRepresentation.sha256()))
         
-        if address != passkey.address || credentialId.base64URLEncodedString() != passkey.credentialId {
+        if signingAccount.address != passkey.address || credentialId.base64URLEncodedString() != passkey.credentialId {
             return PassKeyAuthenticationResponse(error: "liquid-auth-invalid-passkey-found".localized())
         }
         
@@ -140,7 +125,7 @@ public extension PassKeyService {
         ])
         
         return PassKeyAuthenticationResponse(credentialId: passkey.credentialId,
-                                             address: signingAddress, keyPair: p256KeyPair)
+                                             address: signingAccount.address, keyPair: p256KeyPair)
     }
     
     func hasPassKey(origin: String, username: String) -> Bool {
@@ -188,8 +173,12 @@ public extension PassKeyService {
         return nil
     }
     
-    private func getDP256KeyPair(address: HDWalletAddress, origin: String, username: String) throws -> P256.Signing.PrivateKey {
-        let mnemonics = PassphraseUtils.mnemonics(address: address, hdWalletStorage: self.hdWalletStorage, session: self.session)
+    private func getSigningAddressForWallet(address: HDWalletAddressDetail) -> AccountInformation? {
+        self.session.authenticatedUser?.accounts(withWalletId: address.walletId).first
+    }
+    
+    private func getDP256KeyPair(info: AccountInformation, origin: String, username: String) throws -> P256.Signing.PrivateKey {
+        let mnemonics = PassphraseUtils.mnemonics(info: info, hdWalletStorage: self.hdWalletStorage, session: self.session)
         let dp256 = DeterministicP256()
         let derivedMainKey = try dp256.genDerivedMainKeyWithBIP39(phrase: mnemonics.mnemonics.joined(separator: " "))
         let p256KeyPair = dp256.genDomainSpecificKeyPair(derivedMainKey: derivedMainKey, origin: origin, userHandle: username)
