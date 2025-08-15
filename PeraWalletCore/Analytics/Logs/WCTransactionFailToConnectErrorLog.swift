@@ -16,15 +16,9 @@
 
 import Foundation
 
-<<<<<<<< HEAD:PeraWalletCore/Analytics/Events/WalletConnect/WCTransactionRequestSDKErrorEvent.swift
-public struct WCTransactionRequestSDKErrorEvent: ALGAnalyticsEvent {
-    public let name: ALGAnalyticsEventName
-    public let metadata: ALGAnalyticsMetadata
-========
 struct WCTransactionFailToConnectErrorLog: ALGAnalyticsLog {
     let name: ALGAnalyticsLogName
     let metadata: ALGAnalyticsMetadata
->>>>>>>> main:PeraWalletCore/Analytics/Logs/WCTransactionFailToConnectErrorLog.swift
     
     fileprivate init(
         url: WalletConnectURL
@@ -38,14 +32,8 @@ struct WCTransactionFailToConnectErrorLog: ALGAnalyticsLog {
     }
 }
 
-<<<<<<<< HEAD:PeraWalletCore/Analytics/Events/WalletConnect/WCTransactionRequestSDKErrorEvent.swift
-extension AnalyticsEvent where Self == WCTransactionRequestSDKErrorEvent {
-    public static func wcTransactionRequestSDKError(
-        error: Error?,
-========
 extension ALGAnalyticsLog where Self == WCTransactionFailToConnectErrorLog {
     static func wcTransactionFailToConnectError(
->>>>>>>> main:PeraWalletCore/Analytics/Logs/WCTransactionFailToConnectErrorLog.swift
         url: WalletConnectURL
     ) -> Self {
         return WCTransactionFailToConnectErrorLog(url: url)
