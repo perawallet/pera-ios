@@ -17,6 +17,7 @@
 
 import XCTest
 
+@testable import pera_wallet_core
 @testable import pera_staging
 
 class UserTests: XCTestCase {
@@ -61,7 +62,7 @@ class UserTests: XCTestCase {
 }
 
 final class MockHDWalletStorage: HDWalletStorable {
-    func save(wallet: pera_staging.HDWalletSeed) throws {
+    func save(wallet: HDWalletSeed) throws {
         print("saveWallet")
     }
     
@@ -73,7 +74,7 @@ final class MockHDWalletStorage: HDWalletStorable {
         print("deleteWallet")
     }
     
-    func save(address: pera_staging.HDWalletAddress) throws {
+    func save(address: HDWalletAddress) throws {
         print("saveAddress")
     }
     

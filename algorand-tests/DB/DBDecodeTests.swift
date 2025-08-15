@@ -18,6 +18,7 @@
 import XCTest
 import CoreData
 
+@testable import pera_wallet_core
 @testable import pera_staging
 
 class DBDecodeTests: XCTestCase {

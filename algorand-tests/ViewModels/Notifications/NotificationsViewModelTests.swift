@@ -19,6 +19,7 @@ import Foundation
 import MacaroonUtils
 import XCTest
 
+@testable import pera_wallet_core
 @testable import pera_staging
 
 class NotificationsViewModelTests: XCTestCase {
