@@ -3579,6 +3579,7 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
+		3AC4B5522E4586730038E911 /* peraShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AC4B5472E4586730038E911 /* peraShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		543447762D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447772D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
 		543447782D5355820080AF4D /* OptOutAssetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */; };
@@ -8255,7 +8256,28 @@
 			remoteGlobalIDString = 17BD4DEE2292F1260003E49A;
 			remoteInfo = "algorand-staging";
 		};
+		3AC4B54F2E4586730038E911 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B8BE4C622391C38005D8565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AC4B5462E4586730038E911;
+			remoteInfo = peraShare;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3AC4B5512E4586730038E911 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3AC4B5522E4586730038E911 /* peraShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0414ACC52721691100475F8E /* QRCreationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewTheme.swift; sourceTree = "<group>"; };
@@ -9483,6 +9505,7 @@
 		2BFA924729CCCCEC0097E1B1 /* OptInAssetListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
+		3AC4B5472E4586730038E911 /* peraShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = peraShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
 		5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayViewController.swift; sourceTree = "<group>"; };
 		5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayView.swift; sourceTree = "<group>"; };
@@ -11017,6 +11040,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3AC4B5572E4586730038E911 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3AC4B5462E4586730038E911 /* peraShare */;
+		};
 		543FBF982DF6C56500E9522E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -11131,6 +11161,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		3AC4B5482E4586730038E911 /* peraShare */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3AC4B5572E4586730038E911 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = peraShare; sourceTree = "<group>"; };
 		5449C7C52DDB4AE600E63A8F /* Scenes */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Scenes; sourceTree = "<group>"; };
 		5458D85A2DEDB35700DADA06 /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		5458D8682DEDB35700DADA06 /* Managers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (543FBF9E2DF6C5D700E9522E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 543FBF9F2DF6C5D700E9522E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 543FBFA02DF6C5D700E9522E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Managers; sourceTree = "<group>"; };
@@ -11270,6 +11301,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2B95407425A75FB20098805B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AC4B5442E4586730038E911 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -14512,6 +14550,7 @@
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
+				3AC4B5482E4586730038E911 /* peraShare */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
 				2B8BE4CF22391C38005D8565 /* Products */,
@@ -14528,6 +14567,7 @@
 				17BD4F252292F1260003E49A /* pera-staging.app */,
 				2B0F634E24EC129D00DA22A6 /* pera-beta.app */,
 				2B95407725A75FB20098805B /* pera-tests.xctest */,
+				3AC4B5472E4586730038E911 /* peraShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -24382,10 +24422,12 @@
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
 				2B8BE4CC22391C38005D8565 /* Resources */,
 				2B096039225795170005BE27 /* Run Script */,
+				3AC4B5512E4586730038E911 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3AC4B5502E4586730038E911 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
@@ -24454,13 +24496,35 @@
 			productReference = 2B95407725A75FB20098805B /* pera-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3AC4B5462E4586730038E911 /* peraShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AC4B5562E4586730038E911 /* Build configuration list for PBXNativeTarget "peraShare" */;
+			buildPhases = (
+				3AC4B5432E4586730038E911 /* Sources */,
+				3AC4B5442E4586730038E911 /* Frameworks */,
+				3AC4B5452E4586730038E911 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3AC4B5482E4586730038E911 /* peraShare */,
+			);
+			name = peraShare;
+			packageProductDependencies = (
+			);
+			productName = peraShare;
+			productReference = 3AC4B5472E4586730038E911 /* peraShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		2B8BE4C622391C38005D8565 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = hippo;
 				TargetAttributes = {
@@ -24483,6 +24547,9 @@
 					2B95407625A75FB20098805B = {
 						CreatedOnToolsVersion = 12.2;
 						TestTargetID = 17BD4DEE2292F1260003E49A;
+					};
+					3AC4B5462E4586730038E911 = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
@@ -24519,6 +24586,7 @@
 				2B0F615A24EC129D00DA22A6 /* pera-beta */,
 				17BD4DEE2292F1260003E49A /* pera-staging */,
 				2B95407625A75FB20098805B /* pera-tests */,
+				3AC4B5462E4586730038E911 /* peraShare */,
 			);
 		};
 /* End PBXProject section */
@@ -24704,6 +24772,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3AC4B5452E4586730038E911 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -24733,7 +24808,6 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
 			name = "Run Script";
 			outputFileListPaths = (
@@ -32790,6 +32864,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3AC4B5432E4586730038E911 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -32797,6 +32878,11 @@
 			isa = PBXTargetDependency;
 			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
 			targetProxy = 2B95407C25A75FB20098805B /* PBXContainerItemProxy */;
+		};
+		3AC4B5502E4586730038E911 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3AC4B5462E4586730038E911 /* peraShare */;
+			targetProxy = 3AC4B54F2E4586730038E911 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -33250,6 +33336,106 @@
 			};
 			name = "App Store";
 		};
+		3AC4B5532E4586730038E911 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = peraShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = peraShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand.peraShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3AC4B5542E4586730038E911 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 87QL82XC78;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = peraShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = peraShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand.peraShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3AC4B5552E4586730038E911 /* App Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 87QL82XC78;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = peraShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = peraShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 hippo. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand.peraShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "App Store";
+		};
 		EC6B733422541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B3BC385266FEBCD007D7107 /* Config.xcconfig */;
@@ -33390,6 +33576,16 @@
 				2B95407E25A75FB20098805B /* Debug */,
 				2B95407F25A75FB20098805B /* Release */,
 				2B95408025A75FB20098805B /* App Store */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3AC4B5562E4586730038E911 /* Build configuration list for PBXNativeTarget "peraShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AC4B5532E4586730038E911 /* Debug */,
+				3AC4B5542E4586730038E911 /* Release */,
+				3AC4B5552E4586730038E911 /* App Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
