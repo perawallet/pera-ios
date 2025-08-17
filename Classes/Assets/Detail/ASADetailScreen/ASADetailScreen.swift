@@ -800,7 +800,7 @@ extension ASADetailScreen {
                         title: String(localized: "pass-phrase-verify-sdk-error"),
                         message: errorDescription ?? ""
                     )
-                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false, isAlgoCurrency: true))
+                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false))
                     return
                 }
                 profileView.updateChart(with: chartData)
