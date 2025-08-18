@@ -30,8 +30,12 @@ final class PasskeyListViewModel: ObservableObject {
             self.passKeyManager = PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
             let store = ASCredentialIdentityStore.shared
             store.getState { [weak self] state in
-                if let self = self {
-                    self.settingNotEnabled = !state.isEnabled
+                Task {
+                    if let self = self {
+                        await MainActor.run {
+                            self.settingNotEnabled = !state.isEnabled
+                        }
+                    }
                 }
             }
             reloadPasskeys()
@@ -42,6 +46,12 @@ final class PasskeyListViewModel: ObservableObject {
     
     func reloadPasskeys() {
         self.passkeys = passKeyManager?.findAllPassKeys() ?? []
+    }
+    
+    func trackDeletion() {
+        if let analytics = CoreAppConfiguration.shared?.analytics {
+            analytics.track(.webAuthNPassKeyDeleted())
+        }
     }
     
 }

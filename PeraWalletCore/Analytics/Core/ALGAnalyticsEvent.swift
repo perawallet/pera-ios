@@ -146,6 +146,9 @@ public enum ALGAnalyticsEventName:
     case wcTransactionRequestReceived
     case wcTransactionRequestSDKError
     case wcTransactionRequestValidated
+    case webAuthNPassKeyAdded
+    case webAuthNPassKeyUsed
+    case webAuthNPassKeyDeleted
     case tapQRInMenu
     case tapCreateCardInMenu
     case tapGoToCardsInMenu
@@ -231,6 +234,9 @@ extension ALGAnalyticsEventName {
         case .onboardWatchAccountCreateVerified: rawName = "onb_watchacc_create_verified"
         case .onboardWelcomeScreenAccountCreate: rawName = "onb_welcome_account_create"
         case .onboardWelcomeScreenAccountRecover: rawName = "onb_welcome_account_recover"
+        case .webAuthNPassKeyAdded: rawName = "webauthn_passkey_added"
+        case .webAuthNPassKeyUsed: rawName = "webauthn_passkey_used"
+        case .webAuthNPassKeyDeleted: rawName = "webauthn_passkey_deleted"
         case .registerAccount: rawName = "register"
         case .rekeyAccount: rawName = "rekey"
         case .swapCompleted: rawName = "swapscr_assets_completed"

@@ -12,15 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
+//
+//  WebAuthNPassKeyDeletedEvent.swift
 
-public struct PassKeyAuthenticationRequest {
-    public var origin: String
-    public var username: String
-    
-    public init(origin: String, username: String) {
-        self.origin = origin
-        self.username = username
+import Foundation
+import MacaroonVendors
+
+public struct WebAuthNPassKeyDeletedEvent: ALGAnalyticsEvent {
+    public let name: ALGAnalyticsEventName
+    public let metadata: ALGAnalyticsMetadata
+
+    fileprivate init() {
+        self.name = .webAuthNPassKeyDeleted
+        self.metadata = [:]
     }
 }
 
+extension AnalyticsEvent where Self == WebAuthNPassKeyDeletedEvent {
+    public static func webAuthNPassKeyDeleted() -> Self {
+        WebAuthNPassKeyDeletedEvent()
+    }
+}

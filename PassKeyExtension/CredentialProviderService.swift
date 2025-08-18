@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import CoreData
 import pera_wallet_core
 import LiquidAuthSDK
 import SwiftUI
+
 @available(iOS 17, *)
 class CredentialProviderService {
     private let liquidAuthSDK: LiquidAuthSDKAPI = LiquidAuthSDKAPIImpl()
@@ -84,6 +85,10 @@ class CredentialProviderService {
                 credentialID: credentialId,
                 attestationObject: attestationObject
             )
+            
+            if let analytics = CoreAppConfiguration.shared?.analytics {
+                analytics.track(.webAuthNPassKeyAdded())
+            }
             return .success(credential)
         } catch {
             self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
@@ -139,6 +144,10 @@ class CredentialProviderService {
                 authenticatorData: authenticatorData,
                 credentialID: credId
             )
+            
+            if let analytics = CoreAppConfiguration.shared?.analytics {
+                analytics.track(.webAuthNPassKeyUsed())
+            }
             return .success(credential)
         } catch {
             return .failure("\(error.localizedDescription)")

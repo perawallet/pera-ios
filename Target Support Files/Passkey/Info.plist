@@ -51,7 +51,5 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID or Touch ID to authenticate your credentials.</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2025 PeraWallet PDA. All rights reserved.</string>
 </dict>
 </plist>

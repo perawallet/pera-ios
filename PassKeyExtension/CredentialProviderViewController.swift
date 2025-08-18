@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,13 +54,15 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         setupUI()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             Task {
-                let outcome = await self?.credentialService.handleRegistrationRequest(credentialRequest)
-                if let error = outcome?.error {
-                    self?.setError(error)
+                guard let outcome = await self?.credentialService.handleRegistrationRequest(credentialRequest) else {
+                    self?.setError("liquid-auth-error".localized())
                     return
                 }
-                if let credential = outcome?.credential {
+                switch (outcome) {
+                case .success(let credential):
                     await self?.extensionContext.completeRegistrationRequest(using: credential)
+                case .failure(let error):
+                    self?.setError(error)
                 }
             }
         }
@@ -73,13 +75,15 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         setupUI()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             Task {
-                let outcome = await self?.credentialService.handleAuthenticationRequest(requestParameters)
-                if let error = outcome?.error {
-                    self?.setError(error)
+                guard let outcome = await self?.credentialService.handleAuthenticationRequest(requestParameters) else {
+                    self?.setError("liquid-auth-error".localized())
                     return
                 }
-                if let credential = outcome?.credential {
+                switch (outcome) {
+                case .success(let credential):
                     await self?.extensionContext.completeAssertionRequest(using: credential)
+                case .failure(let error):
+                    self?.setError(error)
                 }
             }
         }
