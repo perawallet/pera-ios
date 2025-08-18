@@ -32548,8 +32548,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/perawallet/xHD-Wallet-API-swift";
 			requirement = {
-				branch = "wjbeau/expose-raw-sign";
-				kind = branch;
+				kind = revision;
+				revision = 4429e35b7893265121b44d172ed64a1ce9a2ab81;
 			};
 		};
 		D4B004792D65E2500098AB1A /* XCRemoteSwiftPackageReference "MnemonicSwift" */ = {

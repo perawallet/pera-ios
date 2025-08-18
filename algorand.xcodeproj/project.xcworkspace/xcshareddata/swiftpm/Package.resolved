@@ -472,8 +472,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/perawallet/xHD-Wallet-API-swift",
       "state" : {
-        "branch" : "wjbeau/expose-raw-sign",
-        "revision" : "838463d0b203f92d75cedaf344f3ad24857fcfc4"
+        "revision" : "4429e35b7893265121b44d172ed64a1ce9a2ab81"
       }
     }
   ],
