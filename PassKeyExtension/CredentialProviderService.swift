@@ -27,23 +27,23 @@ class CredentialProviderService {
     private let extensionDelegate = AppInitializer()
     private var passKeyManager: PassKeyService?
     
-    func handleRegistrationRequest(_ credentialRequest: ASPasskeyCredentialRequest) async -> RegistrationOutcome {
+    func handleRegistrationRequest(_ credentialRequest: ASPasskeyCredentialRequest) async -> Result<ASPasskeyRegistrationCredential, String> {
         guard let credentialIdentity = credentialRequest.credentialIdentity as? ASPasskeyCredentialIdentity,
               let rpData = credentialIdentity.relyingPartyIdentifier.data(using: .utf8) else {
             
-            return RegistrationOutcome("liquid-auth-error".localized())
+            return .failure("liquid-auth-error".localized())
         }
         
         do {
             self.initializeExtension()
             guard let _ = CoreAppConfiguration.shared?.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-                return RegistrationOutcome("liquid-auth-not-implemented".localized())
+                return .failure("liquid-auth-not-implemented".localized())
             }
                     
             
             let authenticated = await authenticateBiometrics()
             guard authenticated else {
-                return RegistrationOutcome("local-authentication-failed".localized())
+                return .failure("local-authentication-failed".localized())
             }
             
             let passKeyRequest = PassKeyCreationRequest(origin: credentialIdentity.relyingPartyIdentifier,
@@ -52,25 +52,25 @@ class CredentialProviderService {
             
             if self.passKeyManager?.findPassKeyForRequest(
                 origin: credentialIdentity.relyingPartyIdentifier, username: credentialIdentity.userName) != nil {
-                return RegistrationOutcome("liquid-auth-passkey-already-exists".localized())
+                return .failure("liquid-auth-passkey-already-exists".localized())
             }
             
             guard let response = try await self.passKeyManager?.createAndSavePassKey(request: passKeyRequest) else {
                 self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier, username: credentialIdentity.userName)
-                return RegistrationOutcome("liquid-auth-error".localized())
+                return .failure("liquid-auth-error".localized())
             }
             
             if response.error != nil {
                 self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                         username: credentialIdentity.userName)
-                return RegistrationOutcome("liquid-auth-error".localized())
+                return .failure("liquid-auth-error".localized())
             }
             
             guard let credentialId = response.credentialId,
                   let keyPair = response.keyPair else {
                 self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                         username: credentialIdentity.userName)
-                return RegistrationOutcome("liquid-auth-error".localized())
+                return .failure("liquid-auth-error".localized())
                 
             }
             let credId = Data([UInt8](Utility.hashSHA256(keyPair.publicKey.rawRepresentation)))
@@ -84,25 +84,25 @@ class CredentialProviderService {
                 credentialID: credentialId,
                 attestationObject: attestationObject
             )
-            return RegistrationOutcome(credential)
+            return .success(credential)
         } catch {
             self.passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                     username: credentialIdentity.userName)
-            return RegistrationOutcome("liquid-auth-error".localized())
+            return .failure("liquid-auth-error".localized())
         }
     }
     
-    func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async -> AuthenticationOutcome {
+    func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async -> Result<ASPasskeyAssertionCredential, String> {
         do {
             self.initializeExtension()
             
             let authenticated = await authenticateBiometrics()
             guard authenticated else {
-                return AuthenticationOutcome("local-authentication-failed".localized())
+                return .failure("local-authentication-failed".localized())
             }
             
             guard let passkey = self.passKeyManager?.findAllPassKeys().filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
-                return AuthenticationOutcome("liquid-auth-no-passkey-found".localized())
+                return .failure("liquid-auth-no-passkey-found".localized())
             }
             
             let origin = requestParameters.relyingPartyIdentifier
@@ -110,15 +110,15 @@ class CredentialProviderService {
                 origin: passkey.origin,
                 username: passkey.username)
             guard let passkeyResponse = try await self.passKeyManager?.getAuthenticationData(request: passKeyRequest) else {
-                return AuthenticationOutcome("liquid-auth-no-passkey-found".localized())
+                return .failure("liquid-auth-no-passkey-found".localized())
             }
             
             guard let keyPair = passkeyResponse.keyPair, passkeyResponse.success else {
-                return AuthenticationOutcome(passkeyResponse.error?.localized() ?? "liquid-auth-error".localized())
+                return .failure(passkeyResponse.error?.localized() ?? "liquid-auth-error".localized())
             }
             
             guard let originData = origin.data(using: .utf8) else {
-                return AuthenticationOutcome("liquid-auth-error".localized())
+                return .failure("liquid-auth-error".localized())
             }
             let rpIdHash = Utility.hashSHA256(originData)
             let authenticatorData = self.liquidAuthSDK.getAssertionObject(rpIdHash: rpIdHash, userPresent: true, userVerified: true,
@@ -127,7 +127,7 @@ class CredentialProviderService {
             let signature = try keyPair.signature(for: authenticatorData + requestParameters.clientDataHash)
             
             guard let usernameData = passkey.username.data(using: .utf8) else {
-                return AuthenticationOutcome("liquid-auth-error".localized())
+                return .failure("liquid-auth-error".localized())
             }
             
             let credId = Data([UInt8](Utility.hashSHA256(keyPair.publicKey.rawRepresentation)))
@@ -139,9 +139,9 @@ class CredentialProviderService {
                 authenticatorData: authenticatorData,
                 credentialID: credId
             )
-            return AuthenticationOutcome(credential)
+            return .success(credential)
         } catch {
-            return AuthenticationOutcome("\(error.localizedDescription)")
+            return .failure("\(error.localizedDescription)")
         }
     }
     
@@ -175,32 +175,3 @@ class CredentialProviderService {
         }
     }
 }
-
-@available(iOS 17, *)
-struct RegistrationOutcome {
-    var credential: ASPasskeyRegistrationCredential?
-    var error: String?
-    
-    init(_ error: String) {
-        self.error = error
-    }
-    
-    init(_ credential: ASPasskeyRegistrationCredential) {
-        self.credential = credential
-    }
-}
-
-@available(iOS 17, *)
-struct AuthenticationOutcome {
-    var credential: ASPasskeyAssertionCredential?
-    var error: String?
-    
-    init(_ error: String) {
-        self.error = error
-    }
-    
-    init(_ credential: ASPasskeyAssertionCredential) {
-        self.credential = credential
-    }
-}
-

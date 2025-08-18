@@ -469,7 +469,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     
     private func handleLiquidAuthRequest(request: LiquidAuthRequest) {
         guard let session = self.session else {
-            self.showErrorAlert(message: "Failed to start LiquidAuth session")
+            self.showErrorAlert(message: "liquid-auth-error".localized())
             return
         }
         let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: self.hdWalletStorage, session: session)
@@ -490,7 +490,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                         }
                     }
                 } catch {
-                    self.showErrorAlert(message: "Failed to establish LiquidAuth communcations: \(error.localizedDescription)")
+                    self.showErrorAlert(message: "liquid-auth-error".localized())
                 }
             }
         }

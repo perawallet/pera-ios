@@ -31,6 +31,7 @@ public protocol PassKeyServicing {
 
 public final class PassKeyService: PassKeyServicing {
     static let AAGUID = UUID(uuidString: "418a66da-f981-47e8-814f-19c97f97bd4d")!
+    static let FIDO_SCHEME = "fido"
     
     let hdWalletStorage: HDWalletStorable
     let session: Session
@@ -49,7 +50,7 @@ public final class PassKeyService: PassKeyServicing {
 public extension PassKeyService {
     
     static func isPassKeyURL(_ url: URL) -> Bool {
-        url.scheme?.lowercased() == "fido"
+        url.scheme?.lowercased() == PassKeyService.FIDO_SCHEME
     }
     
     func getSigningAccounts() async throws -> [AccountInformation] {
