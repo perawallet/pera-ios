@@ -68,7 +68,6 @@ struct PasskeyListView: View {
     
     private func passKeyDeleted() {
         self.viewModel.trackDeletion()
-        self.viewModel.reloadPasskeys()
     }
 }
 

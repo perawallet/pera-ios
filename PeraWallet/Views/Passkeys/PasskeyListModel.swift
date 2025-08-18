@@ -52,6 +52,7 @@ final class PasskeyListViewModel: ObservableObject {
         if let analytics = CoreAppConfiguration.shared?.analytics {
             analytics.track(.webAuthNPassKeyDeleted())
         }
+        self.reloadPasskeys()
     }
     
 }
