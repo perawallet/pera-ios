@@ -22,7 +22,7 @@ struct ChartViewData: Hashable, Equatable {
     var model: ChartDataModel {
         let chartDataModel = ChartDataModel()
         chartDataModel.period = period
-        chartDataModel.data = chartValues.map { return ChartDataPointViewModel(value: $0.fiatValue, day: $0.day) }
+        chartDataModel.data = chartValues.map { ChartDataPointViewModel(value: $0.fiatValue, day: $0.day) }
         chartDataModel.isLoading = isLoading
         return chartDataModel
     }
