@@ -18,12 +18,11 @@ struct ChartViewData: Hashable, Equatable {
     let period: ChartDataPeriod
     let chartValues: [ChartDataPoint]
     let isLoading: Bool
-    let isAlgoCurrency: Bool
     
     var model: ChartDataModel {
         let chartDataModel = ChartDataModel()
         chartDataModel.period = period
-        chartDataModel.data = chartValues.map { return ChartDataPointViewModel(value: isAlgoCurrency ? $0.algoValue : $0.fiatValue, day: $0.day) }
+        chartDataModel.data = chartValues.map { ChartDataPointViewModel(value: $0.fiatValue, day: $0.day) }
         chartDataModel.isLoading = isLoading
         return chartDataModel
     }
