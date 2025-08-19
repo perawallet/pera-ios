@@ -267,6 +267,9 @@ final class HomeViewController:
         if configuration.featureFlagService.isEnabled(.portfolioChartsEnabled) {
             dataController.fetchInitialChartData(period: .oneWeek)
         }
+        if configuration.featureFlagService.isEnabled(.swapV2Enabled) {
+            dataController.fetchDefaultAssets()
+        }
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         
