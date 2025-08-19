@@ -107,11 +107,10 @@ final class SwapViewController: BaseViewController {
         guard let selectedAccount else {
             fatalError()
         }
-        let defaultAsset = assetItem(from: selectedAccount[0])!
         
         var assetIn: AssetItem {
             guard let selectedAssetIn else {
-                return defaultAsset
+                return assetItem(from: selectedAccount[0])!
             }
             return selectedAssetIn
         }
@@ -119,7 +118,7 @@ final class SwapViewController: BaseViewController {
         
         var assetOut: AssetItem {
             guard let selectedAssetOut else {
-                return defaultAsset
+                return usdcDefaultAsset()
             }
             return selectedAssetOut
         }
@@ -233,6 +232,19 @@ final class SwapViewController: BaseViewController {
             isAmountHidden: false
         )
         return assetItem
+    }
+    
+    private func usdcDefaultAsset() -> AssetItem {
+        guard
+            let network = api?.network,
+            !sharedDataController.assetDetailCollection.isEmpty,
+            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == ALGAsset.usdcAssetID(network)}).first,
+            let asset = assetItem(from: StandardAsset(decoration: assetDecorationElement))
+        else {
+            return assetItem(from: selectedAccount?[0])!
+        }
+        
+        return asset
     }
     
     private func confirmSwap() {
