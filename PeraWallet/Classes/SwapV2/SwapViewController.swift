@@ -16,6 +16,7 @@
 
 import SwiftUI
 import MacaroonUIKit
+import pera_wallet_core
 
 final class SwapViewController: BaseViewController {
     

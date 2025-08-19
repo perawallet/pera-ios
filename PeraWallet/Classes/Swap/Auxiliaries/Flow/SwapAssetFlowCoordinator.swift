@@ -714,7 +714,7 @@ extension SwapAssetFlowCoordinator {
 
 
 extension SwapAssetFlowCoordinator {
-    func getQoute(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
+    func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics,
