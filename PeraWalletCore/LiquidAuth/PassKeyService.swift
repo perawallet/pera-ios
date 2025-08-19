@@ -21,8 +21,8 @@ import x_hd_wallet_api
 public protocol PassKeyServicing {
     var allPassKeys: [PassKey] { get }
     
-    func fetchSigningAccounts() async throws -> [AccountInformation]
-    func fetchSigningSDK(account: AccountInformation) async throws -> HDWalletSDK?
+    func findAllSigningAccounts() async throws -> [AccountInformation]
+    func makeSigningSDK(account: AccountInformation) async throws -> HDWalletSDK?
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse
     func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse
     
@@ -56,8 +56,7 @@ public extension PassKeyService {
         switch result {
         case .result(let object):
             if object is PassKey {
-                let pk = object as! PassKey
-                return [pk]
+                return [object as! PassKey]
             }
             return []
         case .results(let objects):
@@ -71,7 +70,7 @@ public extension PassKeyService {
         url.scheme?.lowercased() == PassKeyService.FIDO_SCHEME
     }
     
-    func fetchSigningAccounts() async throws -> [AccountInformation] {
+    func findAllSigningAccounts() async throws -> [AccountInformation] {
         if let signingAccounts {
             return signingAccounts
         }
@@ -80,7 +79,7 @@ public extension PassKeyService {
         return signingAccounts ?? []
     }
     
-    func fetchSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
+    func makeSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
         // We're going to need access to the wallet seed for signing later
         guard let walletId = account.hdWalletAddressDetail?.walletId,
               let wallet = try hdWalletStorage.wallet(id: walletId),
@@ -95,7 +94,7 @@ public extension PassKeyService {
     
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {
         let origin = request.origin
-        let signingAccounts = try await fetchSigningAccounts()
+        let signingAccounts = try await findAllSigningAccounts()
         guard let signingAccount = signingAccounts.first(where: { request.address == nil || $0.address == request.address }) else {
             throw LiquidAuthError.signingAccountNotFound
         }
@@ -127,7 +126,7 @@ public extension PassKeyService {
         guard let passkey = findPassKeyForRequest(origin: request.origin, username: request.username) else {
             throw LiquidAuthError.passKeyNotFound
         }
-        let signingAccounts = try await fetchSigningAccounts()
+        let signingAccounts = try await findAllSigningAccounts()
         guard let signingAccount = signingAccounts.first(where: { passkey.address == $0.address }) else {
             throw LiquidAuthError.signingAccountNotFound
         }

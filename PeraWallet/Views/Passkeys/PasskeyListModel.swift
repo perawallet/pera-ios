@@ -22,7 +22,7 @@ final class PasskeyListViewModel: ObservableObject {
     // MARK: - Properties
     
     @Published fileprivate(set) var passkeys: [PassKey] = []
-    @Published var settingNotEnabled = false
+    @Published fileprivate(set) var settingNotEnabled = false
     private let passKeyManager: PassKeyService?
     
     // MARK: - Initializers
@@ -42,7 +42,7 @@ final class PasskeyListViewModel: ObservableObject {
     // MARK: - Methods
     
     func reloadPasskeys() {
-        passkeys = passKeyManager?.findAllPassKeys() ?? []
+        passkeys = passKeyManager?.allPassKeys ?? []
     }
     
     func trackDeletion() {

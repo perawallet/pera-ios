@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -1892,9 +1889,6 @@
         }
       }
     },
-    "Back" : {
-
-    },
     "back-up-before-removing-account-warning-body" : {
       "localizations" : {
         "en" : {
@@ -2909,9 +2903,6 @@
         }
       }
     },
-    "Delete" : {
-
-    },
     "dev-settings-create-algo25-account" : {
       "localizations" : {
         "en" : {
@@ -3011,9 +3002,6 @@
           }
         }
       }
-    },
-    "Error" : {
-
     },
     "express-send-explanation" : {
       "localizations" : {
@@ -3894,7 +3882,6 @@
       }
     },
     "liquid-auth-authentication-required-auth" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3905,7 +3892,6 @@
       }
     },
     "liquid-auth-authentication-required-prompt" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3916,7 +3902,6 @@
       }
     },
     "liquid-auth-authentication-required-registration" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3927,7 +3912,6 @@
       }
     },
     "liquid-auth-autofill-disabled" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3938,7 +3922,6 @@
       }
     },
     "liquid-auth-error" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3949,7 +3932,6 @@
       }
     },
     "liquid-auth-invalid-passkey-found" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3960,7 +3942,6 @@
       }
     },
     "liquid-auth-no-account-found" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3971,7 +3952,6 @@
       }
     },
     "liquid-auth-no-passkey-found" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3982,7 +3962,6 @@
       }
     },
     "liquid-auth-not-implemented" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3993,7 +3972,6 @@
       }
     },
     "liquid-auth-passkey-already-exists" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4881,6 +4859,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "There is something wrong. Please try again later."
+          }
+        }
+      }
+    },
+    "passkeys-back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "passkeys-signing-request" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing request…"
           }
         }
       }
@@ -6661,9 +6661,6 @@
           }
         }
       }
-    },
-    "Signing request..." : {
-
     },
     "single-transaction-request-opt-in-subtitle" : {
       "localizations" : {
@@ -8586,17 +8583,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your previous rekey will be replaced"
-          }
-        }
-      }
-    },
-    "title-passkeys" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passkeys"
           }
         }
       }

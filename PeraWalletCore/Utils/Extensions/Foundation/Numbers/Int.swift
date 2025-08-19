@@ -36,11 +36,11 @@ public extension Int {
 
 public extension UInt64 {
     var toAlgos: Decimal {
-        return Decimal(self) / Decimal(algosInMicroAlgos)
+        Decimal(self) / Decimal(algosInMicroAlgos)
     }
     
-    var isBelowZero: Bool {
-        return self < 0
+    var isNegative: Bool {
+        self < 0
     }
 
     func assetAmount(fromFraction decimal: Int) -> Decimal {

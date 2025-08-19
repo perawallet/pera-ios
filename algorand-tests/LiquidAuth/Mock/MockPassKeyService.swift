@@ -19,28 +19,28 @@ import LiquidAuthSDK
 @testable import pera_staging
 @testable import pera_wallet_core
 
-class MockPassKeyService : PassKeyServicing, Mockable {
+final class MockPassKeyService : PassKeyServicing, Mockable {
     
     var mock = Mock()
     
-    func getSigningAccounts() async throws -> [AccountInformation] {
-        try! mock.call.getSigningAccounts() as! [AccountInformation]
+    var allPassKeys: [PassKey] {
+        try! mock.call.findAllPassKeys() as! [PassKey]
     }
     
-    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
-        try! mock.call.getSigningSDK(account: account) as! HDWalletSDK?
+    func findAllSigningAccounts() async throws -> [AccountInformation] {
+        try! mock.call.findAllSigningAccounts() as! [AccountInformation]
+    }
+    
+    func makeSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
+        try! mock.call.makeSigningSDK(account: account) as! HDWalletSDK?
     }
     
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {
         try! mock.call.createAndSavePassKey(request: request) as! PassKeyCreationResponse
     }
     
-    func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
-        try! mock.call.getAuthenticationData(request: request) as! PassKeyAuthenticationResponse
-    }
-    
-    func findAllPassKeys() -> [PassKey] {
-        try! mock.call.findAllPassKeys() as! [PassKey]
+    func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
+        try! mock.call.makeAuthenticationData(request: request) as! PassKeyAuthenticationResponse
     }
     
     func deletePassKeysForOriginAndUsername(origin: String, username: String) {

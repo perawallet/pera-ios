@@ -19,7 +19,7 @@ import LiquidAuthSDK
 @testable import pera_staging
 @testable import pera_wallet_core
 
-class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
+final class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
     
     var mock = Mock()
     
@@ -29,11 +29,11 @@ class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
         }
     }
     
-    func decodeBase64Url(_ url: String) -> Data? {
+    func decodedBase64Url(_ url: String) -> Data? {
         try! mock.call.decodeBase64Url(url) as! Data?
     }
     
-    func decodeBase64UrlToJSON(_ url: String) -> String? {
+    func decodedBase64UrlAsJSON(_ url: String) -> String? {
         try! mock.call.decodeBase64UrlToJSON(url) as! String?
     }
     
@@ -41,24 +41,24 @@ class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
         try! mock.call.postAttestationOptions(origin: origin, username: username) as! Data
     }
     
-    func postAttestationResult(origin: String, credential: [String : Any], liquidExt: [String : Any]) async throws -> Data {
-        try! mock.call.postAttestationResult(origin: origin, credential: credential, liquidExt: liquidExt) as! Data
+    func postAttestationResult(origin: String, credential: [String : Any], liquidExtension: [String : Any]) async throws -> Data {
+        try! mock.call.postAttestationResult(origin: origin, credential: credential, liquidExtension: liquidExtension) as! Data
     }
     
     func postAssertionOptions(origin: String, credentialId: String) async throws -> Data {
         try! mock.call.postAssertionOptions(origin: origin, credentialId: credentialId) as! Data
     }
     
-    func postAssertionResult(origin: String, credential: String, liquidExt: [String : Any]) async throws -> Data {
-        try! mock.call.postAssertionResult(origin: origin, credential: credential, liquidExt: liquidExt) as! Data
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String : Any]) async throws -> Data {
+        try! mock.call.postAssertionResult(origin: origin, credential: credential, liquidExtension: liquidExtension) as! Data
     }
     
-    func getAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
+    func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
         try! mock.call.getAssertionObject(rpIdHash: rpIdHash, userPresent: userPresent, userVerified: userVerified,
                                           backupEligible: backupEligible, backupState: backupState, signCount: signCount) as! Data
     }
     
-    func getAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
         try! mock.call.getAttestationObject(credentialId: credentialId, keyPair: keyPair, rpIdHash: rpIdHash) as! Data
     }
     

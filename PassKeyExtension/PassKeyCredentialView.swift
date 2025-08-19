@@ -19,7 +19,7 @@ import SwiftUI
 @available(iOS 17.0, *)
 //TODO: This is a temporary placeholder - update when we have final designs
 struct PassKeyCredentialView: View {
-    @State private(set) var viewModel = PassKeyCredentialViewModel()
+    @State private var viewModel = PassKeyCredentialViewModel()
     
     var body: some View {
         VStack {
@@ -28,13 +28,13 @@ struct PassKeyCredentialView: View {
                     .font(.system(size: 16))
                     .foregroundStyle(.red)
                 
-                Button("Back") {
+                Button("passkeys-back") {
                     handleBackButtonTap()
                 }
                 .contentMargins([.top], 10)
                 .buttonStyle(.bordered)
             } else {
-                ProgressView("Signing request...")
+                ProgressView("passkeys-signing-request")
                     .progressViewStyle(CircularProgressViewStyle())
                     .controlSize(.large)
                     .foregroundStyle(.black)

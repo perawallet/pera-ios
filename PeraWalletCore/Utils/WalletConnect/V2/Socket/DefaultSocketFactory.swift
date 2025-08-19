@@ -25,10 +25,10 @@ struct DefaultSocketFactory: WebSocketFactory {
     }
 }
 
-class WebSocketWrapper {
-    var webSocket: WebSocket;
+final class WebSocketWrapper {
+    var webSocket: WebSocket
     
-    var connected = false
+    fileprivate var connected = false
     
     init(webSocket: WebSocket) {
         self.webSocket = webSocket
@@ -66,19 +66,19 @@ extension WebSocketWrapper: WebSocketConnecting {
     
     public var request: URLRequest {
         get {
-            return webSocket.request
+            webSocket.request
         }
         set {}
     }
     
     public func connect() {
         webSocket.connect()
-        self.connected = true
+        connected = true
     }
     
     public func disconnect() {
         webSocket.disconnect()
-        self.connected = false
+        connected = false
     }
     
     public func write(string: String, completion: (() -> Void)?) {

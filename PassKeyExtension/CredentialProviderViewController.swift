@@ -97,10 +97,13 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
                                                                     code: ASExtensionError.userCanceled.rawValue))
         }
         contentView.view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            contentView.view.topAnchor.constraint(equalTo: view.topAnchor),
+            contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+            contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+        ])
     }
     
     private func showError(_ error: String) {
