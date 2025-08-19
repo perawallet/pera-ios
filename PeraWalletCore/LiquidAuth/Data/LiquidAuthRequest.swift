@@ -13,11 +13,6 @@
 // limitations under the License.
 
 public struct LiquidAuthRequest {
-    public var origin: String
-    public var requestId: String
-    
-    public init(origin: String, requestId: String) {
-        self.origin = origin
-        self.requestId = requestId
-    }
+    public let origin: String
+    public let requestId: String
 }

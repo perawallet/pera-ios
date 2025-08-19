@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  WebAuthNPassKeyDeletedEvent.swift
+//   PasskeyListCellModel.swift
 
 import Foundation
-import MacaroonVendors
+import pera_wallet_core
 
-public struct WebAuthNPassKeyDeletedEvent: ALGAnalyticsEvent {
-    public let name: ALGAnalyticsEventName
-    public let metadata: ALGAnalyticsMetadata
-
-    fileprivate init() {
-        self.name = .webAuthNPassKeyDeleted
-        self.metadata = [:]
+final class PasskeyListCellViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
+    let passkey: PassKey
+    let onDelete: () -> Void
+    
+    // MARK: - Initializers
+    
+    init(passkey: PassKey, onDelete: @escaping () -> Void) {
+        self.passkey = passkey
+        self.onDelete = onDelete
     }
-}
-
-extension AnalyticsEvent where Self == WebAuthNPassKeyDeletedEvent {
-    public static func webAuthNPassKeyDeleted() -> Self {
-        WebAuthNPassKeyDeletedEvent()
+    
+    //MARK: - Methods
+    
+    func deletePasskey() {
+        passkey.remove(entity: PassKey.entityName)
+        onDelete()
     }
 }

@@ -14,7 +14,7 @@
 
 //   PassKeyError.swift
 
-public enum PassKeyError : LocalizedError {
+public enum LiquidAuthError : LocalizedError {
     case generalError
     case notImplemented
     case signingAccountNotFound

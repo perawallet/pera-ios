@@ -21,15 +21,15 @@ import UIKit
 public protocol LiquidAuthSDKAPI {
     var signalService: SignalService { get }
     
-    func decodeBase64Url(_ url: String) -> Data?
-    func decodeBase64UrlToJSON(_ url: String) -> String?
+    func decodedBase64Url(_ url: String) -> Data?
+    func decodedBase64UrlAsJSON(_ url: String) -> String?
     
     func postAttestationOptions(origin: String, username: String) async throws -> Data
-    func postAttestationResult(origin: String, credential: [String: Any], liquidExt: [String: Any]) async throws -> Data
+    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws -> Data
     func postAssertionOptions(origin: String, credentialId: String) async throws -> Data
-    func postAssertionResult(origin: String, credential: String, liquidExt: [String: Any]) async throws -> Data
-    func getAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data
-    func getAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws -> Data
+    func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data
 }
 
 public final class LiquidAuthSDKAPIImpl: LiquidAuthSDKAPI {
@@ -37,8 +37,8 @@ public final class LiquidAuthSDKAPIImpl: LiquidAuthSDKAPI {
     public private(set) var signalService: SignalService
     private let userAgent: String
     
-    public init(signalService: SignalService? = nil) {
-        self.signalService = signalService ?? SignalService.shared
+    public init(signalService: SignalService = SignalService.shared) {
+        self.signalService = signalService
         self.userAgent = UserAgentHeader().value ?? "Unknown"
     }
 }
@@ -61,14 +61,14 @@ public extension LiquidAuthSDKAPIImpl {
         return data
     }
     
-    func postAttestationResult(origin: String, credential: [String: Any], liquidExt: [String: Any]) async throws -> Data {
+    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws -> Data {
         let device = await UIDevice.current.model
         let attestationApi = AttestationApi()
         return try await attestationApi.postAttestationResult(
             origin: origin,
             userAgent: self.userAgent,
             credential: credential,
-            liquidExt: liquidExt,
+            liquidExt: liquidExtension,
             device: device
         )
     }
@@ -83,17 +83,17 @@ public extension LiquidAuthSDKAPIImpl {
         return data
     }
     
-    func postAssertionResult(origin: String, credential: String, liquidExt: [String: Any]) async throws -> Data {
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws -> Data {
         let assertionApi = AssertionApi()
         return try await assertionApi.postAssertionResult(
             origin: origin,
             userAgent: userAgent,
             credential: credential,
-            liquidExt: liquidExt
+            liquidExt: liquidExtension
         )
     }
     
-    func getAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
+    func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
         AuthenticatorData.assertion(
             rpIdHash: rpIdHash,
             userPresent: userPresent,
@@ -104,15 +104,15 @@ public extension LiquidAuthSDKAPIImpl {
         ).toData()
     }
     
-    func decodeBase64Url(_ url: String) -> Data? {
+    func decodedBase64Url(_ url: String) -> Data? {
         Utility.decodeBase64Url(url)
     }
     
-    func decodeBase64UrlToJSON(_ url: String) -> String? {
+    func decodedBase64UrlAsJSON(_ url: String) -> String? {
         Utility.decodeBase64UrlToJSON(url)
     }
     
-    func getAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
         let attestedCredData = Utility.getAttestedCredentialData(
             aaguid: PassKeyService.AAGUID,
             credentialId: credentialId,

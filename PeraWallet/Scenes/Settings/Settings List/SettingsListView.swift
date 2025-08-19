@@ -180,7 +180,7 @@ struct SettingsListView: View {
     @ViewBuilder
     private func buildPasskeyView() -> some View {
         //TODO: Is this the right way to handle back or is there a more idiomatic SwiftUI way?
-        PasskeyListView(onBack: { self.navigationPath.removeLast() })
+        PasskeyListView(onBackButtonTap: { self.navigationPath.removeLast() })
     }
 }
 

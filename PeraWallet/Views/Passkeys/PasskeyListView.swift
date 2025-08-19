@@ -19,29 +19,29 @@ import AuthenticationServices
 struct PasskeyListView: View {
     
     private let model: PasskeyListModelable
-    private let backHandler: () -> Void
+    private let onBackButtonTap: () -> Void
     @ObservedObject private var viewModel: PasskeyListViewModel
     
     // MARK: - Initialisers
     
-    init(onBack: @escaping () -> Void) {
+    init(onBackButtonTap: @escaping () -> Void) {
         self.model = PasskeyListModel()
         self.viewModel = model.viewModel
-        self.backHandler = onBack
+        self.onBackButtonTap = onBackButtonTap
     }
     
     // MARK: - Setups
     var body: some View {
         VStack {
             if viewModel.settingNotEnabled {
-                WarningLabel().padding()
+                WarningLabel()
+                    .padding()
             }
             
             List {
                 ForEach(viewModel.passkeys) { passkey in
-                    PasskeyListCell(passkey: passkey, onDelete: passKeyDeleted)
+                    PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: passKeyDeleted))
                 }
-                
             }
             .overlay(Group {
                 if viewModel.passkeys.isEmpty {
@@ -52,13 +52,13 @@ struct PasskeyListView: View {
             .listStyle(.automatic)
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarTitle(String(localized: "settings-passkeys-title"))
+        .navigationBarTitle("settings-passkeys-title")
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(
                 placement: .topBarLeading,
                 content: {
-                    SwiftUI.Button(action: backHandler) {
+                    SwiftUI.Button(action: onBackButtonTap) {
                         Image(.iconBack)
                             .foregroundStyle(Color.Text.main)
                     }
@@ -68,7 +68,7 @@ struct PasskeyListView: View {
     }
     
     private func passKeyDeleted() {
-        self.viewModel.trackDeletion()
+        viewModel.trackDeletion()
     }
 }
 

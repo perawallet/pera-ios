@@ -2933,10 +2933,8 @@
 		59B1068D2E4E0F7300B8F6FB /* AppGroupDataStoreMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B1068C2E4E0F6A00B8F6FB /* AppGroupDataStoreMigration.swift */; };
 		59B1068F2E4E13D000B8F6FB /* AppGroupDataStoreMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B1068E2E4E13C900B8F6FB /* AppGroupDataStoreMigrationTests.swift */; };
 		59B106912E4E2CCC00B8F6FB /* NSPersistentContainer+Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B106902E4E2CBE00B8F6FB /* NSPersistentContainer+Create.swift */; };
-		59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift */; };
-		59B10C7F2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C7E2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift */; };
-		59B10C812E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C802E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift */; };
-		59B10D6C2E549BE400B8F6FB /* PassKeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */; };
+		59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift */; };
+		59B10D6C2E549BE400B8F6FB /* LiquidAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10D6B2E549BDF00B8F6FB /* LiquidAuthError.swift */; };
 		59B1F8882E4B2B1F00B8F6FB /* deterministicP256-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F8872E4B2B1F00B8F6FB /* deterministicP256-swift */; };
 		59B1F88B2E4B2B3A00B8F6FB /* Scout in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F88A2E4B2B3A00B8F6FB /* Scout */; };
 		59B1F88F2E4B2D8E00B8F6FB /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F88E2E4B2D8E00B8F6FB /* LiquidAuthSDK */; };
@@ -8735,10 +8733,8 @@
 		59B1068C2E4E0F6A00B8F6FB /* AppGroupDataStoreMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupDataStoreMigration.swift; sourceTree = "<group>"; };
 		59B1068E2E4E13C900B8F6FB /* AppGroupDataStoreMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupDataStoreMigrationTests.swift; sourceTree = "<group>"; };
 		59B106902E4E2CBE00B8F6FB /* NSPersistentContainer+Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentContainer+Create.swift"; sourceTree = "<group>"; };
-		59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyAddedEvent.swift; sourceTree = "<group>"; };
-		59B10C7E2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyUsedEvent.swift; sourceTree = "<group>"; };
-		59B10C802E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyDeletedEvent.swift; sourceTree = "<group>"; };
-		59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyError.swift; sourceTree = "<group>"; };
+		59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyEvent.swift; sourceTree = "<group>"; };
+		59B10D6B2E549BDF00B8F6FB /* LiquidAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidAuthError.swift; sourceTree = "<group>"; };
 		59B1F86D2E4A75B000B8F6FB /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		59B1F8972E4B2E9B00B8F6FB /* PassKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKey.swift; sourceTree = "<group>"; };
 		59B1F89A2E4B2EB400B8F6FB /* LiquidAuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidAuthRequest.swift; sourceTree = "<group>"; };
@@ -10253,6 +10249,7 @@
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
 				Passkeys/PasskeyListCell.swift,
+				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
 				Styles/NavigationBarStyle.swift,
@@ -10306,6 +10303,7 @@
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
 				Passkeys/PasskeyListCell.swift,
+				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
 				Styles/NavigationBarStyle.swift,
@@ -10339,6 +10337,7 @@
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
 				Passkeys/PasskeyListCell.swift,
+				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
 				Styles/NavigationBarStyle.swift,
@@ -18726,9 +18725,7 @@
 		59B10C7B2E53258300B8F6FB /* LiquidAuth */ = {
 			isa = PBXGroup;
 			children = (
-				59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift */,
-				59B10C7E2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift */,
-				59B10C802E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift */,
+				59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift */,
 			);
 			path = LiquidAuth;
 			sourceTree = "<group>";
@@ -18744,7 +18741,7 @@
 		59B1F8A02E4B2EB400B8F6FB /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */,
+				59B10D6B2E549BDF00B8F6FB /* LiquidAuthError.swift */,
 				59B1F89A2E4B2EB400B8F6FB /* LiquidAuthRequest.swift */,
 				59B1F89B2E4B2EB400B8F6FB /* LiquidAuthResponse.swift */,
 				59B1F89C2E4B2EB400B8F6FB /* PassKeyAuthenticationRequest.swift */,
@@ -31000,7 +30997,6 @@
 				59B1F8A62E4B2EB400B8F6FB /* LiquidAuthRequest.swift in Sources */,
 				59B1F8A72E4B2EB400B8F6FB /* LiquidAuthSDKAPI.swift in Sources */,
 				59B1F8A82E4B2EB400B8F6FB /* LiquidAuthService.swift in Sources */,
-				59B10C7F2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift in Sources */,
 				59B1F8A92E4B2EB400B8F6FB /* PassKeyAuthenticationResponse.swift in Sources */,
 				59B1F8AA2E4B2EB400B8F6FB /* PassKeyAuthenticationRequest.swift in Sources */,
 				59B1F8AB2E4B2EB400B8F6FB /* PassKeyCreationRequest.swift in Sources */,
@@ -31021,7 +31017,6 @@
 				5916767D2E460AF9002184C2 /* DeviceUpdateDraft.swift in Sources */,
 				5916767E2E460AF9002184C2 /* SearchAssetsForDiscoverDraft.swift in Sources */,
 				5916767F2E460AF9002184C2 /* MoonPaySignDraft.swift in Sources */,
-				59B10C812E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift in Sources */,
 				591676802E460AF9002184C2 /* NotificationStatusFetchDraft.swift in Sources */,
 				591676812E460AF9002184C2 /* NotificationStatusUpdateDraft.swift in Sources */,
 				591676822E460AF9002184C2 /* ARC59SendAssetTransactionDraft.swift in Sources */,
@@ -31119,7 +31114,7 @@
 				591676DE2E460AF9002184C2 /* DiscoverSwapParameters.swift in Sources */,
 				591676DF2E460AF9002184C2 /* DiscoverDeviceIDDetails.swift in Sources */,
 				591676E02E460AF9002184C2 /* pera_wallet_core.h in Sources */,
-				59B10D6C2E549BE400B8F6FB /* PassKeyError.swift in Sources */,
+				59B10D6C2E549BE400B8F6FB /* LiquidAuthError.swift in Sources */,
 				591678B02E462E99002184C2 /* ErrorDisplayable.swift in Sources */,
 				591676E72E460AF9002184C2 /* ScrollVerticalDirection.swift in Sources */,
 				591676FD2E460AF9002184C2 /* BLEConnectionManager.swift in Sources */,
@@ -31391,7 +31386,7 @@
 				591678512E460AF9002184C2 /* WCTransaction.swift in Sources */,
 				591678522E460AF9002184C2 /* WCTransactionDetail.swift in Sources */,
 				591678532E460AF9002184C2 /* WCTransactionOption.swift in Sources */,
-				59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift in Sources */,
+				59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift in Sources */,
 				591678542E460AF9002184C2 /* WCTransactionRequestedSigner.swift in Sources */,
 				591678552E460AF9002184C2 /* WCTransactionErrorResponse.swift in Sources */,
 				591678562E460AF9002184C2 /* Backup.swift in Sources */,

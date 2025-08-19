@@ -431,12 +431,12 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         } else if let url = URL(string: qrString),
                   let request = LiquidAuthService.makeRequestForURL(url) {
             closeScreen()
-            if self.configuration.featureFlagService.isEnabled(.liquidConnectEnabled) {
-                self.handleLiquidAuthRequest(request: request)
+            if configuration.featureFlagService.isEnabled(.liquidConnectEnabled) {
+                handleLiquidAuthRequest(request: request)
             }
         } else if let url = URL(string: qrString), PassKeyService.isPassKeyURL(url) {
             closeScreen()
-            if self.configuration.featureFlagService.isEnabled(.liquidAuthEnabled) {
+            if configuration.featureFlagService.isEnabled(.liquidAuthEnabled) {
                 // Just launch the URL which will open the iOS fido:/ flow and hand off to the autofill extension
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
@@ -468,26 +468,30 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
     
     private func handleLiquidAuthRequest(request: LiquidAuthRequest) {
-        guard let session = self.session else {
-            self.showErrorAlert(message: "liquid-auth-error".localized())
+        guard let session else {
+            showErrorAlert(message: String(localized: "liquid-auth-error"))
             return
         }
-        let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: self.hdWalletStorage, session: session)
-        let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: self.configuration.featureFlagService)
+        let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: hdWalletStorage, session: session)
+        let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: configuration.featureFlagService)
         Task {
             do {
                 let response = try await liquidAuthManager.handleAuthRequest(request: request)
-                try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { message in
-                    Task {
-                        //TODO: Implement incoming message handling here...
-                        //This will be done when we implement liquid connect
-                        let response = "pong"
-                        SignalService.shared.sendMessage(response)
-                    }
+                try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { [weak self] message in
+                    self?.handleLiquidAuthMessage(message)
                 }
             } catch {
-                self.showErrorAlert(message: error.localizedDescription)
+                showErrorAlert(message: error.localizedDescription)
             }
+        }
+    }
+    
+    private func handleLiquidAuthMessage(_ message: String) {
+        Task {
+            //TODO: Implement incoming message handling here...
+            //This will be done when we implement liquid connect
+            let response = "pong"
+            SignalService.shared.sendMessage(response)
         }
     }
     

@@ -19,13 +19,9 @@ import pera_wallet_core
 struct PasskeyListCell: View {
     
     // MARK: - Properties
-    
-    let passkey: PassKey
-    let onDelete: () -> Void
-    @State private var isPresentingConfirm: Bool = false
+    @State var viewModel: PasskeyListCellViewModel
         
     // MARK: - Body
-    
     var body: some View {
         HStack {
             Image(.Settings.Icon.passkeys)
@@ -34,13 +30,13 @@ struct PasskeyListCell: View {
                 .frame(width: 24.0, height: 24.0)
                 .padding(.trailing, 16.0)
             VStack(alignment: .leading, spacing: 4.0) {
-                Text(passkey.displayName)
+                Text(viewModel.passkey.displayName)
                     .font(.dmSans.bold.size(15.0))
                     .foregroundStyle(Color.Text.main)
-                Text(passkey.origin)
+                Text(viewModel.passkey.origin)
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
-                Text("settings-passkeys-last-used".localized("\(passkey.lastUsed?.toFormat("MMM d, yyyy, h:mm a") ?? "Never")"))
+                Text(viewModel.passkey.lastUsedDisplay)
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
@@ -53,15 +49,10 @@ struct PasskeyListCell: View {
         .padding(.leading, 24.0)
         .frame(height: 64.0)
         .swipeActions {
-            SwiftUI.Button("settings-passkeys-delete".localized()) {
-                self.passkey.remove(entity: PassKey.entityName)
-                self.onDelete()
+            SwiftUI.Button(String(localized: "settings-passkeys-delete")) {
+                viewModel.deletePasskey()
             }
             .tint(.red)
         }
-    }
-    
-    func showConfirmation() {
-        isPresentingConfirm = true
     }
 }

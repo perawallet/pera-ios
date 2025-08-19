@@ -16,8 +16,8 @@ import Foundation
 import CryptoKit
 
 public struct PassKeyAuthenticationResponse {
-    public var credentialId: String
-    public var address: String
-    public var keyPair: P256.Signing.PrivateKey
+    public let credentialId: String
+    public let address: String
+    public let keyPair: P256.Signing.PrivateKey
 }
 

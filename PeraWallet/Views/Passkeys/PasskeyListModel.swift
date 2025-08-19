@@ -19,45 +19,54 @@ import pera_wallet_core
 
 final class PasskeyListViewModel: ObservableObject {
     
-        
+    // MARK: - Properties
+    
     @Published fileprivate(set) var passkeys: [PassKey] = []
     @Published var settingNotEnabled = false
     private let passKeyManager: PassKeyService?
     
+    // MARK: - Initializers
     
     init() {
-        if let appConfig = AppDelegate.shared?.appConfiguration {
-            self.passKeyManager = PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
-            let store = ASCredentialIdentityStore.shared
-            store.getState { [weak self] state in
-                Task {
-                    if let self = self {
-                        await MainActor.run {
-                            self.settingNotEnabled = !state.isEnabled
-                        }
-                    }
-                }
-            }
-            reloadPasskeys()
-        } else {
-            self.passKeyManager = nil
+        guard let appConfig = AppDelegate.shared?.appConfiguration else {
+            passKeyManager = nil
+            return
         }
+        
+        passKeyManager = PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
+        checkForSettingEnabled()
+        reloadPasskeys()
     }
     
+    
+    // MARK: - Methods
+    
     func reloadPasskeys() {
-        self.passkeys = passKeyManager?.findAllPassKeys() ?? []
+        passkeys = passKeyManager?.findAllPassKeys() ?? []
     }
     
     func trackDeletion() {
         if let analytics = CoreAppConfiguration.shared?.analytics {
             analytics.track(.webAuthNPassKeyDeleted())
         }
-        self.reloadPasskeys()
+        reloadPasskeys()
+    }
+    
+    private func checkForSettingEnabled() {
+        let store = ASCredentialIdentityStore.shared
+        store.getState { [weak self] state in
+            Task {
+                await self?.updateEnabledState(state.isEnabled)
+            }
+        }
+    }
+    
+    @MainActor
+    private func updateEnabledState(_ isEnabled: Bool) {
+        settingNotEnabled = !isEnabled
     }
     
 }
-
-// MARK: - Model
 
 protocol PasskeyListModelable {
     var viewModel: PasskeyListViewModel { get }
@@ -65,18 +74,7 @@ protocol PasskeyListModelable {
 
 final class PasskeyListModel: PasskeyListModelable {
     
-    // MARK: - SettingsListModelable
+    // MARK: - PasskeyListModelable
     
-    let viewModel:PasskeyListViewModel
-    
-    // MARK: - Initialisers
-    
-    init() {
-        viewModel = PasskeyListViewModel()
-    }
-    
-    // MARK: - Setups
-    
-    private func setupData(appVersion: String) {
-    }
+    let viewModel: PasskeyListViewModel = PasskeyListViewModel()
 }

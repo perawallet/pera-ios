@@ -13,5 +13,5 @@
 // limitations under the License.
 
 public struct LiquidAuthResponse {
-    public var credentialId: String
+    public let credentialId: String
 }

@@ -15,11 +15,13 @@
 import CoreData
 
 extension NSPersistentContainer {
+    public static let DEFAULT_CONTAINER_NAME = "algorand"
+    
     public static func makePersistentContainer(group: String?) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: "algorand")
+        let container = NSPersistentContainer(name: DEFAULT_CONTAINER_NAME)
         
-        if let group = group {
-            let storeURL = URL.appGroupDBURL(for: group, databaseName: "algorand")
+        if let group {
+            let storeURL = URL.appGroupDBURL(for: group, databaseName: DEFAULT_CONTAINER_NAME)
             let storeDescription = NSPersistentStoreDescription(url: storeURL)
             container.persistentStoreDescriptions = [storeDescription]
         }
@@ -28,10 +30,7 @@ extension NSPersistentContainer {
                 var resourceValues = URLResourceValues()
                 resourceValues.isExcludedFromBackup = true
 
-                do {
-                    try url.setResourceValues(resourceValues)
-                } catch {
-                }
+                try? url.setResourceValues(resourceValues)
             }
 
             if let error = error as NSError? {

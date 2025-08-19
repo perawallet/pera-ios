@@ -15,21 +15,28 @@
 //
 //  WebAuthNPassKeyAddedEvent.swift
 
-import Foundation
 import MacaroonVendors
 
-public struct WebAuthNPassKeyAddedEvent: ALGAnalyticsEvent {
+public struct WebAuthNPassKeyEvent: ALGAnalyticsEvent {
     public let name: ALGAnalyticsEventName
     public let metadata: ALGAnalyticsMetadata
 
-    fileprivate init() {
-        self.name = .webAuthNPassKeyAdded
+    fileprivate init(name: ALGAnalyticsEventName) {
+        self.name = name
         self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WebAuthNPassKeyAddedEvent {
+extension AnalyticsEvent where Self == WebAuthNPassKeyEvent {
     public static func webAuthNPassKeyAdded() -> Self {
-        WebAuthNPassKeyAddedEvent()
+        WebAuthNPassKeyEvent(name: .webAuthNPassKeyAdded)
+    }
+    
+    public static func webAuthNPassKeyUsed() -> Self {
+        WebAuthNPassKeyEvent(name: .webAuthNPassKeyUsed)
+    }
+    
+    public static func webAuthNPassKeyDeleted() -> Self {
+        WebAuthNPassKeyEvent(name: .webAuthNPassKeyDeleted)
     }
 }

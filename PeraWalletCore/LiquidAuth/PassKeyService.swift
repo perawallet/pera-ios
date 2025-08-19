@@ -19,12 +19,13 @@ import SwiftCBOR
 import x_hd_wallet_api
 
 public protocol PassKeyServicing {
-    func getSigningAccounts() async throws -> [AccountInformation]
-    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK?
-    func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse
-    func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse
+    var allPassKeys: [PassKey] { get }
     
-    func findAllPassKeys() -> [PassKey]
+    func fetchSigningAccounts() async throws -> [AccountInformation]
+    func fetchSigningSDK(account: AccountInformation) async throws -> HDWalletSDK?
+    func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse
+    func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse
+    
     func deletePassKeysForOriginAndUsername(origin: String, username: String)
     func hasPassKey(origin: String, username: String) -> Bool
 }
@@ -40,32 +41,49 @@ public final class PassKeyService: PassKeyServicing {
     
     public init(hdWalletStorage: HDWalletStorable,
                 session: Session,
-                liquidAuthSDK: LiquidAuthSDKAPI? = nil) {
+                liquidAuthSDK: LiquidAuthSDKAPI = LiquidAuthSDKAPIImpl()) {
         self.hdWalletStorage = hdWalletStorage
         self.session = session
-        self.liquidAuthSDK = liquidAuthSDK ?? LiquidAuthSDKAPIImpl()
+        self.liquidAuthSDK = liquidAuthSDK
     }
 }
 
 public extension PassKeyService {
     
+    var allPassKeys: [PassKey] {
+        let result = PassKey.fetchAllSyncronous(entity: PassKey.entityName)
+        
+        switch result {
+        case .result(let object):
+            if object is PassKey {
+                let pk = object as! PassKey
+                return [pk]
+            }
+            return []
+        case .results(let objects):
+            return objects.filter({$0 is PassKey}).map({ $0 as! PassKey })
+        case .error:
+            return []
+        }
+    }
+    
     static func isPassKeyURL(_ url: URL) -> Bool {
         url.scheme?.lowercased() == PassKeyService.FIDO_SCHEME
     }
     
-    func getSigningAccounts() async throws -> [AccountInformation] {
-        if let signingAccounts = self.signingAccounts {
+    func fetchSigningAccounts() async throws -> [AccountInformation] {
+        if let signingAccounts {
             return signingAccounts
         }
         
-        self.signingAccounts = self.session.authenticatedUser?.accounts.filter({ $0.hdWalletAddressDetail != nil && $0.type == .standard})
-        return self.signingAccounts ?? []
+        signingAccounts = session.authenticatedUser?.accounts.filter { $0.hdWalletAddressDetail != nil && $0.type == .standard }
+        return signingAccounts ?? []
     }
     
-    func getSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
+    func fetchSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
         // We're going to need access to the wallet seed for signing later
         guard let walletId = account.hdWalletAddressDetail?.walletId,
-              let wallet = try self.hdWalletStorage.wallet(id: walletId),
+              let wallet = try hdWalletStorage.wallet(id: walletId),
               let seed = HDWalletUtils.generateSeed(fromEntropy: wallet.entropy),
               let sdk = HDWalletSDKImp(seed: seed.toHexString())
         else {
@@ -77,16 +95,16 @@ public extension PassKeyService {
     
     func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {
         let origin = request.origin
-        let signingAccounts = try await getSigningAccounts()
-        guard let signingAccount = signingAccounts.first(where: { request.address == nil || $0.address == request.address })  else {
-            throw PassKeyError.signingAccountNotFound
+        let signingAccounts = try await fetchSigningAccounts()
+        guard let signingAccount = signingAccounts.first(where: { request.address == nil || $0.address == request.address }) else {
+            throw LiquidAuthError.signingAccountNotFound
         }
         
         if findPassKeyForRequest(origin: origin, username: request.username) != nil {
-            throw PassKeyError.passKeyExists
+            throw LiquidAuthError.passKeyExists
         }
         
-        let keyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
+        let keyPair = try dp256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
         let credentialId = keyPair.publicKey.rawRepresentation.sha256()
         
         
@@ -105,20 +123,20 @@ public extension PassKeyService {
         )
     }
     
-    func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
+    func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
         guard let passkey = findPassKeyForRequest(origin: request.origin, username: request.username) else {
-            throw PassKeyError.passKeyNotFound
+            throw LiquidAuthError.passKeyNotFound
         }
-        let signingAccounts = try await getSigningAccounts()
+        let signingAccounts = try await fetchSigningAccounts()
         guard let signingAccount = signingAccounts.first(where: { passkey.address == $0.address }) else {
-            throw PassKeyError.signingAccountNotFound
+            throw LiquidAuthError.signingAccountNotFound
         }
         
-        let p256KeyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
+        let p256KeyPair = try dp256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
         let credentialId = Data([UInt8](p256KeyPair.publicKey.rawRepresentation.sha256()))
         
         if signingAccount.address != passkey.address || credentialId.base64URLEncodedString() != passkey.credentialId {
-            throw PassKeyError.passKeyInvalid
+            throw LiquidAuthError.passKeyInvalid
         }
         
         passkey.update(entity: PassKey.entityName, with: [
@@ -130,29 +148,12 @@ public extension PassKeyService {
     }
     
     func hasPassKey(origin: String, username: String) -> Bool {
-        findAllPassKeys().first(where: { $0.origin == origin && $0.username == username }) != nil
+        allPassKeys.first(where: { $0.origin == origin && $0.username == username }) != nil
     }
     
     func deletePassKeysForOriginAndUsername(origin: String, username: String) {
-        findAllPassKeys().filter({ $0.origin == origin && $0.username == username }).forEach {
+        allPassKeys.filter({ $0.origin == origin && $0.username == username }).forEach {
             $0.remove(entity: PassKey.entityName)
-        }
-    }
-    
-    func findAllPassKeys() -> [PassKey] {
-        let result = PassKey.fetchAllSyncronous(entity: PassKey.entityName)
-        
-        switch result {
-        case .result(let object):
-            if object is PassKey {
-                let pk = object as! PassKey
-                return [pk]
-            }
-            return []
-        case .results(let objects):
-            return objects.filter({$0 is PassKey}).map({ $0 as! PassKey })
-        case .error:
-            return []
         }
     }
     
@@ -161,12 +162,12 @@ public extension PassKeyService {
         
         switch result {
         case .result(let object):
-            if let pk = object as? PassKey, pk.origin == origin, pk.username == username {
-                return pk
+            if let passkey = object as? PassKey, passkey.origin == origin, passkey.username == username {
+                return passkey
             }
         case .results(let objects):
-            if let pk = objects.first(where: { $0 is PassKey && ($0 as? PassKey)?.origin == origin && ($0 as? PassKey)?.username == username }) as? PassKey {
-                return pk
+            if let passkey = objects.first(where: { $0 is PassKey && ($0 as? PassKey)?.origin == origin && ($0 as? PassKey)?.username == username }) as? PassKey {
+                return passkey
             }
         case .error: break
         }
@@ -174,12 +175,8 @@ public extension PassKeyService {
         return nil
     }
     
-    private func getSigningAddressForWallet(address: HDWalletAddressDetail) -> AccountInformation? {
-        self.session.authenticatedUser?.accounts(withWalletId: address.walletId).first
-    }
-    
-    private func getDP256KeyPair(info: AccountInformation, origin: String, username: String) throws -> P256.Signing.PrivateKey {
-        let mnemonics = PassphraseUtils.mnemonics(info: info, hdWalletStorage: self.hdWalletStorage, session: self.session)
+    private func dp256KeyPair(info: AccountInformation, origin: String, username: String) throws -> P256.Signing.PrivateKey {
+        let mnemonics = PassphraseUtils.mnemonics(info: info, hdWalletStorage: hdWalletStorage, session: session)
         let dp256 = DeterministicP256()
         let derivedMainKey = try dp256.genDerivedMainKeyWithBIP39(phrase: mnemonics.mnemonics.joined(separator: " "))
         let p256KeyPair = dp256.genDomainSpecificKeyPair(derivedMainKey: derivedMainKey, origin: origin, userHandle: username)

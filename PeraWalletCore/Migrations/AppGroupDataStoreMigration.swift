@@ -25,28 +25,32 @@ public final class AppGroupDataStoreMigration {
     public func moveDatabaseToAppGroup() {
         // Open the old database container and see if we have an ApplicationConfiguration there.  If so move everything to the app group location
         // and delete the old stuff
-        let persistentContainer = NSPersistentContainer(name: "algorand") //this is the old DB location
+        let persistentContainer = NSPersistentContainer(name: NSPersistentContainer.DEFAULT_CONTAINER_NAME) //this is the old DB location
                 
         do {
             let dbWithContent = try persistentContainer.persistentStoreDescriptions
-                .first(where: { desc in
-                    if let url = desc.url, url.lastPathComponent.starts(with: "algorand") {
+                .first { desc in
+                    if let url = desc.url, url.lastPathComponent.starts(with: NSPersistentContainer.DEFAULT_CONTAINER_NAME) {
                         return try hasContents(url)
                     }
                     return false
-                })
+                }
             
-            if dbWithContent != nil {
-                let loadedDB = NSPersistentContainer.makePersistentContainer(group: nil)
-                try doMigration(from: loadedDB)
+            guard let dbWithContent else {
+                //TODO: we should have some error handling here?
+                return
             }
+            
+            let loadedDB = NSPersistentContainer.makePersistentContainer(group: nil)
+            try performMigration(from: loadedDB)
         } catch {
+            //TODO: we should have some error handling here?
             print("Failed to clear old DB during app group migration: \(error)")
         }
     }
     
-    private func doMigration(from: NSPersistentContainer) throws {
-        let storeURL = URL.appGroupDBURL(for: appGroup, databaseName: "algorand")
+    private func performMigration(from: NSPersistentContainer) throws {
+        let storeURL = URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
         let oldStoreCoordinator = from.persistentStoreCoordinator
         
         for store in from.persistentStoreCoordinator.persistentStores {
@@ -61,7 +65,7 @@ public final class AppGroupDataStoreMigration {
             .filter {
                 $0.lastPathComponent.hasPrefix(name)
             }
-            .count > 0
+            .isNonEmpty
     }
     
     
