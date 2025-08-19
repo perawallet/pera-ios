@@ -15,6 +15,7 @@
 //   MockSession.swift
 
 import Foundation
+@testable import pera_wallet_core
 @testable import pera_staging
 
 final class MockSession: Session { }

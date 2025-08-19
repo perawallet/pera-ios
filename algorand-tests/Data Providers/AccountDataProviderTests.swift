@@ -14,6 +14,7 @@
 
 //   AccountDataProviderTests.swift
 
+@testable import pera_wallet_core
 @testable import pera_staging
 import Testing
 import Foundation

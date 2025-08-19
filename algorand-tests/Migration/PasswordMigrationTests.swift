@@ -16,6 +16,7 @@
 
 import XCTest
 
+@testable import pera_wallet_core
 @testable import pera_staging
 
 final class PasswordMigrationTests: XCTestCase {
