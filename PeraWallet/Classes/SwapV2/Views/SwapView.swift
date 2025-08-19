@@ -16,6 +16,7 @@
 
 import SwiftUI
 import Combine
+import pera_wallet_core
 
 enum SwapViewAction {
     case showInfo

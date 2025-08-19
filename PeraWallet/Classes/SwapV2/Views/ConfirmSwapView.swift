@@ -15,6 +15,7 @@
 //   ConfirmSwapView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 enum SwapInfoSheet: Identifiable {
     case slippageTolerance
