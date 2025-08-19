@@ -19,7 +19,7 @@ import x_hd_wallet_api
 import WebRTC
 
 public protocol LiquidAuthServicing {
-    func handleAuthRequest(request: LiquidAuthRequest) async -> LiquidAuthResponse
+    func handleAuthRequest(request: LiquidAuthRequest) async throws -> LiquidAuthResponse
     func startSignaling(
         origin: String,
         requestId: String,
@@ -47,23 +47,19 @@ public final class LiquidAuthService: LiquidAuthServicing {
 
 public extension LiquidAuthService {
     
-    func handleAuthRequest(request: LiquidAuthRequest) async -> LiquidAuthResponse {
+    func handleAuthRequest(request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
         guard self.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-            return cleanUpAndReturnError(origin: nil, username: nil, error: "liquid-auth-not-implemented")
+            throw PassKeyError.notImplemented
         }
         
-        do {
-            guard let signingAccount = try await self.passKeyService.getSigningAccounts().first else {
-                return cleanUpAndReturnError(origin: nil, username: nil, error: "liquid-auth-no-account-found")
-            }
-            
-            if self.passKeyService.hasPassKey(origin: request.origin, username: signingAccount.address) {
-                return await authenticate(signingAccount: signingAccount, request: request)
-            } else {
-                return await register(signingAccount: signingAccount, request: request)
-            }
-        } catch {
-            return cleanUpAndReturnError(origin: nil, username: nil, error: error.localizedDescription)
+        guard let signingAccount = try await self.passKeyService.getSigningAccounts().first else {
+            throw PassKeyError.signingAccountNotFound
+        }
+        
+        if self.passKeyService.hasPassKey(origin: request.origin, username: signingAccount.address) {
+            return try await authenticate(signingAccount: signingAccount, request: request)
+        } else {
+            return try await register(signingAccount: signingAccount, request: request)
         }
     }
     
@@ -119,7 +115,7 @@ public extension LiquidAuthService {
         )
     }
     
-    static func getRequestForURL(_ url: URL) -> LiquidAuthRequest? {
+    static func makeRequestForURL(_ url: URL) -> LiquidAuthRequest? {
         guard url.scheme == LIQUID_AUTH_SCHEME,
               let host = url.host,
               let queryItems = url.queryParameters,
@@ -130,56 +126,42 @@ public extension LiquidAuthService {
         return LiquidAuthRequest(origin: host, requestId: requestId)
     }
 
-    private func register(signingAccount: AccountInformation, request: LiquidAuthRequest) async -> LiquidAuthResponse {
-        var passKeyAddress: String? = nil
-        do {
-            let passKeyRequest = PassKeyCreationRequest(origin: request.origin, displayName: "Liquid Auth Passkey", username: signingAccount.address)
-            let response = try await self.passKeyService.createAndSavePassKey(request: passKeyRequest)
-            passKeyAddress = response.address
-            return try await signRegistrationChallenge(signingAccount: signingAccount, passKeyResponse: response, request: request)
-        } catch {
-            return cleanUpAndReturnError(origin: request.origin, username: passKeyAddress, error: error.localizedDescription)
-        }
+    private func register(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws  -> LiquidAuthResponse {
+        let passKeyRequest = PassKeyCreationRequest(origin: request.origin, displayName: "Liquid Auth Passkey", username: signingAccount.address)
+        let response = try await self.passKeyService.createAndSavePassKey(request: passKeyRequest)
+        return try await signRegistrationChallenge(signingAccount: signingAccount, passKeyResponse: response, request: request)
     }
     
-    private func authenticate(signingAccount: AccountInformation, request: LiquidAuthRequest) async -> LiquidAuthResponse {
-        do {
-            let passKeyRequest = PassKeyAuthenticationRequest(origin: request.origin, username: signingAccount.address)
-            let passKeyResponse = try await self.passKeyService.getAuthenticationData(request: passKeyRequest)
-            
-            let response = try await signAuthenticationChallenge(signingAccount: signingAccount, request: request, passKeyResponse: passKeyResponse)
-            return response
-        } catch {
-            return LiquidAuthResponse(error: error.localizedDescription)
-        }
+    private func authenticate(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
+        let passKeyRequest = PassKeyAuthenticationRequest(origin: request.origin, username: signingAccount.address)
+        let passKeyResponse = try await self.passKeyService.getAuthenticationData(request: passKeyRequest)
+        
+        let response = try await signAuthenticationChallenge(signingAccount: signingAccount, request: request, passKeyResponse: passKeyResponse)
+        return response
     }
     
     private func signRegistrationChallenge(signingAccount: AccountInformation, passKeyResponse response: PassKeyCreationResponse, request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
-        guard let credentialId = response.credentialId, response.success,
-              let address = response.address,
-              let keyPair = response.keyPair else {
-            return cleanUpAndReturnError(origin: request.origin, username: response.address)
-        }
-        
-        let data = try await self.liquidAuthSDK.postAttestationOptions(origin: request.origin, username: address)
+        let data = try await self.liquidAuthSDK.postAttestationOptions(origin: request.origin, username: response.address)
 
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
               let challengeBase64Url = json["challenge"] as? String,
               let rpId = extractRpId(json: json),
               let rpIdHash = rpId.data(using: .utf8)?.sha256()
         else {
-            return cleanUpAndReturnError(origin: request.origin, username: address)
+            self.passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
+            throw PassKeyError.generalError
         }
         
         guard let decodedChallenge = self.liquidAuthSDK.decodeBase64Url(challengeBase64Url),
               let clientDataJSON = try buildClientData(type: "webauthn.create", challengeUrl: challengeBase64Url, rpId: rpId),
               let signature = try await signChallenge(signingAccount: signingAccount, challenge: Data([UInt8](decodedChallenge)))
         else {
-            return cleanUpAndReturnError(origin: request.origin, username: address)
+            self.passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
+            throw PassKeyError.generalError
         }
         
-        let attestationObject = try self.liquidAuthSDK.getAttestationObject(credentialId: credentialId, keyPair: keyPair, rpIdHash: rpIdHash)
-        let credential = getCredentialObject(credentialId: credentialId,
+        let attestationObject = try self.liquidAuthSDK.getAttestationObject(credentialId: response.credentialId, keyPair: response.keyPair, rpIdHash: rpIdHash)
+        let credential = getCredentialObject(credentialId: response.credentialId,
                                              clientDataJSON: clientDataJSON,
                                              attestationObject: attestationObject)
         
@@ -187,7 +169,7 @@ public extension LiquidAuthService {
         let responseData = try await self.liquidAuthSDK.postAttestationResult(origin: request.origin, credential: credential, liquidExt: [
             "type": "algorand",
             "requestId": request.requestId,
-            "address": address,
+            "address": response.address,
             "signature": signature.base64URLEncodedString(),
             "device": device
         ])
@@ -195,9 +177,10 @@ public extension LiquidAuthService {
         if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
            let errorReason = responseJSON["error"] as? String
         {
-            return cleanUpAndReturnError(origin: request.origin, username: response.address, error: errorReason)
+            self.passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
+            throw PassKeyError.generalError
         } else {
-            return LiquidAuthResponse(credentialId: credentialId.base64URLEncodedString())
+            return LiquidAuthResponse(credentialId: response.credentialId.base64URLEncodedString())
         }
     }
     
@@ -207,29 +190,23 @@ public extension LiquidAuthService {
         passKeyResponse: PassKeyAuthenticationResponse
     ) async throws -> LiquidAuthResponse {
         
-        guard let credentialId = passKeyResponse.credentialId,
-              let address = passKeyResponse.address,
-                passKeyResponse.success else {
-            return LiquidAuthResponse(error: passKeyResponse.error)
-        }
-        
         let device = await UIDevice.current.model
         
-        let data = try await self.liquidAuthSDK.postAssertionOptions(origin: request.origin, credentialId: credentialId)
+        let data = try await self.liquidAuthSDK.postAssertionOptions(origin: request.origin, credentialId: passKeyResponse.credentialId)
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
               let challengeBase64Url = json["challenge"] as? String,
               let rp = extractRpId(json: json),
               let rpIdHash = rp.data(using: .utf8)?.sha256(),
               let challengeData = self.liquidAuthSDK.decodeBase64Url(challengeBase64Url)
         else {
-            return LiquidAuthResponse(error: "liquid-auth-error".localized())
+            throw PassKeyError.generalError
         }
         
         let challengeBytes = Data([UInt8](challengeData))
         
         guard let signature = try await signChallenge(signingAccount: signingAccount, challenge: challengeBytes),
               let clientDataJSON = try buildClientData(type: "webauthn.get", challengeUrl: challengeBase64Url, rpId: rp) else {
-            return LiquidAuthResponse(error: "liquid-auth-error".localized())
+            throw PassKeyError.generalError
         }
         
         let authenticatorData = self.liquidAuthSDK.getAssertionObject(rpIdHash: rpIdHash, userPresent: true, userVerified: true,
@@ -237,17 +214,13 @@ public extension LiquidAuthService {
         let clientDataHash = clientDataJSON.sha256()
         let dataToSign = authenticatorData + clientDataHash
         
-        guard let keyPair = passKeyResponse.keyPair else {
-            return LiquidAuthResponse(error: "liquid-auth-error".localized())
-        }
-        
-        let p256Signature = try keyPair.signature(for: dataToSign)
+        let p256Signature = try passKeyResponse.keyPair.signature(for: dataToSign)
 
         let assertionResponse: [String: Any] = [
-            "id": credentialId,
+            "id": passKeyResponse.credentialId,
             "type": "public-key",
-            "userHandle": address,
-            "rawId": credentialId,
+            "userHandle": passKeyResponse.address,
+            "rawId": passKeyResponse.credentialId,
             "response": [
                 "clientDataJSON": clientDataJSON.base64URLEncodedString(),
                 "authenticatorData": authenticatorData.base64URLEncodedString(),
@@ -259,7 +232,7 @@ public extension LiquidAuthService {
         guard let assertionResponseData = try? JSONSerialization.data(withJSONObject: assertionResponse, options: []),
               let assertionResponseJSON = String(data: assertionResponseData, encoding: .utf8)
         else {
-            return LiquidAuthResponse(error: "liquid-auth-error".localized())
+            throw PassKeyError.generalError
         }
         
         // Post the assertion result
@@ -269,7 +242,7 @@ public extension LiquidAuthService {
             liquidExt: [
                 "type": "algorand",
                 "requestId": request.requestId,
-                "address": address,
+                "address": passKeyResponse.address,
                 "signature": signature.base64URLEncodedString(),
                 "device": device,
             ]
@@ -279,9 +252,9 @@ public extension LiquidAuthService {
         if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
             let errorReason = responseJSON["error"] as? String
         {
-            return LiquidAuthResponse(error: errorReason)
+            throw PassKeyError.generalError
         } else {
-            return LiquidAuthResponse(credentialId: credentialId)
+            return LiquidAuthResponse(credentialId: passKeyResponse.credentialId)
         }
     }
     
@@ -352,12 +325,5 @@ public extension LiquidAuthService {
             derivationType: detail.derivationType
         )
         return try sdk.rawSign(draft)
-    }
-    
-    private func cleanUpAndReturnError(origin: String?, username: String?, error: String? = nil) -> LiquidAuthResponse {
-        if let username = username, let origin = origin {
-            self.passKeyService.deletePassKeysForOriginAndUsername(origin: origin, username: username)
-        }
-        return LiquidAuthResponse(error: error ?? "liquid-auth-error".localized())
     }
 }

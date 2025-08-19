@@ -17,8 +17,9 @@
 import SwiftUI
 
 @available(iOS 17.0, *)
+//TODO: This is a temporary placeholder - update when we have final designs
 struct PassKeyCredentialView: View {
-    @State var viewModel = PassKeyCredentialViewModel()
+    @State private(set) var viewModel = PassKeyCredentialViewModel()
     
     var body: some View {
         VStack {

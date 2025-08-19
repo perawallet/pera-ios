@@ -19,7 +19,7 @@ import LiquidAuthSDK
 @testable import pera_staging
 @testable import pera_wallet_core
 
-class MockFeatureFlagService : FeatureFlagServicing, Mockable {
+final class MockFeatureFlagService : FeatureFlagServicing, Mockable {
     
     var mock = Mock()
     

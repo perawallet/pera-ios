@@ -429,7 +429,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             closeScreen()
             delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
         } else if let url = URL(string: qrString),
-                  let request = LiquidAuthService.getRequestForURL(url) {
+                  let request = LiquidAuthService.makeRequestForURL(url) {
             closeScreen()
             if self.configuration.featureFlagService.isEnabled(.liquidConnectEnabled) {
                 self.handleLiquidAuthRequest(request: request)
@@ -475,23 +475,18 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: self.hdWalletStorage, session: session)
         let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: self.configuration.featureFlagService)
         Task {
-            let response = await liquidAuthManager.handleAuthRequest(request: request)
-            if let error = response.error {
-                self.showErrorAlert(message: error)
-                return
-            } else {
-                do {
-                    try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { message in
-                        Task {
-                            //TODO: Implement incoming message handling here...
-                            //This will be done when we implement liquid connect
-                            let response = "pong"
-                            SignalService.shared.sendMessage(response)
-                        }
+            do {
+                let response = try await liquidAuthManager.handleAuthRequest(request: request)
+                try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { message in
+                    Task {
+                        //TODO: Implement incoming message handling here...
+                        //This will be done when we implement liquid connect
+                        let response = "pong"
+                        SignalService.shared.sendMessage(response)
                     }
-                } catch {
-                    self.showErrorAlert(message: "liquid-auth-error".localized())
                 }
+            } catch {
+                self.showErrorAlert(message: error.localizedDescription)
             }
         }
     }

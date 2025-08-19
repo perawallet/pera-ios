@@ -16,15 +16,8 @@ import Foundation
 import CryptoKit
 
 public struct PassKeyCreationResponse {
-    public var error: String?
-    public var credentialId: Data?
-    public var address: String?
-    public var keyPair: P256.Signing.PrivateKey?
-    
-    public var success: Bool {
-        get {
-            return error == nil
-        }
-    }
+    public var credentialId: Data
+    public var address: String
+    public var keyPair: P256.Signing.PrivateKey
 }
 

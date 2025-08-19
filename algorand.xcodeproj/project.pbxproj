@@ -2936,6 +2936,7 @@
 		59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift */; };
 		59B10C7F2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C7E2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift */; };
 		59B10C812E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10C802E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift */; };
+		59B10D6C2E549BE400B8F6FB /* PassKeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */; };
 		59B1F8882E4B2B1F00B8F6FB /* deterministicP256-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F8872E4B2B1F00B8F6FB /* deterministicP256-swift */; };
 		59B1F88B2E4B2B3A00B8F6FB /* Scout in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F88A2E4B2B3A00B8F6FB /* Scout */; };
 		59B1F88F2E4B2D8E00B8F6FB /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 59B1F88E2E4B2D8E00B8F6FB /* LiquidAuthSDK */; };
@@ -8737,6 +8738,7 @@
 		59B10C7C2E53259E00B8F6FB /* WebAuthNPassKeyAddedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyAddedEvent.swift; sourceTree = "<group>"; };
 		59B10C7E2E53268F00B8F6FB /* WebAuthNPassKeyUsedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyUsedEvent.swift; sourceTree = "<group>"; };
 		59B10C802E53269900B8F6FB /* WebAuthNPassKeyDeletedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthNPassKeyDeletedEvent.swift; sourceTree = "<group>"; };
+		59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyError.swift; sourceTree = "<group>"; };
 		59B1F86D2E4A75B000B8F6FB /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		59B1F8972E4B2E9B00B8F6FB /* PassKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKey.swift; sourceTree = "<group>"; };
 		59B1F89A2E4B2EB400B8F6FB /* LiquidAuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidAuthRequest.swift; sourceTree = "<group>"; };
@@ -10261,7 +10263,6 @@
 		59B1FE582E4B587600B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AppInitializer.swift,
 				CredentialProviderService.swift,
 				CredentialProviderViewController.swift,
 				PassKeyCredentialView.swift,
@@ -10272,7 +10273,6 @@
 		59B1FE5B2E4B588200B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AppInitializer.swift,
 				CredentialProviderService.swift,
 				CredentialProviderViewController.swift,
 				PassKeyCredentialView.swift,
@@ -18744,6 +18744,7 @@
 		59B1F8A02E4B2EB400B8F6FB /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				59B10D6B2E549BDF00B8F6FB /* PassKeyError.swift */,
 				59B1F89A2E4B2EB400B8F6FB /* LiquidAuthRequest.swift */,
 				59B1F89B2E4B2EB400B8F6FB /* LiquidAuthResponse.swift */,
 				59B1F89C2E4B2EB400B8F6FB /* PassKeyAuthenticationRequest.swift */,
@@ -31118,6 +31119,7 @@
 				591676DE2E460AF9002184C2 /* DiscoverSwapParameters.swift in Sources */,
 				591676DF2E460AF9002184C2 /* DiscoverDeviceIDDetails.swift in Sources */,
 				591676E02E460AF9002184C2 /* pera_wallet_core.h in Sources */,
+				59B10D6C2E549BE400B8F6FB /* PassKeyError.swift in Sources */,
 				591678B02E462E99002184C2 /* ErrorDisplayable.swift in Sources */,
 				591676E72E460AF9002184C2 /* ScrollVerticalDirection.swift in Sources */,
 				591676FD2E460AF9002184C2 /* BLEConnectionManager.swift in Sources */,

@@ -19,7 +19,7 @@ import MagpieCore
 @testable import pera_wallet_core
 
 
-class MockSharedDataController: SharedDataController, Mockable {
+final class MockSharedDataController: SharedDataController, Mockable {
     
     var mock = Mock()
     

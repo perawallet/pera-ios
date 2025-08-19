@@ -18,7 +18,7 @@ import x_hd_wallet_api
 @testable import pera_staging
 @testable import pera_wallet_core
 
-class ScoutMockHDWalletStorage: HDWalletStorable, Mockable {
+final class ScoutMockHDWalletStorage: HDWalletStorable, Mockable {
     
     var mock = Mock()
     

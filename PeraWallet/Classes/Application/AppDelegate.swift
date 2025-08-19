@@ -640,7 +640,7 @@ extension AppDelegate {
     }
     
     private func createPersistentContainer() -> NSPersistentContainer {
-        return NSPersistentContainer.createPersistentContainer(
+        NSPersistentContainer.makePersistentContainer(
             group: ALGAppTarget.current.app.appGroupIdentifier)
     }
     

@@ -57,9 +57,13 @@ final class LiquidAuthServiceTests: XCTestCase {
     func test_handleAuthRequest_returnsError_whenFeatureFlagDisabled() async {
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(false))
 
-        let response = await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
+        do {
+            let _ = try await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
+            XCTAssertFalse(true)
+        } catch {
+            XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-not-implemented"))
+        }
 
-        XCTAssertEqual(response.error, "liquid-auth-not-implemented")
         mockFeatureFlagService.verify()
     }
 
@@ -68,9 +72,12 @@ final class LiquidAuthServiceTests: XCTestCase {
         let result: [AccountInformation] = []
         mockPassKeyService.expect.getSigningAccounts().to(`return`(result))
 
-        let response = await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
-
-        XCTAssertEqual(response.error, "liquid-auth-no-account-found")
+        do {
+            let _ = try await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
+            XCTAssertFalse(true)
+        } catch {
+            XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-account-found"))
+        }
         mockFeatureFlagService.verify()
         mockPassKeyService.verify()
     }
@@ -102,10 +109,12 @@ final class LiquidAuthServiceTests: XCTestCase {
                                                     backupEligible: equalTo(false), backupState: equalTo(false), signCount: any()).to(`return`("authData".data(using: .utf8)))
         mockLiquidAuthSDK.expect.postAssertionResult(origin: equalTo("origin.com"), credential: any(), liquidExt: any()).to(`return`("{}".data(using: .utf8)))
 
-        let response = await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
-
-        XCTAssertNil(response.error)
-        XCTAssertNotNil(response.credentialId)
+        do {
+            let response = try await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
+            XCTAssertNotNil(response.credentialId)
+        } catch {
+            XCTAssertFalse(true)
+        }
 
         mockFeatureFlagService.verify()
         mockPassKeyService.verify()
@@ -146,11 +155,14 @@ final class LiquidAuthServiceTests: XCTestCase {
         mockLiquidAuthSDK.expect.postAttestationResult(origin: equalTo("origin.com"), credential: any(), liquidExt: any()).to(`return`(Data()))
 
         let request = LiquidAuthRequest(origin: "origin.com", requestId: "req123")
-        let response = await service.handleAuthRequest(request: request)
-
-        XCTAssertNil(response.error)
-        XCTAssertEqual(response.credentialId, credentialId.base64URLEncodedString())
-
+        
+        do {
+            let response = try await service.handleAuthRequest(request: request)
+            XCTAssertEqual(response.credentialId, credentialId.base64URLEncodedString())
+        } catch {
+            XCTAssertFalse(true)
+        }
+        
         mockFeatureFlagService.verify()
         mockPassKeyService.verify()
         mockLiquidAuthSDK.verify()
@@ -159,13 +171,13 @@ final class LiquidAuthServiceTests: XCTestCase {
 
     func test_getRequestForURL_returnsNil_whenSchemeInvalid() {
         let url = URL(string: "https://example.com?requestId=req123")!
-        let result = LiquidAuthService.getRequestForURL(url)
+        let result = LiquidAuthService.makeRequestForURL(url)
         XCTAssertNil(result)
     }
 
     func test_getRequestForURL_returnsRequest_whenValid() {
         let url = URL(string: "liquid://example.com?requestId=req123")!
-        let result = LiquidAuthService.getRequestForURL(url)
+        let result = LiquidAuthService.makeRequestForURL(url)
         XCTAssertEqual(result?.origin, "example.com")
         XCTAssertEqual(result?.requestId, "req123")
     }

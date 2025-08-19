@@ -15,7 +15,7 @@
 import CoreData
 
 extension NSPersistentContainer {
-    public static func createPersistentContainer(group: String?) -> NSPersistentContainer {
+    public static func makePersistentContainer(group: String?) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "algorand")
         
         if let group = group {

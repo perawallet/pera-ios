@@ -16,7 +16,7 @@ import SwiftUI
 
 @available(iOS 17, *)
 @Observable
-class PassKeyCredentialViewModel {
+final class PassKeyCredentialViewModel {
     var error: String?
     var dismissHandler: (() -> Void)?
 }

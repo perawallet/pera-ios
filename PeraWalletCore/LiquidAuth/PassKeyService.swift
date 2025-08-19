@@ -79,11 +79,11 @@ public extension PassKeyService {
         let origin = request.origin
         let signingAccounts = try await getSigningAccounts()
         guard let signingAccount = signingAccounts.first(where: { request.address == nil || $0.address == request.address })  else {
-            return PassKeyCreationResponse(error: "liquid-auth-no-account-found".localized())
+            throw PassKeyError.signingAccountNotFound
         }
         
         if findPassKeyForRequest(origin: origin, username: request.username) != nil {
-            return PassKeyCreationResponse(error: "liquid-auth-passkey-already-exists".localized())
+            throw PassKeyError.passKeyExists
         }
         
         let keyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
@@ -107,18 +107,18 @@ public extension PassKeyService {
     
     func getAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
         guard let passkey = findPassKeyForRequest(origin: request.origin, username: request.username) else {
-            return PassKeyAuthenticationResponse(error: "liquid-auth-no-passkey-found".localized())
+            throw PassKeyError.passKeyNotFound
         }
         let signingAccounts = try await getSigningAccounts()
         guard let signingAccount = signingAccounts.first(where: { passkey.address == $0.address }) else {
-            return PassKeyAuthenticationResponse(error: "liquid-auth-no-account-found".localized())
+            throw PassKeyError.signingAccountNotFound
         }
         
         let p256KeyPair = try getDP256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
         let credentialId = Data([UInt8](p256KeyPair.publicKey.rawRepresentation.sha256()))
         
         if signingAccount.address != passkey.address || credentialId.base64URLEncodedString() != passkey.credentialId {
-            return PassKeyAuthenticationResponse(error: "liquid-auth-invalid-passkey-found".localized())
+            throw PassKeyError.passKeyInvalid
         }
         
         passkey.update(entity: PassKey.entityName, with: [

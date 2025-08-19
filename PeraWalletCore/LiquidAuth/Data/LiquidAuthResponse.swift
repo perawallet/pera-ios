@@ -13,12 +13,5 @@
 // limitations under the License.
 
 public struct LiquidAuthResponse {
-    public var error: String?
-    public var credentialId: String?
-    
-    public var success: Bool {
-        get {
-            return error == nil
-        }
-    }
+    public var credentialId: String
 }

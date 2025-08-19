@@ -37,7 +37,7 @@ public final class AppGroupDataStoreMigration {
                 })
             
             if dbWithContent != nil {
-                let loadedDB = NSPersistentContainer.createPersistentContainer(group: nil)
+                let loadedDB = NSPersistentContainer.makePersistentContainer(group: nil)
                 try doMigration(from: loadedDB)
             }
         } catch {

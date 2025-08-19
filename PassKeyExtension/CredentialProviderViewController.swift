@@ -18,12 +18,14 @@ import SwiftUI
 import UIKit
 
 @available(iOS 17, *)
-class CredentialProviderViewController: ASCredentialProviderViewController {
+final class CredentialProviderViewController: ASCredentialProviderViewController {
     
-    let contentView = UIHostingController(rootView: PassKeyCredentialView())
-    let credentialService: CredentialProviderService
-    var startTime = Date()
+    // MARK: - Properties
+    private let contentView = UIHostingController(rootView: PassKeyCredentialView())
+    private let credentialService: CredentialProviderService
+    private var startTime = Date()
     
+    // MARK: - Initialisers
     init() {
         FirebaseApp.configure()
         credentialService = CredentialProviderService()
@@ -40,30 +42,26 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup
+    
     override func viewDidLoad() {
-        self.modalPresentationStyle = .popover
         super.viewDidLoad()
+        modalPresentationStyle = .popover
     }
     
     override func prepareInterface(forPasskeyRegistration request: ASCredentialRequest) {
         guard let credentialRequest = request as? ASPasskeyCredentialRequest else {
-            self.setError("The passkey appears to be invalid.")
+            showError("The passkey appears to be invalid.")
             return
         }
         
         setupUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            Task {
-                guard let outcome = await self?.credentialService.handleRegistrationRequest(credentialRequest) else {
-                    self?.setError("liquid-auth-error".localized())
-                    return
-                }
-                switch (outcome) {
-                case .success(let credential):
-                    await self?.extensionContext.completeRegistrationRequest(using: credential)
-                case .failure(let error):
-                    self?.setError(error)
-                }
+        Task {
+            do {
+                let credential = try await credentialService.handleRegistrationRequest(credentialRequest)
+                await self.extensionContext.completeRegistrationRequest(using: credential)
+            } catch {
+                showError(error.localizedDescription)
             }
         }
     }
@@ -73,18 +71,12 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         requestParameters: ASPasskeyCredentialRequestParameters
     ) {
         setupUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            Task {
-                guard let outcome = await self?.credentialService.handleAuthenticationRequest(requestParameters) else {
-                    self?.setError("liquid-auth-error".localized())
-                    return
-                }
-                switch (outcome) {
-                case .success(let credential):
-                    await self?.extensionContext.completeAssertionRequest(using: credential)
-                case .failure(let error):
-                    self?.setError(error)
-                }
+        Task {
+            do {
+                let credential = try await credentialService.handleAuthenticationRequest(requestParameters)
+                await extensionContext.completeAssertionRequest(using: credential)
+            } catch {
+                showError(error.localizedDescription)
             }
         }
     }
@@ -99,19 +91,19 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     private func setupUI() {
         addChild(contentView)
         view.addSubview(contentView.view)
-        self.view.backgroundColor = .white
-        self.contentView.rootView.viewModel.dismissHandler = {
+        view.backgroundColor = .white
+        contentView.rootView.viewModel.dismissHandler = {
             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
                                                                     code: ASExtensionError.userCanceled.rawValue))
         }
-        self.contentView.view.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        contentView.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    private func setError(_ error: String) {
+    private func showError(_ error: String) {
         contentView.rootView.viewModel.error = error
     }
 }

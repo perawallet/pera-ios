@@ -21,7 +21,7 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
     func test_migration_movesDataAndDeletesOldStore() throws {
         let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.App.staging.appGroupIdentifier)
         
-        let oldLocationContainer = NSPersistentContainer.createPersistentContainer(group: nil)
+        let oldLocationContainer = NSPersistentContainer.makePersistentContainer(group: nil)
         Task {
             ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
                 ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,

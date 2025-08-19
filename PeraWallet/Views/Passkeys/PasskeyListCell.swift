@@ -15,6 +15,7 @@
 import SwiftUI
 import pera_wallet_core
 
+//TODO: This is a temporary placeholder - update when we have final designs
 struct PasskeyListCell: View {
     
     // MARK: - Properties
