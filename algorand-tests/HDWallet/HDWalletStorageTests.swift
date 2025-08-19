@@ -17,6 +17,7 @@
 import XCTest
 import KeychainAccess
 
+@testable import pera_wallet_core
 @testable import pera_staging
 
 final class HDWalletStorageTests: XCTestCase {

@@ -16,6 +16,7 @@
 
 import XCTest
 @testable import MnemonicSwift
+@testable import pera_wallet_core
 @testable import pera_staging
 @testable import x_hd_wallet_api
 
