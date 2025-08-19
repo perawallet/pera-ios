@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ enum SwapViewSheet: Identifiable {
     case settings
     case provider
     case confirmSwap
-
+    
     var id: String {
         switch self {
         case .settings: return "settings"
@@ -44,18 +44,13 @@ struct SwapView: View {
     
     // MARK: - Properties
     @ObservedObject var viewModel: SwapSharedViewModel
-
+    
     
     private var safeAreaTopInset: CGFloat {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
             .windows.first?.safeAreaInsets.top ?? 44
     }
     @State private var debounceWorkItem: DispatchWorkItem?
-    
-    @State private var applyMaxBalance = false
-    @State private var shouldShowProvider = false
-    @State private var shouldShowSwapButton = true
-    
     @State private var activeSheet: SwapViewSheet?
     
     var onTap: ((SwapViewAction) -> Void)?
@@ -73,37 +68,33 @@ struct SwapView: View {
             }
             ZStack {
                 VStack (spacing: 0) {
-                    AssetSelectionView(isPayingView: $viewModel.isPayingView, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText) {
+                    AssetSelectionView(isPayingView: $viewModel.isPayingView, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: .constant(false)) {
                         onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                     }
-                    .onChange(of: viewModel.payingText ?? "") { newValue in
-                        debounceWorkItem?.cancel()
-                        let task = DispatchWorkItem {
-                            if
-                                let doubleValue = Double(newValue),
-                                doubleValue > 0
-                            {
-                                viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue)
-                                onTap?(.getQuote(for: doubleValue))
-                            }
-                        }
-                        debounceWorkItem = task
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
-                    }
-                    AssetSelectionView(isPayingView: $viewModel.isPayingView.inverted, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText) {
+                    AssetSelectionView(isPayingView: $viewModel.isPayingView.inverted, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingQuote) {
                         onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
-                    }
-                    .onChange(of: viewModel.receivingText ?? "") { newValue in
-                        if
-                            let doubleValue = Double(newValue),
-                            doubleValue > 0
-                        {
-                            shouldShowSwapButton = true
-                        }
                     }
                 }
                 .padding(.horizontal, 8)
-
+                .onChange(of: viewModel.payingText) { newValue in
+                    debounceWorkItem?.cancel()
+                    let task = DispatchWorkItem {
+                        if
+                            let text = newValue?.replacingOccurrences(of: ",", with: "."),
+                            let doubleValue = Double(text),
+                            doubleValue > 0
+                        {
+                            viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue)
+                            viewModel.isLoadingQuote = true
+                            onTap?(.getQuote(for: doubleValue))
+                        } else {
+                            viewModel.receivingText = nil
+                        }
+                    }
+                    debounceWorkItem = task
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+                }
+                
                 HStack {
                     SwitchSwapButton {
                         onTap?(.switchAssets)
@@ -120,20 +111,20 @@ struct SwapView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            if shouldShowProvider {
+            
+            if viewModel.shouldShowSwapButton {
                 ProviderSelectionView(selectedProvider: $viewModel.provider) {
                     activeSheet = .provider
                 }
                 .padding(.top, 16)
                 .padding(.bottom, 12)
-            }
-            if shouldShowSwapButton {
+                
                 SwapButton {
-                    guard viewModel.payingText != nil, viewModel.receivingText != nil else {
-                        return
-                    }
+                    guard viewModel.payingText != nil, viewModel.receivingText != nil else { return }
                     activeSheet = .confirmSwap
                 }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .animation(.easeInOut, value: viewModel.shouldShowSwapButton)
             }
         }
         .padding(.top, safeAreaTopInset)
@@ -145,7 +136,7 @@ struct SwapView: View {
             case .provider:
                 ProviderSheet()
             case .confirmSwap:
-                let viewModel = SwapConfirmViewModel(selectedAccount: viewModel.selectedAccount, selectedAssetIn: viewModel.selectedAssetIn, selectedAssetOut: viewModel.selectedAssetOut, selectedAssetInAmount: viewModel.payingText!, selectedAssetOutAmount: viewModel.receivingText!, price: "0.17809 ALGO per AKTA", provider: viewModel.provider, slippageTolerance: viewModel.slippageTolerance, priceImpact: viewModel.priceImpact, minimumReceived: "", exchangeFee: "", peraFee: "")
+                let viewModel = SwapConfirmViewModel(selectedAccount: viewModel.selectedAccount, selectedAssetIn: viewModel.selectedAssetIn, selectedAssetOut: viewModel.selectedAssetOut, selectedAssetInAmount: viewModel.payingText!, selectedAssetOutAmount: viewModel.receivingText!, price: viewModel.price, provider: viewModel.provider, slippageTolerance: viewModel.slippageTolerance, priceImpact: viewModel.priceImpact, minimumReceived: "", exchangeFee: "", peraFee: "")
                 ConfirmSwapView(viewModel: viewModel)
             }
         }
