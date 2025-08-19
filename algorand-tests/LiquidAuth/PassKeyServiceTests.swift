@@ -75,7 +75,7 @@ final class PassKeyServiceTests: XCTestCase {
         mockSession.authenticatedUser = user
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
             
-        let result = try await service.getSigningAccounts()
+        let result = try await service.findAllSigningAccounts()
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result.first?.address, info.address)
     }
@@ -93,7 +93,7 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         
-        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_success.com", displayName: "TestPass", username: "myuser")
+        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_success.com", username: "myuser", displayName: "TestPass")
 
         do {
             let response = try await service.createAndSavePassKey(request: request)
@@ -109,7 +109,7 @@ final class PassKeyServiceTests: XCTestCase {
         let user = User(accounts: [])
         mockSession.authenticatedUser = user
 
-        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_fails_whenAccountMissing.com", displayName: "test", username: "myuser")
+        let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_fails_whenAccountMissing.com", username: "myuser", displayName: "test")
 
         do {
             let response = try await service.createAndSavePassKey(request: request)
@@ -132,10 +132,10 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         
-        _ = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test", username: "myuser"))
+        _ = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", username: "myuser", displayName: "test"))
 
         do {
-            let response = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", displayName: "test", username: "myuser"))
+            let _ = try await service.createAndSavePassKey(request: .init(origin: "test_createAndSavePassKey_fails_whenPasskeyAlreadyExists.com", username: "myuser", displayName: "test"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-passkey-already-exists"))
@@ -156,10 +156,10 @@ final class PassKeyServiceTests: XCTestCase {
         mockHDWalletStorage.expect.address(walletId: equalTo(detail.walletId), address: equalTo(info.address)).to(`return`(address))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
         mockHDWalletStorage.expect.wallet(id: equalTo(detail.walletId)).to(`return`(seed))
-        _ = try await service.createAndSavePassKey(request: .init(origin: "test_getAuthenticationData_success.com", displayName: "test", username: "myuser"))
+        _ = try await service.createAndSavePassKey(request: .init(origin: "test_getAuthenticationData_success.com", username: "myuser", displayName: "test"))
 
         do {
-            let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_success.com", username: "myuser"))
+            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_success.com", username: "myuser"))
             XCTAssertEqual(response.address, address.address)
             XCTAssertNotNil(response.credentialId)
             XCTAssertNotNil(response.keyPair)
@@ -177,7 +177,7 @@ final class PassKeyServiceTests: XCTestCase {
         mockSession.authenticatedUser = user
         
         do {
-            let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoAccount.com", username: "myuser"))
+            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoAccount.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-passkey-found"))
@@ -199,7 +199,7 @@ final class PassKeyServiceTests: XCTestCase {
         ])
         
         do {
-            let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoMatchingPasskey.com", username: "myuser"))
+            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoMatchingPasskey.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-passkey-found"))
@@ -228,7 +228,7 @@ final class PassKeyServiceTests: XCTestCase {
         ])
         
         do {
-            let response = try await service.getAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com", username: "myuser"))
+            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-invalid-passkey-found"))

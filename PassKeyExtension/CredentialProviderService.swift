@@ -61,7 +61,7 @@ final class CredentialProviderService {
         
         try await ensureAuthenticated()
         
-        guard let passkey = passKeyManager?.findAllPassKeys().filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
+        guard let passkey = passKeyManager?.allPassKeys.filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
             throw LiquidAuthError.passKeyNotFound
         }
         
@@ -80,8 +80,9 @@ final class CredentialProviderService {
     
     private func createPassKey(credentialIdentity: ASPasskeyCredentialIdentity) async throws ->  PassKeyCreationResponse {
         let passKeyRequest = PassKeyCreationRequest(origin: credentialIdentity.relyingPartyIdentifier,
+                                                    username: credentialIdentity.userName,
                                                     displayName: credentialIdentity.user,
-                                                    username: credentialIdentity.userName)
+                                                    address: nil)
         
         if passKeyManager?.findPassKeyForRequest(
             origin: credentialIdentity.relyingPartyIdentifier, username: credentialIdentity.userName) != nil {
@@ -104,7 +105,7 @@ final class CredentialProviderService {
         }
         let credId = Data([UInt8](Utility.hashSHA256(keyPair.publicKey.rawRepresentation)))
         let rpIdHash = Utility.hashSHA256(rpData)
-        let attestationObject = try liquidAuthSDK.getAttestationObject(
+        let attestationObject = try liquidAuthSDK.makeAttestationObject(
             credentialId: credId, keyPair: keyPair, rpIdHash: rpIdHash)
         
         return ASPasskeyRegistrationCredential(
@@ -120,7 +121,7 @@ final class CredentialProviderService {
         let passKeyRequest = PassKeyAuthenticationRequest(
             origin: passkey.origin,
             username: passkey.username)
-        guard let passkeyResponse = try await passKeyManager?.getAuthenticationData(request: passKeyRequest) else {
+        guard let passkeyResponse = try await passKeyManager?.makeAuthenticationData(request: passKeyRequest) else {
             throw LiquidAuthError.passKeyNotFound
         }
         
@@ -128,7 +129,7 @@ final class CredentialProviderService {
             throw LiquidAuthError.generalError
         }
         let rpIdHash = Utility.hashSHA256(originData)
-        let authenticatorData = liquidAuthSDK.getAssertionObject(rpIdHash: rpIdHash, userPresent: true, userVerified: true,
+        let authenticatorData = liquidAuthSDK.makeAssertionObject(rpIdHash: rpIdHash, userPresent: true, userVerified: true,
                                                                       backupEligible: true, backupState: true, signCount: 0)
         
         let signature = try passkeyResponse.keyPair.signature(for: authenticatorData + requestParameters.clientDataHash)

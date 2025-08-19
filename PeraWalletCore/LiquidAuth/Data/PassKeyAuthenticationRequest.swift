@@ -17,5 +17,10 @@ import Foundation
 public struct PassKeyAuthenticationRequest {
     public let origin: String
     public let username: String
+    
+    public init(origin: String, username: String) {
+        self.origin = origin
+        self.username = username
+    }
 }
 

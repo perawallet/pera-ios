@@ -54,12 +54,12 @@ final class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
     }
     
     func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
-        try! mock.call.getAssertionObject(rpIdHash: rpIdHash, userPresent: userPresent, userVerified: userVerified,
+        try! mock.call.makeAssertionObject(rpIdHash: rpIdHash, userPresent: userPresent, userVerified: userVerified,
                                           backupEligible: backupEligible, backupState: backupState, signCount: signCount) as! Data
     }
     
     func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
-        try! mock.call.getAttestationObject(credentialId: credentialId, keyPair: keyPair, rpIdHash: rpIdHash) as! Data
+        try! mock.call.makeAttestationObject(credentialId: credentialId, keyPair: keyPair, rpIdHash: rpIdHash) as! Data
     }
     
     

@@ -70,7 +70,7 @@ final class LiquidAuthServiceTests: XCTestCase {
     func test_handleAuthRequest_returnsError_whenNoAccount() async {
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
         let result: [AccountInformation] = []
-        mockPassKeyService.expect.getSigningAccounts().to(`return`(result))
+        mockPassKeyService.expect.findAllSigningAccounts().to(`return`(result))
 
         do {
             let _ = try await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
@@ -89,15 +89,15 @@ final class LiquidAuthServiceTests: XCTestCase {
         let info = AccountInformation(address: address.address, name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
 
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
-        mockPassKeyService.expect.getSigningAccounts().to(`return`([info]))
-        mockPassKeyService.expect.getSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
+        mockPassKeyService.expect.findAllSigningAccounts().to(`return`([info]))
+        mockPassKeyService.expect.makeSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
         mockPassKeyService.expect.hasPassKey(origin: equalTo("origin.com"), username: equalTo(address.address)).to(`return`(true))
         
         mockHDWalletSDK.expect.rawSign(draft: any()).to(`return`("authData".data(using: .utf8)))
 
         let keyPair = try! getPrivateKey(origin: "origin.com")
         let authResponse = PassKeyAuthenticationResponse(credentialId: "cred", address: address.address, keyPair: keyPair)
-        mockPassKeyService.expect.getAuthenticationData(request: any()).to(`return`(authResponse))
+        mockPassKeyService.expect.makeAuthenticationData(request: any()).to(`return`(authResponse))
 
         mockLiquidAuthSDK.expect.postAssertionOptions(origin: any(), credentialId: any()).to(`return`(try! JSONSerialization.data(withJSONObject: [
             "challenge": Data("challenge".utf8).base64EncodedString(),
@@ -105,9 +105,9 @@ final class LiquidAuthServiceTests: XCTestCase {
         ])))
         mockLiquidAuthSDK.expect.decodeBase64UrlToJSON(any()).to(`return`(nil))
         mockLiquidAuthSDK.expect.decodeBase64Url(any()).to(`return`("challenge".data(using: .utf8)))
-        mockLiquidAuthSDK.expect.getAssertionObject(rpIdHash: any(), userPresent: equalTo(true), userVerified: equalTo(true),
+        mockLiquidAuthSDK.expect.makeAssertionObject(rpIdHash: any(), userPresent: equalTo(true), userVerified: equalTo(true),
                                                     backupEligible: equalTo(false), backupState: equalTo(false), signCount: any()).to(`return`("authData".data(using: .utf8)))
-        mockLiquidAuthSDK.expect.postAssertionResult(origin: equalTo("origin.com"), credential: any(), liquidExt: any()).to(`return`("{}".data(using: .utf8)))
+        mockLiquidAuthSDK.expect.postAssertionResult(origin: equalTo("origin.com"), credential: any(), liquidExtension: any()).to(`return`("{}".data(using: .utf8)))
 
         do {
             let response = try await service.handleAuthRequest(request: .init(origin: "origin.com", requestId: "req123"))
@@ -131,8 +131,8 @@ final class LiquidAuthServiceTests: XCTestCase {
         let info = AccountInformation(address: address.address, name: "My Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: detail)
         
         mockFeatureFlagService.expect.isEnabled(flag: equalTo(FeatureFlag.liquidAuthEnabled)).to(`return`(true))
-        mockPassKeyService.expect.getSigningAccounts().to(`return`([info]))
-        mockPassKeyService.expect.getSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
+        mockPassKeyService.expect.findAllSigningAccounts().to(`return`([info]))
+        mockPassKeyService.expect.makeSigningSDK(account: equalTo(info)).to(`return`(mockHDWalletSDK))
         mockPassKeyService.expect.hasPassKey(origin: equalTo("origin.com"), username: equalTo(address.address)).to(`return`(false))
         mockPassKeyService.expect.createAndSavePassKey(
             request: any()
@@ -151,8 +151,8 @@ final class LiquidAuthServiceTests: XCTestCase {
         ])))
 
         mockLiquidAuthSDK.expect.decodeBase64Url(equalTo(challengeBase64)).to(`return`(challenge))
-        mockLiquidAuthSDK.expect.getAttestationObject(credentialId: equalTo(credentialId), keyPair: any(), rpIdHash: any()).to(`return`(Data("attestation".utf8)))
-        mockLiquidAuthSDK.expect.postAttestationResult(origin: equalTo("origin.com"), credential: any(), liquidExt: any()).to(`return`(Data()))
+        mockLiquidAuthSDK.expect.makeAttestationObject(credentialId: equalTo(credentialId), keyPair: any(), rpIdHash: any()).to(`return`(Data("attestation".utf8)))
+        mockLiquidAuthSDK.expect.postAttestationResult(origin: equalTo("origin.com"), credential: any(), liquidExtension: any()).to(`return`(Data()))
 
         let request = LiquidAuthRequest(origin: "origin.com", requestId: "req123")
         

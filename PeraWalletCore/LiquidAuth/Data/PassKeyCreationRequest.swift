@@ -19,5 +19,17 @@ public struct PassKeyCreationRequest {
     public let username: String
     public let displayName: String
     public let address: String?
+    
+    public init(
+        origin: String,
+        username: String,
+        displayName: String,
+        address: String? = nil
+    ) {
+        self.origin = origin
+        self.username = username
+        self.displayName = displayName
+        self.address = address
+    }
 }
 
