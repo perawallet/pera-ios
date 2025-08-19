@@ -7368,6 +7368,9 @@
 		D4F0154D2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
 		D4F0154E2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
 		D4F0154F2E460ACD004A4605 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0154C2E460AC8004A4605 /* SwapSharedViewModel.swift */; };
+		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
@@ -10066,6 +10069,7 @@
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
 		D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewModel.swift; sourceTree = "<group>"; };
+		D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerSUIView.swift; sourceTree = "<group>"; };
 		D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreen.swift; sourceTree = "<group>"; };
 		D4F72B6128E3935F00907287 /* InsufficientAlgoBalanceScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreenTheme.swift; sourceTree = "<group>"; };
 		D4F72B6528E3938600907287 /* InsufficientAlgoBalanceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceDraft.swift; sourceTree = "<group>"; };
@@ -22089,6 +22093,7 @@
 		D4A8759427C935C000550935 /* Shimmable */ = {
 			isa = PBXGroup;
 			children = (
+				D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */,
 				D4A8759A27C9433C00550935 /* ShimmerAnimatable.swift */,
 				D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */,
 				D4A875A027C9A24600550935 /* ShimmerAnimationConfiguration.swift */,
@@ -26840,6 +26845,7 @@
 				5916810A2E464C76002184C2 /* AccountImportParameters.swift in Sources */,
 				D4A9E7602E40E37900C3939A /* ConfirmSwapView.swift in Sources */,
 				D4DD4F5D2E37B949002A0CA4 /* AssetSelectionView.swift in Sources */,
+				D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -28095,6 +28101,7 @@
 				59E603042E4A712500CCA99B /* AssetListCollectionView.swift in Sources */,
 				59E603052E4A712500CCA99B /* AssetListItemCell.swift in Sources */,
 				59E603062E4A712500CCA99B /* AssetDiscordListItemButtonViewModel.swift in Sources */,
+				D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 				59E603072E4A712500CCA99B /* AssetSocialMediaGroupedListItemButtonViewModel.swift in Sources */,
 				59E603082E4A712500CCA99B /* AssetTelegramListItemButtonViewModel.swift in Sources */,
 				59E603092E4A712500CCA99B /* AssetTwitterListItemButtonViewModel.swift in Sources */,
@@ -31166,6 +31173,7 @@
 				59E60F012E4A71D000CCA99B /* AccountImportParameters.swift in Sources */,
 				D4A9E7612E40E37900C3939A /* ConfirmSwapView.swift in Sources */,
 				D4DD4F5E2E37B949002A0CA4 /* AssetSelectionView.swift in Sources */,
+				D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,10 +22,11 @@ struct AssetSelectionView: View {
     @Binding var assetItem: AssetItem
     @Binding var payingText: String?
     @FocusState private var isPayingFocused: Bool
+    @Binding var isLoading: Bool
     
     private let defaultValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
-    let onTap: () -> Void
+    let onAssetSelectionTap: () -> Void
     
     // MARK: - Body
     var body: some View {
@@ -43,30 +44,43 @@ struct AssetSelectionView: View {
             Spacer().frame(height: 12)
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    TextField(defaultValue, text: Binding(
-                        get: { payingText ?? defaultValue },
-                        set: { payingText = $0.isEmpty ? defaultValue : $0 }
-                    ))
-                    .keyboardType(.decimalPad)
-                    .font(.dmSans.medium.size(19.0))
-                    .foregroundStyle(Color.Text.gray)
-                    .disabled(!isPayingView)
-                    .frame(maxWidth: 200)
-                    .multilineTextAlignment(.leading)
-                    .focused($isPayingFocused)
-                    .onChange(of: isPayingFocused) { focused in
-                        if focused && (payingText == "0" || payingText == "0.0" || payingText == "0,0") {
-                            payingText = ""
+                    if isLoading, !isPayingView {
+                        ShimmerSUIView()
+                            .frame(width: 100, height: 19, alignment: .leading)
+                            .cornerRadius(3)
+                    } else {
+                        TextField(defaultValue, text: Binding(
+                            get: { payingText ?? defaultValue },
+                            set: { payingText = $0.isEmpty ? defaultValue : $0 }
+                        ))
+                        .keyboardType(.decimalPad)
+                        .font(.dmSans.medium.size(19.0))
+                        .foregroundStyle(Color.Text.gray)
+                        .disabled(!isPayingView)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.leading)
+                        .focused($isPayingFocused)
+                        .onChange(of: isPayingFocused) { focused in
+                            if focused && (payingText == "0" || payingText == "0.0" || payingText == "0,0") {
+                                payingText = ""
+                            }
                         }
                     }
-                    Text(defaultValue)
-                        .keyboardType(.decimalPad)
-                        .font(.dmSans.regular.size(13.0))
-                        .foregroundStyle(Color.Text.gray)
-                        .frame(maxWidth: 200, alignment: .leading)
+
+                    if isLoading, !isPayingView {
+                        ShimmerSUIView()
+                            .frame(width: 80, height: 13, alignment: .leading)
+                            .cornerRadius(2)
+                    } else {
+                        Text(defaultValue)
+                            .keyboardType(.decimalPad)
+                            .font(.dmSans.regular.size(13.0))
+                            .foregroundStyle(Color.Text.gray)
+                            .frame(maxWidth: 200, alignment: .leading)
+                    }
                 }
                 Spacer()
-                AssetSwapButton(assetItem: $assetItem, onTap: onTap)
+                AssetSwapButton(assetItem: $assetItem, onTap: onAssetSelectionTap)
             }
             Spacer()
         }
