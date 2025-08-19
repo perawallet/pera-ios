@@ -7382,6 +7382,9 @@
 		D4F681912897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681922897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681932897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
+		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F72B5D28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
 		D4F72B5E28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
 		D4F72B5F28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
@@ -10778,6 +10781,7 @@
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
 		D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewModel.swift; sourceTree = "<group>"; };
+		D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerSUIView.swift; sourceTree = "<group>"; };
 		D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreen.swift; sourceTree = "<group>"; };
 		D4F72B6128E3935F00907287 /* InsufficientAlgoBalanceScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreenTheme.swift; sourceTree = "<group>"; };
 		D4F72B6528E3938600907287 /* InsufficientAlgoBalanceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceDraft.swift; sourceTree = "<group>"; };
@@ -22282,6 +22286,7 @@
 		D4A8759427C935C000550935 /* Shimmable */ = {
 			isa = PBXGroup;
 			children = (
+				D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */,
 				D4A8759A27C9433C00550935 /* ShimmerAnimatable.swift */,
 				D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */,
 				D4A875A027C9A24600550935 /* ShimmerAnimationConfiguration.swift */,
@@ -27385,6 +27390,7 @@
 				D4E9E276298816850008C4D5 /* CollectibleListQuery.swift in Sources */,
 				2B5F6F922768D8BB00C9B780 /* SettingsToggleView.swift in Sources */,
 				2BCBBAE324A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
+				D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 				8B6F2B2B2BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift in Sources */,
 				D4023E2329A6C61B00DFB5E8 /* MoonPayAccountSelectionListLocalDataController.swift in Sources */,
 				F08A81C7293E9EB600258184 /* CSVFile.swift in Sources */,
@@ -28799,6 +28805,7 @@
 				F07C3C4A28B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */,
 				2B0F623224EC129D00DA22A6 /* AlgorandNotification.swift in Sources */,
 				2B0F623324EC129D00DA22A6 /* BaseControl.swift in Sources */,
+				D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 				D408697E2999904C00D5797D /* BidaliAccountSelectionListLayout.swift in Sources */,
 				D4979487287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
 				2BF65838290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
@@ -32742,6 +32749,7 @@
 				F08A81C5293E9EB600258184 /* CSVFile.swift in Sources */,
 				D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				D478AA9628AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
+				D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */,
 				8B6F2B292BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift in Sources */,
 				953DEE1B279ED4CC00D76957 /* WCAssetInformationViewModel.swift in Sources */,
 				D4B6C09D2AE959BD00AD3C22 /* KeyRegTransactionDetailViewController.swift in Sources */,

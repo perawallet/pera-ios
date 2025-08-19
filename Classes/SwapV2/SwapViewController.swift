@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -201,6 +201,7 @@ final class SwapViewController: BaseViewController {
                     }
                     sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: quote?.amountOutUSDValue)
                     sharedViewModel?.quote = quote
+                    sharedViewModel?.isLoadingQuote = false
                     loadSwapView()
                 }
                 guard let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
