@@ -1,0 +1,81 @@
+// Copyright 2022-2025 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   TransactionType.swift
+
+import Foundation
+
+public enum TransactionType:
+    ALGAPIModel,
+    RawRepresentable,
+    CaseIterable,
+    Hashable {
+    case applicationCall
+    case assetConfig
+    case assetFreeze
+    case assetTransfer
+    case keyReg
+    case payment
+    case heartbeat
+    case unsupported(String)
+
+    public var rawValue: String {
+        switch self {
+        case .applicationCall: return "appl"
+        case .assetConfig: return "acfg"
+        case .assetFreeze: return "afrz"
+        case .assetTransfer: return "axfer"
+        case .keyReg: return "keyreg"
+        case .payment: return "pay"
+        case .heartbeat: return "hb"
+        case .unsupported(let someType): return someType
+        }
+    }
+
+    public static var allCases: [TransactionType] = [
+        .applicationCall,
+        .assetConfig,
+        .assetFreeze,
+        .assetTransfer,
+        .keyReg,
+        .payment,
+        .heartbeat
+    ]
+
+    public init() {
+        self = .random()
+    }
+
+    public init?(rawValue: String) {
+        let someType = Self.allCases.first(matching: (\.rawValue, rawValue))
+        self = someType ?? .unsupported(rawValue)
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
+    }
+
+    public static func == (
+        lhs: TransactionType,
+        rhs: TransactionType
+    ) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension TransactionType {
+    public static func random() -> TransactionType {
+        return .unsupported(UUID().uuidString)
+    }
+}
