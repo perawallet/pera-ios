@@ -202,9 +202,9 @@ public extension LiquidAuthService {
     
     private func postAssertionOptions(origin: String, credentialId: String) async throws -> PostOptionsResult {
         let data = try await liquidAuthSDK.postAssertionOptions(origin: origin, credentialId: credentialId)
-        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-              let challengeBase64Url = json["challenge"] as? String,
-              let relyingPartyId = extractRelyingPartyId(json: json),
+        guard let response = try? JSONDecoder().decode(AssertionOptionsResponseJson.self, from: data),
+              let challengeBase64Url = response.challenge,
+              let relyingPartyId = response.rp?.id ?? response.rpId,
               let relyingPartyIdHash = relyingPartyId.data(using: .utf8)?.sha256()
         else {
             throw LiquidAuthError.generalError()
@@ -230,9 +230,7 @@ public extension LiquidAuthService {
         )
 
         // Parse the response to check for errors
-        if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
-           responseJSON["error"] as? String != nil
-        {
+        if let responseJSON = try? JSONDecoder().decode(ResponseJsonWithError.self, from: responseData), responseJSON.error != nil {
             throw LiquidAuthError.generalError()
         }
     }
@@ -246,20 +244,15 @@ public extension LiquidAuthService {
         
         let p256Signature = try passKeyResponse.keyPair.signature(for: dataToSign)
 
-        let assertionResponse: [String: Any] = [
-            "id": passKeyResponse.credentialId,
-            "type": "public-key",
-            "userHandle": passKeyResponse.address,
-            "rawId": passKeyResponse.credentialId,
-            "response": [
-                "clientDataJSON": clientData.base64URLEncodedString(),
-                "authenticatorData": authenticatorData.base64URLEncodedString(),
-                "signature": p256Signature.derRepresentation.base64URLEncodedString(),
-            ],
-        ]
+        let assertionResponse = AssertionPayload(
+            credentialId: passKeyResponse.credentialId,
+            address: passKeyResponse.address,
+            clientData: clientData,
+            authenticatorData: authenticatorData,
+            p256SignatureDer: p256Signature.derRepresentation)
 
         // Serialize the assertion response into a JSON string
-        guard let assertionResponseData = try? JSONSerialization.data(withJSONObject: assertionResponse, options: []),
+        guard let assertionResponseData = try? JSONEncoder().encode(assertionResponse),
               let assertionResponseJSON = String(data: assertionResponseData, encoding: .utf8)
         else {
             throw LiquidAuthError.generalError()
@@ -293,8 +286,7 @@ public extension LiquidAuthService {
             "device": device
         ])
 
-        if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
-           let _ = responseJSON["error"] as? String
+        if let postResponse = try? JSONDecoder().decode(ResponseJsonWithError.self, from: responseData), postResponse.error != nil
         {
             passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
             throw LiquidAuthError.generalError()
@@ -374,6 +366,20 @@ fileprivate enum SignalType : String {
     case offer
 }
 
+fileprivate final class ResponseJsonWithError : Codable {
+    let error: String?
+}
+
+fileprivate final class AssertionResponseJsonIdHolder : Codable {
+    let id: String
+}
+
+fileprivate final class AssertionOptionsResponseJson : Codable {
+    let rp: AssertionResponseJsonIdHolder?
+    let rpId: String?
+    let challenge: String?
+}
+
 fileprivate struct ClientData : Codable {
     let type: String
     let challenge: String
@@ -384,4 +390,30 @@ fileprivate struct PostOptionsResult {
     let challengeUrl: String
     let relyingPartyId: String
     let relyingPartyIdHash: Data
+}
+
+fileprivate struct AssertionPayloadResponseBody : Codable {
+    let clientDataJSON: String
+    let authenticatorData: String
+    let signature: String
+}
+
+fileprivate struct AssertionPayload : Codable {
+    let id: String
+    let type: String
+    let userHandle: String
+    let rawId: String
+    
+    let response: AssertionPayloadResponseBody
+    
+    init(credentialId: String, address: String, clientData: Data, authenticatorData: Data, p256SignatureDer: Data) {
+        id = credentialId
+        type = "public-key"
+        userHandle = address
+        rawId = credentialId
+        response = AssertionPayloadResponseBody(
+            clientDataJSON: clientData.base64URLEncodedString(),
+            authenticatorData: authenticatorData.base64URLEncodedString(),
+            signature: p256SignatureDer.base64URLEncodedString())
+    }
 }
