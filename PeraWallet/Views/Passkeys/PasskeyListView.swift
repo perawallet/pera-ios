@@ -77,7 +77,7 @@ struct WarningLabel : View {
     var body : some View {
         HStack {
             Image(ImageResource(name: "icon-incoming-asa-yellow-error", bundle: .main))
-            Text("liquid-auth-autofill-disabled".localized())
+            Text("liquid-auth-autofill-disabled")
                 .foregroundColor(.Testnet.bg)
                 .font(.body)
         }

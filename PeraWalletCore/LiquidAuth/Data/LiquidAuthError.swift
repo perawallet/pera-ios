@@ -15,13 +15,13 @@
 //   PassKeyError.swift
 
 public enum LiquidAuthError : LocalizedError {
-    case generalError
-    case notImplemented
-    case signingAccountNotFound
-    case passKeyExists
-    case passKeyNotFound
-    case passKeyInvalid
-    case authenticationFailed
+    case generalError(cause: Error? = nil)
+    case notImplemented(cause: Error? = nil)
+    case signingAccountNotFound(cause: Error? = nil)
+    case passKeyExists(cause: Error? = nil)
+    case passKeyNotFound(cause: Error? = nil)
+    case passKeyInvalid(cause: Error? = nil)
+    case authenticationFailed(cause: Error? = nil)
     
     public var errorDescription: String? {
         switch self {

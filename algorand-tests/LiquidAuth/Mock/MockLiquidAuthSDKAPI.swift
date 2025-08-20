@@ -37,19 +37,19 @@ final class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
         try! mock.call.decodeBase64UrlToJSON(url) as! String?
     }
     
-    func postAttestationOptions(origin: String, username: String) async throws -> Data {
+    func postAttestationOptions(origin: String, username: String) async throws(pera_wallet_core.LiquidAuthError) -> Data {
         try! mock.call.postAttestationOptions(origin: origin, username: username) as! Data
     }
     
-    func postAttestationResult(origin: String, credential: [String : Any], liquidExtension: [String : Any]) async throws -> Data {
+    func postAttestationResult(origin: String, credential: [String : Any], liquidExtension: [String : Any]) async throws(pera_wallet_core.LiquidAuthError) -> Data {
         try! mock.call.postAttestationResult(origin: origin, credential: credential, liquidExtension: liquidExtension) as! Data
     }
     
-    func postAssertionOptions(origin: String, credentialId: String) async throws -> Data {
+    func postAssertionOptions(origin: String, credentialId: String) async throws(pera_wallet_core.LiquidAuthError) -> Data {
         try! mock.call.postAssertionOptions(origin: origin, credentialId: credentialId) as! Data
     }
     
-    func postAssertionResult(origin: String, credential: String, liquidExtension: [String : Any]) async throws -> Data {
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String : Any]) async throws(pera_wallet_core.LiquidAuthError) -> Data {
         try! mock.call.postAssertionResult(origin: origin, credential: credential, liquidExtension: liquidExtension) as! Data
     }
     
@@ -58,7 +58,7 @@ final class MockLiquidAuthSDKAPI : LiquidAuthSDKAPI, Mockable {
                                           backupEligible: backupEligible, backupState: backupState, signCount: signCount) as! Data
     }
     
-    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws(pera_wallet_core.LiquidAuthError) -> Data {
         try! mock.call.makeAttestationObject(credentialId: credentialId, keyPair: keyPair, rpIdHash: rpIdHash) as! Data
     }
     

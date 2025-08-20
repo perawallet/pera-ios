@@ -28,15 +28,15 @@ final class CredentialProviderService {
     private let liquidAuthSDK: LiquidAuthSDKAPI = LiquidAuthSDKAPIImpl()
     private var passKeyManager: PassKeyService?
     
-    func handleRegistrationRequest(_ credentialRequest: ASPasskeyCredentialRequest) async throws -> ASPasskeyRegistrationCredential {
+    func handleRegistrationRequest(_ credentialRequest: ASPasskeyCredentialRequest) async throws(pera_wallet_core.LiquidAuthError) -> ASPasskeyRegistrationCredential {
         guard let credentialIdentity = credentialRequest.credentialIdentity as? ASPasskeyCredentialIdentity else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
         do {
             try initializeExtension()
             guard let config = CoreAppConfiguration.shared, config.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-                throw LiquidAuthError.notImplemented
+                throw LiquidAuthError.notImplemented()
             }
                    
             try await ensureAuthenticated()
@@ -49,28 +49,38 @@ final class CredentialProviderService {
                 analytics.track(.webAuthNPassKeyAdded())
             }
             return credential
-        } catch {
+        } catch let error as pera_wallet_core.LiquidAuthError {
             passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
                                                                     username: credentialIdentity.userName)
             throw error
+        } catch {
+            passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
+                                                                    username: credentialIdentity.userName)
+            throw LiquidAuthError.generalError(cause: error)
         }
     }
     
-    func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async throws -> ASPasskeyAssertionCredential {
-        try initializeExtension()
-        
-        try await ensureAuthenticated()
-        
-        guard let passkey = passKeyManager?.allPassKeys.filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
-            throw LiquidAuthError.passKeyNotFound
+    func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async throws(pera_wallet_core.LiquidAuthError) -> ASPasskeyAssertionCredential {
+        do {
+            try initializeExtension()
+            
+            try await ensureAuthenticated()
+            
+            guard let passkey = passKeyManager?.allPassKeys.filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
+                throw LiquidAuthError.passKeyNotFound()
+            }
+            
+            let credential = try await createAssertionCredential(requestParameters: requestParameters, passkey: passkey)
+            
+            if let analytics = CoreAppConfiguration.shared?.analytics {
+                analytics.track(.webAuthNPassKeyUsed())
+            }
+            return credential
+        } catch let error as pera_wallet_core.LiquidAuthError {
+            throw error
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
         }
-        
-        let credential = try await createAssertionCredential(requestParameters: requestParameters, passkey: passkey)
-        
-        if let analytics = CoreAppConfiguration.shared?.analytics {
-            analytics.track(.webAuthNPassKeyUsed())
-        }
-        return credential
     }
     
     private func initializeExtension() throws {
@@ -86,11 +96,11 @@ final class CredentialProviderService {
         
         if passKeyManager?.findPassKeyForRequest(
             origin: credentialIdentity.relyingPartyIdentifier, username: credentialIdentity.userName) != nil {
-            throw LiquidAuthError.passKeyExists
+            throw LiquidAuthError.passKeyExists()
         }
         
         guard let response = try await passKeyManager?.createAndSavePassKey(request: passKeyRequest) else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
         return response
@@ -101,7 +111,7 @@ final class CredentialProviderService {
                                               clientDataHash: Data,
                                               credentialId: Data) throws -> ASPasskeyRegistrationCredential {
         guard let rpData = credentialIdentity.relyingPartyIdentifier.data(using: .utf8) else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         let credId = Data([UInt8](Utility.hashSHA256(keyPair.publicKey.rawRepresentation)))
         let rpIdHash = Utility.hashSHA256(rpData)
@@ -122,11 +132,11 @@ final class CredentialProviderService {
             origin: passkey.origin,
             username: passkey.username)
         guard let passkeyResponse = try await passKeyManager?.makeAuthenticationData(request: passKeyRequest) else {
-            throw LiquidAuthError.passKeyNotFound
+            throw LiquidAuthError.passKeyNotFound()
         }
         
         guard let originData = origin.data(using: .utf8) else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         let rpIdHash = Utility.hashSHA256(originData)
         let authenticatorData = liquidAuthSDK.makeAssertionObject(rpIdHash: rpIdHash, userPresent: true, userVerified: true,
@@ -135,7 +145,7 @@ final class CredentialProviderService {
         let signature = try passkeyResponse.keyPair.signature(for: authenticatorData + requestParameters.clientDataHash)
         
         guard let usernameData = passkey.username.data(using: .utf8) else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
         let credId = Data([UInt8](Utility.hashSHA256(passkeyResponse.keyPair.publicKey.rawRepresentation)))
@@ -152,7 +162,7 @@ final class CredentialProviderService {
     private func createPassKeyService() throws -> PassKeyService {
         guard let hdWalletStorage = CoreAppConfiguration.shared?.hdWalletStorage,
               let session = CoreAppConfiguration.shared?.session else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         return PassKeyService(hdWalletStorage: hdWalletStorage, session: session, liquidAuthSDK: liquidAuthSDK)
     }
@@ -160,7 +170,7 @@ final class CredentialProviderService {
     private func ensureAuthenticated() async throws {
         let isAuthenticated = await authenticateBiometrics()
         guard isAuthenticated else {
-            throw LiquidAuthError.authenticationFailed
+            throw LiquidAuthError.authenticationFailed()
         }
     }
     

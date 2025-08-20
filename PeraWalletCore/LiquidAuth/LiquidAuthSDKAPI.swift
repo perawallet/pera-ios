@@ -24,12 +24,12 @@ public protocol LiquidAuthSDKAPI {
     func decodedBase64Url(_ url: String) -> Data?
     func decodedBase64UrlAsJSON(_ url: String) -> String?
     
-    func postAttestationOptions(origin: String, username: String) async throws -> Data
-    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws -> Data
-    func postAssertionOptions(origin: String, credentialId: String) async throws -> Data
-    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws -> Data
+    func postAttestationOptions(origin: String, username: String) async throws(LiquidAuthError) -> Data
+    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws(LiquidAuthError) -> Data
+    func postAssertionOptions(origin: String, credentialId: String) async throws(LiquidAuthError) -> Data
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws(LiquidAuthError) -> Data
     func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data
-    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws(LiquidAuthError) -> Data
 }
 
 public final class LiquidAuthSDKAPIImpl: LiquidAuthSDKAPI {
@@ -45,52 +45,68 @@ public final class LiquidAuthSDKAPIImpl: LiquidAuthSDKAPI {
 
 public extension LiquidAuthSDKAPIImpl {
     
-    func postAttestationOptions(origin: String, username: String) async throws -> Data {
-        let attestationApi = AttestationApi()
-        let (data, _) = try await attestationApi.postAttestationOptions(
-            origin: origin,
-            userAgent: self.userAgent,
-            options: [
-                "username": username,
-                "displayName": "Liquid Auth User",
-                "authenticatorSelection": ["userVerification": "required"],
-                "extensions": ["liquid": true],
-            ]
-        )
-        
-        return data
+    func postAttestationOptions(origin: String, username: String) async throws(LiquidAuthError) -> Data {
+        do {
+            let attestationApi = AttestationApi()
+            let (data, _) = try await attestationApi.postAttestationOptions(
+                origin: origin,
+                userAgent: self.userAgent,
+                options: [
+                    "username": username,
+                    "displayName": "Liquid Auth User",
+                    "authenticatorSelection": ["userVerification": "required"],
+                    "extensions": ["liquid": true],
+                ]
+            )
+            
+            return data
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
-    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws -> Data {
-        let device = await UIDevice.current.model
-        let attestationApi = AttestationApi()
-        return try await attestationApi.postAttestationResult(
-            origin: origin,
-            userAgent: self.userAgent,
-            credential: credential,
-            liquidExt: liquidExtension,
-            device: device
-        )
+    func postAttestationResult(origin: String, credential: [String: Any], liquidExtension: [String: Any]) async throws(LiquidAuthError) -> Data {
+        do {
+            let device = await UIDevice.current.model
+            let attestationApi = AttestationApi()
+            return try await attestationApi.postAttestationResult(
+                origin: origin,
+                userAgent: self.userAgent,
+                credential: credential,
+                liquidExt: liquidExtension,
+                device: device
+            )
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
-    func postAssertionOptions(origin: String, credentialId: String) async throws -> Data {
-        let assertionApi = AssertionApi()
-        let (data, _) = try await assertionApi.postAssertionOptions(
-            origin: origin,
-            userAgent: self.userAgent,
-            credentialId: credentialId
-        )
-        return data
+    func postAssertionOptions(origin: String, credentialId: String) async throws(LiquidAuthError) -> Data {
+        do {
+            let assertionApi = AssertionApi()
+            let (data, _) = try await assertionApi.postAssertionOptions(
+                origin: origin,
+                userAgent: self.userAgent,
+                credentialId: credentialId
+            )
+            return data
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
-    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws -> Data {
-        let assertionApi = AssertionApi()
-        return try await assertionApi.postAssertionResult(
-            origin: origin,
-            userAgent: userAgent,
-            credential: credential,
-            liquidExt: liquidExtension
-        )
+    func postAssertionResult(origin: String, credential: String, liquidExtension: [String: Any]) async throws(LiquidAuthError) -> Data {
+        do {
+            let assertionApi = AssertionApi()
+            return try await assertionApi.postAssertionResult(
+                origin: origin,
+                userAgent: userAgent,
+                credential: credential,
+                liquidExt: liquidExtension
+            )
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
     func makeAssertionObject(rpIdHash: Data, userPresent: Bool, userVerified: Bool, backupEligible: Bool, backupState: Bool, signCount: UInt32) -> Data {
@@ -112,31 +128,35 @@ public extension LiquidAuthSDKAPIImpl {
         Utility.decodeBase64UrlToJSON(url)
     }
     
-    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws -> Data {
-        let attestedCredData = Utility.getAttestedCredentialData(
-            aaguid: PassKeyService.AAGUID,
-            credentialId: credentialId,
-            publicKey: keyPair.publicKey.rawRepresentation
-        )
-        
-        let authData = AuthenticatorData.attestation(
-            rpIdHash: rpIdHash,
-            userPresent: true,
-            userVerified: true,
-            backupEligible: true,
-            backupState: true,
-            signCount: 0,
-            attestedCredentialData: attestedCredData,
-            extensions: nil
-        ).toData()
-
-        let attObj: [String: Any] = [
-            "attStmt": [:],
-            "authData": authData,
-            "fmt": "none",
-        ]
-        let cborEncoded = try CBOR.encodeMap(attObj)
-        return Data(cborEncoded)
+    func makeAttestationObject(credentialId: Data, keyPair: P256.Signing.PrivateKey, rpIdHash: Data) throws(LiquidAuthError) -> Data {
+        do {
+            let attestedCredData = Utility.getAttestedCredentialData(
+                aaguid: PassKeyService.AAGUID,
+                credentialId: credentialId,
+                publicKey: keyPair.publicKey.rawRepresentation
+            )
+            
+            let authData = AuthenticatorData.attestation(
+                rpIdHash: rpIdHash,
+                userPresent: true,
+                userVerified: true,
+                backupEligible: true,
+                backupState: true,
+                signCount: 0,
+                attestedCredentialData: attestedCredData,
+                extensions: nil
+            ).toData()
+            
+            let attObj: [String: Any] = [
+                "attStmt": [:],
+                "authData": authData,
+                "fmt": "none",
+            ]
+            let cborEncoded = try CBOR.encodeMap(attObj)
+            return Data(cborEncoded)
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
 }
 

@@ -19,12 +19,12 @@ import x_hd_wallet_api
 import WebRTC
 
 public protocol LiquidAuthServicing {
-    func handleAuthRequest(request: LiquidAuthRequest) async throws -> LiquidAuthResponse
+    func handleAuthRequest(request: LiquidAuthRequest) async throws(LiquidAuthError) -> LiquidAuthResponse
     func startSignaling(
         origin: String,
         requestId: String,
         messageHandler: @escaping (String) -> Void
-    ) async throws
+    ) async throws(LiquidAuthError)
 }
 
 public final class LiquidAuthService: LiquidAuthServicing {
@@ -47,13 +47,13 @@ public final class LiquidAuthService: LiquidAuthServicing {
 
 public extension LiquidAuthService {
     
-    func handleAuthRequest(request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
+    func handleAuthRequest(request: LiquidAuthRequest) async throws(LiquidAuthError) -> LiquidAuthResponse {
         guard featureFlagService.isEnabled(.liquidAuthEnabled) else {
-            throw LiquidAuthError.notImplemented
+            throw LiquidAuthError.notImplemented()
         }
         
         guard let signingAccount = try await passKeyService.findAllSigningAccounts().first else {
-            throw LiquidAuthError.signingAccountNotFound
+            throw LiquidAuthError.signingAccountNotFound()
         }
         
         if passKeyService.hasPassKey(origin: request.origin, username: signingAccount.address) {
@@ -67,9 +67,9 @@ public extension LiquidAuthService {
         origin: String,
         requestId: String,
         messageHandler: @escaping (String) -> Void
-    ) async throws {
+    ) async throws(LiquidAuthError) {
         if !featureFlagService.isEnabled(.liquidAuthEnabled) {
-            throw LiquidAuthError.notImplemented
+            throw LiquidAuthError.notImplemented()
         }
         liquidAuthSDK.signalService.start(url: origin, httpClient: URLSession.shared)
 
@@ -127,18 +127,30 @@ public extension LiquidAuthService {
         return LiquidAuthRequest(origin: host, requestId: requestId)
     }
 
-    private func register(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws  -> LiquidAuthResponse {
-        let passKeyRequest = PassKeyCreationRequest(origin: request.origin, username: signingAccount.address, displayName: "Liquid Auth Passkey", address: nil)
-        let response = try await passKeyService.createAndSavePassKey(request: passKeyRequest)
-        return try await signRegistrationChallenge(signingAccount: signingAccount, passKeyResponse: response, request: request)
+    private func register(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws(LiquidAuthError)  -> LiquidAuthResponse {
+        do {
+            let passKeyRequest = PassKeyCreationRequest(origin: request.origin, username: signingAccount.address, displayName: "Liquid Auth Passkey", address: nil)
+            let response = try await passKeyService.createAndSavePassKey(request: passKeyRequest)
+            return try await signRegistrationChallenge(signingAccount: signingAccount, passKeyResponse: response, request: request)
+        } catch let error as LiquidAuthError {
+            throw error
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
-    private func authenticate(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
-        let passKeyRequest = PassKeyAuthenticationRequest(origin: request.origin, username: signingAccount.address)
-        let passKeyResponse = try await passKeyService.makeAuthenticationData(request: passKeyRequest)
-        
-        let response = try await signAuthenticationChallenge(signingAccount: signingAccount, request: request, passKeyResponse: passKeyResponse)
-        return response
+    private func authenticate(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws(LiquidAuthError) -> LiquidAuthResponse {
+        do {
+            let passKeyRequest = PassKeyAuthenticationRequest(origin: request.origin, username: signingAccount.address)
+            let passKeyResponse = try await passKeyService.makeAuthenticationData(request: passKeyRequest)
+            
+            let response = try await signAuthenticationChallenge(signingAccount: signingAccount, request: request, passKeyResponse: passKeyResponse)
+            return response
+        } catch let error as LiquidAuthError {
+            throw error
+        } catch {
+            throw LiquidAuthError.generalError(cause: error)
+        }
     }
     
     private func signRegistrationChallenge(signingAccount: AccountInformation, passKeyResponse response: PassKeyCreationResponse, request: LiquidAuthRequest) async throws -> LiquidAuthResponse {
@@ -150,7 +162,7 @@ public extension LiquidAuthService {
               let signature = try await signChallenge(signingAccount: signingAccount, challenge: Data([UInt8](decodedChallenge)))
         else {
             passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
         let attestationObject = try liquidAuthSDK.makeAttestationObject(credentialId: response.credentialId,
@@ -168,29 +180,68 @@ public extension LiquidAuthService {
         request: LiquidAuthRequest,
         passKeyResponse: PassKeyAuthenticationResponse
     ) async throws -> LiquidAuthResponse {
-        //TODO: break this code up further
-        let device = await UIDevice.current.model
+        let optionsData = try await postAssertionOptions(origin: request.origin, credentialId: passKeyResponse.credentialId)
         
-        let data = try await liquidAuthSDK.postAssertionOptions(origin: request.origin, credentialId: passKeyResponse.credentialId)
-        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-              let challengeBase64Url = json["challenge"] as? String,
-              let relyingPartyId = extractRelyingPartyId(json: json),
-              let relyingPartyIdHash = relyingPartyId.data(using: .utf8)?.sha256(),
-              let challengeData = liquidAuthSDK.decodedBase64Url(challengeBase64Url)
-        else {
-            throw LiquidAuthError.generalError
+        guard let challengeData = liquidAuthSDK.decodedBase64Url(optionsData.challengeUrl) else {
+            throw LiquidAuthError.generalError()
         }
-        
         let challengeBytes = Data([UInt8](challengeData))
         
         guard let signature = try await signChallenge(signingAccount: signingAccount, challenge: challengeBytes),
-              let clientDataJSON = try clientData(type: "webauthn.get", challengeUrl: challengeBase64Url, relyingParty: relyingPartyId) else {
-            throw LiquidAuthError.generalError
+              let clientDataJSON = try clientData(type: "webauthn.get", challengeUrl: optionsData.challengeUrl, relyingParty: optionsData.relyingPartyId) else {
+            throw LiquidAuthError.generalError()
         }
         
-        let authenticatorData = liquidAuthSDK.makeAssertionObject(rpIdHash: relyingPartyIdHash, userPresent: true, userVerified: true,
+        let assertionResponse = try makeAssertionResponse(clientData: clientDataJSON, passKeyResponse: passKeyResponse, optionsData: optionsData)
+        
+        try await postAssertionResult(request: request, credential: assertionResponse, signature: signature, address: passKeyResponse.address)
+        return LiquidAuthResponse(credentialId: passKeyResponse.credentialId)
+    }
+    
+    
+    
+    private func postAssertionOptions(origin: String, credentialId: String) async throws -> PostOptionsResult {
+        let data = try await liquidAuthSDK.postAssertionOptions(origin: origin, credentialId: credentialId)
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+              let challengeBase64Url = json["challenge"] as? String,
+              let relyingPartyId = extractRelyingPartyId(json: json),
+              let relyingPartyIdHash = relyingPartyId.data(using: .utf8)?.sha256()
+        else {
+            throw LiquidAuthError.generalError()
+        }
+        
+        return PostOptionsResult(challengeUrl: challengeBase64Url, relyingPartyId: relyingPartyId, relyingPartyIdHash: relyingPartyIdHash)
+    }
+    
+    private func postAssertionResult(request: LiquidAuthRequest, credential: String, signature: Data, address: String) async throws {
+        let device = await UIDevice.current.model
+        
+        // Post the assertion result
+        let responseData = try await liquidAuthSDK.postAssertionResult(
+            origin: request.origin,
+            credential: credential,
+            liquidExtension: [
+                "type": "algorand",
+                "requestId": request.requestId,
+                "address": address,
+                "signature": signature.base64URLEncodedString(),
+                "device": device,
+            ]
+        )
+
+        // Parse the response to check for errors
+        if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
+           responseJSON["error"] as? String != nil
+        {
+            throw LiquidAuthError.generalError()
+        }
+    }
+    
+    private func makeAssertionResponse(clientData: Data, passKeyResponse: PassKeyAuthenticationResponse, optionsData: PostOptionsResult) throws -> String {
+        let authenticatorData = liquidAuthSDK.makeAssertionObject(rpIdHash: optionsData.relyingPartyIdHash, userPresent: true, userVerified: true,
                                                                       backupEligible: false, backupState: false, signCount: 0)
-        let clientDataHash = clientDataJSON.sha256()
+        
+        let clientDataHash = clientData.sha256()
         let dataToSign = authenticatorData + clientDataHash
         
         let p256Signature = try passKeyResponse.keyPair.signature(for: dataToSign)
@@ -201,7 +252,7 @@ public extension LiquidAuthService {
             "userHandle": passKeyResponse.address,
             "rawId": passKeyResponse.credentialId,
             "response": [
-                "clientDataJSON": clientDataJSON.base64URLEncodedString(),
+                "clientDataJSON": clientData.base64URLEncodedString(),
                 "authenticatorData": authenticatorData.base64URLEncodedString(),
                 "signature": p256Signature.derRepresentation.base64URLEncodedString(),
             ],
@@ -211,33 +262,13 @@ public extension LiquidAuthService {
         guard let assertionResponseData = try? JSONSerialization.data(withJSONObject: assertionResponse, options: []),
               let assertionResponseJSON = String(data: assertionResponseData, encoding: .utf8)
         else {
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
-        // Post the assertion result
-        let responseData = try await liquidAuthSDK.postAssertionResult(
-            origin: request.origin,
-            credential: assertionResponseJSON,
-            liquidExtension: [
-                "type": "algorand",
-                "requestId": request.requestId,
-                "address": passKeyResponse.address,
-                "signature": signature.base64URLEncodedString(),
-                "device": device,
-            ]
-        )
-
-        // Parse the response to check for errors
-        if let responseJSON = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
-            let _ = responseJSON["error"] as? String
-        {
-            throw LiquidAuthError.generalError
-        } else {
-            return LiquidAuthResponse(credentialId: passKeyResponse.credentialId)
-        }
+        return assertionResponseJSON
     }
     
-    private func postAttestationOptions(origin: String, address: String) async throws -> AttestationOptions {
+    private func postAttestationOptions(origin: String, address: String) async throws -> PostOptionsResult {
         let data = try await liquidAuthSDK.postAttestationOptions(origin: origin, username: address)
 
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
@@ -246,10 +277,10 @@ public extension LiquidAuthService {
               let relyingPartyIdHash = relyingPartyId.data(using: .utf8)?.sha256()
         else {
             passKeyService.deletePassKeysForOriginAndUsername(origin: origin, username: address)
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         }
         
-        return AttestationOptions(challengeUrl: challengeBase64Url, relyingPartyId: relyingPartyId, relyingPartyIdHash: relyingPartyIdHash)
+        return PostOptionsResult(challengeUrl: challengeBase64Url, relyingPartyId: relyingPartyId, relyingPartyIdHash: relyingPartyIdHash)
     }
     
     private func postAttestationResults(request: LiquidAuthRequest, response: PassKeyCreationResponse, signature: Data, credential: [String: Any]) async throws -> LiquidAuthResponse {
@@ -266,7 +297,7 @@ public extension LiquidAuthService {
            let _ = responseJSON["error"] as? String
         {
             passKeyService.deletePassKeysForOriginAndUsername(origin: request.origin, username: response.address)
-            throw LiquidAuthError.generalError
+            throw LiquidAuthError.generalError()
         } else {
             return LiquidAuthResponse(credentialId: response.credentialId.base64URLEncodedString())
         }
@@ -349,7 +380,7 @@ fileprivate struct ClientData : Codable {
     let origin: String
 }
 
-fileprivate struct AttestationOptions {
+fileprivate struct PostOptionsResult {
     let challengeUrl: String
     let relyingPartyId: String
     let relyingPartyIdHash: Data

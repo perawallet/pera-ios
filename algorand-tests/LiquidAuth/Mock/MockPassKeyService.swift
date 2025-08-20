@@ -15,7 +15,6 @@
 import Scout
 import Foundation
 import CryptoKit
-import LiquidAuthSDK
 @testable import pera_staging
 @testable import pera_wallet_core
 
@@ -27,19 +26,19 @@ final class MockPassKeyService : PassKeyServicing, Mockable {
         try! mock.call.findAllPassKeys() as! [PassKey]
     }
     
-    func findAllSigningAccounts() async throws -> [AccountInformation] {
+    func findAllSigningAccounts() async throws(LiquidAuthError) -> [AccountInformation] {
         try! mock.call.findAllSigningAccounts() as! [AccountInformation]
     }
     
-    func makeSigningSDK(account: AccountInformation) async throws -> HDWalletSDK? {
+    func makeSigningSDK(account: AccountInformation) async throws(LiquidAuthError) -> HDWalletSDK? {
         try! mock.call.makeSigningSDK(account: account) as! HDWalletSDK?
     }
     
-    func createAndSavePassKey(request: PassKeyCreationRequest) async throws -> PassKeyCreationResponse {
+    func createAndSavePassKey(request: PassKeyCreationRequest) async throws(LiquidAuthError) -> PassKeyCreationResponse {
         try! mock.call.createAndSavePassKey(request: request) as! PassKeyCreationResponse
     }
     
-    func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws -> PassKeyAuthenticationResponse {
+    func makeAuthenticationData(request: PassKeyAuthenticationRequest) async throws(LiquidAuthError) -> PassKeyAuthenticationResponse {
         try! mock.call.makeAuthenticationData(request: request) as! PassKeyAuthenticationResponse
     }
     

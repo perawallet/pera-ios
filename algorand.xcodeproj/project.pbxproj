@@ -10262,8 +10262,8 @@
 			membershipExceptions = (
 				CredentialProviderService.swift,
 				CredentialProviderViewController.swift,
+				CredentialProviderViewModel.swift,
 				PassKeyCredentialView.swift,
-				PassKeyCredentialViewModel.swift,
 			);
 			target = 59B1FE362E4B553A00B8F6FB /* autofill-extension-staging */;
 		};
@@ -10272,8 +10272,8 @@
 			membershipExceptions = (
 				CredentialProviderService.swift,
 				CredentialProviderViewController.swift,
+				CredentialProviderViewModel.swift,
 				PassKeyCredentialView.swift,
-				PassKeyCredentialViewModel.swift,
 			);
 			target = 59B1FC572E4B505E00B8F6FB /* autofill-extension */;
 		};

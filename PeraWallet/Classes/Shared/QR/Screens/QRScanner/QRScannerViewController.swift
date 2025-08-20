@@ -476,11 +476,11 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: configuration.featureFlagService)
         Task {
             do {
-                let response = try await liquidAuthManager.handleAuthRequest(request: request)
+                let _ = try await liquidAuthManager.handleAuthRequest(request: request)
                 try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { [weak self] message in
                     self?.handleLiquidAuthMessage(message)
                 }
-            } catch {
+            } catch let error as pera_wallet_core.LiquidAuthError {
                 showErrorAlert(message: error.localizedDescription)
             }
         }

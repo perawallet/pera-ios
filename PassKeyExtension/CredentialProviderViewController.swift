@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import AuthenticationServices
-import Firebase
 import SwiftUI
 import UIKit
 
@@ -21,21 +20,15 @@ import UIKit
 final class CredentialProviderViewController: ASCredentialProviderViewController {
     
     // MARK: - Properties
-    private let contentView = UIHostingController(rootView: PassKeyCredentialView())
-    private let credentialService: CredentialProviderService
-    private var startTime = Date()
+    private let viewModel = CredentialProviderViewModel()
+    private let contentView: UIHostingController<PassKeyCredentialView>
+    
     
     // MARK: - Initialisers
-    init() {
-        FirebaseApp.configure()
-        credentialService = CredentialProviderService()
-        super.init()
-    }
-    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        FirebaseApp.configure()
-        credentialService = CredentialProviderService()
+        contentView = UIHostingController(rootView: PassKeyCredentialView(viewModel: viewModel))
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,32 +44,25 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     
     override func prepareInterface(forPasskeyRegistration request: ASCredentialRequest) {
         guard let credentialRequest = request as? ASPasskeyCredentialRequest else {
-            showError("The passkey appears to be invalid.")
+            viewModel.error = "liquid-auth-invalid-passkey-found"
             return
         }
         
-        setupUI()
         Task {
-            do {
-                let credential = try await credentialService.handleRegistrationRequest(credentialRequest)
-                await self.extensionContext.completeRegistrationRequest(using: credential)
-            } catch {
-                showError(error.localizedDescription)
+            if let credential = await viewModel.handleRegistrationRequest(credentialRequest) {
+                await extensionContext.completeRegistrationRequest(using: credential)
             }
         }
+        
     }
     
     override func prepareCredentialList(
         for id: [ASCredentialServiceIdentifier],
         requestParameters: ASPasskeyCredentialRequestParameters
     ) {
-        setupUI()
         Task {
-            do {
-                let credential = try await credentialService.handleAuthenticationRequest(requestParameters)
+            if let credential = await viewModel.handleAuthenticationRequest(requestParameters) {
                 await extensionContext.completeAssertionRequest(using: credential)
-            } catch {
-                showError(error.localizedDescription)
             }
         }
     }
@@ -92,11 +78,12 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         addChild(contentView)
         view.addSubview(contentView.view)
         view.backgroundColor = .white
-        contentView.rootView.viewModel.dismissHandler = {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
+        contentView.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        viewModel.onDismissed = { [weak self] in
+            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
                                                                     code: ASExtensionError.userCanceled.rawValue))
         }
-        contentView.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             contentView.view.topAnchor.constraint(equalTo: view.topAnchor),
@@ -104,9 +91,5 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
             contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor),
             contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
-    }
-    
-    private func showError(_ error: String) {
-        contentView.rootView.viewModel.error = error
     }
 }

@@ -19,7 +19,11 @@ import SwiftUI
 @available(iOS 17.0, *)
 //TODO: This is a temporary placeholder - update when we have final designs
 struct PassKeyCredentialView: View {
-    @State private(set) var viewModel = PassKeyCredentialViewModel()
+    @State private(set) var viewModel: CredentialProviderViewModel
+    
+    init(viewModel: CredentialProviderViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack {
@@ -44,13 +48,12 @@ struct PassKeyCredentialView: View {
     }
     
     private func handleBackButtonTap() {
-        viewModel.error = nil
-        viewModel.dismissHandler?()
+        viewModel.dismiss()
     }
 }
 
 #Preview {
     if #available(iOS 17.0, *) {
-        PassKeyCredentialView()
+        PassKeyCredentialView(viewModel: CredentialProviderViewModel())
     }
 }
