@@ -36,7 +36,7 @@ public final class AppGroupDataStoreMigration {
                     return false
                 }
             
-            guard let dbWithContent else {
+            guard dbWithContent != nil else {
                 //TODO: we should have some error handling here?
                 return
             }
@@ -57,6 +57,8 @@ public final class AppGroupDataStoreMigration {
             for store in from.persistentStoreCoordinator.persistentStores {
                 try oldStoreCoordinator.migratePersistentStore(store, to: storeURL, options: nil, withType: NSSQLiteStoreType)
             }
+            
+            CoreAppConfiguration.shared?.persistentContainer = NSPersistentContainer.makePersistentContainer(group: appGroup)
         } catch {
             throw AppGroupDataStoreMigrationError.migrationFailed(cause: error)
         }
