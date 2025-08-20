@@ -49,24 +49,35 @@ public final class AppGroupDataStoreMigration {
         }
     }
     
-    private func performMigration(from: NSPersistentContainer) throws {
-        let storeURL = URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
-        let oldStoreCoordinator = from.persistentStoreCoordinator
-        
-        for store in from.persistentStoreCoordinator.persistentStores {
-            try oldStoreCoordinator.migratePersistentStore(store, to: storeURL, options: nil, withType: NSSQLiteStoreType)
+    private func performMigration(from: NSPersistentContainer) throws(AppGroupDataStoreMigrationError) {
+        do {
+            let storeURL = URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
+            let oldStoreCoordinator = from.persistentStoreCoordinator
+            
+            for store in from.persistentStoreCoordinator.persistentStores {
+                try oldStoreCoordinator.migratePersistentStore(store, to: storeURL, options: nil, withType: NSSQLiteStoreType)
+            }
+        } catch {
+            throw AppGroupDataStoreMigrationError.migrationFailed(cause: error)
         }
     }
     
-    private func hasContents(_ url: URL) throws -> Bool {
-        let parent = url.deletingLastPathComponent()
-        let name = url.lastPathComponent
-        return try FileManager.default.contentsOfDirectory(at: parent, includingPropertiesForKeys: nil, options: [])
-            .filter {
-                $0.lastPathComponent.hasPrefix(name)
-            }
-            .isNonEmpty
+    private func hasContents(_ url: URL) throws(AppGroupDataStoreMigrationError) -> Bool {
+        do {
+            let parent = url.deletingLastPathComponent()
+            let name = url.lastPathComponent
+            return try FileManager.default.contentsOfDirectory(at: parent, includingPropertiesForKeys: nil, options: [])
+                .filter {
+                    $0.lastPathComponent.hasPrefix(name)
+                }
+                .isNonEmpty
+        } catch {
+            throw AppGroupDataStoreMigrationError.contentNotDetected(cause: error)
+        }
     }
-    
-    
+}
+
+enum AppGroupDataStoreMigrationError: Error {
+    case migrationFailed(cause: Error? = nil)
+    case contentNotDetected(cause: Error? = nil)
 }

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Pera Wallet</string>
+	<string>Pera Wallet Extension</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,8 +24,6 @@
 	<string>The app needs access to your camera to scan QR codes.</string>
 	<key>NSExtension</key>
 	<dict>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).CredentialProviderViewController</string>
 		<key>ASCredentialProviderExtensionSupportedDomains</key>
 		<array>
 			<string>*</string>
@@ -34,11 +32,11 @@
 		<dict>
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
+				<key>ProvidesOneTimeCodes</key>
+				<false/>
 				<key>ProvidesPasskeys</key>
 				<true/>
 				<key>ProvidesPasswords</key>
-				<false/>
-				<key>ProvidesOneTimeCodes</key>
 				<false/>
 				<key>ProvidesTextToInsert</key>
 				<false/>
@@ -48,6 +46,8 @@
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.authentication-services-credential-provider-ui</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).CredentialProviderViewController</string>
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID or Touch ID to authenticate your credentials.</string>

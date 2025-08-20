@@ -26,7 +26,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         self.api = api
     }
     
-    func derivePublicChildNode(_ draft: HDWalletDeriveChildNodeDraft) throws -> Data {
+    func derivePublicChildNode(_ draft: HDWalletDeriveChildNodeDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.deriveChildNodePublic(
                 extendedKey: draft.extendedKey,
@@ -38,7 +38,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func derivePrivateChildNode(_ draft: HDWalletDeriveChildNodeDraft) throws -> Data {
+    func derivePrivateChildNode(_ draft: HDWalletDeriveChildNodeDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.deriveChildNodePrivate(
                 extendedKey: draft.extendedKey,
@@ -50,7 +50,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func deriveKey(_ draft: HDWalletDeriveKeyDraft) throws -> Data {
+    func deriveKey(_ draft: HDWalletDeriveKeyDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.deriveKey(
                 rootKey: api.fromSeed(draft.rootKey),
@@ -63,7 +63,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func generateKey(_ draft: HDWalletKeyGenDraft) throws -> Data {
+    func generateKey(_ draft: HDWalletKeyGenDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.keyGen(
                 context: draft.context.toKeyContext,
@@ -77,7 +77,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func signAlgorandTransaction(_ draft: HDWalletSignAlgoTransactionDraft) throws -> Data {
+    func signAlgorandTransaction(_ draft: HDWalletSignAlgoTransactionDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.signAlgoTransaction(
                 context: draft.context.toKeyContext,
@@ -92,7 +92,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func signData(_ draft: HDWalletSignDataDraft) throws -> Data {
+    func signData(_ draft: HDWalletSignDataDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.signData(
                 context: draft.context.toKeyContext,
@@ -108,7 +108,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data {
+    func rawSign(_ draft: HDWalletSignDataDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.rawSign(
                 context: draft.context.toKeyContext,
@@ -139,7 +139,7 @@ final class HDWalletSDKImp: HDWalletSDK {
         }
     }
     
-    func performECDH(_ draft: HDWalletECDHDraft) throws -> Data {
+    func performECDH(_ draft: HDWalletECDHDraft) throws(HDWalletSDKError) -> Data {
         do {
             return try api.ECDH(
                 context: draft.context.toKeyContext,

@@ -31,7 +31,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Pera Wallet Autofill Staging"
+            "value" : "autofill-extension-staging"
           }
         }
       }
@@ -87,7 +87,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Copyright © 2025 PeraWallet PDA. All rights reserved."
+            "value" : "Copyright © 2022-2025 PeraWallet PDA. All rights reserved."
           }
         }
       }

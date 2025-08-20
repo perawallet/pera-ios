@@ -19,6 +19,7 @@ import Foundation
 import Firebase
 
 @available(iOS 17, *)
+@Observable
 final class CredentialProviderViewModel {
     private let credentialService: CredentialProviderService = CredentialProviderService()
     var onDismissed: (() -> Void)?

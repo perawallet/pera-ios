@@ -4039,7 +4039,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unable to authenticate using FaceID/Touch ID, pPlease try again."
+            "value" : "Unable to authenticate using FaceID/Touch ID, please ensure you have enabled it in Pera Wallet and try again."
           }
         }
       }

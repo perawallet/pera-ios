@@ -28,7 +28,6 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         contentView = UIHostingController(rootView: PassKeyCredentialView(viewModel: viewModel))
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,6 +47,9 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
             return
         }
         
+        //for some reason the UI doesn't show if this is done in viewDidLoad as would be customary
+        setupUI()
+        
         Task {
             if let credential = await viewModel.handleRegistrationRequest(credentialRequest) {
                 await extensionContext.completeRegistrationRequest(using: credential)
@@ -60,6 +62,9 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         for id: [ASCredentialServiceIdentifier],
         requestParameters: ASPasskeyCredentialRequestParameters
     ) {
+        //for some reason the UI doesn't show if this is done in viewDidLoad as would be customary
+        setupUI()
+        
         Task {
             if let credential = await viewModel.handleAuthenticationRequest(requestParameters) {
                 await extensionContext.completeAssertionRequest(using: credential)
@@ -68,13 +73,16 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     }
     
     override func prepareInterfaceForExtensionConfiguration() {
-        // This method is called when the user enables the extension in Settings.
-        // You can present a configuration UI here if needed.
-        // For now, we will just dismiss the view controller.
+        // For now, we will just dismiss the view controller - in future we can show a UI in the settings/configuration screen if needed
         extensionContext.completeExtensionConfigurationRequest()
     }
     
     private func setupUI() {
+        //we need to make this method reentrant because of the weird race condition mentioned above
+        guard contentView.parent == nil else {
+            return
+        }
+        
         addChild(contentView)
         view.addSubview(contentView.view)
         view.backgroundColor = .white

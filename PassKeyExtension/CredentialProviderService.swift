@@ -35,6 +35,7 @@ final class CredentialProviderService {
         
         do {
             try initializeExtension()
+            
             guard let config = CoreAppConfiguration.shared, config.featureFlagService.isEnabled(.liquidAuthEnabled) else {
                 throw LiquidAuthError.notImplemented()
             }
@@ -63,6 +64,10 @@ final class CredentialProviderService {
     func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async throws(pera_wallet_core.LiquidAuthError) -> ASPasskeyAssertionCredential {
         do {
             try initializeExtension()
+            
+            guard let config = CoreAppConfiguration.shared, config.featureFlagService.isEnabled(.liquidAuthEnabled) else {
+                throw LiquidAuthError.notImplemented()
+            }
             
             try await ensureAuthenticated()
             
@@ -181,7 +186,7 @@ final class CredentialProviderService {
 
         if context.canEvaluatePolicy(policy, error: &error) {
             return await withCheckedContinuation { continuation in
-                context.evaluatePolicy(policy, localizedReason: String(localized: "liquid-auth-authentication-required-prompt")) { success, _ in
+                context.evaluatePolicy(policy, localizedReason: String(localized: "liquid-auth-authentication-required-prompt")) { success, error in
                     continuation.resume(returning: success)
                 }
             }
