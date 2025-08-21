@@ -203,7 +203,7 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    Text("0.219412")
+                    Text(viewModel.exchangeFee)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                 }
@@ -213,7 +213,7 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    Text("0.149382")
+                    Text(viewModel.peraFee)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                 }
