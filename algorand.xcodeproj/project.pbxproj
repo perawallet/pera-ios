@@ -2884,6 +2884,8 @@
 		5977541A2E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597754192E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift */; };
 		5977541B2E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597754182E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift */; };
 		5977541D2E570F810089E103 /* WCTransactionFailToConnectErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */; };
+		597755112E5715010089E103 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
+		597755122E5715080089E103 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
 		59B103342E4C8AB200B8F6FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59B103332E4C8AB200B8F6FB /* GoogleService-Info.plist */; };
 		59B103362E4C8AB300B8F6FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59B103352E4C8AB300B8F6FB /* GoogleService-Info.plist */; };
 		59B103872E4CF06800B8F6FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
@@ -2905,7 +2907,6 @@
 		59B103972E4CF06800B8F6FB /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
 		59B103982E4CF06800B8F6FB /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		59B103992E4CF06800B8F6FB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
-		59B1039A2E4CF06800B8F6FB /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
 		59B1039B2E4CF08100B8F6FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
 		59B1039C2E4CF08100B8F6FB /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		59B1039D2E4CF08100B8F6FB /* DMMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */; };
@@ -2925,7 +2926,6 @@
 		59B103AB2E4CF08100B8F6FB /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
 		59B103AC2E4CF08100B8F6FB /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		59B103AD2E4CF08100B8F6FB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
-		59B103AE2E4CF08100B8F6FB /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
 		59B103C22E4DE71700B8F6FB /* PassKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B103C02E4DE71700B8F6FB /* PassKeyServiceTests.swift */; };
 		59B103C32E4DE71700B8F6FB /* LiquidAuthServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B103BF2E4DE71700B8F6FB /* LiquidAuthServiceTests.swift */; };
 		59B103C42E4DE71700B8F6FB /* MockPassKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B103BD2E4DE71700B8F6FB /* MockPassKeyService.swift */; };
@@ -8728,6 +8728,7 @@
 		597754182E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToApproveErrorLog.swift; sourceTree = "<group>"; };
 		597754192E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToRejectErrorLog.swift; sourceTree = "<group>"; };
 		5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToConnectErrorLog.swift; sourceTree = "<group>"; };
+		597755082E5712390089E103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59B103332E4C8AB200B8F6FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59B103352E4C8AB300B8F6FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59B103BC2E4DE71700B8F6FB /* MockLiquidAuthSDKAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLiquidAuthSDKAPI.swift; sourceTree = "<group>"; };
@@ -8753,7 +8754,6 @@
 		59B1F8DE2E4B32D800B8F6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59B1FB652E4B4C1300B8F6FB /* passkey-extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "passkey-extension.entitlements"; sourceTree = "<group>"; };
 		59B1FC582E4B505E00B8F6FB /* autofill-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "autofill-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		59B1FE302E4B550000B8F6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59B1FE312E4B550000B8F6FB /* passkey-extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "passkey-extension.entitlements"; sourceTree = "<group>"; };
 		59B1FE372E4B553A00B8F6FB /* autofill-extension-staging.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "autofill-extension-staging.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		59B1FE5D2E4B5DF400B8F6FB /* auth.request.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = auth.request.json; sourceTree = "<group>"; };
@@ -18783,9 +18783,9 @@
 		59B1FE322E4B550000B8F6FB /* PasskeyStaging */ = {
 			isa = PBXGroup;
 			children = (
+				597755082E5712390089E103 /* Info.plist */,
 				59B103332E4C8AB200B8F6FB /* GoogleService-Info.plist */,
 				59B1FE622E4B68A100B8F6FB /* Config.json */,
-				59B1FE302E4B550000B8F6FB /* Info.plist */,
 				59B1FE312E4B550000B8F6FB /* passkey-extension.entitlements */,
 			);
 			path = PasskeyStaging;
@@ -24298,6 +24298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				597755122E5715080089E103 /* InfoPlist.xcstrings in Resources */,
 				59B1039B2E4CF08100B8F6FB /* Assets.xcassets in Resources */,
 				59B1039C2E4CF08100B8F6FB /* Colors.xcassets in Resources */,
 				59B1039D2E4CF08100B8F6FB /* DMMono-Italic.ttf in Resources */,
@@ -24317,7 +24318,6 @@
 				59B103AB2E4CF08100B8F6FB /* PublicSans-Regular.ttf in Resources */,
 				59B103AC2E4CF08100B8F6FB /* PublicSans-SemiBold.ttf in Resources */,
 				59B103AD2E4CF08100B8F6FB /* Localizable.xcstrings in Resources */,
-				59B103AE2E4CF08100B8F6FB /* InfoPlist.xcstrings in Resources */,
 				59B1FE652E4B68D500B8F6FB /* Config.json in Resources */,
 				59B103362E4C8AB300B8F6FB /* GoogleService-Info.plist in Resources */,
 			);
@@ -24327,6 +24327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				597755112E5715010089E103 /* InfoPlist.xcstrings in Resources */,
 				59B103872E4CF06800B8F6FB /* Assets.xcassets in Resources */,
 				59B103882E4CF06800B8F6FB /* Colors.xcassets in Resources */,
 				59B103892E4CF06800B8F6FB /* DMMono-Italic.ttf in Resources */,
@@ -24346,7 +24347,6 @@
 				59B103972E4CF06800B8F6FB /* PublicSans-Regular.ttf in Resources */,
 				59B103982E4CF06800B8F6FB /* PublicSans-SemiBold.ttf in Resources */,
 				59B103992E4CF06800B8F6FB /* Localizable.xcstrings in Resources */,
-				59B1039A2E4CF06800B8F6FB /* InfoPlist.xcstrings in Resources */,
 				59B1FE642E4B68CC00B8F6FB /* Config.json in Resources */,
 				59B103342E4C8AB200B8F6FB /* GoogleService-Info.plist in Resources */,
 			);
@@ -32066,6 +32066,7 @@
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Passkey/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "autofill-extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 PeraWallet PDA. All rights reserved.";
@@ -32099,6 +32100,7 @@
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Passkey/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "autofill-extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 PeraWallet PDA. All rights reserved.";
@@ -32131,6 +32133,7 @@
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Passkey/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "autofill-extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 PeraWallet PDA. All rights reserved.";
@@ -32163,7 +32166,7 @@
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/PasskeyStaging/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pera Wallet Staging Extension";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs access to your camera to scan QR codes.";
@@ -32199,7 +32202,7 @@
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/PasskeyStaging/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pera Wallet Staging Extension";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs access to your camera to scan QR codes.";
@@ -32234,7 +32237,7 @@
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/PasskeyStaging/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pera Wallet Staging Extension";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs access to your camera to scan QR codes.";
