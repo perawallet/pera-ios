@@ -50,9 +50,13 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         //for some reason the UI doesn't show if this is done in viewDidLoad as would be customary
         setupUI()
         
-        Task {
-            if let credential = await viewModel.handleRegistrationRequest(credentialRequest) {
-                await extensionContext.completeRegistrationRequest(using: credential)
+        //We need a delay here because FaceID only works when app is foregrounded, but sometimes
+        //the extension UI takes a second to fully foreground and FaceID fails
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            Task {
+                if let credential = await self?.viewModel.handleRegistrationRequest(credentialRequest) {
+                    await self?.extensionContext.completeRegistrationRequest(using: credential)
+                }
             }
         }
         
@@ -65,9 +69,13 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         //for some reason the UI doesn't show if this is done in viewDidLoad as would be customary
         setupUI()
         
-        Task {
-            if let credential = await viewModel.handleAuthenticationRequest(requestParameters) {
-                await extensionContext.completeAssertionRequest(using: credential)
+        //We need a delay here because FaceID only works when app is foregrounded, but sometimes
+        //the extension UI takes a second to fully foreground and FaceID fails
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            Task {
+                if let credential = await self?.viewModel.handleAuthenticationRequest(requestParameters) {
+                    await self?.extensionContext.completeAssertionRequest(using: credential)
+                }
             }
         }
     }

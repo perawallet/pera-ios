@@ -2180,7 +2180,6 @@
       }
     },
     "cards-not-supported-country-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2191,7 +2190,6 @@
       }
     },
     "chart-segcontrol-month" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2202,7 +2200,6 @@
       }
     },
     "chart-segcontrol-week" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2213,7 +2210,6 @@
       }
     },
     "chart-segcontrol-year" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4034,7 +4030,6 @@
       }
     },
     "local-authentication-failed" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4125,7 +4120,6 @@
       }
     },
     "menu-card-banner-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4866,7 +4860,6 @@
       }
     },
     "passkeys-back" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4877,7 +4870,6 @@
       }
     },
     "passkeys-signing-request" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6490,7 +6482,6 @@
       }
     },
     "settings-passkeys-delete" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6501,7 +6492,7 @@
       }
     },
     "settings-passkeys-delete-confirm-message" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6512,7 +6503,7 @@
       }
     },
     "settings-passkeys-delete-confirm-title" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6523,7 +6514,6 @@
       }
     },
     "settings-passkeys-empty" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6534,7 +6524,6 @@
       }
     },
     "settings-passkeys-last-used" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7539,7 +7528,6 @@
       }
     },
     "title-all-set" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7722,7 +7710,7 @@
       }
     },
     "title-carousel-banner-algo" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7733,7 +7721,7 @@
       }
     },
     "title-carousel-banner-cards" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7744,7 +7732,7 @@
       }
     },
     "title-carousel-banner-discover" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7755,7 +7743,7 @@
       }
     },
     "title-carousel-banner-receive" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7766,7 +7754,7 @@
       }
     },
     "title-carousel-banner-swap" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7777,7 +7765,7 @@
       }
     },
     "title-carousel-banner-transfer" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7898,7 +7886,6 @@
       }
     },
     "title-create-pera-card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8139,7 +8126,6 @@
       }
     },
     "title-go-to-cards" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8744,7 +8730,7 @@
       }
     },
     "title-recently-used-card" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8965,7 +8951,6 @@
       }
     },
     "title-share" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
