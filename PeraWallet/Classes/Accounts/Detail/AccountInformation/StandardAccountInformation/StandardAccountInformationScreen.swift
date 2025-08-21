@@ -14,7 +14,6 @@
 
 //   StandardAccountInformationScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
@@ -23,31 +22,39 @@ import pera_wallet_core
 final class StandardAccountInformationScreen:
     MacaroonUIKit.ScrollScreen,
     BottomSheetScrollPresentable {
+    
     typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
-
-    var modalHeight: ModalHeight {
-        return .compressed
-    }
-
-    private lazy var contextView = UIView()
-    private lazy var titleView = UILabel()
-    private lazy var accountItemCanvasView = TripleShadowView()
-    private lazy var accountItemView = AccountListItemWithActionView()
-    private lazy var accountTypeInformationView = AccountTypeInformationView()
-    private lazy var optionsView = AccountInformationOptionsView()
-
+    
+    // MARK: - Subviews
+    
+    private let contextView = UIView()
+    private let titleView = UILabel()
+    private let accountItemCanvasView = TripleShadowView()
+    private let accountItemView = CombinedAccountListItemView()
+    
+    private let accountTypeInformationView = AccountTypeInformationView()
+    private let optionsView = AccountInformationOptionsView()
+    
+    // MARK: - Properites
+    
     private let account: Account
     private let copyToClipboardController: CopyToClipboardController
-
+    
+    var eventHandler: EventHandler?
+    var modalHeight: ModalHeight { .compressed }
+    
     private lazy var theme = StandardAccountInformationScreenTheme()
+    
+    // MARK: - Initialisers
 
-    init(
-        account: Account,
-        copyToClipboardController: CopyToClipboardController
-    ) {
+    init(account: Account, copyToClipboardController: CopyToClipboardController, configuration: ViewControllerConfiguration) {
+        
         self.account = account
         self.copyToClipboardController = copyToClipboardController
+        
+        super.init()
+        
+        setupAccountItemView(configuration: configuration)
     }
 
     override func configureNavigationBar() {
@@ -60,6 +67,19 @@ final class StandardAccountInformationScreen:
         super.prepareLayout()
 
         addContext()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupAccountItemView(configuration: ViewControllerConfiguration) {
+        guard let universalWalletID = account.hdWalletAddressDetail?.walletId else { return }
+        accountItemView.universalWalletName = configuration.session?.authenticatedUser?.walletName(for: universalWalletID)
+    }
+    
+    // MARK: - Handlers
+    
+    private func scanForAccounts() {
+        eventHandler?(.performRescanRekeyedAccounts)
     }
 }
 
@@ -106,7 +126,7 @@ extension StandardAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountItemView.customize(theme.accountItem)
+        accountItemView.update(theme: theme.accountItem)
         accountItemCanvasView.addSubview(accountItemView)
         accountItemView.snp.makeConstraints {
             $0.top == 0
@@ -116,9 +136,13 @@ extension StandardAccountInformationScreen {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
 
-        accountItemView.startObserving(event: .performAction) { [weak self] in
+        accountItemView.onCopyButtonTap = { [weak self] in
             guard let self else { return }
             self.copyToClipboardController.copyAddress(self.account)
+        }
+        
+        accountItemView.onScanButtonTap = { [weak self] in
+            self?.scanForAccounts()
         }
 
         bindAccountItem()
@@ -179,7 +203,7 @@ extension StandardAccountInformationScreen {
     
     private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
         AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
-            self?.eventHandler?(.performRescanRekeyedAccounts)
+            self?.scanForAccounts()
         }
     }
 }
@@ -200,7 +224,7 @@ extension StandardAccountInformationScreen {
 
     private func bindAccountItem() {
         let viewModel = AccountInformationCopyAccountItemViewModel(account)
-        accountItemView.bindData(viewModel)
+        accountItemView.update(accountViewModel: viewModel)
     }
 
     private func bindAccountTypeInformation() {
