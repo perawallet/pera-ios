@@ -14,7 +14,6 @@
 
 import Foundation
 
-<<<<<<<< HEAD:PeraWalletCore/LiquidAuth/Data/PassKeyAuthenticationRequest.swift
 public struct PassKeyAuthenticationRequest {
     public let origin: String
     public let username: String
@@ -22,17 +21,6 @@ public struct PassKeyAuthenticationRequest {
     public init(origin: String, username: String) {
         self.origin = origin
         self.username = username
-========
-public struct RekeyTransactionDraft: TransactionDraft {
-    public var from: Account
-    public let rekeyedAccount: String
-    public var transactionParams: TransactionParams
-    
-    public init(from: Account, rekeyedAccount: String, transactionParams: TransactionParams) {
-        self.from = from
-        self.rekeyedAccount = rekeyedAccount
-        self.transactionParams = transactionParams
->>>>>>>> main:PeraWalletCore/API/Drafts/SDK/RekeyTransactionDraft.swift
     }
 }
 

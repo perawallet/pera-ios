@@ -12,18 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-<<<<<<<< HEAD:PeraWalletCore/LiquidAuth/Data/LiquidAuthResponse.swift
 public struct LiquidAuthResponse {
     public let credentialId: String
-========
-public protocol ErrorDisplayable {
-    var title: String { get }
-    var message: String { get }
-}
-
-extension ErrorDisplayable {
-    public var isValid: Bool {
-        return !message.isEmpty
-    }
->>>>>>>> main:PeraWalletCore/Utils/Banner/ErrorDisplayable.swift
 }

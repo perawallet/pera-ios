@@ -12,22 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-<<<<<<<< HEAD:PeraWalletCore/LiquidAuth/Data/LiquidAuthRequest.swift
 public struct LiquidAuthRequest {
     public let origin: String
     public let requestId: String
-========
-//   AssetInboxSendDraft.swift
-
-import Foundation
-
-public struct AssetInboxSendDraft {
-    public let account: String
-    public let assetID: AssetID
-    
-    public init(account: String, assetID: AssetID) {
-        self.account = account
-        self.assetID = assetID
-    }
->>>>>>>> main:PeraWalletCore/API/Drafts/Account/Asset/AssetInboxSendDraft.swift
 }
