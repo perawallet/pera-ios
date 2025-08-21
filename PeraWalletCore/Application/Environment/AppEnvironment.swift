@@ -32,7 +32,11 @@ public class AppEnvironment {
     
     public let appID = "1459898525"
     
-    public lazy var isTestNet = target == .staging
+    public lazy var isTestNet = !ALGAppTarget.current.isProduction
+    
+    private var target: AppTarget {
+        return ALGAppTarget.current.isProduction ? .prod : .staging
+    }
     
     public lazy var schema = "https"
     
@@ -236,16 +240,6 @@ public class AppEnvironment {
                 return "https://discover-mobile.perawallet.app/main/markets"
             }
     }()
-
-    private let target: AppTarget
-    
-    private init() {
-        #if PRODUCTION
-        target = .prod
-        #else
-        target = .staging
-        #endif
-    }
 }
 
 public enum AlgorandWeb: String {

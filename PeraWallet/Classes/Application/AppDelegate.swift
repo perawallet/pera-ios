@@ -43,7 +43,6 @@ class AppDelegate:
 
     var notificationObservations: [NSObjectProtocol] = []
     
-    private(set) lazy var persistentContainer = createPersistentContainer()
     private(set) lazy var appConfiguration = createAppConfiguration()
 
     private lazy var appLaunchController = createAppLaunchController()
@@ -76,9 +75,10 @@ class AppDelegate:
         setupAppLibs()
         runMigrations()
 
+        makeWindow()
+        
         prepareForLaunch()
 
-        makeWindow()
         makeNetworkBanner()
         setupLegacyBridge()
 
@@ -594,8 +594,7 @@ extension AppDelegate {
 
 extension AppDelegate {
     func saveContext() {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
+        if let context = CoreAppConfiguration.shared?.persistentContainer?.viewContext, context.hasChanges {
             do {
                 try context.save()
             } catch {
@@ -651,7 +650,7 @@ extension AppDelegate {
         CoreAppConfiguration.shared = config
         
         if let shared = CoreAppConfiguration.shared {
-            shared.persistentContainer = self.persistentContainer
+            shared.persistentContainer = createPersistentContainer()
         }
         
         return config;
