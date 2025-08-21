@@ -229,8 +229,15 @@ extension HomeAPIDataController {
     }
     
     func fetchDefaultAssets() {
+        let usdcAssetID = ALGAsset.usdcAssetID(api.network)
+        guard
+            sharedDataController.assetDetailCollection.isEmpty ||
+            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil
+        else {
+            return
+        }
         api.fetchAssetDetails(
-            AssetFetchQuery(ids: [ALGAsset.usdcAssetID(api.network)]),
+            AssetFetchQuery(ids: [usdcAssetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in

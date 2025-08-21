@@ -23,7 +23,7 @@ struct SwapConfirmViewModel {
     let selectedAssetInAmount: String
     let selectedAssetOutAmount: String
     let price: String
-    let provider: Provider
+    let provider: SwapProviderV2
     let slippageTolerance: String
     let priceImpact: String
     let minimumReceived: String

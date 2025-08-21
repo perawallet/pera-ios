@@ -7335,6 +7335,8 @@
 		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4FCCB1A2E5706A300CECBFD /* SwapProviderV2List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCCB192E5706A000CECBFD /* SwapProviderV2List.swift */; };
+		D4FCCB1C2E5706DB00CECBFD /* SwapProviderV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCCB1B2E5706D700CECBFD /* SwapProviderV2.swift */; };
 		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB12DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
 		D4FF6CB22DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
@@ -10047,6 +10049,8 @@
 		D4FC5F5827F525AF0017E81F /* SelectedAccountPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAccountPreviewView.swift; sourceTree = "<group>"; };
 		D4FC5F5C27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAccountPreviewViewTheme.swift; sourceTree = "<group>"; };
 		D4FC5F6027F52DA30017E81F /* SelectedAccountPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAccountPreviewViewModel.swift; sourceTree = "<group>"; };
+		D4FCCB192E5706A000CECBFD /* SwapProviderV2List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapProviderV2List.swift; sourceTree = "<group>"; };
+		D4FCCB1B2E5706D700CECBFD /* SwapProviderV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapProviderV2.swift; sourceTree = "<group>"; };
 		D4FDA57628258BA600BFB778 /* CollectibleFullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageViewController.swift; sourceTree = "<group>"; };
 		D4FDA57A28258EC500BFB778 /* FullScreenContentViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenContentViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListViewControllerTheme.swift; sourceTree = "<group>"; };
@@ -12573,6 +12577,8 @@
 			children = (
 				2B69AB1328BF9B7100A8D65D /* PeraSwapFee.swift */,
 				2B69AB1B28BF9CFD00A8D65D /* SwapProvider.swift */,
+				D4FCCB1B2E5706D700CECBFD /* SwapProviderV2.swift */,
+				D4FCCB192E5706A000CECBFD /* SwapProviderV2List.swift */,
 				2B69AB1728BF9CE500A8D65D /* SwapQuote.swift */,
 				2B71CB9728FF327800B1E1A0 /* SwapQuoteList.swift */,
 				2B69AB2728BFA17B00A8D65D /* SwapTransactionGroup.swift */,
@@ -31172,6 +31178,7 @@
 				591678832E460E6E002184C2 /* AccountAssetAscendingAmountAlgorithm.swift in Sources */,
 				591678842E460E6E002184C2 /* AccountAssetDescendingAmountAlgorithm.swift in Sources */,
 				591678722E460E06002184C2 /* AccountListFilterAlgorithm.swift in Sources */,
+				D4FCCB1A2E5706A300CECBFD /* SwapProviderV2List.swift in Sources */,
 				591678732E460E06002184C2 /* AuthorizedAccountListFilterAlgorithm.swift in Sources */,
 				591678742E460E06002184C2 /* NonWatchAccountListFilterAlgorithm.swift in Sources */,
 				591678752E460E06002184C2 /* AccountSortingAlgorithm.swift in Sources */,
@@ -31567,6 +31574,7 @@
 				591677D32E460AF9002184C2 /* WalletConnectProtocol.swift in Sources */,
 				591677D42E460AF9002184C2 /* WalletConnectV1Protocol.swift in Sources */,
 				591677D52E460AF9002184C2 /* WalletConnectV2Protocol.swift in Sources */,
+				D4FCCB1C2E5706DB00CECBFD /* SwapProviderV2.swift in Sources */,
 				591677D62E460AF9002184C2 /* ALGWalletConnectProtocolResolver.swift in Sources */,
 				591677D72E460AF9002184C2 /* WalletConnectProtocolResolver.swift in Sources */,
 				591677D82E460AF9002184C2 /* MnemonicsParser.swift in Sources */,

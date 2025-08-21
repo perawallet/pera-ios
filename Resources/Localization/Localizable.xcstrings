@@ -7676,6 +7676,17 @@
         }
       }
     },
+    "title-auto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
+          }
+        }
+      }
+    },
     "title-back-up-account-selection-header" : {
       "localizations" : {
         "en" : {
@@ -7692,6 +7703,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Balance"
+          }
+        }
+      }
+    },
+    "title-best-price-available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best price available"
           }
         }
       }
@@ -9269,17 +9291,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Swap"
-          }
-        }
-      }
-    },
-    "title-swap-provider" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Provider (Best price available)"
           }
         }
       }
