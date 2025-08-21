@@ -61,7 +61,8 @@ final class SwapAssetFlowCoordinator:
     var onAccountSelected: ((Account) -> Void)?
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
-    var onQuoteLoaded: ((SwapQuote?, SwapAssetDataController.Error?) -> Void)?
+    var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
+    var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -71,31 +72,10 @@ final class SwapAssetFlowCoordinator:
     private let loadingController: LoadingController
     private let bannerController: BannerController
     private let hdWalletStorage: HDWalletStorable
+    private let featureFlagService: FeatureFlagServicing
     private unowned let presentingScreen: UIViewController
     
     private var swapDataController: SwapAssetAPIDataController?
-
-    init(
-        draft: SwapAssetFlowDraft,
-        dataStore: SwapDataStore,
-        analytics: ALGAnalytics,
-        api: ALGAPI,
-        sharedDataController: SharedDataController,
-        loadingController: LoadingController,
-        bannerController: BannerController,
-        hdWalletStorage: HDWalletStorable,
-        presentingScreen: UIViewController
-    ) {
-        self.dataStore = dataStore
-        self.analytics = analytics
-        self.api = api
-        self.sharedDataController = sharedDataController
-        self.loadingController = loadingController
-        self.bannerController = bannerController
-        self.hdWalletStorage = hdWalletStorage
-        self.presentingScreen = presentingScreen
-        self.draft = draft
-    }
     
     init(
         draft: SwapAssetFlowDraft,
@@ -111,6 +91,7 @@ final class SwapAssetFlowCoordinator:
         self.loadingController = configuration.loadingController!
         self.bannerController = configuration.bannerController!
         self.hdWalletStorage = configuration.hdWalletStorage
+        self.featureFlagService = configuration.featureFlagService
         self.presentingScreen = presentingScreen
     }
 
@@ -689,7 +670,7 @@ extension SwapAssetFlowCoordinator {
 
         selectAssetScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didSelectAsset(let asset):
@@ -714,6 +695,18 @@ extension SwapAssetFlowCoordinator {
 
 
 extension SwapAssetFlowCoordinator {
+    func getProvidersList() {
+        api.getProviders { [weak self] response in
+            switch response {
+            case .success(let providersList):
+                guard let self else { return }
+                onProvidersListLoaded?(providersList)
+            case .failure:
+                break
+            }
+        }
+    }
+    
     func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
@@ -738,7 +731,8 @@ extension SwapAssetFlowCoordinator {
             dataStore: dataStore,
             swapController: swapController,
             api: api,
-            sharedDataController: sharedDataController
+            sharedDataController: sharedDataController,
+            featureFlagService: featureFlagService
         )
         
         swapDataController?.eventHandler = { [weak self] event in
@@ -746,10 +740,12 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .willLoadQuote:
                 print("loading...")
-            case .didLoadQuote(let quote):
-                onQuoteLoaded?(quote, nil)
+            case .didLoadQuoteV2(let quoteList):
+                onQuoteLoaded?(quoteList, nil)
             case .didFailToLoadQuote(let error):
                 onQuoteLoaded?(nil, error)
+            case .didLoadQuote(let quote):
+                assertionFailure("Shouldn't enter here")
             }
         }
         
@@ -773,7 +769,7 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSignWithLedgerConfirmation(
+    func openSignWithLedgerConfirmation(
         swapController: SwapController,
         transactionGroups: [SwapTransactionGroup]
     ) {

@@ -28,6 +28,7 @@ final class SwapViewController: BaseViewController {
     private var selectedAccount: Account?
     private var selectedAssetIn: AssetItem?
     private var selectedAssetOut: AssetItem?
+    private var availableProviders: [SwapProviderV2] = []
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
@@ -35,12 +36,21 @@ final class SwapViewController: BaseViewController {
         configuration: configuration,
         presentingScreen: self
     )
+    private var confirmSwapDataController: ConfirmSwapDataController?
+    
     private lazy var transitionToHighPriceImpactWarning = BottomSheetTransition(presentingViewController: self)
     
     // MARK: - Initialisers
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        swapAssetFlowCoordinator.onProvidersListLoaded = { [weak self] providers in
+            guard let self else { return }
+            availableProviders = providers.results
+        }
+        
+        swapAssetFlowCoordinator.getProvidersList()
     }
     
     override func customizeTabBarAppearence() {
@@ -67,7 +77,7 @@ final class SwapViewController: BaseViewController {
         {
             self.selectedAccount = account
             self.selectedAssetIn = assetItem(from: launchDraft.assetIn)
-            self.selectedAssetOut = nil
+            self.selectedAssetOut = launchDraft.assetIn?.isAlgo ?? false ? nil : assetItem(from: account[0])!
             self.sharedViewModel = nil
             loadSwapView()
             self.launchDraft = nil
@@ -147,6 +157,7 @@ final class SwapViewController: BaseViewController {
             {
                 sharedViewModel.selectedAssetOut = assetOut
             }
+            sharedViewModel.availableProviders = availableProviders
             
             rootView = SwapView(viewModel: sharedViewModel)
         } else {
@@ -155,6 +166,7 @@ final class SwapViewController: BaseViewController {
                 selectedAssetIn: assetIn,
                 selectedAssetOut: assetOut
             )
+            viewModel.availableProviders = availableProviders
             self.sharedViewModel = viewModel
             
             rootView = SwapView(viewModel: viewModel)
@@ -186,22 +198,18 @@ final class SwapViewController: BaseViewController {
                     loadSwapView()
                 }
                 swapAssetFlowCoordinator.openSelectAssetOut(account: account)
-                
-            case .switchAssets:
-                let temp = selectedAssetIn
-                selectedAssetIn = selectedAssetOut
-                selectedAssetOut = temp
-                loadSwapView()
             case .getQuote(for: let value):
-                swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quote, error in
+                swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
                     guard let self = self else { return }
                     if let error {
                         // TODO: show error alert
                         print(error)
                         return
                     }
-                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: quote?.amountOutUSDValue)
-                    sharedViewModel?.quote = quote
+                    let orderedQuoteList = quoteList?.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
+                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue)
+                    sharedViewModel?.quoteList = orderedQuoteList
+                    sharedViewModel?.selectedQuote = orderedQuoteList?.first
                     sharedViewModel?.isLoadingQuote = false
                     loadSwapView()
                 }
@@ -211,11 +219,11 @@ final class SwapViewController: BaseViewController {
                 }
                 swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
             case .confirmSwap:
-                if let priceImpact = sharedViewModel?.quote?.priceImpact,
-                   priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent {
-                    presentWarningForHighPriceImpact()
-                    return
-                }
+//                if let priceImpact = sharedViewModel?.quote?.priceImpact,
+//                   priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent {
+//                    presentWarningForHighPriceImpact()
+//                    return
+//                }
                 confirmSwap()
             }
         }
@@ -268,106 +276,194 @@ final class SwapViewController: BaseViewController {
             api: configuration.api!,
             transactionSigner: transactionSigner
         )
+        swapController.quote = viewModel.selectedQuote
+        swapController.providersV2 = availableProviders
         
-        let confirmSwapDataController = ConfirmSwapAPIDataController(
+        swapController.eventHandler = {
+            [weak self, weak swapController] event in
+            guard let self = self,
+                  let swapController = swapController,
+                  let selectedAccount
+            else {
+                return
+            }
+
+            switch event {
+            case .didSignTransaction:
+//                if selectedAccount.requiresLedgerConnection(),
+//                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
+//                    signWithLedgerProcessScreen.increaseProgress()
+//
+//                    if signWithLedgerProcessScreen.isProgressFinished {
+//                        self.stopLoading()
+//
+//                        self.visibleScreen.dismissScreen {
+//                            [weak self] in
+//                            guard let self = self else { return }
+//
+//                            self.openSwapLoading(swapController)
+//                        }
+//                    }
+//                }
+                break
+            case .didSignAllTransactions:
+                if selectedAccount.requiresLedgerConnection() {
+                    return
+                }
+
+//                self.stopLoading()
+//                self.openSwapLoading(swapController)
+            case .didCompleteSwap:
+                if let quote = swapController.quote {
+                    self.analytics.track(
+                        .swapCompleted(
+                            quote: quote,
+                            parsedTransactions: swapController.parsedTransactions,
+                            currency: self.sharedDataController.currency
+                        )
+                    )
+                }
+
+//                self.openSwapSuccess(swapController)
+            case .didFailTransaction(let txnID):
+                guard let quote = swapController.quote else { return }
+
+//                if !(self.visibleScreen is LoadingScreen) {
+//                    return
+//                }
+
+                swapController.clearTransactions()
+//                self.stopLoading()
+
+//                logFailedSwap(
+//                    quote: quote,
+//                    txnID: txnID
+//                )
+
+//                let viewModel = SwapUnexpectedErrorViewModel(quote)
+//                self.openError(
+//                    swapController,
+//                    viewModel: viewModel
+//                ) {
+//                    [weak self] in
+//                    guard let self = self else { return }
+//                    
+//                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+//                    screen?.getSwapQuoteForCurrentInput()
+//                }
+            case .didFailNetwork(let error):
+                guard let quote = swapController.quote else { return }
+
+//                if !(self.visibleScreen is LoadingScreen) {
+//                    return
+//                }
+
+                swapController.clearTransactions()
+//                self.stopLoading()
+//
+//                logFailedSwap(
+//                    quote: quote,
+//                    error: error
+//                )
+
+//                let viewModel = SwapAPIErrorViewModel(
+//                    quote: quote,
+//                    error: error
+//                )
+//                self.openError(
+//                    swapController,
+//                    viewModel: viewModel
+//                ) {
+//                    [weak self] in
+//                    guard let self = self else { return }
+//
+//                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+//                    screen?.getSwapQuoteForCurrentInput()
+//                }
+            case .didCancelTransaction:
+                swapController.clearTransactions()
+//                self.stopLoading()
+            case .didFailSigning(let error):
+                switch error {
+                case .api(let apiError):
+//                    self.displaySigningError(apiError)
+                    break
+                case .ledger(let ledgerError):
+//                    self.displayLedgerError(
+//                        swapController: swapController,
+//                        ledgerError: ledgerError
+//                    )
+                    break
+                }
+            case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
+//                self.ledgerConnectionScreen?.dismiss(animated: true) {
+//                    self.ledgerConnectionScreen = nil
+//
+//                    self.openSignWithLedgerProcess(
+//                        swapController: swapController,
+//                        ledger: ledger,
+//                        transactionGroups: transactionGroups
+//                    )
+//                }
+                break
+            case .didFinishTiming:
+                break
+            case .didLedgerReset:
+                swapController.clearTransactions()
+//                self.stopLoading()
+
+//                if self.visibleScreen is LedgerConnectionScreen {
+//                    self.ledgerConnectionScreen?.dismissScreen()
+//                    self.ledgerConnectionScreen = nil
+//                    return
+//                }
+//
+//                if self.visibleScreen is SignWithLedgerProcessScreen {
+//                    self.signWithLedgerProcessScreen?.dismissScreen()
+//                    self.signWithLedgerProcessScreen = nil
+//                }
+            case .didLedgerResetOnSuccess:
+                break
+            case .didLedgerRejectSigning:
+                break
+            }
+        }
+        
+        let dataController = ConfirmSwapAPIDataController(
             swapController: swapController,
             api: configuration.api!
         )
+        self.confirmSwapDataController = dataController
         
-//        confirmSwapDataController.eventHandler = { [weak self] event in
-//            guard let self else { return }
-//            switch event {
-//            case .willUpdateSlippage:
-//                <#code#>
-//            case .didUpdateSlippage(_):
-//                <#code#>
-//            case .didFailToUpdateSlippage(_):
-//                <#code#>
-//            case .willPrepareTransactions:
-//                <#code#>
-//            case .didPrepareTransactions(_):
-//                <#code#>
-//            case .didFailToPrepareTransactions(_):
-//                <#code#>
-//            }
-//        }
-        confirmSwapDataController.confirmSwap()
-    }
-}
-
-extension SwapViewController {
-    private func presentWarningForHighPriceImpact() {
-        let title =
-            String(localized: "swap-high-price-impact-warning-title")
-                .bodyLargeMedium(alignment: .center)
-        let body = makeHighPriceImpactWarningBody()
-
-        let uiSheet = UISheet(
-            image: "icon-info-red",
-            title: title,
-            body: body
-        )
-
-        uiSheet.bodyHyperlinkHandler = {
-            [unowned self] in
-            let visibleScreen = self.findVisibleScreen()
-            visibleScreen.open(AlgorandWeb.tinymanSwapPriceImpact.link)
-        }
-
-        let confirmAction = makeHighPriceImpactWarningConfirmAction()
-        uiSheet.addAction(confirmAction)
-
-        let cancelAction = makeHighPriceImpactWarningCancelAction()
-        uiSheet.addAction(cancelAction)
-
-        transitionToHighPriceImpactWarning.perform(
-            .sheetAction(
-                sheet: uiSheet,
-                theme: UISheetActionScreenImageTheme()
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func makeHighPriceImpactWarningBody() -> UISheetBodyTextProvider {
-        let body = String(localized: "swap-high-price-impact-warning-body")
-        let bodyHighlightedText = String(localized: "swap-high-price-impact-warning-body-highlighted-text")
-
-        var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
-        bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
-
-        let uiSheetBodyHighlightedText = UISheet.HighlightedText(
-            text: bodyHighlightedText,
-            attributes: bodyHighlightedTextAttributes
-        )
-        let uiSheetBody = UISheetBodyTextProvider(
-            text: body.bodyRegular(alignment: .center),
-            highlightedText: uiSheetBodyHighlightedText
-        )
-
-        return uiSheetBody
-    }
-
-    private func makeHighPriceImpactWarningConfirmAction() -> UISheetAction {
-        return UISheetAction(
-            title: String(localized: "swap-confirm-title"),
-            style: .default
-        ) { [weak self] in
+        confirmSwapDataController?.eventHandler = { [weak self] event in
             guard let self else { return }
-            dismiss(animated: true) {  [weak self] in
-                guard let self else { return }
-                confirmSwap()
+            switch event {
+            case .willUpdateSlippage:
+                // TODO: start loading
+                break
+            case .didUpdateSlippage(_):
+                break
+            case .didFailToUpdateSlippage(_):
+                break
+            case .willPrepareTransactions:
+                // TODO: start loading
+                break
+            case .didPrepareTransactions(let swapTransactionPreparation):
+                let transactionGroups = swapTransactionPreparation.transactionGroups
+                if swapController.account.requiresLedgerConnection() {
+                    swapAssetFlowCoordinator.openSignWithLedgerConfirmation(
+                        swapController: swapController,
+                        transactionGroups: transactionGroups
+                    )
+                    return
+                }
+
+                swapController.signTransactions(transactionGroups)
+                break
+            case .didFailToPrepareTransactions(_):
+                break
             }
         }
-    }
-
-    private func makeHighPriceImpactWarningCancelAction() -> UISheetAction {
-        return UISheetAction(
-            title: String(localized: "title-cancel"),
-            style: .cancel
-        ) { [weak self] in
-            guard let self else { return }
-            dismiss(animated: true)
-        }
+        confirmSwapDataController?.confirmSwap()
     }
 }

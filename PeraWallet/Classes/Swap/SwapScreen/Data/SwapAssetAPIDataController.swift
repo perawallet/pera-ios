@@ -59,6 +59,9 @@ final class SwapAssetAPIDataController:
     private var providers: [SwapProvider] {
         return swapController.providers
     }
+    private var providersV2: [SwapProviderV2] {
+        return swapController.providersV2
+    }
     private var swapType: SwapType {
         return swapController.swapType
     }
@@ -71,17 +74,20 @@ final class SwapAssetAPIDataController:
     private let dataStore: DataStore
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let featureFlagService: FeatureFlagServicing
 
     init(
         dataStore: DataStore,
         swapController: SwapController,
         api: ALGAPI,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        featureFlagService: FeatureFlagServicing
     ) {
         self.dataStore = dataStore
         self.swapController = swapController
         self.api = api
         self.sharedDataController = sharedDataController
+        self.featureFlagService = featureFlagService
 
         sharedDataController.add(self)
     }
@@ -102,6 +108,7 @@ extension SwapAssetAPIDataController {
 
         let draft = SwapQuoteDraft(
             providers: providers,
+            providersV2: providersV2,
             swapperAddress: account.address,
             type: swapType,
             deviceID: deviceID,
@@ -123,7 +130,11 @@ extension SwapAssetAPIDataController {
                 return
             }
 
-            self.loadData(draft)
+            if featureFlagService.isEnabled(.swapV2Enabled) {
+                self.loadDataV2(draft)
+            } else {
+                self.loadData(draft)
+            }
         }
     }
 
@@ -144,6 +155,33 @@ extension SwapAssetAPIDataController {
 
                 self.swapController.quote = quote
                 self.eventHandler?(.didLoadQuote(quote))
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                self.eventHandler?(.didFailToLoadQuote(error))
+            }
+        }
+    }
+    
+    private func loadDataV2(
+        _ draft: SwapQuoteDraft
+    ) {
+        currentQuoteEndpoint = api.getSwapV2Quote(draft) {
+            [weak self] response in
+            guard let self = self else {
+                return
+        }
+
+            self.currentQuoteEndpoint = nil
+
+            switch response {
+            case .success(let quoteList):
+                guard let quote = quoteList.results[safe: 0] else { return }
+
+                self.swapController.quote = quote
+                self.eventHandler?(.didLoadQuoteV2(quoteList.results))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
