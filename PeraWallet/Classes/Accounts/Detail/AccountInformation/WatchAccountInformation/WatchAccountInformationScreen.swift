@@ -14,7 +14,6 @@
 
 //   WatchAccountInformationScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
@@ -27,11 +26,11 @@ final class WatchAccountInformationScreen:
         return .compressed
     }
 
-    private lazy var contextView = UIView()
-    private lazy var titleView = UILabel()
-    private lazy var accountItemCanvasView = TripleShadowView()
-    private lazy var accountItemView = AccountListItemWithActionView()
-    private lazy var accountTypeInformationView = AccountTypeInformationView()
+    private let contextView = UIView()
+    private let titleView = UILabel()
+    private let accountItemCanvasView = TripleShadowView()
+    private let accountItemView = AccountListItemWithActionView()
+    private let accountTypeInformationView = AccountTypeInformationView()
 
     private let account: Account
     private let copyToClipboardController: CopyToClipboardController
@@ -110,9 +109,9 @@ extension WatchAccountInformationScreen {
             $0.trailing == 0
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
-
-        accountItemView.startObserving(event: .performAction) {
-            [unowned self] in
+        
+        accountItemView.onCopyButtonTap = { [weak self] in
+            guard let self else { return }
             self.copyToClipboardController.copyAddress(self.account)
         }
 

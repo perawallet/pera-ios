@@ -1998,7 +1998,8 @@ final class Router:
             )
             viewController = StandardAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .ledgerAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2006,7 +2007,8 @@ final class Router:
             )
             viewController = LedgerAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .noAuthAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(

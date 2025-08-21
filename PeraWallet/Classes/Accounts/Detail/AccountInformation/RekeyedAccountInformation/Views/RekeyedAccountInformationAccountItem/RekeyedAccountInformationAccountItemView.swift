@@ -68,11 +68,9 @@ extension RekeyedAccountInformationAccountItemView {
         sourceAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
-
-        sourceAccountItemView.startObserving(event: .performAction) {
-            [unowned self] in
-            let interaction = self.uiInteractions[.performSourceAccountAction]
-            interaction?.publish()
+        
+        sourceAccountItemView.onCopyButtonTap = { [weak self] in
+            self?.uiInteractions[.performSourceAccountAction]?.publish()
         }
     }
 
@@ -123,11 +121,9 @@ extension RekeyedAccountInformationAccountItemView {
         authAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
-
-        authAccountItemView.startObserving(event: .performAction) {
-            [unowned self] in
-            let interaction = self.uiInteractions[.performAuthAccountAction]
-            interaction?.publish()
+        
+        authAccountItemView.onCopyButtonTap = { [weak self] in
+            self?.uiInteractions[.performAuthAccountAction]?.publish()
         }
     }
 }
