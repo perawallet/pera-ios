@@ -93,20 +93,52 @@ class SwapSharedViewModel: ObservableObject {
         guard
             let amountOutWithSlippage = selectedQuote?.amountOutWithSlippage,
             let assetOutUnitName = selectedQuote?.assetOut?.unitName,
-            let assetOutDecimals = selectedQuote?.assetOut?.decimals
+            let decimals = selectedQuote?.assetOut?.decimals
         else {
             return "-"
         }
         
-        let value = Decimal(amountOutWithSlippage) / pow(10, assetOutDecimals)
+        let value = Decimal(amountOutWithSlippage) / pow(10, decimals)
         return "\(value) \(assetOutUnitName)"
+    }
+    
+    var peraFee: String {
+        guard
+            let peraFee = selectedQuote?.peraFee,
+            let decimals = selectedQuote?.assetOut?.decimals
+        else {
+            return "-"
+        }
+        
+        let value = Decimal(peraFee) / pow(10, decimals)
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = AlgoLocalCurrency()
+        
+        return currencyFormatter.format(value) ?? "-"
+    }
+    
+    var exchangeFee: String {
+        guard
+            let exchangeFee = selectedQuote?.exchangeFee,
+            let decimals = selectedQuote?.assetOut?.decimals
+        else {
+            return "-"
+        }
+        
+        let value = Decimal(exchangeFee) / pow(10, decimals)
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = AlgoLocalCurrency()
+        
+        return currencyFormatter.format(value) ?? "-"
     }
     
     @Published var isPayingView: Bool = true
     @Published var payingText: String? = nil
     @Published var receivingText: String? = nil
-    
-    private var cancellables = Set<AnyCancellable>()
 
     init(
         selectedAccount: Account,
@@ -116,13 +148,6 @@ class SwapSharedViewModel: ObservableObject {
         self.selectedAccount = selectedAccount
         self.selectedAssetIn = selectedAssetIn
         self.selectedAssetOut = selectedAssetOut
-        
-        $receivingText
-            .sink { newValue in
-                // Your logic here
-                print("receivingText changed:", newValue ?? "nil")
-            }
-            .store(in: &cancellables)
     }
     
     func switchAssets() {
@@ -138,7 +163,7 @@ class SwapSharedViewModel: ObservableObject {
         guard let payingText, let receivingText, let selectedProvider else {
             fatalError("Shouldn't be nil")
         }
-        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: selectedProvider, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: "", peraFee: "")
+        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: selectedProvider, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: exchangeFee, peraFee: peraFee)
     }
     
     func selectProvider(_ providerId: String) {
