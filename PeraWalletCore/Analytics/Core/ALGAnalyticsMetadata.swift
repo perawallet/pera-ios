@@ -77,6 +77,7 @@ public enum ALGAnalyticsMetadataKey:
     case scriptMessage = "script_message"
     case screenName = "screen"
     case bannerName = "banner_name"
+    case wcActionError = "wc_action_error"
     
     public static func == (lhs: ALGAnalyticsMetadataKey, rhs: ALGAnalyticsMetadataKey) -> Bool {
         lhs.rawValue == rhs.rawValue

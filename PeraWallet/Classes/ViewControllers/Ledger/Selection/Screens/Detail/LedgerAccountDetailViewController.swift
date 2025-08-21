@@ -110,7 +110,7 @@ extension LedgerAccountDetailViewController {
 extension LedgerAccountDetailViewController {
     private func setTitle() {
         if let index = ledgerIndex {
-            title = String(format: String(localized: "ledger-account-detail-name"), index)
+            title = String(format: String(localized: "ledger-account-detail-name"), "\(index)")
         } else {
             title = account.address.shortAddressDisplay
         }

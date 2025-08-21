@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,11 @@ struct ChartViewData: Hashable, Equatable {
     let period: ChartDataPeriod
     let chartValues: [ChartDataPoint]
     let isLoading: Bool
-    let isAlgoCurrency: Bool
     
     var model: ChartDataModel {
         let chartDataModel = ChartDataModel()
         chartDataModel.period = period
-        chartDataModel.data = chartValues.map { return ChartDataPointViewModel(value: isAlgoCurrency ? $0.algoValue : $0.fiatValue, day: $0.day) }
+        chartDataModel.data = chartValues.map { ChartDataPointViewModel(value: $0.fiatValue, day: $0.day) }
         chartDataModel.isLoading = isLoading
         return chartDataModel
     }

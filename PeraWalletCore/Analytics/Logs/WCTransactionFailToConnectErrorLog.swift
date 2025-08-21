@@ -12,41 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionRequestSDKErrorEvent.swift
+//   WCTransactionFailToConnectErrorLog.swift
 
 import Foundation
-import MacaroonVendors
 
-public struct WCTransactionRequestSDKErrorEvent: ALGAnalyticsEvent {
-    public let name: ALGAnalyticsEventName
-    public let metadata: ALGAnalyticsMetadata
+struct WCTransactionFailToConnectErrorLog: ALGAnalyticsLog {
+    let name: ALGAnalyticsLogName
+    let metadata: ALGAnalyticsMetadata
     
     fileprivate init(
-        error: Error?,
         url: WalletConnectURL
     ) {
-        self.name = .wcTransactionRequestSDKError
+        self.name = .walletConnectTransactionFailToConnectError
         
-        var metadata: ALGAnalyticsMetadata = [
+        self.metadata  = [
             .wcVersion: WalletConnectProtocolID.v1.rawValue,
             .wcRequestURL: Self.regulate(url.absoluteString)
         ]
-        if let error {
-            metadata[.wcRequestError] = Self.regulate(error.localizedDescription)
-        }
-
-        self.metadata = metadata
     }
 }
 
-extension AnalyticsEvent where Self == WCTransactionRequestSDKErrorEvent {
-    public static func wcTransactionRequestSDKError(
-        error: Error?,
+extension ALGAnalyticsLog where Self == WCTransactionFailToConnectErrorLog {
+    static func wcTransactionFailToConnectError(
         url: WalletConnectURL
     ) -> Self {
-        return WCTransactionRequestSDKErrorEvent(
-            error: error,
-            url: url
-        )
+        return WCTransactionFailToConnectErrorLog(url: url)
     }
 }

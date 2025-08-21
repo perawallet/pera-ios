@@ -324,6 +324,10 @@ extension WalletConnectV1Protocol {
         guard let preferences else { return }
 
         clearOngoingWCConnectionRequest(for: key)
+        
+        analytics.record(
+            .wcTransactionFailToConnectError(url: url)
+        )
 
         eventHandler?(
             .didFail(
@@ -346,9 +350,6 @@ extension WalletConnectV1Protocol {
         for url: WCURL
     ) {
         analytics.record(
-            .wcTransactionRequestSDKError(error: error, url: url)
-        )
-        analytics.track(
             .wcTransactionRequestSDKError(error: error, url: url)
         )
     }
@@ -415,20 +416,54 @@ extension WalletConnectV1Protocol {
         try walletConnectServer.updateSession(session, with: newWalletInfo)
     }
     
-    public func signTransactionRequest(_ request: WalletConnectRequest, with signature: [Data?]) {
-        if let signature = WalletConnectResponse.signature(signature, for: request) {
-            walletConnectServer.send(signature)
+    func signTransactionRequest(
+        _ request: WalletConnectRequest,
+        with signature: [Data?]
+    ) {
+        do {
+            let signature = try WalletConnectResponse.signature(signature, for: request)
+            
+            if let signature {
+                walletConnectServer.send(signature)
+            } else {
+                analytics.record(
+                    .wcTransactionFailToApproveErrorLog(error: WalletConnectV1ProtocolSignatureError.invalidSignature)
+                )
+            }
+        } catch let err {
+            analytics.record(
+                .wcTransactionFailToApproveErrorLog(error: err)
+            )
         }
     }
 
-    public func rejectTransactionRequest(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) {
-        if let rejection = WalletConnectResponse.rejection(request, with: error) {
-            walletConnectServer.send(rejection)
+    func rejectTransactionRequest(
+        _ request: WalletConnectRequest,
+        with error: WCTransactionErrorResponse
+    ) {
+        do {
+            let rejection = try WalletConnectResponse.rejection(request, with: error)
+            
+            if let rejection {
+                walletConnectServer.send(rejection)
+            } else {
+                analytics.record(
+                    .wcTransactionFailToRejectErrorLog(error: WalletConnectV1ProtocolSignatureError.invalidSignature)
+                )
+            }
+        } catch let err {
+            analytics.record(
+                .wcTransactionFailToRejectErrorLog(error: err)
+            )
         }
     }
 }
 
-public enum WalletConnectV1Event {
+enum WalletConnectV1ProtocolSignatureError: Error {
+    case invalidSignature
+}
+
+enum WalletConnectV1Event {
     case shouldStart(
         session: WalletConnectSession,
         preferences: WalletConnectSessionCreationPreferences,

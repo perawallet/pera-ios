@@ -114,6 +114,10 @@ public enum ALGAnalyticsEventName:
     case tapDownloadTransactionInHistory
     case tapFilterTransactionInHistory
     case tapGovernanceBanner
+    case tapRetailBanner
+    case tapStakingBanner
+    case tapCardBanner
+    case tapGenericBanner
     case tapHistoryInAccountDetail
     case tapMoreInAccountDetail
     case tapNftReceive
@@ -144,7 +148,6 @@ public enum ALGAnalyticsEventName:
     case wcTransactionRequestDidAppear
     case wcTransactionRequestDidLoad
     case wcTransactionRequestReceived
-    case wcTransactionRequestSDKError
     case wcTransactionRequestValidated
     case webAuthNPassKeyAdded
     case webAuthNPassKeyUsed
@@ -189,6 +192,10 @@ extension ALGAnalyticsEventName {
         case .discoverAssetBuy: rawName = "discover_token_detail_buy"
         case .discoverAssetSell: rawName = "discover_token_detail_sell"
         case .tapGovernanceBanner: rawName = "homescr_visitgovernance"
+        case .tapRetailBanner: rawName = "homescr_visitretail"
+        case .tapStakingBanner: rawName = "homescr_visitstaking"
+        case .tapCardBanner: rawName = "homescr_visitcard"
+        case .tapGenericBanner: rawName = "homescr_visitgeneric"
         case .tapDownloadTransactionInHistory: rawName = "historyscr_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
         case .createAccountInHomeScreen: rawName = "homescr_account_add"
@@ -275,7 +282,6 @@ extension ALGAnalyticsEventName {
         case .wcTransactionRequestDidAppear: rawName = "wc_transaction_request_DidAppear"
         case .wcTransactionRequestDidLoad: rawName = "wc_transaction_request_DidLoad"
         case .wcTransactionRequestReceived: rawName = "wc_transaction_request_Received"
-        case .wcTransactionRequestSDKError: rawName = "wc_transaction_request_SDKError"
         case .wcTransactionRequestValidated: rawName = "wc_transaction_request_Validated"
         case .buyCryptoMeldSelected: rawName = "meldscr_algo_select_wallet_tap"
         case .buyCryptoBidaliSelected: rawName = "bidscr_algo_sell_tap"
