@@ -15,9 +15,20 @@
 import Foundation
 import CryptoKit
 
+<<<<<<<< HEAD:PeraWalletCore/LiquidAuth/Data/PassKeyAuthenticationResponse.swift
 public struct PassKeyAuthenticationResponse {
     public let credentialId: String
     public let address: String
     public let keyPair: P256.Signing.PrivateKey
+========
+public struct AccountAssetFetchDraft {
+    public let publicKey: PublicKey
+    public let assetID: AssetID
+    
+    public init(publicKey: PublicKey, assetID: AssetID) {
+        self.publicKey = publicKey
+        self.assetID = assetID
+    }
+>>>>>>>> main:PeraWalletCore/API/Drafts/Account/AccountAssetFetchDraft.swift
 }
 

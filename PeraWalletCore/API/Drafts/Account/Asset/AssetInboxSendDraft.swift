@@ -16,6 +16,7 @@
 
 import Foundation
 
+<<<<<<<< HEAD:PeraWalletCore/API/Drafts/Account/Asset/AssetInboxSendDraft.swift
 public struct AssetInboxSendDraft {
     public let account: String
     public let assetID: AssetID
@@ -23,5 +24,18 @@ public struct AssetInboxSendDraft {
     public init(account: String, assetID: AssetID) {
         self.account = account
         self.assetID = assetID
+========
+public struct BackupMetadata: Codable, Equatable {
+    public let id: String
+    public let createdAtDate: Date
+    
+    public init(id: String, createdAtDate: Date) {
+        self.id = id
+        self.createdAtDate = createdAtDate
+    }
+
+    public static func == (lhs: BackupMetadata, rhs: BackupMetadata) -> Bool {
+        lhs.id == rhs.id && lhs.createdAtDate == rhs.createdAtDate
+>>>>>>>> main:PeraWalletCore/AlgorandSecureBackup/BackupMetadata.swift
     }
 }

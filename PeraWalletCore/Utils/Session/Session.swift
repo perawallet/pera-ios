@@ -462,3 +462,30 @@ extension Session {
         }
     }
 }
+
+extension Session {
+    
+    public var backups: [String: BackupMetadata] {
+        get {
+            guard let data = data(with: backupsKey, to: .defaults) else {
+                return [:]
+            }
+            
+            do {
+                return try [String: BackupMetadata].decoded(data, using: JSONDecodingStrategy())
+            } catch {
+                return [:]
+            }
+        }
+        set {
+            do {
+                /// <todo>: It may be saved as object instead of data to make it more efficient
+                let data = try newValue.encoded()
+                save(data, for: backupsKey, to: .defaults)
+                NotificationCenter.default.post(name: .backupCreated, object: self)
+            } catch {
+                return
+            }
+        }
+    }
+}
