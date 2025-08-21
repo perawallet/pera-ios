@@ -23,14 +23,13 @@ enum SwapViewAction {
     case selectAccount
     case selectAssetIn(for: Account)
     case selectAssetOut(for: Account)
-    case switchAssets
     case getQuote(for: Double)
     case confirmSwap
 }
 
 enum SwapViewSheet: Identifiable {
     case settings
-    case provider
+    case provider(availableProviders: [SwapProviderV2])
     case confirmSwap
     
     var id: String {
@@ -99,7 +98,7 @@ struct SwapView: View {
                 
                 HStack {
                     SwitchSwapButton {
-                        onTap?(.switchAssets)
+                        viewModel.switchAssets()
                     }
                     Spacer()
                     SettingsSwapButton { action in
@@ -114,12 +113,23 @@ struct SwapView: View {
                 .padding(.horizontal, 16)
             }
             
-            if viewModel.shouldShowSwapButton {
-                ProviderSelectionView(selectedProvider: $viewModel.provider) {
-                    activeSheet = .provider
-                }
-                .padding(.top, 16)
-                .padding(.bottom, 12)
+            if
+                viewModel.shouldShowSwapButton,
+                let selectedProvider = viewModel.selectedProvider
+            {
+                ProviderSelectionView(
+                    selectedProvider: Binding(
+                        get: { selectedProvider },
+                        set: { newProvider in
+                            viewModel.selectProvider(newProvider.name)
+                        }
+                    ),
+                    providerRate: viewModel.providerRate) {
+                        guard let providers = viewModel.availableProviders else { return }
+                        activeSheet = .provider(availableProviders: providers)
+                    }
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
                 
                 SwapButton {
                     guard viewModel.payingText != nil, viewModel.receivingText != nil else { return }
@@ -135,11 +145,12 @@ struct SwapView: View {
             switch sheet {
             case .settings:
                 SwapSettingsSheet()
-            case .provider:
-                ProviderSheet()
+            case .provider(availableProviders: let providers):
+                ProviderSheet(availableProviders: providers, selectedProviderID: viewModel.selectedProvider?.name ?? "auto") { selectedProviderID in
+                    viewModel.selectProvider(selectedProviderID)
+                }
             case .confirmSwap:
-                let viewModel = SwapConfirmViewModel(selectedAccount: viewModel.selectedAccount, selectedAssetIn: viewModel.selectedAssetIn, selectedAssetOut: viewModel.selectedAssetOut, selectedAssetInAmount: viewModel.payingText!, selectedAssetOutAmount: viewModel.receivingText!, price: viewModel.price, provider: viewModel.provider, slippageTolerance: viewModel.slippageTolerance, priceImpact: viewModel.priceImpact, minimumReceived: "", exchangeFee: "", peraFee: "")
-                ConfirmSwapView(viewModel: viewModel) {
+                ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
                     onTap?(.confirmSwap)
                 }
             }

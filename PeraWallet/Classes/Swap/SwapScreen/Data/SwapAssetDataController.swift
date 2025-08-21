@@ -39,5 +39,6 @@ protocol SwapAssetDataController: AnyObject {
 enum SwapAssetDataControllerEvent {
     case willLoadQuote
     case didLoadQuote(SwapQuote)
+    case didLoadQuoteV2([SwapQuote])
     case didFailToLoadQuote(SwapAssetDataController.Error)
 }

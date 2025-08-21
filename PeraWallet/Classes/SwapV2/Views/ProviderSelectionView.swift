@@ -15,30 +15,44 @@
 //   ProviderSelectionView.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct ProviderSelectionView: View {
     // MARK: - Properties
-    @Binding var selectedProvider: Provider
+    @Binding var selectedProvider: SwapProviderV2
+    var providerRate: String
     let onTap: () -> Void
     
     // MARK: - Body
     var body: some View {
         VStack (alignment: .leading) {
-            Text("title-swap-provider")
+            Text("title-provider")
                 .font(.dmSans.regular.size(13.0))
                 .foregroundStyle(Color.Text.gray)
             SwiftUI.Button(action: onTap) {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {
-                        $selectedProvider.wrappedValue.icon
-                            .frame(width: 16, height: 16)
+                        Group {
+                            if let url = URL(string: selectedProvider.iconUrl) {
+                                AsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 16, height: 16)
+                                } placeholder: {
+                                    EmptyView()
+                                }
+                            } else {
+                                EmptyView()
+                            }
+                        }
                         Spacer().frame(width: 4)
-                        Text($selectedProvider.wrappedValue.name)
+                        Text(selectedProvider.displayName)
                             .font(.dmSans.regular.size(15))
                             .foregroundStyle(Color.Text.main)
                     }
                     Spacer()
-                    Text($selectedProvider.wrappedValue.exchangeRate)
+                    Text(providerRate)
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 3)

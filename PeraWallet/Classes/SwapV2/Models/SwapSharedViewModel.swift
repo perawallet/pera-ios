@@ -23,8 +23,10 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedAssetIn: AssetItem
     @Published var selectedAssetOut: AssetItem
     @Published var isLoadingQuote: Bool = false
+    @Published var selectedQuote: SwapQuote?
     
-    var quote: SwapQuote?
+    var quoteList: [SwapQuote]?
+    var availableProviders: [SwapProviderV2]?
     
     var shouldShowSwapButton: Bool {
         let paying = Double(payingText?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
@@ -32,9 +34,14 @@ class SwapSharedViewModel: ObservableObject {
         return paying > 0 && receiving > 0
     }
     
+    var selectedProvider: SwapProviderV2? {
+        guard let selectedQuote = selectedQuote else { return nil }
+        return availableProviders?.first { $0.name == selectedQuote.provider?.rawValue }
+    }
+    
     var slippageTolerance: String {
         guard
-            let slippageTolerance = quote?.slippage,
+            let slippageTolerance = selectedQuote?.slippage,
             slippageTolerance > 0
         else {
             return Formatter.percentageFormatter.string(from: 0)!
@@ -44,7 +51,7 @@ class SwapSharedViewModel: ObservableObject {
     
     var priceImpact: String {
         guard
-            let priceImpact = quote?.priceImpact,
+            let priceImpact = selectedQuote?.priceImpact,
             priceImpact > 0
         else {
             return Formatter.percentageFormatter.string(from: 0)!
@@ -54,9 +61,9 @@ class SwapSharedViewModel: ObservableObject {
     
     var price: String {
         guard
-            let price = quote?.price,
-            let assetOut = quote?.assetOut?.unitName,
-            let assetIn = quote?.assetIn?.unitName
+            let price = selectedQuote?.price,
+            let assetOut = selectedQuote?.assetOut?.unitName,
+            let assetIn = selectedQuote?.assetIn?.unitName
         else {
             return "-"
         }
@@ -65,11 +72,35 @@ class SwapSharedViewModel: ObservableObject {
         return String(format: String(localized: "swap-confirm-price-info"), priceText, assetIn)
     }
     
-    @Published var provider: Provider = Provider(
-        name: "Vestige.fi",
-        iconName: "icon-shield-16",
-        exchangeRate: "1 ALGO ≈ 0.17 USDC"
-    )
+    var providerRate: String {
+        guard
+            let price = selectedQuote?.price,
+            let assetOut = selectedQuote?.assetOut?.unitName,
+            let assetIn = selectedQuote?.assetIn?.unitName
+        else {
+            return "-"
+        }
+        
+        guard let rate = Formatter.decimalFormatter(maximumFractionDigits: 3).string(from: NSDecimalNumber(decimal: (1 / price))) else {
+            return "-"
+        }
+        
+        
+        return "1 \(assetIn) ≈ \(rate) \(assetOut)"
+    }
+    
+    var minimumReceived: String {
+        guard
+            let amountOutWithSlippage = selectedQuote?.amountOutWithSlippage,
+            let assetOutUnitName = selectedQuote?.assetOut?.unitName,
+            let assetOutDecimals = selectedQuote?.assetOut?.decimals
+        else {
+            return "-"
+        }
+        
+        let value = Decimal(amountOutWithSlippage) / pow(10, assetOutDecimals)
+        return "\(value) \(assetOutUnitName)"
+    }
     
     @Published var isPayingView: Bool = true
     @Published var payingText: String? = nil
@@ -98,6 +129,25 @@ class SwapSharedViewModel: ObservableObject {
         let temp = selectedAssetIn
         selectedAssetIn = selectedAssetOut
         selectedAssetOut = temp
+        let tempText = payingText
+        payingText = receivingText
+        receivingText = tempText
+    }
+    
+    func confirmSwapModel() -> SwapConfirmViewModel {
+        guard let payingText, let receivingText, let selectedProvider else {
+            fatalError("Shouldn't be nil")
+        }
+        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: selectedProvider, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: "", peraFee: "")
+    }
+    
+    func selectProvider(_ providerId: String) {
+        guard let quoteList else { return }
+        guard providerId != "auto" else {
+            selectedQuote = quoteList.first
+            return
+        }
+        selectedQuote = quoteList.first { $0.provider?.rawValue == providerId}
     }
 }
 

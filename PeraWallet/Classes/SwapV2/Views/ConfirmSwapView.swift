@@ -137,10 +137,21 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    viewModel.provider.icon
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.provider.name)
+                    Group {
+                        if let url = URL(string: viewModel.provider.iconUrl) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                            } placeholder: {
+                                EmptyView()
+                            }
+                        } else {
+                            EmptyView()
+                        }
+                    }
+                    Text(viewModel.provider.displayName)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                 }
@@ -182,7 +193,7 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    Text("1,365,310.296595 AKTA")
+                    Text(viewModel.minimumReceived)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                 }

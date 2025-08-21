@@ -51,6 +51,7 @@ enum ALGAPIPath: String {
     case signMoonPay = "/moonpay/sign-url/"
     case status = "/status"
     case supply = "/ledger/supply"
+    case swapProviders = "/dex-swap/providers/"
     case swapQuote = "/dex-swap/quotes/"
     case swapQuoteUpdate = "/dex-swap/quotes/%@"
     case trackTransactions = "/transactions/"
