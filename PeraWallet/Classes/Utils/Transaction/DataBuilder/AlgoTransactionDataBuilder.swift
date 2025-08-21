@@ -77,7 +77,7 @@ private extension AlgoTransactionDataBuilder {
         self.calculatedTransactionAmount = transactionAmount
         updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
 
-        if !isValidAddress(address.trimmed()) || transactionAmount.isBelowZero {
+        if !isValidAddress(address.trimmed()) || transactionAmount.isNegative {
             return nil
         }
 
@@ -153,7 +153,7 @@ private extension AlgoTransactionDataBuilder {
             }
         }
 
-        if transactionAmount.isBelowZero {
+        if transactionAmount.isNegative {
             transactionAmount = 0
         }
 

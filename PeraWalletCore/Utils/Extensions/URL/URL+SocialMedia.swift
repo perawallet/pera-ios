@@ -16,8 +16,16 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
     static func twitterURL(username: String) -> URL? {
         return URL(string: "https://twitter.com/\(username)")
+    }
+    
+    static func appGroupDBURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
     }
 }

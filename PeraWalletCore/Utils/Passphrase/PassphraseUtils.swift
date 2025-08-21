@@ -38,6 +38,17 @@ public enum PassphraseUtils {
         let mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: hdWallet.entropy)?.components(separatedBy: .whitespaces) ?? []
         return MnemonicsData(mnemonics: mnemonics, isHDWallet: true)
     }
+    
+    public static func mnemonics(info: AccountInformation, hdWalletStorage: HDWalletStorable, session: Session) -> MnemonicsData {
+        
+        guard let walletId = info.hdWalletAddressDetail?.walletId, let hdWallet = try? hdWalletStorage.wallet(id: walletId) else {
+            let mnemonics = session.mnemonics(forAccount: info.address)
+            return MnemonicsData(mnemonics: mnemonics, isHDWallet: false)
+        }
+        
+        let mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: hdWallet.entropy)?.components(separatedBy: .whitespaces) ?? []
+        return MnemonicsData(mnemonics: mnemonics, isHDWallet: true)
+    }
 }
 
 public extension PassphraseUtils.MnemonicsData {

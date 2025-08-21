@@ -15,6 +15,7 @@
 //   SettingsListModel.swift
 
 import Foundation
+import DeveloperToolsSupport
 
 // MARK: - View Model
 
@@ -31,6 +32,7 @@ final class SettingsListViewModel: ObservableObject {
         case contacts
         case notifications
         case walletConnect
+        case passkeys
         case currency
         case theme
         case help
@@ -65,7 +67,12 @@ final class SettingsListModel: SettingsListModelable {
     // MARK: - Setups
     
     private func setupData(appVersion: String) {
-        viewModel.sections = [.accountSection, .appPreferencesSection, .supportSection]
+        let isLiquidAuthEnabled = AppDelegate.shared?.appConfiguration.featureFlagService.isEnabled(.liquidAuthEnabled) ?? false
+        viewModel.sections = [
+            isLiquidAuthEnabled ? .accountSectionWithPassKeys : .accountSection,
+            .appPreferencesSection,
+            .supportSection
+        ]
         viewModel.appVersion = appVersion
     }
 }
@@ -81,6 +88,20 @@ extension SettingsListViewModel.Section {
                 .contacts,
                 .notifications,
                 .walletConnect
+            ]
+        )
+    }
+    
+    static var accountSectionWithPassKeys: Self {
+        Self(
+            id: 0,
+            title: String(localized: "title-account"),
+            rows: [
+                .security,
+                .contacts,
+                .notifications,
+                .walletConnect,
+                .passkeys
             ]
         )
     }
@@ -123,6 +144,8 @@ extension SettingsListViewModel.Row: Identifiable {
             return "notifications"
         case .walletConnect:
             return "walletConnect"
+        case .passkeys:
+            return "passkeys"
         case .currency:
             return "currency"
         case .theme:
@@ -153,6 +176,8 @@ extension SettingsListViewModel.Row {
             return .Settings.Icon.notifications
         case .walletConnect:
             return .Settings.Icon.walletConnect
+        case .passkeys:
+            return .Settings.Icon.passkeys
         case .currency:
             return .Settings.Icon.currency
         case .theme:
@@ -178,6 +203,8 @@ extension SettingsListViewModel.Row {
             return String(localized: "notifications-title")
         case .walletConnect:
             return String(localized: "settings-wallet-connect-title")
+        case .passkeys:
+            return String(localized: "settings-passkeys-title")
         case .currency:
             return String(localized: "settings-currency")
         case .theme:
