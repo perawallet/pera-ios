@@ -183,7 +183,7 @@ final class ASADetailScreen:
             if height > activityContentHeight {
                 activityContentHeight = height + 100 /// add 100px to leave some bottom padding and garantee the last row is not cut
                 
-                collectionView.performBatchUpdates(nil)
+                dataSource.apply(dataSource.snapshot())
                 pagesScreen.pagesView.collectionViewLayout.invalidateLayout()
                 pagesScreen.pagesView.layoutIfNeeded()
                 activityFragmentScreen.onContentHeightUpdated = nil
