@@ -19,24 +19,70 @@ import Combine
 import pera_wallet_core
 
 class SwapSharedViewModel: ObservableObject {
+    
+    // MARK: - Properties
     @Published var selectedAccount: Account
     @Published var selectedAssetIn: AssetItem
     @Published var selectedAssetOut: AssetItem
-    @Published var isLoadingQuote: Bool = false
+    @Published var selectedProvider: SelectedProvider
+    @Published var isLoadingPayAmount: Bool = false
+    @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
+    
+    @Published var payingText: String = .empty
+    @Published var receivingText: String = .empty
     
     var quoteList: [SwapQuote]?
     var availableProviders: [SwapProviderV2]?
-    
-    var shouldShowSwapButton: Bool {
-        let paying = Double(payingText?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
-        let receiving = Double(receivingText?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
-        return paying > 0 && receiving > 0
+
+    // MARK: - Initialisers
+    init(
+        selectedAccount: Account,
+        selectedAssetIn: AssetItem,
+        selectedAssetOut: AssetItem
+    ) {
+        self.selectedAccount = selectedAccount
+        self.selectedAssetIn = selectedAssetIn
+        self.selectedAssetOut = selectedAssetOut
+        self.selectedProvider = .auto
     }
     
-    var selectedProvider: SwapProviderV2? {
-        guard let selectedQuote = selectedQuote else { return nil }
-        return availableProviders?.first { $0.name == selectedQuote.provider?.rawValue }
+    // MARK: - Helpers
+    
+    func switchAssets() {
+        let temp = selectedAssetIn
+        selectedAssetIn = selectedAssetOut
+        selectedAssetOut = temp
+        let tempText = payingText
+        payingText = receivingText
+        receivingText = tempText
+    }
+    
+    func confirmSwapModel() -> SwapConfirmViewModel {
+        guard let providerDetails else {
+            fatalError("Shouldn't be nil")
+        }
+        
+        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: providerDetails, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: exchangeFee, peraFee: peraFee)
+    }
+    
+    func selectQuote(with selectedProvider: SelectedProvider) {
+        guard let quoteList else { return }
+        switch selectedProvider {
+        case .auto:
+            selectedQuote = quoteList.first
+        case .provider(let provider):
+            selectedQuote = quoteList.first { $0.provider?.rawValue == provider}
+        }
+        receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: selectedQuote?.amountOutUSDValue) ?? .empty
+    }
+}
+
+extension SwapSharedViewModel {
+    var shouldShowSwapButton: Bool {
+        let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+        return paying > 0 && receiving > 0
     }
     
     var slippageTolerance: String {
@@ -136,43 +182,16 @@ class SwapSharedViewModel: ObservableObject {
         return currencyFormatter.format(value) ?? "-"
     }
     
-    @Published var isPayingView: Bool = true
-    @Published var payingText: String? = nil
-    @Published var receivingText: String? = nil
-
-    init(
-        selectedAccount: Account,
-        selectedAssetIn: AssetItem,
-        selectedAssetOut: AssetItem
-    ) {
-        self.selectedAccount = selectedAccount
-        self.selectedAssetIn = selectedAssetIn
-        self.selectedAssetOut = selectedAssetOut
-    }
-    
-    func switchAssets() {
-        let temp = selectedAssetIn
-        selectedAssetIn = selectedAssetOut
-        selectedAssetOut = temp
-        let tempText = payingText
-        payingText = receivingText
-        receivingText = tempText
-    }
-    
-    func confirmSwapModel() -> SwapConfirmViewModel {
-        guard let payingText, let receivingText, let selectedProvider else {
-            fatalError("Shouldn't be nil")
+    var providerDetails: SwapProviderV2? {
+        switch selectedProvider {
+        case .auto:
+            guard let providerId = quoteList?.first?.provider?.rawValue else {
+                return nil
+            }
+            return availableProviders?.first(where: { $0.name == providerId })
+        case .provider(let provider):
+            return availableProviders?.first(where: { $0.name == provider })
         }
-        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: selectedProvider, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: exchangeFee, peraFee: peraFee)
-    }
-    
-    func selectProvider(_ providerId: String) {
-        guard let quoteList else { return }
-        guard providerId != "auto" else {
-            selectedQuote = quoteList.first
-            return
-        }
-        selectedQuote = quoteList.first { $0.provider?.rawValue == providerId}
     }
 }
 

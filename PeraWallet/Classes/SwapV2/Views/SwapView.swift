@@ -46,7 +46,6 @@ struct SwapView: View {
     // MARK: - Properties
     @ObservedObject var viewModel: SwapSharedViewModel
     
-    
     private var safeAreaTopInset: CGFloat {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
             .windows.first?.safeAreaInsets.top ?? 44
@@ -69,10 +68,10 @@ struct SwapView: View {
             }
             ZStack {
                 VStack (spacing: 0) {
-                    AssetSelectionView(isPayingView: $viewModel.isPayingView, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: .constant(false)) {
+                    AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: $viewModel.isLoadingPayAmount) {
                         onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                     }
-                    AssetSelectionView(isPayingView: $viewModel.isPayingView.inverted, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingQuote) {
+                    AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingReceiveAmount) {
                         onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                     }
                 }
@@ -81,15 +80,14 @@ struct SwapView: View {
                     debounceWorkItem?.cancel()
                     let task = DispatchWorkItem {
                         if
-                            let text = newValue?.replacingOccurrences(of: ",", with: "."),
-                            let doubleValue = Double(text),
+                            let doubleValue = Double(newValue.replacingOccurrences(of: ",", with: ".")),
                             doubleValue > 0
                         {
-                            viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue)
-                            viewModel.isLoadingQuote = true
+                            viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue) ?? .empty
+                            viewModel.isLoadingReceiveAmount = true
                             onTap?(.getQuote(for: doubleValue))
                         } else {
-                            viewModel.receivingText = nil
+                            viewModel.receivingText = .empty
                         }
                     }
                     debounceWorkItem = task
@@ -114,26 +112,28 @@ struct SwapView: View {
                 .padding(.horizontal, 16)
             }
             
-            if
-                viewModel.shouldShowSwapButton,
-                let selectedProvider = viewModel.selectedProvider
-            {
-                ProviderSelectionView(
-                    selectedProvider: Binding(
-                        get: { selectedProvider },
-                        set: { newProvider in
-                            viewModel.selectProvider(newProvider.name)
-                        }
-                    ),
-                    providerRate: viewModel.providerRate) {
-                        guard let providers = viewModel.availableProviders else { return }
-                        activeSheet = .provider(availableProviders: providers)
+            if viewModel.shouldShowSwapButton {
+                let selectedProvider: SwapProviderV2? = {
+                    switch viewModel.selectedProvider {
+                    case .auto:
+                        let bestProviderId = viewModel.quoteList?.first?.provider?.rawValue
+                        return viewModel.availableProviders?.first(where: { $0.name == bestProviderId })
+                    case .provider(let providerId):
+                        return viewModel.availableProviders?.first(where: { $0.name == providerId })
                     }
-                    .padding(.top, 16)
-                    .padding(.bottom, 12)
+                }()
+                
+                let providerViewModel = ProviderSelectionViewModel(providerId: viewModel.selectedProvider.providerId, iconUrl: selectedProvider?.iconUrl ?? .empty, displayName: selectedProvider?.displayName ?? .empty, rate: viewModel.providerRate)
+                
+                ProviderSelectionView(viewModel: providerViewModel) {
+                    guard let providers = viewModel.availableProviders else { return }
+                    activeSheet = .provider(availableProviders: providers)
+                }
+                .padding(.top, 16)
+                .padding(.bottom, 12)
                 
                 SwapButton {
-                    guard viewModel.payingText != nil, viewModel.receivingText != nil else { return }
+                    guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
                     activeSheet = .confirmSwap
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -147,14 +147,17 @@ struct SwapView: View {
             case .settings:
                 SwapSettingsSheet()
             case .provider(availableProviders: let providers):
-                ProviderSheet(availableProviders: providers, selectedProviderID: viewModel.selectedProvider?.name ?? "auto") { selectedProviderID in
-                    viewModel.selectProvider(selectedProviderID)
+                ProviderSheet(availableProviders: providers, selectedProvider: viewModel.selectedProvider) { selectedProvider in
+                    viewModel.selectedProvider = selectedProvider
                 }
             case .confirmSwap:
                 ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
                     onTap?(.confirmSwap)
                 }
             }
+        }
+        .onChange(of: viewModel.selectedProvider) { newValue in
+            viewModel.selectQuote(with: newValue)
         }
     }
 }

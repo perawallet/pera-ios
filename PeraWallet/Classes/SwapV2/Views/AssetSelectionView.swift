@@ -17,11 +17,43 @@
 import SwiftUI
 import pera_wallet_core
 
+enum AssetSelectionType {
+    case pay
+    case receive
+    
+    var title: LocalizedStringKey {
+        switch self {
+        case .pay:
+            return "title-you-pay"
+        case .receive:
+            return "title-you-receive"
+        }
+    }
+    
+    var textEditorDisabled: Bool {
+        switch self {
+        case .pay:
+            return false
+        case .receive:
+            return true
+        }
+    }
+    
+    var backgroundColor: Color {
+        switch self {
+        case .pay:
+            return Color.Defaults.bg
+        case .receive:
+            return Color.Layer.grayLighter
+        }
+    }
+}
+
 struct AssetSelectionView: View {
     // MARK: - Properties
-    @Binding var isPayingView: Bool
+    var type: AssetSelectionType
     @Binding var assetItem: AssetItem
-    @Binding var payingText: String?
+    @Binding var payingText: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
     
@@ -33,7 +65,7 @@ struct AssetSelectionView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(isPayingView ? "title-you-pay" : "title-you-receive")
+                Text(type.title)
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
@@ -45,19 +77,19 @@ struct AssetSelectionView: View {
             Spacer().frame(height: 12)
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    if isLoading, !isPayingView {
+                    if isLoading {
                         ShimmerSUIView()
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
                         TextField(defaultValue, text: Binding(
-                            get: { payingText ?? defaultValue },
+                            get: { payingText },
                             set: { payingText = $0.isEmpty ? defaultValue : $0 }
                         ))
                         .keyboardType(.decimalPad)
                         .font(.dmSans.medium.size(19.0))
                         .foregroundStyle(Color.Text.gray)
-                        .disabled(!isPayingView)
+                        .disabled(type.textEditorDisabled)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
@@ -68,7 +100,7 @@ struct AssetSelectionView: View {
                         }
                     }
 
-                    if isLoading, !isPayingView {
+                    if isLoading {
                         ShimmerSUIView()
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)
@@ -90,24 +122,7 @@ struct AssetSelectionView: View {
         .frame(height: 144)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(isPayingView ? Color.Defaults.bg : Color.Layer.grayLighter)
+                .fill(type.backgroundColor)
         )
-    }
-}
-
-extension AssetItem {
-    var balance: String? {
-        let asset = asset
-        
-        let formatter = currencyFormatter
-        formatter.formattingContext = currencyFormattingContext ?? .listItem
-        formatter.isValueHidden = isAmountHidden
-        if asset.isAlgo {
-            formatter.currency = AlgoLocalCurrency()
-            return formatter.format(asset.decimalAmount)
-        } else {
-            formatter.currency = nil
-            return formatter.format(asset.decimalAmount)?.appending(" \(asset.naming.unitName ?? asset.naming.displayNames.primaryName)")
-        }
     }
 }
