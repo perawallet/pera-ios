@@ -23,17 +23,17 @@ final class PasskeyListViewModel: ObservableObject {
     
     @Published fileprivate(set) var passkeys: [PassKeyModel] = []
     @Published fileprivate(set) var settingNotEnabled = false
-    private let passKeyManager: PassKeyService?
+    private let passKeyManager: PassKeyService? = {
+        guard let appConfig = AppDelegate.shared?.appConfiguration else {
+            return nil
+        }
+        
+        return PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
+    }()
     
     // MARK: - Initializers
     
     init() {
-        guard let appConfig = AppDelegate.shared?.appConfiguration else {
-            passKeyManager = nil
-            return
-        }
-        
-        passKeyManager = PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
         checkForSettingEnabled()
         reloadPasskeys()
     }
@@ -49,7 +49,7 @@ final class PasskeyListViewModel: ObservableObject {
                 passkey.remove(entity: PassKey.entityName)
             }
             else {
-               passkeys.append(PassKeyModel(origin: passkey.origin, username: passkey.username, lastUsed: passkey.lastUsed))
+               passkeys.append(PassKeyModel(passkey))
             }
         })
         
@@ -65,8 +65,7 @@ final class PasskeyListViewModel: ObservableObject {
     }
     
     private func reloadPasskeys() {
-        passkeys = passKeyManager?.allPassKeys
-            .map { PassKeyModel(origin: $0.origin, username: $0.username, lastUsed: $0.lastUsed) } ?? []
+        passkeys = passKeyManager?.allPassKeys.map { PassKeyModel($0) } ?? []
     }
     
     private func checkForSettingEnabled() {
@@ -102,11 +101,11 @@ final class PassKeyModel {
     let displayName: String
     let lastUsed: Date?
     
-    init(origin: String, username: String, displayName: String, lastUsed: Date?) {
-        self.origin = origin
-        self.username = username
-        self.displayName = displayName
-        self.lastUsed = lastUsed
+    init(_ passkey: PassKey) {
+        self.origin = passkey.origin
+        self.username = passkey.username
+        self.displayName = passkey.displayName
+        self.lastUsed = passkey.lastUsed
     }
     
     var lastUsedDisplay: String {
