@@ -38,9 +38,7 @@ final class WebSocketWrapper {
 extension WebSocketWrapper: WebSocketConnecting {
     
     public var isConnected: Bool {
-        get {
-            connected
-        }
+        connected
     }
     
     public var onConnect: (() -> Void)? {
