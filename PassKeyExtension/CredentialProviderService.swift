@@ -51,12 +51,10 @@ final class CredentialProviderService {
             }
             return credential
         } catch let error as pera_wallet_core.LiquidAuthError {
-            passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
-                                                                    username: credentialIdentity.userName)
+            deletePassKeyIfExists(identity: credentialIdentity)
             throw error
         } catch {
-            passKeyManager?.deletePassKeysForOriginAndUsername(origin: credentialIdentity.relyingPartyIdentifier,
-                                                                    username: credentialIdentity.userName)
+            deletePassKeyIfExists(identity: credentialIdentity)
             throw LiquidAuthError.generalError(cause: error)
         }
     }
@@ -193,6 +191,12 @@ final class CredentialProviderService {
         } else {
             // Device does not support biometrics/passcode
             return false
+        }
+    }
+    
+    private func deletePassKeyIfExists(identity: ASPasskeyCredentialIdentity) {
+        if let passKeyManager {
+            passKeyManager.deletePassKeysForOriginAndUsername(origin: identity.relyingPartyIdentifier, username: identity.userName)
         }
     }
 }
