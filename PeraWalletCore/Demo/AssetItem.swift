@@ -35,3 +35,20 @@ public final class AssetItem {
         self.isAmountHidden = isAmountHidden
     }
 }
+
+public extension AssetItem {
+    var balance: String? {
+        let asset = asset
+        
+        let formatter = currencyFormatter
+        formatter.formattingContext = currencyFormattingContext ?? .listItem
+        formatter.isValueHidden = isAmountHidden
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+            return formatter.format(asset.decimalAmount)
+        } else {
+            formatter.currency = nil
+            return formatter.format(asset.decimalAmount)?.appending(" \(asset.naming.unitName ?? asset.naming.displayNames.primaryName)")
+        }
+    }
+}

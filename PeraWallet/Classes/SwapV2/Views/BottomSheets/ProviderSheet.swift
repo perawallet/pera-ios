@@ -17,6 +17,40 @@
 import SwiftUI
 import pera_wallet_core
 
+enum SelectedProvider: Equatable {
+    case auto
+    case provider(String)
+    
+    static func == (lhs: SelectedProvider, rhs: SelectedProvider) -> Bool {
+        switch (lhs, rhs) {
+        case (.auto, .auto):
+            return true
+        case let (.provider(a), .provider(b)):
+            return a == b
+        default:
+            return false
+        }
+    }
+    
+    var isAuto: Bool {
+        switch self {
+        case .auto:
+            return true
+        case .provider:
+            return false
+        }
+    }
+    
+    var providerId: String {
+        switch self {
+        case .auto:
+            return "auto"
+        case let .provider(id):
+            return id
+        }
+    }
+}
+
 struct ProviderSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     
@@ -26,17 +60,17 @@ struct ProviderSheet: View {
         CGFloat(150 + ((availableProviders.count + 1) * 72))
     }
     
-    @State private var selectedProviderID: String
+    @State private var selectedProvider: SelectedProvider
     
-    let onProviderSelected: (String) -> Void
+    let onProviderSelected: (SelectedProvider) -> Void
     
     init(
         availableProviders: [SwapProviderV2],
-        selectedProviderID: String,
-        onProviderSelected: @escaping (String) -> Void
+        selectedProvider: SelectedProvider,
+        onProviderSelected: @escaping (SelectedProvider) -> Void
     ) {
         self.availableProviders = availableProviders
-        self._selectedProviderID = State(initialValue: selectedProviderID)
+        self._selectedProvider = State(initialValue: selectedProvider)
         self.onProviderSelected = onProviderSelected
     }
 
@@ -52,23 +86,21 @@ struct ProviderSheet: View {
                         dismiss()
                         return
                     }
-
-                    onProviderSelected(selectedProviderID)
-                    
+                    onProviderSelected(selectedProvider)
                     dismiss()
                 }
             }
 
             List {
-                AutoProviderListItem(selectedProviderID: $selectedProviderID)
+                AutoProviderListItem(selectedProvider: $selectedProvider)
                     .onTapGesture {
-                        selectedProviderID = "auto"
+                        selectedProvider = .auto
                     }
                 ForEach(availableProviders, id: \.name) { provider in
-                    ProviderListItem(provider: provider, selectedProviderID: $selectedProviderID)
+                    ProviderListItem(provider: provider, selectedProvider: $selectedProvider)
                         .listRowSeparator(.hidden)
                         .onTapGesture {
-                            selectedProviderID = provider.name
+                            selectedProvider = .provider(provider.name)
                         }
                 }
             }
@@ -81,15 +113,12 @@ struct ProviderSheet: View {
         .presentationDetents([.height(height)])
         .presentationDragIndicator(.hidden)
     }
-    
-    
 }
-
 
 private struct ProviderListItem: View {
     // MARK: - Properties
     var provider: SwapProviderV2
-    @Binding var selectedProviderID: String
+    @Binding var selectedProvider: SelectedProvider
     
     // MARK: - Body
     var body: some View {
@@ -103,7 +132,8 @@ private struct ProviderListItem: View {
                 .font(.dmSans.regular.size(15))
                 .foregroundStyle(Color.Text.main)
             Spacer()
-            Image(selectedProviderID == provider.name ? "icon-radio-selected" : "icon-radio-unselected")
+            
+            Image(selectedProvider == .provider(provider.name) ? "icon-radio-selected" : "icon-radio-unselected")
                 .resizable()
                 .frame(width: 24, height: 24)
         }
@@ -114,7 +144,7 @@ private struct ProviderListItem: View {
 
 private struct AutoProviderListItem: View {
     // MARK: - Properties
-    @Binding var selectedProviderID: String
+    @Binding var selectedProvider: SelectedProvider
     
     // MARK: - Body
     var body: some View {
@@ -130,7 +160,7 @@ private struct AutoProviderListItem: View {
                 .font(.dmSans.regular.size(15))
                 .foregroundStyle(Color.Text.main)
             Spacer()
-            Image(selectedProviderID == "auto" ? "icon-radio-selected" : "icon-radio-unselected")
+            Image(selectedProvider == .auto ? "icon-radio-selected" : "icon-radio-unselected")
                 .resizable()
                 .frame(width: 24, height: 24)
         }
