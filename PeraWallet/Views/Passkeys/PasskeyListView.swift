@@ -38,10 +38,8 @@ struct PasskeyListView: View {
                     .padding()
             }
             
-            List {
-                ForEach(viewModel.passkeys) { passkey in
-                    PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: passKeyDeleted))
-                }
+            List(viewModel.passkeys) { passkey in
+                PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: viewModel.passKeyDeleted))
             }
             .overlay(Group {
                 if viewModel.passkeys.isEmpty {
@@ -65,10 +63,6 @@ struct PasskeyListView: View {
                 }
             )
         }
-    }
-    
-    private func passKeyDeleted() {
-        viewModel.trackDeletion()
     }
 }
 

@@ -21,7 +21,7 @@ final class PasskeyListViewModel: ObservableObject {
     
     // MARK: - Properties
     
-    @Published fileprivate(set) var passkeys: [PassKey] = []
+    @Published fileprivate(set) var passkeys: [PassKeyModel] = []
     @Published fileprivate(set) var settingNotEnabled = false
     private let passKeyManager: PassKeyService?
     
@@ -41,15 +41,32 @@ final class PasskeyListViewModel: ObservableObject {
     
     // MARK: - Methods
     
-    func reloadPasskeys() {
-        passkeys = passKeyManager?.allPassKeys ?? []
+    func passKeyDeleted(_ model: PassKeyModel) {
+        var passkeys: [PassKeyModel] = []
+        
+        passKeyManager?.allPassKeys.forEach({ passkey in
+            if passkey.origin == model.origin && passkey.username == model.username {
+                passkey.remove(entity: PassKey.entityName)
+            }
+            else {
+               passkeys.append(PassKeyModel(origin: passkey.origin, username: passkey.username, lastUsed: passkey.lastUsed))
+            }
+        })
+        
+        self.passkeys = passkeys
+        trackDeletion()
     }
     
-    func trackDeletion() {
+    private func trackDeletion() {
         if let analytics = CoreAppConfiguration.shared?.analytics {
             analytics.track(.webAuthNPassKeyDeleted())
         }
         reloadPasskeys()
+    }
+    
+    private func reloadPasskeys() {
+        passkeys = passKeyManager?.allPassKeys
+            .map { PassKeyModel(origin: $0.origin, username: $0.username, lastUsed: $0.lastUsed) } ?? []
     }
     
     private func checkForSettingEnabled() {
@@ -77,4 +94,22 @@ final class PasskeyListModel: PasskeyListModelable {
     // MARK: - PasskeyListModelable
     
     let viewModel: PasskeyListViewModel = PasskeyListViewModel()
+}
+
+final class PassKeyModel {
+    let origin: String
+    let username: String
+    let displayName: String
+    let lastUsed: Date?
+    
+    init(origin: String, username: String, displayName: String, lastUsed: Date?) {
+        self.origin = origin
+        self.username = username
+        self.displayName = displayName
+        self.lastUsed = lastUsed
+    }
+    
+    var lastUsedDisplay: String {
+        String(format: String(localized: "settings-passkeys-last-used"), lastUsed?.toFormat("MMM d, yyyy, h:mm a") ?? "Never")
+    }
 }

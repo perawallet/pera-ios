@@ -21,12 +21,12 @@ final class PasskeyListCellViewModel: ObservableObject {
     
     // MARK: - Properties
     
-    let passkey: PassKey
-    let onDelete: () -> Void
+    let passkey: PassKeyModel
+    let onDelete: (PassKeyModel) -> Void
     
     // MARK: - Initializers
     
-    init(passkey: PassKey, onDelete: @escaping () -> Void) {
+    init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
         self.passkey = passkey
         self.onDelete = onDelete
     }
@@ -34,7 +34,6 @@ final class PasskeyListCellViewModel: ObservableObject {
     //MARK: - Methods
     
     func deletePasskey() {
-        passkey.remove(entity: PassKey.entityName)
-        onDelete()
+        onDelete(passkey)
     }
 }

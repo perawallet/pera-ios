@@ -26,11 +26,6 @@ public final class PassKey: NSManagedObject, Identifiable {
 }
 
 extension PassKey {
-    
-    public var lastUsedDisplay: String {
-        String(format: String(localized: "settings-passkeys-last-used"), lastUsed?.toFormat("MMM d, yyyy, h:mm a") ?? "Never")
-    }
-    
     public enum DBKeys: String {
         case origin
         case username
