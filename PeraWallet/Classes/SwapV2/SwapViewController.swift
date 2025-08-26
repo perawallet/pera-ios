@@ -207,10 +207,10 @@ final class SwapViewController: BaseViewController {
                         return
                     }
                     let orderedQuoteList = quoteList?.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
-                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue)
+                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue) ?? .empty
                     sharedViewModel?.quoteList = orderedQuoteList
                     sharedViewModel?.selectedQuote = orderedQuoteList?.first
-                    sharedViewModel?.isLoadingQuote = false
+                    sharedViewModel?.isLoadingReceiveAmount = false
                     loadSwapView()
                 }
                 guard let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
