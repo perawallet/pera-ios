@@ -71,15 +71,28 @@ final class ProviderSheetViewModel: ObservableObject {
     }
     
     func quotePrimaryValue(for providerID: String) -> String {
-        guard let quoteList = quoteList else { return "-" }
+        guard
+            let quotes = quoteList,
+            let selectedQuote = quotes.first(where: { $0.provider?.rawValue == providerID })
+        else {
+            return "-"
+        }
         
-        let amount = quoteList.first { $0.provider?.rawValue == providerID }?.amountOutUSDValue
+        let amount = selectedQuote.amountOut ?? 0
+        let decimals = selectedQuote.assetOut?.decimals ?? 0
+        let value = Decimal(amount) / pow(10, decimals)
         
-        
-        return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: amount) ?? "-"
+        return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 4).string(for: value) ?? "-"
     }
     
     func quoteSecondaryValue(for providerID: String) -> String {
-        return "-"
+        guard
+            let quotes = quoteList,
+            let selectedQuote = quotes.first(where: { $0.provider?.rawValue == providerID })
+        else {
+            return "-"
+        }
+        
+        return "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote.amountOutUSDValue) ?? "-")
     }
 }

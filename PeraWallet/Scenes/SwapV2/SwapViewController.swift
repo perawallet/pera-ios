@@ -243,6 +243,29 @@ final class SwapViewController: BaseViewController {
         viewModel.selectedAssetOut = assetOut
     }
     
+    private func update(
+        _ viewModel: SwapSharedViewModel?,
+        with quoteList: [SwapQuote]?
+    ) {
+        guard let viewModel, let quoteList else { return }
+        
+        let orderedQuoteList = quoteList.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
+        let selectedQuote = orderedQuoteList.first
+        let amount = selectedQuote?.amountOut ?? 0
+        let decimals = selectedQuote?.assetOut?.decimals ?? 0
+        let value = Decimal(amount) / pow(10, decimals)
+        
+        viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: value) ?? SwapSharedViewModel.defaultAmountValue
+        
+        viewModel.receivingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote?.amountOutUSDValue) ?? SwapSharedViewModel.defaultAmountValue)
+        
+        viewModel.payingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote?.amountOutUSDValue) ?? SwapSharedViewModel.defaultAmountValue)
+        
+        viewModel.quoteList = orderedQuoteList
+        viewModel.selectedQuote = selectedQuote
+        viewModel.isLoadingReceiveAmount = false
+    }
+    
     private func makeSwapController(with viewModel: SwapSharedViewModel) -> ALGSwapController {
         let transactionSigner = SwapTransactionSigner(
             api: configuration.api!,
@@ -305,11 +328,8 @@ final class SwapViewController: BaseViewController {
                     print(error)
                     return
                 }
-                let orderedQuoteList = quoteList?.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
-                sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue) ?? .empty
-                sharedViewModel?.quoteList = orderedQuoteList
-                sharedViewModel?.selectedQuote = orderedQuoteList?.first
-                sharedViewModel?.isLoadingReceiveAmount = false
+                
+                update(sharedViewModel, with: quoteList)
                 loadSwapView()
             }
             guard let selectedAccount, let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {

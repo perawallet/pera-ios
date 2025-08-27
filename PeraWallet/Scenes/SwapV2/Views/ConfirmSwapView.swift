@@ -92,7 +92,7 @@ struct ConfirmSwapView: View {
             .frame(height: 60)
             .padding(.top, 8)
             .padding(.bottom, 30)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, assetAmount: viewModel.selectedAssetInAmount)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
 
             HStack {
                 Rectangle()
@@ -110,7 +110,7 @@ struct ConfirmSwapView: View {
             }
             .frame(height: 16)
             .padding(.vertical, 4)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, assetAmount: viewModel.selectedAssetOutAmount)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInUSD)
             Rectangle()
                 .fill(Color.Layer.grayLighter)
                 .frame(height: 1)
@@ -235,6 +235,7 @@ private struct ConfirmSwapAssetView: View {
     // MARK: - Properties
     var assetItem: AssetItem
     var assetAmount: String
+    var assetAmountInUSD: String
     
     // MARK: - Body
     var body: some View {
@@ -258,7 +259,7 @@ private struct ConfirmSwapAssetView: View {
                 Text(assetAmount)
                     .font(.dmSans.medium.size(18))
                     .foregroundStyle(Color.Text.main)
-                Text("-")
+                Text(assetAmountInUSD)
                     .font(.dmSans.regular.size(13))
                     .foregroundStyle(Color.Text.grayLighter)
             }

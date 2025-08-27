@@ -87,10 +87,10 @@ struct SwapView: View {
     private var assetSelectionView: some View {
         ZStack {
             VStack (spacing: 0) {
-                AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: $viewModel.isLoadingPayAmount) {
+                AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, amountText: $viewModel.payingText, amountTextInUSD: $viewModel.payingTextInUSD, isLoading: $viewModel.isLoadingPayAmount) {
                     onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                 }
-                AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingReceiveAmount) {
+                AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, amountText: $viewModel.receivingText, amountTextInUSD: $viewModel.receivingTextInUSD, isLoading: $viewModel.isLoadingReceiveAmount) {
                     onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                 }
             }
