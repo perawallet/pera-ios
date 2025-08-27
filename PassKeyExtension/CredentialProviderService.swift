@@ -69,7 +69,13 @@ final class CredentialProviderService {
             
             try await ensureAuthenticated()
             
-            guard let passkey = passKeyManager?.allPassKeys.filter({$0.origin == requestParameters.relyingPartyIdentifier}).first else {
+            var credentialId: String?
+            if requestParameters.allowedCredentials.isNonEmpty {
+                credentialId = requestParameters.allowedCredentials.first?.base64URLEncodedString()
+            }
+            
+            guard let passkey = passKeyManager?.allPassKeys.first(where: {
+                $0.origin == requestParameters.relyingPartyIdentifier && (credentialId == nil || $0.credentialId == credentialId) }) else {
                 throw LiquidAuthError.passKeyNotFound()
             }
             
