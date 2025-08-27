@@ -19,6 +19,7 @@ import MacaroonURLImage
 
 struct URLImageSUIView: UIViewRepresentable {
     let url: URL?
+    @Binding var didFail: Bool
 
     func makeUIView(context: Context) -> URLImageView {
         let imageView = URLImageView()
@@ -28,13 +29,18 @@ struct URLImageSUIView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: URLImageView, context: Context) {
-        guard let url = url else { return }
+        guard let url = url else {
+            didFail = true
+            return
+        }
         
         uiView.setNeedsLayout()
         uiView.layoutIfNeeded()
         
         DispatchQueue.main.async {
-            uiView.load(from: DefaultURLImageSource(url: url))
+            uiView.load(from: DefaultURLImageSource(url: url)) { error in
+                didFail = (error != nil)
+            }
         }
     }
 }
