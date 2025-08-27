@@ -37,15 +37,14 @@ public final class AppGroupDataStoreMigration {
                 }
             
             guard dbWithContent != nil else {
-                //TODO: we should have some error handling here?
                 return
             }
             
             let loadedDB = NSPersistentContainer.makePersistentContainer(group: nil)
             try performMigration(from: loadedDB)
         } catch {
-            //TODO: we should have some error handling here?
-            print("Failed to clear old DB during app group migration: \(error)")
+            //TODO: we should have some better error handling here
+            assertionFailure("AppGroup data migration failed: \(error)")
         }
     }
     

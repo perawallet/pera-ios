@@ -60,7 +60,7 @@ public extension PassKeyService {
             }
             return []
         case .results(let objects):
-            return objects.filter({$0 is PassKey}).map({ $0 as! PassKey })
+            return objects.filter({$0 is PassKey}).map { $0 as! PassKey }
         case .error:
             return []
         }
