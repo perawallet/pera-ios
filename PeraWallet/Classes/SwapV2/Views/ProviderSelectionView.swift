@@ -17,21 +17,6 @@
 import SwiftUI
 import pera_wallet_core
 
-struct ProviderSelectionViewModel {
-    var providerId: String
-    var iconUrl: String
-    var displayName: String
-    var rate: String
-    
-    var isAuto: Bool {
-        providerId == "auto"
-    }
-    
-    var title: Text {
-        isAuto ? Text("\(String(localized: "title-provider")) (\(String(localized: "title-best-price-available")))") : Text("title-provider")
-    }
-}
-
 struct ProviderSelectionView: View {
     // MARK: - Properties
     var viewModel: ProviderSelectionViewModel
@@ -49,14 +34,9 @@ struct ProviderSelectionView: View {
                     HStack  (alignment: .center) {
                         Group {
                             if let url = URL(string: viewModel.iconUrl) {
-                                AsyncImage(url: url) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 16, height: 16)
-                                } placeholder: {
-                                    EmptyView()
-                                }
+                                URLImageSUIView(url: url)
+                                    .frame(width: 16, height: 16)
+                                    .scaledToFit()
                             } else {
                                 EmptyView()
                             }

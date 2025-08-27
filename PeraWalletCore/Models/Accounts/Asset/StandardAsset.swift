@@ -46,6 +46,10 @@ public final class StandardAsset: Asset {
 
     public let isFault: Bool
 
+    public var isUSDC: Bool {
+        name?.lowercased() == "usdc"
+    }
+    
     public var state: AssetState = .ready
 
     public var naming: AssetNaming {

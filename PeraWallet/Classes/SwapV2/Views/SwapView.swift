@@ -45,119 +45,113 @@ struct SwapView: View {
     
     // MARK: - Properties
     @ObservedObject var viewModel: SwapSharedViewModel
+    var onTap: ((SwapViewAction) -> Void)?
+    
+    @State private var activeSheet: SwapViewSheet?
     
     private var safeAreaTopInset: CGFloat {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
             .windows.first?.safeAreaInsets.top ?? 44
     }
-    @State private var debounceWorkItem: DispatchWorkItem?
-    @State private var activeSheet: SwapViewSheet?
-    
-    var onTap: ((SwapViewAction) -> Void)?
     
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
-            SwapTitleView(selectedAccount: $viewModel.selectedAccount) { action in
-                switch action {
-                case .accountSelection:
-                    onTap?(.selectAccount)
-                case .info:
-                    onTap?(.showInfo)
-                }
-            }
-            ZStack {
-                VStack (spacing: 0) {
-                    AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: $viewModel.isLoadingPayAmount) {
-                        onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
-                    }
-                    AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingReceiveAmount) {
-                        onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
-                    }
-                }
-                .padding(.horizontal, 8)
-                .onChange(of: viewModel.payingText) { newValue in
-                    debounceWorkItem?.cancel()
-                    let task = DispatchWorkItem {
-                        if
-                            let doubleValue = Double(newValue.replacingOccurrences(of: ",", with: ".")),
-                            doubleValue > 0
-                        {
-                            viewModel.payingText = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4).string(for: doubleValue) ?? .empty
-                            viewModel.isLoadingReceiveAmount = true
-                            onTap?(.getQuote(for: doubleValue))
-                        } else {
-                            viewModel.receivingText = .empty
-                        }
-                    }
-                    debounceWorkItem = task
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
-                }
-                
-                HStack {
-                    SwitchSwapButton {
-                        viewModel.switchAssets()
-                    }
-                    Spacer()
-                    SettingsSwapButton { action in
-                        switch action {
-                        case .settings:
-                            activeSheet = .settings
-                        case .max:
-                            print("max")
-                        }
-                    }
-                    .hidden()
-                }
-                .padding(.horizontal, 16)
-            }
-            
+            headerView
+            assetSelectionView
             if viewModel.shouldShowSwapButton {
-                let selectedProvider: SwapProviderV2? = {
-                    switch viewModel.selectedProvider {
-                    case .auto:
-                        let bestProviderId = viewModel.quoteList?.first?.provider?.rawValue
-                        return viewModel.availableProviders?.first(where: { $0.name == bestProviderId })
-                    case .provider(let providerId):
-                        return viewModel.availableProviders?.first(where: { $0.name == providerId })
-                    }
-                }()
-                
-                let providerViewModel = ProviderSelectionViewModel(providerId: viewModel.selectedProvider.providerId, iconUrl: selectedProvider?.iconUrl ?? .empty, displayName: selectedProvider?.displayName ?? .empty, rate: viewModel.providerRate)
-                
-                ProviderSelectionView(viewModel: providerViewModel) {
-                    guard let providers = viewModel.availableProviders else { return }
-                    activeSheet = .provider(availableProviders: providers)
-                }
-                .padding(.top, 16)
-                .padding(.bottom, 12)
-                
-                SwapButton {
-                    guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
-                    activeSheet = .confirmSwap
-                }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .animation(.easeInOut, value: viewModel.shouldShowSwapButton)
+                swapActionView
             }
         }
         .padding(.top, safeAreaTopInset)
         .frame(maxHeight: .infinity, alignment: .top)
-        .sheet(item: $activeSheet) { sheet in
-            switch sheet {
-            case .settings:
-                SwapSettingsSheet()
-            case .provider(availableProviders: let providers):
-                ProviderSheet(availableProviders: providers, selectedProvider: viewModel.selectedProvider) { selectedProvider in
-                    viewModel.selectedProvider = selectedProvider
-                }
-            case .confirmSwap:
-                ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
-                    onTap?(.confirmSwap)
-                }
-            }
-        }
+        .sheet(item: $activeSheet, content: sheetContent)
         .onChange(of: viewModel.selectedProvider) { newValue in
             viewModel.selectQuote(with: newValue)
+        }
+    }
+    
+    // MARK: - Subviews
+    
+    private var headerView: some View {
+        SwapTitleView(selectedAccount: $viewModel.selectedAccount) { action in
+            switch action {
+            case .accountSelection:
+                onTap?(.selectAccount)
+            case .info:
+                onTap?(.showInfo)
+            }
+        }
+    }
+    
+    private var assetSelectionView: some View {
+        ZStack {
+            VStack (spacing: 0) {
+                AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, payingText: $viewModel.payingText, isLoading: $viewModel.isLoadingPayAmount) {
+                    onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
+                }
+                AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, payingText: $viewModel.receivingText, isLoading: $viewModel.isLoadingReceiveAmount) {
+                    onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
+                }
+            }
+            .padding(.horizontal, 8)
+            .onChange(of: viewModel.payingText) { viewModel.updatePayingText($0) { onTap?(.getQuote(for: $0)) } }
+            
+            HStack {
+                SwitchSwapButton {
+                    viewModel.switchAssets()
+                }
+                Spacer()
+                SettingsSwapButton { action in
+                    switch action {
+                    case .settings:
+                        activeSheet = .settings
+                    case .max:
+                        print("max")
+                    }
+                }
+                .hidden()
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    private var swapActionView: some View {
+        VStack(spacing: 0) {
+            providerSelectionView
+            SwapButton {
+                guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
+                activeSheet = .confirmSwap
+            }
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+            .animation(.easeInOut, value: viewModel.shouldShowSwapButton)
+        }
+    }
+    
+    private var providerSelectionView: some View {
+        let providerViewModel = ProviderSelectionViewModel(providerId: viewModel.selectedProvider.providerId, iconUrl: viewModel.activeProvider?.iconUrl ?? .empty, displayName: viewModel.activeProvider?.displayName ?? .empty, rate: viewModel.providerRate)
+        
+        return ProviderSelectionView(viewModel: providerViewModel) {
+            guard let providers = viewModel.availableProviders else { return }
+            activeSheet = .provider(availableProviders: providers)
+        }
+        .padding(.top, 16)
+        .padding(.bottom, 12)
+    }
+    
+    @ViewBuilder
+    private func sheetContent(for sheet: SwapViewSheet) -> some View {
+        switch sheet {
+        case .settings:
+            SwapSettingsSheet()
+        case .provider(availableProviders: let providers):
+            ProviderSheet(availableProviders: providers, selectedProvider: viewModel.selectedProvider) { selectedProvider in
+                viewModel.selectedProvider = selectedProvider
+            }
+        case .confirmSwap:
+            ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
+                onTap?(.confirmSwap)
+            }
         }
     }
 }
