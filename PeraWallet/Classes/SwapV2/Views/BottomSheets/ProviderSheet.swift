@@ -17,64 +17,12 @@
 import SwiftUI
 import pera_wallet_core
 
-enum SelectedProvider: Equatable {
-    case auto
-    case provider(String)
-    
-    static func == (lhs: SelectedProvider, rhs: SelectedProvider) -> Bool {
-        switch (lhs, rhs) {
-        case (.auto, .auto):
-            return true
-        case let (.provider(a), .provider(b)):
-            return a == b
-        default:
-            return false
-        }
-    }
-    
-    var isAuto: Bool {
-        switch self {
-        case .auto:
-            return true
-        case .provider:
-            return false
-        }
-    }
-    
-    var providerId: String {
-        switch self {
-        case .auto:
-            return "auto"
-        case let .provider(id):
-            return id
-        }
-    }
-}
-
 struct ProviderSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
-    
-    var availableProviders: [SwapProviderV2]
-    
-    var height: CGFloat {
-        CGFloat(150 + ((availableProviders.count + 1) * 72))
-    }
-    
-    @State private var selectedProvider: SelectedProvider
-    
+
+    @StateObject var viewModel: ProviderSheetViewModel
     let onProviderSelected: (SelectedProvider) -> Void
     
-    init(
-        availableProviders: [SwapProviderV2],
-        selectedProvider: SelectedProvider,
-        onProviderSelected: @escaping (SelectedProvider) -> Void
-    ) {
-        self.availableProviders = availableProviders
-        self._selectedProvider = State(initialValue: selectedProvider)
-        self.onProviderSelected = onProviderSelected
-    }
-
-
     var body: some View {
         VStack(spacing: 0) {
             SheetTitleView(title: "title-change-provider") { action in
@@ -82,26 +30,31 @@ struct ProviderSheet: View {
                 case .dismiss:
                     dismiss()
                 case .apply:
-                    guard availableProviders.count > 0 else {
+                    guard viewModel.availableProviders.isNonEmpty else {
                         dismiss()
                         return
                     }
-                    onProviderSelected(selectedProvider)
+                    onProviderSelected(viewModel.selectedProvider)
                     dismiss()
                 }
             }
 
             List {
-                AutoProviderListItem(selectedProvider: $selectedProvider)
+                AutoProviderListItem(selectedProvider: $viewModel.selectedProvider)
                     .onTapGesture {
-                        selectedProvider = .auto
+                        viewModel.selectedProvider = .auto
                     }
-                ForEach(availableProviders, id: \.name) { provider in
-                    ProviderListItem(provider: provider, selectedProvider: $selectedProvider)
-                        .listRowSeparator(.hidden)
-                        .onTapGesture {
-                            selectedProvider = .provider(provider.name)
-                        }
+                ForEach(viewModel.availableProviders, id: \.name) { provider in
+                    ProviderListItem(
+                        provider: provider,
+                        quotePrimaryValue: viewModel.quotePrimaryValue(for: provider.name),
+                        quoteSecondaryValue: viewModel.quoteSecondaryValue(for: provider.name),
+                        selectedProvider: $viewModel.selectedProvider
+                    )
+                    .listRowSeparator(.hidden)
+                    .onTapGesture {
+                        viewModel.selectedProvider = .provider(provider.name)
+                    }
                 }
             }
             .listStyle(.plain)
@@ -110,7 +63,7 @@ struct ProviderSheet: View {
             Spacer()
         }
         .background(Color.Defaults.bg)
-        .presentationDetents([.height(height)])
+        .presentationDetents([.height(viewModel.height)])
         .presentationDragIndicator(.hidden)
     }
 }
@@ -118,6 +71,8 @@ struct ProviderSheet: View {
 private struct ProviderListItem: View {
     // MARK: - Properties
     var provider: SwapProviderV2
+    var quotePrimaryValue: String
+    var quoteSecondaryValue: String
     @Binding var selectedProvider: SelectedProvider
     
     // MARK: - Body
@@ -132,7 +87,15 @@ private struct ProviderListItem: View {
                 .font(.dmSans.regular.size(15))
                 .foregroundStyle(Color.Text.main)
             Spacer()
-            
+            VStack(alignment: .trailing, spacing: 0) {
+                Text(quotePrimaryValue)
+                    .font(.dmSans.regular.size(15))
+                    .foregroundStyle(Color.Text.main)
+                Text(quoteSecondaryValue)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+            }
+            Spacer().frame(width: 16)
             Image(selectedProvider == .provider(provider.name) ? "icon-radio-selected" : "icon-radio-unselected")
                 .resizable()
                 .frame(width: 24, height: 24)

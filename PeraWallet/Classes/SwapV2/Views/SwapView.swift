@@ -145,7 +145,12 @@ struct SwapView: View {
         case .settings:
             SwapSettingsSheet()
         case .provider(availableProviders: let providers):
-            ProviderSheet(availableProviders: providers, selectedProvider: viewModel.selectedProvider) { selectedProvider in
+            let vm = ProviderSheetViewModel(
+                selectedProvider: viewModel.selectedProvider,
+                availableProviders: providers,
+                quoteList: viewModel.quoteList
+            )
+            ProviderSheet(viewModel: vm) { selectedProvider in
                 viewModel.selectedProvider = selectedProvider
             }
         case .confirmSwap:

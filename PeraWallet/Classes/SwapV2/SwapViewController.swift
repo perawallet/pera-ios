@@ -135,7 +135,7 @@ final class SwapViewController: BaseViewController {
     private func confirmSwap() {
         guard let viewModel = sharedViewModel else { return }
         
-        var swapController = makeSwapController(with: viewModel)
+        let swapController = makeSwapController(with: viewModel)
         
         swapController.eventHandler = {
             [weak self] event in
@@ -239,12 +239,8 @@ final class SwapViewController: BaseViewController {
         if account.address != viewModel.selectedAccount.address {
             viewModel.selectedAccount = account
         }
-        if assetIn.asset.id != viewModel.selectedAssetIn.asset.id {
-            viewModel.selectedAssetIn = assetIn
-        }
-        if assetOut.asset.id != viewModel.selectedAssetOut.asset.id {
-            viewModel.selectedAssetOut = assetOut
-        }
+        viewModel.selectedAssetIn = assetIn
+        viewModel.selectedAssetOut = assetOut
     }
     
     private func makeSwapController(with viewModel: SwapSharedViewModel) -> ALGSwapController {
@@ -281,8 +277,9 @@ final class SwapViewController: BaseViewController {
         case .selectAccount:
             swapAssetFlowCoordinator.onAccountSelected = { [weak self] account in
                 guard let self = self else { return }
-                selectedAssetIn = resolveDefaultAlgoAsset(for: account)
-                self.selectedAccount = account
+                selectedAssetIn = nil
+                selectedAssetOut = nil
+                selectedAccount = account
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAccount()
