@@ -2886,6 +2886,8 @@
 		5977541D2E570F810089E103 /* WCTransactionFailToConnectErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */; };
 		597755112E5715010089E103 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
 		597755122E5715080089E103 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CB72DB660610041C7A6 /* InfoPlist.xcstrings */; };
+		5977560B2E5EF1360089E103 /* ReadOnlyPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5977560A2E5EF1360089E103 /* ReadOnlyPublisher.swift */; };
+		5977560D2E5EF2490089E103 /* CurrentValueSubject+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5977552B2E5EF1080089E103 /* CurrentValueSubject+Utils.swift */; };
 		59B103342E4C8AB200B8F6FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59B103332E4C8AB200B8F6FB /* GoogleService-Info.plist */; };
 		59B103362E4C8AB300B8F6FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59B103352E4C8AB300B8F6FB /* GoogleService-Info.plist */; };
 		59B103872E4CF06800B8F6FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
@@ -8729,6 +8731,8 @@
 		597754192E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToRejectErrorLog.swift; sourceTree = "<group>"; };
 		5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToConnectErrorLog.swift; sourceTree = "<group>"; };
 		597755082E5712390089E103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5977552B2E5EF1080089E103 /* CurrentValueSubject+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentValueSubject+Utils.swift"; sourceTree = "<group>"; };
+		5977560A2E5EF1360089E103 /* ReadOnlyPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadOnlyPublisher.swift; sourceTree = "<group>"; };
 		59B103332E4C8AB200B8F6FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59B103352E4C8AB300B8F6FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59B103BC2E4DE71700B8F6FB /* MockLiquidAuthSDKAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLiquidAuthSDKAPI.swift; sourceTree = "<group>"; };
@@ -17276,6 +17280,7 @@
 				5916747A2E460AA3002184C2 /* Notifications */,
 				5916747F2E460AA3002184C2 /* Operations */,
 				591674812E460AA3002184C2 /* Passphrase */,
+				597756092E5EF12E0089E103 /* Publishers */,
 				591674832E460AA3002184C2 /* Reusable */,
 				5916748E2E460AA3002184C2 /* SDK */,
 				591674922E460AA3002184C2 /* Session */,
@@ -17869,6 +17874,7 @@
 				591673E72E460AA3002184C2 /* External */,
 				591674192E460AA3002184C2 /* Foundation */,
 				591674222E460AA3002184C2 /* Magpie */,
+				5977560C2E5EF2310089E103 /* Publishers */,
 				591674252E460AA3002184C2 /* String */,
 				591674282E460AA3002184C2 /* Style */,
 				5916789F2E462A57002184C2 /* UI */,
@@ -18707,6 +18713,22 @@
 				2B59F1372254BABF005203DD /* algorand.xcdatamodeld */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		597756092E5EF12E0089E103 /* Publishers */ = {
+			isa = PBXGroup;
+			children = (
+				5977560A2E5EF1360089E103 /* ReadOnlyPublisher.swift */,
+			);
+			path = Publishers;
+			sourceTree = "<group>";
+		};
+		5977560C2E5EF2310089E103 /* Publishers */ = {
+			isa = PBXGroup;
+			children = (
+				5977552B2E5EF1080089E103 /* CurrentValueSubject+Utils.swift */,
+			);
+			path = Publishers;
 			sourceTree = "<group>";
 		};
 		59B103BE2E4DE71700B8F6FB /* Mock */ = {
@@ -31148,6 +31170,7 @@
 				591677182E460AF9002184C2 /* Int16+Byte.swift in Sources */,
 				591677192E460AF9002184C2 /* Codable+JSON.swift in Sources */,
 				5916771A2E460AF9002184C2 /* Date+Additions.swift in Sources */,
+				5977560B2E5EF1360089E103 /* ReadOnlyPublisher.swift in Sources */,
 				5916771B2E460AF9002184C2 /* Dictionary+Additions.swift in Sources */,
 				5916771C2E460AF9002184C2 /* RawRepresentable+Extensions.swift in Sources */,
 				5916771D2E460AF9002184C2 /* Formatter+Additions.swift in Sources */,
@@ -31272,6 +31295,7 @@
 				591677D92E460AF9002184C2 /* PasswordMigration.swift in Sources */,
 				591677DA2E460AF9002184C2 /* BiometricAuthenticationMigration.swift in Sources */,
 				591677DB2E460AF9002184C2 /* RekeyedAccountsResponse.swift in Sources */,
+				5977560D2E5EF2490089E103 /* CurrentValueSubject+Utils.swift in Sources */,
 				591677DC2E460AF9002184C2 /* AlgorandApplication.swift in Sources */,
 				591677DD2E460AF9002184C2 /* ApplicationLocalState.swift in Sources */,
 				591677DE2E460AF9002184C2 /* ApplicationStateSchema.swift in Sources */,

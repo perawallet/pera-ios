@@ -12,10 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CurrentValueSubject+Utils.swift
+//   ReadOnlyPublisher.swift
 
 import Combine
 
-extension CurrentValueSubject where Failure == Never {
-    func readOnlyPublisher() -> ReadOnlyPublisher<Output> { ReadOnlyPublisher<Output>(currentValuePublisher: self) }
+public final class ReadOnlyPublisher<Output> {
+    
+    // MARK: - Properties
+    
+    var value: Output { currentValuePublisher.value }
+    public var publisher: AnyPublisher<Output, Never> { currentValuePublisher.eraseToAnyPublisher() }
+    
+    private let currentValuePublisher: CurrentValueSubject<Output, Never>
+    
+    // MARK: - Initialisers
+    
+    init(currentValuePublisher: CurrentValueSubject<Output, Never>) {
+        self.currentValuePublisher = currentValuePublisher
+    }
 }

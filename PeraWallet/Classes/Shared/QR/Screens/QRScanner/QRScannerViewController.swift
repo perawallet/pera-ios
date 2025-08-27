@@ -21,6 +21,7 @@ import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
 import LiquidAuthSDK
+import Combine
 
 final class QRScannerViewController:
     BaseViewController,
@@ -68,6 +69,7 @@ final class QRScannerViewController:
 
     private var walletConnectSessionCreationPreferences: WalletConnectSessionCreationPreferences?
     private var wcConnectionRepeater: Repeater?
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var cameraResetHandler: EmptyHandler = {
         [weak self] in
@@ -431,9 +433,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         } else if let url = URL(string: qrString),
                   let request = LiquidAuthService.makeRequestForURL(url) {
             closeScreen()
-            if configuration.featureFlagService.isEnabled(.liquidConnectEnabled) {
-                handleLiquidAuthRequest(request: request)
-            }
+            //TODO: implement liquid auth/connect here when ready
+            // this will require calling handleAuthRequest, then startSignaling, then handle published messages
         } else if let url = URL(string: qrString), PassKeyService.isPassKeyURL(url) {
             closeScreen()
             if configuration.featureFlagService.isEnabled(.liquidAuthEnabled) {
@@ -465,34 +466,6 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         }
         let keyValue = param.split(separator: "=")
         return keyValue[safe: 1].map {String($0)}
-    }
-    
-    private func handleLiquidAuthRequest(request: LiquidAuthRequest) {
-        guard let session else {
-            showErrorAlert(message: String(localized: "liquid-auth-error"))
-            return
-        }
-        let passKeyService: PassKeyServicing = PassKeyService(hdWalletStorage: hdWalletStorage, session: session)
-        let liquidAuthManager = LiquidAuthService(passKeyService: passKeyService, featureFlagService: configuration.featureFlagService)
-        Task {
-            do {
-                let _ = try await liquidAuthManager.handleAuthRequest(request: request)
-                try await liquidAuthManager.startSignaling(origin: request.origin, requestId: request.requestId) { [weak self] message in
-                    self?.handleLiquidAuthMessage(message)
-                }
-            } catch let error as pera_wallet_core.LiquidAuthError {
-                showErrorAlert(message: error.localizedDescription)
-            }
-        }
-    }
-    
-    private func handleLiquidAuthMessage(_ message: String) {
-        Task {
-            //TODO: Implement incoming message handling here...
-            //This will be done when we implement liquid connect
-            let response = "pong"
-            SignalService.shared.sendMessage(response)
-        }
     }
     
     private func showErrorAlert(message: String) {

@@ -17,13 +17,15 @@ import AVFoundation
 import LocalAuthentication
 import x_hd_wallet_api
 import WebRTC
+import Combine
 
 public protocol LiquidAuthServicing {
+    var message: ReadOnlyPublisher<String> { get }
+
     func handleAuthRequest(request: LiquidAuthRequest) async throws(LiquidAuthError) -> LiquidAuthResponse
     func startSignaling(
         origin: String,
-        requestId: String,
-        messageHandler: @escaping (String) -> Void
+        requestId: String
     ) async throws(LiquidAuthError)
 }
 
@@ -33,6 +35,11 @@ public final class LiquidAuthService: LiquidAuthServicing {
     private let featureFlagService: FeatureFlagServicing
     private let passKeyService: PassKeyServicing
     private let liquidAuthSDK: LiquidAuthSDKAPI
+    private let currentMessage: CurrentValueSubject<String, Never> = CurrentValueSubject("")
+    
+    public var message: ReadOnlyPublisher<String> {
+        currentMessage.readOnlyPublisher()
+    }
     
     public init(
         passKeyService: PassKeyServicing,
@@ -65,8 +72,7 @@ public extension LiquidAuthService {
     
     func startSignaling(
         origin: String,
-        requestId: String,
-        messageHandler: @escaping (String) -> Void
+        requestId: String
     ) async throws(LiquidAuthError) {
         if !featureFlagService.isEnabled(.liquidAuthEnabled) {
             throw LiquidAuthError.notImplemented()
@@ -106,7 +112,9 @@ public extension LiquidAuthService {
             type: SignalType.answer.rawValue,
             origin: origin,
             iceServers: iceServers,
-            onMessage: messageHandler,
+            onMessage: { [weak self] message in
+                self?.currentMessage.value = message
+            },
             onStateChange: { [weak self] state in
                 if state == "open" {
                     //TODO: this is a temporary initiation.  we will need to implement a more complete liquid auth protocol handler

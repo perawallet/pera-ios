@@ -95,7 +95,7 @@ final class PasskeyListModel: PasskeyListModelable {
     let viewModel: PasskeyListViewModel = PasskeyListViewModel()
 }
 
-final class PassKeyModel {
+final class PassKeyModel : Identifiable {
     let origin: String
     let username: String
     let displayName: String
