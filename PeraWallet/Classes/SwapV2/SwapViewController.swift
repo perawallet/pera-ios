@@ -38,9 +38,7 @@ final class SwapViewController: BaseViewController {
     )
     private var confirmSwapDataController: ConfirmSwapDataController?
     
-    private lazy var transitionToHighPriceImpactWarning = BottomSheetTransition(presentingViewController: self)
-    
-    // MARK: - Initialisers
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,27 +69,12 @@ final class SwapViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if
-            let launchDraft,
-            let account = launchDraft.account
-        {
-            self.selectedAccount = account
-            self.selectedAssetIn = assetItem(from: launchDraft.assetIn)
-            self.selectedAssetOut = launchDraft.assetIn?.isAlgo ?? false ? nil : assetItem(from: account[0])!
-            self.sharedViewModel = nil
-            loadSwapView()
-            self.launchDraft = nil
-        } else {
-            let defaultAccount = sharedDataController.accountCollection.map { $0.value }.filter { !$0.isWatchAccount }.first
-            guard let defaultAccount else { return }
-            
-            self.selectedAccount = defaultAccount
-            self.selectedAssetIn = nil
-            self.selectedAssetOut = nil
-            self.sharedViewModel = nil
-            loadSwapView()
-        }
+        if !resolveInitialState() { return }
+        sharedViewModel = nil
+        loadSwapView()
     }
+    
+    // MARK: - View Setup
     
     private func loadSwapView() {
         let swapHostingController = UIHostingController(
@@ -115,120 +98,102 @@ final class SwapViewController: BaseViewController {
 
     private func createSwapView() -> SwapView {
         guard let selectedAccount else {
-            fatalError()
+            fatalError("No account selected")
         }
         
-        var assetIn: AssetItem {
-            guard let selectedAssetIn else {
-                return assetItem(from: selectedAccount[0])!
-            }
-            return selectedAssetIn
-        }
+        let assetIn = resolveAssetIn(for: selectedAccount)
+        let assetOut = resolveAssetOut()
+        
         self.selectedAssetIn = assetIn
-        
-        var assetOut: AssetItem {
-            guard let selectedAssetOut else {
-                return usdcDefaultAsset()
-            }
-            return selectedAssetOut
-        }
         self.selectedAssetOut = assetOut
         
-        var rootView: SwapView
-        
-        if let sharedViewModel {
-            if
-                let account = self.selectedAccount,
-                account.address != sharedViewModel.selectedAccount.address
-            {
-                sharedViewModel.selectedAccount = account
-            }
-            
-            if
-                let assetIn = self.selectedAssetIn,
-                assetIn.asset.id != sharedViewModel.selectedAssetIn.asset.id
-            {
-                sharedViewModel.selectedAssetIn = assetIn
-            }
-               
-            if
-                let assetOut = self.selectedAssetOut,
-                assetOut.asset.id != sharedViewModel.selectedAssetOut.asset.id
-            {
-                sharedViewModel.selectedAssetOut = assetOut
-            }
-            sharedViewModel.availableProviders = availableProviders
-            
-            rootView = SwapView(viewModel: sharedViewModel)
-        } else {
-            let viewModel = SwapSharedViewModel(
+        let viewModel = sharedViewModel ?? {
+            let vm = SwapSharedViewModel(
                 selectedAccount: selectedAccount,
                 selectedAssetIn: assetIn,
                 selectedAssetOut: assetOut
             )
-            viewModel.availableProviders = availableProviders
-            self.sharedViewModel = viewModel
-            
-            rootView = SwapView(viewModel: viewModel)
-        }
+            self.sharedViewModel = vm
+            return vm
+        }()
+
+        update(viewModel, with: selectedAccount, assetIn: assetIn, assetOut: assetOut)
+        viewModel.availableProviders = availableProviders
+        
+        var rootView = SwapView(viewModel: viewModel)
         
         rootView.onTap = { [weak self] action in
-            guard let self = self else { return }
-            switch action {
-            case .showInfo:
-                open(AlgorandWeb.tinymanSwap.link)
-            case .selectAccount:
-                swapAssetFlowCoordinator.onAccountSelected = { [weak self] selectedAccount in
-                    guard let self = self else { return }
-                    self.selectedAccount = selectedAccount
-                    loadSwapView()
-                }
-                swapAssetFlowCoordinator.openSelectAccount()
-            case .selectAssetIn(for: let account):
-                swapAssetFlowCoordinator.onAssetInSelected = { [weak self] selectedAssetIn in
-                    guard let self = self else { return }
-                    self.selectedAssetIn = assetItem(from: selectedAssetIn)
-                    loadSwapView()
-                }
-                swapAssetFlowCoordinator.openSelectAssetIn(account: account)
-            case .selectAssetOut(for: let account):
-                swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] selectedAssetOut in
-                    guard let self = self else { return }
-                    self.selectedAssetOut = assetItem(from: selectedAssetOut)
-                    loadSwapView()
-                }
-                swapAssetFlowCoordinator.openSelectAssetOut(account: account)
-            case .getQuote(for: let value):
-                swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
-                    guard let self = self else { return }
-                    if let error {
-                        // TODO: show error alert
-                        print(error)
-                        return
-                    }
-                    let orderedQuoteList = quoteList?.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
-                    sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue) ?? .empty
-                    sharedViewModel?.quoteList = orderedQuoteList
-                    sharedViewModel?.selectedQuote = orderedQuoteList?.first
-                    sharedViewModel?.isLoadingReceiveAmount = false
-                    loadSwapView()
-                }
-                guard let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
-                    // TODO: show error alert
-                    return
-                }
-                swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
-            case .confirmSwap:
-//                if let priceImpact = sharedViewModel?.quote?.priceImpact,
-//                   priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent {
-//                    presentWarningForHighPriceImpact()
-//                    return
-//                }
-                confirmSwap()
-            }
+            guard let self else { return }
+            handleSwapViewCallbacks(with: action)
         }
         
         return rootView
+    }
+    
+    // MARK: - Actions
+    
+    private func confirmSwap() {
+        guard let viewModel = sharedViewModel else { return }
+        
+        var swapController = makeSwapController(with: viewModel)
+        
+        swapController.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            handleSwapControllerCallbacks(with: event, from: swapController)
+        }
+        let dataController = ConfirmSwapAPIDataController(
+            swapController: swapController,
+            api: configuration.api!
+        )
+        self.confirmSwapDataController = dataController
+        
+        confirmSwapDataController?.eventHandler = { [weak self] event in
+            guard let self else { return }
+            handleConfirmSwapControllerCallbacks(with: event, from: swapController)
+        }
+        confirmSwapDataController?.confirmSwap()
+    }
+    
+    // MARK: - Helpers
+    
+    private func resolveDefaultAccount() -> Account? {
+        sharedDataController.accountCollection
+            .filter { !$0.value.isWatchAccount }
+            .min(by: { $0.value.preferredOrder < $1.value.preferredOrder })?
+            .value
+    }
+    
+    private func resolveInitialState() -> Bool {
+        if let draft = launchDraft, let account = draft.account {
+            selectedAccount = account
+            selectedAssetIn = assetItem(from: draft.assetIn)
+            selectedAssetOut = draft.assetIn?.isAlgo == true ? nil : resolveDefaultAlgoAsset(for: account)
+            launchDraft = nil
+            return true
+        }
+
+        if let defaultAccount = resolveDefaultAccount() {
+            selectedAccount = defaultAccount
+            selectedAssetIn = nil
+            selectedAssetOut = nil
+            return true
+        }
+        return false
+    }
+
+    private func resolveAssetIn(for account: Account) -> AssetItem {
+        guard let selectedAssetIn else {
+            return resolveDefaultAlgoAsset(for: account)
+        }
+        return selectedAssetIn
+    }
+
+    private func resolveAssetOut() -> AssetItem {
+        guard let selectedAssetOut else {
+            return resolveDefaultUSDCAsset()
+        }
+        return selectedAssetOut
     }
     
     private func assetItem(from asset: Asset?) -> AssetItem? {
@@ -242,24 +207,47 @@ final class SwapViewController: BaseViewController {
         return assetItem
     }
     
-    private func usdcDefaultAsset() -> AssetItem {
+    private func resolveDefaultAlgoAsset(for account: Account?) -> AssetItem {
+        guard
+            let asset = account?[0],
+            let assetItem = assetItem(from: asset)
+        else {
+            fatalError("No algo asset available for account")
+        }
+        return assetItem
+    }
+    
+    private func resolveDefaultUSDCAsset() -> AssetItem {
         guard
             let network = api?.network,
             !sharedDataController.assetDetailCollection.isEmpty,
             let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == ALGAsset.usdcAssetID(network)}).first,
             let asset = assetItem(from: StandardAsset(decoration: assetDecorationElement))
         else {
-            return assetItem(from: selectedAccount?[0])!
+            return resolveDefaultAlgoAsset(for: selectedAccount)
         }
         
         return asset
     }
     
-    private func confirmSwap() {
-        print("---Confirm swap")
-        
-        guard let viewModel = sharedViewModel else { return }
-        
+    private func update(
+        _ viewModel: SwapSharedViewModel,
+        with account: Account,
+        assetIn: AssetItem,
+        assetOut: AssetItem
+    ) {
+        if account.address != viewModel.selectedAccount.address {
+            viewModel.selectedAccount = account
+        }
+        if assetIn.asset.id != viewModel.selectedAssetIn.asset.id {
+            viewModel.selectedAssetIn = assetIn
+        }
+        if assetOut.asset.id != viewModel.selectedAssetOut.asset.id {
+            viewModel.selectedAssetOut = assetOut
+        }
+    }
+    
+    private func makeSwapController(with viewModel: SwapSharedViewModel) -> ALGSwapController {
         let transactionSigner = SwapTransactionSigner(
             api: configuration.api!,
             analytics: analytics,
@@ -279,191 +267,142 @@ final class SwapViewController: BaseViewController {
         swapController.quote = viewModel.selectedQuote
         swapController.providersV2 = availableProviders
         
-        swapController.eventHandler = {
-            [weak self, weak swapController] event in
-            guard let self = self,
-                  let swapController = swapController,
-                  let selectedAccount
-            else {
+        return swapController
+    }
+    
+    // MARK: - Callbacks
+    
+    private func handleSwapViewCallbacks(
+        with action: SwapViewAction
+    ) {
+        switch action {
+        case .showInfo:
+            open(AlgorandWeb.tinymanSwap.link)
+        case .selectAccount:
+            swapAssetFlowCoordinator.onAccountSelected = { [weak self] account in
+                guard let self = self else { return }
+                selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+                self.selectedAccount = account
+                loadSwapView()
+            }
+            swapAssetFlowCoordinator.openSelectAccount()
+        case .selectAssetIn(for: let account):
+            swapAssetFlowCoordinator.onAssetInSelected = { [weak self] selectedAssetIn in
+                guard let self = self else { return }
+                self.selectedAssetIn = assetItem(from: selectedAssetIn)
+                loadSwapView()
+            }
+            swapAssetFlowCoordinator.openSelectAssetIn(account: account)
+        case .selectAssetOut(for: let account):
+            swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] selectedAssetOut in
+                guard let self = self else { return }
+                self.selectedAssetOut = assetItem(from: selectedAssetOut)
+                loadSwapView()
+            }
+            swapAssetFlowCoordinator.openSelectAssetOut(account: account)
+        case .getQuote(for: let value):
+            swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
+                guard let self = self else { return }
+                if let error {
+                    // TODO: show error alert
+                    print(error)
+                    return
+                }
+                let orderedQuoteList = quoteList?.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
+                sharedViewModel?.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: orderedQuoteList?.first?.amountOutUSDValue) ?? .empty
+                sharedViewModel?.quoteList = orderedQuoteList
+                sharedViewModel?.selectedQuote = orderedQuoteList?.first
+                sharedViewModel?.isLoadingReceiveAmount = false
+                loadSwapView()
+            }
+            guard let selectedAccount, let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
+                // TODO: show error alert
+                return
+            }
+            swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
+        case .confirmSwap:
+            confirmSwap()
+        }
+    }
+    
+    private func handleSwapControllerCallbacks(
+        with event: SwapControllerEvent,
+        from swapController: SwapController
+    ) {
+        guard let selectedAccount else { return }
+
+        switch event {
+        case .didSignTransaction:
+            break
+        case .didSignAllTransactions:
+            if selectedAccount.requiresLedgerConnection() {
+                return
+            }
+        case .didCompleteSwap:
+            if let quote = swapController.quote {
+                self.analytics.track(
+                    .swapCompleted(
+                        quote: quote,
+                        parsedTransactions: swapController.parsedTransactions,
+                        currency: self.sharedDataController.currency
+                    )
+                )
+            }
+        case .didFailTransaction:
+            swapController.clearTransactions()
+        case .didFailNetwork:
+            swapController.clearTransactions()
+        case .didCancelTransaction:
+            swapController.clearTransactions()
+        case .didFailSigning(let error):
+            switch error {
+            case .api:
+                break
+            case .ledger:
+                break
+            }
+        case .didLedgerRequestUserApproval:
+            break
+        case .didFinishTiming:
+            break
+        case .didLedgerReset:
+            swapController.clearTransactions()
+        case .didLedgerResetOnSuccess:
+            break
+        case .didLedgerRejectSigning:
+            break
+        }
+    }
+    
+    private func handleConfirmSwapControllerCallbacks(
+        with event: ConfirmSwapDataControllerEvent,
+        from swapController: SwapController
+    ) {
+        switch event {
+        case .willUpdateSlippage:
+            // TODO: start loading
+            break
+        case .didUpdateSlippage(_):
+            break
+        case .didFailToUpdateSlippage(_):
+            break
+        case .willPrepareTransactions:
+            // TODO: start loading
+            break
+        case .didPrepareTransactions(let swapTransactionPreparation):
+            let transactionGroups = swapTransactionPreparation.transactionGroups
+            if swapController.account.requiresLedgerConnection() {
+                swapAssetFlowCoordinator.openSignWithLedgerConfirmation(
+                    swapController: swapController,
+                    transactionGroups: transactionGroups
+                )
                 return
             }
 
-            switch event {
-            case .didSignTransaction:
-//                if selectedAccount.requiresLedgerConnection(),
-//                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
-//                    signWithLedgerProcessScreen.increaseProgress()
-//
-//                    if signWithLedgerProcessScreen.isProgressFinished {
-//                        self.stopLoading()
-//
-//                        self.visibleScreen.dismissScreen {
-//                            [weak self] in
-//                            guard let self = self else { return }
-//
-//                            self.openSwapLoading(swapController)
-//                        }
-//                    }
-//                }
-                break
-            case .didSignAllTransactions:
-                if selectedAccount.requiresLedgerConnection() {
-                    return
-                }
-
-//                self.stopLoading()
-//                self.openSwapLoading(swapController)
-            case .didCompleteSwap:
-                if let quote = swapController.quote {
-                    self.analytics.track(
-                        .swapCompleted(
-                            quote: quote,
-                            parsedTransactions: swapController.parsedTransactions,
-                            currency: self.sharedDataController.currency
-                        )
-                    )
-                }
-
-//                self.openSwapSuccess(swapController)
-            case .didFailTransaction(let txnID):
-                guard let quote = swapController.quote else { return }
-
-//                if !(self.visibleScreen is LoadingScreen) {
-//                    return
-//                }
-
-                swapController.clearTransactions()
-//                self.stopLoading()
-
-//                logFailedSwap(
-//                    quote: quote,
-//                    txnID: txnID
-//                )
-
-//                let viewModel = SwapUnexpectedErrorViewModel(quote)
-//                self.openError(
-//                    swapController,
-//                    viewModel: viewModel
-//                ) {
-//                    [weak self] in
-//                    guard let self = self else { return }
-//                    
-//                    let screen = self.goBackToScreen(SwapAssetScreen.self)
-//                    screen?.getSwapQuoteForCurrentInput()
-//                }
-            case .didFailNetwork(let error):
-                guard let quote = swapController.quote else { return }
-
-//                if !(self.visibleScreen is LoadingScreen) {
-//                    return
-//                }
-
-                swapController.clearTransactions()
-//                self.stopLoading()
-//
-//                logFailedSwap(
-//                    quote: quote,
-//                    error: error
-//                )
-
-//                let viewModel = SwapAPIErrorViewModel(
-//                    quote: quote,
-//                    error: error
-//                )
-//                self.openError(
-//                    swapController,
-//                    viewModel: viewModel
-//                ) {
-//                    [weak self] in
-//                    guard let self = self else { return }
-//
-//                    let screen = self.goBackToScreen(SwapAssetScreen.self)
-//                    screen?.getSwapQuoteForCurrentInput()
-//                }
-            case .didCancelTransaction:
-                swapController.clearTransactions()
-//                self.stopLoading()
-            case .didFailSigning(let error):
-                switch error {
-                case .api(let apiError):
-//                    self.displaySigningError(apiError)
-                    break
-                case .ledger(let ledgerError):
-//                    self.displayLedgerError(
-//                        swapController: swapController,
-//                        ledgerError: ledgerError
-//                    )
-                    break
-                }
-            case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
-//                self.ledgerConnectionScreen?.dismiss(animated: true) {
-//                    self.ledgerConnectionScreen = nil
-//
-//                    self.openSignWithLedgerProcess(
-//                        swapController: swapController,
-//                        ledger: ledger,
-//                        transactionGroups: transactionGroups
-//                    )
-//                }
-                break
-            case .didFinishTiming:
-                break
-            case .didLedgerReset:
-                swapController.clearTransactions()
-//                self.stopLoading()
-
-//                if self.visibleScreen is LedgerConnectionScreen {
-//                    self.ledgerConnectionScreen?.dismissScreen()
-//                    self.ledgerConnectionScreen = nil
-//                    return
-//                }
-//
-//                if self.visibleScreen is SignWithLedgerProcessScreen {
-//                    self.signWithLedgerProcessScreen?.dismissScreen()
-//                    self.signWithLedgerProcessScreen = nil
-//                }
-            case .didLedgerResetOnSuccess:
-                break
-            case .didLedgerRejectSigning:
-                break
-            }
+            swapController.signTransactions(transactionGroups)
+            break
+        case .didFailToPrepareTransactions(_):
+            break
         }
-        
-        let dataController = ConfirmSwapAPIDataController(
-            swapController: swapController,
-            api: configuration.api!
-        )
-        self.confirmSwapDataController = dataController
-        
-        confirmSwapDataController?.eventHandler = { [weak self] event in
-            guard let self else { return }
-            switch event {
-            case .willUpdateSlippage:
-                // TODO: start loading
-                break
-            case .didUpdateSlippage(_):
-                break
-            case .didFailToUpdateSlippage(_):
-                break
-            case .willPrepareTransactions:
-                // TODO: start loading
-                break
-            case .didPrepareTransactions(let swapTransactionPreparation):
-                let transactionGroups = swapTransactionPreparation.transactionGroups
-                if swapController.account.requiresLedgerConnection() {
-                    swapAssetFlowCoordinator.openSignWithLedgerConfirmation(
-                        swapController: swapController,
-                        transactionGroups: transactionGroups
-                    )
-                    return
-                }
-
-                swapController.signTransactions(transactionGroups)
-                break
-            case .didFailToPrepareTransactions(_):
-                break
-            }
-        }
-        confirmSwapDataController?.confirmSwap()
     }
 }

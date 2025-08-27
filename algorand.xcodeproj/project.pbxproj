@@ -7340,6 +7340,12 @@
 		D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
+		D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
+		D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
+		D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
+		D447C7052E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
+		D447C7062E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
+		D447C7072E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
 		D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -9444,6 +9450,8 @@
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D446A749272ABEF50081D60B /* light-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "light-rekey.json"; sourceTree = "<group>"; };
 		D446A74D272ABEFC0081D60B /* dark-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "dark-rekey.json"; sourceTree = "<group>"; };
+		D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageSUIView.swift; sourceTree = "<group>"; };
+		D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSelectionViewModel.swift; sourceTree = "<group>"; };
 		D4487A9A27BD350C00B4B0AB /* RecoverAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewController.swift; sourceTree = "<group>"; };
 		D4487A9C27BD354100B4B0AB /* RecoverAccountViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecoverAccountViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4487A9E27BD355C00B4B0AB /* RecoverAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountView.swift; sourceTree = "<group>"; };
@@ -18700,6 +18708,7 @@
 				591674BE2E460AA3002184C2 /* Transition */,
 				591674772E460AA3002184C2 /* NavigationBar */,
 				591674CA2E460AA3002184C2 /* UI */,
+				D447C6362E5D9CA300E893CC /* URLImage */,
 				591678892E4610D2002184C2 /* WalletConnect */,
 				591674D62E460AA3002184C2 /* Validators */,
 			);
@@ -20570,6 +20579,7 @@
 			children = (
 				D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */,
 				D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */,
+				D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -20931,6 +20941,14 @@
 				D446A749272ABEF50081D60B /* light-rekey.json */,
 			);
 			path = Rekey;
+			sourceTree = "<group>";
+		};
+		D447C6362E5D9CA300E893CC /* URLImage */ = {
+			isa = PBXGroup;
+			children = (
+				D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */,
+			);
+			path = URLImage;
 			sourceTree = "<group>";
 		};
 		D4487A9927BD34FC00B4B0AB /* Recover */ = {
@@ -25875,6 +25893,7 @@
 				59167D302E464C76002184C2 /* DeepLinkParser.swift in Sources */,
 				59167D312E464C76002184C2 /* WalletConnectSessionRequestResponse.swift in Sources */,
 				59167D322E464C76002184C2 /* DeeplinkQR.swift in Sources */,
+				D447C7062E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59167D332E464C76002184C2 /* Screen.swift in Sources */,
 				59167D342E464C76002184C2 /* Router.swift in Sources */,
 				59167D352E464C76002184C2 /* AppearanceSelectionViewController.swift in Sources */,
@@ -26771,6 +26790,7 @@
 				591680AC2E464C76002184C2 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				591680AD2E464C76002184C2 /* WCTransactionWarningViewModel.swift in Sources */,
 				591680AE2E464C76002184C2 /* JSONDisplayView.swift in Sources */,
+				D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				591680AF2E464C76002184C2 /* WCTransactionDappMessageView.swift in Sources */,
 				591680B02E464C76002184C2 /* WCTransactionFullDappDetailView.swift in Sources */,
 				591680B12E464C76002184C2 /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
@@ -28053,6 +28073,7 @@
 				59E602B12E4A712500CCA99B /* DeeplinkQR.swift in Sources */,
 				59E602B22E4A712500CCA99B /* Screen.swift in Sources */,
 				59E602B32E4A712500CCA99B /* Router.swift in Sources */,
+				D447C7052E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59E602B42E4A712500CCA99B /* AppearanceSelectionViewController.swift in Sources */,
 				59E602B52E4A712500CCA99B /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				59E602B62E4A712500CCA99B /* SingleSelectionViewModel.swift in Sources */,
@@ -28948,6 +28969,7 @@
 				59E6062A2E4A712500CCA99B /* WCTransactionDappMessageViewModel.swift in Sources */,
 				59E6062B2E4A712500CCA99B /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				59E6062C2E4A712500CCA99B /* WCTransactionWarningViewModel.swift in Sources */,
+				D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				59E6062D2E4A712500CCA99B /* JSONDisplayView.swift in Sources */,
 				59E6062E2E4A712500CCA99B /* WCTransactionDappMessageView.swift in Sources */,
 				59E6062F2E4A712500CCA99B /* WCTransactionFullDappDetailView.swift in Sources */,
@@ -30229,6 +30251,7 @@
 				59E60B292E4A71D000CCA99B /* DeeplinkQR.swift in Sources */,
 				59E60B2A2E4A71D000CCA99B /* Screen.swift in Sources */,
 				59E60B2B2E4A71D000CCA99B /* Router.swift in Sources */,
+				D447C7072E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59E60B2C2E4A71D000CCA99B /* AppearanceSelectionViewController.swift in Sources */,
 				59E60B2D2E4A71D000CCA99B /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				59E60B2E2E4A71D000CCA99B /* SingleSelectionViewModel.swift in Sources */,
@@ -31125,6 +31148,7 @@
 				59E60EA32E4A71D000CCA99B /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				59E60EA42E4A71D000CCA99B /* WCTransactionWarningViewModel.swift in Sources */,
 				59E60EA52E4A71D000CCA99B /* JSONDisplayView.swift in Sources */,
+				D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				59E60EA62E4A71D000CCA99B /* WCTransactionDappMessageView.swift in Sources */,
 				59E60EA72E4A71D000CCA99B /* WCTransactionFullDappDetailView.swift in Sources */,
 				59E60EA82E4A71D000CCA99B /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
