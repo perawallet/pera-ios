@@ -56,6 +56,7 @@ struct ConfirmSwapView: View {
     var viewModel: SwapConfirmViewModel
     
     @State private var activeSheet: SwapInfoSheet?
+    @State private var didFail = false
     
     var onConfirmTap: () -> Void
 
@@ -138,14 +139,17 @@ struct ConfirmSwapView: View {
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
                     Group {
-                        if let url = URL(string: viewModel.provider.iconUrl) {
-                            URLImageSUIView(url: url)
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
+                        if didFail {
+                            Image("icon-swap-empty")
+                        } else if let url = URL(string: viewModel.provider.iconUrl) {
+                            URLImageSUIView(url: url, didFail: $didFail)
                         } else {
-                            EmptyView()
+                            Image("icon-swap-empty")
                         }
                     }
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .clipShape(Circle())
                     Text(viewModel.provider.displayName)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
