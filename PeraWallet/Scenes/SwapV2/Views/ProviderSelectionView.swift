@@ -20,6 +20,7 @@ import pera_wallet_core
 struct ProviderSelectionView: View {
     // MARK: - Properties
     var viewModel: ProviderSelectionViewModel
+    @State private var didFail = false
     
     let onTap: () -> Void
     
@@ -33,14 +34,17 @@ struct ProviderSelectionView: View {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {
                         Group {
-                            if let url = URL(string: viewModel.iconUrl) {
-                                URLImageSUIView(url: url)
-                                    .frame(width: 16, height: 16)
-                                    .scaledToFit()
+                            if didFail {
+                                Image("icon-swap-empty")
+                            } else if let url = URL(string: viewModel.iconUrl) {
+                                URLImageSUIView(url: url, didFail: $didFail)
                             } else {
-                                EmptyView()
+                                Image("icon-swap-empty")
                             }
                         }
+                        .frame(width: 16, height: 16)
+                        .scaledToFit()
+                        .clipShape(Circle())
                         Spacer().frame(width: 4)
                         Text(viewModel.displayName)
                             .font(.dmSans.regular.size(15))
