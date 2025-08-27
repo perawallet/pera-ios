@@ -29,10 +29,14 @@ class SwapSharedViewModel: ObservableObject {
     @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
     
-    @Published var payingText: String = .empty
-    @Published var receivingText: String = .empty
+    @Published var payingText: String = defaultAmountValue
+    @Published var payingTextInUSD: String = defaultAmountValue
+    @Published var receivingText: String = defaultAmountValue
+    @Published var receivingTextInUSD: String = defaultAmountValue
     
     private var debounceWorkItem: DispatchWorkItem?
+    
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
     // MARK: - Internal State
     var quoteList: [SwapQuote]?
@@ -55,6 +59,7 @@ class SwapSharedViewModel: ObservableObject {
     func switchAssets() {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
         (payingText, receivingText) = (receivingText, payingText)
+        (payingTextInUSD, receivingTextInUSD) = (receivingTextInUSD, payingTextInUSD)
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
@@ -68,6 +73,8 @@ class SwapSharedViewModel: ObservableObject {
             selectedAssetOut: selectedAssetOut,
             selectedAssetInAmount: payingText,
             selectedAssetOutAmount: receivingText,
+            selectedAssetInAmountInUSD: payingTextInUSD,
+            selectedAssetOutAmountInUSD: receivingTextInUSD,
             price: price,
             provider: activeProvider,
             slippageTolerance: slippageTolerance,
@@ -86,7 +93,18 @@ class SwapSharedViewModel: ObservableObject {
         case .provider(let provider):
             selectedQuote = quoteList.first { $0.provider?.rawValue == provider}
         }
-        receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: selectedQuote?.amountOutUSDValue) ?? .empty
+        
+        guard let selectedQuote else { return }
+        
+        let amount = selectedQuote.amountOut ?? 0
+        let decimals = selectedQuote.assetOut?.decimals ?? 0
+        let value = Decimal(amount) / pow(10, decimals)
+        
+        receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: value) ?? .empty
+        
+        receivingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote.amountOutUSDValue) ?? .empty)
+        
+        payingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote.amountInUSDValue) ?? .empty)
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
