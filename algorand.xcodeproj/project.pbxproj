@@ -7277,60 +7277,6 @@
 		D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */; };
 		D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */; };
 		D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */; };
-		D42D88662E5494A300D59DE5 /* SheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88542E5494A300D59DE5 /* SheetTitleView.swift */; };
-		D42D88672E5494A300D59DE5 /* AssetSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88582E5494A300D59DE5 /* AssetSwapButton.swift */; };
-		D42D88682E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885A2E5494A300D59DE5 /* SettingsSwapButton.swift */; };
-		D42D88692E5494A300D59DE5 /* SwapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88612E5494A300D59DE5 /* SwapTitleView.swift */; };
-		D42D886A2E5494A300D59DE5 /* SwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88622E5494A300D59DE5 /* SwapView.swift */; };
-		D42D886B2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88592E5494A300D59DE5 /* ConfirmSlideButton.swift */; };
-		D42D886C2E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88572E5494A300D59DE5 /* AccountSelectionButton.swift */; };
-		D42D886D2E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88522E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift */; };
-		D42D886E2E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */; };
-		D42D886F2E5494A300D59DE5 /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88532E5494A300D59DE5 /* ProviderSheet.swift */; };
-		D42D88702E5494A300D59DE5 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88642E5494A300D59DE5 /* SwapViewController.swift */; };
-		D42D88712E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */; };
-		D42D88722E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88552E5494A300D59DE5 /* SwapSettingsSheet.swift */; };
-		D42D88732E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88602E5494A300D59DE5 /* ProviderSelectionView.swift */; };
-		D42D88742E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885F2E5494A300D59DE5 /* ConfirmSwapView.swift */; };
-		D42D88752E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885C2E5494A300D59DE5 /* SwitchSwapButton.swift */; };
-		D42D88762E5494A300D59DE5 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885E2E5494A300D59DE5 /* AssetSelectionView.swift */; };
-		D42D88772E5494A300D59DE5 /* SwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885B2E5494A300D59DE5 /* SwapButton.swift */; };
-		D42D88782E5494A300D59DE5 /* SheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88542E5494A300D59DE5 /* SheetTitleView.swift */; };
-		D42D88792E5494A300D59DE5 /* AssetSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88582E5494A300D59DE5 /* AssetSwapButton.swift */; };
-		D42D887A2E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885A2E5494A300D59DE5 /* SettingsSwapButton.swift */; };
-		D42D887B2E5494A300D59DE5 /* SwapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88612E5494A300D59DE5 /* SwapTitleView.swift */; };
-		D42D887C2E5494A300D59DE5 /* SwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88622E5494A300D59DE5 /* SwapView.swift */; };
-		D42D887D2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88592E5494A300D59DE5 /* ConfirmSlideButton.swift */; };
-		D42D887E2E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88572E5494A300D59DE5 /* AccountSelectionButton.swift */; };
-		D42D887F2E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88522E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift */; };
-		D42D88802E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */; };
-		D42D88812E5494A300D59DE5 /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88532E5494A300D59DE5 /* ProviderSheet.swift */; };
-		D42D88822E5494A300D59DE5 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88642E5494A300D59DE5 /* SwapViewController.swift */; };
-		D42D88832E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */; };
-		D42D88842E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88552E5494A300D59DE5 /* SwapSettingsSheet.swift */; };
-		D42D88852E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88602E5494A300D59DE5 /* ProviderSelectionView.swift */; };
-		D42D88862E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885F2E5494A300D59DE5 /* ConfirmSwapView.swift */; };
-		D42D88872E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885C2E5494A300D59DE5 /* SwitchSwapButton.swift */; };
-		D42D88882E5494A300D59DE5 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885E2E5494A300D59DE5 /* AssetSelectionView.swift */; };
-		D42D88892E5494A300D59DE5 /* SwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885B2E5494A300D59DE5 /* SwapButton.swift */; };
-		D42D888A2E5494A300D59DE5 /* SheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88542E5494A300D59DE5 /* SheetTitleView.swift */; };
-		D42D888B2E5494A300D59DE5 /* AssetSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88582E5494A300D59DE5 /* AssetSwapButton.swift */; };
-		D42D888C2E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885A2E5494A300D59DE5 /* SettingsSwapButton.swift */; };
-		D42D888D2E5494A300D59DE5 /* SwapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88612E5494A300D59DE5 /* SwapTitleView.swift */; };
-		D42D888E2E5494A300D59DE5 /* SwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88622E5494A300D59DE5 /* SwapView.swift */; };
-		D42D888F2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88592E5494A300D59DE5 /* ConfirmSlideButton.swift */; };
-		D42D88902E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88572E5494A300D59DE5 /* AccountSelectionButton.swift */; };
-		D42D88912E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88522E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift */; };
-		D42D88922E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */; };
-		D42D88932E5494A300D59DE5 /* ProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88532E5494A300D59DE5 /* ProviderSheet.swift */; };
-		D42D88942E5494A300D59DE5 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88642E5494A300D59DE5 /* SwapViewController.swift */; };
-		D42D88952E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */; };
-		D42D88962E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88552E5494A300D59DE5 /* SwapSettingsSheet.swift */; };
-		D42D88972E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D88602E5494A300D59DE5 /* ProviderSelectionView.swift */; };
-		D42D88982E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885F2E5494A300D59DE5 /* ConfirmSwapView.swift */; };
-		D42D88992E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885C2E5494A300D59DE5 /* SwitchSwapButton.swift */; };
-		D42D889A2E5494A300D59DE5 /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885E2E5494A300D59DE5 /* AssetSelectionView.swift */; };
-		D42D889B2E5494A300D59DE5 /* SwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42D885B2E5494A300D59DE5 /* SwapButton.swift */; };
 		D435F9BC2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
@@ -7343,16 +7289,10 @@
 		D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
-		D447C7052E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
-		D447C7062E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
-		D447C7072E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */; };
 		D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
-		D4A480E42E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A480E32E5F0869003105D1 /* ProviderSheetViewModel.swift */; };
-		D4A480E52E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A480E32E5F0869003105D1 /* ProviderSheetViewModel.swift */; };
-		D4A480E62E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A480E32E5F0869003105D1 /* ProviderSheetViewModel.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9349,24 +9289,6 @@
 		D42AE45829DC31940087BEEF /* RekeyConfirmationInformationItemCommonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationInformationItemCommonTheme.swift; sourceTree = "<group>"; };
 		D42AE46E29DC364F0087BEEF /* RekeySummaryInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySummaryInfoViewModel.swift; sourceTree = "<group>"; };
 		D42AE47229DC36590087BEEF /* UndoRekeyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRekeyInfoViewModel.swift; sourceTree = "<group>"; };
-		D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapConfirmViewModel.swift; sourceTree = "<group>"; };
-		D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSharedViewModel.swift; sourceTree = "<group>"; };
-		D42D88522E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSwapInfoSheet.swift; sourceTree = "<group>"; };
-		D42D88532E5494A300D59DE5 /* ProviderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSheet.swift; sourceTree = "<group>"; };
-		D42D88542E5494A300D59DE5 /* SheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTitleView.swift; sourceTree = "<group>"; };
-		D42D88552E5494A300D59DE5 /* SwapSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSettingsSheet.swift; sourceTree = "<group>"; };
-		D42D88572E5494A300D59DE5 /* AccountSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionButton.swift; sourceTree = "<group>"; };
-		D42D88582E5494A300D59DE5 /* AssetSwapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSwapButton.swift; sourceTree = "<group>"; };
-		D42D88592E5494A300D59DE5 /* ConfirmSlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSlideButton.swift; sourceTree = "<group>"; };
-		D42D885A2E5494A300D59DE5 /* SettingsSwapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwapButton.swift; sourceTree = "<group>"; };
-		D42D885B2E5494A300D59DE5 /* SwapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButton.swift; sourceTree = "<group>"; };
-		D42D885C2E5494A300D59DE5 /* SwitchSwapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchSwapButton.swift; sourceTree = "<group>"; };
-		D42D885E2E5494A300D59DE5 /* AssetSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectionView.swift; sourceTree = "<group>"; };
-		D42D885F2E5494A300D59DE5 /* ConfirmSwapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSwapView.swift; sourceTree = "<group>"; };
-		D42D88602E5494A300D59DE5 /* ProviderSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSelectionView.swift; sourceTree = "<group>"; };
-		D42D88612E5494A300D59DE5 /* SwapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTitleView.swift; sourceTree = "<group>"; };
-		D42D88622E5494A300D59DE5 /* SwapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapView.swift; sourceTree = "<group>"; };
-		D42D88642E5494A300D59DE5 /* SwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewController.swift; sourceTree = "<group>"; };
 		D42DA4EB2A86111700442908 /* WCV1SessionBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCV1SessionBadgeView.swift; sourceTree = "<group>"; };
 		D42DA4EF2A8613ED00442908 /* WCV1SessionBadgeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCV1SessionBadgeViewTheme.swift; sourceTree = "<group>"; };
 		D42DA4F32A8622C900442908 /* WCV1SessionBadgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCV1SessionBadgeViewModel.swift; sourceTree = "<group>"; };
@@ -9454,7 +9376,6 @@
 		D446A749272ABEF50081D60B /* light-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "light-rekey.json"; sourceTree = "<group>"; };
 		D446A74D272ABEFC0081D60B /* dark-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "dark-rekey.json"; sourceTree = "<group>"; };
 		D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageSUIView.swift; sourceTree = "<group>"; };
-		D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSelectionViewModel.swift; sourceTree = "<group>"; };
 		D4487A9A27BD350C00B4B0AB /* RecoverAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewController.swift; sourceTree = "<group>"; };
 		D4487A9C27BD354100B4B0AB /* RecoverAccountViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecoverAccountViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4487A9E27BD355C00B4B0AB /* RecoverAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountView.swift; sourceTree = "<group>"; };
@@ -9773,7 +9694,6 @@
 		D4A2E48628A11B120053B654 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D4A2E48A28A124440053B654 /* WCSessionListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListDataController.swift; sourceTree = "<group>"; };
 		D4A2E48E28A127DC0053B654 /* WCSessionListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListLocalDataController.swift; sourceTree = "<group>"; };
-		D4A480E32E5F0869003105D1 /* ProviderSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSheetViewModel.swift; sourceTree = "<group>"; };
 		D4A5335229F6744E00CBC1A9 /* RekeyedAccountSelectionListAccountLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingCell.swift; sourceTree = "<group>"; };
 		D4A5335629F6DEE500CBC1A9 /* RekeyedAccountSelectionListAccountLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingView.swift; sourceTree = "<group>"; };
 		D4A5335A29F6DF3800CBC1A9 /* RekeyedAccountSelectionListAccountLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingViewTheme.swift; sourceTree = "<group>"; };
@@ -13499,7 +13419,6 @@
 				F010637A28AC531700AB6873 /* SharedUI */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
 				D478AA9328AB8027001958C8 /* Swap */,
-				D42D88652E5494A300D59DE5 /* SwapV2 */,
 				2B56F7D2225B3B0500E58737 /* Transactions */,
 				D41F4F012892E1F800B59559 /* TransferAssetBalance */,
 				5916785E2E460BBE002184C2 /* Utils */,
@@ -20578,65 +20497,6 @@
 			path = InformationItem;
 			sourceTree = "<group>";
 		};
-		D42D88512E5494A300D59DE5 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				D42D884F2E5494A300D59DE5 /* SwapConfirmViewModel.swift */,
-				D42D88502E5494A300D59DE5 /* SwapSharedViewModel.swift */,
-				D447C7042E5E01ED00E893CC /* ProviderSelectionViewModel.swift */,
-				D4A480E32E5F0869003105D1 /* ProviderSheetViewModel.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		D42D88562E5494A300D59DE5 /* BottomSheets */ = {
-			isa = PBXGroup;
-			children = (
-				D42D88522E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift */,
-				D42D88532E5494A300D59DE5 /* ProviderSheet.swift */,
-				D42D88542E5494A300D59DE5 /* SheetTitleView.swift */,
-				D42D88552E5494A300D59DE5 /* SwapSettingsSheet.swift */,
-			);
-			path = BottomSheets;
-			sourceTree = "<group>";
-		};
-		D42D885D2E5494A300D59DE5 /* Buttons */ = {
-			isa = PBXGroup;
-			children = (
-				D42D88572E5494A300D59DE5 /* AccountSelectionButton.swift */,
-				D42D88582E5494A300D59DE5 /* AssetSwapButton.swift */,
-				D42D88592E5494A300D59DE5 /* ConfirmSlideButton.swift */,
-				D42D885A2E5494A300D59DE5 /* SettingsSwapButton.swift */,
-				D42D885B2E5494A300D59DE5 /* SwapButton.swift */,
-				D42D885C2E5494A300D59DE5 /* SwitchSwapButton.swift */,
-			);
-			path = Buttons;
-			sourceTree = "<group>";
-		};
-		D42D88632E5494A300D59DE5 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D42D88562E5494A300D59DE5 /* BottomSheets */,
-				D42D885D2E5494A300D59DE5 /* Buttons */,
-				D42D885E2E5494A300D59DE5 /* AssetSelectionView.swift */,
-				D42D885F2E5494A300D59DE5 /* ConfirmSwapView.swift */,
-				D42D88602E5494A300D59DE5 /* ProviderSelectionView.swift */,
-				D42D88612E5494A300D59DE5 /* SwapTitleView.swift */,
-				D42D88622E5494A300D59DE5 /* SwapView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		D42D88652E5494A300D59DE5 /* SwapV2 */ = {
-			isa = PBXGroup;
-			children = (
-				D42D88512E5494A300D59DE5 /* Models */,
-				D42D88632E5494A300D59DE5 /* Views */,
-				D42D88642E5494A300D59DE5 /* SwapViewController.swift */,
-			);
-			path = SwapV2;
-			sourceTree = "<group>";
-		};
 		D431505827EA24610084CA41 /* Label */ = {
 			isa = PBXGroup;
 			children = (
@@ -24912,25 +24772,6 @@
 				591679732E464C76002184C2 /* AccountPortfolioView.swift in Sources */,
 				591679742E464C76002184C2 /* AccountPortfolioViewTheme.swift in Sources */,
 				591679752E464C76002184C2 /* WatchAccountPortfolioCell.swift in Sources */,
-				D42D88662E5494A300D59DE5 /* SheetTitleView.swift in Sources */,
-				D42D88672E5494A300D59DE5 /* AssetSwapButton.swift in Sources */,
-				D42D88682E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */,
-				D42D88692E5494A300D59DE5 /* SwapTitleView.swift in Sources */,
-				D4A480E52E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */,
-				D42D886A2E5494A300D59DE5 /* SwapView.swift in Sources */,
-				D42D886B2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */,
-				D42D886C2E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */,
-				D42D886D2E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */,
-				D42D886E2E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */,
-				D42D886F2E5494A300D59DE5 /* ProviderSheet.swift in Sources */,
-				D42D88702E5494A300D59DE5 /* SwapViewController.swift in Sources */,
-				D42D88712E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */,
-				D42D88722E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */,
-				D42D88732E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */,
-				D42D88742E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */,
-				D42D88752E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */,
-				D42D88762E5494A300D59DE5 /* AssetSelectionView.swift in Sources */,
-				D42D88772E5494A300D59DE5 /* SwapButton.swift in Sources */,
 				591679762E464C76002184C2 /* WatchAccountPortfolioView.swift in Sources */,
 				591679772E464C76002184C2 /* WatchAccountPortfolioViewTheme.swift in Sources */,
 				591679782E464C76002184C2 /* AssetListSearchNoContentViewModel.swift in Sources */,
@@ -25899,7 +25740,6 @@
 				59167D302E464C76002184C2 /* DeepLinkParser.swift in Sources */,
 				59167D312E464C76002184C2 /* WalletConnectSessionRequestResponse.swift in Sources */,
 				59167D322E464C76002184C2 /* DeeplinkQR.swift in Sources */,
-				D447C7062E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59167D332E464C76002184C2 /* Screen.swift in Sources */,
 				59167D342E464C76002184C2 /* Router.swift in Sources */,
 				59167D352E464C76002184C2 /* AppearanceSelectionViewController.swift in Sources */,
@@ -27090,25 +26930,6 @@
 				59E6FEF32E4A712500CCA99B /* WatchAccountPortfolioCell.swift in Sources */,
 				59E6FEF42E4A712500CCA99B /* WatchAccountPortfolioView.swift in Sources */,
 				59E6FEF52E4A712500CCA99B /* WatchAccountPortfolioViewTheme.swift in Sources */,
-				D42D88782E5494A300D59DE5 /* SheetTitleView.swift in Sources */,
-				D42D88792E5494A300D59DE5 /* AssetSwapButton.swift in Sources */,
-				D42D887A2E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */,
-				D42D887B2E5494A300D59DE5 /* SwapTitleView.swift in Sources */,
-				D4A480E42E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */,
-				D42D887C2E5494A300D59DE5 /* SwapView.swift in Sources */,
-				D42D887D2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */,
-				D42D887E2E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */,
-				D42D887F2E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */,
-				D42D88802E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */,
-				D42D88812E5494A300D59DE5 /* ProviderSheet.swift in Sources */,
-				D42D88822E5494A300D59DE5 /* SwapViewController.swift in Sources */,
-				D42D88832E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */,
-				D42D88842E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */,
-				D42D88852E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */,
-				D42D88862E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */,
-				D42D88872E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */,
-				D42D88882E5494A300D59DE5 /* AssetSelectionView.swift in Sources */,
-				D42D88892E5494A300D59DE5 /* SwapButton.swift in Sources */,
 				59E6FEF62E4A712500CCA99B /* AssetListSearchNoContentViewModel.swift in Sources */,
 				59E6FEF72E4A712500CCA99B /* TestNetTitleView.swift in Sources */,
 				59E6FEF82E4A712500CCA99B /* TestNetTitleViewTheme.swift in Sources */,
@@ -28080,7 +27901,6 @@
 				59E602B12E4A712500CCA99B /* DeeplinkQR.swift in Sources */,
 				59E602B22E4A712500CCA99B /* Screen.swift in Sources */,
 				59E602B32E4A712500CCA99B /* Router.swift in Sources */,
-				D447C7052E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59E602B42E4A712500CCA99B /* AppearanceSelectionViewController.swift in Sources */,
 				59E602B52E4A712500CCA99B /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				59E602B62E4A712500CCA99B /* SingleSelectionViewModel.swift in Sources */,
@@ -29273,25 +29093,6 @@
 				59E6076B2E4A71D000CCA99B /* WatchAccountPortfolioCell.swift in Sources */,
 				59E6076C2E4A71D000CCA99B /* WatchAccountPortfolioView.swift in Sources */,
 				59E6076D2E4A71D000CCA99B /* WatchAccountPortfolioViewTheme.swift in Sources */,
-				D42D888A2E5494A300D59DE5 /* SheetTitleView.swift in Sources */,
-				D42D888B2E5494A300D59DE5 /* AssetSwapButton.swift in Sources */,
-				D42D888C2E5494A300D59DE5 /* SettingsSwapButton.swift in Sources */,
-				D42D888D2E5494A300D59DE5 /* SwapTitleView.swift in Sources */,
-				D4A480E62E5F086E003105D1 /* ProviderSheetViewModel.swift in Sources */,
-				D42D888E2E5494A300D59DE5 /* SwapView.swift in Sources */,
-				D42D888F2E5494A300D59DE5 /* ConfirmSlideButton.swift in Sources */,
-				D42D88902E5494A300D59DE5 /* AccountSelectionButton.swift in Sources */,
-				D42D88912E5494A300D59DE5 /* ConfirmSwapInfoSheet.swift in Sources */,
-				D42D88922E5494A300D59DE5 /* SwapSharedViewModel.swift in Sources */,
-				D42D88932E5494A300D59DE5 /* ProviderSheet.swift in Sources */,
-				D42D88942E5494A300D59DE5 /* SwapViewController.swift in Sources */,
-				D42D88952E5494A300D59DE5 /* SwapConfirmViewModel.swift in Sources */,
-				D42D88962E5494A300D59DE5 /* SwapSettingsSheet.swift in Sources */,
-				D42D88972E5494A300D59DE5 /* ProviderSelectionView.swift in Sources */,
-				D42D88982E5494A300D59DE5 /* ConfirmSwapView.swift in Sources */,
-				D42D88992E5494A300D59DE5 /* SwitchSwapButton.swift in Sources */,
-				D42D889A2E5494A300D59DE5 /* AssetSelectionView.swift in Sources */,
-				D42D889B2E5494A300D59DE5 /* SwapButton.swift in Sources */,
 				59E6076E2E4A71D000CCA99B /* AssetListSearchNoContentViewModel.swift in Sources */,
 				59E6076F2E4A71D000CCA99B /* TestNetTitleView.swift in Sources */,
 				59E607702E4A71D000CCA99B /* TestNetTitleViewTheme.swift in Sources */,
@@ -30259,7 +30060,6 @@
 				59E60B292E4A71D000CCA99B /* DeeplinkQR.swift in Sources */,
 				59E60B2A2E4A71D000CCA99B /* Screen.swift in Sources */,
 				59E60B2B2E4A71D000CCA99B /* Router.swift in Sources */,
-				D447C7072E5E01EF00E893CC /* ProviderSelectionViewModel.swift in Sources */,
 				59E60B2C2E4A71D000CCA99B /* AppearanceSelectionViewController.swift in Sources */,
 				59E60B2D2E4A71D000CCA99B /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				59E60B2E2E4A71D000CCA99B /* SingleSelectionViewModel.swift in Sources */,
