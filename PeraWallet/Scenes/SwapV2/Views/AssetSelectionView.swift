@@ -53,11 +53,10 @@ struct AssetSelectionView: View {
     // MARK: - Properties
     var type: AssetSelectionType
     @Binding var assetItem: AssetItem
-    @Binding var payingText: String
+    @Binding var amountText: String
+    @Binding var amountTextInUSD: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
-    
-    private let defaultValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
     let onAssetSelectionTap: () -> Void
     
@@ -69,7 +68,7 @@ struct AssetSelectionView: View {
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
-                Text(assetItem.balance ?? defaultValue)
+                Text(assetItem.balance ?? SwapSharedViewModel.defaultAmountValue)
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
@@ -82,9 +81,9 @@ struct AssetSelectionView: View {
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
-                        TextField(defaultValue, text: Binding(
-                            get: { payingText },
-                            set: { payingText = $0.isEmpty ? defaultValue : $0 }
+                        TextField(SwapSharedViewModel.defaultAmountValue, text: Binding(
+                            get: { amountText },
+                            set: { amountText = $0.isEmpty ? SwapSharedViewModel.defaultAmountValue : $0 }
                         ))
                         .keyboardType(.decimalPad)
                         .font(.dmSans.medium.size(19.0))
@@ -94,8 +93,8 @@ struct AssetSelectionView: View {
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
-                            if focused && (payingText == "0" || payingText == "0.0" || payingText == "0,0") {
-                                payingText = ""
+                            if focused && (amountText == "0" || amountText == "0.0" || amountText == "0,0") {
+                                amountText = ""
                             }
                         }
                     }
@@ -105,7 +104,7 @@ struct AssetSelectionView: View {
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)
                     } else {
-                        Text(defaultValue)
+                        Text(amountTextInUSD)
                             .keyboardType(.decimalPad)
                             .font(.dmSans.regular.size(13.0))
                             .foregroundStyle(Color.Text.gray)
