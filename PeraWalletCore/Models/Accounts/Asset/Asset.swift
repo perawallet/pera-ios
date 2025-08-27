@@ -58,6 +58,8 @@ public protocol Asset: AnyObject {
     var isAvailableOnDiscover: Bool { get }
 
     var isAlgo: Bool { get }
+    
+    var isUSDC: Bool { get }
 
     var isFault: Bool { get }
 }

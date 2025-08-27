@@ -20,7 +20,7 @@ import pera_wallet_core
 
 class SwapSharedViewModel: ObservableObject {
     
-    // MARK: - Properties
+    // MARK: - Published Properties
     @Published var selectedAccount: Account
     @Published var selectedAssetIn: AssetItem
     @Published var selectedAssetOut: AssetItem
@@ -32,10 +32,13 @@ class SwapSharedViewModel: ObservableObject {
     @Published var payingText: String = .empty
     @Published var receivingText: String = .empty
     
+    private var debounceWorkItem: DispatchWorkItem?
+    
+    // MARK: - Internal State
     var quoteList: [SwapQuote]?
     var availableProviders: [SwapProviderV2]?
 
-    // MARK: - Initialisers
+    // MARK: - Init
     init(
         selectedAccount: Account,
         selectedAssetIn: AssetItem,
@@ -50,25 +53,34 @@ class SwapSharedViewModel: ObservableObject {
     // MARK: - Helpers
     
     func switchAssets() {
-        let temp = selectedAssetIn
-        selectedAssetIn = selectedAssetOut
-        selectedAssetOut = temp
-        let tempText = payingText
-        payingText = receivingText
-        receivingText = tempText
+        (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
+        (payingText, receivingText) = (receivingText, payingText)
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
-        guard let providerDetails else {
-            fatalError("Shouldn't be nil")
+        guard let activeProvider else {
+            fatalError("Active provider should not be nil")
         }
         
-        return SwapConfirmViewModel(selectedAccount: selectedAccount, selectedAssetIn: selectedAssetIn, selectedAssetOut: selectedAssetOut, selectedAssetInAmount: payingText, selectedAssetOutAmount: receivingText, price: price, provider: providerDetails, slippageTolerance: slippageTolerance, priceImpact: priceImpact, minimumReceived: minimumReceived, exchangeFee: exchangeFee, peraFee: peraFee)
+        return SwapConfirmViewModel(
+            selectedAccount: selectedAccount,
+            selectedAssetIn: selectedAssetIn,
+            selectedAssetOut: selectedAssetOut,
+            selectedAssetInAmount: payingText,
+            selectedAssetOutAmount: receivingText,
+            price: price,
+            provider: activeProvider,
+            slippageTolerance: slippageTolerance,
+            priceImpact: priceImpact,
+            minimumReceived: minimumReceived,
+            exchangeFee: exchangeFee,
+            peraFee: peraFee
+        )
     }
     
-    func selectQuote(with selectedProvider: SelectedProvider) {
+    func selectQuote(with provider: SelectedProvider) {
         guard let quoteList else { return }
-        switch selectedProvider {
+        switch provider {
         case .auto:
             selectedQuote = quoteList.first
         case .provider(let provider):
@@ -76,8 +88,36 @@ class SwapSharedViewModel: ObservableObject {
         }
         receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: selectedQuote?.amountOutUSDValue) ?? .empty
     }
+    
+    func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
+        debounceWorkItem?.cancel()
+
+        let task = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            let normalized = newValue.replacingOccurrences(of: ",", with: ".")
+            if let doubleValue = Double(normalized), doubleValue > 0 {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    payingText = Formatter
+                        .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
+                        .string(for: doubleValue) ?? .empty
+                    isLoadingReceiveAmount = true
+                    onGetQuote(doubleValue)
+                }
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    receivingText = .empty
+                }
+            }
+        }
+
+        debounceWorkItem = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+    }
 }
 
+// MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
         let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
@@ -182,25 +222,13 @@ extension SwapSharedViewModel {
         return currencyFormatter.format(value) ?? "-"
     }
     
-    var providerDetails: SwapProviderV2? {
+    var activeProvider: SwapProviderV2? {
         switch selectedProvider {
         case .auto:
-            guard let providerId = quoteList?.first?.provider?.rawValue else {
-                return nil
-            }
+            let bestProviderId = quoteList?.first?.provider?.rawValue
+            return availableProviders?.first(where: { $0.name == bestProviderId })
+        case .provider(let providerId):
             return availableProviders?.first(where: { $0.name == providerId })
-        case .provider(let provider):
-            return availableProviders?.first(where: { $0.name == provider })
         }
-    }
-}
-
-struct Provider {
-    let name: String
-    let iconName: String
-    let exchangeRate: String
-
-    var icon: Image {
-        Image(iconName)
     }
 }

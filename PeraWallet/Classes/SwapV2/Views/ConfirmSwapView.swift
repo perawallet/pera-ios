@@ -139,14 +139,9 @@ struct ConfirmSwapView: View {
                     Spacer()
                     Group {
                         if let url = URL(string: viewModel.provider.iconUrl) {
-                            AsyncImage(url: url) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20, height: 20)
-                            } placeholder: {
-                                EmptyView()
-                            }
+                            URLImageSUIView(url: url)
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
                         } else {
                             EmptyView()
                         }

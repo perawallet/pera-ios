@@ -49,6 +49,7 @@ public final class Algo: Asset {
     )
     public let amountWithFraction: Decimal = 0
     public let isAlgo = true
+    public let isUSDC = false
     public let isFault = false
 
     init(

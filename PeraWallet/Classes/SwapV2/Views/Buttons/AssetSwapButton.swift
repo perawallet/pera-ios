@@ -32,6 +32,8 @@ struct AssetSwapButton: View {
                 Group {
                     if assetItem.asset.isAlgo {
                         Image("icon-algo-circle").resizable()
+                    } else if assetItem.asset.isUSDC {
+                        Image("icon-usdc-circle").resizable()
                     } else if let url = assetItem.asset.logoURL {
                         AsyncImage(url: url) { image in
                             image.resizable()
@@ -43,11 +45,13 @@ struct AssetSwapButton: View {
                     }
                 }
                 .frame(width: iconSize, height: iconSize)
+                .clipShape(Circle())
                 Spacer().frame(width: 6)
                 Text(assetItem.asset.naming.displayNames.primaryName)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
                     .lineLimit(1)
+                    .textCase(assetItem.asset.isAlgo ? .uppercase : nil)
                 Spacer().frame(width: 8)
                 Image("icon-arrow-24")
                     .resizable()
