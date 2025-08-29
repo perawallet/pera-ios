@@ -81,6 +81,10 @@ final class StandardAccountInformationScreen:
     private func scanForAccounts() {
         eventHandler?(.performRescanRekeyedAccounts)
     }
+    
+    private func importConnectedAccounts() {
+        eventHandler?(.performImportConnectedAccounts)
+    }
 }
 
 extension StandardAccountInformationScreen {
@@ -142,7 +146,7 @@ extension StandardAccountInformationScreen {
         }
         
         accountItemView.onScanButtonTap = { [weak self] in
-            self?.scanForAccounts()
+            self?.importConnectedAccounts()
         }
 
         bindAccountItem()
@@ -238,5 +242,6 @@ extension StandardAccountInformationScreen {
         case performRekeyToLedger
         case performRekeyToStandard
         case performRescanRekeyedAccounts
+        case performImportConnectedAccounts
     }
 }

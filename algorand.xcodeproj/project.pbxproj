@@ -117,6 +117,9 @@
 		2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E162682474800C57728 /* AlgorandSDKTests.swift */; };
 		2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9B29A3BD9900DDD988 /* WalletConnectV1SessionValidatorTests.swift */; };
 		2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9F29A3CD7800DDD988 /* WalletConnectV2SessionValidatorTests.swift */; };
+		547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
 		54B183172E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183182E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183192E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
@@ -8339,6 +8342,7 @@
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
 		5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayViewController.swift; sourceTree = "<group>"; };
 		5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayView.swift; sourceTree = "<group>"; };
+		547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccountsHandler.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
 		549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportHandler.swift; sourceTree = "<group>"; };
@@ -12882,6 +12886,7 @@
 		2B80C52527720AB300BB071E /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				547E6AE22E5F26D100D82D13 /* Handlers */,
 				2B80C51D27720A9300BB071E /* AccountDetailViewController.swift */,
 				D40650192A5B428C00B05DBC /* RekeyToStandardAccountFlowCoordinator.swift */,
 				D406501D2A5B429900B05DBC /* RekeyToLedgerAccountFlowCoordinator.swift */,
@@ -16999,6 +17004,14 @@
 				5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */,
 			);
 			path = "Rekey Support";
+			sourceTree = "<group>";
+		};
+		547E6AE22E5F26D100D82D13 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */,
+			);
+			path = Handlers;
 			sourceTree = "<group>";
 		};
 		5916357D2E44C9B2002184C2 /* PeraWallet */ = {
@@ -24076,6 +24089,7 @@
 				5916790E2E464C76002184C2 /* AccountInformationUndoRekeyAccountItemViewModel.swift in Sources */,
 				5916790F2E464C76002184C2 /* AccountInformationNoAuthAccountItemViewModel.swift in Sources */,
 				591679102E464C76002184C2 /* AccountInformationOptionItem.swift in Sources */,
+				547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				591679112E464C76002184C2 /* AccountInformationOptionItemViewModel.swift in Sources */,
 				591679122E464C76002184C2 /* AccountInformationOptionsView.swift in Sources */,
 				591679132E464C76002184C2 /* AccountInformationOptionsViewTheme.swift in Sources */,
@@ -26209,6 +26223,7 @@
 				59E6FE8E2E4A712500CCA99B /* AccountInformationOptionItem.swift in Sources */,
 				59E6FE8F2E4A712500CCA99B /* AccountInformationOptionItemViewModel.swift in Sources */,
 				59E6FE902E4A712500CCA99B /* AccountInformationOptionsView.swift in Sources */,
+				547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				59E6FE912E4A712500CCA99B /* AccountInformationOptionsViewTheme.swift in Sources */,
 				59E6FE922E4A712500CCA99B /* AccountTypeInformationView.swift in Sources */,
 				59E6FE932E4A712500CCA99B /* AccountTypeInformationViewModel.swift in Sources */,
@@ -28342,6 +28357,7 @@
 				59E607062E4A71D000CCA99B /* AccountInformationOptionItem.swift in Sources */,
 				59E607072E4A71D000CCA99B /* AccountInformationOptionItemViewModel.swift in Sources */,
 				59E607082E4A71D000CCA99B /* AccountInformationOptionsView.swift in Sources */,
+				547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				59E607092E4A71D000CCA99B /* AccountInformationOptionsViewTheme.swift in Sources */,
 				59E6070A2E4A71D000CCA99B /* AccountTypeInformationView.swift in Sources */,
 				59E6070B2E4A71D000CCA99B /* AccountTypeInformationViewModel.swift in Sources */,

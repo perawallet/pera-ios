@@ -29,20 +29,21 @@ final class WatchAccountInformationScreen:
     private let contextView = UIView()
     private let titleView = UILabel()
     private let accountItemCanvasView = TripleShadowView()
-    private let accountItemView = AccountListItemWithActionView()
+    private let accountItemView = CombinedAccountListItemView()
     private let accountTypeInformationView = AccountTypeInformationView()
+    
+    var onScanButtonTap: (() -> Void)?
 
     private let account: Account
     private let copyToClipboardController: CopyToClipboardController
 
     private lazy var theme = WatchAccountInformationScreenTheme()
 
-    init(
-        account: Account,
-        copyToClipboardController: CopyToClipboardController
-    ) {
+    init(account: Account, copyToClipboardController: CopyToClipboardController, configuration: ViewControllerConfiguration) {
         self.account = account
         self.copyToClipboardController = copyToClipboardController
+        super.init()
+        setupAccountItemView(configuration: configuration)
     }
 
     override func configureNavigationBar() {
@@ -55,6 +56,13 @@ final class WatchAccountInformationScreen:
         super.prepareLayout()
 
         addContext()
+    }
+    
+    // MARK: - Setups
+
+    private func setupAccountItemView(configuration: ViewControllerConfiguration) {
+        guard let universalWalletID = account.hdWalletAddressDetail?.walletId else { return }
+        accountItemView.universalWalletName = configuration.session?.authenticatedUser?.walletName(for: universalWalletID)
     }
 }
 
@@ -100,7 +108,7 @@ extension WatchAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountItemView.customize(theme.accountItem)
+        accountItemView.update(theme: theme.accountItem)
         accountItemCanvasView.addSubview(accountItemView)
         accountItemView.snp.makeConstraints {
             $0.top == 0
@@ -113,6 +121,10 @@ extension WatchAccountInformationScreen {
         accountItemView.onCopyButtonTap = { [weak self] in
             guard let self else { return }
             self.copyToClipboardController.copyAddress(self.account)
+        }
+        
+        accountItemView.onScanButtonTap = { [weak self] in
+            self?.onScanButtonTap?()
         }
 
         bindAccountItem()
@@ -147,7 +159,7 @@ extension WatchAccountInformationScreen {
 
     private func bindAccountItem() {
         let viewModel = AccountInformationCopyAccountItemViewModel(account)
-        accountItemView.bindData(viewModel)
+        accountItemView.update(accountViewModel: viewModel)
     }
 
     private func bindAccountTypeInformation() {

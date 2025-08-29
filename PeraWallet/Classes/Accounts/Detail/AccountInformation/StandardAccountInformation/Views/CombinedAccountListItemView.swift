@@ -129,7 +129,7 @@ final class CombinedAccountListItemView: UIView {
         accountItemView.customize(theme)
     }
     
-    func update(accountViewModel: AccountInformationCopyAccountItemViewModel) {
+    func update(accountViewModel: AccountListItemWithActionViewModel) {
         accountItemView.bindData(accountViewModel)
     }
     

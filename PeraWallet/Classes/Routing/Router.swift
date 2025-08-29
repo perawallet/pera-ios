@@ -2025,7 +2025,8 @@ final class Router:
             viewController = RekeyedAccountInformationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .anyToNoAuthRekeyedAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2053,7 +2054,8 @@ final class Router:
             )
             viewController = WatchAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
             let uiSheet = UndoRekeyConfirmationSheet(

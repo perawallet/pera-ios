@@ -14,7 +14,6 @@
 
 //   RekeyedAccountInformationAccountItemView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -27,16 +26,30 @@ final class RekeyedAccountInformationAccountItemView:
         .performAuthAccountAction: UIBlockInteraction()
     ]
 
-    private lazy var contentView = MacaroonUIKit.VStackView()
-    private lazy var sourceAccountItemView = AccountListItemWithActionView()
-    private lazy var authAccountItemView = AccountListItemWithActionView()
+    private let contentView = MacaroonUIKit.VStackView()
+    private let sourceAccountItemView = CombinedAccountListItemView()
+    private let authAccountItemView = AccountListItemWithActionView()
+    
+    var universalWalletName: String? {
+        get { sourceAccountItemView.universalWalletName }
+        set { sourceAccountItemView.universalWalletName = newValue }
+    }
+    
+    var onScanButtonTap: (() -> Void)? {
+        get { sourceAccountItemView.onScanButtonTap }
+        set { sourceAccountItemView.onScanButtonTap = newValue }
+    }
 
     func customize(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
         addContent(theme)
     }
 
     func bindData(_ viewModel: RekeyedAccountInformationAccountItemViewModel?) {
-        sourceAccountItemView.bindData(viewModel?.sourceAccount)
+        
+        if let accountViewModel = viewModel?.sourceAccount {
+            sourceAccountItemView.update(accountViewModel: accountViewModel)
+        }
+        
         authAccountItemView.bindData(viewModel?.authAccount)
     }
 
@@ -61,7 +74,7 @@ extension RekeyedAccountInformationAccountItemView {
     }
 
     private func addSourceAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
-        sourceAccountItemView.customize(theme.accountItem)
+        sourceAccountItemView.update(theme: theme.accountItem)
 
         contentView.addArrangedSubview(sourceAccountItemView)
 
