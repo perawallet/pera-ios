@@ -26,6 +26,10 @@ extension URL {
         return scheme?.lowercased() == "mailto"
     }
     var isWebURL: Bool {
+        // vestige.fi loads iframe src as blob:https://vestige.fi/... so we need to handle that case
+        if scheme?.lowercased() == "blob", let newURL = URL(string: String(absoluteString.dropFirst(5))) {
+            return newURL.isWebURL
+        }
         return (scheme?.lowercased() == "http" || scheme?.lowercased() == "https") && host != nil
     }
     var isPeraURL: Bool {
