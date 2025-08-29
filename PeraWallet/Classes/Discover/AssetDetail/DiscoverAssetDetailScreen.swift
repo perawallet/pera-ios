@@ -23,12 +23,7 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
-        analytics: analytics,
-        api: api!,
-        sharedDataController: sharedDataController,
-        loadingController: loadingController!,
-        bannerController: bannerController!,
-        hdWalletStorage: hdWalletStorage,
+        configuration: configuration,
         presentingScreen: self
     )
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
@@ -107,8 +102,16 @@ extension DiscoverAssetDetailScreen {
             draft.assetOutID = assetOutID
         }
 
-        swapAssetFlowCoordinator.updateDraft(draft)
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            swapAssetFlowCoordinator.updateDraft(draft)
+            swapAssetFlowCoordinator.launch()
+            return
+        }
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return
+        }
+        // TODO: send draft to swap vc
+        rootViewController.launch(tab: .swap)
     }
 
     /// <note>

@@ -101,7 +101,7 @@ struct MenuListCardViewTheme:
         
         self.actionActive = [
             .titleColor([ .normal(Colors.Button.Primary.text), .disabled(Colors.Button.Primary.disabledText) ]),
-            .icon([.normal("icon-list-arrow".templateImage)]),
+            .icon([.normal("icon-arrow-24".templateImage)]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),

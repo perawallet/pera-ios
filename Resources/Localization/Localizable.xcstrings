@@ -7369,6 +7369,17 @@
         }
       }
     },
+    "title-apply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
+    },
     "title-approve" : {
       "localizations" : {
         "en" : {
@@ -7441,6 +7452,17 @@
         }
       }
     },
+    "title-auto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
+          }
+        }
+      }
+    },
     "title-back-up-account-selection-header" : {
       "localizations" : {
         "en" : {
@@ -7457,6 +7479,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Balance"
+          }
+        }
+      }
+    },
+    "title-best-price-available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best price available"
           }
         }
       }
@@ -7577,6 +7610,17 @@
         }
       }
     },
+    "title-change-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Provider"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "localizations" : {
         "en" : {
@@ -7623,6 +7667,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm All"
+          }
+        }
+      }
+    },
+    "title-confirmed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmed!"
           }
         }
       }
@@ -7824,6 +7879,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error: %@"
+          }
+        }
+      }
+    },
+    "title-exchange-fee" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exchange Fee"
           }
         }
       }
@@ -8165,6 +8231,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lowest Value to Highest"
+          }
+        }
+      }
+    },
+    "title-main-account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main Account"
           }
         }
       }
@@ -8513,6 +8590,17 @@
         }
       }
     },
+    "title-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider"
+          }
+        }
+      }
+    },
     "title-read-more" : {
       "localizations" : {
         "en" : {
@@ -8855,6 +8943,17 @@
         }
       }
     },
+    "title-slide-to-confirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slide To Confirm"
+          }
+        }
+      }
+    },
     "title-sort" : {
       "localizations" : {
         "en" : {
@@ -8961,6 +9060,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Swap"
+          }
+        }
+      }
+    },
+    "title-swap-settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap Settings"
           }
         }
       }
@@ -9141,6 +9251,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yes, continue"
+          }
+        }
+      }
+    },
+    "title-you-pay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You pay"
+          }
+        }
+      }
+    },
+    "title-you-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You receive"
           }
         }
       }
