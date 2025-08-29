@@ -117,6 +117,18 @@
 		2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E162682474800C57728 /* AlgorandSDKTests.swift */; };
 		2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9B29A3BD9900DDD988 /* WalletConnectV1SessionValidatorTests.swift */; };
 		2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9F29A3CD7800DDD988 /* WalletConnectV2SessionValidatorTests.swift */; };
+		547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		54B183172E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
+		54B183182E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
+		54B183192E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
+		54B1831B2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831A2E55B3F000E4FAE5 /* CircleIconView.swift */; };
+		54B1831C2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831A2E55B3F000E4FAE5 /* CircleIconView.swift */; };
+		54B1831D2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831A2E55B3F000E4FAE5 /* CircleIconView.swift */; };
+		54B1831F2E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
+		54B183202E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
+		54B183212E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
 		591635952E44D162002184C2 /* pera_wallet_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 591635942E44D162002184C2 /* pera_wallet_core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; };
 		5916359A2E44D162002184C2 /* pera_wallet_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -8330,10 +8342,14 @@
 		543447752D5355800080AF4D /* OptOutAssetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetCoordinator.swift; sourceTree = "<group>"; };
 		5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayViewController.swift; sourceTree = "<group>"; };
 		5435EC732E126B170056A49D /* RekeySupportOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportOverlayView.swift; sourceTree = "<group>"; };
+		547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccountsHandler.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
 		549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportHandler.swift; sourceTree = "<group>"; };
 		549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsFooterView.swift; sourceTree = "<group>"; };
+		54B183162E55B39400E4FAE5 /* AddressScanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressScanButton.swift; sourceTree = "<group>"; };
+		54B1831A2E55B3F000E4FAE5 /* CircleIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleIconView.swift; sourceTree = "<group>"; };
+		54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedAccountListItemView.swift; sourceTree = "<group>"; };
 		54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanAccountsListItemViewModel.swift; sourceTree = "<group>"; };
 		54B9FAC12DA7D77500869DEA /* RescanRekeyedAccountsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanRekeyedAccountsCoordinator.swift; sourceTree = "<group>"; };
 		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
@@ -12870,6 +12886,7 @@
 		2B80C52527720AB300BB071E /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				547E6AE22E5F26D100D82D13 /* Handlers */,
 				2B80C51D27720A9300BB071E /* AccountDetailViewController.swift */,
 				D40650192A5B428C00B05DBC /* RekeyToStandardAccountFlowCoordinator.swift */,
 				D406501D2A5B429900B05DBC /* RekeyToLedgerAccountFlowCoordinator.swift */,
@@ -16987,6 +17004,14 @@
 				5435EC6F2E126A970056A49D /* RekeySupportOverlayViewController.swift */,
 			);
 			path = "Rekey Support";
+			sourceTree = "<group>";
+		};
+		547E6AE22E5F26D100D82D13 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */,
+			);
+			path = Handlers;
 			sourceTree = "<group>";
 		};
 		5916357D2E44C9B2002184C2 /* PeraWallet */ = {
@@ -22242,6 +22267,8 @@
 		D4F4C88529D16FA70069FB94 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */,
+				54B183162E55B39400E4FAE5 /* AddressScanButton.swift */,
 				D4A553DC29CDD48900C9C5EE /* StandardAccountTypeInformationViewModel.swift */,
 			);
 			path = Views;
@@ -22500,6 +22527,7 @@
 			children = (
 				2B99D46628F5517400323C11 /* Screens */,
 				F03E9AB728AFBE5800A3F07E /* Views */,
+				54B1831A2E55B3F000E4FAE5 /* CircleIconView.swift */,
 			);
 			path = SharedUI;
 			sourceTree = "<group>";
@@ -24061,6 +24089,7 @@
 				5916790E2E464C76002184C2 /* AccountInformationUndoRekeyAccountItemViewModel.swift in Sources */,
 				5916790F2E464C76002184C2 /* AccountInformationNoAuthAccountItemViewModel.swift in Sources */,
 				591679102E464C76002184C2 /* AccountInformationOptionItem.swift in Sources */,
+				547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				591679112E464C76002184C2 /* AccountInformationOptionItemViewModel.swift in Sources */,
 				591679122E464C76002184C2 /* AccountInformationOptionsView.swift in Sources */,
 				591679132E464C76002184C2 /* AccountInformationOptionsViewTheme.swift in Sources */,
@@ -24393,6 +24422,7 @@
 				59167A592E464C76002184C2 /* OptOutCollectibleAssetListItemCellTheme.swift in Sources */,
 				59167A5A2E464C76002184C2 /* OptOutAssetListItemAccessory.swift in Sources */,
 				59167A5B2E464C76002184C2 /* OptOutAssetListItemCell.swift in Sources */,
+				54B1831F2E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */,
 				59167A5C2E464C76002184C2 /* OptOutAssetListItemCellTheme.swift in Sources */,
 				59167A5D2E464C76002184C2 /* OptOutAssetListItemViewModel.swift in Sources */,
 				59167A5E2E464C76002184C2 /* OptOutAssetListItemViewTheme.swift in Sources */,
@@ -24428,6 +24458,7 @@
 				59167A7C2E464C76002184C2 /* PassphraseBackUpViewController+Theme.swift in Sources */,
 				59167A7D2E464C76002184C2 /* PassphraseVerifyViewController.swift in Sources */,
 				59167A7E2E464C76002184C2 /* PassphraseVerifyViewController+Theme.swift in Sources */,
+				54B1831D2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */,
 				59167A7F2E464C76002184C2 /* PassphraseCellViewModel.swift in Sources */,
 				59167A802E464C76002184C2 /* PassphraseVerifyCardViewModel.swift in Sources */,
 				59167A812E464C76002184C2 /* PassphraseVerifyViewModel.swift in Sources */,
@@ -26068,6 +26099,7 @@
 				591680E62E464C76002184C2 /* WCAppCallTransactionItemView.swift in Sources */,
 				591680E72E464C76002184C2 /* WCAppCallTransactionItemCell.swift in Sources */,
 				591680E82E464C76002184C2 /* WCAssetConfigTransactionItemView.swift in Sources */,
+				54B183192E55B39600E4FAE5 /* AddressScanButton.swift in Sources */,
 				591680E92E464C76002184C2 /* WCAssetConfigTransactionItemCell.swift in Sources */,
 				591680EA2E464C76002184C2 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				591680EB2E464C76002184C2 /* WCMultipleTransactionItemView.swift in Sources */,
@@ -26191,6 +26223,7 @@
 				59E6FE8E2E4A712500CCA99B /* AccountInformationOptionItem.swift in Sources */,
 				59E6FE8F2E4A712500CCA99B /* AccountInformationOptionItemViewModel.swift in Sources */,
 				59E6FE902E4A712500CCA99B /* AccountInformationOptionsView.swift in Sources */,
+				547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				59E6FE912E4A712500CCA99B /* AccountInformationOptionsViewTheme.swift in Sources */,
 				59E6FE922E4A712500CCA99B /* AccountTypeInformationView.swift in Sources */,
 				59E6FE932E4A712500CCA99B /* AccountTypeInformationViewModel.swift in Sources */,
@@ -26523,6 +26556,7 @@
 				59E6FFDA2E4A712500CCA99B /* OptOutAssetListItemCellTheme.swift in Sources */,
 				59E6FFDB2E4A712500CCA99B /* OptOutAssetListItemViewModel.swift in Sources */,
 				59E6FFDC2E4A712500CCA99B /* OptOutAssetListItemViewTheme.swift in Sources */,
+				54B183202E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */,
 				59E6FFDD2E4A712500CCA99B /* OptOutAssetListItemView.swift in Sources */,
 				59E6FFDE2E4A712500CCA99B /* ManageAssetListQuery.swift in Sources */,
 				59E6FFDF2E4A712500CCA99B /* SelectAssetListItemViewModel.swift in Sources */,
@@ -26558,6 +26592,7 @@
 				59E6FFFD2E4A712500CCA99B /* PassphraseCellViewModel.swift in Sources */,
 				59E6FFFE2E4A712500CCA99B /* PassphraseVerifyCardViewModel.swift in Sources */,
 				59E6FFFF2E4A712500CCA99B /* PassphraseVerifyViewModel.swift in Sources */,
+				54B1831B2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */,
 				59E600002E4A712500CCA99B /* PassphraseCell.swift in Sources */,
 				59E600012E4A712500CCA99B /* PassphraseCellView.swift in Sources */,
 				59E600022E4A712500CCA99B /* PassphraseCellViewTheme.swift in Sources */,
@@ -28198,6 +28233,7 @@
 				59E606652E4A712500CCA99B /* WCAppCallTransactionItemView.swift in Sources */,
 				59E606662E4A712500CCA99B /* WCAppCallTransactionItemCell.swift in Sources */,
 				59E606672E4A712500CCA99B /* WCAssetConfigTransactionItemView.swift in Sources */,
+				54B183172E55B39600E4FAE5 /* AddressScanButton.swift in Sources */,
 				59E606682E4A712500CCA99B /* WCAssetConfigTransactionItemCell.swift in Sources */,
 				59E606692E4A712500CCA99B /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				59E6066A2E4A712500CCA99B /* WCMultipleTransactionItemView.swift in Sources */,
@@ -28321,6 +28357,7 @@
 				59E607062E4A71D000CCA99B /* AccountInformationOptionItem.swift in Sources */,
 				59E607072E4A71D000CCA99B /* AccountInformationOptionItemViewModel.swift in Sources */,
 				59E607082E4A71D000CCA99B /* AccountInformationOptionsView.swift in Sources */,
+				547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */,
 				59E607092E4A71D000CCA99B /* AccountInformationOptionsViewTheme.swift in Sources */,
 				59E6070A2E4A71D000CCA99B /* AccountTypeInformationView.swift in Sources */,
 				59E6070B2E4A71D000CCA99B /* AccountTypeInformationViewModel.swift in Sources */,
@@ -28653,6 +28690,7 @@
 				59E608522E4A71D000CCA99B /* OptOutAssetListItemCellTheme.swift in Sources */,
 				59E608532E4A71D000CCA99B /* OptOutAssetListItemViewModel.swift in Sources */,
 				59E608542E4A71D000CCA99B /* OptOutAssetListItemViewTheme.swift in Sources */,
+				54B183212E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */,
 				59E608552E4A71D000CCA99B /* OptOutAssetListItemView.swift in Sources */,
 				59E608562E4A71D000CCA99B /* ManageAssetListQuery.swift in Sources */,
 				59E608572E4A71D000CCA99B /* SelectAssetListItemViewModel.swift in Sources */,
@@ -28688,6 +28726,7 @@
 				59E608752E4A71D000CCA99B /* PassphraseCellViewModel.swift in Sources */,
 				59E608762E4A71D000CCA99B /* PassphraseVerifyCardViewModel.swift in Sources */,
 				59E608772E4A71D000CCA99B /* PassphraseVerifyViewModel.swift in Sources */,
+				54B1831C2E55B3F100E4FAE5 /* CircleIconView.swift in Sources */,
 				59E608782E4A71D000CCA99B /* PassphraseCell.swift in Sources */,
 				59E608792E4A71D000CCA99B /* PassphraseCellView.swift in Sources */,
 				59E6087A2E4A71D000CCA99B /* PassphraseCellViewTheme.swift in Sources */,
@@ -30328,6 +30367,7 @@
 				59E60EDD2E4A71D000CCA99B /* WCAppCallTransactionItemView.swift in Sources */,
 				59E60EDE2E4A71D000CCA99B /* WCAppCallTransactionItemCell.swift in Sources */,
 				59E60EDF2E4A71D000CCA99B /* WCAssetConfigTransactionItemView.swift in Sources */,
+				54B183182E55B39600E4FAE5 /* AddressScanButton.swift in Sources */,
 				59E60EE02E4A71D000CCA99B /* WCAssetConfigTransactionItemCell.swift in Sources */,
 				59E60EE12E4A71D000CCA99B /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				59E60EE22E4A71D000CCA99B /* WCMultipleTransactionItemView.swift in Sources */,
