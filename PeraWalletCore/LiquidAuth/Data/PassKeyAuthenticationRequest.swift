@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CurrentValueSubject+Utils.swift
+import Foundation
 
-import Combine
-
-extension CurrentValueSubject where Failure == Never {
-    func readOnlyPublisher() -> ReadOnlyPublisher<Output> { ReadOnlyPublisher<Output>(currentValuePublisher: self) }
+public struct PassKeyAuthenticationRequest {
+    public let origin: String
+    public let username: String
+    
+    public init(origin: String, username: String) {
+        self.origin = origin
+        self.username = username
+    }
 }
+

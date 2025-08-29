@@ -429,7 +429,7 @@ extension TransactionController {
     private func handleMinimumAmountErrorIfNeeded(from builder: TransactionDataBuildable) {
         if let builder = builder as? AlgoTransactionDataBuilder,
            let minimumAccountBalance = builder.minimumAccountBalance,
-           builder.calculatedTransactionAmount.unwrap(or: 0).isBelowZero {
+           builder.calculatedTransactionAmount.unwrap(or: 0).isNegative {
             delegate?.transactionController(
                 self,
                 didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAccountBalance))
