@@ -563,6 +563,16 @@
         }
       }
     },
+    "address-scan-button-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan new addresses"
+          }
+        }
+      }
+    },
     "algo-statistics-title" : {
       "localizations" : {
         "en" : {

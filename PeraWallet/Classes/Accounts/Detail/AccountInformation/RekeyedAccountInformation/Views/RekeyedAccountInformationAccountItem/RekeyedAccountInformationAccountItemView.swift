@@ -14,7 +14,6 @@
 
 //   RekeyedAccountInformationAccountItemView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -27,16 +26,30 @@ final class RekeyedAccountInformationAccountItemView:
         .performAuthAccountAction: UIBlockInteraction()
     ]
 
-    private lazy var contentView = MacaroonUIKit.VStackView()
-    private lazy var sourceAccountItemView = AccountListItemWithActionView()
-    private lazy var authAccountItemView = AccountListItemWithActionView()
+    private let contentView = MacaroonUIKit.VStackView()
+    private let sourceAccountItemView = CombinedAccountListItemView()
+    private let authAccountItemView = AccountListItemWithActionView()
+    
+    var universalWalletName: String? {
+        get { sourceAccountItemView.universalWalletName }
+        set { sourceAccountItemView.universalWalletName = newValue }
+    }
+    
+    var onScanButtonTap: (() -> Void)? {
+        get { sourceAccountItemView.onScanButtonTap }
+        set { sourceAccountItemView.onScanButtonTap = newValue }
+    }
 
     func customize(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
         addContent(theme)
     }
 
     func bindData(_ viewModel: RekeyedAccountInformationAccountItemViewModel?) {
-        sourceAccountItemView.bindData(viewModel?.sourceAccount)
+        
+        if let accountViewModel = viewModel?.sourceAccount {
+            sourceAccountItemView.update(accountViewModel: accountViewModel)
+        }
+        
         authAccountItemView.bindData(viewModel?.authAccount)
     }
 
@@ -61,18 +74,16 @@ extension RekeyedAccountInformationAccountItemView {
     }
 
     private func addSourceAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
-        sourceAccountItemView.customize(theme.accountItem)
+        sourceAccountItemView.update(theme: theme.accountItem)
 
         contentView.addArrangedSubview(sourceAccountItemView)
 
         sourceAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
-
-        sourceAccountItemView.startObserving(event: .performAction) {
-            [unowned self] in
-            let interaction = self.uiInteractions[.performSourceAccountAction]
-            interaction?.publish()
+        
+        sourceAccountItemView.onCopyButtonTap = { [weak self] in
+            self?.uiInteractions[.performSourceAccountAction]?.publish()
         }
     }
 
@@ -123,11 +134,9 @@ extension RekeyedAccountInformationAccountItemView {
         authAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
-
-        authAccountItemView.startObserving(event: .performAction) {
-            [unowned self] in
-            let interaction = self.uiInteractions[.performAuthAccountAction]
-            interaction?.publish()
+        
+        authAccountItemView.onCopyButtonTap = { [weak self] in
+            self?.uiInteractions[.performAuthAccountAction]?.publish()
         }
     }
 }

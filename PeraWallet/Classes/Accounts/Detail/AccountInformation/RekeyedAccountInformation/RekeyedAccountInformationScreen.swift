@@ -14,7 +14,6 @@
 
 //   RekeyedAccountInformationScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
@@ -30,12 +29,12 @@ final class RekeyedAccountInformationScreen:
         return .compressed
     }
 
-    private lazy var contextView = UIView()
-    private lazy var titleView = UILabel()
-    private lazy var accountItemCanvasView = TripleShadowView()
-    private lazy var accountItemView = RekeyedAccountInformationAccountItemView()
-    private lazy var accountTypeInformationView = AccountTypeInformationView()
-    private lazy var optionsView = AccountInformationOptionsView()
+    private let contextView = UIView()
+    private let titleView = UILabel()
+    private let accountItemCanvasView = TripleShadowView()
+    private let accountItemView = RekeyedAccountInformationAccountItemView()
+    private let accountTypeInformationView = AccountTypeInformationView()
+    private let optionsView = AccountInformationOptionsView()
 
     private let sourceAccount: Account
     private let authAccount: Account
@@ -43,14 +42,12 @@ final class RekeyedAccountInformationScreen:
 
     private lazy var theme = RekeyedAccountInformationScreenTheme()
 
-    init(
-        sourceAccount: Account,
-        authAccount: Account,
-        copyToClipboardController: CopyToClipboardController
-    ) {
+    init(sourceAccount: Account, authAccount: Account, copyToClipboardController: CopyToClipboardController, configuration: ViewControllerConfiguration) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
         self.copyToClipboardController = copyToClipboardController
+        super.init()
+        setupAccountItemView(configuration: configuration)
     }
 
     override func configureNavigationBar() {
@@ -63,6 +60,13 @@ final class RekeyedAccountInformationScreen:
         super.prepareLayout()
 
         addContext()
+    }
+    
+    // MARK: - Setups
+
+    private func setupAccountItemView(configuration: ViewControllerConfiguration) {
+        guard let universalWalletID = sourceAccount.hdWalletAddressDetail?.walletId else { return }
+        accountItemView.universalWalletName = configuration.session?.authenticatedUser?.walletName(for: universalWalletID)
     }
 }
 
@@ -202,6 +206,10 @@ extension RekeyedAccountInformationScreen {
             authAccount: authAccount
         )
         accountItemView.bindData(viewModel)
+        
+        accountItemView.onScanButtonTap = { [weak self] in
+            self?.eventHandler?(.performImportConnectedAccounts)
+        }
     }
 
     private func bindAccountTypeInformation() {
@@ -216,5 +224,6 @@ extension RekeyedAccountInformationScreen {
         case performRekeyToStandard
         case performUndoRekey
         case performRescanRekeyedAccounts
+        case performImportConnectedAccounts
     }
 }
