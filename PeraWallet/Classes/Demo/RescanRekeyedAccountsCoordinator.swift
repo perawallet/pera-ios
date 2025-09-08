@@ -106,7 +106,13 @@ final class RescanRekeyedAccountsCoordinator {
             
             if data.isEmpty, nextStep == .returnToHomeScreen {
                 PeraUserDefaults.shouldShowNewAccountAnimation = true
-                presenter?.launchMain()
+                
+                if presenter?.findVisibleScreen() is RootViewController {
+                    presenter?.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    presenter?.launchMain()
+                }
+                
             } else {
                 openAccountsSelectionList(data: data, nextStep: nextStep)
             }

@@ -1998,7 +1998,8 @@ final class Router:
             )
             viewController = StandardAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .ledgerAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2006,7 +2007,8 @@ final class Router:
             )
             viewController = LedgerAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .noAuthAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2023,7 +2025,8 @@ final class Router:
             viewController = RekeyedAccountInformationScreen(
                 sourceAccount: sourceAccount,
                 authAccount: authAccount,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case .anyToNoAuthRekeyedAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
@@ -2051,7 +2054,8 @@ final class Router:
             )
             viewController = WatchAccountInformationScreen(
                 account: account,
-                copyToClipboardController: copyToClipboardController
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
             )
         case let .undoRekeyConfirmation(sourceAccount, authAccount, eventHandler):
             let uiSheet = UndoRekeyConfirmationSheet(
