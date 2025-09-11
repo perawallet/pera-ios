@@ -104,7 +104,11 @@ final class HomeViewController:
         return .init(name: .accountList)
     }
     
-    private lazy var successAnimationImageView = LottieImageView()
+    private lazy var successAnimationImageView: LottieImageView = {
+        let view = LottieImageView()
+        view.accessibilityIdentifier = ViewIdentifier.homeConfettiAnimation.rawValue
+        return view
+    }()
 
     private lazy var listView =
         UICollectionView(frame: .zero, collectionViewLayout: HomeListLayout.build())
