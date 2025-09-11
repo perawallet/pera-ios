@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RoundedButton.swift
-
 import SwiftUI
+import pera_wallet_core
 
-struct RoundedButton: View {
-    
-    // MARK: - Properties
-    
-    let text: LocalizedStringKey
-    var backgroundColor: Color = Color.ButtonSecondary.bg
-    var textColor: Color = Color.ButtonSecondary.text
-    let onTap: () -> Void
-    
+struct PasskeyEmptyView: View {
+        
     // MARK: - Body
-    
     var body: some View {
-        Text(text)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52.0)
-            .background(backgroundColor)
-            .foregroundStyle(textColor)
-            .font(.dmSans.medium.size(15.0))
-            .cornerRadius(4.0)
-            .onTapGesture { onTap() }
+        VStack(spacing: 20.0) {
+            Image(.Passkeys.passkeysWarningHeader)
+                .frame(width: 96, height: 88)
+            Text("settings-passkeys-empty")
+                .font(.dmSans.regular.size(15.0))
+                .foregroundStyle(Color.Text.main)
+        }
     }
 }

@@ -23,6 +23,7 @@ final class PasskeyListViewModel: ObservableObject {
     
     @Published fileprivate(set) var passkeys: [PassKeyModel] = []
     @Published fileprivate(set) var settingNotEnabled = false
+    
     private let passKeyManager: PassKeyService? = {
         guard let appConfig = AppDelegate.shared?.appConfiguration else {
             return nil
@@ -109,6 +110,6 @@ final class PassKeyModel : Identifiable {
     }
     
     var lastUsedDisplay: String {
-        String(format: String(localized: "settings-passkeys-last-used"), lastUsed?.toFormat("MMM d, yyyy, h:mm a") ?? "Never")
+        lastUsed?.toFormat("MMM d, yyyy, h:mm a") ?? String(localized: "settings-passkeys-never")
     }
 }

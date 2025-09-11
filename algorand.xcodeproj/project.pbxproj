@@ -10272,6 +10272,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
+				Passkeys/PasskeyDisabledView.swift,
+				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
@@ -10326,6 +10328,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
+				Passkeys/PasskeyDisabledView.swift,
+				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
@@ -10360,6 +10364,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Buttons/RoundedButton.swift,
+				Passkeys/PasskeyDisabledView.swift,
+				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,

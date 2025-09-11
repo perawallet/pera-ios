@@ -15,7 +15,6 @@
 import SwiftUI
 import AuthenticationServices
 
-//TODO: This is a temporary placeholder - update when we have final designs
 struct PasskeyListView: View {
     
     private let model: PasskeyListModelable
@@ -34,20 +33,19 @@ struct PasskeyListView: View {
     var body: some View {
         VStack {
             if viewModel.settingNotEnabled {
-                WarningLabel()
-                    .padding()
+                PasskeyDisabledView()
             }
-            
-            List(viewModel.passkeys) { passkey in
-                PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: viewModel.passKeyDeleted))
+            else if viewModel.passkeys.isEmpty {
+                PasskeyEmptyView()
             }
-            .overlay(Group {
-                if viewModel.passkeys.isEmpty {
-                    Text("settings-passkeys-empty")
+            else {
+                List(viewModel.passkeys) { passkey in
+                    PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: viewModel.passKeyDeleted))
+                        .listRowSeparator(.hidden)
                 }
-            })
-            .scrollContentBackground(.hidden)
-            .listStyle(.automatic)
+                .scrollContentBackground(.hidden)
+                .listStyle(.plain)
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("settings-passkeys-title")
@@ -63,19 +61,5 @@ struct PasskeyListView: View {
                 }
             )
         }
-    }
-}
-
-struct WarningLabel : View {
-    
-    var body : some View {
-        HStack {
-            Image(ImageResource(name: "icon-incoming-asa-yellow-error", bundle: .main))
-            Text("liquid-auth-autofill-disabled")
-                .foregroundColor(.Testnet.bg)
-                .font(.body)
-        }
-        .padding()
-        .border(Color.Testnet.bg, width: 1)
     }
 }

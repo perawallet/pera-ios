@@ -4869,12 +4869,12 @@
         }
       }
     },
-    "passkeys-back" : {
+    "passkeys-error" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Back"
+            "value" : "Please try again"
           }
         }
       }
@@ -4884,7 +4884,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Signing request…"
+            "value" : "Checking passkeys…"
           }
         }
       }
@@ -6491,34 +6491,52 @@
         }
       }
     },
-    "settings-passkeys-delete" : {
+    "settings-passkey-delete-body" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Delete"
+            "value" : "You are about to remove this passkey.  Are you sure you want to proceed?"
           }
         }
       }
     },
-    "settings-passkeys-delete-confirm-message" : {
-      "extractionState" : "stale",
+    "settings-passkey-delete-title" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure you want to delete this passkey?"
+            "value" : "Remove Passkey"
           }
         }
       }
     },
-    "settings-passkeys-delete-confirm-title" : {
-      "extractionState" : "stale",
+    "settings-passkey-disabled-header" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure?"
+            "value" : "Enable Passkeys"
+          }
+        }
+      }
+    },
+    "settings-passkeys-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Store your passkeys for any website directly in your Pera Wallet and use them to sign in using TouchID or FaceID."
+          }
+        }
+      }
+    },
+    "settings-passkeys-disabled-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can enable Passkeys for Pera Wallet in Settings > General > Autofill & Passwords"
           }
         }
       }
@@ -6528,7 +6546,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You currently have no passkeys saved."
+            "value" : "No passkeys yet"
           }
         }
       }
@@ -6538,7 +6556,27 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last used: %@"
+            "value" : "Last used"
+          }
+        }
+      }
+    },
+    "settings-passkeys-never" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never"
+          }
+        }
+      }
+    },
+    "settings-passkeys-open-settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings"
           }
         }
       }
@@ -6549,6 +6587,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passkeys"
+          }
+        }
+      }
+    },
+    "settings-passkeys-username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
           }
         }
       }
@@ -7961,6 +8009,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Discover"
+          }
+        }
+      }
+    },
+    "title-dismiss" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss"
           }
         }
       }

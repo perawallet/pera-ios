@@ -20,39 +20,107 @@ struct PasskeyListCell: View {
     
     // MARK: - Properties
     @State var viewModel: PasskeyListCellViewModel
-        
+    @State var showingConfirmation = false
+
     // MARK: - Body
     var body: some View {
-        HStack {
-            Image(.Settings.Icon.passkeys)
-                .resizable()
-                .foregroundStyle(Color.Text.main)
-                .frame(width: 24.0, height: 24.0)
-                .padding(.trailing, 16.0)
-            VStack(alignment: .leading, spacing: 4.0) {
-                Text(viewModel.passkey.displayName)
-                    .font(.dmSans.bold.size(15.0))
+        VStack(spacing: 12.0) {
+            HStack (alignment: .center) {
+                Image(.Settings.Icon.passkeys)
+                    .resizable()
                     .foregroundStyle(Color.Text.main)
-                Text(viewModel.passkey.origin)
+                    .frame(width: 24.0, height: 24.0)
+                    .padding(.trailing, 12.0)
+                
+                VStack (alignment: .leading) {
+                    Text(viewModel.passkey.displayName)
+                        .font(.dmSans.medium.size(15.0))
+                        .foregroundStyle(Color.Text.main)
+                        .padding(.bottom, 2.0)
+                    Text(viewModel.passkey.origin)
+                        .font(.dmSans.regular.size(13.0))
+                        .foregroundStyle(Color.Text.grayLighter)
+                }
+                .frame(
+                  minWidth: 0,
+                  maxWidth: .infinity,
+                  minHeight: 0,
+                  maxHeight: 48.0,
+                  alignment: .topLeading
+                )
+                
+                SwiftUI.Button(action: { showingConfirmation = true }) {
+                    Image(.Passkeys.iconTrash)
+                        .frame(width: 24.0, height: 24.0)
+                }
+                .padding(.leading, 12.0)
+                .sheet(isPresented: $showingConfirmation) {
+                    VStack(alignment: .center, spacing: 12.0) {
+                        Image(.Passkeys.iconTrash)
+                            .resizable()
+                            .frame(width: 72, height: 72)
+                            .foregroundStyle(Color.Helpers.negative)
+                        
+                        Text("settings-passkey-delete-title")
+                            .font(.dmSans.medium.size(19.0))
+                            .foregroundStyle(Color.Text.main)
+                        Text("settings-passkey-delete-body")
+                            .font(.dmSans.regular.size(15.0))
+                            .foregroundStyle(Color.Text.gray)
+                            .multilineTextAlignment(.center)
+                            .padding(.bottom, 24.0)
+                        
+                        RoundedButton(text: "title-remove",
+                                      backgroundColor: Color.ButtonPrimary.bg,
+                                      textColor: Color.ButtonPrimary.text,
+                                      onTap: {
+                            viewModel.deletePasskey()
+                        })
+                        RoundedButton(text: "title-keep",
+                                      backgroundColor: Color.ButtonSecondary.bg,
+                                      textColor: Color.ButtonSecondary.text,
+                                      onTap: {
+                            showingConfirmation = false
+                        })
+                    }
+                    .padding([.top, .leading, .trailing], 24.0)
+                    .presentationDetents([.medium])
+                }
+            }
+            
+            // We use rectangles as separators because Divider wasn't rendering correctly
+            Rectangle()
+                .fill(Color.Layer.grayLight)
+                .frame(maxWidth: .infinity, minHeight: 1.0, maxHeight: 1.0)
+            
+            HStack (alignment: .center) {
+                Text("settings-passkeys-last-used")
                     .font(.dmSans.regular.size(13.0))
-                    .foregroundStyle(Color.Text.gray)
+                    .foregroundStyle(Color.Text.main)
+                Spacer()
                 Text(viewModel.passkey.lastUsedDisplay)
                     .font(.dmSans.regular.size(13.0))
-                    .foregroundStyle(Color.Text.gray)
+                    .foregroundStyle(Color.Text.grayLighter)
             }
-            Spacer()
-            Image(.iconNextDisabled)
-                .resizable()
-                .foregroundStyle(Color.Text.main)
-                .frame(width: 24.0, height: 24.0)
-        }
-        .padding(.leading, 24.0)
-        .frame(height: 64.0)
-        .swipeActions {
-            SwiftUI.Button(String(localized: "settings-passkeys-delete")) {
-                viewModel.deletePasskey()
+            
+            Rectangle()
+                .fill(Color.Layer.grayLight)
+                .frame(maxWidth: .infinity, minHeight: 1.0, maxHeight: 1.0)
+            
+            HStack (alignment: .center) {
+                Text(String(localized: "settings-passkeys-username"))
+                    .font(.dmSans.regular.size(13.0))
+                    .foregroundStyle(Color.Text.main)
+                Spacer()
+                Text(viewModel.passkey.username)
+                    .font(.dmSans.regular.size(13.0))
+                    .foregroundStyle(Color.Text.grayLighter)
             }
-            .tint(.red)
         }
+        .padding(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.Layer.grayLight, lineWidth: 1)
+        )
     }
 }
