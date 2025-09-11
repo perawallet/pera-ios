@@ -14,23 +14,23 @@
 
 //   AccountListItemWithActionView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountListItemWithActionView:
-    UIView,
-    ViewComposable,
-    ViewModelBindable,
-    UIInteractable {
-    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performAction: TargetActionInteraction()
-    ]
+final class AccountListItemWithActionView: UIView, ViewComposable, ViewModelBindable {
+    
+    // MARK: - Properties
 
     private lazy var contextView = UIView()
     private lazy var contentView = AccountListItemView()
     private lazy var actionView = MacaroonUIKit.Button()
+    
+    // MARK: - AccountDetailsPresentable
+    
+    var onCopyButtonTap: (() -> Void)?
 
+    // MARK: - Setups
+    
     func customize(_ theme: AccountListItemWithActionViewTheme) {
         addContext(theme)
     }
@@ -89,16 +89,11 @@ extension AccountListItemWithActionView {
             $0.trailing == 0
             $0.centerY == 0
         }
-
-        startPublishing(
-            event: .performAction,
-            for: actionView
-        )
+        
+        actionView.addTarget(self, action: #selector(onActionButtonTapped), for: .touchUpInside)
     }
-}
-
-extension AccountListItemWithActionView {
-    enum Event {
-        case performAction
+    
+    @objc private func onActionButtonTapped() {
+        onCopyButtonTap?()
     }
 }

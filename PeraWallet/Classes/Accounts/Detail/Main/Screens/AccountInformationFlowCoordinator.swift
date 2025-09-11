@@ -100,15 +100,17 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToStandardAccount(sourceAccount)
             case .performRescanRekeyedAccounts:
                 self.openRescanRekeyedAccounts(accounts: [sourceAccount])
+            case .performImportConnectedAccounts:
+                self.openImportConnectedAccounts(account: sourceAccount)
             }
         }
     }
 
     private func openAccountInformationForWatchAccount(_ sourceAccount: Account) {
-        transitionToAccountInformation.perform(
-            .watchAccountInformation(account: sourceAccount),
-            by: .presentWithoutNavigationController
-        )
+        let screen = transitionToAccountInformation.perform(.watchAccountInformation(account: sourceAccount), by: .presentWithoutNavigationController) as? WatchAccountInformationScreen
+        screen?.onScanButtonTap = { [weak self] in
+            self?.openImportConnectedAccounts(account: sourceAccount)
+        }
     }
 
     private func openAccountInformationForLedgerAccount(_ sourceAccount: Account) {
@@ -127,6 +129,8 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToStandardAccount(sourceAccount)
             case .performRescanRekeyedAccounts:
                 self.openRescanRekeyedAccounts(accounts: [sourceAccount])
+            case .performImportConnectedAccounts:
+                self.openImportConnectedAccounts(account: sourceAccount)
             }
         }
     }
@@ -155,6 +159,8 @@ extension AccountInformationFlowCoordinator {
                 self.openUndoRekey(sourceAccount)
             case .performRescanRekeyedAccounts:
                 self.openRescanRekeyedAccounts(accounts: [sourceAccount])
+            case .performImportConnectedAccounts:
+                self.openImportConnectedAccounts(account: sourceAccount)
             }
         }
     }
@@ -197,6 +203,13 @@ extension AccountInformationFlowCoordinator {
     private func openRescanRekeyedAccounts(accounts: [Account]) {
         presentingScreen.dismiss(animated: true) { [weak self] in
             self?.rescanRekeyedAccountsCoordinator.rescan(accounts: accounts, nextStep: .dismiss)
+        }
+    }
+    
+    private func openImportConnectedAccounts(account: Account) {
+        presentingScreen.dismiss(animated: true) { [weak self] in
+            guard let self else { return }
+            ImportAccountsHandler.handle(account: account, presenter: self.presentingScreen)
         }
     }
 
