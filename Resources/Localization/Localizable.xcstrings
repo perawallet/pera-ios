@@ -3887,44 +3887,12 @@
         }
       }
     },
-    "liquid-auth-authentication-required-auth" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User verification is required for authentication."
-          }
-        }
-      }
-    },
     "liquid-auth-authentication-required-prompt" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "User verification is required"
-          }
-        }
-      }
-    },
-    "liquid-auth-authentication-required-registration" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User verification is required for registration"
-          }
-        }
-      }
-    },
-    "liquid-auth-autofill-disabled" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AutoFill Passwords & Passkeys is not enabled for Pera Wallet. Please enable it in Settings > General > AutoFill & Passwords."
           }
         }
       }
