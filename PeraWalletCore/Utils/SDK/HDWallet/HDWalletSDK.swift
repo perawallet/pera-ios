@@ -50,6 +50,7 @@ public protocol HDWalletSDK {
     
     func signAlgorandTransaction(_ draft: HDWalletSignAlgoTransactionDraft) throws -> Data
     func signData(_ draft: HDWalletSignDataDraft) throws -> Data
+    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data
     func verifySignature(_ draft: HDWalletVerifySignatureDraft) -> Bool
     func validateData(_ data: Data, against metadata: SignMetadata) throws -> Bool
     func performECDH(_ draft: HDWalletECDHDraft) throws -> Data

@@ -15,6 +15,7 @@
 //   AccountServiceMock.swift
 
 @testable import pera_staging
+@testable import pera_wallet_core
 import Combine
 
 final class AccountServiceMock: AccountsServiceable {

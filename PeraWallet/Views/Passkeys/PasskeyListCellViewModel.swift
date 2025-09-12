@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReadOnlyPublisher.swift
+//   PasskeyListCellModel.swift
 
-import Combine
+import Foundation
+import pera_wallet_core
 
-final class ReadOnlyPublisher<Output> {
+final class PasskeyListCellViewModel: ObservableObject {
     
     // MARK: - Properties
     
-    var value: Output { currentValuePublisher.value }
-    var publisher: AnyPublisher<Output, Never> { currentValuePublisher.eraseToAnyPublisher() }
+    let passkey: PassKeyModel
+    let onDelete: (PassKeyModel) -> Void
     
-    private let currentValuePublisher: CurrentValueSubject<Output, Never>
+    // MARK: - Initializers
     
-    // MARK: - Initialisers
+    init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
+        self.passkey = passkey
+        self.onDelete = onDelete
+    }
     
-    init(currentValuePublisher: CurrentValueSubject<Output, Never>) {
-        self.currentValuePublisher = currentValuePublisher
+    //MARK: - Methods
+    
+    func deletePasskey() {
+        onDelete(passkey)
     }
 }

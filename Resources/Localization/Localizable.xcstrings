@@ -2190,7 +2190,6 @@
       }
     },
     "cards-not-supported-country-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2201,7 +2200,6 @@
       }
     },
     "chart-segcontrol-month" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2212,7 +2210,6 @@
       }
     },
     "chart-segcontrol-week" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2223,7 +2220,6 @@
       }
     },
     "chart-segcontrol-year" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3891,6 +3887,86 @@
         }
       }
     },
+    "liquid-auth-authentication-required-prompt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User verification is required"
+          }
+        }
+      }
+    },
+    "liquid-auth-error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error has occurred when trying to authenticate.  Please try again and contact support if the problem persists."
+          }
+        }
+      }
+    },
+    "liquid-auth-invalid-passkey-found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A problem was found with the stored passkey."
+          }
+        }
+      }
+    },
+    "liquid-auth-no-account-found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Universal Wallet found.  A Universal Wallet is required to use LiquidAuth or Passkeys."
+          }
+        }
+      }
+    },
+    "liquid-auth-no-passkey-found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching passkey found."
+          }
+        }
+      }
+    },
+    "liquid-auth-not-implemented" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liquid Auth support is not currently enabled."
+          }
+        }
+      }
+    },
+    "liquid-auth-passkey-already-exists" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A passkey for this app or site already exists."
+          }
+        }
+      }
+    },
+    "liquid-auth-title-error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
     "local-authentication-disabled-error-message" : {
       "localizations" : {
         "en" : {
@@ -3927,6 +4003,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometric\nAuthentication\nEnabled"
+          }
+        }
+      }
+    },
+    "local-authentication-failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to authenticate using FaceID/Touch ID, please ensure you have enabled it in Pera Wallet and try again."
           }
         }
       }
@@ -4012,7 +4098,6 @@
       }
     },
     "menu-card-banner-description" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4748,6 +4833,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "There is something wrong. Please try again later."
+          }
+        }
+      }
+    },
+    "passkeys-error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please try again"
+          }
+        }
+      }
+    },
+    "passkeys-signing-request" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking passkeys…"
           }
         }
       }
@@ -6354,6 +6459,116 @@
         }
       }
     },
+    "settings-passkey-delete-body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are about to remove this passkey.  Are you sure you want to proceed?"
+          }
+        }
+      }
+    },
+    "settings-passkey-delete-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Passkey"
+          }
+        }
+      }
+    },
+    "settings-passkey-disabled-header" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Passkeys"
+          }
+        }
+      }
+    },
+    "settings-passkeys-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Store your passkeys for any website directly in your Pera Wallet and use them to sign in using TouchID or FaceID."
+          }
+        }
+      }
+    },
+    "settings-passkeys-disabled-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can enable Passkeys for Pera Wallet in Settings > General > Autofill & Passwords"
+          }
+        }
+      }
+    },
+    "settings-passkeys-empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No passkeys yet"
+          }
+        }
+      }
+    },
+    "settings-passkeys-last-used" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last used"
+          }
+        }
+      }
+    },
+    "settings-passkeys-never" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never"
+          }
+        }
+      }
+    },
+    "settings-passkeys-open-settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings"
+          }
+        }
+      }
+    },
+    "settings-passkeys-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkeys"
+          }
+        }
+      }
+    },
+    "settings-passkeys-username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
+          }
+        }
+      }
+    },
     "settings-rate-modal-description" : {
       "localizations" : {
         "en" : {
@@ -7339,7 +7554,6 @@
       }
     },
     "title-all-set" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7522,7 +7736,7 @@
       }
     },
     "title-carousel-banner-algo" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7533,7 +7747,7 @@
       }
     },
     "title-carousel-banner-cards" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7544,7 +7758,7 @@
       }
     },
     "title-carousel-banner-discover" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7555,7 +7769,7 @@
       }
     },
     "title-carousel-banner-receive" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7566,7 +7780,7 @@
       }
     },
     "title-carousel-banner-swap" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7577,7 +7791,7 @@
       }
     },
     "title-carousel-banner-transfer" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7698,7 +7912,6 @@
       }
     },
     "title-create-pera-card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7764,6 +7977,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Discover"
+          }
+        }
+      }
+    },
+    "title-dismiss" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss"
           }
         }
       }
@@ -7939,7 +8162,6 @@
       }
     },
     "title-go-to-cards" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8544,7 +8766,7 @@
       }
     },
     "title-recently-used-card" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8765,7 +8987,6 @@
       }
     },
     "title-share" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

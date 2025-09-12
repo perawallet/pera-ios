@@ -15,6 +15,7 @@
 //   AlgodApiManager.swift
 
 import Combine
+import pera_wallet_core
 
 protocol BlockchainServiceable {
     var lastBlockNumber: ReadOnlyPublisher<Int> { get }

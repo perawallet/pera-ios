@@ -60,3 +60,89 @@ open class CoreAppConfiguration {
         self.session.clear(.defaults)
     }
 }
+
+// This class performs the same function as the AppDelegate in a normal app (i.e. initialize the world)
+extension CoreAppConfiguration {
+    public static func initialize() {
+        if CoreAppConfiguration.shared != nil {
+            return
+        }
+        
+        ALGAppTarget.setup()
+        let persistentContainer: NSPersistentContainer = NSPersistentContainer.makePersistentContainer(
+            group: ALGAppTarget.current.app.appGroupIdentifier)
+        let featureFlagService = makeFeatureFlagService()
+        let hdWalletService = makeHDWalletService()
+        let hdWalletStorage = makeHDWalletStorage()
+        let session = makeSession()
+        let api = makeAPI(session: session)
+        let analytics = makeAnalytics()
+        let sharedDataController = makeSharedDataController(session: session, api: api, hdWalletStorage: hdWalletStorage)
+        let walletConnectCoordinator = makeWalletConnectCoordinator(analytics: analytics)
+        let peraConnect = makePeraConnect(walletConnectCoordinator: walletConnectCoordinator)
+        
+        let walletConnector = walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV1Protocol
+        let config = CoreAppConfiguration(
+            api: api,
+            session: session,
+            sharedDataController: sharedDataController,
+            walletConnector: walletConnector,
+            analytics: analytics,
+            peraConnect: peraConnect,
+            featureFlagService: featureFlagService,
+            hdWalletService: hdWalletService,
+            hdWalletStorage: hdWalletStorage
+        )
+        
+        config.persistentContainer = persistentContainer
+        CoreAppConfiguration.shared = config
+    }
+
+    private static func makeSession() -> Session {
+        let session = Session()
+        Session.clearConfigurationCache()
+        return session
+    }
+
+    private static func makeAPI(session: Session) -> ALGAPI {
+        ALGAPI(session: session)
+    }
+
+    private static func makeSharedDataController(session: Session, api: ALGAPI, hdWalletStorage: HDWalletStorage) -> SharedDataController {
+        let currency = CurrencyAPIProvider(session: session, api: api)
+        let sharedDataController = SharedAPIDataController(
+            target: ALGAppTarget.current,
+            currency: currency,
+            session: session,
+            storage: hdWalletStorage,
+            api: api
+        )
+        return sharedDataController
+    }
+    
+    private static func makeFeatureFlagService() -> FeatureFlagServicing {
+        FeatureFlagService()
+    }
+    
+    private static func makeHDWalletService() -> HDWalletService {
+        HDWalletService()
+    }
+    
+    private static func makeHDWalletStorage() -> HDWalletStorage {
+        HDWalletStorage()
+    }
+    
+    private static func makeAnalytics() -> ALGAnalytics {
+        ALGAnalyticsCoordinator()
+    }
+
+    private static func makePeraConnect(walletConnectCoordinator: WalletConnectCoordinator) -> PeraConnect {
+        ALGPeraConnect(walletConnectCoordinator: walletConnectCoordinator)
+    }
+    
+    private static func makeWalletConnectCoordinator(analytics: ALGAnalytics) -> WalletConnectCoordinator {
+        let resolver = ALGWalletConnectProtocolResolver(analytics: analytics)
+        return ALGWalletConnectCoordinator(walletConnectProtocolResolver: resolver)
+    }
+}
+

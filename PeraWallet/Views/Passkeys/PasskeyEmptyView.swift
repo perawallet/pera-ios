@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,10 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CurrentValueSubject+Utils.swift
+import SwiftUI
+import pera_wallet_core
 
-import Combine
-
-extension CurrentValueSubject where Failure == Never {
-    func readOnlyPublisher() -> ReadOnlyPublisher<Output> { ReadOnlyPublisher<Output>(currentValuePublisher: self) }
+struct PasskeyEmptyView: View {
+        
+    // MARK: - Body
+    var body: some View {
+        VStack(spacing: 20.0) {
+            Image(.Passkeys.passkeysWarningHeader)
+                .frame(width: 96, height: 88)
+            Text("settings-passkeys-empty")
+                .font(.dmSans.regular.size(15.0))
+                .foregroundStyle(Color.Text.main)
+        }
+    }
 }
