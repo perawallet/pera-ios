@@ -127,19 +127,17 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
         case .nodeSettings:
             openNodeSettings()
         case .dispenser:
-            let authorizedAccountListFilterAlgorithm = AuthorizedAccountListFilterAlgorithm()
-            let authorizedAccounts =
-                sharedDataController
-                    .accountCollection
-                    .filter(authorizedAccountListFilterAlgorithm.getFormula)
-
-            if authorizedAccounts.count > 1 {
-                openAccountSelection()
-            } else {
-                openDispenser(
-                    for: authorizedAccounts.first?.value,
-                    from: self
-                )
+            let inAppBrowser = open(
+                .externalInAppBrowser(destination: .url(AlgorandWeb.dispenser.link)),
+                by: .push
+            ) as? DiscoverExternalInAppBrowserScreen
+            inAppBrowser?.eventHandler = {
+                [weak inAppBrowser] event in
+                switch event {
+                case .goBack:
+                    inAppBrowser?.popScreen()
+                default: break
+                }
             }
         case .createAlgo25Account:
             guard
@@ -212,54 +210,6 @@ extension DeveloperSettingsViewController {
         open(
             .nodeSettings,
             by: .push
-        )
-    }
-
-    private func openAccountSelection() {
-        let draft = SelectAccountDraft(
-            transactionAction: .receive,
-            requiresAssetSelection: false,
-            transactionDraft: nil,
-            receiver: nil
-        )
-        open(
-            .accountSelection(
-                draft: draft,
-                delegate: self
-            ),
-            by: .push
-        )
-    }
-
-    private func openDispenser(
-        for account: Account?,
-        from screen: UIViewController
-    ) {
-        let url = makeDispenserURL(account)
-        screen.open(url)
-    }
-
-    private func makeDispenserURL(_ account: Account?) -> URL? {
-        let url = AlgorandWeb.dispenser.link
-
-        guard let account else {
-            return url
-        }
-
-        let params = ["account": account.address]
-        return url?.appendingQueryParameters(params)
-    }
-}
-
-extension DeveloperSettingsViewController: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        openDispenser(
-            for: account,
-            from: selectAccountViewController
         )
     }
 }
