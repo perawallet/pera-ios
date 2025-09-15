@@ -6989,6 +6989,17 @@
         }
       }
     },
+    "swap-balance-not-sufficient-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ALGO balance is not sufficient."
+          }
+        }
+      }
+    },
     "swap-confirm-failed-title" : {
       "localizations" : {
         "en" : {
