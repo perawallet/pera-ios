@@ -17,13 +17,12 @@
 import SwiftUI
 
 struct ConfirmSlideButton: View {
-    var onConfirm: () -> Void
-    
     @State private var dragOffset: CGFloat = 0
-    @State private var isConfirmed = false
+    @Binding var state: ConfirmSlideButtonState
+    var onConfirm: () -> Void
 
-    private let buttonHeight: CGFloat = 52
-    private let circleSize: CGFloat = 44
+    private let buttonHeight: CGFloat = 44
+    private let circleSize: CGFloat = 52
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,44 +30,83 @@ struct ConfirmSlideButton: View {
                 RoundedRectangle(cornerRadius: 26)
                     .fill(Color.Layer.grayLighter)
                     .frame(height: buttonHeight)
-
-                Text(isConfirmed ? "title-confirmed" : "title-slide-to-confirm")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Rectangle()
+                    .fill(state.buttonBackgroundColor)
+                    .frame(
+                        width: state == .idle ? (dragOffset > 0 ? dragOffset + circleSize / 2 : 0) : geometry.size.width,
+                        height: buttonHeight
+                    )
+                    .mask(
+                        RoundedCorner(radius: 26, corners: state == .idle ? [.topLeft, .bottomLeft] : [.allCorners])
+                    )
+                
+                if let iconName = state.iconName {
+                    Image(iconName)
+                        .resizable()
+                        .renderingMode(state == .success || state == .error ? .template : .original)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(state == .success || state == .error ? Color.Text.white : nil)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    if state == .idle {
+                        Text("title-slide-to-confirm")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    } else {
+                        LottieImageViewSUI(jsonName: "pera-loader-purple-light", color: .black)
+                            .frame(width: 30, height: 30)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                }
 
                 Circle()
-                    .fill(isConfirmed ? Color.Helpers.success : Color.ButtonPrimary.bg)
+                    .fill(Color.ButtonPrimary.bg)
                     .frame(width: circleSize, height: circleSize)
                     .overlay(
-                        Image(isConfirmed ? "icon-success-24" : "icon-arrow-24")
-                            .renderingMode(isConfirmed ? .original : .template)
-                            .foregroundColor(isConfirmed ? nil : Color.Defaults.bg)
+                        Image("icon-arrow-24")
+                            .renderingMode(.template)
+                            .foregroundColor(Color.Defaults.bg)
                     )
-                    .offset(x: dragOffset)
+                    .opacity(state.buttonAndTextOpacity)
+                    .offset(x: dragOffset + 2)
                     .gesture(
                         DragGesture()
                             .onChanged { value in
-                                if !isConfirmed {
+                                if state == .idle {
                                     dragOffset = min(max(0, value.translation.width), geometry.size.width - circleSize - 4)
                                 }
                             }
                             .onEnded { _ in
                                 if dragOffset > geometry.size.width * 0.6 {
                                     dragOffset = geometry.size.width - circleSize - 4
-                                    isConfirmed = true
+                                    state = .loading
                                     onConfirm()
                                 } else {
                                     dragOffset = 0
                                 }
                             }
                     )
-                    .padding(.leading, 4)
             }
             .frame(height: buttonHeight)
             .frame(maxWidth: .infinity)
             .animation(.easeInOut(duration: 0.2), value: dragOffset)
         }
         .frame(height: buttonHeight)
+    }
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
     }
 }
