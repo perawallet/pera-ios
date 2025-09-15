@@ -87,10 +87,24 @@ struct SwapView: View {
     private var assetSelectionView: some View {
         ZStack {
             VStack (spacing: 0) {
-                AssetSelectionView(type: .pay, assetItem: $viewModel.selectedAssetIn, amountText: $viewModel.payingText, amountTextInUSD: $viewModel.payingTextInUSD, isLoading: $viewModel.isLoadingPayAmount) {
+                AssetSelectionView(
+                    type: .pay,
+                    assetItem: $viewModel.selectedAssetIn,
+                    amountText: $viewModel.payingText,
+                    amountTextInUSD: $viewModel.payingTextInUSD,
+                    isLoading: $viewModel.isLoadingPayAmount,
+                    isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
+                ) {
                     onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                 }
-                AssetSelectionView(type: .receive, assetItem: $viewModel.selectedAssetOut, amountText: $viewModel.receivingText, amountTextInUSD: $viewModel.receivingTextInUSD, isLoading: $viewModel.isLoadingReceiveAmount) {
+                AssetSelectionView(
+                    type: .receive,
+                    assetItem: $viewModel.selectedAssetOut,
+                    amountText: $viewModel.receivingText,
+                    amountTextInUSD: $viewModel.receivingTextInUSD,
+                    isLoading: $viewModel.isLoadingReceiveAmount,
+                    isBalanceNotSufficient: .constant(false)
+                ) {
                     onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                 }
             }
@@ -113,6 +127,7 @@ struct SwapView: View {
                 .hidden()
             }
             .padding(.horizontal, 16)
+            .padding(.top, viewModel.isBalanceNotSufficient ? 50 : 0)
         }
     }
     
