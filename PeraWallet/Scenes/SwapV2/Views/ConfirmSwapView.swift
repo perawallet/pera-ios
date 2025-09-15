@@ -20,11 +20,13 @@ import pera_wallet_core
 enum SwapInfoSheet: Identifiable {
     case slippageTolerance
     case priceImpact
+    case exchangeFee
 
     var id: String {
         switch self {
         case .slippageTolerance: return "slippageTolerance"
         case .priceImpact: return "priceImpact"
+        case .exchangeFee: return "exchangeFee"
         }
     }
     
@@ -32,6 +34,7 @@ enum SwapInfoSheet: Identifiable {
         switch self {
         case .slippageTolerance: return "swap-slippage-title"
         case .priceImpact: return "swap-price-impact-title"
+        case .exchangeFee: return "title-exchange-fee"
         }
     }
     
@@ -39,12 +42,14 @@ enum SwapInfoSheet: Identifiable {
         switch self {
         case .slippageTolerance: return "swap-slippage-tolerance-info-body"
         case .priceImpact: return "swap-price-impact-info-body"
+        case .exchangeFee: return "swap-exchange-fee-info-body"
         }
     }
     
     var height: CGFloat {
         switch self {
         case .slippageTolerance: return 320
+        case .exchangeFee: return 280
         case .priceImpact: return 250
         }
     }
@@ -201,6 +206,12 @@ struct ConfirmSwapView: View {
                    Text("title-exchange-fee")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
+                    Spacer().frame(width: 6)
+                    SwiftUI.Button {
+                        activeSheet = .exchangeFee
+                    } label: {
+                        Image("icon-info-20")
+                    }
                     Spacer()
                     Text(viewModel.exchangeFee)
                         .font(.dmSans.regular.size(13))
