@@ -7290,6 +7290,9 @@
 		D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */; };
+		D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
+		D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
+		D46D23DD2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -9507,6 +9510,7 @@
 		D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputCircleViewTheme.swift; sourceTree = "<group>"; };
 		D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TutorialViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeViewController+Theme.swift"; sourceTree = "<group>"; };
+		D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieImageViewSUI.swift; sourceTree = "<group>"; };
 		D46DA18E28CF8FB1006BA6A6 /* SwapAccountSelectionListAccountListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAccountSelectionListAccountListItemCellTheme.swift; sourceTree = "<group>"; };
 		D46DA19228CF920C006BA6A6 /* SwapAccountSelectionListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAccountSelectionListHeaderViewModel.swift; sourceTree = "<group>"; };
 		D46DA19728CF9E90006BA6A6 /* NonWatchAccountListFilterAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonWatchAccountListFilterAlgorithm.swift; sourceTree = "<group>"; };
@@ -19542,6 +19546,7 @@
 		D405058A26F0EE68001D0D11 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */,
 				D405058B26F0EE73001D0D11 /* LottieImageView.swift */,
 			);
 			path = Lottie;
@@ -26143,6 +26148,7 @@
 				59167EC02E464C76002184C2 /* EditSwapSlippageScreen.swift in Sources */,
 				59167EC12E464C76002184C2 /* EditSwapSlippageScreenTheme.swift in Sources */,
 				59167EC22E464C76002184C2 /* SwapSlippageTolerancePercentageValidator.swift in Sources */,
+				D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */,
 				59167EC32E464C76002184C2 /* EditSwapSlippageDataProvider.swift in Sources */,
 				59167EC42E464C76002184C2 /* EditSwapSlippageToleranceLocalDataProvider.swift in Sources */,
 				59167EC52E464C76002184C2 /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
@@ -28303,6 +28309,7 @@
 				59E604402E4A712500CCA99B /* EditSwapSlippageScreenTheme.swift in Sources */,
 				59E604412E4A712500CCA99B /* SwapSlippageTolerancePercentageValidator.swift in Sources */,
 				59E604422E4A712500CCA99B /* EditSwapSlippageDataProvider.swift in Sources */,
+				D46D23DD2E7838C700809462 /* LottieImageViewSUI.swift in Sources */,
 				59E604432E4A712500CCA99B /* EditSwapSlippageToleranceLocalDataProvider.swift in Sources */,
 				59E604442E4A712500CCA99B /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
 				59E604452E4A712500CCA99B /* SwapIntroductionDraft.swift in Sources */,
@@ -30463,6 +30470,7 @@
 				59E60CB92E4A71D000CCA99B /* SwapSlippageTolerancePercentageValidator.swift in Sources */,
 				59E60CBA2E4A71D000CCA99B /* EditSwapSlippageDataProvider.swift in Sources */,
 				59E60CBB2E4A71D000CCA99B /* EditSwapSlippageToleranceLocalDataProvider.swift in Sources */,
+				D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */,
 				59E60CBC2E4A71D000CCA99B /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
 				59E60CBD2E4A71D000CCA99B /* SwapIntroductionDraft.swift in Sources */,
 				59E60CBE2E4A71D000CCA99B /* SwapIntroductionScreen.swift in Sources */,
