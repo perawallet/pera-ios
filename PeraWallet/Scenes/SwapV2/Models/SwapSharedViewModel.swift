@@ -35,6 +35,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var receivingText: String = defaultAmountValue
     @Published var receivingTextInUSD: String = defaultAmountValue
     
+    @Published var activeSheet: SwapViewSheet?
+    @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
+    
     private var debounceWorkItem: DispatchWorkItem?
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
@@ -82,7 +85,8 @@ class SwapSharedViewModel: ObservableObject {
             priceImpact: priceImpact,
             minimumReceived: minimumReceived,
             exchangeFee: exchangeFee,
-            peraFee: peraFee
+            peraFee: peraFee,
+            confirmationState: swapConfirmationState
         )
     }
     
@@ -134,7 +138,7 @@ class SwapSharedViewModel: ObservableObject {
         }
 
         debounceWorkItem = task
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
     }
 }
 

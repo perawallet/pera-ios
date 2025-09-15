@@ -58,7 +58,7 @@ enum SwapInfoSheet: Identifiable {
 struct ConfirmSwapView: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     
-    var viewModel: SwapConfirmViewModel
+    @ObservedObject var viewModel: SwapConfirmViewModel
     
     @State private var activeSheet: SwapInfoSheet?
     @State private var didFail = false
@@ -231,7 +231,7 @@ struct ConfirmSwapView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 24)
-            ConfirmSlideButton() {
+            ConfirmSlideButton(state: $viewModel.confirmationState) {
                 onConfirmTap()
             }
                 .padding(.horizontal, 24)

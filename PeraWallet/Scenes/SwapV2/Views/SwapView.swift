@@ -47,8 +47,6 @@ struct SwapView: View {
     @ObservedObject var viewModel: SwapSharedViewModel
     var onTap: ((SwapViewAction) -> Void)?
     
-    @State private var activeSheet: SwapViewSheet?
-    
     private var safeAreaTopInset: CGFloat {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
             .windows.first?.safeAreaInsets.top ?? 44
@@ -65,7 +63,7 @@ struct SwapView: View {
         }
         .padding(.top, safeAreaTopInset)
         .frame(maxHeight: .infinity, alignment: .top)
-        .sheet(item: $activeSheet, content: sheetContent)
+        .sheet(item: $viewModel.activeSheet, content: sheetContent)
         .onChange(of: viewModel.selectedProvider) { newValue in
             viewModel.selectQuote(with: newValue)
         }
@@ -119,7 +117,7 @@ struct SwapView: View {
                 SettingsSwapButton { action in
                     switch action {
                     case .settings:
-                        activeSheet = .settings
+                        viewModel.activeSheet = .settings
                     case .max:
                         print("max")
                     }
@@ -136,7 +134,7 @@ struct SwapView: View {
             providerSelectionView
             SwapButton {
                 guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
-                activeSheet = .confirmSwap
+                viewModel.activeSheet = .confirmSwap
             }
             .transition(.move(edge: .bottom).combined(with: .opacity))
             .animation(.easeInOut, value: viewModel.shouldShowSwapButton)
@@ -148,7 +146,7 @@ struct SwapView: View {
         
         return ProviderSelectionView(viewModel: providerViewModel) {
             guard let providers = viewModel.availableProviders else { return }
-            activeSheet = .provider(availableProviders: providers)
+            viewModel.activeSheet = .provider(availableProviders: providers)
         }
         .padding(.top, 16)
         .padding(.bottom, 12)
