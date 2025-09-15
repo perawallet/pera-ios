@@ -7110,6 +7110,17 @@
         }
       }
     },
+    "swap-exchange-fee-info-body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top."
+          }
+        }
+      }
+    },
     "swap-high-price-impact-warning-body" : {
       "localizations" : {
         "en" : {
