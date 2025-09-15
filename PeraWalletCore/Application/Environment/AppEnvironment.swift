@@ -248,7 +248,7 @@ public enum AlgorandWeb: String {
     case termsAndServices = "https://www.perawallet.app/terms-and-services/"
     case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
     case support = "https://perawallet.app/support/"
-    case dispenser = "https://dispenser.testnet.aws.algodev.network/"
+    case dispenser = "https://lora.algokit.io/testnet/fund/"
     case backUpSupport = "https://perawallet.app/support/passphrase/"
     case recoverSupport = "https://perawallet.app/support/recover-account/"
     case watchAccountSupport = "https://perawallet.app/support/watch-accounts/"
