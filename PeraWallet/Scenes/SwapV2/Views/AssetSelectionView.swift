@@ -57,6 +57,7 @@ struct AssetSelectionView: View {
     @Binding var amountTextInUSD: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
+    @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
     
@@ -68,7 +69,7 @@ struct AssetSelectionView: View {
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
-                Text(assetItem.balance ?? SwapSharedViewModel.defaultAmountValue)
+                Text(String(format: NSLocalizedString("swap-asset-amount-title-balance", comment: ""), assetItem.balance ?? SwapSharedViewModel.defaultAmountValue))
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
@@ -110,7 +111,23 @@ struct AssetSelectionView: View {
                             .foregroundStyle(Color.Text.gray)
                             .frame(maxWidth: 200, alignment: .leading)
                     }
+                    
+                    if isBalanceNotSufficient {
+                        Spacer().frame(height: 6)
+                        HStack(alignment: .center) {
+                            Image("icon-info-red")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                            Spacer().frame(width: 8)
+                            Text("swap-balance-not-sufficient-title")
+                                .font(.dmSans.medium.size(13.0))
+                                .foregroundStyle(Color.Helpers.negative)
+                                .frame(height: 20)
+                        }
+                        Spacer().frame(height: 24)
+                    }
                 }
+                
                 Spacer()
                 AssetSwapButton(assetItem: $assetItem, onTap: onAssetSelectionTap)
             }
@@ -118,7 +135,7 @@ struct AssetSelectionView: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(height: 144)
+        .frame(height: isBalanceNotSufficient ? 194 : 144)
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(type.backgroundColor)

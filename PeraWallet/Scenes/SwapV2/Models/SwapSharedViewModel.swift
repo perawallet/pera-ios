@@ -26,6 +26,7 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedAssetOut: AssetItem
     @Published var selectedProvider: SelectedProvider
     @Published var isLoadingPayAmount: Bool = false
+    @Published var isBalanceNotSufficient: Bool = false
     @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
     
@@ -116,6 +117,8 @@ class SwapSharedViewModel: ObservableObject {
             if let doubleValue = Double(normalized), doubleValue > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
+                    isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
+                    
                     payingText = Formatter
                         .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
                         .string(for: doubleValue) ?? .empty
