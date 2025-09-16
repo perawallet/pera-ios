@@ -21,7 +21,7 @@ enum SwapInfoSheet: Identifiable {
     case slippageTolerance
     case priceImpact
     case exchangeFee
-
+    
     var id: String {
         switch self {
         case .slippageTolerance: return "slippageTolerance"
@@ -64,7 +64,9 @@ struct ConfirmSwapView: View {
     @State private var didFail = false
     
     var onConfirmTap: () -> Void
-
+    var onSwapSuccess: (String) -> Void
+    var onSwapError: (String) -> Void
+    
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -99,7 +101,7 @@ struct ConfirmSwapView: View {
             .padding(.top, 8)
             .padding(.bottom, 30)
             ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
-
+            
             HStack {
                 Rectangle()
                     .fill(Color.Layer.grayLighter)
@@ -124,7 +126,7 @@ struct ConfirmSwapView: View {
                 .padding(.top, 40)
             VStack {
                 HStack {
-                   Text("title-price")
+                    Text("title-price")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
@@ -139,7 +141,7 @@ struct ConfirmSwapView: View {
                 .padding(.top, 28)
                 .padding(.bottom, 16)
                 HStack {
-                   Text("title-provider")
+                    Text("title-provider")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
@@ -161,7 +163,7 @@ struct ConfirmSwapView: View {
                 }
                 .padding(.bottom, 16)
                 HStack {
-                   Text("swap-slippage-title")
+                    Text("swap-slippage-title")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer().frame(width: 6)
@@ -177,7 +179,7 @@ struct ConfirmSwapView: View {
                 }
                 .padding(.bottom, 16)
                 HStack {
-                   Text("swap-price-impact-title")
+                    Text("swap-price-impact-title")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer().frame(width: 6)
@@ -193,7 +195,7 @@ struct ConfirmSwapView: View {
                 }
                 .padding(.bottom, 16)
                 HStack {
-                   Text("swap-confirm-minimum-received-title")
+                    Text("swap-confirm-minimum-received-title")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
@@ -203,7 +205,7 @@ struct ConfirmSwapView: View {
                 }
                 .padding(.bottom, 16)
                 HStack {
-                   Text("title-exchange-fee")
+                    Text("title-exchange-fee")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer().frame(width: 6)
@@ -219,7 +221,7 @@ struct ConfirmSwapView: View {
                 }
                 .padding(.bottom, 16)
                 HStack {
-                   Text("swap-confirm-pera-fee-title")
+                    Text("swap-confirm-pera-fee-title")
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
@@ -234,8 +236,22 @@ struct ConfirmSwapView: View {
             ConfirmSlideButton(state: $viewModel.confirmationState) {
                 onConfirmTap()
             }
-                .padding(.horizontal, 24)
+            .padding(.horizontal, 24)
             Spacer()
+        }
+        .onChange(of: viewModel.confirmationState) { newState in
+            switch newState {
+            case .idle, .loading: break
+            case .success:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    dismiss()
+                    let assetInUnitName = viewModel.selectedAssetIn.asset.naming.displayNames.primaryName
+                    let assetOutUnitName = viewModel.selectedAssetOut.asset.naming.displayNames.primaryName
+                    onSwapSuccess(String(format: String(localized: "swap-success-toast-text"), assetInUnitName, assetOutUnitName))
+                }
+            case .error:
+                onSwapError("Error!")
+            }
         }
         .background(Color.Defaults.bg)
         .presentationDetents([.large])
