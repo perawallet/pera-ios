@@ -55,6 +55,10 @@ public final class CollectibleAsset: Asset {
 
     public let isAlgo = false
     public let isFault = false
+    
+    public var isUSDC: Bool {
+        name?.lowercased() == "usdc"
+    }
 
     public var naming: AssetNaming {
         return AssetNaming(

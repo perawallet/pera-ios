@@ -18,7 +18,8 @@ import Foundation
 import MagpieCore
 
 public struct SwapQuoteDraft: JSONObjectBody {
-    public let providers: [SwapProvider]
+    public let providers: [SwapProvider]?
+    public let providersV2: [SwapProviderV2]?
     public let swapperAddress: PublicKey
     public let type: SwapType
     public let deviceID: String
@@ -27,8 +28,9 @@ public struct SwapQuoteDraft: JSONObjectBody {
     public let amount: UInt64
     public let slippage: Decimal?
     
-    public init(providers: [SwapProvider], swapperAddress: PublicKey, type: SwapType, deviceID: String, assetInID: AssetID, assetOutID: AssetID, amount: UInt64, slippage: Decimal?) {
+    public init(providers: [SwapProvider]?, providersV2: [SwapProviderV2]?, swapperAddress: PublicKey, type: SwapType, deviceID: String, assetInID: AssetID, assetOutID: AssetID, amount: UInt64, slippage: Decimal?) {
         self.providers = providers
+        self.providersV2 = providersV2
         self.swapperAddress = swapperAddress
         self.type = type
         self.deviceID = deviceID
@@ -40,7 +42,14 @@ public struct SwapQuoteDraft: JSONObjectBody {
 
     public var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
-        params.append(.init(.providers, providers.map { $0.rawValue }))
+        if let providers {
+            params.append(.init(.providers, providers.map { $0.rawValue }))
+        }
+        
+        if let providersV2 {
+            params.append(.init(.providers, providersV2.map { $0.name }))
+        }
+        
         params.append(.init(.swapperAddress, swapperAddress))
         params.append(.init(.swapType, type))
         params.append(.init(.device, deviceID))
