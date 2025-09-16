@@ -366,25 +366,20 @@ final class SwapViewController: BaseViewController {
                 )
             }
             sharedViewModel?.swapConfirmationState = .success
-            sharedViewModel?.activeSheet = .confirmSwap
         case .didFailTransaction:
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error
-            sharedViewModel?.activeSheet = .confirmSwap
         case .didFailNetwork:
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error
-            sharedViewModel?.activeSheet = .confirmSwap
         case .didCancelTransaction:
             swapController.clearTransactions()
         case .didFailSigning(let error):
             switch error {
             case .api:
                 sharedViewModel?.swapConfirmationState = .error
-                sharedViewModel?.activeSheet = .confirmSwap
             case .ledger:
                 sharedViewModel?.swapConfirmationState = .error
-                sharedViewModel?.activeSheet = .confirmSwap
             }
         case .didLedgerRequestUserApproval:
             break
