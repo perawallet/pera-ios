@@ -25,6 +25,7 @@ enum SwapViewAction {
     case selectAssetOut(for: Account)
     case getQuote(for: Double)
     case confirmSwap
+    case showBanner(success: String?, error: String?)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -45,7 +46,7 @@ struct SwapView: View {
     
     // MARK: - Properties
     @ObservedObject var viewModel: SwapSharedViewModel
-    var onTap: ((SwapViewAction) -> Void)?
+    var onAction: ((SwapViewAction) -> Void)?
     
     @State private var activeSheet: SwapViewSheet?
     
@@ -77,9 +78,9 @@ struct SwapView: View {
         SwapTitleView(selectedAccount: $viewModel.selectedAccount) { action in
             switch action {
             case .accountSelection:
-                onTap?(.selectAccount)
+                onAction?(.selectAccount)
             case .info:
-                onTap?(.showInfo)
+                onAction?(.showInfo)
             }
         }
     }
@@ -95,7 +96,7 @@ struct SwapView: View {
                     isLoading: $viewModel.isLoadingPayAmount,
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
-                    onTap?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
+                    onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
                 }
                 AssetSelectionView(
                     type: .receive,
@@ -105,11 +106,11 @@ struct SwapView: View {
                     isLoading: $viewModel.isLoadingReceiveAmount,
                     isBalanceNotSufficient: .constant(false)
                 ) {
-                    onTap?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
+                    onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                 }
             }
             .padding(.horizontal, 8)
-            .onChange(of: viewModel.payingText) { viewModel.updatePayingText($0) { onTap?(.getQuote(for: $0)) } }
+            .onChange(of: viewModel.payingText) { viewModel.updatePayingText($0) { onAction?(.getQuote(for: $0)) } }
             
             HStack {
                 SwitchSwapButton {
@@ -170,7 +171,12 @@ struct SwapView: View {
             }
         case .confirmSwap:
             ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
-                onTap?(.confirmSwap)
+                onAction?(.confirmSwap)
+            } onSwapSuccess: { successMessage in
+                viewModel.reset()
+                onAction?(.showBanner(success: successMessage, error: nil))
+            } onSwapError: { errorMessage in
+                onAction?(.showBanner(success: nil, error: errorMessage))
             }
         }
     }

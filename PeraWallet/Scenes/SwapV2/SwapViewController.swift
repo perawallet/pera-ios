@@ -122,7 +122,7 @@ final class SwapViewController: BaseViewController {
         
         var rootView = SwapView(viewModel: viewModel)
         
-        rootView.onTap = { [weak self] action in
+        rootView.onAction = { [weak self] action in
             guard let self else { return }
             handleSwapViewCallbacks(with: action)
         }
@@ -339,6 +339,12 @@ final class SwapViewController: BaseViewController {
             swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
         case .confirmSwap:
             confirmSwap()
+        case .showBanner(success: let successMessage, error: let errorMessage):
+            guard let successMessage else {
+                bannerController?.presentErrorBanner(title: "Error!", message: errorMessage ?? .empty)
+                return
+            }
+            bannerController?.presentSuccessBanner(title: successMessage)
         }
     }
     

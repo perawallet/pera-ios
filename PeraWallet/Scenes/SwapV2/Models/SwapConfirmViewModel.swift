@@ -70,7 +70,7 @@ class SwapConfirmViewModel: ObservableObject {
     }
 }
 
-enum ConfirmSlideButtonState {
+enum ConfirmSlideButtonState: Equatable {
     case idle
     case loading
     case success
