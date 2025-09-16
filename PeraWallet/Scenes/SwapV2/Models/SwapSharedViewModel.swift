@@ -35,7 +35,6 @@ class SwapSharedViewModel: ObservableObject {
     @Published var receivingText: String = defaultAmountValue
     @Published var receivingTextInUSD: String = defaultAmountValue
     
-    @Published var activeSheet: SwapViewSheet?
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
     private var debounceWorkItem: DispatchWorkItem?
