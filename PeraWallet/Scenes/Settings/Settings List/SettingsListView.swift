@@ -106,6 +106,7 @@ struct SettingsListView: View {
                             Image(.iconBack)
                                 .foregroundStyle(Color.Text.main)
                         }
+                        .accessibilityIdentifier(ViewIdentifier.settingsNavigationBack.rawValue)
                     }
                 )
             }
