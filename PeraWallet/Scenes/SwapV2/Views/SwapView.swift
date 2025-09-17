@@ -125,7 +125,6 @@ struct SwapView: View {
                         print("max")
                     }
                 }
-                .hidden()
             }
             .padding(.horizontal, 16)
             .padding(.top, viewModel.isBalanceNotSufficient ? 50 : 0)

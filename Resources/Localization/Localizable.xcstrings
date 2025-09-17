@@ -4972,6 +4972,17 @@
         }
       }
     },
+    "primary-currency-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primary Currency"
+          }
+        }
+      }
+    },
     "qr-scan-account-match-error" : {
       "localizations" : {
         "en" : {
@@ -10228,6 +10239,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL copied to clipboard"
+          }
+        }
+      }
+    },
+    "use-local-currency-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Local Currency"
           }
         }
       }
