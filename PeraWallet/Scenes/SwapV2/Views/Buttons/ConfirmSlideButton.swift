@@ -19,6 +19,7 @@ import SwiftUI
 struct ConfirmSlideButton: View {
     @State private var dragOffset: CGFloat = 0
     @Binding var state: ConfirmSlideButtonState
+    var isSwapDisabled: Bool
     var onConfirm: () -> Void
 
     private let buttonHeight: CGFloat = 44
@@ -52,7 +53,7 @@ struct ConfirmSlideButton: View {
                     if state == .idle {
                         Text("title-slide-to-confirm")
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.black)
+                            .foregroundColor(isSwapDisabled ? Color.ButtonPrimary.disabledText : Color.ButtonSecondary.text)
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else {
                         LottieImageViewSUI(jsonName: "pera-loader-purple-light", color: .black)
@@ -62,7 +63,7 @@ struct ConfirmSlideButton: View {
                 }
 
                 Circle()
-                    .fill(Color.ButtonPrimary.bg)
+                    .fill(isSwapDisabled ? Color.ButtonPrimary.disabledBg : Color.ButtonPrimary.bg)
                     .frame(width: circleSize, height: circleSize)
                     .overlay(
                         Image("icon-arrow-24")

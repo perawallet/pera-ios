@@ -70,6 +70,31 @@ class SwapConfirmViewModel: ObservableObject {
     }
 }
 
+extension SwapConfirmViewModel {
+    private var priceImpactValue: Double? {
+        Double(priceImpact.replacingOccurrences(of: "%", with: ""))
+    }
+    
+    var highPriceImpactWarning: LocalizedStringKey? {
+        guard let value = priceImpactValue else {
+            return nil
+        }
+        
+        switch value {
+        case let v where v > 15:
+            return "swap-price-impact-greater-than-15-warning-message"
+        case let v where v > 5:
+            return "swap-price-impact-warning-message"
+        default:
+            return nil
+        }
+    }
+    
+    var isSwapDisabled: Bool {
+        (priceImpactValue ?? 0) > 15
+    }
+}
+
 enum ConfirmSlideButtonState: Equatable {
     case idle
     case loading
