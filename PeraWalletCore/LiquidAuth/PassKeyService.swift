@@ -31,6 +31,7 @@ public protocol PassKeyServicing {
 }
 
 public final class PassKeyService: PassKeyServicing {
+    // this AAGUID identifies Pera Wallet as the authority under FIDO2
     static let AAGUID = UUID(uuidString: "418a66da-f981-47e8-814f-19c97f97bd4d")!
     static let FIDO_SCHEME = "fido"
     
