@@ -2899,6 +2899,17 @@
         }
       }
     },
+    "create-account-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Account"
+          }
+        }
+      }
+    },
     "default-error-message" : {
       "localizations" : {
         "en" : {
@@ -7076,6 +7087,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View Swap Summary"
+          }
+        }
+      }
+    },
+    "swap-empty-accounts-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an account to get swapping"
           }
         }
       }

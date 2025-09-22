@@ -68,9 +68,13 @@ final class SwapViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if !resolveInitialState() { return }
         sharedViewModel = nil
+        
+        if !resolveInitialState() {
+            loadNoAccountView()
+            return
+        }
+        
         loadSwapView()
     }
     
@@ -80,13 +84,13 @@ final class SwapViewController: BaseViewController {
         let swapHostingController = UIHostingController(
             rootView: createSwapView()
         )
-
+        
         if let existingController = children.first(where: { $0 is UIHostingController<SwapView> }) {
             existingController.willMove(toParent: nil)
             existingController.view.removeFromSuperview()
             existingController.removeFromParent()
         }
-
+        
         addChild(swapHostingController)
         swapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(swapHostingController.view)
@@ -95,7 +99,36 @@ final class SwapViewController: BaseViewController {
         }
         swapHostingController.didMove(toParent: self)
     }
-
+    
+    private func loadNoAccountView() {
+        var rootView = NoAccountSwapView()
+        
+        rootView.onAction = { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case .info:
+                open(AlgorandWeb.tinymanSwap.link)
+            case .createAccount:
+                open(
+                    .addAccount(flow: .addNewAccount(mode: .none)),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    )
+                )
+            }
+        }
+        let noAccountSwapHostingController = UIHostingController(rootView: rootView)
+        addChild(noAccountSwapHostingController)
+        noAccountSwapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(noAccountSwapHostingController.view)
+        noAccountSwapHostingController.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        noAccountSwapHostingController.didMove(toParent: self)
+    }
+    
     private func createSwapView() -> SwapView {
         guard let selectedAccount else {
             fatalError("No account selected")
@@ -117,7 +150,7 @@ final class SwapViewController: BaseViewController {
             self.sharedViewModel = vm
             return vm
         }()
-
+        
         update(viewModel, with: selectedAccount, assetIn: assetIn, assetOut: assetOut)
         viewModel.availableProviders = availableProviders
         
@@ -174,7 +207,7 @@ final class SwapViewController: BaseViewController {
             launchDraft = nil
             return true
         }
-
+        
         if let defaultAccount = resolveDefaultAccount() {
             selectedAccount = defaultAccount
             selectedAssetIn = nil
@@ -183,14 +216,14 @@ final class SwapViewController: BaseViewController {
         }
         return false
     }
-
+    
     private func resolveAssetIn(for account: Account) -> AssetItem {
         guard let selectedAssetIn else {
             return resolveDefaultAlgoAsset(for: account)
         }
         return selectedAssetIn
     }
-
+    
     private func resolveAssetOut() -> AssetItem {
         guard let selectedAssetOut else {
             return resolveDefaultUSDCAsset()
@@ -355,7 +388,7 @@ final class SwapViewController: BaseViewController {
         from swapController: SwapController
     ) {
         guard let selectedAccount else { return }
-
+        
         switch event {
         case .didSignTransaction, .didSignAllTransactions, .didLedgerRequestUserApproval, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
             break
@@ -402,7 +435,7 @@ final class SwapViewController: BaseViewController {
                 )
                 return
             }
-
+            
             swapController.signTransactions(transactionGroups)
         }
     }
