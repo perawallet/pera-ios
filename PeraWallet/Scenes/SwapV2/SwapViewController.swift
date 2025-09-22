@@ -325,16 +325,16 @@ final class SwapViewController: BaseViewController {
             swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
                 guard let self = self else { return }
                 if let error {
-                    // TODO: show error alert
-                    print(error)
+                    bannerController?.presentErrorBanner(title: "title-error", message: error.prettyDescription)
                     return
                 }
                 
                 update(sharedViewModel, with: quoteList)
                 loadSwapView()
             }
+            
             guard let selectedAccount, let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
-                // TODO: show error alert
+                bannerController?.presentErrorBanner(title: "title-error", message: .empty)
                 return
             }
             swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
@@ -342,7 +342,7 @@ final class SwapViewController: BaseViewController {
             confirmSwap()
         case .showBanner(success: let successMessage, error: let errorMessage):
             guard let successMessage else {
-                bannerController?.presentErrorBanner(title: "Error!", message: errorMessage ?? .empty)
+                bannerController?.presentErrorBanner(title: "title-error", message: errorMessage ?? .empty)
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
@@ -356,12 +356,8 @@ final class SwapViewController: BaseViewController {
         guard let selectedAccount else { return }
 
         switch event {
-        case .didSignTransaction:
+        case .didSignTransaction, .didSignAllTransactions, .didLedgerRequestUserApproval, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
             break
-        case .didSignAllTransactions:
-            if selectedAccount.requiresLedgerConnection() {
-                return
-            }
         case .didCompleteSwap:
             if let quote = swapController.quote {
                 self.analytics.track(
@@ -373,13 +369,10 @@ final class SwapViewController: BaseViewController {
                 )
             }
             sharedViewModel?.swapConfirmationState = .success
-        case .didFailTransaction:
+        case .didFailTransaction, .didFailNetwork:
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error
-        case .didFailNetwork:
-            swapController.clearTransactions()
-            sharedViewModel?.swapConfirmationState = .error
-        case .didCancelTransaction:
+        case .didCancelTransaction, .didLedgerReset:
             swapController.clearTransactions()
         case .didFailSigning(let error):
             switch error {
@@ -388,16 +381,6 @@ final class SwapViewController: BaseViewController {
             case .ledger:
                 sharedViewModel?.swapConfirmationState = .error
             }
-        case .didLedgerRequestUserApproval:
-            break
-        case .didFinishTiming:
-            break
-        case .didLedgerReset:
-            swapController.clearTransactions()
-        case .didLedgerResetOnSuccess:
-            break
-        case .didLedgerRejectSigning:
-            break
         }
     }
     
@@ -406,16 +389,9 @@ final class SwapViewController: BaseViewController {
         from swapController: SwapController
     ) {
         switch event {
-        case .willUpdateSlippage:
-            // TODO: start loading
-            break
-        case .didUpdateSlippage(_):
-            break
-        case .didFailToUpdateSlippage(_):
-            break
-        case .willPrepareTransactions:
-            // TODO: start loading
-            break
+        case .willUpdateSlippage, .didUpdateSlippage, .willPrepareTransactions: break
+        case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
+            bannerController?.presentErrorBanner(title: "title-error", message: error.prettyDescription)
         case .didPrepareTransactions(let swapTransactionPreparation):
             let transactionGroups = swapTransactionPreparation.transactionGroups
             if swapController.account.requiresLedgerConnection() {
@@ -427,9 +403,6 @@ final class SwapViewController: BaseViewController {
             }
 
             swapController.signTransactions(transactionGroups)
-            break
-        case .didFailToPrepareTransactions(_):
-            break
         }
     }
 }
