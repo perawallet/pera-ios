@@ -53,6 +53,7 @@ struct AssetSelectionView: View {
     // MARK: - Properties
     var type: AssetSelectionType
     @Binding var assetItem: AssetItem
+    @Binding var network: ALGAPI.Network
     @Binding var amountText: String
     @Binding var amountTextInUSD: String
     @FocusState private var isPayingFocused: Bool
@@ -129,7 +130,7 @@ struct AssetSelectionView: View {
                 }
                 
                 Spacer()
-                AssetSwapButton(assetItem: $assetItem, onTap: onAssetSelectionTap)
+                AssetSwapButton(assetItem: $assetItem, network: $network, onTap: onAssetSelectionTap)
             }
             Spacer()
         }

@@ -833,6 +833,7 @@ extension ASADetailScreen {
     }
 
     private func navigateToSwapAssetIfPossible() {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let account = dataController.account
         if account.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
@@ -841,10 +842,7 @@ extension ASADetailScreen {
 
         analytics.track(.tapSwapInAlgoDetail())
         guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            self.swapAssetFlowCoordinator.launch()
-            return
-        }
-        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            swapAssetFlowCoordinator.launch()
             return
         }
 

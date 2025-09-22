@@ -263,7 +263,7 @@ final class HomeViewController:
             dataController.fetchInitialChartData(period: .oneWeek)
         }
         if configuration.featureFlagService.isEnabled(.swapV2Enabled) {
-            dataController.fetchDefaultAssets()
+            dataController.fetchUSDCDefaultAsset()
         }
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
@@ -623,14 +623,11 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .swap) {
             [weak self] in
-            guard let self else { return }
-            self.analytics.track(.recordHomeScreen(type: .swap))
+            guard let self, let rootViewController = UIApplication.shared.rootViewController() else { return }
+            analytics.track(.recordHomeScreen(type: .swap))
             guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-                self.swapAssetFlowCoordinator.resetDraft()
-                self.swapAssetFlowCoordinator.launch()
-                return
-            }
-            guard let rootViewController = UIApplication.shared.rootViewController() else {
+                swapAssetFlowCoordinator.resetDraft()
+                swapAssetFlowCoordinator.launch()
                 return
             }
             rootViewController.launch(tab: .swap)

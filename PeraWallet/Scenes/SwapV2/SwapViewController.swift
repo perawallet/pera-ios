@@ -111,7 +111,8 @@ final class SwapViewController: BaseViewController {
             let vm = SwapSharedViewModel(
                 selectedAccount: selectedAccount,
                 selectedAssetIn: assetIn,
-                selectedAssetOut: assetOut
+                selectedAssetOut: assetOut,
+                selectedNetwork: api?.network ?? .mainnet
             )
             self.sharedViewModel = vm
             return vm

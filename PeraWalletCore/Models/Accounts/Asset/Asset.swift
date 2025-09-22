@@ -58,10 +58,10 @@ public protocol Asset: AnyObject {
     var isAvailableOnDiscover: Bool { get }
 
     var isAlgo: Bool { get }
-    
-    var isUSDC: Bool { get }
 
     var isFault: Bool { get }
+    
+    func isUSDC(for network: ALGAPI.Network) -> Bool
 }
 
 extension Asset {
@@ -127,5 +127,9 @@ public struct AssetNaming {
 
     public var hasDisplayName: Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+    
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }

@@ -24,9 +24,9 @@ final class SwapAssetAPIDataController:
     SwapAssetDataController,
     SharedDataControllerObserver {
     typealias DataStore = SwapMutableAmountPercentageStore
-
+    
     var eventHandler: EventHandler?
-
+    
     var account: Account {
         get {
             return swapController.account
@@ -47,12 +47,12 @@ final class SwapAssetAPIDataController:
         get {
             return swapController.poolAsset
         }
-
+        
         set {
             swapController.poolAsset = newValue
         }
     }
-
+    
     private var quote: SwapQuote? {
         return swapController.quote
     }
@@ -65,17 +65,17 @@ final class SwapAssetAPIDataController:
     private var swapType: SwapType {
         return swapController.swapType
     }
-
+    
     private var currentQuoteEndpoint: EndpointOperatable?
     private lazy var quoteThrottler = Throttler(intervalInSeconds: 0.8)
-
+    
     private var swapController: SwapController
-
+    
     private let dataStore: DataStore
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let featureFlagService: FeatureFlagServicing
-
+    
     init(
         dataStore: DataStore,
         swapController: SwapController,
@@ -88,10 +88,10 @@ final class SwapAssetAPIDataController:
         self.api = api
         self.sharedDataController = sharedDataController
         self.featureFlagService = featureFlagService
-
+        
         sharedDataController.add(self)
     }
-
+    
     deinit {
         sharedDataController.remove(self)
     }
@@ -105,7 +105,7 @@ extension SwapAssetAPIDataController {
               let poolAssetID = poolAsset?.id else {
             return
         }
-
+        
         let draft = SwapQuoteDraft(
             providers: providers,
             providersV2: providersV2,
@@ -117,50 +117,44 @@ extension SwapAssetAPIDataController {
             amount: swapAmount,
             slippage: swapController.slippage
         )
-
+        
         eventHandler?(.willLoadQuote)
-
+        
         if currentQuoteEndpoint != nil {
             cancelLoadingQuote()
         }
         
         quoteThrottler.performNext {
             [weak self] in
-            guard let self = self else {
-                return
-            }
-
+            guard let self = self else { return }
+            
             if featureFlagService.isEnabled(.swapV2Enabled) {
-                self.loadDataV2(draft)
+                loadDataV2(draft)
             } else {
-                self.loadData(draft)
+                loadData(draft)
             }
         }
     }
-
+    
     private func loadData(
         _ draft: SwapQuoteDraft
     ) {
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
-            guard let self = self else {
-                return
-        }
-
-            self.currentQuoteEndpoint = nil
-
+            guard let self = self else { return }
+            currentQuoteEndpoint = nil
+            
             switch response {
             case .success(let quoteList):
                 guard let quote = quoteList.results[safe: 0] else { return }
-
-                self.swapController.quote = quote
-                self.eventHandler?(.didLoadQuote(quote))
+                swapController.quote = quote
+                eventHandler?(.didLoadQuote(quote))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
                     apiErrorDetail: hipApiError
                 )
-                self.eventHandler?(.didFailToLoadQuote(error))
+                eventHandler?(.didFailToLoadQuote(error))
             }
         }
     }
@@ -170,33 +164,29 @@ extension SwapAssetAPIDataController {
     ) {
         currentQuoteEndpoint = api.getSwapV2Quote(draft) {
             [weak self] response in
-            guard let self = self else {
-                return
-        }
-
-            self.currentQuoteEndpoint = nil
-
+            guard let self = self else { return }
+            currentQuoteEndpoint = nil
+            
             switch response {
             case .success(let quoteList):
                 guard let quote = quoteList.results[safe: 0] else { return }
-
-                self.swapController.quote = quote
-                self.eventHandler?(.didLoadQuoteV2(quoteList.results))
+                swapController.quote = quote
+                eventHandler?(.didLoadQuoteV2(quoteList.results))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
                     apiErrorDetail: hipApiError
                 )
-                self.eventHandler?(.didFailToLoadQuote(error))
+                eventHandler?(.didFailToLoadQuote(error))
             }
         }
     }
-
+    
     func cancelLoadingQuote() {
         cancelOngoingRequest()
         quoteThrottler.cancelAll()
     }
-
+    
     private func cancelOngoingRequest() {
         currentQuoteEndpoint?.cancel()
         currentQuoteEndpoint = nil
@@ -218,14 +208,14 @@ extension SwapAssetAPIDataController {
             updateAccountIfNeeded()
         }
     }
-
+    
     private func updateAccountIfNeeded() {
         guard let updatedAccount = sharedDataController.accountCollection[account.address] else {
             return
         }
-
+        
         if !updatedAccount.isAvailable { return }
-
+        
         self.account = updatedAccount.value
     }
 }

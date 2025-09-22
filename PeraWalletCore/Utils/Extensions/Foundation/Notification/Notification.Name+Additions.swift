@@ -66,7 +66,7 @@ public extension Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.inAppBrowser.disappeared")
     }
     
-    static var userAccountsChanged: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.userAccounts.changed")
+    static var userAccounstDeleted: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.userAccounts.deleted")
     }
 }
