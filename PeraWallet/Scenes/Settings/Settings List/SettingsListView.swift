@@ -35,6 +35,7 @@ struct SettingsListView: View {
         case help
         case termsAndServices
         case privacyPolicy
+        case passkey
     }
     
     // MARK: - Properties
@@ -95,8 +96,6 @@ struct SettingsListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: NavigationOption.self) {
                 buildView(option: $0)
-                    .navigationBarHidden(true)
-                    .ignoresSafeArea(edges: .top)
             }
             .toolbar {
                 ToolbarItem(
@@ -131,6 +130,8 @@ struct SettingsListView: View {
             onLegacyNavigationOptionSelected?(.notifications)
         case .walletConnect:
             onLegacyNavigationOptionSelected?(.walletConnect)
+        case .passkeys:
+            moveTo(option: .passkey)
         case .currency:
             onLegacyNavigationOptionSelected?(.currency)
         case .theme:
@@ -163,6 +164,8 @@ struct SettingsListView: View {
             buildWebView(link: AlgorandWeb.termsAndServices.link)
         case .privacyPolicy:
             buildWebView(link: AlgorandWeb.privacyPolicy.link)
+        case .passkey:
+            buildPasskeyView()
         }
     }
     
@@ -170,7 +173,15 @@ struct SettingsListView: View {
     private func buildWebView(link: URL?) -> some View {
         if let link {
             WebView(url: link)
+                .navigationBarHidden(true)
+                .ignoresSafeArea(edges: .top)
         }
+    }
+    
+    @ViewBuilder
+    private func buildPasskeyView() -> some View {
+        //TODO: Is this the right way to handle back or is there a more idiomatic SwiftUI way?
+        PasskeyListView(onBackButtonTap: { self.navigationPath.removeLast() })
     }
 }
 
@@ -193,3 +204,4 @@ final class MockedSettingsListModel: SettingsListModelMockable {
         update(appVersion: "1.2.3 - Mock")
     }
 }
+    

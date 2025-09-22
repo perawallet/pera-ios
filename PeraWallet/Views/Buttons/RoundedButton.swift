@@ -21,6 +21,8 @@ struct RoundedButton: View {
     // MARK: - Properties
     
     let text: LocalizedStringKey
+    var backgroundColor: Color = Color.ButtonSecondary.bg
+    var textColor: Color = Color.ButtonSecondary.text
     let onTap: () -> Void
     
     // MARK: - Body
@@ -29,8 +31,8 @@ struct RoundedButton: View {
         Text(text)
             .frame(maxWidth: .infinity)
             .frame(height: 52.0)
-            .background(Color.ButtonSecondary.bg)
-            .foregroundStyle(Color.ButtonSecondary.text)
+            .background(backgroundColor)
+            .foregroundStyle(textColor)
             .font(.dmSans.medium.size(15.0))
             .cornerRadius(4.0)
             .onTapGesture { onTap() }

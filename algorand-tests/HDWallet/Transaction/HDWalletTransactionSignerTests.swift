@@ -136,7 +136,7 @@ struct HDWalletTransactionSignerTests {
     }
     
     @Test("Verify signature with valid input should return true")
-    func testVerifySignatureWithValidInput() async throws {
+    func testVerifySignatureWithValidInput() async {
         // Given
         let (signer, mockSDK, _) = createSigner()
         let signature = Data("test signature".utf8)
@@ -155,7 +155,7 @@ struct HDWalletTransactionSignerTests {
     }
     
     @Test("Verify signature with invalid SDK should return false")
-    func testVerifySignatureWithInvalidSDK() async throws {
+    func testVerifySignatureWithInvalidSDK() async {
         // Given
         let (signer, _, _) = createSigner()
         signer.sdk = nil
@@ -240,6 +240,10 @@ private class MockHDWalletSDK: HDWalletSDK {
     }
     
     func signData(_ draft: HDWalletSignDataDraft) throws -> Data {
+        fatalError("Not implemented")
+    }
+    
+    func rawSign(_ draft: HDWalletSignDataDraft) throws -> Data {
         fatalError("Not implemented")
     }
     

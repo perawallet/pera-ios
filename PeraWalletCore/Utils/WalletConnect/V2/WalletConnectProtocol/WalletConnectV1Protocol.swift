@@ -31,7 +31,7 @@ public final class WalletConnectV1Protocol:
 
     private let analytics: ALGAnalytics
 
-    init(analytics: ALGAnalytics) {
+    public init(analytics: ALGAnalytics) {
         self.analytics = analytics
     }
 }
