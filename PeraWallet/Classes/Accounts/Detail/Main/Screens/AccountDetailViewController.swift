@@ -397,6 +397,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     private func openSwapAssetIfPossible() {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let aRawAccount = accountHandle.value
         if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
@@ -405,10 +406,7 @@ extension AccountDetailViewController {
 
         analytics.track(.recordAccountDetailScreen(type: .tapSwap))
         guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            self.swapAssetFlowCoordinator.launch()
-            return
-        }
-        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            swapAssetFlowCoordinator.launch()
             return
         }
 

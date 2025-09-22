@@ -37,6 +37,8 @@ class SwapSharedViewModel: ObservableObject {
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
+    @Published var selectedNetwork: ALGAPI.Network
+    
     private var debounceWorkItem: DispatchWorkItem?
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
@@ -49,12 +51,14 @@ class SwapSharedViewModel: ObservableObject {
     init(
         selectedAccount: Account,
         selectedAssetIn: AssetItem,
-        selectedAssetOut: AssetItem
+        selectedAssetOut: AssetItem,
+        selectedNetwork: ALGAPI.Network
     ) {
         self.selectedAccount = selectedAccount
         self.selectedAssetIn = selectedAssetIn
         self.selectedAssetOut = selectedAssetOut
         self.selectedProvider = .auto
+        self.selectedNetwork = selectedNetwork
     }
     
     // MARK: - Helpers

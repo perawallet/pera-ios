@@ -91,6 +91,7 @@ struct SwapView: View {
                 AssetSelectionView(
                     type: .pay,
                     assetItem: $viewModel.selectedAssetIn,
+                    network: $viewModel.selectedNetwork,
                     amountText: $viewModel.payingText,
                     amountTextInUSD: $viewModel.payingTextInUSD,
                     isLoading: $viewModel.isLoadingPayAmount,
@@ -101,6 +102,7 @@ struct SwapView: View {
                 AssetSelectionView(
                     type: .receive,
                     assetItem: $viewModel.selectedAssetOut,
+                    network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
                     amountTextInUSD: $viewModel.receivingTextInUSD,
                     isLoading: $viewModel.isLoadingReceiveAmount,

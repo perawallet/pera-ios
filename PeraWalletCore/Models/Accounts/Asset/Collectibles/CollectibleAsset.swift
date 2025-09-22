@@ -55,10 +55,6 @@ public final class CollectibleAsset: Asset {
 
     public let isAlgo = false
     public let isFault = false
-    
-    public var isUSDC: Bool {
-        name?.lowercased() == "usdc"
-    }
 
     public var naming: AssetNaming {
         return AssetNaming(
@@ -235,6 +231,12 @@ extension CollectibleAsset {
         totalUSDValue = asset.totalUSDValue ?? totalUSDValue
         algoPriceChangePercentage = asset.algoPriceChangePercentage
         isAvailableOnDiscover = asset.isAvailableOnDiscover
+    }
+}
+
+extension CollectibleAsset {
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }
 

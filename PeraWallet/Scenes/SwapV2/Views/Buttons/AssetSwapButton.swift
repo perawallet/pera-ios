@@ -21,6 +21,7 @@ struct AssetSwapButton: View {
 
     // MARK: - Properties
     @Binding var assetItem: AssetItem
+    @Binding var network: ALGAPI.Network
     private let iconSize: CGFloat = 24
     
     let onTap: () -> Void
@@ -32,7 +33,7 @@ struct AssetSwapButton: View {
                 Group {
                     if assetItem.asset.isAlgo {
                         Image("icon-algo-circle").resizable()
-                    } else if assetItem.asset.isUSDC {
+                    } else if assetItem.asset.isUSDC(for: network) {
                         Image("icon-usdc-circle").resizable()
                     } else if let url = assetItem.asset.logoURL {
                         AsyncImage(url: url) { image in

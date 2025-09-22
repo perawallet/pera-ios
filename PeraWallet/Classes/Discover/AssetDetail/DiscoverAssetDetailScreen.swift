@@ -94,6 +94,7 @@ extension DiscoverAssetDetailScreen {
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let draft = SwapAssetFlowDraft()
         if let assetInID = parameters.assetIn {
             draft.assetInID = assetInID
@@ -107,11 +108,8 @@ extension DiscoverAssetDetailScreen {
             swapAssetFlowCoordinator.launch()
             return
         }
-        guard let rootViewController = UIApplication.shared.rootViewController() else {
-            return
-        }
-        // TODO: send draft to swap vc
-        rootViewController.launch(tab: .swap)
+        
+        rootViewController.launch(tab: .swap, with: draft)
     }
 
     /// <note>

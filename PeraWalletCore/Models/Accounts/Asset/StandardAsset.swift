@@ -45,10 +45,6 @@ public final class StandardAsset: Asset {
     public let isAvailableOnDiscover: Bool
 
     public let isFault: Bool
-
-    public var isUSDC: Bool {
-        name?.lowercased() == "usdc"
-    }
     
     public var state: AssetState = .ready
 
@@ -157,6 +153,10 @@ extension StandardAsset {
 
     public var hasDisplayName: Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+    
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }
 

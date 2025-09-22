@@ -692,8 +692,6 @@ extension SwapAssetFlowCoordinator {
     }
 }
 
-
-
 extension SwapAssetFlowCoordinator {
     func getProvidersList() {
         api.getProviders { [weak self] response in
@@ -744,7 +742,7 @@ extension SwapAssetFlowCoordinator {
                 onQuoteLoaded?(quoteList, nil)
             case .didFailToLoadQuote(let error):
                 onQuoteLoaded?(nil, error)
-            case .didLoadQuote(let quote):
+            case .didLoadQuote:
                 assertionFailure("Shouldn't enter here")
             }
         }

@@ -228,7 +228,7 @@ extension HomeAPIDataController {
         }
     }
     
-    func fetchDefaultAssets() {
+    func fetchUSDCDefaultAsset() {
         let usdcAssetID = ALGAsset.usdcAssetID(api.network)
         guard
             sharedDataController.assetDetailCollection.isEmpty ||
