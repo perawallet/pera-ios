@@ -99,7 +99,7 @@ struct ConfirmSwapView: View {
             }
             .frame(height: 60)
             .padding(.top, 8)
-            .padding(.bottom, 30)
+            .padding(.bottom, 10)
             ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
             
             HStack {
@@ -123,7 +123,7 @@ struct ConfirmSwapView: View {
                 .fill(Color.Layer.grayLighter)
                 .frame(height: 1)
                 .frame(maxWidth: .infinity)
-                .padding(.top, 40)
+                .padding(.top, 20)
             VStack {
                 HStack {
                     Text("title-price")
@@ -181,17 +181,23 @@ struct ConfirmSwapView: View {
                 HStack {
                     Text("swap-price-impact-title")
                         .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
+                        .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.gray)
                     Spacer().frame(width: 6)
                     SwiftUI.Button {
                         activeSheet = .priceImpact
                     } label: {
-                        Image("icon-info-20")
+                        if viewModel.highPriceImpactWarning != nil {
+                            Image("icon-info-20")
+                                .renderingMode(.template)
+                                .foregroundColor(Color.Helpers.negative)
+                        } else {
+                            Image("icon-info-20")
+                        }
                     }
                     Spacer()
                     Text(viewModel.priceImpact)
                         .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
+                        .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.main)
                 }
                 .padding(.bottom, 16)
                 HStack {
@@ -229,13 +235,28 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                 }
-                .padding(.bottom, 32)
+                Spacer().frame(height: 20)
+                if let warningMessage = viewModel.highPriceImpactWarning {
+                    HStack(alignment: .top, spacing: 4) {
+                        Image("icon-info-red")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                        Text(warningMessage)
+                            .font(.dmSans.medium.size(13))
+                            .foregroundStyle(Color.Helpers.negative)
+                            .frame(maxWidth: .infinity)
+                    }
+                } else {
+                    Spacer().frame(height: 45)
+                }
             }
+            .padding(.bottom, 20)
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 24)
-            ConfirmSlideButton(state: $viewModel.confirmationState) {
+            ConfirmSlideButton(state: $viewModel.confirmationState, isSwapDisabled: viewModel.isSwapDisabled) {
                 onConfirmTap()
             }
+            .disabled(viewModel.isSwapDisabled)
             .padding(.horizontal, 24)
             Spacer()
         }
@@ -320,6 +341,6 @@ private struct ConfirmSwapAssetView: View {
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 105)
+        .frame(height: 90)
     }
 }

@@ -30,13 +30,16 @@ final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
 
     private var swapController: SwapController
     private let api: ALGAPI
+    private let featureFlagService: FeatureFlagServicing
 
     init(
         swapController: SwapController,
-        api: ALGAPI
+        api: ALGAPI,
+        featureFlagService: FeatureFlagServicing
     ) {
         self.swapController = swapController
         self.api = api
+        self.featureFlagService = featureFlagService
     }
 }
 
@@ -50,8 +53,7 @@ extension ConfirmSwapAPIDataController {
 
         let slippage = percentage?.value
         let draft = SwapQuoteDraft(
-            providers: swapController.providers,
-            providersV2: swapController.providersV2,
+            providers: featureFlagService.isEnabled(.swapV2Enabled) ? swapController.providersV2.map { $0.name } : swapController.providers.map { $0.rawValue },
             swapperAddress: account.address,
             type: swapController.swapType,
             deviceID: deviceID,

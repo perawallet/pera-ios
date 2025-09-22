@@ -145,7 +145,8 @@ final class SwapViewController: BaseViewController {
         }
         let dataController = ConfirmSwapAPIDataController(
             swapController: swapController,
-            api: configuration.api!
+            api: configuration.api!,
+            featureFlagService: configuration.featureFlagService
         )
         self.confirmSwapDataController = dataController
         

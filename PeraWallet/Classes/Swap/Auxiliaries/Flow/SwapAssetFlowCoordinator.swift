@@ -448,7 +448,8 @@ extension SwapAssetFlowCoordinator {
     ) {
         let dataController = ConfirmSwapAPIDataController(
             swapController: swapController,
-            api: api
+            api: api,
+            featureFlagService: featureFlagService
         )
 
         let eventHandler: ConfirmSwapScreen.EventHandler = {

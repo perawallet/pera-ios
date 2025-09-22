@@ -107,8 +107,7 @@ extension SwapAssetAPIDataController {
         }
         
         let draft = SwapQuoteDraft(
-            providers: providers,
-            providersV2: providersV2,
+            providers: featureFlagService.isEnabled(.swapV2Enabled) ? providersV2.map { $0.name } : providers.map { $0.rawValue },
             swapperAddress: account.address,
             type: swapType,
             deviceID: deviceID,
