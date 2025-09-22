@@ -129,7 +129,6 @@ extension TabBarController {
         )
     }
 }
-
 extension Array where Element == TabBarItem {
     func index(
         of itemId: TabBarItemID

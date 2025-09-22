@@ -88,7 +88,6 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
         guard let rootViewController = UIApplication.shared.rootViewController() else { return }
 
         rootViewController.deleteAllData() { [weak self] isCompleted in
-            NotificationCenter.default.post(name: .userAccounstDeleted, object: nil)
             
             guard isCompleted else {
                 self?.presentLogoutErrorScreen()
