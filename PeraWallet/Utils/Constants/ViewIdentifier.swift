@@ -19,4 +19,8 @@ enum ViewIdentifier: String {
     // MARK: - Home Scene
     
     case homeConfettiAnimation = "home.animation.confetti"
+    
+    // MARK: - Settings
+    
+    case settingsBackButton = "settings.button.back"
 }
