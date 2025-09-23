@@ -68,6 +68,12 @@ final class SwapViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        configureView()
+    }
+    
+    // MARK: - View Setup
+    
+    private func configureView() {
         sharedViewModel = nil
         
         if !resolveInitialState() {
@@ -77,8 +83,6 @@ final class SwapViewController: BaseViewController {
         
         loadSwapView()
     }
-    
-    // MARK: - View Setup
     
     private func loadSwapView() {
         let swapHostingController = UIHostingController(
@@ -135,7 +139,7 @@ final class SwapViewController: BaseViewController {
         }
         
         let assetIn = resolveAssetIn(for: selectedAccount)
-        let assetOut = resolveAssetOut()
+        let assetOut = resolveAssetOut(for: selectedAccount)
         
         self.selectedAssetIn = assetIn
         self.selectedAssetOut = assetOut
@@ -224,9 +228,9 @@ final class SwapViewController: BaseViewController {
         return selectedAssetIn
     }
     
-    private func resolveAssetOut() -> AssetItem {
+    private func resolveAssetOut(for account: Account) -> AssetItem {
         guard let selectedAssetOut else {
-            return resolveDefaultUSDCAsset()
+            return resolveDefaultUSDCAsset(for: account)
         }
         return selectedAssetOut
     }
@@ -252,17 +256,26 @@ final class SwapViewController: BaseViewController {
         return assetItem
     }
     
-    private func resolveDefaultUSDCAsset() -> AssetItem {
-        guard
-            let network = api?.network,
-            !sharedDataController.assetDetailCollection.isEmpty,
-            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == ALGAsset.usdcAssetID(network)}).first,
-            let asset = assetItem(from: StandardAsset(decoration: assetDecorationElement))
-        else {
-            return resolveDefaultAlgoAsset(for: selectedAccount)
+    private func resolveDefaultUSDCAsset(for account: Account?) -> AssetItem {
+        let network = api?.network ?? .mainnet
+        let usdcAssetID = ALGAsset.usdcAssetID(network)
+        
+        if
+            let usdcAsset = selectedAccount?.allAssets?.filter({ $0.id == usdcAssetID }).first,
+            let usdcAssetItem = assetItem(from: usdcAsset)
+        {
+            return usdcAssetItem
         }
         
-        return asset
+        guard
+            !sharedDataController.assetDetailCollection.isEmpty,
+            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == usdcAssetID}).first,
+            let defaultAsset = assetItem(from: StandardAsset(decoration: assetDecorationElement))
+        else {
+            return resolveDefaultAlgoAsset(for: account)
+        }
+        
+        return defaultAsset
     }
     
     private func update(
@@ -380,6 +393,7 @@ final class SwapViewController: BaseViewController {
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
+            configureView()
         }
     }
     
@@ -387,8 +401,6 @@ final class SwapViewController: BaseViewController {
         with event: SwapControllerEvent,
         from swapController: SwapController
     ) {
-        guard let selectedAccount else { return }
-        
         switch event {
         case .didSignTransaction, .didSignAllTransactions, .didLedgerRequestUserApproval, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
             break

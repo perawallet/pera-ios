@@ -33,19 +33,14 @@ struct ProviderSelectionView: View {
             SwiftUI.Button(action: onTap) {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {
-                        Group {
-                            if didFail {
-                                Image("icon-swap-empty")
-                            } else if let url = URL(string: viewModel.iconUrl) {
-                                URLImageSUIView(url: url, didFail: $didFail)
-                            } else {
-                                Image("icon-swap-empty")
-                            }
+                        if !didFail, let url = URL(string: viewModel.iconUrl) {
+                            URLImageSUIView(url: url, didFail: $didFail)
+                                .frame(width: 16, height: 16)
+                                .scaledToFit()
+                                .clipShape(Circle())
+                            Spacer().frame(width: 4)
                         }
-                        .frame(width: 16, height: 16)
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        Spacer().frame(width: 4)
+                        
                         Text(viewModel.displayName)
                             .font(.dmSans.regular.size(15))
                             .foregroundStyle(Color.Text.main)

@@ -175,7 +175,6 @@ struct SwapView: View {
             ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
                 onAction?(.confirmSwap)
             } onSwapSuccess: { successMessage in
-                viewModel.reset()
                 onAction?(.showBanner(success: successMessage, error: nil))
             } onSwapError: { errorMessage in
                 onAction?(.showBanner(success: nil, error: errorMessage))
