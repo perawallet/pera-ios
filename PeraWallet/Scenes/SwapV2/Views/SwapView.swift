@@ -127,7 +127,6 @@ struct SwapView: View {
                         print("max")
                     }
                 }
-                .hidden()
             }
             .padding(.horizontal, 16)
             .padding(.top, viewModel.isBalanceNotSufficient ? 50 : 0)
@@ -161,7 +160,18 @@ struct SwapView: View {
     private func sheetContent(for sheet: SwapViewSheet) -> some View {
         switch sheet {
         case .settings:
-            SwapSettingsSheet()
+            SwapSettingsSheet() { percentageSelected, slippageSelected in
+                if let percentageSelected {
+                    print("---percentage: \(percentageSelected)")
+                } else {
+                    print("---percentage: nil")
+                }
+                if let slippageSelected {
+                    print("---slippage: \(slippageSelected)")
+                } else {
+                    print("---slippage: nil")
+                }
+            }
         case .provider(availableProviders: let providers):
             let vm = ProviderSheetViewModel(
                 selectedProvider: viewModel.selectedProvider,
