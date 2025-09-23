@@ -3942,7 +3942,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liquid Auth support is not currently enabled."
+            "value" : "Passkey support is not currently enabled."
           }
         }
       }
