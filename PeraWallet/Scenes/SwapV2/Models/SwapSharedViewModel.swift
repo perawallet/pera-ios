@@ -94,6 +94,17 @@ class SwapSharedViewModel: ObservableObject {
         )
     }
     
+    func calculateSwapAmount(balance: Decimal, fee: Decimal, percentage: Decimal) -> Decimal {
+        let desired = balance * percentage
+        let maxTradable = balance - fee
+        
+        if desired > maxTradable {
+            return maxTradable > 0 ? maxTradable : 0
+        } else {
+            return desired
+        }
+    }
+    
     func selectQuote(with provider: SelectedProvider) {
         guard let quoteList else { return }
         switch provider {
