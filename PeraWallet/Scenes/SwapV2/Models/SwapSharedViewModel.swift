@@ -63,17 +63,6 @@ class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Helpers
     
-    func reset() {
-        payingText = Self.defaultAmountValue
-        payingTextInUSD = Self.defaultAmountValue
-        receivingText = Self.defaultAmountValue
-        receivingTextInUSD = Self.defaultAmountValue
-        quoteList = nil
-        isLoadingPayAmount = false
-        isLoadingReceiveAmount = false
-        isBalanceNotSufficient = false
-    }
-    
     func switchAssets() {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
         (payingText, receivingText) = (receivingText, payingText)
@@ -100,7 +89,8 @@ class SwapSharedViewModel: ObservableObject {
             minimumReceived: minimumReceived,
             exchangeFee: exchangeFee,
             peraFee: peraFee,
-            confirmationState: swapConfirmationState
+            confirmationState: swapConfirmationState,
+            selectedNetwork: selectedNetwork
         )
     }
     

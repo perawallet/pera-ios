@@ -32,6 +32,7 @@ class SwapConfirmViewModel: ObservableObject {
     let minimumReceived: String
     let exchangeFee: String
     let peraFee: String
+    let selectedNetwork: ALGAPI.Network
     
     @Published var confirmationState: ConfirmSlideButtonState = .idle
     
@@ -50,7 +51,8 @@ class SwapConfirmViewModel: ObservableObject {
         minimumReceived: String,
         exchangeFee: String,
         peraFee: String,
-        confirmationState: ConfirmSlideButtonState
+        confirmationState: ConfirmSlideButtonState,
+        selectedNetwork: ALGAPI.Network
     ) {
         self.selectedAccount = selectedAccount
         self.selectedAssetIn = selectedAssetIn
@@ -67,6 +69,7 @@ class SwapConfirmViewModel: ObservableObject {
         self.exchangeFee = exchangeFee
         self.peraFee = peraFee
         self.confirmationState = confirmationState
+        self.selectedNetwork = selectedNetwork
     }
 }
 

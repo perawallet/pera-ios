@@ -1473,11 +1473,16 @@ extension HomeViewController {
     /// <note>
     /// Sort by order to be presented.
     private var alertItems: [any AlertItem] {
-        return [
+        var items: [any AlertItem] = [
             makeCopyAddressIntroductionAlertItem(),
-            makeSwapIntroductionAlertItem(),
             makeBuyGiftCardsWithCryptoIntroductionAlertItem()
         ]
+        
+        if !configuration.featureFlagService.isEnabled(.swapV2Enabled) {
+            items.insert(makeSwapIntroductionAlertItem(), at: 1)
+        }
+        
+        return items
     }
 
     private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {

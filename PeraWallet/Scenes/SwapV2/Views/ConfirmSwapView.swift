@@ -100,7 +100,7 @@ struct ConfirmSwapView: View {
             .frame(height: 60)
             .padding(.top, 8)
             .padding(.bottom, 10)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
             
             HStack {
                 Rectangle()
@@ -118,7 +118,7 @@ struct ConfirmSwapView: View {
             }
             .frame(height: 16)
             .padding(.vertical, 4)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInUSD)
             Rectangle()
                 .fill(Color.Layer.grayLighter)
                 .frame(height: 1)
@@ -145,18 +145,12 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    Group {
-                        if didFail {
-                            Image("icon-swap-empty")
-                        } else if let url = URL(string: viewModel.provider.iconUrl) {
-                            URLImageSUIView(url: url, didFail: $didFail)
-                        } else {
-                            Image("icon-swap-empty")
-                        }
+                    if !didFail, let url = URL(string: viewModel.provider.iconUrl) {
+                        URLImageSUIView(url: url, didFail: $didFail)
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .clipShape(Circle())
                     }
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .clipShape(Circle())
                     Text(viewModel.provider.displayName)
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
@@ -286,6 +280,7 @@ struct ConfirmSwapView: View {
 private struct ConfirmSwapAssetView: View {
     // MARK: - Properties
     var assetItem: AssetItem
+    var network: ALGAPI.Network
     var assetAmount: String
     var assetAmountInUSD: String
     
@@ -295,6 +290,8 @@ private struct ConfirmSwapAssetView: View {
             Group {
                 if assetItem.asset.isAlgo {
                     Image("icon-algo-circle").resizable()
+                } else if assetItem.asset.isUSDC(for: network) {
+                    Image("icon-usdc-circle").resizable()
                 } else if let url = assetItem.asset.logoURL {
                     AsyncImage(url: url) { image in
                         image.resizable()
