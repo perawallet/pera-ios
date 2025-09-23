@@ -47,6 +47,33 @@
 		2B516176243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */; };
 		2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */; };
+		2B6086AB2E833BD10020DB70 /* URLQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A82E833BD10020DB70 /* URLQRResolver.swift */; };
+		2B6086AC2E833BD10020DB70 /* QRResolverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A62E833BD10020DB70 /* QRResolverManager.swift */; };
+		2B6086AD2E833BD10020DB70 /* AddressQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */; };
+		2B6086AE2E833BD10020DB70 /* QRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A52E833BD10020DB70 /* QRResolver.swift */; };
+		2B6086AF2E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */; };
+		2B6086B02E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */; };
+		2B6086B12E833BD10020DB70 /* TextQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A72E833BD10020DB70 /* TextQRResolver.swift */; };
+		2B6086B22E833BD10020DB70 /* BackupQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */; };
+		2B6086B32E833BD10020DB70 /* URLQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A82E833BD10020DB70 /* URLQRResolver.swift */; };
+		2B6086B42E833BD10020DB70 /* QRResolverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A62E833BD10020DB70 /* QRResolverManager.swift */; };
+		2B6086B52E833BD10020DB70 /* AddressQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */; };
+		2B6086B62E833BD10020DB70 /* QRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A52E833BD10020DB70 /* QRResolver.swift */; };
+		2B6086B72E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */; };
+		2B6086B82E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */; };
+		2B6086B92E833BD10020DB70 /* TextQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A72E833BD10020DB70 /* TextQRResolver.swift */; };
+		2B6086BA2E833BD10020DB70 /* BackupQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */; };
+		2B6086BB2E833BD10020DB70 /* URLQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A82E833BD10020DB70 /* URLQRResolver.swift */; };
+		2B6086BC2E833BD10020DB70 /* QRResolverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A62E833BD10020DB70 /* QRResolverManager.swift */; };
+		2B6086BD2E833BD10020DB70 /* AddressQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */; };
+		2B6086BE2E833BD10020DB70 /* QRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A52E833BD10020DB70 /* QRResolver.swift */; };
+		2B6086BF2E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */; };
+		2B6086C02E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */; };
+		2B6086C12E833BD10020DB70 /* TextQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A72E833BD10020DB70 /* TextQRResolver.swift */; };
+		2B6086C22E833BD10020DB70 /* BackupQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */; };
+		2B60889F2E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
+		2B6088A02E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
+		2B6088A12E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
 		2B66C57A2D2C76AD00BC6825 /* HDWalletSDKMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5772D2C76AD00BC6825 /* HDWalletSDKMock.swift */; };
 		2B66C57B2D2C76AD00BC6825 /* HDWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5782D2C76AD00BC6825 /* HDWalletSDKTests.swift */; };
 		2B66C5872D2DD55800BC6825 /* HDWalletServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5862D2DD55800BC6825 /* HDWalletServiceTests.swift */; };
@@ -7843,6 +7870,15 @@
 		2B5F6FA02768EC8600C9B780 /* SingleGrayTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderView.swift; sourceTree = "<group>"; };
 		2B5F6FA42768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewTheme.swift; sourceTree = "<group>"; };
 		2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewModel.swift; sourceTree = "<group>"; };
+		2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidAuthQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A52E833BD10020DB70 /* QRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRResolver.swift; sourceTree = "<group>"; };
+		2B6086A62E833BD10020DB70 /* QRResolverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRResolverManager.swift; sourceTree = "<group>"; };
+		2B6086A72E833BD10020DB70 /* TextQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A82E833BD10020DB70 /* URLQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQRResolver.swift; sourceTree = "<group>"; };
+		2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectQRResolver.swift; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
 		2B65602425CE1DDD0028FE12 /* PassphraseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseCellViewModel.swift; sourceTree = "<group>"; };
@@ -12301,6 +12337,22 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		2B6086AA2E833BD10020DB70 /* Resolver */ = {
+			isa = PBXGroup;
+			children = (
+				2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */,
+				2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */,
+				2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */,
+				2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */,
+				2B6086A52E833BD10020DB70 /* QRResolver.swift */,
+				2B6086A62E833BD10020DB70 /* QRResolverManager.swift */,
+				2B6086A72E833BD10020DB70 /* TextQRResolver.swift */,
+				2B6086A82E833BD10020DB70 /* URLQRResolver.swift */,
+				2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */,
+			);
+			path = Resolver;
+			sourceTree = "<group>";
+		};
 		2B656E8E224BAF0B0064A49B /* AccountList */ = {
 			isa = PBXGroup;
 			children = (
@@ -12325,6 +12377,7 @@
 		2B66871822491A46009F21E7 /* QR */ = {
 			isa = PBXGroup;
 			children = (
+				2B6086AA2E833BD10020DB70 /* Resolver */,
 				2BA7135F274862C900B8A907 /* Screens */,
 				04F153B2274F872800AD2732 /* ViewModels */,
 				2BA7135D274862BD00B8A907 /* Views */,
@@ -24547,6 +24600,14 @@
 				591679062E464C76002184C2 /* NoAuthAccountTypeInformationViewModel.swift in Sources */,
 				591679072E464C76002184C2 /* RekeyedAccountInformationScreen.swift in Sources */,
 				591679082E464C76002184C2 /* RekeyedAccountInformationScreenTheme.swift in Sources */,
+				2B6086BB2E833BD10020DB70 /* URLQRResolver.swift in Sources */,
+				2B6086BC2E833BD10020DB70 /* QRResolverManager.swift in Sources */,
+				2B6086BD2E833BD10020DB70 /* AddressQRResolver.swift in Sources */,
+				2B6086BE2E833BD10020DB70 /* QRResolver.swift in Sources */,
+				2B6086BF2E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */,
+				2B6086C02E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */,
+				2B6086C12E833BD10020DB70 /* TextQRResolver.swift in Sources */,
+				2B6086C22E833BD10020DB70 /* BackupQRResolver.swift in Sources */,
 				591679092E464C76002184C2 /* RekeyedAccountInformationAccountItemView.swift in Sources */,
 				5916790A2E464C76002184C2 /* RekeyedAccountInformationAccountItemViewModel.swift in Sources */,
 				5916790B2E464C76002184C2 /* RekeyedAccountInformationAccountItemViewTheme.swift in Sources */,
@@ -25022,6 +25083,7 @@
 				59167ADD2E464C76002184C2 /* CarouselBannerItemViewTheme.swift in Sources */,
 				59167ADE2E464C76002184C2 /* CarouselPageControl.swift in Sources */,
 				59167ADF2E464C76002184C2 /* CarouselBannerView.swift in Sources */,
+				2B6088A12E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */,
 				59167AE02E464C76002184C2 /* CarouselBannerCell.swift in Sources */,
 				59167AE12E464C76002184C2 /* CarouselBannerViewTheme.swift in Sources */,
 				59167AE22E464C76002184C2 /* AnnouncementCell.swift in Sources */,
@@ -26681,6 +26743,14 @@
 				59E6FE862E4A712500CCA99B /* RekeyedAccountInformationScreenTheme.swift in Sources */,
 				59E6FE872E4A712500CCA99B /* RekeyedAccountInformationAccountItemView.swift in Sources */,
 				59E6FE882E4A712500CCA99B /* RekeyedAccountInformationAccountItemViewModel.swift in Sources */,
+				2B6086B32E833BD10020DB70 /* URLQRResolver.swift in Sources */,
+				2B6086B42E833BD10020DB70 /* QRResolverManager.swift in Sources */,
+				2B6086B52E833BD10020DB70 /* AddressQRResolver.swift in Sources */,
+				2B6086B62E833BD10020DB70 /* QRResolver.swift in Sources */,
+				2B6086B72E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */,
+				2B6086B82E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */,
+				2B6086B92E833BD10020DB70 /* TextQRResolver.swift in Sources */,
+				2B6086BA2E833BD10020DB70 /* BackupQRResolver.swift in Sources */,
 				59E6FE892E4A712500CCA99B /* RekeyedAccountInformationAccountItemViewTheme.swift in Sources */,
 				59E6FE8A2E4A712500CCA99B /* RekeyedAccountTypeInformationViewModel.swift in Sources */,
 				59E6FE8B2E4A712500CCA99B /* AccountInformationCopyAccountItemViewModel.swift in Sources */,
@@ -27156,6 +27226,7 @@
 				59E6005E2E4A712500CCA99B /* CarouselBannerCell.swift in Sources */,
 				59E6005F2E4A712500CCA99B /* CarouselBannerViewTheme.swift in Sources */,
 				59E600602E4A712500CCA99B /* AnnouncementCell.swift in Sources */,
+				2B6088A02E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */,
 				59E600612E4A712500CCA99B /* AnnouncementView.swift in Sources */,
 				59E600622E4A712500CCA99B /* AnnouncementViewTheme.swift in Sources */,
 				59E600632E4A712500CCA99B /* AnnouncementViewModel.swift in Sources */,
@@ -28815,6 +28886,14 @@
 				59E606FE2E4A71D000CCA99B /* RekeyedAccountInformationScreenTheme.swift in Sources */,
 				59E606FF2E4A71D000CCA99B /* RekeyedAccountInformationAccountItemView.swift in Sources */,
 				59E607002E4A71D000CCA99B /* RekeyedAccountInformationAccountItemViewModel.swift in Sources */,
+				2B6086AB2E833BD10020DB70 /* URLQRResolver.swift in Sources */,
+				2B6086AC2E833BD10020DB70 /* QRResolverManager.swift in Sources */,
+				2B6086AD2E833BD10020DB70 /* AddressQRResolver.swift in Sources */,
+				2B6086AE2E833BD10020DB70 /* QRResolver.swift in Sources */,
+				2B6086AF2E833BD10020DB70 /* CoinbaseQRResolver.swift in Sources */,
+				2B6086B02E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */,
+				2B6086B12E833BD10020DB70 /* TextQRResolver.swift in Sources */,
+				2B6086B22E833BD10020DB70 /* BackupQRResolver.swift in Sources */,
 				59E607012E4A71D000CCA99B /* RekeyedAccountInformationAccountItemViewTheme.swift in Sources */,
 				59E607022E4A71D000CCA99B /* RekeyedAccountTypeInformationViewModel.swift in Sources */,
 				59E607032E4A71D000CCA99B /* AccountInformationCopyAccountItemViewModel.swift in Sources */,
@@ -29290,6 +29369,7 @@
 				59E608D62E4A71D000CCA99B /* CarouselBannerCell.swift in Sources */,
 				59E608D72E4A71D000CCA99B /* CarouselBannerViewTheme.swift in Sources */,
 				59E608D82E4A71D000CCA99B /* AnnouncementCell.swift in Sources */,
+				2B60889F2E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */,
 				59E608D92E4A71D000CCA99B /* AnnouncementView.swift in Sources */,
 				59E608DA2E4A71D000CCA99B /* AnnouncementViewTheme.swift in Sources */,
 				59E608DB2E4A71D000CCA99B /* AnnouncementViewModel.swift in Sources */,

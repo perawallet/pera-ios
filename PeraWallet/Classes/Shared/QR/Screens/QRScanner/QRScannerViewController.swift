@@ -84,6 +84,8 @@ final class QRScannerViewController:
         }
     }
     
+    private lazy var qrResolverManager = QRResolverManager()
+    
     private var isShowingConnectedAppsButton: Bool {
         let sessions = peraConnect.walletConnectCoordinator.getSessions()
         return canReadWCSession && !sessions.isEmpty
@@ -370,86 +372,59 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         }
 
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        
+        let featureFlagService = CoreAppConfiguration.shared?.featureFlagService as! FeatureFlagServicing
 
-        if peraConnect.isValidSession(qrString) {
+        let context = QRResolutionContext(
+            canReadWCSession: canReadWCSession,
+            deeplinkConfig: target.deeplinkConfig,
+            peraConnect: peraConnect,
+            featureFlagService: featureFlagService
+        )
+        
+        let result = qrResolverManager.resolveQR(
+            qrString: qrString,
+            qrStringData: qrStringData,
+            context: context,
+            cameraResetHandler: cameraResetHandler
+        )
+        
+        handleQRResolutionResult(result)
+    }
+    
+    private func handleQRResolutionResult(_ result: QRResolutionResult) {
+        switch result {
+        case .walletConnect(let preferences):
             if !canReadWCSession {
                 bannerController?.presentErrorBanner(
                     title: String(localized: "title-error"),
                     message: String(localized: "qr-scan-invalid-wc-screen-error")
                 )
-
                 closeScreen()
                 return
             }
-
-            var isAccountMultiselectionEnabled = true
-            var mandotaryAccount: String?
-
-            if let queryString = qrString.split(separator: "?").last {
-                let parameters = queryString.split(separator: "&")
-                mandotaryAccount = parseQrCodeQueryParameter(parameters:parameters, key: Constants.Cards.selectedAccount.rawValue)
-                if let singleAccountValue = parseQrCodeQueryParameter(parameters:parameters, key: Constants.Cards.singleAccount.rawValue) {
-                    isAccountMultiselectionEnabled = (singleAccountValue != "true")
-                }
-            }
-
-            let preferences = WalletConnectSessionCreationPreferences(
-                session: qrString,
-                prefersConnectionApproval: true,
-                isAccountMultiselectionEnabled: isAccountMultiselectionEnabled,
-                mandotaryAccount: mandotaryAccount
-            )
             
             walletConnectSessionCreationPreferences = preferences
             peraConnect.connectToSession(with: preferences)
             startWCConnectionTimer()
-        } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
+            
+        case .backup(let parameters):
             closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrBackupParameters, completionHandler: nil)
-        } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
-            closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-        } else if let url = URL(string: qrString),
-                  let scheme = url.scheme,
-                  target.deeplinkConfig.qr.canAcceptScheme(scheme) {
-            if let browserURL = url.browserDeeplinkURL {
-                closeScreen()
-                let destination = DiscoverExternalDestination.url(browserURL)
-                self.delegate?.qrScannerViewController(self, didRead: destination, completionHandler: nil)
-                return
-            }
-            let deeplinkQR = DeeplinkQR(url: url)
-            guard let qrText = deeplinkQR.qrText() else {
-                delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
-                return
-            }
+            delegate?.qrScannerViewController(self, didRead: parameters, completionHandler: nil)
+            
+        case .text(let qrText):
             closeScreen()
             delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-        } else if let url = URL(string: qrString),
-                  CoinbaseQR.isCoinbaseQR(url),
-                  let qrText = CoinbaseQR.parseQRText(url) {
+            
+        case .externalDestination(let destination):
             closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-        } else if let url = URL(string: qrString),
-                  let request = LiquidAuthService.makeRequestForURL(url) {
+            delegate?.qrScannerViewController(self, didRead: destination, completionHandler: nil)
+        case .liquidAuth(let url):
+            // Just launch the URL which will open the iOS fido:/ flow and hand off to the autofill extension
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
             closeScreen()
-            //TODO: implement liquid auth/connect here when ready
-            // this will require calling handleAuthRequest, then startSignaling, then handle published messages
-        } else if let url = URL(string: qrString), PassKeyService.isPassKeyURL(url) {
-            closeScreen()
-            if configuration.featureFlagService.isEnabled(.liquidAuthEnabled) {
-                // Just launch the URL which will open the iOS fido:/ flow and hand off to the autofill extension
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        } else if qrString.isValidatedAddress {
-            let qrText = QRText(mode: .address, address: qrString)
-            closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-        } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
-            closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrBackupParameters, completionHandler: nil)
-        } else {
-            delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
+        case .error(let error, let resetHandler):
+            delegate?.qrScannerViewController(self, didFail: error, completionHandler: resetHandler)
         }
     }
     
@@ -475,7 +450,6 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         ) { [weak self] _ in
             self?.cameraResetHandler()
         }
-        
     }
 }
 
@@ -551,7 +525,7 @@ extension QRScannerViewController {
     private func startWCConnectionTimer() {
         /// <note>
         /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
-        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { 
+        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) {
             [weak self] in
             guard let self else { return }
 
