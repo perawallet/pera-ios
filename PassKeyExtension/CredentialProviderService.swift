@@ -35,10 +35,6 @@ final class CredentialProviderService {
         
         do {
             try initializeExtension()
-            
-            guard let config = CoreAppConfiguration.shared, config.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-                throw LiquidAuthError.notImplemented()
-            }
                    
             try await ensureAuthenticated()
             
@@ -62,10 +58,6 @@ final class CredentialProviderService {
     func handleAuthenticationRequest(_ requestParameters: ASPasskeyCredentialRequestParameters) async throws(pera_wallet_core.LiquidAuthError) -> ASPasskeyAssertionCredential {
         do {
             try initializeExtension()
-            
-            guard let config = CoreAppConfiguration.shared, config.featureFlagService.isEnabled(.liquidAuthEnabled) else {
-                throw LiquidAuthError.notImplemented()
-            }
             
             try await ensureAuthenticated()
             
