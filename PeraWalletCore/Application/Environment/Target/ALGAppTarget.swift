@@ -27,6 +27,8 @@ public final class ALGAppTarget: MacaroonApplication.AppTarget {
     /// Let's name it as `isStore` in 'Macaroon' later.
     public let isProduction: Bool
     
+    public let appGroupIdentifier: String
+    
     public let bundleIdentifier = getBundleIdentifier()
     public let displayName = getDisplayName()
     public let version = getVersion()
@@ -35,6 +37,7 @@ public final class ALGAppTarget: MacaroonApplication.AppTarget {
     
     private enum CodingKeys: CodingKey {
         case app
+        case appGroupIdentifier
         case deeplinkConfig
         case walletConnectConfig
         case universalLinkConfig
@@ -52,7 +55,6 @@ extension ALGAppTarget {
         CaseIterable,
         Decodable {
         case beta
-        case staging
         case store
         
         public var rawValue: String {
@@ -64,16 +66,8 @@ extension ALGAppTarget {
         
         public static let allCases: [ALGAppTarget.App] = [
             .beta,
-            .staging,
             .store
         ]
-        
-        public var appGroupIdentifier: String {
-            switch self {
-            case .staging: return "group.com.peralda.perawallet.staging"
-            default: return "group.com.algorandllc.algorand"
-            }
-        }
         
         public init?(
             rawValue: String
