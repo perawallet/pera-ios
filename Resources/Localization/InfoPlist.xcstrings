@@ -19,7 +19,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Pera Algo Wallet"
+            "value" : "Pera Algo Wallet Staging"
           }
         }
       }
@@ -31,7 +31,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "autofill-extension"
+            "value" : "autofill-extension-staging"
           }
         }
       }
