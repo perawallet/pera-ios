@@ -501,6 +501,50 @@ final class Router:
             }
 
             scanQRFlowCoordinator.launch()
+        case .buy(let address):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(
+                analytics: appConfiguration.analytics,
+                presentingScreen: visibleScreen
+            )
+            self.meldFlowCoordinator = meldFlowCoordinator
+            
+            let draft = MeldDraft(address: address)
+            meldFlowCoordinator.launch(draft)
+        case .sell(let address):
+            route(
+                to: .bidaliIntroduction,
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .accountDetail(let address):
+            let sharedDataController = rootViewController.appConfiguration.sharedDataController
+            guard sharedDataController.isAvailable else {
+                return
+            }
+            
+            let account = sharedDataController.accountCollection[address]
+            guard let account = account else {
+                return
+            }
+            
+            guard account.isAvailable else {
+                return
+            }
+            
+            let rawAccount = account.value
+            let accountHandle = sharedDataController.accountCollection[rawAccount.address]!
+            
+            route(
+                to: .accountDetail(
+                    accountHandle: accountHandle,
+                    eventHandler: { _ in },
+                    incomingASAsRequestsCount: 0
+                ),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
         
         func isValidDiscoverPath(_ path: String) -> Bool {

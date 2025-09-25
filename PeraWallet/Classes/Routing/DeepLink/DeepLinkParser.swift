@@ -449,6 +449,20 @@ extension DeepLinkParser {
             return makeKeyRegTransactionRequestScreen(
                 qrText
             )
+        case .buy:
+            return makeBuyScreen(qrText)
+        case .sell:
+            return makeSellScreen(qrText)
+        case .accountDetail:
+            return makeAccountDetailScreen(qrText)
+        case .addContact, .editContact, .addWatchAccount, .receiverAccountSelection, .addressActions:
+            return makeActionSelectionScreen(qrText)
+        case .recoverAddress:
+            return nil
+        case .assetDetail:
+            return makeAssetDetailScreen(qrText)
+        case .walletConnect, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath:
+            return nil
         }
     }
     
@@ -579,6 +593,59 @@ extension DeepLinkParser {
 
         return .success(.keyRegTransaction(account: account, draft: draft))
     }
+    
+    private func makeBuyScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.buy(address: address))
+    }
+    
+    private func makeSellScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.sell(address: address))
+    }
+    
+    private func makeAccountDetailScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.accountDetail(address: address))
+    }
+    
+    private func makeAssetDetailScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address,
+              let assetId = qr.asset,
+              sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        let account = sharedDataController.accountCollection[address]
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+        
+        guard account.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        let rawAccount = account.value
+        
+        if let asset = rawAccount[assetId] as? StandardAsset {
+            return .success(.asaDetail(account: rawAccount, asset: asset))
+        }
+        
+        if let collectibleAsset = rawAccount[assetId] as? CollectibleAsset {
+            return .success(.collectibleDetail(account: rawAccount, asset: collectibleAsset))
+        }
+        
+        return .failure(.assetNotFound)
+    }
 }
 
 extension DeepLinkParser {
@@ -691,6 +758,9 @@ extension DeepLinkParser {
             requestsCount: Int
         )
         case qrScanner
+        case buy(address: String)
+        case sell(address: String)
+        case accountDetail(address: String)
     }
     
     enum Error:

@@ -13,36 +13,31 @@
 // limitations under the License.
 
 //
-//  URLQRResolver.swift
+//  AppDeeplinkQRResolver.swift
 
 import Foundation
 import pera_wallet_core
 
-class URLQRResolver: BaseQRResolver {
+class AppDeeplinkQRResolver: BaseQRResolver {
     override func handleResolution(
         qrString: String,
         qrStringData: Data,
         context: QRResolutionContext
     ) -> QRResolutionResult? {
         guard let url = URL(string: qrString),
-              let scheme = url.scheme,
-              context.deeplinkConfig.qr.canAcceptScheme(scheme) else {
+              AppDeeplinkParser.isAppBasedDeeplink(url) else {
             return nil
         }
         
-        if let browserURL = url.browserDeeplinkURL {
-            let destination = DiscoverExternalDestination.url(browserURL)
-            return .externalDestination(destination: destination)
-        }
-        
+        // Parse the app-based deeplink
         let deeplinkQR = DeeplinkQR(url: url)
         guard let qrText = deeplinkQR.qrText() else {
             return .error(
                 error: .jsonSerialization,
-                resetHandler: { }
+                resetHandler: nil
             )
         }
         
         return .text(qrText: qrText)
     }
-} 
+}

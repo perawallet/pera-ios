@@ -71,9 +71,15 @@
 		2B6086C02E833BD10020DB70 /* WalletConnectQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */; };
 		2B6086C12E833BD10020DB70 /* TextQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A72E833BD10020DB70 /* TextQRResolver.swift */; };
 		2B6086C22E833BD10020DB70 /* BackupQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */; };
+		2B6086C52E833BD10020DB70 /* AppEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C32E833BD10020DB70 /* AppEndpoint.swift */; };
+		2B6086C72E833BD10020DB70 /* AppEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C32E833BD10020DB70 /* AppEndpoint.swift */; };
+		2B6086C92E833BD10020DB70 /* AppEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C32E833BD10020DB70 /* AppEndpoint.swift */; };
 		2B60889F2E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
 		2B6088A02E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
 		2B6088A12E8348280020DB70 /* LiquidAuthQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */; };
+		2B608B6C2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
+		2B608B6D2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
+		2B608B6E2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
 		2B66C57A2D2C76AD00BC6825 /* HDWalletSDKMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5772D2C76AD00BC6825 /* HDWalletSDKMock.swift */; };
 		2B66C57B2D2C76AD00BC6825 /* HDWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5782D2C76AD00BC6825 /* HDWalletSDKTests.swift */; };
 		2B66C5872D2DD55800BC6825 /* HDWalletServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5862D2DD55800BC6825 /* HDWalletServiceTests.swift */; };
@@ -7879,6 +7885,8 @@
 		2B6086A72E833BD10020DB70 /* TextQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextQRResolver.swift; sourceTree = "<group>"; };
 		2B6086A82E833BD10020DB70 /* URLQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQRResolver.swift; sourceTree = "<group>"; };
 		2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectQRResolver.swift; sourceTree = "<group>"; };
+		2B6086C32E833BD10020DB70 /* AppEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEndpoint.swift; sourceTree = "<group>"; };
+		2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDeeplinkQRResolver.swift; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
 		2B65602425CE1DDD0028FE12 /* PassphraseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseCellViewModel.swift; sourceTree = "<group>"; };
@@ -11916,6 +11924,7 @@
 		2B4DF40A236C5F5800FF9551 /* DeepLink */ = {
 			isa = PBXGroup;
 			children = (
+				2B6086C32E833BD10020DB70 /* AppEndpoint.swift */,
 				F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */,
 				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
 				8BA851612C790288008F37FE /* WalletConnectSessionRequestResponse.swift */,
@@ -12341,6 +12350,7 @@
 			isa = PBXGroup;
 			children = (
 				2B6086A22E833BD10020DB70 /* AddressQRResolver.swift */,
+				2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */,
 				2B6086A32E833BD10020DB70 /* BackupQRResolver.swift */,
 				2B6086A42E833BD10020DB70 /* CoinbaseQRResolver.swift */,
 				2B6086A12E833BD10020DB70 /* LiquidAuthQRResolver.swift */,
@@ -25643,6 +25653,7 @@
 				59167D0C2E464C76002184C2 /* ToggleTitleHeaderView.swift in Sources */,
 				59167D0D2E464C76002184C2 /* ToggleTitleHeaderViewTheme.swift in Sources */,
 				59167D0E2E464C76002184C2 /* AccountNameSwitchCell.swift in Sources */,
+				2B608B6E2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */,
 				59167D0F2E464C76002184C2 /* AccountNameSwitchView.swift in Sources */,
 				59167D102E464C76002184C2 /* AccountNameSwitchViewTheme.swift in Sources */,
 				59167D112E464C76002184C2 /* TitledToggleCell.swift in Sources */,
@@ -25675,6 +25686,7 @@
 				59167D2C2E464C76002184C2 /* OptOutAssetViewModel.swift in Sources */,
 				59167D2D2E464C76002184C2 /* OptOutAssetNameViewModel.swift in Sources */,
 				59167D2E2E464C76002184C2 /* OptOutAssetNameViewTheme.swift in Sources */,
+				2B6086C52E833BD10020DB70 /* AppEndpoint.swift in Sources */,
 				59167D2F2E464C76002184C2 /* DeeplinkSource.swift in Sources */,
 				59167D302E464C76002184C2 /* DeepLinkParser.swift in Sources */,
 				59167D312E464C76002184C2 /* WalletConnectSessionRequestResponse.swift in Sources */,
@@ -27786,6 +27798,7 @@
 				59E6028D2E4A712500CCA99B /* AccountNameSwitchCell.swift in Sources */,
 				59E6028E2E4A712500CCA99B /* AccountNameSwitchView.swift in Sources */,
 				59E6028F2E4A712500CCA99B /* AccountNameSwitchViewTheme.swift in Sources */,
+				2B608B6D2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */,
 				59E602902E4A712500CCA99B /* TitledToggleCell.swift in Sources */,
 				59E602912E4A712500CCA99B /* TitledToggleLoadingCell.swift in Sources */,
 				59E602922E4A712500CCA99B /* TitledToggleLoadingView.swift in Sources */,
@@ -27816,6 +27829,7 @@
 				59E602AB2E4A712500CCA99B /* OptOutAssetViewModel.swift in Sources */,
 				59E602AC2E4A712500CCA99B /* OptOutAssetNameViewModel.swift in Sources */,
 				59E602AD2E4A712500CCA99B /* OptOutAssetNameViewTheme.swift in Sources */,
+				2B6086C72E833BD10020DB70 /* AppEndpoint.swift in Sources */,
 				59E602AE2E4A712500CCA99B /* DeeplinkSource.swift in Sources */,
 				59E602AF2E4A712500CCA99B /* DeepLinkParser.swift in Sources */,
 				59E602B02E4A712500CCA99B /* WalletConnectSessionRequestResponse.swift in Sources */,
@@ -29929,6 +29943,7 @@
 				59E60B052E4A71D000CCA99B /* AccountNameSwitchCell.swift in Sources */,
 				59E60B062E4A71D000CCA99B /* AccountNameSwitchView.swift in Sources */,
 				59E60B072E4A71D000CCA99B /* AccountNameSwitchViewTheme.swift in Sources */,
+				2B608B6C2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */,
 				59E60B082E4A71D000CCA99B /* TitledToggleCell.swift in Sources */,
 				59E60B092E4A71D000CCA99B /* TitledToggleLoadingCell.swift in Sources */,
 				59E60B0A2E4A71D000CCA99B /* TitledToggleLoadingView.swift in Sources */,
@@ -29959,6 +29974,7 @@
 				59E60B232E4A71D000CCA99B /* OptOutAssetViewModel.swift in Sources */,
 				59E60B242E4A71D000CCA99B /* OptOutAssetNameViewModel.swift in Sources */,
 				59E60B252E4A71D000CCA99B /* OptOutAssetNameViewTheme.swift in Sources */,
+				2B6086C92E833BD10020DB70 /* AppEndpoint.swift in Sources */,
 				59E60B262E4A71D000CCA99B /* DeeplinkSource.swift in Sources */,
 				59E60B272E4A71D000CCA99B /* DeepLinkParser.swift in Sources */,
 				59E60B282E4A71D000CCA99B /* WalletConnectSessionRequestResponse.swift in Sources */,

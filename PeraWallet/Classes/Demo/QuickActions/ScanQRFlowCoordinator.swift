@@ -145,6 +145,18 @@ extension ScanQRFlowCoordinator {
                 controller,
                 keyRegTransactionWasDetected: qrText
             )
+        case .addContact, .editContact, .addWatchAccount, .receiverAccountSelection, .addressActions:
+            qrScanner(
+                controller,
+                accountAddressWasDetected: qrText
+            )
+        case .recoverAddress:
+            qrScanner(
+                controller,
+                accountMnemonicWasDetected: qrText
+            )
+        case .walletConnect, .assetDetail, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath, .buy, .sell, .accountDetail:
+            break
         }
     }
 

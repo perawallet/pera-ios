@@ -26,15 +26,16 @@ class QRResolverManager {
         // Order matters: most specific resolvers first, general ones later
         let walletConnectResolver = WalletConnectQRResolver()
         let liquidAuthResolver = LiquidAuthQRResolver()
+        let appDeeplinkResolver = AppDeeplinkQRResolver()
         let backupResolver = BackupQRResolver()
         let textResolver = TextQRResolver()
         let urlResolver = URLQRResolver()
         let coinbaseResolver = CoinbaseQRResolver()
         let addressResolver = AddressQRResolver()
         
-        // Build the chain
         walletConnectResolver.nextResolver = liquidAuthResolver
-        liquidAuthResolver.nextResolver = backupResolver
+        liquidAuthResolver.nextResolver = appDeeplinkResolver
+        appDeeplinkResolver.nextResolver = backupResolver
         backupResolver.nextResolver = textResolver
         textResolver.nextResolver = urlResolver
         urlResolver.nextResolver = coinbaseResolver
@@ -49,20 +50,17 @@ class QRResolverManager {
         context: QRResolutionContext,
         cameraResetHandler: @escaping EmptyHandler
     ) -> QRResolutionResult {
-        // Try to resolve using the chain
         if let result = resolverChain.resolve(
             qrString: qrString,
             qrStringData: qrStringData,
             context: context
         ) {
-            // Special handling for URL resolver errors to inject camera reset handler
             if case .error(let error, _) = result {
                 return .error(error: error, resetHandler: cameraResetHandler)
             }
             return result
         }
         
-        // If no resolver can handle it, return a JSON serialization error
         return .error(error: .jsonSerialization, resetHandler: cameraResetHandler)
     }
 } 
