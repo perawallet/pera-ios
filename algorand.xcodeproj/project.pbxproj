@@ -80,6 +80,9 @@
 		2B608B6C2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
 		2B608B6D2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
 		2B608B6E2E834DF00020DB70 /* AppDeeplinkQRResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */; };
+		2B6093DE2E85B8590020DB70 /* AppEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6093D92E85B8590020DB70 /* AppEndpointTests.swift */; };
+		2B6093DF2E85B8590020DB70 /* DeeplinkQRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6093DB2E85B8590020DB70 /* DeeplinkQRTests.swift */; };
+		2B6093E02E85B8590020DB70 /* AppDeeplinkParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6093D82E85B8590020DB70 /* AppDeeplinkParserTests.swift */; };
 		2B66C57A2D2C76AD00BC6825 /* HDWalletSDKMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5772D2C76AD00BC6825 /* HDWalletSDKMock.swift */; };
 		2B66C57B2D2C76AD00BC6825 /* HDWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5782D2C76AD00BC6825 /* HDWalletSDKTests.swift */; };
 		2B66C5872D2DD55800BC6825 /* HDWalletServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66C5862D2DD55800BC6825 /* HDWalletServiceTests.swift */; };
@@ -7887,6 +7890,9 @@
 		2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectQRResolver.swift; sourceTree = "<group>"; };
 		2B6086C32E833BD10020DB70 /* AppEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEndpoint.swift; sourceTree = "<group>"; };
 		2B6086C42E833BD10020DB70 /* AppDeeplinkQRResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDeeplinkQRResolver.swift; sourceTree = "<group>"; };
+		2B6093D82E85B8590020DB70 /* AppDeeplinkParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDeeplinkParserTests.swift; sourceTree = "<group>"; };
+		2B6093D92E85B8590020DB70 /* AppEndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEndpointTests.swift; sourceTree = "<group>"; };
+		2B6093DB2E85B8590020DB70 /* DeeplinkQRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkQRTests.swift; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
 		2B65602425CE1DDD0028FE12 /* PassphraseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseCellViewModel.swift; sourceTree = "<group>"; };
@@ -10267,6 +10273,7 @@
 		F0FA692229E76E9E00593F38 /* OptInAssetNextListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListLoadingViewTheme.swift; sourceTree = "<group>"; };
 		F0FA692629E7A0FF00593F38 /* OptInAssetListDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListDraft.swift; sourceTree = "<group>"; };
 		F0FA692A29E7A4D100593F38 /* OptInAssetListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListQuery.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6789012345678 /* RecentChangesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChangesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -12361,6 +12368,16 @@
 				2B6086A92E833BD10020DB70 /* WalletConnectQRResolver.swift */,
 			);
 			path = Resolver;
+			sourceTree = "<group>";
+		};
+		2B6093DD2E85B8590020DB70 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				2B6093D82E85B8590020DB70 /* AppDeeplinkParserTests.swift */,
+				2B6093D92E85B8590020DB70 /* AppEndpointTests.swift */,
+				2B6093DB2E85B8590020DB70 /* DeeplinkQRTests.swift */,
+			);
+			path = Routing;
 			sourceTree = "<group>";
 		};
 		2B656E8E224BAF0B0064A49B /* AccountList */ = {
@@ -20406,6 +20423,7 @@
 		D42585242D4B923A00E89BF2 /* Deeplinks */ = {
 			isa = PBXGroup;
 			children = (
+				2B6093DD2E85B8590020DB70 /* Routing */,
 				D42585272D4B925E00E89BF2 /* Discover */,
 				D42585262D4B925800E89BF2 /* Staking */,
 				D42585252D4B924C00E89BF2 /* Cards */,
@@ -31005,6 +31023,9 @@
 				2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */,
 				2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */,
 				D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */,
+				2B6093DE2E85B8590020DB70 /* AppEndpointTests.swift in Sources */,
+				2B6093DF2E85B8590020DB70 /* DeeplinkQRTests.swift in Sources */,
+				2B6093E02E85B8590020DB70 /* AppDeeplinkParserTests.swift in Sources */,
 				2B95417A25AE62D40098805B /* PaymentTests.swift in Sources */,
 				2B2EE89425B6E944006A53C5 /* AlgoAssetViewModelTests.swift in Sources */,
 				2B9541A525AE634E0098805B /* UserTests.swift in Sources */,
