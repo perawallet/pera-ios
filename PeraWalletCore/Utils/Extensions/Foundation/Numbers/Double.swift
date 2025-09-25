@@ -69,7 +69,7 @@ public extension Double {
         return (self * divisor).rounded() / divisor
     }
     
-    var toDecimal: Decimal {
-        return Decimal(self)
+    var decimal: Decimal {
+        Decimal(self)
     }
 }

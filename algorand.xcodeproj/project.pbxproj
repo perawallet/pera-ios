@@ -7244,6 +7244,7 @@
 		D435F9BC2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
+		D44082712E857CE400495AA4 /* DecimalInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44082702E857CE100495AA4 /* DecimalInputFormatter.swift */; };
 		D446A74A272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
 		D446A74B272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
 		D446A74C272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
@@ -9294,6 +9295,7 @@
 		D43A0C592790DA63007430B9 /* ResultViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewTheme.swift; sourceTree = "<group>"; };
 		D43B23E327180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewModel.swift; sourceTree = "<group>"; };
 		D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewTheme.swift; sourceTree = "<group>"; };
+		D44082702E857CE100495AA4 /* DecimalInputFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInputFormatter.swift; sourceTree = "<group>"; };
 		D4411D0528352DCE00080911 /* CollectibleFullScreenImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageViewModel.swift; sourceTree = "<group>"; };
 		D4411D092836531500080911 /* CollectibleFullScreenVideoDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenVideoDraft.swift; sourceTree = "<group>"; };
 		D4411D0D2836532000080911 /* CollectibleFullScreenImageDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageDraft.swift; sourceTree = "<group>"; };
@@ -17971,6 +17973,7 @@
 		591674582E460AA3002184C2 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				D44082702E857CE100495AA4 /* DecimalInputFormatter.swift */,
 				591674572E460AA3002184C2 /* PercentageInputFormatter.swift */,
 			);
 			path = Inputs;
@@ -31120,6 +31123,7 @@
 				591676742E460AF9002184C2 /* AssetDetailFetchDraft.swift in Sources */,
 				591676752E460AF9002184C2 /* CardsFundAddressesListDraft.swift in Sources */,
 				591676762E460AF9002184C2 /* CardsCountryAvailabilityDraft.swift in Sources */,
+				D44082712E857CE400495AA4 /* DecimalInputFormatter.swift in Sources */,
 				591676772E460AF9002184C2 /* AssetBalanceChartDataDraft.swift in Sources */,
 				591676782E460AF9002184C2 /* WalletWealthBalanceChartDataDraft.swift in Sources */,
 				591676792E460AF9002184C2 /* AddressWealthBalanceChartDataDraft.swift in Sources */,
