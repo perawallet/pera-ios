@@ -94,7 +94,7 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.payingText,
-                    amountTextInUSD: $viewModel.payingTextInUSD,
+                    amountTextInUSD: $viewModel.payingTextInFiatCurrency,
                     isLoading: $viewModel.isLoadingPayAmount,
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
@@ -105,7 +105,7 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
-                    amountTextInUSD: $viewModel.receivingTextInUSD,
+                    amountTextInUSD: $viewModel.receivingTextInFiatCurrency,
                     isLoading: $viewModel.isLoadingReceiveAmount,
                     isBalanceNotSufficient: .constant(false)
                 ) {
