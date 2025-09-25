@@ -31,9 +31,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedQuote: SwapQuote?
     
     @Published var payingText: String = defaultAmountValue
-    @Published var payingTextInUSD: String = defaultAmountValue
+    @Published var payingTextInFiatCurrency: String = defaultAmountValue
     @Published var receivingText: String = defaultAmountValue
-    @Published var receivingTextInUSD: String = defaultAmountValue
+    @Published var receivingTextInFiatCurrency: String = defaultAmountValue
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
@@ -45,6 +45,8 @@ class SwapSharedViewModel: ObservableObject {
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
+    let currency: CurrencyProvider
+    
     // MARK: - Internal State
     var quoteList: [SwapQuote]?
     var availableProviders: [SwapProviderV2]?
@@ -54,13 +56,15 @@ class SwapSharedViewModel: ObservableObject {
         selectedAccount: Account,
         selectedAssetIn: AssetItem,
         selectedAssetOut: AssetItem,
-        selectedNetwork: ALGAPI.Network
+        selectedNetwork: ALGAPI.Network,
+        currency: CurrencyProvider
     ) {
         self.selectedAccount = selectedAccount
         self.selectedAssetIn = selectedAssetIn
         self.selectedAssetOut = selectedAssetOut
         self.selectedProvider = .auto
         self.selectedNetwork = selectedNetwork
+        self.currency = currency
     }
     
     // MARK: - Helpers
@@ -68,7 +72,7 @@ class SwapSharedViewModel: ObservableObject {
     func switchAssets() {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
         (payingText, receivingText) = (receivingText, payingText)
-        (payingTextInUSD, receivingTextInUSD) = (receivingTextInUSD, payingTextInUSD)
+        (payingTextInFiatCurrency, receivingTextInFiatCurrency) = (receivingTextInFiatCurrency, payingTextInFiatCurrency)
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
@@ -82,8 +86,8 @@ class SwapSharedViewModel: ObservableObject {
             selectedAssetOut: selectedAssetOut,
             selectedAssetInAmount: payingText,
             selectedAssetOutAmount: receivingText,
-            selectedAssetInAmountInUSD: payingTextInUSD,
-            selectedAssetOutAmountInUSD: receivingTextInUSD,
+            selectedAssetInAmountInUSD: payingTextInFiatCurrency,
+            selectedAssetOutAmountInUSD: receivingTextInFiatCurrency,
             price: price,
             provider: activeProvider,
             slippageTolerance: slippageTolerance,
@@ -107,15 +111,18 @@ class SwapSharedViewModel: ObservableObject {
         
         guard let selectedQuote else { return }
         
-        let amount = selectedQuote.amountOut ?? 0
-        let decimals = selectedQuote.assetOut?.decimals ?? 0
-        let value = Decimal(amount) / pow(10, decimals)
+        let amountIn = selectedQuote.amountIn ?? 0
+        let decimalsIn = selectedQuote.assetIn?.decimals ?? 0
+        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
         
-        receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: value) ?? .empty
+        let amountOut = selectedQuote.amountOut ?? 0
+        let decimalsOut = selectedQuote.assetOut?.decimals ?? 0
+        let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        receivingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote.amountOutUSDValue) ?? .empty)
+        payingTextInFiatCurrency = fiatValueText(fromAlgo: valueIn.doubleValue)
         
-        payingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote.amountOutUSDValue) ?? .empty)
+        receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
+        receivingTextInFiatCurrency = fiatValueText(fromAlgo: valueOut.doubleValue)
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
@@ -261,6 +268,57 @@ extension SwapSharedViewModel {
         case .provider(let providerId):
             return availableProviders?.first(where: { $0.name == providerId })
         }
+    }
+}
+
+
+// MARK: - Exchange methods
+extension SwapSharedViewModel {
+    func fiatValue(fromAlgo amount: Double) -> Double {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return 0
+        }
+        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+        
+        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.toDecimal) else {
+            return 0
+        }
+        
+        return fiatAmount.doubleValue
+    }
+    
+    func fiatValueText(fromAlgo amount: Double) -> String {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return .empty
+        }
+        let fiatAmount = fiatValue(fromAlgo: amount)
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.currency = currencyFiatValue
+        return currencyFormatter.format(fiatAmount) ?? .empty
+    }
+    
+    func algoValue(fromFiat amount: Double) -> Double {
+        guard let currencyAlgoValue = try? currency.algoValue?.unwrap() else {
+            return 0
+        }
+        let exchanger = CurrencyExchanger(currency: currencyAlgoValue)
+        
+        guard let algoAmount = try? exchanger.exchange(amount: amount.toDecimal) else {
+            return 0
+        }
+        return algoAmount.doubleValue
+    }
+    
+    func algoValueText(fromFiat amount: Double) -> String {
+        guard let currencyAlgoValue = try? currency.algoValue?.unwrap() else {
+            return .empty
+        }
+        let algoAmount = algoValue(fromFiat: amount)
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.currency = currencyAlgoValue
+        return currencyFormatter.format(algoAmount) ?? .empty
     }
 }
 

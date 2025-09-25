@@ -149,7 +149,8 @@ final class SwapViewController: BaseViewController {
                 selectedAccount: selectedAccount,
                 selectedAssetIn: assetIn,
                 selectedAssetOut: assetOut,
-                selectedNetwork: api?.network ?? .mainnet
+                selectedNetwork: api?.network ?? .mainnet,
+                currency: sharedDataController.currency
             )
             self.sharedViewModel = vm
             return vm
@@ -299,15 +300,19 @@ final class SwapViewController: BaseViewController {
         
         let orderedQuoteList = quoteList.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
         let selectedQuote = orderedQuoteList.first
-        let amount = selectedQuote?.amountOut ?? 0
-        let decimals = selectedQuote?.assetOut?.decimals ?? 0
-        let value = Decimal(amount) / pow(10, decimals)
         
-        viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: value) ?? SwapSharedViewModel.defaultAmountValue
+        let amountIn = selectedQuote?.amountIn ?? 0
+        let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
+        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
         
-        viewModel.receivingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote?.amountOutUSDValue) ?? SwapSharedViewModel.defaultAmountValue)
+        let amountOut = selectedQuote?.amountOut ?? 0
+        let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
+        let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        viewModel.payingTextInUSD = "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: selectedQuote?.amountOutUSDValue) ?? SwapSharedViewModel.defaultAmountValue)
+        viewModel.payingTextInFiatCurrency = viewModel.fiatValueText(fromAlgo: valueIn.doubleValue)
+        
+        viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+        viewModel.receivingTextInFiatCurrency = viewModel.fiatValueText(fromAlgo: valueOut.doubleValue)
         
         viewModel.quoteList = orderedQuoteList
         viewModel.selectedQuote = selectedQuote
