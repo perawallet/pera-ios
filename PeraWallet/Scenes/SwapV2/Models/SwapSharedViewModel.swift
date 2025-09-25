@@ -39,6 +39,8 @@ class SwapSharedViewModel: ObservableObject {
     
     @Published var selectedNetwork: ALGAPI.Network
     
+    @Published var slippageSelected: SlippageValue? = nil
+    
     private var debounceWorkItem: DispatchWorkItem?
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
@@ -92,17 +94,6 @@ class SwapSharedViewModel: ObservableObject {
             confirmationState: swapConfirmationState,
             selectedNetwork: selectedNetwork
         )
-    }
-    
-    func calculateSwapAmount(balance: Decimal, fee: Decimal, percentage: Decimal) -> Decimal {
-        let desired = balance * percentage
-        let maxTradable = balance - fee
-        
-        if desired > maxTradable {
-            return maxTradable > 0 ? maxTradable : 0
-        } else {
-            return desired
-        }
     }
     
     func selectQuote(with provider: SelectedProvider) {
@@ -269,6 +260,59 @@ extension SwapSharedViewModel {
             return availableProviders?.first(where: { $0.name == bestProviderId })
         case .provider(let providerId):
             return availableProviders?.first(where: { $0.name == providerId })
+        }
+    }
+}
+
+enum PercentageValue: CaseIterable, Equatable, Hashable {
+    case custom(value: Double)
+    case p25, p50, p75, max
+    
+    var title: String {
+        switch self {
+        case .custom: return "Custom"
+        case .p25: return "25%"
+        case .p50: return "50%"
+        case .p75: return "75%"
+        case .max: return "MAX"
+        }
+    }
+    
+    var value: Double {
+        switch self {
+        case .custom(value: let value): return value
+        case .p25: return 0.25
+        case .p50: return 0.5
+        case .p75: return 0.75
+        case .max: return 1
+        }
+    }
+    
+    static var allCases: [PercentageValue] {
+        return [.p25, .p50, .p75, .max]
+    }
+}
+
+enum SlippageValue: CaseIterable, Equatable {
+    case custom, c05, c1, c2, c5
+    
+    var title: String {
+        switch self {
+        case .custom: return "Custom"
+        case .c05: return "0.5%"
+        case .c1: return "1%"
+        case .c2: return "2%"
+        case .c5: return "5%"
+        }
+    }
+    
+    var value: Double {
+        switch self {
+        case .custom: return 0
+        case .c05: return 0.005
+        case .c1: return 0.01
+        case .c2: return 0.02
+        case .c5: return 0.05
         }
     }
 }

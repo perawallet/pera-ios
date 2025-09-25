@@ -33,7 +33,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .assetsChartsEnabled:
             return .bool(false)
         case .swapV2Enabled:
-            return .bool(true)
+            return .bool(false)
         case .liquidAuthEnabled:
             return .bool(false)
         case .liquidConnectEnabled:
