@@ -5089,7 +5089,6 @@
       }
     },
     "primary-currency-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10487,7 +10486,6 @@
       }
     },
     "use-local-currency-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

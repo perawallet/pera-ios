@@ -20,15 +20,15 @@ import pera_wallet_core
 struct SwapSettingsSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     
-    @State private var percentageText: String = .empty
-    @State private var slippageText: String = .empty
-    @State private var useLocalCurrency = PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
-    @State private var localPercentageSelected: PercentageValue?
-    @State private var localSlippageSelected: SlippageValue?
-    
-    @Binding var slippageSelected: SlippageValue?
+    @StateObject private var viewModel: SwapSettingsViewModel
     
     var onApplyTap: (PercentageValue?, SlippageValue?) -> Void
+    
+    init(slippageSelected: SlippageValue?, onApplyTap: @escaping (PercentageValue?, SlippageValue?) -> Void) {
+        _viewModel = StateObject(wrappedValue: SwapSettingsViewModel(slippageSelected: slippageSelected))
+        self.onApplyTap = onApplyTap
+    }
+
     
     var body: some View {
         VStack(spacing: 0) {
@@ -37,34 +37,22 @@ struct SwapSettingsSheet: View {
                 case .dismiss:
                     dismiss()
                 case .apply:
-                    if
-                        localPercentageSelected == nil,
-                        !percentageText.isEmpty,
-                        let percentageValue = Double(percentageText)
-                    {
-                        localPercentageSelected = .custom(value: percentageValue / 100)
-                    }
+                    if viewModel.localPercentageSelected == nil,
+                      !viewModel.percentageText.isEmpty,
+                      let percentageValue = Double(viewModel.percentageText) {
+                       viewModel.localPercentageSelected = .custom(value: percentageValue / 100)
+                   }
                     
-                    PeraUserDefaults.shouldUseLocalCurrencyInSwap = useLocalCurrency
-                    onApplyTap(localPercentageSelected, localSlippageSelected)
+                    PeraUserDefaults.shouldUseLocalCurrencyInSwap = viewModel.useLocalCurrency
+                    onApplyTap(viewModel.localPercentageSelected, viewModel.localSlippageSelected)
                     dismiss()
                 }
             }
             
             Spacer().frame(height: 24)
             
-            SwapSettingsTextField(title: "swap-amount-percentage-title", placeholder: "swap-amount-percentage-placeholder", text: $percentageText)
-                .onChange(of: percentageText) { newValue in
-                    if let doubleNewValue = Double(newValue) {
-                        if let match = PercentageValue.allCases.first(where: { $0.value == doubleNewValue / 100 }) {
-                            localPercentageSelected = match
-                        } else {
-                            localPercentageSelected = nil
-                        }
-                    } else {
-                        localPercentageSelected = nil
-                    }
-                }
+            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText, viewModel: viewModel)
+                .onChange(of: viewModel.percentageText) { viewModel.updatePercentageSelection(from: $0)}
             
             Spacer().frame(height: 16)
             
@@ -73,10 +61,10 @@ struct SwapSettingsSheet: View {
                     ForEach(PercentageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(
                             title: item.title,
-                            isSelected: localPercentageSelected == item
+                            isSelected: viewModel.localPercentageSelected == item
                         ) {
-                            percentageText = String(format: "%.0f", item.value * 100)
-                            localPercentageSelected = item
+                            viewModel.percentageText = String(format: "%.0f", item.value * 100)
+                            viewModel.localPercentageSelected = item
                         }
                     }
                 }
@@ -85,18 +73,8 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 40)
             
-            SwapSettingsTextField(title: "swap-slippage-title", placeholder: "swap-slippage-placeholder", text: $slippageText)
-                .onChange(of: slippageText) { newValue in
-                    if let doubleNewValue = Double(newValue) {
-                        if let match = SlippageValue.allCases.first(where: { $0.value == doubleNewValue / 100 }) {
-                            localSlippageSelected = match
-                        } else {
-                            localSlippageSelected = .custom
-                        }
-                    } else {
-                        localSlippageSelected = .custom
-                    }
-                }
+            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText, viewModel: viewModel)
+                .onChange(of: viewModel.slippageText) { viewModel.updateSlippageSelection(from: $0)}
             
             Spacer().frame(height: 16)
             
@@ -105,17 +83,17 @@ struct SwapSettingsSheet: View {
                     ForEach(SlippageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(
                             title: item.title,
-                            isSelected: localSlippageSelected == item
+                            isSelected: viewModel.localSlippageSelected == item
                         ) {
                             switch item {
                             case .custom:
-                                slippageText = .empty
+                                viewModel.slippageText = .empty
                             case .c05:
-                                slippageText = String(format: "%.1f", item.value * 100)
+                                viewModel.slippageText = String(format: "%.1f", item.value * 100)
                             default:
-                                slippageText = String(format: "%.0f", item.value * 100)
+                                viewModel.slippageText = String(format: "%.0f", item.value * 100)
                             }
-                            localSlippageSelected = item
+                            viewModel.localSlippageSelected = item
                         }
                     }
                 }
@@ -127,7 +105,7 @@ struct SwapSettingsSheet: View {
             SwapSettingsToogle(
                 title: "primary-currency-title",
                 text: "use-local-currency-text",
-                isOn: $useLocalCurrency
+                isOn: $viewModel.useLocalCurrency
             )
             
             Spacer()
@@ -137,19 +115,5 @@ struct SwapSettingsSheet: View {
         .background(Color.Defaults.bg)
         .presentationDetents([.height(600)])
         .presentationDragIndicator(.hidden)
-        .onAppear {
-            if let slippageSelected {
-                switch slippageSelected {
-                case .custom:
-                    slippageText = .empty
-                case .c05:
-                    slippageText = String(format: "%.1f", slippageSelected.value * 100)
-                    localSlippageSelected = slippageSelected
-                default:
-                    slippageText = String(format: "%.0f", slippageSelected.value * 100)
-                    localSlippageSelected = slippageSelected
-                }
-            }
-        }
     }
 }

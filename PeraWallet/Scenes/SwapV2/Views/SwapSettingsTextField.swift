@@ -18,39 +18,24 @@ import SwiftUI
 
 struct SwapSettingsTextField: View {
     
-    let title: LocalizedStringKey
-    let placeholder: LocalizedStringKey
-    
+    let textFieldType: TextFieldType
     @Binding var text: String
+    @StateObject var viewModel: SwapSettingsViewModel
     
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        Text(title)
+        Text(textFieldType.title)
             .font(.dmSans.regular.size(13))
             .foregroundStyle(Color.Text.gray)
             .frame(maxWidth: .infinity, alignment: .leading)
         Spacer().frame(height: 8)
-        TextField(placeholder, text: $text)
+        TextField(textFieldType.placeholder, text: $text)
             .focused($isFocused)
             .frame(height: 52)
             .foregroundStyle(Color.Text.grayLighter)
             .keyboardType(.numberPad)
-            .onChange(of: text) { new in
-                var filtered = ""
-                    var hasDot = false
-
-                    for c in new {
-                        if c.isNumber {
-                            filtered.append(c)
-                        } else if c == "." && !hasDot {
-                            filtered.append(c)
-                            hasDot = true
-                        }
-                    }
-
-                    text = filtered
-            }
+            .onChange(of: text) { viewModel.updateText($0, for: textFieldType) }
         Rectangle()
             .fill(Color.Layer.grayLighter)
             .frame(height: 1)

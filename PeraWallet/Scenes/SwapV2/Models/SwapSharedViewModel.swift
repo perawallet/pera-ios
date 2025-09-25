@@ -280,7 +280,20 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.toDecimal) else {
+        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.decimal) else {
+            return 0
+        }
+        
+        return fiatAmount.doubleValue
+    }
+    
+    func fiatValue(from asset: Asset, with amount: Double) -> Double {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return 0
+        }
+        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+        
+        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
             return 0
         }
         
@@ -298,13 +311,24 @@ extension SwapSharedViewModel {
         return currencyFormatter.format(fiatAmount) ?? .empty
     }
     
+    func fiatValueText(from asset: Asset, with amount: Double) -> String {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return .empty
+        }
+        let fiatAmount = fiatValue(from: asset, with: amount)
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.currency = currencyFiatValue
+        return currencyFormatter.format(fiatAmount) ?? .empty
+    }
+    
     func algoValue(fromFiat amount: Double) -> Double {
         guard let currencyAlgoValue = try? currency.algoValue?.unwrap() else {
             return 0
         }
         let exchanger = CurrencyExchanger(currency: currencyAlgoValue)
         
-        guard let algoAmount = try? exchanger.exchange(amount: amount.toDecimal) else {
+        guard let algoAmount = try? exchanger.exchange(amount: amount.decimal) else {
             return 0
         }
         return algoAmount.doubleValue
@@ -328,26 +352,26 @@ enum PercentageValue: CaseIterable, Equatable, Hashable {
     
     var title: String {
         switch self {
-        case .custom: return "Custom"
-        case .p25: return "25%"
-        case .p50: return "50%"
-        case .p75: return "75%"
-        case .max: return "MAX"
+        case .custom: "Custom"
+        case .p25: "25%"
+        case .p50: "50%"
+        case .p75: "75%"
+        case .max: "MAX"
         }
     }
     
     var value: Double {
         switch self {
-        case .custom(value: let value): return value
-        case .p25: return 0.25
-        case .p50: return 0.5
-        case .p75: return 0.75
-        case .max: return 1
+        case .custom(value: let value): value
+        case .p25: 0.25
+        case .p50: 0.5
+        case .p75: 0.75
+        case .max: 1
         }
     }
     
     static var allCases: [PercentageValue] {
-        return [.p25, .p50, .p75, .max]
+        [.p25, .p50, .p75, .max]
     }
 }
 
@@ -356,21 +380,21 @@ enum SlippageValue: CaseIterable, Equatable {
     
     var title: String {
         switch self {
-        case .custom: return "Custom"
-        case .c05: return "0.5%"
-        case .c1: return "1%"
-        case .c2: return "2%"
-        case .c5: return "5%"
+        case .custom: "Custom"
+        case .c05: "0.5%"
+        case .c1: "1%"
+        case .c2: "2%"
+        case .c5: "5%"
         }
     }
     
     var value: Double {
         switch self {
-        case .custom: return 0
-        case .c05: return 0.005
-        case .c1: return 0.01
-        case .c2: return 0.02
-        case .c5: return 0.05
+        case .custom: 0
+        case .c05: 0.005
+        case .c1: 0.01
+        case .c2: 0.02
+        case .c5: 0.05
         }
     }
 }

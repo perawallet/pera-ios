@@ -162,19 +162,9 @@ struct SwapView: View {
     private func sheetContent(for sheet: SwapViewSheet) -> some View {
         switch sheet {
         case .settings:
-            SwapSettingsSheet(slippageSelected: $viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
-                if let newPercentageSelected {
-                    viewModel.isLoadingPayAmount = true
-                    onAction?(.calculatePeraFee(forAmount: NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue, withPercentage: newPercentageSelected.value))
-                }
-                
-                if viewModel.slippageSelected != newSlippageSelected {
-                    
-                    viewModel.slippageSelected = newSlippageSelected?.value ?? 0 > 0 ? newSlippageSelected : nil
-                    if viewModel.shouldShowSwapButton {
-                        viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
-                    }
-                }
+            SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                handlePercentageChange(newPercentageSelected)
+                handleSlippageChange(newSlippageSelected)
             }
         case .provider(availableProviders: let providers):
             let vm = ProviderSheetViewModel(
@@ -193,6 +183,22 @@ struct SwapView: View {
             } onSwapError: { errorMessage in
                 onAction?(.showBanner(success: nil, error: errorMessage))
             }
+        }
+    }
+    
+    private func handlePercentageChange(_ newPercentage: PercentageValue?) {
+        guard let newPercentage else { return }
+        viewModel.isLoadingPayAmount = true
+        let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
+    }
+
+    private func handleSlippageChange(_ newSlippage: SlippageValue?) {
+        let slippageChanged = viewModel.slippageSelected != newSlippage
+        viewModel.slippageSelected = (newSlippage?.value ?? 0) > 0 ? newSlippage : nil
+
+        if slippageChanged && viewModel.shouldShowSwapButton {
+            viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }
     }
 }
