@@ -151,8 +151,12 @@ extension TooltipUIController {
     private func addContent(
         adjustedFor sourceView: UIView,
         with viewModel: TooltipViewModel
-    ) -> UIView {
-        let arrowLocationX = sourceView.window!.convert(
+    ) -> UIView? {
+        guard let window = sourceView.window else {
+            return nil
+        }
+        
+        let arrowLocationX = window.convert(
             sourceView.frame,
             from: sourceView.superview
         ).midX
