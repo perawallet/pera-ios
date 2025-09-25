@@ -41,6 +41,7 @@ enum AppEndpoint: String, CaseIterable {
     case buy = "buy"
     case sell = "sell"
     case accountDetail = "account-detail"
+    case webImport = "web-import"
     
     /// Parse QR text from app endpoint format
     func parseQRText(from url: URL) -> QRText? {
@@ -87,6 +88,8 @@ enum AppEndpoint: String, CaseIterable {
             return parseSellEndpoint(queryParams: queryParams)
         case .accountDetail:
             return parseAccountDetailEndpoint(queryParams: queryParams)
+        case .webImport:
+            return parseWebImportEndpoint(queryParams: queryParams)
         }
     }
     
@@ -138,8 +141,11 @@ enum AppEndpoint: String, CaseIterable {
             return nil
         }
         
+        let address = queryParams["address"]
+        
         return QRText(
             mode: .optInRequest,
+            address: address,
             amount: 0,
             asset: assetId,
             note: queryParams["note"],
@@ -308,10 +314,7 @@ enum AppEndpoint: String, CaseIterable {
     }
     
     private func parseDiscoverBrowserEndpoint(queryParams: [String: String]?) -> QRText? {
-        guard let queryParams = queryParams,
-              let url = queryParams["url"] else {
-            return nil
-        }
+        let url = queryParams?["url"]
         
         return QRText(
             mode: .discoverBrowser,
@@ -347,10 +350,7 @@ enum AppEndpoint: String, CaseIterable {
     }
     
     private func parseBuyEndpoint(queryParams: [String: String]?) -> QRText? {
-        guard let queryParams = queryParams,
-              let address = queryParams["address"] else {
-            return nil
-        }
+        let address = queryParams?["address"]
         
         return QRText(
             mode: .buy,
@@ -359,10 +359,7 @@ enum AppEndpoint: String, CaseIterable {
     }
     
     private func parseSellEndpoint(queryParams: [String: String]?) -> QRText? {
-        guard let queryParams = queryParams,
-              let address = queryParams["address"] else {
-            return nil
-        }
+        let address = queryParams?["address"]
         
         return QRText(
             mode: .sell,
@@ -379,6 +376,23 @@ enum AppEndpoint: String, CaseIterable {
         return QRText(
             mode: .accountDetail,
             address: address
+        )
+    }
+    
+    private func parseWebImportEndpoint(queryParams: [String: String]?) -> QRText? {
+        guard let queryParams = queryParams,
+              let backupId = queryParams["backupId"],
+              let encryptionKey = queryParams["encryptionKey"] else {
+            return nil
+        }
+        
+        let action = queryParams["action"]
+        
+        return QRText(
+            mode: .webImport,
+            backupId: backupId,
+            encryptionKey: encryptionKey,
+            action: action
         )
     }
 }

@@ -155,7 +155,7 @@ extension ScanQRFlowCoordinator {
                 controller,
                 accountMnemonicWasDetected: qrText
             )
-        case .walletConnect, .assetDetail, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath, .buy, .sell, .accountDetail:
+        case .walletConnect, .assetDetail, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath, .buy, .sell, .accountDetail, .webImport:
             break
         }
     }

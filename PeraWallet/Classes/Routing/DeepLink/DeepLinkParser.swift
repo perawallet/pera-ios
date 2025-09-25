@@ -47,7 +47,7 @@ extension DeepLinkParser {
             return makeAssetTransactionRequestScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
-        case .inAppBrowser:
+        case .inAppBrowser, .url:
             return makeExternalBrowserScreen(for: notification)
         default:
             return nil
@@ -75,7 +75,7 @@ extension DeepLinkParser {
             return makeAssetOptInScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
-        case .inAppBrowser:
+        case .inAppBrowser, .url:
             return makeExternalBrowserScreen(for: notification)
         case .assetInbox:
             return makeIncomingASAScreen(for: notification)
@@ -184,7 +184,7 @@ extension DeepLinkParser {
         
         return .success(.assetInbox(
             address: accountAddress,
-            requestsCount: 1
+            requestsCount: 0
         ))
     }
     
@@ -455,14 +455,34 @@ extension DeepLinkParser {
             return makeSellScreen(qrText)
         case .accountDetail:
             return makeAccountDetailScreen(qrText)
-        case .addContact, .editContact, .addWatchAccount, .receiverAccountSelection, .addressActions:
+        case .addContact:
+            return makeAddContactScreen(qrText)
+        case .editContact:
+            return makeEditContactScreen(qrText)
+        case .addWatchAccount:
+            return makeAddWatchAccountScreen(qrText)
+        case .receiverAccountSelection:
+            return makeReceiverAccountSelectionScreen(qrText)
+        case .addressActions:
             return makeActionSelectionScreen(qrText)
         case .recoverAddress:
-            return nil
+            return makeRecoverAddressScreen(qrText)
         case .assetDetail:
             return makeAssetDetailScreen(qrText)
-        case .walletConnect, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath:
+        case .discoverBrowser:
+            return makeDiscoverBrowserScreen(qrText)
+        case .discoverPath:
+            return makeDiscoverPathScreen(qrText)
+        case .cardsPath:
+            return makeCardsPathScreen(qrText)
+        case .stakingPath:
+            return makeStakingPathScreen(qrText)
+        case .walletConnect:
             return nil
+        case .assetInbox:
+            return makeAssetInboxScreen(qrText)
+        case .webImport:
+            return makeWebImportScreen(qrText)
         }
     }
     
@@ -569,6 +589,52 @@ extension DeepLinkParser {
             return nil
         }
 
+        // If address is provided, validate and proceed with opt-in for specific account
+        if let address = qr.address {
+            guard sharedDataController.isAvailable else {
+                return .failure(.waitingForAccountsToBeAvailable)
+            }
+
+            let account = sharedDataController.accountCollection[address]
+            guard let account = account else {
+                return .failure(.accountNotFound)
+            }
+
+            guard account.isAvailable else {
+                return .failure(.waitingForAccountsToBeAvailable)
+            }
+
+            let rawAccount = account.value
+
+            let isWatchAccount = rawAccount.authorization.isWatch
+            if isWatchAccount {
+                return .failure(.tryingToOptInForWatchAccount)
+            }
+
+            let isNoAuthAccount = rawAccount.authorization.isNoAuth
+            if isNoAuthAccount {
+                return .failure(.tryingToOptInForNoAuthInLocalAccount)
+            }
+
+            if rawAccount.containsAsset(assetID) {
+                let asset = sharedDataController.assetDetailCollection[assetID]!
+                return .success(.asaDiscoveryWithOptOutAction(account: rawAccount, asset: asset))
+            }
+
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
+                assetID: assetID,
+                for: rawAccount
+            )
+            if hasPendingOptInRequest {
+                let accountName = rawAccount.primaryDisplayName
+                return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
+            }
+
+            return .success(.asaDiscoveryWithOptInAction(account: rawAccount, assetID: assetID))
+        }
+
+        // If no address is provided, show account selection
         return .success(.accountSelect(asset: assetID))
     }
     
@@ -595,19 +661,19 @@ extension DeepLinkParser {
     }
     
     private func makeBuyScreen(_ qr: QRText) -> Result? {
-        guard let address = qr.address else {
-            return nil
+        if let address = qr.address {
+            return .success(.buy(address: address))
+        } else {
+            return .success(.buyAccountSelection)
         }
-        
-        return .success(.buy(address: address))
     }
     
     private func makeSellScreen(_ qr: QRText) -> Result? {
-        guard let address = qr.address else {
-            return nil
+        if let address = qr.address {
+            return .success(.sell(address: address))
+        } else {
+            return .success(.sellAccountSelection)
         }
-        
-        return .success(.sell(address: address))
     }
     
     private func makeAccountDetailScreen(_ qr: QRText) -> Result? {
@@ -645,6 +711,110 @@ extension DeepLinkParser {
         }
         
         return .failure(.assetNotFound)
+    }
+    
+    private func makeDiscoverBrowserScreen(_ qr: QRText) -> Result? {
+        guard let url = qr.url, !url.isEmpty else {
+            let externalDeepLink = ExternalDeepLink.discover(path: "main/browser")
+            return .success(.externalDeepLink(deepLink: externalDeepLink))
+        }
+        
+        guard let browserURL = URL(string: url) else {
+            let externalDeepLink = ExternalDeepLink.discover(path: "main/browser")
+            return .success(.externalDeepLink(deepLink: externalDeepLink))
+        }
+        
+        let destination = DiscoverExternalDestination.redirection(browserURL, api.network)
+        return .success(.externalInAppBrowser(destination: destination))
+    }
+    
+    private func makeDiscoverPathScreen(_ qr: QRText) -> Result? {
+        let path = qr.path
+        let externalDeepLink = ExternalDeepLink.discover(path: path)
+        return .success(.externalDeepLink(deepLink: externalDeepLink))
+    }
+    
+    private func makeCardsPathScreen(_ qr: QRText) -> Result? {
+        let path = qr.path
+        let externalDeepLink = ExternalDeepLink.cards(path: path)
+        return .success(.externalDeepLink(deepLink: externalDeepLink))
+    }
+    
+    private func makeStakingPathScreen(_ qr: QRText) -> Result? {
+        let path = qr.path
+        let externalDeepLink = ExternalDeepLink.staking(path: path)
+        return .success(.externalDeepLink(deepLink: externalDeepLink))
+    }
+    
+    private func makeWebImportScreen(_ qr: QRText) -> Result? {
+        guard let backupId = qr.backupId,
+              let encryptionKey = qr.encryptionKey else {
+            return nil
+        }
+        
+        let qrBackupParameters = QRBackupParameters(
+            id: backupId,
+            encryptionKey: encryptionKey,
+            action: qr.action ?? "import"
+        )
+        
+        return .success(.webImport(parameters: qrBackupParameters))
+    }
+    
+    private func makeRecoverAddressScreen(_ qr: QRText) -> Result? {
+        guard let mnemonic = qr.mnemonic else {
+            return nil
+        }
+        
+        let words = mnemonic.components(separatedBy: CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: ",")))
+            .compactMap { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : $0 }
+        
+        let walletType: WalletFlowType = words.count == 25 ? .algo25 : .bip39
+        
+        return .success(.recoverAddress(mnemonic: mnemonic, walletType: walletType))
+    }
+    
+    private func makeAssetInboxScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.assetInbox(
+            address: address,
+            requestsCount: 0
+        ))
+    }
+    
+    private func makeAddContactScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.addContact(address: address, label: qr.label))
+    }
+    
+    private func makeEditContactScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.editContact(address: address, label: qr.label))
+    }
+    
+    private func makeAddWatchAccountScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.addWatchAccount(address: address, label: qr.label))
+    }
+    
+    private func makeReceiverAccountSelectionScreen(_ qr: QRText) -> Result? {
+        guard let address = qr.address else {
+            return nil
+        }
+        
+        return .success(.receiverAccountSelection(address: address))
     }
 }
 
@@ -759,8 +929,16 @@ extension DeepLinkParser {
         )
         case qrScanner
         case buy(address: String)
+        case buyAccountSelection
         case sell(address: String)
+        case sellAccountSelection
         case accountDetail(address: String)
+        case webImport(parameters: QRBackupParameters)
+        case recoverAddress(mnemonic: String, walletType: WalletFlowType)
+        case addContact(address: String, label: String?)
+        case editContact(address: String, label: String?)
+        case addWatchAccount(address: String, label: String?)
+        case receiverAccountSelection(address: String)
     }
     
     enum Error:
@@ -843,6 +1021,7 @@ extension DeepLinkParser {
         case assetOptIn = "asset/opt-in"
         case assetTransactions = "asset/transactions"
         case inAppBrowser = "in-app-browser"
+        case url = "url"
         case assetInbox = "asset-inbox"
     }
 }

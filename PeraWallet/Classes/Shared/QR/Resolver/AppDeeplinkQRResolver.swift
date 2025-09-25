@@ -38,6 +38,16 @@ class AppDeeplinkQRResolver: BaseQRResolver {
             )
         }
         
+        if qrText.mode == .walletConnect,
+           let walletConnectUrl = qrText.walletConnectUrl {
+            let walletConnectResolver = WalletConnectQRResolver()
+            return walletConnectResolver.resolve(
+                qrString: walletConnectUrl,
+                qrStringData: walletConnectUrl.data(using: .utf8) ?? Data(),
+                context: context
+            )
+        }
+        
         return .text(qrText: qrText)
     }
 }

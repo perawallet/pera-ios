@@ -32,6 +32,9 @@ public final class QRText: Codable {
     public var walletConnectUrl: String?
     public var url: String?
     public var path: String?
+    public var backupId: String?
+    public var encryptionKey: String?
+    public var action: String?
     
     public init(
         mode: QRMode,
@@ -46,7 +49,10 @@ public final class QRText: Codable {
         type: String? = nil,
         walletConnectUrl: String? = nil,
         url: String? = nil,
-        path: String? = nil
+        path: String? = nil,
+        backupId: String? = nil,
+        encryptionKey: String? = nil,
+        action: String? = nil
     ) {
         self.mode = mode
         self.address = address
@@ -61,6 +67,9 @@ public final class QRText: Codable {
         self.walletConnectUrl = walletConnectUrl
         self.url = url
         self.path = path
+        self.backupId = backupId
+        self.encryptionKey = encryptionKey
+        self.action = action
     }
     
     public required init(from decoder: Decoder) throws {
@@ -222,6 +231,16 @@ public final class QRText: Codable {
         case .discoverPath, .cardsPath, .stakingPath:
             if let path = path {
                 try container.encode(path, forKey: .path)
+            }
+        case .webImport:
+            if let backupId = backupId {
+                try container.encode(backupId, forKey: .backupId)
+            }
+            if let encryptionKey = encryptionKey {
+                try container.encode(encryptionKey, forKey: .encryptionKey)
+            }
+            if let action = action {
+                try container.encode(action, forKey: .action)
             }
         }
     }
@@ -542,6 +561,18 @@ extension QRText {
         case .accountDetail:
             var query = "?address=\(address ?? "")"
             return "\(base)account-detail/\(query)"
+        case .webImport:
+            var query = ""
+            if let backupId = backupId {
+                query += "?backupId=\(backupId)"
+            }
+            if let encryptionKey = encryptionKey {
+                query += query.isEmpty ? "?encryptionKey=\(encryptionKey)" : "&encryptionKey=\(encryptionKey)"
+            }
+            if let action = action {
+                query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
+            }
+            return "\(base)web-import/\(query)"
         }
         return ""
     }
@@ -681,6 +712,13 @@ extension QRText {
             }
 
             return "\(base)\(address)\(query)"
+        case .webImport:
+            // For legacy format, web import doesn't have a specific legacy representation
+            // Return the JSON representation of the backup parameters
+            if let backupId = backupId, let encryptionKey = encryptionKey {
+                let action = self.action ?? "import"
+                return "{\"backupId\":\"\(backupId)\",\"encryptionKey\":\"\(encryptionKey)\",\"action\":\"\(action)\",\"version\":\"1\"}"
+            }
         }
         return ""
     }
@@ -877,6 +915,18 @@ extension QRText {
         case .accountDetail:
             var query = "?address=\(address ?? "")"
             return "\(appBase)account-detail/\(query)"
+        case .webImport:
+            var query = ""
+            if let backupId = backupId {
+                query += "?backupId=\(backupId)"
+            }
+            if let encryptionKey = encryptionKey {
+                query += query.isEmpty ? "?encryptionKey=\(encryptionKey)" : "&encryptionKey=\(encryptionKey)"
+            }
+            if let action = action {
+                query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
+            }
+            return "\(appBase)web-import/\(query)"
         }
         return ""
     }
@@ -904,6 +954,9 @@ extension QRText {
         case walletConnectUrl = "walletConnectUrl"
         case url = "url"
         case path = "path"
+        case backupId = "backupId"
+        case encryptionKey = "encryptionKey"
+        case action = "action"
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             lhs.rawValue == rhs.rawValue
@@ -978,4 +1031,5 @@ public enum QRMode {
     case buy
     case sell
     case accountDetail
+    case webImport
 }
