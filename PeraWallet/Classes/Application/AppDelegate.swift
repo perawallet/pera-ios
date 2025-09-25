@@ -485,7 +485,7 @@ extension AppDelegate {
         let biometricAuthenticationMigration = BiometricAuthenticationMigration(session: session)
         biometricAuthenticationMigration.migratePasswordToKeychain()
         
-        let dataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.current.app.appGroupIdentifier)
+        let dataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.current.appGroupIdentifier)
         dataStoreMigration.moveDatabaseToAppGroup()
     }
     
@@ -640,7 +640,7 @@ extension AppDelegate {
     
     private func createPersistentContainer() -> NSPersistentContainer {
         NSPersistentContainer.makePersistentContainer(
-            group: ALGAppTarget.current.app.appGroupIdentifier)
+            group: ALGAppTarget.current.appGroupIdentifier)
     }
     
     private func createAppLaunchController() -> AppLaunchController {

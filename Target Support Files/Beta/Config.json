@@ -49,5 +49,6 @@
             ]
         },
         "url": "https://perawallet.app/"
-    }
+    },
+    "app_group_identifier": "group.com.peralda.perawallet.beta"
 }

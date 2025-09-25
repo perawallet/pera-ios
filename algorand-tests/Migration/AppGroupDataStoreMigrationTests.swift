@@ -17,9 +17,11 @@ import CoreData
 @testable import pera_wallet_core
 
 final class AppGroupDataStoreMigrationTests: XCTestCase {
+    
+    let APP_GROUP = "group.com.peralda.perawallet.staging"
         
     func test_migration_movesDataAndDeletesOldStore() throws {
-        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.App.staging.appGroupIdentifier)
+        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
         
         let oldLocationContainer = NSPersistentContainer.makePersistentContainer(group: nil)
         Task {
@@ -37,7 +39,7 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
             migration.moveDatabaseToAppGroup()
             
             // THEN: App group DB should exist
-            let storeURL = URL.appGroupDBURL(for: ALGAppTarget.App.staging.appGroupIdentifier, databaseName: "algorand")
+            let storeURL = URL.appGroupDBURL(for: APP_GROUP, databaseName: "algorand")
             XCTAssertTrue(FileManager.default.fileExists(atPath: storeURL.path))
             
             // THEN: Old store should be deleted
@@ -71,7 +73,7 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
     }
     
     func test_migration_doesNotRunWhenNoData() throws {
-        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.App.staging.appGroupIdentifier)
+        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
 
         let oldContainer = NSPersistentContainer(name: "algorand")
         let oldLocationContainer = oldContainer.persistentStoreDescriptions

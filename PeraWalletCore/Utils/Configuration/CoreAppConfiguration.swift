@@ -70,7 +70,7 @@ extension CoreAppConfiguration {
         
         ALGAppTarget.setup()
         let persistentContainer: NSPersistentContainer = NSPersistentContainer.makePersistentContainer(
-            group: ALGAppTarget.current.app.appGroupIdentifier)
+            group: ALGAppTarget.current.appGroupIdentifier)
         let featureFlagService = makeFeatureFlagService()
         let hdWalletService = makeHDWalletService()
         let hdWalletStorage = makeHDWalletStorage()
