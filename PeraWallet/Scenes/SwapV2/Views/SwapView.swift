@@ -26,6 +26,7 @@ enum SwapViewAction {
     case getQuote(for: Double)
     case confirmSwap
     case showBanner(success: String?, error: String?)
+    case calculatePeraFee(forAmount: Double, withPercentage: Double)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -124,7 +125,8 @@ struct SwapView: View {
                     case .settings:
                         activeSheet = .settings
                     case .max:
-                        print("max")
+                        viewModel.isLoadingPayAmount = true
+                        onAction?(.calculatePeraFee(forAmount: NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue, withPercentage: 1.0))
                     }
                 }
             }
@@ -160,16 +162,18 @@ struct SwapView: View {
     private func sheetContent(for sheet: SwapViewSheet) -> some View {
         switch sheet {
         case .settings:
-            SwapSettingsSheet() { percentageSelected, slippageSelected in
-                if let percentageSelected {
-                    print("---percentage: \(percentageSelected)")
-                } else {
-                    print("---percentage: nil")
+            SwapSettingsSheet(slippageSelected: $viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                if let newPercentageSelected {
+                    viewModel.isLoadingPayAmount = true
+                    onAction?(.calculatePeraFee(forAmount: NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue, withPercentage: newPercentageSelected.value))
                 }
-                if let slippageSelected {
-                    print("---slippage: \(slippageSelected)")
-                } else {
-                    print("---slippage: nil")
+                
+                if viewModel.slippageSelected != newSlippageSelected {
+                    
+                    viewModel.slippageSelected = newSlippageSelected?.value ?? 0 > 0 ? newSlippageSelected : nil
+                    if viewModel.shouldShowSwapButton {
+                        viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
+                    }
                 }
             }
         case .provider(availableProviders: let providers):

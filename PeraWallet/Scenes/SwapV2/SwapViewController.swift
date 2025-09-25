@@ -333,6 +333,7 @@ final class SwapViewController: BaseViewController {
         )
         swapController.quote = viewModel.selectedQuote
         swapController.providersV2 = availableProviders
+        swapController.slippage = viewModel.slippageSelected.map { Decimal(floatLiteral: $0.value) }
         
         return swapController
     }
@@ -384,7 +385,24 @@ final class SwapViewController: BaseViewController {
                 bannerController?.presentErrorBanner(title: "title-error", message: .empty)
                 return
             }
-            swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
+            swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value, slippage: sharedViewModel?.slippageSelected.map { Decimal(floatLiteral: $0.value) })
+        case .calculatePeraFee(forAmount: let amount, withPercentage: let percentage):
+            guard let assetIn = selectedAssetIn?.asset else { return }
+            swapAssetFlowCoordinator.onFeeCalculated = { [weak self] peraFee, error in
+                guard let self = self else { return }
+                if let error {
+                    bannerController?.presentErrorBanner(title: "title-error", message: error.prettyDescription)
+                    return
+                }
+                
+                let fee = peraFee?.fee?.assetAmount(fromFraction: assetIn.decimals) ?? 0
+                let swapAmount = calculateSwapAmount(balance: amount.toDecimal, fee: fee, percentage: percentage.toDecimal)
+                
+                sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
+                sharedViewModel?.isLoadingPayAmount = false
+            }
+           
+            swapAssetFlowCoordinator.calculateFee(assetIn: assetIn, amount: amount)
         case .confirmSwap:
             confirmSwap()
         case .showBanner(success: let successMessage, error: let errorMessage):
@@ -394,6 +412,17 @@ final class SwapViewController: BaseViewController {
             }
             bannerController?.presentSuccessBanner(title: successMessage)
             configureView()
+        }
+    }
+    
+    private func calculateSwapAmount(balance: Decimal, fee: Decimal, percentage: Decimal) -> Decimal {
+        let desired = balance * percentage
+        let maxTradable = balance - fee
+        
+        if desired > maxTradable {
+            return maxTradable > 0 ? maxTradable : 0
+        } else {
+            return desired
         }
     }
     

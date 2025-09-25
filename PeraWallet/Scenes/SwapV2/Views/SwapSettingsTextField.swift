@@ -23,6 +23,8 @@ struct SwapSettingsTextField: View {
     
     @Binding var text: String
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         Text(title)
             .font(.dmSans.regular.size(13))
@@ -30,18 +32,24 @@ struct SwapSettingsTextField: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         Spacer().frame(height: 8)
         TextField(placeholder, text: $text)
+            .focused($isFocused)
             .frame(height: 52)
             .foregroundStyle(Color.Text.grayLighter)
             .keyboardType(.numberPad)
             .onChange(of: text) { new in
-                let digits = new.filter { $0.isNumber }
-                if digits != new { text = digits }
-                if let n = Int(digits) {
-                    let clamped = min(max(n, 1), 100)
-                    text = String(clamped)
-                } else {
-                    text = ""
-                }
+                var filtered = ""
+                    var hasDot = false
+
+                    for c in new {
+                        if c.isNumber {
+                            filtered.append(c)
+                        } else if c == "." && !hasDot {
+                            filtered.append(c)
+                            hasDot = true
+                        }
+                    }
+
+                    text = filtered
             }
         Rectangle()
             .fill(Color.Layer.grayLighter)

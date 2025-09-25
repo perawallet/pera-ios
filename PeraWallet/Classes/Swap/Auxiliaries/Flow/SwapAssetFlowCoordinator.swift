@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import UIKit
 import pera_wallet_core
+import MagpieHipo
 
 /// <todo>
 /// This should be removed after the routing refactor.
@@ -62,6 +63,7 @@ final class SwapAssetFlowCoordinator:
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
+    var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
 
     private var draft: SwapAssetFlowDraft
@@ -706,7 +708,7 @@ extension SwapAssetFlowCoordinator {
         }
     }
     
-    func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
+    func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double, slippage: Decimal?) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics,
@@ -725,7 +727,8 @@ extension SwapAssetFlowCoordinator {
             api: api,
             transactionSigner: transactionSigner
         )
-        
+        swapController.slippage = slippage
+       
         swapDataController = SwapAssetAPIDataController(
             dataStore: dataStore,
             swapController: swapController,
@@ -765,6 +768,32 @@ extension SwapAssetFlowCoordinator {
         
         return number.toFraction(of: decimals)
     }
+    
+    func calculateFee(assetIn: Asset, amount: Double) {
+        let assetInBalance = assetIn.amount
+        let formatter = SwapAssetValueFormatter()
+        
+        let decimalValue = formatter.getDecimalAmount(
+            of: assetInBalance,
+            for: AssetDecoration(asset: assetIn)
+        ).toFraction(of: assetIn.decimals)
+        
+        let draft = PeraSwapFeeDraft(assetID: assetIn.id, amount: decimalValue)
+        api.calculatePeraSwapFee(draft) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let fee):
+                onFeeCalculated?(fee, nil)
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                onFeeCalculated?(nil, error)
+            }
+        }
+    }
+    
 }
 
 extension SwapAssetFlowCoordinator {
