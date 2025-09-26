@@ -100,7 +100,7 @@ struct ConfirmSwapView: View {
             .frame(height: 60)
             .padding(.top, 8)
             .padding(.bottom, 10)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInSecondaryCurrency)
             
             HStack {
                 Rectangle()
@@ -118,7 +118,7 @@ struct ConfirmSwapView: View {
             }
             .frame(height: 16)
             .padding(.vertical, 4)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInSecondaryCurrency)
             Rectangle()
                 .fill(Color.Layer.grayLighter)
                 .frame(height: 1)

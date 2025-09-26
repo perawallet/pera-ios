@@ -93,6 +93,16 @@ extension CurrencyExchanger {
 
         return amount * algoValue
     }
+    
+    public func exchangeFiat(
+        amount: Decimal
+    ) throws -> Decimal {
+        guard let algoValue = currency.algoValue else {
+            throw CurrencyExchangeError.currencyFailed()
+        }
+
+        return amount / algoValue
+    }
 
     public func exchangeAlgoToUSD(
         amount: Decimal
