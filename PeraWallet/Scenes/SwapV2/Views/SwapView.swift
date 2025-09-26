@@ -26,6 +26,7 @@ enum SwapViewAction {
     case getQuote(for: Double)
     case confirmSwap
     case showBanner(success: String?, error: String?)
+    case calculatePeraFee(forAmount: Double, withPercentage: Double)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -93,7 +94,7 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.payingText,
-                    amountTextInUSD: $viewModel.payingTextInUSD,
+                    amountTextInSecondaryCurrency: $viewModel.payingTextInSecondaryCurrency,
                     isLoading: $viewModel.isLoadingPayAmount,
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
@@ -104,7 +105,7 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
-                    amountTextInUSD: $viewModel.receivingTextInUSD,
+                    amountTextInSecondaryCurrency: $viewModel.receivingTextInSecondaryCurrency,
                     isLoading: $viewModel.isLoadingReceiveAmount,
                     isBalanceNotSufficient: .constant(false)
                 ) {
@@ -124,10 +125,10 @@ struct SwapView: View {
                     case .settings:
                         activeSheet = .settings
                     case .max:
-                        print("max")
+                        viewModel.isLoadingPayAmount = true
+                        onAction?(.calculatePeraFee(forAmount: NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue, withPercentage: 1.0))
                     }
                 }
-                .hidden()
             }
             .padding(.horizontal, 16)
             .padding(.top, viewModel.isBalanceNotSufficient ? 50 : 0)
@@ -161,7 +162,11 @@ struct SwapView: View {
     private func sheetContent(for sheet: SwapViewSheet) -> some View {
         switch sheet {
         case .settings:
-            SwapSettingsSheet()
+            SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
+                handlePercentageChange(newPercentageSelected)
+                handleSlippageChange(newSlippageSelected)
+            }
         case .provider(availableProviders: let providers):
             let vm = ProviderSheetViewModel(
                 selectedProvider: viewModel.selectedProvider,
@@ -179,6 +184,22 @@ struct SwapView: View {
             } onSwapError: { errorMessage in
                 onAction?(.showBanner(success: nil, error: errorMessage))
             }
+        }
+    }
+    
+    private func handlePercentageChange(_ newPercentage: PercentageValue?) {
+        guard let newPercentage else { return }
+        viewModel.isLoadingPayAmount = true
+        let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
+    }
+
+    private func handleSlippageChange(_ newSlippage: SlippageValue?) {
+        let slippageChanged = viewModel.slippageSelected != newSlippage
+        viewModel.slippageSelected = (newSlippage?.value ?? 0) > 0 ? newSlippage : nil
+
+        if slippageChanged && viewModel.shouldShowSwapButton {
+            viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }
     }
 }

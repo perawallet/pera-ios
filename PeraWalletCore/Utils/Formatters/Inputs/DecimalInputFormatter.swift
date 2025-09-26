@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Scout
-import Foundation
-import CryptoKit
-import LiquidAuthSDK
-@testable import pera_staging
-@testable import pera_wallet_core
+//   DecimalInputFormatter.swift
 
-final class MockFeatureFlagService : FeatureFlagServicing, Mockable {
-    
-    var mock = Mock()
-    
-    func fetchAndActivate() async throws {
-        try! mock.call.fetchAndActivate()
-    }
-    
-    func isEnabled(_ flag: FeatureFlag) -> Bool {
-        try! mock.call.isEnabled(flag: flag) as! Bool
-    }
-    
-    func double(for flag: pera_wallet_core.FeatureFlag) -> Double? {
-        return 0.665
+import Foundation
+
+public struct DecimalInputFormatter {
+    /// Filters a string to allow only digits and a single dot
+    public static func format(_ input: String) -> String {
+        var filtered = ""
+        var hasDot = false
+
+        for c in input {
+            if c.isNumber {
+                filtered.append(c)
+            } else if c == "." && !hasDot {
+                filtered.append(c)
+                hasDot = true
+            }
+        }
+
+        return filtered
     }
 }

@@ -55,7 +55,7 @@ struct AssetSelectionView: View {
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
     @Binding var amountText: String
-    @Binding var amountTextInUSD: String
+    @Binding var amountTextInSecondaryCurrency: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
     @Binding var isBalanceNotSufficient: Bool
@@ -106,7 +106,7 @@ struct AssetSelectionView: View {
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)
                     } else {
-                        Text(amountTextInUSD)
+                        Text(amountTextInSecondaryCurrency)
                             .keyboardType(.decimalPad)
                             .font(.dmSans.regular.size(13.0))
                             .foregroundStyle(Color.Text.gray)

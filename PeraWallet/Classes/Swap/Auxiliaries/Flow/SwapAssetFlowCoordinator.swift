@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import UIKit
 import pera_wallet_core
+import MagpieHipo
 
 /// <todo>
 /// This should be removed after the routing refactor.
@@ -62,6 +63,7 @@ final class SwapAssetFlowCoordinator:
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
+    var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
 
     private var draft: SwapAssetFlowDraft
@@ -154,14 +156,14 @@ extension SwapAssetFlowCoordinator {
 
         let screen = Screen.swapIntroduction(draft: draft) {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .performPrimaryAction:
                 self.displayStore.isConfirmedSwapUserAgreement = true
                 self.visibleScreen.dismissScreen {
                     [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
 
                     self.startSwapFlow()
                 }
@@ -275,7 +277,7 @@ extension SwapAssetFlowCoordinator {
 
         swapController.eventHandler = {
             [weak self, weak swapController] event in
-            guard let self = self,
+            guard let self,
                   let swapController = swapController else {
                 return
             }
@@ -291,7 +293,7 @@ extension SwapAssetFlowCoordinator {
 
                         self.visibleScreen.dismissScreen {
                             [weak self] in
-                            guard let self = self else { return }
+                            guard let self else { return }
 
                             self.openSwapLoading(swapController)
                         }
@@ -337,7 +339,7 @@ extension SwapAssetFlowCoordinator {
                     viewModel: viewModel
                 ) {
                     [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     
                     let screen = self.goBackToScreen(SwapAssetScreen.self)
                     screen?.getSwapQuoteForCurrentInput()
@@ -366,7 +368,7 @@ extension SwapAssetFlowCoordinator {
                     viewModel: viewModel
                 ) {
                     [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
 
                     let screen = self.goBackToScreen(SwapAssetScreen.self)
                     screen?.getSwapQuoteForCurrentInput()
@@ -428,7 +430,7 @@ extension SwapAssetFlowCoordinator {
 
         swapAssetScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didTapSwap:
@@ -454,7 +456,7 @@ extension SwapAssetFlowCoordinator {
 
         let eventHandler: ConfirmSwapScreen.EventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didTapConfirm(let swapTransactionPreparation):
@@ -516,7 +518,7 @@ extension SwapAssetFlowCoordinator {
 
         swapSuccessScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didTapViewDetailAction:
@@ -551,7 +553,7 @@ extension SwapAssetFlowCoordinator {
 
         errorScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didTapPrimaryAction:
@@ -620,7 +622,7 @@ extension SwapAssetFlowCoordinator {
 
         selectAssetScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didSelectAsset(let asset):
@@ -706,7 +708,7 @@ extension SwapAssetFlowCoordinator {
         }
     }
     
-    func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double) {
+    func getQuote(account: Account, assetIn: Asset, assetOut: Asset, amount: Double, slippage: Decimal?) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics,
@@ -725,7 +727,8 @@ extension SwapAssetFlowCoordinator {
             api: api,
             transactionSigner: transactionSigner
         )
-        
+        swapController.slippage = slippage
+       
         swapDataController = SwapAssetAPIDataController(
             dataStore: dataStore,
             swapController: swapController,
@@ -735,7 +738,7 @@ extension SwapAssetFlowCoordinator {
         )
         
         swapDataController?.eventHandler = { [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
             switch event {
             case .willLoadQuote:
                 print("loading...")
@@ -764,6 +767,31 @@ extension SwapAssetFlowCoordinator {
         }
         
         return number.toFraction(of: decimals)
+    }
+    
+    func calculateFee(assetIn: Asset, amount: Double) {
+        let assetInBalance = assetIn.amount
+        let formatter = SwapAssetValueFormatter()
+        
+        let decimalValue = formatter.getDecimalAmount(
+            of: assetInBalance,
+            for: AssetDecoration(asset: assetIn)
+        ).toFraction(of: assetIn.decimals)
+        
+        let draft = PeraSwapFeeDraft(assetID: assetIn.id, amount: decimalValue)
+        api.calculatePeraSwapFee(draft) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(fee):
+                onFeeCalculated?(fee, nil)
+            case let .failure(apiError, hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                onFeeCalculated?(nil, error)
+            }
+        }
     }
 }
 
@@ -797,7 +825,7 @@ extension SwapAssetFlowCoordinator {
             title: String(localized: "swap-sign-with-ledger-action-title"),
             style: .default
         ) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.visibleScreen.dismissScreen() {
                 self.startLoading()
@@ -825,7 +853,7 @@ extension SwapAssetFlowCoordinator {
 
         let eventHandler: LedgerConnectionScreen.EventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .performCancel:
@@ -888,7 +916,7 @@ extension SwapAssetFlowCoordinator {
 
         let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .performCancelApproval:
@@ -1022,7 +1050,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
         let screen: Screen = .editSwapSlippage(dataStore: dataStore) {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didComplete:
@@ -1108,7 +1136,7 @@ extension SwapAssetFlowCoordinator {
 
         selectAssetScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didSelectAsset(let asset):
@@ -1123,7 +1151,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
         let screen: Screen = .editSwapAmount(dataStore: dataStore) {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didComplete:
@@ -1163,7 +1191,7 @@ extension SwapAssetFlowCoordinator {
 
         selectAssetScreen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didSelectAsset(let asset):
@@ -1196,7 +1224,7 @@ extension SwapAssetFlowCoordinator {
 
         let screen = Screen.optInAsset(draft: draft) {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .performApprove:
@@ -1338,7 +1366,7 @@ extension SwapAssetFlowCoordinator {
     ) {
         DispatchQueue.main.async {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.notifyObservers {
                 $0.swapAssetFlowCoordinator(

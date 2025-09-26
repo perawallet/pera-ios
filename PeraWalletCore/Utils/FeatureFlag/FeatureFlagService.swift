@@ -26,6 +26,11 @@ public protocol FeatureFlagServicing {
     /// - Parameter flag: The feature flag to check
     /// - Returns: Boolean indicating if the flag is enabled
     func isEnabled(_ flag: FeatureFlag) -> Bool
+    
+    /// Checks if a feature flag has a double value
+    /// - Parameter flag: The feature flag to check
+    /// - Returns: Double if it gets the value, nil if not
+    func double(for flag: FeatureFlag) -> Double?
 }
 
 public final class FeatureFlagService: ObservableObject, FeatureFlagServicing {
@@ -58,5 +63,10 @@ public final class FeatureFlagService: ObservableObject, FeatureFlagServicing {
     public func isEnabled(_ flag: FeatureFlag) -> Bool {
         let value = remoteConfig.configValue(forKey: flag.rawValue)
         return value.boolValue
+    }
+    
+    public func double(for flag: FeatureFlag) -> Double? {
+        let value = remoteConfig.configValue(forKey: flag.rawValue).numberValue.doubleValue
+        return value < 0 ? nil : value
     }
 }
