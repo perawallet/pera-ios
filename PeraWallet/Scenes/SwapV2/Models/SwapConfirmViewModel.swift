@@ -23,8 +23,8 @@ class SwapConfirmViewModel: ObservableObject {
     let selectedAssetOut: AssetItem
     let selectedAssetInAmount: String
     let selectedAssetOutAmount: String
-    let selectedAssetInAmountInUSD: String
-    let selectedAssetOutAmountInUSD: String
+    let selectedAssetInAmountInSecondaryCurrency: String
+    let selectedAssetOutAmountInSecondaryCurrency: String
     let price: String
     let provider: SwapProviderV2
     let slippageTolerance: String
@@ -42,8 +42,8 @@ class SwapConfirmViewModel: ObservableObject {
         selectedAssetOut: AssetItem,
         selectedAssetInAmount: String,
         selectedAssetOutAmount: String,
-        selectedAssetInAmountInUSD: String,
-        selectedAssetOutAmountInUSD: String,
+        selectedAssetInAmountInSecondaryCurrency: String,
+        selectedAssetOutAmountInSecondaryCurrency: String,
         price: String,
         provider: SwapProviderV2,
         slippageTolerance: String,
@@ -59,8 +59,8 @@ class SwapConfirmViewModel: ObservableObject {
         self.selectedAssetOut = selectedAssetOut
         self.selectedAssetInAmount = selectedAssetInAmount
         self.selectedAssetOutAmount = selectedAssetOutAmount
-        self.selectedAssetInAmountInUSD = selectedAssetInAmountInUSD
-        self.selectedAssetOutAmountInUSD = selectedAssetOutAmountInUSD
+        self.selectedAssetInAmountInSecondaryCurrency = selectedAssetInAmountInSecondaryCurrency
+        self.selectedAssetOutAmountInSecondaryCurrency = selectedAssetOutAmountInSecondaryCurrency
         self.price = price
         self.provider = provider
         self.slippageTolerance = slippageTolerance

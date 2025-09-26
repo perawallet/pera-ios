@@ -309,10 +309,10 @@ final class SwapViewController: BaseViewController {
         let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        viewModel.payingTextInFiatCurrency = viewModel.fiatValueText(fromAlgo: valueIn.doubleValue)
+        viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAlgo: valueIn.doubleValue)
         
         viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
-        viewModel.receivingTextInFiatCurrency = viewModel.fiatValueText(fromAlgo: valueOut.doubleValue)
+        viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAlgo: valueOut.doubleValue)
         
         viewModel.quoteList = orderedQuoteList
         viewModel.selectedQuote = selectedQuote
@@ -400,7 +400,7 @@ final class SwapViewController: BaseViewController {
                     return
                 }
                 
-                let swapAmount = calculateSwapAmount(balance: amount.decimal, fee: peraFee?.fee?.assetAmount(fromFraction: assetIn.decimals) ?? 0, percentage: percentage.decimal)
+                let swapAmount = calculateSwapAmount(for: assetIn, balance: amount.decimal, peraSwapFee: peraFee, percentage: percentage.decimal)
                 
                 sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
                 sharedViewModel?.isLoadingPayAmount = false
@@ -419,9 +419,14 @@ final class SwapViewController: BaseViewController {
         }
     }
     
-    private func calculateSwapAmount(balance: Decimal, fee: Decimal, percentage: Decimal) -> Decimal {
+    private func calculateSwapAmount(for asset: Asset, balance: Decimal, peraSwapFee: PeraSwapFee?, percentage: Decimal) -> Decimal {
+        guard let peraSwapFee else { return 0 }
+        
+        let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
+        let paddingFee = configuration.featureFlagService.double(for: .swapFeePadding)?.decimal ?? SwapQuote.feePadding.assetAmount(fromFraction: asset.decimals)
+        let minBalance = selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0
         let desired = balance * percentage
-        let maxTradable = max(balance - fee, 0)
+        let maxTradable = max(balance - peraFee - minBalance - paddingFee, 0)
         return min(desired, maxTradable)
     }
     

@@ -31,9 +31,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedQuote: SwapQuote?
     
     @Published var payingText: String = defaultAmountValue
-    @Published var payingTextInFiatCurrency: String = defaultAmountValue
+    @Published var payingTextInSecondaryCurrency: String = defaultAmountValue
     @Published var receivingText: String = defaultAmountValue
-    @Published var receivingTextInFiatCurrency: String = defaultAmountValue
+    @Published var receivingTextInSecondaryCurrency: String = defaultAmountValue
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
@@ -72,7 +72,7 @@ class SwapSharedViewModel: ObservableObject {
     func switchAssets() {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
         (payingText, receivingText) = (receivingText, payingText)
-        (payingTextInFiatCurrency, receivingTextInFiatCurrency) = (receivingTextInFiatCurrency, payingTextInFiatCurrency)
+        (payingTextInSecondaryCurrency, receivingTextInSecondaryCurrency) = (receivingTextInSecondaryCurrency, payingTextInSecondaryCurrency)
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
@@ -86,8 +86,8 @@ class SwapSharedViewModel: ObservableObject {
             selectedAssetOut: selectedAssetOut,
             selectedAssetInAmount: payingText,
             selectedAssetOutAmount: receivingText,
-            selectedAssetInAmountInUSD: payingTextInFiatCurrency,
-            selectedAssetOutAmountInUSD: receivingTextInFiatCurrency,
+            selectedAssetInAmountInSecondaryCurrency: payingTextInSecondaryCurrency,
+            selectedAssetOutAmountInSecondaryCurrency: receivingTextInSecondaryCurrency,
             price: price,
             provider: activeProvider,
             slippageTolerance: slippageTolerance,
@@ -119,10 +119,10 @@ class SwapSharedViewModel: ObservableObject {
         let decimalsOut = selectedQuote.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        payingTextInFiatCurrency = fiatValueText(fromAlgo: valueIn.doubleValue)
+        payingTextInSecondaryCurrency = fiatValueText(fromAlgo: valueIn.doubleValue)
         
         receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
-        receivingTextInFiatCurrency = fiatValueText(fromAlgo: valueOut.doubleValue)
+        receivingTextInSecondaryCurrency = fiatValueText(fromAlgo: valueOut.doubleValue)
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
@@ -274,26 +274,13 @@ extension SwapSharedViewModel {
 
 // MARK: - Exchange methods
 extension SwapSharedViewModel {
-    func fiatValue(fromAlgo amount: Double) -> Double {
+    private func fiatValue(fromAlgo amount: Double) -> Double {
         guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
             return 0
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
         guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.decimal) else {
-            return 0
-        }
-        
-        return fiatAmount.doubleValue
-    }
-    
-    func fiatValue(from asset: Asset, with amount: Double) -> Double {
-        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
-            return 0
-        }
-        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
-        
-        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
             return 0
         }
         
@@ -311,24 +298,13 @@ extension SwapSharedViewModel {
         return currencyFormatter.format(fiatAmount) ?? .empty
     }
     
-    func fiatValueText(from asset: Asset, with amount: Double) -> String {
+    private func algoValue(fromFiat amount: Double) -> Double {
         guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
-            return .empty
-        }
-        let fiatAmount = fiatValue(from: asset, with: amount)
-        
-        let currencyFormatter = CurrencyFormatter()
-        currencyFormatter.currency = currencyFiatValue
-        return currencyFormatter.format(fiatAmount) ?? .empty
-    }
-    
-    func algoValue(fromFiat amount: Double) -> Double {
-        guard let currencyAlgoValue = try? currency.algoValue?.unwrap() else {
             return 0
         }
-        let exchanger = CurrencyExchanger(currency: currencyAlgoValue)
+        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let algoAmount = try? exchanger.exchange(amount: amount.decimal) else {
+        guard let algoAmount = try? exchanger.exchangeFiat(amount: amount.decimal) else {
             return 0
         }
         return algoAmount.doubleValue
