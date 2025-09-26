@@ -80,14 +80,16 @@ class SwapSharedViewModel: ObservableObject {
             fatalError("Active provider should not be nil")
         }
         
+        let useLocalCurrency = PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
+        
         return SwapConfirmViewModel(
             selectedAccount: selectedAccount,
             selectedAssetIn: selectedAssetIn,
             selectedAssetOut: selectedAssetOut,
-            selectedAssetInAmount: payingText,
-            selectedAssetOutAmount: receivingText,
-            selectedAssetInAmountInSecondaryCurrency: payingTextInSecondaryCurrency,
-            selectedAssetOutAmountInSecondaryCurrency: receivingTextInSecondaryCurrency,
+            selectedAssetInAmount: useLocalCurrency ? payingTextInSecondaryCurrency : payingText,
+            selectedAssetOutAmount: useLocalCurrency ? receivingTextInSecondaryCurrency : receivingText,
+            selectedAssetInAmountInSecondaryCurrency: useLocalCurrency ? payingText : payingTextInSecondaryCurrency,
+            selectedAssetOutAmountInSecondaryCurrency: useLocalCurrency ? receivingText : receivingTextInSecondaryCurrency,
             price: price,
             provider: activeProvider,
             slippageTolerance: slippageTolerance,
@@ -111,18 +113,17 @@ class SwapSharedViewModel: ObservableObject {
         
         guard let selectedQuote else { return }
         
-        let amountIn = selectedQuote.amountIn ?? 0
-        let decimalsIn = selectedQuote.assetIn?.decimals ?? 0
-        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
-        
         let amountOut = selectedQuote.amountOut ?? 0
         let decimalsOut = selectedQuote.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        payingTextInSecondaryCurrency = fiatValueText(fromAlgo: valueIn.doubleValue)
-        
         receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
-        receivingTextInSecondaryCurrency = fiatValueText(fromAlgo: valueOut.doubleValue)
+        
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            receivingTextInSecondaryCurrency = algoFormat(with: valueOut.doubleValue)
+        } else {
+            receivingTextInSecondaryCurrency = fiatValueText(fromUSDC: valueOut.doubleValue)
+        }
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
@@ -130,22 +131,36 @@ class SwapSharedViewModel: ObservableObject {
 
         let task = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            let normalized = newValue.replacingOccurrences(of: ",", with: ".")
+            let normalized = newValue
+                .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                .replacingOccurrences(of: ",", with: ".")
             if let doubleValue = Double(normalized), doubleValue > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
                     
-                    payingText = Formatter
-                        .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
-                        .string(for: doubleValue) ?? .empty
+                    
                     isLoadingReceiveAmount = true
-                    onGetQuote(doubleValue)
+                    
+                    if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+                        payingText = fiatFormat(with: doubleValue)
+                        payingTextInSecondaryCurrency = algoValueText(fromFiat: doubleValue)
+                      onGetQuote(algoValue(fromFiat: doubleValue))
+                    } else {
+                        payingText = Formatter
+                            .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
+                            .string(for: doubleValue) ?? .empty
+                        payingTextInSecondaryCurrency = fiatValueText(fromAlgo: doubleValue)
+                        onGetQuote(doubleValue)
+                    }
                 }
             } else {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    receivingText = .empty
+                    receivingText = Self.defaultAmountValue
+                    receivingTextInSecondaryCurrency = Self.defaultAmountValue
+                    payingText = Self.defaultAmountValue
+                    payingTextInSecondaryCurrency = Self.defaultAmountValue
                 }
             }
         }
@@ -158,9 +173,24 @@ class SwapSharedViewModel: ObservableObject {
 // MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
-        let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
-        let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
-        return paying > 0 && receiving > 0
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            let paying = Double(
+                payingTextInSecondaryCurrency
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
+            let receiving = Double(
+                receivingTextInSecondaryCurrency
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
+            return paying > 0 && receiving > 0
+        } else {
+            let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+            let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+            return paying > 0 && receiving > 0
+        }
+
     }
     
     var slippageTolerance: String {
@@ -271,10 +301,9 @@ extension SwapSharedViewModel {
     }
 }
 
-
 // MARK: - Exchange methods
 extension SwapSharedViewModel {
-    private func fiatValue(fromAlgo amount: Double) -> Double {
+    func fiatValue(fromAlgo amount: Double) -> Double {
         guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
             return 0
         }
@@ -287,15 +316,52 @@ extension SwapSharedViewModel {
         return fiatAmount.doubleValue
     }
     
+    private func fiatValue(fromUSDC amount: Double) -> Double {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return 0
+        }
+        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+        
+        guard let fiatAmount = try? exchanger.exchange(amount: amount.decimal) else {
+            return 0
+        }
+        
+        return fiatAmount.doubleValue
+    }
+    
+    private func fiatValue(fromAsset asset: Asset, with amount: Double) -> Double {
+        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+            return 0
+        }
+        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+        
+        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
+            return 0
+        }
+        
+        return fiatAmount.doubleValue
+    }
+    
     func fiatValueText(fromAlgo amount: Double) -> String {
+        fiatFormat(with: fiatValue(fromAlgo: amount))
+    }
+    
+    func fiatValueText(fromUSDC amount: Double) -> String {
+        fiatFormat(with: fiatValue(fromUSDC: amount))
+    }
+    
+    func fiatValueText(fromAsset asset: Asset, with amount: Double) -> String {
+        fiatFormat(with: fiatValue(fromAsset: asset, with: amount))
+    }
+    
+    func fiatFormat(with amount: Double) -> String {
         guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
             return .empty
         }
-        let fiatAmount = fiatValue(fromAlgo: amount)
         
         let currencyFormatter = CurrencyFormatter()
         currencyFormatter.currency = currencyFiatValue
-        return currencyFormatter.format(fiatAmount) ?? .empty
+        return currencyFormatter.format(amount) ?? .empty
     }
     
     private func algoValue(fromFiat amount: Double) -> Double {
@@ -311,14 +377,17 @@ extension SwapSharedViewModel {
     }
     
     func algoValueText(fromFiat amount: Double) -> String {
+        algoFormat(with: algoValue(fromFiat: amount))
+    }
+    
+    func algoFormat(with amount: Double) -> String {
         guard let currencyAlgoValue = try? currency.algoValue?.unwrap() else {
             return .empty
         }
-        let algoAmount = algoValue(fromFiat: amount)
         
         let currencyFormatter = CurrencyFormatter()
         currencyFormatter.currency = currencyAlgoValue
-        return currencyFormatter.format(algoAmount) ?? .empty
+        return currencyFormatter.format(amount) ?? .empty
     }
 }
 

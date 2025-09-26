@@ -296,23 +296,22 @@ final class SwapViewController: BaseViewController {
         _ viewModel: SwapSharedViewModel?,
         with quoteList: [SwapQuote]?
     ) {
-        guard let viewModel, let quoteList else { return }
+        guard let viewModel, let quoteList, let selectedAssetOut else { return }
         
         let orderedQuoteList = quoteList.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
         let selectedQuote = orderedQuoteList.first
-        
-        let amountIn = selectedQuote?.amountIn ?? 0
-        let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
-        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
         
         let amountOut = selectedQuote?.amountOut ?? 0
         let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
-        viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAlgo: valueIn.doubleValue)
-        
-        viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
-        viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAlgo: valueOut.doubleValue)
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
+            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+        } else {
+            viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+        }
         
         viewModel.quoteList = orderedQuoteList
         viewModel.selectedQuote = selectedQuote
@@ -402,7 +401,14 @@ final class SwapViewController: BaseViewController {
                 
                 let swapAmount = calculateSwapAmount(for: assetIn, balance: amount.decimal, peraSwapFee: peraFee, percentage: percentage.decimal)
                 
-                sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
+                if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? SwapSharedViewModel.defaultAmountValue
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.algoFormat(with: swapAmount.doubleValue)  ?? SwapSharedViewModel.defaultAmountValue
+                } else {
+                    sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? SwapSharedViewModel.defaultAmountValue
+                }
+
                 sharedViewModel?.isLoadingPayAmount = false
             }
            

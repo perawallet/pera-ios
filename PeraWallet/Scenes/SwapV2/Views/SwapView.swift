@@ -163,6 +163,7 @@ struct SwapView: View {
         switch sheet {
         case .settings:
             SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
                 handlePercentageChange(newPercentageSelected)
                 handleSlippageChange(newSlippageSelected)
             }
