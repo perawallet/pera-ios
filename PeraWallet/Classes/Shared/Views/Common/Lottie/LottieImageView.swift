@@ -74,6 +74,11 @@ extension LottieImageView {
     func stop() {
         animationView.stop()
     }
+    
+    func setColor(_ color: UIColor) {
+        let provider = ColorValueProvider(color.lottieColorValue)
+        animationView.setValueProvider(provider, keypath: AnimationKeypath(keypath: "**.Fill 1.Color"))
+    }
 }
 
 extension LottieImageView {

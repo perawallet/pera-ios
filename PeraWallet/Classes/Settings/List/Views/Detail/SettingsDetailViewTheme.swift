@@ -32,7 +32,7 @@ struct SettingsDetailViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.title = SettingsTitleViewTheme(family)
         self.detail = [
-            .image("icon-list-arrow")
+            .image("icon-arrow-24")
         ]
         
         self.imageSize = (24, 24)

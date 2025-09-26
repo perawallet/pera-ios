@@ -26,6 +26,7 @@ final class HomeAPIDataController:
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
     private let session: Session
+    private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
     private let spotBannersDataController: SpotBannersAPIDataController
@@ -60,6 +61,7 @@ final class HomeAPIDataController:
     ) {
         self.sharedDataController = configuration.sharedDataController
         self.session = configuration.session
+        self.api = configuration.api
         self.announcementDataController = announcementDataController
         self.spotBannersDataController = spotBannersDataController
         self.chartsDataController = chartsDataController
@@ -223,6 +225,32 @@ extension HomeAPIDataController {
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData
+        }
+    }
+    
+    func fetchUSDCDefaultAsset() {
+        let usdcAssetID = ALGAsset.usdcAssetID(api.network)
+        guard
+            sharedDataController.assetDetailCollection.isEmpty ||
+            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil
+        else {
+            return
+        }
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: [usdcAssetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let assetDetailResponse):
+                assetDetailResponse.results.forEach { [weak self] in
+                    guard let self else { return }
+                    sharedDataController.assetDetailCollection[$0.id] = $0
+                }
+            case .failure:
+                break
+            }
         }
     }
 }

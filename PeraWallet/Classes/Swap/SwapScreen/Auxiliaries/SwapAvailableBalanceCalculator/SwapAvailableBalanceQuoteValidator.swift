@@ -72,7 +72,7 @@ extension SwapAvailableBalanceQuoteValidator {
     }
 
     private func validateAvailableBalanceForAlgoAmountOut() {
-        guard var amountOut = quote.amountOut else {
+        guard let amountOut = quote.amountOut else {
             publishEvent(.failure(.amountOutNotAvailable))
             return
         }
