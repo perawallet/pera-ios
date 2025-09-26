@@ -58,6 +58,14 @@ final class QRBackupParameters: ALGAPIModel, Identifiable {
         version = ""
         action = QRBackupAction()
     }
+    
+    init(id: String, encryptionKey: String, action: String, version: String = "1") {
+        self.id = id
+        self.modificationKey = nil
+        self.encryptionKey = encryptionKey
+        self.version = version
+        self.action = QRBackupAction(rawValue: action) ?? .import
+    }
 
     func isSupported() -> Bool {
         return version == "1"

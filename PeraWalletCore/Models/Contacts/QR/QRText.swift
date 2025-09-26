@@ -29,6 +29,12 @@ public final class QRText: Codable {
     public var lockedNote: String?
     public let type: String?
     public var keyRegTransactionQRData: KeyRegTransactionQRData?
+    public var walletConnectUrl: String?
+    public var url: String?
+    public var path: String?
+    public var backupId: String?
+    public var encryptionKey: String?
+    public var action: String?
     
     public init(
         mode: QRMode,
@@ -40,7 +46,13 @@ public final class QRText: Codable {
         note: String? = nil,
         lockedNote: String? = nil,
         keyRegTransactionQRData: KeyRegTransactionQRData? = nil,
-        type: String? = nil
+        type: String? = nil,
+        walletConnectUrl: String? = nil,
+        url: String? = nil,
+        path: String? = nil,
+        backupId: String? = nil,
+        encryptionKey: String? = nil,
+        action: String? = nil
     ) {
         self.mode = mode
         self.address = address
@@ -52,6 +64,12 @@ public final class QRText: Codable {
         self.lockedNote = lockedNote
         self.keyRegTransactionQRData = keyRegTransactionQRData
         self.type = type
+        self.walletConnectUrl = walletConnectUrl
+        self.url = url
+        self.path = path
+        self.backupId = backupId
+        self.encryptionKey = encryptionKey
+        self.action = action
     }
     
     public required init(from decoder: Decoder) throws {
@@ -184,6 +202,46 @@ public final class QRText: Codable {
             if let voteLast = keyRegTransactionQRData?.voteLast {
                 try container.encode(voteLast, forKey: .voteLast)
             }
+        case .addContact, .editContact, .addWatchAccount, .receiverAccountSelection, .addressActions, .buy, .sell, .accountDetail:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let label = label {
+                try container.encode(label, forKey: .label)
+            }
+        case .recoverAddress:
+            if let mnemonic = mnemonic {
+                try container.encode(mnemonic, forKey: .mnemonic)
+            }
+        case .walletConnect:
+            if let walletConnectUrl = walletConnectUrl {
+                try container.encode(walletConnectUrl, forKey: .walletConnectUrl)
+            }
+        case .assetDetail, .assetInbox:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let asset = asset {
+                try container.encode(asset, forKey: .asset)
+            }
+        case .discoverBrowser:
+            if let url = url {
+                try container.encode(url, forKey: .url)
+            }
+        case .discoverPath, .cardsPath, .stakingPath:
+            if let path = path {
+                try container.encode(path, forKey: .path)
+            }
+        case .webImport:
+            if let backupId = backupId {
+                try container.encode(backupId, forKey: .backupId)
+            }
+            if let encryptionKey = encryptionKey {
+                try container.encode(encryptionKey, forKey: .encryptionKey)
+            }
+            if let action = action {
+                try container.encode(action, forKey: .action)
+            }
         }
     }
 
@@ -219,6 +277,43 @@ public final class QRText: Codable {
                 lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue],
                 keyRegTransactionQRData: keyRegTransactionQRData
                     
+            )
+        }
+        
+        // Handle new type parameters
+        if let type = queryParameters[QRText.CodingKeys.type.rawValue] {
+            if type == "asset/opt-in", let assetIdString = queryParameters[QRText.CodingKeys.asset.rawValue] {
+                return Self(
+                    mode: .optInRequest,
+                    address: address,
+                    amount: 0,
+                    asset: Int64(assetIdString),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+            
+            if type == "asset/transactions", let assetIdString = queryParameters[QRText.CodingKeys.asset.rawValue] {
+                return Self(
+                    mode: .assetDetail,
+                    address: address,
+                    asset: Int64(assetIdString)
+                )
+            }
+            
+            if type == "asset-inbox" {
+                return Self(
+                    mode: .assetInbox,
+                    address: address
+                )
+            }
+        }
+        
+        // Handle URL parameter for browser discovery
+        if let url = queryParameters["url"] {
+            return Self(
+                mode: .discoverBrowser,
+                url: url
             )
         }
 
@@ -273,7 +368,217 @@ public final class QRText: Codable {
 }
 
 extension QRText {
+    /// Generate QR text using the legacy format (backward compatibility)
     public func qrText() -> String {
+        return qrTextLegacyFormat()
+    }
+    
+    /// Generate QR text using the new app-based format
+    public func qrTextAppFormat() -> String {
+        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig.qr
+        let base = "\(deeplinkConfig.preferredScheme)://app/"
+        
+        switch mode {
+        case .mnemonic:
+            if let mnemonic = mnemonic {
+                return "\(mnemonic)"
+            }
+        case .address:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)address-action/\(query)"
+        case .addContact:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)add-contact/\(query)"
+        case .editContact:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)edit-contact/\(query)"
+        case .addWatchAccount:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)add-watch-account/\(query)"
+        case .receiverAccountSelection:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)receiver-account-selection/\(query)"
+        case .addressActions:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)address-actions/\(query)"
+        case .recoverAddress:
+            var query = ""
+            if let mnemonic = mnemonic {
+                query += "?mnemonic=\(mnemonic)"
+            }
+            return "\(base)recover-address/\(query)"
+            
+        case .algosRequest:
+            guard let address = address else {
+                return base + "asset-transfer/"
+            }
+            var query = "?assetId=0&receiverAddress=\(address)"
+            if let amount = amount {
+                query += "&amount=\(amount)"
+            }
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)asset-transfer/\(query)"
+            
+        case .assetRequest:
+            guard let address = address else {
+                return base + "asset-transfer/"
+            }
+            var query = "?receiverAddress=\(address)"
+            if let asset = asset {
+                query += "&assetId=\(asset)"
+            }
+            if let amount = amount {
+                query += "&amount=\(amount)"
+            }
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(base)asset-transfer/\(query)"
+            
+        case .optInRequest:
+            var query = ""
+            if let asset = asset {
+                query += "?assetId=\(asset)"
+            }
+            if let note = note {
+                query += query.isEmpty ? "?note=\(note)" : "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += query.isEmpty ? "?xnote=\(lockedNote)" : "&xnote=\(lockedNote)"
+            }
+            return "\(base)asset-opt-in/\(query)"
+            
+        case .keyregRequest:
+            guard let address = address else {
+                return base + "key-reg/"
+            }
+            var query = "?address=\(address)"
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let fee = keyRegTransactionQRData?.fee {
+                query += "&fee=\(fee)"
+            }
+            if let selectionKey = keyRegTransactionQRData?.selectionKey {
+                query += "&selkey=\(selectionKey)"
+            }
+            if let stateProofKey = keyRegTransactionQRData?.stateProofKey {
+                query += "&sprfkey=\(stateProofKey)"
+            }
+            if let voteKeyDilution = keyRegTransactionQRData?.voteKeyDilution {
+                query += "&votekd=\(voteKeyDilution)"
+            }
+            if let votingKey = keyRegTransactionQRData?.votingKey {
+                query += "&votekey=\(votingKey)"
+            }
+            if let voteFirst = keyRegTransactionQRData?.voteFirst {
+                query += "&votefst=\(voteFirst)"
+            }
+            if let voteLast = keyRegTransactionQRData?.voteLast {
+                query += "&votelst=\(voteLast)"
+            }
+            return "\(base)keyreg/\(query)"
+        case .walletConnect:
+            var query = ""
+            if let walletConnectUrl = walletConnectUrl {
+                query += "?walletConnectUrl=\(walletConnectUrl)"
+            }
+            return "\(base)wallet-connect/\(query)"
+        case .assetDetail:
+            var query = "?address=\(address ?? "")"
+            if let asset = asset {
+                query += "&assetId=\(asset)"
+            }
+            return "\(base)asset-detail/\(query)"
+        case .assetInbox:
+            var query = "?address=\(address ?? "")"
+            return "\(base)asset-inbox/\(query)"
+        case .discoverBrowser:
+            var query = ""
+            if let url = url {
+                query += "?url=\(url)"
+            }
+            return "\(base)discover-browser/\(query)"
+        case .discoverPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(base)discover-path/\(query)"
+        case .cardsPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(base)cards-path/\(query)"
+        case .stakingPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(base)staking-path/\(query)"
+        case .buy:
+            var query = "?address=\(address ?? "")"
+            return "\(base)buy/\(query)"
+        case .sell:
+            var query = "?address=\(address ?? "")"
+            return "\(base)sell/\(query)"
+        case .accountDetail:
+            var query = "?address=\(address ?? "")"
+            return "\(base)account-detail/\(query)"
+        case .webImport:
+            var query = ""
+            if let backupId = backupId {
+                query += "?backupId=\(backupId)"
+            }
+            if let encryptionKey = encryptionKey {
+                query += query.isEmpty ? "?encryptionKey=\(encryptionKey)" : "&encryptionKey=\(encryptionKey)"
+            }
+            if let action = action {
+                query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
+            }
+            return "\(base)web-import/\(query)"
+        }
+        return ""
+    }
+    
+    /// Generate QR text using the legacy format (for backward compatibility)
+    public func qrTextLegacyFormat() -> String {
         /// <todo>
         /// This should be converted to a builder/generator, not implemented in the model itself.
         let deeplinkConfig = ALGAppTarget.current.deeplinkConfig.qr
@@ -283,7 +588,7 @@ extension QRText {
             if let mnemonic = mnemonic {
                 return "\(mnemonic)"
             }
-        case .address:
+        case .address, .addContact, .editContact, .addWatchAccount, .receiverAccountSelection, .addressActions, .assetDetail, .assetInbox, .buy, .sell, .accountDetail:
             guard let address = address else {
                 return base
             }
@@ -291,6 +596,33 @@ extension QRText {
                 return "\(base)\(address)?\(CodingKeys.label.rawValue)=\(label)"
             }
             return "\(address)"
+        case .recoverAddress:
+            if let mnemonic = mnemonic {
+                return "\(mnemonic)"
+            }
+        case .walletConnect:
+            if let walletConnectUrl = walletConnectUrl {
+                return walletConnectUrl
+            }
+        case .discoverBrowser:
+            if let url = url {
+                return "\(base)?url=\(url)"
+            }
+        case .discoverPath:
+            if let path = path {
+                return "\(base)discover?path=\(path)"
+            }
+            return "\(base)discover"
+        case .cardsPath:
+            if let path = path {
+                return "\(base)cards?path=\(path)"
+            }
+            return "\(base)cards"
+        case .stakingPath:
+            if let path = path {
+                return "\(base)staking?path=\(path)"
+            }
+            return "\(base)staking"
         case .algosRequest:
             guard let address = address else {
                 return base
@@ -380,6 +712,221 @@ extension QRText {
             }
 
             return "\(base)\(address)\(query)"
+        case .webImport:
+            // For legacy format, web import doesn't have a specific legacy representation
+            // Return the JSON representation of the backup parameters
+            if let backupId = backupId, let encryptionKey = encryptionKey {
+                let action = self.action ?? "import"
+                return "{\"backupId\":\"\(backupId)\",\"encryptionKey\":\"\(encryptionKey)\",\"action\":\"\(action)\",\"version\":\"1\"}"
+            }
+        }
+        return ""
+    }
+    
+    /// Generate universal link using the new app-based format
+    public func universalLinkAppFormat() -> String {
+        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
+        let base = universalLinkConfig.url.absoluteString
+        
+        // Remove trailing slash if present
+        let cleanBase = base.hasSuffix("/") ? String(base.dropLast()) : base
+        let appBase = "\(cleanBase)/qr/perawallet/app/"
+        
+        switch mode {
+        case .mnemonic:
+            if let mnemonic = mnemonic {
+                return "\(mnemonic)"
+            }
+        case .address:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)address-action/\(query)"
+        case .addContact:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)add-contact/\(query)"
+        case .editContact:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)edit-contact/\(query)"
+        case .addWatchAccount:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)add-watch-account/\(query)"
+        case .receiverAccountSelection:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)receiver-account-selection/\(query)"
+        case .addressActions:
+            var query = "?address=\(address ?? "")"
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)address-actions/\(query)"
+        case .recoverAddress:
+            var query = ""
+            if let mnemonic = mnemonic {
+                query += "?mnemonic=\(mnemonic)"
+            }
+            return "\(appBase)recover-address/\(query)"
+            
+        case .algosRequest:
+            guard let address = address else {
+                return appBase + "asset-transfer/"
+            }
+            var query = "?assetId=0&receiverAddress=\(address)"
+            if let amount = amount {
+                query += "&amount=\(amount)"
+            }
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)asset-transfer/\(query)"
+            
+        case .assetRequest:
+            guard let address = address else {
+                return appBase + "asset-transfer/"
+            }
+            var query = "?receiverAddress=\(address)"
+            if let asset = asset {
+                query += "&assetId=\(asset)"
+            }
+            if let amount = amount {
+                query += "&amount=\(amount)"
+            }
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let label = label {
+                query += "&label=\(label)"
+            }
+            return "\(appBase)asset-transfer/\(query)"
+            
+        case .optInRequest:
+            var query = ""
+            if let asset = asset {
+                query += "?assetId=\(asset)"
+            }
+            if let note = note {
+                query += query.isEmpty ? "?note=\(note)" : "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += query.isEmpty ? "?xnote=\(lockedNote)" : "&xnote=\(lockedNote)"
+            }
+            return "\(appBase)asset-opt-in/\(query)"
+            
+        case .keyregRequest:
+            guard let address = address else {
+                return appBase + "key-reg/"
+            }
+            var query = "?address=\(address)"
+            if let note = note {
+                query += "&note=\(note)"
+            }
+            if let lockedNote = lockedNote {
+                query += "&xnote=\(lockedNote)"
+            }
+            if let fee = keyRegTransactionQRData?.fee {
+                query += "&fee=\(fee)"
+            }
+            if let selectionKey = keyRegTransactionQRData?.selectionKey {
+                query += "&selkey=\(selectionKey)"
+            }
+            if let stateProofKey = keyRegTransactionQRData?.stateProofKey {
+                query += "&sprfkey=\(stateProofKey)"
+            }
+            if let voteKeyDilution = keyRegTransactionQRData?.voteKeyDilution {
+                query += "&votekd=\(voteKeyDilution)"
+            }
+            if let votingKey = keyRegTransactionQRData?.votingKey {
+                query += "&votekey=\(votingKey)"
+            }
+            if let voteFirst = keyRegTransactionQRData?.voteFirst {
+                query += "&votefst=\(voteFirst)"
+            }
+            if let voteLast = keyRegTransactionQRData?.voteLast {
+                query += "&votelst=\(voteLast)"
+            }
+            return "\(appBase)keyreg/\(query)"
+        case .walletConnect:
+            var query = ""
+            if let walletConnectUrl = walletConnectUrl {
+                query += "?walletConnectUrl=\(walletConnectUrl)"
+            }
+            return "\(appBase)wallet-connect/\(query)"
+        case .assetDetail:
+            var query = "?address=\(address ?? "")"
+            if let asset = asset {
+                query += "&assetId=\(asset)"
+            }
+            return "\(appBase)asset-detail/\(query)"
+        case .assetInbox:
+            var query = "?address=\(address ?? "")"
+            return "\(appBase)asset-inbox/\(query)"
+        case .discoverBrowser:
+            var query = ""
+            if let url = url {
+                query += "?url=\(url)"
+            }
+            return "\(appBase)discover-browser/\(query)"
+        case .discoverPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(appBase)discover-path/\(query)"
+        case .cardsPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(appBase)cards-path/\(query)"
+        case .stakingPath:
+            var query = ""
+            if let path = path {
+                query += "?path=\(path)"
+            }
+            return "\(appBase)staking-path/\(query)"
+        case .buy:
+            var query = "?address=\(address ?? "")"
+            return "\(appBase)buy/\(query)"
+        case .sell:
+            var query = "?address=\(address ?? "")"
+            return "\(appBase)sell/\(query)"
+        case .accountDetail:
+            var query = "?address=\(address ?? "")"
+            return "\(appBase)account-detail/\(query)"
+        case .webImport:
+            var query = ""
+            if let backupId = backupId {
+                query += "?backupId=\(backupId)"
+            }
+            if let encryptionKey = encryptionKey {
+                query += query.isEmpty ? "?encryptionKey=\(encryptionKey)" : "&encryptionKey=\(encryptionKey)"
+            }
+            if let action = action {
+                query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
+            }
+            return "\(appBase)web-import/\(query)"
         }
         return ""
     }
@@ -404,6 +951,12 @@ extension QRText {
         case votingKey = "votekey"
         case voteFirst = "votefst"
         case voteLast = "votelst"
+        case walletConnectUrl = "walletConnectUrl"
+        case url = "url"
+        case path = "path"
+        case backupId = "backupId"
+        case encryptionKey = "encryptionKey"
+        case action = "action"
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             lhs.rawValue == rhs.rawValue
@@ -462,4 +1015,21 @@ public enum QRMode {
     case assetRequest
     case optInRequest
     case keyregRequest
+    case addContact
+    case editContact
+    case addWatchAccount
+    case receiverAccountSelection
+    case addressActions
+    case recoverAddress
+    case walletConnect
+    case assetDetail
+    case assetInbox
+    case discoverBrowser
+    case discoverPath
+    case cardsPath
+    case stakingPath
+    case buy
+    case sell
+    case accountDetail
+    case webImport
 }

@@ -501,6 +501,160 @@ final class Router:
             }
 
             scanQRFlowCoordinator.launch()
+        case .buy(let address):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            
+            let meldFlowCoordinator = MeldFlowCoordinator(
+                analytics: appConfiguration.analytics,
+                presentingScreen: visibleScreen
+            )
+            self.meldFlowCoordinator = meldFlowCoordinator
+            
+            let draft = MeldDraft(address: address)
+            meldFlowCoordinator.launch(draft)
+        case .buyAccountSelection:
+            route(
+                to: .meldAccountSelection { [weak self] event, screen in
+                    guard let self else { return }
+                    switch event {
+                    case .didSelect(let accountHandle):
+                        let visibleScreen = findVisibleScreen(over: rootViewController)
+                        let meldFlowCoordinator = MeldFlowCoordinator(
+                            analytics: appConfiguration.analytics,
+                            presentingScreen: visibleScreen
+                        )
+                        self.meldFlowCoordinator = meldFlowCoordinator
+                        
+                        let draft = MeldDraft(address: accountHandle.value.address)
+                        meldFlowCoordinator.launch(draft)
+                    case .didOptInToAsset:
+                        break
+                    }
+                },
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .sell(let address):
+            let sharedDataController = rootViewController.appConfiguration.sharedDataController
+            guard sharedDataController.isAvailable else { return }
+            let account = sharedDataController.accountCollection[address]
+            guard let account = account else { return }
+            guard account.isAvailable else { return }
+            let accountHandle = sharedDataController.accountCollection[account.value.address]!
+            
+            route(
+                to: .bidaliDappDetail(account: accountHandle),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .sellAccountSelection:
+            route(
+                to: .bidaliAccountSelection { [weak self] event, screen in
+                    guard let self else { return }
+                    switch event {
+                    case .didSelect(let accountHandle):
+                        route(
+                            to: .bidaliDappDetail(account: accountHandle),
+                            from: findVisibleScreen(over: rootViewController),
+                            by: .present
+                        )
+                    case .didOptInToAsset:
+                        break
+                    }
+                },
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .accountDetail(let address):
+            launch(tab: .home)
+            
+            let sharedDataController = rootViewController.appConfiguration.sharedDataController
+            guard sharedDataController.isAvailable else {
+                return
+            }
+            
+            let account = sharedDataController.accountCollection[address]
+            guard let account = account else {
+                return
+            }
+            
+            guard account.isAvailable else {
+                return
+            }
+            
+            let rawAccount = account.value
+            let accountHandle = sharedDataController.accountCollection[rawAccount.address]!
+            
+            route(
+                to: .accountDetail(
+                    accountHandle: accountHandle,
+                    eventHandler: { _ in },
+                    incomingASAsRequestsCount: 0
+                ),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .webImport(let parameters):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let accountImportFlowCoordinator = AccountImportFlowCoordinator(
+                presentingScreen: visibleScreen
+            )
+            accountImportFlowCoordinator.launch(qrBackupParameters: parameters)
+        case .recoverAddress(let mnemonic, let walletType):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            route(
+                to: .accountRecover(flow: .none, walletFlowType: walletType, initialMnemonic: mnemonic),
+                from: visibleScreen,
+                by: .present
+            )
+        case .addContact(let address, let label):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            route(
+                to: .addContact(address: address, name: label),
+                from: visibleScreen,
+                by: .present
+            )
+        case .editContact(let address, let label):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            Contact.fetchAll(entity: Contact.entityName) { [weak self] response in
+                guard let self = self else { return }
+
+                switch response {
+                case let .results(objects: objects):
+                    guard let results = objects as? [Contact],
+                          let contact = results.first(where: { $0.address == address}) else {
+                        return
+                    }
+
+                    self.route(
+                        to: .editContact(contact: contact),
+                        from: visibleScreen,
+                        by: .present
+                    )
+                default:
+                    break
+                }
+            }
+        case .addWatchAccount(let address, let label):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            route(
+                to: .watchAccountAddition(flow: .addNewAccount(mode: .watch), address: address),
+                from: visibleScreen,
+                by: .present
+            )
+        case .receiverAccountSelection(let address):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let draft = QRCreationDraft(
+                address: address,
+                mode: .address,
+                title: address.shortAddressDisplay
+            )
+            
+            route(
+                to: .qrGenerator(title: address.shortAddressDisplay, draft: draft),
+                from: visibleScreen,
+                by: .present
+            )
         }
         
         func isValidDiscoverPath(_ path: String) -> Bool {

@@ -28,7 +28,9 @@ struct DeeplinkQR {
             return nil
         }
 
-        if deeplinkConfig.qr.canAcceptScheme(scheme) {
+        if AppDeeplinkParser.isAppBasedDeeplink(url) {
+            return generateQRTextFromAppEndpoint()
+        } else if deeplinkConfig.qr.canAcceptScheme(scheme) {
             return generateQRTextFromDeepLink()
         } else if universalLinkConfig.canAcceptQR(url) {
             return generateQRTextFromUniversalLink()
@@ -59,10 +61,37 @@ struct DeeplinkQR {
         return QRText.build(for: address, with: queryParams)
     }
 
+    private func generateQRTextFromAppEndpoint() -> QRText? {
+        guard let endpoint = AppDeeplinkParser.parseEndpoint(from: url) else {
+            return nil
+        }
+        
+        return endpoint.parseQRText(from: url)
+    }
+    
     private func generateQRTextFromDeepLink() -> QRText? {
-        let address = url.host
+        let host = url.host
         let queryParams = url.queryParameters
-
-        return QRText.build(for: address, with: queryParams)
+        
+        // Handle special host-based deeplinks
+        if let host = host {
+            switch host {
+            case "discover":
+                let path = queryParams?["path"]
+                return QRText(mode: .discoverPath, path: path)
+            case "cards":
+                let path = queryParams?["path"]
+                return QRText(mode: .cardsPath, path: path)
+            case "staking":
+                let path = queryParams?["path"]
+                return QRText(mode: .stakingPath, path: path)
+            default:
+                // Regular address-based deeplink
+                return QRText.build(for: host, with: queryParams)
+            }
+        }
+        
+        // Handle query-only deeplinks (no host)
+        return QRText.build(for: nil, with: queryParams)
     }
 }
