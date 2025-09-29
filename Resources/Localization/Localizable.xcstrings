@@ -4378,6 +4378,17 @@
         }
       }
     },
+    "no-swap-activity-placeholder-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No swap activity in the last 24 hours"
+          }
+        }
+      }
+    },
     "node-settings-action-delete-title" : {
       "localizations" : {
         "en" : {
@@ -7468,6 +7479,16 @@
         }
       }
     },
+    "swap-volume-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume (24H)"
+          }
+        }
+      }
+    },
     "tite-pinging" : {
       "localizations" : {
         "en" : {
@@ -9579,6 +9600,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap value to hide your balance"
+          }
+        }
+      }
+    },
+    "top5-swaps-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top 5 Swaps"
           }
         }
       }

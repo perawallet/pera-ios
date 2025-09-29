@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapQuoteList.swift
+//   SwapTopPairsList.swift
 
 import Foundation
 
-public final class SwapQuoteList: ALGEntityModel {
-    public let results: [SwapQuote]
+public final class SwapTopPairsList: ALGEntityModel {
+    public let results: [SwapTopPair]
 
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.results = apiModel.results.unwrapMap(SwapQuote.init)
+        self.results = apiModel.results.unwrapMap(SwapTopPair.init)
     }
 
     public func encode() -> APIModel {
@@ -32,9 +32,9 @@ public final class SwapQuoteList: ALGEntityModel {
     }
 }
 
-extension SwapQuoteList {
+extension SwapTopPairsList {
     public struct APIModel: ALGAPIModel {
-        var results: [SwapQuote.APIModel]?
+        var results: [SwapTopPair.APIModel]?
 
         public init() {
             self.results = []

@@ -58,18 +58,22 @@ struct SwapView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack (spacing: 0) {
-            headerView
-            assetSelectionView
-            if viewModel.shouldShowSwapButton {
-                swapActionView
+        SwiftUI.ScrollView {
+            VStack (spacing: 0) {
+                headerView
+                assetSelectionView
+                if viewModel.shouldShowSwapButton {
+                    swapActionView
+                }
+                SwapTopPairsListView(swapTopPairsList: viewModel.swapTopPairsList)
+
             }
-        }
-        .padding(.top, safeAreaTopInset)
-        .frame(maxHeight: .infinity, alignment: .top)
-        .sheet(item: $activeSheet, content: sheetContent)
-        .onChange(of: viewModel.selectedProvider) { newValue in
-            viewModel.selectQuote(with: newValue)
+            .padding(.top, safeAreaTopInset)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .sheet(item: $activeSheet, content: sheetContent)
+            .onChange(of: viewModel.selectedProvider) { newValue in
+                viewModel.selectQuote(with: newValue)
+            }
         }
     }
     

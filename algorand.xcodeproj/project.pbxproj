@@ -7294,6 +7294,10 @@
 		D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DD2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
+		D4772F8E2E8A6D2600B4F262 /* SwapTopPairsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */; };
+		D4772F902E8A75F500B4F262 /* SwapTopPairsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */; };
+		D4772F922E8A760E00B4F262 /* SwapTopPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F912E8A760B00B4F262 /* SwapTopPair.swift */; };
+		D4772F942E8A762900B4F262 /* SwapAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F932E8A761F00B4F262 /* SwapAsset.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -9542,6 +9546,10 @@
 		D47509B52AB1DB060091F0B9 /* WCArbitraryDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewController.swift; sourceTree = "<group>"; };
 		D47509B92AB1DE210091F0B9 /* WCArbitraryDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewModel.swift; sourceTree = "<group>"; };
 		D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSelectedPointViewModel.swift; sourceTree = "<group>"; };
+		D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPairsQuery.swift; sourceTree = "<group>"; };
+		D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPairsList.swift; sourceTree = "<group>"; };
+		D4772F912E8A760B00B4F262 /* SwapTopPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPair.swift; sourceTree = "<group>"; };
+		D4772F932E8A761F00B4F262 /* SwapAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAsset.swift; sourceTree = "<group>"; };
 		D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewTheme.swift; sourceTree = "<group>"; };
 		D477A74827FB8CB700E2D790 /* CollectibleListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListViewControllerTheme.swift; sourceTree = "<group>"; };
 		D478404529DCC5A60070AB46 /* MultipleSelectionLedgerAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionLedgerAccountCell.swift; sourceTree = "<group>"; };
@@ -10291,7 +10299,6 @@
 		F0FA692229E76E9E00593F38 /* OptInAssetNextListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListLoadingViewTheme.swift; sourceTree = "<group>"; };
 		F0FA692629E7A0FF00593F38 /* OptInAssetListDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListDraft.swift; sourceTree = "<group>"; };
 		F0FA692A29E7A4D100593F38 /* OptInAssetListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListQuery.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F6789012345678 /* RecentChangesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChangesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -12593,6 +12600,9 @@
 		2B69AB1228BF9B6200A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D4772F932E8A761F00B4F262 /* SwapAsset.swift */,
+				D4772F912E8A760B00B4F262 /* SwapTopPair.swift */,
+				D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */,
 				2B69AB1328BF9B7100A8D65D /* PeraSwapFee.swift */,
 				2B69AB1B28BF9CFD00A8D65D /* SwapProvider.swift */,
 				D4FCCB1B2E5706D700CECBFD /* SwapProviderV2.swift */,
@@ -12623,6 +12633,7 @@
 			isa = PBXGroup;
 			children = (
 				2B69AB3D28BFCFC200A8D65D /* AvailablePoolAssetsQuery.swift */,
+				D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */,
 			);
 			path = Swap;
 			sourceTree = "<group>";
@@ -31086,6 +31097,7 @@
 				591678AD2E462E22002184C2 /* SendTransactionDraft.swift in Sources */,
 				591678A02E462A82002184C2 /* Utils.swift in Sources */,
 				5916789A2E461C54002184C2 /* SwapTransactionSigner.swift in Sources */,
+				D4772F942E8A762900B4F262 /* SwapAsset.swift in Sources */,
 				5916789B2E461C54002184C2 /* SwapTransactionGroupSigner.swift in Sources */,
 				5916789C2E461C54002184C2 /* TransactionMonitor.swift in Sources */,
 				5916789D2E461C54002184C2 /* TransactionPoolMonitor.swift in Sources */,
@@ -31120,6 +31132,7 @@
 				5916760C2E460AF9002184C2 /* DiscoverAssetBuyEvent.swift in Sources */,
 				5916760D2E460AF9002184C2 /* DiscoverAssetSellEvent.swift in Sources */,
 				5916760E2E460AF9002184C2 /* DiscoverDappDetailEvent.swift in Sources */,
+				D4772F8E2E8A6D2600B4F262 /* SwapTopPairsQuery.swift in Sources */,
 				5916760F2E460AF9002184C2 /* SwapSelectTokenEvent.swift in Sources */,
 				591676102E460AF9002184C2 /* SwapEnterNumbersEvent.swift in Sources */,
 				591676112E460AF9002184C2 /* SwapBannerLaterEvent.swift in Sources */,
@@ -31373,6 +31386,7 @@
 				591677152E460AF9002184C2 /* Array+View.swift in Sources */,
 				591677162E460AF9002184C2 /* Bool+Additions.swift in Sources */,
 				591677172E460AF9002184C2 /* Int+Byte.swift in Sources */,
+				D4772F902E8A75F500B4F262 /* SwapTopPairsList.swift in Sources */,
 				591677182E460AF9002184C2 /* Int16+Byte.swift in Sources */,
 				591677192E460AF9002184C2 /* Codable+JSON.swift in Sources */,
 				5916771A2E460AF9002184C2 /* Date+Additions.swift in Sources */,
@@ -31595,6 +31609,7 @@
 				591678332E460AF9002184C2 /* AlgorandNotification.swift in Sources */,
 				591678342E460AF9002184C2 /* AlgorandNotificationDetail.swift in Sources */,
 				591678352E460AF9002184C2 /* Device.swift in Sources */,
+				D4772F922E8A760E00B4F262 /* SwapTopPair.swift in Sources */,
 				591678362E460AF9002184C2 /* NotificationMessage.swift in Sources */,
 				591678372E460AF9002184C2 /* NotificationFilterResponse.swift in Sources */,
 				591678382E460AF9002184C2 /* NotificationStatus.swift in Sources */,
