@@ -65,7 +65,6 @@ final class SwapAssetFlowCoordinator:
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
     var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
-    var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
 
     private var draft: SwapAssetFlowDraft

@@ -177,13 +177,7 @@ final class SwapViewController: BaseViewController {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
                 return
             }
-            
-            var results = result?.results ?? []
-            results.append(contentsOf: result?.results ?? [])
-            results.append(contentsOf: result?.results ?? [])
-            results.append(contentsOf: result?.results ?? [])
-            
-            sharedViewModel?.swapTopPairsList = []
+            sharedViewModel?.swapTopPairsList = result?.results ?? []
         }
         
         swapAssetFlowCoordinator.getSwapTopPairsList()
