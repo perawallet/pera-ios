@@ -90,8 +90,7 @@ struct SwapTopPairsListView: View {
                             .padding(5)
                             
                             Spacer().frame(width: 8)
-                            
-                            Text("\(swapTopPair.assetA.name) to \(swapTopPair.assetB.name)")
+                            Text(String(format: NSLocalizedString("swap-top-pair-text", comment: ""), swapTopPair.assetA.name, swapTopPair.assetB.name))
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
                             Spacer()

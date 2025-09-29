@@ -7479,6 +7479,17 @@
         }
       }
     },
+    "swap-top-pair-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ to %@"
+          }
+        }
+      }
+    },
     "swap-volume-title" : {
       "localizations" : {
         "en" : {
