@@ -42,6 +42,8 @@ class SwapSharedViewModel: ObservableObject {
     @Published var slippageSelected: SlippageValue? = nil
     
     @Published var swapTopPairsList: [SwapTopPair] = []
+    @Published var swapHistoryList: [SwapHistory] = []
+    
     private var debounceWorkItem: DispatchWorkItem?
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!

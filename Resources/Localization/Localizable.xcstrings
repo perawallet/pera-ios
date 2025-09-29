@@ -5979,6 +5979,17 @@
         }
       }
     },
+    "see-all-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
     "select-address-description" : {
       "localizations" : {
         "en" : {
@@ -7190,6 +7201,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "High Price impact detected!"
+          }
+        }
+      }
+    },
+    "swap-history-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap History"
           }
         }
       }

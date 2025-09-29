@@ -65,6 +65,26 @@ struct SwapView: View {
                 if viewModel.shouldShowSwapButton {
                     swapActionView
                 }
+                
+                VStack {
+                    HStack {
+                        Text("swap-history-title")
+                            .font(.dmSans.medium.size(15))
+                            .foregroundStyle(Color.Text.main)
+                        Spacer()
+                        SwiftUI.Button {
+                            print("---see all")
+                        } label: {
+                            Text("see-all-title")
+                                .font(.dmSans.medium.size(15))
+                                .foregroundStyle(Color.Helpers.positive)
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.horizontal, 24)
+                
                 SwapTopPairsListView(swapTopPairsList: viewModel.swapTopPairsList)
 
             }

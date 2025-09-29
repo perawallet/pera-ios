@@ -65,6 +65,7 @@ final class SwapAssetFlowCoordinator:
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
     var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
+    var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
 
     private var draft: SwapAssetFlowDraft
@@ -810,6 +811,23 @@ extension SwapAssetFlowCoordinator {
                     apiErrorDetail: hipApiError
                 )
                 onTopPairsListLoaded?(nil, error)
+            }
+        }
+    }
+    
+    func getSwapHistoryList(with address: String, cursor: String? = nil, limit: Int? = nil, statuses: String? = nil) {
+        let draft = SwapHistoryQuery(address: address, cursor: cursor, limit: limit, statuses: statuses)
+        api.getSwapHistory(draft) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(value):
+                onHistoryListLoaded?(value, nil)
+            case let .failure(apiError, hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                onHistoryListLoaded?(nil, error)
             }
         }
     }

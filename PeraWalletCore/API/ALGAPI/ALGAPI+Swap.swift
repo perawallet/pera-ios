@@ -113,6 +113,21 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func getSwapHistory(
+        _ draft: SwapHistoryQuery,
+        onCompleted handler: @escaping (Response.Result<SwapHistoryList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapHistoryList)
+            .method(.get)
+            .query(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+    
     @discardableResult
     public func getSwapTopPairs(
         _ draft: SwapTopPairsQuery,

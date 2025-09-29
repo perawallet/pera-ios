@@ -7294,10 +7294,13 @@
 		D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DD2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
+		D4772F8C2E8A6BAE00B4F262 /* SwapHistoryQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F8B2E8A6BA500B4F262 /* SwapHistoryQuery.swift */; };
 		D4772F8E2E8A6D2600B4F262 /* SwapTopPairsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */; };
 		D4772F902E8A75F500B4F262 /* SwapTopPairsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */; };
 		D4772F922E8A760E00B4F262 /* SwapTopPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F912E8A760B00B4F262 /* SwapTopPair.swift */; };
 		D4772F942E8A762900B4F262 /* SwapAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F932E8A761F00B4F262 /* SwapAsset.swift */; };
+		D4772F962E8A86D000B4F262 /* SwapHistoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */; };
+		D4772F982E8A86EB00B4F262 /* SwapHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F972E8A86E300B4F262 /* SwapHistory.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -9546,10 +9549,13 @@
 		D47509B52AB1DB060091F0B9 /* WCArbitraryDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewController.swift; sourceTree = "<group>"; };
 		D47509B92AB1DE210091F0B9 /* WCArbitraryDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCArbitraryDataViewModel.swift; sourceTree = "<group>"; };
 		D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSelectedPointViewModel.swift; sourceTree = "<group>"; };
+		D4772F8B2E8A6BA500B4F262 /* SwapHistoryQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapHistoryQuery.swift; sourceTree = "<group>"; };
 		D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPairsQuery.swift; sourceTree = "<group>"; };
 		D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPairsList.swift; sourceTree = "<group>"; };
 		D4772F912E8A760B00B4F262 /* SwapTopPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPair.swift; sourceTree = "<group>"; };
 		D4772F932E8A761F00B4F262 /* SwapAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAsset.swift; sourceTree = "<group>"; };
+		D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapHistoryList.swift; sourceTree = "<group>"; };
+		D4772F972E8A86E300B4F262 /* SwapHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapHistory.swift; sourceTree = "<group>"; };
 		D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewTheme.swift; sourceTree = "<group>"; };
 		D477A74827FB8CB700E2D790 /* CollectibleListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListViewControllerTheme.swift; sourceTree = "<group>"; };
 		D478404529DCC5A60070AB46 /* MultipleSelectionLedgerAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionLedgerAccountCell.swift; sourceTree = "<group>"; };
@@ -12600,6 +12606,8 @@
 		2B69AB1228BF9B6200A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D4772F972E8A86E300B4F262 /* SwapHistory.swift */,
+				D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */,
 				D4772F932E8A761F00B4F262 /* SwapAsset.swift */,
 				D4772F912E8A760B00B4F262 /* SwapTopPair.swift */,
 				D4772F8F2E8A75E800B4F262 /* SwapTopPairsList.swift */,
@@ -12633,6 +12641,7 @@
 			isa = PBXGroup;
 			children = (
 				2B69AB3D28BFCFC200A8D65D /* AvailablePoolAssetsQuery.swift */,
+				D4772F8B2E8A6BA500B4F262 /* SwapHistoryQuery.swift */,
 				D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */,
 			);
 			path = Swap;
@@ -31345,6 +31354,7 @@
 				591676CF2E460AF9002184C2 /* CurrencyProvider.swift in Sources */,
 				591676D02E460AF9002184C2 /* CurrencyRefreshOperation.swift in Sources */,
 				591676D12E460AF9002184C2 /* FiatCurrency.swift in Sources */,
+				D4772F8C2E8A6BAE00B4F262 /* SwapHistoryQuery.swift in Sources */,
 				591676D22E460AF9002184C2 /* NameServiceAPIStatus.swift in Sources */,
 				591676D32E460AF9002184C2 /* LocalCurrency.swift in Sources */,
 				591676D42E460AF9002184C2 /* Portfolio.swift in Sources */,
@@ -31548,6 +31558,7 @@
 				591677F62E460AF9002184C2 /* Media.swift in Sources */,
 				591677F72E460AF9002184C2 /* AssetAlertDraft.swift in Sources */,
 				591677F82E460AF9002184C2 /* AssetDecoration.swift in Sources */,
+				D4772F982E8A86EB00B4F262 /* SwapHistory.swift in Sources */,
 				591677F92E460AF9002184C2 /* AccountAssetInformation.swift in Sources */,
 				591677FA2E460AF9002184C2 /* AssetCreator.swift in Sources */,
 				591677FB2E460AF9002184C2 /* StandardAsset.swift in Sources */,
@@ -31562,6 +31573,7 @@
 				591678042E460AF9002184C2 /* KeyRegTransaction.swift in Sources */,
 				591678052E460AF9002184C2 /* AssetConfigTransactionType.swift in Sources */,
 				591678062E460AF9002184C2 /* AssetTransferTransactionType.swift in Sources */,
+				D4772F962E8A86D000B4F262 /* SwapHistoryList.swift in Sources */,
 				591678072E460AF9002184C2 /* TransactionParams.swift in Sources */,
 				591678082E460AF9002184C2 /* Payment.swift in Sources */,
 				591678092E460AF9002184C2 /* TransactionID.swift in Sources */,

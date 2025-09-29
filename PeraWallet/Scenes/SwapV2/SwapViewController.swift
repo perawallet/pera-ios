@@ -82,6 +82,7 @@ final class SwapViewController: BaseViewController {
         }
         
         loadSwapView()
+        loadSwapHistory()
         loadSwapTopPairs()
     }
     
@@ -168,6 +169,20 @@ final class SwapViewController: BaseViewController {
         }
         
         return rootView
+    }
+    
+    private func loadSwapHistory() {
+        if let selectedAccount {
+            swapAssetFlowCoordinator.onHistoryListLoaded = { [weak self] result, error in
+                guard let self else { return }
+                if let error {
+                    bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    return
+                }
+                sharedViewModel?.swapHistoryList = result?.results ?? []
+            }
+            swapAssetFlowCoordinator.getSwapHistoryList(with: selectedAccount.address)
+        }
     }
     
     private func loadSwapTopPairs() {
