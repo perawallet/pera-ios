@@ -19,7 +19,7 @@ import Foundation
 public final class SwapAsset: ALGEntityModel, Codable {
 
     public let assetID: AssetID
-    public let logo: String
+    public let logo: String?
     public let name: String
     public let unitName: String
     public let total: String
@@ -58,7 +58,7 @@ public final class SwapAsset: ALGEntityModel, Codable {
 extension SwapAsset {
     public struct APIModel: ALGAPIModel {
         var assetID: AssetID
-        var logo: String
+        var logo: String?
         var name: String
         var unitName: String
         var total: String
@@ -68,7 +68,7 @@ extension SwapAsset {
 
         public init() {
             self.assetID = 0
-            self.logo = .empty
+            self.logo = nil
             self.name = .empty
             self.unitName = .empty
             self.total = .empty

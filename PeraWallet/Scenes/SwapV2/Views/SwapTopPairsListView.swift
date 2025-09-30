@@ -55,7 +55,7 @@ struct SwapTopPairsListView: View {
                             Spacer().frame(width: 8)
                             
                             ZStack(alignment: .topLeading) {
-                                AsyncImage(url: URL(string: swapTopPair.assetA.logo)) { phase in
+                                AsyncImage(url: URL(string: swapTopPair.assetA.logo ?? .empty)) { phase in
                                     switch phase {
                                     case .empty, .failure:
                                         EmptyView()
@@ -71,7 +71,7 @@ struct SwapTopPairsListView: View {
                                 .clipShape(Circle())
                                 .offset(x: -12 + 5, y: -12 + 5)
                                 
-                                AsyncImage(url: URL(string: swapTopPair.assetB.logo)) { phase in
+                                AsyncImage(url: URL(string: swapTopPair.assetB.logo ?? .empty)) { phase in
                                     switch phase {
                                     case .empty, .failure:
                                         EmptyView()
