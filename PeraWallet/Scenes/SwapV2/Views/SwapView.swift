@@ -66,15 +66,20 @@ struct SwapView: View {
                 if viewModel.shouldShowSwapButton {
                     swapActionView
                 }
+                
+                SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                    onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                }
+                
                 SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
                     onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
-            }
-            .padding(.top, safeAreaTopInset)
-            .frame(maxHeight: .infinity, alignment: .top)
-            .sheet(item: $activeSheet, content: sheetContent)
-            .onChange(of: viewModel.selectedProvider) { newValue in
-                viewModel.selectQuote(with: newValue)
+                .padding(.top, safeAreaTopInset)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .sheet(item: $activeSheet, content: sheetContent)
+                .onChange(of: viewModel.selectedProvider) { newValue in
+                    viewModel.selectQuote(with: newValue)
+                }
             }
         }
     }
@@ -199,11 +204,11 @@ struct SwapView: View {
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
         onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
     }
-
+    
     private func handleSlippageChange(_ newSlippage: SlippageValue?) {
         let slippageChanged = viewModel.slippageSelected != newSlippage
         viewModel.slippageSelected = (newSlippage?.value ?? 0) > 0 ? newSlippage : nil
-
+        
         if slippageChanged && viewModel.shouldShowSwapButton {
             viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }

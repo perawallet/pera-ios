@@ -4389,6 +4389,16 @@
         }
       }
     },
+    "no-swap-history-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your swap history will appear here once you've completed a swap."
+          }
+        }
+      }
+    },
     "node-settings-action-delete-title" : {
       "localizations" : {
         "en" : {

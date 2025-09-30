@@ -18,40 +18,42 @@ import Foundation
 
 public final class SwapHistory: ALGEntityModel, Codable {
     public let historyId: Int
-    public let proviverId: String
+    public let providerId: String
     public let status: String
     public let assetIn: SwapAsset
     public let assetOut: SwapAsset
-    public let amountIn: String
-    public let amountOut: String
-    public let amountInUSDValue: String
-    public let amountOutUSDValue: String
+    
+    public init(
+        historyId: Int,
+        providerId: String,
+        status: String,
+        assetIn: SwapAsset,
+        assetOut: SwapAsset
+    ) {
+        self.historyId = historyId
+        self.providerId = providerId
+        self.status = status
+        self.assetIn = assetIn
+        self.assetOut = assetOut
+    }
 
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.historyId = apiModel.historyId
-        self.proviverId = apiModel.proviverId
+        self.providerId = apiModel.providerId
         self.status = apiModel.status
         self.assetIn = apiModel.assetIn
         self.assetOut = apiModel.assetOut
-        self.amountIn = apiModel.amountIn
-        self.amountOut = apiModel.amountOut
-        self.amountInUSDValue = apiModel.amountInUSDValue
-        self.amountOutUSDValue = apiModel.amountOutUSDValue
     }
 
     public func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.historyId = historyId
-        apiModel.proviverId = proviverId
+        apiModel.providerId = providerId
         apiModel.status = status
         apiModel.assetIn = assetIn
         apiModel.assetOut = assetOut
-        apiModel.amountIn = amountIn
-        apiModel.amountOut = amountOut
-        apiModel.amountInUSDValue = amountInUSDValue
-        apiModel.amountOutUSDValue = amountOutUSDValue
         return apiModel
     }
 }
@@ -59,39 +61,27 @@ public final class SwapHistory: ALGEntityModel, Codable {
 extension SwapHistory {
     public struct APIModel: ALGAPIModel {
         var historyId: Int
-        var proviverId: String
+        var providerId: String
         var status: String
         var assetIn: SwapAsset
         var assetOut: SwapAsset
-        var amountIn: String
-        var amountOut: String
-        var amountInUSDValue: String
-        var amountOutUSDValue: String
 
         public init() {
             self.historyId = 0
-            self.proviverId = .empty
+            self.providerId = .empty
             self.status = .empty
             self.assetIn = SwapAsset()
             self.assetOut = SwapAsset()
-            self.amountIn = .empty
-            self.amountOut = .empty
-            self.amountInUSDValue = .empty
-            self.amountOutUSDValue = .empty
         }
 
         private enum CodingKeys:
             String,
             CodingKey {
             case historyId = "id"
-            case proviverId = "provider"
+            case providerId = "provider"
             case status
             case assetIn = "asset_in"
             case assetOut = "asset_out"
-            case amountIn = "amount_in"
-            case amountOut = "amount_out"
-            case amountInUSDValue = "amount_in_usd_value"
-            case amountOutUSDValue = "amount_out_usd_value"
         }
     }
 }
