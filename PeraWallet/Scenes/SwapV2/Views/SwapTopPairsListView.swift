@@ -55,35 +55,44 @@ struct SwapTopPairsListView: View {
                             Spacer().frame(width: 8)
                             
                             ZStack(alignment: .topLeading) {
-                                AsyncImage(url: URL(string: swapTopPair.assetA.logo)) { phase in
+                                AsyncImage(url: URL(string: swapTopPair.assetA.logo ?? .empty)) { phase in
                                     switch phase {
                                     case .empty, .failure:
-                                        EmptyView()
+                                        Image("icon-swap-empty")
+                                            .resizable()
+                                            .scaledToFit()
                                     case .success(let image):
                                         image
                                             .resizable()
                                             .scaledToFit()
                                     @unknown default:
-                                        EmptyView()
+                                        Image("icon-swap-empty")
+                                            .resizable()
+                                            .scaledToFit()
                                     }
                                 }
                                 .frame(width: 24, height: 24)
                                 .clipShape(Circle())
                                 .offset(x: -12 + 5, y: -12 + 5)
                                 
-                                AsyncImage(url: URL(string: swapTopPair.assetB.logo)) { phase in
+                                AsyncImage(url: URL(string: swapTopPair.assetB.logo ?? .empty)) { phase in
                                     switch phase {
                                     case .empty, .failure:
-                                        EmptyView()
+                                        Image("icon-swap-empty")
+                                            .resizable()
+                                            .scaledToFit()
                                     case .success(let image):
                                         image
                                             .resizable()
                                             .scaledToFit()
                                     @unknown default:
-                                        EmptyView()
+                                        Image("icon-swap-empty")
+                                            .resizable()
+                                            .scaledToFit()
                                     }
                                 }
                                 .frame(width: 24, height: 24)
+                                .background(Color.Defaults.bg)
                                 .clipShape(Circle())
                                 .overlay(Circle().stroke(Color.Defaults.bg, lineWidth: 1))
                                 .offset(x: 12 - 5, y: 12 - 5)

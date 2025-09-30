@@ -4379,7 +4379,6 @@
       }
     },
     "no-swap-activity-placeholder-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
