@@ -74,12 +74,12 @@ struct SwapView: View {
                 SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
                     onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
-                .padding(.top, safeAreaTopInset)
-                .frame(maxHeight: .infinity, alignment: .top)
-                .sheet(item: $activeSheet, content: sheetContent)
-                .onChange(of: viewModel.selectedProvider) { newValue in
-                    viewModel.selectQuote(with: newValue)
-                }
+            }
+            .padding(.top, safeAreaTopInset)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .sheet(item: $activeSheet, content: sheetContent)
+            .onChange(of: viewModel.selectedProvider) { newValue in
+                viewModel.selectQuote(with: newValue)
             }
         }
     }

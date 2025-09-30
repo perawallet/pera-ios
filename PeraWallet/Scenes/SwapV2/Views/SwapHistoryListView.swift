@@ -42,15 +42,15 @@ struct SwapHistoryListView: View {
                     Text("no-swap-history-placeholder-text")
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.gray)
-                    Spacer()
                 }
-                .frame(height: 72)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 Spacer().frame(height: 5)
             }
         }
+        .frame(height: 72)
         .padding(.horizontal, 24)
         .padding(.top, 24)
+        .padding(.bottom, 24)
     }
 }
