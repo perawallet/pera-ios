@@ -34,7 +34,7 @@ public final class StandardAsset: Asset {
     public let creator: AssetCreator?
     public let url: String?
     public let projectURL: URL?
-    public  let explorerURL: URL?
+    public let explorerURL: URL?
     public let logoURL: URL?
     public let description: String?
     public let discordURL: URL?
@@ -129,6 +129,37 @@ public final class StandardAsset: Asset {
         self.isFault = true
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+    }
+    
+    public init(
+        swapAsset: SwapAsset
+    ) {
+        self.id = swapAsset.assetID
+        self.isFrozen = nil
+        self.isDestroyed = false
+        self.optedInAtRound = nil
+        self.name = swapAsset.name
+        self.unitName = swapAsset.unitName
+        self.verificationTier = AssetVerificationTier(rawValue: swapAsset.verificationTier) ?? .unverified
+        self.creator = nil
+        self.url = nil
+        self.projectURL = nil
+        self.explorerURL = nil
+        self.logoURL = URL(string: swapAsset.logo ?? .empty)
+        self.total = UInt64(swapAsset.total)
+        self.totalSupply = nil
+        self.amount = 0
+        self.decimals = swapAsset.fractionDecimals
+        self.decimalAmount = 0
+        self.usdValue = Decimal(string: swapAsset.usdValue ?? .empty)
+        self.totalUSDValue = nil
+        self.description = nil
+        self.discordURL = nil
+        self.telegramURL = nil
+        self.twitterURL = nil
+        self.isFault = swapAsset.isFault
+        self.algoPriceChangePercentage = 0
+        self.isAvailableOnDiscover = false
     }
 }
 
