@@ -27,6 +27,7 @@ enum SwapViewAction {
     case confirmSwap
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
+    case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -65,28 +66,9 @@ struct SwapView: View {
                 if viewModel.shouldShowSwapButton {
                     swapActionView
                 }
-                
-                VStack {
-                    HStack {
-                        Text("swap-history-title")
-                            .font(.dmSans.medium.size(15))
-                            .foregroundStyle(Color.Text.main)
-                        Spacer()
-                        SwiftUI.Button {
-                            print("---see all")
-                        } label: {
-                            Text("see-all-title")
-                                .font(.dmSans.medium.size(15))
-                                .foregroundStyle(Color.Helpers.positive)
-                        }
-                    }
-                    Spacer()
+                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                    onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
-                .padding(.top, 24)
-                .padding(.horizontal, 24)
-                
-                SwapTopPairsListView(swapTopPairsList: viewModel.swapTopPairsList)
-
             }
             .padding(.top, safeAreaTopInset)
             .frame(maxHeight: .infinity, alignment: .top)

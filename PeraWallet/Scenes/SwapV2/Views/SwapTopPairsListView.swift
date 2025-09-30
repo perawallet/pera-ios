@@ -18,8 +18,8 @@ import SwiftUI
 import pera_wallet_core
 
 struct SwapTopPairsListView: View {
-    var swapTopPairsList: [SwapTopPair]
-    @State private var didFail = false
+    @ObservedObject var viewModel: SwapTopPairViewModel
+    var onRowTap: ((SwapTopPair) -> Void)?
     
     var body: some View {
         VStack {
@@ -34,16 +34,18 @@ struct SwapTopPairsListView: View {
             }
             Spacer().frame(height: 8)
             
-            if swapTopPairsList.isEmpty {
-                Text("no-swap-activity-placeholder-text")
-                    .font(.dmSans.regular.size(15))
-                    .foregroundStyle(Color.Text.gray)
-                    .frame(height: 72)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
+            if viewModel.isListEmpty {
+                HStack {
+                    Text("no-swap-activity-placeholder-text")
+                        .font(.dmSans.regular.size(15))
+                        .foregroundStyle(Color.Text.gray)
+                    Spacer()
+                }
+                .frame(height: 72)
+                .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(spacing: 5) {
-                    ForEach(Array(swapTopPairsList.prefix(5).enumerated()), id: \.0) { index, swapTopPair in
+                    ForEach(Array(viewModel.swapTopPairsList.prefix(5).enumerated()), id: \.0) { index, swapTopPair in
                         HStack(alignment: .center) {
                             Text("\(index + 1).")
                                 .font(.dmSans.regular.size(19))
@@ -90,11 +92,11 @@ struct SwapTopPairsListView: View {
                             .padding(5)
                             
                             Spacer().frame(width: 8)
-                            Text(String(format: NSLocalizedString("swap-top-pair-text", comment: ""), swapTopPair.assetA.name, swapTopPair.assetB.name))
+                            Text(viewModel.rowTitleFor(index: index))
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
                             Spacer()
-                            Text("$575.83K")
+                            Text(viewModel.volumeFor(index: index))
                                 .font(.dmSans.regular.size(15))
                                 .foregroundStyle(Color.Text.gray)
                         }
@@ -102,7 +104,7 @@ struct SwapTopPairsListView: View {
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            
+                            onRowTap?(swapTopPair)
                         }
                     }
                 }

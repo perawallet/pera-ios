@@ -25,6 +25,7 @@ final class SwapViewController: BaseViewController {
     var launchDraft: SwapAssetFlowDraft?
     
     private var sharedViewModel: SwapSharedViewModel?
+    private var noAccountViewModel: NoAccountViewModel?
     private var selectedAccount: Account?
     private var selectedAssetIn: AssetItem?
     private var selectedAssetOut: AssetItem?
@@ -78,6 +79,7 @@ final class SwapViewController: BaseViewController {
         
         if !resolveInitialState() {
             loadNoAccountView()
+            loadSwapTopPairs()
             return
         }
         
@@ -107,7 +109,12 @@ final class SwapViewController: BaseViewController {
     }
     
     private func loadNoAccountView() {
-        var rootView = NoAccountSwapView()
+        let viewModel = noAccountViewModel ?? {
+            let vm = NoAccountViewModel()
+            self.noAccountViewModel = vm
+            return vm
+        }()
+        var rootView = NoAccountSwapView(viewModel: viewModel)
         
         rootView.onAction = { [weak self] action in
             guard let self else { return }
@@ -193,6 +200,7 @@ final class SwapViewController: BaseViewController {
                 return
             }
             sharedViewModel?.swapTopPairsList = result?.results ?? []
+            noAccountViewModel?.swapTopPairsList = result?.results ?? []
         }
         
         swapAssetFlowCoordinator.getSwapTopPairsList()
@@ -389,16 +397,16 @@ final class SwapViewController: BaseViewController {
             }
             swapAssetFlowCoordinator.openSelectAccount()
         case let .selectAssetIn(account):
-            swapAssetFlowCoordinator.onAssetInSelected = { [weak self] selectedAssetIn in
+            swapAssetFlowCoordinator.onAssetInSelected = { [weak self] assetIn in
                 guard let self else { return }
-                self.selectedAssetIn = assetItem(from: selectedAssetIn)
+                selectedAssetIn = assetItem(from: assetIn)
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAssetIn(account: account)
         case let .selectAssetOut(account):
-            swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] selectedAssetOut in
+            swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] assetOut in
                 guard let self else { return }
-                self.selectedAssetOut = assetItem(from: selectedAssetOut)
+                selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAssetOut(account: account)
@@ -437,11 +445,19 @@ final class SwapViewController: BaseViewController {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
                     sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? SwapSharedViewModel.defaultAmountValue
                 }
-
+                
                 sharedViewModel?.isLoadingPayAmount = false
             }
-           
+            
             swapAssetFlowCoordinator.calculateFee(assetIn: assetIn, amount: amount)
+        case let .selectSwap(swapAssetIn, swapAssetOut):
+            if let assetIn = asset(from: swapAssetIn) {
+                selectedAssetIn = assetItem(from: assetIn)
+            }
+            if let assetOut = asset(from: swapAssetOut) {
+                selectedAssetOut = assetItem(from: assetOut)
+            }
+            loadSwapView()
         case .confirmSwap:
             confirmSwap()
         case let .showBanner(successMessage, errorMessage):
@@ -463,6 +479,27 @@ final class SwapViewController: BaseViewController {
         let desired = balance * percentage
         let maxTradable = max(balance - peraFee - minBalance - paddingFee, 0)
         return min(desired, maxTradable)
+    }
+    
+    private func asset(from swapAsset: SwapAsset) -> Asset? {
+        guard let selectedAccount else { return nil }
+        
+        if let asset = selectedAccount[swapAsset.assetID] {
+            return asset
+        }
+        
+        if let asset = selectedAccount.allAssets?.filter({ $0.id == swapAsset.assetID }).first {
+            return asset
+        }
+        
+        if
+            !sharedDataController.assetDetailCollection.isEmpty,
+            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == swapAsset.assetID}).first
+        {
+            return StandardAsset(decoration: assetDecorationElement)
+        }
+        
+        return nil
     }
     
     private func handleSwapControllerCallbacks(
