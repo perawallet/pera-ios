@@ -499,7 +499,7 @@ final class SwapViewController: BaseViewController {
             return StandardAsset(decoration: assetDecorationElement)
         }
         
-        return nil
+        return StandardAsset(swapAsset: swapAsset)
     }
     
     private func handleSwapControllerCallbacks(
