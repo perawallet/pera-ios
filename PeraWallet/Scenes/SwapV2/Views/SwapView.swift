@@ -27,6 +27,7 @@ enum SwapViewAction {
     case confirmSwap
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
+    case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -65,8 +66,9 @@ struct SwapView: View {
                 if viewModel.shouldShowSwapButton {
                     swapActionView
                 }
-                SwapTopPairsListView(swapTopPairsList: viewModel.swapTopPairsList)
-
+                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                    onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
+                }
             }
             .padding(.top, safeAreaTopInset)
             .frame(maxHeight: .infinity, alignment: .top)
