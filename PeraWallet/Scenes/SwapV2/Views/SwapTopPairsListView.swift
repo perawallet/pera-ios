@@ -35,12 +35,14 @@ struct SwapTopPairsListView: View {
             Spacer().frame(height: 8)
             
             if viewModel.isListEmpty {
-                Text("no-swap-activity-placeholder-text")
-                    .font(.dmSans.regular.size(15))
-                    .foregroundStyle(Color.Text.gray)
-                    .frame(height: 72)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
+                HStack {
+                    Text("no-swap-activity-placeholder-text")
+                        .font(.dmSans.regular.size(15))
+                        .foregroundStyle(Color.Text.gray)
+                    Spacer()
+                }
+                .frame(height: 72)
+                .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(spacing: 5) {
                     ForEach(Array(viewModel.swapTopPairsList.prefix(5).enumerated()), id: \.0) { index, swapTopPair in
