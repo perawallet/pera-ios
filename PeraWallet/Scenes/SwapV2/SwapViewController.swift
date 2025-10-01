@@ -461,6 +461,15 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = assetItem(from: assetOut)
             }
             loadSwapView()
+        case let .openExplorer(transactionGroupId):
+            guard let formattedGroupID = transactionGroupId.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+                  let url = AlgorandWeb.PeraExplorer.group(
+                    isMainnet: api?.network == .mainnet,
+                    param: formattedGroupID
+                  ).link else {
+                return
+            }
+            open(url)
         case .confirmSwap:
             confirmSwap()
         case let .showBanner(successMessage, errorMessage):

@@ -28,6 +28,7 @@ enum SwapViewAction {
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
+    case openExplorer(transactionGroupId: String)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -201,7 +202,7 @@ struct SwapView: View {
             }
         case .swapHistory:
             SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
-                onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                onAction?(.openExplorer(transactionGroupId: swapHistory.transactionGroupId))
             }
         }
     }

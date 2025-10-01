@@ -21,6 +21,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
     public let providerId: String
     public let status: String
     public let dateTime: String
+    public let transactionGroupId: String
     public let assetIn: SwapAsset
     public let assetOut: SwapAsset
     public let amountIn: String
@@ -33,6 +34,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
         providerId: String,
         status: String,
         dateTime: String,
+        transactionGroupId: String,
         assetIn: SwapAsset,
         assetOut: SwapAsset,
         amountIn: String,
@@ -44,6 +46,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
         self.providerId = providerId
         self.status = status
         self.dateTime = dateTime
+        self.transactionGroupId = transactionGroupId
         self.assetIn = assetIn
         self.assetOut = assetOut
         self.amountIn = amountIn
@@ -59,6 +62,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
         self.providerId = apiModel.providerId
         self.status = apiModel.status
         self.dateTime = apiModel.dateTime
+        self.transactionGroupId = apiModel.transactionGroupId
         self.assetIn = apiModel.assetIn
         self.assetOut = apiModel.assetOut
         self.amountIn = apiModel.amountIn
@@ -73,6 +77,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
         apiModel.providerId = providerId
         apiModel.status = status
         apiModel.dateTime = dateTime
+        apiModel.transactionGroupId = transactionGroupId
         apiModel.assetIn = assetIn
         apiModel.assetOut = assetOut
         apiModel.amountIn = amountIn
@@ -90,6 +95,7 @@ extension SwapHistory {
         var providerId: String
         var status: String
         var dateTime: String
+        var transactionGroupId: String
         var assetIn: SwapAsset
         var assetOut: SwapAsset
         var amountIn: String
@@ -102,6 +108,7 @@ extension SwapHistory {
             self.providerId = .empty
             self.status = .empty
             self.dateTime = .empty
+            self.transactionGroupId = .empty
             self.assetIn = SwapAsset()
             self.assetOut = SwapAsset()
             self.amountIn = .empty
@@ -117,6 +124,7 @@ extension SwapHistory {
             case providerId = "provider"
             case status
             case dateTime = "completed_datetime"
+            case transactionGroupId = "transaction_group_id"
             case assetIn = "asset_in"
             case assetOut = "asset_out"
             case amountIn = "amount_in"
