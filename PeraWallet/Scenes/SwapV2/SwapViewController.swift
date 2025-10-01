@@ -372,7 +372,7 @@ final class SwapViewController: BaseViewController {
             swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
                 guard let self = self else { return }
                 if let error {
-                    bannerController?.presentErrorBanner(title: "title-error", message: error.prettyDescription)
+                    bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
                     return
                 }
                 
@@ -381,7 +381,7 @@ final class SwapViewController: BaseViewController {
             }
             
             guard let selectedAccount, let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else {
-                bannerController?.presentErrorBanner(title: "title-error", message: .empty)
+                bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: .empty)
                 return
             }
             swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value)
@@ -389,7 +389,7 @@ final class SwapViewController: BaseViewController {
             confirmSwap()
         case .showBanner(success: let successMessage, error: let errorMessage):
             guard let successMessage else {
-                bannerController?.presentErrorBanner(title: "title-error", message: errorMessage ?? .empty)
+                bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: errorMessage ?? .empty)
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
@@ -437,7 +437,7 @@ final class SwapViewController: BaseViewController {
         switch event {
         case .willUpdateSlippage, .didUpdateSlippage, .willPrepareTransactions: break
         case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
-            bannerController?.presentErrorBanner(title: "title-error", message: error.prettyDescription)
+            bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
         case .didPrepareTransactions(let swapTransactionPreparation):
             let transactionGroups = swapTransactionPreparation.transactionGroups
             if swapController.account.requiresLedgerConnection() {

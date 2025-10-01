@@ -41,7 +41,7 @@ class SwapSharedViewModel: ObservableObject {
     
     private var debounceWorkItem: DispatchWorkItem?
     
-    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 1).string(for: Decimal(0))!
     
     // MARK: - Internal State
     var quoteList: [SwapQuote]?
@@ -128,7 +128,7 @@ class SwapSharedViewModel: ObservableObject {
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
                     
                     payingText = Formatter
-                        .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
+                        .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8)
                         .string(for: doubleValue) ?? .empty
                     isLoadingReceiveAmount = true
                     onGetQuote(doubleValue)
@@ -149,6 +149,7 @@ class SwapSharedViewModel: ObservableObject {
 // MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
+        if isBalanceNotSufficient { return false }
         let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
         let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
         return paying > 0 && receiving > 0
