@@ -43,7 +43,7 @@ class SwapSharedViewModel: ObservableObject {
     
     private var debounceWorkItem: DispatchWorkItem?
     
-    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 1).string(for: Decimal(0))!
     
     let currency: CurrencyProvider
     
@@ -148,7 +148,7 @@ class SwapSharedViewModel: ObservableObject {
                       onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
                         payingText = Formatter
-                            .decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 4)
+                            .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8)
                             .string(for: doubleValue) ?? .empty
                         payingTextInSecondaryCurrency = fiatValueText(fromAlgo: doubleValue)
                         onGetQuote(doubleValue)
@@ -173,6 +173,7 @@ class SwapSharedViewModel: ObservableObject {
 // MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
+        if isBalanceNotSufficient { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             let paying = Double(
                 payingTextInSecondaryCurrency
