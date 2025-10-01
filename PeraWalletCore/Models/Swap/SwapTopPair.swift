@@ -60,3 +60,13 @@ extension SwapTopPair {
         }
     }
 }
+
+extension SwapTopPair {
+    public var title: String {
+        String(format: NSLocalizedString("swap-top-pair-text", comment: ""), assetA.name, assetB.name)
+    }
+    
+    public var volumeText: String {
+        return "$" + Formatter.numberTextWithSuffix(from: Double(volume24hUSD) ?? 0)
+    }
+}

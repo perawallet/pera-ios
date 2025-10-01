@@ -399,9 +399,11 @@ final class SwapViewController: BaseViewController {
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAccount()
+            analytics.track(.swapV2SelectAccountEvent(type: .selectAccount))
         case let .selectAssetIn(account):
             swapAssetFlowCoordinator.onAssetInSelected = { [weak self] assetIn in
                 guard let self else { return }
+                analytics.track(.swapV2SelectAssetEvent(type: .selectTopAsset, assetName: assetIn.naming.displayNames.primaryName))
                 selectedAssetIn = assetItem(from: assetIn)
                 loadSwapView()
             }
@@ -409,6 +411,7 @@ final class SwapViewController: BaseViewController {
         case let .selectAssetOut(account):
             swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] assetOut in
                 guard let self else { return }
+                analytics.track(.swapV2SelectAssetEvent(type: .selectBottomAsset, assetName: assetOut.naming.displayNames.primaryName))
                 selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
             }
@@ -461,7 +464,7 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = assetItem(from: assetOut)
             }
             loadSwapView()
-        case let .openExplorer(transactionGroupId):
+        case let .openExplorer(transactionGroupId, pairing):
             guard let formattedGroupID = transactionGroupId.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
                   let url = AlgorandWeb.PeraExplorer.group(
                     isMainnet: api?.network == .mainnet,
@@ -469,8 +472,10 @@ final class SwapViewController: BaseViewController {
                   ).link else {
                 return
             }
+            analytics.track(.swapV2HistoryEvent(type: .selectHistoryInSeeAll, swapPairing: pairing))
             open(url)
         case .confirmSwap:
+            analytics.track(.swapV2ConfirmEvent(type: .confirmSlide))
             confirmSwap()
         case let .showBanner(successMessage, errorMessage):
             guard let successMessage else {
@@ -479,6 +484,39 @@ final class SwapViewController: BaseViewController {
             }
             bannerController?.presentSuccessBanner(title: successMessage)
             configureView()
+        case let .trackAnalytics(event):
+            switch event {
+            case .swapHistorySeeAll:
+                analytics.track(.swapV2HistoryEvent(type: .historySeeAll, swapPairing: nil))
+            case .swapHistorySelect(pairing: let pairing):
+                analytics.track(.swapV2HistoryEvent(type: .selectHistory, swapPairing: pairing))
+            case .swapTopPairSelect(pairing: let pairing):
+                analytics.track(.swapV2TopPairEvent(type: .selectTopPair, swapPairing: pairing))
+            case .swapSelectProvider:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderOpen, routerName: nil))
+            case .swapSelectProviderClose:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderClose, routerName: nil))
+            case .swapSelectProviderApply:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderApply, routerName: nil))
+            case .swapSelectProviderRouter(name: let name):
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderRouter, routerName: name))
+            case .swapSettingsClose:
+                analytics.track(.swapV2SettingsEvent(type: .settingsClose, value: nil))
+            case .swapSettingsApply:
+                analytics.track(.swapV2SettingsEvent(type: .settingsApply, value: nil))
+            case .swapSettingsPercentage(value: let value):
+                analytics.track(.swapV2SettingsEvent(type: .settingsPercentageSelected, value: value))
+            case .swapSettingsSlippage(value: let value):
+                analytics.track(.swapV2SettingsEvent(type: .settingsSlippageSelected, value: value))
+            case .swapSettingsLocalCurrency(on: let isOn):
+                if isOn {
+                    analytics.track(.swapV2SettingsEvent(type: .settingsLocalCurrencyOn, value: nil))
+                } else {
+                    analytics.track(.swapV2SettingsEvent(type: .settingsLocalCurrencyOff, value: nil))
+                }
+            case .swapConfirmTapped:
+                analytics.track(.swapV2ConfirmEvent(type: .confirmSwap))
+            }
         }
     }
     

@@ -17,6 +17,7 @@
 import SwiftUI
 import Combine
 import pera_wallet_core
+import MacaroonVendors
 
 enum SwapViewAction {
     case showInfo
@@ -28,7 +29,24 @@ enum SwapViewAction {
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
-    case openExplorer(transactionGroupId: String)
+    case openExplorer(transactionGroupId: String, pairing: String)
+    case trackAnalytics(event: SwapAnalyticsEvent)
+}
+
+enum SwapAnalyticsEvent {
+    case swapHistorySeeAll
+    case swapHistorySelect(pairing: String)
+    case swapTopPairSelect(pairing: String)
+    case swapSelectProvider
+    case swapSelectProviderClose
+    case swapSelectProviderApply
+    case swapSelectProviderRouter(name: String)
+    case swapSettingsClose
+    case swapSettingsApply
+    case swapSettingsPercentage(value: String)
+    case swapSettingsSlippage(value: String)
+    case swapSettingsLocalCurrency(on: Bool)
+    case swapConfirmTapped
 }
 
 enum SwapViewSheet: Identifiable {
@@ -71,12 +89,15 @@ struct SwapView: View {
                 }
                 
                 SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                    onAction?(.trackAnalytics(event: .swapHistorySelect(pairing: swapHistory.title)))
                     onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
                 } onSeeAllTap: {
+                    onAction?(.trackAnalytics(event: .swapHistorySeeAll))
                     activeSheet = .swapHistory
                 }
                 
                 SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                    onAction?(.trackAnalytics(event: .swapTopPairSelect(pairing: swapTopPair.title)))
                     onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
             }
@@ -156,6 +177,7 @@ struct SwapView: View {
             providerSelectionView
             SwapButton {
                 guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
+                onAction?(.trackAnalytics(event: .swapConfirmTapped))
                 activeSheet = .confirmSwap
             }
             .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -168,6 +190,7 @@ struct SwapView: View {
         
         return ProviderSelectionView(viewModel: providerViewModel) {
             guard let providers = viewModel.availableProviders else { return }
+            onAction?(.trackAnalytics(event: .swapSelectProvider))
             activeSheet = .provider(availableProviders: providers)
         }
         .padding(.top, 16)
@@ -179,9 +202,12 @@ struct SwapView: View {
         switch sheet {
         case .settings:
             SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                onAction?(.trackAnalytics(event: .swapSettingsApply))
                 viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
                 handlePercentageChange(newPercentageSelected)
                 handleSlippageChange(newSlippageSelected)
+            } onAnalyticsEvent: { event in
+                onAction?(.trackAnalytics(event: event))
             }
         case .provider(availableProviders: let providers):
             let vm = ProviderSheetViewModel(
@@ -190,7 +216,10 @@ struct SwapView: View {
                 quoteList: viewModel.quoteList
             )
             ProviderSheet(viewModel: vm) { selectedProvider in
+                onAction?(.trackAnalytics(event: .swapSelectProviderApply))
                 viewModel.selectedProvider = selectedProvider
+            } onAnalyticsEvent: { event in
+                onAction?(.trackAnalytics(event: event))
             }
         case .confirmSwap:
             ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
@@ -202,7 +231,7 @@ struct SwapView: View {
             }
         case .swapHistory:
             SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
-                onAction?(.openExplorer(transactionGroupId: swapHistory.transactionGroupId))
+                onAction?(.openExplorer(transactionGroupId: swapHistory.transactionGroupId, pairing: swapHistory.title))
             }
         }
     }

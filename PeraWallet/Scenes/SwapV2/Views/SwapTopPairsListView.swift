@@ -57,11 +57,11 @@ struct SwapTopPairsListView: View {
                             SwapLogosView(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB)
                             
                             Spacer().frame(width: 8)
-                            Text(viewModel.rowTitleFor(index: index))
+                            Text(swapTopPair.title)
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
                             Spacer()
-                            Text(viewModel.volumeFor(index: index))
+                            Text(swapTopPair.volumeText)
                                 .font(.dmSans.regular.size(15))
                                 .foregroundStyle(Color.Text.gray)
                         }
