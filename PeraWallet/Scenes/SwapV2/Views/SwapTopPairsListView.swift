@@ -37,7 +37,7 @@ struct SwapTopPairsListView: View {
             if viewModel.isListEmpty {
                 HStack {
                     Text("no-swap-activity-placeholder-text")
-                        .font(.dmSans.regular.size(15))
+                        .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
                 }

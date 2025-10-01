@@ -36,20 +36,46 @@ struct SwapHistoryListView: View {
                         .foregroundStyle(Color.Helpers.positive)
                 }
             }
+            .padding(.horizontal, 24)
             Spacer().frame(height: 8)
-            if viewModel.isListEmpty {
+            if let swapHistoryList = viewModel.swapHistoryList {
+                if swapHistoryList.isEmpty {
+                    HStack {
+                        Text("no-swap-history-placeholder-text")
+                            .font(.dmSans.regular.size(13))
+                            .foregroundStyle(Color.Text.gray)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 24)
+                } else {
+                    SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            Spacer().frame(width: 24)
+                            ForEach(swapHistoryList, id: \.historyId) { item in
+                                SwapHistoryListItem(viewModel: viewModel, item: item)
+                                    .onTapGesture {
+                                        onRowTap?(item)
+                                    }
+                            }
+                        }
+                    }
+                }
+            } else {
                 HStack {
-                    Text("no-swap-history-placeholder-text")
-                        .font(.dmSans.regular.size(15))
-                        .foregroundStyle(Color.Text.gray)
+                    Image("icon-info-18")
+                        .resizable()
+                        .renderingMode(.template)
+                        .foregroundColor(Color.Helpers.negative)
+                        .frame(width: 16, height: 16)
+                    Spacer().frame(width: 8)
+                    Text("swap-history-error-message")
+                        .font(.dmSans.regular.size(13))
+                        .foregroundStyle(Color.Helpers.negative)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                Spacer().frame(height: 5)
+                .padding(.horizontal, 24)
             }
         }
-        .frame(height: 72)
-        .padding(.horizontal, 24)
         .padding(.top, 24)
         .padding(.bottom, 24)
     }

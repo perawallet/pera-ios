@@ -7133,7 +7133,6 @@
       }
     },
     "swap-empty-accounts-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7174,7 +7173,6 @@
       }
     },
     "swap-exchange-fee-info-body" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7210,6 +7208,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "High Price impact detected!"
+          }
+        }
+      }
+    },
+    "swap-history-error-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load swap history"
           }
         }
       }

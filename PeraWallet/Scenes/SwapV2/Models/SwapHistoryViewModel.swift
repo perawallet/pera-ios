@@ -18,18 +18,9 @@ import SwiftUI
 import pera_wallet_core
 
 class SwapHistoryViewModel: ObservableObject {
-    @Published var swapHistoryList: [SwapHistory]
+    @Published var swapHistoryList: [SwapHistory]?
     
-    var isListEmpty: Bool {
-        swapHistoryList.isEmpty
-    }
-    
-    init(swapHistoryList: [SwapHistory]) {
+    init(swapHistoryList: [SwapHistory]?) {
         self.swapHistoryList = swapHistoryList
-    }
-    
-    func rowTitleFor(index: Int) -> String {
-        let historyItem = swapHistoryList[index]
-        return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), historyItem.assetIn.name, historyItem.assetOut.name)
     }
 }

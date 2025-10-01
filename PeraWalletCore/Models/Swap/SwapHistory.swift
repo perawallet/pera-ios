@@ -85,3 +85,9 @@ extension SwapHistory {
         }
     }
 }
+
+extension SwapHistory {
+    public var title: String {
+        return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), assetIn.name, assetOut.name)
+    }
+}

@@ -184,6 +184,7 @@ final class SwapViewController: BaseViewController {
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    sharedViewModel?.swapHistoryList = nil
                     return
                 }
                 sharedViewModel?.swapHistoryList = result?.results ?? []
@@ -197,6 +198,8 @@ final class SwapViewController: BaseViewController {
             guard let self else { return }
             if let error {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                sharedViewModel?.swapTopPairsList = []
+                noAccountViewModel?.swapTopPairsList = []
                 return
             }
             sharedViewModel?.swapTopPairsList = result?.results ?? []
