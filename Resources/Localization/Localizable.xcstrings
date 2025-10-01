@@ -7538,6 +7538,17 @@
         }
       }
     },
+    "swapped-for-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swapped %@ %@ for"
+          }
+        }
+      }
+    },
     "tite-pinging" : {
       "localizations" : {
         "en" : {

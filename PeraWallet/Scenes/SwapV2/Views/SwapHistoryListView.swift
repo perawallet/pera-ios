@@ -20,6 +20,7 @@ import pera_wallet_core
 struct SwapHistoryListView: View {
     @ObservedObject var viewModel: SwapHistoryViewModel
     var onRowTap: ((SwapHistory) -> Void)?
+    var onSeeAllTap: (() -> Void)?
     
     var body: some View {
         VStack {
@@ -28,12 +29,14 @@ struct SwapHistoryListView: View {
                     .font(.dmSans.medium.size(15))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
-                SwiftUI.Button {
-                    print("---see all")
-                } label: {
-                    Text("see-all-title")
-                        .font(.dmSans.medium.size(15))
-                        .foregroundStyle(Color.Helpers.positive)
+                if viewModel.shouldShowSeeAllButton {
+                    SwiftUI.Button {
+                        onSeeAllTap?()
+                    } label: {
+                        Text("see-all-title")
+                            .font(.dmSans.medium.size(15))
+                            .foregroundStyle(Color.Helpers.positive)
+                    }
                 }
             }
             .padding(.horizontal, 24)

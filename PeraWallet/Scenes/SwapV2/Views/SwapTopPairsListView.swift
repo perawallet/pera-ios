@@ -54,51 +54,7 @@ struct SwapTopPairsListView: View {
                             
                             Spacer().frame(width: 8)
                             
-                            ZStack(alignment: .topLeading) {
-                                AsyncImage(url: URL(string: swapTopPair.assetA.logo ?? .empty)) { phase in
-                                    switch phase {
-                                    case .empty, .failure:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                    @unknown default:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                .frame(width: 24, height: 24)
-                                .clipShape(Circle())
-                                .offset(x: -12 + 5, y: -12 + 5)
-                                
-                                AsyncImage(url: URL(string: swapTopPair.assetB.logo ?? .empty)) { phase in
-                                    switch phase {
-                                    case .empty, .failure:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                    @unknown default:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                .frame(width: 24, height: 24)
-                                .background(Color.Defaults.bg)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.Defaults.bg, lineWidth: 1))
-                                .offset(x: 12 - 5, y: 12 - 5)
-                            }
-                            .frame(width: 48, height: 48)
-                            .padding(5)
+                            SwapLogosView(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB)
                             
                             Spacer().frame(width: 8)
                             Text(viewModel.rowTitleFor(index: index))

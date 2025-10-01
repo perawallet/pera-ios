@@ -41,8 +41,8 @@ class SwapSharedViewModel: ObservableObject {
     
     @Published var slippageSelected: SlippageValue? = nil
     
-    @Published var swapTopPairsList: [SwapTopPair]?
-    @Published var swapHistoryList: [SwapHistory]?
+    @Published var swapTopPairsList: [SwapTopPair] = []
+    @Published var swapHistoryList: [SwapHistory]? = []
     
     private var debounceWorkItem: DispatchWorkItem?
     

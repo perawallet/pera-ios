@@ -24,51 +24,7 @@ struct SwapHistoryListItem: View {
     var body: some View {
         VStack {
             HStack {
-                ZStack(alignment: .topLeading) {
-                    AsyncImage(url: URL(string: item.assetIn.logo ?? .empty)) { phase in
-                        switch phase {
-                        case .empty, .failure:
-                            Image("icon-swap-empty")
-                                .resizable()
-                                .scaledToFit()
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        @unknown default:
-                            Image("icon-swap-empty")
-                                .resizable()
-                                .scaledToFit()
-                        }
-                    }
-                    .frame(width: 24, height: 24)
-                    .clipShape(Circle())
-                    .offset(x: -12 + 5, y: -12 + 5)
-                    
-                    AsyncImage(url: URL(string: item.assetOut.logo ?? .empty)) { phase in
-                        switch phase {
-                        case .empty, .failure:
-                            Image("icon-swap-empty")
-                                .resizable()
-                                .scaledToFit()
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        @unknown default:
-                            Image("icon-swap-empty")
-                                .resizable()
-                                .scaledToFit()
-                        }
-                    }
-                    .frame(width: 24, height: 24)
-                    .background(Color.Defaults.bg)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.Defaults.bg, lineWidth: 1))
-                    .offset(x: 12 - 5, y: 12 - 5)
-                }
-                .frame(width: 48, height: 48)
-                .padding(5)
+                SwapLogosView(assetIn: item.assetIn, assetOut: item.assetOut)
                 
                 Spacer().frame(width: 8)
 

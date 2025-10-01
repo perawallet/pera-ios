@@ -20,6 +20,10 @@ import pera_wallet_core
 class SwapHistoryViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]?
     
+    var shouldShowSeeAllButton: Bool {
+        swapHistoryList?.isNonEmpty ?? false
+    }
+    
     init(swapHistoryList: [SwapHistory]?) {
         self.swapHistoryList = swapHistoryList
     }

@@ -20,21 +20,36 @@ public final class SwapHistory: ALGEntityModel, Codable {
     public let historyId: Int
     public let providerId: String
     public let status: String
+    public let dateTime: String
     public let assetIn: SwapAsset
     public let assetOut: SwapAsset
+    public let amountIn: String
+    public let amountOut: String
+    public let amountInUSDValue: String
+    public let amountOutUSDValue: String
     
     public init(
         historyId: Int,
         providerId: String,
         status: String,
+        dateTime: String,
         assetIn: SwapAsset,
-        assetOut: SwapAsset
+        assetOut: SwapAsset,
+        amountIn: String,
+        amountOut: String,
+        amountInUSDValue: String,
+        amountOutUSDValue: String
     ) {
         self.historyId = historyId
         self.providerId = providerId
         self.status = status
+        self.dateTime = dateTime
         self.assetIn = assetIn
         self.assetOut = assetOut
+        self.amountIn = amountIn
+        self.amountOut = amountOut
+        self.amountInUSDValue = amountInUSDValue
+        self.amountOutUSDValue = amountOutUSDValue
     }
 
     public init(
@@ -43,8 +58,13 @@ public final class SwapHistory: ALGEntityModel, Codable {
         self.historyId = apiModel.historyId
         self.providerId = apiModel.providerId
         self.status = apiModel.status
+        self.dateTime = apiModel.dateTime
         self.assetIn = apiModel.assetIn
         self.assetOut = apiModel.assetOut
+        self.amountIn = apiModel.amountIn
+        self.amountOut = apiModel.amountOut
+        self.amountInUSDValue = apiModel.amountInUSDValue
+        self.amountOutUSDValue = apiModel.amountOutUSDValue
     }
 
     public func encode() -> APIModel {
@@ -52,8 +72,14 @@ public final class SwapHistory: ALGEntityModel, Codable {
         apiModel.historyId = historyId
         apiModel.providerId = providerId
         apiModel.status = status
+        apiModel.dateTime = dateTime
         apiModel.assetIn = assetIn
         apiModel.assetOut = assetOut
+        apiModel.amountIn = amountIn
+        apiModel.amountOut = amountOut
+        apiModel.amountInUSDValue = amountInUSDValue
+        apiModel.amountOutUSDValue = amountOutUSDValue
+
         return apiModel
     }
 }
@@ -63,15 +89,25 @@ extension SwapHistory {
         var historyId: Int
         var providerId: String
         var status: String
+        var dateTime: String
         var assetIn: SwapAsset
         var assetOut: SwapAsset
+        var amountIn: String
+        var amountOut: String
+        var amountInUSDValue: String
+        var amountOutUSDValue: String
 
         public init() {
             self.historyId = 0
             self.providerId = .empty
             self.status = .empty
+            self.dateTime = .empty
             self.assetIn = SwapAsset()
             self.assetOut = SwapAsset()
+            self.amountIn = .empty
+            self.amountOut = .empty
+            self.amountInUSDValue = .empty
+            self.amountOutUSDValue = .empty
         }
 
         private enum CodingKeys:
@@ -80,14 +116,35 @@ extension SwapHistory {
             case historyId = "id"
             case providerId = "provider"
             case status
+            case dateTime = "completed_datetime"
             case assetIn = "asset_in"
             case assetOut = "asset_out"
+            case amountIn = "amount_in"
+            case amountOut = "amount_out"
+            case amountInUSDValue = "amount_in_usd_value"
+            case amountOutUSDValue = "amount_out_usd_value"
         }
     }
 }
 
 extension SwapHistory {
     public var title: String {
-        return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), assetIn.name, assetOut.name)
+        String(format: NSLocalizedString("swap-top-pair-text", comment: ""), assetIn.name, assetOut.name)
+    }
+    
+    public var swappedText: String {
+        String(format: NSLocalizedString("swapped-for-text", comment: ""), "2,000.00", assetIn.unitName)
+    }
+    
+    public var resultText: String {
+        "600.80 \(assetOut.unitName)"
+    }
+    
+    public var dateText: String {
+        let isoFormatter = ISO8601DateFormatter()
+        guard let date = isoFormatter.date(from: dateTime) else {
+            return .empty
+        }
+        return date.toFormat("MMM d, yyyy")
     }
 }

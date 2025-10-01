@@ -34,12 +34,14 @@ enum SwapViewSheet: Identifiable {
     case settings
     case provider(availableProviders: [SwapProviderV2])
     case confirmSwap
+    case swapHistory
     
     var id: String {
         switch self {
         case .settings: return "settings"
         case .provider: return "provider"
         case .confirmSwap: return "confirmSwap"
+        case .swapHistory: return "swapHistory"
         }
     }
 }
@@ -69,9 +71,11 @@ struct SwapView: View {
                 
                 SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
                     onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                } onSeeAllTap: {
+                    activeSheet = .swapHistory
                 }
                 
-                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList ?? [])) { swapTopPair in
+                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
                     onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
             }
@@ -194,6 +198,10 @@ struct SwapView: View {
                 onAction?(.showBanner(success: successMessage, error: nil))
             } onSwapError: { errorMessage in
                 onAction?(.showBanner(success: nil, error: errorMessage))
+            }
+        case .swapHistory:
+            SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
             }
         }
     }
