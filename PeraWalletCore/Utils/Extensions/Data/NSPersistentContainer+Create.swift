@@ -17,7 +17,7 @@ import CoreData
 extension NSPersistentContainer {
     public static let DEFAULT_CONTAINER_NAME = "algorand"
     
-    public static func makePersistentContainer(group: String?) throws -> NSPersistentContainer {
+    public static func makePersistentContainer(group: String?) throws(URL.AppGroupURLError) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: DEFAULT_CONTAINER_NAME)
         
         if let group {

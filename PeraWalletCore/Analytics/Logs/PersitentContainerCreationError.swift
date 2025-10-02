@@ -27,8 +27,8 @@ public struct PersitentContainerCreationError: ALGAnalyticsLog {
         appGroup: String,
         errorDetails: String
     ) {
-        self.name = .persistentContainerCreationError
-        self.metadata = [
+        name = .persistentContainerCreationError
+        metadata = [
             .errorDetails: "\(errorDetails)",
             .appGroupName: appGroup
         ]
@@ -40,7 +40,7 @@ extension ALGAnalyticsLog where Self == PersitentContainerCreationError {
         appGroup: String,
         errorDetails: String
     ) -> Self {
-        return PersitentContainerCreationError(
+        PersitentContainerCreationError(
             appGroup: appGroup,
             errorDetails: errorDetails
         )

@@ -27,8 +27,8 @@ public struct MigrationFailureLog: ALGAnalyticsLog {
         message: String,
         cause: Error?
     ) {
-        self.name = .migrationFailure
-        self.metadata = [
+        name = .migrationFailure
+        metadata = [
             .errorDetails: "\(message)",
             .errorCause: "\(cause ?? "No cause")"
         ]
@@ -40,7 +40,7 @@ extension ALGAnalyticsLog where Self == MigrationFailureLog {
         message: String,
         cause: Error?
     ) -> Self {
-        return MigrationFailureLog(
+        MigrationFailureLog(
             message: message,
             cause: cause
         )

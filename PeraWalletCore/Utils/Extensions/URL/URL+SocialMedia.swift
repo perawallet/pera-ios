@@ -25,7 +25,7 @@ public extension URL {
         case invalid
     }
     
-    static func appGroupDBURL(for appGroup: String, databaseName: String) throws -> URL {
+    static func appGroupDBURL(for appGroup: String, databaseName: String) throws(AppGroupURLError) -> URL {
         guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
             throw AppGroupURLError.invalid
         }
