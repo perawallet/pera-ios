@@ -109,6 +109,7 @@ struct SwapView: View {
             }
         }
         .background(Color.Defaults.bg)
+        .ignoresSafeArea(edges: .top)
     }
     
     // MARK: - Subviews
