@@ -30,9 +30,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
     
-    @Published var payingText: String = defaultAmountValue
+    @Published var payingText: String = .empty
     @Published var payingTextInSecondaryCurrency: String = defaultAmountValue
-    @Published var receivingText: String = defaultAmountValue
+    @Published var receivingText: String = .empty
     @Published var receivingTextInSecondaryCurrency: String = defaultAmountValue
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
@@ -46,7 +46,7 @@ class SwapSharedViewModel: ObservableObject {
     
     private var debounceWorkItem: DispatchWorkItem?
     
-    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 1).string(for: Decimal(0))!
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
     
     let currency: CurrencyProvider
     
@@ -170,6 +170,19 @@ class SwapSharedViewModel: ObservableObject {
 
         debounceWorkItem = task
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
+    }
+    
+    func filterPayingText(_ input: String) -> String {
+        var filtered = input.filter { "0123456789,.".contains($0) }
+
+        if let firstSeparatorIndex = filtered.firstIndex(where: { $0 == "." || $0 == "," }) {
+            let before = filtered.prefix(upTo: filtered.index(after: firstSeparatorIndex))
+            let after = filtered.suffix(from: filtered.index(after: firstSeparatorIndex))
+                .filter { $0 != "." && $0 != "," }
+            filtered = String(before + after)
+        }
+
+        return filtered
     }
 }
 
