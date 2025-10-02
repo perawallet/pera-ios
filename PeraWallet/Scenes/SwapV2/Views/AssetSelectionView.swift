@@ -47,6 +47,15 @@ enum AssetSelectionType {
             return Color.Layer.grayLighter
         }
     }
+    
+    var buttonBackgroundColor: Color {
+        switch self {
+        case .pay:
+            return Color.Layer.grayLightest
+        case .receive:
+            return Color.Swap.ButtonReceiveAsset.bg
+        }
+    }
 }
 
 struct AssetSelectionView: View {
@@ -130,7 +139,7 @@ struct AssetSelectionView: View {
                 }
                 
                 Spacer()
-                AssetSwapButton(assetItem: $assetItem, network: $network, onTap: onAssetSelectionTap)
+                AssetSwapButton(assetItem: $assetItem, network: $network, buttonBgColor: type.buttonBackgroundColor, onTap: onAssetSelectionTap)
             }
             Spacer()
         }

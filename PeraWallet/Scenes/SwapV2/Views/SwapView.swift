@@ -108,6 +108,7 @@ struct SwapView: View {
                 viewModel.selectQuote(with: newValue)
             }
         }
+        .background(Color.Defaults.bg)
     }
     
     // MARK: - Subviews
