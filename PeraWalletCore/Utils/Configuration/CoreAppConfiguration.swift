@@ -63,13 +63,13 @@ open class CoreAppConfiguration {
 
 // This class performs the same function as the AppDelegate in a normal app (i.e. initialize the world)
 extension CoreAppConfiguration {
-    public static func initialize() {
+    public static func initialize() throws {
         if CoreAppConfiguration.shared != nil {
             return
         }
         
         ALGAppTarget.setup()
-        let persistentContainer: NSPersistentContainer = NSPersistentContainer.makePersistentContainer(
+        let persistentContainer: NSPersistentContainer = try NSPersistentContainer.makePersistentContainer(
             group: ALGAppTarget.current.appGroupIdentifier)
         let featureFlagService = makeFeatureFlagService()
         let hdWalletService = makeHDWalletService()
