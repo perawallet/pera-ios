@@ -17,14 +17,12 @@
 import SwiftUI
 import pera_wallet_core
 
-class SwapHistoryViewModel: ObservableObject {
-    @Published var swapHistoryList: [SwapHistory]?
-    
-    var shouldShowSeeAllButton: Bool {
-        swapHistoryList?.isNonEmpty ?? false
-    }
+final class SwapHistoryViewModel: ObservableObject {
+    @Published private(set) var swapHistoryList: [SwapHistory]?
+    @Published private(set) var shouldShowSeeAllButton: Bool = false
     
     init(swapHistoryList: [SwapHistory]?) {
         self.swapHistoryList = swapHistoryList
+        self.shouldShowSeeAllButton = swapHistoryList?.isNonEmpty ?? false
     }
 }

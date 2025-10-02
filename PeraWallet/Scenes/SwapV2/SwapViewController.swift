@@ -179,18 +179,18 @@ final class SwapViewController: BaseViewController {
     }
     
     private func loadSwapHistory() {
-        if let selectedAccount {
-            swapAssetFlowCoordinator.onHistoryListLoaded = { [weak self] result, error in
-                guard let self else { return }
-                if let error {
-                    bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
-                    sharedViewModel?.swapHistoryList = nil
-                    return
-                }
-                sharedViewModel?.swapHistoryList = result?.results ?? []
+        guard let selectedAccount else { return }
+        
+        swapAssetFlowCoordinator.onHistoryListLoaded = { [weak self] result, error in
+            guard let self else { return }
+            if let error {
+                bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                sharedViewModel?.swapHistoryList = nil
+                return
             }
-            swapAssetFlowCoordinator.getSwapHistoryList(with: selectedAccount.address)
+            sharedViewModel?.swapHistoryList = result?.results ?? []
         }
+        swapAssetFlowCoordinator.swapHistoryList(with: selectedAccount.address)
     }
     
     private func loadSwapTopPairs() {
