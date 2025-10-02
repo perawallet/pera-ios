@@ -2929,6 +2929,8 @@
 		5916815F2E4A2D83002184C2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591674632E460AA3002184C2 /* ImagePicker.swift */; };
 		591681602E4A34F4002184C2 /* StatusBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591674932E460AA3002184C2 /* StatusBarConfigurable.swift */; };
 		591681632E4A51C6002184C2 /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
+		594D54822E8E6D7700D0DA38 /* MigrationFailureLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594D54812E8E6D7700D0DA38 /* MigrationFailureLog.swift */; };
+		594D54842E8E748800D0DA38 /* PersitentContainerCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594D54832E8E748800D0DA38 /* PersitentContainerCreationError.swift */; };
 		5977541A2E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597754192E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift */; };
 		5977541B2E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597754182E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift */; };
 		5977541D2E570F810089E103 /* WCTransactionFailToConnectErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */; };
@@ -8793,6 +8795,8 @@
 		591678AB2E462D4B002184C2 /* Session+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+UI.swift"; sourceTree = "<group>"; };
 		591678AF2E462E95002184C2 /* ErrorDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDisplayable.swift; sourceTree = "<group>"; };
 		591678B72E463C43002184C2 /* CoreAppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAppConfiguration.swift; sourceTree = "<group>"; };
+		594D54812E8E6D7700D0DA38 /* MigrationFailureLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFailureLog.swift; sourceTree = "<group>"; };
+		594D54832E8E748800D0DA38 /* PersitentContainerCreationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersitentContainerCreationError.swift; sourceTree = "<group>"; };
 		597754182E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToApproveErrorLog.swift; sourceTree = "<group>"; };
 		597754192E570EF20089E103 /* WCTransactionFailToRejectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToRejectErrorLog.swift; sourceTree = "<group>"; };
 		5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionFailToConnectErrorLog.swift; sourceTree = "<group>"; };
@@ -11607,6 +11611,8 @@
 			children = (
 				D4A5336229F6EA2100CBC1A9 /* LedgerAccountSelectionScreenFetchingRekeyingAccountsFailedLog.swift */,
 				2B32A25E2552F031007CC3A6 /* LedgerTransactionErrorLog.swift */,
+				594D54812E8E6D7700D0DA38 /* MigrationFailureLog.swift */,
+				594D54832E8E748800D0DA38 /* PersitentContainerCreationError.swift */,
 				D4A5335E29F6E8C000CBC1A9 /* RecoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailedLog.swift */,
 				597754182E570EF20089E103 /* WCTransactionFailToApproveErrorLog.swift */,
 				5977541C2E570F7A0089E103 /* WCTransactionFailToConnectErrorLog.swift */,
@@ -31094,6 +31100,7 @@
 				5916761C2E460AF9002184C2 /* BuyCryptoEvent.swift in Sources */,
 				5916761D2E460AF9002184C2 /* RegisterAccountEvent.swift in Sources */,
 				5916761E2E460AF9002184C2 /* RekeyAccountEvent.swift in Sources */,
+				594D54842E8E748800D0DA38 /* PersitentContainerCreationError.swift in Sources */,
 				5916761F2E460AF9002184C2 /* ShowAssetDetailEvent.swift in Sources */,
 				591676202E460AF9002184C2 /* ShowQRCopyEvent.swift in Sources */,
 				591676212E460AF9002184C2 /* ShowQRShareCompleteEvent.swift in Sources */,
@@ -31583,6 +31590,7 @@
 				591678532E460AF9002184C2 /* WCTransactionOption.swift in Sources */,
 				59B10C7D2E53259E00B8F6FB /* WebAuthNPassKeyEvent.swift in Sources */,
 				591678542E460AF9002184C2 /* WCTransactionRequestedSigner.swift in Sources */,
+				594D54822E8E6D7700D0DA38 /* MigrationFailureLog.swift in Sources */,
 				591678552E460AF9002184C2 /* WCTransactionErrorResponse.swift in Sources */,
 				591678562E460AF9002184C2 /* Backup.swift in Sources */,
 				591678572E460AF9002184C2 /* IncomingASAsRequestList.swift in Sources */,

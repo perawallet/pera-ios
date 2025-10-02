@@ -21,9 +21,13 @@ public extension URL {
         return URL(string: "https://twitter.com/\(username)")
     }
     
-    static func appGroupDBURL(for appGroup: String, databaseName: String) -> URL {
+    enum AppGroupURLError : Error {
+        case invalid
+    }
+    
+    static func appGroupDBURL(for appGroup: String, databaseName: String) throws -> URL {
         guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
-            fatalError("Shared file container could not be created.")
+            throw AppGroupURLError.invalid
         }
 
         return fileContainer.appendingPathComponent("\(databaseName).sqlite")

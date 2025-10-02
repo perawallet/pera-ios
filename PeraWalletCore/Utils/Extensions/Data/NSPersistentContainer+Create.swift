@@ -17,11 +17,11 @@ import CoreData
 extension NSPersistentContainer {
     public static let DEFAULT_CONTAINER_NAME = "algorand"
     
-    public static func makePersistentContainer(group: String?) -> NSPersistentContainer {
+    public static func makePersistentContainer(group: String?) throws -> NSPersistentContainer {
         let container = NSPersistentContainer(name: DEFAULT_CONTAINER_NAME)
         
         if let group {
-            let storeURL = URL.appGroupDBURL(for: group, databaseName: DEFAULT_CONTAINER_NAME)
+            let storeURL = try URL.appGroupDBURL(for: group, databaseName: DEFAULT_CONTAINER_NAME)
             let storeDescription = NSPersistentStoreDescription(url: storeURL)
             container.persistentStoreDescriptions = [storeDescription]
         }
@@ -34,6 +34,8 @@ extension NSPersistentContainer {
             }
 
             if let error = error as NSError? {
+                CoreAppConfiguration.shared?.analytics.record(
+                    PersitentContainerCreationError.persistentContainerCreationError(appGroup: group ?? "nil", errorDetails: "\(error), \(error.code), \(error.userInfo)"))
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }

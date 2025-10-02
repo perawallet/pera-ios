@@ -85,7 +85,7 @@ final class CredentialProviderService {
     }
     
     private func initializeExtension() throws {
-        CoreAppConfiguration.initialize()
+        try CoreAppConfiguration.initialize()
         passKeyManager = try createPassKeyService()
     }
     

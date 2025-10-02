@@ -22,42 +22,37 @@ public final class AppGroupDataStoreMigration {
         self.appGroup = appGroup
     }
 
-    public func moveDatabaseToAppGroup() {
+    public func moveDatabaseToAppGroup() throws {
         // Open the old database container and see if we have an ApplicationConfiguration there.  If so move everything to the app group location
         // and delete the old stuff
         let persistentContainer = NSPersistentContainer(name: NSPersistentContainer.DEFAULT_CONTAINER_NAME) //this is the old DB location
                 
-        do {
-            let dbWithContent = try persistentContainer.persistentStoreDescriptions
-                .first { desc in
-                    if let url = desc.url, url.lastPathComponent.starts(with: NSPersistentContainer.DEFAULT_CONTAINER_NAME) {
-                        return try hasContents(url)
-                    }
-                    return false
+        let dbWithContent = try persistentContainer.persistentStoreDescriptions
+            .first { desc in
+                if let url = desc.url, url.lastPathComponent.starts(with: NSPersistentContainer.DEFAULT_CONTAINER_NAME) {
+                    return try hasContents(url)
                 }
-            
-            guard dbWithContent != nil else {
-                return
+                return false
             }
-            
-            let loadedDB = NSPersistentContainer.makePersistentContainer(group: nil)
-            try performMigration(from: loadedDB)
-        } catch {
-            //TODO: we should have some better error handling here
-            assertionFailure("AppGroup data migration failed: \(error)")
+        
+        guard dbWithContent != nil else {
+            return
         }
+        
+        let loadedDB = try NSPersistentContainer.makePersistentContainer(group: nil)
+        try performMigration(from: loadedDB)
     }
     
     private func performMigration(from: NSPersistentContainer) throws(AppGroupDataStoreMigrationError) {
         do {
-            let storeURL = URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
+            let storeURL = try URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
             let oldStoreCoordinator = from.persistentStoreCoordinator
             
             for store in from.persistentStoreCoordinator.persistentStores {
                 try oldStoreCoordinator.migratePersistentStore(store, to: storeURL, options: nil, withType: NSSQLiteStoreType)
             }
             
-            CoreAppConfiguration.shared?.persistentContainer = NSPersistentContainer.makePersistentContainer(group: appGroup)
+            CoreAppConfiguration.shared?.persistentContainer = try NSPersistentContainer.makePersistentContainer(group: appGroup)
         } catch {
             throw AppGroupDataStoreMigrationError.migrationFailed(cause: error)
         }
@@ -78,7 +73,18 @@ public final class AppGroupDataStoreMigration {
     }
 }
 
-enum AppGroupDataStoreMigrationError: Error {
+public enum AppGroupDataStoreMigrationError: Error {
     case migrationFailed(cause: Error? = nil)
     case contentNotDetected(cause: Error? = nil)
+    case generalError(cause: Error? = nil)
+    
+    public var cause: Error? {
+        switch self {
+        case .migrationFailed(cause: let cause),
+             .contentNotDetected(cause: let cause),
+             .generalError(cause: let cause):
+            return cause
+        }
+        return nil
+    }
 }

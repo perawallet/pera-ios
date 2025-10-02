@@ -23,7 +23,7 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
     func test_migration_movesDataAndDeletesOldStore() throws {
         let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
         
-        let oldLocationContainer = NSPersistentContainer.makePersistentContainer(group: nil)
+        let oldLocationContainer = try NSPersistentContainer.makePersistentContainer(group: nil)
         Task {
             ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
                 ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,
@@ -36,10 +36,14 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
             ], in: oldLocationContainer)
             
             // WHEN: Running migration
-            migration.moveDatabaseToAppGroup()
+            do {
+                try migration.moveDatabaseToAppGroup()
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
             
             // THEN: App group DB should exist
-            let storeURL = URL.appGroupDBURL(for: APP_GROUP, databaseName: "algorand")
+            let storeURL = try URL.appGroupDBURL(for: APP_GROUP, databaseName: "algorand")
             XCTAssertTrue(FileManager.default.fileExists(atPath: storeURL.path))
             
             // THEN: Old store should be deleted
@@ -95,11 +99,34 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
             ApplicationConfiguration.DBKeys.password.rawValue: "pwd"
         ], in: newPersistentContainer)
         
-        migration.moveDatabaseToAppGroup()
+        do {
+            try migration.moveDatabaseToAppGroup()
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
                 
         let migratedAppConfig = ApplicationConfiguration.fetchAllSyncronous(entity: "ApplicationConfiguration", in: newPersistentContainer)
         let newConfig: ApplicationConfiguration? = castResult(migratedAppConfig)
         XCTAssertEqual(newConfig?.password, "pwd")
+    }
+    
+    func test_migration_invalidGroup() throws {
+        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: "not.the.right.group")
+
+        let oldContainer = NSPersistentContainer(name: "algorand")
+        let oldLocationContainer = oldContainer.persistentStoreDescriptions
+            .filter({$0.url?.lastPathComponent.starts(with: "algorand") ?? false}).first!.url!
+        
+        if FileManager.default.fileExists(atPath: oldLocationContainer.path) {
+            try FileManager.default.removeItem(at: oldLocationContainer)
+        }
+        
+        // WHEN: Running migration
+        do {
+            try migration.moveDatabaseToAppGroup()
+            XCTFail("expected exception")
+        } catch {
+        }
     }
     
     private func castResult<T>(_ result: DBOperationResult<T>) -> T? {
