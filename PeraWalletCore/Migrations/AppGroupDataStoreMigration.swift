@@ -48,8 +48,21 @@ public final class AppGroupDataStoreMigration {
             let storeURL = try URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
             let oldStoreCoordinator = from.persistentStoreCoordinator
             
-            for store in from.persistentStoreCoordinator.persistentStores {
-                try oldStoreCoordinator.migratePersistentStore(store, to: storeURL, options: nil, withType: NSSQLiteStoreType)
+            for store in oldStoreCoordinator.persistentStores {
+                if let url = store.url {
+                    let type = NSPersistentStore.StoreType(rawValue: store.type)
+                    try oldStoreCoordinator.replacePersistentStore(at: storeURL,
+                                                                   withPersistentStoreFrom: url,
+                                                                   type: type)
+                    try oldStoreCoordinator.destroyPersistentStore(at: url, type: type)
+                    
+                    let remainingFiles = try FileManager.default.contentsOfDirectory(
+                        at: url.deletingLastPathComponent(),
+                        includingPropertiesForKeys: nil
+                    )
+                    
+                    remainingFiles.forEach({ try? FileManager.default.removeItem(at: $0) })
+                }
             }
             
             CoreAppConfiguration.shared?.persistentContainer = try NSPersistentContainer.makePersistentContainer(group: appGroup)
