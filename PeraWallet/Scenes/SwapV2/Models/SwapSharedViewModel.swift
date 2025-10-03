@@ -46,7 +46,7 @@ class SwapSharedViewModel: ObservableObject {
     
     private var debounceWorkItem: DispatchWorkItem?
     
-    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 1, maximumFractionDigits: 1).string(for: Decimal(0))!
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 2).string(for: Decimal(0))!
     
     let currency: CurrencyProvider
     

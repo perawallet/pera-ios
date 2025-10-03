@@ -421,6 +421,7 @@ final class SwapViewController: BaseViewController {
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    sharedViewModel?.isLoadingReceiveAmount = false
                     return
                 }
                 
@@ -439,6 +440,7 @@ final class SwapViewController: BaseViewController {
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    sharedViewModel?.isLoadingPayAmount = false
                     return
                 }
                 
