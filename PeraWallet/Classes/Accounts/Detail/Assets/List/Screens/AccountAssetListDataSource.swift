@@ -60,7 +60,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 return cell
             case .assetManagement(let item):
                 let cell = collectionView.dequeue(
-                    ManagementItemWithSecondaryActionCell.self,
+                    ManagementItemAccountDetailCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -140,7 +140,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             AccountDetailAccountNotBackedUpWarningCell.self,
             AccountPortfolioCell.self,
             WatchAccountPortfolioCell.self,
-            ManagementItemWithSecondaryActionCell.self,
+            ManagementItemAccountDetailCell.self,
             ManagementItemCell.self,
             SearchBarItemCell.self,
             AccountAssetListLoadingCell.self,
