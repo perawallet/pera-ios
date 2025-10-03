@@ -7311,6 +7311,7 @@
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
+		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9728,6 +9729,7 @@
 		D4A2E48628A11B120053B654 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D4A2E48A28A124440053B654 /* WCSessionListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListDataController.swift; sourceTree = "<group>"; };
 		D4A2E48E28A127DC0053B654 /* WCSessionListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListLocalDataController.swift; sourceTree = "<group>"; };
+		D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraSwapV2Fee.swift; sourceTree = "<group>"; };
 		D4A5335229F6744E00CBC1A9 /* RekeyedAccountSelectionListAccountLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingCell.swift; sourceTree = "<group>"; };
 		D4A5335629F6DEE500CBC1A9 /* RekeyedAccountSelectionListAccountLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingView.swift; sourceTree = "<group>"; };
 		D4A5335A29F6DF3800CBC1A9 /* RekeyedAccountSelectionListAccountLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListAccountLoadingViewTheme.swift; sourceTree = "<group>"; };
@@ -12620,6 +12622,7 @@
 		2B69AB1228BF9B6200A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */,
 				D4772F972E8A86E300B4F262 /* SwapHistory.swift */,
 				D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */,
 				D4772F932E8A761F00B4F262 /* SwapAsset.swift */,
@@ -31463,6 +31466,7 @@
 				5916773D2E460AF9002184C2 /* UIFont+Additions.swift in Sources */,
 				591677502E460AF9002184C2 /* FeatureFlag.swift in Sources */,
 				591677512E460AF9002184C2 /* FeatureFlagService.swift in Sources */,
+				D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */,
 				591677522E460AF9002184C2 /* RemoteConfigValue.swift in Sources */,
 				591677532E460AF9002184C2 /* CollectibleAmountFormatter.swift in Sources */,
 				591677542E460AF9002184C2 /* CollectibleAmountFormattingContext.swift in Sources */,
