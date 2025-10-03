@@ -35,12 +35,7 @@ final class DiscoverHomeScreen:
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: SwapDataLocalStore(),
-        analytics: analytics,
-        api: api!,
-        sharedDataController: sharedDataController,
-        loadingController: loadingController!,
-        bannerController: bannerController!,
-        hdWalletStorage: hdWalletStorage,
+        configuration: configuration,
         presentingScreen: self
     )
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
@@ -218,6 +213,7 @@ extension DiscoverHomeScreen {
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let draft = SwapAssetFlowDraft()
         if let assetInID = parameters.assetIn {
             draft.assetInID = assetInID
@@ -226,8 +222,13 @@ extension DiscoverHomeScreen {
             draft.assetOutID = assetOutID
         }
 
-        swapAssetFlowCoordinator.updateDraft(draft)
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            swapAssetFlowCoordinator.updateDraft(draft)
+            swapAssetFlowCoordinator.launch()
+            return
+        }
+        
+        rootViewController.launch(tab: .swap, with: draft)
     }
     
     private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {

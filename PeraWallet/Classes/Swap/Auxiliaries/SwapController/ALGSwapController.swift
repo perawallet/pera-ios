@@ -24,6 +24,7 @@ final class ALGSwapController: SwapController {
     var account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
     let providers: [SwapProvider] = [.tinyman, .tinymanV2, .vestige]
+    var providersV2: [SwapProviderV2] = []
 
     var userAsset: Asset
     var quote: SwapQuote?

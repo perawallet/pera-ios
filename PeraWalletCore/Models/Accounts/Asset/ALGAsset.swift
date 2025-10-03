@@ -84,7 +84,7 @@ extension ALGAsset {
 }
 
 extension ALGAsset {
-    static func usdcAssetID(_ network: ALGAPI.Network) -> AssetID {
+    public static func usdcAssetID(_ network: ALGAPI.Network) -> AssetID {
         switch network {
         case .mainnet: return 31566704
         case .testnet: return 10458941

@@ -77,6 +77,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func getSwapV2Quote(
+        _ draft: SwapQuoteDraft,
+        onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapQuote)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func updateSwapQuote(_ draft: UpdateSwapQuoteDraft) -> EndpointOperatable {
@@ -85,6 +99,18 @@ extension ALGAPI {
             .path(.swapQuoteUpdate, args: String(draft.id))
             .method(.patch)
             .body(draft)
+            .execute()
+    }
+    
+    @discardableResult
+    public func getProviders(
+        onCompleted handler: @escaping (Response.Result<SwapProviderV2List, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapProviders)
+            .method(.get)
+            .completionHandler(handler)
             .execute()
     }
 }

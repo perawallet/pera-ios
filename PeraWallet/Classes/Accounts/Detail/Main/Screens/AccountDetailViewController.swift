@@ -56,12 +56,7 @@ final class AccountDetailViewController: PageContainer {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(account: accountHandle.value),
         dataStore: swapDataStore,
-        analytics: analytics,
-        api: api!,
-        sharedDataController: sharedDataController,
-        loadingController: loadingController!,
-        bannerController: bannerController!,
-        hdWalletStorage: hdWalletStorage,
+        configuration: configuration,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -402,6 +397,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     private func openSwapAssetIfPossible() {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let aRawAccount = accountHandle.value
         if aRawAccount.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
@@ -409,7 +405,12 @@ extension AccountDetailViewController {
         }
 
         analytics.track(.recordAccountDetailScreen(type: .tapSwap))
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            swapAssetFlowCoordinator.launch()
+            return
+        }
+
+        rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: aRawAccount))
     }
 }
 

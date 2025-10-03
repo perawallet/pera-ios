@@ -45,7 +45,7 @@ public final class StandardAsset: Asset {
     public let isAvailableOnDiscover: Bool
 
     public let isFault: Bool
-
+    
     public var state: AssetState = .ready
 
     public var naming: AssetNaming {
@@ -153,6 +153,10 @@ extension StandardAsset {
 
     public var hasDisplayName: Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+    
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }
 

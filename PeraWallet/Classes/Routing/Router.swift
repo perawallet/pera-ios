@@ -1702,7 +1702,8 @@ final class Router:
                 dataStore: dataStore,
                 swapController: swapController,
                 api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                featureFlagService: appConfiguration.featureFlagService
             )
 
             viewController = SwapAssetScreen(

@@ -234,6 +234,12 @@ extension CollectibleAsset {
     }
 }
 
+extension CollectibleAsset {
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
+    }
+}
+
 extension CollectibleAsset: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
