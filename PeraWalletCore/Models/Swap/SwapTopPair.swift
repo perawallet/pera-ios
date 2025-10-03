@@ -17,7 +17,6 @@
 import Foundation
 
 public final class SwapTopPair: ALGEntityModel, Codable, Identifiable {
-
     public let assetA: SwapAsset
     public let assetB: SwapAsset
     public let volume24hUSD: String
@@ -25,38 +24,47 @@ public final class SwapTopPair: ALGEntityModel, Codable, Identifiable {
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.assetA = SwapAsset(apiModel.assetA)
-        self.assetB = SwapAsset(apiModel.assetB)
+        self.assetA = apiModel.assetA
+        self.assetB = apiModel.assetB
         self.volume24hUSD = apiModel.volume24hUSD
     }
 
     public func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.assetA = assetA.encode()
-        apiModel.assetB = assetB.encode()
+        apiModel.assetA = assetA
+        apiModel.assetB = assetB
         apiModel.volume24hUSD = volume24hUSD
         return apiModel
     }
+    
 }
 
 extension SwapTopPair {
     public struct APIModel: ALGAPIModel, Codable {
-        var assetA: SwapAsset.APIModel
-        var assetB: SwapAsset.APIModel
+        var assetA: SwapAsset
+        var assetB: SwapAsset
         var volume24hUSD: String
 
         public init() {
-            self.assetA = SwapAsset.APIModel()
-            self.assetB = SwapAsset.APIModel()
+            self.assetA = SwapAsset()
+            self.assetB = SwapAsset()
             self.volume24hUSD = .empty
         }
-
-        private enum CodingKeys:
-            String,
-            CodingKey {
+        
+        enum CodingKeys: String, CodingKey {
             case assetA = "asset_a"
             case assetB = "asset_b"
             case volume24hUSD = "volume_24h_usd"
         }
+    }
+}
+
+extension SwapTopPair {
+    public var title: String {
+        String(format: NSLocalizedString("swap-top-pair-text", comment: ""), assetA.name, assetB.name)
+    }
+    
+    public var volumeText: String {
+        return "$" + Formatter.numberTextWithSuffix(from: Double(volume24hUSD) ?? 0)
     }
 }

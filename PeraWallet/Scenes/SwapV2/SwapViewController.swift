@@ -237,6 +237,14 @@ final class SwapViewController: BaseViewController {
     
     // MARK: - Helpers
     
+    private func resetAmounts() {
+        sharedViewModel?.payingText = .empty
+        sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.receivingText = .empty
+        sharedViewModel?.receivingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.isBalanceNotSufficient = false
+    }
+    
     private func resolveDefaultAccount() -> Account? {
         sharedDataController.accountCollection
             .filter { !$0.value.isWatchAccount }
@@ -347,10 +355,10 @@ final class SwapViewController: BaseViewController {
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+            viewModel.receivingTextInSecondaryCurrency = viewModel.algoFormat(with: valueOut.doubleValue)
         } else {
-            viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? SwapSharedViewModel.defaultAmountValue
+            viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
+            viewModel.receivingTextInSecondaryCurrency = viewModel.fiatFormat(with: valueOut.doubleValue)
         }
         
         viewModel.quoteList = orderedQuoteList
@@ -393,15 +401,18 @@ final class SwapViewController: BaseViewController {
         case .selectAccount:
             swapAssetFlowCoordinator.onAccountSelected = { [weak self] account in
                 guard let self else { return }
+                resetAmounts()
                 selectedAssetIn = nil
                 selectedAssetOut = nil
                 selectedAccount = account
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAccount()
+            analytics.track(.swapV2SelectAccountEvent(type: .selectAccount))
         case let .selectAssetIn(account):
             swapAssetFlowCoordinator.onAssetInSelected = { [weak self] assetIn in
                 guard let self else { return }
+                analytics.track(.swapV2SelectAssetEvent(type: .selectTopAsset, assetName: assetIn.naming.displayNames.primaryName))
                 selectedAssetIn = assetItem(from: assetIn)
                 loadSwapView()
             }
@@ -409,6 +420,7 @@ final class SwapViewController: BaseViewController {
         case let .selectAssetOut(account):
             swapAssetFlowCoordinator.onAssetOutSelected = { [weak self] assetOut in
                 guard let self else { return }
+                analytics.track(.swapV2SelectAssetEvent(type: .selectBottomAsset, assetName: assetOut.naming.displayNames.primaryName))
                 selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
             }
@@ -418,6 +430,7 @@ final class SwapViewController: BaseViewController {
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    sharedViewModel?.isLoadingReceiveAmount = false
                     return
                 }
                 
@@ -432,21 +445,21 @@ final class SwapViewController: BaseViewController {
             swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value, slippage: sharedViewModel?.slippageSelected.map { Decimal(floatLiteral: $0.value) })
         case let .calculatePeraFee(amount, percentage):
             guard let assetIn = selectedAssetIn?.asset else { return }
-            swapAssetFlowCoordinator.onFeeCalculated = { [weak self] peraFee, error in
+            swapAssetFlowCoordinator.onFeeCalculated = { [weak self] response, error in
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                    sharedViewModel?.isLoadingPayAmount = false
                     return
                 }
-                
-                let swapAmount = calculateSwapAmount(for: assetIn, balance: amount.decimal, peraSwapFee: peraFee, percentage: percentage.decimal)
+                let swapAmount = calculateSwapAmount(for: assetIn, balance: amount.decimal, peraSwapFee: response, percentage: percentage.decimal)
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? SwapSharedViewModel.defaultAmountValue
-                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.algoFormat(with: swapAmount.doubleValue)  ?? SwapSharedViewModel.defaultAmountValue
+                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.algoFormat(with: swapAmount.doubleValue)  ?? .empty
                 } else {
-                    sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? SwapSharedViewModel.defaultAmountValue
-                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? SwapSharedViewModel.defaultAmountValue
+                    sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
                 }
                 
                 sharedViewModel?.isLoadingPayAmount = false
@@ -461,7 +474,7 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = assetItem(from: assetOut)
             }
             loadSwapView()
-        case let .openExplorer(transactionGroupId):
+        case let .openExplorer(transactionGroupId, pairing):
             guard let formattedGroupID = transactionGroupId.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
                   let url = AlgorandWeb.PeraExplorer.group(
                     isMainnet: api?.network == .mainnet,
@@ -469,20 +482,56 @@ final class SwapViewController: BaseViewController {
                   ).link else {
                 return
             }
+            analytics.track(.swapV2HistoryEvent(type: .selectHistoryInSeeAll, swapPairing: pairing))
             open(url)
         case .confirmSwap:
+            analytics.track(.swapV2ConfirmEvent(type: .confirmSlide))
             confirmSwap()
-        case let .showBanner(successMessage, errorMessage):
+        case let .showSwapConfirmationBanner(successMessage, errorMessage):
             guard let successMessage else {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: errorMessage ?? .empty)
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
-            configureView()
+            resetAmounts()
+            loadSwapView()
+        case let .trackAnalytics(event):
+            switch event {
+            case .swapHistorySeeAll:
+                analytics.track(.swapV2HistoryEvent(type: .historySeeAll, swapPairing: nil))
+            case .swapHistorySelect(pairing: let pairing):
+                analytics.track(.swapV2HistoryEvent(type: .selectHistory, swapPairing: pairing))
+            case .swapTopPairSelect(pairing: let pairing):
+                analytics.track(.swapV2TopPairEvent(type: .selectTopPair, swapPairing: pairing))
+            case .swapSelectProvider:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderOpen, routerName: nil))
+            case .swapSelectProviderClose:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderClose, routerName: nil))
+            case .swapSelectProviderApply:
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderApply, routerName: nil))
+            case .swapSelectProviderRouter(name: let name):
+                analytics.track(.swapV2ProviderEvent(type: .selectProviderRouter, routerName: name))
+            case .swapSettingsClose:
+                analytics.track(.swapV2SettingsEvent(type: .settingsClose, value: nil))
+            case .swapSettingsApply:
+                analytics.track(.swapV2SettingsEvent(type: .settingsApply, value: nil))
+            case .swapSettingsPercentage(value: let value):
+                analytics.track(.swapV2SettingsEvent(type: .settingsPercentageSelected, value: value))
+            case .swapSettingsSlippage(value: let value):
+                analytics.track(.swapV2SettingsEvent(type: .settingsSlippageSelected, value: value))
+            case .swapSettingsLocalCurrency(on: let isOn):
+                if isOn {
+                    analytics.track(.swapV2SettingsEvent(type: .settingsLocalCurrencyOn, value: nil))
+                } else {
+                    analytics.track(.swapV2SettingsEvent(type: .settingsLocalCurrencyOff, value: nil))
+                }
+            case .swapConfirmTapped:
+                analytics.track(.swapV2ConfirmEvent(type: .confirmSwap))
+            }
         }
     }
     
-    private func calculateSwapAmount(for asset: Asset, balance: Decimal, peraSwapFee: PeraSwapFee?, percentage: Decimal) -> Decimal {
+    private func calculateSwapAmount(for asset: Asset, balance: Decimal, peraSwapFee: PeraSwapV2Fee?, percentage: Decimal) -> Decimal {
         guard let peraSwapFee else { return 0 }
         
         let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0

@@ -22,12 +22,14 @@ struct ProviderSheet: View {
 
     @StateObject var viewModel: ProviderSheetViewModel
     let onProviderSelected: (SelectedProvider) -> Void
+    let onAnalyticsEvent: (SwapAnalyticsEvent) -> Void
     
     var body: some View {
         VStack(spacing: 0) {
             SheetTitleView(title: "title-change-provider") { action in
                 switch action {
                 case .dismiss:
+                    onAnalyticsEvent(.swapSelectProviderClose)
                     dismiss()
                 case .apply:
                     guard viewModel.availableProviders.isNonEmpty else {
@@ -55,6 +57,7 @@ struct ProviderSheet: View {
                     .listRowSeparator(.hidden)
                     .onTapGesture {
                         viewModel.selectedProvider = .provider(provider.name)
+                        onAnalyticsEvent(.swapSelectProviderRouter(name: provider.name))
                     }
                 }
             }

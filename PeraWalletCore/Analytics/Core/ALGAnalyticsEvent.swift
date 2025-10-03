@@ -81,6 +81,23 @@ public enum ALGAnalyticsEventName:
     case showQRCopy
     case showQRShare
     case showQRShareComplete
+    case swapOpenSelectAccount
+    case swapSelectTopAsset
+    case swapSelectBottomAsset
+    case swapHistorySeeAll
+    case swapSelectHistory
+    case swapSelectHistoryInSeeAll
+    case swapSelectTopPair
+    case swapSelectProviderOpen
+    case swapSelectProviderClose
+    case swapSelectProviderApply
+    case swapSelectProviderRouter
+    case swapSettingsClose
+    case swapSettingsApply
+    case swapSettingsPercentage
+    case swapSettingsSlippage
+    case swapSettingsLocalCurrencyOn
+    case swapSettingsLocalCurrencyOff
     case swapAssetFailed
     case swapBannerLater
     case swapBannerTry
@@ -246,6 +263,23 @@ extension ALGAnalyticsEventName {
         case .webAuthNPassKeyDeleted: rawName = "webauthn_passkey_deleted"
         case .registerAccount: rawName = "register"
         case .rekeyAccount: rawName = "rekey"
+        case .swapOpenSelectAccount: rawName = "swapscr_account_select_open"
+        case .swapSelectTopAsset: rawName = "swapscr_asset_top_select"
+        case .swapSelectBottomAsset: rawName = "swapscr_asset_bot_select"
+        case .swapHistorySeeAll: rawName = "swapscr_swap_history_see_all"
+        case .swapSelectHistory: rawName = "swapscr_swap_history_select"
+        case .swapSelectHistoryInSeeAll: rawName = "swapscr_swap_history_see_all_asset_select"
+        case .swapSelectTopPair: rawName = "swapscr_swap_top_select"
+        case .swapSelectProviderOpen: rawName = "swapscr_swap_select_provider"
+        case .swapSelectProviderClose: rawName = "swapscr_swap_select_provider_close"
+        case .swapSelectProviderApply: rawName = "swapscr_swap_select_provider_apply"
+        case .swapSelectProviderRouter: rawName = "swapscr_swap_select_provider_router"
+        case .swapSettingsClose: rawName = "swapscr_swap_settings_close"
+        case .swapSettingsApply: rawName = "swapscr_swap_settings_apply"
+        case .swapSettingsPercentage: rawName = "swapscr_swap_settings_balance_percent"
+        case .swapSettingsSlippage: rawName = "swapscr_swap_settings_slippage_percent"
+        case .swapSettingsLocalCurrencyOn: rawName = "swapscr_swap_settings_local_currency_on"
+        case .swapSettingsLocalCurrencyOff: rawName = "swapscr_swap_settings_local_currency_off"
         case .swapCompleted: rawName = "swapscr_assets_completed"
         case .swapFailed: rawName = "swapscr_assets_failed"
         case .tapConfirmSwap: rawName = "swapscr_assets_confirm"

@@ -47,6 +47,15 @@ enum AssetSelectionType {
             return Color.Layer.grayLighter
         }
     }
+    
+    var buttonBackgroundColor: Color {
+        switch self {
+        case .pay:
+            return Color.Layer.grayLightest
+        case .receive:
+            return Color.Swap.ButtonReceiveAsset.bg
+        }
+    }
 }
 
 struct AssetSelectionView: View {
@@ -83,20 +92,24 @@ struct AssetSelectionView: View {
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
-                        TextField(SwapSharedViewModel.defaultAmountValue, text: Binding(
+                        TextField("", text: Binding(
                             get: { amountText },
-                            set: { amountText = $0.isEmpty ? SwapSharedViewModel.defaultAmountValue : $0 }
+                            set: { amountText = $0.isEmpty ? .empty : $0 }
                         ))
+                        .placeholder(when: amountText.isEmpty) {
+                            Text(SwapSharedViewModel.defaultAmountValue)
+                                .foregroundColor(Color.Text.grayLighter)
+                        }
                         .keyboardType(.decimalPad)
                         .font(.dmSans.medium.size(19.0))
-                        .foregroundStyle(Color.Text.gray)
+                        .foregroundStyle(Color.Text.main)
                         .disabled(type.textEditorDisabled)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
                             if focused && (amountText == "0" || amountText == "0.0" || amountText == "0,0") {
-                                amountText = ""
+                                amountText = .empty
                             }
                         }
                     }
@@ -130,7 +143,7 @@ struct AssetSelectionView: View {
                 }
                 
                 Spacer()
-                AssetSwapButton(assetItem: $assetItem, network: $network, onTap: onAssetSelectionTap)
+                AssetSwapButton(assetItem: $assetItem, network: $network, buttonBgColor: type.buttonBackgroundColor, onTap: onAssetSelectionTap)
             }
             Spacer()
         }
@@ -141,5 +154,18 @@ struct AssetSelectionView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(type.backgroundColor)
         )
+    }
+}
+
+extension View {
+    func placeholder<Content: View>(
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        @ViewBuilder placeholder: () -> Content
+    ) -> some View {
+        ZStack(alignment: alignment) {
+            if shouldShow { placeholder() }
+            self
+        }
     }
 }

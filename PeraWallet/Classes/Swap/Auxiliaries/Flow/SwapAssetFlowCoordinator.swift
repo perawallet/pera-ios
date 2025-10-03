@@ -63,7 +63,7 @@ final class SwapAssetFlowCoordinator:
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
-    var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
+    var onFeeCalculated: ((PeraSwapV2Fee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
     var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
@@ -781,11 +781,11 @@ extension SwapAssetFlowCoordinator {
         ).toFraction(of: assetIn.decimals)
         
         let draft = PeraSwapFeeDraft(assetID: assetIn.id, amount: decimalValue)
-        api.calculatePeraSwapFee(draft) { [weak self] result in
+        api.calculatePeraSwapV2Fee(draft) { [weak self] result in
             guard let self else { return }
             switch result {
-            case let .success(fee):
-                onFeeCalculated?(fee, nil)
+            case let .success(response):
+                onFeeCalculated?(response, nil)
             case let .failure(apiError, hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
