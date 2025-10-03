@@ -38,6 +38,7 @@ struct ProviderSheet: View {
                     dismiss()
                 }
             }
+            .padding(.horizontal, 24)
 
             List {
                 AutoProviderListItem(selectedProvider: $viewModel.selectedProvider)

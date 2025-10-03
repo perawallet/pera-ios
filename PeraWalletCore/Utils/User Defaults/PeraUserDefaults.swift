@@ -19,6 +19,7 @@ public enum PeraUserDefaults {
     @UserDefault(key: "wasPrivacyTooltipPresented") public static var wasPrivacyTooltipPresented: Bool?
     @UserDefault(key: "isPrivacyModeEnabled") public static var isPrivacyModeEnabled: Bool?
     @UserDefault(key: "shouldShowNewAccountAnimation") public static var shouldShowNewAccountAnimation: Bool?
+    @UserDefault(key: "shouldUseLocalCurrencyInSwap") public static var shouldUseLocalCurrencyInSwap: Bool?
     
     // MARK: - Security Settings
     

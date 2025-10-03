@@ -15,10 +15,21 @@
 //   SwapSettingsSheet.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct SwapSettingsSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
+    
+    @StateObject private var viewModel: SwapSettingsViewModel
+    
+    var onApplyTap: (PercentageValue?, SlippageValue?) -> Void
+    
+    init(slippageSelected: SlippageValue?, onApplyTap: @escaping (PercentageValue?, SlippageValue?) -> Void) {
+        _viewModel = StateObject(wrappedValue: SwapSettingsViewModel(slippageSelected: slippageSelected))
+        self.onApplyTap = onApplyTap
+    }
 
+    
     var body: some View {
         VStack(spacing: 0) {
             SheetTitleView(title: "title-swap-settings") { action in
@@ -26,12 +37,81 @@ struct SwapSettingsSheet: View {
                 case .dismiss:
                     dismiss()
                 case .apply:
+                    if viewModel.localPercentageSelected == nil,
+                      !viewModel.percentageText.isEmpty,
+                      let percentageValue = Double(viewModel.percentageText) {
+                       viewModel.localPercentageSelected = .custom(value: percentageValue / 100)
+                   }
+                    
+                    PeraUserDefaults.shouldUseLocalCurrencyInSwap = viewModel.useLocalCurrency
+                    onApplyTap(viewModel.localPercentageSelected, viewModel.localSlippageSelected)
                     dismiss()
                 }
             }
-
+            
+            Spacer().frame(height: 24)
+            
+            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText, viewModel: viewModel)
+                .onChange(of: viewModel.percentageText) { viewModel.updatePercentageSelection(from: $0)}
+            
+            Spacer().frame(height: 16)
+            
+            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(PercentageValue.allCases, id: \.self) { item in
+                        SwapSettingsHListItem(
+                            title: item.title,
+                            isSelected: viewModel.localPercentageSelected == item
+                        ) {
+                            viewModel.percentageText = String(format: "%.0f", item.value * 100)
+                            viewModel.localPercentageSelected = item
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
+            Spacer().frame(height: 40)
+            
+            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText, viewModel: viewModel)
+                .onChange(of: viewModel.slippageText) { viewModel.updateSlippageSelection(from: $0)}
+            
+            Spacer().frame(height: 16)
+            
+            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(SlippageValue.allCases, id: \.self) { item in
+                        SwapSettingsHListItem(
+                            title: item.title,
+                            isSelected: viewModel.localSlippageSelected == item
+                        ) {
+                            switch item {
+                            case .custom:
+                                viewModel.slippageText = .empty
+                            case .c05:
+                                viewModel.slippageText = String(format: "%.1f", item.value * 100)
+                            default:
+                                viewModel.slippageText = String(format: "%.0f", item.value * 100)
+                            }
+                            viewModel.localSlippageSelected = item
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
+            Spacer().frame(height: 40)
+            
+            SwapSettingsToogle(
+                title: "primary-currency-title",
+                text: "use-local-currency-text",
+                isOn: $viewModel.useLocalCurrency
+            )
+            
             Spacer()
+            
         }
+        .padding(.horizontal, 24)
         .background(Color.Defaults.bg)
         .presentationDetents([.height(600)])
         .presentationDragIndicator(.hidden)
