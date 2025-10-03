@@ -26,7 +26,7 @@ enum SwapViewAction {
     case selectAssetOut(for: Account)
     case getQuote(for: Double)
     case confirmSwap
-    case showBanner(success: String?, error: String?)
+    case showSwapConfirmationBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
     case openExplorer(transactionGroupId: String, pairing: String)
@@ -230,9 +230,9 @@ struct SwapView: View {
             ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
                 onAction?(.confirmSwap)
             } onSwapSuccess: { successMessage in
-                onAction?(.showBanner(success: successMessage, error: nil))
+                onAction?(.showSwapConfirmationBanner(success: successMessage, error: nil))
             } onSwapError: { errorMessage in
-                onAction?(.showBanner(success: nil, error: errorMessage))
+                onAction?(.showSwapConfirmationBanner(success: nil, error: errorMessage))
             }
         case .swapHistory:
             SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in

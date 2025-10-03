@@ -237,6 +237,14 @@ final class SwapViewController: BaseViewController {
     
     // MARK: - Helpers
     
+    private func resetAmounts() {
+        sharedViewModel?.payingText = .empty
+        sharedViewModel?.payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.receivingText = .empty
+        sharedViewModel?.receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.isBalanceNotSufficient = false
+    }
+    
     private func resolveDefaultAccount() -> Account? {
         sharedDataController.accountCollection
             .filter { !$0.value.isWatchAccount }
@@ -393,6 +401,7 @@ final class SwapViewController: BaseViewController {
         case .selectAccount:
             swapAssetFlowCoordinator.onAccountSelected = { [weak self] account in
                 guard let self else { return }
+                resetAmounts()
                 selectedAssetIn = nil
                 selectedAssetOut = nil
                 selectedAccount = account
@@ -479,13 +488,14 @@ final class SwapViewController: BaseViewController {
         case .confirmSwap:
             analytics.track(.swapV2ConfirmEvent(type: .confirmSlide))
             confirmSwap()
-        case let .showBanner(successMessage, errorMessage):
+        case let .showSwapConfirmationBanner(successMessage, errorMessage):
             guard let successMessage else {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: errorMessage ?? .empty)
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
-            configureView()
+            resetAmounts()
+            loadSwapView()
         case let .trackAnalytics(event):
             switch event {
             case .swapHistorySeeAll:

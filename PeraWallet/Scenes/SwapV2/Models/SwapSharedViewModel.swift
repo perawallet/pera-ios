@@ -160,9 +160,9 @@ class SwapSharedViewModel: ObservableObject {
             } else {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    receivingText = Self.defaultAmountValue
+                    receivingText = .empty
                     receivingTextInSecondaryCurrency = Self.defaultAmountValue
-                    payingText = Self.defaultAmountValue
+                    payingText = .empty
                     payingTextInSecondaryCurrency = Self.defaultAmountValue
                 }
             }
