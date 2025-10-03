@@ -506,7 +506,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
             
             switch itemIdentifier {
             case .assetManagement:
-                guard let item = cell as? ManagementItemWithSecondaryActionCell else {
+                guard let item = cell as? ManagementItemAccountDetailCell else {
                     return
                 }
                 
