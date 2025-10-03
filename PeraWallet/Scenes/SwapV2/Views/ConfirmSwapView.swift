@@ -251,7 +251,7 @@ struct ConfirmSwapView: View {
                 onConfirmTap()
             }
             .disabled(viewModel.isSwapDisabled)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             Spacer()
         }
         .onChange(of: viewModel.confirmationState) { newState in
