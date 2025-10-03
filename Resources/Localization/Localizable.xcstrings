@@ -4388,6 +4388,16 @@
         }
       }
     },
+    "no-swap-history-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your swap history will appear here once you've completed a swap."
+          }
+        }
+      }
+    },
     "node-settings-action-delete-title" : {
       "localizations" : {
         "en" : {
@@ -5978,6 +5988,17 @@
         }
       }
     },
+    "see-all-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
     "select-address-description" : {
       "localizations" : {
         "en" : {
@@ -7112,7 +7133,6 @@
       }
     },
     "swap-empty-accounts-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7153,7 +7173,6 @@
       }
     },
     "swap-exchange-fee-info-body" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7189,6 +7208,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "High Price impact detected!"
+          }
+        }
+      }
+    },
+    "swap-history-error-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load swap history"
+          }
+        }
+      }
+    },
+    "swap-history-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap History"
           }
         }
       }
@@ -7495,6 +7534,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Volume (24H)"
+          }
+        }
+      }
+    },
+    "swapped-for-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swapped %@ %@ for"
           }
         }
       }

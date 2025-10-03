@@ -92,6 +92,7 @@ public enum APIParamKey: String, CodingKey {
     case slippage = "slippage"
     case startDate = "start_date"
     case status = "status"
+    case statuses = "statuses"
     case swapperAddress = "swapper_address"
     case swapType = "swap_type"
     case top = "top"

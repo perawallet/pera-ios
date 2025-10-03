@@ -84,6 +84,7 @@ final class SwapViewController: BaseViewController {
         }
         
         loadSwapView()
+        loadSwapHistory()
         loadSwapTopPairs()
     }
     
@@ -177,11 +178,28 @@ final class SwapViewController: BaseViewController {
         return rootView
     }
     
+    private func loadSwapHistory() {
+        guard let selectedAccount else { return }
+        
+        swapAssetFlowCoordinator.onHistoryListLoaded = { [weak self] result, error in
+            guard let self else { return }
+            if let error {
+                bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                sharedViewModel?.swapHistoryList = nil
+                return
+            }
+            sharedViewModel?.swapHistoryList = result?.results ?? []
+        }
+        swapAssetFlowCoordinator.swapHistoryList(with: selectedAccount.address)
+    }
+    
     private func loadSwapTopPairs() {
         swapAssetFlowCoordinator.onTopPairsListLoaded = { [weak self] result, error in
             guard let self else { return }
             if let error {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+                sharedViewModel?.swapTopPairsList = []
+                noAccountViewModel?.swapTopPairsList = []
                 return
             }
             sharedViewModel?.swapTopPairsList = result?.results ?? []
@@ -443,6 +461,15 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = assetItem(from: assetOut)
             }
             loadSwapView()
+        case let .openExplorer(transactionGroupId):
+            guard let formattedGroupID = transactionGroupId.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+                  let url = AlgorandWeb.PeraExplorer.group(
+                    isMainnet: api?.network == .mainnet,
+                    param: formattedGroupID
+                  ).link else {
+                return
+            }
+            open(url)
         case .confirmSwap:
             confirmSwap()
         case let .showBanner(successMessage, errorMessage):

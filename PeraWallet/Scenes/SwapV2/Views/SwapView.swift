@@ -28,18 +28,21 @@ enum SwapViewAction {
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
+    case openExplorer(transactionGroupId: String)
 }
 
 enum SwapViewSheet: Identifiable {
     case settings
     case provider(availableProviders: [SwapProviderV2])
     case confirmSwap
+    case swapHistory
     
     var id: String {
         switch self {
         case .settings: return "settings"
         case .provider: return "provider"
         case .confirmSwap: return "confirmSwap"
+        case .swapHistory: return "swapHistory"
         }
     }
 }
@@ -66,6 +69,13 @@ struct SwapView: View {
                 if viewModel.shouldShowSwapButton {
                     swapActionView
                 }
+                
+                SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                    onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                } onSeeAllTap: {
+                    activeSheet = .swapHistory
+                }
+                
                 SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
                     onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
                 }
@@ -190,6 +200,10 @@ struct SwapView: View {
             } onSwapError: { errorMessage in
                 onAction?(.showBanner(success: nil, error: errorMessage))
             }
+        case .swapHistory:
+            SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                onAction?(.openExplorer(transactionGroupId: swapHistory.transactionGroupId))
+            }
         }
     }
     
@@ -199,11 +213,11 @@ struct SwapView: View {
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
         onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
     }
-
+    
     private func handleSlippageChange(_ newSlippage: SlippageValue?) {
         let slippageChanged = viewModel.slippageSelected != newSlippage
         viewModel.slippageSelected = (newSlippage?.value ?? 0) > 0 ? newSlippage : nil
-
+        
         if slippageChanged && viewModel.shouldShowSwapButton {
             viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }

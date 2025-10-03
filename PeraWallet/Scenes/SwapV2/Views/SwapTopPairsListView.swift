@@ -37,7 +37,7 @@ struct SwapTopPairsListView: View {
             if viewModel.isListEmpty {
                 HStack {
                     Text("no-swap-activity-placeholder-text")
-                        .font(.dmSans.regular.size(15))
+                        .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
                 }
@@ -52,55 +52,8 @@ struct SwapTopPairsListView: View {
                                 .foregroundStyle(Color.Text.gray)
                                 .frame(width: 26, alignment: .leading)
                             
-                            Spacer().frame(width: 8)
+                            SwapLogosView(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB)
                             
-                            ZStack(alignment: .topLeading) {
-                                AsyncImage(url: URL(string: swapTopPair.assetA.logo ?? .empty)) { phase in
-                                    switch phase {
-                                    case .empty, .failure:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                    @unknown default:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                .frame(width: 24, height: 24)
-                                .clipShape(Circle())
-                                .offset(x: -12 + 5, y: -12 + 5)
-                                
-                                AsyncImage(url: URL(string: swapTopPair.assetB.logo ?? .empty)) { phase in
-                                    switch phase {
-                                    case .empty, .failure:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                    @unknown default:
-                                        Image("icon-swap-empty")
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                .frame(width: 24, height: 24)
-                                .background(Color.Defaults.bg)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.Defaults.bg, lineWidth: 1))
-                                .offset(x: 12 - 5, y: 12 - 5)
-                            }
-                            .frame(width: 48, height: 48)
-                            .padding(5)
-                            
-                            Spacer().frame(width: 8)
                             Text(viewModel.rowTitleFor(index: index))
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
