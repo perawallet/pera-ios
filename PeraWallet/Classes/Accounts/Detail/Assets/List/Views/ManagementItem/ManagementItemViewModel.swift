@@ -75,8 +75,9 @@ extension ManagementItemViewModel {
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
-        case .asset,
-             .collectible:
+        case .asset:
+            self.primaryButtonIcon = img("icon-asset-manage")
+        case .collectible:
             self.primaryButtonTitle = .attributedString(
                 String(localized: "asset-manage-button")
                     .bodyMedium()
@@ -89,13 +90,22 @@ extension ManagementItemViewModel {
         _ type: ManagementItemType
     ) {
         switch type {
-        case .collectible(_, let isWatchAccountDisplay),
-             .asset(let isWatchAccountDisplay):
+        case .asset(let isWatchAccountDisplay):
             if isWatchAccountDisplay {
                 return
             }
+            secondaryButtonTitle = .attributedString(
+                String(localized: "transaction-option-list-add-asset-title")
+                    .bodyMedium()
+            )
+            secondaryButtonIcon = img("icon-management-add-asset")
 
+        case .collectible(_, let isWatchAccountDisplay):
+            if isWatchAccountDisplay {
+                return
+            }
             fallthrough
+
         default:
             secondaryButtonTitle = nil
             secondaryButtonIcon = img("icon-management-add")

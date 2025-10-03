@@ -7287,9 +7287,18 @@
 		D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
+		D46485452E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
+		D46485462E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
+		D46485472E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
 		D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
+		D46485492E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
+		D464854A2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
+		D464854B2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
+		D464854D2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464854C2E8E7EAD007DDBDB /* ManagementItemAccountDetailViewTheme.swift */; };
+		D464854E2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464854C2E8E7EAD007DDBDB /* ManagementItemAccountDetailViewTheme.swift */; };
+		D464854F2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464854C2E8E7EAD007DDBDB /* ManagementItemAccountDetailViewTheme.swift */; };
 		D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */; };
 		D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
@@ -9496,6 +9505,9 @@
 		D46432D328B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewTheme.swift; sourceTree = "<group>"; };
 		D46432DB28B614AC00BF4EC2 /* OptOutAssetListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewModel.swift; sourceTree = "<group>"; };
 		D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItem.swift; sourceTree = "<group>"; };
+		D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementItemAccountDetailCell.swift; sourceTree = "<group>"; };
+		D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementItemAccountDetailView.swift; sourceTree = "<group>"; };
+		D464854C2E8E7EAD007DDBDB /* ManagementItemAccountDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementItemAccountDetailViewTheme.swift; sourceTree = "<group>"; };
 		D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentParameters.swift; sourceTree = "<group>"; };
 		D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLParameters.swift; sourceTree = "<group>"; };
 		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
@@ -10291,7 +10303,6 @@
 		F0FA692229E76E9E00593F38 /* OptInAssetNextListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListLoadingViewTheme.swift; sourceTree = "<group>"; };
 		F0FA692629E7A0FF00593F38 /* OptInAssetListDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListDraft.swift; sourceTree = "<group>"; };
 		F0FA692A29E7A4D100593F38 /* OptInAssetListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetListQuery.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F6789012345678 /* RecentChangesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChangesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -11603,6 +11614,9 @@
 		2B3088D727FF31E00010AE49 /* ManagementItem */ = {
 			isa = PBXGroup;
 			children = (
+				D464854C2E8E7EAD007DDBDB /* ManagementItemAccountDetailViewTheme.swift */,
+				D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */,
+				D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */,
 				D41868DE287F0D8C0066DDC0 /* ManagementItemCell.swift */,
 				2BA979D7284E216700EDA5EA /* ManagementItemView.swift */,
 				2BA979DF284E281E00EDA5EA /* ManagementItemViewModel.swift */,
@@ -25979,6 +25993,7 @@
 				59167E1E2E464C76002184C2 /* LoadingView.swift in Sources */,
 				59167E1F2E464C76002184C2 /* LoadingViewCommonTheme.swift in Sources */,
 				59167E202E464C76002184C2 /* LoadingViewTheme.swift in Sources */,
+				D46485472E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */,
 				59167E212E464C76002184C2 /* NoContentCell.swift in Sources */,
 				59167E222E464C76002184C2 /* NoContentView.swift in Sources */,
 				59167E232E464C76002184C2 /* NoContentViewCommonTheme.swift in Sources */,
@@ -26182,6 +26197,7 @@
 				59167EE82E464C76002184C2 /* SwapAssetAmountOutInputViewModel.swift in Sources */,
 				59167EE92E464C76002184C2 /* ConfirmSwapAmountInInputViewModel.swift in Sources */,
 				59167EEA2E464C76002184C2 /* ConfirmSwapAmountOutInputViewModel.swift in Sources */,
+				D46485492E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */,
 				59167EEB2E464C76002184C2 /* ConfirmSwapAmountInViewModel.swift in Sources */,
 				59167EEC2E464C76002184C2 /* ConfirmSwapAmountOutViewModel.swift in Sources */,
 				59167EED2E464C76002184C2 /* SwapAssetAmountInViewModel.swift in Sources */,
@@ -26613,6 +26629,7 @@
 				591680992E464C76002184C2 /* WCAssetCreationTransactionViewController.swift in Sources */,
 				5916809A2E464C76002184C2 /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				5916809B2E464C76002184C2 /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
+				D464854F2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */,
 				5916809C2E464C76002184C2 /* WCAssetCreationTransactionViewModel.swift in Sources */,
 				5916809D2E464C76002184C2 /* WCAssetDeletionTransactionItemViewModel.swift in Sources */,
 				5916809E2E464C76002184C2 /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
@@ -28128,6 +28145,7 @@
 				59E6039F2E4A712500CCA99B /* LoadingViewTheme.swift in Sources */,
 				59E603A02E4A712500CCA99B /* NoContentCell.swift in Sources */,
 				59E603A12E4A712500CCA99B /* NoContentView.swift in Sources */,
+				D46485462E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */,
 				59E603A22E4A712500CCA99B /* NoContentViewCommonTheme.swift in Sources */,
 				59E603A32E4A712500CCA99B /* NoContentViewModel.swift in Sources */,
 				59E603A42E4A712500CCA99B /* NoContentViewTheme.swift in Sources */,
@@ -28331,6 +28349,7 @@
 				59E604692E4A712500CCA99B /* ConfirmSwapAmountOutInputViewModel.swift in Sources */,
 				59E6046A2E4A712500CCA99B /* ConfirmSwapAmountInViewModel.swift in Sources */,
 				59E6046B2E4A712500CCA99B /* ConfirmSwapAmountOutViewModel.swift in Sources */,
+				D464854A2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */,
 				59E6046C2E4A712500CCA99B /* SwapAssetAmountInViewModel.swift in Sources */,
 				59E6046D2E4A712500CCA99B /* SwapAssetAmountOutViewModel.swift in Sources */,
 				59E6046E2E4A712500CCA99B /* SwapAssetAmountView.swift in Sources */,
@@ -28762,6 +28781,7 @@
 				59E606182E4A712500CCA99B /* WCAssetCreationTransactionViewController.swift in Sources */,
 				59E606192E4A712500CCA99B /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				59E6061A2E4A712500CCA99B /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
+				D464854E2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */,
 				59E6061B2E4A712500CCA99B /* WCAssetCreationTransactionViewModel.swift in Sources */,
 				59E6061C2E4A712500CCA99B /* WCAssetDeletionTransactionItemViewModel.swift in Sources */,
 				59E6061D2E4A712500CCA99B /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
@@ -30275,6 +30295,7 @@
 				59E60C172E4A71D000CCA99B /* LoadingViewTheme.swift in Sources */,
 				59E60C182E4A71D000CCA99B /* NoContentCell.swift in Sources */,
 				59E60C192E4A71D000CCA99B /* NoContentView.swift in Sources */,
+				D46485452E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */,
 				59E60C1A2E4A71D000CCA99B /* NoContentViewCommonTheme.swift in Sources */,
 				59E60C1B2E4A71D000CCA99B /* NoContentViewModel.swift in Sources */,
 				59E60C1C2E4A71D000CCA99B /* NoContentViewTheme.swift in Sources */,
@@ -30478,6 +30499,7 @@
 				59E60CE12E4A71D000CCA99B /* ConfirmSwapAmountOutInputViewModel.swift in Sources */,
 				59E60CE22E4A71D000CCA99B /* ConfirmSwapAmountInViewModel.swift in Sources */,
 				59E60CE32E4A71D000CCA99B /* ConfirmSwapAmountOutViewModel.swift in Sources */,
+				D464854B2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */,
 				59E60CE42E4A71D000CCA99B /* SwapAssetAmountInViewModel.swift in Sources */,
 				59E60CE52E4A71D000CCA99B /* SwapAssetAmountOutViewModel.swift in Sources */,
 				59E60CE62E4A71D000CCA99B /* SwapAssetAmountView.swift in Sources */,
@@ -30909,6 +30931,7 @@
 				59E60E902E4A71D000CCA99B /* WCAssetCreationTransactionViewController.swift in Sources */,
 				59E60E912E4A71D000CCA99B /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				59E60E922E4A71D000CCA99B /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
+				D464854D2E8E7EB0007DDBDB /* ManagementItemAccountDetailViewTheme.swift in Sources */,
 				59E60E932E4A71D000CCA99B /* WCAssetCreationTransactionViewModel.swift in Sources */,
 				59E60E942E4A71D000CCA99B /* WCAssetDeletionTransactionItemViewModel.swift in Sources */,
 				59E60E952E4A71D000CCA99B /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
@@ -31733,7 +31756,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -31762,7 +31785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31791,7 +31814,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -31822,7 +31845,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31852,7 +31875,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -31882,7 +31905,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32039,7 +32062,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32072,7 +32095,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32308,7 +32331,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32342,7 +32365,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32375,7 +32398,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32572,7 +32595,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.8.0;
+				MARKETING_VERSION = 6.9.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
