@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapHistoryViewModel.swift
+//   ManagementItemAccountDetailCell.swift
 
-import SwiftUI
-import pera_wallet_core
+import MacaroonUIKit
+import UIKit
 
-final class SwapHistoryViewModel: ObservableObject {
-    @Published private(set) var swapHistoryList: [SwapHistory]?
-    @Published private(set) var shouldShowSeeAllButton: Bool = false
+final class ManagementItemAccountDetailCell:
+    CollectionCell<ManagementItemAccountDetailView>,
+    ViewModelBindable,
+    UIInteractable {
     
-    init(swapHistoryList: [SwapHistory]?) {
-        self.swapHistoryList = swapHistoryList
-        self.shouldShowSeeAllButton = swapHistoryList?.isNonEmpty ?? false
+    static let theme = ManagementItemAccountDetailViewTheme()
+    override class var contextPaddings: LayoutPaddings { (0.0, 24.0, 0.0, 24.0) }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

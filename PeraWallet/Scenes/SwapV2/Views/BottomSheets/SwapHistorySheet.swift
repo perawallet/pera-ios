@@ -20,7 +20,7 @@ import pera_wallet_core
 struct SwapHistorySheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     
-    @ObservedObject var viewModel: SwapHistoryViewModel
+    @ObservedObject private(set) var viewModel: SwapHistoryViewModel
     var onRowTap: ((SwapHistory) -> Void)?
     
     var body: some View {
@@ -52,23 +52,22 @@ struct SwapHistorySheet: View {
                         VStack(spacing: 0) {
                             HStack(alignment: .center, spacing: 0) {
                                 SwapLogosView(assetIn: swapHistoryItem.assetIn, assetOut: swapHistoryItem.assetOut)
-                                
-                                Spacer().frame(width: 8)
+                                    .padding(.trailing, 8)
                                 
                                 VStack(alignment: .leading) {
                                     Text(swapHistoryItem.swappedText)
                                         .font(.dmSans.regular.size(15))
                                         .foregroundStyle(Color.Text.main)
-                                    Spacer().frame(height: 4)
+                                        .padding(.bottom, 4)
                                     HStack {
                                         Text(swapHistoryItem.resultText)
                                             .font(.dmSans.bold.size(15))
                                             .foregroundStyle(Color.Text.main)
-                                        Spacer().frame(width: 5)
+                                            .padding(.trailing, 5)
                                         Text("\u{30FB}")
                                             .font(.dmSans.regular.size(15))
                                             .foregroundStyle(Color.Text.gray)
-                                        Spacer().frame(width: 5)
+                                            .padding(.trailing, 5)
                                         Text(swapHistoryItem.dateText)
                                             .font(.dmSans.regular.size(15))
                                             .foregroundStyle(Color.Text.gray)

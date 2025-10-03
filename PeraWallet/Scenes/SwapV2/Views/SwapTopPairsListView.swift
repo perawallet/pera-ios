@@ -52,11 +52,8 @@ struct SwapTopPairsListView: View {
                                 .foregroundStyle(Color.Text.gray)
                                 .frame(width: 26, alignment: .leading)
                             
-                            Spacer().frame(width: 8)
-                            
                             SwapLogosView(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB)
                             
-                            Spacer().frame(width: 8)
                             Text(swapTopPair.title)
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)

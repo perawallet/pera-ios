@@ -18,15 +18,13 @@ import SwiftUI
 import pera_wallet_core
 
 struct SwapHistoryListItem: View {
-    @ObservedObject var viewModel: SwapHistoryViewModel
+    @ObservedObject private(set) var viewModel: SwapHistoryViewModel
     let item: SwapHistory
     
     var body: some View {
         VStack {
             HStack {
                 SwapLogosView(assetIn: item.assetIn, assetOut: item.assetOut)
-                
-                Spacer().frame(width: 8)
 
                 Text(item.title)
                     .font(.dmSans.medium.size(15))

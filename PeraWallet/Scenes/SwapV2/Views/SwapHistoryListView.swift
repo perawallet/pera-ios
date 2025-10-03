@@ -18,7 +18,7 @@ import SwiftUI
 import pera_wallet_core
 
 struct SwapHistoryListView: View {
-    @ObservedObject var viewModel: SwapHistoryViewModel
+    @ObservedObject private(set) var viewModel: SwapHistoryViewModel
     var onRowTap: ((SwapHistory) -> Void)?
     var onSeeAllTap: (() -> Void)?
     

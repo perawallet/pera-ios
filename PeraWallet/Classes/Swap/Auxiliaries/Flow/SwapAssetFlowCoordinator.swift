@@ -815,7 +815,7 @@ extension SwapAssetFlowCoordinator {
         }
     }
     
-    func getSwapHistoryList(with address: String, cursor: String? = nil, limit: Int? = nil, statuses: String? = nil) {
+    func swapHistoryList(with address: String, cursor: String? = nil, limit: Int? = nil, statuses: String? = nil) {
         let draft = SwapHistoryQuery(address: address, cursor: cursor, limit: limit, statuses: statuses)
         api.getSwapHistory(draft) { [weak self] result in
             guard let self else { return }

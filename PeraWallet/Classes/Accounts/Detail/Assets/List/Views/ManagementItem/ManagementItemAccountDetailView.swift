@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManagementItemView.swift
+//   ManagementItemAccountDetailView.swift
 
 import MacaroonUIKit
 import UIKit
 
-final class ManagementItemView:
+final class ManagementItemAccountDetailView:
     View,
     UIInteractable,
     ListReusable {
@@ -27,10 +27,10 @@ final class ManagementItemView:
     ]
     
     private lazy var titleView = Label()
-    private lazy var primaryButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
-    private lazy var secondaryButton = MacaroonUIKit.Button()
+    private lazy var primaryButton = MacaroonUIKit.Button()
+    private lazy var secondaryButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     
-    func customize(_ theme: ManagementItemViewTheme) {
+    func customize(_ theme: ManagementItemAccountDetailViewTheme) {
         addSecondaryButton(theme)
         addPrimaryButton(theme)
         addTitle(theme)
@@ -45,8 +45,8 @@ final class ManagementItemView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
-extension ManagementItemView {
-    private func addTitle(_ theme: ManagementItemViewTheme) {
+extension ManagementItemAccountDetailView {
+    private func addTitle(_ theme: ManagementItemAccountDetailViewTheme) {
         addSubview(titleView)
         titleView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
@@ -54,9 +54,11 @@ extension ManagementItemView {
         }
     }
     
-    private func addPrimaryButton(_ theme: ManagementItemViewTheme) {
+    private func addPrimaryButton(_ theme: ManagementItemAccountDetailViewTheme) {
         primaryButton.customizeAppearance(theme.primaryButton)
-
+        primaryButton.contentEdgeInsets = theme.contentEdgeInsets
+        primaryButton.layer.cornerRadius = theme.cornerRadius
+        
         addSubview(primaryButton)
         primaryButton.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
@@ -69,8 +71,10 @@ extension ManagementItemView {
         )
     }
     
-    private func addSecondaryButton(_ theme: ManagementItemViewTheme) {
+    private func addSecondaryButton(_ theme: ManagementItemAccountDetailViewTheme) {
         secondaryButton.customizeAppearance(theme.secondaryButton)
+        secondaryButton.contentEdgeInsets = theme.contentEdgeInsets
+        secondaryButton.layer.cornerRadius = theme.cornerRadius
 
         addSubview(secondaryButton)
         secondaryButton.fitToIntrinsicSize()
@@ -85,7 +89,7 @@ extension ManagementItemView {
     }
 }
 
-extension ManagementItemView: ViewModelBindable {
+extension ManagementItemAccountDetailView: ViewModelBindable {
     func bindData(_ viewModel: ManagementItemViewModel?) {
         titleView.editText = viewModel?.title
         primaryButton.setEditTitle(
@@ -108,7 +112,7 @@ extension ManagementItemView: ViewModelBindable {
 
     class func calculatePreferredSize(
         _ viewModel: ManagementItemViewModel?,
-        for layoutSheet: ManagementItemViewTheme,
+        for layoutSheet: ManagementItemAccountDetailViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -126,7 +130,7 @@ extension ManagementItemView: ViewModelBindable {
     }
 }
 
-extension ManagementItemView {
+extension ManagementItemAccountDetailView {
     enum Event {
         case primaryAction
         case secondaryAction
