@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManagementItemViewTheme.swift
+//   ManagementItemAccountDetailViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct ManagementItemViewTheme:
+struct ManagementItemAccountDetailViewTheme:
     StyleSheet,
     LayoutSheet {
     let primaryButton: ButtonStyle
-    var secondaryButton: ButtonStyle
+    let secondaryButton: ButtonStyle
     let buttonHeight: LayoutMetric
-    var spacing: LayoutMetric
+    let spacing: LayoutMetric
+    let cornerRadius: LayoutMetric
+    let contentEdgeInsets: UIEdgeInsets
     
     init(_ family: LayoutFamily) {
         self.primaryButton = [
-            .titleColor([.normal(Colors.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)]),
+            .backgroundColor(Colors.Alert.positive.uiColor.withAlphaComponent(0.12))
         ]
         self.secondaryButton = [
-            .titleColor([.normal(Colors.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)]),
+            .backgroundColor(Colors.Alert.positive.uiColor.withAlphaComponent(0.12))
         ]
         self.buttonHeight = 40
-        self.spacing = 16
-    }
-}
-
-extension ManagementItemViewTheme {
-    mutating func configureForSingleAction() {
-        secondaryButton = []
-        spacing = .zero
+        self.spacing = 8
+        self.cornerRadius = 8
+        self.contentEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
     }
 }
