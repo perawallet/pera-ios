@@ -27,6 +27,7 @@ enum SwapViewAction {
     case confirmSwap
     case showBanner(success: String?, error: String?)
     case calculatePeraFee(forAmount: Double, withPercentage: Double)
+    case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
 }
 
 enum SwapViewSheet: Identifiable {
@@ -58,18 +59,23 @@ struct SwapView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack (spacing: 0) {
-            headerView
-            assetSelectionView
-            if viewModel.shouldShowSwapButton {
-                swapActionView
+        SwiftUI.ScrollView {
+            VStack (spacing: 0) {
+                headerView
+                assetSelectionView
+                if viewModel.shouldShowSwapButton {
+                    swapActionView
+                }
+                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                    onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
+                }
             }
-        }
-        .padding(.top, safeAreaTopInset)
-        .frame(maxHeight: .infinity, alignment: .top)
-        .sheet(item: $activeSheet, content: sheetContent)
-        .onChange(of: viewModel.selectedProvider) { newValue in
-            viewModel.selectQuote(with: newValue)
+            .padding(.top, safeAreaTopInset)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .sheet(item: $activeSheet, content: sheetContent)
+            .onChange(of: viewModel.selectedProvider) { newValue in
+                viewModel.selectQuote(with: newValue)
+            }
         }
     }
     

@@ -12,38 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapQuoteList.swift
+//   SwapTopPair.swift
 
 import Foundation
 
-public final class SwapQuoteList: ALGEntityModel {
-    public let results: [SwapQuote]
+public final class SwapTopPair: ALGEntityModel, Codable, Identifiable {
+
+    public let assetA: SwapAsset
+    public let assetB: SwapAsset
+    public let volume24hUSD: String
 
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.results = apiModel.results.unwrapMap(SwapQuote.init)
+        self.assetA = SwapAsset(apiModel.assetA)
+        self.assetB = SwapAsset(apiModel.assetB)
+        self.volume24hUSD = apiModel.volume24hUSD
     }
 
     public func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.results = results.map { $0.encode() }
+        apiModel.assetA = assetA.encode()
+        apiModel.assetB = assetB.encode()
+        apiModel.volume24hUSD = volume24hUSD
         return apiModel
     }
 }
 
-extension SwapQuoteList {
-    public struct APIModel: ALGAPIModel {
-        var results: [SwapQuote.APIModel]?
+extension SwapTopPair {
+    public struct APIModel: ALGAPIModel, Codable {
+        var assetA: SwapAsset.APIModel
+        var assetB: SwapAsset.APIModel
+        var volume24hUSD: String
 
         public init() {
-            self.results = []
+            self.assetA = SwapAsset.APIModel()
+            self.assetB = SwapAsset.APIModel()
+            self.volume24hUSD = .empty
         }
 
         private enum CodingKeys:
             String,
             CodingKey {
-            case results
+            case assetA = "asset_a"
+            case assetB = "asset_b"
+            case volume24hUSD = "volume_24h_usd"
         }
     }
 }
