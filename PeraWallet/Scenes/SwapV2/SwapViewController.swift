@@ -239,9 +239,9 @@ final class SwapViewController: BaseViewController {
     
     private func resetAmounts() {
         sharedViewModel?.payingText = .empty
-        sharedViewModel?.payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
         sharedViewModel?.receivingText = .empty
-        sharedViewModel?.receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+        sharedViewModel?.receivingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
         sharedViewModel?.isBalanceNotSufficient = false
     }
     
@@ -355,10 +355,10 @@ final class SwapViewController: BaseViewController {
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? .empty
+            viewModel.receivingTextInSecondaryCurrency = viewModel.algoFormat(with: valueOut.doubleValue)
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: valueOut) ?? .empty
+            viewModel.receivingTextInSecondaryCurrency = viewModel.fiatFormat(with: valueOut.doubleValue)
         }
         
         viewModel.quoteList = orderedQuoteList

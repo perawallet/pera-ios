@@ -31,9 +31,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var selectedQuote: SwapQuote?
     
     @Published var payingText: String = .empty
-    @Published var payingTextInSecondaryCurrency: String = defaultAmountValue
+    @Published var payingTextInSecondaryCurrency: String = .empty
     @Published var receivingText: String = .empty
-    @Published var receivingTextInSecondaryCurrency: String = defaultAmountValue
+    @Published var receivingTextInSecondaryCurrency: String = .empty
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
@@ -161,9 +161,9 @@ class SwapSharedViewModel: ObservableObject {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     receivingText = .empty
-                    receivingTextInSecondaryCurrency = Self.defaultAmountValue
+                    receivingTextInSecondaryCurrency = fiatFormat(with: 0.0)
                     payingText = .empty
-                    payingTextInSecondaryCurrency = Self.defaultAmountValue
+                    payingTextInSecondaryCurrency = fiatFormat(with: 0.0)
                 }
             }
         }

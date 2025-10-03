@@ -136,7 +136,10 @@ struct SwapView: View {
                         get: { viewModel.payingText },
                         set: { viewModel.payingText = viewModel.filterPayingText($0) }
                     ),
-                    amountTextInSecondaryCurrency: $viewModel.payingTextInSecondaryCurrency,
+                    amountTextInSecondaryCurrency: Binding(
+                        get: { viewModel.payingTextInSecondaryCurrency.isEmpty ? viewModel.fiatFormat(with: 0.0) : viewModel.payingTextInSecondaryCurrency },
+                        set: { viewModel.payingTextInSecondaryCurrency = $0 }
+                    ),
                     isLoading: $viewModel.isLoadingPayAmount,
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
@@ -147,7 +150,10 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
-                    amountTextInSecondaryCurrency: $viewModel.receivingTextInSecondaryCurrency,
+                    amountTextInSecondaryCurrency: Binding(
+                        get: { viewModel.receivingTextInSecondaryCurrency.isEmpty ? viewModel.fiatFormat(with: 0.0) : viewModel.receivingTextInSecondaryCurrency },
+                        set: { viewModel.receivingTextInSecondaryCurrency = $0 }
+                    ),
                     isLoading: $viewModel.isLoadingReceiveAmount,
                     isBalanceNotSufficient: .constant(false)
                 ) {
