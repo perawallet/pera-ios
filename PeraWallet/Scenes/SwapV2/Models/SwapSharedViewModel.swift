@@ -437,8 +437,9 @@ enum PercentageValue: CaseIterable, Equatable, Hashable {
     }
 }
 
-enum SlippageValue: CaseIterable, Equatable {
-    case custom, c05, c1, c2, c5
+enum SlippageValue: Equatable, Hashable {
+    case custom(value: Double)
+    case c05, c1, c2, c5
     
     var title: String {
         switch self {
@@ -452,11 +453,32 @@ enum SlippageValue: CaseIterable, Equatable {
     
     var value: Double {
         switch self {
-        case .custom: 0
+        case .custom(value: let value): value
         case .c05: 0.005
         case .c1: 0.01
         case .c2: 0.02
         case .c5: 0.05
         }
     }
+    
+    static var allDefaultCases: [SlippageValue] {
+        [.c05, .c1, .c2, .c5]
+    }
+    
+    static var allCases: [SlippageValue] {
+        [.custom(value: 0), .c05, .c1, .c2, .c5]
+    }
+    
+    static func == (lhs: SlippageValue, rhs: SlippageValue) -> Bool {
+            switch (lhs, rhs) {
+            case (.custom, .custom),
+                 (.c05, .c05),
+                 (.c1, .c1),
+                 (.c2, .c2),
+                 (.c5, .c5):
+                return true
+            default:
+                return false
+            }
+        }
 }
