@@ -27,6 +27,7 @@ public protocol Asset: AnyObject {
     var decimals: Int { get }
     var total: UInt64? { get }
     var totalSupply: Decimal? { get }
+    var category: String? { get }
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }

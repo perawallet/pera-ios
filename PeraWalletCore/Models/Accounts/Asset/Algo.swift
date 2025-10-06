@@ -27,6 +27,7 @@ public final class Algo: Asset {
     public let decimalAmount: Decimal
     public let total: UInt64?
     public let totalSupply: Decimal?
+    public let category: String?
     public let usdValue: Decimal? = nil
     public let totalUSDValue: Decimal? = nil
     public var state: AssetState = .ready
@@ -70,5 +71,6 @@ public final class Algo: Asset {
         self.discordURL = URL(string: "https://discord.com/invite/algorand")
         self.telegramURL = URL(string: "https://t.me/algorand")
         self.twitterURL = URL.twitterURL(username: "Algorand")
+        self.category = nil
     }
 }

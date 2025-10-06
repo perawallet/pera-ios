@@ -30,6 +30,7 @@ public final class CollectibleAsset: Asset {
     public private(set) var isDestroyed: Bool
     public private(set) var optedInAtRound: UInt64?
     public private(set) var creator: AssetCreator?
+    public private(set) var category: String?
     public private(set) var name: String?
     public private(set) var unitName: String?
     public private(set) var usdValue: Decimal?
@@ -95,6 +96,7 @@ public final class CollectibleAsset: Asset {
         self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = asset.optedInAtRound
         self.creator = decoration.creator
+        self.category = decoration.category
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
