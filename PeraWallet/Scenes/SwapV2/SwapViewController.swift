@@ -243,6 +243,7 @@ final class SwapViewController: BaseViewController {
         sharedViewModel?.receivingText = .empty
         sharedViewModel?.receivingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
         sharedViewModel?.isBalanceNotSufficient = false
+        sharedViewModel?.swapConfirmationState = .idle
     }
     
     private func resolveDefaultAccount() -> Account? {
