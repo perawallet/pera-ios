@@ -690,6 +690,7 @@ extension SwapAssetFlowCoordinator {
                 }
 
                 let assetDecoration = AssetDecoration(asset: asset)
+                draft = SwapAssetFlowDraft(account: account)
                 self.openOptInAsset(assetDecoration)
             case .didOptInToAsset(let asset):
                 guard let onAssetOutSelected else { return }
