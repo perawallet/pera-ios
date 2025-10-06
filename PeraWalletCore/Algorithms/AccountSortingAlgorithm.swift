@@ -56,14 +56,3 @@ public struct AssetExcludeFilterAlgorithm: AssetFilterAlgorithm {
         return excludedList.contains { $0.id != asset.id }
     }
 }
-
-public struct AssetVerifiedAndCategoryFilterAlgorithm: AssetFilterAlgorithm {
-    public init() {}
-    
-    public func getFormula(
-        asset: Asset
-    ) -> Bool {
-        return asset.verificationTier == .verified || asset.verificationTier == .trusted || asset.category == "1"
-    }
-}
-

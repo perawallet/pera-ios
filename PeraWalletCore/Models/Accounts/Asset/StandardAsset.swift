@@ -26,7 +26,6 @@ public final class StandardAsset: Asset {
     public let isFrozen: Bool?
     public let isDestroyed: Bool
     public let optedInAtRound: UInt64?
-    public let category: String?
     public let name: String?
     public let unitName: String?
     public let usdValue: Decimal?
@@ -79,7 +78,6 @@ public final class StandardAsset: Asset {
         self.logoURL = decoration.logoURL
         self.total = decoration.total
         self.totalSupply = decoration.totalSupply
-        self.category = decoration.category
 
         let amount = asset.amount
         let decimals = decoration.decimals
@@ -131,7 +129,6 @@ public final class StandardAsset: Asset {
         self.isFault = true
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
-        self.category = decoration.category
     }
     
     public init(
@@ -163,7 +160,6 @@ public final class StandardAsset: Asset {
         self.isFault = swapAsset.isFault
         self.algoPriceChangePercentage = 0
         self.isAvailableOnDiscover = false
-        self.category = nil
     }
 }
 

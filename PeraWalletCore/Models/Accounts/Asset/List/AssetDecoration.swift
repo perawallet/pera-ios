@@ -27,7 +27,6 @@ public final class AssetDecoration: ALGEntityModel {
     public let usdValue: Decimal?
     public let total: UInt64?
     public let totalSupply: Decimal?
-    public let category: String?
     public let creator: AssetCreator?
     public let collectible: Collectible?
     public let projectURL: URL?
@@ -75,7 +74,6 @@ public final class AssetDecoration: ALGEntityModel {
         }
 
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
-        self.category = apiModel.category
         self.projectURL = apiModel.projectURL.toURL()
         self.explorerURL = apiModel.explorerURL.toURL()
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
@@ -105,7 +103,6 @@ public final class AssetDecoration: ALGEntityModel {
         self.projectURL = nil
         self.explorerURL = nil
         self.collectible = nil
-        self.category = nil
         self.url = assetDetail.url
         self.verificationTier = .unverified
         self.logoURL = nil
@@ -126,7 +123,6 @@ public final class AssetDecoration: ALGEntityModel {
         self.usdValue = asset.usdValue
         self.total = asset.total
         self.totalSupply = asset.totalSupply
-        self.category = asset.category
         self.creator = asset.creator
         self.projectURL = asset.projectURL
         self.explorerURL = asset.explorerURL
@@ -151,7 +147,6 @@ public final class AssetDecoration: ALGEntityModel {
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.total = total.unwrap { String(describing: $0) }
-        apiModel.category = category.unwrap { String(describing: $0) }
         apiModel.totalSupply = totalSupply
         apiModel.creator = creator?.encode()
         apiModel.projectURL = projectURL?.absoluteString
@@ -184,7 +179,6 @@ extension AssetDecoration {
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
-        var category: String?
         var totalSupply: Decimal?
         var verificationTier: AssetVerificationTier?
         var logo: String?
@@ -208,7 +202,6 @@ extension AssetDecoration {
             case fractionDecimals = "fraction_decimals"
             case usdValue = "usd_value"
             case creator
-            case category
             case projectURL = "project_url"
             case explorerURL = "explorer_url"
             case collectible
