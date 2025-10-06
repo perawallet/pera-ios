@@ -256,8 +256,15 @@ final class SwapViewController: BaseViewController {
     private func resolveInitialState() -> Bool {
         if let draft = launchDraft, let account = draft.account {
             selectedAccount = account
-            selectedAssetIn = assetItem(from: draft.assetIn)
-            selectedAssetOut = draft.assetIn?.isAlgo == true ? nil : resolveDefaultAlgoAsset(for: account)
+            
+            if let draftAsset = draft.assetIn {
+                selectedAssetIn = draftAsset.isAlgo ? resolveDefaultUSDCAsset(for: account) : resolveDefaultAlgoAsset(for: account)
+                selectedAssetOut = assetItem(from: draftAsset)
+            } else {
+                selectedAssetIn = nil
+                selectedAssetOut = nil
+            }
+            
             launchDraft = nil
             return true
         }
