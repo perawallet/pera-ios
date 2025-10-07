@@ -49,7 +49,7 @@ struct AssetSwapButton: View {
                 .frame(width: iconSize, height: iconSize)
                 .clipShape(Circle())
                 Spacer().frame(width: 6)
-                Text(assetItem.asset.naming.displayNames.primaryName)
+                Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
                     .lineLimit(1)

@@ -317,7 +317,7 @@ private struct ConfirmSwapAssetView: View {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.Layer.grayLightest)
                 HStack {
-                    Text(assetItem.asset.naming.displayNames.primaryName)
+                    Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 6)
