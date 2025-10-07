@@ -78,15 +78,18 @@ private struct ProviderListItem: View {
     var quotePrimaryValue: String
     var quoteSecondaryValue: String
     @Binding var selectedProvider: SelectedProvider
-    @State private var didFail = false
     
     // MARK: - Body
     var body: some View {
         HStack (alignment: .center) {            
-            if !didFail, let url = URL(string: provider.iconUrl) {
-                URLImageSUIView(url: url, didFail: $didFail)
-                    .frame(width: 16, height: 16)
-                    .clipShape(Circle())
+            if let url = URL(string: provider.iconUrl) {
+                AsyncImage(url: url) { image in
+                    image.resizable()
+                } placeholder: {
+                    EmptyView()
+                }
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
                 Spacer().frame(width: 16)
             }
             

@@ -7290,9 +7290,6 @@
 		D46485452E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
 		D46485462E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
 		D46485472E8E7B25007DDBDB /* ManagementItemAccountDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485442E8E7B24007DDBDB /* ManagementItemAccountDetailCell.swift */; };
-		D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
-		D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
-		D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */; };
 		D46485492E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
 		D464854A2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
 		D464854B2E8E7B57007DDBDB /* ManagementItemAccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46485482E8E7B50007DDBDB /* ManagementItemAccountDetailView.swift */; };
@@ -9404,7 +9401,6 @@
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D446A749272ABEF50081D60B /* light-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "light-rekey.json"; sourceTree = "<group>"; };
 		D446A74D272ABEFC0081D60B /* dark-rekey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "dark-rekey.json"; sourceTree = "<group>"; };
-		D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageSUIView.swift; sourceTree = "<group>"; };
 		D4487A9A27BD350C00B4B0AB /* RecoverAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewController.swift; sourceTree = "<group>"; };
 		D4487A9C27BD354100B4B0AB /* RecoverAccountViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecoverAccountViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4487A9E27BD355C00B4B0AB /* RecoverAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountView.swift; sourceTree = "<group>"; };
@@ -18691,7 +18687,6 @@
 				591674BE2E460AA3002184C2 /* Transition */,
 				591674772E460AA3002184C2 /* NavigationBar */,
 				591674CA2E460AA3002184C2 /* UI */,
-				D447C6362E5D9CA300E893CC /* URLImage */,
 				591678892E4610D2002184C2 /* WalletConnect */,
 				591674D62E460AA3002184C2 /* Validators */,
 			);
@@ -20867,14 +20862,6 @@
 				D446A749272ABEF50081D60B /* light-rekey.json */,
 			);
 			path = Rekey;
-			sourceTree = "<group>";
-		};
-		D447C6362E5D9CA300E893CC /* URLImage */ = {
-			isa = PBXGroup;
-			children = (
-				D447C6372E5D9CB600E893CC /* URLImageSUIView.swift */,
-			);
-			path = URLImage;
 			sourceTree = "<group>";
 		};
 		D4487A9927BD34FC00B4B0AB /* Recover */ = {
@@ -26702,7 +26689,6 @@
 				591680AC2E464C76002184C2 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				591680AD2E464C76002184C2 /* WCTransactionWarningViewModel.swift in Sources */,
 				591680AE2E464C76002184C2 /* JSONDisplayView.swift in Sources */,
-				D447C63A2E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				591680AF2E464C76002184C2 /* WCTransactionDappMessageView.swift in Sources */,
 				591680B02E464C76002184C2 /* WCTransactionFullDappDetailView.swift in Sources */,
 				591680B12E464C76002184C2 /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
@@ -28853,7 +28839,6 @@
 				59E6062A2E4A712500CCA99B /* WCTransactionDappMessageViewModel.swift in Sources */,
 				59E6062B2E4A712500CCA99B /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				59E6062C2E4A712500CCA99B /* WCTransactionWarningViewModel.swift in Sources */,
-				D447C6392E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				59E6062D2E4A712500CCA99B /* JSONDisplayView.swift in Sources */,
 				59E6062E2E4A712500CCA99B /* WCTransactionDappMessageView.swift in Sources */,
 				59E6062F2E4A712500CCA99B /* WCTransactionFullDappDetailView.swift in Sources */,
@@ -31004,7 +30989,6 @@
 				59E60EA32E4A71D000CCA99B /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				59E60EA42E4A71D000CCA99B /* WCTransactionWarningViewModel.swift in Sources */,
 				59E60EA52E4A71D000CCA99B /* JSONDisplayView.swift in Sources */,
-				D447C6382E5D9CDE00E893CC /* URLImageSUIView.swift in Sources */,
 				59E60EA62E4A71D000CCA99B /* WCTransactionDappMessageView.swift in Sources */,
 				59E60EA72E4A71D000CCA99B /* WCTransactionFullDappDetailView.swift in Sources */,
 				59E60EA82E4A71D000CCA99B /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
