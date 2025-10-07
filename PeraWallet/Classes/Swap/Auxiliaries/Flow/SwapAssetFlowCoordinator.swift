@@ -636,7 +636,7 @@ extension SwapAssetFlowCoordinator {
         }
     }
     
-    func openSelectAssetOut(account: Account) {
+    func openSelectAssetOut(account: Account, assetIn: Asset?) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics,
@@ -646,7 +646,7 @@ extension SwapAssetFlowCoordinator {
         
         let swapControllerDraft = ALGSwapControllerDraft(
             account: account,
-            assetIn: draft.assetIn ?? account.algo,
+            assetIn: assetIn ?? draft.assetIn ?? account.algo,
             assetOut: draft.assetOut
         )
         
@@ -658,7 +658,7 @@ extension SwapAssetFlowCoordinator {
         
         let dataController = SelectSwapPoolAssetDataController(
             account: swapController.account,
-            userAsset: swapController.userAsset.id,
+            userAsset: assetIn?.id ?? swapController.userAsset.id,
             swapProviders: swapController.providers,
             api: api,
             sharedDataController: sharedDataController

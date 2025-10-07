@@ -254,28 +254,26 @@ final class SwapViewController: BaseViewController {
     }
     
     private func resolveInitialState() -> Bool {
-        if let draft = launchDraft, let account = draft.account {
-            selectedAccount = account
-            
-            if let draftAsset = draft.assetIn {
-                selectedAssetIn = draftAsset.isAlgo ? resolveDefaultUSDCAsset(for: account) : resolveDefaultAlgoAsset(for: account)
-                selectedAssetOut = assetItem(from: draftAsset)
-            } else {
-                selectedAssetIn = nil
-                selectedAssetOut = nil
-            }
-            
-            launchDraft = nil
-            return true
-        }
         
-        if let defaultAccount = resolveDefaultAccount() {
-            selectedAccount = defaultAccount
+        guard let account = launchDraft?.account ?? resolveDefaultAccount() else {
+            return false
+        }
+        selectedAccount = account
+        
+        defer { launchDraft = nil }
+        
+        if let assetOut = launchDraft?.assetOut {
+            selectedAssetOut = assetItem(from: assetOut)
+            selectedAssetIn = assetItem(from: launchDraft?.assetIn)
+        } else if let assetIn = launchDraft?.assetIn {
+            selectedAssetOut = assetItem(from: assetIn)
+            selectedAssetIn = assetIn.isAlgo ? resolveDefaultUSDCAsset(for: account) : resolveDefaultAlgoAsset(for: account)
+        } else {
             selectedAssetIn = nil
             selectedAssetOut = nil
-            return true
         }
-        return false
+
+        return true
     }
     
     private func resolveAssetIn(for account: Account) -> AssetItem {
@@ -422,6 +420,13 @@ final class SwapViewController: BaseViewController {
                 guard let self else { return }
                 analytics.track(.swapV2SelectAssetEvent(type: .selectTopAsset, assetName: assetIn.naming.displayNames.primaryName))
                 selectedAssetIn = assetItem(from: assetIn)
+                if selectedAssetIn?.asset.id == selectedAssetOut?.asset.id {
+                    if selectedAssetIn?.asset.isAlgo ?? false {
+                        selectedAssetOut = resolveDefaultUSDCAsset(for: account)
+                    } else if selectedAssetIn?.asset.isUSDC(for: api?.network ?? .mainnet) ?? false {
+                        selectedAssetOut = resolveDefaultAlgoAsset(for: account)
+                    }
+                }
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAssetIn(account: account)
@@ -432,7 +437,7 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
             }
-            swapAssetFlowCoordinator.openSelectAssetOut(account: account)
+            swapAssetFlowCoordinator.openSelectAssetOut(account: account, assetIn: selectedAssetIn?.asset)
         case let .getQuote(value):
             swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
                 guard let self else { return }
