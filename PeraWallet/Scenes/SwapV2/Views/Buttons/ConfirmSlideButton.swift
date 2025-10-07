@@ -17,6 +17,8 @@
 import SwiftUI
 
 struct ConfirmSlideButton: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     @State private var dragOffset: CGFloat = 0
     @Binding var state: ConfirmSlideButtonState
     var isSwapDisabled: Bool
@@ -54,6 +56,7 @@ struct ConfirmSlideButton: View {
                         Text("title-slide-to-confirm")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(isSwapDisabled ? Color.ButtonPrimary.disabledText : Color.ButtonSecondary.text)
+                            .blendMode(colorScheme == .dark ? .difference : .normal)
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else {
                         LottieImageViewSUI(jsonName: "pera-loader-purple-light", color: .black)
