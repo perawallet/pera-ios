@@ -364,7 +364,7 @@ final class SwapViewController: BaseViewController {
             viewModel.receivingTextInSecondaryCurrency = viewModel.algoFormat(with: valueOut.doubleValue)
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
-            viewModel.receivingTextInSecondaryCurrency = viewModel.fiatFormat(with: valueOut.doubleValue)
+            viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
         }
         
         viewModel.quoteList = orderedQuoteList
@@ -428,14 +428,12 @@ final class SwapViewController: BaseViewController {
                     }
                 }
                 loadSwapView()
-                if
-                    sharedViewModel?.shouldShowSwapButton ?? false,
-                    let payingText = sharedViewModel?.payingText
-                {
-                    sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
-                        guard let self else { return }
-                        handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
-                    }
+                guard let payingText = sharedViewModel?.payingText else {
+                    return
+                }
+                sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
+                    guard let self else { return }
+                    handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
                 }
             }
             swapAssetFlowCoordinator.openSelectAssetIn(account: account)
@@ -445,14 +443,12 @@ final class SwapViewController: BaseViewController {
                 analytics.track(.swapV2SelectAssetEvent(type: .selectBottomAsset, assetName: assetOut.naming.displayNames.primaryName))
                 selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
-                if
-                    sharedViewModel?.shouldShowSwapButton ?? false,
-                    let payingText = sharedViewModel?.payingText
-                {
-                    sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
-                        guard let self else { return }
-                        handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
-                    }
+                guard let payingText = sharedViewModel?.payingText else {
+                    return
+                }
+                sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
+                    guard let self else { return }
+                    handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
                 }
             }
             swapAssetFlowCoordinator.openSelectAssetOut(account: account, assetIn: selectedAssetIn?.asset)
