@@ -242,7 +242,8 @@ struct SwapView: View {
             }
         case .swapHistory:
             SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
-                onAction?(.openExplorer(transactionGroupId: swapHistory.transactionGroupId, pairing: swapHistory.title))
+                guard let transactionGroupId = swapHistory.transactionGroupId else { return }
+                onAction?(.openExplorer(transactionGroupId: transactionGroupId, pairing: swapHistory.title))
             }
         }
     }

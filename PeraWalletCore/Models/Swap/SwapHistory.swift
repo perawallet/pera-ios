@@ -21,7 +21,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
     public let providerId: String
     public let status: String
     public let dateTime: String
-    public let transactionGroupId: String
+    public let transactionGroupId: String?
     public let assetIn: SwapAsset
     public let assetOut: SwapAsset
     public let amountIn: String
@@ -69,7 +69,7 @@ extension SwapHistory {
         var providerId: String
         var status: String
         var dateTime: String
-        var transactionGroupId: String
+        var transactionGroupId: String?
         var assetIn: SwapAsset
         var assetOut: SwapAsset
         var amountIn: String
