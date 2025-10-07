@@ -262,12 +262,37 @@ final class SwapViewController: BaseViewController {
         
         defer { launchDraft = nil }
         
-        if let assetOut = launchDraft?.assetOut {
+        guard let launchDraft else {
+            selectedAssetIn = nil
+            selectedAssetOut = nil
+            return true
+        }
+        
+        if let assetOut = launchDraft.assetOut {
             selectedAssetOut = assetItem(from: assetOut)
-            selectedAssetIn = assetItem(from: launchDraft?.assetIn)
-        } else if let assetIn = launchDraft?.assetIn {
+            selectedAssetIn = assetItem(from: launchDraft.assetIn)
+        } else if let assetIn = launchDraft.assetIn {
             selectedAssetOut = assetItem(from: assetIn)
             selectedAssetIn = assetIn.isAlgo ? resolveDefaultUSDCAsset(for: account) : resolveDefaultAlgoAsset(for: account)
+        } else if let assetOutId = launchDraft.assetOutID {
+            if let assetOut = assetFromAssetDetailCollection(with: assetOutId) {
+                selectedAssetOut = assetItem(from: assetOut)
+            } else {
+                swapAssetFlowCoordinator.onAssetLoaded = { [weak self] assetLoaded in
+                    guard let self else { return }
+                    guard let assetLoaded else {
+                        bannerController?.presentErrorBanner(
+                            title: String(localized: "title-error"),
+                            message: String(localized: "asset-confirmation-not-fetched")
+                        )
+                        return
+                    }
+                    selectedAssetOut = assetItem(from: assetLoaded)
+                    loadSwapView()
+                }
+                swapAssetFlowCoordinator.fetchAsset(with: assetOutId)
+            }
+            
         } else {
             selectedAssetIn = nil
             selectedAssetOut = nil
@@ -317,20 +342,39 @@ final class SwapViewController: BaseViewController {
         
         if
             let usdcAsset = selectedAccount?.allAssets?.filter({ $0.id == usdcAssetID }).first,
-            let usdcAssetItem = assetItem(from: usdcAsset)
+            let usdcAssetItem = assetItem(from: usdcAsset),
+            let asset = resolveAsset(with: usdcAssetID, for: account),
+            let assetItem = assetItem(from: asset)
         {
-            return usdcAssetItem
+            return assetItem
         }
         
         guard
-            !sharedDataController.assetDetailCollection.isEmpty,
-            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == usdcAssetID}).first,
-            let defaultAsset = assetItem(from: StandardAsset(decoration: assetDecorationElement))
+            let asset = assetFromAssetDetailCollection(with: usdcAssetID),
+            let defaultAsset = assetItem(from: asset)
         else {
             return resolveDefaultAlgoAsset(for: account)
         }
         
         return defaultAsset
+    }
+    
+    private func resolveAsset(with assetID: AssetID, for account: Account?) -> Asset? {
+        if let asset = selectedAccount?.allAssets?.filter({ $0.id == assetID }).first {
+            return asset
+        }
+        return assetFromAssetDetailCollection(with: assetID)
+    }
+    
+    private func assetFromAssetDetailCollection(with assetId: AssetID) -> Asset? {
+        guard
+            !sharedDataController.assetDetailCollection.isEmpty,
+            let assetDecorationElement = sharedDataController.assetDetailCollection.filter({ $0.id == assetId}).first
+        else
+        {
+            return nil
+        }
+        return StandardAsset(decoration: assetDecorationElement)
     }
     
     private func update(

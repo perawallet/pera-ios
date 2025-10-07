@@ -67,6 +67,7 @@ final class SwapAssetFlowCoordinator:
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
     var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
+    var onAssetLoaded: ((Asset?) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -683,6 +684,28 @@ extension SwapAssetFlowCoordinator {
                 onAssetOutSelected(asset)
                 selectAssetScreen?.dismissScreen()
             case .didOptInToAsset: break
+            }
+        }
+    }
+    
+    func fetchAsset(with assetId: AssetID) {
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetId]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let assetDetailResponse):
+                guard let assetDecoration = assetDetailResponse.results.first else {
+                    onAssetLoaded?(nil)
+                    return
+                }
+                
+                let asset = StandardAsset(decoration: assetDecoration)
+                onAssetLoaded?(asset)
+            case .failure:
+                onAssetLoaded?(nil)
             }
         }
     }
