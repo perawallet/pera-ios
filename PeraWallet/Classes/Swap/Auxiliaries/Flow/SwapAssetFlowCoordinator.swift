@@ -679,20 +679,10 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didSelectAsset(let asset):
-                if swapController.account.isOptedIn(to: asset.id) {
-                    guard let onAssetOutSelected else { return }
-                    onAssetOutSelected(asset)
-                    selectAssetScreen?.dismissScreen()
-                    return
-                }
-
-                let assetDecoration = AssetDecoration(asset: asset)
-                draft = SwapAssetFlowDraft(account: account)
-                self.openOptInAsset(assetDecoration)
-            case .didOptInToAsset(let asset):
                 guard let onAssetOutSelected else { return }
                 onAssetOutSelected(asset)
                 selectAssetScreen?.dismissScreen()
+            case .didOptInToAsset: break
             }
         }
     }

@@ -428,6 +428,15 @@ final class SwapViewController: BaseViewController {
                     }
                 }
                 loadSwapView()
+                if
+                    sharedViewModel?.shouldShowSwapButton ?? false,
+                    let payingText = sharedViewModel?.payingText
+                {
+                    sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
+                        guard let self else { return }
+                        handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
+                    }
+                }
             }
             swapAssetFlowCoordinator.openSelectAssetIn(account: account)
         case let .selectAssetOut(account):
@@ -436,6 +445,15 @@ final class SwapViewController: BaseViewController {
                 analytics.track(.swapV2SelectAssetEvent(type: .selectBottomAsset, assetName: assetOut.naming.displayNames.primaryName))
                 selectedAssetOut = assetItem(from: assetOut)
                 loadSwapView()
+                if
+                    sharedViewModel?.shouldShowSwapButton ?? false,
+                    let payingText = sharedViewModel?.payingText
+                {
+                    sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
+                        guard let self else { return }
+                        handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
+                    }
+                }
             }
             swapAssetFlowCoordinator.openSelectAssetOut(account: account, assetIn: selectedAssetIn?.asset)
         case .onSwitchAssets:
