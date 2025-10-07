@@ -438,6 +438,9 @@ final class SwapViewController: BaseViewController {
                 loadSwapView()
             }
             swapAssetFlowCoordinator.openSelectAssetOut(account: account, assetIn: selectedAssetIn?.asset)
+        case .onSwitchAssets:
+            selectedAssetIn = sharedViewModel?.selectedAssetIn
+            selectedAssetOut = sharedViewModel?.selectedAssetOut
         case let .getQuote(value):
             swapAssetFlowCoordinator.onQuoteLoaded = { [weak self] quoteList, error in
                 guard let self else { return }

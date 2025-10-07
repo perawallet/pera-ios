@@ -31,6 +31,7 @@ enum SwapViewAction {
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
     case openExplorer(transactionGroupId: String, pairing: String)
     case trackAnalytics(event: SwapAnalyticsEvent)
+    case onSwitchAssets
 }
 
 enum SwapAnalyticsEvent {
@@ -166,6 +167,7 @@ struct SwapView: View {
             HStack {
                 SwitchSwapButton {
                     viewModel.switchAssets()
+                    onAction?(.onSwitchAssets)
                 }
                 Spacer()
                 SettingsSwapButton { action in
