@@ -569,6 +569,7 @@ final class SwapViewController: BaseViewController {
             bannerController?.presentSuccessBanner(title: successMessage)
             resetAmounts()
             loadSwapView()
+            loadSwapHistory()
         case let .trackAnalytics(event):
             switch event {
             case .swapHistorySeeAll:
