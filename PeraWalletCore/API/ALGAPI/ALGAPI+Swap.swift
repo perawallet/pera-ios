@@ -155,4 +155,18 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func updateSwapStatus(
+        _ draft: SwapStatusUpdateQuery,
+        onCompleted handler: @escaping (Response.Result<SwapTopPairsList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapUpdate, args: draft.swapId)
+            .method(.put)
+            .query(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 }

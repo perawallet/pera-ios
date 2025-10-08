@@ -586,6 +586,21 @@ extension SwapAssetFlowCoordinator {
 
         return lastVC as? T
     }
+    
+    func updateSwapStatus(swapId: Int64?, status: SwapStatus, submittedTransactionIds: [String]? = nil, failureReason: SwapStatusUpdateError? = nil) {
+        guard let swapId else { return }
+        let draft = SwapStatusUpdateQuery(
+            swapId: String(swapId),
+            status: status,
+            submittedTransactionIds: submittedTransactionIds,
+            reason: failureReason,
+            appVersion: Bundle.main.appVersion,
+            countryCode: Locale.current.region?.identifier
+        )
+        api.updateSwapStatus(draft) { response in
+            print(response)
+        }
+    }
 }
 
 extension SwapAssetFlowCoordinator {

@@ -7274,6 +7274,7 @@
 		D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D405059626F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
+		D42566AD2E967C590008A287 /* SwapStatusUpdateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42566AC2E967C4F0008A287 /* SwapStatusUpdateQuery.swift */; };
 		D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */; };
 		D425852D2D4B9A7600E89BF2 /* CardsDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */; };
 		D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */; };
@@ -9305,6 +9306,7 @@
 		D4241FCF26E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormInputFieldAssistiveViewTheme.swift; sourceTree = "<group>"; };
 		D424BE5E2A7F980C002E5AF6 /* WCSessionAdvancedPermissionsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderView.swift; sourceTree = "<group>"; };
 		D424BE622A7F9831002E5AF6 /* WCSessionAdvancedPermissionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeader.swift; sourceTree = "<group>"; };
+		D42566AC2E967C4F0008A287 /* SwapStatusUpdateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapStatusUpdateQuery.swift; sourceTree = "<group>"; };
 		D42585282D4B926D00E89BF2 /* StakingDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingDeeplinksTests.swift; sourceTree = "<group>"; };
 		D425852C2D4B9A7000E89BF2 /* CardsDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsDeeplinksTests.swift; sourceTree = "<group>"; };
 		D425852E2D4BA0FB00E89BF2 /* DiscoverDeeplinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDeeplinksTests.swift; sourceTree = "<group>"; };
@@ -12668,6 +12670,7 @@
 		2B69AB3028BFCF1E00A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D42566AC2E967C4F0008A287 /* SwapStatusUpdateQuery.swift */,
 				2B69AB3D28BFCFC200A8D65D /* AvailablePoolAssetsQuery.swift */,
 				D4772F8B2E8A6BA500B4F262 /* SwapHistoryQuery.swift */,
 				D4772F8D2E8A6D1E00B4F262 /* SwapTopPairsQuery.swift */,
@@ -31650,6 +31653,7 @@
 				591678212E460AF9002184C2 /* CardsFundAddressesList.swift in Sources */,
 				591678222E460AF9002184C2 /* CardsCountryAvailability.swift in Sources */,
 				591678232E460AF9002184C2 /* CSVFile.swift in Sources */,
+				D42566AD2E967C590008A287 /* SwapStatusUpdateQuery.swift in Sources */,
 				591678242E460AF9002184C2 /* PaginatedList.swift in Sources */,
 				591678252E460AF9002184C2 /* TitledInformation.swift in Sources */,
 				591678262E460AF9002184C2 /* QRCreationDraft.swift in Sources */,
