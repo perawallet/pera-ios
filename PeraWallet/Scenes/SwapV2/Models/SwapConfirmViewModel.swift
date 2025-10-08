@@ -135,6 +135,11 @@ enum ConfirmSlideButtonState: Equatable {
         }
     }
     
+    var isError: Bool {
+        if case .error = self { return true }
+        return false
+    }
+    
     static func == (lhs: ConfirmSlideButtonState, rhs: ConfirmSlideButtonState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle), (.loading, .loading), (.success, .success):

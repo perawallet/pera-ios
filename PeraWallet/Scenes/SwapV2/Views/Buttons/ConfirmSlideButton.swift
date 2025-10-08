@@ -47,9 +47,9 @@ struct ConfirmSlideButton: View {
                 if let iconName = state.iconName {
                     Image(iconName)
                         .resizable()
-                        .renderingMode(state == .success || state == .error ? .template : .original)
+                        .renderingMode(state == .success || state.isError ? .template : .original)
                         .frame(width: 24, height: 24)
-                        .foregroundColor(state == .success || state == .error ? Color.Text.white : nil)
+                        .foregroundColor(state == .success || state.isError ? Color.Text.white : nil)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     if state == .idle {
