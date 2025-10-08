@@ -456,6 +456,7 @@ final class SwapViewController: BaseViewController {
                 selectedAssetOut = nil
                 selectedAccount = account
                 loadSwapView()
+                loadSwapHistory()
             }
             swapAssetFlowCoordinator.openSelectAccount()
             analytics.track(.swapV2SelectAccountEvent(type: .selectAccount))

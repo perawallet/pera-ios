@@ -74,43 +74,38 @@ struct SwapView: View {
     
     @State private var activeSheet: SwapViewSheet?
     
-    private var safeAreaTopInset: CGFloat {
-        (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
-            .windows.first?.safeAreaInsets.top ?? 44
-    }
-    
     // MARK: - Body
     var body: some View {
-        SwiftUI.ScrollView {
-            VStack (spacing: 0) {
-                headerView
-                assetSelectionView
-                if viewModel.shouldShowSwapButton {
-                    swapActionView
+        VStack (spacing: 0) {
+            headerView
+            SwiftUI.ScrollView {
+                VStack (spacing: 0) {
+                    assetSelectionView
+                    if viewModel.shouldShowSwapButton {
+                        swapActionView
+                    }
+                    
+                    SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                        onAction?(.trackAnalytics(event: .swapHistorySelect(pairing: swapHistory.title)))
+                        onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                    } onSeeAllTap: {
+                        onAction?(.trackAnalytics(event: .swapHistorySeeAll))
+                        activeSheet = .swapHistory
+                    }
+                    
+                    SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                        onAction?(.trackAnalytics(event: .swapTopPairSelect(pairing: swapTopPair.title)))
+                        onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
+                    }
                 }
-                
-                SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
-                    onAction?(.trackAnalytics(event: .swapHistorySelect(pairing: swapHistory.title)))
-                    onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
-                } onSeeAllTap: {
-                    onAction?(.trackAnalytics(event: .swapHistorySeeAll))
-                    activeSheet = .swapHistory
+                .frame(maxHeight: .infinity, alignment: .top)
+                .sheet(item: $activeSheet, content: sheetContent)
+                .onChange(of: viewModel.selectedProvider) { newValue in
+                    viewModel.selectQuote(with: newValue)
                 }
-                
-                SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
-                    onAction?(.trackAnalytics(event: .swapTopPairSelect(pairing: swapTopPair.title)))
-                    onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
-                }
-            }
-            .padding(.top, safeAreaTopInset)
-            .frame(maxHeight: .infinity, alignment: .top)
-            .sheet(item: $activeSheet, content: sheetContent)
-            .onChange(of: viewModel.selectedProvider) { newValue in
-                viewModel.selectQuote(with: newValue)
             }
         }
         .background(Color.Defaults.bg)
-        .ignoresSafeArea(edges: .top)
     }
     
     // MARK: - Subviews
