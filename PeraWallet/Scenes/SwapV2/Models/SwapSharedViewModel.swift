@@ -72,12 +72,12 @@ class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Helpers
     
-    func switchAssets() {
+    func switchAssets(onAssetsSwitched: @escaping () -> Void) {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
-        payingText = receivingText
         receivingText = .empty
         payingTextInSecondaryCurrency = .empty
         receivingTextInSecondaryCurrency = .empty
+        onAssetsSwitched()
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {

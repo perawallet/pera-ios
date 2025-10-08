@@ -161,8 +161,10 @@ struct SwapView: View {
             
             HStack {
                 SwitchSwapButton {
-                    viewModel.switchAssets()
-                    onAction?(.onSwitchAssets)
+                    viewModel.switchAssets {
+                        onAction?(.onSwitchAssets)
+                        viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
+                    }
                 }
                 Spacer()
                 SettingsSwapButton { action in
