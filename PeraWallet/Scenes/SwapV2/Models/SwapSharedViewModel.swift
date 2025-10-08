@@ -204,8 +204,16 @@ extension SwapSharedViewModel {
             ) ?? 0
             return paying > 0 && receiving > 0
         } else {
-            let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
-            let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+            let paying = Double(
+                payingText
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
+            let receiving = Double(
+                receivingText
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
             return paying > 0 && receiving > 0
         }
 
