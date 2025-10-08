@@ -126,6 +126,11 @@ class SwapSharedViewModel: ObservableObject {
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut.doubleValue) ?? .empty
+            
+            let amountIn = selectedQuote.amountIn ?? 0
+            let decimalsIn = selectedQuote.assetIn?.decimals ?? 0
+            let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
+            payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn.doubleValue) ?? .empty
         } else {
             receivingTextInSecondaryCurrency = fiatValueText(fromUSDC: valueOut.doubleValue)
             payingTextInSecondaryCurrency = fiatFormat(with: selectedQuote.amountInUSDValue?.doubleValue ?? 0)

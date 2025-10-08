@@ -408,7 +408,7 @@ final class SwapViewController: BaseViewController {
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut.doubleValue) ?? .empty
+            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut) ?? .empty
             
             let amountIn = selectedQuote?.amountIn ?? 0
             let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
@@ -540,7 +540,7 @@ final class SwapViewController: BaseViewController {
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                     sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
-                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.algoFormat(with: swapAmount.doubleValue)  ?? .empty
+                    sharedViewModel?.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                 } else {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                     sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
