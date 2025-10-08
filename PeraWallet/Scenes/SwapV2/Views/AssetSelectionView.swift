@@ -67,6 +67,7 @@ struct AssetSelectionView: View {
     @Binding var amountTextInSecondaryCurrency: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
+    @Binding var isLoadingQuote: Bool?
     @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
@@ -119,7 +120,7 @@ struct AssetSelectionView: View {
                         }
                     }
 
-                    if isLoading {
+                    if isLoading || isLoadingQuote ?? false {
                         ShimmerSUIView()
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)

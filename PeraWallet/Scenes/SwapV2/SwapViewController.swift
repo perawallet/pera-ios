@@ -234,10 +234,18 @@ final class SwapViewController: BaseViewController {
     // MARK: - Helpers
     
     private func resetAmounts() {
-        sharedViewModel?.payingText = .empty
-        sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
-        sharedViewModel?.receivingText = .empty
-        sharedViewModel?.receivingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            sharedViewModel?.payingText = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+            sharedViewModel?.payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+            sharedViewModel?.receivingText = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+            sharedViewModel?.receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+        } else {
+            sharedViewModel?.payingText = .empty
+            sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+            sharedViewModel?.receivingText = .empty
+            sharedViewModel?.receivingTextInSecondaryCurrency = sharedViewModel?.fiatFormat(with: 0.0) ?? SwapSharedViewModel.defaultAmountValue
+        }
+       
         sharedViewModel?.isBalanceNotSufficient = false
         sharedViewModel?.swapConfirmationState = .idle
     }
@@ -337,7 +345,6 @@ final class SwapViewController: BaseViewController {
         let usdcAssetID = ALGAsset.usdcAssetID(network)
         
         if
-            let usdcAsset = selectedAccount?.allAssets?.filter({ $0.id == usdcAssetID }).first,
             let asset = resolveAsset(with: usdcAssetID, for: account),
             let assetItem = assetItem(from: asset)
         {
@@ -398,12 +405,19 @@ final class SwapViewController: BaseViewController {
         let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
+        
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.receivingTextInSecondaryCurrency = viewModel.algoFormat(with: valueOut.doubleValue)
+            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut.doubleValue) ?? .empty
+            
+            let amountIn = selectedQuote?.amountIn ?? 0
+            let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
+            let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
+            viewModel.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn.doubleValue) ?? .empty
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
             viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
+            viewModel.payingTextInSecondaryCurrency = viewModel.fiatFormat(with: selectedQuote?.amountInUSDValue?.doubleValue ?? 0)
         }
         
         viewModel.quoteList = orderedQuoteList

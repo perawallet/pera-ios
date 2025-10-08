@@ -125,9 +125,10 @@ class SwapSharedViewModel: ObservableObject {
         receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            receivingTextInSecondaryCurrency = algoFormat(with: valueOut.doubleValue)
+            receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut.doubleValue) ?? .empty
         } else {
             receivingTextInSecondaryCurrency = fiatValueText(fromUSDC: valueOut.doubleValue)
+            payingTextInSecondaryCurrency = fiatFormat(with: selectedQuote.amountInUSDValue?.doubleValue ?? 0)
         }
     }
     
@@ -148,23 +149,28 @@ class SwapSharedViewModel: ObservableObject {
                     
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                         payingText = fiatFormat(with: doubleValue)
-                        payingTextInSecondaryCurrency = algoValueText(fromFiat: doubleValue)
-                      onGetQuote(algoValue(fromFiat: doubleValue))
+                        onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
                         payingText = Formatter
                             .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8)
                             .string(for: doubleValue) ?? .empty
-                        payingTextInSecondaryCurrency = fiatValueText(fromAlgo: doubleValue)
                         onGetQuote(doubleValue)
                     }
                 }
             } else {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    receivingText = .empty
-                    receivingTextInSecondaryCurrency = fiatFormat(with: 0.0)
-                    payingText = .empty
-                    payingTextInSecondaryCurrency = fiatFormat(with: 0.0)
+                    if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+                        receivingText = fiatFormat(with: 0.0)
+                        receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+                        payingText = fiatFormat(with: 0.0)
+                        payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+                    } else {
+                        receivingText = .empty
+                        receivingTextInSecondaryCurrency = fiatFormat(with: 0.0)
+                        payingText = .empty
+                        payingTextInSecondaryCurrency = fiatFormat(with: 0.0)
+                    }
                 }
             }
         }

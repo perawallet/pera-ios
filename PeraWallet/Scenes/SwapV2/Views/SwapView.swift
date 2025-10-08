@@ -133,10 +133,16 @@ struct SwapView: View {
                         set: { viewModel.payingText = viewModel.filterPayingText($0) }
                     ),
                     amountTextInSecondaryCurrency: Binding(
-                        get: { viewModel.payingTextInSecondaryCurrency.isEmpty ? viewModel.fiatFormat(with: 0.0) : viewModel.payingTextInSecondaryCurrency },
+                        get: { viewModel.payingTextInSecondaryCurrency.isEmpty ?
+                            (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
+                            : viewModel.payingTextInSecondaryCurrency },
                         set: { viewModel.payingTextInSecondaryCurrency = $0 }
                     ),
                     isLoading: $viewModel.isLoadingPayAmount,
+                    isLoadingQuote: Binding<Bool?>(
+                        get: { viewModel.isLoadingReceiveAmount },
+                        set: { viewModel.isLoadingReceiveAmount = $0 ?? false }
+                    ),
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
                     onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
@@ -147,10 +153,13 @@ struct SwapView: View {
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
                     amountTextInSecondaryCurrency: Binding(
-                        get: { viewModel.receivingTextInSecondaryCurrency.isEmpty ? viewModel.fiatFormat(with: 0.0) : viewModel.receivingTextInSecondaryCurrency },
+                        get: { viewModel.receivingTextInSecondaryCurrency.isEmpty
+                            ? (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
+                            : viewModel.receivingTextInSecondaryCurrency },
                         set: { viewModel.receivingTextInSecondaryCurrency = $0 }
                     ),
                     isLoading: $viewModel.isLoadingReceiveAmount,
+                    isLoadingQuote: .constant(nil),
                     isBalanceNotSufficient: .constant(false)
                 ) {
                     onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
