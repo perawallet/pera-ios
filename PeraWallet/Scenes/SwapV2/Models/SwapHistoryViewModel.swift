@@ -19,10 +19,24 @@ import pera_wallet_core
 
 final class SwapHistoryViewModel: ObservableObject {
     @Published private(set) var swapHistoryList: [SwapHistory]?
+    @Published private(set) var uniqueSwapHistoryList: [SwapHistory]?
     @Published private(set) var shouldShowSeeAllButton: Bool = false
     
     init(swapHistoryList: [SwapHistory]?) {
         self.swapHistoryList = swapHistoryList
+        self.uniqueSwapHistoryList = listWithoutDuplicates(from: swapHistoryList)
         self.shouldShowSeeAllButton = swapHistoryList?.isNonEmpty ?? false
+    }
+    
+    private func listWithoutDuplicates(from list: [SwapHistory]?) -> [SwapHistory]? {
+        guard let list else { return nil }
+        return list.reduce(into: [SwapHistory]()) { result, item in
+            if !result.contains(where: {
+                $0.assetIn.assetID == item.assetIn.assetID &&
+                $0.assetOut.assetID == item.assetOut.assetID
+            }) {
+                result.append(item)
+            }
+        }
     }
 }

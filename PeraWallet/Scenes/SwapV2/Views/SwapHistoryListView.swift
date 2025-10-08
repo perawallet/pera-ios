@@ -41,7 +41,7 @@ struct SwapHistoryListView: View {
             }
             .padding(.horizontal, 24)
             Spacer().frame(height: 8)
-            if let swapHistoryList = viewModel.swapHistoryList {
+            if let swapHistoryList = viewModel.uniqueSwapHistoryList {
                 if swapHistoryList.isEmpty {
                     HStack {
                         Text("no-swap-history-placeholder-text")
@@ -55,7 +55,7 @@ struct SwapHistoryListView: View {
                         HStack(spacing: 12) {
                             Spacer().frame(width: 24)
                             ForEach(swapHistoryList, id: \.historyId) { item in
-                                SwapHistoryListItem(viewModel: viewModel, item: item)
+                                SwapHistoryListItem(item: item)
                                     .onTapGesture {
                                         onRowTap?(item)
                                     }

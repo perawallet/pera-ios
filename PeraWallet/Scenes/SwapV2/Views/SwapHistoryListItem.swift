@@ -18,7 +18,6 @@ import SwiftUI
 import pera_wallet_core
 
 struct SwapHistoryListItem: View {
-    @ObservedObject private(set) var viewModel: SwapHistoryViewModel
     let item: SwapHistory
     
     var body: some View {

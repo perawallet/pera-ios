@@ -48,7 +48,7 @@ struct SwapHistorySheet: View {
                 .padding(24)
                 
                 VStack {
-                    if let swapHistoryList = viewModel.swapHistoryList {
+                    if let swapHistoryList = viewModel.uniqueSwapHistoryList {
                         ForEach(swapHistoryList, id: \.historyId) { swapHistoryItem in
                             VStack(spacing: 0) {
                                 HStack(alignment: .center, spacing: 0) {
