@@ -130,7 +130,15 @@ struct SwapView: View {
                     network: $viewModel.selectedNetwork,
                     amountText: Binding(
                         get: { viewModel.payingText },
-                        set: { viewModel.payingText = viewModel.filterPayingText($0) }
+                        set: { newValue in
+                            let filteredValue = viewModel.filterPayingText(newValue)
+                            guard filteredValue != viewModel.payingText else { return }
+                            
+                            viewModel.payingText = filteredValue
+                            viewModel.updatePayingText(filteredValue) {
+                                onAction?(.getQuote(for: $0))
+                            }
+                        }
                     ),
                     amountTextInSecondaryCurrency: Binding(
                         get: { viewModel.payingTextInSecondaryCurrency.isEmpty ?
@@ -166,7 +174,6 @@ struct SwapView: View {
                 }
             }
             .padding(.horizontal, 8)
-            .onChange(of: viewModel.payingText) { viewModel.updatePayingText($0) { onAction?(.getQuote(for: $0)) } }
             
             HStack {
                 SwitchSwapButton {

@@ -153,12 +153,8 @@ class SwapSharedViewModel: ObservableObject {
                     isLoadingReceiveAmount = true
                     
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                        payingText = fiatFormat(with: doubleValue)
                         onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
-                        payingText = Formatter
-                            .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8)
-                            .string(for: doubleValue) ?? .empty
                         onGetQuote(doubleValue)
                     }
                 }
@@ -193,8 +189,20 @@ class SwapSharedViewModel: ObservableObject {
                 .filter { $0 != "." && $0 != "," }
             filtered = String(before + after)
         }
-
-        return filtered
+        
+        let normalized = filtered
+            .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: ",", with: ".")
+        
+        guard let doubleValue = Double(normalized), doubleValue > 0 else {
+            return normalized
+        }
+        
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            return fiatFormat(with: doubleValue)
+        } else {
+            return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: doubleValue) ?? .empty
+        }
     }
 }
 
