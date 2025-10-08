@@ -48,12 +48,12 @@ struct SwapHistorySheet: View {
                 .padding(24)
                 
                 VStack {
-                    if let swapHistoryList = viewModel.uniqueSwapHistoryList {
+                    if let swapHistoryList = viewModel.swapHistoryList {
                         ForEach(swapHistoryList, id: \.historyId) { swapHistoryItem in
                             VStack(spacing: 0) {
                                 HStack(alignment: .center, spacing: 0) {
                                     SwapLogosView(assetIn: swapHistoryItem.assetIn, assetOut: swapHistoryItem.assetOut)
-                                        .padding(.trailing, 8)
+                                        .padding(.trailing, 4)
                                     
                                     VStack(alignment: .leading) {
                                         Text(swapHistoryItem.swappedText)
@@ -89,7 +89,8 @@ struct SwapHistorySheet: View {
                                     .background(Color.Layer.grayLighter)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 24)
+                            .padding(.leading, 20)
+                            .padding(.trailing, 24)
                             .onTapGesture {
                                 onRowTap?(swapHistoryItem)
                                 dismiss()

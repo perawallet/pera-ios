@@ -115,11 +115,17 @@ extension SwapHistory {
     }
     
     public var swappedText: String {
-        String(format: NSLocalizedString("swapped-for-text", comment: ""), "2,000.00", assetIn.unitName)
+        let decimals = assetIn.fractionDecimals
+        let amount = Decimal(string: amountIn) ?? 0
+        let value = amount == 0 ? amount : amount / pow(10, decimals)
+        return String(format: NSLocalizedString("swapped-for-text", comment: ""), value.stringValue, assetIn.unitName)
     }
     
     public var resultText: String {
-        "600.80 \(assetOut.unitName)"
+        let decimals = assetOut.fractionDecimals
+        let amount = Decimal(string: amountOut) ?? 0
+        let value = amount == 0 ? amount : amount / pow(10, decimals)
+        return "\(value) \(assetOut.unitName)"
     }
     
     public var dateText: String {
