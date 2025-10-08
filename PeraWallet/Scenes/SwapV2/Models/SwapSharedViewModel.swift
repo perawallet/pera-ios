@@ -190,7 +190,7 @@ class SwapSharedViewModel: ObservableObject {
 // MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
-        if isBalanceNotSufficient { return false }
+        if isBalanceNotSufficient || isLoadingPayAmount || isLoadingReceiveAmount { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             let paying = Double(
                 payingTextInSecondaryCurrency

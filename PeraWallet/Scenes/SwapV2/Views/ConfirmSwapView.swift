@@ -337,7 +337,9 @@ private struct ConfirmSwapAssetView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .frame(width: 94, height: 48)
+            .frame(minWidth: 94)
+            .frame(height: 48)
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
