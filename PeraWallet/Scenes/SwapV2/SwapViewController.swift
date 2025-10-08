@@ -50,6 +50,7 @@ final class SwapViewController: BaseViewController {
         }
         
         swapAssetFlowCoordinator.getProvidersList()
+        configureView()
     }
     
     override func customizeTabBarAppearence() {
@@ -65,11 +66,6 @@ final class SwapViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        configureView()
     }
     
     // MARK: - View Setup
