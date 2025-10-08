@@ -287,21 +287,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didSignTransaction:
-                if account.requiresLedgerConnection(),
-                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
-                    signWithLedgerProcessScreen.increaseProgress()
-
-                    if signWithLedgerProcessScreen.isProgressFinished {
-                        self.stopLoading()
-
-                        self.visibleScreen.dismissScreen {
-                            [weak self] in
-                            guard let self else { return }
-
-                            self.openSwapLoading(swapController)
-                        }
-                    }
-                }
+                swapAssetDidSignTransaction(account: account, swapController: swapController)
             case .didSignAllTransactions:
                 if account.requiresLedgerConnection() {
                     return
@@ -390,15 +376,7 @@ extension SwapAssetFlowCoordinator {
                     )
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
-                self.ledgerConnectionScreen?.dismiss(animated: true) {
-                    self.ledgerConnectionScreen = nil
-
-                    self.openSignWithLedgerProcess(
-                        swapController: swapController,
-                        ledger: ledger,
-                        transactionGroups: transactionGroups
-                    )
-                }
+                swapAssetDidLedgerRequestUserApproval(ledger: ledger, transactionGroups: transactionGroups, swapController: swapController)
             case .didFinishTiming:
                 break
             case .didLedgerReset:
@@ -445,6 +423,36 @@ extension SwapAssetFlowCoordinator {
             case .didTapPoolAsset:
                 self.openPoolAssetSelection(swapController)
             }
+        }
+    }
+    
+    func swapAssetDidSignTransaction(account: Account, swapController: SwapController) {
+        if account.requiresLedgerConnection(),
+           let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
+            signWithLedgerProcessScreen.increaseProgress()
+
+            if signWithLedgerProcessScreen.isProgressFinished {
+                self.stopLoading()
+
+                self.visibleScreen.dismissScreen {
+                    [weak self] in
+                    guard let self else { return }
+
+                    self.openSwapLoading(swapController)
+                }
+            }
+        }
+    }
+    
+    func swapAssetDidLedgerRequestUserApproval(ledger: String, transactionGroups: [SwapTransactionGroup], swapController: SwapController) {
+        self.ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                swapController: swapController,
+                ledger: ledger,
+                transactionGroups: transactionGroups
+            )
         }
     }
 
@@ -1316,7 +1324,7 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func logFailedSwap(
+    func logFailedSwap(
         quote: SwapQuote,
         txnID: String
     ) {
@@ -1333,7 +1341,7 @@ extension SwapAssetFlowCoordinator {
         )
     }
 
-    private func logFailedSwap(
+    func logFailedSwap(
         quote: SwapQuote,
         error: SwapController.Error
     ) {

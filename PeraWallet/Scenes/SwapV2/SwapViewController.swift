@@ -342,7 +342,6 @@ final class SwapViewController: BaseViewController {
         
         if
             let usdcAsset = selectedAccount?.allAssets?.filter({ $0.id == usdcAssetID }).first,
-            let usdcAssetItem = assetItem(from: usdcAsset),
             let asset = resolveAsset(with: usdcAssetID, for: account),
             let assetItem = assetItem(from: asset)
         {
@@ -651,7 +650,12 @@ final class SwapViewController: BaseViewController {
         from swapController: SwapController
     ) {
         switch event {
-        case .didSignTransaction, .didSignAllTransactions, .didLedgerRequestUserApproval, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
+        case .didSignTransaction:
+            guard let selectedAccount else { return }
+            swapAssetFlowCoordinator.swapAssetDidSignTransaction(account: selectedAccount, swapController: swapController)
+        case let .didLedgerRequestUserApproval(ledger, transactionGroups):
+            swapAssetFlowCoordinator.swapAssetDidLedgerRequestUserApproval(ledger: ledger, transactionGroups: transactionGroups, swapController: swapController)
+        case .didSignAllTransactions, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
             break
         case .didCompleteSwap:
             if let quote = swapController.quote {
@@ -664,18 +668,27 @@ final class SwapViewController: BaseViewController {
                 )
             }
             sharedViewModel?.swapConfirmationState = .success
-        case .didFailTransaction, .didFailNetwork:
+        case .didFailTransaction(let txnID):
+            guard let quote = swapController.quote else { return }
+            swapAssetFlowCoordinator.logFailedSwap(
+                quote: quote,
+                txnID: txnID
+            )
             swapController.clearTransactions()
-            sharedViewModel?.swapConfirmationState = .error
+            sharedViewModel?.swapConfirmationState = .error(nil)
+        case .didFailNetwork(let error):
+            guard let quote = swapController.quote else { return }
+            swapAssetFlowCoordinator.logFailedSwap(
+                quote: quote,
+                error: error
+            )
+            swapController.clearTransactions()
+            sharedViewModel?.swapConfirmationState = .error(error)
         case .didCancelTransaction, .didLedgerReset:
             swapController.clearTransactions()
+            sharedViewModel?.swapConfirmationState = .idle
         case .didFailSigning(let error):
-            switch error {
-            case .api:
-                sharedViewModel?.swapConfirmationState = .error
-            case .ledger:
-                sharedViewModel?.swapConfirmationState = .error
-            }
+            sharedViewModel?.swapConfirmationState = .error(error)
         }
     }
     
