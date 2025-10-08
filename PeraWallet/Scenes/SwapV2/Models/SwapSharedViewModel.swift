@@ -74,8 +74,10 @@ class SwapSharedViewModel: ObservableObject {
     
     func switchAssets() {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
-        (payingText, receivingText) = (receivingText, payingText)
-        (payingTextInSecondaryCurrency, receivingTextInSecondaryCurrency) = (receivingTextInSecondaryCurrency, payingTextInSecondaryCurrency)
+        payingText = receivingText
+        receivingText = .empty
+        payingTextInSecondaryCurrency = .empty
+        receivingTextInSecondaryCurrency = .empty
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
@@ -141,7 +143,6 @@ class SwapSharedViewModel: ObservableObject {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
-                    
                     
                     isLoadingReceiveAmount = true
                     
@@ -347,15 +348,17 @@ extension SwapSharedViewModel {
     }
     
     private func fiatValue(fromAsset asset: Asset, with amount: Double) -> Double {
-        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+        guard
+            let currencyFiatValue = try? currency.fiatValue?.unwrap(),
+            let fiatAmount = try? {
+                let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+                return asset.isAlgo
+                    ? try exchanger.exchangeAlgo(amount: amount.decimal)
+                    : try exchanger.exchange(asset, amount: amount.decimal)
+            }()
+        else {
             return 0
         }
-        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
-        
-        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
-            return 0
-        }
-        
         return fiatAmount.doubleValue
     }
     
