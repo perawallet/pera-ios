@@ -253,7 +253,7 @@ extension SwapSharedViewModel {
             return "-"
         }
         
-        guard let rate = Formatter.decimalFormatter(maximumFractionDigits: 3).string(from: NSDecimalNumber(decimal: (1 / price))) else {
+        guard let rate = Formatter.decimalFormatter(maximumFractionDigits: 3).string(from: NSDecimalNumber(decimal: price)) else {
             return "-"
         }
         

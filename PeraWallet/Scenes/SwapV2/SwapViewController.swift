@@ -548,6 +548,13 @@ final class SwapViewController: BaseViewController {
             if let assetOut = asset(from: swapAssetOut) {
                 selectedAssetOut = assetItem(from: assetOut)
             }
+            let payingText = sharedViewModel?.payingText ?? .empty
+            resetAmounts()
+            sharedViewModel?.payingText = payingText
+            sharedViewModel?.updatePayingText(payingText) { [weak self] doubleValue in
+                guard let self else { return }
+                handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
+            }
             loadSwapView()
         case let .openExplorer(transactionGroupId, pairing):
             guard let formattedGroupID = transactionGroupId.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
