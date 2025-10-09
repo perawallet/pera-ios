@@ -55,8 +55,10 @@ final class SwapSettingsViewModel: ObservableObject {
         switch type {
         case .percentage:
             percentageText = formatted
+            updatePercentageSelection(from: percentageText)
         case .slippage:
             slippageText = formatted
+            updateSlippageSelection(from: slippageText)
         }
     }
     

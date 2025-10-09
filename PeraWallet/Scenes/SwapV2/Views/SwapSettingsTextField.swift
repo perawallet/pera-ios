@@ -20,7 +20,6 @@ struct SwapSettingsTextField: View {
     
     let textFieldType: TextFieldType
     @Binding var text: String
-    @StateObject var viewModel: SwapSettingsViewModel
     
     var body: some View {
         Text(textFieldType.title)
@@ -32,7 +31,6 @@ struct SwapSettingsTextField: View {
             .frame(height: 52)
             .foregroundStyle(Color.Text.grayLighter)
             .keyboardType(.numberPad)
-            .onChange(of: text) { viewModel.updateText($0, for: textFieldType) }
         Rectangle()
             .fill(Color.Layer.grayLighter)
             .frame(height: 1)

@@ -45,8 +45,8 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 24)
             
-            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText, viewModel: viewModel)
-                .onChange(of: viewModel.percentageText) { viewModel.updatePercentageSelection(from: $0)}
+            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText)
+                .onChange(of: viewModel.percentageText) { viewModel.updateText($0, for: .percentage) }
             
             Spacer().frame(height: 16)
             
@@ -67,8 +67,8 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 40)
             
-            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText, viewModel: viewModel)
-                .onChange(of: viewModel.slippageText) { viewModel.updateSlippageSelection(from: $0)}
+            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText)
+                .onChange(of: viewModel.slippageText) { viewModel.updateText($0, for: .slippage) }
             
             Spacer().frame(height: 16)
             
