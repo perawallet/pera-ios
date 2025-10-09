@@ -17,14 +17,38 @@
 import SwiftUI
 import pera_wallet_core
 
-class SwapTopPairViewModel: ObservableObject {
+final class SwapTopPairViewModel: ObservableObject {
     @Published var swapTopPairsList: [SwapTopPair]
     
     var isListEmpty: Bool {
         swapTopPairsList.isEmpty
     }
     
+    var swapTopPairsArray: [(offset: Int, element: SwapTopPair)] {
+        Array(swapTopPairsList.prefix(5).enumerated())
+    }
+    
     init(swapTopPairsList: [SwapTopPair]) {
         self.swapTopPairsList = swapTopPairsList
     }
+    
+    func indexTitleFor(index: Int) -> String {
+        "\(index + 1)."
+    }
+    
+    func rowTitleFor(index: Int) -> String {
+        let topPair = swapTopPairsList[index]
+        return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), topPair.assetA.name, topPair.assetB.name)
+    }
+    
+    func assetAUrlFor(index: Int) -> URL? {
+        let topPair = swapTopPairsList[index]
+        return URL(string: topPair.assetA.logo ?? .empty)
+    }
+    
+    func assetBUrlFor(index: Int) -> URL? {
+        let topPair = swapTopPairsList[index]
+        return URL(string: topPair.assetA.logo ?? .empty)
+    }
+    
 }

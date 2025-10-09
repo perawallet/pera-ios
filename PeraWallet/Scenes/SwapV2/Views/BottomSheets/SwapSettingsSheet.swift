@@ -59,7 +59,7 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(PercentageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(
@@ -82,7 +82,7 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(SlippageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(

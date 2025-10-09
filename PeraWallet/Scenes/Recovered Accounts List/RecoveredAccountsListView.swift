@@ -64,7 +64,7 @@ struct RecoveredAccountsListView: View {
                 .font(.dmSans.regular.size(15.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 40.0)
-            SwiftUI.ScrollView {
+            ScrollView {
                 ForEach(model.addressViewModels) { viewModel in
                     RecoveredAccountsListCell(
                         isSelected: viewModel.isSelected,

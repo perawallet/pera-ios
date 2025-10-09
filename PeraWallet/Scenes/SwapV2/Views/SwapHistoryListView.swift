@@ -51,7 +51,7 @@ struct SwapHistoryListView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
                 } else {
-                    SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             Spacer().frame(width: 24)
                             ForEach(swapHistoryList, id: \.historyId) { item in

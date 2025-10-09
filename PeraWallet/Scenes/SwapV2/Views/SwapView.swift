@@ -78,7 +78,7 @@ struct SwapView: View {
     var body: some View {
         VStack (spacing: 0) {
             headerView
-            SwiftUI.ScrollView {
+            ScrollView {
                 VStack (spacing: 0) {
                     assetSelectionView
                     if viewModel.shouldShowSwapButton {

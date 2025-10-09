@@ -24,7 +24,7 @@ struct SwapHistorySheet: View {
     var onRowTap: ((SwapHistory) -> Void)?
     
     var body: some View {
-        SwiftUI.ScrollView {
+        ScrollView {
             VStack() {
                 ZStack {
                     HStack {

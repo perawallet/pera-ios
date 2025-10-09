@@ -820,9 +820,9 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    func getSwapTopPairsList(with limit: Int? = nil) {
+    func swapTopPairsList(with limit: Int? = nil) {
         let draft = SwapTopPairsQuery(limit: limit)
-        api.getSwapTopPairs(draft) { [weak self] result in
+        api.swapTopPairs(draft) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(value):

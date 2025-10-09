@@ -226,7 +226,7 @@ final class SwapViewController: BaseViewController {
             noAccountViewModel?.swapTopPairsList = result?.results ?? []
         }
         
-        swapAssetFlowCoordinator.getSwapTopPairsList()
+        swapAssetFlowCoordinator.swapTopPairsList()
     }
     
     // MARK: - Actions

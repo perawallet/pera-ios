@@ -143,11 +143,11 @@ extension ALGAPI {
     }
     
     @discardableResult
-    public func getSwapTopPairs(
+    public func swapTopPairs(
         _ draft: SwapTopPairsQuery,
         onCompleted handler: @escaping (Response.Result<SwapTopPairsList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV2(network))
             .path(.swapTopPairsList)
             .method(.get)
