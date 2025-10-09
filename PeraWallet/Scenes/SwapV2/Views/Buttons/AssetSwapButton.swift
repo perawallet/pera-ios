@@ -22,6 +22,7 @@ struct AssetSwapButton: View {
     // MARK: - Properties
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
+    var buttonBgColor: Color
     private let iconSize: CGFloat = 24
     
     let onTap: () -> Void
@@ -48,7 +49,7 @@ struct AssetSwapButton: View {
                 .frame(width: iconSize, height: iconSize)
                 .clipShape(Circle())
                 Spacer().frame(width: 6)
-                Text(assetItem.asset.naming.displayNames.primaryName)
+                Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
                     .font(.dmSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
                     .lineLimit(1)
@@ -64,7 +65,7 @@ struct AssetSwapButton: View {
         .frame(height: 48)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.Layer.grayLightest)
+                .fill(buttonBgColor)
         )
         .frame(maxWidth: 250)
         .fixedSize(horizontal: true, vertical: false)

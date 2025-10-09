@@ -18,6 +18,9 @@ import SwiftUI
 import Combine
 import pera_wallet_core
 
+// FIXME: This class mixes ViewModel and Model logic.
+// It should be refactored to follow a proper MVVM structure by
+// moving business and formatting logic into dedicated services.
 class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Published Properties
@@ -30,10 +33,10 @@ class SwapSharedViewModel: ObservableObject {
     @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
     
-    @Published var payingText: String = defaultAmountValue
-    @Published var payingTextInSecondaryCurrency: String = defaultAmountValue
-    @Published var receivingText: String = defaultAmountValue
-    @Published var receivingTextInSecondaryCurrency: String = defaultAmountValue
+    @Published var payingText: String = .empty
+    @Published var payingTextInSecondaryCurrency: String = .empty
+    @Published var receivingText: String = .empty
+    @Published var receivingTextInSecondaryCurrency: String = .empty
     
     @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
     
@@ -42,9 +45,11 @@ class SwapSharedViewModel: ObservableObject {
     @Published var slippageSelected: SlippageValue? = nil
     
     @Published var swapTopPairsList: [SwapTopPair] = []
+    @Published var swapHistoryList: [SwapHistory]? = []
+    
     private var debounceWorkItem: DispatchWorkItem?
     
-    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 1).string(for: Decimal(0))!
+    static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 2).string(for: Decimal(0))!
     
     let currency: CurrencyProvider
     
@@ -70,10 +75,12 @@ class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Helpers
     
-    func switchAssets() {
+    func switchAssets(onAssetsSwitched: @escaping () -> Void) {
         (selectedAssetIn, selectedAssetOut) = (selectedAssetOut, selectedAssetIn)
-        (payingText, receivingText) = (receivingText, payingText)
-        (payingTextInSecondaryCurrency, receivingTextInSecondaryCurrency) = (receivingTextInSecondaryCurrency, payingTextInSecondaryCurrency)
+        receivingText = .empty
+        payingTextInSecondaryCurrency = .empty
+        receivingTextInSecondaryCurrency = .empty
+        onAssetsSwitched()
     }
     
     func confirmSwapModel() -> SwapConfirmViewModel {
@@ -121,9 +128,15 @@ class SwapSharedViewModel: ObservableObject {
         receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            receivingTextInSecondaryCurrency = algoFormat(with: valueOut.doubleValue)
+            receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut.doubleValue) ?? .empty
+            
+            let amountIn = selectedQuote.amountIn ?? 0
+            let decimalsIn = selectedQuote.assetIn?.decimals ?? 0
+            let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
+            payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn.doubleValue) ?? .empty
         } else {
             receivingTextInSecondaryCurrency = fiatValueText(fromUSDC: valueOut.doubleValue)
+            payingTextInSecondaryCurrency = fiatFormat(with: selectedQuote.amountInUSDValue?.doubleValue ?? 0)
         }
     }
     
@@ -140,28 +153,28 @@ class SwapSharedViewModel: ObservableObject {
                     guard let self = self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
                     
-                    
                     isLoadingReceiveAmount = true
                     
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                        payingText = fiatFormat(with: doubleValue)
-                        payingTextInSecondaryCurrency = algoValueText(fromFiat: doubleValue)
-                      onGetQuote(algoValue(fromFiat: doubleValue))
+                        onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
-                        payingText = Formatter
-                            .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8)
-                            .string(for: doubleValue) ?? .empty
-                        payingTextInSecondaryCurrency = fiatValueText(fromAlgo: doubleValue)
                         onGetQuote(doubleValue)
                     }
                 }
             } else {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    receivingText = Self.defaultAmountValue
-                    receivingTextInSecondaryCurrency = Self.defaultAmountValue
-                    payingText = Self.defaultAmountValue
-                    payingTextInSecondaryCurrency = Self.defaultAmountValue
+                    if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+                        receivingText = fiatFormat(with: 0.0)
+                        receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+                        payingText = fiatFormat(with: 0.0)
+                        payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
+                    } else {
+                        receivingText = .empty
+                        receivingTextInSecondaryCurrency = fiatFormat(with: 0.0)
+                        payingText = .empty
+                        payingTextInSecondaryCurrency = fiatFormat(with: 0.0)
+                    }
                 }
             }
         }
@@ -169,12 +182,37 @@ class SwapSharedViewModel: ObservableObject {
         debounceWorkItem = task
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
     }
+    
+    func filterPayingText(_ input: String) -> String {
+        var filtered = input.filter { "0123456789,.".contains($0) }
+
+        if let firstSeparatorIndex = filtered.firstIndex(where: { $0 == "." || $0 == "," }) {
+            let before = filtered.prefix(upTo: filtered.index(after: firstSeparatorIndex))
+            let after = filtered.suffix(from: filtered.index(after: firstSeparatorIndex))
+                .filter { $0 != "." && $0 != "," }
+            filtered = String(before + after)
+        }
+        
+        let normalized = filtered
+            .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: ",", with: ".")
+        
+        guard let doubleValue = Double(normalized), doubleValue > 0 else {
+            return normalized
+        }
+        
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            return fiatFormat(with: doubleValue)
+        } else {
+            return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: doubleValue) ?? .empty
+        }
+    }
 }
 
 // MARK: - Computed Properties
 extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
-        if isBalanceNotSufficient { return false }
+        if isBalanceNotSufficient || isLoadingPayAmount || isLoadingReceiveAmount { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             let paying = Double(
                 payingTextInSecondaryCurrency
@@ -188,8 +226,16 @@ extension SwapSharedViewModel {
             ) ?? 0
             return paying > 0 && receiving > 0
         } else {
-            let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0
-            let receiving = Double(receivingText.replacingOccurrences(of: ",", with: ".")) ?? 0
+            let paying = Double(
+                payingText
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
+            let receiving = Double(
+                receivingText
+                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+                    .replacingOccurrences(of: ",", with: ".")
+            ) ?? 0
             return paying > 0 && receiving > 0
         }
 
@@ -237,7 +283,7 @@ extension SwapSharedViewModel {
             return "-"
         }
         
-        guard let rate = Formatter.decimalFormatter(maximumFractionDigits: 3).string(from: NSDecimalNumber(decimal: (1 / price))) else {
+        guard let rate = Formatter.decimalFormatter(maximumFractionDigits: 3).string(from: NSDecimalNumber(decimal: price)) else {
             return "-"
         }
         
@@ -332,15 +378,17 @@ extension SwapSharedViewModel {
     }
     
     private func fiatValue(fromAsset asset: Asset, with amount: Double) -> Double {
-        guard let currencyFiatValue = try? currency.fiatValue?.unwrap() else {
+        guard
+            let currencyFiatValue = try? currency.fiatValue?.unwrap(),
+            let fiatAmount = try? {
+                let exchanger = CurrencyExchanger(currency: currencyFiatValue)
+                return asset.isAlgo
+                    ? try exchanger.exchangeAlgo(amount: amount.decimal)
+                    : try exchanger.exchange(asset, amount: amount.decimal)
+            }()
+        else {
             return 0
         }
-        let exchanger = CurrencyExchanger(currency: currencyFiatValue)
-        
-        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
-            return 0
-        }
-        
         return fiatAmount.doubleValue
     }
     
@@ -422,8 +470,9 @@ enum PercentageValue: CaseIterable, Equatable, Hashable {
     }
 }
 
-enum SlippageValue: CaseIterable, Equatable {
-    case custom, c05, c1, c2, c5
+enum SlippageValue: Equatable, Hashable {
+    case custom(value: Double)
+    case c05, c1, c2, c5
     
     var title: String {
         switch self {
@@ -437,11 +486,32 @@ enum SlippageValue: CaseIterable, Equatable {
     
     var value: Double {
         switch self {
-        case .custom: 0
+        case .custom(value: let value): value
         case .c05: 0.005
         case .c1: 0.01
         case .c2: 0.02
         case .c5: 0.05
         }
     }
+    
+    static var allDefaultCases: [SlippageValue] {
+        [.c05, .c1, .c2, .c5]
+    }
+    
+    static var allCases: [SlippageValue] {
+        [.custom(value: 0), .c05, .c1, .c2, .c5]
+    }
+    
+    static func == (lhs: SlippageValue, rhs: SlippageValue) -> Bool {
+            switch (lhs, rhs) {
+            case (.custom, .custom),
+                 (.c05, .c05),
+                 (.c1, .c1),
+                 (.c2, .c2),
+                 (.c5, .c5):
+                return true
+            default:
+                return false
+            }
+        }
 }

@@ -51,22 +51,4 @@ final class SwapTopPairViewModel: ObservableObject {
         return URL(string: topPair.assetA.logo ?? .empty)
     }
     
-    func volumeFor(index: Int) -> String {
-        let topPair = swapTopPairsList[index]
-        let value = Double(topPair.volume24hUSD) ?? 0
-        
-        let thresholds: [(Double, String)] = [
-            (1_000_000_000, "B"),
-            (1_000_000, "M"),
-            (1_000, "k")
-        ]
-        
-        for (divider, suffix) in thresholds {
-            if value >= divider {
-                return String(format: "$%.2f%@", value / divider, suffix)
-            }
-        }
-        
-        return "$" + (Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: value) ?? "0.00")
-    }
 }

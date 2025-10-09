@@ -24,33 +24,33 @@ enum SwapInfoSheet: Identifiable {
     
     var id: String {
         switch self {
-        case .slippageTolerance: return "slippageTolerance"
-        case .priceImpact: return "priceImpact"
-        case .exchangeFee: return "exchangeFee"
+        case .slippageTolerance: "slippageTolerance"
+        case .priceImpact: "priceImpact"
+        case .exchangeFee: "exchangeFee"
         }
     }
     
     var title: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-title"
-        case .priceImpact: return "swap-price-impact-title"
-        case .exchangeFee: return "title-exchange-fee"
+        case .slippageTolerance: "swap-slippage-title"
+        case .priceImpact: "swap-price-impact-title"
+        case .exchangeFee: "title-exchange-fee"
         }
     }
     
     var text: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-tolerance-info-body"
-        case .priceImpact: return "swap-price-impact-info-body"
-        case .exchangeFee: return "swap-exchange-fee-info-body"
+        case .slippageTolerance: "swap-slippage-tolerance-info-body"
+        case .priceImpact: "swap-price-impact-info-body"
+        case .exchangeFee: "swap-exchange-fee-info-body"
         }
     }
     
     var height: CGFloat {
         switch self {
-        case .slippageTolerance: return 320
-        case .exchangeFee: return 280
-        case .priceImpact: return 250
+        case .slippageTolerance: 320
+        case .exchangeFee: 280
+        case .priceImpact: 250
         }
     }
 }
@@ -61,7 +61,6 @@ struct ConfirmSwapView: View {
     @ObservedObject var viewModel: SwapConfirmViewModel
     
     @State private var activeSheet: SwapInfoSheet?
-    @State private var didFail = false
     
     var onConfirmTap: () -> Void
     var onSwapSuccess: (String) -> Void
@@ -145,11 +144,15 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    if !didFail, let url = URL(string: viewModel.provider.iconUrl) {
-                        URLImageSUIView(url: url, didFail: $didFail)
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .clipShape(Circle())
+                    if let url = URL(string: viewModel.provider.iconUrl) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                        } placeholder: {
+                            EmptyView()
+                        }
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .clipShape(Circle())
                     }
                     Text(viewModel.provider.displayName)
                         .font(.dmSans.regular.size(13))
@@ -251,7 +254,7 @@ struct ConfirmSwapView: View {
                 onConfirmTap()
             }
             .disabled(viewModel.isSwapDisabled)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             Spacer()
         }
         .onChange(of: viewModel.confirmationState) { newState in
@@ -317,7 +320,7 @@ private struct ConfirmSwapAssetView: View {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.Layer.grayLightest)
                 HStack {
-                    Text(assetItem.asset.naming.displayNames.primaryName)
+                    Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 6)
@@ -334,7 +337,9 @@ private struct ConfirmSwapAssetView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .frame(width: 94, height: 48)
+            .frame(minWidth: 94)
+            .frame(height: 48)
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)

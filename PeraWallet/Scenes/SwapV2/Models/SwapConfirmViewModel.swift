@@ -102,7 +102,7 @@ enum ConfirmSlideButtonState: Equatable {
     case idle
     case loading
     case success
-    case error
+    case error(Error?)
     
     var buttonBackgroundColor: Color {
         switch self {
@@ -135,4 +135,26 @@ enum ConfirmSlideButtonState: Equatable {
         }
     }
     
+    var isError: Bool {
+        if case .error = self { return true }
+        return false
+    }
+    
+    static func == (lhs: ConfirmSlideButtonState, rhs: ConfirmSlideButtonState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle), (.loading, .loading), (.success, .success):
+            return true
+        case let (.error(lhsError), .error(rhsError)):
+            switch (lhsError, rhsError) {
+            case (nil, nil):
+                return true
+            case let (lhs?, rhs?):
+                return type(of: lhs) == type(of: rhs) && lhs.localizedDescription == rhs.localizedDescription
+            default:
+                return false
+            }
+        default:
+            return false
+        }
+    }
 }

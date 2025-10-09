@@ -63,9 +63,11 @@ final class SwapAssetFlowCoordinator:
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
-    var onFeeCalculated: ((PeraSwapFee?, SwapAssetDataController.Error?) -> Void)?
+    var onFeeCalculated: ((PeraSwapV2Fee?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
+    var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
+    var onAssetLoaded: ((Asset?) -> Void)?
 
     private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
@@ -285,21 +287,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didSignTransaction:
-                if account.requiresLedgerConnection(),
-                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
-                    signWithLedgerProcessScreen.increaseProgress()
-
-                    if signWithLedgerProcessScreen.isProgressFinished {
-                        self.stopLoading()
-
-                        self.visibleScreen.dismissScreen {
-                            [weak self] in
-                            guard let self else { return }
-
-                            self.openSwapLoading(swapController)
-                        }
-                    }
-                }
+                swapAssetDidSignTransaction(account: account, swapController: swapController)
             case .didSignAllTransactions:
                 if account.requiresLedgerConnection() {
                     return
@@ -388,15 +376,7 @@ extension SwapAssetFlowCoordinator {
                     )
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
-                self.ledgerConnectionScreen?.dismiss(animated: true) {
-                    self.ledgerConnectionScreen = nil
-
-                    self.openSignWithLedgerProcess(
-                        swapController: swapController,
-                        ledger: ledger,
-                        transactionGroups: transactionGroups
-                    )
-                }
+                swapAssetDidLedgerRequestUserApproval(ledger: ledger, transactionGroups: transactionGroups, swapController: swapController)
             case .didFinishTiming:
                 break
             case .didLedgerReset:
@@ -443,6 +423,36 @@ extension SwapAssetFlowCoordinator {
             case .didTapPoolAsset:
                 self.openPoolAssetSelection(swapController)
             }
+        }
+    }
+    
+    func swapAssetDidSignTransaction(account: Account, swapController: SwapController) {
+        if account.requiresLedgerConnection(),
+           let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
+            signWithLedgerProcessScreen.increaseProgress()
+
+            if signWithLedgerProcessScreen.isProgressFinished {
+                self.stopLoading()
+
+                self.visibleScreen.dismissScreen {
+                    [weak self] in
+                    guard let self else { return }
+
+                    self.openSwapLoading(swapController)
+                }
+            }
+        }
+    }
+    
+    func swapAssetDidLedgerRequestUserApproval(ledger: String, transactionGroups: [SwapTransactionGroup], swapController: SwapController) {
+        self.ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                swapController: swapController,
+                ledger: ledger,
+                transactionGroups: transactionGroups
+            )
         }
     }
 
@@ -635,7 +645,7 @@ extension SwapAssetFlowCoordinator {
         }
     }
     
-    func openSelectAssetOut(account: Account) {
+    func openSelectAssetOut(account: Account, assetIn: Asset?) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics,
@@ -645,7 +655,7 @@ extension SwapAssetFlowCoordinator {
         
         let swapControllerDraft = ALGSwapControllerDraft(
             account: account,
-            assetIn: draft.assetIn ?? account.algo,
+            assetIn: assetIn ?? draft.assetIn ?? account.algo,
             assetOut: draft.assetOut
         )
         
@@ -657,7 +667,7 @@ extension SwapAssetFlowCoordinator {
         
         let dataController = SelectSwapPoolAssetDataController(
             account: swapController.account,
-            userAsset: swapController.userAsset.id,
+            userAsset: assetIn?.id ?? swapController.userAsset.id,
             swapProviders: swapController.providers,
             api: api,
             sharedDataController: sharedDataController
@@ -678,19 +688,32 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didSelectAsset(let asset):
-                if swapController.account.isOptedIn(to: asset.id) {
-                    guard let onAssetOutSelected else { return }
-                    onAssetOutSelected(asset)
-                    selectAssetScreen?.dismissScreen()
-                    return
-                }
-
-                let assetDecoration = AssetDecoration(asset: asset)
-                self.openOptInAsset(assetDecoration)
-            case .didOptInToAsset(let asset):
                 guard let onAssetOutSelected else { return }
                 onAssetOutSelected(asset)
                 selectAssetScreen?.dismissScreen()
+            case .didOptInToAsset: break
+            }
+        }
+    }
+    
+    func fetchAsset(with assetId: AssetID) {
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetId]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let assetDetailResponse):
+                guard let assetDecoration = assetDetailResponse.results.first else {
+                    onAssetLoaded?(nil)
+                    return
+                }
+                
+                let asset = StandardAsset(decoration: assetDecoration)
+                onAssetLoaded?(asset)
+            case .failure:
+                onAssetLoaded?(nil)
             }
         }
     }
@@ -780,11 +803,11 @@ extension SwapAssetFlowCoordinator {
         ).toFraction(of: assetIn.decimals)
         
         let draft = PeraSwapFeeDraft(assetID: assetIn.id, amount: decimalValue)
-        api.calculatePeraSwapFee(draft) { [weak self] result in
+        api.calculatePeraSwapV2Fee(draft) { [weak self] result in
             guard let self else { return }
             switch result {
-            case let .success(fee):
-                onFeeCalculated?(fee, nil)
+            case let .success(response):
+                onFeeCalculated?(response, nil)
             case let .failure(apiError, hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
@@ -810,6 +833,23 @@ extension SwapAssetFlowCoordinator {
                     apiErrorDetail: hipApiError
                 )
                 onTopPairsListLoaded?(nil, error)
+            }
+        }
+    }
+    
+    func swapHistoryList(with address: String, cursor: String? = nil, limit: Int? = nil, statuses: String? = nil) {
+        let draft = SwapHistoryQuery(address: address, cursor: cursor, limit: limit, statuses: statuses)
+        api.getSwapHistory(draft) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(value):
+                onHistoryListLoaded?(value, nil)
+            case let .failure(apiError, hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                onHistoryListLoaded?(nil, error)
             }
         }
     }
@@ -1284,7 +1324,7 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func logFailedSwap(
+    func logFailedSwap(
         quote: SwapQuote,
         txnID: String
     ) {
@@ -1301,7 +1341,7 @@ extension SwapAssetFlowCoordinator {
         )
     }
 
-    private func logFailedSwap(
+    func logFailedSwap(
         quote: SwapQuote,
         error: SwapController.Error
     ) {
