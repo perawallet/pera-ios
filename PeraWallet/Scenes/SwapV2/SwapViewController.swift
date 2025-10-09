@@ -63,6 +63,19 @@ final class SwapViewController: BaseViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let sharedViewModel else { return }
+        guard !sharedViewModel.payingText.isEmptyOrBlank else {
+            resetAmounts()
+            return
+        }
+        sharedViewModel.updatePayingText(sharedViewModel.payingText) {  [weak self] doubleValue in
+            guard let self else { return }
+            handleSwapViewCallbacks(with: .getQuote(for: doubleValue))
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -547,6 +560,8 @@ final class SwapViewController: BaseViewController {
                 }
                 
                 sharedViewModel?.isLoadingPayAmount = false
+                sharedViewModel?.isLoadingReceiveAmount = true
+                handleSwapViewCallbacks(with: .getQuote(for: swapAmount.doubleValue))
             }
             
             swapAssetFlowCoordinator.calculateFee(assetIn: assetIn, amount: amount)
@@ -628,7 +643,7 @@ final class SwapViewController: BaseViewController {
         
         let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
         let paddingFee = configuration.featureFlagService.double(for: .swapFeePadding)?.decimal ?? SwapQuote.feePadding.assetAmount(fromFraction: asset.decimals)
-        let minBalance = selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0
+        let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
         let desired = balance * percentage
         let maxTradable = max(balance - peraFee - minBalance - paddingFee, 0)
         return min(desired, maxTradable)

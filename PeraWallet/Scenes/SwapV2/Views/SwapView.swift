@@ -188,8 +188,7 @@ struct SwapView: View {
                     case .settings:
                         activeSheet = .settings
                     case .max:
-                        viewModel.isLoadingPayAmount = true
-                        onAction?(.calculatePeraFee(forAmount: NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue, withPercentage: 1.0))
+                        handlePercentageChange(.max)
                     }
                 }
             }
@@ -229,7 +228,6 @@ struct SwapView: View {
         case .settings:
             SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
                 onAction?(.trackAnalytics(event: .swapSettingsApply))
-                viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
                 handlePercentageChange(newPercentageSelected)
                 handleSlippageChange(newSlippageSelected)
             } onAnalyticsEvent: { event in
@@ -267,6 +265,7 @@ struct SwapView: View {
         guard let newPercentage else { return }
         viewModel.isLoadingPayAmount = true
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        viewModel.isBalanceNotSufficient = amount > NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
         onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
     }
     
