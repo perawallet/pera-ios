@@ -41,7 +41,11 @@ public extension AssetItem {
         let asset = asset
         
         let formatter = currencyFormatter
-        formatter.formattingContext = currencyFormattingContext ?? .listItem
+        var formattingRules = CurrencyFormattingContextRules()
+        formattingRules.minimumFractionDigits = 0
+        formattingRules.maximumFractionDigits = 7
+        
+        formatter.formattingContext = .standalone(constraints: formattingRules)
         formatter.isValueHidden = isAmountHidden
         if asset.isAlgo {
             formatter.currency = AlgoLocalCurrency()
