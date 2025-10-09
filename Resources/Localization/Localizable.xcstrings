@@ -7479,7 +7479,6 @@
       }
     },
     "swap-top-pair-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
