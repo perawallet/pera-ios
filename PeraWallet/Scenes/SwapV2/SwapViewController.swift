@@ -647,13 +647,10 @@ final class SwapViewController: BaseViewController {
         switch event {
         case .didSignTransaction:
             guard let selectedAccount else { return }
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .inProgress, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID })
             swapAssetFlowCoordinator.swapAssetDidSignTransaction(account: selectedAccount, swapController: swapController)
         case let .didLedgerRequestUserApproval(ledger, transactionGroups):
             swapAssetFlowCoordinator.swapAssetDidLedgerRequestUserApproval(ledger: ledger, transactionGroups: transactionGroups, swapController: swapController)
-        case .didSignAllTransactions:
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .inProgress, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID })
-        case .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
+        case .didSignAllTransactions, .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
             break
         case .didCompleteSwap:
             if let quote = swapController.quote {
@@ -665,7 +662,6 @@ final class SwapViewController: BaseViewController {
                     )
                 )
             }
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .completed, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID })
             sharedViewModel?.swapConfirmationState = .success
         case .didFailTransaction(let txnID):
             guard let quote = swapController.quote else { return }
@@ -673,12 +669,10 @@ final class SwapViewController: BaseViewController {
                 quote: quote,
                 txnID: txnID
             )
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: quote.id, status: .failed, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID }, failureReason: .blockchainError)
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error(nil)
         case .didFailNetwork(let error):
             guard let quote = swapController.quote else { return }
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: quote.id, status: .failed, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID }, failureReason: .other)
             swapAssetFlowCoordinator.logFailedSwap(
                 quote: quote,
                 error: error
@@ -686,11 +680,9 @@ final class SwapViewController: BaseViewController {
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error(error)
         case .didCancelTransaction, .didLedgerReset:
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .failed, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID }, failureReason: .userCancelled)
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .idle
         case .didFailSigning(let error):
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .failed, submittedTransactionIds: swapController.parsedTransactions.map { $0.groupID }, failureReason: .blockchainError)
             sharedViewModel?.swapConfirmationState = .error(error)
         }
     }
@@ -702,7 +694,6 @@ final class SwapViewController: BaseViewController {
         switch event {
         case .willUpdateSlippage, .didUpdateSlippage, .willPrepareTransactions: break
         case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
-            swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.quote?.id, status: .failed, failureReason: .blockchainError)
             bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
         case .didPrepareTransactions(let swapTransactionPreparation):
             let transactionGroups = swapTransactionPreparation.transactionGroups
