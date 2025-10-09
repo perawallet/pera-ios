@@ -54,8 +54,14 @@ public extension String {
     }
     
     func normalizedNumericString() -> String {
-        replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: ",", with: ".")
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .decimal
+
+        if let number = formatter.number(from: self) {
+            return number.stringValue
+        }
+        return self
     }
     
     var isZeroValue: Bool {
