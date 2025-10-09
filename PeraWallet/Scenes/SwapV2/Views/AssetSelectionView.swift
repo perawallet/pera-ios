@@ -144,7 +144,7 @@ struct AssetSelectionView: View {
                         .resizable()
                         .frame(width: 16, height: 16)
                     Spacer().frame(width: 8)
-                    Text("swap-balance-not-sufficient-title")
+                    Text(String(format: String(localized: "swap-balance-not-sufficient-title"), assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName))
                         .font(.dmSans.medium.size(13.0))
                         .foregroundStyle(Color.Helpers.negative)
                         .frame(height: 20)

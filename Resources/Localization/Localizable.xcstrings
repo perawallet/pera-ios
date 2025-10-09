@@ -7047,7 +7047,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ALGO balance is not sufficient."
+            "value" : "%@ balance is not sufficient."
           }
         }
       }
