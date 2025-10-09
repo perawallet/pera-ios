@@ -92,7 +92,6 @@ struct SwapHistorySheet: View {
                         .padding(.trailing, 24)
                         .onTapGesture {
                             onRowTap?(swapHistoryItem)
-                            dismiss()
                         }
                     }
                 } else {

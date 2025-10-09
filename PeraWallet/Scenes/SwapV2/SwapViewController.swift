@@ -608,7 +608,11 @@ final class SwapViewController: BaseViewController {
                 return
             }
             analytics.track(.swapV2HistoryEvent(type: .selectHistoryInSeeAll, swapPairing: pairing))
-            open(url)
+            guard let presentedViewController else {
+                openInBrowser(url)
+                return
+            }
+            open(url, from: presentedViewController)
         case .confirmSwap:
             analytics.track(.swapV2ConfirmEvent(type: .confirmSlide))
             confirmSwap()
