@@ -18,6 +18,9 @@ import SwiftUI
 import Combine
 import pera_wallet_core
 
+// FIXME: This class mixes ViewModel and Model logic.
+// It should be refactored to follow a proper MVVM structure by
+// moving business and formatting logic into dedicated services.
 class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Published Properties
