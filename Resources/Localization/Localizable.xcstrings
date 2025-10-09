@@ -2900,7 +2900,6 @@
       }
     },
     "create-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

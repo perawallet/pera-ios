@@ -32,7 +32,7 @@ struct SettingsSwapButton: View {
             SwiftUI.Button {
                 onTap(.settings)
             } label: {
-                Image("icon-asset-manage")
+                Image(.iconAssetManage)
                     .resizable()
                     .frame(width: 16, height: 16)
                     .clipShape(Circle())

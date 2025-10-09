@@ -31,7 +31,7 @@ struct SwapHistorySheet: View {
                         SwiftUI.Button(action: {
                             dismiss()
                         }) {
-                            Image("icon-close")
+                            Image(.iconClose)
                                 .frame(width: 24, height: 24)
                         }
                         Spacer()
@@ -79,7 +79,7 @@ struct SwapHistorySheet: View {
                                     
                                     Spacer()
                                     
-                                    Image("icon-external-link")
+                                    Image(.iconExternalLink)
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                 }

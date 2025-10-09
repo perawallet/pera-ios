@@ -65,7 +65,7 @@ struct SwapHistoryListView: View {
                 }
             } else {
                 HStack {
-                    Image("icon-info-18")
+                    Image(.iconInfo18)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.Helpers.negative)

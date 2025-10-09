@@ -73,7 +73,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button(action: {
                         dismiss()
                     }) {
-                        Image("icon-close")
+                        Image(.iconClose)
                             .frame(width: 24, height: 24)
                     }
                     Spacer()
@@ -133,7 +133,7 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 8)
-                    Image("icon-repeat")
+                    Image(.iconRepeat)
                         .resizable()
                         .frame(width: 20, height: 20)
                 }
@@ -167,7 +167,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button {
                         activeSheet = .slippageTolerance
                     } label: {
-                        Image("icon-info-20")
+                        Image(.iconInfo20)
                     }
                     Spacer()
                     Text(viewModel.slippageTolerance)
@@ -184,11 +184,11 @@ struct ConfirmSwapView: View {
                         activeSheet = .priceImpact
                     } label: {
                         if viewModel.highPriceImpactWarning != nil {
-                            Image("icon-info-20")
+                            Image(.iconInfo20)
                                 .renderingMode(.template)
                                 .foregroundColor(Color.Helpers.negative)
                         } else {
-                            Image("icon-info-20")
+                            Image(.iconInfo20)
                         }
                     }
                     Spacer()
@@ -215,7 +215,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button {
                         activeSheet = .exchangeFee
                     } label: {
-                        Image("icon-info-20")
+                        Image(.iconInfo20)
                     }
                     Spacer()
                     Text(viewModel.exchangeFee)
@@ -235,7 +235,7 @@ struct ConfirmSwapView: View {
                 Spacer().frame(height: 20)
                 if let warningMessage = viewModel.highPriceImpactWarning {
                     HStack(alignment: .top, spacing: 4) {
-                        Image("icon-info-red")
+                        Image(.iconInfoRed)
                             .resizable()
                             .frame(width: 20, height: 20)
                         Text(warningMessage)
@@ -292,17 +292,17 @@ private struct ConfirmSwapAssetView: View {
         HStack (alignment: .center) {
             Group {
                 if assetItem.asset.isAlgo {
-                    Image("icon-algo-circle").resizable()
+                    Image(.iconAlgoCircle).resizable()
                 } else if assetItem.asset.isUSDC(for: network) {
-                    Image("icon-usdc-circle").resizable()
+                    Image(.iconUsdcCircle).resizable()
                 } else if let url = assetItem.asset.logoURL {
                     AsyncImage(url: url) { image in
                         image.resizable()
                     } placeholder: {
-                        Image("icon-swap-empty").resizable()
+                        Image(.iconSwapEmpty).resizable()
                     }
                 } else {
-                    Image("icon-swap-empty").resizable()
+                    Image(.iconSwapEmpty).resizable()
                 }
             }
             .frame(width: 40, height: 40)
@@ -326,9 +326,9 @@ private struct ConfirmSwapAssetView: View {
                     Spacer().frame(width: 6)
                     Group {
                         if assetItem.asset.verificationTier.isVerified {
-                            Image("icon-verified").resizable()
+                            Image(.iconVerified).resizable()
                         } else if assetItem.asset.verificationTier.isTrusted {
-                            Image("icon-trusted").resizable()
+                            Image(.iconTrusted).resizable()
                         } else {
                             EmptyView()
                         }
