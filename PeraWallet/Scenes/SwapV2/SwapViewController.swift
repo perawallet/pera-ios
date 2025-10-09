@@ -560,7 +560,7 @@ final class SwapViewController: BaseViewController {
                     sharedViewModel?.isLoadingPayAmount = false
                     return
                 }
-                let swapAmount = calculateSwapAmount(for: assetIn, balance: amount.decimal, peraSwapFee: response, percentage: percentage.decimal)
+                let swapAmount = calculateSwapAmount(for: assetIn, balance: Decimal(amount), peraSwapFee: response, percentage: Decimal(percentage))
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                     sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
@@ -653,8 +653,14 @@ final class SwapViewController: BaseViewController {
         guard let peraSwapFee else { return 0 }
         
         let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
-        let paddingFee = configuration.featureFlagService.double(for: .swapFeePadding)?.decimal ?? SwapQuote.feePadding.assetAmount(fromFraction: asset.decimals)
         let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
+        var paddingFee: Decimal {
+            if let feePadding = configuration.featureFlagService.double(for: .swapFeePadding) {
+                return Decimal(feePadding)
+            } else {
+                return SwapQuote.feePadding.assetAmount(fromFraction: asset.decimals)
+            }
+        }
         let desired = balance * percentage
         let maxTradable = max(balance - peraFee - minBalance - paddingFee, 0)
         return min(desired, maxTradable)

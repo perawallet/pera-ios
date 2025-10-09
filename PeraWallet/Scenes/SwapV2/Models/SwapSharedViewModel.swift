@@ -145,9 +145,7 @@ class SwapSharedViewModel: ObservableObject {
 
         let task = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            let normalized = newValue
-                .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                .replacingOccurrences(of: ",", with: ".")
+            let normalized = newValue.normalizedNumericString()
             if let doubleValue = Double(normalized), doubleValue > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
@@ -214,16 +212,8 @@ extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
         if isBalanceNotSufficient || isLoadingPayAmount || isLoadingReceiveAmount { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            let paying = Double(
-                payingTextInSecondaryCurrency
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
-            let receiving = Double(
-                receivingTextInSecondaryCurrency
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
+            let paying = Double(payingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
+            let receiving = Double(receivingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
             return paying > 0 && receiving > 0
         } else {
             let paying = Double(
@@ -357,7 +347,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.decimal) else {
+        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: Decimal(amount)) else {
             return 0
         }
         
@@ -370,7 +360,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchange(amount: amount.decimal) else {
+        guard let fiatAmount = try? exchanger.exchange(amount: Decimal(amount)) else {
             return 0
         }
         
@@ -383,8 +373,8 @@ extension SwapSharedViewModel {
             let fiatAmount = try? {
                 let exchanger = CurrencyExchanger(currency: currencyFiatValue)
                 return asset.isAlgo
-                    ? try exchanger.exchangeAlgo(amount: amount.decimal)
-                    : try exchanger.exchange(asset, amount: amount.decimal)
+                    ? try exchanger.exchangeAlgo(amount: Decimal(amount))
+                    : try exchanger.exchange(asset, amount: Decimal(amount))
             }()
         else {
             return 0
@@ -420,7 +410,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let algoAmount = try? exchanger.exchangeFiat(amount: amount.decimal) else {
+        guard let algoAmount = try? exchanger.exchangeFiat(amount: Decimal(amount)) else {
             return 0
         }
         return algoAmount.doubleValue
