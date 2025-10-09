@@ -230,6 +230,7 @@ struct SwapView: View {
                 onAction?(.trackAnalytics(event: .swapSettingsApply))
                 handlePercentageChange(newPercentageSelected)
                 handleSlippageChange(newSlippageSelected)
+                updateValuesAfterSettingsApplied()
             } onAnalyticsEvent: { event in
                 onAction?(.trackAnalytics(event: event))
             }
@@ -278,5 +279,15 @@ struct SwapView: View {
         if slippageChanged && viewModel.shouldShowSwapButton {
             viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }
+    }
+    
+    private func updateValuesAfterSettingsApplied() {
+        let value = Double(viewModel.payingText.normalizedNumericString()) ?? 0
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            viewModel.payingText = viewModel.fiatFormat(with: value)
+        } else {
+            viewModel.payingText = String(value)
+        }
+        viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
     }
 }

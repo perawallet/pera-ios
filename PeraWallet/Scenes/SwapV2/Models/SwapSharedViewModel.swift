@@ -56,7 +56,7 @@ class SwapSharedViewModel: ObservableObject {
     // MARK: - Internal State
     var quoteList: [SwapQuote]?
     var availableProviders: [SwapProviderV2]?
-
+    
     // MARK: - Init
     init(
         selectedAccount: Account,
@@ -142,18 +142,16 @@ class SwapSharedViewModel: ObservableObject {
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
         debounceWorkItem?.cancel()
-
-        let currentTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            guard let self else { return }
-
+        
+        let task = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
             let normalized = newValue.normalizedNumericString()
             if let doubleValue = Double(normalized), doubleValue > 0 {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
                     isLoadingReceiveAmount = true
-
+                    
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                         onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
@@ -161,8 +159,8 @@ class SwapSharedViewModel: ObservableObject {
                     }
                 }
             } else {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                         receivingText = fiatFormat(with: 0.0)
                         receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
@@ -177,13 +175,13 @@ class SwapSharedViewModel: ObservableObject {
                 }
             }
         }
-
-        debounceWorkItem = nil
+        debounceWorkItem = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
     }
     
     func filterPayingText(_ input: String) -> String {
         var filtered = input.filter { "0123456789,.".contains($0) }
-
+        
         if let firstSeparatorIndex = filtered.firstIndex(where: { $0 == "." || $0 == "," }) {
             let before = filtered.prefix(upTo: filtered.index(after: firstSeparatorIndex))
             let after = filtered.suffix(from: filtered.index(after: firstSeparatorIndex))
@@ -205,6 +203,7 @@ class SwapSharedViewModel: ObservableObject {
             return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: doubleValue) ?? .empty
         }
     }
+    
 }
 
 // MARK: - Computed Properties
@@ -228,7 +227,7 @@ extension SwapSharedViewModel {
             ) ?? 0
             return paying > 0 && receiving > 0
         }
-
+        
     }
     
     var slippageTolerance: String {
@@ -373,8 +372,8 @@ extension SwapSharedViewModel {
             let fiatAmount = try? {
                 let exchanger = CurrencyExchanger(currency: currencyFiatValue)
                 return asset.isAlgo
-                    ? try exchanger.exchangeAlgo(amount: Decimal(amount))
-                    : try exchanger.exchange(asset, amount: Decimal(amount))
+                ? try exchanger.exchangeAlgo(amount: Decimal(amount))
+                : try exchanger.exchange(asset, amount: Decimal(amount))
             }()
         else {
             return 0
@@ -495,15 +494,15 @@ enum SlippageValue: Equatable, Hashable {
     }
     
     static func == (lhs: SlippageValue, rhs: SlippageValue) -> Bool {
-            switch (lhs, rhs) {
-            case (.custom, .custom),
-                 (.c05, .c05),
-                 (.c1, .c1),
-                 (.c2, .c2),
-                 (.c5, .c5):
-                return true
-            default:
-                return false
-            }
+        switch (lhs, rhs) {
+        case (.custom, .custom),
+            (.c05, .c05),
+            (.c1, .c1),
+            (.c2, .c2),
+            (.c5, .c5):
+            return true
+        default:
+            return false
         }
+    }
 }

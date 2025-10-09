@@ -114,7 +114,7 @@ struct AssetSelectionView: View {
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
-                            if focused && (amountText == "0" || amountText == "0.0" || amountText == "0,0") {
+                            if focused && amountText.isZeroValue {
                                 amountText = .empty
                             }
                         }

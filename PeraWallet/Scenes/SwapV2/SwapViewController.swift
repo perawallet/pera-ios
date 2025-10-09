@@ -81,6 +81,14 @@ final class SwapViewController: BaseViewController {
             resetAmounts()
             return
         }
+        
+        let value = Double(sharedViewModel.payingText.normalizedNumericString()) ?? 0
+        if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
+            sharedViewModel.payingText = sharedViewModel.fiatFormat(with: value)
+        } else {
+            sharedViewModel.payingText = String(value)
+        }
+        
         sharedViewModel.updatePayingText(sharedViewModel.payingText) {  [weak self] doubleValue in
             guard let self else { return }
             handleSwapViewCallbacks(with: .getQuote(for: doubleValue))

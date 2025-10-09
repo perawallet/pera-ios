@@ -57,4 +57,8 @@ public extension String {
         replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
             .replacingOccurrences(of: ",", with: ".")
     }
+    
+    var isZeroValue: Bool {
+        (Double(self.normalizedNumericString()) ?? 0) == 0
+    }
 }
