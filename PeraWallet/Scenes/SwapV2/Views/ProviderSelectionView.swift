@@ -33,11 +33,15 @@ struct ProviderSelectionView: View {
             SwiftUI.Button(action: onTap) {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {
-                        if !didFail, let url = URL(string: viewModel.iconUrl) {
-                            URLImageSUIView(url: url, didFail: $didFail)
-                                .frame(width: 16, height: 16)
-                                .scaledToFit()
-                                .clipShape(Circle())
+                        if let url = URL(string: viewModel.iconUrl) {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                            } placeholder: {
+                                EmptyView()
+                            }
+                            .frame(width: 16, height: 16)
+                            .scaledToFit()
+                            .clipShape(Circle())
                             Spacer().frame(width: 4)
                         }
                         
@@ -50,7 +54,7 @@ struct ProviderSelectionView: View {
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 3)
-                    Image("icon-arrow-24")
+                    Image(.iconArrow24)
                         .resizable()
                         .frame(width: 20, height: 20)
                 }

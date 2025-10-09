@@ -22,7 +22,7 @@ public final class SwapQuoteList: ALGEntityModel {
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.results =  apiModel.results.unwrapMap(SwapQuote.init)
+        self.results = apiModel.results.unwrapMap(SwapQuote.init)
     }
 
     public func encode() -> APIModel {

@@ -22,11 +22,13 @@ struct SwapSettingsSheet: View {
     
     @StateObject private var viewModel: SwapSettingsViewModel
     
-    var onApplyTap: (PercentageValue?, SlippageValue?) -> Void
+    let onApplyTap: (PercentageValue?, SlippageValue?) -> Void
+    let onAnalyticsEvent: (SwapAnalyticsEvent) -> Void
     
-    init(slippageSelected: SlippageValue?, onApplyTap: @escaping (PercentageValue?, SlippageValue?) -> Void) {
+    init(slippageSelected: SlippageValue?, onApplyTap: @escaping (PercentageValue?, SlippageValue?) -> Void, onAnalyticsEvent: @escaping (SwapAnalyticsEvent) -> Void) {
         _viewModel = StateObject(wrappedValue: SwapSettingsViewModel(slippageSelected: slippageSelected))
         self.onApplyTap = onApplyTap
+        self.onAnalyticsEvent = onAnalyticsEvent
     }
 
     
@@ -35,6 +37,7 @@ struct SwapSettingsSheet: View {
             SheetTitleView(title: "title-swap-settings") { action in
                 switch action {
                 case .dismiss:
+                    onAnalyticsEvent(.swapSettingsClose)
                     dismiss()
                 case .apply:
                     viewModel.applyChanges()
@@ -57,6 +60,7 @@ struct SwapSettingsSheet: View {
                             title: item.title,
                             isSelected: viewModel.localPercentageSelected == item
                         ) {
+                            onAnalyticsEvent(.swapSettingsPercentage(value: "\(item.value)"))
                             viewModel.percentageText = String(format: "%.0f", item.value * 100)
                             viewModel.localPercentageSelected = item
                         }
@@ -79,6 +83,7 @@ struct SwapSettingsSheet: View {
                             title: item.title,
                             isSelected: viewModel.localSlippageSelected == item
                         ) {
+                            onAnalyticsEvent(.swapSettingsSlippage(value: "\(item.value)"))
                             switch item {
                             case .custom:
                                 viewModel.slippageText = .empty
@@ -101,6 +106,9 @@ struct SwapSettingsSheet: View {
                 text: "use-local-currency-text",
                 isOn: $viewModel.useLocalCurrency
             )
+            .onChange(of: viewModel.useLocalCurrency) { newValue in
+                onAnalyticsEvent(.swapSettingsLocalCurrency(on: newValue))
+            }
             
             Spacer()
             

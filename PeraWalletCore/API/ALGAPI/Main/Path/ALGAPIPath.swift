@@ -54,6 +54,8 @@ enum ALGAPIPath: String {
     case swapProviders = "/dex-swap/providers/"
     case swapQuote = "/dex-swap/quotes/"
     case swapQuoteUpdate = "/dex-swap/quotes/%@"
+    case swapTopPairsList = "/dex-swap/top-pairs/"
+    case swapHistoryList = "/dex-swap/history/"
     case trackTransactions = "/transactions/"
     case transactionParams = "/transactions/params"
     case transactions = "/transactions"

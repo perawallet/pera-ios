@@ -27,6 +27,7 @@ public final class ALGAsset:
     public let isFrozen: Bool?
     public let id: Int64
     public let optedInAtRound: UInt64?
+    public let category: UInt64?
 
     public init() {
         self.creator = nil
@@ -34,6 +35,7 @@ public final class ALGAsset:
         self.isFrozen = nil
         self.id = 1
         self.optedInAtRound = nil
+        self.category = nil
     }
 
     public init(id: AssetID) {
@@ -42,6 +44,7 @@ public final class ALGAsset:
         self.amount = 0
         self.isFrozen = nil
         self.optedInAtRound = nil
+        self.category = nil
     }
 
     public init(asset: Asset) {
@@ -50,6 +53,7 @@ public final class ALGAsset:
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.optedInAtRound = asset.optedInAtRound
+        self.category = asset.category
     }
 }
 
@@ -80,6 +84,7 @@ extension ALGAsset {
         case isFrozen = "is-frozen"
         case id = "asset-id"
         case optedInAtRound = "opted-in-at-round"
+        case category
     }
 }
 

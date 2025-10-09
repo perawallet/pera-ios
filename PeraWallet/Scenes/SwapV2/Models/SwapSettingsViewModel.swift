@@ -36,16 +36,17 @@ final class SwapSettingsViewModel: ObservableObject {
     
     private func setupInitialValues() {
         guard let slippageSelected else { return }
+        let slippageValue = slippageSelected.value * 100
         
         switch slippageSelected {
         case .custom:
-            slippageText = .empty
-            localSlippageSelected = .custom
+            slippageText = slippageValue.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", slippageValue) : String(format: "%.1f", slippageValue)
+            localSlippageSelected = slippageSelected
         case .c05:
-            slippageText = String(format: "%.1f", slippageSelected.value * 100)
+            slippageText = String(format: "%.1f", slippageValue)
             localSlippageSelected = slippageSelected
         default:
-            slippageText = String(format: "%.0f", slippageSelected.value * 100)
+            slippageText = String(format: "%.0f", slippageValue)
             localSlippageSelected = slippageSelected
         }
     }
@@ -72,11 +73,15 @@ final class SwapSettingsViewModel: ObservableObject {
     }
     
     func updateSlippageSelection(from text: String) {
-        if let doubleValue = Double(text),
-           let match = SlippageValue.allCases.first(where: { $0.value == doubleValue / 100 }) {
+        guard let doubleValue = Double(text) else {
+            localSlippageSelected = .custom(value: 0)
+            return
+        }
+        
+        if let match = SlippageValue.allDefaultCases.first(where: { $0.value == doubleValue / 100 }) {
             localSlippageSelected = match
         } else {
-            localSlippageSelected = .custom
+            localSlippageSelected = .custom(value: doubleValue / 100)
         }
     }
     

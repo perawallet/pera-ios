@@ -53,7 +53,7 @@ extension ConfirmSwapAPIDataController {
 
         let slippage = percentage?.value
         let draft = SwapQuoteDraft(
-            providers: featureFlagService.isEnabled(.swapV2Enabled) ? swapController.providersV2.map { $0.name } : swapController.providers.map { $0.rawValue },
+            providers: featureFlagService.isEnabled(.swapV2Enabled) ? swapController.providersV2.map(\.name) : swapController.providers.map { $0.rawValue },
             swapperAddress: account.address,
             type: swapController.swapType,
             deviceID: deviceID,

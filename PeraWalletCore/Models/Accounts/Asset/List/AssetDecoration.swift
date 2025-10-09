@@ -41,6 +41,7 @@ public final class AssetDecoration: ALGEntityModel {
     public let algoPriceChangePercentage: Decimal
     public let isAvailableOnDiscover: Bool
     public let isDestroyed: Bool
+    public let category: UInt64?
 
     public var state: AssetState = .ready
 
@@ -89,6 +90,7 @@ public final class AssetDecoration: ALGEntityModel {
         self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage ?? 0
         self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
         self.isDestroyed = apiModel.isDestroyed ?? false
+        self.category = apiModel.category
     }
     
     public init(assetDetail: AssetDetail) {
@@ -113,6 +115,7 @@ public final class AssetDecoration: ALGEntityModel {
         self.algoPriceChangePercentage = 0
         self.isAvailableOnDiscover = false
         self.isDestroyed = false
+        self.category = nil
     }
 
     public init(asset: Asset) {
@@ -137,6 +140,7 @@ public final class AssetDecoration: ALGEntityModel {
         self.algoPriceChangePercentage = asset.algoPriceChangePercentage
         self.isAvailableOnDiscover = asset.isAvailableOnDiscover
         self.isDestroyed = asset.isDestroyed
+        self.category = asset.category
     }
 
     public func encode() -> APIModel {
@@ -162,6 +166,7 @@ public final class AssetDecoration: ALGEntityModel {
         apiModel.algoPriceChangePercentage = algoPriceChangePercentage
         apiModel.isAvailableOnDiscover = isAvailableOnDiscover
         apiModel.isDestroyed = isDestroyed
+        apiModel.category = category
         return apiModel
     }
 }
@@ -189,6 +194,7 @@ extension AssetDecoration {
         var algoPriceChangePercentage: Decimal?
         var isAvailableOnDiscover: Bool?
         var isDestroyed: Bool?
+        var category: UInt64?
 
         public init() {
             self.assetId = 0
@@ -217,6 +223,7 @@ extension AssetDecoration {
             case algoPriceChangePercentage = "last_24_hours_algo_price_change_percentage"
             case isAvailableOnDiscover = "available_on_discover_mobile"
             case isDestroyed = "is_deleted"
+            case category
         }
     }
 }
