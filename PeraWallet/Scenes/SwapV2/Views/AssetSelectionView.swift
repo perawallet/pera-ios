@@ -55,7 +55,7 @@ struct AssetSelectionView: View {
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
     @Binding var amountText: String
-    @Binding var amountTextInSecondaryCurrency: String
+    let amountTextInSecondaryCurrency: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
     @Binding var isBalanceNotSufficient: Bool

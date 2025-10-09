@@ -131,9 +131,7 @@ class SwapSharedViewModel: ObservableObject {
 
         let task = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            let normalized = newValue
-                .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                .replacingOccurrences(of: ",", with: ".")
+            let normalized = newValue.normalizedNumericString()
             if let doubleValue = Double(normalized), doubleValue > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
@@ -175,16 +173,8 @@ extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
         if isBalanceNotSufficient { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            let paying = Double(
-                payingTextInSecondaryCurrency
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
-            let receiving = Double(
-                receivingTextInSecondaryCurrency
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
+            let paying = Double(payingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
+            let receiving = Double(receivingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
             return paying > 0 && receiving > 0
         } else {
             let paying = Double(payingText.replacingOccurrences(of: ",", with: ".")) ?? 0

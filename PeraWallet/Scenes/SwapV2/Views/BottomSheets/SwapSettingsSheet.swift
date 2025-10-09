@@ -37,13 +37,7 @@ struct SwapSettingsSheet: View {
                 case .dismiss:
                     dismiss()
                 case .apply:
-                    if viewModel.localPercentageSelected == nil,
-                      !viewModel.percentageText.isEmpty,
-                      let percentageValue = Double(viewModel.percentageText) {
-                       viewModel.localPercentageSelected = .custom(value: percentageValue / 100)
-                   }
-                    
-                    PeraUserDefaults.shouldUseLocalCurrencyInSwap = viewModel.useLocalCurrency
+                    viewModel.applyChanges()
                     onApplyTap(viewModel.localPercentageSelected, viewModel.localSlippageSelected)
                     dismiss()
                 }
@@ -56,7 +50,7 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(PercentageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(
@@ -78,7 +72,7 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(SlippageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(

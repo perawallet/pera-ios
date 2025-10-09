@@ -17,7 +17,10 @@
 import SwiftUI
 import pera_wallet_core
 
-class SwapSettingsViewModel: ObservableObject {
+// FIXME: This class mixes ViewModel and Model logic.
+// It should be refactored to follow a proper MVVM structure by
+// moving business and formatting logic into dedicated services.
+final class SwapSettingsViewModel: ObservableObject {
     @Published var percentageText: String = .empty
     @Published var slippageText: String = .empty
     @Published var useLocalCurrency: Bool = PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
@@ -73,6 +76,17 @@ class SwapSettingsViewModel: ObservableObject {
         } else {
             localSlippageSelected = .custom
         }
+    }
+    
+    func applyChanges() {
+        if
+            localPercentageSelected == nil,
+            !percentageText.isEmpty,
+            let percentageValue = Double(percentageText)
+        {
+            localPercentageSelected = .custom(value: percentageValue / 100)
+        }
+        PeraUserDefaults.shouldUseLocalCurrencyInSwap = useLocalCurrency
     }
 }
 

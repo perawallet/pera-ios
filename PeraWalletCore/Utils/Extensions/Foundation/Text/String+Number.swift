@@ -52,4 +52,9 @@ public extension String {
 
         return nil
     }
+    
+    func normalizedNumericString() -> String {
+        self.replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: ",", with: ".")
+    }
 }
