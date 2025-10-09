@@ -5989,7 +5989,6 @@
       }
     },
     "see-all-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7539,7 +7538,6 @@
       }
     },
     "swapped-for-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
