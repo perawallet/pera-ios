@@ -24,33 +24,33 @@ enum SwapInfoSheet: Identifiable {
     
     var id: String {
         switch self {
-        case .slippageTolerance: return "slippageTolerance"
-        case .priceImpact: return "priceImpact"
-        case .exchangeFee: return "exchangeFee"
+        case .slippageTolerance: "slippageTolerance"
+        case .priceImpact: "priceImpact"
+        case .exchangeFee: "exchangeFee"
         }
     }
     
     var title: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-title"
-        case .priceImpact: return "swap-price-impact-title"
-        case .exchangeFee: return "title-exchange-fee"
+        case .slippageTolerance: "swap-slippage-title"
+        case .priceImpact: "swap-price-impact-title"
+        case .exchangeFee: "title-exchange-fee"
         }
     }
     
     var text: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-tolerance-info-body"
-        case .priceImpact: return "swap-price-impact-info-body"
-        case .exchangeFee: return "swap-exchange-fee-info-body"
+        case .slippageTolerance: "swap-slippage-tolerance-info-body"
+        case .priceImpact: "swap-price-impact-info-body"
+        case .exchangeFee: "swap-exchange-fee-info-body"
         }
     }
     
     var height: CGFloat {
         switch self {
-        case .slippageTolerance: return 320
-        case .exchangeFee: return 280
-        case .priceImpact: return 250
+        case .slippageTolerance: 320
+        case .exchangeFee: 280
+        case .priceImpact: 250
         }
     }
 }

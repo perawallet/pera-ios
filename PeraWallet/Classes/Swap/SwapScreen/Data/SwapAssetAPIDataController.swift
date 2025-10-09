@@ -29,7 +29,7 @@ final class SwapAssetAPIDataController:
     
     var account: Account {
         get {
-            return swapController.account
+            swapController.account
         }
         set {
             swapController.account = newValue
@@ -37,7 +37,7 @@ final class SwapAssetAPIDataController:
     }
     var userAsset: Asset {
         get {
-            return swapController.userAsset
+            swapController.userAsset
         }
         set {
             swapController.userAsset = newValue
@@ -45,7 +45,7 @@ final class SwapAssetAPIDataController:
     }
     var poolAsset: Asset? {
         get {
-            return swapController.poolAsset
+            swapController.poolAsset
         }
         
         set {
@@ -54,16 +54,16 @@ final class SwapAssetAPIDataController:
     }
     
     private var quote: SwapQuote? {
-        return swapController.quote
+        swapController.quote
     }
     private var providers: [SwapProvider] {
-        return swapController.providers
+        swapController.providers
     }
     private var providersV2: [SwapProviderV2] {
-        return swapController.providersV2
+        swapController.providersV2
     }
     private var swapType: SwapType {
-        return swapController.swapType
+        swapController.swapType
     }
     
     private var currentQuoteEndpoint: EndpointOperatable?
