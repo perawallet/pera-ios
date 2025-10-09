@@ -70,7 +70,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<SwapTransactionPreparation, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.prepareSwapTransaction)
             .method(.post)
             .body(draft)

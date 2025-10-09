@@ -33,6 +33,7 @@ public enum SwapStatusUpdateError: String {
 
 public struct SwapStatusUpdateQuery: ObjectQuery {
     public let swapId: String
+    public let swapVersion: String
     public let status: SwapStatus
     public let submittedTransactionIds: [String]?
     public let reason: SwapStatusUpdateError?
@@ -65,13 +66,14 @@ public struct SwapStatusUpdateQuery: ObjectQuery {
             params.append(.init(.countryCode, countryCode))
         }
         
-        params.append(.init(.swapVersion, "v2"))
+        params.append(.init(.swapVersion, swapVersion))
 
         return params
     }
     
-    public init(swapId: String, status: SwapStatus, submittedTransactionIds: [String]?, reason: SwapStatusUpdateError?, appVersion: String?, countryCode: String?) {
+    public init(swapId: String, swapVersion: String, status: SwapStatus, submittedTransactionIds: [String]?, reason: SwapStatusUpdateError?, appVersion: String?, countryCode: String?) {
         self.swapId = swapId
+        self.swapVersion = swapVersion
         self.status = status
         self.submittedTransactionIds = submittedTransactionIds
         self.reason = reason
