@@ -246,12 +246,14 @@ struct SwapView: View {
                 onAction?(.trackAnalytics(event: event))
             }
         case .confirmSwap:
-            ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
-                onAction?(.confirmSwap)
-            } onSwapSuccess: { successMessage in
-                onAction?(.showSwapConfirmationBanner(success: successMessage, error: nil))
-            } onSwapError: { errorMessage in
-                onAction?(.showSwapConfirmationBanner(success: nil, error: errorMessage))
+            if let confirmSwapModel = viewModel.confirmSwapModel() {
+                ConfirmSwapView(viewModel: confirmSwapModel) {
+                    onAction?(.confirmSwap)
+                } onSwapSuccess: { successMessage in
+                    onAction?(.showSwapConfirmationBanner(success: successMessage, error: nil))
+                } onSwapError: { errorMessage in
+                    onAction?(.showSwapConfirmationBanner(success: nil, error: errorMessage))
+                }
             }
         case .swapHistory:
             SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in

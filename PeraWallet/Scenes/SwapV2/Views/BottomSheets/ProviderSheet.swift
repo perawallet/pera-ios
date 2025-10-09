@@ -63,11 +63,10 @@ struct ProviderSheet: View {
             }
             .listStyle(.plain)
             .listRowSpacing(8)
-            .scrollDisabled(true)
             Spacer()
         }
         .background(Color.Defaults.bg)
-        .presentationDetents([.height(viewModel.height)])
+        .presentationDetents([.height(viewModel.sheetHeight)])
         .presentationDragIndicator(.hidden)
     }
 }

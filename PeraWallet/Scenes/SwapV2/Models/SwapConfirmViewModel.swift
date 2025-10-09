@@ -17,7 +17,7 @@
 import pera_wallet_core
 import SwiftUI
 
-class SwapConfirmViewModel: ObservableObject {
+final class SwapConfirmViewModel: ObservableObject {
     let selectedAccount: Account
     let selectedAssetIn: AssetItem
     let selectedAssetOut: AssetItem

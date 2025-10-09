@@ -27,9 +27,24 @@ struct ProviderSelectionView: View {
     // MARK: - Body
     var body: some View {
         VStack (alignment: .leading) {
-            viewModel.title
-                .font(.dmSans.regular.size(13.0))
-                .foregroundStyle(Color.Text.gray)
+            if viewModel.isAuto {
+                HStack(spacing: 0) {
+                    Text(String(localized: "title-provider"))
+                        .font(.dmSans.regular.size(13.0))
+                        .foregroundStyle(Color.Text.gray)
+                    Text(String("\u{20}"))
+                        .font(.dmSans.regular.size(13.0))
+                        .foregroundStyle(Color.Text.gray)
+                    Text("(" + String(localized: "title-best-price-available") + ")")
+                        .font(.dmSans.regular.size(13.0))
+                        .foregroundStyle(Color.Text.gray)
+                }
+            } else {
+                Text(String(localized: "title-provider"))
+                    .font(.dmSans.regular.size(13.0))
+                    .foregroundStyle(Color.Text.gray)
+            }
+
             SwiftUI.Button(action: onTap) {
                 HStack (alignment: .center) {
                     HStack  (alignment: .center) {

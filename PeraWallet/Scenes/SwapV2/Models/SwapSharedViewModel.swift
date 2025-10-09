@@ -83,9 +83,9 @@ class SwapSharedViewModel: ObservableObject {
         onAssetsSwitched()
     }
     
-    func confirmSwapModel() -> SwapConfirmViewModel {
+    func confirmSwapModel() -> SwapConfirmViewModel? {
         guard let activeProvider else {
-            fatalError("Active provider should not be nil")
+            return nil
         }
         
         let useLocalCurrency = PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
@@ -143,16 +143,17 @@ class SwapSharedViewModel: ObservableObject {
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
         debounceWorkItem?.cancel()
 
-        let task = DispatchWorkItem { [weak self] in
-            guard let self = self else { return }
+        let currentTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            guard let self else { return }
+
             let normalized = newValue.normalizedNumericString()
             if let doubleValue = Double(normalized), doubleValue > 0 {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
-                    
                     isLoadingReceiveAmount = true
-                    
+
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                         onGetQuote(algoValue(fromFiat: doubleValue))
                     } else {
@@ -160,8 +161,8 @@ class SwapSharedViewModel: ObservableObject {
                     }
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
                     if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                         receivingText = fiatFormat(with: 0.0)
                         receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
@@ -177,8 +178,7 @@ class SwapSharedViewModel: ObservableObject {
             }
         }
 
-        debounceWorkItem = task
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
+        debounceWorkItem = nil
     }
     
     func filterPayingText(_ input: String) -> String {
@@ -236,7 +236,7 @@ extension SwapSharedViewModel {
             let slippageTolerance = selectedQuote?.slippage,
             slippageTolerance > 0
         else {
-            return Formatter.percentageFormatter.string(from: 0)!
+            return Formatter.percentageFormatter.string(from: 0) ?? .empty
         }
         return Formatter.percentageWith(fraction: 10).string(from: NSDecimalNumber(decimal: slippageTolerance)) ?? Formatter.percentageFormatter.string(from: 0)!
     }
@@ -430,6 +430,8 @@ extension SwapSharedViewModel {
         return currencyFormatter.format(amount) ?? .empty
     }
 }
+
+// MARK: - Models
 
 enum PercentageValue: CaseIterable, Equatable, Hashable {
     case custom(value: Double)
