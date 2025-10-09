@@ -492,11 +492,11 @@ extension AppDelegate {
         } catch AppGroupDataStoreMigrationError.migrationFailed(let cause), AppGroupDataStoreMigrationError.contentNotDetected(let cause) {
             CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: cause))
             //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
-            assertionFailure("AppGroup data migration failed")
+            fatalError("AppGroup data migration failed")
         } catch {
             CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: error))
             //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
-            assertionFailure("AppGroup data migration failed")
+            fatalError("AppGroup data migration failed")
         }
     }
     
