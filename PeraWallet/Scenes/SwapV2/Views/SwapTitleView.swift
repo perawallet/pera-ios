@@ -40,6 +40,7 @@ struct SwapTitleView: View {
                     onTap(.info)
                 } label: {
                     Image("icon-info-gray")
+                        .resizable()
                         .frame(width: 24, height: 24)
                 }
             }

@@ -30,7 +30,7 @@ struct NoAccountSwapView: View {
     
     // MARK: - Body
     var body: some View {
-        SwiftUI.ScrollView {
+        ScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     Text("title-swap")
@@ -41,6 +41,7 @@ struct NoAccountSwapView: View {
                         onAction?(.info)
                     } label: {
                         Image("icon-info-gray")
+                            .resizable()
                             .frame(width: 24, height: 24)
                     }
                     Spacer()
@@ -70,6 +71,7 @@ struct NoAccountSwapView: View {
                         onAction?(.createAccount)
                     } label: {
                         HStack(alignment: .center, spacing: 12) {
+                            //FIXME: Please replace it with template
                             Image("icon-asset-add")
                                 .renderingMode(.template)
                                 .foregroundStyle(Color.ButtonPrimary.text)

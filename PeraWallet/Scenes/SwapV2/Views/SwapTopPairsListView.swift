@@ -45,7 +45,7 @@ struct SwapTopPairsListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(spacing: 5) {
-                    ForEach(Array(viewModel.swapTopPairsList.prefix(5).enumerated()), id: \.0) { index, swapTopPair in
+                    ForEach(viewModel.swapTopPairsArray, id: \.0) { index, swapTopPair in
                         HStack(alignment: .center) {
                             Text("\(index + 1).")
                                 .font(.dmSans.regular.size(19))
@@ -55,7 +55,7 @@ struct SwapTopPairsListView: View {
                             Spacer().frame(width: 8)
                             
                             ZStack(alignment: .topLeading) {
-                                AsyncImage(url: URL(string: swapTopPair.assetA.logo ?? .empty)) { phase in
+                                AsyncImage(url: viewModel.assetAUrlFor(index: index)) { phase in
                                     switch phase {
                                     case .empty, .failure:
                                         Image("icon-swap-empty")
@@ -75,7 +75,7 @@ struct SwapTopPairsListView: View {
                                 .clipShape(Circle())
                                 .offset(x: -12 + 5, y: -12 + 5)
                                 
-                                AsyncImage(url: URL(string: swapTopPair.assetB.logo ?? .empty)) { phase in
+                                AsyncImage(url: viewModel.assetBUrlFor(index: index)) { phase in
                                     switch phase {
                                     case .empty, .failure:
                                         Image("icon-swap-empty")

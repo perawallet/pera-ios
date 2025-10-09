@@ -59,7 +59,7 @@ struct SwapView: View {
     
     // MARK: - Body
     var body: some View {
-        SwiftUI.ScrollView {
+       ScrollView {
             VStack (spacing: 0) {
                 headerView
                 assetSelectionView

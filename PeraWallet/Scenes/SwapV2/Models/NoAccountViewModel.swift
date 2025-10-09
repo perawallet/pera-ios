@@ -17,6 +17,6 @@
 import SwiftUI
 import pera_wallet_core
 
-class NoAccountViewModel: ObservableObject {
+final class NoAccountViewModel: ObservableObject {
     @Published var swapTopPairsList: [SwapTopPair] = []
 }
