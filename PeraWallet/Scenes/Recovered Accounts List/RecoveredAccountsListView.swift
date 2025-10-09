@@ -47,7 +47,7 @@ struct RecoveredAccountsListView: View {
     var body: some View {
         VStack(spacing: 0.0) {
             HStack {
-                Image("icon-wallet")
+                Image(.iconWallet)
                     .resizable()
                     .frame(width: 48.0, height: 48.0)
                 Spacer()

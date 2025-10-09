@@ -27,14 +27,4 @@ class SwapTopPairViewModel: ObservableObject {
     init(swapTopPairsList: [SwapTopPair]) {
         self.swapTopPairsList = swapTopPairsList
     }
-    
-    func rowTitleFor(index: Int) -> String {
-        let topPair = swapTopPairsList[index]
-        return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), topPair.assetA.name, topPair.assetB.name)
-    }
-    
-    func volumeFor(index: Int) -> String {
-        let value = Double(swapTopPairsList[index].volume24hUSD) ?? 0
-        return "$" + Formatter.numberTextWithSuffix(from: value)
-    }
 }

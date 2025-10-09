@@ -76,18 +76,18 @@ extension SwapAsset {
             self.verificationTier = .empty
             self.usdValue = nil
         }
+    }
+}
 
-        private enum CodingKeys:
-            String,
-            CodingKey {
-            case assetID = "asset_id"
-            case logo
-            case name
-            case unitName = "unit_name"
-            case total
-            case fractionDecimals = "fraction_decimals"
-            case verificationTier = "verification_tier"
-            case usdValue = "usd_value"
-        }
+extension SwapAsset {
+    enum CodingKeys: String, CodingKey {
+        case assetID = "asset_id"
+        case logo
+        case name
+        case unitName = "unit_name"
+        case total
+        case fractionDecimals = "fraction_decimals"
+        case verificationTier = "verification_tier"
+        case usdValue = "usd_value"
     }
 }

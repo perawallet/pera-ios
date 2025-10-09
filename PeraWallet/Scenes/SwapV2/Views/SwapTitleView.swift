@@ -39,7 +39,7 @@ struct SwapTitleView: View {
                 SwiftUI.Button {
                     onTap(.info)
                 } label: {
-                    Image("icon-info-gray")
+                    Image(.iconInfoGray)
                         .frame(width: 24, height: 24)
                 }
             }

@@ -2900,7 +2900,6 @@
       }
     },
     "create-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7046,7 +7045,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ALGO balance is not sufficient."
+            "value" : "%@ balance is not sufficient."
           }
         }
       }
@@ -7517,7 +7516,6 @@
       }
     },
     "swap-top-pair-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
