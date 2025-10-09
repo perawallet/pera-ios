@@ -23,8 +23,8 @@ class SwapConfirmViewModel: ObservableObject {
     let selectedAssetOut: AssetItem
     let selectedAssetInAmount: String
     let selectedAssetOutAmount: String
-    let selectedAssetInAmountInUSD: String
-    let selectedAssetOutAmountInUSD: String
+    let selectedAssetInAmountInSecondaryCurrency: String
+    let selectedAssetOutAmountInSecondaryCurrency: String
     let price: String
     let provider: SwapProviderV2
     let slippageTolerance: String
@@ -42,8 +42,8 @@ class SwapConfirmViewModel: ObservableObject {
         selectedAssetOut: AssetItem,
         selectedAssetInAmount: String,
         selectedAssetOutAmount: String,
-        selectedAssetInAmountInUSD: String,
-        selectedAssetOutAmountInUSD: String,
+        selectedAssetInAmountInSecondaryCurrency: String,
+        selectedAssetOutAmountInSecondaryCurrency: String,
         price: String,
         provider: SwapProviderV2,
         slippageTolerance: String,
@@ -59,8 +59,8 @@ class SwapConfirmViewModel: ObservableObject {
         self.selectedAssetOut = selectedAssetOut
         self.selectedAssetInAmount = selectedAssetInAmount
         self.selectedAssetOutAmount = selectedAssetOutAmount
-        self.selectedAssetInAmountInUSD = selectedAssetInAmountInUSD
-        self.selectedAssetOutAmountInUSD = selectedAssetOutAmountInUSD
+        self.selectedAssetInAmountInSecondaryCurrency = selectedAssetInAmountInSecondaryCurrency
+        self.selectedAssetOutAmountInSecondaryCurrency = selectedAssetOutAmountInSecondaryCurrency
         self.price = price
         self.provider = provider
         self.slippageTolerance = slippageTolerance
@@ -102,7 +102,7 @@ enum ConfirmSlideButtonState: Equatable {
     case idle
     case loading
     case success
-    case error
+    case error(Error?)
     
     var buttonBackgroundColor: Color {
         switch self {
@@ -135,4 +135,26 @@ enum ConfirmSlideButtonState: Equatable {
         }
     }
     
+    var isError: Bool {
+        if case .error = self { return true }
+        return false
+    }
+    
+    static func == (lhs: ConfirmSlideButtonState, rhs: ConfirmSlideButtonState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle), (.loading, .loading), (.success, .success):
+            return true
+        case let (.error(lhsError), .error(rhsError)):
+            switch (lhsError, rhsError) {
+            case (nil, nil):
+                return true
+            case let (lhs?, rhs?):
+                return type(of: lhs) == type(of: rhs) && lhs.localizedDescription == rhs.localizedDescription
+            default:
+                return false
+            }
+        default:
+            return false
+        }
+    }
 }

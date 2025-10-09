@@ -29,7 +29,7 @@ struct ProviderSelectionViewModel {
     var title: Text {
         if isAuto {
             Text(String(localized: "title-provider"))
-            + Text(" ")
+            + Text(String("\u{20}"))
             + Text("(" + String(localized: "title-best-price-available") + ")")
         } else {
             Text(String(localized: "title-provider"))

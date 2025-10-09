@@ -30,4 +30,8 @@ final class MockFeatureFlagService : FeatureFlagServicing, Mockable {
     func isEnabled(_ flag: FeatureFlag) -> Bool {
         try! mock.call.isEnabled(flag: flag) as! Bool
     }
+    
+    func double(for flag: pera_wallet_core.FeatureFlag) -> Double? {
+        return 0.665
+    }
 }

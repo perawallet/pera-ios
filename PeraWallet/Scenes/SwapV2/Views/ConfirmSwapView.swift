@@ -24,33 +24,33 @@ enum SwapInfoSheet: Identifiable {
     
     var id: String {
         switch self {
-        case .slippageTolerance: return "slippageTolerance"
-        case .priceImpact: return "priceImpact"
-        case .exchangeFee: return "exchangeFee"
+        case .slippageTolerance: "slippageTolerance"
+        case .priceImpact: "priceImpact"
+        case .exchangeFee: "exchangeFee"
         }
     }
     
     var title: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-title"
-        case .priceImpact: return "swap-price-impact-title"
-        case .exchangeFee: return "title-exchange-fee"
+        case .slippageTolerance: "swap-slippage-title"
+        case .priceImpact: "swap-price-impact-title"
+        case .exchangeFee: "title-exchange-fee"
         }
     }
     
     var text: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-tolerance-info-body"
-        case .priceImpact: return "swap-price-impact-info-body"
-        case .exchangeFee: return "swap-exchange-fee-info-body"
+        case .slippageTolerance: "swap-slippage-tolerance-info-body"
+        case .priceImpact: "swap-price-impact-info-body"
+        case .exchangeFee: "swap-exchange-fee-info-body"
         }
     }
     
     var height: CGFloat {
         switch self {
-        case .slippageTolerance: return 320
-        case .exchangeFee: return 280
-        case .priceImpact: return 250
+        case .slippageTolerance: 320
+        case .exchangeFee: 280
+        case .priceImpact: 250
         }
     }
 }
@@ -61,7 +61,6 @@ struct ConfirmSwapView: View {
     @ObservedObject var viewModel: SwapConfirmViewModel
     
     @State private var activeSheet: SwapInfoSheet?
-    @State private var didFail = false
     
     var onConfirmTap: () -> Void
     var onSwapSuccess: (String) -> Void
@@ -74,7 +73,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button(action: {
                         dismiss()
                     }) {
-                        Image("icon-close")
+                        Image(.iconClose)
                             .frame(width: 24, height: 24)
                     }
                     Spacer()
@@ -100,7 +99,7 @@ struct ConfirmSwapView: View {
             .frame(height: 60)
             .padding(.top, 8)
             .padding(.bottom, 10)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInSecondaryCurrency)
             
             HStack {
                 Rectangle()
@@ -118,7 +117,7 @@ struct ConfirmSwapView: View {
             }
             .frame(height: 16)
             .padding(.vertical, 4)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInUSD)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInSecondaryCurrency)
             Rectangle()
                 .fill(Color.Layer.grayLighter)
                 .frame(height: 1)
@@ -134,7 +133,7 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 8)
-                    Image("icon-repeat")
+                    Image(.iconRepeat)
                         .resizable()
                         .frame(width: 20, height: 20)
                 }
@@ -145,11 +144,15 @@ struct ConfirmSwapView: View {
                         .font(.dmSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
-                    if !didFail, let url = URL(string: viewModel.provider.iconUrl) {
-                        URLImageSUIView(url: url, didFail: $didFail)
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .clipShape(Circle())
+                    if let url = URL(string: viewModel.provider.iconUrl) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                        } placeholder: {
+                            EmptyView()
+                        }
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .clipShape(Circle())
                     }
                     Text(viewModel.provider.displayName)
                         .font(.dmSans.regular.size(13))
@@ -164,7 +167,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button {
                         activeSheet = .slippageTolerance
                     } label: {
-                        Image("icon-info-20")
+                        Image(.iconInfo20)
                     }
                     Spacer()
                     Text(viewModel.slippageTolerance)
@@ -181,11 +184,11 @@ struct ConfirmSwapView: View {
                         activeSheet = .priceImpact
                     } label: {
                         if viewModel.highPriceImpactWarning != nil {
-                            Image("icon-info-20")
+                            Image(.iconInfo20)
                                 .renderingMode(.template)
                                 .foregroundColor(Color.Helpers.negative)
                         } else {
-                            Image("icon-info-20")
+                            Image(.iconInfo20)
                         }
                     }
                     Spacer()
@@ -212,7 +215,7 @@ struct ConfirmSwapView: View {
                     SwiftUI.Button {
                         activeSheet = .exchangeFee
                     } label: {
-                        Image("icon-info-20")
+                        Image(.iconInfo20)
                     }
                     Spacer()
                     Text(viewModel.exchangeFee)
@@ -232,7 +235,7 @@ struct ConfirmSwapView: View {
                 Spacer().frame(height: 20)
                 if let warningMessage = viewModel.highPriceImpactWarning {
                     HStack(alignment: .top, spacing: 4) {
-                        Image("icon-info-red")
+                        Image(.iconInfoRed)
                             .resizable()
                             .frame(width: 20, height: 20)
                         Text(warningMessage)
@@ -251,7 +254,7 @@ struct ConfirmSwapView: View {
                 onConfirmTap()
             }
             .disabled(viewModel.isSwapDisabled)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             Spacer()
         }
         .onChange(of: viewModel.confirmationState) { newState in
@@ -289,17 +292,17 @@ private struct ConfirmSwapAssetView: View {
         HStack (alignment: .center) {
             Group {
                 if assetItem.asset.isAlgo {
-                    Image("icon-algo-circle").resizable()
+                    Image(.iconAlgoCircle).resizable()
                 } else if assetItem.asset.isUSDC(for: network) {
-                    Image("icon-usdc-circle").resizable()
+                    Image(.iconUsdcCircle).resizable()
                 } else if let url = assetItem.asset.logoURL {
                     AsyncImage(url: url) { image in
                         image.resizable()
                     } placeholder: {
-                        Image("icon-swap-empty").resizable()
+                        Image(.iconSwapEmpty).resizable()
                     }
                 } else {
-                    Image("icon-swap-empty").resizable()
+                    Image(.iconSwapEmpty).resizable()
                 }
             }
             .frame(width: 40, height: 40)
@@ -317,15 +320,15 @@ private struct ConfirmSwapAssetView: View {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.Layer.grayLightest)
                 HStack {
-                    Text(assetItem.asset.naming.displayNames.primaryName)
+                    Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 6)
                     Group {
                         if assetItem.asset.verificationTier.isVerified {
-                            Image("icon-verified").resizable()
+                            Image(.iconVerified).resizable()
                         } else if assetItem.asset.verificationTier.isTrusted {
-                            Image("icon-trusted").resizable()
+                            Image(.iconTrusted).resizable()
                         } else {
                             EmptyView()
                         }
@@ -334,7 +337,9 @@ private struct ConfirmSwapAssetView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .frame(width: 94, height: 48)
+            .frame(minWidth: 94)
+            .frame(height: 48)
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -17,6 +17,7 @@
 import SwiftUI
 import Combine
 import pera_wallet_core
+import MacaroonVendors
 
 enum SwapViewAction {
     case showInfo
@@ -25,19 +26,42 @@ enum SwapViewAction {
     case selectAssetOut(for: Account)
     case getQuote(for: Double)
     case confirmSwap
-    case showBanner(success: String?, error: String?)
+    case showSwapConfirmationBanner(success: String?, error: String?)
+    case calculatePeraFee(forAmount: Double, withPercentage: Double)
+    case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
+    case openExplorer(transactionGroupId: String, pairing: String)
+    case trackAnalytics(event: SwapAnalyticsEvent)
+    case onSwitchAssets
+}
+
+enum SwapAnalyticsEvent {
+    case swapHistorySeeAll
+    case swapHistorySelect(pairing: String)
+    case swapTopPairSelect(pairing: String)
+    case swapSelectProvider
+    case swapSelectProviderClose
+    case swapSelectProviderApply
+    case swapSelectProviderRouter(name: String)
+    case swapSettingsClose
+    case swapSettingsApply
+    case swapSettingsPercentage(value: String)
+    case swapSettingsSlippage(value: String)
+    case swapSettingsLocalCurrency(on: Bool)
+    case swapConfirmTapped
 }
 
 enum SwapViewSheet: Identifiable {
     case settings
     case provider(availableProviders: [SwapProviderV2])
     case confirmSwap
+    case swapHistory
     
     var id: String {
         switch self {
         case .settings: return "settings"
         case .provider: return "provider"
         case .confirmSwap: return "confirmSwap"
+        case .swapHistory: return "swapHistory"
         }
     }
 }
@@ -50,26 +74,38 @@ struct SwapView: View {
     
     @State private var activeSheet: SwapViewSheet?
     
-    private var safeAreaTopInset: CGFloat {
-        (UIApplication.shared.connectedScenes.first as? UIWindowScene)?
-            .windows.first?.safeAreaInsets.top ?? 44
-    }
-    
     // MARK: - Body
     var body: some View {
         VStack (spacing: 0) {
             headerView
-            assetSelectionView
-            if viewModel.shouldShowSwapButton {
-                swapActionView
+            ScrollView {
+                VStack (spacing: 0) {
+                    assetSelectionView
+                    if viewModel.shouldShowSwapButton {
+                        swapActionView
+                    }
+                    
+                    SwapHistoryListView(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                        onAction?(.trackAnalytics(event: .swapHistorySelect(pairing: swapHistory.title)))
+                        onAction?(.selectSwap(assetIn: swapHistory.assetIn, assetOut: swapHistory.assetOut))
+                    } onSeeAllTap: {
+                        onAction?(.trackAnalytics(event: .swapHistorySeeAll))
+                        activeSheet = .swapHistory
+                    }
+                    
+                    SwapTopPairsListView(viewModel: SwapTopPairViewModel(swapTopPairsList: viewModel.swapTopPairsList)) { swapTopPair in
+                        onAction?(.trackAnalytics(event: .swapTopPairSelect(pairing: swapTopPair.title)))
+                        onAction?(.selectSwap(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB))
+                    }
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
+                .sheet(item: $activeSheet, content: sheetContent)
+                .onChange(of: viewModel.selectedProvider) { newValue in
+                    viewModel.selectQuote(with: newValue)
+                }
             }
         }
-        .padding(.top, safeAreaTopInset)
-        .frame(maxHeight: .infinity, alignment: .top)
-        .sheet(item: $activeSheet, content: sheetContent)
-        .onChange(of: viewModel.selectedProvider) { newValue in
-            viewModel.selectQuote(with: newValue)
-        }
+        .background(Color.Defaults.bg)
     }
     
     // MARK: - Subviews
@@ -92,9 +128,29 @@ struct SwapView: View {
                     type: .pay,
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
-                    amountText: $viewModel.payingText,
-                    amountTextInUSD: $viewModel.payingTextInUSD,
+                    amountText: Binding(
+                        get: { viewModel.payingText },
+                        set: { newValue in
+                            let filteredValue = viewModel.filterPayingText(newValue)
+                            guard filteredValue != viewModel.payingText else { return }
+                            
+                            viewModel.payingText = filteredValue
+                            viewModel.updatePayingText(filteredValue) {
+                                onAction?(.getQuote(for: $0))
+                            }
+                        }
+                    ),
+                    amountTextInSecondaryCurrency: Binding(
+                        get: { viewModel.payingTextInSecondaryCurrency.isEmpty ?
+                            (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
+                            : viewModel.payingTextInSecondaryCurrency },
+                        set: { viewModel.payingTextInSecondaryCurrency = $0 }
+                    ),
                     isLoading: $viewModel.isLoadingPayAmount,
+                    isLoadingQuote: Binding<Bool?>(
+                        get: { viewModel.isLoadingReceiveAmount },
+                        set: { viewModel.isLoadingReceiveAmount = $0 ?? false }
+                    ),
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
                     onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
@@ -104,19 +160,27 @@ struct SwapView: View {
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
-                    amountTextInUSD: $viewModel.receivingTextInUSD,
+                    amountTextInSecondaryCurrency: Binding(
+                        get: { viewModel.receivingTextInSecondaryCurrency.isEmpty
+                            ? (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
+                            : viewModel.receivingTextInSecondaryCurrency },
+                        set: { viewModel.receivingTextInSecondaryCurrency = $0 }
+                    ),
                     isLoading: $viewModel.isLoadingReceiveAmount,
+                    isLoadingQuote: .constant(nil),
                     isBalanceNotSufficient: .constant(false)
                 ) {
                     onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
                 }
             }
             .padding(.horizontal, 8)
-            .onChange(of: viewModel.payingText) { viewModel.updatePayingText($0) { onAction?(.getQuote(for: $0)) } }
             
             HStack {
                 SwitchSwapButton {
-                    viewModel.switchAssets()
+                    viewModel.switchAssets {
+                        onAction?(.onSwitchAssets)
+                        viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
+                    }
                 }
                 Spacer()
                 SettingsSwapButton { action in
@@ -124,10 +188,9 @@ struct SwapView: View {
                     case .settings:
                         activeSheet = .settings
                     case .max:
-                        print("max")
+                        handlePercentageChange(.max)
                     }
                 }
-                .hidden()
             }
             .padding(.horizontal, 16)
             .padding(.top, viewModel.isBalanceNotSufficient ? 50 : 0)
@@ -139,6 +202,7 @@ struct SwapView: View {
             providerSelectionView
             SwapButton {
                 guard !viewModel.payingText.isEmpty, !viewModel.receivingText.isEmpty else { return }
+                onAction?(.trackAnalytics(event: .swapConfirmTapped))
                 activeSheet = .confirmSwap
             }
             .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -151,6 +215,7 @@ struct SwapView: View {
         
         return ProviderSelectionView(viewModel: providerViewModel) {
             guard let providers = viewModel.availableProviders else { return }
+            onAction?(.trackAnalytics(event: .swapSelectProvider))
             activeSheet = .provider(availableProviders: providers)
         }
         .padding(.top, 16)
@@ -161,7 +226,13 @@ struct SwapView: View {
     private func sheetContent(for sheet: SwapViewSheet) -> some View {
         switch sheet {
         case .settings:
-            SwapSettingsSheet()
+            SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
+                onAction?(.trackAnalytics(event: .swapSettingsApply))
+                handlePercentageChange(newPercentageSelected)
+                handleSlippageChange(newSlippageSelected)
+            } onAnalyticsEvent: { event in
+                onAction?(.trackAnalytics(event: event))
+            }
         case .provider(availableProviders: let providers):
             let vm = ProviderSheetViewModel(
                 selectedProvider: viewModel.selectedProvider,
@@ -169,16 +240,41 @@ struct SwapView: View {
                 quoteList: viewModel.quoteList
             )
             ProviderSheet(viewModel: vm) { selectedProvider in
+                onAction?(.trackAnalytics(event: .swapSelectProviderApply))
                 viewModel.selectedProvider = selectedProvider
+            } onAnalyticsEvent: { event in
+                onAction?(.trackAnalytics(event: event))
             }
         case .confirmSwap:
             ConfirmSwapView(viewModel: viewModel.confirmSwapModel()) {
                 onAction?(.confirmSwap)
             } onSwapSuccess: { successMessage in
-                onAction?(.showBanner(success: successMessage, error: nil))
+                onAction?(.showSwapConfirmationBanner(success: successMessage, error: nil))
             } onSwapError: { errorMessage in
-                onAction?(.showBanner(success: nil, error: errorMessage))
+                onAction?(.showSwapConfirmationBanner(success: nil, error: errorMessage))
             }
+        case .swapHistory:
+            SwapHistorySheet(viewModel: SwapHistoryViewModel(swapHistoryList: viewModel.swapHistoryList)) { swapHistory in
+                guard let transactionGroupId = swapHistory.transactionGroupId else { return }
+                onAction?(.openExplorer(transactionGroupId: transactionGroupId, pairing: swapHistory.title))
+            }
+        }
+    }
+    
+    private func handlePercentageChange(_ newPercentage: PercentageValue?) {
+        guard let newPercentage else { return }
+        viewModel.isLoadingPayAmount = true
+        let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        viewModel.isBalanceNotSufficient = amount > NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
+    }
+    
+    private func handleSlippageChange(_ newSlippage: SlippageValue?) {
+        let slippageChanged = viewModel.slippageSelected != newSlippage
+        viewModel.slippageSelected = (newSlippage?.value ?? 0) > 0 ? newSlippage : nil
+        
+        if slippageChanged && viewModel.shouldShowSwapButton {
+            viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
         }
     }
 }

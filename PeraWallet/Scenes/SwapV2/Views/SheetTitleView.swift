@@ -40,7 +40,7 @@ struct SheetTitleView: View {
                     SwiftUI.Button(action: {
                         onTap(.dismiss)
                     }) {
-                        Image("icon-close")
+                        Image(.iconClose)
                             .frame(width: 24, height: 24)
                     }
                     Spacer()
@@ -51,7 +51,6 @@ struct SheetTitleView: View {
                     .foregroundStyle(Color.Helpers.positive)
                 }
                 .frame(maxHeight: .infinity, alignment: .center)
-                .padding(.horizontal, 24)
                 Text(title)
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(Color.Text.main)

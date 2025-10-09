@@ -47,6 +47,15 @@ enum AssetSelectionType {
             return Color.Layer.grayLighter
         }
     }
+    
+    var buttonBackgroundColor: Color {
+        switch self {
+        case .pay:
+            return Color.Layer.grayLightest
+        case .receive:
+            return Color.Swap.ButtonReceiveAsset.bg
+        }
+    }
 }
 
 struct AssetSelectionView: View {
@@ -55,16 +64,17 @@ struct AssetSelectionView: View {
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
     @Binding var amountText: String
-    @Binding var amountTextInUSD: String
+    @Binding var amountTextInSecondaryCurrency: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
+    @Binding var isLoadingQuote: Bool?
     @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
     
     // MARK: - Body
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 Text(type.title)
                     .font(.dmSans.regular.size(13.0))
@@ -74,7 +84,7 @@ struct AssetSelectionView: View {
                     .font(.dmSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
-            .padding(.top, 40)
+            .padding(.top, type == .pay ? 20: 40)
             Spacer().frame(height: 12)
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
@@ -83,63 +93,84 @@ struct AssetSelectionView: View {
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
-                        TextField(SwapSharedViewModel.defaultAmountValue, text: Binding(
+                        TextField("", text: Binding(
                             get: { amountText },
-                            set: { amountText = $0.isEmpty ? SwapSharedViewModel.defaultAmountValue : $0 }
+                            set: {
+                                amountText = $0.isEmpty ? .empty : $0
+                                if type == .pay, amountText.isEmpty {
+                                    isBalanceNotSufficient = false
+                                }
+                            }
                         ))
+                        .placeholder(when: amountText.isEmpty) {
+                            Text(SwapSharedViewModel.defaultAmountValue)
+                                .foregroundColor(Color.Text.grayLighter)
+                        }
                         .keyboardType(.decimalPad)
                         .font(.dmSans.medium.size(19.0))
-                        .foregroundStyle(Color.Text.gray)
+                        .foregroundStyle(Color.Text.main)
                         .disabled(type.textEditorDisabled)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
                             if focused && (amountText == "0" || amountText == "0.0" || amountText == "0,0") {
-                                amountText = ""
+                                amountText = .empty
                             }
                         }
                     }
 
-                    if isLoading {
+                    if isLoading || isLoadingQuote ?? false {
                         ShimmerSUIView()
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)
                     } else {
-                        Text(amountTextInUSD)
+                        Text(amountTextInSecondaryCurrency)
                             .keyboardType(.decimalPad)
                             .font(.dmSans.regular.size(13.0))
                             .foregroundStyle(Color.Text.gray)
                             .frame(maxWidth: 200, alignment: .leading)
                     }
-                    
-                    if isBalanceNotSufficient {
-                        Spacer().frame(height: 6)
-                        HStack(alignment: .center) {
-                            Image("icon-info-red")
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                            Spacer().frame(width: 8)
-                            Text("swap-balance-not-sufficient-title")
-                                .font(.dmSans.medium.size(13.0))
-                                .foregroundStyle(Color.Helpers.negative)
-                                .frame(height: 20)
-                        }
-                        Spacer().frame(height: 24)
-                    }
                 }
                 
                 Spacer()
-                AssetSwapButton(assetItem: $assetItem, network: $network, onTap: onAssetSelectionTap)
+                AssetSwapButton(assetItem: $assetItem, network: $network, buttonBgColor: type.buttonBackgroundColor, onTap: onAssetSelectionTap)
+            }
+            
+            if isBalanceNotSufficient {
+                Spacer().frame(height: 16)
+                HStack(alignment: .center) {
+                    Image(.iconInfoRed)
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                    Spacer().frame(width: 8)
+                    Text(String(format: String(localized: "swap-balance-not-sufficient-title"), assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName))
+                        .font(.dmSans.medium.size(13.0))
+                        .foregroundStyle(Color.Helpers.negative)
+                        .frame(height: 20)
+                }
             }
             Spacer()
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(height: isBalanceNotSufficient ? 194 : 144)
+        .frame(height: isBalanceNotSufficient ? 174 : 144)
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(type.backgroundColor)
         )
+    }
+}
+
+extension View {
+    func placeholder<Content: View>(
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        @ViewBuilder placeholder: () -> Content
+    ) -> some View {
+        ZStack(alignment: alignment) {
+            if shouldShow { placeholder() }
+            self
+        }
     }
 }

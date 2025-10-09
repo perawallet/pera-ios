@@ -47,7 +47,7 @@ struct RecoveredAccountsListView: View {
     var body: some View {
         VStack(spacing: 0.0) {
             HStack {
-                Image("icon-wallet")
+                Image(.iconWallet)
                     .resizable()
                     .frame(width: 48.0, height: 48.0)
                 Spacer()
@@ -64,7 +64,7 @@ struct RecoveredAccountsListView: View {
                 .font(.dmSans.regular.size(15.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 40.0)
-            SwiftUI.ScrollView {
+            ScrollView {
                 ForEach(model.addressViewModels) { viewModel in
                     RecoveredAccountsListCell(
                         isSelected: viewModel.isSelected,

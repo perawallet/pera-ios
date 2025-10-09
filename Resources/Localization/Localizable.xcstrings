@@ -2900,7 +2900,6 @@
       }
     },
     "create-account-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4378,6 +4377,26 @@
         }
       }
     },
+    "no-swap-activity-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No swap activity in the last 24 hours"
+          }
+        }
+      }
+    },
+    "no-swap-history-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your swap history will appear here once you've completed a swap."
+          }
+        }
+      }
+    },
     "node-settings-action-delete-title" : {
       "localizations" : {
         "en" : {
@@ -5084,6 +5103,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Portfolio Value"
+          }
+        }
+      }
+    },
+    "primary-currency-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primary Currency"
           }
         }
       }
@@ -5954,6 +5983,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Security"
+          }
+        }
+      }
+    },
+    "see-all-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
           }
         }
       }
@@ -7006,7 +7045,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ALGO balance is not sufficient."
+            "value" : "%@ balance is not sufficient."
           }
         }
       }
@@ -7092,7 +7131,6 @@
       }
     },
     "swap-empty-accounts-title" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7133,7 +7171,6 @@
       }
     },
     "swap-exchange-fee-info-body" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7169,6 +7206,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "High Price impact detected!"
+          }
+        }
+      }
+    },
+    "swap-history-error-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load swap history"
+          }
+        }
+      }
+    },
+    "swap-history-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap History"
           }
         }
       }
@@ -7454,6 +7511,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Received"
+          }
+        }
+      }
+    },
+    "swap-top-pair-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ to %@"
+          }
+        }
+      }
+    },
+    "swap-volume-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume (24H)"
+          }
+        }
+      }
+    },
+    "swapped-for-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swapped %@ %@ for"
           }
         }
       }
@@ -9573,6 +9660,16 @@
         }
       }
     },
+    "top5-swaps-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top 5 Swaps"
+          }
+        }
+      }
+    },
     "total-rewards-faq-title" : {
       "localizations" : {
         "en" : {
@@ -10471,6 +10568,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL copied to clipboard"
+          }
+        }
+      }
+    },
+    "use-local-currency-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Local Currency"
           }
         }
       }
