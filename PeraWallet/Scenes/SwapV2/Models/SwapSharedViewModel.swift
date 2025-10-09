@@ -300,7 +300,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: amount.decimal) else {
+        guard let fiatAmount = try? exchanger.exchangeAlgo(amount: Decimal(amount)) else {
             return 0
         }
         
@@ -313,7 +313,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchange(amount: amount.decimal) else {
+        guard let fiatAmount = try? exchanger.exchange(amount: Decimal(amount)) else {
             return 0
         }
         
@@ -326,7 +326,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let fiatAmount = try? exchanger.exchange(asset, amount: amount.decimal) else {
+        guard let fiatAmount = try? exchanger.exchange(asset, amount: Decimal(amount)) else {
             return 0
         }
         
@@ -361,7 +361,7 @@ extension SwapSharedViewModel {
         }
         let exchanger = CurrencyExchanger(currency: currencyFiatValue)
         
-        guard let algoAmount = try? exchanger.exchangeFiat(amount: amount.decimal) else {
+        guard let algoAmount = try? exchanger.exchangeFiat(amount: Decimal(amount)) else {
             return 0
         }
         return algoAmount.doubleValue

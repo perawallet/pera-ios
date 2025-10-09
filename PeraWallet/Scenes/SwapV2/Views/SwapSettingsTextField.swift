@@ -22,8 +22,6 @@ struct SwapSettingsTextField: View {
     @Binding var text: String
     @StateObject var viewModel: SwapSettingsViewModel
     
-    @FocusState private var isFocused: Bool
-    
     var body: some View {
         Text(textFieldType.title)
             .font(.dmSans.regular.size(13))
@@ -31,7 +29,6 @@ struct SwapSettingsTextField: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         Spacer().frame(height: 8)
         TextField(textFieldType.placeholder, text: $text)
-            .focused($isFocused)
             .frame(height: 52)
             .foregroundStyle(Color.Text.grayLighter)
             .keyboardType(.numberPad)
