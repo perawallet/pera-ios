@@ -66,6 +66,17 @@ final class SwapViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let sharedViewModel else { return }
+        
+        guard sharedViewModel.selectedNetwork == api?.network else {
+            swapAssetFlowCoordinator.onProvidersListLoaded = { [weak self] providers in
+                guard let self else { return }
+                availableProviders = providers.results
+            }
+            swapAssetFlowCoordinator.getProvidersList()
+            configureView()
+            return
+        }
+        
         guard !sharedViewModel.payingText.isEmptyOrBlank else {
             resetAmounts()
             return
@@ -734,6 +745,7 @@ final class SwapViewController: BaseViewController {
                 )
                 return
             }
+            
             
             swapController.signTransactions(transactionGroups)
         }
