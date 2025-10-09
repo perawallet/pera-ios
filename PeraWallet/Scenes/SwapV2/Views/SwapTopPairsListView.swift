@@ -47,7 +47,7 @@ struct SwapTopPairsListView: View {
                 VStack(spacing: 5) {
                     ForEach(viewModel.swapTopPairsArray, id: \.0) { index, swapTopPair in
                         HStack(alignment: .center) {
-                            Text("\(index + 1).")
+                            Text(viewModel.indexTitleFor(index: index))
                                 .font(.dmSans.regular.size(19))
                                 .foregroundStyle(Color.Text.gray)
                                 .frame(width: 26, alignment: .leading)

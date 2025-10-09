@@ -32,6 +32,10 @@ final class SwapTopPairViewModel: ObservableObject {
         self.swapTopPairsList = swapTopPairsList
     }
     
+    func indexTitleFor(index: Int) -> String {
+        "\(index + 1)."
+    }
+    
     func rowTitleFor(index: Int) -> String {
         let topPair = swapTopPairsList[index]
         return String(format: NSLocalizedString("swap-top-pair-text", comment: ""), topPair.assetA.name, topPair.assetB.name)
