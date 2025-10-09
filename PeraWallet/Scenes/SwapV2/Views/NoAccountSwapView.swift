@@ -40,7 +40,7 @@ struct NoAccountSwapView: View {
                     SwiftUI.Button {
                         onAction?(.info)
                     } label: {
-                        Image("icon-info-gray")
+                        Image(.iconInfoGray)
                             .resizable()
                             .frame(width: 24, height: 24)
                     }
@@ -72,7 +72,7 @@ struct NoAccountSwapView: View {
                     } label: {
                         HStack(alignment: .center, spacing: 12) {
                             //FIXME: Please replace it with template
-                            Image("icon-asset-add")
+                            Image(.iconAssetAdd)
                                 .renderingMode(.template)
                                 .foregroundStyle(Color.ButtonPrimary.text)
                                 .frame(width: 24, height: 24)

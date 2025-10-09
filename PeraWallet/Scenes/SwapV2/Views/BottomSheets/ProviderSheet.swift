@@ -116,7 +116,7 @@ private struct AutoProviderListItem: View {
     // MARK: - Body
     var body: some View {
         HStack (alignment: .center) {
-            Image("icon-sparkles")
+            Image(.iconSparkles)
                 .resizable()
                 .padding(8)
                 .frame(width: 40, height: 40)

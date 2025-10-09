@@ -50,7 +50,7 @@ struct ProviderSelectionView: View {
                         .font(.dmSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 3)
-                    Image("icon-arrow-24")
+                    Image(.iconArrow24)
                         .resizable()
                         .frame(width: 20, height: 20)
                 }

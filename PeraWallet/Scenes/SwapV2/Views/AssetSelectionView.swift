@@ -116,7 +116,7 @@ struct AssetSelectionView: View {
                     if isBalanceNotSufficient {
                         Spacer().frame(height: 6)
                         HStack(alignment: .center) {
-                            Image("icon-info-red")
+                            Image(.iconInfoRed)
                                 .resizable()
                                 .frame(width: 16, height: 16)
                             Spacer().frame(width: 8)

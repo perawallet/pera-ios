@@ -24,7 +24,7 @@ struct SwitchSwapButton: View {
     // MARK: - Body
     var body: some View {
         SwiftUI.Button(action: onTap) {
-            Image("icon-repeat")
+            Image(.iconRepeat)
                 .resizable()
                 .renderingMode(.template)
                 .foregroundColor(Color.Text.main)

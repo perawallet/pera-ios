@@ -40,7 +40,7 @@ struct SheetTitleView: View {
                     SwiftUI.Button(action: {
                         onTap(.dismiss)
                     }) {
-                        Image("icon-close")
+                        Image(.iconClose)
                             .frame(width: 24, height: 24)
                     }
                     Spacer()

@@ -38,7 +38,7 @@ struct AccountSelectionButton: View {
                 .foregroundStyle(Color.Text.gray)
                 .frame(minWidth: 85, alignment: .leading)
                 Spacer().frame(width: 8)
-                Image("icon-dropdown-arrow")
+                Image(.iconDropdownArrow)
                     .resizable()
                     .frame(width: 16, height: 16)
             }

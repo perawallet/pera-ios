@@ -58,7 +58,7 @@ struct SwapTopPairsListView: View {
                                 AsyncImage(url: viewModel.assetAUrlFor(index: index)) { phase in
                                     switch phase {
                                     case .empty, .failure:
-                                        Image("icon-swap-empty")
+                                        Image(.iconSwapEmpty)
                                             .resizable()
                                             .scaledToFit()
                                     case .success(let image):
@@ -66,7 +66,7 @@ struct SwapTopPairsListView: View {
                                             .resizable()
                                             .scaledToFit()
                                     @unknown default:
-                                        Image("icon-swap-empty")
+                                        Image(.iconSwapEmpty)
                                             .resizable()
                                             .scaledToFit()
                                     }
@@ -78,7 +78,7 @@ struct SwapTopPairsListView: View {
                                 AsyncImage(url: viewModel.assetBUrlFor(index: index)) { phase in
                                     switch phase {
                                     case .empty, .failure:
-                                        Image("icon-swap-empty")
+                                        Image(.iconSwapEmpty)
                                             .resizable()
                                             .scaledToFit()
                                     case .success(let image):
@@ -86,7 +86,7 @@ struct SwapTopPairsListView: View {
                                             .resizable()
                                             .scaledToFit()
                                     @unknown default:
-                                        Image("icon-swap-empty")
+                                        Image(.iconSwapEmpty)
                                             .resizable()
                                             .scaledToFit()
                                     }
