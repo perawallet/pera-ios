@@ -54,7 +54,7 @@ public extension String {
     }
     
     func normalizedNumericString() -> String {
-        self.replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+        replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
             .replacingOccurrences(of: ",", with: ".")
     }
 }
