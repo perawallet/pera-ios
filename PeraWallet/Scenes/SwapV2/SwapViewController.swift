@@ -578,6 +578,13 @@ final class SwapViewController: BaseViewController {
                     sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
                 }
                 
+                guard swapAmount.doubleValue > 0 else {
+                    sharedViewModel?.isLoadingPayAmount = false
+                    sharedViewModel?.isLoadingReceiveAmount = false
+                    sharedViewModel?.isBalanceNotSufficient = true
+                    return
+                }
+                
                 sharedViewModel?.isLoadingPayAmount = false
                 sharedViewModel?.isLoadingReceiveAmount = true
                 handleSwapViewCallbacks(with: .getQuote(for: swapAmount.doubleValue))
