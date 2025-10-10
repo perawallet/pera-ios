@@ -89,7 +89,9 @@ struct ConfirmSwapView: View {
                     onSwapSuccess(String(format: String(localized: "swap-success-toast-text"), assetInUnitName, assetOutUnitName))
                 }
             case .error:
-                onSwapError("Error!")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    onSwapError(String(localized: "title-generic-error"))
+                }
             }
         }
         .background(Color.Defaults.bg)

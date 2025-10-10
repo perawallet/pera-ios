@@ -619,6 +619,7 @@ final class SwapViewController: BaseViewController {
         case let .showSwapConfirmationBanner(successMessage, errorMessage):
             guard let successMessage else {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: errorMessage ?? .empty)
+                sharedViewModel?.swapConfirmationState = .idle
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
