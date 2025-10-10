@@ -189,9 +189,7 @@ class SwapSharedViewModel: ObservableObject {
             filtered = String(before + after)
         }
         
-        let normalized = filtered
-            .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: ",", with: ".")
+        let normalized = filtered.normalizedNumericString()
         
         guard let doubleValue = Double(normalized), doubleValue > 0 else {
             return normalized
@@ -215,16 +213,8 @@ extension SwapSharedViewModel {
             let receiving = Double(receivingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
             return paying > 0 && receiving > 0
         } else {
-            let paying = Double(
-                payingText
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
-            let receiving = Double(
-                receivingText
-                    .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-                    .replacingOccurrences(of: ",", with: ".")
-            ) ?? 0
+            let paying = Double(payingText.normalizedNumericString()) ?? 0
+            let receiving = Double(receivingText.normalizedNumericString()) ?? 0
             return paying > 0 && receiving > 0
         }
         
