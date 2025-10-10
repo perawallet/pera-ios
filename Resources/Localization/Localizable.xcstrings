@@ -7260,6 +7260,16 @@
         }
       }
     },
+    "swap-powered-by-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powered by P.E.R.A."
+          }
+        }
+      }
+    },
     "swap-price-impact-greater-than-10-warning-message" : {
       "localizations" : {
         "en" : {
@@ -7520,7 +7530,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "By continuing, you agree to our swap partner's Terms of Service"
+            "value" : "By continuing, you agree to our<br>\nswap partner's <a href=\\\\\\\"%@\\\\\\\">Terms of Service</a>"
           }
         }
       }

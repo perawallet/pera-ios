@@ -27,22 +27,12 @@ final class SwapIntroductionScreen: ScrollScreen {
     private lazy var titleView = Label()
     private lazy var newBadgeView = Label()
     private lazy var bodyView = Label()
+    private lazy var poweredView = Label()
     private lazy var footerContentView = UIView()
-    private lazy var providerContent = UIView()
+    private lazy var termsOfServiceTextView = UITextView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
     private lazy var theme = SwapIntroductionScreenTheme()
-
-    private let draft: SwapIntroductionDraft
-
-    init(
-        draft: SwapIntroductionDraft,
-        api: ALGAPI?
-    ) {
-        self.draft = draft
-        
-        super.init(api: api)
-    }
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -241,18 +231,21 @@ extension SwapIntroductionScreen {
             $0.setPaddings(theme.footerContentEdgeInsets)
         }
 
-        addProviderContent()
+        addPoweredView()
         addPrimaryAction()
+        addTermsOfServiceTextView()
     }
+    
+    private func addPoweredView() {
+        poweredView.customizeAppearance(theme.powered)
 
-    private func addProviderContent() {
-        footerContentView.addSubview(providerContent)
-        providerContent.snp.makeConstraints {
-            $0.centerX == 0
-            $0.top == 0
-            $0.leading >= 0
-            $0.trailing <= 0
+        footerContentView.addSubview(poweredView)
+        poweredView.snp.makeConstraints {
+            $0.top == footerContentView.snp.top + theme.poweredEdgeInsets.top
+            $0.centerX == footerContentView.snp.centerX
         }
+        
+        bindPowered()
     }
 
     private func addPrimaryAction() {
@@ -261,10 +254,9 @@ extension SwapIntroductionScreen {
         footerContentView.addSubview(primaryActionView)
         primaryActionView.contentEdgeInsets = theme.primaryActionContentEdgeInsets
         primaryActionView.snp.makeConstraints {
-            $0.top == theme.primaryActionTopInset
+            $0.top == poweredView.snp.bottom + theme.primaryActionTopInset
             $0.leading == 0
             $0.trailing == 0
-            $0.bottom == 0
         }
 
         primaryActionView.addTouch(
@@ -272,6 +264,32 @@ extension SwapIntroductionScreen {
             action: #selector(performPrimaryAction)
         )
     }
+    
+    private func addTermsOfServiceTextView() {
+        termsOfServiceTextView.isEditable = false
+        termsOfServiceTextView.isScrollEnabled = false
+        termsOfServiceTextView.dataDetectorTypes = .link
+        termsOfServiceTextView.textContainerInset = .zero
+        termsOfServiceTextView.backgroundColor = .clear
+        termsOfServiceTextView.linkTextAttributes = theme.termsOfServiceLinkAttributes.asSystemAttributes()
+        termsOfServiceTextView.bindHTML(
+            String(
+                format: String(localized: "swap-terms-service-text"),
+                AlgorandWeb.termsAndServices.rawValue
+            ),
+            attributes: theme.termsOfServiceAttributes.asSystemAttributes()
+        )
+        termsOfServiceTextView.delegate = self
+
+        footerContentView.addSubview(termsOfServiceTextView)
+        termsOfServiceTextView.snp.makeConstraints {
+            $0.top == primaryActionView.snp.bottom + theme.termsOfServiceInset
+            $0.leading == footerContentView.snp.leading
+            $0.trailing == footerContentView.snp.trailing
+            $0.bottom == footerContentView.snp.bottom - theme.termsOfServiceInset
+        }
+    }
+    
 }
 
 extension SwapIntroductionScreen {
@@ -288,10 +306,28 @@ extension SwapIntroductionScreen {
             String(localized: "swap-introduction-body")
                 .bodyRegular()
     }
+    
+    private func bindPowered() {
+        poweredView.attributedText =
+            String(localized: "swap-powered-by-text")
+                .bodyRegular()
+    }
 
     private func bindNewBadge() {
         newBadgeView.text =
             String(localized: "title-new-uppercased")
+    }
+}
+
+extension SwapIntroductionScreen: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        open(URL)
+        return false
     }
 }
 

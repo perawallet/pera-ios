@@ -162,9 +162,8 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSwapIntroduction() {
-        let draft = SwapIntroductionDraft(provider: .vestige)
 
-        let screen = Screen.swapIntroduction(draft: draft) {
+        let screen = Screen.swapIntroduction() {
             [weak self] event in
             guard let self else { return }
 
