@@ -114,6 +114,8 @@ final class SwapViewController: BaseViewController {
         loadSwapView()
         loadSwapHistory()
         loadSwapTopPairs()
+        
+        swapAssetFlowCoordinator.showSwapIntroductionIfNeeded()
     }
     
     private func loadSwapView() {
