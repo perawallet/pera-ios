@@ -158,14 +158,14 @@ extension ALGAPI {
     
     @discardableResult
     public func updateSwapStatus(
-        _ draft: SwapStatusUpdateQuery,
+        _ draft: SwapStatusUpdateDraft,
         onCompleted handler: @escaping (Response.Result<SwapTopPairsList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV2(network))
             .path(.swapUpdate, args: draft.swapId)
             .method(.put)
-            .query(draft)
+            .body(draft)
             .completionHandler(handler)
             .execute()
     }

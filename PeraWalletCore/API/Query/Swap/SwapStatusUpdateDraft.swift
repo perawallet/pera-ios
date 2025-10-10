@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapStatusUpdateQuery.swift
+//   SwapStatusUpdateDraft.swift
 
 import Foundation
 import MagpieCore
@@ -31,7 +31,7 @@ public enum SwapStatusUpdateError: String {
     case blockchainError = "blockchain_error"
 }
 
-public struct SwapStatusUpdateQuery: ObjectQuery {
+public struct SwapStatusUpdateDraft: JSONObjectBody {
     public let swapId: String
     public let swapVersion: String
     public let status: SwapStatus
@@ -40,8 +40,8 @@ public struct SwapStatusUpdateQuery: ObjectQuery {
     public let appVersion: String?
     public let countryCode: String?
 
-    public var queryParams: [APIQueryParam] {
-        var params: [APIQueryParam] = []
+    public var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.status, status.rawValue))
         
         if let submittedTransactionIds, submittedTransactionIds.isNonEmpty {
