@@ -7235,7 +7235,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pera Wallet provides an easy and fast way to swap assets on blockchain, using decentralized liquidity pools."
+            "value" : "Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees."
           }
         }
       }
@@ -7256,6 +7256,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You will receive at least %@ or the transaction will revert."
+          }
+        }
+      }
+    },
+    "swap-powered-by-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powered by P.E.R.A."
           }
         }
       }
@@ -7511,6 +7521,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Received"
+          }
+        }
+      }
+    },
+    "swap-terms-service-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By continuing, you agree to our<br>\nswap partner's <a href=\\\\\\\"%@\\\\\\\">Terms of Service</a>"
           }
         }
       }

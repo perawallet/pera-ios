@@ -19,12 +19,18 @@ import UIKit
 
 extension UITextView {
     func bindHTML(_ html: String?, attributes: [NSAttributedString.Key: Any]) {
-        guard let data = html?.data(using: .unicode),
-            let attributedString = try? NSMutableAttributedString(
-            data: data,
-            options: [.documentType: NSAttributedString.DocumentType.html],
-            documentAttributes: nil) else {
-                return
+        guard var html = html else { return }
+        
+        // Remove unnecessary backslashes and quotes
+        html = html.replacingOccurrences(of: "\\", with: "")
+        html = html.replacingOccurrences(of: "\"", with: "\"")
+        
+        guard let data = html.data(using: .unicode),
+              let attributedString = try? NSMutableAttributedString(
+                  data: data,
+                  options: [.documentType: NSAttributedString.DocumentType.html],
+                  documentAttributes: nil) else {
+            return
         }
         
         attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.string.count))

@@ -142,6 +142,13 @@ extension SwapAssetFlowCoordinator {
 
         startSwapFlow()
     }
+    
+    func showSwapIntroductionIfNeeded() {
+        if !displayStore.isConfirmedSwapUserAgreement {
+            openSwapIntroduction()
+            return
+        }
+    }
 }
 
 extension SwapAssetFlowCoordinator {
@@ -155,9 +162,8 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSwapIntroduction() {
-        let draft = SwapIntroductionDraft(provider: .vestige)
 
-        let screen = Screen.swapIntroduction(draft: draft) {
+        let screen = Screen.swapIntroduction() {
             [weak self] event in
             guard let self else { return }
 
@@ -167,8 +173,13 @@ extension SwapAssetFlowCoordinator {
                 self.visibleScreen.dismissScreen {
                     [weak self] in
                     guard let self else { return }
-
-                    self.startSwapFlow()
+                    
+                    if featureFlagService.isEnabled(.swapV2Enabled) {
+                        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+                        rootViewController.launch(tab: .swap)
+                    } else {
+                        self.startSwapFlow()
+                    }
                 }
             case .performCloseAction:
                 self.visibleScreen.dismissScreen()

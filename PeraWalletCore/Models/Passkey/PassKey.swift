@@ -19,6 +19,7 @@ import Foundation
 public final class PassKey: NSManagedObject, Identifiable {
     @NSManaged public var origin: String
     @NSManaged public var username: String
+    @NSManaged public var userHandle: String
     @NSManaged public var displayName: String
     @NSManaged public var address: String
     @NSManaged public var credentialId: String
@@ -29,6 +30,7 @@ extension PassKey {
     public enum DBKeys: String {
         case origin
         case username
+        case userHandle
         case displayName
         case address
         case credentialId

@@ -1794,9 +1794,8 @@ final class Router:
                 alert: alert,
                 api: configuration.api
             )
-        case .swapIntroduction(let draft, let eventHandler):
+        case .swapIntroduction(let eventHandler):
             let aViewController = SwapIntroductionScreen(
-                draft: draft,
                 api: configuration.api
             )
             aViewController.eventHandler = eventHandler
