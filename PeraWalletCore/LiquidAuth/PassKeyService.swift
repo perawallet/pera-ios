@@ -111,10 +111,6 @@ public extension PassKeyService {
             let keyPair = try dp256KeyPair(info: signingAccount, origin: request.origin, username: request.username)
             let credentialId = keyPair.publicKey.rawRepresentation.sha256()
             
-            // We concatenate
-            var compoundCredentialId = credentialId
-            
-            
             PassKey.create(entity: PassKey.entityName, with: [
                 PassKey.DBKeys.username.rawValue: request.username,
                 PassKey.DBKeys.userHandle.rawValue: request.userHandle.base64EncodedString(),
