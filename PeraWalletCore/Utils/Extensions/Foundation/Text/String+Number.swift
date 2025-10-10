@@ -58,7 +58,7 @@ public extension String {
         formatter.locale = .current
         formatter.numberStyle = .decimal
 
-        if let number = formatter.number(from: self) {
+        if let number = formatter.number(from: self.replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)) {
             return number.stringValue
         }
         return self

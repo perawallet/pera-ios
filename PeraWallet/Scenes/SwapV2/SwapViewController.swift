@@ -580,6 +580,13 @@ final class SwapViewController: BaseViewController {
                     sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
                 }
                 
+                guard swapAmount.doubleValue > 0 else {
+                    sharedViewModel?.isLoadingPayAmount = false
+                    sharedViewModel?.isLoadingReceiveAmount = false
+                    sharedViewModel?.isBalanceNotSufficient = true
+                    return
+                }
+                
                 sharedViewModel?.isLoadingPayAmount = false
                 sharedViewModel?.isLoadingReceiveAmount = true
                 handleSwapViewCallbacks(with: .getQuote(for: swapAmount.doubleValue))
@@ -621,6 +628,7 @@ final class SwapViewController: BaseViewController {
         case let .showSwapConfirmationBanner(successMessage, errorMessage):
             guard let successMessage else {
                 bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: errorMessage ?? .empty)
+                sharedViewModel?.swapConfirmationState = .idle
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
@@ -669,6 +677,9 @@ final class SwapViewController: BaseViewController {
         let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
         let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
         var paddingFee: Decimal {
+            guard asset.isAlgo else {
+                return 0
+            }
             if let feePadding = configuration.featureFlagService.double(for: .swapFeePadding) {
                 return Decimal(feePadding)
             } else {

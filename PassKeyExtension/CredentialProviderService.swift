@@ -92,6 +92,7 @@ final class CredentialProviderService {
     private func createPassKey(credentialIdentity: ASPasskeyCredentialIdentity) async throws ->  PassKeyCreationResponse {
         let passKeyRequest = PassKeyCreationRequest(origin: credentialIdentity.relyingPartyIdentifier,
                                                     username: credentialIdentity.userName,
+                                                    userHandle: credentialIdentity.userHandle,
                                                     displayName: credentialIdentity.user,
                                                     address: nil)
         
@@ -144,14 +145,14 @@ final class CredentialProviderService {
                                                                       backupEligible: true, backupState: true, signCount: 0)
         
         let signature = try passkeyResponse.keyPair.signature(for: authenticatorData + requestParameters.clientDataHash)
-        
-        guard let usernameData = passkey.username.data(using: .utf8) else {
+                
+        guard let userHandle = Data(base64Encoded: passkey.userHandle) else {
             throw LiquidAuthError.generalError()
         }
         
         let credId = Data([UInt8](Utility.hashSHA256(passkeyResponse.keyPair.publicKey.rawRepresentation)))
         return ASPasskeyAssertionCredential(
-            userHandle: usernameData,
+            userHandle: userHandle,
             relyingParty: requestParameters.relyingPartyIdentifier,
             signature: signature.derRepresentation,
             clientDataHash: requestParameters.clientDataHash,

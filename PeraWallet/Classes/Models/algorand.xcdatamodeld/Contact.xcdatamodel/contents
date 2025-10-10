@@ -24,6 +24,7 @@
         <attribute name="displayName" optional="YES" attributeType="String"/>
         <attribute name="lastUsed" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="origin" optional="YES" attributeType="String"/>
+        <attribute name="userHandle" optional="YES" attributeType="String"/>
         <attribute name="username" optional="YES" attributeType="String"/>
     </entity>
     <entity name="WCSessionHistory" representedClassName="WCSessionHistory" syncable="YES">

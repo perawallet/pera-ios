@@ -96,6 +96,11 @@ struct ConfirmSlideButton: View {
             .frame(height: buttonHeight)
             .frame(maxWidth: .infinity)
             .animation(.easeInOut(duration: 0.2), value: dragOffset)
+            .onChange(of: state) { newState in
+                if newState == .idle {
+                    dragOffset = 0
+                }
+            }
         }
         .frame(height: buttonHeight)
     }
