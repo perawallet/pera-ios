@@ -675,6 +675,9 @@ final class SwapViewController: BaseViewController {
         let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
         let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
         var paddingFee: Decimal {
+            guard asset.isAlgo else {
+                return 0
+            }
             if let feePadding = configuration.featureFlagService.double(for: .swapFeePadding) {
                 return Decimal(feePadding)
             } else {
