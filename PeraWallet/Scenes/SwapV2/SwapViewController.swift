@@ -712,8 +712,7 @@ final class SwapViewController: BaseViewController {
         case .didSignAllTransactions:
             let transactions = swapController.parsedTransactions.compactMap { $0.groupID.isEmpty == false ? $0.groupID : nil }
             swapAssetFlowCoordinator.updateSwapStatus(swapId: swapController.swapId, swapVersion: swapController.swapVersion, status: .inProgress, submittedTransactionIds: transactions)
-        case .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning:
-            break
+        case .didFinishTiming, .didLedgerResetOnSuccess, .didLedgerRejectSigning: break
         case .didCompleteSwap:
             if let quote = swapController.quote {
                 self.analytics.track(

@@ -161,7 +161,7 @@ extension ALGAPI {
         _ draft: SwapStatusUpdateDraft,
         onCompleted handler: @escaping (Response.Result<SwapTopPairsList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
+        EndpointBuilder(api: self)
             .base(.mobileV2(network))
             .path(.swapUpdate, args: draft.swapId)
             .method(.put)
