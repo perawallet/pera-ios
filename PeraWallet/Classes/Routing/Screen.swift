@@ -304,7 +304,6 @@ indirect enum Screen {
     )
     case alert(alert: Alert)
     case swapIntroduction(
-        draft: SwapIntroductionDraft,
         eventHandler: EventHandler<SwapIntroductionEvent>
     )
     case optInAsset(
