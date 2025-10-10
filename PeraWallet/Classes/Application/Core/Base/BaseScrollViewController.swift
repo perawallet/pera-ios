@@ -28,7 +28,7 @@ class BaseScrollViewController: BaseViewController {
     }
 
     private(set) lazy var scrollView: UIScrollView = {
-        let scrollView = ScrollView()
+        let scrollView = BaseScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
@@ -168,7 +168,7 @@ extension BottomSheetScrollPresentable where Self: BaseScrollViewController {
     }
 }
 
-final class ScrollView: UIScrollView {
+final class BaseScrollView: UIScrollView {
     var isAutoScrollingToEditingTextFieldEnabled: Bool = true
 
     override func scrollRectToVisible(_ rect: CGRect, animated: Bool) {

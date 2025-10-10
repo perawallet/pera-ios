@@ -24,33 +24,33 @@ enum SwapInfoSheet: Identifiable {
     
     var id: String {
         switch self {
-        case .slippageTolerance: return "slippageTolerance"
-        case .priceImpact: return "priceImpact"
-        case .exchangeFee: return "exchangeFee"
+        case .slippageTolerance: "slippageTolerance"
+        case .priceImpact: "priceImpact"
+        case .exchangeFee: "exchangeFee"
         }
     }
     
     var title: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-title"
-        case .priceImpact: return "swap-price-impact-title"
-        case .exchangeFee: return "title-exchange-fee"
+        case .slippageTolerance: "swap-slippage-title"
+        case .priceImpact: "swap-price-impact-title"
+        case .exchangeFee: "title-exchange-fee"
         }
     }
     
     var text: LocalizedStringKey {
         switch self {
-        case .slippageTolerance: return "swap-slippage-tolerance-info-body"
-        case .priceImpact: return "swap-price-impact-info-body"
-        case .exchangeFee: return "swap-exchange-fee-info-body"
+        case .slippageTolerance: "swap-slippage-tolerance-info-body"
+        case .priceImpact: "swap-price-impact-info-body"
+        case .exchangeFee: "swap-exchange-fee-info-body"
         }
     }
     
     var height: CGFloat {
         switch self {
-        case .slippageTolerance: return 320
-        case .exchangeFee: return 280
-        case .priceImpact: return 250
+        case .slippageTolerance: 320
+        case .exchangeFee: 280
+        case .priceImpact: 250
         }
     }
 }
@@ -68,188 +68,9 @@ struct ConfirmSwapView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
-                HStack {
-                    SwiftUI.Button(action: {
-                        dismiss()
-                    }) {
-                        Image("icon-close")
-                            .frame(width: 24, height: 24)
-                    }
-                    Spacer()
-                }
-                .frame(maxHeight: .infinity, alignment: .center)
-                .padding(.horizontal, 24)
-                VStack {
-                    Text("swap-confirm-title")
-                        .font(.dmSans.medium.size(15))
-                        .foregroundStyle(Color.Text.main)
-                    Spacer().frame(height: 2)
-                    HStack {
-                        Image(uiImage: viewModel.selectedAccount.typeImage)
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                        Spacer().frame(width: 6)
-                        Text(viewModel.selectedAccount.primaryDisplayName)
-                            .font(.dmSans.regular.size(13))
-                            .foregroundStyle(Color.Text.gray)
-                    }
-                }
-            }
-            .frame(height: 60)
-            .padding(.top, 8)
-            .padding(.bottom, 10)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInSecondaryCurrency)
-            
-            HStack {
-                Rectangle()
-                    .fill(Color.Layer.grayLighter)
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-                Text("title-to")
-                    .font(.dmSans.medium.size(11))
-                    .foregroundStyle(Color.Text.grayLighter)
-                    .padding(.horizontal, 14)
-                Rectangle()
-                    .fill(Color.Layer.grayLighter)
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-            }
-            .frame(height: 16)
-            .padding(.vertical, 4)
-            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInSecondaryCurrency)
-            Rectangle()
-                .fill(Color.Layer.grayLighter)
-                .frame(height: 1)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 20)
-            VStack {
-                HStack {
-                    Text("title-price")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer()
-                    Text(viewModel.price)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                    Spacer().frame(width: 8)
-                    Image("icon-repeat")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .padding(.top, 28)
-                .padding(.bottom, 16)
-                HStack {
-                    Text("title-provider")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer()
-                    if let url = URL(string: viewModel.provider.iconUrl) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                        } placeholder: {
-                            EmptyView()
-                        }
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .clipShape(Circle())
-                    }
-                    Text(viewModel.provider.displayName)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                }
-                .padding(.bottom, 16)
-                HStack {
-                    Text("swap-slippage-title")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer().frame(width: 6)
-                    SwiftUI.Button {
-                        activeSheet = .slippageTolerance
-                    } label: {
-                        Image("icon-info-20")
-                    }
-                    Spacer()
-                    Text(viewModel.slippageTolerance)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                }
-                .padding(.bottom, 16)
-                HStack {
-                    Text("swap-price-impact-title")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.gray)
-                    Spacer().frame(width: 6)
-                    SwiftUI.Button {
-                        activeSheet = .priceImpact
-                    } label: {
-                        if viewModel.highPriceImpactWarning != nil {
-                            Image("icon-info-20")
-                                .renderingMode(.template)
-                                .foregroundColor(Color.Helpers.negative)
-                        } else {
-                            Image("icon-info-20")
-                        }
-                    }
-                    Spacer()
-                    Text(viewModel.priceImpact)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.main)
-                }
-                .padding(.bottom, 16)
-                HStack {
-                    Text("swap-confirm-minimum-received-title")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer()
-                    Text(viewModel.minimumReceived)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                }
-                .padding(.bottom, 16)
-                HStack {
-                    Text("title-exchange-fee")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer().frame(width: 6)
-                    SwiftUI.Button {
-                        activeSheet = .exchangeFee
-                    } label: {
-                        Image("icon-info-20")
-                    }
-                    Spacer()
-                    Text(viewModel.exchangeFee)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                }
-                .padding(.bottom, 16)
-                HStack {
-                    Text("swap-confirm-pera-fee-title")
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.gray)
-                    Spacer()
-                    Text(viewModel.peraFee)
-                        .font(.dmSans.regular.size(13))
-                        .foregroundStyle(Color.Text.main)
-                }
-                Spacer().frame(height: 20)
-                if let warningMessage = viewModel.highPriceImpactWarning {
-                    HStack(alignment: .top, spacing: 4) {
-                        Image("icon-info-red")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text(warningMessage)
-                            .font(.dmSans.medium.size(13))
-                            .foregroundStyle(Color.Helpers.negative)
-                            .frame(maxWidth: .infinity)
-                    }
-                } else {
-                    Spacer().frame(height: 45)
-                }
-            }
-            .padding(.bottom, 20)
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 24)
+            headerView
+            assetViews
+            infoSection
             ConfirmSlideButton(state: $viewModel.confirmationState, isSwapDisabled: viewModel.isSwapDisabled) {
                 onConfirmTap()
             }
@@ -278,6 +99,199 @@ struct ConfirmSwapView: View {
             ConfirmSwapInfoSheet(infoSheet: sheet)
         }
     }
+    
+    private var headerView: some View {
+        ZStack {
+            HStack {
+                SwiftUI.Button(action: {
+                    dismiss()
+                }) {
+                    Image(.iconClose)
+                        .frame(width: 24, height: 24)
+                }
+                Spacer()
+            }
+            .frame(maxHeight: .infinity, alignment: .center)
+            .padding(.horizontal, 24)
+            VStack {
+                Text("swap-confirm-title")
+                    .font(.dmSans.medium.size(15))
+                    .foregroundStyle(Color.Text.main)
+                Spacer().frame(height: 2)
+                HStack {
+                    Image(uiImage: viewModel.selectedAccount.typeImage)
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                    Spacer().frame(width: 6)
+                    Text(viewModel.selectedAccount.primaryDisplayName)
+                        .font(.dmSans.regular.size(13))
+                        .foregroundStyle(Color.Text.gray)
+                }
+            }
+        }
+        .frame(height: 60)
+        .padding(.top, 8)
+        .padding(.bottom, 10)
+    }
+    
+    private var assetViews: some View {
+        VStack(spacing: 0) {
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetIn, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetInAmount, assetAmountInUSD: viewModel.selectedAssetInAmountInSecondaryCurrency)
+            
+            HStack {
+                Rectangle()
+                    .fill(Color.Layer.grayLighter)
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+                Text("title-to")
+                    .font(.dmSans.medium.size(11))
+                    .foregroundStyle(Color.Text.grayLighter)
+                    .padding(.horizontal, 14)
+                Rectangle()
+                    .fill(Color.Layer.grayLighter)
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+            }
+            .frame(height: 16)
+            .padding(.vertical, 4)
+            ConfirmSwapAssetView(assetItem: viewModel.selectedAssetOut, network: viewModel.selectedNetwork, assetAmount: viewModel.selectedAssetOutAmount, assetAmountInUSD: viewModel.selectedAssetOutAmountInSecondaryCurrency)
+            Rectangle()
+                .fill(Color.Layer.grayLighter)
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 20)
+        }
+    }
+    
+    private var infoSection: some View {
+        VStack {
+            HStack {
+                Text("title-price")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer()
+                Text(viewModel.price)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+                Spacer().frame(width: 8)
+                Image(.iconRepeat)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }
+            .padding(.top, 28)
+            .padding(.bottom, 16)
+            HStack {
+                Text("title-provider")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer()
+                if let url = URL(string: viewModel.provider.iconUrl) {
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                    } placeholder: {
+                        EmptyView()
+                    }
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .clipShape(Circle())
+                }
+                Text(viewModel.provider.displayName)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+            }
+            .padding(.bottom, 16)
+            HStack {
+                Text("swap-slippage-title")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer().frame(width: 6)
+                SwiftUI.Button {
+                    activeSheet = .slippageTolerance
+                } label: {
+                    Image(.iconInfo20)
+                }
+                Spacer()
+                Text(viewModel.slippageTolerance)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+            }
+            .padding(.bottom, 16)
+            HStack {
+                Text("swap-price-impact-title")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.gray)
+                Spacer().frame(width: 6)
+                SwiftUI.Button {
+                    activeSheet = .priceImpact
+                } label: {
+                    if viewModel.highPriceImpactWarning != nil {
+                        Image(.iconInfo20)
+                            .renderingMode(.template)
+                            .foregroundColor(Color.Helpers.negative)
+                    } else {
+                        Image(.iconInfo20)
+                    }
+                }
+                Spacer()
+                Text(viewModel.priceImpact)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.main)
+            }
+            .padding(.bottom, 16)
+            HStack {
+                Text("swap-confirm-minimum-received-title")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer()
+                Text(viewModel.minimumReceived)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+            }
+            .padding(.bottom, 16)
+            HStack {
+                Text("title-exchange-fee")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer().frame(width: 6)
+                SwiftUI.Button {
+                    activeSheet = .exchangeFee
+                } label: {
+                    Image(.iconInfo20)
+                }
+                Spacer()
+                Text(viewModel.exchangeFee)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+            }
+            .padding(.bottom, 16)
+            HStack {
+                Text("swap-confirm-pera-fee-title")
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.gray)
+                Spacer()
+                Text(viewModel.peraFee)
+                    .font(.dmSans.regular.size(13))
+                    .foregroundStyle(Color.Text.main)
+            }
+            Spacer().frame(height: 20)
+            if let warningMessage = viewModel.highPriceImpactWarning {
+                HStack(alignment: .top, spacing: 4) {
+                    Image(.iconInfoRed)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                    Text(warningMessage)
+                        .font(.dmSans.medium.size(13))
+                        .foregroundStyle(Color.Helpers.negative)
+                        .frame(maxWidth: .infinity)
+                }
+            } else {
+                Spacer().frame(height: 45)
+            }
+        }
+        .padding(.bottom, 20)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 24)
+    }
 }
 
 private struct ConfirmSwapAssetView: View {
@@ -292,17 +306,17 @@ private struct ConfirmSwapAssetView: View {
         HStack (alignment: .center) {
             Group {
                 if assetItem.asset.isAlgo {
-                    Image("icon-algo-circle").resizable()
+                    Image(.iconAlgoCircle).resizable()
                 } else if assetItem.asset.isUSDC(for: network) {
-                    Image("icon-usdc-circle").resizable()
+                    Image(.iconUsdcCircle).resizable()
                 } else if let url = assetItem.asset.logoURL {
                     AsyncImage(url: url) { image in
                         image.resizable()
                     } placeholder: {
-                        Image("icon-swap-empty").resizable()
+                        Image(.iconSwapEmpty).resizable()
                     }
                 } else {
-                    Image("icon-swap-empty").resizable()
+                    Image(.iconSwapEmpty).resizable()
                 }
             }
             .frame(width: 40, height: 40)
@@ -326,9 +340,9 @@ private struct ConfirmSwapAssetView: View {
                     Spacer().frame(width: 6)
                     Group {
                         if assetItem.asset.verificationTier.isVerified {
-                            Image("icon-verified").resizable()
+                            Image(.iconVerified).resizable()
                         } else if assetItem.asset.verificationTier.isTrusted {
-                            Image("icon-trusted").resizable()
+                            Image(.iconTrusted).resizable()
                         } else {
                             EmptyView()
                         }
@@ -337,7 +351,9 @@ private struct ConfirmSwapAssetView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .frame(width: 94, height: 48)
+            .frame(minWidth: 94)
+            .frame(height: 48)
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)

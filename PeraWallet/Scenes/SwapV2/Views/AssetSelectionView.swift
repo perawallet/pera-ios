@@ -67,6 +67,7 @@ struct AssetSelectionView: View {
     @Binding var amountTextInSecondaryCurrency: String
     @FocusState private var isPayingFocused: Bool
     @Binding var isLoading: Bool
+    @Binding var isLoadingQuote: Bool?
     @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
@@ -113,13 +114,13 @@ struct AssetSelectionView: View {
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
-                            if focused && (amountText == "0" || amountText == "0.0" || amountText == "0,0") {
+                            if focused && amountText.isZeroValue {
                                 amountText = .empty
                             }
                         }
                     }
 
-                    if isLoading {
+                    if isLoading || isLoadingQuote ?? false {
                         ShimmerSUIView()
                             .frame(width: 80, height: 13, alignment: .leading)
                             .cornerRadius(2)
@@ -139,11 +140,11 @@ struct AssetSelectionView: View {
             if isBalanceNotSufficient {
                 Spacer().frame(height: 16)
                 HStack(alignment: .center) {
-                    Image("icon-info-red")
+                    Image(.iconInfoRed)
                         .resizable()
                         .frame(width: 16, height: 16)
                     Spacer().frame(width: 8)
-                    Text("swap-balance-not-sufficient-title")
+                    Text(String(format: String(localized: "swap-balance-not-sufficient-title"), assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName))
                         .font(.dmSans.medium.size(13.0))
                         .foregroundStyle(Color.Helpers.negative)
                         .frame(height: 20)

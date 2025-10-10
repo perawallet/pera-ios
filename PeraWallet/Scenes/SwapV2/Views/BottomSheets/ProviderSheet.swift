@@ -63,11 +63,10 @@ struct ProviderSheet: View {
             }
             .listStyle(.plain)
             .listRowSpacing(8)
-            .scrollDisabled(true)
             Spacer()
         }
         .background(Color.Defaults.bg)
-        .presentationDetents([.height(viewModel.height)])
+        .presentationDetents([.height(viewModel.sheetHeight)])
         .presentationDragIndicator(.hidden)
     }
 }
@@ -122,7 +121,7 @@ private struct AutoProviderListItem: View {
     // MARK: - Body
     var body: some View {
         HStack (alignment: .center) {
-            Image("icon-sparkles")
+            Image(.iconSparkles)
                 .resizable()
                 .padding(8)
                 .frame(width: 40, height: 40)

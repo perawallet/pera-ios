@@ -45,16 +45,17 @@ struct SwapTopPairsListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(spacing: 5) {
-                    ForEach(Array(viewModel.swapTopPairsList.prefix(5).enumerated()), id: \.0) { index, swapTopPair in
+                    ForEach(viewModel.swapTopPairsArray, id: \.0) { index, swapTopPair in
                         HStack(alignment: .center) {
-                            Text("\(index + 1).")
+                            Text(viewModel.indexTitleFor(index: index))
                                 .font(.dmSans.regular.size(19))
                                 .foregroundStyle(Color.Text.gray)
                                 .frame(width: 26, alignment: .leading)
                             
                             SwapLogosView(assetIn: swapTopPair.assetA, assetOut: swapTopPair.assetB)
                             
-                            Text(swapTopPair.title)
+                            Spacer().frame(width: 8)
+                            Text(viewModel.rowTitleFor(index: index))
                                 .font(.dmSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
                             Spacer()

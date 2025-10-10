@@ -56,8 +56,8 @@ final class ProviderSheetViewModel: ObservableObject {
     var availableProviders: [SwapProviderV2]
     var quoteList: [SwapQuote]?
     
-    var height: CGFloat {
-        CGFloat(150 + ((availableProviders.count + 1) * 72))
+    var sheetHeight: Double {
+        Double(150 + ((availableProviders.count + 1) * 72))
     }
     
     init(

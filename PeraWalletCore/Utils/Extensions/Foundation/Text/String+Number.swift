@@ -52,4 +52,19 @@ public extension String {
 
         return nil
     }
+    
+    func normalizedNumericString() -> String {
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .decimal
+
+        if let number = formatter.number(from: self) {
+            return number.stringValue
+        }
+        return self
+    }
+    
+    var isZeroValue: Bool {
+        (Double(self.normalizedNumericString()) ?? 0) == 0
+    }
 }

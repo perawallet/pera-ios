@@ -69,7 +69,7 @@ struct ConfirmSlideButton: View {
                     .fill(isSwapDisabled ? Color.ButtonPrimary.disabledBg : Color.ButtonPrimary.bg)
                     .frame(width: circleSize, height: circleSize)
                     .overlay(
-                        Image("icon-arrow-24")
+                        Image(.iconArrow24)
                             .renderingMode(.template)
                             .foregroundColor(Color.Defaults.bg)
                     )

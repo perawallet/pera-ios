@@ -48,7 +48,7 @@ final class SelectAssetScreen:
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = AccountAssetListLayout.build(backgroundColor: theme.listBackgroundColor.uiColor)
+        let collectionViewLayout = SelectAssetListLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout

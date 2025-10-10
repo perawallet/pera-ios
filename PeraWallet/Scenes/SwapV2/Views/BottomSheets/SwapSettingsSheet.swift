@@ -40,13 +40,7 @@ struct SwapSettingsSheet: View {
                     onAnalyticsEvent(.swapSettingsClose)
                     dismiss()
                 case .apply:
-                    if viewModel.localPercentageSelected == nil,
-                      !viewModel.percentageText.isEmpty,
-                      let percentageValue = Double(viewModel.percentageText) {
-                       viewModel.localPercentageSelected = .custom(value: percentageValue / 100)
-                   }
-                    
-                    PeraUserDefaults.shouldUseLocalCurrencyInSwap = viewModel.useLocalCurrency
+                    viewModel.applyChanges()
                     onApplyTap(viewModel.localPercentageSelected, viewModel.localSlippageSelected)
                     dismiss()
                 }
@@ -54,12 +48,12 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 24)
             
-            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText, viewModel: viewModel)
-                .onChange(of: viewModel.percentageText) { viewModel.updatePercentageSelection(from: $0)}
+            SwapSettingsTextField(textFieldType: .percentage, text: $viewModel.percentageText)
+                .onChange(of: viewModel.percentageText) { viewModel.updateText($0, for: .percentage) }
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(PercentageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(
@@ -77,12 +71,12 @@ struct SwapSettingsSheet: View {
             
             Spacer().frame(height: 40)
             
-            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText, viewModel: viewModel)
-                .onChange(of: viewModel.slippageText) { viewModel.updateSlippageSelection(from: $0)}
+            SwapSettingsTextField(textFieldType: .slippage, text: $viewModel.slippageText)
+                .onChange(of: viewModel.slippageText) { viewModel.updateText($0, for: .slippage) }
             
             Spacer().frame(height: 16)
             
-            SwiftUI.ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(SlippageValue.allCases, id: \.self) { item in
                         SwapSettingsHListItem(

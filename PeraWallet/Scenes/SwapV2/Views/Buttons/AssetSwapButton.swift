@@ -33,17 +33,17 @@ struct AssetSwapButton: View {
             HStack(spacing: 0) {
                 Group {
                     if assetItem.asset.isAlgo {
-                        Image("icon-algo-circle").resizable()
+                        Image(.iconAlgoCircle).resizable()
                     } else if assetItem.asset.isUSDC(for: network) {
-                        Image("icon-usdc-circle").resizable()
+                        Image(.iconUsdcCircle).resizable()
                     } else if let url = assetItem.asset.logoURL {
                         AsyncImage(url: url) { image in
                             image.resizable()
                         } placeholder: {
-                            Image("icon-swap-empty").resizable()
+                            Image(.iconSwapEmpty).resizable()
                         }
                     } else {
-                        Image("icon-swap-empty").resizable()
+                        Image(.iconSwapEmpty).resizable()
                     }
                 }
                 .frame(width: iconSize, height: iconSize)
@@ -55,7 +55,7 @@ struct AssetSwapButton: View {
                     .lineLimit(1)
                     .textCase(assetItem.asset.isAlgo ? .uppercase : nil)
                 Spacer().frame(width: 8)
-                Image("icon-arrow-24")
+                Image(.iconArrow24)
                     .resizable()
                     .frame(width: 24, height: 24)
             }

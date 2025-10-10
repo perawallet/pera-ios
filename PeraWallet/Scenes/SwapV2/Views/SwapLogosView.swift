@@ -29,7 +29,7 @@ struct SwapLogosView: View {
             AsyncImage(url: URL(string: assetIn.logo ?? .empty)) { phase in
                 switch phase {
                 case .empty, .failure:
-                    Image("icon-swap-empty")
+                    Image(.iconSwapEmpty)
                         .resizable()
                         .scaledToFit()
                 case .success(let image):
@@ -37,7 +37,7 @@ struct SwapLogosView: View {
                         .resizable()
                         .scaledToFit()
                 @unknown default:
-                    Image("icon-swap-empty")
+                    Image(.iconSwapEmpty)
                         .resizable()
                         .scaledToFit()
                 }
@@ -49,7 +49,7 @@ struct SwapLogosView: View {
             AsyncImage(url: URL(string: assetOut.logo ?? .empty)) { phase in
                 switch phase {
                 case .empty, .failure:
-                    Image("icon-swap-empty")
+                    Image(.iconSwapEmpty)
                         .resizable()
                         .scaledToFit()
                 case .success(let image):
@@ -57,7 +57,7 @@ struct SwapLogosView: View {
                         .resizable()
                         .scaledToFit()
                 @unknown default:
-                    Image("icon-swap-empty")
+                    Image(.iconSwapEmpty)
                         .resizable()
                         .scaledToFit()
                 }
