@@ -115,6 +115,15 @@ extension UIViewController {
 
         return safariViewController
     }
+    
+    func open(_ url: URL?, from presentedVC: UIViewController) {
+        guard let vURL = url?.straightened() else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: vURL)
+        presentedVC.present(safariViewController, animated: true)
+    }
 
     public func openInBrowser(
         _ url: URL

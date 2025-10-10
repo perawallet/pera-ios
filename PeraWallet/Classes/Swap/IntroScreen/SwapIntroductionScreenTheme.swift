@@ -46,16 +46,17 @@ struct SwapIntroductionScreenTheme:
     let spacingBetweenTitleAndBody: LayoutMetric
 
     let footerContentEdgeInsets: LayoutPaddings
-
-    let poweredByTitle: TextStyle
-    let poweredByTitleLeadingInset: LayoutMetric
+    
+    let powered: TextStyle
+    let poweredEdgeInsets: LayoutPaddings
 
     let primaryAction: ButtonStyle
     let primaryActionContentEdgeInsets: UIEdgeInsets
     let primaryActionTopInset: LayoutMetric
 
-    let termsOfService: TextStyle
-    let termsOfServiceTopInset: LayoutMetric
+    let termsOfServiceInset: LayoutMetric
+    let termsOfServiceAttributes: [AttributedTextBuilder.Attribute]
+    let termsOfServiceLinkAttributes: [AttributedTextBuilder.Attribute]
 
     init(
         _ family: LayoutFamily
@@ -115,12 +116,13 @@ struct SwapIntroductionScreenTheme:
         self.spacingBetweenTitleAndBody = 16
 
         self.footerContentEdgeInsets = (16, 24, 16, 24)
-
-        self.poweredByTitle = [
-            .textColor(Colors.Text.grayLighter),
-            .textOverflow(SingleLineText())
+        
+        self.powered = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText()),
+            .font(Typography.bodyRegular())
         ]
-        self.poweredByTitleLeadingInset = 10
+        self.poweredEdgeInsets = (20, 16, .noMetric, -16)
 
         self.primaryAction = [
             .title(String(localized: "swap-introduction-primary-action-title")),
@@ -139,12 +141,22 @@ struct SwapIntroductionScreenTheme:
             bottom: 16,
             right: 0
         )
-        self.primaryActionTopInset = 16
-
-        self.termsOfService = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(FittingText()),
+        self.primaryActionTopInset = 24
+        
+        self.termsOfServiceLinkAttributes = [
+            .textColor(Colors.Link.primary.uiColor),
+            .underline(UIColor.clear),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
         ]
-        self.termsOfServiceTopInset = 20
+        
+        self.termsOfServiceAttributes = [
+            .textColor(Colors.Text.gray.uiColor),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
+            .paragraph([
+                .alignment(.center)
+            ])
+        ]
+
+        self.termsOfServiceInset = 20
     }
 }

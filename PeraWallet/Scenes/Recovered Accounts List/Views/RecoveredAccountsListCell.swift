@@ -46,7 +46,7 @@ struct RecoveredAccountsListCell: View {
             }
             Spacer()
             SwiftUI.Button(action: onInfoButtonAction) {
-                Image("icon-info-gray")
+                Image(.iconInfoGray)
                     .resizable()
                     .frame(width: 24.0, height: 24.0)
             }

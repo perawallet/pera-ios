@@ -41,6 +41,7 @@ public final class Algo: Asset {
     public let twitterURL: URL?
     public let algoPriceChangePercentage: Decimal = 0
     public let isAvailableOnDiscover: Bool = true
+    public let category: UInt64? = nil
 
     public let naming: AssetNaming = AssetNaming(
         id: 0,
@@ -49,6 +50,7 @@ public final class Algo: Asset {
     )
     public let amountWithFraction: Decimal = 0
     public let isAlgo = true
+    public func isUSDC(for network: ALGAPI.Network) -> Bool { false }
     public let isFault = false
 
     init(

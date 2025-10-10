@@ -21,6 +21,7 @@ public enum FeatureFlag: String, CaseIterable {
     case accountsChartsEnabled = "enable_charts_accounts"
     case assetsChartsEnabled = "enable_charts_assets"
     case swapV2Enabled = "enable_swap_v2"
+    case swapFeePadding = "swap_fee_padding"
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
 
@@ -34,6 +35,8 @@ public enum FeatureFlag: String, CaseIterable {
             return .bool(false)
         case .swapV2Enabled:
             return .bool(false)
+        case .swapFeePadding:
+            return .double(-1)
         case .liquidAuthEnabled:
             return .bool(false)
         case .liquidConnectEnabled:

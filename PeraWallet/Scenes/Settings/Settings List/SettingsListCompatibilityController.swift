@@ -88,7 +88,7 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
         guard let rootViewController = UIApplication.shared.rootViewController() else { return }
 
         rootViewController.deleteAllData() { [weak self] isCompleted in
-        
+            
             guard isCompleted else {
                 self?.presentLogoutErrorScreen()
                 return

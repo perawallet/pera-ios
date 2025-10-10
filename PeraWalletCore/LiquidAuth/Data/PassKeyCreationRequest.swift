@@ -17,17 +17,20 @@ import Foundation
 public struct PassKeyCreationRequest {
     public let origin: String
     public let username: String
+    public let userHandle: Data
     public let displayName: String
     public let address: String?
     
     public init(
         origin: String,
         username: String,
+        userHandle: Data,
         displayName: String,
         address: String? = nil
     ) {
         self.origin = origin
         self.username = username
+        self.userHandle = userHandle
         self.displayName = displayName
         self.address = address
     }

@@ -52,6 +52,7 @@ public final class CollectibleAsset: Asset {
     public private(set) var twitterURL: URL?
     public private(set) var algoPriceChangePercentage: Decimal
     public private(set) var isAvailableOnDiscover: Bool
+    public private(set) var category: UInt64?
 
     public let isAlgo = false
     public let isFault = false
@@ -130,6 +131,7 @@ public final class CollectibleAsset: Asset {
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+        self.category = asset.category ?? decoration.category
     }
 
     public init(decoration: AssetDecoration) {
@@ -165,6 +167,7 @@ public final class CollectibleAsset: Asset {
         self.totalUSDValue = 0
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+        self.category = decoration.category
     }
 }
 
@@ -195,6 +198,7 @@ extension CollectibleAsset {
         totalUSDValue = asset.totalUSDValue ?? totalUSDValue
         algoPriceChangePercentage = asset.algoPriceChangePercentage
         isAvailableOnDiscover = asset.isAvailableOnDiscover
+        category = asset.category
     }
 
     public func update(with asset: CollectibleAsset) {
@@ -231,6 +235,13 @@ extension CollectibleAsset {
         totalUSDValue = asset.totalUSDValue ?? totalUSDValue
         algoPriceChangePercentage = asset.algoPriceChangePercentage
         isAvailableOnDiscover = asset.isAvailableOnDiscover
+        category = asset.category
+    }
+}
+
+extension CollectibleAsset {
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }
 

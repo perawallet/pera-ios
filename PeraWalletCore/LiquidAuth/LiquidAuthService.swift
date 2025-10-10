@@ -137,7 +137,7 @@ public extension LiquidAuthService {
 
     private func register(signingAccount: AccountInformation, request: LiquidAuthRequest) async throws(LiquidAuthError)  -> LiquidAuthResponse {
         do {
-            let passKeyRequest = PassKeyCreationRequest(origin: request.origin, username: signingAccount.address, displayName: "Liquid Auth Passkey", address: nil)
+            let passKeyRequest = PassKeyCreationRequest(origin: request.origin, username: signingAccount.address, userHandle: Data(), displayName: "Liquid Auth Passkey", address: nil)
             let response = try await passKeyService.createAndSavePassKey(request: passKeyRequest)
             return try await signRegistrationChallenge(signingAccount: signingAccount, passKeyResponse: response, request: request)
         } catch let error as LiquidAuthError {

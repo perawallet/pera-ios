@@ -87,6 +87,7 @@ public extension Formatter {
     }
 
     static func decimalFormatter(
+        minimumFractionDigits: Int = 0,
         maximumFractionDigits: Int = 0,
         groupingSeparator: String? = nil
     ) -> NumberFormatter {
@@ -96,8 +97,28 @@ public extension Formatter {
             formatter.groupingSeparator = groupingSeparator
         }
         formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 0
+        formatter.minimumFractionDigits = minimumFractionDigits
         formatter.maximumFractionDigits = maximumFractionDigits
         return formatter
+    }
+    
+    static func numberTextWithSuffix(from value: Double) -> String {
+        let thresholds: [(Double, String)] = [
+            (1_000_000_000, "B"),
+            (1_000_000, "M"),
+            (1_000, "k")
+        ]
+        
+        for (divider, suffix) in thresholds {
+            if value >= divider {
+                return String(format: "%.2f%@", value / divider, suffix)
+            }
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        return formatter.string(for: value) ?? "0.00"
     }
 }

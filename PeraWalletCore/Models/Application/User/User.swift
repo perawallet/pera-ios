@@ -242,7 +242,6 @@ extension User {
         guard CoreAppConfiguration.shared?.session.authenticatedUser != nil else {
             return
         }
-        
         CoreAppConfiguration.shared?.session.authenticatedUser = self
     }
     

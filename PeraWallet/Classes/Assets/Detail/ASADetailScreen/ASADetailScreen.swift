@@ -75,12 +75,7 @@ final class ASADetailScreen:
             assetInID: dataController.asset.id
         ),
         dataStore: swapDataStore,
-        analytics: analytics,
-        api: api!,
-        sharedDataController: sharedDataController,
-        loadingController: loadingController!,
-        bannerController: bannerController!,
-        hdWalletStorage: hdWalletStorage,
+        configuration: configuration,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -838,6 +833,7 @@ extension ASADetailScreen {
     }
 
     private func navigateToSwapAssetIfPossible() {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         let account = dataController.account
         if account.authorization.isNoAuth {
             presentActionsNotAvailableForAccountBanner()
@@ -845,7 +841,12 @@ extension ASADetailScreen {
         }
 
         analytics.track(.tapSwapInAlgoDetail())
-        swapAssetFlowCoordinator.launch()
+        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+            swapAssetFlowCoordinator.launch()
+            return
+        }
+
+        rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: account, assetInID: dataController.asset.id))
     }
 
     private func navigateToSendTransactionIfPossible() {

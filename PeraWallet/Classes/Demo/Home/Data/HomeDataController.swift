@@ -38,6 +38,7 @@ protocol HomeDataController: AnyObject {
     func updateClose(for banner: CarouselBannerItemModel)
     func hideAnnouncement()
     func fetchIncomingASAsRequests()
+    func fetchUSDCDefaultAsset()
 }
 
 enum HomeSectionIdentifier:

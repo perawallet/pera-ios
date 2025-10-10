@@ -66,12 +66,7 @@ final class HomeViewController:
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
-        analytics: analytics,
-        api: api!,
-        sharedDataController: sharedDataController,
-        loadingController: loadingController!,
-        bannerController: bannerController!,
-        hdWalletStorage: hdWalletStorage,
+        configuration: configuration,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -266,6 +261,9 @@ final class HomeViewController:
         dataController.fetchSpotBanners()
         if configuration.featureFlagService.isEnabled(.portfolioChartsEnabled) {
             dataController.fetchInitialChartData(period: .oneWeek)
+        }
+        if configuration.featureFlagService.isEnabled(.swapV2Enabled) {
+            dataController.fetchUSDCDefaultAsset()
         }
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
@@ -625,10 +623,14 @@ extension HomeViewController {
     ) {
         cell.startObserving(event: .swap) {
             [weak self] in
-            guard let self else { return }
-            self.analytics.track(.recordHomeScreen(type: .swap))
-            self.swapAssetFlowCoordinator.resetDraft()
-            self.swapAssetFlowCoordinator.launch()
+            guard let self, let rootViewController = UIApplication.shared.rootViewController() else { return }
+            analytics.track(.recordHomeScreen(type: .swap))
+            guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
+                swapAssetFlowCoordinator.resetDraft()
+                swapAssetFlowCoordinator.launch()
+                return
+            }
+            rootViewController.launch(tab: .swap)
         }
         
         cell.startObserving(event: .buy) {
@@ -1471,7 +1473,7 @@ extension HomeViewController {
     /// <note>
     /// Sort by order to be presented.
     private var alertItems: [any AlertItem] {
-        return [
+        [
             makeCopyAddressIntroductionAlertItem(),
             makeSwapIntroductionAlertItem(),
             makeBuyGiftCardsWithCryptoIntroductionAlertItem()

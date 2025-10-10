@@ -39,7 +39,7 @@ struct SendKeyRegTransactionView: View {
 private extension SendKeyRegTransactionView {
     var content: some View {
         VStack {
-            SwiftUI.ScrollView(showsIndicators: false) {
+            ScrollView(showsIndicators: false) {
                 VStack(
                     alignment: .leading,
                     spacing: theme.itemSpacing
