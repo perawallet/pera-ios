@@ -38,7 +38,7 @@ struct LedgerTutorialInstructionViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.main)
         ]
         self.arrowImage = [
-            .image("icon-arrow-gray-24")
+            .image("icon-arrow-24")
         ]
 
         self.horizontalInset = 24

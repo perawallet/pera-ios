@@ -410,6 +410,7 @@ extension SwapAssetScreen {
             case .willLoadQuote: self.updateUIWhenDataWillLoad()
             case .didLoadQuote(let quote): self.validateFromQuote(quote)
             case .didFailToLoadQuote(let error): self.updateUIWhenDataDidFailToLoad(error)
+            case .didLoadQuoteV2: assertionFailure("Shouldn't enter here")
             }
         }
 

@@ -27,6 +27,7 @@ public protocol Asset: AnyObject {
     var decimals: Int { get }
     var total: UInt64? { get }
     var totalSupply: Decimal? { get }
+    var category: UInt64? { get }
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
@@ -60,6 +61,8 @@ public protocol Asset: AnyObject {
     var isAlgo: Bool { get }
 
     var isFault: Bool { get }
+    
+    func isUSDC(for network: ALGAPI.Network) -> Bool
 }
 
 extension Asset {
@@ -125,5 +128,9 @@ public struct AssetNaming {
 
     public var hasDisplayName: Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+    
+    public func isUSDC(for network: ALGAPI.Network) -> Bool {
+        id == ALGAsset.usdcAssetID(network)
     }
 }

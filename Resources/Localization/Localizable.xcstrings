@@ -2899,6 +2899,16 @@
         }
       }
     },
+    "create-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Account"
+          }
+        }
+      }
+    },
     "default-error-message" : {
       "localizations" : {
         "en" : {
@@ -4367,6 +4377,26 @@
         }
       }
     },
+    "no-swap-activity-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No swap activity in the last 24 hours"
+          }
+        }
+      }
+    },
+    "no-swap-history-placeholder-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your swap history will appear here once you've completed a swap."
+          }
+        }
+      }
+    },
     "node-settings-action-delete-title" : {
       "localizations" : {
         "en" : {
@@ -5073,6 +5103,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Portfolio Value"
+          }
+        }
+      }
+    },
+    "primary-currency-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primary Currency"
           }
         }
       }
@@ -5943,6 +5983,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Security"
+          }
+        }
+      }
+    },
+    "see-all-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
           }
         }
       }
@@ -6989,6 +7039,17 @@
         }
       }
     },
+    "swap-balance-not-sufficient-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ balance is not sufficient."
+          }
+        }
+      }
+    },
     "swap-confirm-failed-title" : {
       "localizations" : {
         "en" : {
@@ -7069,6 +7130,16 @@
         }
       }
     },
+    "swap-empty-accounts-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an account to get swapping"
+          }
+        }
+      }
+    },
     "swap-error-failed-title" : {
       "localizations" : {
         "en" : {
@@ -7099,6 +7170,16 @@
         }
       }
     },
+    "swap-exchange-fee-info-body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top."
+          }
+        }
+      }
+    },
     "swap-high-price-impact-warning-body" : {
       "localizations" : {
         "en" : {
@@ -7125,6 +7206,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "High Price impact detected!"
+          }
+        }
+      }
+    },
+    "swap-history-error-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load swap history"
+          }
+        }
+      }
+    },
+    "swap-history-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap History"
           }
         }
       }
@@ -7363,6 +7464,17 @@
         }
       }
     },
+    "swap-success-toast-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ to %@ swap successfully completed"
+          }
+        }
+      }
+    },
     "swap-success-view-explorer" : {
       "localizations" : {
         "en" : {
@@ -7399,6 +7511,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Received"
+          }
+        }
+      }
+    },
+    "swap-top-pair-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ to %@"
+          }
+        }
+      }
+    },
+    "swap-volume-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume (24H)"
+          }
+        }
+      }
+    },
+    "swapped-for-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swapped %@ %@ for"
           }
         }
       }
@@ -7593,6 +7735,17 @@
         }
       }
     },
+    "title-apply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
+    },
     "title-approve" : {
       "localizations" : {
         "en" : {
@@ -7665,6 +7818,17 @@
         }
       }
     },
+    "title-auto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
+          }
+        }
+      }
+    },
     "title-back-up-account-selection-header" : {
       "localizations" : {
         "en" : {
@@ -7681,6 +7845,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Balance"
+          }
+        }
+      }
+    },
+    "title-best-price-available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best price available"
           }
         }
       }
@@ -7801,6 +7976,17 @@
         }
       }
     },
+    "title-change-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Provider"
+          }
+        }
+      }
+    },
     "title-choose-account-to-proceed-with" : {
       "localizations" : {
         "en" : {
@@ -7847,6 +8033,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm All"
+          }
+        }
+      }
+    },
+    "title-confirmed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmed!"
           }
         }
       }
@@ -8057,6 +8254,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error: %@"
+          }
+        }
+      }
+    },
+    "title-exchange-fee" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exchange Fee"
           }
         }
       }
@@ -8397,6 +8605,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lowest Value to Highest"
+          }
+        }
+      }
+    },
+    "title-main-account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main Account"
           }
         }
       }
@@ -8745,6 +8964,17 @@
         }
       }
     },
+    "title-provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider"
+          }
+        }
+      }
+    },
     "title-read-more" : {
       "localizations" : {
         "en" : {
@@ -9086,6 +9316,17 @@
         }
       }
     },
+    "title-slide-to-confirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slide To Confirm"
+          }
+        }
+      }
+    },
     "title-sort" : {
       "localizations" : {
         "en" : {
@@ -9192,6 +9433,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Swap"
+          }
+        }
+      }
+    },
+    "title-swap-settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swap Settings"
           }
         }
       }
@@ -9376,12 +9628,44 @@
         }
       }
     },
+    "title-you-pay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You pay"
+          }
+        }
+      }
+    },
+    "title-you-receive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You receive"
+          }
+        }
+      }
+    },
     "tooltip-privacy-mode" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap value to hide your balance"
+          }
+        }
+      }
+    },
+    "top5-swaps-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top 5 Swaps"
           }
         }
       }
@@ -10284,6 +10568,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL copied to clipboard"
+          }
+        }
+      }
+    },
+    "use-local-currency-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Local Currency"
           }
         }
       }

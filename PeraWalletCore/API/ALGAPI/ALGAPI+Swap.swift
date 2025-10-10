@@ -48,6 +48,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func calculatePeraSwapV2Fee(
+        _ draft: PeraSwapFeeDraft,
+        onCompleted handler: @escaping (Response.Result<PeraSwapV2Fee, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.calculatePeraFee)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func prepareSwapTransactions(
@@ -77,6 +91,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func getSwapV2Quote(
+        _ draft: SwapQuoteDraft,
+        onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapQuote)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func updateSwapQuote(_ draft: UpdateSwapQuoteDraft) -> EndpointOperatable {
@@ -85,6 +113,46 @@ extension ALGAPI {
             .path(.swapQuoteUpdate, args: String(draft.id))
             .method(.patch)
             .body(draft)
+            .execute()
+    }
+    
+    @discardableResult
+    public func getProviders(
+        onCompleted handler: @escaping (Response.Result<SwapProviderV2List, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapProviders)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    public func getSwapHistory(
+        _ draft: SwapHistoryQuery,
+        onCompleted handler: @escaping (Response.Result<SwapHistoryList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapHistoryList)
+            .method(.get)
+            .query(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    public func swapTopPairs(
+        _ draft: SwapTopPairsQuery,
+        onCompleted handler: @escaping (Response.Result<SwapTopPairsList, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.swapTopPairsList)
+            .method(.get)
+            .query(draft)
+            .completionHandler(handler)
             .execute()
     }
 }
