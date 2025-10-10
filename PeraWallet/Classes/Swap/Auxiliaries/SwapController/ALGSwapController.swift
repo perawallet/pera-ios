@@ -30,6 +30,8 @@ final class ALGSwapController: SwapController {
     var quote: SwapQuote?
     var poolAsset: Asset?
     var slippage: Decimal?
+    var swapId: UInt64?
+    var swapVersion: String?
 
     private(set) var parsedTransactions: [ParsedSwapTransaction] = []
     
@@ -154,6 +156,11 @@ extension ALGSwapController {
 
     func disconnectFromLedger() {
         swapTransactionGroupSigner.disconnectFromLedger()
+    }
+    
+    func uploadSwapInfo(swapId: UInt64?, swapVersion: String?) {
+        self.swapId = swapId
+        self.swapVersion = swapVersion
     }
 }
 

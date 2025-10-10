@@ -33,10 +33,13 @@ protocol SwapController {
     var providers: [SwapProvider] { get }
     var providersV2: [SwapProviderV2] { get }
     var parsedTransactions: [ParsedSwapTransaction] { get }
+    var swapId: UInt64? { get set }
+    var swapVersion: String? { get set }
 
     func signTransactions(_ transactions: [SwapTransactionGroup])
     func clearTransactions()
     func uploadTransactions()
+    func uploadSwapInfo(swapId: UInt64?, swapVersion: String?)
 
     func disconnectFromLedger()
 }

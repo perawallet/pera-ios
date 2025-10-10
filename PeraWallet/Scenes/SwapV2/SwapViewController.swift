@@ -755,6 +755,7 @@ final class SwapViewController: BaseViewController {
         case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
             bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
         case .didPrepareTransactions(let swapTransactionPreparation):
+            swapController.uploadSwapInfo(swapId: swapTransactionPreparation.swapId, swapVersion: swapTransactionPreparation.swapVersion)
             let transactionGroups = swapTransactionPreparation.transactionGroups
             if swapController.account.requiresLedgerConnection() {
                 swapAssetFlowCoordinator.openSignWithLedgerConfirmation(
