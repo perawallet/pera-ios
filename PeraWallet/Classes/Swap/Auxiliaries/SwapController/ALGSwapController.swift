@@ -181,7 +181,7 @@ extension ALGSwapController {
                 waitingTimeAfterTransactionConfirmed: isLastTransaction ? 0.0 : 1.0,
                 transactionMonitor: transactionMonitor,
                 api: api,
-                shouldReturnSuccessWhenCompleted: isLastTransaction
+                shouldReturnSuccessWhenCompleted: true
             )
 
             transactionUploadAndWaitOperation.eventHandler = {
@@ -191,7 +191,9 @@ extension ALGSwapController {
                 switch event {
                 case .didCompleteTransactionOnTheNode(let id):
                     self.submittedTransactionIds.append(id)
-                    self.publishEvent(.didCompleteSwap(id))
+                    if isLastTransaction {
+                        self.publishEvent(.didCompleteSwap(id))
+                    }
                 case .didFailTransaction(let id):
                     self.cancelAllOperations()
                     self.publishEvent(.didFailTransaction(id))
