@@ -330,7 +330,9 @@ extension SwapAssetFlowCoordinator {
 
                 logFailedSwap(
                     quote: quote,
-                    txnID: txnID
+                    txnID: txnID,
+                    swapController: swapController,
+                    failureReason: .blockchainError
                 )
 
                 let viewModel = SwapUnexpectedErrorViewModel(quote)
@@ -356,7 +358,8 @@ extension SwapAssetFlowCoordinator {
 
                 logFailedSwap(
                     quote: quote,
-                    error: error
+                    error: error,
+                    swapController: swapController
                 )
 
                 let viewModel = SwapAPIErrorViewModel(
@@ -380,7 +383,7 @@ extension SwapAssetFlowCoordinator {
                 switch error {
                 case .api(let apiError):
                     self.displaySigningError(apiError)
-                case .ledger(let ledgerError):                    
+                case .ledger(let ledgerError):
                     self.displayLedgerError(
                         swapController: swapController,
                         ledgerError: ledgerError
@@ -598,13 +601,15 @@ extension SwapAssetFlowCoordinator {
         return lastVC as? T
     }
     
-    func updateSwapStatus(swapId: UInt64?, swapVersion: String?, status: SwapStatus, submittedTransactionIds: [String]? = nil, failureReason: SwapStatusUpdateError? = nil) {
-        guard let swapId else { return }
+    func updateSwapStatus(swapController: SwapController, status: SwapStatus, failureReason: SwapStatusUpdateError? = nil) {
+        
+        guard let swapId = swapController.swapId, featureFlagService.isEnabled(.swapV2Enabled) else { return }
+        
         let draft = SwapStatusUpdateDraft(
             swapId: String(swapId),
-            swapVersion: swapVersion ?? "v2",
+            swapVersion: swapController.swapVersion ?? "v2",
             status: status,
-            submittedTransactionIds: submittedTransactionIds,
+            submittedTransactionIds: swapController.submittedTransactionIds,
             reason: failureReason,
             appVersion: Bundle.main.appVersion,
             countryCode: Locale.current.region?.identifier
@@ -1351,7 +1356,9 @@ extension SwapAssetFlowCoordinator {
 extension SwapAssetFlowCoordinator {
     func logFailedSwap(
         quote: SwapQuote,
-        txnID: String
+        txnID: String,
+        swapController: SwapController,
+        failureReason: SwapStatusUpdateError? = .other
     ) {
         analytics.track(
             .swapFailed(
@@ -1359,6 +1366,10 @@ extension SwapAssetFlowCoordinator {
                 currency: sharedDataController.currency
             )
         )
+        
+        if swapController.swapVersion == "v2" {
+            updateSwapStatus(swapController: swapController, status: .failed, failureReason: failureReason)
+        }
 
         updateSwapQuote(
             quote,
@@ -1368,7 +1379,9 @@ extension SwapAssetFlowCoordinator {
 
     func logFailedSwap(
         quote: SwapQuote,
-        error: SwapController.Error
+        error: SwapController.Error,
+        swapController: SwapController,
+        failureReason: SwapStatusUpdateError? = .other
     ) {
         analytics.track(
             .swapFailed(
@@ -1387,6 +1400,11 @@ extension SwapAssetFlowCoordinator {
             message = error.debugDescription
         case .unexpected(let error):
             message = error.debugDescription
+        }
+        
+        
+        if swapController.swapVersion == "v2" {
+            updateSwapStatus(swapController: swapController, status: .failed, failureReason: failureReason)
         }
 
         updateSwapQuote(
