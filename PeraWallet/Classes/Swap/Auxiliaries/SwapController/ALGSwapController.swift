@@ -30,6 +30,8 @@ final class ALGSwapController: SwapController {
     var quote: SwapQuote?
     var poolAsset: Asset?
     var slippage: Decimal?
+    var swapId: UInt64?
+    var swapVersion: String?
 
     private(set) var parsedTransactions: [ParsedSwapTransaction] = []
     
@@ -46,6 +48,7 @@ final class ALGSwapController: SwapController {
     private let transactionSigner: SwapTransactionSigner
 
     private var signedTransactions: [Data] = []
+    private(set) var submittedTransactionIds: [TxnID] = []
 
     private lazy var swapTransactionGroupSigner = SwapTransactionGroupSigner(
         account: account,
@@ -148,12 +151,18 @@ extension ALGSwapController {
 
     func clearTransactions() {
         signedTransactions = []
+        submittedTransactionIds = []
         parsedTransactions = []
         swapTransactionGroupSigner.clearTransactions()
     }
 
     func disconnectFromLedger() {
         swapTransactionGroupSigner.disconnectFromLedger()
+    }
+    
+    func uploadSwapInfo(swapId: UInt64?, swapVersion: String?) {
+        self.swapId = swapId
+        self.swapVersion = swapVersion
     }
 }
 
@@ -180,8 +189,9 @@ extension ALGSwapController {
                 guard let self = self else { return }
 
                 switch event {
-                case .didCompleteTransactionOnTheNode:
-                    self.publishEvent(.didCompleteSwap)
+                case .didCompleteTransactionOnTheNode(let id):
+                    self.submittedTransactionIds.append(id)
+                    self.publishEvent(.didCompleteSwap(id))
                 case .didFailTransaction(let id):
                     self.cancelAllOperations()
                     self.publishEvent(.didFailTransaction(id))
