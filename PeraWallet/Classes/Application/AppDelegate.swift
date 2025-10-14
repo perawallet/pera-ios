@@ -199,7 +199,12 @@ class AppDelegate:
         let deeplinkQR = DeeplinkQR(url: url)
 
         if let walletConnectURL = deeplinkQR.walletConnectUrl() {
-            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            //TODO: this is a HACK - often when the app is in the background the WC signing sheet doesn't appear
+            //correctly.  Adding a delay seems to help resolve it until we can debug why that's happening fully
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                guard let self = self else { return }
+                self.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            }
             return true
         }
         
