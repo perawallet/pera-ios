@@ -513,7 +513,6 @@ extension SwapSharedViewModel: SharedDataControllerObserver {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            updateAssetIfNeeded(on: sharedDataController)
         }
     }
 
@@ -524,9 +523,10 @@ extension SwapSharedViewModel: SharedDataControllerObserver {
         if !updatedAccount.isAvailable { return }
 
         selectedAccount = updatedAccount.value
+        updateAssetIfNeeded(for: updatedAccount.value, on: sharedDataController)
     }
 
-    private func updateAssetIfNeeded(on sharedDataController: SharedDataController) {
+    private func updateAssetIfNeeded(for selectedAccount: Account, on sharedDataController: SharedDataController) {
         guard let newAssetIn = selectedAccount[selectedAssetIn.asset.id],
               let newAssetOut = selectedAccount[selectedAssetOut.asset.id] else {
             return

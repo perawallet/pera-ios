@@ -737,6 +737,11 @@ final class SwapViewController: BaseViewController {
             }
             swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .inProgress)
             sharedViewModel?.swapConfirmationState = .success
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                guard let self else { return }
+                self.sharedViewModel?.swapConfirmationState = .idle
+            }
         case .didFailTransaction(let txnID):
             guard let quote = swapController.quote else { return }
             swapAssetFlowCoordinator.logFailedSwap(
