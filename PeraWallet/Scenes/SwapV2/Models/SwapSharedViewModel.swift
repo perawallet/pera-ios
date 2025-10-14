@@ -38,7 +38,13 @@ class SwapSharedViewModel: ObservableObject {
     @Published var receivingText: String = .empty
     @Published var receivingTextInSecondaryCurrency: String = .empty
     
-    @Published var swapConfirmationState: ConfirmSlideButtonState = .idle
+    @Published var swapConfirmationState: ConfirmSlideButtonState = .idle {
+        didSet {
+            if swapConfirmationState == .success {
+                shouldUpdateAccounts = true
+            }
+        }
+    }
     
     @Published var selectedNetwork: ALGAPI.Network
     
@@ -48,6 +54,8 @@ class SwapSharedViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]? = []
     
     private var debounceWorkItem: DispatchWorkItem?
+    
+    private var shouldUpdateAccounts = false
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 2).string(for: Decimal(0))!
     
@@ -511,8 +519,10 @@ extension SwapSharedViewModel: SharedDataControllerObserver {
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
     ) {
-        if case .didFinishRunning = event {
+        if case .didFinishRunning = event,
+           shouldUpdateAccounts {
             updateAccountIfNeeded()
+            shouldUpdateAccounts = false
         }
     }
 
