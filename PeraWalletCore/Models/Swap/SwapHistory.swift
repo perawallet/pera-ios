@@ -20,7 +20,7 @@ public final class SwapHistory: ALGEntityModel, Codable {
     public let historyId: Int
     public let providerId: String
     public let status: String
-    public let dateTime: String
+    public let dateTime: String?
     public let transactionGroupId: String?
     public let assetIn: SwapAsset
     public let assetOut: SwapAsset
@@ -68,7 +68,7 @@ extension SwapHistory {
         var historyId: Int
         var providerId: String
         var status: String
-        var dateTime: String
+        var dateTime: String?
         var transactionGroupId: String?
         var assetIn: SwapAsset
         var assetOut: SwapAsset
@@ -130,7 +130,7 @@ extension SwapHistory {
     
     public var dateText: String {
         let isoFormatter = ISO8601DateFormatter()
-        guard let date = isoFormatter.date(from: dateTime) else {
+        guard let date = isoFormatter.date(from: dateTime ?? .empty) else {
             return .empty
         }
         return date.toFormat("MMM d, yyyy")
