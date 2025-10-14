@@ -45,28 +45,28 @@ public struct SwapStatusUpdateDraft: JSONObjectBody {
         params.append(.init(.status, status.rawValue))
         
         if let submittedTransactionIds, submittedTransactionIds.isNonEmpty {
-            params.append(.init(.submittedTransactionIds, submittedTransactionIds))
+            params.append(APIBodyParam(.submittedTransactionIds, submittedTransactionIds))
         }
         
         if let reason {
-            params.append(.init(.reason, reason.rawValue))
+            params.append(APIBodyParam(.reason, reason.rawValue))
         }
         
         if let appVersion {
-            params.append(.init(.appVersion, appVersion))
+            params.append(APIBodyParam(.appVersion, appVersion))
         }
         
-        params.append(.init(.platform, "ios"))
+        params.append(APIBodyParam(.platform, "ios"))
         
         if let appVersion {
-            params.append(.init(.appVersion, appVersion))
+            params.append(APIBodyParam(.appVersion, appVersion))
         }
         
         if let countryCode {
-            params.append(.init(.countryCode, countryCode))
+            params.append(APIBodyParam(.countryCode, countryCode))
         }
         
-        params.append(.init(.swapVersion, swapVersion))
+        params.append(APIBodyParam(.swapVersion, swapVersion))
 
         return params
     }
