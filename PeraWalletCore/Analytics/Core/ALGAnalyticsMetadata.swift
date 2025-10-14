@@ -82,6 +82,10 @@ public enum ALGAnalyticsMetadataKey:
     case screenName = "screen"
     case bannerName = "banner_name"
     case wcActionError = "wc_action_error"
+    case errorDetails = "error_details"
+    case errorCause = "error_root_cause"
+    case appGroupName = "app_group_name"
+    
     
     public static func == (lhs: ALGAnalyticsMetadataKey, rhs: ALGAnalyticsMetadataKey) -> Bool {
         lhs.rawValue == rhs.rawValue

@@ -486,7 +486,18 @@ extension AppDelegate {
         biometricAuthenticationMigration.migratePasswordToKeychain()
         
         let dataStoreMigration = AppGroupDataStoreMigration(appGroup: ALGAppTarget.current.appGroupIdentifier)
-        dataStoreMigration.moveDatabaseToAppGroup()
+        
+        do {
+            try dataStoreMigration.moveDatabaseToAppGroup()
+        } catch AppGroupDataStoreMigrationError.migrationFailed(let cause), AppGroupDataStoreMigrationError.contentNotDetected(let cause) {
+            CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: cause))
+            //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
+            fatalError("AppGroup data migration failed")
+        } catch {
+            CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: error))
+            //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
+            fatalError("AppGroup data migration failed")
+        }
     }
     
     private func setupLegacyBridge() {
@@ -632,14 +643,19 @@ extension AppDelegate {
         CoreAppConfiguration.shared = config
         
         if let shared = CoreAppConfiguration.shared {
-            shared.persistentContainer = createPersistentContainer()
+            do {
+                shared.persistentContainer = try createPersistentContainer()
+            } catch {
+                //TODO: ideally we should go to a user visible error, but we have no such page, so for now we have to crash
+                assertionFailure("Failed to initialize database: \(error)")
+            }
         }
         
         return config;
     }
     
-    private func createPersistentContainer() -> NSPersistentContainer {
-        NSPersistentContainer.makePersistentContainer(
+    private func createPersistentContainer() throws -> NSPersistentContainer {
+        try NSPersistentContainer.makePersistentContainer(
             group: ALGAppTarget.current.appGroupIdentifier)
     }
     
