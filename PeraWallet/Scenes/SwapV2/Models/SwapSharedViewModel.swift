@@ -52,6 +52,7 @@ class SwapSharedViewModel: ObservableObject {
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 2).string(for: Decimal(0))!
     
     let currency: CurrencyProvider
+    let sharedDataController: SharedDataController
     
     // MARK: - Internal State
     var quoteList: [SwapQuote]?
@@ -63,7 +64,8 @@ class SwapSharedViewModel: ObservableObject {
         selectedAssetIn: AssetItem,
         selectedAssetOut: AssetItem,
         selectedNetwork: ALGAPI.Network,
-        currency: CurrencyProvider
+        currency: CurrencyProvider,
+        sharedDataController: SharedDataController
     ) {
         self.selectedAccount = selectedAccount
         self.selectedAssetIn = selectedAssetIn
@@ -71,6 +73,13 @@ class SwapSharedViewModel: ObservableObject {
         self.selectedProvider = .auto
         self.selectedNetwork = selectedNetwork
         self.currency = currency
+        self.sharedDataController = sharedDataController
+        
+        sharedDataController.add(self)
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
     
     // MARK: - Helpers
@@ -494,5 +503,50 @@ enum SlippageValue: Equatable, Hashable {
         default:
             return false
         }
+    }
+}
+
+extension SwapSharedViewModel: SharedDataControllerObserver {    
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+            updateAssetIfNeeded(on: sharedDataController)
+        }
+    }
+
+    private func updateAccountIfNeeded() {
+        let account = selectedAccount
+        guard let updatedAccount = sharedDataController.accountCollection[account.address] else { return }
+
+        if !updatedAccount.isAvailable { return }
+
+        selectedAccount = updatedAccount.value
+    }
+
+    private func updateAssetIfNeeded(on sharedDataController: SharedDataController) {
+        guard let newAssetIn = selectedAccount[selectedAssetIn.asset.id],
+              let newAssetOut = selectedAccount[selectedAssetOut.asset.id] else {
+            return
+        }
+
+        if isAssetUpdated(oldAsset: selectedAssetIn.asset, newAsset: newAssetIn),
+           let assetDetail = sharedDataController.assetDetailCollection[newAssetIn.id] {
+            let algAsset = ALGAsset(asset: newAssetIn)
+            self.selectedAssetIn.asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+        }
+        
+        if isAssetUpdated(oldAsset: selectedAssetOut.asset, newAsset: newAssetOut),
+           let assetDetail = sharedDataController.assetDetailCollection[newAssetOut.id] {
+            let algAsset = ALGAsset(asset: newAssetOut)
+            self.selectedAssetOut.asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+        }
+    }
+
+    private func isAssetUpdated(oldAsset: Asset, newAsset: Asset) -> Bool {
+        return oldAsset.decimalAmount != newAsset.decimalAmount ||
+            oldAsset.usdValue != newAsset.usdValue
     }
 }

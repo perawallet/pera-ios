@@ -189,7 +189,8 @@ final class SwapViewController: BaseViewController {
                 selectedAssetIn: assetIn,
                 selectedAssetOut: assetOut,
                 selectedNetwork: api?.network ?? .mainnet,
-                currency: sharedDataController.currency
+                currency: sharedDataController.currency,
+                sharedDataController: sharedDataController
             )
             self.sharedViewModel = vm
             return vm
