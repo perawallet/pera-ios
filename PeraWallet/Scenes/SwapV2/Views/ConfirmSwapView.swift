@@ -100,6 +100,9 @@ struct ConfirmSwapView: View {
         .sheet(item: $activeSheet) { sheet in
             ConfirmSwapInfoSheet(infoSheet: sheet)
         }
+        .onDisappear {
+            viewModel.confirmationState = .idle
+        }
     }
     
     private var headerView: some View {
