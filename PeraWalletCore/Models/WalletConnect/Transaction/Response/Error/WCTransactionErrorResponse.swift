@@ -46,8 +46,6 @@ public enum WCTransactionErrorResponse: Error {
                 return String(localized: "wallet-connect-transaction-error-group-validation")
             case .unsignable:
                 return String(localized: "wallet-connect-transaction-error-group-unauthorized-user")
-            case .alreadyDisplayed:
-                return String(localized: "wallet-connect-request-error-already-displayed")
             case .none:
                 return String(localized: "wallet-connect-transaction-error-rejected")
             }
@@ -171,7 +169,6 @@ extension WCTransactionErrorResponse {
         case user
         case failedValidation
         case unsignable
-        case alreadyDisplayed
         case none
     }
 

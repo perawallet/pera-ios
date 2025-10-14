@@ -100,17 +100,6 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
     private func canSignWCV1Request(
         for request: WalletConnectRequest
     ) -> Bool {
-        let topic = request.url.topic
-
-        if hasOngoingWCRequest(for: topic) {
-            let params = WalletConnectV1RejectTransactionRequestParams(
-                v1Request: request,
-                error: .rejected(.alreadyDisplayed)
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return false
-        }
-        
         return true
     }
 }
@@ -290,15 +279,6 @@ extension RootViewController: WalletConnectV2RequestHandlerDelegate {
             let params = WalletConnectV2RejectTransactionRequestParams(
                 v2Request: request,
                 error: .unsupportedMethods
-            )
-            appConfiguration.peraConnect.rejectTransactionRequest(params)
-            return false
-        }
-
-        if hasOngoingWCRequest(for: request.topic) {
-            let params = WalletConnectV2RejectTransactionRequestParams(
-                v2Request: request,
-                error: .rejected(.alreadyDisplayed)
             )
             appConfiguration.peraConnect.rejectTransactionRequest(params)
             return false
