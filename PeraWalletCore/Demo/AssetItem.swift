@@ -15,7 +15,7 @@
 //   AssetItem.swift
 
 public final class AssetItem {
-    public let asset: Asset
+    public var asset: Asset
     public let currency: CurrencyProvider
     public let currencyFormatter: CurrencyFormatter
     public let currencyFormattingContext: CurrencyFormattingContext?

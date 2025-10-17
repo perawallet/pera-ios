@@ -189,7 +189,8 @@ final class SwapViewController: BaseViewController {
                 selectedAssetIn: assetIn,
                 selectedAssetOut: assetOut,
                 selectedNetwork: api?.network ?? .mainnet,
-                currency: sharedDataController.currency
+                currency: sharedDataController.currency,
+                sharedDataController: sharedDataController
             )
             self.sharedViewModel = vm
             return vm
@@ -220,7 +221,7 @@ final class SwapViewController: BaseViewController {
             }
             sharedViewModel?.swapHistoryList = result?.results ?? []
         }
-        swapAssetFlowCoordinator.swapHistoryList(with: selectedAccount.address)
+        swapAssetFlowCoordinator.swapHistoryList(with: selectedAccount.address, statuses: [SwapStatus.completed.rawValue, SwapStatus.inProgress.rawValue].joined(separator: ","))
     }
     
     private func loadSwapTopPairs() {
@@ -734,12 +735,15 @@ final class SwapViewController: BaseViewController {
                     )
                 )
             }
+            swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .inProgress)
             sharedViewModel?.swapConfirmationState = .success
         case .didFailTransaction(let txnID):
             guard let quote = swapController.quote else { return }
             swapAssetFlowCoordinator.logFailedSwap(
                 quote: quote,
-                txnID: txnID
+                txnID: txnID,
+                swapController: swapController,
+                failureReason: .blockchainError
             )
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error(nil)
@@ -747,14 +751,18 @@ final class SwapViewController: BaseViewController {
             guard let quote = swapController.quote else { return }
             swapAssetFlowCoordinator.logFailedSwap(
                 quote: quote,
-                error: error
+                error: error,
+                swapController: swapController,
+                failureReason: .blockchainError
             )
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .error(error)
         case .didCancelTransaction, .didLedgerReset:
+            swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .failed, failureReason: .userCancelled)
             swapController.clearTransactions()
             sharedViewModel?.swapConfirmationState = .idle
         case .didFailSigning(let error):
+            swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .failed, failureReason: .other)
             sharedViewModel?.swapConfirmationState = .error(error)
         }
     }
@@ -768,6 +776,7 @@ final class SwapViewController: BaseViewController {
         case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
             bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
         case .didPrepareTransactions(let swapTransactionPreparation):
+            swapController.uploadSwapInfo(swapId: swapTransactionPreparation.swapId, swapVersion: swapTransactionPreparation.swapVersion)
             let transactionGroups = swapTransactionPreparation.transactionGroups
             if swapController.account.requiresLedgerConnection() {
                 swapAssetFlowCoordinator.openSignWithLedgerConfirmation(

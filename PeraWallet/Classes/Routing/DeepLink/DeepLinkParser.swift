@@ -104,15 +104,18 @@ extension DeepLinkParser {
             return nil
         }
 
-        guard let host = url.host else {
+        if let host = url.host {
+            let aRawValue = host + url.path
+            return NotificationAction(rawValue: aRawValue)
+        }
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let queryItems = components.queryItems,
+              let actionName = queryItems.first?.name else {
             return nil
         }
-
-        let path = url.path
-
-        let aRawValue = host + path
-
-        return NotificationAction(rawValue: aRawValue)
+        
+        return NotificationAction(rawValue: actionName)
     }
 
     private func makeAssetOptInScreen(for notificationMessage: NotificationMessage) -> Result? {
@@ -407,12 +410,12 @@ extension DeepLinkParser {
 
     private func makeExternalBrowserScreen(from url: URL?) -> Result? {
         let params = url?.queryParameters
-        guard let redirectedUrlString = params?["url"],
-              let redirectedURL = URL(string: redirectedUrlString) else {
+        guard let redirectedUrlString = params?["url"] else {
             return nil
         }
 
         guard let browserDeeplinkURL = url?.browserDeeplinkURL else {
+            let redirectedURL = URL(string: redirectedUrlString)
             let redirectDestination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
             return .success(.externalInAppBrowser(destination: redirectDestination))
         }
@@ -724,7 +727,7 @@ extension DeepLinkParser {
             return .success(.externalDeepLink(deepLink: externalDeepLink))
         }
         
-        let destination = DiscoverExternalDestination.redirection(browserURL, api.network)
+        let destination = DiscoverExternalDestination.url(browserURL)
         return .success(.externalInAppBrowser(destination: destination))
     }
     
