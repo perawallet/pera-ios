@@ -24,8 +24,8 @@ final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
     var account: Account {
         return swapController.account
     }
-    var quote: SwapQuote {
-        return swapController.quote!
+    var quote: SwapQuote? {
+        return swapController.quote
     }
 
     private var swapController: SwapController
@@ -87,6 +87,11 @@ extension ConfirmSwapAPIDataController {
     }
 
     func confirmSwap() {
+        guard let quote = swapController.quote else {
+            eventHandler?(.didFailToPrepareTransactions(HIPNetworkError.client(.init(statusCode: 0), nil)))
+            return
+        }
+        
         eventHandler?(.willPrepareTransactions)
 
         let draft = SwapTransactionPreparationDraft(quoteID: quote.id)
