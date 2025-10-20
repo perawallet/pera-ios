@@ -559,17 +559,7 @@ extension HomeViewController {
         _ cell: NoContentWithActionCell
     ) {
         cell.startObserving(event: .performPrimaryAction) {
-            [weak self] in
-            guard let self else { return }
-            
-            self.open(
-                .addAccount(flow: .addNewAccount(mode: .none)),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
+            AppDelegate.shared?.launchOnboarding()
         }
     }
     
@@ -827,7 +817,7 @@ extension HomeViewController {
 
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
-                .addAccount(flow: .addNewAccount(mode: .none)),
+                .addAccount,
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,

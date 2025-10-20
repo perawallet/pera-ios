@@ -23,7 +23,7 @@ struct PasskeyEmptyView: View {
             Image(.Passkeys.passkeysWarningHeader)
                 .frame(width: 96, height: 88)
             Text("settings-passkeys-empty")
-                .font(.dmSans.regular.size(15.0))
+                .font(.DMSans.regular.size(15.0))
                 .foregroundStyle(Color.Text.main)
         }
     }

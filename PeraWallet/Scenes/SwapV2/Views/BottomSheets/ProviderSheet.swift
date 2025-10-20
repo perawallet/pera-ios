@@ -93,15 +93,15 @@ private struct ProviderListItem: View {
             }
             
             Text(provider.displayName)
-                .font(.dmSans.regular.size(15))
+                .font(.DMSans.regular.size(15))
                 .foregroundStyle(Color.Text.main)
             Spacer()
             VStack(alignment: .trailing, spacing: 0) {
                 Text(quotePrimaryValue)
-                    .font(.dmSans.regular.size(15))
+                    .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.main)
                 Text(quoteSecondaryValue)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
             }
             Spacer().frame(width: 16)
@@ -129,11 +129,11 @@ private struct AutoProviderListItem: View {
                 .clipShape(Circle())
             Spacer().frame(width: 16)
             Text("title-auto")
-                .font(.dmSans.regular.size(15))
+                .font(.DMSans.regular.size(15))
                 .foregroundStyle(Color.Text.main)
             Spacer()
             Text("title-best-price-available")
-                .font(.dmSans.regular.size(15))
+                .font(.DMSans.regular.size(15))
                 .foregroundStyle(Color.Text.gray)
             Spacer().frame(width: 16)
             Image(selectedProvider == .auto ? "icon-radio-selected" : "icon-radio-unselected")

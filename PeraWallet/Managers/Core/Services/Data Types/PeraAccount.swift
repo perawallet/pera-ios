@@ -14,26 +14,71 @@
 
 //   PeraAccount.swift
 
-struct PeraAccount {
+struct PeraAccount: Hashable {
     
-    enum AccountType {
+    enum AccountType: CaseIterable {
         case algo25
         case universalWallet
         case watch
+        case ledger
+        case joint
         case invalid
     }
 
     enum AuthorizedAccountType {
-        case wallet
+        case algo25
+        case universalWallet
         case ledger
         case invalid
+    }
+    
+    struct Titles: Hashable {
+        let primary: String
+        let secondary: String?
     }
     
     let address: String
     let type: AccountType
     let authType: AuthorizedAccountType?
+    let amount: Double
+    let titles: Titles
+    let sortingIndex: Int
 }
 
 extension PeraAccount {
     var isBackupable: Bool { type != .invalid && authType != .invalid }
+}
+
+extension PeraAccount.AccountType {
+    var isStandardAccount: Bool { self == .algo25 || self == .universalWallet }
+}
+
+extension PeraAccount.AccountType {
+    
+    var name: String? {
+        switch self {
+        case .algo25, .universalWallet:
+            nil
+        case .watch:
+            String(localized: "common-account-type-name-watch")
+        case .ledger:
+            String(localized: "common-account-type-name-ledger")
+        case .joint:
+            String(localized: "common-account-type-name-joint")
+        case .invalid:
+            String(localized: "common-account-type-name-no-auth")
+        }
+    }
+}
+
+extension PeraAccount.AuthorizedAccountType {
+    
+    var name: String {
+        switch self {
+        case .algo25, .universalWallet, .ledger:
+            String(localized: "common-account-type-name-rekeyed")
+        case .invalid:
+            String(localized: "common-account-type-name-no-auth")
+        }
+    }
 }

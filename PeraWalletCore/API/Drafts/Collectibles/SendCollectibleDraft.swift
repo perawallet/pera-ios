@@ -23,7 +23,7 @@ public struct SendCollectibleDraft {
 
     public var toAccount: Account?
     public var toContact: Contact?
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     public var fee: UInt64?
     public var isReceiverOptingInToCollectible: Bool
 

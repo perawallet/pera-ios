@@ -45,7 +45,7 @@ final class ReceiverAccountSelectionListAPIDataController:
     private var ongoingNameServiceEndpoint: EndpointOperatable?
     private var nameServiceAPIStatus: NameServiceAPIStatus = .idle
     private var nameServiceValidator: RegexValidator = .nameService()
-    private var matchedAccounts: [NameService] = []
+    private var matchedAccounts: [NameServiceAPIModel] = []
 
     private lazy var searchThrottler: Throttler = .init(intervalInSeconds: 0.3)
 
@@ -75,7 +75,7 @@ final class ReceiverAccountSelectionListAPIDataController:
         return contacts[address]
     }
 
-    subscript(nameServiceAddress address: Address) -> NameService? {
+    subscript(nameServiceAddress address: Address) -> NameServiceAPIModel? {
         return matchedAccounts.first(matching: (\.address, address))
     }
 }
@@ -455,7 +455,7 @@ extension ReceiverAccountSelectionListAPIDataController {
         return matchedAccounts.map(makeNameServiceItem)
     }
 
-    private func makeNameServiceItem(_ nameService: NameService) -> ReceiverAccountSelectionListItem {
+    private func makeNameServiceItem(_ nameService: NameServiceAPIModel) -> ReceiverAccountSelectionListItem {
         let imageSource = DefaultURLImageSource(url: URL(string: nameService.service.logo))
         let nameServiceAccount = nameService.account.value
         let preview = NameServiceAccountListItem(

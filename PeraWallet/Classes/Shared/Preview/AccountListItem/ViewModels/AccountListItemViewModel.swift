@@ -20,16 +20,19 @@ import UIKit
 import MacaroonURLImage
 import pera_wallet_core
 
-struct AccountListItemViewModel:
-    PortfolioViewModel,
-    BindableViewModel,
-    Hashable {
+struct AccountListItemViewModel: PortfolioViewModel, BindableViewModel, Hashable {
+    
+    enum AccountBadge {
+        case image(UIImage)
+        case text(String)
+    }
+    
     private(set) var address: String?
     private(set) var authorization: AccountAuthorization?
     private(set) var isBackedUp: Bool?
 
     private(set) var icon: ImageSource?
-    private(set) var iconBottomRightBadge: Image?
+    private(set) var badge: AccountBadge?
     public var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
@@ -290,13 +293,15 @@ extension AccountListItemViewModel {
 }
 
 extension AccountListItemViewModel {
+    
     mutating func bindIconBottomRightBadge(_ account: Account) {
-        guard !account.isBackedUp else {
-            iconBottomRightBadge = nil
-            return
+        if account.authorization == .jointAccount, let participantsCount = account.jointAccountParticipants?.count {
+            badge = .text("\(participantsCount)")
+        } else if !account.isBackedUp {
+            badge = .image(.circleBadgeWarning)
+        } else {
+            badge = nil
         }
-
-        iconBottomRightBadge = "circle-badge-warning"
     }
 
     mutating func bindTitle(

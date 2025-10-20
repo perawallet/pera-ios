@@ -27,7 +27,7 @@ public protocol TransactionSendDraft {
     var note: String? { get set }
     var lockedNote: String? { get set }
     var toContact: Contact? { get set }
-    var toNameService: NameService? { get set }
+    var toNameService: NameServiceAPIModel? { get set }
 }
 
 extension TransactionSendDraft {
