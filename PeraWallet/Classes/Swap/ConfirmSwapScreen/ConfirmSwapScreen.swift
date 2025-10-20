@@ -128,7 +128,8 @@ final class ConfirmSwapScreen:
 
     override func bindData() {
         super.bindData()
-        bindData(dataController.quote)
+        guard let quote = dataController.quote else { return }
+        bindData(quote)
     }
 }
 
@@ -426,12 +427,17 @@ extension ConfirmSwapScreen {
     }
 
     private func switchPriceValuePresentation() {
-        guard var priceInfoViewModel = viewModel?.priceInfo as? SwapConfirmPriceInfoViewModel else { return }
+        guard
+            var priceInfoViewModel = viewModel?.priceInfo as? SwapConfirmPriceInfoViewModel,
+            let quote = dataController.quote
+        else {
+            return
+        }
 
         isPriceReversed.toggle()
 
         priceInfoViewModel.bindDetail(
-            quote: dataController.quote,
+            quote: quote,
             isPriceReversed: isPriceReversed,
             currencyFormatter: currencyFormatter
         )
@@ -504,8 +510,11 @@ extension ConfirmSwapScreen {
 
     @objc
     private func didTapConfirmSwap() {
-        if let priceImpact = dataController.quote.priceImpact,
-           priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent {
+        if
+            let quote = dataController.quote,
+            let priceImpact = quote.priceImpact,
+            priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent
+        {
             presentWarningForHighPriceImpact()
             return
         }
