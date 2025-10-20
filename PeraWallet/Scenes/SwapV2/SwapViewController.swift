@@ -775,6 +775,7 @@ final class SwapViewController: BaseViewController {
         case .willUpdateSlippage, .didUpdateSlippage, .willPrepareTransactions: break
         case .didFailToPrepareTransactions(let error), .didFailToUpdateSlippage(let error):
             bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
+            sharedViewModel?.swapConfirmationState = .idle
         case .didPrepareTransactions(let swapTransactionPreparation):
             swapController.uploadSwapInfo(swapId: swapTransactionPreparation.swapId, swapVersion: swapTransactionPreparation.swapVersion)
             let transactionGroups = swapTransactionPreparation.transactionGroups

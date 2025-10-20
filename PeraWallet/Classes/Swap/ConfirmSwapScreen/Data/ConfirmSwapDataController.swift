@@ -25,7 +25,7 @@ protocol ConfirmSwapDataController: AnyObject {
     typealias Error = HIPNetworkError<HIPAPIError>
 
     var account: Account { get }
-    var quote: SwapQuote { get }
+    var quote: SwapQuote? { get }
 
     var eventHandler: EventHandler? { get set }
 
