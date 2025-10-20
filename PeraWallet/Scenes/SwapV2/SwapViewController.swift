@@ -44,6 +44,13 @@ final class SwapViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        
         swapAssetFlowCoordinator.onProvidersListLoaded = { [weak self] providers in
             guard let self else { return }
             availableProviders = providers.results
@@ -51,6 +58,14 @@ final class SwapViewController: BaseViewController {
         
         swapAssetFlowCoordinator.getProvidersList()
         configureView()
+    }
+    
+    @objc private func appDidBecomeActive() {
+        if launchDraft != nil { configureView() }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func customizeTabBarAppearence() {
@@ -73,6 +88,11 @@ final class SwapViewController: BaseViewController {
                 availableProviders = providers.results
             }
             swapAssetFlowCoordinator.getProvidersList()
+            configureView()
+            return
+        }
+        
+        guard launchDraft == nil else {
             configureView()
             return
         }
@@ -293,12 +313,8 @@ final class SwapViewController: BaseViewController {
     }
     
     private func resolveInitialState() -> Bool {
-        
-        guard let account = launchDraft?.account ?? resolveDefaultAccount() else {
-            return false
-        }
+        guard let account = launchDraft?.account ?? resolveDefaultAccount() else { return false }
         selectedAccount = account
-        
         defer { launchDraft = nil }
         
         guard let launchDraft else {
@@ -309,12 +325,35 @@ final class SwapViewController: BaseViewController {
         
         if let assetOut = launchDraft.assetOut {
             selectedAssetOut = assetItem(from: assetOut)
-            selectedAssetIn = assetItem(from: launchDraft.assetIn)
-        } else if let assetIn = launchDraft.assetIn {
-            selectedAssetOut = assetItem(from: assetIn)
-            selectedAssetIn = assetIn.isAlgo ? resolveDefaultUSDCAsset(for: account) : resolveDefaultAlgoAsset(for: account)
-        } else if let assetOutId = launchDraft.assetOutID {
+            selectedAssetIn = launchDraft.assetIn
+                .map { assetItem(from: $0) }
+                ?? assetItem(from: resolveAsset(with: launchDraft.assetInID, for: selectedAccount))
+            return true
+        }
+        
+        if let assetIn = launchDraft.assetIn {
+            selectedAssetIn = assetItem(from: assetIn)
+            if let assetOutID = launchDraft.assetOutID {
+                selectedAssetOut = assetItem(from: resolveAsset(with: assetOutID, for: selectedAccount))
+            } else {
+                selectedAssetOut = assetItem(from: assetIn)
+                selectedAssetIn = assetIn.isAlgo
+                    ? resolveDefaultUSDCAsset(for: account)
+                    : resolveDefaultAlgoAsset(for: account)
+            }
+            return true
+        }
+        
+        if let assetOutId = launchDraft.assetOutID {
             if let assetOut = assetFromAssetDetailCollection(with: assetOutId) {
+                guard launchDraft.assetInID > 0 else {
+                    selectedAssetOut = assetItem(from: assetOut)
+                    selectedAssetIn = assetOut.isAlgo
+                    ? resolveDefaultUSDCAsset(for: account)
+                    : resolveDefaultAlgoAsset(for: account)
+                    return true
+                }
+                selectedAssetIn = assetItem(from: resolveAsset(with: launchDraft.assetInID, for: selectedAccount))
                 selectedAssetOut = assetItem(from: assetOut)
             } else {
                 swapAssetFlowCoordinator.onAssetLoaded = { [weak self] assetLoaded in
@@ -326,17 +365,22 @@ final class SwapViewController: BaseViewController {
                         )
                         return
                     }
-                    selectedAssetOut = assetItem(from: assetLoaded)
+                    if let assetOutID = launchDraft.assetOutID {
+                        selectedAssetIn = assetItem(from: assetLoaded)
+                        selectedAssetOut = assetItem(from: resolveAsset(with: assetOutID, for: selectedAccount))
+                    } else {
+                        selectedAssetOut = assetItem(from: assetLoaded)
+                        selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+                    }
                     loadSwapView()
                 }
                 swapAssetFlowCoordinator.fetchAsset(with: assetOutId)
             }
-            
-        } else {
-            selectedAssetIn = nil
-            selectedAssetOut = nil
+            return true
         }
-
+        
+        selectedAssetIn = nil
+        selectedAssetOut = nil
         return true
     }
     

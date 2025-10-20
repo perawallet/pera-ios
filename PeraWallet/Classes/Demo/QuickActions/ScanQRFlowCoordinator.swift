@@ -155,6 +155,11 @@ extension ScanQRFlowCoordinator {
                 controller,
                 accountMnemonicWasDetected: qrText
             )
+        case .swap:
+            qrScanner(
+                controller,
+                swapWasDetected: qrText
+            )
         case .walletConnect, .assetDetail, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath, .buy, .sell, .accountDetail, .webImport:
             break
         }
@@ -944,6 +949,31 @@ extension ScanQRFlowCoordinator {
             ),
             by: .present
         )
+    }
+    
+    private func qrScanner(
+        _ qrScannerScreen: QRScannerViewController,
+        swapWasDetected qr: QRText
+    ) {
+        let draft = SwapAssetFlowDraft()
+        
+        if
+            let address = qr.address,
+            let accountInformation = session.authenticatedUser?.account(address: address)
+        {
+            let account = Account(localAccount: accountInformation)
+            draft.account = account
+        }
+        
+        if let assetInID = qr.assetInId {
+            draft.assetInID = assetInID
+        }
+        if let assetOutID = qr.assetOutId {
+            draft.assetOutID = assetOutID
+        }
+
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+        rootViewController.launch(tab: .swap, with: draft)
     }
 
     private func composeAlgosTransactionDraft(

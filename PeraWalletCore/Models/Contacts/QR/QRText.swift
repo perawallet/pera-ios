@@ -35,6 +35,8 @@ public final class QRText: Codable {
     public var backupId: String?
     public var encryptionKey: String?
     public var action: String?
+    public var assetInId: Int64?
+    public var assetOutId: Int64?
     
     public init(
         mode: QRMode,
@@ -52,7 +54,9 @@ public final class QRText: Codable {
         path: String? = nil,
         backupId: String? = nil,
         encryptionKey: String? = nil,
-        action: String? = nil
+        action: String? = nil,
+        assetInId: Int64? = nil,
+        assetOutId: Int64? = nil
     ) {
         self.mode = mode
         self.address = address
@@ -70,6 +74,8 @@ public final class QRText: Codable {
         self.backupId = backupId
         self.encryptionKey = encryptionKey
         self.action = action
+        self.assetInId = assetInId
+        self.assetOutId = assetOutId
     }
     
     public required init(from decoder: Decoder) throws {
@@ -85,6 +91,14 @@ public final class QRText: Codable {
         
         if let assetText = try values.decodeIfPresent(String.self, forKey: .asset) {
             asset = Int64(assetText)
+        }
+        
+        if let assetInIdText = try values.decodeIfPresent(String.self, forKey: .assetInId) {
+            assetInId = Int64(assetInIdText)
+        }
+        
+        if let assetOutIdText = try values.decodeIfPresent(String.self, forKey: .assetOutId) {
+            assetOutId = Int64(assetOutIdText)
         }
 
         note = try values.decodeIfPresent(String.self, forKey: .note)
@@ -241,6 +255,17 @@ public final class QRText: Codable {
             }
             if let action = action {
                 try container.encode(action, forKey: .action)
+            }
+            
+        case .swap:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let assetInId = assetInId {
+                try container.encode(assetInId, forKey: .assetInId)
+            }
+            if let assetOutId = assetOutId {
+                try container.encode(assetOutId, forKey: .assetOutId)
             }
         }
     }
@@ -526,7 +551,7 @@ extension QRText {
             }
             return "\(base)asset-detail/\(query)"
         case .assetInbox:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(base)asset-inbox/\(query)"
         case .discoverBrowser:
             var query = ""
@@ -553,13 +578,13 @@ extension QRText {
             }
             return "\(base)staking-path/\(query)"
         case .buy:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(base)buy/\(query)"
         case .sell:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(base)sell/\(query)"
         case .accountDetail:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(base)account-detail/\(query)"
         case .webImport:
             var query = ""
@@ -573,6 +598,15 @@ extension QRText {
                 query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
             }
             return "\(base)web-import/\(query)"
+        case .swap:
+            var query = "?address=\(address ?? "")"
+            if let assetInId = assetInId {
+                query += "&assetInId=\(assetInId)"
+            }
+            if let assetOutId = assetOutId {
+                query += "&assetOutId=\(assetOutId)"
+            }
+            return "\(base)swap/\(query)"
         }
         return ""
     }
@@ -719,6 +753,15 @@ extension QRText {
                 let action = self.action ?? "import"
                 return "{\"backupId\":\"\(backupId)\",\"encryptionKey\":\"\(encryptionKey)\",\"action\":\"\(action)\",\"version\":\"1\"}"
             }
+        case .swap:
+            var query = "?address=\(address ?? "")"
+            if let assetInId = assetInId {
+                query += "&assetInId=\(assetInId)"
+            }
+            if let assetOutId = assetOutId {
+                query += "&assetOutId=\(assetOutId)"
+            }
+            return "\(base)swap/\(query)"
         }
         return ""
     }
@@ -880,7 +923,7 @@ extension QRText {
             }
             return "\(appBase)asset-detail/\(query)"
         case .assetInbox:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(appBase)asset-inbox/\(query)"
         case .discoverBrowser:
             var query = ""
@@ -907,13 +950,13 @@ extension QRText {
             }
             return "\(appBase)staking-path/\(query)"
         case .buy:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(appBase)buy/\(query)"
         case .sell:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(appBase)sell/\(query)"
         case .accountDetail:
-            var query = "?address=\(address ?? "")"
+            let query = "?address=\(address ?? "")"
             return "\(appBase)account-detail/\(query)"
         case .webImport:
             var query = ""
@@ -927,6 +970,15 @@ extension QRText {
                 query += query.isEmpty ? "?action=\(action)" : "&action=\(action)"
             }
             return "\(appBase)web-import/\(query)"
+        case .swap:
+            var query = "?address=\(address ?? "")"
+            if let assetInId = assetInId {
+                query += "&assetInId=\(assetInId)"
+            }
+            if let assetOutId = assetOutId {
+                query += "&assetOutId=\(assetOutId)"
+            }
+            return "\(base)swap/\(query)"
         }
         return ""
     }
@@ -957,6 +1009,8 @@ extension QRText {
         case backupId = "backupId"
         case encryptionKey = "encryptionKey"
         case action = "action"
+        case assetInId = "assetInId"
+        case assetOutId = "assetOutId"
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             lhs.rawValue == rhs.rawValue
@@ -1028,6 +1082,7 @@ public enum QRMode {
     case discoverPath
     case cardsPath
     case stakingPath
+    case swap
     case buy
     case sell
     case accountDetail

@@ -42,6 +42,7 @@ enum AppEndpoint: String, CaseIterable {
     case sell = "sell"
     case accountDetail = "account-detail"
     case webImport = "web-import"
+    case swap = "swap"
     
     /// Parse QR text from app endpoint format
     func parseQRText(from url: URL) -> QRText? {
@@ -90,6 +91,8 @@ enum AppEndpoint: String, CaseIterable {
             return parseAccountDetailEndpoint(queryParams: queryParams)
         case .webImport:
             return parseWebImportEndpoint(queryParams: queryParams)
+        case .swap:
+            return parseSwapEndpoint(queryParams: queryParams)
         }
     }
     
@@ -346,6 +349,19 @@ enum AppEndpoint: String, CaseIterable {
         return QRText(
             mode: .stakingPath,
             path: path
+        )
+    }
+    
+    private func parseSwapEndpoint(queryParams: [String: String]?) -> QRText? {
+        let assetInId = queryParams?["assetInId"] ?? .empty
+        let assetOutId = queryParams?["assetOutId"] ?? .empty
+        let address = queryParams?["address"]
+        
+        return QRText(
+            mode: .swap,
+            address: address,
+            assetInId: assetInId.isEmpty ? nil : Int64(assetInId),
+            assetOutId: assetOutId.isEmpty ? nil : Int64(assetOutId)
         )
     }
     
