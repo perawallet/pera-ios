@@ -137,7 +137,7 @@ struct CollectibleTransactionInformation: Hashable {
     enum Icon: Hashable {
         case account(Account)
         case contact(Contact)
-        case nameService(NameService)
+        case nameService(NameServiceAPIModel)
         case custom(UIImage?)
     }
 }

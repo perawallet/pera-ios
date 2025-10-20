@@ -32,12 +32,15 @@ final class CurrencySelectionViewController: BaseViewController {
     private lazy var dataSource = CurrencySelectionListDataSource(contextView.collectionView)
 
     private let dataController: CurrencySelectionDataController
+    private let currencyService: CurrencyServiceable
 
     init(
         dataController: CurrencySelectionDataController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        currencyService: CurrencyServiceable
     ) {
         self.dataController = dataController
+        self.currencyService = currencyService
         super.init(configuration: configuration)
     }
         
@@ -101,7 +104,10 @@ final class CurrencySelectionViewController: BaseViewController {
             guard let selectedCurrencyID = selectedCurrency?.id else {
                 return
             }
-
+            
+            currencyService.selectedCurrency = selectedCurrencyID.remoteValue
+            currencyService.isAlgoPrimaryCurrency.value = selectedCurrencyID.isAlgo
+            
             self.sharedDataController.stopPolling()
             self.sharedDataController.currency.setAsPrimaryCurrency(selectedCurrencyID)
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()

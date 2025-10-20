@@ -20,7 +20,7 @@ public final class ReadOnlyPublisher<Output> {
     
     // MARK: - Properties
     
-    var value: Output { currentValuePublisher.value }
+    public var value: Output { currentValuePublisher.value }
     public var publisher: AnyPublisher<Output, Never> { currentValuePublisher.eraseToAnyPublisher() }
     
     private let currentValuePublisher: CurrentValueSubject<Output, Never>

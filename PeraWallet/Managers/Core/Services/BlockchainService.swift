@@ -20,19 +20,20 @@ import pera_wallet_core
 protocol BlockchainServiceable {
     var lastBlockNumber: ReadOnlyPublisher<Int> { get }
     var error: AnyPublisher<BlockchainService.ServiceError?, Never> { get }
-    var network: CoreApiManager.BaseURL.Network { get set }
 }
 
-final class BlockchainService: BlockchainServiceable {
+final class BlockchainService: BlockchainServiceable, NetworkConfigureable {
     
     enum ServiceError: Error {
         case failedToFetchLastBlockNumber(blockNumber: Int)
     }
     
-    // MARK: - BlockchainServicable Properties
+    // MARK: - Properties - BlockchainServicable
     
     var lastBlockNumber: ReadOnlyPublisher<Int> { lastBlockNumberPublisher.readOnlyPublisher() }
     var error: AnyPublisher<ServiceError?, Never> { errorPublisher.eraseToAnyPublisher() }
+    
+    // MARK: - Properties - NetworkConfigureable
     
     var network: CoreApiManager.BaseURL.Network = .mainNet {
         didSet { update(network: network) }

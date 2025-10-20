@@ -33,7 +33,7 @@ struct SwapTitleView: View {
         HStack {
             HStack {
                 Text("title-swap")
-                    .font(.dmSans.medium.size(19.0))
+                    .font(.DMSans.medium.size(19.0))
                     .foregroundStyle(Color.Text.main)
                 Spacer().frame(width: 10)
                 SwiftUI.Button {

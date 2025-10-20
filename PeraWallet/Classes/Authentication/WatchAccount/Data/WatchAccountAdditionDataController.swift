@@ -34,6 +34,6 @@ protocol WatchAccountAdditionDataController: AnyObject {
 
 enum WatchAccountAdditionDataControllerEvent {
     case willLoadNameServices
-    case didLoadNameServices([NameService])
+    case didLoadNameServices([NameServiceAPIModel])
     case didFailLoadingNameServices
 }

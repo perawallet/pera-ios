@@ -33,12 +33,12 @@ struct SwapHistorySheet: View {
                         .frame(width: 24, height: 24)
                 }
                 Spacer()
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Helpers.positive)
             }
             .frame(maxHeight: .infinity, alignment: .center)
             Text("swap-history-title")
-                .font(.dmSans.medium.size(15))
+                .font(.DMSans.medium.size(15))
                 .foregroundStyle(Color.Text.main)
                 .frame(maxHeight: .infinity, alignment: .center)
         }
@@ -56,20 +56,20 @@ struct SwapHistorySheet: View {
                                 
                                 VStack(alignment: .leading) {
                                     Text(swapHistoryItem.swappedText)
-                                        .font(.dmSans.regular.size(15))
+                                        .font(.DMSans.regular.size(15))
                                         .foregroundStyle(Color.Text.main)
                                         .padding(.bottom, 4)
                                     HStack {
                                         Text(swapHistoryItem.resultText)
-                                            .font(.dmSans.bold.size(15))
+                                            .font(.DMSans.bold.size(15))
                                             .foregroundStyle(Color.Text.main)
                                             .padding(.trailing, 5)
                                         Text("\u{30FB}")
-                                            .font(.dmSans.regular.size(15))
+                                            .font(.DMSans.regular.size(15))
                                             .foregroundStyle(Color.Text.gray)
                                             .padding(.trailing, 5)
                                         Text(swapHistoryItem.dateText)
-                                            .font(.dmSans.regular.size(15))
+                                            .font(.DMSans.regular.size(15))
                                             .foregroundStyle(Color.Text.gray)
                                     }
                                     .frame(maxWidth: .infinity, alignment: .leading)

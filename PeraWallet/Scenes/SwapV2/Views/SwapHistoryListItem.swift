@@ -26,7 +26,7 @@ struct SwapHistoryListItem: View {
                 SwapLogosView(assetIn: item.assetIn, assetOut: item.assetOut)
 
                 Text(item.title)
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.vertical, 4)

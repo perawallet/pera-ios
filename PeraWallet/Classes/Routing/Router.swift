@@ -891,8 +891,8 @@ final class Router:
             viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
-        case let .addAccount(flow):
-            viewController = AddAccountViewController(flow: flow, configuration: configuration)
+        case .addAccount:
+            viewController = AddAccountConstructor.buildCompatibilityViewController(legacyConfiguration: configuration)
         case let .mnemonicTypeSelection(eventHandler):
             let screen = MnemonicTypeSelectionScreen(configuration: configuration)
             screen.eventHandler = eventHandler
@@ -1244,7 +1244,8 @@ final class Router:
                     sharedDataController: appConfiguration.sharedDataController,
                     api: appConfiguration.api
                 ),
-                configuration: configuration
+                configuration: configuration,
+                currencyService: PeraCoreManager.shared.currencies
             )
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)

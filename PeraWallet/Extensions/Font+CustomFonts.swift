@@ -35,9 +35,6 @@ extension Font {
         case medium = "Medium"
         case mediumItalic = "MediumItalic"
     }
-    
-    static var dmMono = DMMono.self
-    static var dmSans = DMSans.self
 }
 
 protocol PeraFont {

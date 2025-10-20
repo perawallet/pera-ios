@@ -23,7 +23,7 @@ struct SwapSettingsTextField: View {
     
     var body: some View {
         Text(textFieldType.title)
-            .font(.dmSans.regular.size(13))
+            .font(.DMSans.regular.size(13))
             .foregroundStyle(Color.Text.gray)
             .frame(maxWidth: .infinity, alignment: .leading)
         Spacer().frame(height: 8)
