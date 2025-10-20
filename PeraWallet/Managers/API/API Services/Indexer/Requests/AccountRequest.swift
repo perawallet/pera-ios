@@ -37,4 +37,6 @@ struct IndexerAccount: Decodable {
     let address: String
     /// The address against which signing should be checked. If empty, the address of the current account is used.
     let authAddr: String?
+    /// Total number of MicroAlgos in the account.
+    let amount: Int
 }

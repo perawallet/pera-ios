@@ -47,7 +47,7 @@ struct SheetTitleView: View {
                     SwiftUI.Button("title-apply") {
                         onTap(.apply)
                     }
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Helpers.positive)
                 }
                 .frame(maxHeight: .infinity, alignment: .center)

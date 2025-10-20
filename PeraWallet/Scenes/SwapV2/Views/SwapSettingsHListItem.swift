@@ -24,7 +24,7 @@ struct SwapSettingsHListItem: View {
     var body: some View {
         SwiftUI.Button(action: action) {
             Text(title)
-                .font(.dmSans.regular.size(13.0))
+                .font(.DMSans.regular.size(13.0))
                 .foregroundColor(isSelected ? Color.Helpers.positive : Color.ButtonSecondary.text)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)

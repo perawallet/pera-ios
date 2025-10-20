@@ -21,7 +21,7 @@ enum NavigationBarStyle {
     
     static func applyStyle() {
         
-        guard let titleFont = UIFont(name: Font.dmSans.medium.name, size: 16.0), let largeTitleFont = UIFont(name: Font.dmSans.medium.name, size: 32.0) else { return }
+        guard let titleFont = UIFont(name: Font.DMSans.medium.name, size: 16.0), let largeTitleFont = UIFont(name: Font.DMSans.medium.name, size: 32.0) else { return }
         
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [.font: titleFont]

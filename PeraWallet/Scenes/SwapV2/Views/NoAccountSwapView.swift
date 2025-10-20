@@ -34,7 +34,7 @@ struct NoAccountSwapView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("title-swap")
-                        .font(.dmSans.medium.size(19.0))
+                        .font(.DMSans.medium.size(19.0))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 10)
                     SwiftUI.Button {
@@ -56,13 +56,13 @@ struct NoAccountSwapView: View {
                 VStack(alignment: .center) {
                     Spacer().frame(height: 62)
                     Text("account-select-search-empty-title")
-                        .font(.dmSans.medium.size(15))
+                        .font(.DMSans.medium.size(15))
                         .foregroundStyle(Color.Text.main)
                     
                     Spacer().frame(height: 8)
                     
                     Text("swap-empty-accounts-title")
-                        .font(.dmSans.regular.size(15))
+                        .font(.DMSans.regular.size(15))
                         .foregroundStyle(Color.Text.gray)
                     
                     Spacer().frame(height: 32)
@@ -78,7 +78,7 @@ struct NoAccountSwapView: View {
                                 .frame(width: 24, height: 24)
                             
                             Text("create-account-title")
-                                .font(.dmSans.medium.size(15))
+                                .font(.DMSans.medium.size(15))
                                 .foregroundStyle(Color.ButtonPrimary.text)
                         }
                     }

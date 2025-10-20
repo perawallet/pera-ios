@@ -15,7 +15,6 @@
 //
 //   AccountListItemView.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -25,6 +24,28 @@ final class AccountListItemView:
     ListReusable {
     private lazy var iconView = ImageView()
     private lazy var iconBottomRightBadgeView = UIImageView()
+    
+    private var iconBottomRightTextBadgeShadowView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.08).cgColor
+        view.layer.shadowOpacity = 1.0
+        view.layer.shadowRadius = 4
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        return view
+    }()
+    
+    private var iconBottomRightTextBadgeView: UILabel = {
+        let view = UILabel()
+        view.font = Fonts.DMSans.bold.make(13.0).uiFont
+        view.textColor = .Wallet.wallet1Icon
+        view.textAlignment = .center
+        view.backgroundColor = .Defaults.bg
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 12.0
+        return view
+    }()
+    
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = PrimaryTitleView()
@@ -53,7 +74,20 @@ final class AccountListItemView:
         _ viewModel: AccountListItemViewModel?
     ) {
         iconView.load(from: viewModel?.icon)
-        iconBottomRightBadgeView.image = viewModel?.iconBottomRightBadge?.uiImage
+        
+        switch viewModel?.badge {
+        case let .image(image):
+            iconBottomRightBadgeView.image = image
+            iconBottomRightTextBadgeView.isHidden = true
+        case let .text(text):
+            iconBottomRightTextBadgeView.text = text
+            iconBottomRightTextBadgeView.isHidden = false
+        case .none:
+            iconBottomRightBadgeView.image = nil
+            iconBottomRightTextBadgeView.text = nil
+            iconBottomRightTextBadgeView.isHidden = true
+        }
+        
         titleView.bindData(viewModel?.title)
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
@@ -120,6 +154,20 @@ extension AccountListItemView {
         iconBottomRightBadgeView.snp.makeConstraints {
             $0.top == iconView.snp.top + theme.iconBottomRightBadgePaddings.top
             $0.leading == theme.iconBottomRightBadgePaddings.leading
+        }
+        
+        
+        addSubview(iconBottomRightTextBadgeShadowView)
+        iconBottomRightTextBadgeShadowView.addSubview(iconBottomRightTextBadgeView)
+        
+        iconBottomRightTextBadgeShadowView.snp.makeConstraints {
+            $0.top == iconView.snp.top + theme.iconBottomRightBadgePaddings.top
+            $0.leading == theme.iconBottomRightBadgePaddings.leading
+            $0.width.height.equalTo(24.0)
+        }
+        
+        iconBottomRightTextBadgeView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 

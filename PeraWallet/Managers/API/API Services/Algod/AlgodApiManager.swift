@@ -22,7 +22,7 @@ final class AlgodApiManager {
         didSet { updateApiManager(network: network) }
     }
     
-    private lazy var apiManager = CoreApiManager(baseURL: .algod(network: network))
+    private lazy var apiManager = CoreApiManager(baseURL: .algod(network: network), keyDecodingStrategy: .kebabCase, keyEncodingStrategy: .convertToSnakeCase)
     
     // MARK: - Initialisers
     
