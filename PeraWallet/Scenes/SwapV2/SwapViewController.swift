@@ -77,6 +77,11 @@ final class SwapViewController: BaseViewController {
             return
         }
         
+        guard launchDraft == nil else {
+            configureView()
+            return
+        }
+        
         guard !sharedViewModel.payingText.isEmptyOrBlank else {
             resetAmounts()
             return
