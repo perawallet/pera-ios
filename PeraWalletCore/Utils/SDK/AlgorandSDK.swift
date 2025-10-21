@@ -156,15 +156,17 @@ extension AlgorandSDK {
         with draft: KeyRegTransactionDraft,
         error: inout NSError?
     ) -> Data? {
-        return AlgoSdkMakeKeyRegTxn(
+        return AlgoSdkMakeKeyRegTxnWithStateProofKey(
             getTrimmedAddress(from: draft.from),
             draft.note,
+            draft.transactionParams.toSDKSuggestedParams(customFee: draft.fee),
             draft.voteKey,
             draft.selectionKey,
+            draft.stateProofKey,
             AlgoSdkUint64(ref: draft.voteFirst ?? 0),
             AlgoSdkUint64(ref: draft.voteLast ?? 0),
             AlgoSdkUint64(ref: draft.voteKeyDilution ?? 0),
-            draft.transactionParams.toSDKSuggestedParams(customFee: draft.fee),
+            false,
             &error
         )
     }
