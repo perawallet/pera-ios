@@ -159,14 +159,12 @@ extension AlgorandSDK {
         return AlgoSdkMakeKeyRegTxn(
             getTrimmedAddress(from: draft.from),
             draft.note,
-            draft.transactionParams.toSDKSuggestedParams(customFee: draft.fee),
             draft.voteKey,
             draft.selectionKey,
-            draft.stateProofKey,
-            draft.voteFirst ?? 0,
-            draft.voteLast ?? 0,
-            draft.voteKeyDilution ?? 0,
-            false,
+            AlgoSdkUint64(ref: draft.voteFirst ?? 0),
+            AlgoSdkUint64(ref: draft.voteLast ?? 0),
+            AlgoSdkUint64(ref: draft.voteKeyDilution ?? 0),
+            draft.transactionParams.toSDKSuggestedParams(customFee: draft.fee),
             &error
         )
     }
