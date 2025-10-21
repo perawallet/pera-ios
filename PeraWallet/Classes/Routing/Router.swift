@@ -614,7 +614,7 @@ final class Router:
                 from: visibleScreen,
                 by: .present
             )
-        case .editContact(let address, let label):
+        case .editContact(let address, _):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             Contact.fetchAll(entity: Contact.entityName) { [weak self] response in
                 guard let self = self else { return }
@@ -635,7 +635,7 @@ final class Router:
                     break
                 }
             }
-        case .addWatchAccount(let address, let label):
+        case .addWatchAccount(let address, _):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             route(
                 to: .watchAccountAddition(flow: .addNewAccount(mode: .watch), address: address),
@@ -655,6 +655,27 @@ final class Router:
                 from: visibleScreen,
                 by: .present
             )
+        case let .swap(address, asssetInId, assetOutId):
+            let draft = SwapAssetFlowDraft()
+            let session = self.appConfiguration.session
+            
+            if
+                let address,
+                let accountInformation = session.authenticatedUser?.account(address: address)
+            {
+                let account = Account(localAccount: accountInformation)
+                draft.account = account
+            }
+            
+            if let asssetInId {
+                draft.assetInID = asssetInId
+            }
+            if let assetOutId {
+                draft.assetOutID = assetOutId
+            }
+
+            guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+            rootViewController.launch(tab: .swap, with: draft)
         }
         
         func isValidDiscoverPath(_ path: String) -> Bool {

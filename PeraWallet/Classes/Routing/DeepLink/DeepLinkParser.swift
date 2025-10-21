@@ -486,6 +486,8 @@ extension DeepLinkParser {
             return makeAssetInboxScreen(qrText)
         case .webImport:
             return makeWebImportScreen(qrText)
+        case .swap:
+            return makeSwapScreen(qrText)
         }
     }
     
@@ -749,6 +751,10 @@ extension DeepLinkParser {
         return .success(.externalDeepLink(deepLink: externalDeepLink))
     }
     
+    private func makeSwapScreen(_ qr: QRText) -> Result? {
+        return .success(.swap(address: qr.address, asssetInId: qr.assetInId, assetOutId: qr.assetOutId))
+    }
+    
     private func makeWebImportScreen(_ qr: QRText) -> Result? {
         guard let backupId = qr.backupId,
               let encryptionKey = qr.encryptionKey else {
@@ -942,6 +948,7 @@ extension DeepLinkParser {
         case editContact(address: String, label: String?)
         case addWatchAccount(address: String, label: String?)
         case receiverAccountSelection(address: String)
+        case swap(address: String?, asssetInId: AssetID?, assetOutId: AssetID?)
     }
     
     enum Error:
