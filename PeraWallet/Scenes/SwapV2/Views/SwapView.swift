@@ -228,9 +228,12 @@ struct SwapView: View {
         case .settings:
             SwapSettingsSheet(slippageSelected: viewModel.slippageSelected) { newPercentageSelected, newSlippageSelected in
                 onAction?(.trackAnalytics(event: .swapSettingsApply))
-                handlePercentageChange(newPercentageSelected)
+                if let newPercentageSelected {
+                    handlePercentageChange(newPercentageSelected)
+                } else {
+                    updateValuesAfterSettingsApplied()
+                }
                 handleSlippageChange(newSlippageSelected)
-                updateValuesAfterSettingsApplied()
             } onAnalyticsEvent: { event in
                 onAction?(.trackAnalytics(event: event))
             }
@@ -264,8 +267,7 @@ struct SwapView: View {
         }
     }
     
-    private func handlePercentageChange(_ newPercentage: PercentageValue?) {
-        guard let newPercentage else { return }
+    private func handlePercentageChange(_ newPercentage: PercentageValue) {
         viewModel.isLoadingPayAmount = true
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
         viewModel.isBalanceNotSufficient = amount > NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
