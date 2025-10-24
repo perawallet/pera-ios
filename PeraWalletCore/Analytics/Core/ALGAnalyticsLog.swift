@@ -52,6 +52,7 @@ public enum ALGAnalyticsLogName:
     case walletConnectV2TransactionRequestRejectionFailed = "WCv2TransactionRequestRejectionFailed"
     case migrationFailure = "MigrationFailure"
     case persistentContainerCreationError = "PersistentContainerCreationError"
+    case mediaCleanUpError = "MediaCleanUpError"
     
     public static func ==(lhs: ALGAnalyticsLogName, rhs: ALGAnalyticsLogName) -> Bool {
         lhs.rawValue == rhs.rawValue
@@ -86,6 +87,7 @@ extension ALGAnalyticsLogName {
         case .walletConnectTransactionRejectionFailedError: return 18
         case .migrationFailure: return 19
         case .persistentContainerCreationError: return 20
+        case .mediaCleanUpError: return 21
         }
     }
 }

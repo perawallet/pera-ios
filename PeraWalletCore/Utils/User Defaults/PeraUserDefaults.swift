@@ -20,6 +20,7 @@ public enum PeraUserDefaults {
     @UserDefault(key: "isPrivacyModeEnabled") public static var isPrivacyModeEnabled: Bool?
     @UserDefault(key: "shouldShowNewAccountAnimation") public static var shouldShowNewAccountAnimation: Bool?
     @UserDefault(key: "shouldUseLocalCurrencyInSwap") public static var shouldUseLocalCurrencyInSwap: Bool?
+    @UserDefault(key: "isMediaCleanupCompleted") public static var isMediaCleanupCompleted: Bool?
     
     // MARK: - Security Settings
     
