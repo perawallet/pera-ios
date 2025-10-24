@@ -17,44 +17,6 @@
 import SwiftUI
 import pera_wallet_core
 
-enum SwapInfoSheet: Identifiable {
-    case slippageTolerance
-    case priceImpact
-    case exchangeFee
-    
-    var id: String {
-        switch self {
-        case .slippageTolerance: "slippageTolerance"
-        case .priceImpact: "priceImpact"
-        case .exchangeFee: "exchangeFee"
-        }
-    }
-    
-    var title: LocalizedStringKey {
-        switch self {
-        case .slippageTolerance: "swap-slippage-title"
-        case .priceImpact: "swap-price-impact-title"
-        case .exchangeFee: "title-exchange-fee"
-        }
-    }
-    
-    var text: LocalizedStringKey {
-        switch self {
-        case .slippageTolerance: "swap-slippage-tolerance-info-body"
-        case .priceImpact: "swap-price-impact-info-body"
-        case .exchangeFee: "swap-exchange-fee-info-body"
-        }
-    }
-    
-    var height: CGFloat {
-        switch self {
-        case .slippageTolerance: 320
-        case .exchangeFee: 280
-        case .priceImpact: 250
-        }
-    }
-}
-
 struct ConfirmSwapView: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     
@@ -67,16 +29,18 @@ struct ConfirmSwapView: View {
     var onSwapError: (String) -> Void
     
     var body: some View {
-        VStack(spacing: 0) {
-            headerView
-            assetViews
-            infoSection
-            ConfirmSlideButton(state: $viewModel.confirmationState, isSwapDisabled: viewModel.isSwapDisabled) {
-                onConfirmTap()
+        headerView
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                assetViews
+                infoSection
+                ConfirmSlideButton(state: $viewModel.confirmationState, isSwapDisabled: viewModel.isSwapDisabled) {
+                    onConfirmTap()
+                }
+                .disabled(viewModel.isSwapDisabled)
+                .padding(.horizontal, 20)
+                Spacer(minLength: 20)
             }
-            .disabled(viewModel.isSwapDisabled)
-            .padding(.horizontal, 20)
-            Spacer()
         }
         .onChange(of: viewModel.confirmationState) { newState in
             switch newState {
@@ -136,7 +100,6 @@ struct ConfirmSwapView: View {
         }
         .frame(height: 60)
         .padding(.top, 8)
-        .padding(.bottom, 10)
     }
     
     private var assetViews: some View {
