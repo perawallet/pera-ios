@@ -477,6 +477,9 @@ extension AppDelegate {
         sessionConfiguration.httpAdditionalHeaders = [
             userAgentHeader.key: userAgentHeaderValue
         ]
+        KingfisherManager.shared.cache.clearMemoryCache()
+        KingfisherManager.shared.cache.clearDiskCache()
+        KingfisherManager.shared.cache.cleanExpiredDiskCache()
         let customDownloader = ImageDownloader(name: "ImageDownloaderWithPeraUserAgent")
         customDownloader.sessionConfiguration = sessionConfiguration
         KingfisherManager.shared.downloader = customDownloader
