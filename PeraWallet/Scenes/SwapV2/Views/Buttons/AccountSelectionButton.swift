@@ -34,7 +34,7 @@ struct AccountSelectionButton: View {
                     .clipShape(Circle())
                 Spacer().frame(width: 8)
                 Text(selectedAccount.primaryDisplayName)
-                    .font(.dmSans.medium.size(13.0))
+                    .font(.DMSans.medium.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                     .frame(minWidth: 85, alignment: .leading)
                 Spacer().frame(width: 8)

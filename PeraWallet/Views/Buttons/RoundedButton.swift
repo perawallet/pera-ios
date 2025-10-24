@@ -18,11 +18,17 @@ import SwiftUI
 
 struct RoundedButton: View {
     
+    enum Style {
+        case primary
+        case secondary
+        case destructive
+    }
+    
     // MARK: - Properties
     
     let text: LocalizedStringKey
-    var backgroundColor: Color = Color.ButtonSecondary.bg
-    var textColor: Color = Color.ButtonSecondary.text
+    let style: Style
+    let isEnabled: Bool
     let onTap: () -> Void
     
     // MARK: - Body
@@ -31,10 +37,38 @@ struct RoundedButton: View {
         Text(text)
             .frame(maxWidth: .infinity)
             .frame(height: 52.0)
-            .background(backgroundColor)
-            .foregroundStyle(textColor)
-            .font(.dmSans.medium.size(15.0))
+            .background(style.backroundColor(isEnabled: isEnabled))
+            .foregroundStyle(style.forgroundColor(isEnabled: isEnabled))
+            .font(.DMSans.medium.size(15.0))
             .cornerRadius(4.0)
-            .onTapGesture { onTap() }
+            .onTapGesture {
+                guard isEnabled else { return }
+                onTap()
+            }
+    }
+}
+
+private extension RoundedButton.Style {
+    
+    func backroundColor(isEnabled: Bool) -> Color {
+        switch self {
+        case .primary:
+            isEnabled ? Color.ButtonPrimary.bg : Color.ButtonPrimary.disabledBg
+        case .secondary:
+            isEnabled ? Color.ButtonSecondary.bg : Color.ButtonSecondary.disabledBg
+        case .destructive:
+            isEnabled ? Color.Helpers.negativeLighter : Color.ButtonPrimary.disabledBg
+        }
+    }
+    
+    func forgroundColor(isEnabled: Bool) -> Color {
+        switch self {
+        case .primary:
+            isEnabled ? Color.ButtonPrimary.text : Color.ButtonPrimary.disabledText
+        case .secondary:
+            isEnabled ? Color.ButtonSecondary.text : Color.ButtonSecondary.disabledText
+        case .destructive:
+            isEnabled ? Color.Helpers.negative : Color.ButtonPrimary.disabledText
+        }
     }
 }

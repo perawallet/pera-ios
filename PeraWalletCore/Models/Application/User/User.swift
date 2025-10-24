@@ -203,7 +203,7 @@ extension User {
         }
         
         accounts[index].updateName(account.name)
-        accounts[index].isWatchAccount = account.isWatchAccount
+        accounts[index].type = account.type
         accounts[index].ledgerDetail = account.ledgerDetail
         accounts[index].receivesNotification = account.receivesNotification
         accounts[index].rekeyDetail = account.rekeyDetail
@@ -224,7 +224,11 @@ extension User {
         }
 
         accounts[localAccountIndex].updateName(updatedAccount.name ?? "")
-        accounts[localAccountIndex].isWatchAccount = updatedAccount.isWatchAccount
+        
+        if updatedAccount.isWatchAccount {
+            accounts[localAccountIndex].type = .watch
+        }
+        
         accounts[localAccountIndex].ledgerDetail = updatedAccount.ledgerDetail
         accounts[localAccountIndex].receivesNotification = updatedAccount.receivesNotification
         accounts[localAccountIndex].rekeyDetail = updatedAccount.rekeyDetail

@@ -508,6 +508,8 @@ extension AppDelegate {
     private func setupLegacyBridge() {
         
         PeraCoreManager.shared.legacySessionManager = session
+        PeraCoreManager.shared.legacySharedDataController = sharedDataController
+        PeraCoreManager.shared.legacyFeatureFlagService = featureFlagService
         
         switch api.network {
         case .mainnet:

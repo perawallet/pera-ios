@@ -17,6 +17,7 @@
 import Foundation
 
 public enum FeatureFlag: String, CaseIterable {
+    
     case portfolioChartsEnabled = "enable_charts_portfolio"
     case accountsChartsEnabled = "enable_charts_accounts"
     case assetsChartsEnabled = "enable_charts_assets"
@@ -24,23 +25,26 @@ public enum FeatureFlag: String, CaseIterable {
     case swapFeePadding = "swap_fee_padding"
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
-
+    case jointAccountEnabled = "enable_joint_account"
+    
     var defaultValue: RemoteConfigValue {
         switch self {
         case .portfolioChartsEnabled:
-            return .bool(false)
+                .bool(false)
         case .accountsChartsEnabled:
-            return .bool(false)
+                .bool(false)
         case .assetsChartsEnabled:
-            return .bool(false)
+                .bool(false)
         case .swapV2Enabled:
-            return .bool(false)
+                .bool(false)
         case .swapFeePadding:
-            return .double(-1)
+                .double(-1)
         case .liquidAuthEnabled:
-            return .bool(false)
+                .bool(false)
         case .liquidConnectEnabled:
-            return .bool(false)
+                .bool(false)
+        case .jointAccountEnabled:
+                .bool(false)
         }
     }
     
