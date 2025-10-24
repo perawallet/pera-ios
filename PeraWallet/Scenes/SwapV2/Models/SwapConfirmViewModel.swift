@@ -158,3 +158,41 @@ enum ConfirmSlideButtonState: Equatable {
         }
     }
 }
+
+enum SwapInfoSheet: Identifiable {
+    case slippageTolerance
+    case priceImpact
+    case exchangeFee
+    
+    var id: String {
+        switch self {
+        case .slippageTolerance: "slippageTolerance"
+        case .priceImpact: "priceImpact"
+        case .exchangeFee: "exchangeFee"
+        }
+    }
+    
+    var title: LocalizedStringKey {
+        switch self {
+        case .slippageTolerance: "swap-slippage-title"
+        case .priceImpact: "swap-price-impact-title"
+        case .exchangeFee: "title-exchange-fee"
+        }
+    }
+    
+    var text: LocalizedStringKey {
+        switch self {
+        case .slippageTolerance: "swap-slippage-tolerance-info-body"
+        case .priceImpact: "swap-price-impact-info-body"
+        case .exchangeFee: "swap-exchange-fee-info-body"
+        }
+    }
+    
+    var height: CGFloat {
+        switch self {
+        case .slippageTolerance: 320
+        case .exchangeFee: 280
+        case .priceImpact: 250
+        }
+    }
+}
