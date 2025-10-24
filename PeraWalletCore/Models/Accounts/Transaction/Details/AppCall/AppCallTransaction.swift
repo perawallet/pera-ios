@@ -23,12 +23,16 @@ public final class AppCallTransaction: ALGAPIModel {
     public let onCompletion: OnCompletion?
     public let accounts: [PublicKey]?
     public let foreignAssets: [Int64]?
+    public let al: [AppCallArgument]?
+    public let aprv: Int64?
 
     public init() {
         self.appID = nil
         self.onCompletion = nil
         self.accounts = nil
         self.foreignAssets = nil
+        self.al = nil
+        self.aprv = nil
     }
 }
 
@@ -40,6 +44,8 @@ extension AppCallTransaction {
         case onCompletion = "on-completion"
         case accounts
         case foreignAssets = "foreign-assets"
+        case al
+        case aprv
     }
 }
 
@@ -93,5 +99,68 @@ public enum OnCompletion:
     ) {
         let foundCase = Self.allCases.first { $0.rawValue == rawValue }
         self = foundCase ?? .other(rawValue)
+    }
+}
+
+// MARK: - AppCallArgument
+
+public struct AppCallArgument: Codable, Equatable {
+    public let d: String?
+    public let s: Int64?
+    public let p: Int64?
+    public let h: HoldingResource?
+    public let l: LocalsResource?
+    public let b: BoxResource?
+    
+    public init(
+        d: String? = nil,
+        s: Int64? = nil,
+        p: Int64? = nil,
+        h: HoldingResource? = nil,
+        l: LocalsResource? = nil,
+        b: BoxResource? = nil
+    ) {
+        self.d = d
+        self.s = s
+        self.p = p
+        self.h = h
+        self.l = l
+        self.b = b
+    }
+}
+
+// MARK: - HoldingResource
+
+public struct HoldingResource: Codable, Equatable {
+    public let d: Int64
+    public let s: Int64
+    
+    public init(d: Int64, s: Int64) {
+        self.d = d
+        self.s = s
+    }
+}
+
+// MARK: - LocalsResource
+
+public struct LocalsResource: Codable, Equatable {
+    public let d: Int64
+    public let p: Int64
+    
+    public init(d: Int64, p: Int64) {
+        self.d = d
+        self.p = p
+    }
+}
+
+// MARK: - BoxResource
+
+public struct BoxResource: Codable, Equatable {
+    public let i: Int64
+    public let n: String
+    
+    public init(i: Int64, n: String) {
+        self.i = i
+        self.n = n
     }
 }

@@ -22,6 +22,10 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     private(set) var sender: String?
     private(set) var applicationID: String?
     private(set) var onCompletion: String?
+    private(set) var aprv: String?
+    private(set) var aprvViewIsHidden: Bool = false
+    private(set) var al: String?
+    private(set) var alViewIsHidden: Bool = false
     private(set) var transactionAssetInformationViewModel: AppCallTransactionAssetInformationViewModel?
     private(set) var fee: TransactionAmountView.Mode?
     private(set) var transactionIDTitle: String?
@@ -42,6 +46,8 @@ final class AppCallTransactionDetailViewModel: ViewModel {
         bindApplicationID(transaction)
         bindAssets(assets)
         bindOnCompletion(transaction)
+        bindAprv(transaction)
+        bindAl(transaction)
         bindFee(transaction)
         bindInnerTransactionsViewModel(transaction)
         bindTransactionIDTitle(transaction)
@@ -89,6 +95,26 @@ extension AppCallTransactionDetailViewModel {
         _ transaction: Transaction
     ) {
         onCompletion = transaction.applicationCall?.onCompletion?.uiRepresentation
+    }
+    
+    private func bindAprv(
+        _ transaction: Transaction
+    ) {
+        if let aprv = transaction.applicationCall?.aprv {
+            self.aprv = "\(aprv)"
+        } else {
+            aprvViewIsHidden = true
+        }
+    }
+    
+    private func bindAl(
+        _ transaction: Transaction
+    ) {
+        if let al = transaction.applicationCall?.al {
+            self.al = "\(String(localized: "count-number-title")) \(al.count)"
+        } else {
+            alViewIsHidden = true
+        }
     }
 
     private func bindFee(

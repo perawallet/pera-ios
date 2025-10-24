@@ -28,6 +28,8 @@ final class AppCallTransactionDetailView:
     private lazy var senderView = TransactionTextInformationView()
     private lazy var applicationIDView = TransactionTextInformationView()
     private lazy var onCompletionView = TransactionTextInformationView()
+    private lazy var aprvView = TransactionTextInformationView()
+    private lazy var alView = TransactionTextInformationView()
     private lazy var assetView = AppCallTransactionAssetInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
@@ -79,6 +81,8 @@ final class AppCallTransactionDetailView:
         addSenderView(theme)
         addApplicationIDView(theme)
         addOnCompletionView(theme)
+        addAprvView(theme)
+        addAlView(theme)
         addAssetView(theme)
         addFeeView(theme)
         addInnerTransactionView(theme)
@@ -123,6 +127,18 @@ extension AppCallTransactionDetailView {
         onCompletionView.customize(theme.onCompletionViewTheme)
 
         verticalStackView.addArrangedSubview(onCompletionView)
+    }
+    
+    private func addAprvView(_ theme: AppCallTransactionDetailViewTheme) {
+        aprvView.customize(theme.textInformationViewCommonTheme)
+
+        verticalStackView.addArrangedSubview(aprvView)
+    }
+    
+    private func addAlView(_ theme: AppCallTransactionDetailViewTheme) {
+        alView.customize(theme.textInformationViewCommonTheme)
+
+        verticalStackView.addArrangedSubview(alView)
     }
 
     private func addAssetView(_ theme: AppCallTransactionDetailViewTheme) {
@@ -239,6 +255,22 @@ extension AppCallTransactionDetailView {
                 detail: viewModel?.onCompletion
             )
         )
+        
+        aprvView.bindData(
+            TransactionTextInformationViewModel(
+                title: "aprv",
+                detail: viewModel?.aprv
+            )
+        )
+        aprvView.isHidden = (viewModel?.aprvViewIsHidden).falseIfNil
+        
+        alView.bindData(
+            TransactionTextInformationViewModel(
+                title: "al",
+                detail: viewModel?.al
+            )
+        )
+        alView.isHidden = (viewModel?.alViewIsHidden).falseIfNil
 
         if let transactionAssetInformationViewModel = viewModel?.transactionAssetInformationViewModel {
             assetView.bindData(transactionAssetInformationViewModel)
