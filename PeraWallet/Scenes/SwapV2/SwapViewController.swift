@@ -477,7 +477,15 @@ final class SwapViewController: BaseViewController {
     ) {
         guard let viewModel, let quoteList, let selectedAssetOut else { return }
         
-        let orderedQuoteList = quoteList.sorted { $0.amountOutUSDValue ?? 0 > $1.amountOutUSDValue ?? 0}
+        var orderedQuoteList: [SwapQuote] {
+            let shouldFilterDeflex = configuration.featureFlagService.isEnabled(.ledgerDeflexFilterEnabled)
+                && (selectedAccount?.authorization.isLedger ?? false)
+            
+            return quoteList
+                .sorted { ($0.amountOutUSDValue ?? 0) > ($1.amountOutUSDValue ?? 0) }
+                .filter { !shouldFilterDeflex || $0.provider?.rawValue != "deflex" }
+        }
+        
         let selectedQuote = orderedQuoteList.first
         
         let amountOut = selectedQuote?.amountOut ?? 0

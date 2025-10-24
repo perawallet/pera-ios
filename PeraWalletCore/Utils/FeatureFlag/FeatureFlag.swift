@@ -24,6 +24,7 @@ public enum FeatureFlag: String, CaseIterable {
     case swapFeePadding = "swap_fee_padding"
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
+    case ledgerDeflexFilterEnabled = "enable_ledger_deflex_filter"
 
     var defaultValue: RemoteConfigValue {
         switch self {
@@ -40,6 +41,8 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled:
             return .bool(false)
         case .liquidConnectEnabled:
+            return .bool(false)
+        case .ledgerDeflexFilterEnabled:
             return .bool(false)
         }
     }
