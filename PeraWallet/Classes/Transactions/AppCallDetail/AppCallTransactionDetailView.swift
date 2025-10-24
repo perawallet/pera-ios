@@ -28,8 +28,8 @@ final class AppCallTransactionDetailView:
     private lazy var senderView = TransactionTextInformationView()
     private lazy var applicationIDView = TransactionTextInformationView()
     private lazy var onCompletionView = TransactionTextInformationView()
-    private lazy var aprvView = TransactionTextInformationView()
-    private lazy var alView = TransactionTextInformationView()
+    private lazy var rejectVersionView = TransactionTextInformationView()
+    private lazy var accessListView = TransactionTextInformationView()
     private lazy var assetView = AppCallTransactionAssetInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
@@ -81,8 +81,8 @@ final class AppCallTransactionDetailView:
         addSenderView(theme)
         addApplicationIDView(theme)
         addOnCompletionView(theme)
-        addAprvView(theme)
-        addAlView(theme)
+        addRejectVersionView(theme)
+        addAccessListView(theme)
         addAssetView(theme)
         addFeeView(theme)
         addInnerTransactionView(theme)
@@ -129,16 +129,16 @@ extension AppCallTransactionDetailView {
         verticalStackView.addArrangedSubview(onCompletionView)
     }
     
-    private func addAprvView(_ theme: AppCallTransactionDetailViewTheme) {
-        aprvView.customize(theme.textInformationViewCommonTheme)
+    private func addRejectVersionView(_ theme: AppCallTransactionDetailViewTheme) {
+        rejectVersionView.customize(theme.textInformationViewCommonTheme)
 
-        verticalStackView.addArrangedSubview(aprvView)
+        verticalStackView.addArrangedSubview(rejectVersionView)
     }
     
-    private func addAlView(_ theme: AppCallTransactionDetailViewTheme) {
-        alView.customize(theme.textInformationViewCommonTheme)
+    private func addAccessListView(_ theme: AppCallTransactionDetailViewTheme) {
+        accessListView.customize(theme.textInformationViewCommonTheme)
 
-        verticalStackView.addArrangedSubview(alView)
+        verticalStackView.addArrangedSubview(accessListView)
     }
 
     private func addAssetView(_ theme: AppCallTransactionDetailViewTheme) {
@@ -256,21 +256,21 @@ extension AppCallTransactionDetailView {
             )
         )
         
-        aprvView.bindData(
+        rejectVersionView.bindData(
             TransactionTextInformationViewModel(
                 title: "aprv",
-                detail: viewModel?.aprv
+                detail: viewModel?.rejectVersion
             )
         )
-        aprvView.isHidden = (viewModel?.aprvViewIsHidden).falseIfNil
+        rejectVersionView.isHidden = (viewModel?.rejectVersionViewIsHidden).falseIfNil
         
-        alView.bindData(
+        accessListView.bindData(
             TransactionTextInformationViewModel(
                 title: "al",
-                detail: viewModel?.al
+                detail: viewModel?.accessList
             )
         )
-        alView.isHidden = (viewModel?.alViewIsHidden).falseIfNil
+        accessListView.isHidden = (viewModel?.accessViewIsHidden).falseIfNil
 
         if let transactionAssetInformationViewModel = viewModel?.transactionAssetInformationViewModel {
             assetView.bindData(transactionAssetInformationViewModel)

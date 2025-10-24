@@ -22,10 +22,10 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     private(set) var sender: String?
     private(set) var applicationID: String?
     private(set) var onCompletion: String?
-    private(set) var aprv: String?
-    private(set) var aprvViewIsHidden: Bool = false
-    private(set) var al: String?
-    private(set) var alViewIsHidden: Bool = false
+    private(set) var rejectVersion: String?
+    private(set) var rejectVersionViewIsHidden: Bool = false
+    private(set) var accessList: String?
+    private(set) var accessViewIsHidden: Bool = false
     private(set) var transactionAssetInformationViewModel: AppCallTransactionAssetInformationViewModel?
     private(set) var fee: TransactionAmountView.Mode?
     private(set) var transactionIDTitle: String?
@@ -46,8 +46,8 @@ final class AppCallTransactionDetailViewModel: ViewModel {
         bindApplicationID(transaction)
         bindAssets(assets)
         bindOnCompletion(transaction)
-        bindAprv(transaction)
-        bindAl(transaction)
+        bindRejectVersion(transaction)
+        bindAccessList(transaction)
         bindFee(transaction)
         bindInnerTransactionsViewModel(transaction)
         bindTransactionIDTitle(transaction)
@@ -97,23 +97,23 @@ extension AppCallTransactionDetailViewModel {
         onCompletion = transaction.applicationCall?.onCompletion?.uiRepresentation
     }
     
-    private func bindAprv(
+    private func bindRejectVersion(
         _ transaction: Transaction
     ) {
         if let aprv = transaction.applicationCall?.aprv {
-            self.aprv = "\(aprv)"
+            self.rejectVersion = "\(aprv)"
         } else {
-            aprvViewIsHidden = true
+            rejectVersionViewIsHidden = true
         }
     }
     
-    private func bindAl(
+    private func bindAccessList(
         _ transaction: Transaction
     ) {
         if let al = transaction.applicationCall?.al {
-            self.al = "\(String(localized: "count-number-title")) \(al.count)"
+            self.accessList = "\(String(localized: "count-number-title")) \(al.count)"
         } else {
-            alViewIsHidden = true
+            accessViewIsHidden = true
         }
     }
 

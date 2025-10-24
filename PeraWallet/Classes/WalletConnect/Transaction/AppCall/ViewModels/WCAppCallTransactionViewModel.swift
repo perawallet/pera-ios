@@ -22,8 +22,8 @@ final class WCAppCallTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var idInformationViewModel: TransactionTextInformationViewModel?
     private(set) var onCompletionInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var aprvInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var alInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var rejectVersionInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var accessListInformationViewModel: TransactionTextInformationViewModel?
     private(set) var appGlobalSchemaInformationViewModel: TransactionTextInformationViewModel?
     private(set) var appLocalSchemaInformationViewModel: TransactionTextInformationViewModel?
     private(set) var appExtraPagesInformationViewModel: TransactionTextInformationViewModel?
@@ -50,8 +50,8 @@ final class WCAppCallTransactionViewModel {
         setSenderInformationViewModel(from: account, and: transaction)
         setIdInformationViewModel(from: transaction)
         setOnCompletionInformationViewModel(from: transaction)
-        setAprvInformationViewModel(from: transaction)
-        setAlInformationViewModel(from: transaction)
+        rejectVersionInformationViewModel(from: transaction)
+        accessListInformationViewModel(from: transaction)
         setAppGlobalSchemaInformationViewModel(from: transaction)
         setAppLocalSchemaInformationViewModel(from: transaction)
         setAppExtraPagesInformationViewModel(from: transaction)
@@ -121,32 +121,32 @@ final class WCAppCallTransactionViewModel {
         self.onCompletionInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
     
-    private func setAprvInformationViewModel(from transaction: WCTransaction) {
+    private func rejectVersionInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let aprv = transactionDetail.aprv else {
+              let rejectVersion = transactionDetail.aprv else {
             return
         }
 
         let titledInformation = TitledInformation(
             title: "aprv",
-            detail: "\(aprv)"
+            detail: "\(rejectVersion)"
         )
 
-        self.aprvInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.rejectVersionInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
     
-    private func setAlInformationViewModel(from transaction: WCTransaction) {
+    private func accessListInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let al = transactionDetail.al else {
+              let accessList = transactionDetail.al else {
             return
         }
 
         let titledInformation = TitledInformation(
             title: "al",
-            detail: "\(String(localized: "count-number-title")) \(al.count)"
+            detail: "\(String(localized: "count-number-title")) \(accessList.count)"
         )
 
-        self.alInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.accessListInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setAppGlobalSchemaInformationViewModel(from transaction: WCTransaction) {
