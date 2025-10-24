@@ -28,6 +28,8 @@ final class AppCallTransactionDetailView:
     private lazy var senderView = TransactionTextInformationView()
     private lazy var applicationIDView = TransactionTextInformationView()
     private lazy var onCompletionView = TransactionTextInformationView()
+    private lazy var rejectVersionView = TransactionTextInformationView()
+    private lazy var accessListView = TransactionTextInformationView()
     private lazy var assetView = AppCallTransactionAssetInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
@@ -79,6 +81,8 @@ final class AppCallTransactionDetailView:
         addSenderView(theme)
         addApplicationIDView(theme)
         addOnCompletionView(theme)
+        addRejectVersionView(theme)
+        addAccessListView(theme)
         addAssetView(theme)
         addFeeView(theme)
         addInnerTransactionView(theme)
@@ -123,6 +127,18 @@ extension AppCallTransactionDetailView {
         onCompletionView.customize(theme.onCompletionViewTheme)
 
         verticalStackView.addArrangedSubview(onCompletionView)
+    }
+    
+    private func addRejectVersionView(_ theme: AppCallTransactionDetailViewTheme) {
+        rejectVersionView.customize(theme.textInformationViewCommonTheme)
+
+        verticalStackView.addArrangedSubview(rejectVersionView)
+    }
+    
+    private func addAccessListView(_ theme: AppCallTransactionDetailViewTheme) {
+        accessListView.customize(theme.textInformationViewCommonTheme)
+
+        verticalStackView.addArrangedSubview(accessListView)
     }
 
     private func addAssetView(_ theme: AppCallTransactionDetailViewTheme) {
@@ -239,6 +255,22 @@ extension AppCallTransactionDetailView {
                 detail: viewModel?.onCompletion
             )
         )
+        
+        rejectVersionView.bindData(
+            TransactionTextInformationViewModel(
+                title: "aprv",
+                detail: viewModel?.rejectVersion
+            )
+        )
+        rejectVersionView.isHidden = (viewModel?.rejectVersionViewIsHidden).falseIfNil
+        
+        accessListView.bindData(
+            TransactionTextInformationViewModel(
+                title: "al",
+                detail: viewModel?.accessList
+            )
+        )
+        accessListView.isHidden = (viewModel?.accessViewIsHidden).falseIfNil
 
         if let transactionAssetInformationViewModel = viewModel?.transactionAssetInformationViewModel {
             assetView.bindData(transactionAssetInformationViewModel)

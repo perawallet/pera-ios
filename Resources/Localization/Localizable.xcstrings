@@ -2899,6 +2899,16 @@
         }
       }
     },
+    "count-number-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Count:"
+          }
+        }
+      }
+    },
     "create-account-title" : {
       "localizations" : {
         "en" : {

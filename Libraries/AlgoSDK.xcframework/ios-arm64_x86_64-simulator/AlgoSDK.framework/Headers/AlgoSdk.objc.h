@@ -714,11 +714,9 @@ FOUNDATION_EXPORT id<AlgoSdkTransactionSigner> _Nullable AlgoSdkMakeBasicAccount
 
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeBid(NSString* _Nullable bidderAddress, int64_t bidAmount, int64_t maxPrice, int64_t bidID, NSString* _Nullable auctionAddress, int64_t auctionID, NSError* _Nullable* _Nullable error);
 
-/**
- * MakeKeyRegTxn constructs a keyreg transaction using the passed parameters.
-`from` and `to` addresses should be checksummed, human-readable addresses
- */
-FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeKeyRegTxn(NSString* _Nullable account, NSData* _Nullable note, AlgoSdkSuggestedParams* _Nullable params, NSString* _Nullable voteKey, NSString* _Nullable selectionKey, NSString* _Nullable stateProofPK, int64_t voteFirst, int64_t voteLast, int64_t voteKeyDilution, BOOL nonpart, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeKeyRegTxn(NSString* _Nullable account, NSData* _Nullable note, NSString* _Nullable voteKey, NSString* _Nullable selectionKey, AlgoSdkUint64* _Nullable voteFirst, AlgoSdkUint64* _Nullable voteLast, AlgoSdkUint64* _Nullable voteKeyDilution, AlgoSdkSuggestedParams* _Nullable suggestedParams, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkMakeKeyRegTxnWithStateProofKey(NSString* _Nullable account, NSData* _Nullable note, AlgoSdkSuggestedParams* _Nullable params, NSString* _Nullable voteKey, NSString* _Nullable selectionKey, NSString* _Nullable stateProofPK, AlgoSdkUint64* _Nullable voteFirst, AlgoSdkUint64* _Nullable voteLast, AlgoSdkUint64* _Nullable voteKeyDilution, BOOL nonpart, NSError* _Nullable* _Nullable error);
 
 /**
  * MakeLogicSigAccountDelegatedSign creates a new delegated LogicSigAccount. This

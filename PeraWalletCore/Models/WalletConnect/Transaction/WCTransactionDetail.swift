@@ -62,6 +62,8 @@ public final class WCTransactionDetail: Codable {
     public let appExtraPages: Int?
     public let approvalHash: Data?
     public let stateHash: Data?
+    public let al: [AppCallArgument]?
+    public let aprv: Int64?
     public let assetIdBeingConfigured: Int64?
     public let assetConfigParams: WCAssetConfigParameters?
     public let transactionGroupId: String?
@@ -98,6 +100,8 @@ public final class WCTransactionDetail: Codable {
         appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
         approvalHash = try container.decodeIfPresent(Data.self, forKey: .approvalHash)
         stateHash = try container.decodeIfPresent(Data.self, forKey: .stateHash)
+        al = try container.decodeIfPresent([AppCallArgument].self, forKey: .al)
+        aprv = try container.decodeIfPresent(Int64.self, forKey: .aprv)
         transactionGroupId = try container.decodeIfPresent(String.self, forKey: .transactionGroupId)
 
         if type == .applicationCall {
@@ -173,6 +177,8 @@ public final class WCTransactionDetail: Codable {
         try container.encodeIfPresent(appExtraPages, forKey: .appExtraPages)
         try container.encodeIfPresent(approvalHash, forKey: .approvalHash)
         try container.encodeIfPresent(stateHash, forKey: .stateHash)
+        try container.encodeIfPresent(al, forKey: .al)
+        try container.encodeIfPresent(aprv, forKey: .aprv)
         try container.encodeIfPresent(assetIdBeingConfigured, forKey: .assetIdBeingConfigured)
         try container.encodeIfPresent(assetConfigParams, forKey: .assetConfigParams)
         try container.encodeIfPresent(transactionGroupId, forKey: .transactionGroupId)
@@ -404,6 +410,8 @@ extension WCTransactionDetail {
         case appExtraPages = "apep"
         case approvalHash = "apap"
         case stateHash = "apsu"
+        case al = "al"
+        case aprv = "aprv"
         case assetIdBeingConfigured = "caid"
         case assetConfigParams = "apar"
         case transactionGroupId = "grp"

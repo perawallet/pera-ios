@@ -25,6 +25,8 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
     private lazy var senderView = TitledTransactionAccountNameView()
     private lazy var idInformationView = TransactionTextInformationView()
     private lazy var onCompletionInformationView = TransactionTextInformationView()
+    private lazy var rejectVersionInformationView = TransactionTextInformationView()
+    private lazy var accessListInformationView = TransactionTextInformationView()
     private lazy var appGlobalSchemaInformationView = TransactionTextInformationView()
     private lazy var appLocalSchemaInformationView = TransactionTextInformationView()
     private lazy var appExtraPagesInformationView = TransactionTextInformationView()
@@ -69,6 +71,8 @@ extension WCAppCallTransactionView {
         senderView.customize(theme.accountInformationTheme)
         idInformationView.customize(theme.textInformationTheme)
         onCompletionInformationView.customize(theme.textInformationTheme)
+        rejectVersionInformationView.customize(theme.textInformationTheme)
+        accessListInformationView.customize(theme.textInformationTheme)
         appGlobalSchemaInformationView.customize(theme.textInformationTheme)
         appLocalSchemaInformationView.customize(theme.textInformationTheme)
         appExtraPagesInformationView.customize(theme.textInformationTheme)
@@ -81,6 +85,8 @@ extension WCAppCallTransactionView {
         addParticipantInformationView(senderView)
         addParticipantInformationView(idInformationView)
         addParticipantInformationView(onCompletionInformationView)
+        addParticipantInformationView(rejectVersionInformationView)
+        addParticipantInformationView(accessListInformationView)
         addParticipantInformationView(appGlobalSchemaInformationView)
         addParticipantInformationView(appLocalSchemaInformationView)
         addParticipantInformationView(appExtraPagesInformationView)
@@ -151,6 +157,18 @@ extension WCAppCallTransactionView {
 
         if let onCompletionInformationViewModel = viewModel.onCompletionInformationViewModel {
             onCompletionInformationView.bindData(onCompletionInformationViewModel)
+        }
+        
+        if let rejectVersionInformationViewModel = viewModel.rejectVersionInformationViewModel {
+            rejectVersionInformationView.bindData(rejectVersionInformationViewModel)
+        } else {
+            rejectVersionInformationView.hideViewInStack()
+        }
+        
+        if let accessListInformationViewModel = viewModel.accessListInformationViewModel {
+            accessListInformationView.bindData(accessListInformationViewModel)
+        } else {
+            accessListInformationView.hideViewInStack()
         }
 
         if let appGlobalSchemaInformationViewModel = viewModel.appGlobalSchemaInformationViewModel {
