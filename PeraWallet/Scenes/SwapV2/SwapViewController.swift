@@ -477,10 +477,6 @@ final class SwapViewController: BaseViewController {
     ) {
         guard let viewModel, let quoteList, let selectedAssetOut else { return }
         
-        if !(selectedAccount?.isHDAccount ?? false) {
-            
-        }
-        
         var orderedQuoteList: [SwapQuote] {
             let shouldFilterDeflex = configuration.featureFlagService.isEnabled(.ledgerDeflexFilterEnabled)
                 && (selectedAccount?.authorization.isLedger ?? false)
