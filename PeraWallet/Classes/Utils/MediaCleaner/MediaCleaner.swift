@@ -16,6 +16,7 @@
 
 import Foundation
 import pera_wallet_core
+import Kingfisher
 
 public struct MediaCleaner {
     
@@ -35,6 +36,12 @@ public struct MediaCleaner {
         cleanupTemporaryMediaFiles()
         
         PeraUserDefaults.isMediaCleanupCompleted = true
+    }
+    
+    func clearMediaCache() {
+        KingfisherManager.shared.cache.clearMemoryCache()
+        KingfisherManager.shared.cache.clearDiskCache()
+        KingfisherManager.shared.cache.cleanExpiredDiskCache()
     }
 }
 
