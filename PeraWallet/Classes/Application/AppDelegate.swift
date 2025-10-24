@@ -74,6 +74,8 @@ class AppDelegate:
         setupAppTarget()
         setupAppLibs()
         runMigrations()
+        
+        performOneTimeMediaCleanup()
 
         makeWindow()
         
@@ -768,6 +770,49 @@ extension AppDelegate {
     
     private func createHDWalletStorage() -> HDWalletStorage {
         HDWalletStorage()
+    }
+    
+    private func performOneTimeMediaCleanup() {
+        let userDefaults = UserDefaults.standard
+        let cleanupKey = "pera_wallet_media_cleanup_completed"
+        
+        guard !userDefaults.bool(forKey: cleanupKey) else {
+            return
+        }
+
+        cleanupTemporaryMediaFiles()
+        
+        userDefaults.set(true, forKey: cleanupKey)
+        userDefaults.synchronize()
+    }
+
+    private func cleanupTemporaryMediaFiles() {
+        let fileManager = FileManager.default
+        let temporaryDirectory = fileManager.temporaryDirectory
+        
+        do {
+            let contents = try fileManager.contentsOfDirectory(at: temporaryDirectory, includingPropertiesForKeys: nil, options: [])
+            
+            let mediaExtensions = MediaExtension.allCases.map { $0.rawValue.lowercased() }
+            
+            for fileURL in contents {
+                let fileExtension = fileURL.pathExtension.lowercased()
+                let fileExtensionWithDot = "." + fileExtension
+ 
+                if mediaExtensions.contains(fileExtensionWithDot) {
+                    let attributes = try fileManager.attributesOfItem(atPath: fileURL.path)
+                    if let creationDate = attributes[.creationDate] as? Date {
+                        let oneHourAgo = Date().addingTimeInterval(-3600)
+                        
+                        if creationDate < oneHourAgo {
+                            try fileManager.removeItem(at: fileURL)
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 
