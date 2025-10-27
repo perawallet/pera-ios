@@ -95,9 +95,7 @@ extension HomeAPIDataController {
         announcementDataController.delegate = self
         incomingASAsAPIDataController.delegate = self
         setupSpotsBannersClosures()
-        if featureFlagService.isEnabled(.portfolioChartsEnabled) {
-            setupChartDataClosures()
-        }
+        setupChartDataClosures()
     }
     
     func reload() {
@@ -333,10 +331,7 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
             
-            if
-                featureFlagService.isEnabled(.portfolioChartsEnabled),
-                let chartViewData
-            {
+            if let chartViewData {
                 snapshot.appendItems(
                     [.portfolio(.charts(chartViewData))],
                     toSection: .portfolio

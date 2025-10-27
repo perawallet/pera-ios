@@ -37,7 +37,7 @@ final class ASADetailScreen:
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
-    private lazy var profileView = ASAProfileView(shouldShowCharts: configuration.featureFlagService.isEnabled(.assetsChartsEnabled))
+    private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
     private lazy var marketInfoView = ASADetailMarketView()
     private lazy var pagesScreen = PageContainer(configuration: configuration, hidePageBar: true)
@@ -641,25 +641,23 @@ extension ASADetailScreen {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
         }
         
-        if configuration.featureFlagService.isEnabled(.assetsChartsEnabled) {
-            profileView.onPeriodChange = { [weak self] newPeriodSelected in
-                guard let self else { return }
-                dataController.updateChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: newPeriodSelected)
+        profileView.onPeriodChange = { [weak self] newPeriodSelected in
+            guard let self else { return }
+            dataController.updateChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: newPeriodSelected)
+        }
+        
+        profileView.onPointSelected = { [weak self] pointSelected in
+            guard let self else { return }
+
+            guard
+                let pointSelected,
+                let date = pointSelected.timestamp.toDate(.fullNumericWithTimezone)
+            else {
+                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                return
             }
             
-            profileView.onPointSelected = { [weak self] pointSelected in
-                guard let self else { return }
-
-                guard
-                    let pointSelected,
-                    let date = pointSelected.timestamp.toDate(.fullNumericWithTimezone)
-                else {
-                    bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-                    return
-                }
-                
-                bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(algoValue: pointSelected.algoValue, fiatValue: pointSelected.fiatValue, usdValue: pointSelected.usdValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
-            }
+            bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, chartPointSelected: ChartSelectedPointViewModel(algoValue: pointSelected.algoValue, fiatValue: pointSelected.fiatValue, usdValue: pointSelected.usdValue, dateValue: DateFormatter.chartDisplay.string(from: date)))
         }
         
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
@@ -803,9 +801,7 @@ extension ASADetailScreen {
             }
         }
         dataController.loadData()
-        if configuration.featureFlagService.isEnabled(.assetsChartsEnabled) {
-            dataController.fetchInitialChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: .oneWeek)
-        }
+        dataController.fetchInitialChartData(address: dataController.account.address, assetId: String(dataController.asset.id), period: .oneWeek)
     }
 }
 

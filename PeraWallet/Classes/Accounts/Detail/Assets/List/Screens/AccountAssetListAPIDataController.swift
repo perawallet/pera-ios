@@ -77,9 +77,7 @@ final class AccountAssetListAPIDataController:
 
 extension AccountAssetListAPIDataController {
     func load(query: AccountAssetListQuery?) {
-        if featureFlagService.isEnabled(.accountsChartsEnabled) {
-            setupChartDataClosures()
-        }
+        setupChartDataClosures()
         nextQuery = query
 
         if canDeliverUpdatesForAssets {
@@ -310,9 +308,7 @@ extension AccountAssetListAPIDataController {
     ) -> Updates {
         var snapshot = Snapshot()
         appendSectionsForPortfolio(into: &snapshot)
-        if featureFlagService.isEnabled(.accountsChartsEnabled) {
-            appendSectionsForCharts(into: &snapshot)
-        }
+        appendSectionsForCharts(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
         appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForAssets(

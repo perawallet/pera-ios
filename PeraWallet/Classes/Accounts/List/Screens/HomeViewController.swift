@@ -259,9 +259,7 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
         dataController.fetchSpotBanners()
-        if configuration.featureFlagService.isEnabled(.portfolioChartsEnabled) {
-            dataController.fetchInitialChartData(period: .oneWeek)
-        }
+        dataController.fetchInitialChartData(period: .oneWeek)
         if configuration.featureFlagService.isEnabled(.swapV2Enabled) {
             dataController.fetchUSDCDefaultAsset()
         }
