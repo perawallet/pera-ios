@@ -33,7 +33,7 @@ final class ASADiscoveryScreen:
 
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
-    private lazy var profileView = ASAProfileView(shouldShowCharts: false)
+    private lazy var profileView = ASAProfileView()
 
     private lazy var aboutFragmentScreen =
         ASAAboutScreen(

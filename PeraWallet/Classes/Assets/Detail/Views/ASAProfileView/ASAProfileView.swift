@@ -57,17 +57,12 @@ final class ASAProfileView:
     
     private var theme = ASAProfileViewTheme()
     
-    private let shouldShowCharts: Bool
-    
     // MARK: - Initialisers
     
-    @MainActor init(shouldShowCharts: Bool) {
-        self.shouldShowCharts = shouldShowCharts
+    @MainActor init() {
         super.init(frame: .zero)
         setupGestures()
-        if shouldShowCharts {
-            setupViewModelCallback()
-        }
+        setupViewModelCallback()
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -235,10 +230,7 @@ extension ASAProfileView {
         addCompressedContent(theme)
         addPrimaryValue(theme)
         addSecondaryValueAndSelectPointDate(theme)
-        
-        if shouldShowCharts {
-            addChartView(theme)
-        }
+        addChartView(theme)
     }
 
     private func addCompressedContent(_ theme: ASAProfileViewTheme) {

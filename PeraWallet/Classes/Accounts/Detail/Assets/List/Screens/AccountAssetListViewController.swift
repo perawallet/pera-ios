@@ -153,10 +153,7 @@ final class AccountAssetListViewController:
         if !isViewFirstAppeared {
             reloadIfNeededForPendingAssetRequests()
         }
-        if configuration.featureFlagService.isEnabled(.accountsChartsEnabled) {
-            dataController.fetchInitialChartData(period: .oneWeek)
-        }
-
+        dataController.fetchInitialChartData(period: .oneWeek)
         analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
 
