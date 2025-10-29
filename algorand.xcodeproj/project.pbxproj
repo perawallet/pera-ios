@@ -150,6 +150,10 @@
 		2B99D48828F5607E00323C11 /* pera_loader_240x240.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B99D48728F5607D00323C11 /* pera_loader_240x240.json */; };
 		2B99D48928F5607E00323C11 /* pera_loader_240x240.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B99D48728F5607D00323C11 /* pera_loader_240x240.json */; };
 		2B99D48A28F5607E00323C11 /* pera_loader_240x240.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B99D48728F5607D00323C11 /* pera_loader_240x240.json */; };
+		2BB835A32EAB7801002BEA35 /* MediaCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB835A12EAB7772002BEA35 /* MediaCleaner.swift */; };
+		2BB835A42EAB7801002BEA35 /* MediaCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB835A12EAB7772002BEA35 /* MediaCleaner.swift */; };
+		2BB835A52EAB7801002BEA35 /* MediaCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB835A12EAB7772002BEA35 /* MediaCleaner.swift */; };
+		2BB835A72EAB78D7002BEA35 /* MediaCleanUpErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB835A62EAB78D2002BEA35 /* MediaCleanUpErrorLog.swift */; };
 		2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E162682474800C57728 /* AlgorandSDKTests.swift */; };
 		2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9B29A3BD9900DDD988 /* WalletConnectV1SessionValidatorTests.swift */; };
 		2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF9F29A3CD7800DDD988 /* WalletConnectV2SessionValidatorTests.swift */; };
@@ -8321,6 +8325,8 @@
 		2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceListViewModel.swift; sourceTree = "<group>"; };
 		2BB68F51261261250070FFE9 /* HomeNoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoContentViewModel.swift; sourceTree = "<group>"; };
 		2BB6EE57239339E400CF7874 /* AssetPreviewActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionCell.swift; sourceTree = "<group>"; };
+		2BB835A12EAB7772002BEA35 /* MediaCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCleaner.swift; sourceTree = "<group>"; };
+		2BB835A62EAB78D2002BEA35 /* MediaCleanUpErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCleanUpErrorLog.swift; sourceTree = "<group>"; };
 		2BB8482227E8CA66004F2E39 /* CollectibleMediaPreviewViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectibleMediaPreviewViewController+Theme.swift"; sourceTree = "<group>"; };
 		2BB8482727E8EC98004F2E39 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		2BB8483127E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectibleDetailLayout+Theme.swift"; sourceTree = "<group>"; };
@@ -11669,6 +11675,7 @@
 		2B32A2412552EF9B007CC3A6 /* Logs */ = {
 			isa = PBXGroup;
 			children = (
+				2BB835A62EAB78D2002BEA35 /* MediaCleanUpErrorLog.swift */,
 				D4A5336229F6EA2100CBC1A9 /* LedgerAccountSelectionScreenFetchingRekeyingAccountsFailedLog.swift */,
 				2B32A25E2552F031007CC3A6 /* LedgerTransactionErrorLog.swift */,
 				594D54812E8E6D7700D0DA38 /* MigrationFailureLog.swift */,
@@ -15540,6 +15547,14 @@
 			path = Ledger;
 			sourceTree = "<group>";
 		};
+		2BB835A02EAB7767002BEA35 /* MediaCleaner */ = {
+			isa = PBXGroup;
+			children = (
+				2BB835A12EAB7772002BEA35 /* MediaCleaner.swift */,
+			);
+			path = MediaCleaner;
+			sourceTree = "<group>";
+		};
 		2BB98FB3297692C900262D63 /* AccountAssetListLoadingCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -18698,6 +18713,7 @@
 				591674CA2E460AA3002184C2 /* UI */,
 				591678892E4610D2002184C2 /* WalletConnect */,
 				591674D62E460AA3002184C2 /* Validators */,
+				2BB835A02EAB7767002BEA35 /* MediaCleaner */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -26616,6 +26632,7 @@
 				5916805B2E464C76002184C2 /* WCSessionStatusSecondaryListItemViewModel.swift in Sources */,
 				5916805C2E464C76002184C2 /* WCSessionStatus.swift in Sources */,
 				5916805D2E464C76002184C2 /* WCSessionProfileCell.swift in Sources */,
+				2BB835A52EAB7801002BEA35 /* MediaCleaner.swift in Sources */,
 				5916805E2E464C76002184C2 /* WCSessionProfileView.swift in Sources */,
 				5916805F2E464C76002184C2 /* WCSessionProfileViewModel.swift in Sources */,
 				591680602E464C76002184C2 /* WCSessionProfileViewTheme.swift in Sources */,
@@ -28766,6 +28783,7 @@
 				59E605D92E4A712500CCA99B /* WCSessionInfoViewTheme.swift in Sources */,
 				59E605DA2E4A712500CCA99B /* WCSessionStatusSecondaryListItemViewModel.swift in Sources */,
 				59E605DB2E4A712500CCA99B /* WCSessionStatus.swift in Sources */,
+				2BB835A42EAB7801002BEA35 /* MediaCleaner.swift in Sources */,
 				59E605DC2E4A712500CCA99B /* WCSessionProfileCell.swift in Sources */,
 				59E605DD2E4A712500CCA99B /* WCSessionProfileView.swift in Sources */,
 				59E605DE2E4A712500CCA99B /* WCSessionProfileViewModel.swift in Sources */,
@@ -30916,6 +30934,7 @@
 				59E60E522E4A71D000CCA99B /* WCSessionStatusSecondaryListItemViewModel.swift in Sources */,
 				59E60E532E4A71D000CCA99B /* WCSessionStatus.swift in Sources */,
 				59E60E542E4A71D000CCA99B /* WCSessionProfileCell.swift in Sources */,
+				2BB835A32EAB7801002BEA35 /* MediaCleaner.swift in Sources */,
 				59E60E552E4A71D000CCA99B /* WCSessionProfileView.swift in Sources */,
 				59E60E562E4A71D000CCA99B /* WCSessionProfileViewModel.swift in Sources */,
 				59E60E572E4A71D000CCA99B /* WCSessionProfileViewTheme.swift in Sources */,
@@ -31339,6 +31358,7 @@
 				5916768B2E460AF9002184C2 /* AssetOptInAndSendTransactionDraft.swift in Sources */,
 				5916768C2E460AF9002184C2 /* SDKTransactionSignerItem.swift in Sources */,
 				5916768D2E460AF9002184C2 /* KeyRegTransactionDraft.swift in Sources */,
+				2BB835A72EAB78D7002BEA35 /* MediaCleanUpErrorLog.swift in Sources */,
 				5916768E2E460AF9002184C2 /* NodeTestDraft.swift in Sources */,
 				5916768F2E460AF9002184C2 /* PeraSwapFeeDraft.swift in Sources */,
 				591676902E460AF9002184C2 /* SwapQuoteDraft.swift in Sources */,

@@ -34,6 +34,9 @@ final class CollectibleDetailAPIDataController:
     private lazy var amountFormatter: CollectibleAmountFormatter = .init()
 
     private var ongoingEndpoint: EndpointOperatable?
+    private var ongoingImageTask: URLSessionDataTask?
+    private var ongoingDownloadTask: URLSessionDownloadTask?
+    private var downloadedFileURLs: Set<URL> = []
 
     private var account: Account
     private var asset: CollectibleAsset
@@ -61,6 +64,7 @@ final class CollectibleDetailAPIDataController:
     
     deinit {
         sharedDataController.remove(self)
+        cleanup()
     }
 }
 
@@ -128,6 +132,26 @@ extension CollectibleDetailAPIDataController {
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
     }
+    
+    private func cancelOngoingTasks() {
+        ongoingImageTask?.cancel()
+        ongoingImageTask = nil
+        ongoingDownloadTask?.cancel()
+        ongoingDownloadTask = nil
+    }
+    
+    private func cleanup() {
+        cancelOngoingEndpoint()
+        cancelOngoingTasks()
+        cleanupDownloadedFiles()
+    }
+    
+    private func cleanupDownloadedFiles() {
+        for fileURL in downloadedFileURLs {
+            try? FileManager.default.removeItem(at: fileURL)
+        }
+        downloadedFileURLs.removeAll()
+    }
 }
 
 extension CollectibleDetailAPIDataController {
@@ -181,6 +205,10 @@ extension CollectibleDetailAPIDataController {
     
     func getCurrentAccountCollectibleStatus() -> AccountCollectibleStatus {
         return currentAccountCollectibleStatus
+    }
+    
+    func cleanupResources() {
+        cleanup()
     }
 }
 
@@ -431,7 +459,15 @@ extension CollectibleDetailAPIDataController {
     func getImageDataToCopy(
         from url: URL
     ) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        ongoingImageTask?.cancel()
+        
+        ongoingImageTask = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self else { return }
+            
+            defer {
+                self.ongoingImageTask = nil
+            }
+            
             guard error == nil,
                   let data = data,
                   let image = UIImage(data: data) else {
@@ -439,7 +475,8 @@ extension CollectibleDetailAPIDataController {
                 return
             }
             self.eventHandler?(.didFetchImage(image))
-        }.resume()
+        }
+        ongoingImageTask?.resume()
     }
     
     func downloadAssetMediaToSave(
@@ -447,8 +484,16 @@ extension CollectibleDetailAPIDataController {
         of type: MediaType,
         with fileExtension: String
     ) {
+        ongoingDownloadTask?.cancel()
+        
         let fileComponents = url.lastPathComponent.split(separator: ".", maxSplits: 1)
-        URLSession.shared.downloadTask(with: url) { tempLocalUrl, _, error in
+        ongoingDownloadTask = URLSession.shared.downloadTask(with: url) { [weak self] tempLocalUrl, _, error in
+            guard let self = self else { return }
+            
+            defer {
+                self.ongoingDownloadTask = nil
+            }
+            
             do {
                 guard error == nil,
                       let tempLocalUrl = tempLocalUrl,
@@ -456,11 +501,14 @@ extension CollectibleDetailAPIDataController {
                       let destinationURL = try self.handleDownloadedCollectible(at: tempLocalUrl, with: fileName, and: fileExtension) else {
                     throw FileError.missingData
                 }
+                
+                self.downloadedFileURLs.insert(destinationURL)
                 self.eventHandler?(.didFetchMedia(destinationURL))
             } catch {
                 self.eventHandler?(.didMediaResponseFail(url: url))
             }
-        }.resume()
+        }
+        ongoingDownloadTask?.resume()
     }
     
     private func handleDownloadedCollectible(

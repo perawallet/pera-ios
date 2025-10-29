@@ -63,6 +63,7 @@ class AppDelegate:
     private lazy var featureFlagService = createFeatureFlagService()
     private lazy var hdWalletService = createHDWalletService()
     private lazy var hdWalletStorage = createHDWalletStorage()
+    private lazy var mediaCleaner = MediaCleaner(analytics: analytics)
 
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -74,6 +75,8 @@ class AppDelegate:
         setupAppTarget()
         setupAppLibs()
         runMigrations()
+        
+        mediaCleaner.performOneTimeMediaCleanup()
 
         makeWindow()
         
@@ -475,6 +478,7 @@ extension AppDelegate {
         sessionConfiguration.httpAdditionalHeaders = [
             userAgentHeader.key: userAgentHeaderValue
         ]
+        mediaCleaner.clearMediaCache()
         let customDownloader = ImageDownloader(name: "ImageDownloaderWithPeraUserAgent")
         customDownloader.sessionConfiguration = sessionConfiguration
         KingfisherManager.shared.downloader = customDownloader
