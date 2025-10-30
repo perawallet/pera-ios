@@ -229,7 +229,11 @@ extension DBStorable where Self: NSManagedObject {
         with predicate: NSPredicate? = nil,
         in persistentContainer: NSPersistentContainer? = CoreAppConfiguration.shared?.persistentContainer
     ) -> Bool {
+        
+        PeraLogger.shared.log(message: "[DB][\(entity)] Conf: \(CoreAppConfiguration.shared != nil)")
+        
         guard let context = persistentContainer?.viewContext else {
+            PeraLogger.shared.log(message: "[DB][\(entity)] No Context")
             return false
         }
 
@@ -242,8 +246,10 @@ extension DBStorable where Self: NSManagedObject {
         
         do {
             let response = try context.fetch(fetchRequest)
+            PeraLogger.shared.log(message: "[DB][\(entity)] Response: \(!response.isEmpty)")
             return !response.isEmpty
         } catch {
+            PeraLogger.shared.log(message: "[DB][\(entity)] Error: \(error.localizedDescription)")
             return false
         }
     }

@@ -56,19 +56,29 @@ public class Session: Storable {
     
     public var authenticatedUser: User? {
         get {
+            PeraLogger.shared.log(message: "[Session] GET authenticatedUser: \(applicationConfiguration?.authenticatedUser() != nil)")
             return applicationConfiguration?.authenticatedUser()
         }
         set {
+            
+            PeraLogger.shared.log(message: "[Session] SET authenticatedUser: \(newValue != nil)")
+            
+            if let newValue {
+                PeraLogger.shared.log(message: "[Session] Accounts: \(newValue.accounts.count)")
+            }
+            
             guard let userData = newValue?.encoded() else {
                 return
             }
             
             if let config = applicationConfiguration {
+                PeraLogger.shared.log(message: "[Update] Normal")
                 config.update(
                     entity: ApplicationConfiguration.entityName,
                     with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData]
                 )
             } else {
+                PeraLogger.shared.log(message :"[Update] New")
                 ApplicationConfiguration.create(
                     entity: ApplicationConfiguration.entityName,
                     with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData]
@@ -76,15 +86,21 @@ public class Session: Storable {
             }
             
             Cache.configuration = nil
+            PeraLogger.shared.log(message: "[Update] Done: \(applicationConfiguration != nil)")
             Cache.configuration = applicationConfiguration
+            
+            PeraLogger.shared.log(message: "[Session] applicationConfiguration.authenticatedUser: \(applicationConfiguration?.authenticatedUser() != nil)")
         }
     }
     
     public var applicationConfiguration: ApplicationConfiguration? {
         get {
+            PeraLogger.shared.log(message: "[Session] GET applicationConfiguration")
             if Cache.configuration == nil {
+                PeraLogger.shared.log(message: "[Cache] Empty")
                 let entityName = ApplicationConfiguration.entityName
                 guard ApplicationConfiguration.hasResult(entity: entityName) else {
+                    PeraLogger.shared.log(message: "[Cache] No Result")
                     return nil
                 }
                 
@@ -92,31 +108,37 @@ public class Session: Storable {
                 
                 switch result {
                 case .result(let object):
+                    PeraLogger.shared.log(message: "[Cache] Result")
                     guard let configuration = object as? ApplicationConfiguration else {
+                        PeraLogger.shared.log(message: "[Cache] Result - No Configuration")
                         return nil
                     }
-                    
+                    PeraLogger.shared.log(message: "[Cache] Result - Success")
                     Cache.configuration = configuration
                     return Cache.configuration
                 case .results(let objects):
+                    PeraLogger.shared.log(message: "[Cache] Multiple Results")
                     guard let configuration = objects.first(where: { appConfig -> Bool in
                         if appConfig is ApplicationConfiguration {
                             return true
                         }
                         return false
                     }) as? ApplicationConfiguration else {
+                        PeraLogger.shared.log(message: "[Cache] Multiple Results - No Configuration")
                         return nil
                     }
-                    
+                    PeraLogger.shared.log(message: "[Cache] Multiple Results - Success")
                     Cache.configuration = configuration
                     return Cache.configuration
-                case .error:
+                case let .error(error):
+                    PeraLogger.shared.log(message: "[Cache] Error - \(error.localizedDescription)")
                     return nil
                 }
             }
             return Cache.configuration
         }
         set {
+            PeraLogger.shared.log(message: "[Session] SET applicationConfiguration: \(newValue != nil)")
             Cache.configuration = newValue
         }
     }
@@ -428,7 +450,9 @@ extension Session {
 
 extension Session {
     private enum Cache {
-        static var configuration: ApplicationConfiguration?
+        static var configuration: ApplicationConfiguration? {
+            didSet { PeraLogger.shared.log(message: "[Session.Cache.configuration] SET: \(configuration != nil)") }
+        }
     }
     
     public static func clearConfigurationCache() {

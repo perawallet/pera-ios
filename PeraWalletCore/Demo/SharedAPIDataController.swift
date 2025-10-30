@@ -41,7 +41,11 @@ public final class SharedAPIDataController:
         didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
     }
     
-    public private(set) var accountCollection: AccountCollection = []
+    public private(set) var accountCollection: AccountCollection = [] {
+        didSet {
+//            PeraLogger.shared.log(message: "[1][AC] On Change: \(accountCollection.count)")
+        }
+    }
 
     public private(set) var currency: CurrencyProvider
 
@@ -90,7 +94,11 @@ public final class SharedAPIDataController:
         qos: .userInitiated
     )
     
-    private var nextAccountCollection: AccountCollection = []
+    private var nextAccountCollection: AccountCollection = []  {
+        didSet {
+//            PeraLogger.shared.log(message: "[5][NAC] On Change: \(self.nextAccountCollection.count)")
+        }
+    }
 
     private var transactionParamsResult: Result<TransactionParams, HIPNetworkError<NoAPIModel>>?
     
@@ -224,6 +232,7 @@ extension SharedAPIDataController {
 
         session.removePrivateData(for: address)
 
+//        PeraLogger.shared.log(message: "[2][AC] resetPollingAfterRemoving")
         accountCollection[address] = nil
 
         deviceRegistrationController.sendDeviceDetails()
@@ -312,6 +321,7 @@ extension SharedAPIDataController {
 
 extension SharedAPIDataController {
     private func deleteData() {
+//        PeraLogger.shared.log(message: "[3][AC/NAC] deleteData")
         accountCollection = []
         nextAccountCollection = []
         assetDetailCollection = []
@@ -321,6 +331,7 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
+//            PeraLogger.shared.log(message: "[SharedAPIDataController] authenticatedUser: \(self.session.authenticatedUser != nil)")
             return ALGBlockRequest(
                 localAccounts: self.session.authenticatedUser?.accounts ?? [],
                 cachedAccounts: self.accountCollection,
@@ -372,6 +383,7 @@ extension SharedAPIDataController {
     private func blockProcessorWillStart() {
         $status.mutate { $0 = .running }
 
+//        PeraLogger.shared.log(message: "[6][NAC] blockProcessorWillStart")
         nextAccountCollection = []
         
         publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
@@ -387,6 +399,7 @@ extension SharedAPIDataController {
             account = Account(localAccount: localAccount)
         }
 
+//        PeraLogger.shared.log(message: "[7][NAC] blockProcessorWillFetchAccount")
         nextAccountCollection[localAccount.address] = AccountHandle(account: account, status: .idle)
     }
     
@@ -394,6 +407,7 @@ extension SharedAPIDataController {
         _ account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .inProgress)
+//        PeraLogger.shared.log(message: "[8][NAC] blockProcessorDidFetchAccount")
         nextAccountCollection[account.address] = updatedAccount
     }
     
@@ -408,6 +422,7 @@ extension SharedAPIDataController {
             account = Account(localAccount: localAccount)
         }
         
+//        PeraLogger.shared.log(message: "[9][NAC] blockProcessorDidFailToFetchAccount")
         nextAccountCollection[localAccount.address] = AccountHandle(account: account, status: .failed(error))
     }
     
@@ -415,6 +430,7 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .inProgress)
+//        PeraLogger.shared.log(message: "[10][NAC] blockProcessorWillFetchAssetDetails")
         nextAccountCollection[account.address] = updatedAccount
     }
     
@@ -424,6 +440,7 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .ready)
+//        PeraLogger.shared.log(message: "[11][NAC] blockProcessorDidFetchAssetDetails")
         nextAccountCollection[account.address] = updatedAccount
 
         for assetDetail in assetDetails {
@@ -457,12 +474,14 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .failed(error))
+//        PeraLogger.shared.log(message: "[12][NAC] blockProcessorDidFailToFetchAssetDetails")
         nextAccountCollection[account.address] = updatedAccount
     }
     
     private func blockProcessorDidFinish() {
         setAccountsAuthorizationWhenBlockProcessorDidFinish()
 
+//        PeraLogger.shared.log(message: "[4][AC] blockProcessorDidFinish")
         accountCollection = nextAccountCollection
         nextAccountCollection = []
 
@@ -575,3 +594,5 @@ extension SharedAPIDataController {
         )
     }
 }
+
+

@@ -28,6 +28,17 @@ public final class ApplicationConfiguration: NSManagedObject {
         guard let data = authenticatedUserData else {
             return nil
         }
+        
+//        do {
+//            let user = try JSONDecoder().decode(User.self, from: data)
+//            let encoder = JSONEncoder()
+//            encoder.outputFormatting = .prettyPrinted
+//            let data = try encoder.encode(user)
+//            let json = String(data: data, encoding: .utf8) ?? ""
+//            PeraLogger.shared.log(message: "[JSON]\n\(json)")
+//        } catch {
+//            PeraLogger.shared.log(message: "[JSON] Error: \(error)")
+//        }
         return try? JSONDecoder().decode(User.self, from: data)
     }
 }

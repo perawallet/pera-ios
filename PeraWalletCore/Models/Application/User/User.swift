@@ -20,7 +20,9 @@ import UIKit
 public final class User: Codable {
 
     // Stores accounts that represent regular accounts or HD wallet addresses. The ones that represent HD wallet addresses will have the hdWalletAddressDetail
-    public private(set) var accounts: [AccountInformation] = []
+    public private(set) var accounts: [AccountInformation] = [] {
+        didSet { PeraLogger.shared.log(message: "[User][1] Accounts: \(accounts.count)") }
+    }
     
     // Default node used to interact with the blockchain
     private(set) var defaultNode: String?
@@ -48,6 +50,7 @@ public final class User: Codable {
         accounts: [AccountInformation]
     ) {
         self.accounts = accounts
+        PeraLogger.shared.log(message: "[User][2] Accounts: \(accounts.count)")
     }
     
     public init(
@@ -75,6 +78,8 @@ public final class User: Codable {
         } else if network == .testnet {
             self.deviceIDOnTestnet = legacyDeviceID
         }
+        
+        PeraLogger.shared.log(message: "[User][3] Accounts: \(accounts.count)")
     }
     
     public func encode(

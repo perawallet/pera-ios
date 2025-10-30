@@ -997,7 +997,8 @@ final class Router:
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case .settings:
-            viewController = SettingsListConstructor.buildScene(legacyAppConfiguration: appConfiguration)
+            let hc = UIHostingController(rootView: DebugLogView())
+            viewController = SwiftUICompatibilityBaseViewController(configuration: appConfiguration.all(), hostingController: hc)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
