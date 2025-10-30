@@ -47,13 +47,17 @@ public final class AppGroupDataStoreMigration {
         do {
             let storeURL = try URL.appGroupDBURL(for: appGroup, databaseName: NSPersistentContainer.DEFAULT_CONTAINER_NAME)
             let oldStoreCoordinator = from.persistentStoreCoordinator
+            let newDBHasContents = try hasContents(storeURL)
             
             for store in oldStoreCoordinator.persistentStores {
                 if let url = store.url {
                     let type = NSPersistentStore.StoreType(rawValue: store.type)
-                    try oldStoreCoordinator.replacePersistentStore(at: storeURL,
-                                                                   withPersistentStoreFrom: url,
-                                                                   type: type)
+                    
+                    if !newDBHasContents {
+                        try oldStoreCoordinator.replacePersistentStore(at: storeURL,
+                                                                       withPersistentStoreFrom: url,
+                                                                       type: type)
+                    }
                     try oldStoreCoordinator.destroyPersistentStore(at: url, type: type)
                     
                     let remainingFiles = try FileManager.default.contentsOfDirectory(
