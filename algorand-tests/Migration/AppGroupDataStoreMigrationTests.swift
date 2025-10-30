@@ -34,6 +34,66 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
             "name": "some-name"
         ], in: oldLocationContainer)
         
+        //Destroy the new store in case it exists to allow migration to run
+        try deletePersistentStore(APP_GROUP)
+        
+        // WHEN: Running migration
+        do {
+            try migration.moveDatabaseToAppGroup()
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+            
+    }
+    
+    func test_migration_doesNotRunWhenNoData() throws {
+        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
+
+        //start fresh
+        try deletePersistentStore(nil)
+        try deletePersistentStore(APP_GROUP)
+        
+        // Now ensure there's some data in the new container
+        let newPersistentContainer = try NSPersistentContainer.makePersistentContainer(group: APP_GROUP)
+        
+        //create a data entry in the new place
+        ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
+            ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,
+            ApplicationConfiguration.DBKeys.password.rawValue: "pwd"
+        ], in: newPersistentContainer)
+        
+        try migration.moveDatabaseToAppGroup()
+                
+        let migratedAppConfig = ApplicationConfiguration.fetchAllSyncronous(entity: "ApplicationConfiguration", in: newPersistentContainer)
+        let newConfig: ApplicationConfiguration? = castResult(migratedAppConfig)
+        XCTAssertEqual(newConfig?.password, "pwd")
+    }
+    
+    func test_migration_doesNotMigrateWhenNewDatabaseButDeletesOld() throws {
+        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
+        
+        let oldLocationContainer = try NSPersistentContainer.makePersistentContainer(group: nil)
+        ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
+            ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,
+            ApplicationConfiguration.DBKeys.password.rawValue: "pwd"
+        ], in: oldLocationContainer)
+        Contact.create(entity: Contact.entityName, with: [
+            "identifier": "some-contact",
+            "address": "some-address",
+            "name": "some-name"
+        ], in: oldLocationContainer)
+        
+        let newLocationContainer = try NSPersistentContainer.makePersistentContainer(group: APP_GROUP)
+        ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
+            ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,
+            ApplicationConfiguration.DBKeys.password.rawValue: "pwd-new"
+        ], in: newLocationContainer)
+        Contact.create(entity: Contact.entityName, with: [
+            "identifier": "some-contact-new",
+            "address": "some-address-new",
+            "name": "some-name-new"
+        ], in: newLocationContainer)
+        
         // WHEN: Running migration
         do {
             try migration.moveDatabaseToAppGroup()
@@ -64,47 +124,13 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
         let migratedAppConfig = ApplicationConfiguration.fetchAllSyncronous(entity: "ApplicationConfiguration", in: newPersistentContainer)
         let newConfig: ApplicationConfiguration? = castResult(migratedAppConfig)
         XCTAssertEqual(newConfig?.isDefaultNodeActive, true)
-        XCTAssertEqual(newConfig?.password, "pwd")
+        XCTAssertEqual(newConfig?.password, "pwd-new")
         
         let migratedContact = Contact.fetchAllSyncronous(entity: Contact.entityName, in: newPersistentContainer)
         let newContact: Contact? = castResult(migratedContact)
-        XCTAssertEqual(newContact?.identifier, "some-contact")
-        XCTAssertEqual(newContact?.address, "some-address")
-        XCTAssertEqual(newContact?.name, "some-name")            
-    }
-    
-    func test_migration_doesNotRunWhenNoData() throws {
-        let migration: AppGroupDataStoreMigration = AppGroupDataStoreMigration(appGroup: APP_GROUP)
-
-        let oldContainer = NSPersistentContainer(name: "algorand")
-        let oldLocationContainer = oldContainer.persistentStoreDescriptions
-            .filter({$0.url?.lastPathComponent.starts(with: "algorand") ?? false}).first!.url!
-        
-        if FileManager.default.fileExists(atPath: oldLocationContainer.path) {
-            try FileManager.default.removeItem(at: oldLocationContainer)
-        }
-        
-        // THEN: Data should be present in the app group store
-        guard let newPersistentContainer = CoreAppConfiguration.shared?.persistentContainer else {
-            XCTAssertFalse(true, "Can't open new container")
-            return
-        }
-        
-        //create a data entry in the new place
-        ApplicationConfiguration.create(entity: "ApplicationConfiguration", with: [
-            ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: true,
-            ApplicationConfiguration.DBKeys.password.rawValue: "pwd"
-        ], in: newPersistentContainer)
-        
-        do {
-            try migration.moveDatabaseToAppGroup()
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-                
-        let migratedAppConfig = ApplicationConfiguration.fetchAllSyncronous(entity: "ApplicationConfiguration", in: newPersistentContainer)
-        let newConfig: ApplicationConfiguration? = castResult(migratedAppConfig)
-        XCTAssertEqual(newConfig?.password, "pwd")
+        XCTAssertEqual(newContact?.identifier, "some-contact-new")
+        XCTAssertEqual(newContact?.address, "some-address-new")
+        XCTAssertEqual(newContact?.name, "some-name-new")
     }
     
     func test_migration_invalidGroup() throws {
@@ -138,6 +164,26 @@ final class AppGroupDataStoreMigrationTests: XCTestCase {
         case .error:
             return nil
         }
+    }
+    
+    private func deletePersistentStore(_ group: String?) throws {
+        let newLocationContainer = try NSPersistentContainer.makePersistentContainer(group: group)
+        let newStoreCoordinator = newLocationContainer.persistentStoreCoordinator
+        for store in newStoreCoordinator.persistentStores {
+            if let url = store.url {
+                let type = NSPersistentStore.StoreType(rawValue: store.type)
+                
+                try newStoreCoordinator.destroyPersistentStore(at: url, type: type)
+                
+                let remainingFiles = try FileManager.default.contentsOfDirectory(
+                    at: url.deletingLastPathComponent(),
+                    includingPropertiesForKeys: nil
+                )
+                
+                remainingFiles.forEach({ try? FileManager.default.removeItem(at: $0) })
+            }
+        }
+        
     }
 }
 
