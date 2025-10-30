@@ -84,7 +84,7 @@ struct ConfirmSwapView: View {
             .padding(.horizontal, 24)
             VStack {
                 Text("swap-confirm-title")
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Text.main)
                 Spacer().frame(height: 2)
                 HStack {
@@ -93,7 +93,7 @@ struct ConfirmSwapView: View {
                         .frame(width: 16, height: 16)
                     Spacer().frame(width: 6)
                     Text(viewModel.selectedAccount.primaryDisplayName)
-                        .font(.dmSans.regular.size(13))
+                        .font(.DMSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                 }
             }
@@ -112,7 +112,7 @@ struct ConfirmSwapView: View {
                     .frame(height: 1)
                     .frame(maxWidth: .infinity)
                 Text("title-to")
-                    .font(.dmSans.medium.size(11))
+                    .font(.DMSans.medium.size(11))
                     .foregroundStyle(Color.Text.grayLighter)
                     .padding(.horizontal, 14)
                 Rectangle()
@@ -135,11 +135,11 @@ struct ConfirmSwapView: View {
         VStack {
             HStack {
                 Text("title-price")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
                 Text(viewModel.price)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
                 Spacer().frame(width: 8)
                 Image(.iconRepeat)
@@ -150,7 +150,7 @@ struct ConfirmSwapView: View {
             .padding(.bottom, 16)
             HStack {
                 Text("title-provider")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
                 if let url = URL(string: viewModel.provider.iconUrl) {
@@ -164,13 +164,13 @@ struct ConfirmSwapView: View {
                     .clipShape(Circle())
                 }
                 Text(viewModel.provider.displayName)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.bottom, 16)
             HStack {
                 Text("swap-slippage-title")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer().frame(width: 6)
                 SwiftUI.Button {
@@ -180,13 +180,13 @@ struct ConfirmSwapView: View {
                 }
                 Spacer()
                 Text(viewModel.slippageTolerance)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.bottom, 16)
             HStack {
                 Text("swap-price-impact-title")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.gray)
                 Spacer().frame(width: 6)
                 SwiftUI.Button {
@@ -202,23 +202,23 @@ struct ConfirmSwapView: View {
                 }
                 Spacer()
                 Text(viewModel.priceImpact)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(viewModel.highPriceImpactWarning != nil ? Color.Helpers.negative : Color.Text.main)
             }
             .padding(.bottom, 16)
             HStack {
                 Text("swap-confirm-minimum-received-title")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
                 Text(viewModel.minimumReceived)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.bottom, 16)
             HStack {
                 Text("title-exchange-fee")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer().frame(width: 6)
                 SwiftUI.Button {
@@ -228,17 +228,17 @@ struct ConfirmSwapView: View {
                 }
                 Spacer()
                 Text(viewModel.exchangeFee)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.bottom, 16)
             HStack {
                 Text("swap-confirm-pera-fee-title")
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
                 Text(viewModel.peraFee)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.main)
             }
             Spacer().frame(height: 20)
@@ -248,7 +248,7 @@ struct ConfirmSwapView: View {
                         .resizable()
                         .frame(width: 20, height: 20)
                     Text(warningMessage)
-                        .font(.dmSans.medium.size(13))
+                        .font(.DMSans.medium.size(13))
                         .foregroundStyle(Color.Helpers.negative)
                         .frame(maxWidth: .infinity)
                 }
@@ -291,10 +291,10 @@ private struct ConfirmSwapAssetView: View {
             Spacer().frame(width: 16)
             VStack (alignment: .leading) {
                 Text(assetAmount)
-                    .font(.dmSans.medium.size(18))
+                    .font(.DMSans.medium.size(18))
                     .foregroundStyle(Color.Text.main)
                 Text(assetAmountInUSD)
-                    .font(.dmSans.regular.size(13))
+                    .font(.DMSans.regular.size(13))
                     .foregroundStyle(Color.Text.grayLighter)
             }
             Spacer()
@@ -303,7 +303,7 @@ private struct ConfirmSwapAssetView: View {
                     .fill(Color.Layer.grayLightest)
                 HStack {
                     Text(assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName)
-                        .font(.dmSans.regular.size(15))
+                        .font(.DMSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 6)
                     Group {

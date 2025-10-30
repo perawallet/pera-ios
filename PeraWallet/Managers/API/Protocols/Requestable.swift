@@ -23,5 +23,8 @@ protocol Requestable: Encodable {
 }
 
 extension Requestable {
+    
+    // MARK: - Properties
+    
     var responseType: ResponseType.Type { ResponseType.self }
 }

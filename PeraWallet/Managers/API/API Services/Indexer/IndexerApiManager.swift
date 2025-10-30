@@ -22,7 +22,7 @@ final class IndexerApiManager {
         didSet { updateApiManager(network: network) }
     }
     
-    private lazy var apiManager = CoreApiManager(baseURL: .indexer(network: network))
+    private lazy var apiManager = CoreApiManager(baseURL: .indexer(network: network), keyDecodingStrategy: .kebabCase, keyEncodingStrategy: .kebabCase)
     
     // MARK: - Initialisers
     

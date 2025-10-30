@@ -18,22 +18,30 @@ import Combine
 import pera_wallet_core
 
 protocol AccountsServiceable {
-    var accounts: ReadOnlyPublisher<[PeraAccount]> { get }
+    
+    var accounts: ReadOnlyPublisher<Set<PeraAccount>> { get }
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
-    var network: CoreApiManager.BaseURL.Network { get set }
+    
+    func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
 }
 
-final class AccountsService: AccountsServiceable {
+final class AccountsService: AccountsServiceable, NetworkConfigureable {
     
     enum ServiceError: Error {
         case failedToFetchAccounts(error: CoreApiManager.ApiError)
         case unexpectedError(error: Error)
     }
     
-    // MARK: - AccountsServicable Properties
+    enum ActionError: Error {
+        case unableToCreateLocalAccount(error: Error)
+    }
     
-    var accounts: ReadOnlyPublisher<[PeraAccount]> { accountsPublisher.readOnlyPublisher() }
+    // MARK: - Properties - AccountsServicable
+    
+    var accounts: ReadOnlyPublisher<Set<PeraAccount>> { accountsPublisher.readOnlyPublisher() }
     var error: AnyPublisher<ServiceError, Never> { errorPublisher.eraseToAnyPublisher() }
+    
+    // MARK: - Properties - NetworkConfigureable
 
     var network: CoreApiManager.BaseURL.Network = .mainNet {
         didSet { updateManagers(network: network) }
@@ -41,10 +49,13 @@ final class AccountsService: AccountsServiceable {
     
     // MARK: - Properties
     
-    private let accountsPublisher: CurrentValueSubject<[PeraAccount], Never> = CurrentValueSubject([])
+    private let accountsPublisher: CurrentValueSubject<Set<PeraAccount>, Never> = CurrentValueSubject([])
     private let errorPublisher: PassthroughSubject<ServiceError, Never> = PassthroughSubject()
+    private let legacySessionManager: Session
+    private let legacySharedDataController: SharedDataController
     private let accountDataProvider: AccountDataProvider
     private lazy var indexerApiManager = IndexerApiManager(network: network)
+    private lazy var mobileApiManager = MobileApiManager(network: network)
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Legacy Properties
@@ -53,8 +64,10 @@ final class AccountsService: AccountsServiceable {
     
     // MARK: - Initialisers
     
-    init(services: CoreServiceable, legacySessionManager: Session) {
-        accountDataProvider = AccountDataProvider(legacySessionManager: legacySessionManager)
+    init(services: CoreServiceable, legacySessionManager: Session, legacySharedDataController: SharedDataController, legacyFeatureFlagService: FeatureFlagServicing) {
+        self.legacySessionManager = legacySessionManager
+        self.legacySharedDataController = legacySharedDataController
+        accountDataProvider = AccountDataProvider(legacySessionManager: legacySessionManager, legacyFeatureFlagService: legacyFeatureFlagService)
         setupCallbacks(blockchainService: services.blockchain)
     }
     
@@ -72,6 +85,15 @@ final class AccountsService: AccountsServiceable {
     }
     
     // MARK: - Actions
+    
+    func createJointAccount(participants: [String], threshold: Int, name: String) async throws(ActionError) {
+        do {
+            let response = try await mobileApiManager.createJointAccount(participants: participants, threshold: threshold)
+            try LegacyBridgeAccountManager.addLocalAccount(session: legacySessionManager, sharedDataController: legacySharedDataController, address: response.address, name: name, isWatchAccount: false, participants: participants)
+        } catch {
+            throw .unableToCreateLocalAccount(error: error)
+        }
+    }
     
     private func fetchAccounts() {
         
@@ -104,12 +126,9 @@ final class AccountsService: AccountsServiceable {
             }
             
             accountsPublisher.value = accountsData
-                .map { response, localAccount in
-                    PeraAccount(
-                        address: localAccount.address,
-                        type: accountDataProvider.accountType(localAccount: localAccount),
-                        authType: accountDataProvider.authorizationType(indexerAccount: response?.account, localAccounts: localAccounts)
-                    )
+                .reduce(into: Set<PeraAccount>()) { result, data in
+                    let account = account(response: data.0, localAccount: data.1, allLocalAccounts: localAccounts)
+                    result.insert(account)
                 }
         }
     }
@@ -117,4 +136,29 @@ final class AccountsService: AccountsServiceable {
     private func reset() {
         accountsPublisher.value.removeAll()
     }
+    
+    // MARK: - Handlers
+    
+    private func account(response: AccountResponse?, localAccount: AccountInformation, allLocalAccounts: [AccountInformation]) -> PeraAccount {
+        
+        let accountType = accountDataProvider.accountType(localAccount: localAccount)
+        let authorizedAccountType = accountDataProvider.authorizationType(indexerAccount: response?.account, localAccounts: allLocalAccounts)
+        let amount: Double
+        
+        if let response {
+            amount = response.account.amount.fromMicroToValue()
+        } else {
+            amount = 0.0
+        }
+        
+        return PeraAccount(
+            address: localAccount.address,
+            type: accountType,
+            authType: authorizedAccountType,
+            amount: amount,
+            titles: AccountNameFormatter.accountTitles(localAccount: localAccount, accountType: accountType, authorizedAccountType: authorizedAccountType),
+            sortingIndex: localAccount.preferredOrder
+        )
+    }
 }
+

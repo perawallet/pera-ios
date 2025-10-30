@@ -49,7 +49,7 @@ final class WatchAccountAdditionViewController:
     private var isLayoutFinalized = false
 
     private var nameServiceItemsUIInteractions: [GestureInteraction] = []
-    private var selectedNameService: NameService?
+    private var selectedNameService: NameServiceAPIModel?
 
     private let accountSetupFlow: AccountSetupFlow
     private var address: PublicKey?
@@ -304,7 +304,7 @@ extension WatchAccountAdditionViewController {
         addNameServiceLoadingView()
     }
 
-    private func didLoadNameServices(_ nameServices: [NameService]) {
+    private func didLoadNameServices(_ nameServices: [NameServiceAPIModel]) {
         reset()
 
         if nameServices.isEmpty {
@@ -336,7 +336,7 @@ extension WatchAccountAdditionViewController {
         aView.startAnimating()
     }
 
-    private func addNameServiceViews(_ nameServices: [NameService]) {
+    private func addNameServiceViews(_ nameServices: [NameServiceAPIModel]) {
         nameServices.forEach { nameService in
             let aView = makeNameServiceView(nameService)
 
@@ -392,7 +392,7 @@ extension WatchAccountAdditionViewController {
         )
     }
 
-    private func makeNameServiceView(_ nameService: NameService) -> UIView {
+    private func makeNameServiceView(_ nameService: NameServiceAPIModel) -> UIView {
         let aCanvasView = UIView()
 
         let previewView = AccountListItemView()
@@ -411,7 +411,7 @@ extension WatchAccountAdditionViewController {
         return aCanvasView
     }
 
-    private func makeNameServiceViewModel(_ nameService: NameService) -> AccountListItemViewModel {
+    private func makeNameServiceViewModel(_ nameService: NameServiceAPIModel) -> AccountListItemViewModel {
         let nameServiceAccount = nameService.account.value
         let imageSource = DefaultURLImageSource(url: URL(string: nameService.service.logo))
         let preview = NameServiceAccountListItem(

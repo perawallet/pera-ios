@@ -34,9 +34,9 @@ public struct AssetTransactionSendDraft: TransactionSendDraft {
 
     public var toContact: Contact?
     public var asset: Asset?
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     
-    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, assetIndex: Int64?, assetCreator: String = "", assetDecimalFraction: Int = 0, isVerifiedAsset: Bool = false, note: String? = nil, lockedNote: String? = nil, isReceiverOptingInToAsset: Bool = false, toContact: Contact? = nil, asset: Asset? = nil, toNameService: NameService? = nil) {
+    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, assetIndex: Int64?, assetCreator: String = "", assetDecimalFraction: Int = 0, isVerifiedAsset: Bool = false, note: String? = nil, lockedNote: String? = nil, isReceiverOptingInToAsset: Bool = false, toContact: Contact? = nil, asset: Asset? = nil, toNameService: NameServiceAPIModel? = nil) {
         self.from = from
         self.toAccount = toAccount
         self.amount = amount

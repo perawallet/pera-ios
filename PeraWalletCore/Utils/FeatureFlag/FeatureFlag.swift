@@ -22,19 +22,22 @@ public enum FeatureFlag: String, CaseIterable {
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
     case ledgerDeflexFilterEnabled = "enable_ledger_deflex_filter"
-
+    case jointAccountEnabled = "enable_joint_account"
+    
     var defaultValue: RemoteConfigValue {
         switch self {
         case .swapV2Enabled:
-            return .bool(false)
+                .bool(false)
         case .swapFeePadding:
-            return .double(-1)
+                .double(-1)
         case .liquidAuthEnabled:
-            return .bool(false)
+                .bool(false)
         case .liquidConnectEnabled:
-            return .bool(false)
+                .bool(false)
         case .ledgerDeflexFilterEnabled:
-            return .bool(false)
+                .bool(false)
+        case .jointAccountEnabled:
+                .bool(false)
         }
     }
     

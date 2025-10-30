@@ -34,11 +34,11 @@ struct PasskeyListCell: View {
                 
                 VStack (alignment: .leading) {
                     Text(viewModel.passkey.displayName)
-                        .font(.dmSans.medium.size(15.0))
+                        .font(.DMSans.medium.size(15.0))
                         .foregroundStyle(Color.Text.main)
                         .padding(.bottom, 2.0)
                     Text(viewModel.passkey.origin)
-                        .font(.dmSans.regular.size(13.0))
+                        .font(.DMSans.regular.size(13.0))
                         .foregroundStyle(Color.Text.grayLighter)
                 }
                 .frame(
@@ -62,23 +62,23 @@ struct PasskeyListCell: View {
                             .foregroundStyle(Color.Helpers.negative)
                         
                         Text("settings-passkey-delete-title")
-                            .font(.dmSans.medium.size(19.0))
+                            .font(.DMSans.medium.size(19.0))
                             .foregroundStyle(Color.Text.main)
                         Text("settings-passkey-delete-body")
-                            .font(.dmSans.regular.size(15.0))
+                            .font(.DMSans.regular.size(15.0))
                             .foregroundStyle(Color.Text.gray)
                             .multilineTextAlignment(.center)
                             .padding(.bottom, 24.0)
                         
                         RoundedButton(text: "title-remove",
-                                      backgroundColor: Color.ButtonPrimary.bg,
-                                      textColor: Color.ButtonPrimary.text,
+                                      style: .primary,
+                                      isEnabled: true,
                                       onTap: {
                             viewModel.deletePasskey()
                         })
                         RoundedButton(text: "title-keep",
-                                      backgroundColor: Color.ButtonSecondary.bg,
-                                      textColor: Color.ButtonSecondary.text,
+                                      style: .secondary,
+                                      isEnabled: true,
                                       onTap: {
                             showingConfirmation = false
                         })
@@ -95,11 +95,11 @@ struct PasskeyListCell: View {
             
             HStack (alignment: .center) {
                 Text("settings-passkeys-last-used")
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
                 Text(viewModel.passkey.lastUsedDisplay)
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
             }
             
@@ -109,11 +109,11 @@ struct PasskeyListCell: View {
             
             HStack (alignment: .center) {
                 Text(String(localized: "settings-passkeys-username"))
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
                 Text(viewModel.passkey.username)
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
             }
         }

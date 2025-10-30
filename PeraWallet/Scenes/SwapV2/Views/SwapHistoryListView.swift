@@ -26,7 +26,7 @@ struct SwapHistoryListView: View {
         VStack {
             HStack {
                 Text("swap-history-title")
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
                 if viewModel.shouldShowSeeAllButton {
@@ -34,7 +34,7 @@ struct SwapHistoryListView: View {
                         onSeeAllTap?()
                     } label: {
                         Text("see-all-title")
-                            .font(.dmSans.medium.size(15))
+                            .font(.DMSans.medium.size(15))
                             .foregroundStyle(Color.Helpers.positive)
                     }
                 }
@@ -45,7 +45,7 @@ struct SwapHistoryListView: View {
                 if swapHistoryList.isEmpty {
                     HStack {
                         Text("no-swap-history-placeholder-text")
-                            .font(.dmSans.regular.size(13))
+                            .font(.DMSans.regular.size(13))
                             .foregroundStyle(Color.Text.gray)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,7 +72,7 @@ struct SwapHistoryListView: View {
                         .frame(width: 16, height: 16)
                     Spacer().frame(width: 8)
                     Text("swap-history-error-message")
-                        .font(.dmSans.regular.size(13))
+                        .font(.DMSans.regular.size(13))
                         .foregroundStyle(Color.Helpers.negative)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

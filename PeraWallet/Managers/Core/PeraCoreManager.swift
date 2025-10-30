@@ -32,19 +32,36 @@ final class PeraCoreManager: CoreServiceable {
     
     // MARK: - Legacy Properties
     
-    var legacySessionManager: Session!
+    var legacySessionManager: Session! {
+        didSet { updateDataFromLegacySessionManagerInServices() }
+    }
+    
+    var legacySharedDataController: SharedDataController!
+    var legacyFeatureFlagService: FeatureFlagServicing!
     
     // MARK: - Services
     
-    private(set) lazy var accounts: AccountsServiceable = AccountsService(services: self, legacySessionManager: legacySessionManager)
+    private(set) lazy var accounts: AccountsServiceable = AccountsService(services: self, legacySessionManager: legacySessionManager, legacySharedDataController: legacySharedDataController, legacyFeatureFlagService: legacyFeatureFlagService)
     private(set) lazy var blockchain: BlockchainServiceable = BlockchainService()
+    private(set) lazy var currencies: CurrencyServiceable = CurrencyService(services: self)
+    private(set) lazy var nfd: NonFungibleDomainServiceable = NonFungibleDomainService()
     
     // MARK: - Initialisers
     
     private init() {}
     
+    // MARK: - Updates
+    
     private func updateServices(network: CoreApiManager.BaseURL.Network) {
-        accounts.network = network
-        blockchain.network = network
+        [accounts, blockchain, currencies, nfd]
+            .compactMap { $0 as? NetworkConfigureable }
+            .forEach { $0.network = network }
+    }
+    
+    // MARK: - Legacy Handlers
+    
+    private func updateDataFromLegacySessionManagerInServices() {
+        currencies.selectedCurrency = legacySessionManager.preferredCurrencyID.remoteValue
+        currencies.isAlgoPrimaryCurrency.value = legacySessionManager.preferredCurrencyID.isAlgo
     }
 }
