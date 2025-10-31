@@ -26,4 +26,5 @@ public protocol HDWalletStorable {
     func address(walletId: String, address: String) throws -> HDWalletAddress?
     func addresses(walletId: String) throws -> [HDWalletAddress]
     func deleteAddress(walletId: String, address: String) throws
+    func allHDWalletKeys() -> [String]
 }

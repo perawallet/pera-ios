@@ -112,4 +112,8 @@ extension HDWalletStorage {
     ) -> String {
         addressPrefix + walletId + "." + address
     }
+    
+    public func allHDWalletKeys() -> [String] {
+        keychain.allKeys()
+    }
 }

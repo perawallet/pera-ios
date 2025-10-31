@@ -21,6 +21,7 @@ public enum DeveloperSettings: Settings {
     case nodeSettings
     case dispenser
     case createAlgo25Account
+    case recoverAccount
     
     public var image: UIImage? {
         switch self {
@@ -30,6 +31,8 @@ public enum DeveloperSettings: Settings {
             return img("icon-settings-dispenser")
         case .createAlgo25Account:
             return img("icon-settings-create-algo25")
+        case .recoverAccount:
+            return img("icon-recover-passphrase")
         }
     }
     
@@ -41,6 +44,8 @@ public enum DeveloperSettings: Settings {
             return String(localized: "settings-developer-dispenser")
         case .createAlgo25Account:
             return String(localized: "dev-settings-create-algo25-account")
+        case .recoverAccount:
+            return String(localized: "dev-settings-recover-account")
         }
     }
 

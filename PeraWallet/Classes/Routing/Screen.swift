@@ -35,6 +35,7 @@ indirect enum Screen {
     case mnemonicTypeSelection(eventHandler: MnemonicTypeSelectionScreen.EventHandler)
     case recoverAccount(flow: AccountSetupFlow)
     case recoverAccountsLoadingScreen
+    case accountRecoverySearch
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)
     case passphraseVerify(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)

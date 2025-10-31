@@ -2435,6 +2435,10 @@ final class Router:
             let screen = RekeySupportOverlayViewController(configuration: configuration, variant: variant)
             screen.onPrimaryButtonTap = onPrimaryAction
             viewController = screen
+        case .accountRecoverySearch:
+            let screen = AccountSearchRecoveryScreen(configuration: configuration)
+            viewController = screen
+            
         }
         return viewController as? T
     }

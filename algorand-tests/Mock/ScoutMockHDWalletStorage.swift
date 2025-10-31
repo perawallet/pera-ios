@@ -50,4 +50,8 @@ final class ScoutMockHDWalletStorage: HDWalletStorable, Mockable {
         try! mock.call.deleteAddress(walletId: walletId, address: address)
     }
     
+    func allHDWalletKeys() -> [String] {
+        try! mock.call.allHDWalletKeys() as! [String]
+    }
+    
 }
