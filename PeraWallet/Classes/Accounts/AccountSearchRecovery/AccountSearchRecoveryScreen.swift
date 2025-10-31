@@ -26,7 +26,7 @@ class AccountSearchRecoveryScreen : BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Defaults.background.uiColor
-        navigationItem.title = String(localized: "search-recovery-accounts").capitalized
+        navigationItem.title = String(localized: "dev-settings-recover-account").capitalized
     }
 
     override func prepareLayout() {

@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "・" : {
+
+    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -5938,6 +5944,7 @@
       }
     },
     "search-recovery-accounts" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
