@@ -329,6 +329,7 @@ public extension Session {
     
     func privateData(for account: String) -> Data? {
         let dataKey = privateKey.appending(".\(account)")
+        
         return privateStorage.data(for: dataKey)
     }
     
@@ -339,6 +340,14 @@ public extension Session {
     
     func hasPrivateData(for account: PublicKey) -> Bool {
         return privateData(for: account) != nil
+    }
+    
+    func allPrivateDataKeys() -> [String] {
+        return privateStorage.allKeys()
+    }
+    
+    func allBiometricDataKeys() -> [String] {
+        return biometricStorage.allKeys()
     }
 }
 
