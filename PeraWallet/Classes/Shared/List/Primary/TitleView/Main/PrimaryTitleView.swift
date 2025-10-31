@@ -133,6 +133,7 @@ extension PrimaryTitleView {
         _ theme: PrimaryTitleViewTheme
     ) {
         secondaryTitleView.customizeAppearance(theme.secondaryTitle)
+        secondaryTitleView.numberOfLines = 0
 
         addSubview(secondaryTitleView)
         secondaryTitleView.fitToVerticalIntrinsicSize(

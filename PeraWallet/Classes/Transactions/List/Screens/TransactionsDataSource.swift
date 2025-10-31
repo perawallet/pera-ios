@@ -17,15 +17,25 @@
 
 import UIKit
 import MacaroonUIKit
+import pera_wallet_core
 
 final class TransactionsDataSource: UICollectionViewDiffableDataSource<TransactionsSection, TransactionsItem> {
     let noContentType: NoContentCellType
+    let showHeader: Bool
+    let shouldDisplayQuickActions: Bool
+    
+    private weak var headerView: ASAHoldingsFragmentHeaderView?
+    private var currentHeaderContext: ASAHoldingsHeaderContext?
 
     init(
         _ collectionView: UICollectionView,
-        noContentType: NoContentCellType = .centered
+        noContentType: NoContentCellType = .centered,
+        headerContext: ASAHoldingsHeaderContext? = nil
     ) {
         self.noContentType = noContentType
+        self.showHeader = headerContext != nil
+        self.shouldDisplayQuickActions = headerContext?.shouldDisplayQuickActions ?? true
+        self.currentHeaderContext = headerContext
         
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -101,5 +111,32 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
         ].forEach {
             collectionView.register($0)
         }
+        
+        if headerContext != nil {
+            collectionView.register(header: ASAHoldingsFragmentHeaderView.self)
+            
+            supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+                guard let self, kind == UICollectionView.elementKindSectionHeader else { return nil }
+                guard let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: ASAHoldingsFragmentHeaderView.reuseIdentifier,
+                    for: indexPath
+                ) as? ASAHoldingsFragmentHeaderView else {
+                    return nil
+                }
+                
+                headerView = header
+                if let context = currentHeaderContext {
+                    header.bind(context: context)
+                }
+                return headerView
+            }
+        }
+       
+    }
+    
+    func updateHeader(with context: ASAHoldingsHeaderContext) {
+        currentHeaderContext = context
+        headerView?.bind(context: context)
     }
 }

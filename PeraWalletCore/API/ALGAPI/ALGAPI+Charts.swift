@@ -94,3 +94,20 @@ extension ALGAPI {
             .execute()
     }
 }
+
+extension ALGAPI {
+    @discardableResult
+    public func fetchAssetPriceChartData(
+        assetId: AssetID,
+        period: ChartDataPeriod,
+        onCompleted handler: @escaping (Response.ModelResult<AssetPriceChartDataResultDTO>) -> Void
+    ) -> EndpointOperatable {
+        EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.assetPriceChartData)
+            .query(AssetPriceChartDataDraft(period: period, assetId: assetId))
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+}

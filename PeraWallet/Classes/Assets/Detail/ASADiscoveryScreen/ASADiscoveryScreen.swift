@@ -33,7 +33,7 @@ final class ASADiscoveryScreen:
 
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
-    private lazy var profileView = ASAProfileView()
+    private lazy var profileView = ASAProfileView(type: .assetDescovery)
 
     private lazy var aboutFragmentScreen =
         ASAAboutScreen(
@@ -295,12 +295,6 @@ extension ASADiscoveryScreen {
             [unowned self] in
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
-        }
-        profileView.startObserving(event: .copyAssetID) {
-            [unowned self] in
-
-            let asset = dataController.asset
-            self.copyToClipboardController.copyID(asset)
         }
 
         bindProfileData()

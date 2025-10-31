@@ -178,6 +178,18 @@ class TransactionsViewController:
             sizeForItemAt: indexPath
         )
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            referenceSizeForHeaderInSection: section
+        )
+    }
 
     /// <mark>
     /// UICollectionViewDelegate

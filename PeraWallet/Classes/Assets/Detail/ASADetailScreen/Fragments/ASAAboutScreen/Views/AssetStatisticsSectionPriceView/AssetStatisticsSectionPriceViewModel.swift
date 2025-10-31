@@ -25,14 +25,20 @@ struct AssetStatisticsSectionPriceViewModel: PrimaryTitleViewModel {
     init(
         asset: Asset,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        chartPointSelected: ChartSelectedPointViewModel? = nil
     ) {
         bindTitle()
-        bindSubtitle(
-            asset: asset,
-            currency: currency,
-            currencyFormatter: currencyFormatter
-        )
+        guard let chartPointSelected else {
+            bindSubtitle(
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
+            return
+        }
+        
+        bindSubtitle(for: chartPointSelected)
     }
 }
 
@@ -43,7 +49,7 @@ extension AssetStatisticsSectionPriceViewModel {
                 lineBreakMode: .byTruncatingTail
             )
     }
-
+    
     mutating func bindSubtitle(
         asset: Asset,
         currency: CurrencyProvider,
@@ -63,62 +69,100 @@ extension AssetStatisticsSectionPriceViewModel {
             )
         }
     }
-
+    
     private mutating func bindAlgoSubtitle(
         asset: Asset,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let fiatCurrencyValue = currency.fiatValue else {
+        guard let fiatCurrencyValue = currency.fiatValue,
+              let fiatRawCurrency = try? fiatCurrencyValue.unwrap(),
+              let usdRate = fiatRawCurrency.usdValue else
+        {
             bindSubtitle(text: nil)
             return
         }
-
+        
         do {
-            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
-
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-            let amount = try exchanger.exchangeAlgoToUSD(amount: 1)
-
+            let amountInUSD = try exchanger.exchangeAlgoToUSD(amount: 1)
+            let amount = amountInUSD * usdRate
+            
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = fiatRawCurrency
-
-            let text = currencyFormatter.format(amount)
+            
+            guard var text = currencyFormatter.format(amount) else {
+                bindSubtitle(text: nil)
+                return
+            }
+            
+            if
+                !fiatRawCurrency.isUSD,
+                let usdText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: amountInUSD)
+            {
+                text += "\n$" + usdText
+            }
+            
             bindSubtitle(text: text)
         } catch {
             bindSubtitle(text: nil)
         }
     }
-
+    
     private mutating func bindAssetSubtitle(
         asset: Asset,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let currencyValue = currency.primaryValue else {
+        guard let currencyValue = try? currency.primaryValue?.unwrap() else {
             bindSubtitle(text: nil)
             return
         }
-
-        do {
-            let rawCurrency = try currencyValue.unwrap()
-
-            let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(
-                asset,
-                amount: 1
-            )
-
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = rawCurrency
-
-            let text = currencyFormatter.format(amount)
+        
+        let exchanger = CurrencyExchanger(currency: currencyValue)
+        guard let amount = try? exchanger.exchange(asset, amount: 1) else {
+            bindSubtitle(text: nil)
+            return
+        }
+        
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = currencyValue
+        guard let text = currencyFormatter.format(amount) else {
+            bindSubtitle(text: nil)
+            return
+        }
+        
+        guard !currencyValue.isUSD else {
             bindSubtitle(text: text)
-        } catch {
+            return
+        }
+        
+        var finalText = text
+        
+        if
+            let usdRate = try? (currencyValue.isAlgo ? currency.algoValue?.unwrap().usdValue : currency.fiatValue?.unwrap().usdValue),
+            usdRate != 0
+        {
+            let amountInUSD = amount / usdRate
+            if let usdText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: amountInUSD) {
+                finalText += "\n$" + usdText
+            }
+        }
+        
+        bindSubtitle(text: finalText)
+    }
+    
+    private mutating func bindSubtitle(for chartPointSelected: ChartSelectedPointViewModel) {
+        if let usdText = Formatter.decimalFormatter(
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 6
+        ).string(for: chartPointSelected.fiatValue) {
+            bindSubtitle(text: "$" + usdText)
+        } else {
             bindSubtitle(text: nil)
         }
     }
-
+    
     mutating func bindSubtitle(text: String?) {
         secondaryTitle = (text ?? "-").bodyLargeMedium(lineBreakMode: .byTruncatingTail)
     }
