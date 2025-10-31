@@ -21,11 +21,13 @@ enum ChartDataScreen {
     case home
     case account(address: String)
     case asset(address: String, assetId: String)
+    case assetPrice(assetId: AssetID)
 }
 
 final class ChartAPIDataController {
     var onFetch: ((String?, ChartDataPeriod, [ChartDataDTO]) -> Void)?
     var onAssetFetch: ((String?, ChartDataPeriod, [AssetChartDataDTO]) -> Void)?
+    var onAssetPriceFetch: ((String?, ChartDataPeriod, [AssetPriceChartItemDTO]) -> Void)?
     
     private let api: ALGAPI
     private let session: Session
@@ -52,6 +54,8 @@ final class ChartAPIDataController {
             loadAccountData(address: address, period: period, currency: currency)
         case .asset(address: let address, assetId: let assetId):
             loadAssetData(address: address, assetId: assetId, period: period, currency: currency)
+        case .assetPrice(assetId: let assetId):
+            loadAssetPriceData(assetId: assetId, period: period)
         }
     }
     
@@ -94,6 +98,18 @@ final class ChartAPIDataController {
                 onAssetFetch?(nil, period, values.results)
             case .failure(let apiError, _):
                 onAssetFetch?(apiError.localizedDescription, period, [])
+            }
+        }
+    }
+    
+    private func loadAssetPriceData(assetId: AssetID, period: ChartDataPeriod) {
+        api.fetchAssetPriceChartData(assetId: assetId, period: period) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let values):
+                onAssetPriceFetch?(nil, period, values.results)
+            case .failure(let apiError, _):
+                onAssetPriceFetch?(apiError.localizedDescription, period, [])
             }
         }
     }

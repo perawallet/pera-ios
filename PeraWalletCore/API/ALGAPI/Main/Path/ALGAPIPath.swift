@@ -73,6 +73,7 @@ enum ALGAPIPath: String {
     case assetBalanceChartData = "/accounts/%@/assets/%@/balance-history/"
     case addressWealthBalanceChartData = "/accounts/%@/wealth/"
     case walletWealthBalanceChartData = "/wallet/wealth/"
+    case assetPriceChartData = "/assets/price-chart"
 }
 
 extension EndpointBuilder {

@@ -29,13 +29,15 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
+    private(set) var priceValue: TextProvider?
     
     init(
         asset: Asset,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter,
         isAmountHidden: Bool,
-        selectedPointVM: ChartSelectedPointViewModel? = nil
+        selectedPointVM: ChartSelectedPointViewModel? = nil,
+        priceVM: AssetStatisticsSectionPriceViewModel? = nil
     ) {
         self.isAmountHidden = isAmountHidden
         bindIcon(asset: asset)
@@ -54,12 +56,17 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
             selectedPointVM: selectedPointVM
         )
         
-        guard let selectedPointVM else {
+        if let selectedPointVM {
+            bindSelectedPointDateValue(selectedPoint: selectedPointVM)
+        } else {
             selectedPointDateValue = nil
-            return
         }
         
-        bindSelectedPointDateValue(selectedPoint: selectedPointVM)
+        if let priceVM {
+            bindPriceValue(price: priceVM)
+        } else {
+            priceValue = nil
+        }
     }
 }
 
@@ -280,5 +287,9 @@ extension ASADetailProfileViewModel {
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
+    }
+    
+    mutating func bindPriceValue(price: AssetStatisticsSectionPriceViewModel) {
+        priceValue = price.secondaryTitle?.string.titleSmallMedium()
     }
 }

@@ -40,6 +40,7 @@ final class ASADetailScreenAPIDataController:
     
     private var chartViewData: ChartViewData?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
+    private var priceChartDataCache: [ChartDataPeriod: ChartViewData] = [:]
 
     init(
         account: Account,
@@ -110,6 +111,11 @@ extension ASADetailScreenAPIDataController {
         chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
     }
     
+    func fetchInitialAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod) {
+        priceChartDataCache.removeAll()
+        chartsDataController.loadData(screen: .assetPrice(assetId: assetId), period: period)
+    }
+    
     func updateChartData(address: String, assetId: String, period: ChartDataPeriod) {
         guard let viewModel = chartDataCache[period] else {
             chartsDataController.loadData(screen: .asset(address: address, assetId: assetId), period: period)
@@ -117,6 +123,15 @@ extension ASADetailScreenAPIDataController {
         }
         chartViewData = viewModel
         eventHandler?(.didFetchChartData(data: chartViewData, error: nil, period: period))
+    }
+    
+    func updateAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod) {
+        guard let viewModel = priceChartDataCache[period] else {
+            chartsDataController.loadData(screen: .assetPrice(assetId: assetId), period: period)
+            return
+        }
+        chartViewData = viewModel
+        eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
     }
     
     private func setupChartDataClosures() {
@@ -138,6 +153,21 @@ extension ASADetailScreenAPIDataController {
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             chartDataCache[period] = chartViewData
             eventHandler?(.didFetchChartData(data: chartViewData, error: nil, period: period))
+        }
+        
+        chartsDataController.onAssetPriceFetch = { [weak self] error, period, chartsData in
+            guard let self else { return }
+            guard error == nil else {
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                eventHandler?(.didFetchPriceChartData(data: nil, error: error, period: period))
+                return
+            }
+            let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
+                return ChartDataPoint(day: index, algoValue: 0.0, fiatValue: item.price, usdValue: 0.0, timestamp: item.datetime)
+            }
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            priceChartDataCache[period] = chartViewData
+            eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
         }
     }
 }

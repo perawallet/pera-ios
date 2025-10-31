@@ -20,13 +20,18 @@ import UIKit
 import SwiftUI
 import pera_wallet_core
 
+enum ASAProfileViewType {
+    case assetDetail
+    case assetPrice
+    case assetDescovery
+}
+
 final class ASAProfileView:
     UIView,
     ViewModelBindable,
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
-        .copyAssetID: GestureInteraction(gesture: .longPress),
         .onAmountTap: TargetActionInteraction()
     ]
     
@@ -43,8 +48,6 @@ final class ASAProfileView:
     private lazy var iconView = URLImageView()
     private lazy var titleView = UIView()
     private lazy var nameView = RightAccessorizedLabel()
-    private lazy var titleSeparatorView = Label()
-    private lazy var idView = UILabel()
     private lazy var primaryValueView = UILabel()
     private lazy var primaryValueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueAndSelectedPointView = UIStackView()
@@ -56,10 +59,12 @@ final class ASAProfileView:
     private lazy var chartHostingController = UIHostingController(rootView: makeChartView())
     
     private var theme = ASAProfileViewTheme()
+    private let type: ASAProfileViewType
     
     // MARK: - Initialisers
     
-    @MainActor init() {
+    @MainActor init(type: ASAProfileViewType = .assetDetail) {
+        self.type = type
         super.init(frame: .zero)
         setupGestures()
         setupViewModelCallback()
@@ -103,47 +108,40 @@ final class ASAProfileView:
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
-        bindIcon(viewModel)
-
-        nameView.bindData(viewModel?.name)
-
-        if let titleSeparator = viewModel?.titleSeparator {
-            titleSeparator.load(in: titleSeparatorView)
+        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
+            selectedPointDateValue.load(in: selectedPointDateValueView)
         } else {
-            titleSeparatorView.text = nil
-            titleSeparatorView.attributedText = nil
+            [selectedPointDateValueView].forEach {
+                $0.text = nil
+                $0.attributedText = nil
+            }
+            bindIcon(viewModel)
+            nameView.bindData(viewModel?.name)
         }
-
-        if let id = viewModel?.id {
-            id.load(in: idView)
-        } else {
-            idView.text = nil
-            idView.attributedText = nil
-        }
-
-        if let primaryValue = viewModel?.primaryValue {
-            primaryValue.load(in: primaryValueView)
+        
+        let valueToLoad = (type == .assetPrice ? viewModel?.priceValue : viewModel?.primaryValue)
+        if let value = valueToLoad {
+            value.load(in: primaryValueView)
         } else {
             primaryValueView.text = nil
             primaryValueView.attributedText = nil
         }
-
+        
         if let secondaryValue = viewModel?.secondaryValue {
             secondaryValue.load(in: secondaryValueView)
+            secondaryValueView.alpha = (type == .assetPrice ? 0 : 1)
         } else {
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
-        
-        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
-            selectedPointDateValue.load(in: selectedPointDateValueView)
-        } else {
-            selectedPointDateValueView.text = nil
-            selectedPointDateValueView.attributedText = nil
-        }
     }
     
-    func updateChart(with data: ChartViewData) {
+    func updateChart(with data: ChartViewData?) {
+        guard let data else {
+            expandedContentView.removeArrangedSubview(chartHostingController.view)
+            chartHostingController.view.removeFromSuperview()
+            return
+        }
         chartData = data
         chartViewModel.refresh(with: data.model)
         chartHostingController.rootView = makeChartView()
@@ -230,23 +228,16 @@ extension ASAProfileView {
         addCompressedContent(theme)
         addPrimaryValue(theme)
         addSecondaryValueAndSelectPointDate(theme)
+        
+        guard type != .assetDescovery else { return }
         addChartView(theme)
     }
 
     private func addCompressedContent(_ theme: ASAProfileViewTheme) {
         expandedContentView.addArrangedSubview(compressedContentView)
 
-        addIcon(theme)
+        
         addTitle(theme)
-    }
-
-    private func addIcon(_ theme: ASAProfileViewTheme) {
-        iconView.build(theme.icon)
-
-        compressedContentView.addArrangedSubview(iconView)
-        iconView.snp.makeConstraints {
-            $0.fitToSize(theme.expandedIconSize)
-        }
     }
 
     private func addTitle(_ theme: ASAProfileViewTheme) {
@@ -256,9 +247,18 @@ extension ASAProfileView {
             $0.height.equalTo(theme.titleViewHeight)
         }
 
+        addIcon(theme)
         addName(theme)
-        addTitleSeparator(theme)
-        addID(theme)
+    }
+    
+    private func addIcon(_ theme: ASAProfileViewTheme) {
+        iconView.build(theme.icon)
+
+        titleView.addSubview(iconView)
+        iconView.snp.makeConstraints {
+            $0.fitToSize(theme.expandedIconSize)
+            $0.leading == 0
+        }
     }
 
     private func addName(_ theme: ASAProfileViewTheme) {
@@ -268,38 +268,9 @@ extension ASAProfileView {
         nameView.fitToVerticalIntrinsicSize()
         nameView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == 0
+            $0.leading == iconView.snp.trailing + 12
             $0.bottom == 0
         }
-    }
-
-    private func addTitleSeparator(_ theme: ASAProfileViewTheme) {
-        titleSeparatorView.customizeAppearance(theme.titleSeparator)
-
-        titleView.addSubview(titleSeparatorView)
-        titleSeparatorView.fitToIntrinsicSize()
-        titleSeparatorView.snp.makeConstraints {
-            $0.leading == nameView.snp.trailing
-            $0.centerY == 0
-        }
-    }
-
-    private func addID(_ theme: ASAProfileViewTheme) {
-        idView.customizeAppearance(theme.id)
-
-        titleView.addSubview(idView)
-        idView.fitToIntrinsicSize()
-        idView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == titleSeparatorView.snp.trailing
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-
-        startPublishing(
-            event: .copyAssetID,
-            for: idView
-        )
     }
 
     private func addPrimaryValue(_ theme: ASAProfileViewTheme) {
@@ -416,7 +387,6 @@ extension ASAProfileView {
 extension ASAProfileView {
     enum Event {
         case layoutChanged
-        case copyAssetID
         case onAmountTap
     }
 }
