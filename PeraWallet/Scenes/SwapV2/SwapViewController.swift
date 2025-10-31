@@ -313,7 +313,7 @@ final class SwapViewController: BaseViewController {
     }
     
     private func resolveInitialState() -> Bool {
-        guard let account = launchDraft?.account ?? resolveDefaultAccount() else { return false }
+        guard let account = launchDraft?.account ?? selectedAccount ?? resolveDefaultAccount() else { return false }
         selectedAccount = account
         defer { launchDraft = nil }
         
