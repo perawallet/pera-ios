@@ -90,4 +90,7 @@ final class MockHDWalletStorage: HDWalletStorable {
         print("deleteAddress")
     }
     
+    func allHDWalletKeys() -> [String] {
+        return []
+    }
 }
