@@ -243,7 +243,7 @@ extension NotificationsViewController {
 
         loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
 
-        api?.fetchAssetDetails(
+        api?.fetchAssetList(
             AssetFetchQuery(ids: [assetID]),
             queue: .main,
             ignoreResponseOnCancelled: false

@@ -727,7 +727,7 @@ extension SwapAssetFlowCoordinator {
     }
     
     func fetchAsset(with assetId: AssetID) {
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             AssetFetchQuery(ids: [assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false

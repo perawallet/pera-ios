@@ -7273,6 +7273,8 @@
 		8BF250072CB03A1E00D2297B /* light-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250032CB03A1E00D2297B /* light-dots.json */; };
 		8BF250082CB03A1E00D2297B /* dark-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250022CB03A1E00D2297B /* dark-dots.json */; };
 		8BF250092CB03A1E00D2297B /* light-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250032CB03A1E00D2297B /* light-dots.json */; };
+		D400583C2EB8BE3F009B7543 /* ALGAPI+Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400583B2EB8BE39009B7543 /* ALGAPI+Favorites.swift */; };
+		D400583E2EB8C97F009B7543 /* AssetListFechDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400583D2EB8C97A009B7543 /* AssetListFechDraft.swift */; };
 		D405059026F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
 		D405059126F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
 		D405059226F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
@@ -9089,6 +9091,8 @@
 		95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSendTransactionDraft.swift; sourceTree = "<group>"; };
 		CBAD47442745510900C91946 /* AccountFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountFlow.swift; sourceTree = "<group>"; };
 		CBAD47492745595300C91946 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D400583B2EB8BE39009B7543 /* ALGAPI+Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Favorites.swift"; sourceTree = "<group>"; };
+		D400583D2EB8C97A009B7543 /* AssetListFechDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListFechDraft.swift; sourceTree = "<group>"; };
 		D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceImpactLimit.swift; sourceTree = "<group>"; };
 		D401CC0A2CF8AD3D00D2BA70 /* SendAssetAndOptInTransactionInfoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetAndOptInTransactionInfoScreen.swift; sourceTree = "<group>"; };
@@ -11050,7 +11054,7 @@
 			children = (
 				2B4DF42C236C772300FF9551 /* Account */,
 				17A011CC27EB6D4F008C147D /* Announcement */,
-				D49D2E6A2A54194F00CE5384 /* AssetDetail */,
+				D49D2E6A2A54194F00CE5384 /* Assets */,
 				D4D2B52A2DD4DA7D009286EC /* Cards */,
 				D443C3D82DF1D46F00705B1D /* Charts */,
 				59166F0B2E460613002184C2 /* Collectibles */,
@@ -17099,6 +17103,7 @@
 				D435F9A02DE86212004B7D61 /* ALGAPI+Charts.swift */,
 				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
 				95CA71F627CD5D0A00424626 /* ALGAPI+MoonPay.swift */,
+				D400583B2EB8BE39009B7543 /* ALGAPI+Favorites.swift */,
 				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
 				17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */,
 				17AC7286286F2142006919C3 /* ALGAPI+NameService.swift */,
@@ -21871,12 +21876,13 @@
 			path = CollectibleDetailQuickActions;
 			sourceTree = "<group>";
 		};
-		D49D2E6A2A54194F00CE5384 /* AssetDetail */ = {
+		D49D2E6A2A54194F00CE5384 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D400583D2EB8C97A009B7543 /* AssetListFechDraft.swift */,
 				D49D2E6B2A54195C00CE5384 /* AssetDetailFetchDraft.swift */,
 			);
-			path = AssetDetail;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		D49D77D42789EC69001FD5F6 /* FloatingAction */ = {
@@ -31525,6 +31531,7 @@
 				591676C82E460AF9002184C2 /* BlockCycle.swift in Sources */,
 				591676C92E460AF9002184C2 /* BlockEvent.swift in Sources */,
 				591676CA2E460AF9002184C2 /* BlockProcessor.swift in Sources */,
+				D400583E2EB8C97F009B7543 /* AssetListFechDraft.swift in Sources */,
 				591676CB2E460AF9002184C2 /* CollectibleAssetItem.swift in Sources */,
 				591676CC2E460AF9002184C2 /* CurrencyAPIProvider.swift in Sources */,
 				591676CD2E460AF9002184C2 /* CurrencyExchanger.swift in Sources */,
@@ -31781,6 +31788,7 @@
 				5916781E2E460AF9002184C2 /* SpotBannerListItem.swift in Sources */,
 				5916781F2E460AF9002184C2 /* Announcement.swift in Sources */,
 				591678202E460AF9002184C2 /* MoonPaySignedResponse.swift in Sources */,
+				D400583C2EB8BE3F009B7543 /* ALGAPI+Favorites.swift in Sources */,
 				591678212E460AF9002184C2 /* CardsFundAddressesList.swift in Sources */,
 				591678222E460AF9002184C2 /* CardsCountryAvailability.swift in Sources */,
 				591678232E460AF9002184C2 /* CSVFile.swift in Sources */,

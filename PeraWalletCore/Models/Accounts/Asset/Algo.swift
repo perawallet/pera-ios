@@ -52,6 +52,8 @@ public final class Algo: Asset {
     public let isAlgo = true
     public func isUSDC(for network: ALGAPI.Network) -> Bool { false }
     public let isFault = false
+    public let isFavorited: Bool? = nil
+    public let isPriceAlertEnabled: Bool? = nil
 
     init(
         amount: UInt64

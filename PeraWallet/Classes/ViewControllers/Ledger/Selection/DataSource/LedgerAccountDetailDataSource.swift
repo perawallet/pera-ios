@@ -188,7 +188,7 @@ extension LedgerAccountDetailDataSource {
             }
         }
 
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             AssetFetchQuery(ids: assetsToBeFetched, includeDeleted: true),
             queue: .main,
             ignoreResponseOnCancelled: false

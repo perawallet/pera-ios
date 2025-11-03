@@ -684,7 +684,7 @@ extension AppDelegate {
     }
 
     private func createAPI() -> ALGAPI {
-        ALGAPI(session: session)
+        ALGAPI(session: session, featureFlagService: featureFlagService)
     }
 
     private func createSharedDataController() -> SharedDataController {

@@ -41,10 +41,13 @@ enum ALGAPIPath: String {
     case deviceAccountUpdate = "/devices/%@/accounts/%@/"
     case deviceDetail = "/devices/%@/"
     case devices = "/devices/"
+    case notifications = "/devices/%@/notifications/"
+    case favoritesStatus = "/devices/%@/assets/%@/favorite-status/"
+    case addToFavorites = "/devices/%@/assets/%@/add-to-favorites/"
+    case removeFromFavorites = "devices/%@/assets/%@/remove-from-favorites/"
     case nameServicesSearch = "/name-services/search/"
     case exportTransactions = "/accounts/%@/export-history/"
     case trendingAssets = "/discover/assets/trending/"
-    case notifications = "/devices/%@/notifications/"
     case pendingAccountTransactions = "/accounts/%@/transactions/pending"
     case pendingTransaction = "/transactions/pending/%@"
     case prepareSwapTransaction = "/dex-swap/prepare-transactions/"
@@ -74,6 +77,7 @@ enum ALGAPIPath: String {
     case addressWealthBalanceChartData = "/accounts/%@/wealth/"
     case walletWealthBalanceChartData = "/wallet/wealth/"
     case assetPriceChartData = "/assets/price-chart"
+    
 }
 
 extension EndpointBuilder {

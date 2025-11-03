@@ -46,6 +46,8 @@ public final class StandardAsset: Asset {
     public let category: UInt64?
 
     public let isFault: Bool
+    public let isFavorited: Bool?
+    public let isPriceAlertEnabled: Bool?
     
     public var state: AssetState = .ready
 
@@ -100,6 +102,8 @@ public final class StandardAsset: Asset {
         self.isFault = false
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+        self.isFavorited = asset.isFavorited ?? decoration.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled ?? decoration.isPriceAlertEnabled
     }
 
     public init(
@@ -132,6 +136,8 @@ public final class StandardAsset: Asset {
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
         self.category = decoration.category
+        self.isFavorited = decoration.isFavorited
+        self.isPriceAlertEnabled = decoration.isPriceAlertEnabled
     }
     
     public init(
@@ -164,6 +170,8 @@ public final class StandardAsset: Asset {
         self.algoPriceChangePercentage = 0
         self.isAvailableOnDiscover = false
         self.category = nil
+        self.isFavorited = nil
+        self.isPriceAlertEnabled = nil
     }
 }
 

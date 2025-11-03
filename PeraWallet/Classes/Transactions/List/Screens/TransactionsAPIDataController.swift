@@ -241,7 +241,7 @@ extension TransactionsAPIDataController {
         }
 
         let draft = AssetFetchQuery(ids: assetIDs, includeDeleted: true)
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             draft,
             queue: .main,
             ignoreResponseOnCancelled: false

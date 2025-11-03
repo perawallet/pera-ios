@@ -3439,7 +3439,7 @@ extension Router {
 
         appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
 
-        appConfiguration.api.fetchAssetDetails(
+        appConfiguration.api.fetchAssetList(
             AssetFetchQuery(ids: [assetID]),
             queue: .main,
             ignoreResponseOnCancelled: false

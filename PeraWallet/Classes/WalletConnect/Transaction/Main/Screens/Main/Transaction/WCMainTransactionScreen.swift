@@ -1169,7 +1169,7 @@ extension WCMainTransactionScreen {
 
         let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
         let queue = DispatchQueue.global(qos: .userInitiated)
-        api!.fetchAssetDetails(
+        api!.fetchAssetList(
             draft,
             queue: queue,
             ignoreResponseOnCancelled: true

@@ -25,6 +25,8 @@ public final class ALGAsset:
     public let creator: String?
     public let amount: UInt64
     public let isFrozen: Bool?
+    public let isFavorited: Bool?
+    public let isPriceAlertEnabled: Bool?
     public let id: Int64
     public let optedInAtRound: UInt64?
     public let category: UInt64?
@@ -33,6 +35,8 @@ public final class ALGAsset:
         self.creator = nil
         self.amount = 0
         self.isFrozen = nil
+        self.isFavorited = nil
+        self.isPriceAlertEnabled = nil
         self.id = 1
         self.optedInAtRound = nil
         self.category = nil
@@ -43,6 +47,8 @@ public final class ALGAsset:
         self.creator = nil
         self.amount = 0
         self.isFrozen = nil
+        self.isFavorited = nil
+        self.isPriceAlertEnabled = nil
         self.optedInAtRound = nil
         self.category = nil
     }
@@ -52,6 +58,8 @@ public final class ALGAsset:
         self.creator = asset.creator?.address
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
+        self.isFavorited = asset.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled
         self.optedInAtRound = asset.optedInAtRound
         self.category = asset.category
     }
@@ -82,6 +90,8 @@ extension ALGAsset {
         case creator
         case amount
         case isFrozen = "is-frozen"
+        case isFavorited = "is_favorited"
+        case isPriceAlertEnabled = "is_price_alert_enabled"
         case id = "asset-id"
         case optedInAtRound = "opted-in-at-round"
         case category

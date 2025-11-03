@@ -75,7 +75,7 @@ extension CoreAppConfiguration {
         let hdWalletService = makeHDWalletService()
         let hdWalletStorage = makeHDWalletStorage()
         let session = makeSession()
-        let api = makeAPI(session: session)
+        let api = makeAPI(session: session, featureFlagService: featureFlagService)
         let analytics = makeAnalytics()
         let sharedDataController = makeSharedDataController(session: session, api: api, hdWalletStorage: hdWalletStorage)
         let walletConnectCoordinator = makeWalletConnectCoordinator(analytics: analytics)
@@ -104,8 +104,8 @@ extension CoreAppConfiguration {
         return session
     }
 
-    private static func makeAPI(session: Session) -> ALGAPI {
-        ALGAPI(session: session)
+    private static func makeAPI(session: Session, featureFlagService: FeatureFlagServicing) -> ALGAPI {
+        ALGAPI(session: session, featureFlagService: featureFlagService)
     }
 
     private static func makeSharedDataController(session: Session, api: ALGAPI, hdWalletStorage: HDWalletStorage) -> SharedDataController {

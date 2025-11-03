@@ -242,7 +242,7 @@ extension AssetDetailGroupFetchOperation {
     ) -> EndpointOperatable {
         let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
         return
-            api.fetchAssetDetails(
+            api.fetchAssetList(
                 draft,
                 queue: completionQueue,
                 ignoreResponseOnCancelled: false

@@ -27,6 +27,8 @@ public final class CollectibleAsset: Asset {
     public private(set) var totalSupply: Decimal?
     public private(set) var decimalAmount: Decimal
     public private(set) var isFrozen: Bool?
+    public private(set) var isFavorited: Bool?
+    public private(set) var isPriceAlertEnabled: Bool?
     public private(set) var isDestroyed: Bool
     public private(set) var optedInAtRound: UInt64?
     public private(set) var creator: AssetCreator?
@@ -93,6 +95,8 @@ public final class CollectibleAsset: Asset {
     ) {
         self.id = asset.id
         self.isFrozen = asset.isFrozen
+        self.isFavorited = asset.isFavorited ?? decoration.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled ?? decoration.isPriceAlertEnabled
         self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = asset.optedInAtRound
         self.creator = decoration.creator
@@ -137,6 +141,8 @@ public final class CollectibleAsset: Asset {
     public init(decoration: AssetDecoration) {
         self.id = decoration.id
         self.isFrozen = nil
+        self.isFavorited = decoration.isFavorited
+        self.isPriceAlertEnabled = decoration.isPriceAlertEnabled
         self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = nil
         self.creator = decoration.creator
@@ -177,6 +183,8 @@ extension CollectibleAsset {
 
         isFrozen = asset.isFrozen ?? isFrozen
         isDestroyed = asset.isDestroyed
+        isFavorited = asset.isFavorited
+        isPriceAlertEnabled = asset.isPriceAlertEnabled
         optedInAtRound = asset.optedInAtRound ?? optedInAtRound
         creator = asset.creator ?? creator
         name = asset.naming.name ?? name
@@ -206,6 +214,8 @@ extension CollectibleAsset {
 
         isFrozen = asset.isFrozen ?? isFrozen
         isDestroyed = asset.isDestroyed
+        isFavorited = asset.isFavorited
+        isPriceAlertEnabled = asset.isPriceAlertEnabled
         optedInAtRound = asset.optedInAtRound ?? optedInAtRound
         creator = asset.creator ?? creator
         name = asset.naming.name ?? name

@@ -62,6 +62,9 @@ public protocol Asset: AnyObject {
 
     var isFault: Bool { get }
     
+    var isFavorited: Bool? { get }
+    var isPriceAlertEnabled: Bool? { get }
+    
     func isUSDC(for network: ALGAPI.Network) -> Bool
 }
 
