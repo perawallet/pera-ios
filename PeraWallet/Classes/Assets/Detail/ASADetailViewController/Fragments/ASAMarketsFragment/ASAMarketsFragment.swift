@@ -29,7 +29,7 @@ final class ASAMarketsFragment:
     }
 
     private lazy var contextView = VStackView()
-    private lazy var profileView = ASAProfileView(type: .assetPrice)
+    private lazy var profileView = ASAProfileView(type: .assetPrice, showButtons: true)
     private lazy var marketInfoView = ASADetailMarketView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()

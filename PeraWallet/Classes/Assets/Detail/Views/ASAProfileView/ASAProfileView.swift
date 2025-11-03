@@ -65,11 +65,13 @@ final class ASAProfileView:
     
     private var theme = ASAProfileViewTheme()
     private let type: ASAProfileViewType
+    private let showButtons: Bool
     
     // MARK: - Initialisers
     
-    @MainActor init(type: ASAProfileViewType = .assetDetail) {
+    @MainActor init(type: ASAProfileViewType = .assetDetail, showButtons: Bool = false) {
         self.type = type
+        self.showButtons = showButtons
         super.init(frame: .zero)
         setupGestures()
         setupViewModelCallback()
@@ -111,7 +113,10 @@ final class ASAProfileView:
         self.theme = theme
 
         addExpandedContent(theme)
-        addButtons(theme)
+        
+        if showButtons {
+            addButtons(theme)
+        }
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
@@ -142,8 +147,10 @@ final class ASAProfileView:
             secondaryValueView.attributedText = nil
         }
         
-        notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
-        favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
+        if showButtons {
+            notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
+            favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
+        }
     }
     
     func updateChart(with data: ChartViewData?) {

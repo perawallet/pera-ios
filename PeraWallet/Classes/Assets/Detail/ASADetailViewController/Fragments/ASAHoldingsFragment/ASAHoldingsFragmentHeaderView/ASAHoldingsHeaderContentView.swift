@@ -20,7 +20,7 @@ import pera_wallet_core
 
 final class ASAHoldingsHeaderContentView: UIView {
 
-    private lazy var profileView = ASAProfileView()
+    private lazy var profileView = ASAProfileView(showButtons: true)
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
     private let theme = ASADetailViewControllerTheme()
