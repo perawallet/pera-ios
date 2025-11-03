@@ -33,11 +33,11 @@ extension ASAProfileNameViewModel {
     mutating func bindText(asset: Asset) {
         let name = asset.naming.name.unwrapNonEmptyString() ?? String(localized: "title-unknown")
 
-        var attributes = Typography.footnoteRegularAttributes()
+        var attributes = Typography.bodyLargeRegularAttributes()
         if asset.verificationTier.isSuspicious {
             attributes.insert(.textColor(Colors.Helpers.negative))
         } else {
-            attributes.insert(.textColor(Colors.Text.gray))
+            attributes.insert(.textColor(Colors.Text.main))
         }
 
         let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
