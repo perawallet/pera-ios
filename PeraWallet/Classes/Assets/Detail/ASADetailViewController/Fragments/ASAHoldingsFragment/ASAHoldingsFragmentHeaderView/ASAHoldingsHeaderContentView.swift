@@ -87,6 +87,16 @@ final class ASAHoldingsHeaderContentView: UIView {
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
         }
+        
+        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnFavoriteTap)
+        }
+        
+        profileView.startObserving(event: .onNotificationTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnNotificationTap)
+        }
 
         profileView.onPeriodChange = { [weak self] newPeriodSelected in
             guard let self, let account, let asset else { return }

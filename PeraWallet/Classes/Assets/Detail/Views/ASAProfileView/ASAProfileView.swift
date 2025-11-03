@@ -32,7 +32,9 @@ final class ASAProfileView:
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
-        .onAmountTap: TargetActionInteraction()
+        .onAmountTap: TargetActionInteraction(),
+        .onFavoriteTap: TargetActionInteraction(),
+        .onNotificationTap: TargetActionInteraction(),
     ]
     
     var onPeriodChange: ((ChartDataPeriod) -> Void)?
@@ -53,6 +55,9 @@ final class ASAProfileView:
     private lazy var secondaryValueAndSelectedPointView = UIStackView()
     private lazy var secondaryValueView = UILabel()
     private lazy var selectedPointDateValueView = Label()
+    private lazy var buttonsView = UIStackView()
+    private lazy var notificationsButton = UIButton()
+    private lazy var favoritesButton = UIButton()
     
     private var chartData: ChartViewData?
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
@@ -82,6 +87,8 @@ final class ASAProfileView:
     
     private func setupGestures() {
         startPublishing(event: .onAmountTap, for: primaryValueButton)
+        startPublishing(event: .onNotificationTap, for: notificationsButton)
+        startPublishing(event: .onFavoriteTap, for: favoritesButton)
     }
     
     private func setupViewModelCallback() {
@@ -104,7 +111,7 @@ final class ASAProfileView:
         self.theme = theme
 
         addExpandedContent(theme)
-        expand()
+        addButtons(theme)
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
@@ -134,6 +141,9 @@ final class ASAProfileView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
+        
+        notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
+        favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
     }
     
     func updateChart(with data: ChartViewData?) {
@@ -174,46 +184,6 @@ final class ASAProfileView:
 }
 
 extension ASAProfileView {
-    func expand() {
-        compressedContentView.axis = .vertical
-        compressedContentView.alignment = .leading
-        compressedContentView.distribution = .fill
-        compressedContentView.spacing = theme.expandedSpacingBetweenIconAndTitle
-
-        iconView.snp.updateConstraints {
-            $0.fitToSize(theme.expandedIconSize)
-        }
-
-        primaryValueView.alpha = 1
-
-        secondaryValueView.alpha = 1
-        
-        selectedPointDateValueView.alpha = 1
-        
-        chartHostingController.view.alpha = 1
-    }
-
-    func compress() {
-        compressedContentView.axis = .horizontal
-        compressedContentView.alignment = .center
-        compressedContentView.distribution = .equalCentering
-        compressedContentView.spacing = theme.compressedSpacingBetweenIconAndTitle
-
-        iconView.snp.updateConstraints {
-            $0.fitToSize(theme.compressedIconSize)
-        }
-
-        primaryValueView.alpha = 0
-
-        secondaryValueView.alpha = 0
-        
-        selectedPointDateValueView.alpha = 0
-        
-        chartHostingController.view.alpha = 0
-    }
-}
-
-extension ASAProfileView {
     private func addExpandedContent(_ theme: ASAProfileViewTheme) {
         addSubview(expandedContentView)
         expandedContentView.alignment = .leading
@@ -234,8 +204,12 @@ extension ASAProfileView {
     }
 
     private func addCompressedContent(_ theme: ASAProfileViewTheme) {
-        expandedContentView.addArrangedSubview(compressedContentView)
+        compressedContentView.axis = .vertical
+        compressedContentView.alignment = .leading
+        compressedContentView.distribution = .fill
+        compressedContentView.spacing = theme.expandedSpacingBetweenIconAndTitle
 
+        expandedContentView.addArrangedSubview(compressedContentView)
         
         addTitle(theme)
     }
@@ -270,6 +244,29 @@ extension ASAProfileView {
             $0.top == 0
             $0.leading == iconView.snp.trailing + 12
             $0.bottom == 0
+        }
+    }
+    
+    private func addButtons(_ theme: ASAProfileViewTheme) {
+        buttonsView.removeAllSubviews()
+        buttonsView.axis = .horizontal
+        buttonsView.spacing = 12
+        buttonsView.alignment = .center
+        buttonsView.distribution = .fill
+        
+        [notificationsButton, favoritesButton].forEach {
+            $0.backgroundColor = Colors.Layer.grayLighter.uiColor
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+            $0.layer.cornerRadius = 14
+            $0.clipsToBounds = true
+            $0.snp.makeConstraints { $0.size.equalTo(CGSize(width: 28, height: 28)) }
+            buttonsView.addArrangedSubview($0)
+        }
+        
+        addSubview(buttonsView)
+        buttonsView.snp.makeConstraints {
+            $0.centerY.equalTo(titleView.snp.centerY)
+            $0.trailing.equalToSuperview()
         }
     }
 
@@ -388,5 +385,7 @@ extension ASAProfileView {
     enum Event {
         case layoutChanged
         case onAmountTap
+        case onNotificationTap
+        case onFavoriteTap
     }
 }

@@ -189,7 +189,6 @@ extension ASADiscoveryScreen {
     }
 
     private func updateUI(for state: DisplayState) {
-        updateProfile(for: state)
         updateAboutFragment(for: state)
     }
 
@@ -296,23 +295,18 @@ extension ASADiscoveryScreen {
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
         }
+        
+        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
+            guard let self else { return }
+            print("---onFavoriteTap ASADiscoveryScreen")
+        }
+        
+        profileView.startObserving(event: .onNotificationTap) { [weak self] in
+            guard let self else { return }
+            print("---onNotificationTap ASADiscoveryScreen")
+        }
 
         bindProfileData()
-    }
-
-    private func updateProfile(for state: DisplayState) {
-        switch state {
-        case .normal:
-            profileView.expand()
-            profileView.snp.updateConstraints {
-                $0.top == theme.normalProfileVerticalEdgeInsets.top
-            }
-        case .folded:
-            profileView.compress()
-            profileView.snp.updateConstraints {
-                $0.top == theme.foldedProfileVerticalEdgeInsets.top
-            }
-        }
     }
 
     private func bindProfileData() {
