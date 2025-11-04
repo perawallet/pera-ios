@@ -63,11 +63,9 @@ final class ASAHoldingsFragment: TransactionsViewController {
     }
     
     private func makeViewModel(for asset: Asset) -> ASADetailQuickActionsViewModel {
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
         return ASADetailQuickActionsViewModel(
             asset: asset,
-            isSwapBadgeVisible: !isOnboardedToSwap
+            isSwapBadgeVisible: false
         )
     }
     
