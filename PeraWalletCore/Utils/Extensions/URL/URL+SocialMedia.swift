@@ -43,6 +43,6 @@ public extension URL {
         
         #endif
 
-        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+        return containerURL.appendingPathComponent("\(databaseName).sqlite")
     }
 }
