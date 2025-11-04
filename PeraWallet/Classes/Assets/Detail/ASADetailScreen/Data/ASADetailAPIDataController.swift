@@ -170,6 +170,58 @@ extension ASADetailScreenAPIDataController {
             eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
         }
     }
+    
+    func updateFavoriteStatus() {
+        guard let deviceId = api.deviceId else { return }
+        print("---updateFavoriteStatus")
+        if asset.isFavorited ?? false {
+            api.removeAssetFromFavorites(for: deviceId, and: String(asset.id)) { response in
+                print("---\(response)")
+                switch response {
+                case .success(let device):
+                    print("---device: \(device)")
+                case .failure(let apiError, let error):
+                    print("---apiError: \(apiError)")
+                }
+            }
+        } else {
+            api.addAssetToFavorites(for: deviceId, and: String(asset.id)) { response in
+                print("---\(response)")
+                switch response {
+                case .success(let device):
+                    print("---device: \(device)")
+                case .failure(let apiError, let error):
+                    print("---apiError: \(apiError)")
+                }
+            }
+        }
+    }
+    
+    func updatePriceAlertStatus() {
+        guard let deviceId = api.deviceId else { return }
+        print("---updatePriceAlertStatus")
+        if asset.isPriceAlertEnabled ?? false {
+            api.removeAssetFromPriceWatch(for: deviceId, and: String(asset.id)) { response in
+                print("---\(response)")
+                switch response {
+                case .success(let device):
+                    print("---device: \(device)")
+                case .failure(let apiError, let error):
+                    print("---apiError: \(apiError)")
+                }
+            }
+        } else {
+            api.addAssetToPriceWatch(for: deviceId, and: String(asset.id)) { response in
+                print("---\(response)")
+                switch response {
+                case .success(let device):
+                    print("---device: \(device)")
+                case .failure(let apiError, let error):
+                    print("---apiError: \(apiError)")
+                }
+            }
+        }
+    }
 }
 
 /// <mark>

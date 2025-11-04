@@ -30,6 +30,8 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
     private(set) var priceValue: TextProvider?
+    private(set) var isAssetFavorited: Bool?
+    private(set) var isAssetPriceAlertEnabled: Bool?
     
     init(
         asset: Asset,
@@ -40,6 +42,9 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
         priceVM: AssetStatisticsSectionPriceViewModel? = nil
     ) {
         self.isAmountHidden = isAmountHidden
+        isAssetFavorited = asset.isFavorited
+        isAssetPriceAlertEnabled = asset.isPriceAlertEnabled
+        
         bindIcon(asset: asset)
         bindName(asset: asset)
         bindTitleSeparator(asset: asset)

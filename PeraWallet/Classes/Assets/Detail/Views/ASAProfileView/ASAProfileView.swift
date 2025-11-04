@@ -148,8 +148,16 @@ final class ASAProfileView:
         }
         
         if showButtons {
-            notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
-            favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
+            if viewModel?.isAssetFavorited ?? false {
+                notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
+            } else {
+                notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
+            }
+            if viewModel?.isAssetPriceAlertEnabled ?? false {
+                favoritesButton.setImage(UIImage(named: "icon-asset-favorite"), for: .normal)
+            } else {
+                favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
+            }
         }
     }
     

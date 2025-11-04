@@ -7353,6 +7353,7 @@
 		D4B50BD02EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD12EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD22EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
+		D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9915,6 +9916,7 @@
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
 		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
 		D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewTheme.swift; sourceTree = "<group>"; };
+		D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+PriceWatch.swift"; sourceTree = "<group>"; };
 		D4C45BEE2726B59D00F4AE31 /* ContactDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationView.swift; sourceTree = "<group>"; };
 		D4C45BF62726C60500F4AE31 /* ContactInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationViewTheme.swift; sourceTree = "<group>"; };
@@ -17104,6 +17106,7 @@
 				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
 				95CA71F627CD5D0A00424626 /* ALGAPI+MoonPay.swift */,
 				D400583B2EB8BE39009B7543 /* ALGAPI+Favorites.swift */,
+				D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */,
 				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
 				17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */,
 				17AC7286286F2142006919C3 /* ALGAPI+NameService.swift */,
@@ -31579,6 +31582,7 @@
 				591677112E460AF9002184C2 /* SwiftDate+Region.swift in Sources */,
 				591677142E460AF9002184C2 /* Array+Additions.swift in Sources */,
 				591677152E460AF9002184C2 /* Array+View.swift in Sources */,
+				D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceWatch.swift in Sources */,
 				591677162E460AF9002184C2 /* Bool+Additions.swift in Sources */,
 				591677172E460AF9002184C2 /* Int+Byte.swift in Sources */,
 				D4772F902E8A75F500B4F262 /* SwapTopPairsList.swift in Sources */,

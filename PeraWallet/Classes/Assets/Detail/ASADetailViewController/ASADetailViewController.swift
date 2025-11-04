@@ -44,10 +44,8 @@ final class ASADetailViewController: PageContainer {
             case .quickActionsReceive: navigateToReceiveTransaction()
             case .quickActionsSwap: navigateToSwapAssetIfPossible()
             case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateChartData(address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-            case .profileOnFavoriteTap:
-                print("---profileOnFavoriteTap holdingsFragmentScreen")
-            case .profileOnNotificationTap:
-                print("---profileOnNotificationTap holdingsFragmentScreen")
+            case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
+            case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
             }
         }
     
@@ -65,10 +63,8 @@ final class ASADetailViewController: PageContainer {
             case .quickActionsReceive: navigateToReceiveTransaction()
             case .quickActionsSwap: navigateToSwapAssetIfPossible()
             case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateAssetPriceChartData(assetId: asset.id, period: newPeriodSelected)
-            case .profileOnFavoriteTap:
-                print("---profileOnFavoriteTap marketsFragmentScreen")
-            case .profileOnNotificationTap:
-                print("---profileOnNotificationTap marketsFragmentScreen")
+            case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
+            case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
             }
         }
 
@@ -376,10 +372,8 @@ extension ASADetailViewController {
                     case .quickActionsReceive: navigateToReceiveTransaction()
                     case .quickActionsSwap: navigateToSwapAssetIfPossible()
                     case let .profileOnPeriodChange(account, asset, newPeriodSelected): dataController.updateChartData( address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-                    case .profileOnFavoriteTap:
-                        print("---profileOnFavoriteTap holdingsFragmentScreen")
-                    case .profileOnNotificationTap:
-                        print("---profileOnNotificationTap holdingsFragmentScreen")
+                    case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
+                    case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
                     }
                 }
             case let .didFetchPriceChartData(chartData, _, _):
