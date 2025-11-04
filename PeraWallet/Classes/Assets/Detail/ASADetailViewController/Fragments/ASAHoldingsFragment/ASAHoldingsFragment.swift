@@ -86,7 +86,8 @@ final class ASAHoldingsFragment: TransactionsViewController {
             shouldDisplayQuickActions: shouldDisplayQuickActions,
             quickActionsViewModel: viewModel,
             chartData: chartData,
-            eventHandler: eventHandler
+            eventHandler: eventHandler,
+            showButtons: configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
         )
     }
     
@@ -114,4 +115,5 @@ struct ASAHoldingsHeaderContext {
     let quickActionsViewModel: ASADetailQuickActionsViewModel
     let chartData: ChartViewData
     let eventHandler: ASADetailViewController.EventHandler
+    let showButtons: Bool
 }

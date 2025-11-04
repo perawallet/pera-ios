@@ -61,7 +61,15 @@ extension ALGAPI {
             return fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
         }
         let draftV2 = AssetListFechDraft(ids: draft.ids, includeDeleted: draft.includeDeleted, deviceId: deviceId)
-        return fetchAssetListV2(draftV2, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+        return fetchAssetListV2(draftV2, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let list):
+                handler(.success(list))
+            case .failure:
+                fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+            }
+        }
     }
 
     @discardableResult
