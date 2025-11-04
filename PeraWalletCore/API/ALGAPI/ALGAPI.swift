@@ -40,8 +40,8 @@ public final class ALGAPI: API {
     public var deviceId: String? {
         session.authenticatedUser?.getDeviceId(on: network)
     }
-    public var useAssetDetailV2: Bool {
-        featureFlagService.isEnabled(.assetDetailV2Enabled)
+    public var useAssetDetailV2Endpoint: Bool {
+        featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
     }
 
     public init(session: Session, featureFlagService: FeatureFlagServicing, networkMonitor: NetworkMonitor? = nil) {

@@ -57,7 +57,7 @@ extension ALGAPI {
         ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
-        guard useAssetDetailV2 else {
+        guard useAssetDetailV2Endpoint else {
             return fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
         }
         let draftV2 = AssetListFechDraft(ids: draft.ids, includeDeleted: draft.includeDeleted, deviceId: deviceId)
