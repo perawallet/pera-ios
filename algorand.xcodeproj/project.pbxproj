@@ -7273,6 +7273,12 @@
 		8BF250072CB03A1E00D2297B /* light-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250032CB03A1E00D2297B /* light-dots.json */; };
 		8BF250082CB03A1E00D2297B /* dark-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250022CB03A1E00D2297B /* dark-dots.json */; };
 		8BF250092CB03A1E00D2297B /* light-dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF250032CB03A1E00D2297B /* light-dots.json */; };
+		D40150BF2EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150BE2EB927D100376A0E /* ASAMarketsFragmentMarketViewTheme.swift */; };
+		D40150C02EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150BE2EB927D100376A0E /* ASAMarketsFragmentMarketViewTheme.swift */; };
+		D40150C12EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150BE2EB927D100376A0E /* ASAMarketsFragmentMarketViewTheme.swift */; };
+		D40150C32EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150C22EB9288800376A0E /* ASAMarketsFragmentMarketView.swift */; };
+		D40150C42EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150C22EB9288800376A0E /* ASAMarketsFragmentMarketView.swift */; };
+		D40150C52EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40150C22EB9288800376A0E /* ASAMarketsFragmentMarketView.swift */; };
 		D405059026F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
 		D405059126F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
 		D405059226F0F0A1001D0D11 /* light-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405058F26F0F0A1001D0D11 /* light-ledger.json */; };
@@ -9091,6 +9097,8 @@
 		CBAD47492745595300C91946 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceImpactLimit.swift; sourceTree = "<group>"; };
+		D40150BE2EB927D100376A0E /* ASAMarketsFragmentMarketViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAMarketsFragmentMarketViewTheme.swift; sourceTree = "<group>"; };
+		D40150C22EB9288800376A0E /* ASAMarketsFragmentMarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAMarketsFragmentMarketView.swift; sourceTree = "<group>"; };
 		D401CC0A2CF8AD3D00D2BA70 /* SendAssetAndOptInTransactionInfoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetAndOptInTransactionInfoScreen.swift; sourceTree = "<group>"; };
 		D401CC0E2CF8AD5700D2BA70 /* SendAssetAndOptInTransactionInfoScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendAssetAndOptInTransactionInfoScreen+Theme.swift"; sourceTree = "<group>"; };
 		D401FCA928E640D100FBA85C /* CollectibleDetailAssetIDItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAssetIDItemCellTheme.swift; sourceTree = "<group>"; };
@@ -21201,6 +21209,8 @@
 		D4563FB22EB0B87900164EF2 /* ASAMarketsFragment */ = {
 			isa = PBXGroup;
 			children = (
+				D40150C22EB9288800376A0E /* ASAMarketsFragmentMarketView.swift */,
+				D40150BE2EB927D100376A0E /* ASAMarketsFragmentMarketViewTheme.swift */,
 				D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */,
 				D46303382EA8FB6C00AC2FDB /* ASAMarketsFragment.swift */,
 			);
@@ -25668,6 +25678,7 @@
 				59167C492E464C76002184C2 /* ViewPassphraseListItemButtonViewModel.swift in Sources */,
 				59167C4A2E464C76002184C2 /* ViewRootWalletPassphraseListItemButtonViewModel.swift in Sources */,
 				59167C4B2E464C76002184C2 /* DiscoverAssetDetailScreen.swift in Sources */,
+				D40150C32EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59167C4C2E464C76002184C2 /* DiscoverExternalInAppBrowserScreen.swift in Sources */,
 				59167C4D2E464C76002184C2 /* DiscoverExternalInAppBrowserNavigationView.swift in Sources */,
 				59167C4E2E464C76002184C2 /* DiscoverExternalInAppBrowserNavigationViewModel.swift in Sources */,
@@ -26436,6 +26447,7 @@
 				59167F412E464C76002184C2 /* TransactionActionInformationView.swift in Sources */,
 				59167F422E464C76002184C2 /* TransactionActionInformationViewTheme.swift in Sources */,
 				59167F432E464C76002184C2 /* TransactionMultipleAmountInformationView.swift in Sources */,
+				D40150C12EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59167F442E464C76002184C2 /* TransactionMultipleAmountInformationViewTheme.swift in Sources */,
 				59167F452E464C76002184C2 /* TransactionTextInformationView.swift in Sources */,
 				59167F462E464C76002184C2 /* TransactionTextInformationViewTheme.swift in Sources */,
@@ -27827,6 +27839,7 @@
 				59E601CA2E4A712500CCA99B /* DiscoverExternalInAppBrowserScreen.swift in Sources */,
 				59E601CB2E4A712500CCA99B /* DiscoverExternalInAppBrowserNavigationView.swift in Sources */,
 				59E601CC2E4A712500CCA99B /* DiscoverExternalInAppBrowserNavigationViewModel.swift in Sources */,
+				D40150C42EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59E601CD2E4A712500CCA99B /* DiscoverExternalInAppBrowserNavigationViewTheme.swift in Sources */,
 				59E601CE2E4A712500CCA99B /* DiscoverDappDetailScreen.swift in Sources */,
 				59E601CF2E4A712500CCA99B /* BrowserAuthorizedAddressEventHandler.swift in Sources */,
@@ -28595,6 +28608,7 @@
 				59E604C12E4A712500CCA99B /* TransactionActionInformationViewTheme.swift in Sources */,
 				59E604C22E4A712500CCA99B /* TransactionMultipleAmountInformationView.swift in Sources */,
 				59E604C32E4A712500CCA99B /* TransactionMultipleAmountInformationViewTheme.swift in Sources */,
+				D40150C02EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59E604C42E4A712500CCA99B /* TransactionTextInformationView.swift in Sources */,
 				59E604C52E4A712500CCA99B /* TransactionTextInformationViewTheme.swift in Sources */,
 				59E604C62E4A712500CCA99B /* ContactDisplayView.swift in Sources */,
@@ -29986,6 +30000,7 @@
 				59E60A422E4A71D000CCA99B /* DiscoverExternalInAppBrowserScreen.swift in Sources */,
 				59E60A432E4A71D000CCA99B /* DiscoverExternalInAppBrowserNavigationView.swift in Sources */,
 				59E60A442E4A71D000CCA99B /* DiscoverExternalInAppBrowserNavigationViewModel.swift in Sources */,
+				D40150C52EB9289400376A0E /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59E60A452E4A71D000CCA99B /* DiscoverExternalInAppBrowserNavigationViewTheme.swift in Sources */,
 				59E60A462E4A71D000CCA99B /* DiscoverDappDetailScreen.swift in Sources */,
 				59E60A472E4A71D000CCA99B /* BrowserAuthorizedAddressEventHandler.swift in Sources */,
@@ -30754,6 +30769,7 @@
 				59E60D3A2E4A71D000CCA99B /* TransactionMultipleAmountInformationView.swift in Sources */,
 				59E60D3B2E4A71D000CCA99B /* TransactionMultipleAmountInformationViewTheme.swift in Sources */,
 				59E60D3C2E4A71D000CCA99B /* TransactionTextInformationView.swift in Sources */,
+				D40150BF2EB927E000376A0E /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59E60D3D2E4A71D000CCA99B /* TransactionTextInformationViewTheme.swift in Sources */,
 				59E60D3E2E4A71D000CCA99B /* ContactDisplayView.swift in Sources */,
 				59E60D3F2E4A71D000CCA99B /* ContactDisplayViewTheme.swift in Sources */,

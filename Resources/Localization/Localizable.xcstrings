@@ -10712,6 +10712,16 @@
         }
       }
     },
+    "view-more-details-discover-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View more details on Discover"
+          }
+        }
+      }
+    },
     "vote-key-dilution-title" : {
       "localizations" : {
         "en" : {
