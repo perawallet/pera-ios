@@ -38,6 +38,7 @@ final class HomePortfolioView:
     private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = Label()
     private lazy var selectedPointDateValueView = Label()
+    private lazy var tendencyValueView = ChartTendencyView()
     
     private lazy var tooltipController = TooltipUIController(presentingView: self)
     
@@ -61,6 +62,7 @@ final class HomePortfolioView:
         addInfoAction(theme)
         addValue(theme)
         addSecondaryValue(theme)
+        addTendencyValue(theme)
         addSelectedPointDateValue(theme)
     }
     
@@ -104,6 +106,22 @@ final class HomePortfolioView:
         } else {
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
+        }
+        
+        if
+            let differenceText = viewModel?.differenceText,
+            let differenceInPercentageText = viewModel?.differenceInPercentageText,
+            let arrowImageView = viewModel?.arrowImageView
+        {
+            tendencyValueView.bind(
+                differenceText: differenceText,
+                differenceInPercentageText: differenceInPercentageText,
+                arrowImageView: arrowImageView,
+                hideDiffLabel: false,
+                baselineView: secondaryValueView)
+            tendencyValueView.isHidden = false
+        } else {
+            tendencyValueView.isHidden = true
         }
     }
     
@@ -221,6 +239,19 @@ extension HomePortfolioView {
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0
+            $0.bottom == 0
+        }
+    }
+    
+    private func addTendencyValue(
+        _ theme: HomePortfolioViewTheme
+    ) {
+        
+        addSubview(tendencyValueView)
+
+        tendencyValueView.snp.makeConstraints {
+            $0.centerY == secondaryValueView.snp.centerY
+            $0.leading == secondaryValueView.snp.trailing + 8
             $0.bottom == 0
         }
     }

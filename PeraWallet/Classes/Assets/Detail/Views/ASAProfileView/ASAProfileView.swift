@@ -51,7 +51,7 @@ final class ASAProfileView:
     private lazy var primaryValueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueAndSelectedPointView = UIView()
     private lazy var secondaryValueView = UILabel()
-    private lazy var tendencyValueView = UIView()
+    private lazy var tendencyValueView = ChartTendencyView()
     private lazy var selectedPointDateValueView = Label()
     
     private var chartData: ChartViewData?
@@ -155,48 +155,14 @@ final class ASAProfileView:
             tendencyValueView.isHidden = true
             return
         }
-        addChartTendencies(differenceText: differenceText, differenceInPercentageText: differenceInPercentageText, arrowImageView: arrowImageView)
-    }
-    
-    func addChartTendencies(differenceText: TextProvider, differenceInPercentageText: TextProvider, arrowImageView: ImageProvider) {
-        let diffLabel = UILabel()
-        differenceText.load(in: diffLabel)
         
-        let percentLabel = UILabel()
-        differenceInPercentageText.load(in: percentLabel)
-        
-        let iconView = UIImageView()
-        arrowImageView.load(in: iconView)
-        
-        if type != .assetPrice {
-            tendencyValueView.addSubview(diffLabel)
-        }
-        
-        [iconView, percentLabel].forEach { tendencyValueView.addSubview($0) }
-        
-        if type == .assetPrice {
-            iconView.snp.makeConstraints {
-                $0.leading.equalToSuperview()
-                $0.centerY.equalTo(secondaryValueView)
-            }
-            percentLabel.snp.makeConstraints {
-                $0.leading.equalTo(iconView.snp.trailing).offset(4)
-                $0.centerY.equalTo(iconView)
-            }
-        } else {
-            diffLabel.snp.makeConstraints {
-                $0.leading.equalToSuperview()
-                $0.firstBaseline.equalTo(secondaryValueView)
-            }
-            iconView.snp.makeConstraints {
-                $0.leading.equalTo(diffLabel.snp.trailing).offset(theme.iconViewLeadingOffset)
-                $0.centerY.equalTo(diffLabel)
-            }
-            percentLabel.snp.makeConstraints {
-                $0.leading.equalTo(iconView.snp.trailing).offset(theme.percentLabelLeadingOffset)
-                $0.firstBaseline.equalTo(secondaryValueView)
-            }
-        }
+        tendencyValueView.bind(
+            differenceText: differenceText,
+            differenceInPercentageText: differenceInPercentageText,
+            arrowImageView: arrowImageView,
+            hideDiffLabel: type == .assetPrice,
+            baselineView: secondaryValueView
+        )
         
         tendencyValueView.isHidden = false
     }

@@ -7305,6 +7305,9 @@
 		D451BEB42EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB52EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB62EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
+		D451BEB82EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
+		D451BEB92EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
+		D451BEBA2EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
 		D4563FB42EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB52EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB62EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
@@ -9478,6 +9481,7 @@
 		D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreen.swift; sourceTree = "<group>"; };
 		D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreenTheme.swift; sourceTree = "<group>"; };
 		D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TendenciesViewModel.swift; sourceTree = "<group>"; };
+		D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTendencyView.swift; sourceTree = "<group>"; };
 		D453A5A02AB085C20079A7AB /* WCMainArbitraryDataScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataScreen.swift; sourceTree = "<group>"; };
 		D453A5A42AB0868B0079A7AB /* WCMainArbitraryDataScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WCMainArbitraryDataScreen+Theme.swift"; sourceTree = "<group>"; };
 		D453A5A82AB087E70079A7AB /* WCMainArbitraryDataDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataDataSource.swift; sourceTree = "<group>"; };
@@ -20294,6 +20298,7 @@
 		D418A3C82DE5B2310009747E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */,
 				D418A3C92DE5B23D0009747E /* ChartView.swift */,
 				D4C526EF2DF9725A00C7F4B4 /* LineChartView.swift */,
 				D42361272E128762005E717B /* LineChartOverlayView.swift */,
@@ -26082,6 +26087,7 @@
 				59167DD32E464C76002184C2 /* PrimaryImageViewTheme.swift in Sources */,
 				59167DD42E464C76002184C2 /* PrimaryImageViewModel.swift in Sources */,
 				59167DD52E464C76002184C2 /* AssetPreviewActionCell.swift in Sources */,
+				D451BEB92EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
 				59167DD62E464C76002184C2 /* AssetPreviewActionView.swift in Sources */,
 				59167DD72E464C76002184C2 /* AssetPreviewActionViewTheme.swift in Sources */,
 				59167DD82E464C76002184C2 /* AssetPreviewCell.swift in Sources */,
@@ -28244,6 +28250,7 @@
 				59E603532E4A712500CCA99B /* PrimaryImageViewModel.swift in Sources */,
 				59E603542E4A712500CCA99B /* AssetPreviewActionCell.swift in Sources */,
 				59E603552E4A712500CCA99B /* AssetPreviewActionView.swift in Sources */,
+				D451BEBA2EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
 				59E603562E4A712500CCA99B /* AssetPreviewActionViewTheme.swift in Sources */,
 				59E603572E4A712500CCA99B /* AssetPreviewCell.swift in Sources */,
 				59E603582E4A712500CCA99B /* AssetPreviewView.swift in Sources */,
@@ -30406,6 +30413,7 @@
 				59E60BCC2E4A71D000CCA99B /* AssetPreviewActionCell.swift in Sources */,
 				59E60BCD2E4A71D000CCA99B /* AssetPreviewActionView.swift in Sources */,
 				59E60BCE2E4A71D000CCA99B /* AssetPreviewActionViewTheme.swift in Sources */,
+				D451BEB82EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
 				59E60BCF2E4A71D000CCA99B /* AssetPreviewCell.swift in Sources */,
 				59E60BD02E4A71D000CCA99B /* AssetPreviewView.swift in Sources */,
 				59E60BD12E4A71D000CCA99B /* AssetPreviewViewTheme.swift in Sources */,

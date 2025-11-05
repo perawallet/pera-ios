@@ -212,11 +212,11 @@ final class HomeViewController:
                     title: String(localized: "pass-phrase-verify-sdk-error"),
                     message: errorDescription
                 )
-            case .didSelectChartPoint(let chartSelectedPointViewModel, let totalPortfolioItem):
+            case .didSelectChartPoint(let chartSelectedPointViewModel, let totalPortfolioItem, let tendenciesVM):
                 guard let totalPortfolioItem else {
                     return
                 }
-                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel)
+                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel, tendenciesVM: tendenciesVM)
                 self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }

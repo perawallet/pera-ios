@@ -38,8 +38,6 @@ struct ASAProfileViewTheme:
     var spacingBetweenPrimaryValueAndSecondValue: LayoutMetric
     var secondaryValue: TextStyle
     var tendencyValueViewLeading: LayoutMetric
-    var iconViewLeadingOffset: LayoutMetric
-    var percentLabelLeadingOffset: LayoutMetric
     var chartViewHeight: LayoutMetric
     var chartViewLeadingOffset: LayoutMetric
     var chartViewTrailingOffset: LayoutMetric
@@ -87,8 +85,6 @@ struct ASAProfileViewTheme:
         ]
         
         self.tendencyValueViewLeading = 8
-        self.iconViewLeadingOffset = 10
-        self.percentLabelLeadingOffset = 4
         
         self.chartViewHeight = 172
         self.chartViewLeadingOffset = -24

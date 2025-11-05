@@ -80,7 +80,7 @@ enum HomeDataControllerEvent {
     case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
     case didUpdateSpotBanner(String?)
     case didFailWithError(String?)
-    case didSelectChartPoint(ChartSelectedPointViewModel?, TotalPortfolioItem?)
+    case didSelectChartPoint(ChartSelectedPointViewModel?, TotalPortfolioItem?, TendenciesViewModel?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
