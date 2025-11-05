@@ -37,7 +37,7 @@ extension AssetCachable where Self: BaseViewController {
             return
         }
 
-        let draft = AssetDetailFetchDraft(id: id)
+        let draft = AssetDetailFetchDraft(id: id, deviceId: api.deviceId)
         let completionHandler: (Response.ModelResult<AssetDecoration>) -> Void = {
             [weak self] result in
             guard let self = self else { return }

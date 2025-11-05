@@ -29,7 +29,7 @@ final class ASAMarketsFragment:
     }
 
     private lazy var contextView = VStackView()
-    private lazy var profileView = ASAProfileView(type: .assetPrice, showButtons: showButtons)
+    private lazy var profileView = ASAProfileView(type: .assetPrice, showNotificationAndFavoriteButtons: showNotificationAndFavoriteButtons)
     private lazy var marketInfoView = ASADetailMarketView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()
@@ -50,7 +50,7 @@ final class ASAMarketsFragment:
     private var currency: CurrencyProvider
     private let copyToClipboardController: CopyToClipboardController
     private var eventHandler: ASADetailViewController.EventHandler?
-    private var showButtons = false
+    private var showNotificationAndFavoriteButtons = false
 
     private let theme = ASAMarketsFragmentTheme()
 
@@ -67,7 +67,7 @@ final class ASAMarketsFragment:
         self.currency = currency
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
-        self.showButtons = configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
+        self.showNotificationAndFavoriteButtons = configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
 
         super.init(configuration: configuration)
     }

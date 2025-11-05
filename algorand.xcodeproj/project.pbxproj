@@ -7298,6 +7298,8 @@
 		D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
+		D451C0332EBB9B13007524E2 /* AssetToogleStatusDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0322EBB9B0C007524E2 /* AssetToogleStatusDraft.swift */; };
+		D451C0352EBBA0A2007524E2 /* AssetToogleStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0342EBBA098007524E2 /* AssetToogleStatus.swift */; };
 		D4563FB42EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB52EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB62EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
@@ -7353,7 +7355,7 @@
 		D4B50BD02EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD12EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD22EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
-		D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */; };
+		D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceAlert.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9471,6 +9473,8 @@
 		D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountVerificationViewController+Theme.swift"; sourceTree = "<group>"; };
 		D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreen.swift; sourceTree = "<group>"; };
 		D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreenTheme.swift; sourceTree = "<group>"; };
+		D451C0322EBB9B0C007524E2 /* AssetToogleStatusDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetToogleStatusDraft.swift; sourceTree = "<group>"; };
+		D451C0342EBBA098007524E2 /* AssetToogleStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetToogleStatus.swift; sourceTree = "<group>"; };
 		D453A5A02AB085C20079A7AB /* WCMainArbitraryDataScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataScreen.swift; sourceTree = "<group>"; };
 		D453A5A42AB0868B0079A7AB /* WCMainArbitraryDataScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WCMainArbitraryDataScreen+Theme.swift"; sourceTree = "<group>"; };
 		D453A5A82AB087E70079A7AB /* WCMainArbitraryDataDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataDataSource.swift; sourceTree = "<group>"; };
@@ -9916,7 +9920,7 @@
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
 		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
 		D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewTheme.swift; sourceTree = "<group>"; };
-		D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+PriceWatch.swift"; sourceTree = "<group>"; };
+		D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+PriceAlert.swift"; sourceTree = "<group>"; };
 		D4C45BEE2726B59D00F4AE31 /* ContactDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationView.swift; sourceTree = "<group>"; };
 		D4C45BF62726C60500F4AE31 /* ContactInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationViewTheme.swift; sourceTree = "<group>"; };
@@ -11942,6 +11946,7 @@
 				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
 				D4B33AB727F2229A00523CEA /* AssetType.swift */,
 				2B1073AC28858F6800D465C1 /* AssetVerificationTier.swift */,
+				D451C0342EBBA098007524E2 /* AssetToogleStatus.swift */,
 				2B4A8A7427D77CE4005F1EFA /* Collectibles */,
 				2B4BDA09238C9EB600491149 /* Draft */,
 				2B4BDA18238D359000491149 /* List */,
@@ -17106,7 +17111,7 @@
 				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
 				95CA71F627CD5D0A00424626 /* ALGAPI+MoonPay.swift */,
 				D400583B2EB8BE39009B7543 /* ALGAPI+Favorites.swift */,
-				D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceWatch.swift */,
+				D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceAlert.swift */,
 				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
 				17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */,
 				17AC7286286F2142006919C3 /* ALGAPI+NameService.swift */,
@@ -21882,6 +21887,7 @@
 		D49D2E6A2A54194F00CE5384 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D451C0322EBB9B0C007524E2 /* AssetToogleStatusDraft.swift */,
 				D400583D2EB8C97A009B7543 /* AssetListFechDraft.swift */,
 				D49D2E6B2A54195C00CE5384 /* AssetDetailFetchDraft.swift */,
 			);
@@ -31413,6 +31419,7 @@
 				5916765D2E460AF9002184C2 /* ALGAPI+Charts.swift in Sources */,
 				5916765E2E460AF9002184C2 /* ALGAPI+Block.swift in Sources */,
 				5916765F2E460AF9002184C2 /* ALGAPI+MoonPay.swift in Sources */,
+				D451C0352EBBA0A2007524E2 /* AssetToogleStatus.swift in Sources */,
 				591676602E460AF9002184C2 /* ALGAPI+Currency.swift in Sources */,
 				591676612E460AF9002184C2 /* ALGAPI+Device.swift in Sources */,
 				591676622E460AF9002184C2 /* ALGAPI+NameService.swift in Sources */,
@@ -31582,7 +31589,7 @@
 				591677112E460AF9002184C2 /* SwiftDate+Region.swift in Sources */,
 				591677142E460AF9002184C2 /* Array+Additions.swift in Sources */,
 				591677152E460AF9002184C2 /* Array+View.swift in Sources */,
-				D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceWatch.swift in Sources */,
+				D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceAlert.swift in Sources */,
 				591677162E460AF9002184C2 /* Bool+Additions.swift in Sources */,
 				591677172E460AF9002184C2 /* Int+Byte.swift in Sources */,
 				D4772F902E8A75F500B4F262 /* SwapTopPairsList.swift in Sources */,
@@ -31658,6 +31665,7 @@
 				591677822E460AF9002184C2 /* AlgorandSDK.swift in Sources */,
 				591677832E460AF9002184C2 /* Session.swift in Sources */,
 				591677842E460AF9002184C2 /* Session+Announcement.swift in Sources */,
+				D451C0332EBB9B13007524E2 /* AssetToogleStatusDraft.swift in Sources */,
 				591677852E460AF9002184C2 /* Session+Crypto.swift in Sources */,
 				591677872E460AF9002184C2 /* Storable.swift in Sources */,
 				5916778C2E460AF9002184C2 /* UTMCampaingnHandler.swift in Sources */,

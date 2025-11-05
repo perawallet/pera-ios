@@ -53,6 +53,7 @@ public enum APIParamKey: String, CodingKey {
     case deviceId = "device_id"
     case domain = "domain"
     case email = "email"
+    case enabled = "enabled"
     case encryptedContent = "encrypted_content"
     case exceptionText = "exception_text"
     case device = "device"

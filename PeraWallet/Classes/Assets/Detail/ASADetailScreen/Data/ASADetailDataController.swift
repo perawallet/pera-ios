@@ -34,8 +34,8 @@ protocol ASADetailScreenDataController: AnyObject {
     func fetchInitialAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod)
     func updateChartData(address: String, assetId: String, period: ChartDataPeriod)
     func updateAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod)
-    func updateFavoriteStatus()
-    func updatePriceAlertStatus()
+    func toogleFavoriteStatus()
+    func tooglePriceAlertStatus()
 }
 
 enum ASADetailScreenDataControllerEvent {

@@ -1191,7 +1191,7 @@ extension WCMainTransactionScreen {
     ) {
         if isRejected { return }
 
-        let draft = AssetDetailFetchDraft(id: id)
+        let draft = AssetDetailFetchDraft(id: id, deviceId: api?.deviceId)
         api!.fetchAssetDetailFromNode(draft) {
             [weak self] result in
             guard let self else { return }

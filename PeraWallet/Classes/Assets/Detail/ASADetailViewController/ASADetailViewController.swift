@@ -44,8 +44,8 @@ final class ASADetailViewController: PageContainer {
             case .quickActionsReceive: navigateToReceiveTransaction()
             case .quickActionsSwap: navigateToSwapAssetIfPossible()
             case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateChartData(address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-            case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
-            case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
+            case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
+            case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
             }
         }
     
@@ -63,8 +63,8 @@ final class ASADetailViewController: PageContainer {
             case .quickActionsReceive: navigateToReceiveTransaction()
             case .quickActionsSwap: navigateToSwapAssetIfPossible()
             case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateAssetPriceChartData(assetId: asset.id, period: newPeriodSelected)
-            case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
-            case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
+            case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
+            case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
             }
         }
 
@@ -372,8 +372,8 @@ extension ASADetailViewController {
                     case .quickActionsReceive: navigateToReceiveTransaction()
                     case .quickActionsSwap: navigateToSwapAssetIfPossible()
                     case let .profileOnPeriodChange(account, asset, newPeriodSelected): dataController.updateChartData( address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-                    case .profileOnFavoriteTap: dataController.updateFavoriteStatus()
-                    case .profileOnNotificationTap: dataController.updatePriceAlertStatus()
+                    case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
+                    case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
                     }
                 }
             case let .didFetchPriceChartData(chartData, _, _):

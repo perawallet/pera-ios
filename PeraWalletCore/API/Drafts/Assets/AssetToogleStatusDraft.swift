@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetDetailFetchDraft.swift
+//   AssetToogleStatusDraft.swift
 
 import MagpieCore
 
-public struct AssetDetailFetchDraft: JSONObjectBody {
-    let id: AssetID
-    var deviceId: String?
+public struct AssetToogleStatusDraft: JSONObjectBody {
+    var deviceId: Int64
+    var enabled: Bool
     
     public var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
-        if let deviceId {
-            params.append(.init(.deviceId, deviceId))
-        }
+        params.append(.init(.deviceId, deviceId))
+        params.append(.init(.enabled, enabled))
         
         return params
     }
     
-    public init(id: AssetID, deviceId: String?) {
-        self.id = id
+    public init(deviceId: Int64, enabled: Bool) {
         self.deviceId = deviceId
+        self.enabled = enabled
     }
 }

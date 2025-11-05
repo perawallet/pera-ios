@@ -65,13 +65,13 @@ final class ASAProfileView:
     
     private var theme = ASAProfileViewTheme()
     private let type: ASAProfileViewType
-    private let showButtons: Bool
+    private let showNotificationAndFavoriteButtons: Bool
     
     // MARK: - Initialisers
     
-    @MainActor init(type: ASAProfileViewType = .assetDetail, showButtons: Bool = false) {
+    @MainActor init(type: ASAProfileViewType = .assetDetail, showNotificationAndFavoriteButtons: Bool = false) {
         self.type = type
-        self.showButtons = showButtons
+        self.showNotificationAndFavoriteButtons = showNotificationAndFavoriteButtons
         super.init(frame: .zero)
         setupGestures()
         setupViewModelCallback()
@@ -114,8 +114,8 @@ final class ASAProfileView:
 
         addExpandedContent(theme)
         
-        if showButtons {
-            addButtons(theme)
+        if showNotificationAndFavoriteButtons {
+            addNotificationAndFavoriteButtons(theme)
         }
     }
 
@@ -147,7 +147,7 @@ final class ASAProfileView:
             secondaryValueView.attributedText = nil
         }
         
-        if showButtons {
+        if showNotificationAndFavoriteButtons {
             if viewModel?.isAssetFavorited ?? false {
                 notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
             } else {
@@ -262,7 +262,7 @@ extension ASAProfileView {
         }
     }
     
-    private func addButtons(_ theme: ASAProfileViewTheme) {
+    private func addNotificationAndFavoriteButtons(_ theme: ASAProfileViewTheme) {
         buttonsView.removeAllSubviews()
         buttonsView.axis = .horizontal
         buttonsView.spacing = 12

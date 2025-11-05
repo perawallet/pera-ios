@@ -100,7 +100,7 @@ extension CollectibleDetailAPIDataController {
         cancelOngoingEndpoint()
 
         ongoingEndpoint = api.fetchAssetDetail(
-            AssetDetailFetchDraft(id: asset.id),
+            AssetDetailFetchDraft(id: asset.id, deviceId: api.deviceId),
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
             guard let self = self else { return }

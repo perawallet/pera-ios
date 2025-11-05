@@ -23,7 +23,7 @@ public struct AssetListFechDraft: JSONObjectBody {
     
     public var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
-        params.append(.init(.assetIDs, ids.map { "\($0)" }.joined(separator: ",")))
+        params.append(.init(.assetIDs, ids))
         
         if let includeDeleted {
             params.append(.init(.includeDeleted, includeDeleted))

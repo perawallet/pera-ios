@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetDetailFetchDraft.swift
+//   ALGAPI+PriceAlert.swift
 
 import MagpieCore
+import MagpieExceptions
 
-public struct AssetDetailFetchDraft: JSONObjectBody {
-    let id: AssetID
-    var deviceId: String?
-    
-    public var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        if let deviceId {
-            params.append(.init(.deviceId, deviceId))
-        }
-        
-        return params
-    }
-    
-    public init(id: AssetID, deviceId: String?) {
-        self.id = id
-        self.deviceId = deviceId
+extension ALGAPI {
+    @discardableResult
+    public func toogglePriceAlertStatus(
+        _ draft: AssetToogleStatusDraft,
+        and assetId: String,
+        onCompleted handler: @escaping (Response.Result<AssetToogleStatus, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.tooglePriceAlertStatus, args: assetId)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
     }
 }

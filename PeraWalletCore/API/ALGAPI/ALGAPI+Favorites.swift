@@ -19,45 +19,17 @@ import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
-    public func addAssetToFavorites(
-        for deviceId: String,
+    public func tooggleFavoriteStatus(
+        _ draft: AssetToogleStatusDraft,
         and assetId: String,
-        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
+        onCompleted handler: @escaping (Response.Result<AssetToogleStatus, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.addToFavorites, args: deviceId, assetId)
+            .base(.mobileV2(network))
+            .path(.toggleFavoriteStatus, args: assetId)
             .method(.post)
+            .body(draft)
             .completionHandler(handler)
             .execute()
     }
-    
-    @discardableResult
-    public func removeAssetFromFavorites(
-        for deviceId: String,
-        and assetId: String,
-        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.removeFromFavorites, args: deviceId, assetId)
-            .method(.post)
-            .completionHandler(handler)
-            .execute()
-    }
-
-    @discardableResult
-    public func favoriteStatus(
-        for deviceId: String,
-        and assetId: String,
-        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.favoritesStatus, args: deviceId, assetId)
-            .method(.put)
-            .completionHandler(handler)
-            .execute()
-    }
-
 }

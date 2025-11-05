@@ -107,9 +107,29 @@ extension ALGAPI {
             .responseDispatcher(queue)
             .execute()
     }
-
+    
     @discardableResult
     public func fetchAssetDetail(
+        _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        guard useAssetDetailV2Endpoint else {
+            return fetchAssetDetailV1(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+        }
+        return fetchAssetDetailV2(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let detail):
+                handler(.success(detail))
+            case .failure:
+                fetchAssetDetailV1(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+            }
+        }
+    }
+
+    @discardableResult
+    public func fetchAssetDetailV1(
         _ draft: AssetDetailFetchDraft,
         ignoreResponseOnCancelled: Bool = true,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
@@ -118,6 +138,22 @@ extension ALGAPI {
             .base(.mobileV1(network))
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    public func fetchAssetDetailV2(
+        _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.assetDetail, args: "\(draft.id)")
+            .method(.post)
+            .body(draft)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .execute()

@@ -79,7 +79,7 @@ extension ASADetailScreenAPIDataController {
 
         eventHandler?(.willLoadData)
 
-        let draft = AssetDetailFetchDraft(id: asset.id)
+        let draft = AssetDetailFetchDraft(id: asset.id, deviceId: api.deviceId)
         api.fetchAssetDetail(draft) {
             [weak self] result in
             guard let self = self else { return }
@@ -171,54 +171,32 @@ extension ASADetailScreenAPIDataController {
         }
     }
     
-    func updateFavoriteStatus() {
-        guard let deviceId = api.deviceId else { return }
-        print("---updateFavoriteStatus")
-        if asset.isFavorited ?? false {
-            api.removeAssetFromFavorites(for: deviceId, and: String(asset.id)) { response in
-                print("---\(response)")
-                switch response {
-                case .success(let device):
-                    print("---device: \(device)")
-                case .failure(let apiError, let error):
-                    print("---apiError: \(apiError)")
-                }
-            }
-        } else {
-            api.addAssetToFavorites(for: deviceId, and: String(asset.id)) { response in
-                print("---\(response)")
-                switch response {
-                case .success(let device):
-                    print("---device: \(device)")
-                case .failure(let apiError, let error):
-                    print("---apiError: \(apiError)")
-                }
+    func toogleFavoriteStatus() {
+        guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
+        
+        api.tooggleFavoriteStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isFavorited ?? false)), and: String(asset.id)) { response in
+            print("---\(response)")
+            switch response {
+            case .success(let status):
+                print("---status: \(status.isEnabled)")
+                self.loadData()
+            case .failure(let apiError, let error):
+                print("---apiError: \(apiError)")
             }
         }
     }
     
-    func updatePriceAlertStatus() {
-        guard let deviceId = api.deviceId else { return }
-        print("---updatePriceAlertStatus")
-        if asset.isPriceAlertEnabled ?? false {
-            api.removeAssetFromPriceWatch(for: deviceId, and: String(asset.id)) { response in
-                print("---\(response)")
-                switch response {
-                case .success(let device):
-                    print("---device: \(device)")
-                case .failure(let apiError, let error):
-                    print("---apiError: \(apiError)")
-                }
-            }
-        } else {
-            api.addAssetToPriceWatch(for: deviceId, and: String(asset.id)) { response in
-                print("---\(response)")
-                switch response {
-                case .success(let device):
-                    print("---device: \(device)")
-                case .failure(let apiError, let error):
-                    print("---apiError: \(apiError)")
-                }
+    func tooglePriceAlertStatus() {
+        guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
+        
+        api.toogglePriceAlertStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isPriceAlertEnabled ?? false)), and: String(asset.id)) { response in
+            print("---\(response)")
+            switch response {
+            case .success(let status):
+                print("---status: \(status.isEnabled)")
+                self.loadData()
+            case .failure(let apiError, let error):
+                print("---apiError: \(apiError)")
             }
         }
     }
