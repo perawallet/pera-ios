@@ -18,20 +18,12 @@ import MacaroonUIKit
 
 struct SwapTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
-    private(set) var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
-    init(isBadgeVisible: Bool) {
+    init() {
         self.icon = "icon-transaction-option-list-swap"
-        self.isBadgeVisible = isBadgeVisible
         self.title = Self.getTitle(String(localized: "title-swap"))
         self.subtitle = Self.getSubtitle(String(localized: "transaction-option-list-swap-subtitle"))
-    }
-}
-
-extension SwapTransactionOptionListItemButtonViewModel {
-    mutating func bindIsBadgeVisible(_ isBadgeVisible: Bool) {
-        self.isBadgeVisible = isBadgeVisible
     }
 }

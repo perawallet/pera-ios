@@ -290,8 +290,6 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
 
-        observeWhenUserIsOnboardedToSwap()
-
         observe(notification: .newNotificationReceieved) {
             [weak self] _ in
             guard let self = self else {
@@ -930,24 +928,6 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    private func observeWhenUserIsOnboardedToSwap() {
-        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
-            [weak self] notification in
-            guard let self else { return }
-
-            guard
-                let indexPath = self.listDataSource.indexPath(for: .portfolio(.quickActions)),
-                let cell = self.listView.cellForItem(at: indexPath) as? HomeQuickActionsCell
-            else {
-                return
-            }
-
-            cell.isSwapBadgeVisible = false
-        }
-    }
-}
-
-extension HomeViewController {
     private func requestAppReview() {
         asyncMain(afterDuration: 1.0) {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
@@ -1042,8 +1022,6 @@ extension HomeViewController {
             case .loading:
                 setListBackgroundVisible(true)
                 guard let cell = cell as? HomeLoadingCell else { return }
-
-                cell.isSwapBadgeVisible = !isOnboardedToSwap
                 cell.startAnimating()
             case .noContent:
                 setListBackgroundVisible(false)
@@ -1062,8 +1040,6 @@ extension HomeViewController {
                 )
             case .quickActions:
                 guard let cell = cell as? HomeQuickActionsCell else { return }
-                cell.isSwapBadgeVisible = !isOnboardedToSwap
-
                 linkInteractors(cell)
             case .charts:
                 guard let cell = cell as? HomeChartsCell else { return }
@@ -1106,12 +1082,6 @@ extension HomeViewController {
                 break
             }
         }
-    }
-
-    private var isOnboardedToSwap: Bool {
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-        return isOnboardedToSwap
     }
     
     func collectionView(

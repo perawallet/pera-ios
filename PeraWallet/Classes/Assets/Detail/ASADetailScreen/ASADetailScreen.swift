@@ -686,24 +686,14 @@ extension ASADetailScreen {
         quickActionsView.customize(theme.quickActions)
 
         let asset = dataController.asset
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-        var viewModel = ASADetailQuickActionsViewModel(
-            asset: asset,
-            isSwapBadgeVisible: !isOnboardedToSwap
-        )
+        var viewModel = ASADetailQuickActionsViewModel(asset: asset)
 
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
             self.navigateToBuyAlgoIfPossible()
         }
         quickActionsView.startObserving(event: .swap) {
-            [unowned self, unowned quickActionsView] in
-
-            if !isOnboardedToSwap {
-                viewModel.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
-                quickActionsView.bindData(viewModel)
-            }
+            [unowned self] in
 
             self.navigateToSwapAssetIfPossible()
         }

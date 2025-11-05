@@ -27,12 +27,6 @@ final class HomeQuickActionsCell:
 
     static let theme = HomeQuickActionsViewTheme()
 
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            contextView.isSwapBadgeVisible = isSwapBadgeVisible
-        }
-    }
-
     override init(
         frame: CGRect
     ) {

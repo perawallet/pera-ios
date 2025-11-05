@@ -31,18 +31,12 @@ final class HomeQuickActionsView:
     ]
 
     private lazy var contentView = HStackView()
-    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var swapActionView = makeActionView()
     private lazy var buyActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
 
     private var theme: HomeQuickActionsViewTheme!
-
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            swapActionView.isBadgeVisible = isSwapBadgeVisible
-        }
-    }
 
     func customize(_ theme: HomeQuickActionsViewTheme) {
         self.theme = theme
@@ -128,7 +122,6 @@ extension HomeQuickActionsView {
     }
 
     private func addSwapAction(_ theme: HomeQuickActionsViewTheme) {
-        swapActionView.customize(theme: theme.swapBadge)
         swapActionView.customizeAppearance(theme.swapAction)
         customizeAction(
             swapActionView,
@@ -204,18 +197,6 @@ extension HomeQuickActionsView {
         return MacaroonUIKit.Button(.imageAtTopmost(
             padding: 0,
             titleAdjustmentY: titleAdjustmentY)
-        )
-    }
-
-    private func makeBadgeActionView() -> BadgeButton {
-        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
-        let swapBadgeEdgeInsets = theme.swapBadgeEdgeInsets
-        return BadgeButton(
-            badgePosition: .topTrailing(swapBadgeEdgeInsets),
-            .imageAtTopmost(
-                padding: 0,
-                titleAdjustmentY: titleAdjustmentY
-            )
         )
     }
 }

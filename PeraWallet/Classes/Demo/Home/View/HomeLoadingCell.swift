@@ -21,11 +21,6 @@ import UIKit
 
 final class HomeLoadingCell:
     CollectionCell<HomeLoadingView> {
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            contextView.isSwapBadgeVisible = isSwapBadgeVisible
-        }
-    }
 
     func startAnimating() {
         contextView.startAnimating()

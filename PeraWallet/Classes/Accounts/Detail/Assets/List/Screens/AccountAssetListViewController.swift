@@ -181,7 +181,6 @@ final class AccountAssetListViewController:
 
         listView.delegate = self
 
-        observeWhenUserIsOnboardedToSwap()
     }
 
     func reloadData() {
@@ -565,9 +564,6 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     return
                 }
 
-                let swapDisplayStore = SwapDisplayStore()
-                let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-                item.isSwapBadgeVisible = !isOnboardedToSwap
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
@@ -810,22 +806,6 @@ extension AccountAssetListViewController {
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func observeWhenUserIsOnboardedToSwap() {
-        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
-            [weak self] _ in
-            guard let self = self else { return }
-
-            guard
-                let indexPath = self.listDataSource.indexPath(for: .quickActions),
-                let cell = self.listView.cellForItem(at: indexPath) as? AccountQuickActionsCell
-            else {
-                return
-            }
-
-            cell.isSwapBadgeVisible = false
-        }
     }
 }
 

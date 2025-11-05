@@ -21,23 +21,16 @@ import pera_wallet_core
 
 struct ASADetailQuickActionsViewModel: ViewModel {
     private(set) var isBuyActionAvailable = false
-    private(set) var isSwapBadgeVisible = false
 
     init(
-        asset: Asset,
-        isSwapBadgeVisible: Bool
+        asset: Asset
     ) {
         bindBuyActionAvailable(asset: asset)
-        bindIsSwapBadgeVisible(isSwapBadgeVisible: isSwapBadgeVisible)
     }
 }
 
 extension ASADetailQuickActionsViewModel {
     mutating func bindBuyActionAvailable(asset: Asset) {
         isBuyActionAvailable = asset.isAlgo
-    }
-
-    mutating func bindIsSwapBadgeVisible(isSwapBadgeVisible: Bool) {
-        self.isSwapBadgeVisible = isSwapBadgeVisible
     }
 }

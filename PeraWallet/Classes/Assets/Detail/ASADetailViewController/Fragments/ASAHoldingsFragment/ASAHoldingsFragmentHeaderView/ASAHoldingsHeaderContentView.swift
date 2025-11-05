@@ -150,13 +150,8 @@ final class ASAHoldingsHeaderContentView: UIView {
             eventHandler?(.quickActionsBuy)
         }
 
-        quickActionsView.startObserving(event: .swap) { [weak self, weak quickActionsView] in
-            guard let self, let quickActionsView else { return }
-
-            if quickActionsViewModel?.isSwapBadgeVisible ?? false {
-                quickActionsViewModel?.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
-                quickActionsView.bindData(quickActionsViewModel)
-            }
+        quickActionsView.startObserving(event: .swap) { [weak self] in
+            guard let self else { return }
 
             eventHandler?(.quickActionsSwap)
         }
