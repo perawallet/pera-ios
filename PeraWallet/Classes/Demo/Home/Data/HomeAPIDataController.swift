@@ -116,7 +116,7 @@ extension HomeAPIDataController {
     func updatePortfolio(with selectedPoint: ChartDataPoint?) {
         guard let point = selectedPoint else {
             chartSelectedPointViewModel = nil
-            publish(.didSelectChartPoint(nil, totalPortfolioItem, tendenciesVM))
+            publish(.shouldReloadPortfolio(nil, totalPortfolioItem, tendenciesVM))
             return
         }
 
@@ -128,7 +128,7 @@ extension HomeAPIDataController {
 
         let viewModel = ChartSelectedPointViewModel(algoValue: point.algoValue, fiatValue: point.fiatValue, usdValue: point.usdValue, dateValue: dateValue)
         chartSelectedPointViewModel = viewModel
-        publish(.didSelectChartPoint(chartSelectedPointViewModel, totalPortfolioItem, tendenciesVM))
+        publish(.shouldReloadPortfolio(chartSelectedPointViewModel, totalPortfolioItem, tendenciesVM))
     }
     
     func fetchInitialChartData(period: ChartDataPeriod) {
@@ -143,6 +143,7 @@ extension HomeAPIDataController {
         }
         chartViewData = viewModel
         tendenciesVM = TendenciesViewModel(chartData: chartViewData?.model.data, currency: sharedDataController.currency)
+        publish(.shouldReloadPortfolio(nil, totalPortfolioItem, tendenciesVM))
     }
     
     func updateClose(for banner: CarouselBannerItemModel) {
@@ -227,6 +228,7 @@ extension HomeAPIDataController {
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
             tendenciesVM = TendenciesViewModel(chartData: chartViewData?.model.data, currency: sharedDataController.currency)
             chartDataCache[period] = chartViewData
+            publish(.shouldReloadPortfolio(nil, totalPortfolioItem, tendenciesVM))
         }
     }
     

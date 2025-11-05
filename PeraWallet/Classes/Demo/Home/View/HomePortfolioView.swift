@@ -101,13 +101,6 @@ final class HomePortfolioView:
             secondaryValueView.attributedText = nil
         }
         
-        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
-            selectedPointDateValue.load(in: selectedPointDateValueView)
-        } else {
-            selectedPointDateValueView.text = nil
-            selectedPointDateValueView.attributedText = nil
-        }
-        
         if
             let differenceText = viewModel?.differenceText,
             let differenceInPercentageText = viewModel?.differenceInPercentageText,
@@ -122,6 +115,15 @@ final class HomePortfolioView:
             tendencyValueView.isHidden = false
         } else {
             tendencyValueView.isHidden = true
+        }
+        
+        if let selectedPointDateValue = viewModel?.selectedPointDateValue {
+            selectedPointDateValue.load(in: selectedPointDateValueView)
+            tendencyValueView.isHidden = true
+        } else {
+            selectedPointDateValueView.text = nil
+            selectedPointDateValueView.attributedText = nil
+            tendencyValueView.isHidden = false
         }
     }
     

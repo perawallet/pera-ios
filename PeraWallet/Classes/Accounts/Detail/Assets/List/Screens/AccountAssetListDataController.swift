@@ -189,7 +189,7 @@ struct AccountAssetsPendingAssetListItem: Hashable {
 
 enum AccountAssetListDataControllerEvent {
     case didUpdate(AccountAssetListUpdates)
-    case didSelectChartPoint(PortfolioViewModel)
+    case shouldReloadPortfolio(PortfolioViewModel)
 }
 
 struct AccountAssetListUpdates {

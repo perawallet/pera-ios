@@ -31,6 +31,7 @@ final class AccountPortfolioView:
     private lazy var valueView = UILabel()
     private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = UILabel()
+    private lazy var tendencyValueView = ChartTendencyView()
     private lazy var minimumBalanceContentView = UIView()
     private lazy var minimumBalanceTitleView = UILabel()
     private lazy var minimumBalanceValueView = UILabel()
@@ -55,6 +56,7 @@ final class AccountPortfolioView:
     ) {
         addValue(theme)
         addSecondaryValue(theme)
+        addTendencyValue(theme)
         addMinimumBalanceContent(theme)
         addSelectedPointDateValue(theme)
     }
@@ -98,18 +100,35 @@ final class AccountPortfolioView:
             minimumBalanceValueView.attributedText = nil
         }
         
+        if
+            let differenceText = viewModel?.differenceText,
+            let differenceInPercentageText = viewModel?.differenceInPercentageText,
+            let arrowImageView = viewModel?.arrowImageView
+        {
+            tendencyValueView.bind(
+                differenceText: differenceText,
+                differenceInPercentageText: differenceInPercentageText,
+                arrowImageView: arrowImageView,
+                hideDiffLabel: false,
+                baselineView: secondaryValueView)
+            tendencyValueView.isHidden = false
+        } else {
+            tendencyValueView.isHidden = true
+        }
+        
         if let selectedPointDateValue = viewModel?.selectedPointDateValue {
-            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView].forEach {
+            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView, tendencyValueView].forEach {
                 $0.isHidden = true
             }
             selectedPointDateValue.load(in: selectedPointDateValueView)
         } else {
-            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView].forEach {
+            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView, tendencyValueView].forEach {
                 $0.isHidden = false
             }
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
         }
+
     }
     
     class func calculatePreferredSize(
@@ -169,14 +188,27 @@ extension AccountPortfolioView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    private func addTendencyValue(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        
+        addSubview(tendencyValueView)
+
+        tendencyValueView.snp.makeConstraints {
+            $0.centerY == secondaryValueView.snp.centerY
+            $0.leading == secondaryValueView.snp.trailing + 8
+            $0.bottom == 0
+        }
+    }
 
     private func addMinimumBalanceContent(
         _ theme: AccountPortfolioViewTheme
     ) {
         addSubview(minimumBalanceContentView)
         minimumBalanceContentView.snp.makeConstraints {
-            $0.centerY == secondaryValueView.snp.centerY
-            $0.trailing == 0
+            $0.top == secondaryValueView.snp.bottom + 12
+            $0.leading == 0
         }
 
         addMinimumBalanceTitle(theme)

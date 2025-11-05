@@ -105,7 +105,6 @@ final class AccountAssetListViewController:
             switch event {
             case .didUpdate(let updates):
                 self.eventHandler?(.didUpdate(self.dataController.account))
-
                 switch updates.operation {
                 case .customize:
                     self.listView.scrollToTop(animated: false)
@@ -130,7 +129,7 @@ final class AccountAssetListViewController:
                         )
                     }
                 }
-            case .didSelectChartPoint(let viewModel):
+            case .shouldReloadPortfolio(let viewModel):
                 listDataSource.reloadPortfolio(with: viewModel)
             }
         }
