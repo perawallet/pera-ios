@@ -28,6 +28,7 @@ struct ASAProfileViewTheme:
     var expandedSpacingBetweenIconAndTitle: LayoutMetric
     var compressedSpacingBetweenIconAndTitle: LayoutMetric
     var name: RightAccessorizedLabelStyle
+    var nameViewLeading: LayoutMetric
     var titleViewHeight: LayoutMetric
     var titleSeparator: TextStyle
     var titleSeparatorContentEdgeInsets: LayoutPaddings
@@ -36,6 +37,9 @@ struct ASAProfileViewTheme:
     var primaryValue: TextStyle
     var spacingBetweenPrimaryValueAndSecondValue: LayoutMetric
     var secondaryValue: TextStyle
+    var tendencyValueViewLeading: LayoutMetric
+    var iconViewLeadingOffset: LayoutMetric
+    var percentLabelLeadingOffset: LayoutMetric
     var chartViewHeight: LayoutMetric
     var chartViewLeadingOffset: LayoutMetric
     var chartViewTrailingOffset: LayoutMetric
@@ -55,6 +59,7 @@ struct ASAProfileViewTheme:
         ]
         name.accessoryContentOffset = (6, 0)
         self.name = name
+        self.nameViewLeading = 12
         self.titleViewHeight = 40
 
         self.titleSeparator = [
@@ -77,8 +82,13 @@ struct ASAProfileViewTheme:
         self.spacingBetweenPrimaryValueAndSecondValue = 4
         self.secondaryValue = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineFittingText()),
+            .font(Typography.bodyMedium())
         ]
+        
+        self.tendencyValueViewLeading = 8
+        self.iconViewLeadingOffset = 10
+        self.percentLabelLeadingOffset = 4
         
         self.chartViewHeight = 172
         self.chartViewLeadingOffset = -24

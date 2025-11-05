@@ -7302,6 +7302,9 @@
 		D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
+		D451BEB42EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
+		D451BEB52EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
+		D451BEB62EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D4563FB42EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB52EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB62EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
@@ -9474,6 +9477,7 @@
 		D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountVerificationViewController+Theme.swift"; sourceTree = "<group>"; };
 		D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreen.swift; sourceTree = "<group>"; };
 		D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreenTheme.swift; sourceTree = "<group>"; };
+		D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TendenciesViewModel.swift; sourceTree = "<group>"; };
 		D453A5A02AB085C20079A7AB /* WCMainArbitraryDataScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataScreen.swift; sourceTree = "<group>"; };
 		D453A5A42AB0868B0079A7AB /* WCMainArbitraryDataScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WCMainArbitraryDataScreen+Theme.swift"; sourceTree = "<group>"; };
 		D453A5A82AB087E70079A7AB /* WCMainArbitraryDataDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainArbitraryDataDataSource.swift; sourceTree = "<group>"; };
@@ -20301,6 +20305,7 @@
 		D418A3CD2DE5B93F0009747E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */,
 				D4757EB12E0AD8BF009C9B91 /* ChartSelectedPointViewModel.swift */,
 				D4C283762E09537B009A4F53 /* ChartViewModel.swift */,
 				D4C283722E095305009A4F53 /* ChartDataModel.swift */,
@@ -26603,6 +26608,7 @@
 				59167FDB2E464C76002184C2 /* BannerView.swift in Sources */,
 				59167FDC2E464C76002184C2 /* BannerViewCommonLayoutSheet.swift in Sources */,
 				59167FDF2E464C76002184C2 /* BannerViewLayoutSheet.swift in Sources */,
+				D451BEB62EBB6517007524E2 /* TendenciesViewModel.swift in Sources */,
 				59167FE02E464C76002184C2 /* BannerViewModel.swift in Sources */,
 				59167FE12E464C76002184C2 /* BannerViewStyleSheet.swift in Sources */,
 				59167FE22E464C76002184C2 /* BannerViewTheme.swift in Sources */,
@@ -28764,6 +28770,7 @@
 				59E6055B2E4A712500CCA99B /* BannerViewCommonLayoutSheet.swift in Sources */,
 				59E6055C2E4A712500CCA99B /* BannerViewLayoutSheet.swift in Sources */,
 				59E6055D2E4A712500CCA99B /* BannerViewModel.swift in Sources */,
+				D451BEB52EBB6517007524E2 /* TendenciesViewModel.swift in Sources */,
 				59E6055E2E4A712500CCA99B /* BannerViewStyleSheet.swift in Sources */,
 				59E6055F2E4A712500CCA99B /* BannerViewTheme.swift in Sources */,
 				59E605602E4A712500CCA99B /* AppConfiguration.swift in Sources */,
@@ -30925,6 +30932,7 @@
 				59E60DD42E4A71D000CCA99B /* BannerViewLayoutSheet.swift in Sources */,
 				59E60DD52E4A71D000CCA99B /* BannerViewModel.swift in Sources */,
 				59E60DD62E4A71D000CCA99B /* BannerViewStyleSheet.swift in Sources */,
+				D451BEB42EBB6517007524E2 /* TendenciesViewModel.swift in Sources */,
 				59E60DD72E4A71D000CCA99B /* BannerViewTheme.swift in Sources */,
 				59E60DD82E4A71D000CCA99B /* AppConfiguration.swift in Sources */,
 				59E60DD92E4A71D000CCA99B /* ViewControllerConfiguration.swift in Sources */,
