@@ -20,6 +20,7 @@ import pera_wallet_core
 
 struct CollectibleDetailNameViewModel: PrimaryTitleViewModel {
     var primaryTitle: TextProvider?
+    var favoriteTitleAccessory: Image?
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?
 

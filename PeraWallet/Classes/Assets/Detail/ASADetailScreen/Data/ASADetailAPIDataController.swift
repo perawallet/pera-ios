@@ -30,6 +30,7 @@ final class ASADetailScreenAPIDataController:
     }
 
     private(set) var asset: Asset
+    private(set) var chartViewData: ChartViewData?
 
     private var assetDetail: AssetDecoration?
 
@@ -38,7 +39,6 @@ final class ASADetailScreenAPIDataController:
     private let chartsDataController: ChartAPIDataController
     private let featureFlagService: FeatureFlagServicing
     
-    private var chartViewData: ChartViewData?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var priceChartDataCache: [ChartDataPeriod: ChartViewData] = [:]
 
@@ -174,14 +174,13 @@ extension ASADetailScreenAPIDataController {
     func toogleFavoriteStatus() {
         guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
         
-        api.tooggleFavoriteStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isFavorited ?? false)), and: String(asset.id)) { response in
-            print("---\(response)")
+        api.tooggleFavoriteStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isFavorited ?? false)), and: String(asset.id)) { [weak self] response in
+            guard let self else { return }
             switch response {
-            case .success(let status):
-                print("---status: \(status.isEnabled)")
-                self.loadData()
-            case .failure(let apiError, let error):
-                print("---apiError: \(apiError)")
+            case .success:
+                loadData()
+            case .failure:
+                eventHandler?(.didFailToToogleStatus(String(localized: "toggle-favorites-error-message")))
             }
         }
     }
@@ -189,14 +188,13 @@ extension ASADetailScreenAPIDataController {
     func tooglePriceAlertStatus() {
         guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
         
-        api.toogglePriceAlertStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isPriceAlertEnabled ?? false)), and: String(asset.id)) { response in
-            print("---\(response)")
+        api.toogglePriceAlertStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isPriceAlertEnabled ?? false)), and: String(asset.id)) { [weak self] response in
+            guard let self else { return }
             switch response {
-            case .success(let status):
-                print("---status: \(status.isEnabled)")
-                self.loadData()
-            case .failure(let apiError, let error):
-                print("---apiError: \(apiError)")
+            case .success:
+                loadData()
+            case .failure:
+                eventHandler?(.didFailToToogleStatus(String(localized: "toggle-price-alert-error-message")))
             }
         }
     }

@@ -30,43 +30,39 @@ final class ASADetailViewController: PageContainer {
     private lazy var errorView = makeError()
     private lazy var pagesScreen = PageContainer(configuration: configuration, hidePageBar: true)
     
+    private lazy var sharedEventHandler: ASADetailViewController.EventHandler = { [weak self] event in
+        guard let self else { return }
+        switch event {
+        case .quickActionsBuy: navigateToBuyAlgoIfPossible()
+        case .quickActionsSend: navigateToSendTransactionIfPossible()
+        case .quickActionsReceive: navigateToReceiveTransaction()
+        case .quickActionsSwap: navigateToSwapAssetIfPossible()
+        case let .profileOnPeriodChange(account, asset, newPeriodSelected):
+            dataController.updateChartData(
+                address: account.address,
+                assetId: String(asset.id),
+                period: newPeriodSelected
+            )
+        case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
+        case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
+        }
+    }
+    
     private lazy var holdingsFragmentScreen = ASAHoldingsFragment(
         account: dataController.account,
         asset: dataController.asset,
         dataController: dataController,
         copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    ) { [weak self] event in
-            guard let self else { return }
-            switch event {
-            case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-            case .quickActionsSend: navigateToSendTransactionIfPossible()
-            case .quickActionsReceive: navigateToReceiveTransaction()
-            case .quickActionsSwap: navigateToSwapAssetIfPossible()
-            case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateChartData(address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-            case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
-            case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
-            }
-        }
+        configuration: configuration,
+        eventHandler: sharedEventHandler)
     
     private lazy var marketsFragmentScreen = ASAMarketsFragment(
         account: dataController.account,
         asset: dataController.asset,
         currency: sharedDataController.currency,
         copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    ) { [weak self] event in
-            guard let self else { return }
-            switch event {
-            case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-            case .quickActionsSend: navigateToSendTransactionIfPossible()
-            case .quickActionsReceive: navigateToReceiveTransaction()
-            case .quickActionsSwap: navigateToSwapAssetIfPossible()
-            case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateAssetPriceChartData(assetId: asset.id, period: newPeriodSelected)
-            case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
-            case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
-            }
-        }
+        configuration: configuration,
+        eventHandler: sharedEventHandler)
 
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
         analytics: analytics,
@@ -265,6 +261,7 @@ extension ASADetailViewController {
 
     private func updateUIWhenDataDidLoad() {
         bindMarketPageData()
+        bindHoldingsPageData()
         removeLoading()
         removeError()
     }
@@ -324,10 +321,21 @@ extension ASADetailViewController {
     private func bindMarketPageData(chartData: ChartViewData? = nil) {
         let asset = dataController.asset
         
-        
         // Get the markets screen from the page container (second screen)
         if let marketScreen = items.last?.screen as? ASAMarketsFragment {
             marketScreen.bindData(asset: asset, account: dataController.account, chartData: chartData)
+        }
+    }
+    
+    private func bindHoldingsPageData() {
+        let asset = dataController.asset
+        
+        if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+            holdingsScreen.updateHeader(
+                with: dataController.chartViewData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false),
+                newAsset: asset,
+                shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
+                eventHandler: sharedEventHandler)
         }
     }
 }
@@ -363,21 +371,14 @@ extension ASADetailViewController {
                 
                 holdingsFragmentScreen.updateHeader(
                     with: validChartData,
-                    shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions
-                ) { [weak self] event in
-                    guard let self else { return }
-                    switch event {
-                    case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-                    case .quickActionsSend: navigateToSendTransactionIfPossible()
-                    case .quickActionsReceive: navigateToReceiveTransaction()
-                    case .quickActionsSwap: navigateToSwapAssetIfPossible()
-                    case let .profileOnPeriodChange(account, asset, newPeriodSelected): dataController.updateChartData( address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-                    case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
-                    case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
-                    }
-                }
-            case let .didFetchPriceChartData(chartData, _, _):
-                bindMarketPageData(chartData: chartData)
+                    shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
+                    eventHandler: sharedEventHandler)
+            case let .didFetchPriceChartData(chartData, _, _): bindMarketPageData(chartData: chartData)
+            case let .didFailToToogleStatus(errorDescription):
+                bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
                 
             }
         }

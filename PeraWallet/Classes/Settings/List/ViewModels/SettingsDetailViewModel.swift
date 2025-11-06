@@ -24,6 +24,7 @@ struct SettingsDetailViewModel:
     PrimaryTitleViewModel,
     Hashable {
     private(set) var primaryTitleAccessory: MacaroonUIKit.Image?
+    private(set) var favoriteTitleAccessory: MacaroonUIKit.Image?
 
     private(set) var image: ImageProvider?
     private(set) var primaryTitle: TextProvider?

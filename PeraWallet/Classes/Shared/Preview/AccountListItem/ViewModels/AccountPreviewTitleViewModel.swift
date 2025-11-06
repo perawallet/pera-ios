@@ -24,6 +24,7 @@ struct AccountPreviewTitleViewModel:
     Hashable {
     private(set) var primaryTitle: MacaroonUIKit.TextProvider?
     private(set) var primaryTitleAccessory: MacaroonUIKit.Image?
+    private(set) var favoriteTitleAccessory: MacaroonUIKit.Image?
     private(set) var secondaryTitle: MacaroonUIKit.TextProvider?
 
     init(account: Account) {

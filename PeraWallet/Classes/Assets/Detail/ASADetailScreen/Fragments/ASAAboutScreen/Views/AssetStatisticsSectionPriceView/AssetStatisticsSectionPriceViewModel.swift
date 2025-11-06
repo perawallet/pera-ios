@@ -19,6 +19,7 @@ import pera_wallet_core
 
 struct AssetStatisticsSectionPriceViewModel: PrimaryTitleViewModel {
     var primaryTitle: TextProvider?
+    var favoriteTitleAccessory: Image?
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?
 

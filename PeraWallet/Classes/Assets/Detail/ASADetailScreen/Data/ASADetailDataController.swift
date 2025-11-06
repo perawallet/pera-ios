@@ -28,6 +28,7 @@ protocol ASADetailScreenDataController: AnyObject {
 
     var account: Account { get }
     var asset: Asset { get }
+    var chartViewData: ChartViewData? { get }
 
     func loadData()
     func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod)
@@ -45,6 +46,7 @@ enum ASADetailScreenDataControllerEvent {
     case didUpdateAccount(old: Account)
     case didFetchChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
     case didFetchPriceChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
+    case didFailToToogleStatus(String)
 }
 
 struct ASADetailScreenConfiguration {

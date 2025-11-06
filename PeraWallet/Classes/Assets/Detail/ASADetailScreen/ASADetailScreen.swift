@@ -784,6 +784,11 @@ extension ASADetailScreen {
                 }
                 profileView.updateChart(with: chartData)
             case .didFetchPriceChartData: break
+            case let .didFailToToogleStatus(errorDescription):
+                bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
             }
         }
         dataController.loadData()

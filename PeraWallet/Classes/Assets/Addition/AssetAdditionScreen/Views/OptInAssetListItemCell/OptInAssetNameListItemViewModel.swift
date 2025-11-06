@@ -22,11 +22,13 @@ import pera_wallet_core
 
 struct OptInAssetNameListItemViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
     init(asset: AssetDecoration) {
         bindPrimaryTitle(asset: asset)
+        bindFavoriteTitleAccessory(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
     }
@@ -66,6 +68,14 @@ extension OptInAssetNameListItemViewModel {
         case .verified: primaryTitleAccessory = "icon-verified"
         case .unverified: primaryTitleAccessory = nil
         case .suspicious: primaryTitleAccessory = "icon-suspicious"
+        }
+    }
+    
+    mutating func bindFavoriteTitleAccessory(asset: AssetDecoration) {
+        if asset.isFavorited ?? false {
+            favoriteTitleAccessory = "icon-asset-favorite"
+        } else {
+            favoriteTitleAccessory = nil
         }
     }
 

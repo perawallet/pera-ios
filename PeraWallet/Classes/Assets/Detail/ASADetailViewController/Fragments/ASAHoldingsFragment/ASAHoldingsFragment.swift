@@ -86,12 +86,12 @@ final class ASAHoldingsFragment: TransactionsViewController {
         )
     }
     
-    func updateHeader(with chartData: ChartViewData, shouldDisplayQuickActions: Bool, eventHandler: @escaping ASADetailViewController.EventHandler) {
+    func updateHeader(with chartData: ChartViewData, newAsset: Asset? = nil, shouldDisplayQuickActions: Bool, eventHandler: @escaping ASADetailViewController.EventHandler) {
         guard let asset else { return }
-        let viewModel = makeViewModel(for: asset)
+        let viewModel = makeViewModel(for: newAsset ?? asset)
         let context = makeContext(
             account: draft.accountHandle.value,
-            asset: asset,
+            asset: newAsset ?? asset,
             viewModel: viewModel,
             chartData: chartData,
             shouldDisplayQuickActions: shouldDisplayQuickActions,

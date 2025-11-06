@@ -148,12 +148,12 @@ final class ASAProfileView:
         }
         
         if showNotificationAndFavoriteButtons {
-            if viewModel?.isAssetFavorited ?? false {
+            if viewModel?.isAssetPriceAlertEnabled ?? false {
                 notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
             } else {
                 notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
             }
-            if viewModel?.isAssetPriceAlertEnabled ?? false {
+            if viewModel?.isAssetFavorited ?? false {
                 favoritesButton.setImage(UIImage(named: "icon-asset-favorite"), for: .normal)
             } else {
                 favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
