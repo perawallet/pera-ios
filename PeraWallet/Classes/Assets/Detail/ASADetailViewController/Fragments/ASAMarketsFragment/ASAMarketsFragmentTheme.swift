@@ -24,7 +24,7 @@ struct ASAMarketsFragmentTheme:
     var background: ViewStyle
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var profile: ASAProfileViewTheme
-    var marketInfo: ASADetailMarketViewTheme
+    var marketInfo: ASAMarketsFragmentMarketViewTheme
     var statistics: AssetStatisticsSectionViewTheme
     var about: AssetAboutSectionViewTheme
     var verificationTier: AssetVerificationInfoViewTheme
@@ -53,7 +53,7 @@ struct ASAMarketsFragmentTheme:
         ]
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.profile = ASAProfileViewTheme(family)
-        self.marketInfo = ASADetailMarketViewTheme()
+        self.marketInfo = ASAMarketsFragmentMarketViewTheme()
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.about = AssetAboutSectionViewTheme(family)
         self.verificationTier = AssetVerificationInfoViewTheme(family)

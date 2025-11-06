@@ -7332,6 +7332,12 @@
 		D46AF6A82E8D701A00C417EF /* SwapV2ConfirmEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AF6A72E8D701500C417EF /* SwapV2ConfirmEvent.swift */; };
 		D46AF6AA2E8D753400C417EF /* SwapV2SettingsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AF6A92E8D752F00C417EF /* SwapV2SettingsEvent.swift */; };
 		D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */; };
+		D46C618E2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C618D2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift */; };
+		D46C618F2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C618D2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift */; };
+		D46C61902EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C618D2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift */; };
+		D46C61922EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C61912EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift */; };
+		D46C61932EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C61912EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift */; };
+		D46C61942EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C61912EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift */; };
 		D46D23DB2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DC2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
 		D46D23DD2E7838C700809462 /* LottieImageViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D23DA2E7838AC00809462 /* LottieImageViewSUI.swift */; };
@@ -9592,6 +9598,8 @@
 		D46B5F4D2D5B78B80016EBDF /* SessionCryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCryptoTests.swift; sourceTree = "<group>"; };
 		D46BB37B277CE66100F50F44 /* ContactDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDisplayViewModel.swift; sourceTree = "<group>"; };
 		D46BB37F277CE86E00F50F44 /* TransactionContactInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionContactInformationViewModel.swift; sourceTree = "<group>"; };
+		D46C618D2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAMarketsFragmentMarketView.swift; sourceTree = "<group>"; };
+		D46C61912EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAMarketsFragmentMarketViewTheme.swift; sourceTree = "<group>"; };
 		D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChoosePasswordViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
 		D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseVerifyViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -21221,7 +21229,9 @@
 			isa = PBXGroup;
 			children = (
 				D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */,
+				D46C61912EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift */,
 				D46303382EA8FB6C00AC2FDB /* ASAMarketsFragment.swift */,
+				D46C618D2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift */,
 			);
 			path = ASAMarketsFragment;
 			sourceTree = "<group>";
@@ -25513,6 +25523,7 @@
 				59167B9A2E464C76002184C2 /* CollectibleGalleryListLoadingCell.swift in Sources */,
 				59167B9B2E464C76002184C2 /* CollectibleGalleryListLoadingView.swift in Sources */,
 				59167B9C2E464C76002184C2 /* CollectibleGalleryListLoadingViewTheme.swift in Sources */,
+				D46C61942EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59167B9D2E464C76002184C2 /* CollectibleGridItemCell.swift in Sources */,
 				59167B9E2E464C76002184C2 /* CollectibleGridItemView.swift in Sources */,
 				59167B9F2E464C76002184C2 /* CollectibleGridItemViewTheme.swift in Sources */,
@@ -25999,6 +26010,7 @@
 				59167D7C2E464C76002184C2 /* AssetVerificationTierInfoBoxViewTheme.swift in Sources */,
 				59167D7D2E464C76002184C2 /* ReceiveCollectibleInfoBoxViewTheme.swift in Sources */,
 				59167D7E2E464C76002184C2 /* InfoBoxView.swift in Sources */,
+				D46C618F2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59167D7F2E464C76002184C2 /* InfoBoxViewModel.swift in Sources */,
 				59167D802E464C76002184C2 /* InfoBoxViewStyle.swift in Sources */,
 				59167D812E464C76002184C2 /* InfoBoxViewTheme.swift in Sources */,
@@ -27672,6 +27684,7 @@
 				59E6011B2E4A712500CCA99B /* CollectibleGridItemCell.swift in Sources */,
 				59E6011C2E4A712500CCA99B /* CollectibleGridItemView.swift in Sources */,
 				59E6011D2E4A712500CCA99B /* CollectibleGridItemViewTheme.swift in Sources */,
+				D46C61932EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59E6011E2E4A712500CCA99B /* PendingCollectibleGridItemCell.swift in Sources */,
 				59E6011F2E4A712500CCA99B /* CollectibleGridItemLoadingView.swift in Sources */,
 				59E601202E4A712500CCA99B /* CollectibleGridItemLoadingViewTheme.swift in Sources */,
@@ -28158,6 +28171,7 @@
 				59E602FD2E4A712500CCA99B /* InfoBoxView.swift in Sources */,
 				59E602FE2E4A712500CCA99B /* InfoBoxViewModel.swift in Sources */,
 				59E602FF2E4A712500CCA99B /* InfoBoxViewStyle.swift in Sources */,
+				D46C618E2EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59E603002E4A712500CCA99B /* InfoBoxViewTheme.swift in Sources */,
 				59E603012E4A712500CCA99B /* InstructionItemView.swift in Sources */,
 				59E603022E4A712500CCA99B /* InstructionItemViewModel.swift in Sources */,
@@ -29831,6 +29845,7 @@
 				59E609932E4A71D000CCA99B /* CollectibleGridItemCell.swift in Sources */,
 				59E609942E4A71D000CCA99B /* CollectibleGridItemView.swift in Sources */,
 				59E609952E4A71D000CCA99B /* CollectibleGridItemViewTheme.swift in Sources */,
+				D46C61922EBD4210001E0378 /* ASAMarketsFragmentMarketViewTheme.swift in Sources */,
 				59E609962E4A71D000CCA99B /* PendingCollectibleGridItemCell.swift in Sources */,
 				59E609972E4A71D000CCA99B /* CollectibleGridItemLoadingView.swift in Sources */,
 				59E609982E4A71D000CCA99B /* CollectibleGridItemLoadingViewTheme.swift in Sources */,
@@ -30317,6 +30332,7 @@
 				59E60B752E4A71D000CCA99B /* InfoBoxView.swift in Sources */,
 				59E60B762E4A71D000CCA99B /* InfoBoxViewModel.swift in Sources */,
 				59E60B772E4A71D000CCA99B /* InfoBoxViewStyle.swift in Sources */,
+				D46C61902EBD41D8001E0378 /* ASAMarketsFragmentMarketView.swift in Sources */,
 				59E60B782E4A71D000CCA99B /* InfoBoxViewTheme.swift in Sources */,
 				59E60B792E4A71D000CCA99B /* InstructionItemView.swift in Sources */,
 				59E60B7A2E4A71D000CCA99B /* InstructionItemViewModel.swift in Sources */,

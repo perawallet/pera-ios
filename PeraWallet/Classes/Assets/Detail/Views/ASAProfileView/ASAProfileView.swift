@@ -253,7 +253,7 @@ extension ASAProfileView {
             $0.leading == 0
         }
     }
-
+    
     private func addName(_ theme: ASAProfileViewTheme) {
         nameView.customize(theme.name)
 

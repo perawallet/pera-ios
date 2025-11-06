@@ -86,8 +86,8 @@ struct LineChartView: View {
                 .chartOverlay { proxy in
                     LineChartOverlayView(data: data, proxy: proxy, geo: geo, selectedPoint: $selectedPoint)
                 }
-                .clipped()
                 .padding(.trailing, 16)
+                .padding(.vertical, 5)
         }
     }
 }

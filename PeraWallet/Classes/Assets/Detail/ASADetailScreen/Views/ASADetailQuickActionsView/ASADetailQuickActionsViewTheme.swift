@@ -35,7 +35,7 @@ struct ASADetailQuickActionsViewTheme:
         self.actionWidth = 64
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
-            .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
+            .title(Self.makeActionTitle(title: String(localized: "title-buy-sell")))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),

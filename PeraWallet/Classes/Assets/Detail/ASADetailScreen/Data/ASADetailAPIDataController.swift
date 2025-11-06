@@ -164,6 +164,21 @@ extension ASADetailScreenAPIDataController {
             priceChartDataCache[period] = chartViewData
             eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
         }
+        
+        chartsDataController.onAssetPriceFetch = { [weak self] error, period, chartsData in
+            guard let self else { return }
+            guard error == nil else {
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                eventHandler?(.didFetchPriceChartData(data: nil, error: error, period: period))
+                return
+            }
+            let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
+                return ChartDataPoint(day: index, algoValue: 0.0, fiatValue: item.price, usdValue: 0.0, timestamp: item.datetime)
+            }
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            priceChartDataCache[period] = chartViewData
+            eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
+        }
     }
     
     func toogleFavoriteStatus() {

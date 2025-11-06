@@ -21,15 +21,28 @@ public extension URL {
         return URL(string: "https://twitter.com/\(username)")
     }
     
-    enum AppGroupURLError : Error {
+    enum AppGroupURLError: Error {
         case invalid
     }
     
     static func appGroupDBURL(for appGroup: String, databaseName: String) throws(AppGroupURLError) -> URL {
-        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
-            throw AppGroupURLError.invalid
-        }
+        
+        let containerURL: URL
+        
+        #if DATABASE_SANDBOX
 
-        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+        containerURL = FileManager.default.temporaryDirectory
+        
+        #else
+        
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            throw .invalid
+        }
+        
+        containerURL = fileContainer
+        
+        #endif
+
+        return containerURL.appendingPathComponent("\(databaseName).sqlite")
     }
 }

@@ -29,8 +29,8 @@ final class ASAMarketsFragment:
     }
 
     private lazy var contextView = VStackView()
-    private lazy var profileView = ASAProfileView(type: .assetPrice, showNotificationAndFavoriteButtons: showNotificationAndFavoriteButtons)
-    private lazy var marketInfoView = ASADetailMarketView()
+    private lazy var profileView = ASAProfileView(type: .assetPrice)
+    private lazy var marketInfoView = ASAMarketsFragmentMarketView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
@@ -50,7 +50,6 @@ final class ASAMarketsFragment:
     private var currency: CurrencyProvider
     private let copyToClipboardController: CopyToClipboardController
     private var eventHandler: ASADetailViewController.EventHandler?
-    private var showNotificationAndFavoriteButtons = false
 
     private let theme = ASAMarketsFragmentTheme()
 
@@ -67,7 +66,6 @@ final class ASAMarketsFragment:
         self.currency = currency
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
-        self.showNotificationAndFavoriteButtons = configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
 
         super.init(configuration: configuration)
     }
@@ -144,8 +142,7 @@ extension ASAMarketsFragment {
             switch section {
             case .profile:
                 bindProfile()
-            case .market:
-                bindMarketData()
+            case .market: break
             case .statistics:
                 bindStatisticsData()
             case .about:
@@ -193,16 +190,6 @@ extension ASAMarketsFragment {
     private func bindProfile() {
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
-        }
-        
-        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
-            guard let self else { return }
-            eventHandler?(.profileOnFavoriteTap)
-        }
-        
-        profileView.startObserving(event: .onNotificationTap) { [weak self] in
-            guard let self else { return }
-            eventHandler?(.profileOnNotificationTap)
         }
 
         profileView.onPeriodChange = { [weak self] newPeriodSelected in
@@ -274,19 +261,6 @@ extension ASAMarketsFragment {
             )
         }
 
-        bindMarketData()
-    }
-    
-    private func bindMarketData() {
-        let viewModel = ASADetailMarketViewModel(
-            assetItem: .init(
-                asset: asset,
-                currency: sharedDataController.currency,
-                currencyFormatter: CurrencyFormatter(),
-                isAmountHidden: false
-            )
-        )
-        marketInfoView.bindData(viewModel)
     }
 
     private func addStatistics() {
