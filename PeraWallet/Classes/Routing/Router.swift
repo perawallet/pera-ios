@@ -436,7 +436,7 @@ final class Router:
             route(
                 to: .incomingASA(address: address, requestsCount: requestsCount),
                 from: findVisibleScreen(over: rootViewController),
-                by: .push
+                by: .present
             )
         case .externalDeepLink(deepLink: let deepLink):
             switch deepLink {
