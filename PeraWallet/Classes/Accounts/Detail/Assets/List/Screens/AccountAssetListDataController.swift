@@ -30,6 +30,8 @@ protocol AccountAssetListDataController: AnyObject {
     func fetchInitialChartData(period: ChartDataPeriod)
     func updateChartData(period: ChartDataPeriod)
     func updatePortfolio(with selectedPoint: ChartDataPoint?)
+    func shouldUpdateAsset(_ asset: Asset)
+    func checkForAssetsToUpdate()
 }
 
 enum AccountAssetsSection:
@@ -205,6 +207,8 @@ extension AccountAssetListUpdates {
         case search
         /// Reload by the last query
         case refresh
+        /// Update assets
+        case updateAssets
     }
 }
 

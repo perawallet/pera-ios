@@ -45,10 +45,12 @@ final class AccountAssetListAPIDataController:
     private let sharedDataController: SharedDataController
     private let chartsDataController: ChartAPIDataController
     private let featureFlagService: FeatureFlagServicing
+    private let api: ALGAPI
     
     private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var portfolioItem: AccountPortfolioItem?
+    private var assetToUpdate: Asset?
 
     init(
         account: AccountHandle,
@@ -59,6 +61,7 @@ final class AccountAssetListAPIDataController:
         self.sharedDataController = configuration.sharedDataController
         self.chartsDataController = chartsDataController
         self.featureFlagService = configuration.featureFlagService
+        self.api = configuration.api
         setupCallbacks()
     }
     
@@ -225,8 +228,40 @@ extension AccountAssetListAPIDataController {
         } else {
             publish(event: .didSelectChartPoint(AccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))
         }
-        
+    }
+    
+    func shouldUpdateAsset(_ asset: Asset) {
+        assetToUpdate = asset
+    }
+    
+    func checkForAssetsToUpdate() {
+        if let asset = assetToUpdate {
 
+            api.fetchAssetList(
+                AssetFetchQuery(ids: [asset.id]),
+                queue: .main,
+                ignoreResponseOnCancelled: false
+            ) { [weak self] response in
+                guard let self else { return }
+                switch response {
+                case .success(let assetDetailResponse):
+                    assetDetailResponse.results.forEach { [weak self] in
+                        guard let self else { return }
+                        sharedDataController.assetDetailCollection[$0.id] = $0
+                    }
+                    if
+                        let assetToUpdate,
+                        assetToUpdate.isFavorited != sharedDataController.assetDetailCollection[assetToUpdate.id]?.isFavorited
+                    {
+                        deliverUpdatesForLoading(for: .updateAssets)
+                    }
+                    
+                case .failure:
+                    break
+                }
+                assetToUpdate = nil
+            }
+        }
     }
     
     private func setupChartDataClosures() {

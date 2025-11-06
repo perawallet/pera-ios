@@ -100,7 +100,7 @@ final class AccountAssetListViewController:
 
         dataController.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didUpdate(let updates):
@@ -108,16 +108,25 @@ final class AccountAssetListViewController:
 
                 switch updates.operation {
                 case .customize:
-                    self.listView.scrollToTop(animated: false)
+                    listView.scrollToTop(animated: false)
                 case .search:
                     let bottom = self.listView.contentSize.height
                     let minBottom = self.calculateMinEmptySpacingToScrollSearchInputFieldToTop()
-                    self.listView.contentInset.bottom = max(bottom, minBottom)
+                    listView.contentInset.bottom = max(bottom, minBottom)
                 case .refresh:
                     break
+                case .updateAssets:
+                    let offset = listView.contentOffset
+                    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AccountAssetsItem>()
+                    sectionSnapshot.append(updates.snapshot.itemIdentifiers(inSection: .assets))
+                    listDataSource.apply(sectionSnapshot, to: .assets, animatingDifferences: true) { [weak self] in
+                        guard let self else { return }
+                        listView.setContentOffset(offset, animated: false)
+                    }
+                    return
                 }
 
-                self.listDataSource.apply(
+                listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
                 ) { [weak self] in
@@ -143,6 +152,12 @@ final class AccountAssetListViewController:
         if !listView.frame.isEmpty {
             updateUIWhenViewDidLayoutSubviews()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        dataController.checkForAssetsToUpdate()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -669,6 +684,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     account: dataController.account.value,
                     asset: item.asset
                 )
+                dataController.shouldUpdateAsset(item.asset)
                 open(
                     screen,
                     by: .push
