@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASAProfileViewModel.swift
+//   AssetPriceChartDataDraft.swift
 
-import Foundation
-import MacaroonUIKit
+import MagpieCore
 
-protocol ASAProfileViewModel: ViewModel {
-    var icon: ImageSource? { get }
-    var name: RightAccessorizedLabelModel? { get }
-    var titleSeparator: TextProvider? { get }
-    var id: TextProvider? { get }
-    var primaryValue: TextProvider? { get }
-    var secondaryValue: TextProvider? { get }
-    var selectedPointDateValue: TextProvider? { get }
-    var priceValue: TextProvider? { get }
+struct AssetPriceChartDataDraft: ObjectQuery {
+    var period: ChartDataPeriod
+    var assetId: AssetID
+    
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
+
+        params.append(APIQueryParam(.period, period.rawValue))
+        params.append(APIQueryParam(.asset, assetId))
+
+        return params
+    }
 }

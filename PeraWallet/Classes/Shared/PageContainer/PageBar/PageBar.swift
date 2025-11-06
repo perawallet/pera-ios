@@ -58,6 +58,7 @@ final class PageBar: View {
     func customizeAppearance(_ styleSheet: PageBarStyleSheet ) {
         customizeOffIndicatorAppearance(styleSheet)
         customizeOnIndicatorAppearance(styleSheet)
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 
     func prepareLayout(_ layoutSheet: PageBarLayoutSheet) {

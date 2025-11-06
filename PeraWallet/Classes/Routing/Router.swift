@@ -862,13 +862,24 @@ final class Router:
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
-            let aViewController = ASADetailScreen(
-                swapDataStore: SwapDataLocalStore(),
-                dataController: dataController,
-                copyToClipboardController: copyToClipboardController,
-                configuration: configuration
-            )
-            viewController = aViewController
+            
+            if appConfiguration.featureFlagService.isEnabled(.assetDetailV2Enabled) {
+                let aViewController = ASADetailViewController(
+                    swapDataStore: SwapDataLocalStore(),
+                    dataController: dataController,
+                    copyToClipboardController: copyToClipboardController,
+                    configuration: configuration
+                )
+                viewController = aViewController
+            } else {
+                let aViewController = ASADetailScreen(
+                    swapDataStore: SwapDataLocalStore(),
+                    dataController: dataController,
+                    copyToClipboardController: copyToClipboardController,
+                    configuration: configuration
+                )
+                viewController = aViewController
+            }
         case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
             let dataController =
                 ASADiscoveryScreenAPIDataController(

@@ -8439,6 +8439,16 @@
         }
       }
     },
+    "title-holdings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holdings"
+          }
+        }
+      }
+    },
     "title-home" : {
       "localizations" : {
         "en" : {
@@ -10698,6 +10708,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ASA Verification"
+          }
+        }
+      }
+    },
+    "view-more-details-discover-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View more details on Discover"
           }
         }
       }

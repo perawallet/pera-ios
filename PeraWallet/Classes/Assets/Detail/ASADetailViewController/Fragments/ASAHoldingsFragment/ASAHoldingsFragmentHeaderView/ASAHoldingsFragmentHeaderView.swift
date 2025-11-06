@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   LocalCurrency.swift
+//   ASAHoldingsFragmentHeaderView.swift
 
-import Foundation
+import UIKit
 
-/// <todo>
-/// The asset symbols can be used as `LocalCurrency`.
-public protocol LocalCurrency {
-    var id: CurrencyID { get }
-    var name: String? { get }
-    var symbol: String? { get }
-}
+final class ASAHoldingsFragmentHeaderView: UICollectionReusableView {
+    private lazy var contentViewContainer = ASAHoldingsHeaderContentView()
 
-extension LocalCurrency {
-    public var isAlgo: Bool {
-        return id.isAlgo
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubview(contentViewContainer)
+        contentViewContainer.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
-    public var isUSD: Bool {
-        return id.isUSD
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func bind(context: ASAHoldingsHeaderContext) {
+        contentViewContainer.bind(context: context)
     }
 }

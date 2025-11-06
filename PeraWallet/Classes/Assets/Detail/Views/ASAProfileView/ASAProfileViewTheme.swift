@@ -55,7 +55,7 @@ struct ASAProfileViewTheme:
         ]
         name.accessoryContentOffset = (6, 0)
         self.name = name
-        self.titleViewHeight = 20
+        self.titleViewHeight = 40
 
         self.titleSeparator = [
             .textColor(Colors.Text.grayLighter),
@@ -74,7 +74,7 @@ struct ASAProfileViewTheme:
             .textOverflow(SingleLineFittingText())
         ]
 
-        self.spacingBetweenPrimaryValueAndSecondValue = 8
+        self.spacingBetweenPrimaryValueAndSecondValue = 4
         self.secondaryValue = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText())

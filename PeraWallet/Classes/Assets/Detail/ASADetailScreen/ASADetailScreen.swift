@@ -631,11 +631,6 @@ extension ASADetailScreen {
 
     private func setupProfileView() {
         profileView.customize(theme.profile)
-
-        profileView.startObserving(event: .copyAssetID) {
-            [unowned self] in
-            self.copyToClipboardController.copyID(self.dataController.asset)
-        }
         
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
@@ -798,6 +793,7 @@ extension ASADetailScreen {
                     return
                 }
                 profileView.updateChart(with: chartData)
+            case .didFetchPriceChartData: break
             }
         }
         dataController.loadData()
