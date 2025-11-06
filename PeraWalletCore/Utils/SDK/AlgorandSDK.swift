@@ -163,9 +163,9 @@ extension AlgorandSDK {
             draft.voteKey,
             draft.selectionKey,
             draft.stateProofKey,
-            AlgoSdkUint64(ref: draft.voteFirst ?? 0),
-            AlgoSdkUint64(ref: draft.voteLast ?? 0),
-            AlgoSdkUint64(ref: draft.voteKeyDilution ?? 0),
+            UInt64(draft.voteFirst ?? 0).toSDKInt64(),
+            UInt64(draft.voteLast ?? 0).toSDKInt64(),
+            UInt64(draft.voteKeyDilution ?? 0).toSDKInt64(),
             false,
             &error
         )
