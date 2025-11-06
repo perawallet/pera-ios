@@ -23,6 +23,7 @@ import MagpieCore
 
 public final class ALGAPI: API {
     public let session: Session
+    public let analytics: ALGAnalytics
     private let featureFlagService: FeatureFlagServicing
 
     /// <todo>
@@ -44,8 +45,9 @@ public final class ALGAPI: API {
         featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
     }
 
-    public init(session: Session, featureFlagService: FeatureFlagServicing, networkMonitor: NetworkMonitor? = nil) {
+    public init(session: Session, analytics: ALGAnalytics, featureFlagService: FeatureFlagServicing, networkMonitor: NetworkMonitor? = nil) {
         self.session = session
+        self.analytics = analytics
         self.featureFlagService = featureFlagService
 
         super.init(

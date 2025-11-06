@@ -7380,6 +7380,8 @@
 		D4D2B5232DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		D4D2B5242DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		D4D2B5252DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
+		D4EBC1D92EBCD44A0046AE9C /* AssetDetailV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */; };
+		D4EBC1DB2EBCD4F50046AE9C /* AssetListV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1DA2EBCD4EC0046AE9C /* AssetListV2Error.swift */; };
 		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
@@ -10066,6 +10068,8 @@
 		D4E9E273298816850008C4D5 /* CollectibleListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListQuery.swift; sourceTree = "<group>"; };
 		D4EAEC9F2846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAccountListTitleSupplementaryHeader.swift; sourceTree = "<group>"; };
 		D4EBA7612E13E75100899FF3 /* AssetChartDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetChartDataDTO.swift; sourceTree = "<group>"; };
+		D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailV2Error.swift; sourceTree = "<group>"; };
+		D4EBC1DA2EBCD4EC0046AE9C /* AssetListV2Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListV2Error.swift; sourceTree = "<group>"; };
 		D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
 		D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewModel.swift; sourceTree = "<group>"; };
 		D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsViewTheme.swift; sourceTree = "<group>"; };
@@ -11721,6 +11725,8 @@
 		2B32A2412552EF9B007CC3A6 /* Logs */ = {
 			isa = PBXGroup;
 			children = (
+				D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */,
+				D4EBC1DA2EBCD4EC0046AE9C /* AssetListV2Error.swift */,
 				2BB835A62EAB78D2002BEA35 /* MediaCleanUpErrorLog.swift */,
 				D4A5336229F6EA2100CBC1A9 /* LedgerAccountSelectionScreenFetchingRekeyingAccountsFailedLog.swift */,
 				2B32A25E2552F031007CC3A6 /* LedgerTransactionErrorLog.swift */,
@@ -31437,6 +31443,7 @@
 				5916766E2E460AF9002184C2 /* AssetFetchDraft.swift in Sources */,
 				5916766F2E460AF9002184C2 /* AssetSupportDraft.swift in Sources */,
 				591676702E460AF9002184C2 /* AssetInboxSendDraft.swift in Sources */,
+				D4EBC1DB2EBCD4F50046AE9C /* AssetListV2Error.swift in Sources */,
 				59B1F8A52E4B2EB400B8F6FB /* LiquidAuthResponse.swift in Sources */,
 				59B1F8A62E4B2EB400B8F6FB /* LiquidAuthRequest.swift in Sources */,
 				59B1F8A72E4B2EB400B8F6FB /* LiquidAuthSDKAPI.swift in Sources */,
@@ -31728,6 +31735,7 @@
 				591677DC2E460AF9002184C2 /* AlgorandApplication.swift in Sources */,
 				591677DD2E460AF9002184C2 /* ApplicationLocalState.swift in Sources */,
 				D46AF69E2E8D6BCE00C417EF /* SwapV2HistoryEvent.swift in Sources */,
+				D4EBC1D92EBCD44A0046AE9C /* AssetDetailV2Error.swift in Sources */,
 				591677DE2E460AF9002184C2 /* ApplicationStateSchema.swift in Sources */,
 				591677DF2E460AF9002184C2 /* Account.swift in Sources */,
 				591677E02E460AF9002184C2 /* Account+FastLookup.swift in Sources */,

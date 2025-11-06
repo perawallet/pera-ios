@@ -66,7 +66,8 @@ extension ALGAPI {
             switch response {
             case .success(let list):
                 handler(.success(list))
-            case .failure:
+            case .failure(let apiError, _):
+                analytics.record(.assetListV2Error(errorDescription: apiError.localizedDescription))
                 fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
             }
         }
@@ -122,7 +123,8 @@ extension ALGAPI {
             switch response {
             case .success(let detail):
                 handler(.success(detail))
-            case .failure:
+            case .failure(let apiError, _):
+                analytics.record(.assetDetailV2Error(errorDescription: apiError.localizedDescription))
                 fetchAssetDetailV1(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
             }
         }
