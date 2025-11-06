@@ -185,7 +185,6 @@ extension AccountPortfolioView {
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0
-            $0.bottom.equalToSuperview()
         }
     }
     
@@ -209,6 +208,7 @@ extension AccountPortfolioView {
         minimumBalanceContentView.snp.makeConstraints {
             $0.top == secondaryValueView.snp.bottom + 12
             $0.leading == 0
+            $0.bottom.lessThanOrEqualToSuperview()
         }
 
         addMinimumBalanceTitle(theme)
