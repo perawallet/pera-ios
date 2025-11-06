@@ -24,7 +24,7 @@ final class TendenciesViewModel {
     var differenceText: TextProvider?
     var differenceInPercentageText: TextProvider?
     var arrowImageView: ImageProvider?
-
+    
     init(
         chartData: [ChartDataPointViewModel]?,
         currency: CurrencyProvider?,
@@ -32,6 +32,10 @@ final class TendenciesViewModel {
         self.chartData = chartData
         self.currency = currency
         
+        configure()
+    }
+    
+    private func configure() {
         guard
             let chartData,
             chartData.count > 1,
@@ -43,8 +47,6 @@ final class TendenciesViewModel {
         }
         
         let difference = lastValue - firstValue
-        let differenceInPercentage = (difference / firstValue) * 100
-        
         let isPositive = difference > 0
         let textSign = isPositive ? "+" : "-"
         let textColor = isPositive ? Colors.Helpers.positive : Colors.Helpers.negative
@@ -54,22 +56,24 @@ final class TendenciesViewModel {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = rawCurrency
         
-        guard
-            let differenceString = currencyFormatter.format(abs(difference)),
-            let differenceInPercentageString = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2).string(for: abs(differenceInPercentage))
-        else {
-            return
-        }
+        guard let differenceString = currencyFormatter.format(abs(difference)) else { return }
         
         differenceText = (textSign + differenceString).attributed([
             .font(Typography.bodyMedium()),
             .textColor(textColor)
         ])
         
-        differenceInPercentageText = (differenceInPercentageString + "%").attributed([
-            .font(Typography.bodyMedium()),
-            .textColor(textColor)
-        ])
+        if firstValue != 0 {
+            let differenceInPercentage = (difference / firstValue) * 100
+            if let percentageString = Formatter
+                .decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 2)
+                .string(for: abs(differenceInPercentage)) {
+                differenceInPercentageText = (percentageString + "%").attributed([
+                    .font(Typography.bodyMedium()),
+                    .textColor(textColor)
+                ])
+            }
+        }
         
         arrowImageView = (isPositive ? "icon-market-increase" : "icon-market-decrease").uiImage
     }
