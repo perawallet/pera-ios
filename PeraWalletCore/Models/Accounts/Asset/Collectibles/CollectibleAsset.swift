@@ -56,7 +56,7 @@ public final class CollectibleAsset: Asset {
     public private(set) var isAvailableOnDiscover: Bool
     public private(set) var category: UInt64?
 
-    public let isAlgo = false
+    public var isAlgo = false
     public let isFault = false
 
     public var naming: AssetNaming {
@@ -94,6 +94,7 @@ public final class CollectibleAsset: Asset {
         decoration: AssetDecoration
     ) {
         self.id = asset.id
+        self.isAlgo = asset.id == 0
         self.isFrozen = asset.isFrozen
         self.isFavorited = asset.isFavorited ?? decoration.isFavorited
         self.isPriceAlertEnabled = asset.isPriceAlertEnabled ?? decoration.isPriceAlertEnabled
@@ -140,6 +141,7 @@ public final class CollectibleAsset: Asset {
 
     public init(decoration: AssetDecoration) {
         self.id = decoration.id
+        self.isAlgo = decoration.id == 0
         self.isFrozen = nil
         self.isFavorited = decoration.isFavorited
         self.isPriceAlertEnabled = decoration.isPriceAlertEnabled
@@ -180,7 +182,8 @@ public final class CollectibleAsset: Asset {
 extension CollectibleAsset {
     public func update(with asset: StandardAsset) {
         if id != asset.id { return }
-
+        
+        isAlgo = asset.id == 0
         isFrozen = asset.isFrozen ?? isFrozen
         isDestroyed = asset.isDestroyed
         isFavorited = asset.isFavorited
@@ -212,6 +215,7 @@ extension CollectibleAsset {
     public func update(with asset: CollectibleAsset) {
         if id != asset.id { return }
 
+        isAlgo = asset.id == 0
         isFrozen = asset.isFrozen ?? isFrozen
         isDestroyed = asset.isDestroyed
         isFavorited = asset.isFavorited

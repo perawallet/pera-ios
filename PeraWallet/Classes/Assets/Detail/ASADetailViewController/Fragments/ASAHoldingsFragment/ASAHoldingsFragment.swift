@@ -100,6 +100,10 @@ final class ASAHoldingsFragment: TransactionsViewController {
         
         transactionsDataSource.updateHeader(with: context)
     }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        transactionsDataSource.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
 }
 
 struct ASAHoldingsHeaderContext {

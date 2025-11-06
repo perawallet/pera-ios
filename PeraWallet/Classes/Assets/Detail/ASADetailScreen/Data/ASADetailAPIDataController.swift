@@ -71,11 +71,6 @@ final class ASADetailScreenAPIDataController:
 extension ASADetailScreenAPIDataController {
     func loadData() {
         setupChartDataClosures()
-        
-        if asset.isAlgo {
-            didLoadData()
-            return
-        }
 
         eventHandler?(.willLoadData)
 
@@ -218,23 +213,8 @@ extension ASADetailScreenAPIDataController {
         guard let newAccount = sharedDataController.accountCollection[address] else { return }
 
         if !newAccount.isAvailable { return }
-
-        if asset.isAlgo {
-            publishEventIfAlgoAssetDidUpdate(newAccount.value)
-        } else {
-            publishEventIfStandardAssetDidUpdate(newAccount.value)
-        }
-
+        publishEventIfStandardAssetDidUpdate(newAccount.value)
         account = newAccount.value
-    }
-
-    private func publishEventIfAlgoAssetDidUpdate(_ newAccount: Account) {
-        let newAsset = newAccount.algo
-
-        if !isAssetUpdated(newAsset) { return }
-
-        asset = newAsset
-        eventHandler?(.didLoadData)
     }
 
     private func publishEventIfStandardAssetDidUpdate(_ newAccount: Account) {

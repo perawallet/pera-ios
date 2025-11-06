@@ -336,6 +336,7 @@ extension ASADetailViewController {
                 newAsset: asset,
                 shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
                 eventHandler: sharedEventHandler)
+            holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: asset.isPriceAlertEnabled ?? false, isAssetFavorited: asset.isFavorited ?? false)
         }
     }
 }
@@ -373,6 +374,7 @@ extension ASADetailViewController {
                     with: validChartData,
                     shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
                     eventHandler: sharedEventHandler)
+                holdingsFragmentScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: dataController.asset.isPriceAlertEnabled ?? false, isAssetFavorited: dataController.asset.isFavorited ?? false)
             case let .didFetchPriceChartData(chartData, _, _): bindMarketPageData(chartData: chartData)
             case let .didFailToToogleStatus(errorDescription):
                 bannerController?.presentErrorBanner(

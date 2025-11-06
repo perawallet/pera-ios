@@ -139,4 +139,8 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
         currentHeaderContext = context
         headerView?.bind(context: context)
     }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        headerView?.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
 }

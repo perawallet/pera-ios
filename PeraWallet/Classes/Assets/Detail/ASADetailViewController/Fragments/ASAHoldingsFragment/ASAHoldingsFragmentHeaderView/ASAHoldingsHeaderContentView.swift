@@ -182,4 +182,8 @@ final class ASAHoldingsHeaderContentView: UIView {
 
         profileView.bindData(viewModel)
     }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        profileView.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
 }

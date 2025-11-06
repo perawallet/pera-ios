@@ -32,4 +32,8 @@ final class ASAHoldingsFragmentHeaderView: UICollectionReusableView {
     func bind(context: ASAHoldingsHeaderContext) {
         contentViewContainer.bind(context: context)
     }
+    
+    func bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        contentViewContainer.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
 }
