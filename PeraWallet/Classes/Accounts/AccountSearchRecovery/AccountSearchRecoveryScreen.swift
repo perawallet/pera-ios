@@ -14,30 +14,34 @@
 
 //   AccountSearchRecoveryScreen.swift
 
-import Foundation
 import UIKit
 import SwiftUI
-import pera_wallet_core
-import MacaroonUIKit
 
-class AccountSearchRecoveryScreen : BaseViewController {
-
-    let recoveryView = RecoveryToolView()
+final class AccountSearchRecoveryScreen : SwiftUICompatibilityBaseViewController {
+    init(configuration: ViewControllerConfiguration) {
+        if let session = configuration.session,
+           let api = configuration.api
+        {
+            let sharedDataController = configuration.sharedDataController
+            let hdWalletStorage = configuration.hdWalletStorage
+            let hdWalletService = configuration.hdWalletService
+            
+            let recoveryView: RecoveryToolView = RecoveryToolView(
+                session: session,
+                sharedDataController: sharedDataController,
+                hdWalletStorage: hdWalletStorage,
+                hdWalletService: hdWalletService,
+                api: api)
+            let hostingController = UIHostingController(rootView: recoveryView)
+            super.init(configuration: configuration, hostingController: hostingController)
+        } else {
+            let hostingController = UIHostingController(rootView: Text("default-error-message"))
+            super.init(configuration: configuration, hostingController: hostingController)
+        }
+    }
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Defaults.background.uiColor
         navigationItem.title = String(localized: "dev-settings-recover-account").capitalized
-    }
-
-    override func prepareLayout() {
-        let hostingController = UIHostingController(rootView: recoveryView)
-        addChild(hostingController)
-        hostingController.didMove(toParent: self)
-        view.addSubview(hostingController.view)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostingController.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        hostingController.sizingOptions = [.intrinsicContentSize]
     }
 }

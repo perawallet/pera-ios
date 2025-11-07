@@ -26,11 +26,27 @@ final class RecoveryToolViewModel: ObservableObject {
     @Published fileprivate(set) var isErrorState: Bool = false
     @Published var address: String = ""
     
+    private let session: Session
+    private let sharedDataController: SharedDataController
+    private let hdWalletStorage: HDWalletStorable
+    private let hdWalletService: HDWalletServicing
+    private let api: ALGAPI
+    
+    init(session: Session, sharedDataController: SharedDataController, hdWalletStorage: HDWalletStorable, hdWalletService: HDWalletServicing, api: ALGAPI) {
+        self.session = session
+        self.sharedDataController = sharedDataController
+        self.hdWalletStorage = hdWalletStorage
+        self.hdWalletService = hdWalletService
+        self.api = api
+    }
     
     // MARK: - Methods
-    
     @MainActor
     func scanForAddress() {
+        guard !loading else {
+            return
+        }
+        
         do {
             statusText = ""
             isErrorState = false
@@ -38,15 +54,10 @@ final class RecoveryToolViewModel: ObservableObject {
             
             defer { loading = false }
             
-            guard let config = CoreAppConfiguration.shared else {
-                loading = false
-                return
-            }
-            
-            if config.session.privateData(for: address) != nil {
-                try recoverAlgo25Account(address)
-            } else if let key = config.hdWalletStorage.allHDWalletKeys.first(where: { $0.contains(address) }) {
-                try recoverHDWalletAccount(key)
+            if session.privateData(for: address) != nil {
+                try recoverAlgo25Account(address: address)
+            } else if let key = hdWalletStorage.allHDWalletKeys.first(where: { $0.contains(address) }) {
+                try recoverHDWalletAccount(key: key)
             } else {
                 statusText = String(localized: "search-recovery-not-found")
                 isErrorState = true
@@ -58,12 +69,9 @@ final class RecoveryToolViewModel: ObservableObject {
         }
     }
     
-    private func recoverAlgo25Account(_ address: String) throws {
-        guard let config = CoreAppConfiguration.shared else {
-            return
-        }
+    private func recoverAlgo25Account(address: String) throws {
         
-        guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
+        guard sharedDataController.accountCollection.contains(where: { $0.value.address == address }) else {
             statusText = String(localized: "search-recovery-already-exists")
             isErrorState = true
             return
@@ -73,23 +81,19 @@ final class RecoveryToolViewModel: ObservableObject {
             address: address,
             name: address.shortAddressDisplay,
             isWatchAccount: false,
-            preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
             isBackedUp: true,
             hdWalletAddressDetail: nil
         ))
     }
     
-    private func recoverHDWalletAccount(_ key: String) throws {
+    private func recoverHDWalletAccount(key: String) throws {
         let parts = key.split(separator: ".")
         let walletId = String(parts[1])
         let address = String(parts[2])
         
-        guard let config = CoreAppConfiguration.shared else {
-            return
-        }
-        
-        if let hdWallet = try config.hdWalletStorage.wallet(id: walletId) {
-            guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
+        if let hdWallet = try hdWalletStorage.wallet(id: walletId) {
+            guard sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
                 statusText = String(localized: "search-recovery-already-exists")
                 isErrorState = true
                 return
@@ -98,7 +102,7 @@ final class RecoveryToolViewModel: ObservableObject {
             let mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: hdWallet.entropy)?.components(separatedBy: .whitespaces) ?? []
             
             Task {
-                let recovery = try await config.hdWalletService.recoverAccounts(fromMnemonic: mnemonics.joined(separator: " "), api: config.api)
+                let recovery = try await hdWalletService.recoverAccounts(fromMnemonic: mnemonics.joined(separator: " "), api: api)
                 if let account = recovery.first(where: {$0.address == address}) {
                     
                     let hdWalletAddressDetail = HDWalletAddressDetail(
@@ -112,7 +116,7 @@ final class RecoveryToolViewModel: ObservableObject {
                         address: account.address,
                         name: account.address.shortAddressDisplay,
                         isWatchAccount: false,
-                        preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
+                        preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
                         isBackedUp: true,
                         hdWalletAddressDetail: hdWalletAddressDetail
                     ))
@@ -126,7 +130,7 @@ final class RecoveryToolViewModel: ObservableObject {
             return
         }
         
-        let authenticatedUser = config.session.authenticatedUser ?? User()
+        let authenticatedUser = session.authenticatedUser ?? User()
         authenticatedUser.addAccounts([info])
         
         let pushNotificationController = PushNotificationController(
@@ -138,8 +142,12 @@ final class RecoveryToolViewModel: ObservableObject {
         
         config.session.authenticatedUser = authenticatedUser
         
-        statusText = String(localized: "search-recovery-recovered")
-        isErrorState = false
-        loading = false
+        Task {
+            await MainActor.run {
+                statusText = String(localized: "search-recovery-recovered")
+                isErrorState = false
+                loading = false
+            }
+        }
     }
 }

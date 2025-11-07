@@ -329,7 +329,6 @@ public extension Session {
     
     func privateData(for account: String) -> Data? {
         let dataKey = privateKey.appending(".\(account)")
-        
         return privateStorage.data(for: dataKey)
     }
     

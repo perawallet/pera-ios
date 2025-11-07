@@ -14,6 +14,7 @@
 
 import SwiftUI
 import AuthenticationServices
+import pera_wallet_core
 
 struct RecoveryToolView: View {
     
@@ -21,8 +22,8 @@ struct RecoveryToolView: View {
     
     // MARK: - Initialisers
     
-    init() {
-        self.viewModel = RecoveryToolViewModel()
+    init(session: Session, sharedDataController: SharedDataController, hdWalletStorage: HDWalletStorable, hdWalletService: HDWalletServicing, api: ALGAPI) {
+        self.viewModel = RecoveryToolViewModel(session: session, sharedDataController: sharedDataController, hdWalletStorage: hdWalletStorage, hdWalletService: hdWalletService, api: api)
     }
     
     // MARK: - Setups
