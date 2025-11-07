@@ -50,6 +50,7 @@ final class AccountAssetListAPIDataController:
     private var chartViewData: ChartViewData = ChartViewData(period: .oneMonth, chartValues: [], isLoading: true)
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var portfolioItem: AccountPortfolioItem?
+    var tendenciesVM: TendenciesViewModel?
     private var assetToUpdate: Asset?
 
     init(
@@ -202,11 +203,14 @@ extension AccountAssetListAPIDataController {
     }
     
     func updateChartData(period: ChartDataPeriod) {
+        guard let portfolioItem else { return }
         guard let viewModel = chartDataCache[period] else {
             chartsDataController.loadData(screen: .account(address: account.value.address), period: period)
             return
         }
         chartViewData = viewModel
+        tendenciesVM = TendenciesViewModel(chartData: chartViewData.model.data, currency: sharedDataController.currency)
+        reloadPortolio(with: portfolioItem, selectedPoint: nil)
     }
     
     func updatePortfolio(with selectedPoint: ChartDataPoint?) {
@@ -215,7 +219,7 @@ extension AccountAssetListAPIDataController {
             let point = selectedPoint,
             let date = point.timestamp.toDate(.fullNumericWithTimezone)
         else {
-            publish(event: .didSelectChartPoint(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: tendenciesVM)))
             return
         }
         
@@ -223,11 +227,7 @@ extension AccountAssetListAPIDataController {
 
         let viewModel = ChartSelectedPointViewModel(algoValue: point.algoValue, fiatValue: point.fiatValue, usdValue: point.usdValue, dateValue: dateValue)
         
-        if account.value.authorization.isWatch {
-            publish(event: .didSelectChartPoint(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))
-        } else {
-            publish(event: .didSelectChartPoint(AccountPortfolioViewModel(portfolioItem, selectedPoint: viewModel)))
-        }
+        reloadPortolio(with: portfolioItem, selectedPoint: viewModel)
     }
     
     func shouldUpdateAsset(_ asset: Asset) {
@@ -236,7 +236,6 @@ extension AccountAssetListAPIDataController {
     
     func checkForAssetsToUpdate() {
         if let asset = assetToUpdate {
-
             api.fetchAssetList(
                 AssetFetchQuery(ids: [asset.id]),
                 queue: .main,
@@ -266,9 +265,10 @@ extension AccountAssetListAPIDataController {
     
     private func setupChartDataClosures() {
         chartsDataController.onFetch = { [weak self] error, period, chartsData in
-            guard let self else { return }
+            guard let self, let portfolioItem else { return }
             guard error == nil else {
                 chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                tendenciesVM = nil
                 return
             }
             let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
@@ -280,7 +280,17 @@ extension AccountAssetListAPIDataController {
                 return ChartDataPoint(day: index, algoValue: algoValue, fiatValue: fiatValue, usdValue: usdValue, timestamp: item.datetime)
             }
             chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            tendenciesVM = TendenciesViewModel(chartData: chartViewData.model.data, currency: sharedDataController.currency)
             chartDataCache[period] = chartViewData
+            reloadPortolio(with: portfolioItem, selectedPoint: nil)
+        }
+    }
+    
+    private func reloadPortolio(with portfolioItem: AccountPortfolioItem, selectedPoint: ChartSelectedPointViewModel?) {
+        if account.value.authorization.isWatch {
+            publish(event: .shouldReloadPortfolio(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM)))
+        } else {
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM)))
         }
     }
 }
@@ -463,7 +473,7 @@ extension AccountAssetListAPIDataController {
             
         )
         self.portfolioItem = portfolio
-        let viewModel = WatchAccountPortfolioViewModel(portfolio, selectedPoint: nil)
+        let viewModel = WatchAccountPortfolioViewModel(portfolio, selectedPoint: nil, tendenciesVM: tendenciesVM)
         return [ .watchPortfolio(viewModel) ]
     }
 
@@ -483,7 +493,7 @@ extension AccountAssetListAPIDataController {
             isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
         )
         self.portfolioItem = portfolio
-        let viewModel = AccountPortfolioViewModel(portfolio, selectedPoint: nil)
+        let viewModel = AccountPortfolioViewModel(portfolio, selectedPoint: nil, tendenciesVM: tendenciesVM)
         return [ .portfolio(viewModel) ]
     }
 

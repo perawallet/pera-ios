@@ -171,7 +171,6 @@ extension ASADetailProfileViewModel {
             bindPrimaryValue(text: text)
             return
         }
-
         let amountText = currencyFormatter.format(selectedPointVM.algoValue)
         let unitText =
             asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()

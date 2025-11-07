@@ -17,7 +17,7 @@
 import Combine
 import pera_wallet_core
 
-class ChartViewModel: ObservableObject {
+final class ChartViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var data: [ChartDataPointViewModel] = []
     @Published var selectedPeriod: ChartDataPeriod = .oneWeek

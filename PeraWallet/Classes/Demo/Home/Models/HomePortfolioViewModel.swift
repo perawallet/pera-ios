@@ -27,13 +27,18 @@ struct HomePortfolioViewModel:
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
+    private(set) var differenceText: TextProvider?
+    private(set) var differenceInPercentageText: TextProvider?
+    private(set) var arrowImageView: ImageProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
     
     init(
         _ model: TotalPortfolioItem,
-        selectedPoint: ChartSelectedPointViewModel?
+        selectedPoint: ChartSelectedPointViewModel?,
+        tendenciesVM: TendenciesViewModel?
     ) {
+        bindTendencies(tendenciesVM)
         guard let selectedPoint else {
             bind(model)
             return
@@ -44,6 +49,15 @@ struct HomePortfolioViewModel:
 }
 
 extension HomePortfolioViewModel {
+    mutating func bindTendencies(
+        _ tendenciesVM: TendenciesViewModel?
+    ) {
+        guard let tendenciesVM else { return }
+        differenceText = tendenciesVM.differenceText
+        differenceInPercentageText = tendenciesVM.differenceInPercentageText
+        arrowImageView = tendenciesVM.arrowImageView
+    }
+    
     mutating func bind(
         _ portfolioItem: TotalPortfolioItem
     ) {
