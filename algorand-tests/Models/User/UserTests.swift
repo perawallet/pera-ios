@@ -62,12 +62,17 @@ class UserTests: XCTestCase {
 }
 
 final class MockHDWalletStorage: HDWalletStorable {
+    
+    var allHDWalletKeys: [String] {
+        []
+    }
+    
     func save(wallet: HDWalletSeed) throws {
         print("saveWallet")
     }
     
     func wallet(id: String) throws -> HDWalletSeed? {
-        return nil
+        nil
     }
     
     func deleteWallet(id: String) throws {
@@ -79,15 +84,14 @@ final class MockHDWalletStorage: HDWalletStorable {
     }
     
     func address(walletId: String, address: String) throws -> HDWalletAddress? {
-        return nil
+        nil
     }
     
     func addresses(walletId: String) throws -> [HDWalletAddress] {
-        return []
+        []
     }
     
     func deleteAddress(walletId: String, address: String) throws {
         print("deleteAddress")
     }
-    
 }
