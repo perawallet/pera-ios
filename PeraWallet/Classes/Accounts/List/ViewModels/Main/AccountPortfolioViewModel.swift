@@ -27,13 +27,18 @@ struct AccountPortfolioViewModel:
     private(set) var minimumBalanceTitle: TextProvider?
     private(set) var minimumBalanceValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
+    private(set) var differenceText: TextProvider?
+    private(set) var differenceInPercentageText: TextProvider?
+    private(set) var arrowImageView: ImageProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
     init(
         _ portfolioItem: AccountPortfolioItem,
-        selectedPoint: ChartSelectedPointViewModel?
+        selectedPoint: ChartSelectedPointViewModel?,
+        tendenciesVM: TendenciesViewModel?
     ) {
+        bindTendencies(tendenciesVM)
         guard let selectedPoint else {
             bind(portfolioItem)
             return
@@ -43,6 +48,15 @@ struct AccountPortfolioViewModel:
 }
 
 extension AccountPortfolioViewModel {
+    mutating func bindTendencies(
+        _ tendenciesVM: TendenciesViewModel?
+    ) {
+        guard let tendenciesVM else { return }
+        differenceText = tendenciesVM.differenceText
+        differenceInPercentageText = tendenciesVM.differenceInPercentageText
+        arrowImageView = tendenciesVM.arrowImageView
+    }
+
     mutating func bind(
         _ portfolioItem: AccountPortfolioItem
     ) {

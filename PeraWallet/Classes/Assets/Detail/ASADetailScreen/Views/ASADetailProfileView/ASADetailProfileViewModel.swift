@@ -170,8 +170,7 @@ extension ASADetailProfileViewModel {
             bindPrimaryValue(text: text)
             return
         }
-
-        let amountText = currencyFormatter.format(selectedPointVM.fiatValue)
+        let amountText = currencyFormatter.format(selectedPointVM.algoValue)
         let unitText =
             asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
         let text = [ amountText, unitText ].compound(" ")
@@ -246,7 +245,7 @@ extension ASADetailProfileViewModel {
         currencyFormatter: CurrencyFormatter,
         selectedPointVM: ChartSelectedPointViewModel?
     ) {
-        guard let currencyValue = currency.primaryValue else {
+        guard let currencyValue = currency.fiatValue else {
             secondaryValue = nil
             return
         }
@@ -267,7 +266,7 @@ extension ASADetailProfileViewModel {
                 return
             }
 
-            let text = currencyFormatter.format(selectedPointVM.algoValue)
+            let text = currencyFormatter.format(selectedPointVM.fiatValue)
             bindSecondaryValue(text: text)
         } catch {
             secondaryValue = nil

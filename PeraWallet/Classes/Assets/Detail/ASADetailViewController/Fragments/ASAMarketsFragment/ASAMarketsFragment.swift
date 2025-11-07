@@ -219,7 +219,7 @@ extension ASAMarketsFragment {
         }
 
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-        profileView.updateChart(with: chartData)
+        profileView.updateChart(with: chartData, and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
     }
     
     private func bindProfileData(isAmountHidden: Bool, chartPointSelected: ChartSelectedPointViewModel? = nil) {

@@ -82,7 +82,7 @@ extension TransactionsListLayout {
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         guard transactionsDataSource?.showHeader ?? false && section == 0 else { return .zero }
-        return CGSize(width: collectionView.bounds.width, height: transactionsDataSource?.shouldDisplayQuickActions ?? true ? 460 : 320)
+        return CGSize(width: collectionView.bounds.width, height: transactionsDataSource?.shouldDisplayQuickActions ?? true ? 470 : 320)
     }
 }
 

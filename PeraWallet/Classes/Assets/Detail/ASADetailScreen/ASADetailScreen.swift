@@ -789,10 +789,10 @@ extension ASADetailScreen {
                         title: String(localized: "pass-phrase-verify-sdk-error"),
                         message: errorDescription ?? ""
                     )
-                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false))
+                    profileView.updateChart(with: ChartViewData(period: period, chartValues: [], isLoading: false), and: TendenciesViewModel(chartData: nil, currency: configuration.sharedDataController.currency))
                     return
                 }
-                profileView.updateChart(with: chartData)
+                profileView.updateChart(with: chartData, and: TendenciesViewModel(chartData: chartData.model.data, currency: configuration.sharedDataController.currency))
             case .didFetchPriceChartData: break
             }
         }

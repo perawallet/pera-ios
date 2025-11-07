@@ -115,7 +115,7 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
 
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-        profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false))
+        profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false), and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
     }
     
     private func addQuickActions() {
