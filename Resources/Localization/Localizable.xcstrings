@@ -5943,17 +5943,6 @@
         }
       }
     },
-    "search-recovery-accounts" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search for recoverable accounts"
-          }
-        }
-      }
-    },
     "search-recovery-already-exists" : {
       "localizations" : {
         "en" : {

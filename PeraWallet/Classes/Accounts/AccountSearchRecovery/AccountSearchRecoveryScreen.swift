@@ -40,16 +40,4 @@ class AccountSearchRecoveryScreen : BaseViewController {
         }
         hostingController.sizingOptions = [.intrinsicContentSize]
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
 }

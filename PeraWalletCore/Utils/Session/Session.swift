@@ -341,14 +341,6 @@ public extension Session {
     func hasPrivateData(for account: PublicKey) -> Bool {
         return privateData(for: account) != nil
     }
-    
-    func allPrivateDataKeys() -> [String] {
-        return privateStorage.allKeys()
-    }
-    
-    func allBiometricDataKeys() -> [String] {
-        return biometricStorage.allKeys()
-    }
 }
 
 public extension Session {

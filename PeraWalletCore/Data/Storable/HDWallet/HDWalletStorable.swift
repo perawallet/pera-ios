@@ -18,6 +18,8 @@ import Foundation
 import KeychainAccess
 
 public protocol HDWalletStorable {
+    var allHDWalletKeys: [String] { get }
+    
     func save(wallet: HDWalletSeed) throws
     func wallet(id: String) throws -> HDWalletSeed?
     func deleteWallet(id: String) throws
@@ -26,5 +28,4 @@ public protocol HDWalletStorable {
     func address(walletId: String, address: String) throws -> HDWalletAddress?
     func addresses(walletId: String) throws -> [HDWalletAddress]
     func deleteAddress(walletId: String, address: String) throws
-    func allHDWalletKeys() -> [String]
 }

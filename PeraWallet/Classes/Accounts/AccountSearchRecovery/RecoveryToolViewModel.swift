@@ -26,11 +26,6 @@ final class RecoveryToolViewModel: ObservableObject {
     @Published fileprivate(set) var isErrorState: Bool = false
     @Published var address: String = ""
     
-    // MARK: - Initializers
-    
-    init() {
-    }
-    
     
     // MARK: - Methods
     
@@ -49,56 +44,9 @@ final class RecoveryToolViewModel: ObservableObject {
             }
             
             if config.session.privateData(for: address) != nil {
-                guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
-                    statusText = String(localized: "search-recovery-already-exists")
-                    isErrorState = true
-                    return
-                }
-                
-                saveAccountInfo(AccountInformation(
-                    address: address,
-                    name: address.shortAddressDisplay,
-                    isWatchAccount: false,
-                    preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
-                    isBackedUp: true,
-                    hdWalletAddressDetail: nil
-                ))
-            } else if let key = config.hdWalletStorage.allHDWalletKeys().first(where: { $0.contains(address) }) {
-                let parts = key.split(separator: ".")
-                let walletId = String(parts[1])
-                let address = String(parts[2])
-                
-                if let hdWallet = try config.hdWalletStorage.wallet(id: walletId) {
-                    guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
-                        statusText = String(localized: "search-recovery-already-exists")
-                        isErrorState = true
-                        return
-                    }
-                
-                    let mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: hdWallet.entropy)?.components(separatedBy: .whitespaces) ?? []
-                    
-                    Task {
-                        let recovery = try await config.hdWalletService.recoverAccounts(fromMnemonic: mnemonics.joined(separator: " "), api: config.api)
-                        if let account = recovery.first(where: {$0.address == address}) {
-                            
-                            let hdWalletAddressDetail = HDWalletAddressDetail(
-                                walletId: hdWallet.id,
-                                account: account.accountIndex,
-                                change: 0,
-                                keyIndex: account.addressIndex
-                            )
-                            
-                            saveAccountInfo(AccountInformation(
-                                address: account.address,
-                                name: account.address.shortAddressDisplay,
-                                isWatchAccount: false,
-                                preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
-                                isBackedUp: true,
-                                hdWalletAddressDetail: hdWalletAddressDetail
-                            ))
-                        }
-                    }
-                }
+                try recoverAlgo25Account(address)
+            } else if let key = config.hdWalletStorage.allHDWalletKeys.first(where: { $0.contains(address) }) {
+                try recoverHDWalletAccount(key)
             } else {
                 statusText = String(localized: "search-recovery-not-found")
                 isErrorState = true
@@ -110,8 +58,70 @@ final class RecoveryToolViewModel: ObservableObject {
         }
     }
     
-    private func saveAccountInfo(_ info: AccountInformation) {
+    private func recoverAlgo25Account(_ address: String) throws {
+        guard let config = CoreAppConfiguration.shared else {
+            return
+        }
         
+        guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
+            statusText = String(localized: "search-recovery-already-exists")
+            isErrorState = true
+            return
+        }
+        
+        saveAccountInfo(AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay,
+            isWatchAccount: false,
+            preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: true,
+            hdWalletAddressDetail: nil
+        ))
+    }
+    
+    private func recoverHDWalletAccount(_ key: String) throws {
+        let parts = key.split(separator: ".")
+        let walletId = String(parts[1])
+        let address = String(parts[2])
+        
+        guard let config = CoreAppConfiguration.shared else {
+            return
+        }
+        
+        if let hdWallet = try config.hdWalletStorage.wallet(id: walletId) {
+            guard config.sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
+                statusText = String(localized: "search-recovery-already-exists")
+                isErrorState = true
+                return
+            }
+        
+            let mnemonics = HDWalletUtils.generateMnemonic(fromEntropy: hdWallet.entropy)?.components(separatedBy: .whitespaces) ?? []
+            
+            Task {
+                let recovery = try await config.hdWalletService.recoverAccounts(fromMnemonic: mnemonics.joined(separator: " "), api: config.api)
+                if let account = recovery.first(where: {$0.address == address}) {
+                    
+                    let hdWalletAddressDetail = HDWalletAddressDetail(
+                        walletId: hdWallet.id,
+                        account: account.accountIndex,
+                        change: 0,
+                        keyIndex: account.addressIndex
+                    )
+                    
+                    saveAccountInfo(AccountInformation(
+                        address: account.address,
+                        name: account.address.shortAddressDisplay,
+                        isWatchAccount: false,
+                        preferredOrder: config.sharedDataController.getPreferredOrderForNewAccount(),
+                        isBackedUp: true,
+                        hdWalletAddressDetail: hdWalletAddressDetail
+                    ))
+                }
+            }
+        }
+    }
+    
+    private func saveAccountInfo(_ info: AccountInformation) {
         guard let config = CoreAppConfiguration.shared else {
             return
         }

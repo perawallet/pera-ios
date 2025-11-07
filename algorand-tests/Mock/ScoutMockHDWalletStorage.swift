@@ -22,6 +22,10 @@ final class ScoutMockHDWalletStorage: HDWalletStorable, Mockable {
     
     var mock = Mock()
     
+    var allHDWalletKeys: [String] {
+        try! mock.call.allHDWalletKeys() as? [String] ?? []
+    }
+    
     func save(wallet: HDWalletSeed) throws {
         try! mock.call.save(wallet: wallet)
     }
@@ -48,10 +52,6 @@ final class ScoutMockHDWalletStorage: HDWalletStorable, Mockable {
     
     func deleteAddress(walletId: String, address: String) throws {
         try! mock.call.deleteAddress(walletId: walletId, address: address)
-    }
-    
-    func allHDWalletKeys() -> [String] {
-        try! mock.call.allHDWalletKeys() as! [String]
     }
     
 }
