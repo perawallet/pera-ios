@@ -271,8 +271,8 @@ extension ASADetailViewController {
         removeLoading()
     }
 
-    private func makeLoading() -> ASADetailLoadingView {
-        let loadingView = ASADetailLoadingView()
+    private func makeLoading() -> ASADetailViewControllerLoadingView {
+        let loadingView = ASADetailViewControllerLoadingView()
         loadingView.customize(theme.loading)
         return loadingView
     }

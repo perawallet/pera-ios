@@ -7300,12 +7300,12 @@
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D451BEB42EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB52EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
-		D451C0332EBB9B13007524E2 /* AssetToogleStatusDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0322EBB9B0C007524E2 /* AssetToogleStatusDraft.swift */; };
-		D451C0352EBBA0A2007524E2 /* AssetToogleStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0342EBBA098007524E2 /* AssetToogleStatus.swift */; };
 		D451BEB62EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB82EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
 		D451BEB92EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
 		D451BEBA2EBB73E5007524E2 /* ChartTendencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB72EBB73E4007524E2 /* ChartTendencyView.swift */; };
+		D451C0332EBB9B13007524E2 /* AssetToogleStatusDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0322EBB9B0C007524E2 /* AssetToogleStatusDraft.swift */; };
+		D451C0352EBBA0A2007524E2 /* AssetToogleStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451C0342EBBA098007524E2 /* AssetToogleStatus.swift */; };
 		D4563FB42EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB52EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
 		D4563FB62EB0B89200164EF2 /* ASAHoldingsFragmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB32EB0B88800164EF2 /* ASAHoldingsFragmentHeaderView.swift */; };
@@ -7367,6 +7367,12 @@
 		D4B50BD02EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD12EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
 		D4B50BD22EA780CE00642C1D /* ASADetailViewController+PageItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */; };
+		D4C2B6102EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B60F2EBE1808005B8DEF /* ASADetailViewControllerLoadingView.swift */; };
+		D4C2B6112EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B60F2EBE1808005B8DEF /* ASADetailViewControllerLoadingView.swift */; };
+		D4C2B6122EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B60F2EBE1808005B8DEF /* ASADetailViewControllerLoadingView.swift */; };
+		D4C2B6142EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */; };
+		D4C2B6152EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */; };
+		D4C2B6162EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */; };
 		D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceAlert.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -9935,6 +9941,8 @@
 		D4C2836E2E0951ED009A4F53 /* ChartDataPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataPoint.swift; sourceTree = "<group>"; };
 		D4C283722E095305009A4F53 /* ChartDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModel.swift; sourceTree = "<group>"; };
 		D4C283762E09537B009A4F53 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
+		D4C2B60F2EBE1808005B8DEF /* ASADetailViewControllerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailViewControllerLoadingView.swift; sourceTree = "<group>"; };
+		D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailViewControllerLoadingViewTheme.swift; sourceTree = "<group>"; };
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
 		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
 		D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewTheme.swift; sourceTree = "<group>"; };
@@ -22269,10 +22277,11 @@
 		D4B50BCA2EA7806800642C1D /* ASADetailViewController */ = {
 			isa = PBXGroup;
 			children = (
+				D4C2B60E2EBE17F2005B8DEF /* Views */,
+				D46303332EA8FAA000AC2FDB /* Fragments */,
 				D4B50BCF2EA780C900642C1D /* ASADetailViewController+PageItems.swift */,
 				D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */,
 				D4653A0F2EB2210800573F81 /* ASADetailViewControllerTheme.swift */,
-				D46303332EA8FAA000AC2FDB /* Fragments */,
 			);
 			path = ASADetailViewController;
 			sourceTree = "<group>";
@@ -22555,6 +22564,23 @@
 				D4BE32762DC36CFC002602F5 /* MenuListCardViewTheme.swift */,
 			);
 			path = Cards;
+			sourceTree = "<group>";
+		};
+		D4C2B60E2EBE17F2005B8DEF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D4C2B61B2EBE1826005B8DEF /* ASADetailViewControllerLoadingView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D4C2B61B2EBE1826005B8DEF /* ASADetailViewControllerLoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */,
+				D4C2B60F2EBE1808005B8DEF /* ASADetailViewControllerLoadingView.swift */,
+			);
+			path = ASADetailViewControllerLoadingView;
 			sourceTree = "<group>";
 		};
 		D4C51B4D27D0DD0D00F21981 /* AssetImage */ = {
@@ -25641,6 +25667,7 @@
 				59167C042E464C76002184C2 /* HomePortfolioNavigationView.swift in Sources */,
 				59167C052E464C76002184C2 /* HomePortfolioView.swift in Sources */,
 				59167C062E464C76002184C2 /* HomePortfolioViewTheme.swift in Sources */,
+				D4C2B6152EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */,
 				59167C072E464C76002184C2 /* HomeAPIDataController.swift in Sources */,
 				59167C082E464C76002184C2 /* HomeDataController.swift in Sources */,
 				59167C092E464C76002184C2 /* HomeListDataSource.swift in Sources */,
@@ -26395,6 +26422,7 @@
 				59167EEC2E464C76002184C2 /* ConfirmSwapAmountOutViewModel.swift in Sources */,
 				59167EED2E464C76002184C2 /* SwapAssetAmountInViewModel.swift in Sources */,
 				59167EEE2E464C76002184C2 /* SwapAssetAmountOutViewModel.swift in Sources */,
+				D4C2B6122EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */,
 				59167EEF2E464C76002184C2 /* SwapAssetAmountView.swift in Sources */,
 				59167EF02E464C76002184C2 /* SwapAssetAmountViewModel.swift in Sources */,
 				59167EF12E464C76002184C2 /* SwapAssetAmountViewTheme.swift in Sources */,
@@ -27804,6 +27832,7 @@
 				59E601852E4A712500CCA99B /* HomeAPIDataController.swift in Sources */,
 				59E601862E4A712500CCA99B /* HomeDataController.swift in Sources */,
 				59E601872E4A712500CCA99B /* HomeListDataSource.swift in Sources */,
+				D4C2B6162EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */,
 				59E601882E4A712500CCA99B /* HomeNoContentViewModel.swift in Sources */,
 				59E601892E4A712500CCA99B /* HomePortfolioNavigationViewModel.swift in Sources */,
 				59E6018A2E4A712500CCA99B /* HomePortfolioViewModel.swift in Sources */,
@@ -28558,6 +28587,7 @@
 				59E6046C2E4A712500CCA99B /* SwapAssetAmountInViewModel.swift in Sources */,
 				59E6046D2E4A712500CCA99B /* SwapAssetAmountOutViewModel.swift in Sources */,
 				59E6046E2E4A712500CCA99B /* SwapAssetAmountView.swift in Sources */,
+				D4C2B6112EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */,
 				59E6046F2E4A712500CCA99B /* SwapAssetAmountViewModel.swift in Sources */,
 				59E604702E4A712500CCA99B /* SwapAssetAmountViewTheme.swift in Sources */,
 				59E604712E4A712500CCA99B /* SwapAssetSelectionEmptyView.swift in Sources */,
@@ -29967,6 +29997,7 @@
 				59E609FD2E4A71D000CCA99B /* HomeAPIDataController.swift in Sources */,
 				59E609FE2E4A71D000CCA99B /* HomeDataController.swift in Sources */,
 				59E609FF2E4A71D000CCA99B /* HomeListDataSource.swift in Sources */,
+				D4C2B6142EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */,
 				59E60A002E4A71D000CCA99B /* HomeNoContentViewModel.swift in Sources */,
 				59E60A012E4A71D000CCA99B /* HomePortfolioNavigationViewModel.swift in Sources */,
 				59E60A022E4A71D000CCA99B /* HomePortfolioViewModel.swift in Sources */,
@@ -30721,6 +30752,7 @@
 				59E60CE52E4A71D000CCA99B /* SwapAssetAmountOutViewModel.swift in Sources */,
 				59E60CE62E4A71D000CCA99B /* SwapAssetAmountView.swift in Sources */,
 				59E60CE72E4A71D000CCA99B /* SwapAssetAmountViewModel.swift in Sources */,
+				D4C2B6102EBE1810005B8DEF /* ASADetailViewControllerLoadingView.swift in Sources */,
 				59E60CE82E4A71D000CCA99B /* SwapAssetAmountViewTheme.swift in Sources */,
 				59E60CE92E4A71D000CCA99B /* SwapAssetSelectionEmptyView.swift in Sources */,
 				59E60CEA2E4A71D000CCA99B /* SwapAssetSelectionEmptyViewDraft.swift in Sources */,

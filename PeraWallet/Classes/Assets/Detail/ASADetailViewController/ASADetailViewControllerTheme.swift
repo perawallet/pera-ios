@@ -22,7 +22,7 @@ struct ASADetailViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     var navigationTitle: AccountNameTitleViewTheme
-    var loading: ASADetailLoadingViewTheme
+    var loading: ASADetailViewControllerLoadingViewTheme
     var error: NoContentWithActionViewCommonTheme
     var errorBackground: ViewStyle
     var profile: ASAProfileViewTheme
@@ -33,7 +33,7 @@ struct ASADetailViewControllerTheme:
 
     init(_ family: LayoutFamily) {
         self.navigationTitle = AccountNameTitleViewTheme(family)
-        self.loading = ASADetailLoadingViewTheme()
+        self.loading = ASADetailViewControllerLoadingViewTheme()
         self.error = NoContentWithActionViewCommonTheme()
         self.errorBackground = [
             .backgroundColor(Colors.Defaults.background)
