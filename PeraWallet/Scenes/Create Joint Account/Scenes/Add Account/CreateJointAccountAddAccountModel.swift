@@ -280,6 +280,8 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
             fiatValue = account.amount * exchangeRate
         }
         
+        PeraLogger.shared.log(message: "[Add] \(account.address) | \(account.amount) | \(currencyData != nil) | \(currencyData?.exchangeRate ?? "N/A")")
+        
         let formatterAlgoValue = algoCurrencyFormatter.format(account.amount) ?? ""
         let formattedFiatValue = currencyFormatter.format(fiatValue) ?? ""
         let isAlgoPrimaryCurrency = currencyService.isAlgoPrimaryCurrency.value

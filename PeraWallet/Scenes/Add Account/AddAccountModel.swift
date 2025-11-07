@@ -16,7 +16,7 @@
 
 import Combine
 import pera_wallet_core
-import SwiftUICore
+import SwiftUI
 
 final class AddAccountViewModel: ObservableObject {
     
