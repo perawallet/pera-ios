@@ -31,18 +31,12 @@ final class AccountQuickActionsView:
 
     private lazy var contentView = HStackView()
     private let contentBackgroundView = UIView()
-    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var swapActionView = makeActionView()
     private lazy var buyActionView =  makeActionView()
     private lazy var requestsActionView = makeActionView()
     private lazy var moreActionView = makeActionView()
 
     private var theme: AccountQuickActionsViewTheme!
-
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            swapActionView.isBadgeVisible = isSwapBadgeVisible
-        }
-    }
 
     var isRequestsBadgeVisible: Bool = false {
         didSet {
@@ -145,7 +139,6 @@ extension AccountQuickActionsView {
     }
 
     private func addSwapAction(_ theme: AccountQuickActionsViewTheme) {
-        swapActionView.customize(theme: theme.swapBadge)
         swapActionView.customizeAppearance(theme.swapAction)
         swapActionView.sizeToFit()
         customizeAction(
@@ -225,18 +218,6 @@ extension AccountQuickActionsView {
         return MacaroonUIKit.Button(.imageAtTopmost(
             padding: 0,
             titleAdjustmentY: titleAdjustmentY)
-        )
-    }
-
-    private func makeBadgeActionView() -> BadgeButton {
-        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
-        let swapBadgeEdgeInsets = theme.swapBadgeEdgeInsets
-        return BadgeButton(
-            badgePosition: .topTrailing(swapBadgeEdgeInsets),
-            .imageAtTopmost(
-                padding: 0,
-                titleAdjustmentY: titleAdjustmentY
-            )
         )
     }
 }

@@ -20,20 +20,10 @@ import pera_wallet_core
 final class SwapDisplayStore: Storable {
     typealias Object = Any
 
-    static var isOnboardedToSwapNotification: Notification.Name {
-        .init(rawValue: "isOnboardedToSwap")
-    }
-
-    var isOnboardedToSwap: Bool {
-        get { userDefaults.bool(forKey: isOnboardedToSwapKey) }
-        set { userDefaults.set(newValue, forKey: isOnboardedToSwapKey) }
-    }
-
     var isConfirmedSwapUserAgreement: Bool {
         get { userDefaults.bool(forKey: isConfirmedSwapUserAgreementKey) }
         set { userDefaults.set(newValue, forKey: isConfirmedSwapUserAgreementKey) }
     }
 
-    private let isOnboardedToSwapKey = "cache.key.swap.isOnboarded"
     private let isConfirmedSwapUserAgreementKey = "cache.key.swap.isConfirmedUserAgreement"
 }

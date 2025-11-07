@@ -129,12 +129,6 @@ extension SwapAssetFlowCoordinator {
 
         sharedDataController.add(self)
 
-        if !displayStore.isOnboardedToSwap {
-            displayStore.isOnboardedToSwap = true
-
-            notifyIsOnboardedToSwapObservers()
-        }
-
         if !displayStore.isConfirmedSwapUserAgreement {
             openSwapIntroduction()
             return
@@ -148,15 +142,6 @@ extension SwapAssetFlowCoordinator {
             openSwapIntroduction()
             return
         }
-    }
-}
-
-extension SwapAssetFlowCoordinator {
-    private func notifyIsOnboardedToSwapObservers() {
-        NotificationCenter.default.post(
-            name: SwapDisplayStore.isOnboardedToSwapNotification,
-            object: nil
-        )
     }
 }
 
@@ -727,7 +712,7 @@ extension SwapAssetFlowCoordinator {
     }
     
     func fetchAsset(with assetId: AssetID) {
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             AssetFetchQuery(ids: [assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false

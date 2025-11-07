@@ -21,6 +21,7 @@ import pera_wallet_core
 struct TransferAssetBalanceNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
     init(asset: AssetDecoration) {

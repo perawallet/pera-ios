@@ -21,11 +21,13 @@ import pera_wallet_core
 struct OptOutAssetNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
     init(asset: Asset) {
         bindPrimaryTitle(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
+        bindFavoriteTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
     }
 }
@@ -63,6 +65,14 @@ extension OptOutAssetNameViewModel {
         case .verified: primaryTitleAccessory = "icon-verified"
         case .unverified: primaryTitleAccessory = nil
         case .suspicious: primaryTitleAccessory = "icon-suspicious"
+        }
+    }
+    
+    mutating func bindFavoriteTitleAccessory(asset: Asset) {
+        if asset.isFavorited ?? false {
+            favoriteTitleAccessory = "icon-asset-favorite"
+        } else {
+            favoriteTitleAccessory = nil
         }
     }
 

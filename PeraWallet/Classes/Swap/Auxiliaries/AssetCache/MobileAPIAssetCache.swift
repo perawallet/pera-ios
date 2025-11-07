@@ -41,7 +41,7 @@ struct MobileAPIAssetCache: AssetCache {
             return
         }
 
-        let draft = AssetDetailFetchDraft(id: id)
+        let draft = AssetDetailFetchDraft(id: id, deviceId: api.deviceId)
         let completionHandler: (Response.ModelResult<AssetDecoration>) -> Void = {
             result in
             

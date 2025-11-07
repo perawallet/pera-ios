@@ -127,17 +127,11 @@ extension TransactionOptionsScreen {
 
     private func makeSwapAction() -> TransactionOptionListAction {
         let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
+        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel()
         return TransactionOptionListAction(
             viewModel: swapActionViewModel
         ) {
             [unowned self] actionView in
-
-            if !isOnboardedToSwap {
-                swapActionViewModel.bindIsBadgeVisible(false)
-                actionView.bindData(swapActionViewModel)
-            }
 
             self.delegate?.transactionOptionsScreenDidTapSwap(self)
         }

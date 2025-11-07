@@ -21,6 +21,7 @@ import pera_wallet_core
 struct AssetNameViewModel: PrimaryTitleViewModel {
     var primaryTitle: TextProvider?
     var primaryTitleAccessory: Image?
+    var favoriteTitleAccessory: Image?
     var secondaryTitle: TextProvider?
 
     init(
@@ -28,6 +29,7 @@ struct AssetNameViewModel: PrimaryTitleViewModel {
     ) {
         bindPrimaryTitle(asset)
         bindPrimaryTitleAccessory(asset)
+        bindFavoriteTitleAccessory(asset)
         bindSecondaryTitle(asset)
     }
 
@@ -59,6 +61,16 @@ extension AssetNameViewModel {
         _ asset: Asset
     ) {
         primaryTitleAccessory = getPrimaryTitleAccessory(asset.verificationTier)
+    }
+    
+    mutating func bindFavoriteTitleAccessory(
+        _ asset: Asset
+    ) {
+        if asset.isFavorited ?? false {
+            favoriteTitleAccessory = "icon-asset-favorite"
+        } else {
+            favoriteTitleAccessory = nil
+        }
     }
 
     mutating func bindSecondaryTitle(

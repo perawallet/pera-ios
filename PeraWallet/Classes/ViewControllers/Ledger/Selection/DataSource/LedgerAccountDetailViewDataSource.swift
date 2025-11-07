@@ -55,7 +55,7 @@ final class LedgerAccountDetailViewDataSource: NSObject {
             }
         }
 
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             AssetFetchQuery(ids: assetsToBeFetched),
             queue: .main,
             ignoreResponseOnCancelled: false

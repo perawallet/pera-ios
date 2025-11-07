@@ -23,6 +23,7 @@ final class PrimaryTitleView:
     ViewModelBindable,
     ListReusable {
     private lazy var primaryTitleView = Label()
+    private lazy var favoriteTitleAccessoryView = ImageView()
     private lazy var primaryTitleAccessoryView = ImageView()
     private lazy var secondaryTitleView = Label()
 
@@ -30,6 +31,7 @@ final class PrimaryTitleView:
         _ theme: PrimaryTitleViewTheme
     ) {
         addPrimaryTitle(theme)
+        addFavoriteTitleAccessory(theme)
         addPrimaryTitleAccessory(theme)
         addSecondaryTitle(theme)
     }
@@ -52,6 +54,13 @@ final class PrimaryTitleView:
         }
 
         primaryTitleAccessoryView.image = viewModel?.primaryTitleAccessory?.uiImage
+        
+        if let favoriteTitleAccessory = viewModel?.favoriteTitleAccessory {
+            favoriteTitleAccessoryView.image = favoriteTitleAccessory.uiImage
+            favoriteTitleAccessoryView.isHidden = false
+        } else {
+            favoriteTitleAccessoryView.isHidden = true
+        }
 
         if let secondaryTitle = viewModel?.secondaryTitle {
             secondaryTitle.load(in: secondaryTitleView)
@@ -113,6 +122,21 @@ extension PrimaryTitleView {
             $0.leading == 0
         }
     }
+    
+    private func addFavoriteTitleAccessory(
+        _ theme: PrimaryTitleViewTheme
+    ) {
+        favoriteTitleAccessoryView.customizeAppearance(theme.primaryTitleAccessory)
+
+        addSubview(favoriteTitleAccessoryView)
+        favoriteTitleAccessoryView.contentEdgeInsets = theme.primaryTitleAccessoryContentEdgeInsets
+        favoriteTitleAccessoryView.fitToIntrinsicSize()
+        favoriteTitleAccessoryView.snp.makeConstraints {
+            $0.centerY == primaryTitleView
+            $0.leading == primaryTitleView.snp.trailing
+            $0.trailing <= 0
+        }
+    }
 
     private func addPrimaryTitleAccessory(
         _ theme: PrimaryTitleViewTheme
@@ -124,7 +148,7 @@ extension PrimaryTitleView {
         primaryTitleAccessoryView.fitToIntrinsicSize()
         primaryTitleAccessoryView.snp.makeConstraints {
             $0.centerY == primaryTitleView
-            $0.leading == primaryTitleView.snp.trailing
+            $0.leading == favoriteTitleAccessoryView.snp.trailing
             $0.trailing <= 0
         }
     }

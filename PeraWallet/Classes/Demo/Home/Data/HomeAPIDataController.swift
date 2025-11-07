@@ -240,7 +240,7 @@ extension HomeAPIDataController {
         else {
             return
         }
-        api.fetchAssetDetails(
+        api.fetchAssetList(
             AssetFetchQuery(ids: [usdcAssetID]),
             queue: .main,
             ignoreResponseOnCancelled: false

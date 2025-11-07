@@ -85,7 +85,7 @@ extension AssetActionConfirmationViewController {
 
         addLoading()
 
-        api?.fetchAssetDetails(
+        api?.fetchAssetList(
             AssetFetchQuery(ids: [draft.assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false

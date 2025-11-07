@@ -9690,6 +9690,27 @@
         }
       }
     },
+    "toggle-favorites-error-message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to update favorite status. Please try again later."
+          }
+        }
+      }
+    },
+    "toggle-price-alert-error-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to change price alert settings. Please try again later."
+          }
+        }
+      }
+    },
     "tooltip-privacy-mode" : {
       "localizations" : {
         "en" : {

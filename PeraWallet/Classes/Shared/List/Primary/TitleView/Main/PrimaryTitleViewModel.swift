@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 protocol PrimaryTitleViewModel: ViewModel {
     var primaryTitle: TextProvider? { get }
+    var favoriteTitleAccessory: Image?  { get }
     var primaryTitleAccessory: Image?  { get }
     var secondaryTitle: TextProvider? { get }
 }

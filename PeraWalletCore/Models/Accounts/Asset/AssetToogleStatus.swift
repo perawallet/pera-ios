@@ -12,14 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetDetailFetchDraft.swift
+//   AssetToogleStatus.swift
 
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-public struct AssetDetailFetchDraft {
-    public let id: AssetID
+public final class AssetToogleStatus: ALGEntityModel {
+    public let isEnabled: Bool
     
-    public init(id: AssetID) {
-        self.id = id
+    public init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.isEnabled = apiModel.is_enabled
+    }
+    
+    public func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.is_enabled = isEnabled
+        return apiModel
+    }
+}
+
+extension AssetToogleStatus {
+    public struct APIModel: ALGAPIModel {
+        var is_enabled: Bool
+
+        public init() {
+            self.is_enabled = false
+        }
     }
 }

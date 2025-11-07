@@ -32,7 +32,9 @@ final class ASAProfileView:
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
-        .onAmountTap: TargetActionInteraction()
+        .onAmountTap: TargetActionInteraction(),
+        .onFavoriteTap: TargetActionInteraction(),
+        .onNotificationTap: TargetActionInteraction(),
     ]
     
     var onPeriodChange: ((ChartDataPeriod) -> Void)?
@@ -53,6 +55,9 @@ final class ASAProfileView:
     private lazy var secondaryValueView = UILabel()
     private lazy var tendencyValueView = ChartTendencyView()
     private lazy var selectedPointDateValueView = Label()
+    private lazy var buttonsView = UIStackView()
+    private lazy var notificationsButton = UIButton()
+    private lazy var favoritesButton = UIButton()
     
     private var chartData: ChartViewData?
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
@@ -60,11 +65,13 @@ final class ASAProfileView:
     
     private var theme = ASAProfileViewTheme()
     private let type: ASAProfileViewType
+    private let showNotificationAndFavoriteButtons: Bool
     
     // MARK: - Initialisers
     
-    @MainActor init(type: ASAProfileViewType = .assetDetail) {
+    @MainActor init(type: ASAProfileViewType = .assetDetail, showNotificationAndFavoriteButtons: Bool = false) {
         self.type = type
+        self.showNotificationAndFavoriteButtons = showNotificationAndFavoriteButtons
         super.init(frame: .zero)
         setupGestures()
         setupViewModelCallback()
@@ -82,6 +89,8 @@ final class ASAProfileView:
     
     private func setupGestures() {
         startPublishing(event: .onAmountTap, for: primaryValueButton)
+        startPublishing(event: .onNotificationTap, for: notificationsButton)
+        startPublishing(event: .onFavoriteTap, for: favoritesButton)
     }
     
     private func setupViewModelCallback() {
@@ -104,6 +113,10 @@ final class ASAProfileView:
         self.theme = theme
 
         addContent(theme)
+        
+        if showNotificationAndFavoriteButtons {
+            addNotificationAndFavoriteButtons(theme)
+        }
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
@@ -134,6 +147,21 @@ final class ASAProfileView:
         } else {
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
+        }
+    }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        if showNotificationAndFavoriteButtons {
+            if isAssetPriceAlertEnabled {
+                notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
+            } else {
+                notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
+            }
+            if isAssetFavorited {
+                favoritesButton.setImage(UIImage(named: "icon-asset-favorite"), for: .normal)
+            } else {
+                favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
+            }
         }
     }
     
@@ -228,7 +256,7 @@ extension ASAProfileView {
             $0.leading == 0
         }
     }
-
+    
     private func addName(_ theme: ASAProfileViewTheme) {
         nameView.customize(theme.name)
 
@@ -238,6 +266,28 @@ extension ASAProfileView {
             $0.top == 0
             $0.leading == iconView.snp.trailing + theme.nameViewLeading
             $0.bottom == 0
+        }
+    }
+    
+    private func addNotificationAndFavoriteButtons(_ theme: ASAProfileViewTheme) {
+        buttonsView.axis = .horizontal
+        buttonsView.spacing = 12
+        buttonsView.alignment = .center
+        buttonsView.distribution = .fill
+
+        [notificationsButton, favoritesButton].forEach {
+            $0.backgroundColor = Colors.Layer.grayLighter.uiColor
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+            $0.layer.cornerRadius = 14
+            $0.clipsToBounds = true
+            $0.snp.makeConstraints { $0.size.equalTo(CGSize(width: 28, height: 28)) }
+            buttonsView.addArrangedSubview($0)
+        }
+        
+        addSubview(buttonsView)
+        buttonsView.snp.makeConstraints {
+            $0.centerY.equalTo(titleView.snp.centerY)
+            $0.trailing.equalToSuperview()
         }
     }
 
@@ -323,5 +373,7 @@ extension ASAProfileView {
     enum Event {
         case layoutChanged
         case onAmountTap
+        case onNotificationTap
+        case onFavoriteTap
     }
 }

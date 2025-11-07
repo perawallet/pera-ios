@@ -1169,7 +1169,7 @@ extension WCMainTransactionScreen {
 
         let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
         let queue = DispatchQueue.global(qos: .userInitiated)
-        api!.fetchAssetDetails(
+        api!.fetchAssetList(
             draft,
             queue: queue,
             ignoreResponseOnCancelled: true
@@ -1191,7 +1191,7 @@ extension WCMainTransactionScreen {
     ) {
         if isRejected { return }
 
-        let draft = AssetDetailFetchDraft(id: id)
+        let draft = AssetDetailFetchDraft(id: id, deviceId: api?.deviceId)
         api!.fetchAssetDetailFromNode(draft) {
             [weak self] result in
             guard let self else { return }

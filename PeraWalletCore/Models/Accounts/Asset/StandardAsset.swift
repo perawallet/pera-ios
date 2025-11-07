@@ -40,12 +40,14 @@ public final class StandardAsset: Asset {
     public let discordURL: URL?
     public let telegramURL: URL?
     public let twitterURL: URL?
-    public let isAlgo = false
+    public var isAlgo: Bool
     public let algoPriceChangePercentage: Decimal
     public let isAvailableOnDiscover: Bool
     public let category: UInt64?
 
     public let isFault: Bool
+    public let isFavorited: Bool?
+    public let isPriceAlertEnabled: Bool?
     
     public var state: AssetState = .ready
 
@@ -66,6 +68,7 @@ public final class StandardAsset: Asset {
         decoration: AssetDecoration
     ) {
         self.id = asset.id
+        self.isAlgo = asset.id == 0
         self.isFrozen = asset.isFrozen
         self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = asset.optedInAtRound
@@ -100,12 +103,15 @@ public final class StandardAsset: Asset {
         self.isFault = false
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+        self.isFavorited = asset.isFavorited ?? decoration.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled ?? decoration.isPriceAlertEnabled
     }
 
     public init(
         decoration: AssetDecoration
     ) {
         self.id = decoration.id
+        self.isAlgo = decoration.id == 0
         self.isFrozen = nil
         self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = nil
@@ -132,12 +138,15 @@ public final class StandardAsset: Asset {
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
         self.category = decoration.category
+        self.isFavorited = decoration.isFavorited
+        self.isPriceAlertEnabled = decoration.isPriceAlertEnabled
     }
     
     public init(
         swapAsset: SwapAsset
     ) {
         self.id = swapAsset.assetID
+        self.isAlgo = swapAsset.assetID == 0
         self.isFrozen = nil
         self.isDestroyed = false
         self.optedInAtRound = nil
@@ -164,6 +173,8 @@ public final class StandardAsset: Asset {
         self.algoPriceChangePercentage = 0
         self.isAvailableOnDiscover = false
         self.category = nil
+        self.isFavorited = nil
+        self.isPriceAlertEnabled = nil
     }
 }
 

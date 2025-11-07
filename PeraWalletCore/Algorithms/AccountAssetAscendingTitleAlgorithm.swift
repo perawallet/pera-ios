@@ -32,6 +32,12 @@ extension AccountAssetAscendingTitleAlgorithm {
         asset: Asset,
         otherAsset: Asset
     ) -> Bool {
+        let assetFav = asset.isFavorited ?? false
+        let otherFav = otherAsset.isFavorited ?? false
+
+        if assetFav != otherFav {
+            return assetFav
+        }
         let assetTitle =
             asset.naming.name.unwrapNonEmptyString() ??
             String(localized: "title-unknown")

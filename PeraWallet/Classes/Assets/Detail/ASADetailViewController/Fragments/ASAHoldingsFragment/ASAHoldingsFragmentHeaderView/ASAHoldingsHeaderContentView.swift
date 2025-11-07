@@ -20,7 +20,7 @@ import pera_wallet_core
 
 final class ASAHoldingsHeaderContentView: UIView {
 
-    private lazy var profileView = ASAProfileView()
+    private lazy var profileView = ASAProfileView(showNotificationAndFavoriteButtons: showNotificationAndFavoriteButtons)
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
     private let theme = ASADetailViewControllerTheme()
@@ -30,6 +30,7 @@ final class ASAHoldingsHeaderContentView: UIView {
     private var asset: Asset?
     private var chartData: ChartViewData?
     private var currency: CurrencyProvider?
+    private var showNotificationAndFavoriteButtons = false
     private var shouldDisplayQuickActions = false
     private var quickActionsViewModel: ASADetailQuickActionsViewModel?
     private var eventHandler: ASADetailViewController.EventHandler?
@@ -51,6 +52,7 @@ final class ASAHoldingsHeaderContentView: UIView {
         self.shouldDisplayQuickActions = context.shouldDisplayQuickActions
         self.quickActionsViewModel = context.quickActionsViewModel
         self.eventHandler = context.eventHandler
+        self.showNotificationAndFavoriteButtons = context.showNotificationAndFavoriteButtons
 
         setupLayout()
     }
@@ -81,11 +83,22 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
         
         bindProfile()
+        updateChart()
     }
 
     private func bindProfile() {
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+        }
+        
+        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnFavoriteTap)
+        }
+        
+        profileView.startObserving(event: .onNotificationTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnNotificationTap)
         }
 
         profileView.onPeriodChange = { [weak self] newPeriodSelected in
@@ -115,7 +128,6 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
 
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-        profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false), and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
     }
     
     private func addQuickActions() {
@@ -138,13 +150,8 @@ final class ASAHoldingsHeaderContentView: UIView {
             eventHandler?(.quickActionsBuy)
         }
 
-        quickActionsView.startObserving(event: .swap) { [weak self, weak quickActionsView] in
-            guard let self, let quickActionsView else { return }
-
-            if quickActionsViewModel?.isSwapBadgeVisible ?? false {
-                quickActionsViewModel?.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
-                quickActionsView.bindData(quickActionsViewModel)
-            }
+        quickActionsView.startObserving(event: .swap) { [weak self] in
+            guard let self else { return }
 
             eventHandler?(.quickActionsSwap)
         }
@@ -174,5 +181,16 @@ final class ASAHoldingsHeaderContentView: UIView {
         )
 
         profileView.bindData(viewModel)
+    }
+    
+    func updateChart(with data: ChartViewData? = nil) {
+        if let data {
+            self.chartData = data
+            profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false), and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
+        }
+    }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        profileView.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
     }
 }

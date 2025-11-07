@@ -30,6 +30,7 @@ final class ASADetailScreenAPIDataController:
     }
 
     private(set) var asset: Asset
+    private(set) var chartViewData: ChartViewData?
 
     private var assetDetail: AssetDecoration?
 
@@ -38,7 +39,6 @@ final class ASADetailScreenAPIDataController:
     private let chartsDataController: ChartAPIDataController
     private let featureFlagService: FeatureFlagServicing
     
-    private var chartViewData: ChartViewData?
     private var chartDataCache: [ChartDataPeriod: ChartViewData] = [:]
     private var priceChartDataCache: [ChartDataPeriod: ChartViewData] = [:]
 
@@ -72,14 +72,14 @@ extension ASADetailScreenAPIDataController {
     func loadData() {
         setupChartDataClosures()
         
-        if asset.isAlgo {
+        if !featureFlagService.isEnabled(.assetDetailV2EndpointEnabled), asset.isAlgo {
             didLoadData()
             return
         }
 
         eventHandler?(.willLoadData)
 
-        let draft = AssetDetailFetchDraft(id: asset.id)
+        let draft = AssetDetailFetchDraft(id: asset.id, deviceId: api.deviceId)
         api.fetchAssetDetail(draft) {
             [weak self] result in
             guard let self = self else { return }
@@ -169,6 +169,55 @@ extension ASADetailScreenAPIDataController {
             priceChartDataCache[period] = chartViewData
             eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
         }
+        
+        chartsDataController.onAssetPriceFetch = { [weak self] error, period, chartsData in
+            guard let self else { return }
+            guard error == nil else {
+                chartViewData = ChartViewData(period: period, chartValues: [], isLoading: false)
+                eventHandler?(.didFetchPriceChartData(data: nil, error: error, period: period))
+                return
+            }
+            let chartDataPoints: [ChartDataPoint] = chartsData.enumerated().compactMap { index, item -> ChartDataPoint? in
+                return ChartDataPoint(day: index, algoValue: 0.0, fiatValue: item.price, usdValue: 0.0, timestamp: item.datetime)
+            }
+            chartViewData = ChartViewData(period: period, chartValues: chartDataPoints, isLoading: false)
+            priceChartDataCache[period] = chartViewData
+            eventHandler?(.didFetchPriceChartData(data: chartViewData, error: nil, period: period))
+        }
+    }
+    
+    func toogleFavoriteStatus() {
+        guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
+        
+        api.tooggleFavoriteStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isFavorited ?? false)), and: String(asset.id)) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let toggleStatus):
+                let algAsset = ALGAsset(asset: asset, isFavorited: toggleStatus.isEnabled)
+                guard let assetDetail = assetDetail else { return }
+                asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+                eventHandler?(.didUpdateAssetStatus(favorite: toggleStatus.isEnabled, priceAlert: asset.isPriceAlertEnabled ?? false))
+            case .failure:
+                eventHandler?(.didFailToToogleStatus(String(localized: "toggle-favorites-error-message")))
+            }
+        }
+    }
+    
+    func tooglePriceAlertStatus() {
+        guard let deviceIdString = api.deviceId, let deviceId = Int64(deviceIdString) else { return }
+        
+        api.toogglePriceAlertStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isPriceAlertEnabled ?? false)), and: String(asset.id)) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let toggleStatus):
+                let algAsset = ALGAsset(asset: asset, isPriceAlertEnabled: toggleStatus.isEnabled)
+                guard let assetDetail = assetDetail else { return }
+                asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+                eventHandler?(.didUpdateAssetStatus(favorite: asset.isFavorited ?? false, priceAlert: toggleStatus.isEnabled))
+            case .failure:
+                eventHandler?(.didFailToToogleStatus(String(localized: "toggle-price-alert-error-message")))
+            }
+        }
     }
 }
 
@@ -190,23 +239,8 @@ extension ASADetailScreenAPIDataController {
         guard let newAccount = sharedDataController.accountCollection[address] else { return }
 
         if !newAccount.isAvailable { return }
-
-        if asset.isAlgo {
-            publishEventIfAlgoAssetDidUpdate(newAccount.value)
-        } else {
-            publishEventIfStandardAssetDidUpdate(newAccount.value)
-        }
-
+        publishEventIfStandardAssetDidUpdate(newAccount.value)
         account = newAccount.value
-    }
-
-    private func publishEventIfAlgoAssetDidUpdate(_ newAccount: Account) {
-        let newAsset = newAccount.algo
-
-        if !isAssetUpdated(newAsset) { return }
-
-        asset = newAsset
-        eventHandler?(.didLoadData)
     }
 
     private func publishEventIfStandardAssetDidUpdate(_ newAccount: Account) {

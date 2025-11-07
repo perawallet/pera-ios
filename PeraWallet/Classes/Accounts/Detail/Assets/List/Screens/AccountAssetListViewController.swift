@@ -100,23 +100,25 @@ final class AccountAssetListViewController:
 
         dataController.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch event {
             case .didUpdate(let updates):
                 self.eventHandler?(.didUpdate(self.dataController.account))
                 switch updates.operation {
                 case .customize:
-                    self.listView.scrollToTop(animated: false)
+                    listView.scrollToTop(animated: false)
                 case .search:
                     let bottom = self.listView.contentSize.height
                     let minBottom = self.calculateMinEmptySpacingToScrollSearchInputFieldToTop()
-                    self.listView.contentInset.bottom = max(bottom, minBottom)
+                    listView.contentInset.bottom = max(bottom, minBottom)
                 case .refresh:
                     break
+                case .updateAssets:
+                    return
                 }
 
-                self.listDataSource.apply(
+                listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
                 ) { [weak self] in
@@ -142,6 +144,12 @@ final class AccountAssetListViewController:
         if !listView.frame.isEmpty {
             updateUIWhenViewDidLayoutSubviews()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        dataController.checkForAssetsToUpdate()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -180,7 +188,6 @@ final class AccountAssetListViewController:
 
         listView.delegate = self
 
-        observeWhenUserIsOnboardedToSwap()
     }
 
     func reloadData() {
@@ -564,9 +571,6 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     return
                 }
 
-                let swapDisplayStore = SwapDisplayStore()
-                let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-                item.isSwapBadgeVisible = !isOnboardedToSwap
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
@@ -672,6 +676,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     account: dataController.account.value,
                     asset: item.asset
                 )
+                dataController.shouldUpdateAsset(item.asset)
                 open(
                     screen,
                     by: .push
@@ -809,22 +814,6 @@ extension AccountAssetListViewController {
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func observeWhenUserIsOnboardedToSwap() {
-        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
-            [weak self] _ in
-            guard let self = self else { return }
-
-            guard
-                let indexPath = self.listDataSource.indexPath(for: .quickActions),
-                let cell = self.listView.cellForItem(at: indexPath) as? AccountQuickActionsCell
-            else {
-                return
-            }
-
-            cell.isSwapBadgeVisible = false
-        }
     }
 }
 

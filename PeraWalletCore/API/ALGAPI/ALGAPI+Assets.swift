@@ -49,9 +49,32 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func fetchAssetList(
+        _ draft: AssetFetchQuery,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
+    ) -> EndpointOperatable {
+        guard useAssetDetailV2Endpoint else {
+            return fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+        }
+        let draftV2 = AssetListFechDraft(ids: draft.ids, includeDeleted: draft.includeDeleted, deviceId: deviceId)
+        return fetchAssetListV2(draftV2, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let list):
+                handler(.success(list))
+            case .failure(let apiError, _):
+                analytics.record(.assetListV2Error(errorDescription: apiError.localizedDescription))
+                fetchAssetListV1(draft, queue: queue, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+            }
+        }
+    }
 
     @discardableResult
-    public func fetchAssetDetails(
+    private func fetchAssetListV1(
         _ draft: AssetFetchQuery,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
@@ -67,9 +90,48 @@ extension ALGAPI {
             .responseDispatcher(queue)
             .execute()
     }
-
+    
+    @discardableResult
+    private func fetchAssetListV2(
+        _ draft: AssetListFechDraft,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.assets)
+            .method(.post)
+            .body(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .responseDispatcher(queue)
+            .execute()
+    }
+    
     @discardableResult
     public func fetchAssetDetail(
+        _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        guard useAssetDetailV2Endpoint else {
+            return fetchAssetDetailV1(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+        }
+        return fetchAssetDetailV2(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let detail):
+                handler(.success(detail))
+            case .failure(let apiError, _):
+                analytics.record(.assetDetailV2Error(errorDescription: apiError.localizedDescription))
+                fetchAssetDetailV1(draft, ignoreResponseOnCancelled: ignoreResponseOnCancelled, onCompleted: handler)
+            }
+        }
+    }
+
+    @discardableResult
+    public func fetchAssetDetailV1(
         _ draft: AssetDetailFetchDraft,
         ignoreResponseOnCancelled: Bool = true,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
@@ -78,6 +140,22 @@ extension ALGAPI {
             .base(.mobileV1(network))
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    public func fetchAssetDetailV2(
+        _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV2(network))
+            .path(.assetDetail, args: "\(draft.id)")
+            .method(.post)
+            .body(draft)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .execute()

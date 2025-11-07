@@ -30,39 +30,39 @@ final class ASADetailViewController: PageContainer {
     private lazy var errorView = makeError()
     private lazy var pagesScreen = PageContainer(configuration: configuration, hidePageBar: true)
     
+    private lazy var sharedEventHandler: ASADetailViewController.EventHandler = { [weak self] event in
+        guard let self else { return }
+        switch event {
+        case .quickActionsBuy: navigateToBuyAlgoIfPossible()
+        case .quickActionsSend: navigateToSendTransactionIfPossible()
+        case .quickActionsReceive: navigateToReceiveTransaction()
+        case .quickActionsSwap: navigateToSwapAssetIfPossible()
+        case let .profileOnPeriodChange(account, asset, newPeriodSelected):
+            dataController.updateChartData(
+                address: account.address,
+                assetId: String(asset.id),
+                period: newPeriodSelected
+            )
+        case .profileOnFavoriteTap: dataController.toogleFavoriteStatus()
+        case .profileOnNotificationTap: dataController.tooglePriceAlertStatus()
+        }
+    }
+    
     private lazy var holdingsFragmentScreen = ASAHoldingsFragment(
         account: dataController.account,
         asset: dataController.asset,
         dataController: dataController,
         copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    ) { [weak self] event in
-            guard let self else { return }
-            switch event {
-            case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-            case .quickActionsSend: navigateToSendTransactionIfPossible()
-            case .quickActionsReceive: navigateToReceiveTransaction()
-            case .quickActionsSwap: navigateToSwapAssetIfPossible()
-            case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateChartData(address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-            }
-        }
+        configuration: configuration,
+        eventHandler: sharedEventHandler)
     
     private lazy var marketsFragmentScreen = ASAMarketsFragment(
         account: dataController.account,
         asset: dataController.asset,
         currency: sharedDataController.currency,
         copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    ) { [weak self] event in
-            guard let self else { return }
-            switch event {
-            case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-            case .quickActionsSend: navigateToSendTransactionIfPossible()
-            case .quickActionsReceive: navigateToReceiveTransaction()
-            case .quickActionsSwap: navigateToSwapAssetIfPossible()
-            case .profileOnPeriodChange(account: let account, asset: let asset, newPeriodSelected: let newPeriodSelected): dataController.updateAssetPriceChartData(assetId: asset.id, period: newPeriodSelected)
-            }
-        }
+        configuration: configuration,
+        eventHandler: sharedEventHandler)
 
     private lazy var meldFlowCoordinator = MeldFlowCoordinator(
         analytics: analytics,
@@ -261,6 +261,7 @@ extension ASADetailViewController {
 
     private func updateUIWhenDataDidLoad() {
         bindMarketPageData()
+        bindHoldingsPageData()
         removeLoading()
         removeError()
     }
@@ -270,8 +271,8 @@ extension ASADetailViewController {
         removeLoading()
     }
 
-    private func makeLoading() -> ASADetailLoadingView {
-        let loadingView = ASADetailLoadingView()
+    private func makeLoading() -> ASADetailViewControllerLoadingView {
+        let loadingView = ASADetailViewControllerLoadingView()
         loadingView.customize(theme.loading)
         return loadingView
     }
@@ -320,10 +321,22 @@ extension ASADetailViewController {
     private func bindMarketPageData(chartData: ChartViewData? = nil) {
         let asset = dataController.asset
         
-        
         // Get the markets screen from the page container (second screen)
         if let marketScreen = items.last?.screen as? ASAMarketsFragment {
             marketScreen.bindData(asset: asset, account: dataController.account, chartData: chartData)
+        }
+    }
+    
+    private func bindHoldingsPageData() {
+        let asset = dataController.asset
+        if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+            holdingsScreen.updateHeader(
+                with: dataController.chartViewData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false),
+                newAsset: asset,
+                shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
+                eventHandler: sharedEventHandler)
+            
+            holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: dataController.asset.isPriceAlertEnabled ?? false, isAssetFavorited: dataController.asset.isFavorited ?? false)
         }
     }
 }
@@ -356,22 +369,22 @@ extension ASADetailViewController {
                         message: errorDescription ?? ""
                     )
                 }
-                
-                holdingsFragmentScreen.updateHeader(
-                    with: validChartData,
-                    shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions
-                ) { [weak self] event in
-                    guard let self else { return }
-                    switch event {
-                    case .quickActionsBuy: navigateToBuyAlgoIfPossible()
-                    case .quickActionsSend: navigateToSendTransactionIfPossible()
-                    case .quickActionsReceive: navigateToReceiveTransaction()
-                    case .quickActionsSwap: navigateToSwapAssetIfPossible()
-                    case let .profileOnPeriodChange(account, asset, newPeriodSelected): dataController.updateChartData( address: account.address, assetId: String(asset.id), period: newPeriodSelected)
-                    }
+                if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+                    holdingsScreen.updateChart(with: validChartData)
                 }
-            case let .didFetchPriceChartData(chartData, _, _):
-                bindMarketPageData(chartData: chartData)
+            case let .didFetchPriceChartData(chartData, _, _): bindMarketPageData(chartData: chartData)
+            case let .didUpdateAssetStatus(favorite, priceAlert):
+                if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+                    holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: priceAlert, isAssetFavorited: favorite)
+                }
+                if let marketsScreen = items.last?.screen as? ASAMarketsFragment {
+                    marketsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: priceAlert, isAssetFavorited: favorite)
+                }
+            case let .didFailToToogleStatus(errorDescription):
+                bannerController?.presentErrorBanner(
+                    title: String(localized: "pass-phrase-verify-sdk-error"),
+                    message: errorDescription
+                )
                 
             }
         }
@@ -449,6 +462,8 @@ extension ASADetailViewController {
 
 extension ASADetailViewController {
     enum Event {
+        case profileOnNotificationTap
+        case profileOnFavoriteTap
         case profileOnPeriodChange(account: Account, asset: Asset, newPeriodSelected: ChartDataPeriod)
         case quickActionsBuy
         case quickActionsSwap

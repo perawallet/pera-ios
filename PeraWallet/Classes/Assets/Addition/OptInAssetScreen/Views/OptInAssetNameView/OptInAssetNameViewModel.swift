@@ -22,11 +22,13 @@ import pera_wallet_core
 /// Just one of these view models is enough to cover all, i.e. TransferAssetBalanceNameViewModel etc.
 struct OptInAssetNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
     init(asset: AssetDecoration) {
         bindPrimaryTitle(asset: asset)
+        bindFavoriteTitleAccessory(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
     }
@@ -65,6 +67,14 @@ extension OptInAssetNameViewModel {
         case .verified: primaryTitleAccessory = "icon-verified"
         case .unverified: primaryTitleAccessory = nil
         case .suspicious: primaryTitleAccessory = "icon-suspicious"
+        }
+    }
+    
+    mutating func bindFavoriteTitleAccessory(asset: AssetDecoration) {
+        if asset.isFavorited ?? false {
+            favoriteTitleAccessory = "icon-asset-favorite"
+        } else {
+            favoriteTitleAccessory = nil
         }
     }
 

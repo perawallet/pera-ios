@@ -52,6 +52,8 @@ public final class Algo: Asset {
     public let isAlgo = true
     public func isUSDC(for network: ALGAPI.Network) -> Bool { false }
     public let isFault = false
+    public var isFavorited: Bool? = nil
+    public var isPriceAlertEnabled: Bool? = nil
 
     init(
         amount: UInt64
@@ -71,5 +73,10 @@ public final class Algo: Asset {
         self.discordURL = URL(string: "https://discord.com/invite/algorand")
         self.telegramURL = URL(string: "https://t.me/algorand")
         self.twitterURL = URL.twitterURL(username: "Algorand")
+    }
+    
+    public func updateStatus(priceAlert: Bool, favorite: Bool) {
+        isFavorited = favorite
+        isPriceAlertEnabled = priceAlert
     }
 }

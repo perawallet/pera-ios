@@ -63,10 +63,7 @@ final class ASAHoldingsFragment: TransactionsViewController {
     }
     
     private func makeViewModel(for asset: Asset) -> ASADetailQuickActionsViewModel {
-        return ASADetailQuickActionsViewModel(
-            asset: asset,
-            isSwapBadgeVisible: false
-        )
+        return ASADetailQuickActionsViewModel(asset: asset)
     }
     
     private func makeContext(
@@ -84,16 +81,17 @@ final class ASAHoldingsFragment: TransactionsViewController {
             shouldDisplayQuickActions: shouldDisplayQuickActions,
             quickActionsViewModel: viewModel,
             chartData: chartData,
-            eventHandler: eventHandler
+            eventHandler: eventHandler,
+            showNotificationAndFavoriteButtons: configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
         )
     }
     
-    func updateHeader(with chartData: ChartViewData, shouldDisplayQuickActions: Bool, eventHandler: @escaping ASADetailViewController.EventHandler) {
+    func updateHeader(with chartData: ChartViewData, newAsset: Asset? = nil, shouldDisplayQuickActions: Bool, eventHandler: @escaping ASADetailViewController.EventHandler) {
         guard let asset else { return }
-        let viewModel = makeViewModel(for: asset)
+        let viewModel = makeViewModel(for: newAsset ?? asset)
         let context = makeContext(
             account: draft.accountHandle.value,
-            asset: asset,
+            asset: newAsset ?? asset,
             viewModel: viewModel,
             chartData: chartData,
             shouldDisplayQuickActions: shouldDisplayQuickActions,
@@ -101,6 +99,14 @@ final class ASAHoldingsFragment: TransactionsViewController {
         )
         
         transactionsDataSource.updateHeader(with: context)
+    }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        transactionsDataSource.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
+    
+    func updateChart(with data: ChartViewData?) {
+        transactionsDataSource.updateChart(with: data)
     }
 }
 
@@ -112,4 +118,5 @@ struct ASAHoldingsHeaderContext {
     let quickActionsViewModel: ASADetailQuickActionsViewModel
     let chartData: ChartViewData
     let eventHandler: ASADetailViewController.EventHandler
+    let showNotificationAndFavoriteButtons: Bool
 }

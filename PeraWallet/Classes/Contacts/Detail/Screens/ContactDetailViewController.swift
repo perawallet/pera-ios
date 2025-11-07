@@ -143,7 +143,7 @@ extension ContactDetailViewController {
                             }
                         }
 
-                        self.api?.fetchAssetDetails(
+                        self.api?.fetchAssetList(
                             AssetFetchQuery(ids: assetsToBeFetched),
                             queue: .main,
                             ignoreResponseOnCancelled: false

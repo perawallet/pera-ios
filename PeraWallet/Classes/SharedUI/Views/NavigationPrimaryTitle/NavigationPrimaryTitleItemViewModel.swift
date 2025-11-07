@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 struct NavigationPrimaryTitleItemViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
     
@@ -27,6 +28,7 @@ struct NavigationPrimaryTitleItemViewModel: PrimaryTitleViewModel {
         detail: String
     ) {
         bindPrimaryTitle(title)
+        bindFavoriteTitleAccessory()
         bindPrimaryTitleAccessory()
         bindSecondaryTitle(detail)
     }
@@ -36,6 +38,10 @@ extension NavigationPrimaryTitleItemViewModel {
     mutating func bindPrimaryTitle(_ title: String) {
         primaryTitle = title
             .bodyMedium(alignment: .center)
+    }
+    
+    mutating func bindFavoriteTitleAccessory() {
+        favoriteTitleAccessory = nil
     }
     
     mutating func bindPrimaryTitleAccessory() {

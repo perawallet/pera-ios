@@ -23,22 +23,32 @@ import MagpieCore
 
 public final class ALGAPI: API {
     public let session: Session
+    public let analytics: ALGAnalytics
+    private let featureFlagService: FeatureFlagServicing
 
     /// <todo>
     /// NOP!
     public var _interceptor: ALGAPIInterceptor {
-        return interceptor as! ALGAPIInterceptor
+        interceptor as! ALGAPIInterceptor
     }
 
     public var network: Network {
-        return _interceptor.network
+        _interceptor.network
     }
     public var isTestNet: Bool {
-        return _interceptor.isTestNet
+        _interceptor.isTestNet
+    }
+    public var deviceId: String? {
+        session.authenticatedUser?.getDeviceId(on: network)
+    }
+    public var useAssetDetailV2Endpoint: Bool {
+        featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
     }
 
-    public init(session: Session, networkMonitor: NetworkMonitor? = nil) {
+    public init(session: Session, analytics: ALGAnalytics, featureFlagService: FeatureFlagServicing, networkMonitor: NetworkMonitor? = nil) {
         self.session = session
+        self.analytics = analytics
+        self.featureFlagService = featureFlagService
 
         super.init(
             base: AppEnvironment.current.serverApi,

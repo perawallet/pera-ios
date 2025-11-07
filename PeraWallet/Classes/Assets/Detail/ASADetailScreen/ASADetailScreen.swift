@@ -686,24 +686,14 @@ extension ASADetailScreen {
         quickActionsView.customize(theme.quickActions)
 
         let asset = dataController.asset
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-        var viewModel = ASADetailQuickActionsViewModel(
-            asset: asset,
-            isSwapBadgeVisible: !isOnboardedToSwap
-        )
+        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
 
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
             self.navigateToBuyAlgoIfPossible()
         }
         quickActionsView.startObserving(event: .swap) {
-            [unowned self, unowned quickActionsView] in
-
-            if !isOnboardedToSwap {
-                viewModel.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
-                quickActionsView.bindData(viewModel)
-            }
+            [unowned self] in
 
             self.navigateToSwapAssetIfPossible()
         }
@@ -793,7 +783,7 @@ extension ASADetailScreen {
                     return
                 }
                 profileView.updateChart(with: chartData, and: TendenciesViewModel(chartData: chartData.model.data, currency: configuration.sharedDataController.currency))
-            case .didFetchPriceChartData: break
+            case .didFetchPriceChartData, .didUpdateAssetStatus, .didFailToToogleStatus: break
             }
         }
         dataController.loadData()

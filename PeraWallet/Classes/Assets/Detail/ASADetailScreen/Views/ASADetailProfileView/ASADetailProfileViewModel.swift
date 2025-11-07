@@ -40,6 +40,7 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
         priceVM: AssetStatisticsSectionPriceViewModel? = nil
     ) {
         self.isAmountHidden = isAmountHidden
+        
         bindIcon(asset: asset)
         bindName(asset: asset)
         bindTitleSeparator(asset: asset)

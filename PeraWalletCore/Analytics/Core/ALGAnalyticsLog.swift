@@ -53,6 +53,8 @@ public enum ALGAnalyticsLogName:
     case migrationFailure = "MigrationFailure"
     case persistentContainerCreationError = "PersistentContainerCreationError"
     case mediaCleanUpError = "MediaCleanUpError"
+    case assetDetailV2Error = "AssetDetailV2Error"
+    case assetListV2Error = "AssetListV2Error"
     
     public static func ==(lhs: ALGAnalyticsLogName, rhs: ALGAnalyticsLogName) -> Bool {
         lhs.rawValue == rhs.rawValue
@@ -88,6 +90,8 @@ extension ALGAnalyticsLogName {
         case .migrationFailure: return 19
         case .persistentContainerCreationError: return 20
         case .mediaCleanUpError: return 21
+        case .assetDetailV2Error: return 22
+        case .assetListV2Error: return 23
         }
     }
 }

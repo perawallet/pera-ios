@@ -20,6 +20,7 @@ import pera_wallet_core
 
 struct WCSessionSupportedMethodsAdvancedPermissionViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 

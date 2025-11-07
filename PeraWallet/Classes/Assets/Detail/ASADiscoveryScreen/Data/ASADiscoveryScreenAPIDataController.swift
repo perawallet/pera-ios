@@ -55,7 +55,7 @@ extension ASADiscoveryScreenAPIDataController {
 
         eventHandler?(.willLoadData)
 
-        let draft = AssetDetailFetchDraft(id: asset.id)
+        let draft = AssetDetailFetchDraft(id: asset.id, deviceId: api.deviceId)
         api.fetchAssetDetail(draft) {
             [weak self] result in
             guard let self = self else { return }

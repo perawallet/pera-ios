@@ -39,6 +39,7 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
+        
         bindIcon(asset: asset)
         bindName(asset: asset)
         bindTitleSeparator(asset: asset)

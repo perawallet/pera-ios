@@ -42,7 +42,9 @@ public final class AssetDecoration: ALGEntityModel {
     public let isAvailableOnDiscover: Bool
     public let isDestroyed: Bool
     public let category: UInt64?
-
+    public let isFavorited: Bool?
+    public let isPriceAlertEnabled: Bool?
+    
     public var state: AssetState = .ready
 
     public var isCollectible: Bool {
@@ -91,6 +93,8 @@ public final class AssetDecoration: ALGEntityModel {
         self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
         self.isDestroyed = apiModel.isDestroyed ?? false
         self.category = apiModel.category
+        self.isFavorited = apiModel.isFavorited ?? false
+        self.isPriceAlertEnabled = apiModel.isPriceAlertEnabled ?? false
     }
     
     public init(assetDetail: AssetDetail) {
@@ -116,6 +120,8 @@ public final class AssetDecoration: ALGEntityModel {
         self.isAvailableOnDiscover = false
         self.isDestroyed = false
         self.category = nil
+        self.isFavorited = nil
+        self.isPriceAlertEnabled = nil
     }
 
     public init(asset: Asset) {
@@ -141,6 +147,8 @@ public final class AssetDecoration: ALGEntityModel {
         self.isAvailableOnDiscover = asset.isAvailableOnDiscover
         self.isDestroyed = asset.isDestroyed
         self.category = asset.category
+        self.isFavorited = asset.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled
     }
 
     public func encode() -> APIModel {
@@ -167,6 +175,8 @@ public final class AssetDecoration: ALGEntityModel {
         apiModel.isAvailableOnDiscover = isAvailableOnDiscover
         apiModel.isDestroyed = isDestroyed
         apiModel.category = category
+        apiModel.isFavorited = isFavorited
+        apiModel.isPriceAlertEnabled = isPriceAlertEnabled
         return apiModel
     }
 }
@@ -195,6 +205,8 @@ extension AssetDecoration {
         var isAvailableOnDiscover: Bool?
         var isDestroyed: Bool?
         var category: UInt64?
+        var isFavorited: Bool?
+        var isPriceAlertEnabled: Bool?
 
         public init() {
             self.assetId = 0
@@ -224,6 +236,8 @@ extension AssetDecoration {
             case isAvailableOnDiscover = "available_on_discover_mobile"
             case isDestroyed = "is_deleted"
             case category
+            case isFavorited = "is_favorited"
+            case isPriceAlertEnabled = "is_price_alert_enabled"
         }
     }
 }

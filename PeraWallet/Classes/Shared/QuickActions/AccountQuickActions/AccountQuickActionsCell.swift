@@ -22,12 +22,6 @@ final class AccountQuickActionsCell:
     UIInteractable {
 
     static let theme = AccountQuickActionsViewTheme()
-
-    var isSwapBadgeVisible: Bool = false {
-        didSet {
-            contextView.isSwapBadgeVisible = isSwapBadgeVisible
-        }
-    }
     
     var isRequestsBadgeVisible: Bool = false {
         didSet {

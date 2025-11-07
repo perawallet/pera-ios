@@ -25,11 +25,13 @@ import pera_wallet_core
 struct DiscoverSearchAssetNameListItemViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?
+    private(set) var favoriteTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
     init(asset: AssetDecoration) {
         bindPrimaryTitle(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
+        bindFavoriteTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
     }
 }
@@ -68,6 +70,14 @@ extension DiscoverSearchAssetNameListItemViewModel {
         case .verified: primaryTitleAccessory = "icon-verified"
         case .unverified: primaryTitleAccessory = nil
         case .suspicious: primaryTitleAccessory = "icon-suspicious"
+        }
+    }
+    
+    mutating func bindFavoriteTitleAccessory(asset: AssetDecoration) {
+        if asset.isFavorited ?? false {
+            favoriteTitleAccessory = "icon-asset-favorite"
+        } else {
+            favoriteTitleAccessory = nil
         }
     }
 

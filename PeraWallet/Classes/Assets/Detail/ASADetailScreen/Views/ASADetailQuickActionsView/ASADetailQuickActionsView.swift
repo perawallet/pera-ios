@@ -34,7 +34,7 @@ final class ASADetailQuickActionsView:
 
     private lazy var contentView = HStackView()
     private lazy var buyActionView = makeActionView()
-    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var swapActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
     private lazy var receiveActionView = makeActionView()
 
@@ -50,9 +50,6 @@ final class ASADetailQuickActionsView:
     func bindData(_ viewModel: ASADetailQuickActionsViewModel?) {
         let isBuyActionAvailable = viewModel?.isBuyActionAvailable ?? true
         buyActionView.isHidden = !isBuyActionAvailable
-
-        let isSwapBadgeVisible = viewModel?.isSwapBadgeVisible ?? false
-        swapActionView.isBadgeVisible = isSwapBadgeVisible
     }
 
     static func calculatePreferredSize(
@@ -81,18 +78,6 @@ extension ASADetailQuickActionsView {
     private func makeActionView() -> MacaroonUIKit.Button {
         let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
         return MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: titleAdjustmentY))
-    }
-
-    private func makeBadgeActionView() -> BadgeButton {
-        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
-        let swapBadgeEdgeInsets = theme.swapBadgeEdgeInsets
-        return BadgeButton(
-            badgePosition: .topTrailing(swapBadgeEdgeInsets),
-            .imageAtTopmost(
-                padding: 0,
-                titleAdjustmentY: titleAdjustmentY
-            )
-        )
     }
 }
 
@@ -131,7 +116,6 @@ extension ASADetailQuickActionsView {
     }
 
     private func addSwapAction(_ theme: ASADetailQuickActionsViewTheme) {
-        swapActionView.customize(theme: theme.swapBadge)
         swapActionView.customizeAppearance(theme.swapAction)
         customizeAction(
             swapActionView,

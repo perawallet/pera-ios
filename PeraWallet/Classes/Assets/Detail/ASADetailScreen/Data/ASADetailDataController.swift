@@ -28,21 +28,26 @@ protocol ASADetailScreenDataController: AnyObject {
 
     var account: Account { get }
     var asset: Asset { get }
+    var chartViewData: ChartViewData? { get }
 
     func loadData()
     func fetchInitialChartData(address: String, assetId: String, period: ChartDataPeriod)
     func fetchInitialAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod)
     func updateChartData(address: String, assetId: String, period: ChartDataPeriod)
     func updateAssetPriceChartData(assetId: AssetID, period: ChartDataPeriod)
+    func toogleFavoriteStatus()
+    func tooglePriceAlertStatus()
 }
 
 enum ASADetailScreenDataControllerEvent {
     case willLoadData
     case didLoadData
+    case didUpdateAssetStatus(favorite: Bool, priceAlert: Bool)
     case didFailToLoadData(ASADiscoveryScreenDataController.Error)
     case didUpdateAccount(old: Account)
     case didFetchChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
     case didFetchPriceChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
+    case didFailToToogleStatus(String)
 }
 
 struct ASADetailScreenConfiguration {

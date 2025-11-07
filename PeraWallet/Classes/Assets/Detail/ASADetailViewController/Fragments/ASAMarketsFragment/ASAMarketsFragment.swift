@@ -29,7 +29,7 @@ final class ASAMarketsFragment:
     }
 
     private lazy var contextView = VStackView()
-    private lazy var profileView = ASAProfileView(type: .assetPrice)
+    private lazy var profileView = ASAProfileView(type: .assetPrice, showNotificationAndFavoriteButtons: true)
     private lazy var marketInfoView = ASAMarketsFragmentMarketView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()
@@ -68,6 +68,8 @@ final class ASAMarketsFragment:
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+        
+        updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: asset.isPriceAlertEnabled ?? false, isAssetFavorited: asset.isFavorited ?? false)
     }
 
     override func viewDidLoad() {
@@ -92,6 +94,10 @@ extension ASAMarketsFragment {
         if isViewLoaded {
             bindUIData()
         }
+    }
+    
+    func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
+        profileView.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
     }
 }
 
@@ -190,6 +196,16 @@ extension ASAMarketsFragment {
     private func bindProfile() {
         profileView.startObserving(event: .onAmountTap) {
             ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
+        }
+        
+        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnFavoriteTap)
+        }
+        
+        profileView.startObserving(event: .onNotificationTap) { [weak self] in
+            guard let self else { return }
+            eventHandler?(.profileOnNotificationTap)
         }
 
         profileView.onPeriodChange = { [weak self] newPeriodSelected in
