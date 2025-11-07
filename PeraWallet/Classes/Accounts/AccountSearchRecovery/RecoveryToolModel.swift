@@ -67,7 +67,7 @@ final class RecoveryToolModel: RecoveryToolModelable {
             updateViewModel(statusText: "", loading: true, isErrorState: false)
             
             defer {
-                updateViewModel(statusText: nil, loading: true, isErrorState: nil)
+                updateViewModel(statusText: nil, loading: false, isErrorState: nil)
             }
             
             if session.privateData(for: viewModel.address) != nil {
