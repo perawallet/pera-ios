@@ -295,16 +295,6 @@ extension ASADiscoveryScreen {
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
         }
-        
-        profileView.startObserving(event: .onFavoriteTap) { [weak self] in
-            guard let self else { return }
-            print("---onFavoriteTap ASADiscoveryScreen")
-        }
-        
-        profileView.startObserving(event: .onNotificationTap) { [weak self] in
-            guard let self else { return }
-            print("---onNotificationTap ASADiscoveryScreen")
-        }
 
         bindProfileData()
     }

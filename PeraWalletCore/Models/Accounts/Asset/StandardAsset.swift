@@ -103,8 +103,8 @@ public final class StandardAsset: Asset {
         self.isFault = false
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
-        self.isFavorited = decoration.isFavorited ?? asset.isFavorited
-        self.isPriceAlertEnabled = decoration.isPriceAlertEnabled ?? asset.isPriceAlertEnabled
+        self.isFavorited = asset.isFavorited ?? decoration.isFavorited
+        self.isPriceAlertEnabled = asset.isPriceAlertEnabled ?? decoration.isPriceAlertEnabled
     }
 
     public init(

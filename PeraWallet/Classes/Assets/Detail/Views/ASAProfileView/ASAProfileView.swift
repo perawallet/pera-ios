@@ -146,8 +146,6 @@ final class ASAProfileView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
-        
-        updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: viewModel?.isAssetPriceAlertEnabled ?? false, isAssetFavorited: viewModel?.isAssetFavorited ?? false)
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
@@ -267,12 +265,11 @@ extension ASAProfileView {
     }
     
     private func addNotificationAndFavoriteButtons(_ theme: ASAProfileViewTheme) {
-        buttonsView.removeAllSubviews()
         buttonsView.axis = .horizontal
         buttonsView.spacing = 12
         buttonsView.alignment = .center
         buttonsView.distribution = .fill
-        
+
         [notificationsButton, favoritesButton].forEach {
             $0.backgroundColor = Colors.Layer.grayLighter.uiColor
             $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)

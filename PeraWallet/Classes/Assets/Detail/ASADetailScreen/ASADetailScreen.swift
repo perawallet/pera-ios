@@ -686,7 +686,7 @@ extension ASADetailScreen {
         quickActionsView.customize(theme.quickActions)
 
         let asset = dataController.asset
-        var viewModel = ASADetailQuickActionsViewModel(asset: asset)
+        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
 
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
@@ -783,12 +783,7 @@ extension ASADetailScreen {
                     return
                 }
                 profileView.updateChart(with: chartData)
-            case .didFetchPriceChartData: break
-            case let .didFailToToogleStatus(errorDescription):
-                bannerController?.presentErrorBanner(
-                    title: String(localized: "pass-phrase-verify-sdk-error"),
-                    message: errorDescription
-                )
+            case .didFetchPriceChartData, .didUpdateAssetStatus, .didFailToToogleStatus: break
             }
         }
         dataController.loadData()

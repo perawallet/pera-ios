@@ -329,14 +329,14 @@ extension ASADetailViewController {
     
     private func bindHoldingsPageData() {
         let asset = dataController.asset
-        
         if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
             holdingsScreen.updateHeader(
                 with: dataController.chartViewData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false),
                 newAsset: asset,
                 shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
                 eventHandler: sharedEventHandler)
-            holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: asset.isPriceAlertEnabled ?? false, isAssetFavorited: asset.isFavorited ?? false)
+            
+            holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: dataController.asset.isPriceAlertEnabled ?? false, isAssetFavorited: dataController.asset.isFavorited ?? false)
         }
     }
 }
@@ -369,13 +369,17 @@ extension ASADetailViewController {
                         message: errorDescription ?? ""
                     )
                 }
-                
-                holdingsFragmentScreen.updateHeader(
-                    with: validChartData,
-                    shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
-                    eventHandler: sharedEventHandler)
-                holdingsFragmentScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: dataController.asset.isPriceAlertEnabled ?? false, isAssetFavorited: dataController.asset.isFavorited ?? false)
+                if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+                    holdingsScreen.updateChart(with: validChartData)
+                }
             case let .didFetchPriceChartData(chartData, _, _): bindMarketPageData(chartData: chartData)
+            case let .didUpdateAssetStatus(favorite, priceAlert):
+                if let holdingsScreen = items.first?.screen as? ASAHoldingsFragment {
+                    holdingsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: priceAlert, isAssetFavorited: favorite)
+                }
+                if let marketsScreen = items.last?.screen as? ASAMarketsFragment {
+                    marketsScreen.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: priceAlert, isAssetFavorited: favorite)
+                }
             case let .didFailToToogleStatus(errorDescription):
                 bannerController?.presentErrorBanner(
                     title: String(localized: "pass-phrase-verify-sdk-error"),

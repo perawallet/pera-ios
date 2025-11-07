@@ -83,6 +83,7 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
         
         bindProfile()
+        updateChart()
     }
 
     private func bindProfile() {
@@ -127,7 +128,7 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
 
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-        profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false))
+        
     }
     
     private func addQuickActions() {
@@ -181,6 +182,13 @@ final class ASAHoldingsHeaderContentView: UIView {
         )
 
         profileView.bindData(viewModel)
+    }
+    
+    func updateChart(with data: ChartViewData? = nil) {
+        if let data {
+            self.chartData = data
+            profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false))
+        }
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {

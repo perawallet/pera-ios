@@ -30,8 +30,6 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
     private(set) var priceValue: TextProvider?
-    private(set) var isAssetFavorited: Bool?
-    private(set) var isAssetPriceAlertEnabled: Bool?
     
     init(
         asset: Asset,
@@ -42,8 +40,6 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
         priceVM: AssetStatisticsSectionPriceViewModel? = nil
     ) {
         self.isAmountHidden = isAmountHidden
-        isAssetFavorited = asset.isFavorited
-        isAssetPriceAlertEnabled = asset.isPriceAlertEnabled
         
         bindIcon(asset: asset)
         bindName(asset: asset)
@@ -176,7 +172,7 @@ extension ASADetailProfileViewModel {
             return
         }
 
-        let amountText = currencyFormatter.format(selectedPointVM.fiatValue)
+        let amountText = currencyFormatter.format(selectedPointVM.algoValue)
         let unitText =
             asset.naming.unitName.unwrapNonEmptyString() ?? asset.naming.name.unwrapNonEmptyString()
         let text = [ amountText, unitText ].compound(" ")
@@ -251,7 +247,7 @@ extension ASADetailProfileViewModel {
         currencyFormatter: CurrencyFormatter,
         selectedPointVM: ChartSelectedPointViewModel?
     ) {
-        guard let currencyValue = currency.primaryValue else {
+        guard let currencyValue = currency.fiatValue else {
             secondaryValue = nil
             return
         }
@@ -272,7 +268,7 @@ extension ASADetailProfileViewModel {
                 return
             }
 
-            let text = currencyFormatter.format(selectedPointVM.algoValue)
+            let text = currencyFormatter.format(selectedPointVM.fiatValue)
             bindSecondaryValue(text: text)
         } catch {
             secondaryValue = nil

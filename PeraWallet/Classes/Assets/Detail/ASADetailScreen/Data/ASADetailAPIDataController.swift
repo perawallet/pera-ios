@@ -71,6 +71,11 @@ final class ASADetailScreenAPIDataController:
 extension ASADetailScreenAPIDataController {
     func loadData() {
         setupChartDataClosures()
+        
+        if !featureFlagService.isEnabled(.assetDetailV2EndpointEnabled), asset.isAlgo {
+            didLoadData()
+            return
+        }
 
         eventHandler?(.willLoadData)
 
@@ -187,8 +192,11 @@ extension ASADetailScreenAPIDataController {
         api.tooggleFavoriteStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isFavorited ?? false)), and: String(asset.id)) { [weak self] response in
             guard let self else { return }
             switch response {
-            case .success:
-                loadData()
+            case .success(let toggleStatus):
+                let algAsset = ALGAsset(asset: asset, isFavorited: toggleStatus.isEnabled)
+                guard let assetDetail = assetDetail else { return }
+                asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+                eventHandler?(.didUpdateAssetStatus(favorite: toggleStatus.isEnabled, priceAlert: asset.isPriceAlertEnabled ?? false))
             case .failure:
                 eventHandler?(.didFailToToogleStatus(String(localized: "toggle-favorites-error-message")))
             }
@@ -201,8 +209,11 @@ extension ASADetailScreenAPIDataController {
         api.toogglePriceAlertStatus(AssetToogleStatusDraft(deviceId: deviceId, enabled: !(asset.isPriceAlertEnabled ?? false)), and: String(asset.id)) { [weak self] response in
             guard let self else { return }
             switch response {
-            case .success:
-                loadData()
+            case .success(let toggleStatus):
+                let algAsset = ALGAsset(asset: asset, isPriceAlertEnabled: toggleStatus.isEnabled)
+                guard let assetDetail = assetDetail else { return }
+                asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+                eventHandler?(.didUpdateAssetStatus(favorite: asset.isFavorited ?? false, priceAlert: toggleStatus.isEnabled))
             case .failure:
                 eventHandler?(.didFailToToogleStatus(String(localized: "toggle-price-alert-error-message")))
             }

@@ -31,8 +31,6 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
     private(set) var priceValue: TextProvider?
-    private(set) var isAssetFavorited: Bool?
-    private(set) var isAssetPriceAlertEnabled: Bool?
 
     init() {}
 
@@ -41,8 +39,6 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        isAssetFavorited = asset.isFavorited
-        isAssetPriceAlertEnabled = asset.isPriceAlertEnabled
         
         bindIcon(asset: asset)
         bindName(asset: asset)

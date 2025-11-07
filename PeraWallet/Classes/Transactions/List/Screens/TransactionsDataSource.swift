@@ -112,7 +112,7 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             collectionView.register($0)
         }
         
-        if headerContext != nil {
+        if headerContext != nil, headerView == nil {
             collectionView.register(header: ASAHoldingsFragmentHeaderView.self)
             
             supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
@@ -142,5 +142,9 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
         headerView?.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+    }
+    
+    func updateChart(with data: ChartViewData?) {
+        headerView?.updateChart(with: data)
     }
 }

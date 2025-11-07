@@ -53,13 +53,13 @@ public final class ALGAsset:
         self.category = nil
     }
 
-    public init(asset: Asset) {
+    public init(asset: Asset, isFavorited: Bool? = nil, isPriceAlertEnabled: Bool? = nil) {
         self.id = asset.id
         self.creator = asset.creator?.address
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
-        self.isFavorited = asset.isFavorited
-        self.isPriceAlertEnabled = asset.isPriceAlertEnabled
+        self.isFavorited = isFavorited ?? asset.isFavorited
+        self.isPriceAlertEnabled = isPriceAlertEnabled ?? asset.isPriceAlertEnabled
         self.optedInAtRound = asset.optedInAtRound
         self.category = asset.category
     }

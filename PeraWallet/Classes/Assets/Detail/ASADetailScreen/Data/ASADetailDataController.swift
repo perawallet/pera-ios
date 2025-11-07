@@ -42,6 +42,7 @@ protocol ASADetailScreenDataController: AnyObject {
 enum ASADetailScreenDataControllerEvent {
     case willLoadData
     case didLoadData
+    case didUpdateAssetStatus(favorite: Bool, priceAlert: Bool)
     case didFailToLoadData(ASADiscoveryScreenDataController.Error)
     case didUpdateAccount(old: Account)
     case didFetchChartData(data: ChartViewData?, error: String?, period: ChartDataPeriod)
