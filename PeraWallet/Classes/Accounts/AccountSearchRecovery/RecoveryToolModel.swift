@@ -58,7 +58,6 @@ final class RecoveryToolModel: RecoveryToolModelable {
     // MARK: - Setups
     
     // MARK: - Methods
-    @MainActor
     func scanForAddress() {
         guard !viewModel.loading else {
             return
