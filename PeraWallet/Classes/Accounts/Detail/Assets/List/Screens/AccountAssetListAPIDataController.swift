@@ -248,6 +248,14 @@ extension AccountAssetListAPIDataController {
                         guard let self else { return }
                         sharedDataController.assetDetailCollection[$0.id] = $0
                     }
+                    
+                    if
+                        asset.isAlgo,
+                        let algoAssetUpdate = sharedDataController.assetDetailCollection[asset.id]
+                    {
+                        account.value.algo.updateStatus(priceAlert: algoAssetUpdate.isPriceAlertEnabled ?? false, favorite: algoAssetUpdate.isFavorited ?? false)
+                    }
+                    
                     if
                         let assetToUpdate,
                         assetToUpdate.isFavorited != sharedDataController.assetDetailCollection[assetToUpdate.id]?.isFavorited
