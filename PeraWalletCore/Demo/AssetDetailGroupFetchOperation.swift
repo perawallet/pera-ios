@@ -69,8 +69,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             return
         }
         
-        var assets = account.assets.someArray
-        assets.append(ALGAsset(id: 0))
+        let assets = account.assetsToFetch
         let newAssetIDs: [AssetID]
         
         if let cacheAccount = input.cachedAccounts.account(for: account.address) {

@@ -58,6 +58,14 @@ public final class Account: ALGEntityModel {
     public private(set) var algo: Algo
     public private(set) var standardAssets: [StandardAsset]?
     public private(set) var collectibleAssets: [CollectibleAsset]?
+    
+    public var assetsToFetch: [ALGAsset] {
+        let algoAsset = ALGAsset(id: 0)
+        if let assets {
+            return assets + [algoAsset]
+        }
+        return [algoAsset]
+    }
 
     var totalUSDValueOfAssets: Decimal? {
         return calculateTotalUSDValueOfAssets()
