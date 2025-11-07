@@ -17,6 +17,12 @@ import pera_wallet_core
 import KeychainAccess
 
 
+protocol RecoveryToolModelable {
+    var viewModel: RecoveryToolViewModel { get }
+    
+    func scanForAddress()
+}
+
 final class RecoveryToolViewModel: ObservableObject {
     
     // MARK: - Properties
@@ -25,6 +31,13 @@ final class RecoveryToolViewModel: ObservableObject {
     @Published fileprivate(set) var loading: Bool = false
     @Published fileprivate(set) var isErrorState: Bool = false
     @Published var address: String = ""
+}
+
+final class RecoveryToolModel: RecoveryToolModelable {
+    
+    // MARK: - RecoveryToolModelable
+    
+    var viewModel = RecoveryToolViewModel()
     
     private let session: Session
     private let sharedDataController: SharedDataController
@@ -32,6 +45,8 @@ final class RecoveryToolViewModel: ObservableObject {
     private let hdWalletService: HDWalletServicing
     private let api: ALGAPI
     
+    
+    // MARK: - Initialisers
     init(session: Session, sharedDataController: SharedDataController, hdWalletStorage: HDWalletStorable, hdWalletService: HDWalletServicing, api: ALGAPI) {
         self.session = session
         self.sharedDataController = sharedDataController
@@ -40,40 +55,45 @@ final class RecoveryToolViewModel: ObservableObject {
         self.api = api
     }
     
+    // MARK: - Setups
+    
     // MARK: - Methods
     @MainActor
     func scanForAddress() {
-        guard !loading else {
+        guard !viewModel.loading else {
             return
         }
         
         do {
-            statusText = ""
-            isErrorState = false
-            loading = true
+            updateViewModel(statusText: "", loading: true, isErrorState: false)
             
-            defer { loading = false }
+            defer {
+                updateViewModel(statusText: nil, loading: true, isErrorState: nil)
+            }
             
-            if session.privateData(for: address) != nil {
-                try recoverAlgo25Account(address: address)
-            } else if let key = hdWalletStorage.allHDWalletKeys.first(where: { $0.contains(address) }) {
+            if session.privateData(for: viewModel.address) != nil {
+                try recoverAlgo25Account(address: viewModel.address)
+            } else if let key = hdWalletStorage.allHDWalletKeys.first(where: { $0.contains(viewModel.address) }) {
                 try recoverHDWalletAccount(key: key)
             } else {
-                statusText = String(localized: "search-recovery-not-found")
-                isErrorState = true
+                updateViewModel(statusText: String(localized: "search-recovery-not-found"),
+                                loading: nil,
+                                isErrorState: true)
                 return
             }
         } catch {
-            isErrorState = true
-            statusText = error.localizedDescription
+            updateViewModel(statusText: error.localizedDescription,
+                            loading: nil,
+                            isErrorState: true)
         }
     }
     
     private func recoverAlgo25Account(address: String) throws {
         
         guard sharedDataController.accountCollection.contains(where: { $0.value.address == address }) else {
-            statusText = String(localized: "search-recovery-already-exists")
-            isErrorState = true
+            updateViewModel(statusText: String(localized: "search-recovery-already-exists"),
+                            loading: nil,
+                            isErrorState: true)
             return
         }
         
@@ -94,8 +114,9 @@ final class RecoveryToolViewModel: ObservableObject {
         
         if let hdWallet = try hdWalletStorage.wallet(id: walletId) {
             guard sharedDataController.accountCollection.filter({ $0.value.address == address }).first == nil else {
-                statusText = String(localized: "search-recovery-already-exists")
-                isErrorState = true
+                updateViewModel(statusText: String(localized: "search-recovery-already-exists"),
+                                loading: nil,
+                                isErrorState: true)
                 return
             }
         
@@ -141,13 +162,16 @@ final class RecoveryToolViewModel: ObservableObject {
         pushNotificationController.sendDeviceDetails()
         
         config.session.authenticatedUser = authenticatedUser
-        
-        Task {
-            await MainActor.run {
-                statusText = String(localized: "search-recovery-recovered")
-                isErrorState = false
-                loading = false
-            }
+        updateViewModel(statusText: String(localized: "search-recovery-recovered"),
+                        loading: false,
+                        isErrorState: false)
+    }
+    
+    private func updateViewModel(statusText: String?, loading: Bool?, isErrorState: Bool?) {
+        Task { @MainActor [weak self] in
+            if let statusText { self?.viewModel.statusText = statusText }
+            if let isErrorState { self?.viewModel.isErrorState = isErrorState }
+            if let loading { self?.viewModel.loading = loading }
         }
     }
 }

@@ -18,12 +18,15 @@ import pera_wallet_core
 
 struct RecoveryToolView: View {
     
+    private let model: RecoveryToolModelable
+    
     @ObservedObject private var viewModel: RecoveryToolViewModel
     
     // MARK: - Initialisers
     
     init(session: Session, sharedDataController: SharedDataController, hdWalletStorage: HDWalletStorable, hdWalletService: HDWalletServicing, api: ALGAPI) {
-        self.viewModel = RecoveryToolViewModel(session: session, sharedDataController: sharedDataController, hdWalletStorage: hdWalletStorage, hdWalletService: hdWalletService, api: api)
+        self.model = RecoveryToolModel(session: session, sharedDataController: sharedDataController, hdWalletStorage: hdWalletStorage, hdWalletService: hdWalletService, api: api)
+        self.viewModel = model.viewModel
     }
     
     // MARK: - Setups
@@ -46,7 +49,7 @@ struct RecoveryToolView: View {
                         .stroke(Color.Layer.grayLight, lineWidth: 1)
                 )
             SwiftUI.Button(
-                    action: viewModel.scanForAddress,
+                    action: model.scanForAddress,
                     label: {
                         Text("search-recovery-button")
                             .font(.dmSans.medium.size(15.0))
