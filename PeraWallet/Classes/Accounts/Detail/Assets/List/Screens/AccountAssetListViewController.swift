@@ -115,13 +115,6 @@ final class AccountAssetListViewController:
                 case .refresh:
                     break
                 case .updateAssets:
-                    let offset = listView.contentOffset
-                    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AccountAssetsItem>()
-                    sectionSnapshot.append(updates.snapshot.itemIdentifiers(inSection: .assets))
-                    listDataSource.apply(sectionSnapshot, to: .assets, animatingDifferences: true) { [weak self] in
-                        guard let self else { return }
-                        listView.setContentOffset(offset, animated: false)
-                    }
                     return
                 }
 
