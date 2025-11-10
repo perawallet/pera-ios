@@ -28,7 +28,7 @@ public enum FeatureFlag: String, CaseIterable {
     var defaultValue: RemoteConfigValue {
         switch self {
         case .swapV2Enabled:
-            return .bool(false)
+            return .bool(true)
         case .swapFeePadding:
             return .double(-1)
         case .liquidAuthEnabled:
