@@ -426,11 +426,6 @@ extension ASADetailViewController {
         }
 
         analytics.track(.tapSwapInAlgoDetail())
-        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            swapAssetFlowCoordinator.launch()
-            return
-        }
-
         rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: account, assetInID: dataController.asset.id))
     }
 
