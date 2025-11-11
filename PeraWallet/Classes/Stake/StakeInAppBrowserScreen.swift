@@ -33,9 +33,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
     }
     
     var hideBackButtonInWebView: Bool = false
-
-    private lazy var navigationScript = createNavigationScript()
-    private lazy var peraConnectScript = createPeraConnectScript()
     
     init(
         destination: StakingDestination,
@@ -89,8 +86,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
             )
         }
         /// App listens this script in order to catch html5 navigation process
-        controller.addUserScript(navigationScript)
-        controller.addUserScript(peraConnectScript)
+        [InAppBrowserScript.navigation, InAppBrowserScript.peraConnect].forEach { controller.addUserScript($0.userScript)}
         return controller
     }
 
@@ -160,45 +156,8 @@ extension StakingInAppBrowserScreen {
 }
 
 extension StakingInAppBrowserScreen {
-    private func createNavigationScript() -> WKUserScript {
-        let navigationScript = """
-!function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
-"""
-
-        return WKUserScript(
-            source: navigationScript,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: false
-        )
-    }
-
-    private func createPeraConnectScript() -> WKUserScript {
-        let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverExternalInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
-"""
-        return WKUserScript(
-            source: peraConnectScript,
-            injectionTime: .atDocumentEnd,
-            forMainFrameOnly: false
-        )
-    }
-}
-
-
-extension StakingInAppBrowserScreen {
-    private func isAcceptableMessage(_ message: WKScriptMessage) -> Bool {
-        let frameInfo = message.frameInfo
-
-        if !frameInfo.isMainFrame { return false }
-        if frameInfo.request.url.unwrap(where: \.isPeraURL) == nil { return false }
-
-        return true
-    }
-}
-
-extension StakingInAppBrowserScreen {
     private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
-        if !isAcceptableMessage(message) { return }
+        if !message.isAcceptable { return }
       
         guard let jsonString = message.body as? String else { return }
         guard let jsonData = jsonString.data(using: .utf8) else { return }
@@ -221,7 +180,7 @@ extension StakingInAppBrowserScreen {
 
 extension StakingInAppBrowserScreen {
     private func handleDeviceIDRequest(_ message: WKScriptMessage) {
-        if !isAcceptableMessage(message) { return }
+        if !message.isAcceptable { return }
         guard let deviceIDDetails = makeDeviceIDDetails() else { return }
 
         let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
@@ -237,7 +196,7 @@ extension StakingInAppBrowserScreen {
 
 extension StakingInAppBrowserScreen {
     private func handleDappDetailAction(_ message: WKScriptMessage) {
-        if !isAcceptableMessage(message) { return }
+        if !message.isAcceptable { return }
 
         guard let jsonString = message.body as? String else { return }
         guard let jsonData = jsonString.data(using: .utf8) else { return }
