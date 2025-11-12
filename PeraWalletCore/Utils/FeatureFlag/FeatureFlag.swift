@@ -41,7 +41,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .assetDetailV2Enabled:
             return .bool(false)
         case .assetDetailV2EndpointEnabled:
-            return .bool(true)
+            return .bool(false)
         case .webviewV2Enabled:
             return .bool(false)
         }
