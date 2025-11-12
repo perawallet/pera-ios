@@ -393,6 +393,7 @@ extension SharedAPIDataController {
     private func blockProcessorDidFetchAccount(
         _ account: Account
     ) {
+        PeraLogger.shared.log(message: "[Legacy] \(account.address) | \(account.algo.amount)")
         let updatedAccount = AccountHandle(account: account, status: .inProgress)
         nextAccountCollection[account.address] = updatedAccount
     }

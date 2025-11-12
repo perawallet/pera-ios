@@ -997,7 +997,7 @@ final class Router:
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case .settings:
-            viewController = UIHostingController(rootView: DebugLogView())
+            viewController = DebugLogsViewController(configuration: configuration)
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
@@ -3839,4 +3839,6 @@ extension Router {
             by: .present
         ) as? SignWithLedgerProcessScreen
     }
+    
+
 }

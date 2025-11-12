@@ -147,8 +147,10 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         
         if let response {
             amount = response.account.amount.fromMicroToValue()
+            PeraLogger.shared.log(message: "[Service][Response] \(response.account.address) | \(response.account.amount)")
         } else {
             amount = 0.0
+            PeraLogger.shared.log(message: "[Service][Default] \(localAccount.address)")
         }
         
         return PeraAccount(
