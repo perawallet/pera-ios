@@ -27,6 +27,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
         let currentUserAgent = webView.value(forKey: "userAgent") as? String
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
+    
+    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
 
     var destination: CardsDestination {
         didSet { loadCardsURL() }
@@ -77,8 +79,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
-        /// App listens this script in order to catch html5 navigation process
-        [InAppBrowserScript.navigation, InAppBrowserScript.peraConnect].forEach { controller.addUserScript($0.userScript)}
         return controller
     }
 

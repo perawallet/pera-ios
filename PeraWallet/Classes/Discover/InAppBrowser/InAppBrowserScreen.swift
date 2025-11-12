@@ -42,6 +42,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private let socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
     private let theme = InAppBrowserScreenTheme()
 
+    var extraUserScripts: [InAppBrowserScript] { [] }
+
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
     private var lastURL: URL? { webView.url ?? sourceURL }
@@ -137,6 +139,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
+        extraUserScripts.forEach { controller.addUserScript($0.userScript) }
         return controller
     }
     

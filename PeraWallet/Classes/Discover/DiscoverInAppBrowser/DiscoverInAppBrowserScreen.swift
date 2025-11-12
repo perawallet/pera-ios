@@ -31,6 +31,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
     
+    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
+    
     var destination: DiscoverDestination {
         didSet { loadPeraURL() }
     }
@@ -79,7 +81,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
-        [InAppBrowserScript.navigation, InAppBrowserScript.peraConnect].forEach { controller.addUserScript($0.userScript)}
         return controller
     }
 

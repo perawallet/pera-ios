@@ -22,6 +22,7 @@ import pera_wallet_core
 
 class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
     typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
@@ -30,7 +31,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
     
-    var eventHandler: EventHandler?
+    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
 
     private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
 
@@ -77,14 +78,6 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
             isViewLayoutLoaded = true
             updateWebViewLayout()
         }
-    }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        /// <note>
-        /// App listens this script in order to catch html5 navigation process
-        [InAppBrowserScript.navigation, InAppBrowserScript.peraConnect].forEach { controller.addUserScript($0.userScript)}
-        return controller
     }
 
     override func updateUIForLoading() {
