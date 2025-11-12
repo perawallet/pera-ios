@@ -83,6 +83,8 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                 }
             }
         }
+        
+        print(ongoingEndpoint)
     }
 
     private func refetchTheAccountWithoutTheAssetsIfNeeded(

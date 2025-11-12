@@ -121,7 +121,12 @@ final class CoreApiManager {
         var urlRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = request.method.rawValue
-        urlRequest.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        urlRequest.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Indexer-API-Token": AppEnvironment.current.indexerToken,
+            "Accept-Encoding": "gzip;q=1.0, *;q=0.5"
+        ]
         
         if request.method == .post || request.method == .put {
             do {

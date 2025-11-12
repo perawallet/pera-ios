@@ -162,6 +162,11 @@ final class HomeViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            let token = AppEnvironment.current.indexerToken
+            print("[X] \(token)")
+        }
 
         addUI()
         
