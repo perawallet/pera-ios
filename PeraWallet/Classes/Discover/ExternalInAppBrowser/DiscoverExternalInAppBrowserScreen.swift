@@ -107,18 +107,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen {
     ) {
         updateTitle()
         updateToolbarNavigationActions()
-
-        let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: message.name)
-
-        switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
-        case .peraconnect:
-            handlePeraConnectAction(message)
-        }
+        super.userContentController(userContentController, didReceive: message)
     }
 
     func updateToolbarActionsForLoading() {
@@ -253,17 +242,6 @@ extension DiscoverExternalInAppBrowserScreen {
         }
 
         bindNavigationTitle(with: item)
-    }
-}
-
-extension DiscoverExternalInAppBrowserScreen {
-    private func handlePeraConnectAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let url = URL(string: jsonString) else { return }
-        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
-
-        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
-        launchController.receive(deeplinkWithSource: src)
     }
 }
 

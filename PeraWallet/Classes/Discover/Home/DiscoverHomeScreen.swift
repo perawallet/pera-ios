@@ -92,25 +92,6 @@ final class DiscoverHomeScreen:
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    override func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        guard let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name) else {
-            super.userContentController(userContentController, didReceive: message)
-            return
-        }
-
-        switch inAppMessage {
-        case .pushTokenDetailScreen:
-            handleTokenDetailAction(message)
-        case .swap, .handleTokenDetailActionButtonClick:
-            handleTokenAction(message)
-        }
-    }
 }
 
 /// <mark>
@@ -185,77 +166,6 @@ extension DiscoverHomeScreen {
 }
 
 extension DiscoverHomeScreen {
-    private func handleTokenDetailAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverAssetParameters.decoded(jsonData) else { return }
-        navigateToAssetDetail(params)
-    }
-
-    private func navigateToAssetDetail(_ params: DiscoverAssetParameters) {
-        open(
-            .discoverAssetDetail(params),
-            by: .push
-        )
-    }
-    
-    private func handleTokenAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverSwapParameters.decoded(jsonData) else { return }
-        
-        switch params.action {
-        case .buyAlgo:
-            navigateToBuyAlgo()
-        default:
-            navigateToSwap(with: params)
-        }
-        
-        sendAnalyticsEvent(with: params)
-    }
-    
-    private func navigateToBuyAlgo() {
-        meldFlowCoordinator.launch()
-    }
-
-    private func navigateToSwap(with parameters: DiscoverSwapParameters) {
-        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-        let draft = SwapAssetFlowDraft()
-        if let assetInID = parameters.assetIn {
-            draft.assetInID = assetInID
-        }
-        if let assetOutID = parameters.assetOut {
-            draft.assetOutID = assetOutID
-        }
-
-        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            swapAssetFlowCoordinator.updateDraft(draft)
-            swapAssetFlowCoordinator.launch()
-            return
-        }
-        
-        rootViewController.launch(tab: .swap, with: draft)
-    }
-    
-    private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {
-        let assetInID = parameters.assetIn
-        let assetOutID = parameters.assetOut
-
-        switch parameters.action {
-        case .buyAlgo:
-            self.analytics.track(.buyAssetFromDiscover(assetOutID: 0, assetInID: nil))
-        case .swapFromAlgo:
-            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: 0))
-        case .swapToAsset:
-            guard let assetOutID else { return }
-            self.analytics.track(.buyAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
-        case .swapFromAsset:
-            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
-        }
-    }
-}
-
-extension DiscoverHomeScreen {
     private func navigateToSearch() {
         let screen = Screen.discoverSearch {
             [weak self] event, screen in
@@ -278,6 +188,13 @@ extension DiscoverHomeScreen {
                 transitionStyle: nil,
                 transitioningDelegate: nil
             )
+        )
+    }
+    
+    private func navigateToAssetDetail(_ params: DiscoverAssetParameters) {
+        open(
+            .discoverAssetDetail(params),
+            by: .push
         )
     }
 }

@@ -1927,7 +1927,6 @@ final class Router:
         case .discoverAssetDetail(let parameters):
             viewController = DiscoverAssetDetailScreen(
                 assetParameters: parameters,
-                swapDataStore: SwapDataLocalStore(),
                 configuration: configuration
             )
         case .discoverDappDetail(let dappParameters, let eventHandler):

@@ -73,33 +73,6 @@ class CardsInAppBrowserScreen: InAppBrowserScreen {
     override func didPullToRefresh() {
         loadCardsURL()
     }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    override func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        let inAppMessage = CardsInAppBrowserScriptMessage(rawValue: message.name)
-        switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
-        case .requestAuthorizedAddresses:
-            let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
-            handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: true)
-        case .openSystemBrowser:
-            handleOpenSystemBrowser(message)
-        case .closePeraCards:
-            dismissScreen()
-        case .peraconnect:
-            handlePeraConnectAction(message)
-        case .requestDeviceID:
-            handleDeviceIDRequest(message)
-        }
-    }
 }
 
 private extension CardsInAppBrowserScreen {
@@ -137,45 +110,6 @@ private extension CardsInAppBrowserScreen {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
-    }
-}
-
-private extension CardsInAppBrowserScreen {
-    func handleOpenSystemBrowser(_ message: WKScriptMessage) {
-        if !message.isAcceptable { return }
-      
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
-
-        openInBrowser(params.url)
-    }
-}
-
-private extension CardsInAppBrowserScreen {
-    func handlePeraConnectAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let url = URL(string: jsonString) else { return }
-        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
-
-        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
-        launchController.receive(deeplinkWithSource: src)
-    }
-}
-
-private extension CardsInAppBrowserScreen {
-    func handleDeviceIDRequest(_ message: WKScriptMessage) {
-        if !message.isAcceptable { return }
-        guard let deviceIDDetails = makeDeviceIDDetails() else { return }
-
-        let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
-        self.webView.evaluateJavaScript(scriptString)
-    }
-
-    func makeDeviceIDDetails() -> String? {
-        guard let api else { return nil }
-        guard let deviceID = session?.authenticatedUser?.getDeviceId(on: api.network) else { return nil }
-        return try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
     }
 }
 

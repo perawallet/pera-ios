@@ -82,32 +82,6 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
     override func didPullToRefresh() {
         loadStakingURL()
     }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    override func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        let inAppMessage = StakingInAppBrowserScreenMessage(rawValue: message.name)
-        switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
-        case .openSystemBrowser:
-            handleOpenSystemBrowser(message)
-        case .closeWebView:
-            dismissScreen()
-        case .peraconnect:
-            handlePeraConnectAction(message)
-        case .requestDeviceID:
-            handleDeviceIDRequest(message)
-        case .openDappWebview:
-            handleDappDetailAction(message)
-        }
-    }
 }
 
 extension StakingInAppBrowserScreen {
@@ -145,75 +119,6 @@ extension StakingInAppBrowserScreen {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
-    }
-}
-
-extension StakingInAppBrowserScreen {
-    private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
-        if !message.isAcceptable { return }
-      
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
-
-        openInBrowser(params.url)
-    }
-}
-
-extension StakingInAppBrowserScreen {
-    private func handlePeraConnectAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let url = URL(string: jsonString) else { return }
-        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
-
-        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
-        launchController.receive(deeplinkWithSource: src)
-    }
-}
-
-extension StakingInAppBrowserScreen {
-    private func handleDeviceIDRequest(_ message: WKScriptMessage) {
-        if !message.isAcceptable { return }
-        guard let deviceIDDetails = makeDeviceIDDetails() else { return }
-
-        let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
-        self.webView.evaluateJavaScript(scriptString)
-    }
-
-    private func makeDeviceIDDetails() -> String? {
-        guard let api else { return nil }
-        guard let deviceID = session?.authenticatedUser?.getDeviceId(on: api.network) else { return nil }
-        return try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
-    }
-}
-
-extension StakingInAppBrowserScreen {
-    private func handleDappDetailAction(_ message: WKScriptMessage) {
-        if !message.isAcceptable { return }
-
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverDappParamaters.decoded(jsonData) else { return }
-        navigateToDappDetail(params)
-    }
-    
-    private func navigateToDappDetail(_ params: DiscoverDappParamaters) {
-        let screen: Screen = .discoverDappDetail(params) {
-            [weak self] event in
-            guard let self else { return }
-
-            switch event {
-            case .goBack:
-                self.findVisibleScreen().dismissScreen()
-            default:
-                break
-            }
-        }
-
-        open(
-            screen,
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
     }
 }
 
