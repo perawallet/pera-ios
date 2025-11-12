@@ -107,13 +107,17 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
                     taskGroup.addTask {
                         do {
                             let response = try await self.indexerApiManager.fetchAccount(publicKey: localAccount.address)
+                            PeraLogger.shared.log(message: "[Service][Request] \(response.account.address) | \(response.account.amount)")
                             return (response, localAccount)
                         } catch let CoreApiManager.ApiError.invalidHTTPStatusCode(code) where code == 404 {
+                            PeraLogger.shared.log(message: "[Service][Request] \(localAccount.address) | 404")
                             return (nil, localAccount)
                         } catch let error as CoreApiManager.ApiError {
+                            PeraLogger.shared.log(message: "[Service][Request][Error-API] \(error)")
                             self.errorPublisher.send(.failedToFetchAccounts(error: error))
                             return (nil, localAccount)
                         } catch {
+                            PeraLogger.shared.log(message: "[Service][Request][Error-General] \(error)")
                             self.errorPublisher.send(.unexpectedError(error: error))
                             return (nil, localAccount)
                         }

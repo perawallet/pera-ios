@@ -14,6 +14,8 @@
 
 //   IndexerApiManager.swift
 
+import pera_wallet_core
+
 final class IndexerApiManager {
     
     // MARK: - Properties
@@ -39,6 +41,7 @@ final class IndexerApiManager {
     // MARK: - Requests
     
     func fetchAccount(publicKey: String) async throws(CoreApiManager.ApiError) -> AccountResponse {
+        PeraLogger.shared.log(message: "[API] \(apiManager.baseURL)")
         let request = AccountRequest(publicKey: publicKey)
         return try await apiManager.perform(request: request)
     }
