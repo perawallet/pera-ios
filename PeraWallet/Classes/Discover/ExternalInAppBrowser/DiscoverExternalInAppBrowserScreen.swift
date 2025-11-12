@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
 
-class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
+class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 

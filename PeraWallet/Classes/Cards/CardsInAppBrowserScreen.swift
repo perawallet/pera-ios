@@ -19,8 +19,7 @@ import UIKit
 import WebKit
 import pera_wallet_core
 
-class CardsInAppBrowserScreen<ScriptMessage>: InAppBrowserScreen<ScriptMessage>
-where ScriptMessage: InAppBrowserScriptMessage {
+class CardsInAppBrowserScreen: InAppBrowserScreen {
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
         let versionUserAgent = version.unwrap { "pera_ios_" + $0 }

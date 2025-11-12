@@ -22,8 +22,8 @@ import pera_wallet_core
 /// @abstract
 /// DiscoverInAppBrowserScreen should be used for websites that created by Pera
 /// It handles theme changes, some common logics on that websites.
-class DiscoverInAppBrowserScreen<ScriptMessage>: InAppBrowserScreen<ScriptMessage>
-where ScriptMessage: InAppBrowserScriptMessage {
+class DiscoverInAppBrowserScreen: InAppBrowserScreen {
+    
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
         let versionUserAgent = version.unwrap { "pera_ios_" + $0 }

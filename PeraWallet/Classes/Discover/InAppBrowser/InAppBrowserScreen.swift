@@ -21,13 +21,13 @@ import MacaroonUtils
 import WebKit
 import pera_wallet_core
 
-class InAppBrowserScreen<ScriptMessage>:
+class InAppBrowserScreen:
     BaseViewController,
     WKNavigationDelegate,
     NotificationObserver,
     WKUIDelegate,
     WKScriptMessageHandler
-where ScriptMessage: InAppBrowserScriptMessage {
+{
     
     // MARK: - Properties
     
@@ -134,14 +134,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private func createUserContentController() -> InAppBrowserUserContentController {
         let controller = InAppBrowserUserContentController()
         controller.addUserScript(InAppBrowserScript.selection.userScript)
-        ScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
+
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
+        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
+        
         return controller
     }
     

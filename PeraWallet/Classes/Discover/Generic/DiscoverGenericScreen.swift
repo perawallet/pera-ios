@@ -19,7 +19,7 @@ import UIKit
 import WebKit
 import pera_wallet_core
 
-final class DiscoverGenericScreen: DiscoverInAppBrowserScreen<NoInAppBrowserScriptMessage> {
+final class DiscoverGenericScreen: DiscoverInAppBrowserScreen {
     init(
         params: DiscoverGenericParameters,
         configuration: ViewControllerConfiguration

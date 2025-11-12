@@ -21,7 +21,7 @@ import MacaroonUIKit
 import pera_wallet_core
 
 final class DiscoverHomeScreen:
-    DiscoverInAppBrowserScreen<DiscoverHomeScriptMessage>,
+    DiscoverInAppBrowserScreen,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -30,6 +30,12 @@ final class DiscoverHomeScreen:
 
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
+    }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
+        let homeMessages = DiscoverHomeScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
+        return baseMessages + homeMessages
     }
     
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(

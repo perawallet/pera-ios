@@ -19,7 +19,7 @@ import WebKit
 import MacaroonUtils
 import pera_wallet_core
 
-final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
+final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -32,6 +32,12 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
     )
 
     private let assetParameters: DiscoverAssetParameters
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
+        let homeMessages = DiscoverAssetDetailScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
+        return baseMessages + homeMessages
+    }
 
     /// <todo>
     /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
