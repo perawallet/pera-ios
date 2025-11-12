@@ -29,6 +29,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
     }
     
     override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        CardsInAppBrowserScriptMessage.allCases
+    }
 
     var destination: CardsDestination {
         didSet { loadCardsURL() }
@@ -69,17 +73,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
     override func didPullToRefresh() {
         loadCardsURL()
-    }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        CardsInAppBrowserScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        return controller
     }
 
     /// <mark>

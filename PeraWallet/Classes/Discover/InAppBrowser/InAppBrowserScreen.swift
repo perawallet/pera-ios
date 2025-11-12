@@ -43,6 +43,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private let theme = InAppBrowserScreenTheme()
 
     var extraUserScripts: [InAppBrowserScript] { [] }
+    var handledMessages: [any InAppBrowserScriptMessage] { [] }
 
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
@@ -130,7 +131,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return configuration
     }
 
-    func createUserContentController() -> InAppBrowserUserContentController {
+    private func createUserContentController() -> InAppBrowserUserContentController {
         let controller = InAppBrowserUserContentController()
         controller.addUserScript(InAppBrowserScript.selection.userScript)
         ScriptMessage.allCases.forEach {
@@ -139,6 +140,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 forMessage: $0
             )
         }
+        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
         return controller
     }

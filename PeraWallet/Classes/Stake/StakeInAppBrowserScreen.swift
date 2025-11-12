@@ -29,6 +29,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
     }
     
     override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        StakingInAppBrowserScreenMessage.allCases
+    }
 
     var destination: StakingDestination {
         didSet { loadStakingURL() }
@@ -77,17 +81,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
     override func didPullToRefresh() {
         loadStakingURL()
-    }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        StakingInAppBrowserScreenMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        return controller
     }
 
     /// <mark>

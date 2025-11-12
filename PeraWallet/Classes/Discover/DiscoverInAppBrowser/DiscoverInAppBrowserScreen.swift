@@ -33,6 +33,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
     
     override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
     
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        DiscoverInAppBrowserScriptMessage.allCases
+    }
+    
     var destination: DiscoverDestination {
         didSet { loadPeraURL() }
     }
@@ -71,17 +75,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
     override func didPullToRefresh() {
         loadPeraURL()
-    }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        DiscoverInAppBrowserScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        return controller
     }
 
     /// <mark>

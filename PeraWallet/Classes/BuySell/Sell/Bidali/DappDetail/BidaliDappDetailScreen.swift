@@ -26,6 +26,10 @@ final class BidaliDappDetailScreen:
     private var account: AccountHandle {
         didSet { updateBalancesIfNeeded(old: oldValue, new: account) }
     }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        BidaliDappDetailScriptMessage.allCases
+    }
 
     private let config: BidaliConfig
 
@@ -52,6 +56,11 @@ final class BidaliDappDetailScreen:
 
         addPaymentScript()
     }
+    
+    private func addPaymentScript() {
+        guard let balancesJSONString = try? makeBalances(account).encodedString() else { return }
+        userContentController.addUserScript(InAppBrowserScript.bidaliPayment(config: config, balance: balancesJSONString).userScript)
+    }
 
     /// <note>
     /// In here, we're handling the cancel operation with assuming that confirm transaction screen is presented as modally.
@@ -60,17 +69,6 @@ final class BidaliDappDetailScreen:
         super.viewDidAppearAfterInteractiveDismiss()
 
         cancelPayment()
-    }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        BidaliDappDetailScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        return controller
     }
 
     /// <mark>
@@ -96,41 +94,39 @@ final class BidaliDappDetailScreen:
 }
 
 extension BidaliDappDetailScreen {
-    private func addPaymentScript() {
-        guard let script = makePaymentScript() else { return }
-
-        userContentController.addUserScript(script)
+    private func makeBalances(_ account: AccountHandle) -> BidaliBalances {
+        switch api!.network {
+        case .testnet:
+            return makeBalancesForTestnet(account)
+        case .mainnet:
+            return makeBalancesForMainnet(account)
+        }
     }
 
-    private func makePaymentScript() -> WKUserScript? {
-        let balances = makeBalances(account)
+    private func makeBalancesForTestnet(_ account: AccountHandle) -> BidaliBalances {
+        let network = api!.network
+        let aRawAccount = account.value
 
-        guard let balancesJSONString = try? balances.encodedString() else {
-            return nil
-        }
+        let algo = aRawAccount.algo.decimalAmount
+        let usdc = aRawAccount.usdc(network)?.decimalAmount
+        return [
+            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
+            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue
+        ]
+    }
 
-        let script = """
-            window.bidaliProvider = {
-                key: '\(config.key)',
-                name: '\(config.name)',
-                paymentCurrencies: \(config.supportedCurrencyProtocols),
-                balances: \(balancesJSONString),
-                onPaymentRequest: (paymentRequest) => {
-                    var payload = { data: paymentRequest };
-                    window.webkit.messageHandlers.\(BidaliDappDetailScriptMessage.paymentRequest.rawValue).postMessage(JSON.stringify(payload));
-                },
-                openUrl: function (url) {
-                    var payload = { data: { url } };
-                    window.webkit.messageHandlers.\(BidaliDappDetailScriptMessage.openURLRequest.rawValue).postMessage(JSON.stringify(payload));
-                }
-            };
-            true;
-        """
-        return WKUserScript(
-            source: script,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: false
-        )
+    private func makeBalancesForMainnet(_ account: AccountHandle) -> BidaliBalances {
+        let network = api!.network
+        let aRawAccount = account.value
+
+        let algo = aRawAccount.algo.decimalAmount
+        let usdc = aRawAccount.usdc(network)?.decimalAmount
+        let usdt = aRawAccount.usdt(network)?.decimalAmount
+        return [
+            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
+            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue,
+            BidaliPaymentCurrencyProtocol.usdt.getRawValue(in: network): usdt?.stringValue
+        ]
     }
 }
 
@@ -259,43 +255,6 @@ extension BidaliDappDetailScreen {
     private func confirmPayment() {
         let script = "window.bidaliProvider.paymentSent();"
         webView.evaluateJavaScript(script)
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func makeBalances(_ account: AccountHandle) -> BidaliBalances {
-        switch api!.network {
-        case .testnet:
-            return makeBalancesForTestnet(account)
-        case .mainnet:
-            return makeBalancesForMainnet(account)
-        }
-    }
-
-    private func makeBalancesForTestnet(_ account: AccountHandle) -> BidaliBalances {
-        let network = api!.network
-        let aRawAccount = account.value
-
-        let algo = aRawAccount.algo.decimalAmount
-        let usdc = aRawAccount.usdc(network)?.decimalAmount
-        return [
-            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
-            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue
-        ]
-    }
-
-    private func makeBalancesForMainnet(_ account: AccountHandle) -> BidaliBalances {
-        let network = api!.network
-        let aRawAccount = account.value
-
-        let algo = aRawAccount.algo.decimalAmount
-        let usdc = aRawAccount.usdc(network)?.decimalAmount
-        let usdt = aRawAccount.usdt(network)?.decimalAmount
-        return [
-            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
-            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue,
-            BidaliPaymentCurrencyProtocol.usdt.getRawValue(in: network): usdt?.stringValue
-        ]
     }
 }
 
