@@ -219,7 +219,7 @@ extension AccountAssetListAPIDataController {
             let point = selectedPoint,
             let date = point.timestamp.toDate(.fullNumericWithTimezone)
         else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: tendenciesVM)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: ObservableUserDefaults.shared.isPrivacyModeEnabled ? nil : tendenciesVM)))
             return
         }
         
@@ -295,10 +295,11 @@ extension AccountAssetListAPIDataController {
     }
     
     private func reloadPortolio(with portfolioItem: AccountPortfolioItem, selectedPoint: ChartSelectedPointViewModel?) {
+        let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
         if account.value.authorization.isWatch {
-            publish(event: .shouldReloadPortfolio(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM)))
+            publish(event: .shouldReloadPortfolio(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: isAmountHidden ? nil : tendenciesVM)))
         } else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: isAmountHidden ? nil : tendenciesVM)))
         }
     }
 }
@@ -473,20 +474,26 @@ extension AccountAssetListAPIDataController {
 
     private func makeItemsForWatchAccountPortfolio() -> [AccountAssetsItem] {
         let currency = sharedDataController.currency
+        let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
         let portfolio = AccountPortfolioItem(
             accountValue: account,
             currency: currency,
             currencyFormatter: createCurrencyFormatter(),
-            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
+            isAmountHidden: isAmountHidden
             
         )
         self.portfolioItem = portfolio
-        let viewModel = WatchAccountPortfolioViewModel(portfolio, selectedPoint: nil, tendenciesVM: tendenciesVM)
+        let viewModel = WatchAccountPortfolioViewModel(
+            portfolio,
+            selectedPoint: nil,
+            tendenciesVM: isAmountHidden ? nil : tendenciesVM
+        )
         return [ .watchPortfolio(viewModel) ]
     }
 
     private func makeItemsForNormalAccountPortfolio() -> [AccountAssetsItem] {
         let currency = sharedDataController.currency
+        let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
         let calculatedMinimumBalance = minBalanceCalculator.calculateMinimumAmount(
             for: account.value,
             with: .algo,
@@ -498,10 +505,14 @@ extension AccountAssetListAPIDataController {
             currency: currency,
             currencyFormatter: createCurrencyFormatter(),
             minimumBalance: calculatedMinimumBalance,
-            isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled
+            isAmountHidden: isAmountHidden
         )
         self.portfolioItem = portfolio
-        let viewModel = AccountPortfolioViewModel(portfolio, selectedPoint: nil, tendenciesVM: tendenciesVM)
+        let viewModel = AccountPortfolioViewModel(
+            portfolio,
+            selectedPoint: nil,
+            tendenciesVM: isAmountHidden ? nil : tendenciesVM
+        )
         return [ .portfolio(viewModel) ]
     }
 
