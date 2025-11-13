@@ -107,7 +107,7 @@ extension SwapAssetAPIDataController {
         }
         
         let draft = SwapQuoteDraft(
-            providers: featureFlagService.isEnabled(.swapV2Enabled) ? providersV2.map { $0.name } : providers.map { $0.rawValue },
+            providers: providersV2.map { $0.name },
             swapperAddress: account.address,
             type: swapType,
             deviceID: deviceID,
@@ -127,38 +127,11 @@ extension SwapAssetAPIDataController {
             [weak self] in
             guard let self = self else { return }
             
-            if featureFlagService.isEnabled(.swapV2Enabled) {
-                loadDataV2(draft)
-            } else {
-                loadData(draft)
-            }
+            loadData(draft)
         }
     }
     
     private func loadData(
-        _ draft: SwapQuoteDraft
-    ) {
-        currentQuoteEndpoint = api.getSwapQuote(draft) {
-            [weak self] response in
-            guard let self = self else { return }
-            currentQuoteEndpoint = nil
-            
-            switch response {
-            case .success(let quoteList):
-                guard let quote = quoteList.results[safe: 0] else { return }
-                swapController.quote = quote
-                eventHandler?(.didLoadQuote(quote))
-            case .failure(let apiError, let hipApiError):
-                let error = HIPNetworkError(
-                    apiError: apiError,
-                    apiErrorDetail: hipApiError
-                )
-                eventHandler?(.didFailToLoadQuote(error))
-            }
-        }
-    }
-    
-    private func loadDataV2(
         _ draft: SwapQuoteDraft
     ) {
         currentQuoteEndpoint = api.getSwapV2Quote(draft) {
