@@ -10579,6 +10579,7 @@
 		545CAA892E28CE1400D0C9A0 /* Testing Tools */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA8C2E28CEAC00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Testing Tools"; sourceTree = "<group>"; };
 		545CAA932E28F41000D0C9A0 /* Mock */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Mock; sourceTree = "<group>"; };
 		54C7260E2E27920B00E08B4C /* Data Providers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Data Providers"; sourceTree = "<group>"; };
+		594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AccountSearchRecovery; sourceTree = "<group>"; };
 		59B1F8B52E4B319500B8F6FB /* PassKeyExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59B1FE5B2E4B588200B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59B1FE582E4B587600B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PassKeyExtension; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -16435,6 +16436,7 @@
 		2BF53177224AA86500A7455F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 				2B656E8E224BAF0B0064A49B /* AccountList */,
 				D4CF67D828C759310007A727 /* AccountSelection */,
 				2B80C51C277209C900BB071E /* Detail */,
@@ -24164,6 +24166,7 @@
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-staging";
 			packageProductDependencies = (
@@ -24192,6 +24195,7 @@
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-beta";
 			packageProductDependencies = (
@@ -24221,6 +24225,7 @@
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = pera;
 			packageProductDependencies = (
@@ -32036,7 +32041,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -32065,7 +32070,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32094,7 +32099,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32125,7 +32130,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32155,7 +32160,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32185,7 +32190,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32342,7 +32347,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32375,7 +32380,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32611,7 +32616,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32645,7 +32650,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32678,7 +32683,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32713,7 +32718,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32749,7 +32754,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32784,7 +32789,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32875,7 +32880,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
