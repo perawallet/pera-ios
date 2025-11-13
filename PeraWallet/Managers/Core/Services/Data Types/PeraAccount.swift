@@ -46,7 +46,7 @@ struct PeraAccount: Hashable {
 }
 
 extension PeraAccount {
-    var isBackupable: Bool { type != .invalid && authType != .invalid }
+    var isValid: Bool { type != .invalid && authType != .invalid }
 }
 
 extension PeraAccount.AccountType {

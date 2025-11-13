@@ -90,6 +90,6 @@ struct CreateJointAccountEditAccountView: View {
     }
 
     private func onDoneButtonTapAction() {
-        model.createContact()
+        model.updateContact()
     }
 }

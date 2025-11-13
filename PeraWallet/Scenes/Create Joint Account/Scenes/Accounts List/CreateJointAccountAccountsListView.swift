@@ -24,6 +24,10 @@ struct CreateJointAccountAccountsListView: View {
         case selectThreshold(participantAddresses: [String])
     }
     
+    // MARK: - Constants
+    
+    private let addAccountButtonID: String = "add_account_button_id"
+    
     // MARK: - Properties
     
     private let model: CreateJointAccountAccountsListModelable
@@ -60,30 +64,43 @@ struct CreateJointAccountAccountsListView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24.0)
-            List {
-                ForEach(viewModel.accounts) { model in
-                    AccountRowWithEditButton(
-                        image: model.image,
-                        title: model.title,
-                        subtitle: model.subtitle,
-                        actionType: model.isEditable ? .edit : .delete,
-                        onActionButtonTap: { onAccountActionButtonAction(viewModel: model) }
-                    )
-                }
-                SwiftUI.Button(action: onAddAccountButtonAction) {
-                    HStack {
-                        Image(.Icons.plus)
-                            .resizable()
-                            .frame(width: 20.0, height: 20.0)
-                        Text("create-joint-account-account-list-add-button")
-                            .font(.DMSans.medium.size(15.0))
+            ScrollViewReader { scrollViewReader in
+                List {
+                    ForEach(viewModel.accounts) { model in
+                        AccountRowWithEditButton(
+                            image: model.image,
+                            title: model.title,
+                            subtitle: model.subtitle,
+                            actionType: model.isEditable ? .edit : .delete,
+                            onActionButtonTap: { onAccountActionButtonAction(viewModel: model) }
+                        )
+                        .id(model.id)
                     }
-                    .foregroundStyle(Color.Helpers.positive)
+                    if viewModel.canAddAccounts {
+                        SwiftUI.Button(action: onAddAccountButtonAction) {
+                            HStack {
+                                Image(.Icons.plus)
+                                    .resizable()
+                                    .frame(width: 20.0, height: 20.0)
+                                Text("create-joint-account-account-list-add-button")
+                                    .font(.DMSans.medium.size(15.0))
+                            }
+                            .foregroundStyle(Color.Helpers.positive)
+                        }
+                        .padding(.horizontal, 24.0)
+                        .defaultPeraRowStyle()
+                        .id(addAccountButtonID)
+                    }
                 }
-                .padding(.horizontal, 24.0)
-                .defaultPeraRowStyle()
+                .listStyle(.plain)
+                .onChange(of: viewModel.accounts.count) { _ in
+                    if viewModel.canAddAccounts {
+                        scrollViewReader.scrollTo(addAccountButtonID, anchor: .bottom)
+                    } else {
+                        scrollViewReader.scrollTo(viewModel.accounts.last?.id, anchor: .bottom)
+                    }
+                }
             }
-            .listStyle(.plain)
             RoundedButton(text: "common-continue", style: .primary, isEnabled: viewModel.isValidated, onTap: onContinueButtonAction)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
@@ -103,6 +120,7 @@ struct CreateJointAccountAccountsListView: View {
             CreateJointAccountAddAccountConstructor.buildScene(navigationPath: $navigationPath, onSelectedAddress: { model.add(account: $0) })
         case let .editAccount(viewModel):
             CreateJointAccountEditAccountConstructor.buildScene(
+                name: viewModel.title,
                 image: viewModel.image,
                 address: viewModel.address,
                 navigationPath: $navigationPath,

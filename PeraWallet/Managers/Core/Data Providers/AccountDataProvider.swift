@@ -36,6 +36,7 @@ final class AccountDataProvider {
         if localAccount.type == .watch { return .watch }
         if localAccount.jointAccountParticipants != nil, legacyFeatureFlagService.isEnabled(.jointAccountEnabled) { return .joint }
         if localAccount.hdWalletAddressDetail != nil { return .universalWallet }
+        if localAccount.ledgerDetail != nil { return .ledger }
         return havePrivateData(address: localAccount.address) ? .algo25 : .invalid
     }
     

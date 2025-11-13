@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
-    "・" : {
-
-    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -3191,6 +3185,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add account"
+          }
+        }
+      }
+    },
+    "create-joint-account-account-list-user-account-suffix" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(You)"
           }
         }
       }
@@ -12966,5 +12970,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

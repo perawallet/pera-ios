@@ -40,8 +40,7 @@ struct CreateJointAccountAddAccountView: View {
     var body: some View {
         VStack {
             SearchFieldWithPasteButton(
-                placeholder:
-                    "create-joint-account-add-account-search-field-placeholder",
+                placeholder: "create-joint-account-add-account-search-field-placeholder",
                 text: $viewModel.searchText
             ) { model.pasteFromClipboard() }
             .textInputAutocapitalization(.never)
@@ -60,8 +59,7 @@ struct CreateJointAccountAddAccountView: View {
             } else {
                 List(viewModel.accountsListSections) { section in
                     if let sectionTitle = section.title {
-                        Section(header: TitleSectionHeader(title: sectionTitle))
-                        {
+                        Section(header: TitleSectionHeader(title: sectionTitle)) {
                             accountsList(rows: section.rows)
                         }
                     } else {

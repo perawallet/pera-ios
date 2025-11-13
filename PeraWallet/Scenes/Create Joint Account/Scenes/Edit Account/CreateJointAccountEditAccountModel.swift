@@ -22,13 +22,14 @@ final class CreateJointAccountEditAccountViewModel: ObservableObject {
         case unableToCreateContact
     }
     
-    @Published var name: String = ""
+    @Published var name: String
     @Published fileprivate(set) var updatedModel: AddedAccountData?
     @Published fileprivate(set) var errorMessage: ErrorMessage?
     @Published private(set) var image: ImageType
     @Published private(set) var address: String
     
-    fileprivate init(image: ImageType, address: String) {
+    fileprivate init(name: String, image: ImageType, address: String) {
+        self.name = name
         self.image = image
         self.address = address
     }
@@ -36,7 +37,7 @@ final class CreateJointAccountEditAccountViewModel: ObservableObject {
 
 protocol CreateJointAccountEditAccountModelable {
     var viewModel: CreateJointAccountEditAccountViewModel { get }
-    func createContact()
+    func updateContact()
 }
 
 final class CreateJointAccountEditAccountModel: CreateJointAccountEditAccountModelable {
@@ -47,20 +48,41 @@ final class CreateJointAccountEditAccountModel: CreateJointAccountEditAccountMod
     
     // MARK: - Initialisers
     
-    init(image: ImageType, address: String) {
-        viewModel = CreateJointAccountEditAccountViewModel(image: image, address: address)
+    init(name: String, image: ImageType, address: String) {
+        viewModel = CreateJointAccountEditAccountViewModel(name: name, image: image, address: address)
     }
     
     // MARK: - Actions - CreateJointAccountEditAccountModelable
     
-    func createContact() {
+    func updateContact() {
         do {
-            let _ = try ContactsManager.createContact(name: viewModel.name, address: viewModel.address)
-            let title = !viewModel.name.isEmpty ? viewModel.name : viewModel.address.shortAddressDisplay
-            let subtitle = !viewModel.name.isEmpty ? viewModel.address.shortAddressDisplay : nil
-            viewModel.updatedModel = AddedAccountData(address: viewModel.address, image: .placeholderIconData, title: title, subtitle: subtitle, isStoredLocally: false)
+            try updateExistingContact()
+        } catch .contactNotFound {
+            createContact()
         } catch {
             viewModel.errorMessage = .unableToCreateContact
         }
+    }
+    
+    // MARK: - Actions
+    
+    private func updateExistingContact() throws(ContactsManager.ContactsManagerError) {
+        _ = try ContactsManager.updateContact(name: viewModel.name, address: viewModel.address)
+        updateModel()
+    }
+    
+    private func createContact() {
+        do {
+            _ = try ContactsManager.createContact(name: viewModel.name, address: viewModel.address)
+            updateModel()
+        } catch {
+            viewModel.errorMessage = .unableToCreateContact
+        }
+    }
+    
+    private func updateModel() {
+        let title = !viewModel.name.isEmpty ? viewModel.name : viewModel.address.shortAddressDisplay
+        let subtitle = !viewModel.name.isEmpty ? viewModel.address.shortAddressDisplay : nil
+        viewModel.updatedModel = AddedAccountData(address: viewModel.address, image: .placeholderIconData, title: title, subtitle: subtitle, isEditable: true, isUserAccount: false)
     }
 }

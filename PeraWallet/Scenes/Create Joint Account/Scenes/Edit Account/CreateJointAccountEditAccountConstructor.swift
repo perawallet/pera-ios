@@ -19,8 +19,9 @@ import pera_wallet_core
 
 enum CreateJointAccountEditAccountConstructor {
     
-    static func buildScene(image: ImageType, address: String, navigationPath: Binding<NavigationPath>, onRemoveAddressButtonTap: @escaping () -> Void, onDataUpdate: @escaping (AddedAccountData) -> Void) -> CreateJointAccountEditAccountView {
-        let model = CreateJointAccountEditAccountModel(image: image, address: address)
+    static func buildScene(name: String, image: ImageType, address: String, navigationPath: Binding<NavigationPath>,
+                           onRemoveAddressButtonTap: @escaping () -> Void, onDataUpdate: @escaping (AddedAccountData) -> Void) -> CreateJointAccountEditAccountView {
+        let model = CreateJointAccountEditAccountModel(name: name, image: image, address: address)
         return CreateJointAccountEditAccountView(model: model, navigationPath: navigationPath, onRemoveAddressButtonTap: onRemoveAddressButtonTap, onDataUpdate: onDataUpdate)
     }
 }

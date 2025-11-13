@@ -33,6 +33,7 @@ final class CreateJointAccountAccountsListViewModel: ObservableObject {
     }
     
     @Published fileprivate(set) var accounts: [AccountModel] = []
+    @Published fileprivate(set) var canAddAccounts: Bool = true
     @Published fileprivate(set) var isValidated: Bool = false
     @Published fileprivate(set) var action: Action?
 }
@@ -52,6 +53,7 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     // MARK: - Constants
     
     private static let minAccountsForValidation = 2
+    private static let maxAccountsCount = 16
     
     // MARK: - Properties - CreateJointAccountAccountsListModelable
     
@@ -72,16 +74,29 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     // MARK: - Setups
     
     private func setupCallbacks() {
+        
         viewModel.$accounts
             .map { $0.count >= Self.minAccountsForValidation }
             .sink { [weak self] in self?.viewModel.isValidated = $0 }
+            .store(in: &cancellables)
+        
+        viewModel.$accounts
+            .map { $0.count < Self.maxAccountsCount }
+            .sink { [weak self] in self?.viewModel.canAddAccounts = $0 }
             .store(in: &cancellables)
     }
     
     // MARK: - Actions - CreateJointAccountAccountsListModelable
     
     func add(account: AddedAccountData) {
-        let model = CreateJointAccountAccountsListViewModel.AccountModel(id: UUID(), address: account.address, image: account.image, title: account.title, subtitle: account.subtitle, isEditable: !account.isStoredLocally)
+        
+        var title = account.title
+        
+        if account.isUserAccount {
+            title += " " + String(localized: "create-joint-account-account-list-user-account-suffix")
+        }
+        
+        let model = CreateJointAccountAccountsListViewModel.AccountModel(id: UUID(), address: account.address, image: account.image, title: title, subtitle: account.subtitle, isEditable: account.isEditable)
         viewModel.accounts.append(model)
     }
     
@@ -91,7 +106,7 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     func update(identifier: UUID, account: AddedAccountData) {
         guard let index = viewModel.accounts.firstIndex(where: { $0.id == identifier }) else { return }
-        let model = CreateJointAccountAccountsListViewModel.AccountModel(id: identifier, address: account.address, image: account.image, title: account.title, subtitle: account.subtitle, isEditable: false)
+        let model = CreateJointAccountAccountsListViewModel.AccountModel(id: identifier, address: account.address, image: account.image, title: account.title, subtitle: account.subtitle, isEditable: account.isEditable)
         viewModel.accounts[index] = model
     }
     

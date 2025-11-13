@@ -50,12 +50,11 @@ struct AccountRowWithEditButton: View {
     
     var body: some View {
         CoreAccountRow(image: image, title: title, subtitle: subtitle) {
-            SwiftUI.Button(action: onActionButtonTap) {
-                Image(actionIcon)
-                    .resizable()
-                    .foregroundStyle(actionButtonTintColor)
-            }
-            .frame(width: 24.0, height: 24.0)
+            Image(actionIcon)
+                .resizable()
+                .frame(width: 24.0, height: 24.0)
+                .foregroundStyle(actionButtonTintColor)
+                .onTapGesture(perform: onActionButtonTap)
         }
     }
 }

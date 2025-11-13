@@ -21,8 +21,8 @@ struct RoundedMenuRow: View {
     // MARK: - Properties
     
     let icon: ImageResource
-    let title: LocalizedStringKey
-    let description: LocalizedStringKey
+    let title: String
+    let description: String
     let isNewBadgeVisible: Bool
     
     // MARK: - Body

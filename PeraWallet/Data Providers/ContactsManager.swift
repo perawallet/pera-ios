@@ -19,14 +19,53 @@ import pera_wallet_core
 // FIXME: Replace it with a micro-service
 enum ContactsManager {
     
-    static func createContact(name: String, address: String) throws(DataBaseStoreError) -> Contact {
+    enum ContactsManagerError: Error {
+        case contactNotFound
+        case unableToFetch(error: DBOperationError)
+        case unableToCreateContact(error: DataBaseStoreError)
+        case unableToUpdateContact(error: DataBaseStoreError)
+    }
+    
+    static func createContact(name: String, address: String) throws(ContactsManagerError) -> Contact {
         
-        let contact = try Contact.create()
-        contact.name = name
-        contact.address = address
+        let contact: Contact
         
-        try Contact.save()
+        do {
+            contact = try Contact.create()
+        } catch {
+            throw .unableToCreateContact(error: error)
+        }
         
-        return contact
+        return try update(contact: contact, name: name, address: address)
+    }
+    
+    static func updateContact(name: String, address: String) throws(ContactsManagerError) -> Contact {
+        
+        let predicate: NSPredicate = NSPredicate(format: "address == %@", address)
+        let result = Contact.fetchAllSyncronous(entity: Contact.entityName, with: predicate)
+        let contact: Contact?
+        
+        switch result {
+        case let .result(object):
+            contact = object as? Contact
+        case let .results(objects):
+            contact = objects.first as? Contact
+        case let .error(error):
+            throw .unableToFetch(error: error)
+        }
+        
+        guard let contact else { throw .contactNotFound }
+        return try update(contact: contact, name: name, address: address)
+    }
+    
+    private static func update(contact: Contact, name: String, address: String) throws(ContactsManagerError) -> Contact {
+        do {
+            contact.name = name
+            contact.address = address
+            try Contact.save()
+            return contact
+        } catch {
+            throw .unableToUpdateContact(error: error)
+        }
     }
 }

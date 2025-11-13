@@ -19,5 +19,6 @@ struct AddedAccountData {
     let image: ImageType
     let title: String
     let subtitle: String?
-    let isStoredLocally: Bool
+    let isEditable: Bool
+    let isUserAccount: Bool
 }

@@ -65,10 +65,10 @@ final class CoreApiManager {
     
     // MARK: - Actions
     
-    func perform<Request: Requestable>(request: Request) async throws(ApiError) -> Request.ResponseType {
+    func perform<Request: Requestable>(request: Request, headers: [String: String]) async throws(ApiError) -> Request.ResponseType {
         
         let url = try makeURL(request: request)
-        let urlRequest = try makeUrlRequest(url: url, request: request)
+        let urlRequest = try makeUrlRequest(url: url, headers: headers, request: request)
         
         let task = Task {
             let result = try await URLSession.shared.data(for: urlRequest)
@@ -116,12 +116,12 @@ final class CoreApiManager {
         return url
     }
     
-    private func makeUrlRequest(url: URL, request: any Requestable) throws(ApiError) -> URLRequest {
+    private func makeUrlRequest(url: URL, headers: [String: String], request: any Requestable) throws(ApiError) -> URLRequest {
         
         var urlRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = request.method.rawValue
-        urlRequest.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        urlRequest.allHTTPHeaderFields = headers
         
         if request.method == .post || request.method == .put {
             do {

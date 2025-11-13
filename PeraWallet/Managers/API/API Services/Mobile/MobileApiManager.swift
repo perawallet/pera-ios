@@ -42,17 +42,33 @@ final class MobileApiManager {
     
     func fetchCurrencyData(currencyID: String) async throws(CoreApiManager.ApiError) -> CurrencyDataResponse {
         let request = CurrencyDataRequest(currencyID: currencyID)
-        return try await apiManagerV1.perform(request: request)
+        return try await perform(v1Request: request)
     }
     
     func fetchNonFungibleDomainData(domain: String) async throws(CoreApiManager.ApiError) -> NameServiceSearchResponse {
         let request = NameServiceSearchRequest(name: domain)
-        return try await apiManagerV1.perform(request: request)
+        return try await perform(v1Request: request)
     }
     
     func createJointAccount(participants: [String], threshold: Int) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
         let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1)
         let request = CreateJointAccountRequest(jointAccountObject: jointAccountObject)
-        return try await apiManagerV1.perform(request: request)
+        return try await perform(v1Request: request)
+    }
+    
+    // MARK: - Actions
+    
+    private func perform<Request: Requestable>(v1Request: Request) async throws(CoreApiManager.ApiError) -> Request.ResponseType {
+        try await apiManagerV1.perform(request: v1Request, headers: makeHeaders())
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeHeaders() -> [String: String] {
+        [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip;q=1.0, *;q=0.5"
+        ]
     }
 }

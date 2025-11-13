@@ -67,6 +67,7 @@ final class CreateJointAccountAddAccountViewModel: ObservableObject {
         let primaryValue: String
         let secondaryValue: String
         let image: ImageType
+        let isContact: Bool
     }
     
     @Published var searchText: String = ""
@@ -129,7 +130,11 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
             }
             .store(in: &cancellables)
         
-        Publishers.CombineLatest3(accountsService.accounts.publisher.removeDuplicates(), currencyService.selectedCurrencyData.publisher.removeDuplicates(), viewModel.$searchText)
+        let accountsPublisher = accountsService.accounts.publisher
+            .removeDuplicates()
+            .map { $0.filter { $0.type != .joint }}
+        
+        Publishers.CombineLatest3(accountsPublisher, currencyService.selectedCurrencyData.publisher.removeDuplicates(), viewModel.$searchText)
             .map { [weak self] accounts, currencyData, searchText in
                 accounts
                     .filter {
@@ -238,11 +243,32 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     }
     
     func select(normalAccount: CreateJointAccountAddAccountViewModel.AccountModel) {
-        viewModel.selectedAccount = AddedAccountData(address: normalAccount.address, image: normalAccount.image, title: normalAccount.title, subtitle: normalAccount.subtitle, isStoredLocally: true)
+        
+        let isUserAccount = accountsService.accounts.value
+            .first { $0.address == normalAccount.address }
+            .map { $0.isValid && $0.type != .watch }
+        
+        guard let isUserAccount else { return }
+        
+        viewModel.selectedAccount = AddedAccountData(
+            address: normalAccount.address,
+            image: normalAccount.image,
+            title: normalAccount.title,
+            subtitle: normalAccount.subtitle,
+            isEditable: normalAccount.isContact,
+            isUserAccount: isUserAccount
+        )
     }
     
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel) {
-        viewModel.selectedAccount = AddedAccountData(address: specialAccount.id, image: .placeholderIconData, title: specialAccount.title, subtitle: specialAccount.subtitle, isStoredLocally: false)
+        viewModel.selectedAccount = AddedAccountData(
+            address: specialAccount.id,
+            image: .placeholderIconData,
+            title: specialAccount.title,
+            subtitle: specialAccount.subtitle,
+            isEditable: true,
+            isUserAccount: false
+        )
     }
     
     // MARK: - Handlers
@@ -290,7 +316,8 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
             subtitle: account.titles.secondary,
             primaryValue: isAlgoPrimaryCurrency ? formatterAlgoValue : formattedFiatValue,
             secondaryValue: isAlgoPrimaryCurrency ? formattedFiatValue : formatterAlgoValue,
-            image: .icon(data: AccountIconProvider.iconData(account: account))
+            image: .icon(data: AccountIconProvider.iconData(account: account)),
+            isContact: false
         )
     }
     
@@ -308,6 +335,6 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
             image = .icon(data: ImageType.IconData(image: .Icons.user, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon))
         }
         
-        return CreateJointAccountAddAccountViewModel.AccountModel(address: address, title: title, subtitle: subtitle, primaryValue: "", secondaryValue: "", image: image)
+        return CreateJointAccountAddAccountViewModel.AccountModel(address: address, title: title, subtitle: subtitle, primaryValue: "", secondaryValue: "", image: image, isContact: true)
     }
 }

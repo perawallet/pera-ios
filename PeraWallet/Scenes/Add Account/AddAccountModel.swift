@@ -16,7 +16,6 @@
 
 import Combine
 import pera_wallet_core
-import SwiftUI
 
 final class AddAccountViewModel: ObservableObject {
     
@@ -32,8 +31,8 @@ final class AddAccountViewModel: ObservableObject {
     struct MenuOptionModel: Identifiable {
         let id: RowIdentifier
         let icon: ImageResource
-        let title: LocalizedStringKey
-        let description: LocalizedStringKey
+        let title: String
+        let description: String
         let isNewBadgeVisible: Bool
     }
     
@@ -100,8 +99,8 @@ final class AddAccountModel: AddAccountModelable {
             AddAccountViewModel.MenuOptionModel(
                 id: .addAccount,
                 icon: .Icons.walletAdd,
-                title: "add-account-option-add-account-title",
-                description: "add-account-option-add-account-description",
+                title: String(localized: "add-account-option-add-account-title"),
+                description: String(localized: "add-account-option-add-account-description"),
                 isNewBadgeVisible: false
             )
         ]
@@ -110,8 +109,8 @@ final class AddAccountModel: AddAccountModelable {
             result.append(AddAccountViewModel.MenuOptionModel(
                 id: .addJointAccount,
                 icon: .Icons.group,
-                title: "add-account-option-add-joint-account-title",
-                description: "add-account-option-add-joint-account-description",
+                title: String(localized: "add-account-option-add-joint-account-title"),
+                description: String(localized: "add-account-option-add-joint-account-description"),
                 isNewBadgeVisible: true)
             )
         }
@@ -120,8 +119,8 @@ final class AddAccountModel: AddAccountModelable {
             AddAccountViewModel.MenuOptionModel(
                 id: .importWallet,
                 icon: .Icons.walletImport,
-                title: "add-account-option-import-account-title",
-                description: "add-account-option-import-account-description",
+                title: String(localized: "add-account-option-import-account-title"),
+                description: String(localized: "add-account-option-import-account-description"),
                 isNewBadgeVisible: false)
         )
         return result
@@ -132,22 +131,22 @@ final class AddAccountModel: AddAccountModelable {
             AddAccountViewModel.MenuOptionModel(
                 id: .watchAccount,
                 icon: .Icons.watchAccount,
-                title: "add-account-option-watch-account-title",
-                description: "add-account-option-watch-account-description",
+                title: String(localized: "add-account-option-watch-account-title"),
+                description: String(localized: "add-account-option-watch-account-description"),
                 isNewBadgeVisible: false
             ),
             AddAccountViewModel.MenuOptionModel(
                 id: .createUniversalWallet,
                 icon: .Icons.walletUniversal,
-                title: "add-account-option-create-universal-wallet-title",
-                description: "add-account-option-create-universal-wallet-description",
+                title: String(localized: "add-account-option-create-universal-wallet-title"),
+                description: String(localized: "add-account-option-create-universal-wallet-description"),
                 isNewBadgeVisible: false
             ),
             AddAccountViewModel.MenuOptionModel(
                 id: .createAlgo256Wallet,
                 icon: .Icons.wallet,
-                title: "add-account-option-create-algo25-wallet-title",
-                description: "add-account-option-create-algo25-wallet-description",
+                title: String(localized: "add-account-option-create-algo25-wallet-title"),
+                description: String(localized: "add-account-option-create-algo25-wallet-description"),
                 isNewBadgeVisible: false
             )
         ]
