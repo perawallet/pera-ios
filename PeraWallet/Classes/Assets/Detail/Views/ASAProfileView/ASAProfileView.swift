@@ -60,6 +60,7 @@ final class ASAProfileView:
     private lazy var favoritesButton = UIButton()
     
     private var chartData: ChartViewData?
+    private var isAmountHidden = false
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var chartHostingController = UIHostingController(rootView: makeChartView())
     
@@ -120,6 +121,8 @@ final class ASAProfileView:
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
+        isAmountHidden = viewModel?.isAmountHidden ?? false
+        
         if let selectedPointDateValue = viewModel?.selectedPointDateValue {
             selectedPointDateValue.load(in: selectedPointDateValueView)
             tendencyValueView.isHidden = true
@@ -128,7 +131,7 @@ final class ASAProfileView:
                 $0.text = nil
                 $0.attributedText = nil
             }
-            tendencyValueView.isHidden = false
+            tendencyValueView.isHidden = isAmountHidden
             bindIcon(viewModel)
             nameView.bindData(viewModel?.name)
         }
@@ -165,7 +168,7 @@ final class ASAProfileView:
         }
     }
     
-    func updateChart(with data: ChartViewData?, and tendenciesVM: TendenciesViewModel) {
+    func updateChart(with data: ChartViewData?, and tendenciesVM: TendenciesViewModel?) {
         guard let data else {
             contentView.removeArrangedSubview(chartHostingController.view)
             chartHostingController.view.removeFromSuperview()
@@ -176,6 +179,7 @@ final class ASAProfileView:
         chartHostingController.rootView = makeChartView()
         
         guard
+            let tendenciesVM,
             let differenceText = tendenciesVM.differenceText,
             let differenceInPercentageText = tendenciesVM.differenceInPercentageText,
             let arrowImageView = tendenciesVM.arrowImageView
@@ -192,7 +196,7 @@ final class ASAProfileView:
             baselineView: secondaryValueView
         )
         
-        tendencyValueView.isHidden = false
+        tendencyValueView.isHidden = isAmountHidden
     }
 
     func bindIcon(_ viewModel: ASAProfileViewModel?) {
