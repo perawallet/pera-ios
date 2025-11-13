@@ -25,7 +25,7 @@ struct SwapSettingsToogle: View {
     
     var body: some View {
         Text(title)
-            .font(.dmSans.regular.size(13))
+            .font(.DMSans.regular.size(13))
             .foregroundStyle(Color.Text.gray)
             .frame(maxWidth: .infinity, alignment: .leading)
         
@@ -33,7 +33,7 @@ struct SwapSettingsToogle: View {
         
         SwiftUI.Toggle(isOn: $isOn) {
             Text(text)
-                .font(.dmSans.regular.size(15))
+                .font(.DMSans.regular.size(15))
                 .foregroundColor(Color.Text.main)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

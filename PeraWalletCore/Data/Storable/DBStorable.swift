@@ -18,6 +18,11 @@
 import CoreData
 import UIKit
 
+public enum DataBaseStoreError: Error {
+    case unableToGetPersistentContainer
+    case unableToSaveContext(error: Error)
+}
+
 public protocol DBStorable: AnyObject {
     typealias DBOperationHandler = (DBOperationResult<Self>) -> Void
     typealias DBOperationErrorHandler = (DBOperationError?) -> Void
@@ -47,6 +52,19 @@ public protocol DBStorable: AnyObject {
 }
 
 extension DBStorable where Self: NSManagedObject {
+    
+    public static func create(persistentContainer: NSPersistentContainer? = CoreAppConfiguration.shared?.persistentContainer) throws(DataBaseStoreError) -> Self {
+        guard let context = persistentContainer?.viewContext else { throw .unableToGetPersistentContainer }
+        return Self(context: context)
+    }
+    
+    public static func save(persistentContainer: NSPersistentContainer? = CoreAppConfiguration.shared?.persistentContainer) throws(DataBaseStoreError) {
+        do {
+            try persistentContainer?.viewContext.save()
+        } catch {
+            throw .unableToSaveContext(error: error)
+        }
+    }
     
     public static func create(
         entity: String,

@@ -22,6 +22,7 @@ final class CoreApiManager {
     enum ApiError: Error {
         case invalidBaseUrl(baseURL: String)
         case cantGenerateUrlFromComponents(components: URLComponents)
+        case unableToEncodeBody(error: Error)
         case invalidHTTPStatusCode(code: Int)
         case responseError(error: Error)
         case cancelled
@@ -50,37 +51,29 @@ final class CoreApiManager {
         didSet { cancelAllRequests() }
     }
     
-    private let jsonDecoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .kebabCase
-        return decoder
-    }()
-    
+    private let jsonDecoder: JSONDecoder = JSONDecoder()
+    private let jsonEncoder: JSONEncoder = JSONEncoder()
     private let taskManager = CancellableTasksManager()
     
     // MARK: - Initialisers
     
-    init(baseURL: BaseURL) {
+    init(baseURL: BaseURL, keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy, keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy) {
         self.baseURL = baseURL
+        jsonDecoder.keyDecodingStrategy = keyDecodingStrategy
+        jsonEncoder.keyEncodingStrategy = keyEncodingStrategy
     }
     
     // MARK: - Actions
     
-    func perform<Request: Requestable>(request: Request) async throws(ApiError) -> Request.ResponseType {
+    func perform<Request: Requestable>(request: Request, headers: [String: String]) async throws(ApiError) -> Request.ResponseType {
         
-        guard var components = URLComponents(string: baseURL.rawUrl) else { throw .invalidBaseUrl(baseURL: baseURL.rawUrl) }
-        components.path += request.path
-        
-        guard let url = components.url else { throw .cantGenerateUrlFromComponents(components: components) }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = request.method.rawValue
+        let url = try makeURL(request: request)
+        let urlRequest = try makeUrlRequest(url: url, headers: headers, request: request)
         
         let task = Task {
             let result = try await URLSession.shared.data(for: urlRequest)
             try handle(response: result.1)
-            let response = try jsonDecoder.decode(request.responseType, from: result.0)
-            return response
+            return try jsonDecoder.decode(request.responseType, from: result.0)
         }
         
         let uuid = await taskManager.add(task: task)
@@ -94,11 +87,11 @@ final class CoreApiManager {
             throw error
         } catch let error as URLError {
             await taskManager.cancel(uuid: uuid)
-            guard error.code == .cancelled else { throw .responseError(error: error) }
-            throw .cancelled
+            guard error.code == .cancelled else { throw ApiError.responseError(error: error) }
+            throw ApiError.cancelled
         } catch {
             await taskManager.cancel(uuid: uuid)
-            throw .responseError(error: error)
+            throw ApiError.responseError(error: error)
         }
     }
     
@@ -108,11 +101,52 @@ final class CoreApiManager {
         }
     }
     
+    // MARK: - Factories
+    
+    private func makeURL(request: any Requestable) throws(ApiError) -> URL {
+        
+        guard var components = URLComponents(string: baseURL.rawUrl) else { throw .invalidBaseUrl(baseURL: baseURL.rawUrl) }
+        components.path += request.path
+        
+        if request.method == .get || request.method == .delete, let requestWithQueryItems = request as? (any QueryRequestable) {
+            components.queryItems = requestWithQueryItems.queryItems
+        }
+        
+        guard let url = components.url else { throw .cantGenerateUrlFromComponents(components: components) }
+        return url
+    }
+    
+    private func makeUrlRequest(url: URL, headers: [String: String], request: any Requestable) throws(ApiError) -> URLRequest {
+        
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = request.method.rawValue
+        urlRequest.allHTTPHeaderFields = headers
+        
+        if request.method == .post || request.method == .put {
+            do {
+                let rawBody: Encodable
+                
+                if let requestWithBody = request as? (any BodyRequestable) {
+                    rawBody = requestWithBody.body
+                } else {
+                    rawBody = request
+                }
+                
+                urlRequest.httpBody = try jsonEncoder.encode(rawBody)
+            } catch {
+                throw .unableToEncodeBody(error: error)
+            }
+        }
+        
+        return urlRequest
+    }
+    
     // MARK: - Handlers
     
     private func handle(response: URLResponse) throws(ApiError) {
         guard let httpResponse = response as? HTTPURLResponse else { return }
-        guard httpResponse.statusCode == 200 else { throw .invalidHTTPStatusCode(code: httpResponse.statusCode) }
+        guard 200...299 ~= httpResponse.statusCode else { throw .invalidHTTPStatusCode(code: httpResponse.statusCode) }
     }
 }
 
@@ -137,14 +171,23 @@ extension CoreApiManager.BaseURL {
         case let .mobile(network, version):
             switch (network, version) {
             case (.mainNet, .v1):
-                return AppEnvironment.current.mainNetMobileAPIV1
+                return AppEnvironment.current.mainNetMobileAPIV1.removeTrailingSlash()
             case (.mainNet, .v2):
-                return AppEnvironment.current.mainNetMobileAPIV2
+                return AppEnvironment.current.mainNetMobileAPIV2.removeTrailingSlash()
             case (.testNet, .v1):
-                return AppEnvironment.current.testNetMobileAPIV1
+                return AppEnvironment.current.testNetMobileAPIV1.removeTrailingSlash()
             case (.testNet, .v2):
-                return AppEnvironment.current.testNetMobileAPIV2
+                return AppEnvironment.current.testNetMobileAPIV2.removeTrailingSlash()
             }
         }
+    }
+}
+
+// FIXME: Currently, some of the URLs to the APIs have a trailing slash while others don't. Please remove unnecessary slashes at the end of the URLs, and delete this extension afterward.
+private extension String {
+    
+    func removeTrailingSlash() -> String {
+        guard hasSuffix("/") else { return self }
+        return String(dropLast())
     }
 }

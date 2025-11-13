@@ -95,6 +95,8 @@ extension Account {
         return ledgerDetail != nil
     }
     
+    public var hasJointAccountDetails: Bool { jointAccountParticipants != nil }
+    
     public func requiresLedgerConnection() -> Bool {
         return authorization.isLedger || authorization.isRekeyedToLedger
     }
@@ -222,6 +224,9 @@ extension Account {
         }
         if authorization.isWatch {
             return "icon-watch-account"
+        }
+        if authorization == .jointAccount {
+            return "icon-joint-account"
         }
         if authorization.isLedger {
             return "icon-ledger-account"

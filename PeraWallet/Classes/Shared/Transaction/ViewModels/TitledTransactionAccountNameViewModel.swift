@@ -32,7 +32,7 @@ class TitledTransactionAccountNameViewModel {
         setAccountNameViewModel(from: contact, and: hasImage)
     }
 
-    init(title: String, nameService: NameService) {
+    init(title: String, nameService: NameServiceAPIModel) {
         setTitle(from: title)
         setAccountNameViewModel(from: nameService)
     }
@@ -49,7 +49,7 @@ class TitledTransactionAccountNameViewModel {
         accountNameViewModel = AccountNameViewModel(contact: contact, hasImage: hasImage)
     }
 
-    private func setAccountNameViewModel(from nameService: NameService) {
+    private func setAccountNameViewModel(from nameService: NameServiceAPIModel) {
         accountNameViewModel = AccountNameViewModel(nameService: nameService)
     }
 }

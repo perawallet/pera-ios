@@ -33,14 +33,14 @@ struct RecoveryToolView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20.0) {
             Text("search-recovery-info")
-                .font(.dmSans.regular.size(15.0))
+                .font(.DMSans.regular.size(15.0))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.Text.main)
             Text("search-recovery-title")
-                .font(.dmSans.medium.size(15.0))
+                .font(.DMSans.medium.size(15.0))
                 .foregroundStyle(Color.Text.main)
             TextField("search-recovery-placeholder", text: $viewModel.address)
-                .font(.dmSans.medium.size(15.0))
+                .font(.DMSans.medium.size(15.0))
                 .foregroundStyle(Color.Text.main)
                 .padding([.leading, .trailing], 5.0)
                 .padding([.top, .bottom], 10.0)
@@ -52,7 +52,7 @@ struct RecoveryToolView: View {
                     action: model.scanForAddress,
                     label: {
                         Text("search-recovery-button")
-                            .font(.dmSans.medium.size(15.0))
+                            .font(.DMSans.medium.size(15.0))
                             .tint(Color.ButtonPrimary.text)
                             .padding()
                     }
@@ -64,7 +64,7 @@ struct RecoveryToolView: View {
                 .disabled(viewModel.loading)
                 
             Text(viewModel.statusText)
-                .font(.dmSans.regular.size(15.0))
+                .font(.DMSans.regular.size(15.0))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(viewModel.isErrorState ? Color.Helpers.negative : Color.Helpers.positive)
             

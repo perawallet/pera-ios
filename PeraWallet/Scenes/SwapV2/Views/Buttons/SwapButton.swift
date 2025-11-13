@@ -31,7 +31,7 @@ struct SwapButton: View {
             Spacer().frame(height: 8)
             SwiftUI.Button(action: onTap) {
                 Text("title-swap")
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.ButtonPrimary.text)
                     .frame(maxWidth: .infinity, minHeight: 52)
                     .background(

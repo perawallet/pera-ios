@@ -172,14 +172,7 @@ final class SwapViewController: BaseViewController {
             case .info:
                 open(AlgorandWeb.tinymanSwap.link)
             case .createAccount:
-                open(
-                    .addAccount(flow: .addNewAccount(mode: .none)),
-                    by: .customPresent(
-                        presentationStyle: .fullScreen,
-                        transitionStyle: nil,
-                        transitioningDelegate: nil
-                    )
-                )
+                AppDelegate.shared?.launchOnboarding()
             }
         }
         let noAccountSwapHostingController = UIHostingController(rootView: rootView)

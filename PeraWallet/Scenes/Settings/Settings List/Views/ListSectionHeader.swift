@@ -22,7 +22,7 @@ struct ListSectionHeader: View {
     
     var body: some View {
         Text(text)
-            .font(.dmSans.regular.size(13.0))
+            .font(.DMSans.regular.size(13.0))
             .foregroundStyle(Color.Text.gray)
             .padding(.bottom, 8.0)
             .textCase(.none)

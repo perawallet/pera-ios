@@ -31,7 +31,7 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
-    case addAccount(flow: AccountSetupFlow)
+    case addAccount
     case mnemonicTypeSelection(eventHandler: MnemonicTypeSelectionScreen.EventHandler)
     case recoverAccount(flow: AccountSetupFlow)
     case recoverAccountsLoadingScreen
