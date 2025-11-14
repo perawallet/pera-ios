@@ -111,7 +111,7 @@ final class AccountPortfolioView:
                 arrowImageView: arrowImageView,
                 hideDiffLabel: false,
                 baselineView: secondaryValueView)
-            tendencyValueView.isHidden = false
+            tendencyValueView.isHidden = viewModel?.isAmountHidden ?? false
         } else {
             tendencyValueView.isHidden = true
         }
@@ -122,9 +122,10 @@ final class AccountPortfolioView:
             }
             selectedPointDateValue.load(in: selectedPointDateValueView)
         } else {
-            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView, tendencyValueView].forEach {
+            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView].forEach {
                 $0.isHidden = false
             }
+            tendencyValueView.isHidden = viewModel?.isAmountHidden ?? false
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
         }

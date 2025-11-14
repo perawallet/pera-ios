@@ -219,7 +219,7 @@ extension AccountAssetListAPIDataController {
             let point = selectedPoint,
             let date = point.timestamp.toDate(.fullNumericWithTimezone)
         else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: ObservableUserDefaults.shared.isPrivacyModeEnabled ? nil : tendenciesVM)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: tendenciesVM, isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)))
             return
         }
         
@@ -299,7 +299,7 @@ extension AccountAssetListAPIDataController {
         if account.value.authorization.isWatch {
             publish(event: .shouldReloadPortfolio(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: isAmountHidden ? nil : tendenciesVM)))
         } else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: isAmountHidden ? nil : tendenciesVM)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM, isAmountHidden: isAmountHidden)))
         }
     }
 }
@@ -511,7 +511,8 @@ extension AccountAssetListAPIDataController {
         let viewModel = AccountPortfolioViewModel(
             portfolio,
             selectedPoint: nil,
-            tendenciesVM: isAmountHidden ? nil : tendenciesVM
+            tendenciesVM: tendenciesVM,
+            isAmountHidden: isAmountHidden
         )
         return [ .portfolio(viewModel) ]
     }
