@@ -89,7 +89,9 @@ final class ASAProfileView:
     // MARK: - Setups
     
     private func setupGestures() {
-        startPublishing(event: .onAmountTap, for: primaryValueButton)
+        if type != .assetPrice {
+            startPublishing(event: .onAmountTap, for: primaryValueButton)
+        }
         startPublishing(event: .onNotificationTap, for: notificationsButton)
         startPublishing(event: .onFavoriteTap, for: favoritesButton)
     }
@@ -121,7 +123,7 @@ final class ASAProfileView:
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
-        isAmountHidden = viewModel?.isAmountHidden ?? false
+        isAmountHidden = type == .assetPrice ? false : viewModel?.isAmountHidden ?? false
         
         if let selectedPointDateValue = viewModel?.selectedPointDateValue {
             selectedPointDateValue.load(in: selectedPointDateValueView)
