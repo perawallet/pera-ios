@@ -31,6 +31,7 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
     private(set) var priceValue: TextProvider?
+    private(set) var isAmountHidden: Bool?
 
     init() {}
 

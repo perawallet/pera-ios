@@ -216,7 +216,12 @@ final class HomeViewController:
                 guard let totalPortfolioItem else {
                     return
                 }
-                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel, tendenciesVM: tendenciesVM)
+                let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
+                let homePortfolioViewModel = HomePortfolioViewModel(
+                    totalPortfolioItem,
+                    selectedPoint: chartSelectedPointViewModel,
+                    tendenciesVM: isAmountHidden ? nil : tendenciesVM
+                )
                 self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }

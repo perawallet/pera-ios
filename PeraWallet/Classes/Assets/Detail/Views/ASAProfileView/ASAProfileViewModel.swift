@@ -26,4 +26,5 @@ protocol ASAProfileViewModel: ViewModel {
     var secondaryValue: TextProvider? { get }
     var selectedPointDateValue: TextProvider? { get }
     var priceValue: TextProvider? { get }
+    var isAmountHidden: Bool? { get }
 }
