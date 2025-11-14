@@ -198,7 +198,6 @@ extension AccountPortfolioView {
         tendencyValueView.snp.makeConstraints {
             $0.centerY == secondaryValueView.snp.centerY
             $0.leading == secondaryValueView.snp.trailing + 8
-            $0.bottom == 0
         }
     }
 
