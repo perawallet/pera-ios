@@ -474,7 +474,7 @@ final class SwapViewController: BaseViewController {
         _ viewModel: SwapSharedViewModel?,
         with quoteList: [SwapQuote]?
     ) {
-        guard let viewModel, let quoteList, let selectedAssetOut else { return }
+        guard let viewModel, let quoteList, let selectedAssetIn, let selectedAssetOut else { return }
         
         var orderedQuoteList: [SwapQuote] {
             let shouldFilterDeflex = configuration.featureFlagService.isEnabled(.ledgerDeflexFilterEnabled)
@@ -491,6 +491,10 @@ final class SwapViewController: BaseViewController {
         let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
+        let amountIn = selectedQuote?.amountIn ?? 0
+        let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
+        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
+        
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
@@ -503,7 +507,7 @@ final class SwapViewController: BaseViewController {
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
             viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.payingTextInSecondaryCurrency = viewModel.fiatFormat(with: selectedQuote?.amountInUSDValue?.doubleValue ?? 0)
+            viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetIn.asset, with: valueIn.doubleValue)
         }
         
         viewModel.quoteList = orderedQuoteList
