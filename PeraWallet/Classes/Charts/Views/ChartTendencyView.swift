@@ -39,8 +39,13 @@ final class ChartTendencyView: UIView {
         baselineView: UIView
     ) {
         differenceText?.load(in: diffLabel)
-        differenceInPercentageText?.load(in: percentLabel)
-        arrowImageView?.load(in: iconView)
+        if let differenceInPercentageText {
+            differenceInPercentageText.load(in: percentLabel)
+            arrowImageView?.load(in: iconView)
+        } else {
+            percentLabel.text = nil
+            iconView.image = nil
+        }
 
         diffLabel.isHidden = hideDiffLabel
         setupConstraints(hideDiffLabel: hideDiffLabel, baselineView: baselineView)

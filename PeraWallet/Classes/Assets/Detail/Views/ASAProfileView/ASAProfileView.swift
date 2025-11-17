@@ -170,7 +170,7 @@ final class ASAProfileView:
         }
     }
     
-    func updateChart(with data: ChartViewData?, and tendenciesVM: TendenciesViewModel?) {
+    func updateChart(with data: ChartViewData?, and tendenciesVM: TendenciesViewModel) {
         guard let data else {
             contentView.removeArrangedSubview(chartHostingController.view)
             chartHostingController.view.removeFromSuperview()
@@ -180,20 +180,15 @@ final class ASAProfileView:
         chartViewModel.refresh(with: data.model)
         chartHostingController.rootView = makeChartView()
         
-        guard
-            let tendenciesVM,
-            let differenceText = tendenciesVM.differenceText,
-            let differenceInPercentageText = tendenciesVM.differenceInPercentageText,
-            let arrowImageView = tendenciesVM.arrowImageView
-        else {
+        guard let differenceText = tendenciesVM.differenceText else {
             tendencyValueView.isHidden = true
             return
         }
         
         tendencyValueView.bind(
             differenceText: differenceText,
-            differenceInPercentageText: differenceInPercentageText,
-            arrowImageView: arrowImageView,
+            differenceInPercentageText: tendenciesVM.differenceInPercentageText,
+            arrowImageView: tendenciesVM.arrowImageView,
             hideDiffLabel: type == .assetPrice,
             baselineView: secondaryValueView
         )
