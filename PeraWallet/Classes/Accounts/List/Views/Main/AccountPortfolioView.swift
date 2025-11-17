@@ -69,6 +69,10 @@ final class AccountPortfolioView:
         _ layoutSheet: LayoutSheet
     ) {}
     
+    func prepareForReuse() {
+        setupGestures()
+    }
+    
     func bindData(
         _ viewModel: AccountPortfolioViewModel?
     ) {
@@ -129,7 +133,6 @@ final class AccountPortfolioView:
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
         }
-
     }
     
     class func calculatePreferredSize(
@@ -165,10 +168,11 @@ extension AccountPortfolioView {
         
         [valueView, valueButton].forEach(addSubview)
         
-        valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
+
         }
         
         valueButton.snp.makeConstraints {
