@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "・" : {
+
+    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -2935,6 +2941,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create Legacy Algo25 Account"
+          }
+        }
+      }
+    },
+    "dev-settings-recover-account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Recovery Tool"
           }
         }
       }
@@ -5923,6 +5939,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Screenshot Detected"
+          }
+        }
+      }
+    },
+    "search-recovery-already-exists" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That account already exists, no need to recover."
+          }
+        }
+      }
+    },
+    "search-recovery-button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attempt Recovery"
+          }
+        }
+      }
+    },
+    "search-recovery-info" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using this screen you can attempt to recover accounts on this device.  Note: In order to be able to recover an account it must have previously existed on this device."
+          }
+        }
+      }
+    },
+    "search-recovery-not-found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The account you specified could not be found"
+          }
+        }
+      }
+    },
+    "search-recovery-placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter an account address to recover"
+          }
+        }
+      }
+    },
+    "search-recovery-recovered" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account successfully restored."
+          }
+        }
+      }
+    },
+    "search-recovery-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address to recover:"
           }
         }
       }

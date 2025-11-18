@@ -159,12 +159,8 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self else { return }
                     
-                    if featureFlagService.isEnabled(.swapV2Enabled) {
-                        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-                        rootViewController.launch(tab: .swap)
-                    } else {
-                        self.startSwapFlow()
-                    }
+                    guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+                    rootViewController.launch(tab: .swap)
                 }
             case .performCloseAction:
                 self.visibleScreen.dismissScreen()
@@ -588,7 +584,7 @@ extension SwapAssetFlowCoordinator {
     
     func updateSwapStatus(swapController: SwapController, status: SwapStatus, failureReason: SwapStatusUpdateError? = nil) {
         
-        guard let swapId = swapController.swapId, featureFlagService.isEnabled(.swapV2Enabled) else { return }
+        guard let swapId = swapController.swapId else { return }
         
         let draft = SwapStatusUpdateDraft(
             swapId: String(swapId),

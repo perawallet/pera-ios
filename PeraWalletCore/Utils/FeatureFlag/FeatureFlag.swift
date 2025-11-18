@@ -17,7 +17,6 @@
 import Foundation
 
 public enum FeatureFlag: String, CaseIterable {
-    case swapV2Enabled = "enable_swap_v2"
     case swapFeePadding = "swap_fee_padding"
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
@@ -28,8 +27,6 @@ public enum FeatureFlag: String, CaseIterable {
 
     var defaultValue: RemoteConfigValue {
         switch self {
-        case .swapV2Enabled:
-            return .bool(false)
         case .swapFeePadding:
             return .double(-1)
         case .liquidAuthEnabled:

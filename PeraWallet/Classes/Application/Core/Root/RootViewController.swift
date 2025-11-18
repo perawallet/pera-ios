@@ -165,17 +165,6 @@ extension RootViewController {
         let menuVC = MenuViewController(configuration: appConfiguration.all())
         let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
 
-        guard appConfiguration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            mainContainer.items = [
-                homeTab,
-                discoverTab,
-                stakeTab,
-                collectiblesTab,
-                menuTab
-            ]
-            setNeedsDiscoverTabBarItemUpdateIfNeeded()
-            return
-        }
         mainContainer.items = [
             homeTab,
             discoverTab,

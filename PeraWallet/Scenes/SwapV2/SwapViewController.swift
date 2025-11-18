@@ -365,12 +365,11 @@ final class SwapViewController: BaseViewController {
                         )
                         return
                     }
-                    if let assetOutID = launchDraft.assetOutID {
-                        selectedAssetIn = assetItem(from: assetLoaded)
-                        selectedAssetOut = assetItem(from: resolveAsset(with: assetOutID, for: selectedAccount))
-                    } else {
-                        selectedAssetOut = assetItem(from: assetLoaded)
+                    selectedAssetOut = assetItem(from: assetLoaded)
+                    if launchDraft.assetInID == 0 {
                         selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+                    } else {
+                        selectedAssetIn = assetItem(from: resolveAsset(with: launchDraft.assetInID, for: selectedAccount))
                     }
                     loadSwapView()
                 }
