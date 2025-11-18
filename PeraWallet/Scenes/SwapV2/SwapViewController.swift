@@ -457,6 +457,31 @@ final class SwapViewController: BaseViewController {
         return StandardAsset(decoration: assetDecorationElement)
     }
     
+    private func resetViewAfterSwap() {
+        /// force balance update if asset is algo
+        let shouldForceUpdate = (selectedAssetIn?.asset.isAlgo == true) || (selectedAssetOut?.asset.isAlgo == true)
+        
+        if
+            shouldForceUpdate,
+            let address = selectedAccount?.address,
+            let account = sharedDataController.accountCollection.first(where: { $0.value.address == address })?.value
+        {
+            selectedAccount = account
+
+            if selectedAssetIn?.asset.isAlgo == true {
+                selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+            }
+
+            if selectedAssetOut?.asset.isAlgo == true {
+                selectedAssetOut = resolveDefaultAlgoAsset(for: account)
+            }
+        }
+        
+        resetAmounts()
+        loadSwapView()
+        loadSwapHistory()
+    }
+    
     private func update(
         _ viewModel: SwapSharedViewModel,
         with account: Account,
@@ -684,9 +709,8 @@ final class SwapViewController: BaseViewController {
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
-            resetAmounts()
-            loadSwapView()
-            loadSwapHistory()
+            resetViewAfterSwap()
+
         case let .trackAnalytics(event):
             switch event {
             case .swapHistorySeeAll:
