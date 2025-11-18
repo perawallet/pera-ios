@@ -7281,6 +7281,9 @@
 		D405059426F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D405059626F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
+		D40B5ECA2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
+		D40B5ECB2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
+		D40B5ECC2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
 		D417DAD92EB35A6D001D3C53 /* AssetPriceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DAD82EB35A60001D3C53 /* AssetPriceChartDataDraft.swift */; };
 		D417DADB2EB35AF2001D3C53 /* AssetPriceChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DADA2EB35AE6001D3C53 /* AssetPriceChartDataDTO.swift */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
@@ -9198,6 +9201,7 @@
 		D40ADD89294515BC004C74E3 /* CollectibleFilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFilterOptions.swift; sourceTree = "<group>"; };
 		D40ADD8D294521EE004C74E3 /* AccountCollectibleListFilterSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectibleListFilterSelectionViewController.swift; sourceTree = "<group>"; };
 		D40ADD9129452252004C74E3 /* AccountCollectibleListFilterSelectionViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectibleListFilterSelectionViewControllerTheme.swift; sourceTree = "<group>"; };
+		D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Message.swift"; sourceTree = "<group>"; };
 		D40BA4C42A81155400138BF7 /* WCSessionAdvancedPermissionsHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D40BA4C82A8115A600138BF7 /* WCSessionAdvancedPermissionsHeaderContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderContentConfiguration.swift; sourceTree = "<group>"; };
 		D40BA4CF2A819C2A00138BF7 /* WCSessionAdvancedPermissionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionCell.swift; sourceTree = "<group>"; };
@@ -18801,7 +18805,6 @@
 				591674772E460AA3002184C2 /* NavigationBar */,
 				591674CA2E460AA3002184C2 /* UI */,
 				591678892E4610D2002184C2 /* WalletConnect */,
-				D46CDEB22EC3754400B7196B /* WKScriptMessage */,
 				591674D62E460AA3002184C2 /* Validators */,
 				2BB835A02EAB7767002BEA35 /* MediaCleaner */,
 			);
@@ -18905,6 +18908,7 @@
 				591674202E460AA3002184C2 /* Macaroon */,
 				5916742A2E460AA3002184C2 /* UIImage */,
 				591674442E460AA3002184C2 /* UIKit */,
+				D40B5EC72ECC8E950033CF66 /* Webview */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -19894,6 +19898,23 @@
 				D409C05C29E9AB9A00791F57 /* RekeyedAccountSelectionListNavigationBarViewModel.swift */,
 			);
 			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		D40B5EC72ECC8E950033CF66 /* Webview */ = {
+			isa = PBXGroup;
+			children = (
+				D40B5EC82ECC8EAC0033CF66 /* WKWebView */,
+				D46CDEB22EC3754400B7196B /* WKScriptMessage */,
+			);
+			path = Webview;
+			sourceTree = "<group>";
+		};
+		D40B5EC82ECC8EAC0033CF66 /* WKWebView */ = {
+			isa = PBXGroup;
+			children = (
+				D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */,
+			);
+			path = WKWebView;
 			sourceTree = "<group>";
 		};
 		D40BA4CC2A819BF100138BF7 /* AdvancedPermissions */ = {
@@ -26157,6 +26178,7 @@
 				59167DD42E464C76002184C2 /* PrimaryImageViewModel.swift in Sources */,
 				59167DD52E464C76002184C2 /* AssetPreviewActionCell.swift in Sources */,
 				D451BEB92EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
+				D40B5ECA2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */,
 				59167DD62E464C76002184C2 /* AssetPreviewActionView.swift in Sources */,
 				59167DD72E464C76002184C2 /* AssetPreviewActionViewTheme.swift in Sources */,
 				59167DD82E464C76002184C2 /* AssetPreviewCell.swift in Sources */,
@@ -28324,6 +28346,7 @@
 				59E603542E4A712500CCA99B /* AssetPreviewActionCell.swift in Sources */,
 				59E603552E4A712500CCA99B /* AssetPreviewActionView.swift in Sources */,
 				D451BEBA2EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
+				D40B5ECB2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */,
 				59E603562E4A712500CCA99B /* AssetPreviewActionViewTheme.swift in Sources */,
 				59E603572E4A712500CCA99B /* AssetPreviewCell.swift in Sources */,
 				59E603582E4A712500CCA99B /* AssetPreviewView.swift in Sources */,
@@ -30491,6 +30514,7 @@
 				59E60BCD2E4A71D000CCA99B /* AssetPreviewActionView.swift in Sources */,
 				59E60BCE2E4A71D000CCA99B /* AssetPreviewActionViewTheme.swift in Sources */,
 				D451BEB82EBB73E5007524E2 /* ChartTendencyView.swift in Sources */,
+				D40B5ECC2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */,
 				59E60BCF2E4A71D000CCA99B /* AssetPreviewCell.swift in Sources */,
 				59E60BD02E4A71D000CCA99B /* AssetPreviewView.swift in Sources */,
 				59E60BD12E4A71D000CCA99B /* AssetPreviewViewTheme.swift in Sources */,

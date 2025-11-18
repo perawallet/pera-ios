@@ -61,6 +61,20 @@ class InAppBrowserScreen:
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
     private var lastURL: URL? { webView.url ?? sourceURL }
+    
+    enum WebViewV2Message: String, InAppBrowserScriptMessage {
+        case pushWebView
+        case openSystemBrowser
+        case canOpenUri
+        case openNativeURI
+        case notifyUser
+        case getAddresses
+        case getSettings
+        case getPublicSettings
+        case onBackPressed
+        case logAnalyticsEvent
+        case closeWebView
+    }
 
     // MARK: - Initialisers
     
@@ -447,6 +461,40 @@ class InAppBrowserScreen:
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
+        guard configuration.featureFlagService.isEnabled(.webviewV2Enabled) else {
+            parseWebViewMessageV1(message)
+            return
+        }
+        
+        guard let scriptMessage = WebViewV2Message(rawValue: message.name) else { return }
+        switch scriptMessage {
+        case .pushWebView:
+            break
+        case .openSystemBrowser:
+            break
+        case .canOpenUri:
+            break
+        case .openNativeURI:
+            break
+        case .notifyUser:
+            break
+        case .getAddresses:
+            break
+        case .getSettings:
+            break
+        case .getPublicSettings:
+            break
+        case .onBackPressed:
+            break
+        case .logAnalyticsEvent:
+            break
+        case .closeWebView:
+            break
+        }
+        
+    }
+    
+    private func parseWebViewMessageV1(_ message: WKScriptMessage) {
         switch message.name {
         case let name where DiscoverAssetDetailScriptMessage(rawValue: name) != nil:
             guard let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: name) else { return }
@@ -478,6 +526,15 @@ class InAppBrowserScreen:
     private func isPresentable(_ error: Error) -> Bool {
         guard let urlError = error as? URLError else { return true }
         return urlError.code != .cancelled
+    }
+    
+    private func decode<T: Decodable>(_ message: WKScriptMessage) -> T? {
+        guard
+            let jsonString = message.body as? String,
+            let jsonData = jsonString.data(using: .utf8)
+        else { return nil }
+
+        return try? JSONDecoder().decode(T.self, from: jsonData)
     }
     
     private func handleDiscoverInApp(_ inAppMessage: DiscoverInAppBrowserScriptMessage, _ message: WKScriptMessage) {
@@ -554,18 +611,18 @@ class InAppBrowserScreen:
     }
     
     private func handlePeraConnectAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let url = URL(string: jsonString) else { return }
-        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
+        guard
+            let jsonString = message.body as? String,
+            let url = URL(string: jsonString),
+            let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl()
+        else { return }
 
         let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
         launchController.receive(deeplinkWithSource: src)
     }
     
     private func handleTokenDetailAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverAssetParameters.decoded(jsonData) else { return }
+        guard let params: DiscoverAssetParameters = decode(message) else { return }
         navigateToAssetDetail(params)
     }
     
@@ -577,9 +634,7 @@ class InAppBrowserScreen:
     }
     
     private func handleTokenAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverSwapParameters.decoded(jsonData) else { return }
+        guard let params: DiscoverSwapParameters = decode(message) else { return }
 
         switch params.action {
         case .buyAlgo:
@@ -617,9 +672,8 @@ class InAppBrowserScreen:
     private func handleDeviceIDRequest(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
         guard let deviceIDDetails = makeDeviceIDDetails() else { return }
-
-        let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
-        webView.evaluateJavaScript(scriptString)
+        
+        webView.sendMessage(deviceIDDetails)
     }
     
     private func makeDeviceIDDetails() -> String? {
@@ -630,11 +684,7 @@ class InAppBrowserScreen:
     
     private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-      
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
-
+        guard let params: DiscoverGenericParameters = decode(message) else { return }
         openInBrowser(params.url)
     }
     
@@ -645,10 +695,7 @@ class InAppBrowserScreen:
     
     private func handleDappDetailAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverDappParamaters.decoded(jsonData) else { return }
+        guard let params: DiscoverDappParamaters = decode(message) else { return }
         navigateToDappDetail(params)
     }
 
@@ -685,16 +732,12 @@ class InAppBrowserScreen:
         guard let dappDetailsString = try? dapp.encodedString() else {
             return
         }
-
-        let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
-        self.webView.evaluateJavaScript(scriptString)
+        webView.sendMessage(dappDetailsString)
     }
     
     private func handleNewScreenAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
+        guard let params: DiscoverGenericParameters = decode(message) else { return }
         navigateToDiscoverGeneric(params)
     }
 
@@ -706,9 +749,7 @@ class InAppBrowserScreen:
     }
     
     private func handlePaymentRequestAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8),
-              let params = try? BidaliPaymentParameters.decoded(jsonData),
+        guard let params: BidaliPaymentParameters = decode(message),
               let paymentRequest = params.data else {
             presentGenericErrorBanner()
             return
@@ -786,19 +827,15 @@ class InAppBrowserScreen:
     }
     
     func cancelPayment() {
-        let script = "window.bidaliProvider.paymentCancelled();"
-        webView.evaluateJavaScript(script)
+        webView.sendBidaliEvent("paymentCancelled")
     }
 
     private func confirmPayment() {
-        let script = "window.bidaliProvider.paymentSent();"
-        webView.evaluateJavaScript(script)
+        webView.sendBidaliEvent("paymentSent")
     }
     
     private func handleOpenURLRequestAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8),
-              let params = try? BidaliOpenURLParameters.decoded(jsonData),
+        guard let params: BidaliOpenURLParameters = decode(message),
               let openURLRequest = params.data else {
             presentGenericErrorBanner()
             return
