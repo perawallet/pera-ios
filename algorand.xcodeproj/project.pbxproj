@@ -7284,6 +7284,12 @@
 		D40B5ECA2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
 		D40B5ECB2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
 		D40B5ECC2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
+		D40B663D2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */; };
+		D40B663E2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */; };
+		D40B663F2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */; };
+		D40B66412ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
+		D40B66422ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
+		D40B66432ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
 		D417DAD92EB35A6D001D3C53 /* AssetPriceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DAD82EB35A60001D3C53 /* AssetPriceChartDataDraft.swift */; };
 		D417DADB2EB35AF2001D3C53 /* AssetPriceChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DADA2EB35AE6001D3C53 /* AssetPriceChartDataDTO.swift */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
@@ -9202,6 +9208,8 @@
 		D40ADD8D294521EE004C74E3 /* AccountCollectibleListFilterSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectibleListFilterSelectionViewController.swift; sourceTree = "<group>"; };
 		D40ADD9129452252004C74E3 /* AccountCollectibleListFilterSelectionViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectibleListFilterSelectionViewControllerTheme.swift; sourceTree = "<group>"; };
 		D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Message.swift"; sourceTree = "<group>"; };
+		D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowserHelpers.swift; sourceTree = "<group>"; };
+		D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKScriptMessage+JSON.swift"; sourceTree = "<group>"; };
 		D40BA4C42A81155400138BF7 /* WCSessionAdvancedPermissionsHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D40BA4C82A8115A600138BF7 /* WCSessionAdvancedPermissionsHeaderContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderContentConfiguration.swift; sourceTree = "<group>"; };
 		D40BA4CF2A819C2A00138BF7 /* WCSessionAdvancedPermissionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionCell.swift; sourceTree = "<group>"; };
@@ -11138,6 +11146,7 @@
 		17C932642934CA64000EE03D /* InAppBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */,
 				D46CDEAB2EC3544800B7196B /* InAppBrowserScripts.swift */,
 				1710831D29066E7000A80CC0 /* InAppBrowserScreen.swift */,
 				171083252906720800A80CC0 /* InAppBrowserScreenTheme.swift */,
@@ -21688,6 +21697,7 @@
 		D46CDEB22EC3754400B7196B /* WKScriptMessage */ = {
 			isa = PBXGroup;
 			children = (
+				D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */,
 				D46CDEB32EC3755200B7196B /* WKScriptMessage+Validation.swift */,
 			);
 			path = WKScriptMessage;
@@ -25490,6 +25500,7 @@
 				59167B2D2E464C76002184C2 /* CollectibleDetailDataController.swift in Sources */,
 				59167B2E2E464C76002184C2 /* CollectibleDetailDataSource.swift in Sources */,
 				59167B2F2E464C76002184C2 /* CollectibleMediaPreviewDataSource.swift in Sources */,
+				D40B66422ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */,
 				59167B302E464C76002184C2 /* CollectibleDetailAPIDataController.swift in Sources */,
 				59167B312E464C76002184C2 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				59167B322E464C76002184C2 /* CollectibleDetailLayout.swift in Sources */,
@@ -26694,6 +26705,7 @@
 				D488A5C92EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */,
 				59167FD12E464C76002184C2 /* ActionableBannerViewTheme.swift in Sources */,
 				59167FD22E464C76002184C2 /* BottomActionableBannerController.swift in Sources */,
+				D40B663D2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */,
 				59167FD32E464C76002184C2 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				59167FD42E464C76002184C2 /* FetchErrorActionableBannerViewModel.swift in Sources */,
 				59167FD52E464C76002184C2 /* BannerController.swift in Sources */,
@@ -27658,6 +27670,7 @@
 				59E600AE2E4A712500CCA99B /* CollectibleDetailAPIDataController.swift in Sources */,
 				59E600AF2E4A712500CCA99B /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				59E600B02E4A712500CCA99B /* CollectibleDetailLayout.swift in Sources */,
+				D40B66412ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */,
 				59E600B12E4A712500CCA99B /* CollectibleDetailLayout+Theme.swift in Sources */,
 				59E600B22E4A712500CCA99B /* CollectibleDetailTransactionController.swift in Sources */,
 				59E600B32E4A712500CCA99B /* CollectibleDetailViewController.swift in Sources */,
@@ -28862,6 +28875,7 @@
 				D488A5C82EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */,
 				59E605512E4A712500CCA99B /* BottomActionableBannerController.swift in Sources */,
 				59E605522E4A712500CCA99B /* BottomActionableBannerControllerConfiguration.swift in Sources */,
+				D40B663E2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */,
 				59E605532E4A712500CCA99B /* FetchErrorActionableBannerViewModel.swift in Sources */,
 				59E605542E4A712500CCA99B /* BannerController.swift in Sources */,
 				59E605552E4A712500CCA99B /* BannerDraft.swift in Sources */,
@@ -29826,6 +29840,7 @@
 				59E609262E4A71D000CCA99B /* CollectibleDetailAPIDataController.swift in Sources */,
 				59E609272E4A71D000CCA99B /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				59E609282E4A71D000CCA99B /* CollectibleDetailLayout.swift in Sources */,
+				D40B66432ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */,
 				59E609292E4A71D000CCA99B /* CollectibleDetailLayout+Theme.swift in Sources */,
 				59E6092A2E4A71D000CCA99B /* CollectibleDetailTransactionController.swift in Sources */,
 				59E6092B2E4A71D000CCA99B /* CollectibleDetailViewController.swift in Sources */,
@@ -31030,6 +31045,7 @@
 				D488A5C72EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */,
 				59E60DCA2E4A71D000CCA99B /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				59E60DCB2E4A71D000CCA99B /* FetchErrorActionableBannerViewModel.swift in Sources */,
+				D40B663F2ECCBDC30033CF66 /* InAppBrowserHelpers.swift in Sources */,
 				59E60DCC2E4A71D000CCA99B /* BannerController.swift in Sources */,
 				59E60DCD2E4A71D000CCA99B /* BannerDraft.swift in Sources */,
 				59E60DCE2E4A71D000CCA99B /* BannerErrorViewModel.swift in Sources */,

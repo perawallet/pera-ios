@@ -38,17 +38,6 @@ final class DiscoverHomeScreen:
         return baseMessages + homeMessages
     }
     
-    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
-        dataStore: SwapDataLocalStore(),
-        configuration: configuration,
-        presentingScreen: self
-    )
-    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
-        analytics: analytics,
-        presentingScreen: self
-    )
-    
     private lazy var theme = DiscoverHomeScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
