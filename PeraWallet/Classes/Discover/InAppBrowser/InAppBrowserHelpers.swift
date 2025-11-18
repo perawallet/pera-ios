@@ -167,12 +167,6 @@ extension InAppBrowserScreen {
         if let assetOutID = parameters.assetOut {
             draft.assetOutID = assetOutID
         }
-
-        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            swapAssetFlowCoordinator.updateDraft(draft)
-            swapAssetFlowCoordinator.launch()
-            return
-        }
         
         rootViewController.launch(tab: .swap, with: draft)
     }
