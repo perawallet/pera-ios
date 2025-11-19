@@ -93,7 +93,7 @@ struct AssetSelectionView: View {
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
-                        TextField("", text: Binding(
+                        PeraTextField(placeholder: nil, text: Binding(
                             get: { amountText },
                             set: {
                                 amountText = $0.isEmpty ? .empty : $0
