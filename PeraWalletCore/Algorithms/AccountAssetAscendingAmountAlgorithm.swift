@@ -35,6 +35,12 @@ extension AccountAssetAscendingAmountAlgorithm {
         asset: Asset,
         otherAsset: Asset
     ) -> Bool {
+        let assetFav = asset.isFavorited ?? false
+        let otherFav = otherAsset.isFavorited ?? false
+
+        if assetFav != otherFav {
+            return assetFav
+        }
         let assetCurrencyValue = getValueInUSD(for: asset)
         let otherAssetCurrencyValue = getValueInUSD(for: otherAsset)
         if assetCurrencyValue != otherAssetCurrencyValue {
