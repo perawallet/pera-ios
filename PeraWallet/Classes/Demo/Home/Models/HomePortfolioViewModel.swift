@@ -52,7 +52,12 @@ extension HomePortfolioViewModel {
     mutating func bindTendencies(
         _ tendenciesVM: TendenciesViewModel?
     ) {
-        guard let tendenciesVM else { return }
+        guard let tendenciesVM else {
+            differenceText = nil
+            differenceInPercentageText = nil
+            arrowImageView = nil
+            return
+        }
         differenceText = tendenciesVM.differenceText
         differenceInPercentageText = tendenciesVM.differenceInPercentageText
         arrowImageView = tendenciesVM.arrowImageView

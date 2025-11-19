@@ -21,7 +21,6 @@ import UIKit
 import pera_wallet_core
 
 struct ASADetailProfileViewModel: ASAProfileViewModel {
-    let isAmountHidden: Bool
     private(set) var icon: ImageSource?
     private(set) var name: RightAccessorizedLabelModel?
     private(set) var titleSeparator: TextProvider?
@@ -30,6 +29,7 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
     private(set) var secondaryValue: TextProvider?
     private(set) var selectedPointDateValue: TextProvider?
     private(set) var priceValue: TextProvider?
+    private(set) var isAmountHidden: Bool?
     
     init(
         asset: Asset,
@@ -142,7 +142,7 @@ extension ASADetailProfileViewModel {
     ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
-        currencyFormatter.isValueHidden = isAmountHidden
+        currencyFormatter.isValueHidden = isAmountHidden ?? false
         
         guard let selectedPointVM else {
             let text = currencyFormatter.format(asset.decimalAmount)
@@ -161,7 +161,7 @@ extension ASADetailProfileViewModel {
     ) {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = nil
-        currencyFormatter.isValueHidden = isAmountHidden
+        currencyFormatter.isValueHidden = isAmountHidden ?? false
         
         guard let selectedPointVM else {
             let amountText = currencyFormatter.format(asset.decimalAmount)
@@ -225,7 +225,7 @@ extension ASADetailProfileViewModel {
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = fiatRawCurrency
-            currencyFormatter.isValueHidden = isAmountHidden
+            currencyFormatter.isValueHidden = isAmountHidden ?? false
             
             guard let selectedPointVM else {
                 let text = currencyFormatter.format(amount)
@@ -259,7 +259,7 @@ extension ASADetailProfileViewModel {
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = rawCurrency
-            currencyFormatter.isValueHidden = isAmountHidden
+            currencyFormatter.isValueHidden = isAmountHidden ?? false
             
             guard let selectedPointVM else {
                 let text = currencyFormatter.format(amount)
