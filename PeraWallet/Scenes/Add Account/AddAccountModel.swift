@@ -85,12 +85,6 @@ final class AddAccountModel: AddAccountModelable {
             .store(in: &cancellables)
     }
     
-    // MARK: - Actions - AddAccountModelable
-    
-    func handleAction(rowID: AddAccountViewModel.RowIdentifier) {
-        
-    }
-    
     // MARK: - Factories
     
     private func collapsedMenuOptions() -> [AddAccountViewModel.MenuOptionModel] {
