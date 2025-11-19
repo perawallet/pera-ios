@@ -405,11 +405,6 @@ extension AccountDetailViewController {
         }
 
         analytics.track(.recordAccountDetailScreen(type: .tapSwap))
-        guard configuration.featureFlagService.isEnabled(.swapV2Enabled) else {
-            swapAssetFlowCoordinator.launch()
-            return
-        }
-
         rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: aRawAccount))
     }
 }

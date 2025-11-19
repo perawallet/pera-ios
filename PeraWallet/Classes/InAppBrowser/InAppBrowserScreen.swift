@@ -470,6 +470,8 @@ class InAppBrowserScreen:
 
     // MARK: - WKScriptMessageHandler
     
+    struct AnyCodable: Codable {}
+    
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
@@ -481,6 +483,7 @@ class InAppBrowserScreen:
         
         guard let scriptMessage = WebViewV2Message(rawValue: message.name) else { return }
         print("---message: \(scriptMessage.rawValue)")
+        print("---data: \(message.decode([String: AnyCodable].self))")
         switch scriptMessage {
         case .pushWebView:
             break
