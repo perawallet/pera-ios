@@ -64,7 +64,7 @@ struct SwapHistorySheet: View {
                                             .font(.DMSans.bold.size(15))
                                             .foregroundStyle(Color.Text.main)
                                             .padding(.trailing, 5)
-                                        Text("\u{30FB}")
+                                        Text("symbol-katakana-middle-dot")
                                             .font(.DMSans.regular.size(15))
                                             .foregroundStyle(Color.Text.gray)
                                             .padding(.trailing, 5)
