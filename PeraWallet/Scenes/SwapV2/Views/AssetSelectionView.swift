@@ -77,11 +77,11 @@ struct AssetSelectionView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(type.title)
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
                 Spacer()
                 Text(String(format: NSLocalizedString("swap-asset-amount-title-balance", comment: ""), assetItem.balance ?? SwapSharedViewModel.defaultAmountValue))
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
             .padding(.top, type == .pay ? 20: 40)
@@ -107,7 +107,7 @@ struct AssetSelectionView: View {
                                 .foregroundColor(Color.Text.grayLighter)
                         }
                         .keyboardType(.decimalPad)
-                        .font(.dmSans.medium.size(19.0))
+                        .font(.DMSans.medium.size(19.0))
                         .foregroundStyle(Color.Text.main)
                         .disabled(type.textEditorDisabled)
                         .frame(maxWidth: 200)
@@ -127,7 +127,7 @@ struct AssetSelectionView: View {
                     } else {
                         Text(amountTextInSecondaryCurrency)
                             .keyboardType(.decimalPad)
-                            .font(.dmSans.regular.size(13.0))
+                            .font(.DMSans.regular.size(13.0))
                             .foregroundStyle(Color.Text.gray)
                             .frame(maxWidth: 200, alignment: .leading)
                     }
@@ -145,7 +145,7 @@ struct AssetSelectionView: View {
                         .frame(width: 16, height: 16)
                     Spacer().frame(width: 8)
                     Text(String(format: String(localized: "swap-balance-not-sufficient-title"), assetItem.asset.naming.unitName ?? assetItem.asset.naming.displayNames.primaryName))
-                        .font(.dmSans.medium.size(13.0))
+                        .font(.DMSans.medium.size(13.0))
                         .foregroundStyle(Color.Helpers.negative)
                         .frame(height: 20)
                 }

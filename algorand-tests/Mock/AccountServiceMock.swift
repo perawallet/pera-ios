@@ -20,14 +20,18 @@ import Combine
 
 final class AccountServiceMock: AccountsServiceable {
     
-    // MARK: - AccountsServiceable
+    // MARK: - Properties - AccountsServiceable
     
-    var accounts: ReadOnlyPublisher<[PeraAccount]> { accountsPublisher.readOnlyPublisher() }
+    var accounts: ReadOnlyPublisher<Set<PeraAccount>> { accountsPublisher.readOnlyPublisher() }
     var error: AnyPublisher<AccountsService.ServiceError, Never> { errorPublisher.eraseToAnyPublisher() }
     var network: CoreApiManager.BaseURL.Network = .testNet
     
     // MARK: - Properties
     
-    var accountsPublisher = CurrentValueSubject<[PeraAccount], Never>([])
+    var accountsPublisher = CurrentValueSubject<Set<PeraAccount>, Never>([])
     var errorPublisher = PassthroughSubject<AccountsService.ServiceError, Never>()
+    
+    // MARK: - Actions - AccountsServiceable
+    
+    func createJointAccount(participants: [String], threshold: Int, name: String) async throws(pera_staging.AccountsService.ActionError) {}
 }

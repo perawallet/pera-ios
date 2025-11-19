@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
-    "・" : {
-
-    },
     "account-continue-unable-to-sign-transactions-itself" : {
       "localizations" : {
         "en" : {
@@ -489,16 +483,6 @@
         }
       }
     },
-    "account-welcome-add-wallet-or-account-title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a wallet\nor account"
-          }
-        }
-      }
-    },
     "account-welcome-wallet-title" : {
       "localizations" : {
         "en" : {
@@ -555,6 +539,196 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This action is not available for this account type"
+          }
+        }
+      }
+    },
+    "add-account-expand-row-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See other options"
+          }
+        }
+      }
+    },
+    "add-account-joint-account-overlay-list-description-1" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhanced security by requiring multiple approvals—great for shared or high-value accounts."
+          }
+        }
+      }
+    },
+    "add-account-joint-account-overlay-list-description-2" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assign signers and required approvals per transaction."
+          }
+        }
+      }
+    },
+    "add-account-joint-account-overlay-list-description-3" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assign signers and required approvals per transaction."
+          }
+        }
+      }
+    },
+    "add-account-joint-account-overlay-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joint Account"
+          }
+        }
+      }
+    },
+    "add-account-option-add-account-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a new account to your existing Universal Wallet "
+          }
+        }
+      }
+    },
+    "add-account-option-add-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Account"
+          }
+        }
+      }
+    },
+    "add-account-option-add-joint-account-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new multi-sig account with enhanced security that requires multiple signers"
+          }
+        }
+      }
+    },
+    "add-account-option-add-joint-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Joint Account"
+          }
+        }
+      }
+    },
+    "add-account-option-create-algo25-wallet-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legacy format that is specific to Algorand "
+          }
+        }
+      }
+    },
+    "add-account-option-create-algo25-wallet-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an Algo25 Account"
+          }
+        }
+      }
+    },
+    "add-account-option-create-universal-wallet-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet that lets you derive new accounts, all using the same 24 word mnemonic"
+          }
+        }
+      }
+    },
+    "add-account-option-create-universal-wallet-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a Universal Wallet"
+          }
+        }
+      }
+    },
+    "add-account-option-import-account-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import an existing Algorand account with various methods or pair your Ledger"
+          }
+        }
+      }
+    },
+    "add-account-option-import-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Account"
+          }
+        }
+      }
+    },
+    "add-account-option-watch-account-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor an Algorand address by providing its address"
+          }
+        }
+      }
+    },
+    "add-account-option-watch-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch an Address"
+          }
+        }
+      }
+    },
+    "add-account-terms-and-conditions-%@-privacy-policy-%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By adding a wallet, you agree to Pera Wallet’s [Terms and Conditions](%@) and [Privacy Policy](%@)"
+          }
+        }
+      }
+    },
+    "add-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add an account"
           }
         }
       }
@@ -2725,6 +2899,86 @@
         }
       }
     },
+    "common-account-type-name-joint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joint Account"
+          }
+        }
+      }
+    },
+    "common-account-type-name-ledger" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ledger account"
+          }
+        }
+      }
+    },
+    "common-account-type-name-no-auth" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Auth"
+          }
+        }
+      }
+    },
+    "common-account-type-name-rekeyed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekeyed Account"
+          }
+        }
+      }
+    },
+    "common-account-type-name-watch" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch account"
+          }
+        }
+      }
+    },
+    "common-badge-new" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NEW"
+          }
+        }
+      }
+    },
+    "common-continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "common-done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
     "common-not-now" : {
       "localizations" : {
         "en" : {
@@ -2921,6 +3175,266 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create Account"
+          }
+        }
+      }
+    },
+    "create-joint-account-account-list-add-button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add account"
+          }
+        }
+      }
+    },
+    "create-joint-account-account-list-user-account-suffix" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(You)"
+          }
+        }
+      }
+    },
+    "create-joint-account-accounts-list-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the accounts that will jointly manage and sign transactions for this account."
+          }
+        }
+      }
+    },
+    "create-joint-account-accounts-list-message-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You need add at least two accounts"
+          }
+        }
+      }
+    },
+    "create-joint-account-accounts-list-message-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accounts"
+          }
+        }
+      }
+    },
+    "create-joint-account-accounts-list-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Joint Account"
+          }
+        }
+      }
+    },
+    "create-joint-account-add-account-list-placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No accounts found..."
+          }
+        }
+      }
+    },
+    "create-joint-account-add-account-navigation-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add account"
+          }
+        }
+      }
+    },
+    "create-joint-account-add-account-search-field-placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type a new address or search"
+          }
+        }
+      }
+    },
+    "create-joint-account-add-account-section-accounts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accounts"
+          }
+        }
+      }
+    },
+    "create-joint-account-add-account-section-contacts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
+          }
+        }
+      }
+    },
+    "create-joint-account-button-remove" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Address"
+          }
+        }
+      }
+    },
+    "create-joint-account-edit-account-label-address-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Address"
+          }
+        }
+      }
+    },
+    "create-joint-account-edit-account-navigation-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit address"
+          }
+        }
+      }
+    },
+    "create-joint-account-edit-account-textfield-nickname-placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a nickname"
+          }
+        }
+      }
+    },
+    "create-joint-account-edit-account-textfield-nickname-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nickname (Optional)"
+          }
+        }
+      }
+    },
+    "create-joint-account-edit-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Address"
+          }
+        }
+      }
+    },
+    "create-joint-account-name-account-button-finish" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish Account Creation"
+          }
+        }
+      }
+    },
+    "create-joint-account-name-account-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you."
+          }
+        }
+      }
+    },
+    "create-joint-account-name-account-text-field-initial-name-%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joint Account #%lld"
+          }
+        }
+      }
+    },
+    "create-joint-account-name-account-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name your account"
+          }
+        }
+      }
+    },
+    "create-joint-account-threshold-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You need to set the minimum number of accounts required to confirm a transaction."
+          }
+        }
+      }
+    },
+    "create-joint-account-threshold-label-number-of-accounts-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You included"
+          }
+        }
+      }
+    },
+    "create-joint-account-threshold-label-number-of-accounts-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of accounts"
+          }
+        }
+      }
+    },
+    "create-joint-account-threshold-label-threshold-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Threshold"
+          }
+        }
+      }
+    },
+    "create-joint-account-threshold-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set a threshold"
           }
         }
       }
@@ -3387,16 +3901,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "By creating an account, you agree to Pera Wallet's<br><a href=\\\"%@\\\">Terms and Conditions</a> and <a href=\\\"%@\\\">Privacy Policy</a>"
-          }
-        }
-      }
-    },
-    "introduction-title-terms-and-services-wallet" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "By adding a wallet, you agree to Pera Wallet's<br><a href=\\\\\\\"%@\\\\\\\">Terms and Conditions</a> and <a href=\\\\\\\"%@\\\\\\\">Privacy Policy</a>"
           }
         }
       }
@@ -12466,5 +12970,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

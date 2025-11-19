@@ -15,13 +15,13 @@
 //
 //  AccountInformation.swift
 
-import Foundation
 import UIKit
 
 public typealias PublicKey = String
 public typealias RekeyDetail = [PublicKey: LedgerDetail]
 
 public final class AccountInformation: Codable {
+    
     public let address: String
     public var name: String
     public var ledgerDetail: LedgerDetail?
@@ -30,6 +30,7 @@ public final class AccountInformation: Codable {
     public var preferredOrder: Int
     public var isBackedUp: Bool
     public var hdWalletAddressDetail: HDWalletAddressDetail?
+    public let jointAccountParticipants: [String]?
 
     static let invalidOrder = -1
 
@@ -53,17 +54,27 @@ public final class AccountInformation: Codable {
         receivesNotification: Bool = true,
         preferredOrder: Int? = nil,
         isBackedUp: Bool,
-        hdWalletAddressDetail: HDWalletAddressDetail? = nil
+        hdWalletAddressDetail: HDWalletAddressDetail? = nil,
+        jointAccountParticipants: [String]? = nil
     ) {
         self.address = address
         self.name = name
-        self.type = isWatchAccount ? .watch : .standard
+        
+        if isWatchAccount {
+            self.type = .watch
+        } else if jointAccountParticipants != nil {
+            self.type = .joint
+        } else {
+            self.type = .standard
+        }
+        
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder ?? Self.invalidOrder
         self.isBackedUp = isBackedUp
         self.hdWalletAddressDetail = hdWalletAddressDetail
+        self.jointAccountParticipants = jointAccountParticipants
     }
     
     public required init(from decoder: Decoder) throws {
@@ -77,6 +88,7 @@ public final class AccountInformation: Codable {
         preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
         isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
         hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
+        jointAccountParticipants = try container.decodeIfPresent([String].self, forKey: .jointAccountParticipants)
     }
 }
 
@@ -109,6 +121,7 @@ extension AccountInformation {
         case standard = "standard"
         case watch = "watch"
         case ledger = "ledger"
+        case joint
         case rekeyed = "rekeyed"
         
         public static func == (lhs: AccountType, rhs: AccountType) -> Bool {
@@ -132,6 +145,7 @@ extension AccountInformation {
         case preferredOrder = "preferredOrder"
         case isBackedUp = "isBackedUp"
         case hdWalletAddressDetail = "hdWalletAddressDetail"
+        case jointAccountParticipants
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             return lhs.rawValue == rhs.rawValue

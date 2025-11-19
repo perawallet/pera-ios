@@ -56,12 +56,12 @@ struct RecoveredAccountsListView: View {
             .padding(.bottom, 24.0)
             Text("rekeyed-account-selection-list-header-title".localized(model.addressViewModels.count))
                 .foregroundStyle(Color(uiColor: Colors.Text.main.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
-                .font(.dmSans.medium.size(19.0))
+                .font(.DMSans.medium.size(19.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 12.0)
             Text("rekeyed-account-selection-list-header-body".localized(model.addressViewModels.count))
                 .foregroundStyle(Color(uiColor: Colors.Text.gray.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
-                .font(.dmSans.regular.size(15.0))
+                .font(.DMSans.regular.size(15.0))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 40.0)
             ScrollView {

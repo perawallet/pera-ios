@@ -30,18 +30,18 @@ struct ConfirmSwapInfoSheet: View {
             Spacer().frame(height: 20)
             VStack(alignment: .leading) {
                 Text(infoSheet.title)
-                    .font(.dmSans.medium.size(19))
+                    .font(.DMSans.medium.size(19))
                     .foregroundStyle(Color.Text.main)
                 Spacer().frame(height: 20)
                 Text(infoSheet.text)
-                    .font(.dmSans.regular.size(15))
+                    .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
                 SwiftUI.Button {
                     dismiss()
                 } label: {
                     Text("title-close")
-                        .font(.dmSans.medium.size(15))
+                        .font(.DMSans.medium.size(15))
                         .foregroundStyle(Color.ButtonSecondary.text)
                         .frame(maxWidth: .infinity, minHeight: 52)
                         .background(

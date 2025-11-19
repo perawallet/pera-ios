@@ -28,12 +28,12 @@ import Foundation
 
     public var wrappedValue: T? {
         get {
-            guard let encodedData = UserDefaults.standard.data(forKey: key) else { return nil }
+            guard let encodedData = userDefaults.data(forKey: key) else { return nil }
             return try? JSONDecoder().decode(T.self, from: encodedData)
         }
         set {
             guard let encodedValue = try? JSONEncoder().encode(newValue) else { return }
-            UserDefaults.standard.set(encodedValue, forKey: key)
+            userDefaults.set(encodedValue, forKey: key)
         }
     }
 }
