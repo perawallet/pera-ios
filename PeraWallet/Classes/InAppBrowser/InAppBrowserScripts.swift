@@ -126,4 +126,13 @@ struct Scripts {
         true;
         """
     }
+    
+    static func message(action: String, payload: String) -> String {
+        return """
+        window.postMessage(JSON.stringify({
+            action: "\(action)",
+            payload: \(payload)
+        }), window.location.origin);
+        """
+    }
 }

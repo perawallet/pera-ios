@@ -45,6 +45,59 @@ extension InAppBrowserScreen {
         }
     }
     
+    func parseWebViewMessageV2(_ message: WKScriptMessage) {
+        guard let scriptMessage = WebViewV2Message(rawValue: message.name) else { return }
+        print("---message: \(scriptMessage.rawValue)")
+        
+        switch scriptMessage {
+        case .pushWebView:
+            guard
+                let params = message.decode(PushWVParams.self),
+                let url = URL(string: params.url)
+            else { return }
+            open(url)
+        case .openSystemBrowser:
+            guard
+                let params = message.decode(URLParams.self),
+                let url = URL(string: params.url)
+            else { return }
+            openInBrowser(url)
+        case .canOpenURI:
+            guard
+                let params = message.decode(URIParams.self),
+                let uri = URL(string: params.uri)
+            else { return }
+            webView.evaluateJavaScript(
+                Scripts.message(
+                    action: scriptMessage.rawValue,
+                    payload: UIApplication.shared.canOpenURL(uri).description
+                )
+            )
+        case .openNativeURI:
+            guard
+                let params = message.decode(URIParams.self),
+                let uri = URL(string: params.uri)
+            else { return }
+            UIApplication.shared.open(uri)
+        case .notifyUser:
+            guard let params = message.decode(NotifyParams.self) else { return }
+            print("---params: \(params)")
+        case .getAddresses:
+            break
+        case .getSettings:
+            break
+        case .getPublicSettings:
+            break
+        case .onBackPressed:
+            break
+        case .logAnalyticsEvent:
+            guard let params = message.decode(LogEventParams.self) else { return }
+            print("---params: \(params)")
+        case .closeWebView:
+            break
+        }
+    }
+    
     private func handleDiscoverInApp(_ inAppMessage: DiscoverInAppBrowserScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .requestAuthorizedAddresses:

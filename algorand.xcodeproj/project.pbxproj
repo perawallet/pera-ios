@@ -7290,6 +7290,9 @@
 		D40B66412ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
 		D40B66422ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
 		D40B66432ECCBE9D0033CF66 /* WKScriptMessage+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */; };
+		D40B6BC72ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
+		D40B6BC82ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
+		D40B6BC92ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
 		D417DAD92EB35A6D001D3C53 /* AssetPriceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DAD82EB35A60001D3C53 /* AssetPriceChartDataDraft.swift */; };
 		D417DADB2EB35AF2001D3C53 /* AssetPriceChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DADA2EB35AE6001D3C53 /* AssetPriceChartDataDTO.swift */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
@@ -9210,6 +9213,7 @@
 		D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Message.swift"; sourceTree = "<group>"; };
 		D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowserHelpers.swift; sourceTree = "<group>"; };
 		D40B66402ECCBE870033CF66 /* WKScriptMessage+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKScriptMessage+JSON.swift"; sourceTree = "<group>"; };
+		D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowserMessageParams.swift; sourceTree = "<group>"; };
 		D40BA4C42A81155400138BF7 /* WCSessionAdvancedPermissionsHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D40BA4C82A8115A600138BF7 /* WCSessionAdvancedPermissionsHeaderContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionsHeaderContentConfiguration.swift; sourceTree = "<group>"; };
 		D40BA4CF2A819C2A00138BF7 /* WCSessionAdvancedPermissionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAdvancedPermissionCell.swift; sourceTree = "<group>"; };
@@ -11145,6 +11149,7 @@
 		17C932642934CA64000EE03D /* InAppBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */,
 				D40B663C2ECCBDB90033CF66 /* InAppBrowserHelpers.swift */,
 				D46CDEAB2EC3544800B7196B /* InAppBrowserScripts.swift */,
 				1710831D29066E7000A80CC0 /* InAppBrowserScreen.swift */,
@@ -27004,6 +27009,7 @@
 				591680F72E464C76002184C2 /* WebImportSuccessScreenLocalDataController.swift in Sources */,
 				591680F82E464C76002184C2 /* WebImportSuccessScreenDataSource.swift in Sources */,
 				591680F92E464C76002184C2 /* WebImportSuccessScreen.swift in Sources */,
+				D40B6BC72ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */,
 				591680FA2E464C76002184C2 /* WebImportSuccessScreenTheme.swift in Sources */,
 				591680FB2E464C76002184C2 /* WebImportSuccessScreenListLayout.swift in Sources */,
 				591680FC2E464C76002184C2 /* WebImportErrorViewModel.swift in Sources */,
@@ -29174,6 +29180,7 @@
 				59E606752E4A712500CCA99B /* WebImportSuccessScreenDataController.swift in Sources */,
 				59E606762E4A712500CCA99B /* WebImportSuccessScreenLocalDataController.swift in Sources */,
 				59E606772E4A712500CCA99B /* WebImportSuccessScreenDataSource.swift in Sources */,
+				D40B6BC82ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */,
 				59E606782E4A712500CCA99B /* WebImportSuccessScreen.swift in Sources */,
 				59E606792E4A712500CCA99B /* WebImportSuccessScreenTheme.swift in Sources */,
 				59E6067A2E4A712500CCA99B /* WebImportSuccessScreenListLayout.swift in Sources */,
@@ -31344,6 +31351,7 @@
 				59E60EEE2E4A71D000CCA99B /* WebImportSuccessScreenLocalDataController.swift in Sources */,
 				59E60EEF2E4A71D000CCA99B /* WebImportSuccessScreenDataSource.swift in Sources */,
 				59E60EF02E4A71D000CCA99B /* WebImportSuccessScreen.swift in Sources */,
+				D40B6BC92ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */,
 				59E60EF12E4A71D000CCA99B /* WebImportSuccessScreenTheme.swift in Sources */,
 				59E60EF22E4A71D000CCA99B /* WebImportSuccessScreenListLayout.swift in Sources */,
 				59E60EF32E4A71D000CCA99B /* WebImportErrorViewModel.swift in Sources */,

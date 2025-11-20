@@ -65,7 +65,7 @@ class InAppBrowserScreen:
     enum WebViewV2Message: String, InAppBrowserScriptMessage {
         case pushWebView
         case openSystemBrowser
-        case canOpenUri
+        case canOpenURI
         case openNativeURI
         case notifyUser
         case getAddresses
@@ -173,7 +173,10 @@ class InAppBrowserScreen:
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
         
         if configuration.featureFlagService.isEnabled(.webviewV2Enabled) {
-            WebViewV2Message.allCases.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
+            WebViewV2Message.allCases.forEach {
+                print("---\($0.rawValue)")
+                controller.add(secureScriptMessageHandler: self, forName: $0.rawValue)
+            }
         } else {
             handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
         }
@@ -470,8 +473,6 @@ class InAppBrowserScreen:
 
     // MARK: - WKScriptMessageHandler
     
-    struct AnyCodable: Codable {}
-    
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
@@ -480,35 +481,7 @@ class InAppBrowserScreen:
             parseWebViewMessageV1(message)
             return
         }
-        
-        guard let scriptMessage = WebViewV2Message(rawValue: message.name) else { return }
-        print("---message: \(scriptMessage.rawValue)")
-        print("---data: \(message.decode([String: AnyCodable].self))")
-        switch scriptMessage {
-        case .pushWebView:
-            break
-        case .openSystemBrowser:
-            break
-        case .canOpenUri:
-            break
-        case .openNativeURI:
-            break
-        case .notifyUser:
-            break
-        case .getAddresses:
-            break
-        case .getSettings:
-            break
-        case .getPublicSettings:
-            break
-        case .onBackPressed:
-            break
-        case .logAnalyticsEvent:
-            break
-        case .closeWebView:
-            break
-        }
-        
+        parseWebViewMessageV2(message)
     }
     
     // MARK: - Helpers
