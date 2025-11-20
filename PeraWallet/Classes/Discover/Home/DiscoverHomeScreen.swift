@@ -33,9 +33,7 @@ final class DiscoverHomeScreen:
     }
     
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
-        let homeMessages = DiscoverHomeScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
-        return baseMessages + homeMessages
+        super.handledMessages + DiscoverHomeScriptMessage.allCases
     }
     
     private lazy var theme = DiscoverHomeScreenTheme()

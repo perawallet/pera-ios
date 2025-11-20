@@ -23,14 +23,11 @@ final class BidaliDappDetailScreen:
     DiscoverExternalInAppBrowserScreen,
     SharedDataControllerObserver {
 
-    private var _account: AccountHandle
-
-    override var account: AccountHandle {
-        get { _account }
-        set {
-            let oldValue = _account
-            _account = newValue
-            updateBalancesIfNeeded(old: oldValue, new: newValue)
+    override var account: AccountHandle? {
+        didSet {
+            if let old = oldValue, let new = account {
+                updateBalancesIfNeeded(old: old, new: new)
+            }
         }
     }
     
@@ -45,11 +42,11 @@ final class BidaliDappDetailScreen:
         config: BidaliConfig,
         configuration: ViewControllerConfiguration
     ) {
-        self._account = account
         self.config = config
         let url = URL(string: config.url)
         super.init(destination: .url(url), configuration: configuration)
         self.allowsPullToRefresh = false
+        self.account = account
 
         self.sharedDataController.add(self)
     }
@@ -65,7 +62,7 @@ final class BidaliDappDetailScreen:
     }
     
     private func addPaymentScript() {
-        guard let balancesJSONString = try? makeBalances(account).encodedString() else { return }
+        guard let account, let balancesJSONString = try? makeBalances(account).encodedString() else { return }
         userContentController.addUserScript(InAppBrowserScript.bidaliPayment(config: config, balance: balancesJSONString).userScript)
     }
 
@@ -76,6 +73,18 @@ final class BidaliDappDetailScreen:
         super.viewDidAppearAfterInteractiveDismiss()
 
         cancelPayment()
+    }
+    
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event,
+           let account,
+           let upToDateAccount = sharedDataController.accountCollection[account.value.address],
+           upToDateAccount.isAvailable {
+            self.account = upToDateAccount
+        }
     }
 }
 
@@ -113,20 +122,6 @@ extension BidaliDappDetailScreen {
             BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue,
             BidaliPaymentCurrencyProtocol.usdt.getRawValue(in: network): usdt?.stringValue
         ]
-    }
-}
-
-/// <note>: SharedDataControllerObserver
-extension BidaliDappDetailScreen {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        if case .didFinishRunning = event,
-           let upToDateAccount = sharedDataController.accountCollection[account.value.address],
-           upToDateAccount.isAvailable {
-            account = upToDateAccount
-        }
     }
 }
 

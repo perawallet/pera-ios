@@ -19,7 +19,6 @@ import WebKit
 extension WKScriptMessage {
     var isAcceptable: Bool {
         guard frameInfo.isMainFrame else { return false }
-        guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return false }
-        return true
+        return frameInfo.request.url.unwrap(where: \.isPeraURL) != nil
     }
 }

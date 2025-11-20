@@ -22,6 +22,6 @@ extension WKWebView {
     }
     
     func sendBidaliEvent(_ event: String) {
-            evaluateJavaScript("window.bidaliProvider.\(event)();")
-        }
+        evaluateJavaScript("window.bidaliProvider.\(event)();")
+    }
 }

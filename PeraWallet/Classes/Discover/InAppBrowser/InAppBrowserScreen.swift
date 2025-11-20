@@ -56,7 +56,7 @@ class InAppBrowserScreen:
 
     var extraUserScripts: [InAppBrowserScript] { [] }
     var handledMessages: [any InAppBrowserScriptMessage] { [] }
-    var account: AccountHandle? { nil }
+    var account: AccountHandle? = nil
 
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?

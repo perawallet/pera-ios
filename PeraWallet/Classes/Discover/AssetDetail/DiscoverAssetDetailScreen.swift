@@ -23,9 +23,7 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
     private let assetParameters: DiscoverAssetParameters
     
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
-        let homeMessages = DiscoverAssetDetailScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
-        return baseMessages + homeMessages
+        super.handledMessages + DiscoverAssetDetailScriptMessage.allCases
     }
 
     init(
