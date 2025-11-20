@@ -25,6 +25,7 @@ struct ASADetailQuickActionsViewTheme:
     var actionWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
     var buyAction: ButtonStyle
+    var stakeAction: ButtonStyle
     var swapAction: ButtonStyle
     var sendAction: ButtonStyle
     var receiveAction: ButtonStyle
@@ -36,6 +37,10 @@ struct ASADetailQuickActionsViewTheme:
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
             .title(Self.makeActionTitle(title: String(localized: "title-buy-sell")))
+        ]
+        self.stakeAction = [
+            .icon(Self.makeActionIcon(icon: "stake-quick-icon")),
+            .title(Self.makeActionTitle(title: String(localized: "title-staking")))
         ]
         self.swapAction = [
             .icon(Self.makeActionIcon(icon: "swap-icon")),

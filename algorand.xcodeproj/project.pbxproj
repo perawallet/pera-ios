@@ -7392,6 +7392,12 @@
 		D4C2B6152EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */; };
 		D4C2B6162EBE181A005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2B6132EBE1817005B8DEF /* ASADetailViewControllerLoadingViewTheme.swift */; };
 		D4C425F52EBA0B7D00329ED3 /* ALGAPI+PriceAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C425F42EBA0B7400329ED3 /* ALGAPI+PriceAlert.swift */; };
+		D4CBDB802ECF298A00309437 /* FundURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB7F2ECF298400309437 /* FundURLGenerator.swift */; };
+		D4CBDB812ECF298A00309437 /* FundURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB7F2ECF298400309437 /* FundURLGenerator.swift */; };
+		D4CBDB822ECF298A00309437 /* FundURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB7F2ECF298400309437 /* FundURLGenerator.swift */; };
+		D4CBDB842ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB832ECF2A2800309437 /* FundInAppBrowserScreen.swift */; };
+		D4CBDB852ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB832ECF2A2800309437 /* FundInAppBrowserScreen.swift */; };
+		D4CBDB862ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBDB832ECF2A2800309437 /* FundInAppBrowserScreen.swift */; };
 		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
 		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
@@ -10001,6 +10007,8 @@
 		D4CA94702DF02AC90087E7F0 /* ChartAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartAPIDataController.swift; sourceTree = "<group>"; };
 		D4CA94742DF02FBD0087E7F0 /* ChartDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataDTO.swift; sourceTree = "<group>"; };
 		D4CBB90A2A8C0D7D003471D6 /* WCTransactionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionType.swift; sourceTree = "<group>"; };
+		D4CBDB7F2ECF298400309437 /* FundURLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundURLGenerator.swift; sourceTree = "<group>"; };
+		D4CBDB832ECF2A2800309437 /* FundInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		D4CC28B428759F6F0082E038 /* InnerTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListViewController.swift; sourceTree = "<group>"; };
 		D4CC28B82875A0A90082E038 /* InnerTransactionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListLayout.swift; sourceTree = "<group>"; };
 		D4CC28BC2875A0CD0082E038 /* InnerTransactionListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListDataSource.swift; sourceTree = "<group>"; };
@@ -13580,6 +13588,7 @@
 				1710831C29066B7800A80CC0 /* Discover */,
 				8B68BAA92C85E14300498812 /* Cards */,
 				8BE5AB962CDE034C007D9527 /* Stake */,
+				D4CBDB7D2ECF296B00309437 /* Fund */,
 				17C932642934CA64000EE03D /* InAppBrowser */,
 				D435F9B12DE877AC004B7D61 /* InviteFriends */,
 				2B567155240074F60037FCFA /* Ledger */,
@@ -22711,6 +22720,23 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		D4CBDB7D2ECF296B00309437 /* Fund */ = {
+			isa = PBXGroup;
+			children = (
+				D4CBDB832ECF2A2800309437 /* FundInAppBrowserScreen.swift */,
+				D4CBDB7E2ECF297E00309437 /* Utils */,
+			);
+			path = Fund;
+			sourceTree = "<group>";
+		};
+		D4CBDB7E2ECF297E00309437 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D4CBDB7F2ECF298400309437 /* FundURLGenerator.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		D4CC28B328759ED40082E038 /* InnerTransactionsList */ = {
 			isa = PBXGroup;
 			children = (
@@ -25588,6 +25614,7 @@
 				59167B7F2E464C76002184C2 /* CollectibleMediaPreviewViewController+ImageTransition.swift in Sources */,
 				59167B802E464C76002184C2 /* CollectibleFullScreenVideoDraft.swift in Sources */,
 				59167B812E464C76002184C2 /* CollectibleFullScreenVideoViewController.swift in Sources */,
+				D4CBDB852ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */,
 				59167B822E464C76002184C2 /* CollectibleGalleryUIStyleCache.swift in Sources */,
 				59167B832E464C76002184C2 /* CollectibleListDataController.swift in Sources */,
 				59167B842E464C76002184C2 /* CollectibleListDataSource.swift in Sources */,
@@ -26255,6 +26282,7 @@
 				59167E0F2E464C76002184C2 /* ShimmerView.swift in Sources */,
 				59167E102E464C76002184C2 /* ErrorView.swift in Sources */,
 				59167E112E464C76002184C2 /* ErrorViewModel.swift in Sources */,
+				D4CBDB812ECF298A00309437 /* FundURLGenerator.swift in Sources */,
 				59167E122E464C76002184C2 /* ErrorViewTheme.swift in Sources */,
 				59167E132E464C76002184C2 /* ResultView.swift in Sources */,
 				59167E142E464C76002184C2 /* ResultViewCommonTheme.swift in Sources */,
@@ -27759,6 +27787,7 @@
 				59E601002E4A712500CCA99B /* CollectibleGalleryUIStyleCache.swift in Sources */,
 				59E601012E4A712500CCA99B /* CollectibleListDataController.swift in Sources */,
 				59E601022E4A712500CCA99B /* CollectibleListDataSource.swift in Sources */,
+				D4CBDB862ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */,
 				59E601032E4A712500CCA99B /* CollectibleListLocalDataController.swift in Sources */,
 				59E601042E4A712500CCA99B /* CollectibleListQuery.swift in Sources */,
 				59E601052E4A712500CCA99B /* SelectionValue.swift in Sources */,
@@ -28426,6 +28455,7 @@
 				59E6038F2E4A712500CCA99B /* ErrorView.swift in Sources */,
 				59E603902E4A712500CCA99B /* ErrorViewModel.swift in Sources */,
 				59E603912E4A712500CCA99B /* ErrorViewTheme.swift in Sources */,
+				D4CBDB822ECF298A00309437 /* FundURLGenerator.swift in Sources */,
 				59E603922E4A712500CCA99B /* ResultView.swift in Sources */,
 				59E603932E4A712500CCA99B /* ResultViewCommonTheme.swift in Sources */,
 				59E603942E4A712500CCA99B /* ResultViewModel.swift in Sources */,
@@ -29930,6 +29960,7 @@
 				59E609782E4A71D000CCA99B /* CollectibleGalleryUIStyleCache.swift in Sources */,
 				59E609792E4A71D000CCA99B /* CollectibleListDataController.swift in Sources */,
 				59E6097A2E4A71D000CCA99B /* CollectibleListDataSource.swift in Sources */,
+				D4CBDB842ECF2A3000309437 /* FundInAppBrowserScreen.swift in Sources */,
 				59E6097B2E4A71D000CCA99B /* CollectibleListLocalDataController.swift in Sources */,
 				59E6097C2E4A71D000CCA99B /* CollectibleListQuery.swift in Sources */,
 				59E6097D2E4A71D000CCA99B /* SelectionValue.swift in Sources */,
@@ -30597,6 +30628,7 @@
 				59E60C082E4A71D000CCA99B /* ErrorViewModel.swift in Sources */,
 				59E60C092E4A71D000CCA99B /* ErrorViewTheme.swift in Sources */,
 				59E60C0A2E4A71D000CCA99B /* ResultView.swift in Sources */,
+				D4CBDB802ECF298A00309437 /* FundURLGenerator.swift in Sources */,
 				59E60C0B2E4A71D000CCA99B /* ResultViewCommonTheme.swift in Sources */,
 				59E60C0C2E4A71D000CCA99B /* ResultViewModel.swift in Sources */,
 				59E60C0D2E4A71D000CCA99B /* ResultViewTheme.swift in Sources */,

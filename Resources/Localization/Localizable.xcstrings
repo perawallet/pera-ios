@@ -8349,6 +8349,17 @@
         }
       }
     },
+    "title-fund" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fund"
+          }
+        }
+      }
+    },
     "title-generic-api-error" : {
       "localizations" : {
         "en" : {

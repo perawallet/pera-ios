@@ -155,6 +155,12 @@ final class ASAHoldingsHeaderContentView: UIView {
 
             eventHandler?(.quickActionsSwap)
         }
+        
+        quickActionsView.startObserving(event: .stake) { [weak self] in
+            guard let self else { return }
+
+            eventHandler?(.quickActionsStake)
+        }
 
         quickActionsView.startObserving(event: .send) { [weak self] in
             guard let self else { return }

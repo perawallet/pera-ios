@@ -21,16 +21,19 @@ import pera_wallet_core
 
 struct ASADetailQuickActionsViewModel: ViewModel {
     private(set) var isBuyActionAvailable = false
+    private(set) var shouldShowStakeAction = false
 
     init(
-        asset: Asset
+        asset: Asset,
+        shouldShowStakeAction: Bool
     ) {
-        bindBuyActionAvailable(asset: asset)
+        bindBuyActionAvailable(asset: asset, shouldShowStakeAction: shouldShowStakeAction)
     }
 }
 
 extension ASADetailQuickActionsViewModel {
-    mutating func bindBuyActionAvailable(asset: Asset) {
+    mutating func bindBuyActionAvailable(asset: Asset, shouldShowStakeAction: Bool) {
         isBuyActionAvailable = asset.isAlgo
+        self.shouldShowStakeAction = shouldShowStakeAction
     }
 }

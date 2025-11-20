@@ -156,7 +156,6 @@ extension RootViewController {
             ),
             configuration: appConfiguration.all()
         )
-        let collectiblesTab = CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
         
         let stakingVC = StakingScreen(configuration: appConfiguration.all())
         stakingVC.hideBackButtonInWebView = true
@@ -164,12 +163,27 @@ extension RootViewController {
         
         let menuVC = MenuViewController(configuration: appConfiguration.all())
         let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
+        
+        let fundVC = FundInAppBrowserScreen(configuration: appConfiguration.all())
+        let fundTab = FundTabBarItem(NavigationContainer(rootViewController: fundVC))
+        
+        guard appConfiguration.featureFlagService.isEnabled(.webviewV2Enabled) else {
+            mainContainer.items = [
+                homeTab,
+                discoverTab,
+                swapTab,
+                stakeTab,
+                menuTab
+            ]
+            setNeedsDiscoverTabBarItemUpdateIfNeeded()
+            return
+        }
 
         mainContainer.items = [
             homeTab,
             discoverTab,
             swapTab,
-            stakeTab,
+            fundTab,
             menuTab
         ]
         setNeedsDiscoverTabBarItemUpdateIfNeeded()

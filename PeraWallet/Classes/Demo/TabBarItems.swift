@@ -129,6 +129,28 @@ struct StakeTabBarItem: TabBarItem {
     }
 }
 
+struct FundTabBarItem: TabBarItem {
+    let id: String
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
+    let screen: UIViewController?
+
+    init(
+        _ screen: UIViewController
+    ) {
+        self.id = TabBarItemID.stake.rawValue
+        self.barButtonItem =
+            TabBarButtonItem(
+                icon: [
+                    .normal("tabbar-icon-stake"),
+                    .selected("tabbar-icon-stake-selected"),
+                    .disabled("tabbar-icon-stake-disabled")
+                ],
+                title: String(localized: "title-fund")
+            )
+        self.screen = screen
+    }
+}
+
 struct MenuTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
