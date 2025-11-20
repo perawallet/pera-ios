@@ -216,7 +216,12 @@ final class HomeViewController:
                 guard let totalPortfolioItem else {
                     return
                 }
-                let homePortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel, tendenciesVM: tendenciesVM)
+                let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
+                let homePortfolioViewModel = HomePortfolioViewModel(
+                    totalPortfolioItem,
+                    selectedPoint: chartSelectedPointViewModel,
+                    tendenciesVM: isAmountHidden ? nil : tendenciesVM
+                )
                 self.listDataSource.reloadPortfolio(with: homePortfolioViewModel)
             }
         }
@@ -559,17 +564,7 @@ extension HomeViewController {
         _ cell: NoContentWithActionCell
     ) {
         cell.startObserving(event: .performPrimaryAction) {
-            [weak self] in
-            guard let self else { return }
-            
-            self.open(
-                .addAccount(flow: .addNewAccount(mode: .none)),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
+            AppDelegate.shared?.launchOnboarding()
         }
     }
     
@@ -827,7 +822,7 @@ extension HomeViewController {
 
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
-                .addAccount(flow: .addNewAccount(mode: .none)),
+                .addAccount,
                 by: .customPresent(
                     presentationStyle: .fullScreen,
                     transitionStyle: nil,

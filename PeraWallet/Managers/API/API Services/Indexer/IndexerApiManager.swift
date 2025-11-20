@@ -14,6 +14,8 @@
 
 //   IndexerApiManager.swift
 
+import pera_wallet_core
+
 final class IndexerApiManager {
     
     // MARK: - Properties
@@ -22,7 +24,7 @@ final class IndexerApiManager {
         didSet { updateApiManager(network: network) }
     }
     
-    private lazy var apiManager = CoreApiManager(baseURL: .indexer(network: network))
+    private lazy var apiManager = CoreApiManager(baseURL: .indexer(network: network), keyDecodingStrategy: .kebabCase, keyEncodingStrategy: .kebabCase)
     
     // MARK: - Initialisers
     
@@ -40,6 +42,23 @@ final class IndexerApiManager {
     
     func fetchAccount(publicKey: String) async throws(CoreApiManager.ApiError) -> AccountResponse {
         let request = AccountRequest(publicKey: publicKey)
-        return try await apiManager.perform(request: request)
+        return try await perform(request: request)
+    }
+    
+    // MARK: - Actions
+    
+    private func perform<Request: Requestable>(request: Request) async throws(CoreApiManager.ApiError) -> Request.ResponseType {
+        try await apiManager.perform(request: request, headers: makeHeaders())
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeHeaders() -> [String: String] {
+        [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Indexer-API-Token": AppEnvironment.current.indexerToken,
+            "Accept-Encoding": "gzip;q=1.0, *;q=0.5"
+        ]
     }
 }

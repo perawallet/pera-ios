@@ -47,7 +47,7 @@ struct SettingsSwapButton: View {
                 onTap(.max)
             } label: {
                 Text("send-transaction-max-button-title")
-                    .font(.dmSans.bold.size(11.0))
+                    .font(.DMSans.bold.size(11.0))
                     .foregroundStyle(Color.Helpers.positive)
                     .frame(width: 25, alignment: .leading)
                     .padding(.vertical, 8)

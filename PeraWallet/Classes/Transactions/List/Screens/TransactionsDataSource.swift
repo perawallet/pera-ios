@@ -26,6 +26,7 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
     
     private weak var headerView: ASAHoldingsFragmentHeaderView?
     private var currentHeaderContext: ASAHoldingsHeaderContext?
+    private var currentChartData: ChartViewData?
 
     init(
         _ collectionView: UICollectionView,
@@ -116,18 +117,22 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             collectionView.register(header: ASAHoldingsFragmentHeaderView.self)
             
             supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
-                guard let self, kind == UICollectionView.elementKindSectionHeader else { return nil }
+                guard let self, kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
                 guard let header = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,
                     withReuseIdentifier: ASAHoldingsFragmentHeaderView.reuseIdentifier,
                     for: indexPath
                 ) as? ASAHoldingsFragmentHeaderView else {
-                    return nil
+                    return UICollectionReusableView()
                 }
                 
                 headerView = header
                 if let context = currentHeaderContext {
                     header.bind(context: context)
+                    if let data = currentChartData {
+                        header.updateChart(with: data)
+                    }
+                    header.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: context.asset.isPriceAlertEnabled ?? false, isAssetFavorited: context.asset.isFavorited ?? false)
                 }
                 return headerView
             }
@@ -144,7 +149,8 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
         headerView?.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
     }
     
-    func updateChart(with data: ChartViewData?) {
+    func updateChart(with data: ChartViewData) {
+        currentChartData = data
         headerView?.updateChart(with: data)
     }
 }

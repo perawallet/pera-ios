@@ -19,7 +19,7 @@
 import Testing
 import Foundation
 
-@Suite("Data Providers - AccountDataProvider Tests", .serialized, .tags(.accountDataProvider))
+@Suite("Data Providers - AccountDataProvider Tests", .serialized, .tags(.dataProvider))
 struct AccountDataProviderTests {
     
     // MARK: - Constants
@@ -82,7 +82,7 @@ struct AccountDataProviderTests {
     func authTypeForNonRekeyedAccount(authAddress: String?) async throws {
         
         let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: nil)
-        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress)
+        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress, amount: 0)
         
         let result = accountDataProvider.authorizationType(indexerAccount: indexerAccount, localAccounts: [])
         
@@ -98,7 +98,7 @@ struct AccountDataProviderTests {
     func authTypeForAccountRekeyedWithWalletWithoutPrivateData(localAccounts: [AccountInformation]) async throws {
         
         let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: nil)
-        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress)
+        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress, amount: 0)
         
         let result = accountDataProvider.authorizationType(indexerAccount: indexerAccount, localAccounts: localAccounts)
         
@@ -109,12 +109,12 @@ struct AccountDataProviderTests {
     func authTypeForAccountRekeyedWithWalletWithPrivateData() async throws {
         
         let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: authAddress)
-        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress)
+        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress, amount: 0)
         
         let localAccount = AccountInformation(address: authAddress, name: "Test Account", isWatchAccount: false, isBackedUp: false, hdWalletAddressDetail: nil)
         let result = accountDataProvider.authorizationType(indexerAccount: indexerAccount, localAccounts: [localAccount])
         
-        #expect(result == .wallet)
+        #expect(result == .algo25)
     }
     
     @Test("Authorization type for rekeyed account using ledger without private data stored locally",
@@ -126,7 +126,7 @@ struct AccountDataProviderTests {
     func authTypeForAccountRekeyedWithLedgerWithoutPrivateData(localAccounts: [AccountInformation]) async throws {
         
         let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: authAddress)
-        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress)
+        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress, amount: 0)
         
         let result = accountDataProvider.authorizationType(indexerAccount: indexerAccount, localAccounts: localAccounts)
         
@@ -137,7 +137,7 @@ struct AccountDataProviderTests {
     func authTypeForAccountRekeyedWithLedgerWithPrivateData() async throws {
         
         let accountDataProvider = try await makeAccountDataProvider(createPrivateDataForAddress: authAddress)
-        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress)
+        let indexerAccount = IndexerAccount(address: testedAddress, authAddr: authAddress, amount: 0)
         
         let ledgerDetails = LedgerDetail(id: nil, name: nil, indexInLedger: 0)
         let localAccount = AccountInformation(address: authAddress, name: "Test Account", isWatchAccount: false, ledgerDetail: ledgerDetails, isBackedUp: false, hdWalletAddressDetail: nil)
@@ -149,7 +149,9 @@ struct AccountDataProviderTests {
     // MARK: - Helpers
     
     private func makeAccountDataProvider(removePrivateDataForAddresses: [String] = [testedAddress, authAddress], createPrivateDataForAddress: String?) async throws -> AccountDataProvider {
+        
         let session = try #require(await AppDelegate.shared?.appConfiguration.session)
+        let featureFlagService = MockFeatureFlagService()
         
         removePrivateDataForAddresses
             .forEach { session.removePrivateData(for: $0) }
@@ -157,10 +159,6 @@ struct AccountDataProviderTests {
         if let createPrivateDataForAddress {
             session.savePrivate(Data(), for: createPrivateDataForAddress)
         }
-        return AccountDataProvider(legacySessionManager: session)
+        return AccountDataProvider(legacySessionManager: session, legacyFeatureFlagService: featureFlagService)
     }
-}
-
-private extension Tag {
-    @Tag static var accountDataProvider: Self
 }

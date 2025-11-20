@@ -31,7 +31,7 @@ protocol ReceiverAccountSelectionListDataController: AnyObject {
     typealias Address = String
     subscript(accountAddress address: Address) -> Account? { get }
     subscript(contactAddress address: Address) -> Contact? { get }
-    subscript(nameServiceAddress address: Address) -> NameService? { get }
+    subscript(nameServiceAddress address: Address) -> NameServiceAPIModel? { get }
 }
 
 enum ReceiverAccountSelectionListSection:

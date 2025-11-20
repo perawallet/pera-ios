@@ -28,7 +28,6 @@ final class ASAHoldingsHeaderContentView: UIView {
 
     private var account: Account?
     private var asset: Asset?
-    private var chartData: ChartViewData?
     private var currency: CurrencyProvider?
     private var showNotificationAndFavoriteButtons = false
     private var shouldDisplayQuickActions = false
@@ -47,7 +46,6 @@ final class ASAHoldingsHeaderContentView: UIView {
     func bind(context: ASAHoldingsHeaderContext) {
         self.account = context.account
         self.asset = context.asset
-        self.chartData = context.chartData
         self.currency = context.currency
         self.shouldDisplayQuickActions = context.shouldDisplayQuickActions
         self.quickActionsViewModel = context.quickActionsViewModel
@@ -83,7 +81,6 @@ final class ASAHoldingsHeaderContentView: UIView {
         }
         
         bindProfile()
-        updateChart()
     }
 
     private func bindProfile() {
@@ -183,11 +180,8 @@ final class ASAHoldingsHeaderContentView: UIView {
         profileView.bindData(viewModel)
     }
     
-    func updateChart(with data: ChartViewData? = nil) {
-        if let data {
-            self.chartData = data
-            profileView.updateChart(with: chartData ?? ChartViewData(period: .oneWeek, chartValues: [], isLoading: false), and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
-        }
+    func updateChart(with data: ChartViewData) {
+        profileView.updateChart(with: data, and: TendenciesViewModel(chartData: data.model.data, currency: currency))
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {

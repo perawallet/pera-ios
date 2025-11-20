@@ -18,7 +18,7 @@ import SwiftUI
 
 extension View {
     
-    func settingsViewRowStyle() -> some View {
+    func defaultPeraRowStyle() -> some View {
         listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)

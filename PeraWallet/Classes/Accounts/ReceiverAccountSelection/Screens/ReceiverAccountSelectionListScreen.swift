@@ -495,6 +495,6 @@ extension ReceiverAccountSelectionListScreen {
     enum Event {
         case didSelectAccount(Account)
         case didSelectContact(Contact)
-        case didSelectNameService(NameService)
+        case didSelectNameService(NameServiceAPIModel)
     }
 }
