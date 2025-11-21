@@ -16,7 +16,6 @@
 //   AccountsPortfolioAPIDataController.swift
 
 import UIKit
-import MacaroonUtils
 import Combine
 import pera_wallet_core
 
@@ -31,8 +30,8 @@ final class HomeAPIDataController:
     private let announcementDataController: AnnouncementAPIDataController
     private let spotBannersDataController: SpotBannersAPIDataController
     private let chartsDataController: ChartAPIDataController
-    private let incomingASAsAPIDataController: IncomingASAsAPIDataController
     private let featureFlagService: FeatureFlagServicing
+    private let inboxService: InboxServiceable
 
     private var visibleAnnouncement: Announcement?
     private var spotBanners: [CarouselBannerItemModel]?
@@ -49,24 +48,23 @@ final class HomeAPIDataController:
         label: "pera.queue.home.updates",
         qos: .userInitiated
     )
-
-    private var asasLoadRepeater: Repeater?
+    
     private var cancellables = Set<AnyCancellable>()
     
     init(
         configuration: AppConfiguration,
+        inboxService: InboxServiceable,
         announcementDataController: AnnouncementAPIDataController,
         spotBannersDataController: SpotBannersAPIDataController,
-        chartsDataController: ChartAPIDataController,
-        incomingASAsAPIDataController: IncomingASAsAPIDataController
+        chartsDataController: ChartAPIDataController
     ) {
         self.sharedDataController = configuration.sharedDataController
         self.session = configuration.session
         self.api = configuration.api
+        self.inboxService = inboxService
         self.announcementDataController = announcementDataController
         self.spotBannersDataController = spotBannersDataController
         self.chartsDataController = chartsDataController
-        self.incomingASAsAPIDataController = incomingASAsAPIDataController
         self.featureFlagService = configuration.featureFlagService
         
         setupCallbacks()
@@ -74,7 +72,6 @@ final class HomeAPIDataController:
     
     deinit {
         sharedDataController.remove(self)
-        stopASAsLoadTimer()
     }
 
     subscript (address: String?) -> AccountHandle? {
@@ -84,9 +81,32 @@ final class HomeAPIDataController:
     }
     
     private func setupCallbacks() {
+        
         ObservableUserDefaults.shared.$isPrivacyModeEnabled
             .sink { [weak self] _ in self?.deliverContentUpdates() }
             .store(in: &cancellables)
+        
+        Publishers.CombineLatest3(inboxService.jointAccountImportRequests.publisher.removeDuplicates(), inboxService.jointAccountSignRequests.publisher.removeDuplicates(), inboxService.algorandStandardAssetInboxes.publisher.removeDuplicates())
+            .sink { [weak self] in self?.handleInboxButtonLabel(jointAccountImportRequests: $0, jointAccountSignRequests: $1, algorandStandardAssetInboxes: $2) }
+            .store(in: &cancellables)
+    }
+    
+    private func handleInboxButtonLabel(jointAccountImportRequests: [MultiSigAccountObject], jointAccountSignRequests: [SignRequestObject], algorandStandardAssetInboxes: [ASAInboxMeta]) {
+        
+        let label: String?
+        let assetsRequestsCount = algorandStandardAssetInboxes.map(\.requestCount).reduce(0, +)
+        
+        if jointAccountImportRequests.count > 0 {
+            label = String(localized: "home-inbox-button-joint-account-request")
+        } else if jointAccountSignRequests.count > 0 {
+            label = String(localized: "home-inbox-button-sign-request")
+        } else if assetsRequestsCount > 0 {
+            label = String(localized: "home-inbox-button-standard-asset-\(assetsRequestsCount)")
+        } else {
+            label = nil
+        }
+        
+        publish(.deliverInboxActionLabel(label))
     }
 }
 
@@ -94,7 +114,6 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
         announcementDataController.delegate = self
-        incomingASAsAPIDataController.delegate = self
         setupSpotsBannersClosures()
         setupChartDataClosures()
     }
@@ -161,31 +180,6 @@ extension HomeAPIDataController {
         }
 
         announcementDataController.hideAnnouncement(visibleAnnouncement)
-    }
-    
-    func fetchIncomingASAsRequests() {
-        asasLoadRepeater = Repeater(intervalInSeconds: 6) {
-            [weak self] in
-            guard let self else { return }
-
-            asyncMain { [weak self] in
-                guard let self else { return }
-                
-                let filteredAccounts = sharedDataController.accountCollection.filter {
-                    $0.value.isWatchAccount == false
-                }
-                let addresses = filteredAccounts.map({$0.value.address})
-                guard addresses.isNonEmpty else { return }
-                incomingASAsAPIDataController.fetchRequests(addresses: addresses)
-            }
-        }
-        
-        asasLoadRepeater?.resume(immediately: true)
-    }
-    
-    private func stopASAsLoadTimer() {
-        asasLoadRepeater?.invalidate()
-        asasLoadRepeater = nil
     }
     
     private func setupSpotsBannersClosures() {
@@ -436,16 +430,6 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         didFetch announcements: [Announcement]
     ) {
         self.visibleAnnouncement = announcements.first
-    }
-}
-
-extension HomeAPIDataController: IncomingASAsAPIDataControllerDelegate {
-    func incomingASAsAPIDataController(
-        _ dataController: IncomingASAsAPIDataController,
-        didFetch incomingASAsRequestList: IncomingASAsRequestList
-    ) {
-        self.incomingASAsRequestList = incomingASAsRequestList
-        self.publish(.deliverASARequestsContentUpdate(incomingASAsRequestList))
     }
 }
 

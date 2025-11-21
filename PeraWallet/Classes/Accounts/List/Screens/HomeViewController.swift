@@ -144,7 +144,6 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         configureNotificationBarButton()
-        configureASARequestBarButton()
         navigationView.prepareLayout(NoLayoutSheet())
 
         navigationItem.titleView = navigationView
@@ -179,16 +178,8 @@ final class HomeViewController:
                 if totalPortfolioItem != nil {
                     self.alertPresenter.presentIfNeeded()
                 }
-            case .deliverASARequestsContentUpdate(let asasReqUpdate):
-                self.sharedDataController.currentInboxRequestCount = asasReqUpdate?.results.map({$0.requestCount ?? 0}).reduce(0, +) ?? 0
-                self.incomingASAsRequestList = asasReqUpdate
-                if self.sharedDataController.currentInboxRequestCount == 0 {
-                    self.leftBarButtonItems = []
-                    self.setNeedsNavigationBarAppearanceUpdate()
-                }
-                if !listWasScrolled {
-                    self.configureASARequestBarButton()
-                }
+            case let .deliverInboxActionLabel(label):
+                self.configureInboxBarButton(label: label)
             case .didUpdateSpotBanner(let errorDescription):
                 guard let errorDescription else {
                     dataController.fetchSpotBanners()
@@ -260,7 +251,6 @@ final class HomeViewController:
         dataController.fetchSpotBanners()
         dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchUSDCDefaultAsset()
-        dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
         showNewAccountAnimationIfNeeded()
     }
@@ -338,6 +328,14 @@ final class HomeViewController:
     @objc private func handleOnTapAnywhere() {
         isPrivacyModeTooltipVisible = false
     }
+    
+    // MARK: - Actions
+    
+    @MainActor
+    private func openInbox() {
+        analytics.track(.recordHomeScreen(type: .assetInbox))
+        open(.inbox, by: .push)
+    }
 }
 
 extension HomeViewController {
@@ -400,26 +398,19 @@ extension HomeViewController {
         setNeedsNavigationBarAppearanceUpdate()
     }
     
-    private func configureASARequestBarButton() {
-        let asasRequestsCount = sharedDataController.currentInboxRequestCount
-        guard asasRequestsCount > 0 else {
-            self.leftBarButtonItems = []
-            self.setNeedsNavigationBarAppearanceUpdate()
+    private func configureInboxBarButton(label: String?) {
+        
+        guard let label else {
+            leftBarButtonItems = []
+            setNeedsNavigationBarAppearanceUpdate()
             return
         }
         
-        let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(asasRequestsCount)) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                self.analytics.track(.recordHomeScreen(type: .assetInbox))
-                self.openASAInbox()
-            }
+        let inboxButton = ALGBarButtonItem(kind: .inbox(label: label)) { [weak self] in
+            self?.openInbox()
         }
-
-        leftBarButtonItems = [notificationBarButtonItem]
+        
+        leftBarButtonItems = [inboxButton]
         setNeedsNavigationBarAppearanceUpdate()
     }
 }
@@ -450,23 +441,10 @@ extension HomeViewController {
                 guard self.sharedDataController.currentInboxRequestCount > 0 else {
                     return
                 }
-                
-                let notificationBarButtonItem = ALGBarButtonItem(kind: .asaInbox(0)) { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self else { return }
-                        self.analytics.track(.recordHomeScreen(type: .assetInbox))
-                        self.openASAInbox()
-                    }
-                }
-                self.leftBarButtonItems = [notificationBarButtonItem]
                 self.setNeedsNavigationBarAppearanceUpdate()
                 self.listWasScrolled = true
             } else {
                 self.listWasScrolled = false
-                self.configureASARequestBarButton()
             }
         }
     }
@@ -1470,27 +1448,5 @@ extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegat
 
     func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
-    }
-}
-
-extension HomeViewController {
-    private func openASAInbox() {
-        let screen = open(
-            .incomingASAAccounts(
-                result: incomingASAsRequestList
-            ),
-            by: .push
-        ) as? IncomingASAAccountsViewController
-        
-        screen?.eventHandler = { [weak screen] event in
-            guard let screen else {
-                return
-            }
-                                
-            switch event {
-            case .didCompleteTransaction:
-                screen.closeScreen(by: .pop, animated: false)
-            }
-        }
     }
 }

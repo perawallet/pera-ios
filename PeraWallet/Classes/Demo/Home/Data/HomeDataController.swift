@@ -37,7 +37,6 @@ protocol HomeDataController: AnyObject {
     func updateChartData(period: ChartDataPeriod)
     func updateClose(for banner: CarouselBannerItemModel)
     func hideAnnouncement()
-    func fetchIncomingASAsRequests()
     func fetchUSDCDefaultAsset()
 }
 
@@ -77,15 +76,15 @@ enum HomeAccountItemIdentifier: Hashable {
 
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Updates)
-    case deliverASARequestsContentUpdate(IncomingASAsRequestList?)
+    case deliverInboxActionLabel(String?)
     case didUpdateSpotBanner(String?)
     case didFailWithError(String?)
     case shouldReloadPortfolio(ChartSelectedPointViewModel?, TotalPortfolioItem?, TendenciesViewModel?)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
-        case .didUpdate(let updates): return updates.snapshot
-        case .deliverASARequestsContentUpdate, .didUpdateSpotBanner, .didFailWithError, .shouldReloadPortfolio: return HomeDataController.Snapshot()
+        case .didUpdate(let updates): updates.snapshot
+        case .deliverInboxActionLabel, .didUpdateSpotBanner, .didFailWithError, .shouldReloadPortfolio : HomeDataController.Snapshot()
         }
     }
 }
