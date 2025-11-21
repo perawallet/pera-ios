@@ -18,12 +18,13 @@ import SwiftUI
 
 final class AccountIconProvider {
     
-    static func iconData(account: PeraAccount) -> ImageType.IconData {
+    static func iconData(account: PeraAccount?) -> ImageType.IconData {
         ImageType.IconData(image: image(account: account), tintColor: tintColor(account: account), backgroundColor: backgroundColor(account: account))
     }
     
-    private static func image(account: PeraAccount) -> ImageResource {
+    private static func image(account: PeraAccount?) -> ImageResource {
         
+        guard let account else { return .Icons.question }
         guard account.authType == nil else { return .Icons.rekeyedAccount }
         
         return switch account.type {
@@ -42,7 +43,8 @@ final class AccountIconProvider {
         }
     }
     
-    private static func tintColor(account: PeraAccount) -> Color {
+    private static func tintColor(account: PeraAccount?) -> Color {
+        guard let account else { return .Text.grayLighter }
         if account.type == .invalid || account.authType == .invalid { return .Helpers.negative }
         if account.type == .watch { return .Wallet.wallet1Icon }
         if account.type == .joint { return .Wallet.wallet1 }
@@ -50,7 +52,8 @@ final class AccountIconProvider {
         return .Wallet.wallet4Icon
     }
     
-    private static func backgroundColor(account: PeraAccount) -> Color {
+    private static func backgroundColor(account: PeraAccount?) -> Color {
+        guard let account else { return .Layer.grayLighter }
         if account.type == .invalid || account.authType == .invalid { return .Helpers.negativeLighter }
         if account.type == .watch { return .Wallet.wallet1 }
         if account.type == .joint { return .Wallet.wallet1Icon }

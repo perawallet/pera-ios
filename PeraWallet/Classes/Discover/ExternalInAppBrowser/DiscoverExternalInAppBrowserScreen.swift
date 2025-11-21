@@ -184,7 +184,7 @@ extension DiscoverExternalInAppBrowserScreen {
                 self.webView.go(to: homePage)
             }
         }
-        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+        return UIBarButtonItem(customView: LegacyBarButton(barButtonItem: button))
     }
 
     private func makePreviousButton() -> UIBarButtonItem {
@@ -193,7 +193,7 @@ extension DiscoverExternalInAppBrowserScreen {
             self.webView.goBack()
             self.updateToolbarNavigationActions()
         }
-        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+        return UIBarButtonItem(customView: LegacyBarButton(barButtonItem: button))
     }
 
     private func makeNextButton() -> UIBarButtonItem {
@@ -202,7 +202,7 @@ extension DiscoverExternalInAppBrowserScreen {
             self.webView.goForward()
             self.updateToolbarNavigationActions()
         }
-        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+        return UIBarButtonItem(customView: LegacyBarButton(barButtonItem: button))
     }
 
     private func addToolbarActions() {

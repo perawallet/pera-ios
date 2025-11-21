@@ -25,6 +25,7 @@ final class CoreApiManager {
         case unableToEncodeBody(error: Error)
         case invalidHTTPStatusCode(code: Int)
         case responseError(error: Error)
+        case dataConversionError
         case cancelled
     }
     
@@ -51,7 +52,12 @@ final class CoreApiManager {
         didSet { cancelAllRequests() }
     }
     
-    private let jsonDecoder: JSONDecoder = JSONDecoder()
+    private let jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+    
     private let jsonEncoder: JSONEncoder = JSONEncoder()
     private let taskManager = CancellableTasksManager()
     
@@ -73,7 +79,8 @@ final class CoreApiManager {
         let task = Task {
             let result = try await URLSession.shared.data(for: urlRequest)
             try handle(response: result.1)
-            return try jsonDecoder.decode(request.responseType, from: result.0)
+            let responseData = try handle(responseData: result.0)
+            return try jsonDecoder.decode(request.responseType, from: responseData)
         }
         
         let uuid = await taskManager.add(task: task)
@@ -149,6 +156,12 @@ final class CoreApiManager {
     private func handle(response: URLResponse) throws(ApiError) {
         guard let httpResponse = response as? HTTPURLResponse else { return }
         guard 200...299 ~= httpResponse.statusCode else { throw .invalidHTTPStatusCode(code: httpResponse.statusCode) }
+    }
+    
+    private func handle(responseData: Data) throws(ApiError) -> Data {
+        guard responseData.isEmpty else { return responseData }
+        guard let emptyJsonData = "{}".data(using: .utf8) else { throw .dataConversionError }
+        return emptyJsonData
     }
 }
 

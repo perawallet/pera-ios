@@ -15,10 +15,15 @@
 //
 //  BarButtonItem.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import pera_wallet_core
+
+// FIXME: BarButtonType was introduced to decouple incompatible UIBarButton types. It should be removed (along with the entire BarButtonItem concept) during the Home screen or Navigation Bar refactor.
+enum BarButtonType {
+    case legacy
+    case inbox(label: String)
+}
 
 protocol BarButtonItem {
     
@@ -32,6 +37,7 @@ protocol BarButtonItem {
     var image: ImageContent? { get }
     var size: Size { get }
     var handler: EmptyHandler? { get set }
+    var type: BarButtonType { get }
     
     /// Returns nil if the bar button item cannot be configured as a back/dismiss.
     static func back() -> Self?

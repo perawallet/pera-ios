@@ -44,7 +44,7 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
         background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        // TODO: - HDWalletFeature check if wallet is Bip39 or not
+        // FIXME: - HDWalletFeature check if wallet is Bip39 or not
         passphraseBackUpViewTheme = PassphraseBackUpViewCommonTheme(family)
         cellHeight = 24
         defaultInset = 24

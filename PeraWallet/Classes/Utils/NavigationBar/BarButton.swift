@@ -15,11 +15,10 @@
 //
 //  BarButton.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 
-class BarButton:
+final class LegacyBarButton:
     UIButton,
     CornerDrawable {
     
@@ -41,7 +40,7 @@ class BarButton:
     }
 }
 
-extension BarButton {
+extension LegacyBarButton {
     
     private func configureAppearance() {
         adjustsImageWhenHighlighted = false
@@ -70,7 +69,7 @@ extension BarButton {
     }
 }
 
-extension BarButton {
+extension LegacyBarButton {
     
     private func prepareLayout() {
         switch barButtonItem.size {
@@ -164,7 +163,7 @@ extension BarButton {
     }
 }
 
-extension BarButton {
+extension LegacyBarButton {
     
     private func linkInteractors() {
         addTarget(self, action: #selector(callInteractor(sender:)), for: .touchUpInside)
