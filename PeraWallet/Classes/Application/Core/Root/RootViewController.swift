@@ -110,19 +110,14 @@ extension RootViewController {
             session: appConfiguration.session
         )
         let chartsDataController = ChartAPIDataController(configuration: appConfiguration)
-        
-        let incomingASAsAPIDataController = IncomingASAsAPIDataController(
-            api: appConfiguration.api,
-            session: appConfiguration.session
-        )
         let homeViewController = HomeViewController(
             swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
                 configuration: appConfiguration,
+                inboxService: PeraCoreManager.shared.inbox,
                 announcementDataController: announcementAPIDataController,
                 spotBannersDataController: spotBannersAPIDataController,
-                chartsDataController: chartsDataController,
-                incomingASAsAPIDataController: incomingASAsAPIDataController
+                chartsDataController: chartsDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

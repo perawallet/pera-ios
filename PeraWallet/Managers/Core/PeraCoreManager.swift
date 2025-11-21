@@ -17,6 +17,7 @@
 import pera_wallet_core
 
 protocol CoreServiceable {
+    var accounts: AccountsServiceable { get }
     var blockchain: BlockchainServiceable { get }
 }
 
@@ -45,6 +46,7 @@ final class PeraCoreManager: CoreServiceable {
     private(set) lazy var blockchain: BlockchainServiceable = BlockchainService()
     private(set) lazy var currencies: CurrencyServiceable = CurrencyService(services: self)
     private(set) lazy var nfd: NonFungibleDomainServiceable = NonFungibleDomainService()
+    private(set) lazy var inbox: InboxServiceable = InboxService(services: self, legacySessionManager: legacySessionManager, legacyFeatureFlagService: legacyFeatureFlagService)
     
     // MARK: - Initialisers
     
@@ -53,7 +55,7 @@ final class PeraCoreManager: CoreServiceable {
     // MARK: - Updates
     
     private func updateServices(network: CoreApiManager.BaseURL.Network) {
-        [accounts, blockchain, currencies, nfd]
+        [accounts, blockchain, currencies, nfd, inbox]
             .compactMap { $0 as? NetworkConfigureable }
             .forEach { $0.network = network }
     }

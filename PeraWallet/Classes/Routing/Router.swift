@@ -1415,18 +1415,8 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
-        case let .incomingASAAccounts(result):
-            
-            let dataController = IncomingASAAccountsLocalDataController(
-                incomingASAsRequestList: result,
-                sharedDataController: configuration.sharedDataController
-            )
-            
-            viewController = IncomingASAAccountsViewController(
-                dataController: dataController,
-                configuration: configuration
-            )
-            
+        case .inbox:
+            viewController = InboxConstructor.buildScene(legacyConfiguration: configuration) ?? UIViewController()
         case let .incomingASA(address, requestsCount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -2454,7 +2444,15 @@ final class Router:
         case .accountRecoverySearch:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
-            
+        case let .jointAccountConfirmationOverlay(subtitle, threshold, accountModels, onIgnore, onAccept):
+            viewController = JointAccountInviteConfirmationOverlayConstructor.buildCompatibilityViewController(
+                configuration: configuration,
+                subtitle: subtitle,
+                threshold: threshold,
+                accountModels: accountModels,
+                onIgnore: onIgnore,
+                onAccept: onAccept
+            )
         }
         return viewController as? T
     }
