@@ -4194,7 +4194,6 @@
       }
     },
     "joint-account-invite-ignored-text" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
