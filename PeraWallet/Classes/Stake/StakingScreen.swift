@@ -21,7 +21,7 @@ import MacaroonUIKit
 import pera_wallet_core
 
 final class StakingScreen:
-    StakingInAppBrowserScreen<StakingScreenScriptMessage>,
+    StakingInAppBrowserScreen,
     UIScrollViewDelegate {
     
     private lazy var theme = DiscoverHomeScreenTheme()
@@ -54,10 +54,4 @@ final class StakingScreen:
         }
         isViewLayoutLoaded = true
     }
-}
-
-enum StakingScreenScriptMessage:
-    String,
-    InAppBrowserScriptMessage {
-    case none
 }

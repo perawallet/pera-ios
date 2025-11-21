@@ -12,21 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverGenericScreen.swift
+//   WKWebView+Message.swift
 
-import Foundation
-import UIKit
 import WebKit
-import pera_wallet_core
 
-final class DiscoverGenericScreen: DiscoverInAppBrowserScreen {
-    init(
-        params: DiscoverGenericParameters,
-        configuration: ViewControllerConfiguration
-    ) {
-        super.init(
-            destination: .generic(params),
-            configuration: configuration
-        )
+extension WKWebView {
+    func sendMessage(_ message: String) {
+        evaluateJavaScript("var message = '\(message)'; handleMessage(message);")
+    }
+    
+    func sendBidaliEvent(_ event: String) {
+        evaluateJavaScript("window.bidaliProvider.\(event)();")
     }
 }

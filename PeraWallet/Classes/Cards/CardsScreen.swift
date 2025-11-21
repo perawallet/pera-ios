@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
 
-final class CardsScreen: CardsInAppBrowserScreen<CardsScreenScriptMessage> {
+final class CardsScreen: CardsInAppBrowserScreen {
     
     private lazy var theme = DiscoverHomeScreenTheme()
     private var isViewLayoutLoaded = false
@@ -60,10 +60,4 @@ extension CardsScreen: UIScrollViewDelegate {
         guard !scrollView.isDragging else { return }
         scrollView.contentOffset = .zero
     }
-}
-
-enum CardsScreenScriptMessage:
-    String,
-    InAppBrowserScriptMessage {
-    case none
 }

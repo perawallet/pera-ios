@@ -23,8 +23,16 @@ final class BidaliDappDetailScreen:
     DiscoverExternalInAppBrowserScreen,
     SharedDataControllerObserver {
 
-    private var account: AccountHandle {
-        didSet { updateBalancesIfNeeded(old: oldValue, new: account) }
+    override var account: AccountHandle? {
+        didSet {
+            if let old = oldValue, let new = account {
+                updateBalancesIfNeeded(old: old, new: new)
+            }
+        }
+    }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        BidaliDappDetailScriptMessage.allCases
     }
 
     private let config: BidaliConfig
@@ -34,11 +42,11 @@ final class BidaliDappDetailScreen:
         config: BidaliConfig,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
         self.config = config
         let url = URL(string: config.url)
         super.init(destination: .url(url), configuration: configuration)
         self.allowsPullToRefresh = false
+        self.account = account
 
         self.sharedDataController.add(self)
     }
@@ -52,6 +60,11 @@ final class BidaliDappDetailScreen:
 
         addPaymentScript()
     }
+    
+    private func addPaymentScript() {
+        guard let account, let balancesJSONString = try? makeBalances(account).encodedString() else { return }
+        userContentController.addUserScript(InAppBrowserScript.bidaliPayment(config: config, balance: balancesJSONString).userScript)
+    }
 
     /// <note>
     /// In here, we're handling the cancel operation with assuming that confirm transaction screen is presented as modally.
@@ -61,204 +74,17 @@ final class BidaliDappDetailScreen:
 
         cancelPayment()
     }
-
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        BidaliDappDetailScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
-        return controller
-    }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    override func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        let inAppMessage = BidaliDappDetailScriptMessage(rawValue: message.name)
-
-        switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
-        case .paymentRequest:
-            handlePaymentRequestAction(message)
-        case .openURLRequest:
-            handleOpenURLRequestAction(message)
-        }
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func addPaymentScript() {
-        guard let script = makePaymentScript() else { return }
-
-        userContentController.addUserScript(script)
-    }
-
-    private func makePaymentScript() -> WKUserScript? {
-        let balances = makeBalances(account)
-
-        guard let balancesJSONString = try? balances.encodedString() else {
-            return nil
-        }
-
-        let script = """
-            window.bidaliProvider = {
-                key: '\(config.key)',
-                name: '\(config.name)',
-                paymentCurrencies: \(config.supportedCurrencyProtocols),
-                balances: \(balancesJSONString),
-                onPaymentRequest: (paymentRequest) => {
-                    var payload = { data: paymentRequest };
-                    window.webkit.messageHandlers.\(BidaliDappDetailScriptMessage.paymentRequest.rawValue).postMessage(JSON.stringify(payload));
-                },
-                openUrl: function (url) {
-                    var payload = { data: { url } };
-                    window.webkit.messageHandlers.\(BidaliDappDetailScriptMessage.openURLRequest.rawValue).postMessage(JSON.stringify(payload));
-                }
-            };
-            true;
-        """
-        return WKUserScript(
-            source: script,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: false
-        )
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func handlePaymentRequestAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8),
-              let params = try? BidaliPaymentParameters.decoded(jsonData),
-              let paymentRequest = params.data else {
-            presentGenericErrorBanner()
-            return
-        }
-
-        openPaymentRequest(paymentRequest)
-    }
-
-    private func openPaymentRequest(_ request: BidaliPaymentRequest) {
-        guard let address = request.address,
-              let amount = request.amount,
-              let extraId = request.extraID,
-              let currencyProtocol = request.currencyProtocol else {
-            presentGenericErrorBanner()
-            return
-        }
-
-        let asset = account.value.asset(for: currencyProtocol, network: api!.network)
-
-        guard let asset else {
-            presentGenericErrorBanner()
-            return
-        }
-
-        let draft = makeSendTransactionDraft(
-            from: account.value,
-            to: Account(address: address),
-            asset: asset,
-            amount: amount,
-            extraId: extraId
-        )
-        openPaymentRequest(draft)
-    }
-
-    private func makeSendTransactionDraft(
-        from: Account,
-        to: Account,
-        asset: Asset,
-        amount: String,
-        extraId: String
-    ) -> SendTransactionDraft {
-        let transactionMode: TransactionMode = asset.isAlgo ? .algo : .asset(asset)
-        let draft = SendTransactionDraft(
-            from: from,
-            toAccount: to,
-            amount: NSDecimalNumber(string: amount) as Decimal,
-            transactionMode: transactionMode,
-            lockedNote: extraId
-        )
-        return draft
-    }
-
-    private func openPaymentRequest(_ draft: SendTransactionDraft) {
-        let controller = open(
-            .sendTransactionPreview(draft: draft),
-            by: .present
-        ) as? SendTransactionPreviewScreen
-        controller?.navigationController?.presentationController?.delegate = self
-        controller?.eventHandler = {
-            [weak self] event in
-            guard let self else { return }
-
-            switch event {
-            case .didCompleteTransaction:
-                self.confirmPayment()
-            case .didPerformDismiss:
-                self.cancelPayment()
-            default:
-                break
-            }
-        }
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func handleOpenURLRequestAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8),
-              let params = try? BidaliOpenURLParameters.decoded(jsonData),
-              let openURLRequest = params.data else {
-            presentGenericErrorBanner()
-            return
-        }
-
-        openOpenURLRequest(openURLRequest)
-    }
-
-    private func openOpenURLRequest(_ request: BidaliOpenURLRequest) {
-        guard let url = request.url.toURL() else {
-            presentGenericErrorBanner()
-            return
-        }
-
-        open(url)
-    }
-}
-
-/// <note>: SharedDataControllerObserver
-extension BidaliDappDetailScreen {
+    
     func sharedDataController(
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
     ) {
         if case .didFinishRunning = event,
+           let account,
            let upToDateAccount = sharedDataController.accountCollection[account.value.address],
            upToDateAccount.isAvailable {
-            account = upToDateAccount
+            self.account = upToDateAccount
         }
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func cancelPayment() {
-        let script = "window.bidaliProvider.paymentCancelled();"
-        webView.evaluateJavaScript(script)
-    }
-
-    private func confirmPayment() {
-        let script = "window.bidaliProvider.paymentSent();"
-        webView.evaluateJavaScript(script)
     }
 }
 

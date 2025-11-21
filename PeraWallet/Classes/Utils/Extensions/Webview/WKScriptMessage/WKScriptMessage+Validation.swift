@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverGenericScreen.swift
+//   WKScriptMessage+Validation.swift
 
-import Foundation
-import UIKit
 import WebKit
-import pera_wallet_core
 
-final class DiscoverGenericScreen: DiscoverInAppBrowserScreen {
-    init(
-        params: DiscoverGenericParameters,
-        configuration: ViewControllerConfiguration
-    ) {
-        super.init(
-            destination: .generic(params),
-            configuration: configuration
-        )
+extension WKScriptMessage {
+    var isAcceptable: Bool {
+        guard frameInfo.isMainFrame else { return false }
+        return frameInfo.request.url.unwrap(where: \.isPeraURL) != nil
     }
 }

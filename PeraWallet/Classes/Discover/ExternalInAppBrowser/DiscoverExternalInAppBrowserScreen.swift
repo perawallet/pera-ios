@@ -20,8 +20,9 @@ import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
 
-class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
+class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen {
     typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
@@ -30,7 +31,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
     
-    var eventHandler: EventHandler?
+    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
 
     private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
 
@@ -38,9 +39,6 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
-
-    private lazy var navigationScript = createNavigationScript()
-    private lazy var peraConnectScript = createPeraConnectScript()
 
     private var isViewLayoutLoaded = false
 
@@ -82,15 +80,6 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
         }
     }
 
-    override func createUserContentController() -> InAppBrowserUserContentController {
-        let controller = super.createUserContentController()
-        /// <note>
-        /// App listens this script in order to catch html5 navigation process
-        controller.addUserScript(navigationScript)
-        controller.addUserScript(peraConnectScript)
-        return controller
-    }
-
     override func updateUIForLoading() {
         super.updateUIForLoading()
         updateToolbarActionsForLoading()
@@ -118,18 +107,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     ) {
         updateTitle()
         updateToolbarNavigationActions()
-
-        let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: message.name)
-
-        switch inAppMessage {
-        case .none:
-            super.userContentController(
-                userContentController,
-                didReceive: message
-            )
-        case .peraconnect:
-            handlePeraConnectAction(message)
-        }
+        super.userContentController(userContentController, didReceive: message)
     }
 
     func updateToolbarActionsForLoading() {
@@ -188,32 +166,6 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     
     private func bindNavigationTitleForCurrentURL() {
         navigationTitleView.bindData(DiscoverExternalInAppBrowserNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
-    }
-}
-
-extension DiscoverExternalInAppBrowserScreen {
-    private func createNavigationScript() -> WKUserScript {
-        let navigationScript = """
-!function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
-"""
-
-        return WKUserScript(
-            source: navigationScript,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: false
-        )
-    }
-
-    private func createPeraConnectScript() -> WKUserScript {
-        let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverExternalInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
-"""
-
-        return WKUserScript(
-            source: peraConnectScript,
-            injectionTime: .atDocumentEnd,
-            forMainFrameOnly: false
-        )
     }
 }
 
@@ -290,17 +242,6 @@ extension DiscoverExternalInAppBrowserScreen {
         }
 
         bindNavigationTitle(with: item)
-    }
-}
-
-extension DiscoverExternalInAppBrowserScreen {
-    private func handlePeraConnectAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let url = URL(string: jsonString) else { return }
-        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
-
-        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
-        launchController.receive(deeplinkWithSource: src)
     }
 }
 

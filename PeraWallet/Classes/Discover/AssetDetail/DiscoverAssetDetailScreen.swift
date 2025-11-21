@@ -19,32 +19,18 @@ import WebKit
 import MacaroonUtils
 import pera_wallet_core
 
-final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
-    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        draft: SwapAssetFlowDraft(),
-        dataStore: swapDataStore,
-        configuration: configuration,
-        presentingScreen: self
-    )
-    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
-        analytics: analytics,
-        presentingScreen: self
-    )
-
+final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
     private let assetParameters: DiscoverAssetParameters
-
-    /// <todo>
-    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
-    /// routing approach hasn't been refactored yet.
-    private let swapDataStore: SwapDataStore
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        super.handledMessages + DiscoverAssetDetailScriptMessage.allCases
+    }
 
     init(
         assetParameters: DiscoverAssetParameters,
-        swapDataStore: SwapDataStore,
         configuration: ViewControllerConfiguration
     ) {
         self.assetParameters = assetParameters
-        self.swapDataStore = swapDataStore
         super.init(
             destination: .assetDetail(assetParameters),
             configuration: configuration
@@ -53,77 +39,6 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
-    }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    override func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        guard let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name) else {
-            super.userContentController(userContentController, didReceive: message)
-            return
-        }
-
-        switch inAppMessage {
-        case .handleTokenDetailActionButtonClick:
-            handleTokenAction(message)
-        }
-    }
-}
-
-extension DiscoverAssetDetailScreen {
-    private func handleTokenAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverSwapParameters.decoded(jsonData) else { return }
-
-        switch params.action {
-        case .buyAlgo:
-           navigateToBuyAlgo()
-        default:
-            navigateToSwap(with: params)
-        }
-
-        sendAnalyticsEvent(with: params)
-    }
-
-    private func navigateToBuyAlgo() {
-        meldFlowCoordinator.launch()
-    }
-
-    private func navigateToSwap(with parameters: DiscoverSwapParameters) {
-        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-        let draft = SwapAssetFlowDraft()
-        if let assetInID = parameters.assetIn {
-            draft.assetInID = assetInID
-        }
-        if let assetOutID = parameters.assetOut {
-            draft.assetOutID = assetOutID
-        }
-        
-        rootViewController.launch(tab: .swap, with: draft)
-    }
-
-    /// <note>
-    /// ID 0 is for algo, if it's updated we should update the reflects
-    /// Maybe it should be a constant within whole app
-    private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {
-        let assetInID = parameters.assetIn
-        let assetOutID = parameters.assetOut
-
-        switch parameters.action {
-        case .buyAlgo:
-            self.analytics.track(.buyAssetFromDiscover(assetOutID: 0, assetInID: nil))
-        case .swapFromAlgo:
-            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: 0))
-        case .swapToAsset:
-            guard let assetOutID else { return }
-            self.analytics.track(.buyAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
-        case .swapFromAsset:
-            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
-        }
     }
 }
 

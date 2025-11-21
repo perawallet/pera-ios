@@ -21,42 +21,63 @@ import MacaroonUtils
 import WebKit
 import pera_wallet_core
 
-/// @abstract
-/// <todo>
-/// How to prevent the standalone usage ???
-class InAppBrowserScreen<ScriptMessage>:
+class InAppBrowserScreen:
     BaseViewController,
     WKNavigationDelegate,
     NotificationObserver,
     WKUIDelegate,
     WKScriptMessageHandler
-where ScriptMessage: InAppBrowserScriptMessage {
-    var allowsPullToRefresh: Bool = true
+{
     
+    // MARK: - Properties
+    
+    var allowsPullToRefresh: Bool = true
     var notificationObservations: [NSObjectProtocol] = []
+    private var isViewLayoutLoaded = false
     
     private(set) lazy var webView: WKWebView = createWebView()
     private(set) lazy var noContentView = InAppBrowserNoContentView(theme.noContent)
-
     private(set) lazy var userContentController = createUserContentController()
+    
+    private let socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
+    private let theme = InAppBrowserScreenTheme()
+    
+    private(set) lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
+        dataStore: SwapDataLocalStore(),
+        configuration: configuration,
+        presentingScreen: self
+    )
+    
+    private(set) lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
+
+    var extraUserScripts: [InAppBrowserScript] { [] }
+    var handledMessages: [any InAppBrowserScriptMessage] { [] }
+    var account: AccountHandle? = nil
 
     private(set) var userAgent: String? = nil
-
     private var sourceURL: URL?
-
-    private var isViewLayoutLoaded = false
-
     private var lastURL: URL? { webView.url ?? sourceURL }
 
-    private let theme = InAppBrowserScreenTheme()
-    private let socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
-
+    // MARK: - Initialisers
+    
     deinit {
         userContentController.removeAllScriptMessageHandlers()
     }
+    
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /// To prevent the standalone usage
+        if type(of: self) == InAppBrowserScreen.self {
+            fatalError("InAppBrowserScreen is abstract — instantiate a subclass instead.")
+        }
+        
         addUI()
     }
     
@@ -86,6 +107,17 @@ where ScriptMessage: InAppBrowserScriptMessage {
             isViewLayoutLoaded = true
         }
     }
+    
+    // MARK: - Setups
+    
+    func load(url: URL?) {
+        guard let url = url else { return }
+        
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 30
+        webView.load(request)
+        sourceURL = url
+    }
 
     func createWebView() -> WKWebView {
         let configuration = createWebViewConfiguration()
@@ -109,218 +141,18 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return configuration
     }
 
-    func createUserContentController() -> InAppBrowserUserContentController {
+    private func createUserContentController() -> InAppBrowserUserContentController {
         let controller = InAppBrowserUserContentController()
-        let selectionString  = """
-        var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}textarea,input{user-select:text;-webkit-user-select:text;}';
-        var head = document.head || document.getElementsByTagName('head')[0];
-        var style = document.createElement('style'); style.type = 'text/css';
-        style.appendChild(document.createTextNode(css)); head.appendChild(style);
-        """
-        let selectionScript = WKUserScript(
-            source: selectionString,
-            injectionTime: .atDocumentEnd,
-            forMainFrameOnly: false
-        )
-        controller.addUserScript(selectionScript)
-        ScriptMessage.allCases.forEach {
-            controller.add(
-                secureScriptMessageHandler: self,
-                forMessage: $0
-            )
-        }
+        controller.addUserScript(InAppBrowserScript.selection.userScript)
+
+        extraUserScripts.forEach { controller.addUserScript($0.userScript) }
+        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
+        
         return controller
     }
-
-    func updateUIForLoading() {
-        let state = InAppBrowserNoContentView.State.loading(theme.loading)
-        updateUI(for: state)
-    }
-
-    func updateUIForURL() {
-        let clearNoContent = {
-            [weak self] in
-            guard let self else { return }
-
-            self.noContentView.setState(
-                nil,
-                animated: false
-            )
-        }
-
-        if !webView.isHidden {
-            clearNoContent()
-            return
-        }
-
-        updateUI(
-            from: noContentView,
-            to: webView,
-            animated: isViewAppeared
-        ) { isCompleted in
-            if !isCompleted { return }
-            clearNoContent()
-        }
-    }
-
-    func updateUIForError(_ error: Error) {
-        defer {
-            endRefreshingIfNeeded()
-        }
-
-        if !isPresentable(error) {
-            updateUIForURL()
-            return
-        }
-
-        let viewModel = InAppBrowserErrorViewModel(error: error)
-        let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
-        updateUI(for: state)
-    }
-
-    @objc
-    func didPullToRefresh() {
-        webView.reload()
-    }
-
-    /// <mark>
-    /// WKNavigationDelegate
-    func webView(
-        _ webView: WKWebView,
-        didStartProvisionalNavigation navigation: WKNavigation!
-    ) {
-        updateUIForLoading()
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        didFailProvisionalNavigation navigation: WKNavigation!,
-        withError error: Error
-    ) {
-        updateUIForError(error)
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        didFinish navigation: WKNavigation!
-    ) {
-        updateUIForURL()
-        endRefreshingIfNeeded()
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        didFail navigation: WKNavigation!,
-        withError error: Error
-    ) {
-        updateUIForError(error)
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        preferences: WKWebpagePreferences,
-        decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
-    ) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.cancel, preferences)
-            return
-        }
-
-        let policy: WKNavigationActionPolicy
-        if url.isMailURL {
-            policy = navigateToMail(url)
-        } else if let socialMediaURL = socialMediaDeeplinkParser.route(url: url) {
-            policy = navigateToSocialMedia(socialMediaURL)
-        } else if let walletConnectSessionURL = DeeplinkQR(url: url).walletConnectUrl() {
-            policy = navigateToWalletConnectSession(walletConnectSessionURL)
-        } else {
-            policy = url.isWebURL ? .allow : .cancel
-        }
-
-        decisionHandler(policy, preferences)
-    }
-
-    /// <mark>
-    /// WKUIDelegate
-    func webView(
-        _ webView: WKWebView,
-        createWebViewWith configuration: WKWebViewConfiguration,
-        for navigationAction: WKNavigationAction,
-        windowFeatures: WKWindowFeatures
-    ) -> WKWebView? {
-        if navigationAction.targetFrame == nil {
-            webView.load(navigationAction.request)
-        }
-
-        return nil
-    }
     
-    func webView(
-        _ webView: WKWebView,
-        runJavaScriptConfirmPanelWithMessage message: String,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        let controller = UIAlertController(
-            title: nil,
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        let confirmAction = UIAlertAction(
-            title: String(localized: "title-ok"),
-            style: .default
-        ) { _ in
-            completionHandler(true)
-        }
-        controller.addAction(confirmAction)
-        
-        let cancelAction = UIAlertAction(
-            title: String(localized: "title-cancel"),
-            style: .cancel
-        ) { _ in
-            completionHandler(false)
-        }
-        controller.addAction(cancelAction)
-
-        present(
-            controller,
-            animated: true
-        )
-    }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {}
-}
-
-extension InAppBrowserScreen {
-    func load(url: URL?) {
-        guard let url = url else {
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 30
-        webView.load(request)
-
-        sourceURL = url
-    }
-}
-
-extension InAppBrowserScreen {
-    private func endRefreshingIfNeeded() {
-        if !allowsPullToRefresh { return }
-
-        webView.scrollView.refreshControl?.endRefreshing()
-    }
-}
-
-extension InAppBrowserScreen {
+    // MARK: - UI functions
+    
     private func addUI() {
         addBackground()
         addWebView()
@@ -401,6 +233,11 @@ extension InAppBrowserScreen {
             for: .valueChanged
         )
     }
+    
+    @objc
+    func didPullToRefresh() {
+        webView.reload()
+    }
 
     private func addNoContent() {
         view.addSubview(noContentView)
@@ -412,20 +249,173 @@ extension InAppBrowserScreen {
         }
 
         noContentView.startObserving(event: .retry) {
-            [unowned self] in
-            self.load(url: self.lastURL)
+            [weak self] in
+            guard let self else { return }
+            load(url: self.lastURL)
         }
     }
-}
 
-extension InAppBrowserScreen {
-    private func isPresentable(_ error: Error) -> Bool {
-        guard let urlError = error as? URLError else { return true }
-        return urlError.code != .cancelled
+    func updateUIForLoading() {
+        let state = InAppBrowserNoContentView.State.loading(theme.loading)
+        updateUI(for: state)
     }
-}
 
-extension InAppBrowserScreen {
+    func updateUIForURL() {
+        let clearNoContent = {
+            [weak self] in
+            guard let self else { return }
+
+            self.noContentView.setState(
+                nil,
+                animated: false
+            )
+        }
+
+        if !webView.isHidden {
+            clearNoContent()
+            return
+        }
+
+        updateUI(
+            from: noContentView,
+            to: webView,
+            animated: isViewAppeared
+        ) { isCompleted in
+            if !isCompleted { return }
+            clearNoContent()
+        }
+    }
+
+    func updateUIForError(_ error: Error) {
+        defer {
+            endRefreshingIfNeeded()
+        }
+
+        if !isPresentable(error) {
+            updateUIForURL()
+            return
+        }
+
+        let viewModel = InAppBrowserErrorViewModel(error: error)
+        let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
+        updateUI(for: state)
+    }
+    
+    private func endRefreshingIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        webView.scrollView.refreshControl?.endRefreshing()
+    }
+    
+    // MARK: - WKUIDelegate
+    
+    func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+    ) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+
+        return nil
+    }
+    
+    func webView(
+        _ webView: WKWebView,
+        runJavaScriptConfirmPanelWithMessage message: String,
+        initiatedByFrame frame: WKFrameInfo,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
+        let controller = UIAlertController(
+            title: nil,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(
+            title: String(localized: "title-ok"),
+            style: .default
+        ) { _ in
+            completionHandler(true)
+        }
+        controller.addAction(confirmAction)
+        
+        let cancelAction = UIAlertAction(
+            title: String(localized: "title-cancel"),
+            style: .cancel
+        ) { _ in
+            completionHandler(false)
+        }
+        controller.addAction(cancelAction)
+
+        present(
+            controller,
+            animated: true
+        )
+    }
+
+    // MARK: - WKNavigationDelegate
+    
+    func webView(
+        _ webView: WKWebView,
+        didStartProvisionalNavigation navigation: WKNavigation!
+    ) {
+        updateUIForLoading()
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFailProvisionalNavigation navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        updateUIForError(error)
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFinish navigation: WKNavigation!
+    ) {
+        updateUIForURL()
+        endRefreshingIfNeeded()
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFail navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        updateUIForError(error)
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        preferences: WKWebpagePreferences,
+        decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
+    ) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.cancel, preferences)
+            return
+        }
+
+        if url.isMailURL {
+            decisionHandler(navigateToMail(url), preferences)
+            return
+        }
+        if let socialMediaURL = socialMediaDeeplinkParser.route(url: url) {
+            decisionHandler(navigateToSocialMedia(socialMediaURL), preferences)
+            return
+        }
+        if let walletConnectSessionURL = DeeplinkQR(url: url).walletConnectUrl() {
+            decisionHandler(navigateToWalletConnectSession(walletConnectSessionURL), preferences)
+            return
+        }
+        
+        decisionHandler(url.isWebURL ? .allow : .cancel, preferences)
+    }
+    
     private func navigateToMail(_ url: URL) -> WKNavigationActionPolicy {
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
@@ -446,5 +436,21 @@ extension InAppBrowserScreen {
         let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(url)
         launchController.receive(deeplinkWithSource: src)
         return .cancel
+    }
+
+    // MARK: - WKScriptMessageHandler
+    
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        parseWebViewMessageV1(message)
+    }
+    
+    // MARK: - Helpers
+    
+    private func isPresentable(_ error: Error) -> Bool {
+        guard let urlError = error as? URLError else { return true }
+        return urlError.code != .cancelled
     }
 }

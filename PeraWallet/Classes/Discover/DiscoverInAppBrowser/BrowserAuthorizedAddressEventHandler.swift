@@ -28,8 +28,9 @@ public struct BrowserAuthorizedAddressEventHandler {
     }
     
     func returnAuthorizedAccounts(_ message: WKScriptMessage, in webView: WKWebView, isAuthorizedAccountsOnly: Bool) {
-        guard isAcceptableMessage(message),
-              let cardAccountsBase64 = makeEncodedAccountDetails(isAuthorizedAccountsOnly) else {
+        guard
+            message.isAcceptable,
+            let cardAccountsBase64 = makeEncodedAccountDetails(isAuthorizedAccountsOnly) else {
             return
         }
         
@@ -91,17 +92,6 @@ private extension BrowserAuthorizedAddressEventHandler {
         } catch {
             return nil
         }
-    }
-
-    func isAcceptableMessage(_ message: WKScriptMessage) -> Bool {
-        let frameInfo = message.frameInfo
-        
-        guard frameInfo.isMainFrame,
-              frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else {
-            return false
-        }
-        
-        return true
     }
     
     func getAccountAuthValue(_ account: Account) -> String {
