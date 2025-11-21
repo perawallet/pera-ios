@@ -299,10 +299,16 @@ final class SwapViewController: BaseViewController {
     }
     
     private func resolveDefaultAccount() -> Account? {
-        sharedDataController.accountCollection
-            .filter { !$0.value.isWatchAccount }
-            .min(by: { $0.value.preferredOrder < $1.value.preferredOrder })?
-            .value
+        let validAccounts = sharedDataController.accountCollection
+            .filter { !$0.value.isWatchAccount && $0.value.canSignTransaction }
+        
+        if let lastAddressUsed = PeraUserDefaults.lastAddressUsedInSwapCompleted,
+           let lastUsedAccount = validAccounts.first(where: { $0.value.address == lastAddressUsed })?
+            .value {
+            return lastUsedAccount
+        }
+        
+        return validAccounts.min(by: { $0.value.preferredOrder < $1.value.preferredOrder })?.value
     }
     
     private func resolveInitialState() -> Bool {
@@ -807,6 +813,7 @@ final class SwapViewController: BaseViewController {
                     )
                 )
             }
+            PeraUserDefaults.lastAddressUsedInSwapCompleted = selectedAccount?.address
             swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .inProgress)
             sharedViewModel?.swapConfirmationState = .success
         case .didFailTransaction(let txnID):

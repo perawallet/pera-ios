@@ -67,6 +67,10 @@ public final class Account: ALGEntityModel {
         }
         return [algoAsset]
     }
+    
+    public var canSignTransaction: Bool {
+        authorization.isStandard || isHDAccount || authorization.isLedger || authorization.isRekeyed
+    }
 
     var totalUSDValueOfAssets: Decimal? {
         return calculateTotalUSDValueOfAssets()
