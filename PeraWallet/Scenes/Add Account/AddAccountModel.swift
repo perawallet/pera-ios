@@ -25,7 +25,7 @@ final class AddAccountViewModel: ObservableObject {
         case importWallet
         case watchAccount
         case createUniversalWallet
-        case createAlgo256Wallet
+        case createAlgo25Wallet
     }
     
     struct MenuOptionModel: Identifiable {
@@ -150,7 +150,7 @@ final class AddAccountModel: AddAccountModelable {
         }
         
         result.append(AddAccountViewModel.MenuOptionModel(
-            id: .createAlgo256Wallet,
+            id: .createAlgo25Wallet,
             icon: .Icons.wallet,
             title: String(localized: "add-account-option-create-algo25-wallet-title"),
             description: String(localized: "add-account-option-create-algo25-wallet-description"),

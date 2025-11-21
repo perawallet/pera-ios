@@ -23,12 +23,6 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
     private lazy var algorandSecureBackupFlowCoordinator: AlgorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(configuration: configuration, presentingScreen: self)
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
-    // MARK: - Initialisers
-    
-    override init(configuration: ViewControllerConfiguration, hostingController: UIViewController) {
-        super.init(configuration: configuration, hostingController: hostingController)
-    }
-    
     // MARK: - View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
