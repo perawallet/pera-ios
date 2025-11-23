@@ -40,6 +40,18 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
     override func customizeTabBarAppearence() {
         tabBarHidden = true
     }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name) {
+            handleDiscoverAssetDetail(inAppMessage, message)
+        }
+        super.userContentController(userContentController, didReceive: message)
+    }
 }
 
 enum DiscoverAssetDetailScriptMessage:

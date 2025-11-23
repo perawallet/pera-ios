@@ -79,6 +79,18 @@ final class DiscoverHomeScreen:
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name) {
+            handleDiscoverHome(inAppMessage, message)
+        }
+        super.userContentController(userContentController, didReceive: message)
+    }
 }
 
 /// <mark>

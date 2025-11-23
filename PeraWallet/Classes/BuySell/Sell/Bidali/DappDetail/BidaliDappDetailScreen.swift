@@ -75,6 +75,17 @@ final class BidaliDappDetailScreen:
         cancelPayment()
     }
     
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = BidaliDappDetailScriptMessage(rawValue: message.name) {
+            handleBidali(inAppMessage, message)
+        }
+    }
+    
     func sharedDataController(
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent

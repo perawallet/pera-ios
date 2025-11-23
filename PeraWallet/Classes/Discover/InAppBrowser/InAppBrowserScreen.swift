@@ -443,9 +443,7 @@ class InAppBrowserScreen:
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
-    ) {
-        parseWebViewMessageV1(message)
-    }
+    ) { }
     
     // MARK: - Helpers
     

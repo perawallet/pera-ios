@@ -17,35 +17,8 @@
 import WebKit
 import pera_wallet_core
 
-extension InAppBrowserScreen {
-    func parseWebViewMessageV1(_ message: WKScriptMessage) {
-        switch message.name {
-        case let name where DiscoverAssetDetailScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: name) else { return }
-            handleDiscoverAssetDetail(inAppMessage, message)
-        case let name where DiscoverExternalInAppBrowserScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: name) else { return }
-            handleDiscoverExternal(inAppMessage, message)
-        case let name where DiscoverHomeScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = DiscoverHomeScriptMessage(rawValue: name) else { return }
-            handleDiscoverHome(inAppMessage, message)
-        case let name where DiscoverInAppBrowserScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = DiscoverInAppBrowserScriptMessage(rawValue: name) else { return }
-            handleDiscoverInApp(inAppMessage, message)
-        case let name where StakingInAppBrowserScreenMessage(rawValue: name) != nil:
-            guard let inAppMessage = StakingInAppBrowserScreenMessage(rawValue: name) else { return }
-            handleStaking(inAppMessage, message)
-        case let name where CardsInAppBrowserScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = CardsInAppBrowserScriptMessage(rawValue: name) else { return }
-            handleCards(inAppMessage, message)
-        case let name where BidaliDappDetailScriptMessage(rawValue: name) != nil:
-            guard let inAppMessage = BidaliDappDetailScriptMessage(rawValue: name) else { return }
-            handleBidali(inAppMessage, message)
-        default: break
-        }
-    }
-    
-    private func handleDiscoverInApp(_ inAppMessage: DiscoverInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+extension InAppBrowserScreen {    
+    func handleDiscoverInApp(_ inAppMessage: DiscoverInAppBrowserScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .requestAuthorizedAddresses:
             handleRequestAuthorizedAddresses(message, isAuthorizedAccountsOnly: false)
@@ -66,11 +39,11 @@ extension InAppBrowserScreen {
         switch inAppMessage { case .handleTokenDetailActionButtonClick: handleTokenAction(message) }
     }
     
-    private func handleDiscoverExternal(_ inAppMessage: DiscoverExternalInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+    func handleDiscoverExternal(_ inAppMessage: DiscoverExternalInAppBrowserScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage { case .peraconnect: handlePeraConnectAction(message) }
     }
     
-    private func handleDiscoverHome(_ inAppMessage: DiscoverHomeScriptMessage, _ message: WKScriptMessage) {
+    func handleDiscoverHome(_ inAppMessage: DiscoverHomeScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .pushTokenDetailScreen:
             handleTokenDetailAction(message)
@@ -79,7 +52,7 @@ extension InAppBrowserScreen {
         }
     }
     
-    private func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
+    func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
@@ -94,7 +67,7 @@ extension InAppBrowserScreen {
         }
     }
     
-    private func handleCards(_ inAppMessage: CardsInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+    func handleCards(_ inAppMessage: CardsInAppBrowserScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .requestAuthorizedAddresses:
             handleRequestAuthorizedAddresses(message, isAuthorizedAccountsOnly: true)
@@ -109,7 +82,7 @@ extension InAppBrowserScreen {
         }
     }
     
-    private func handleBidali(_ inAppMessage: BidaliDappDetailScriptMessage, _ message: WKScriptMessage) {
+    func handleBidali(_ inAppMessage: BidaliDappDetailScriptMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .paymentRequest:
             handlePaymentRequestAction(message)
