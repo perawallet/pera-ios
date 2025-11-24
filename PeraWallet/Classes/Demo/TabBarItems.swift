@@ -138,12 +138,15 @@ struct FundTabBarItem: TabBarItem {
         _ screen: UIViewController
     ) {
         self.id = TabBarItemID.stake.rawValue
+        
+        let image = UIImage(named: "tabbar-icon-fund")?.withRenderingMode(.alwaysOriginal)
+
         self.barButtonItem =
             TabBarButtonItem(
                 icon: [
-                    .normal("tabbar-icon-stake"),
-                    .selected("tabbar-icon-stake-selected"),
-                    .disabled("tabbar-icon-stake-disabled")
+                    .normal(image!.withTintColor(Colors.TabBar.iconActive.uiColor)),
+                    .selected(image!.withTintColor(Colors.Text.main.uiColor)),
+                    .disabled(image!.withTintColor(Colors.TabBar.iconDisabled.uiColor))
                 ],
                 title: String(localized: "title-fund")
             )
