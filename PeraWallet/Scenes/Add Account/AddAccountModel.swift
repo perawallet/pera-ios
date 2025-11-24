@@ -88,16 +88,24 @@ final class AddAccountModel: AddAccountModelable {
     // MARK: - Factories
     
     private func collapsedMenuOptions() -> [AddAccountViewModel.MenuOptionModel] {
-        
-        var result: [AddAccountViewModel.MenuOptionModel] = [
-            AddAccountViewModel.MenuOptionModel(
+        var result: [AddAccountViewModel.MenuOptionModel] = []
+        if legacyConfiguration.session?.authenticatedUser?.hdWallets.isNonEmpty ?? false {
+            result.append(AddAccountViewModel.MenuOptionModel(
                 id: .addAccount,
                 icon: .Icons.walletAdd,
                 title: String(localized: "add-account-option-add-account-title"),
                 description: String(localized: "add-account-option-add-account-description"),
-                isNewBadgeVisible: false
+                isNewBadgeVisible: false)
             )
-        ]
+        } else {
+            result.append(AddAccountViewModel.MenuOptionModel(
+                id: .createUniversalWallet,
+                icon: .Icons.walletUniversal,
+                title: String(localized: "add-account-option-create-universal-wallet-title"),
+                description: String(localized: "add-account-option-create-universal-wallet-description"),
+                isNewBadgeVisible: false)
+            )
+        }
         
         if legacyConfiguration.featureFlagService.isEnabled(.jointAccountEnabled) {
             result.append(AddAccountViewModel.MenuOptionModel(
@@ -121,28 +129,34 @@ final class AddAccountModel: AddAccountModelable {
     }
     
     private func expandedMenuOptions() -> [AddAccountViewModel.MenuOptionModel] {
-        [
+        var result: [AddAccountViewModel.MenuOptionModel] = [
             AddAccountViewModel.MenuOptionModel(
                 id: .watchAccount,
                 icon: .Icons.watchAccount,
                 title: String(localized: "add-account-option-watch-account-title"),
                 description: String(localized: "add-account-option-watch-account-description"),
                 isNewBadgeVisible: false
-            ),
-            AddAccountViewModel.MenuOptionModel(
+            )
+        ]
+        
+        if legacyConfiguration.session?.authenticatedUser?.hdWallets.isNonEmpty ?? false {
+            result.append(AddAccountViewModel.MenuOptionModel(
                 id: .createUniversalWallet,
                 icon: .Icons.walletUniversal,
                 title: String(localized: "add-account-option-create-universal-wallet-title"),
                 description: String(localized: "add-account-option-create-universal-wallet-description"),
-                isNewBadgeVisible: false
-            ),
-            AddAccountViewModel.MenuOptionModel(
-                id: .createAlgo256Wallet,
-                icon: .Icons.wallet,
-                title: String(localized: "add-account-option-create-algo25-wallet-title"),
-                description: String(localized: "add-account-option-create-algo25-wallet-description"),
-                isNewBadgeVisible: false
+                isNewBadgeVisible: false)
             )
-        ]
+        }
+        
+        result.append(AddAccountViewModel.MenuOptionModel(
+            id: .createAlgo256Wallet,
+            icon: .Icons.wallet,
+            title: String(localized: "add-account-option-create-algo25-wallet-title"),
+            description: String(localized: "add-account-option-create-algo25-wallet-description"),
+            isNewBadgeVisible: false)
+        )
+        
+        return result
     }
 }
