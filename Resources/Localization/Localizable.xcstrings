@@ -364,7 +364,6 @@
       }
     },
     "account-type-selection-passphrase-algo25" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
