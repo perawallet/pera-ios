@@ -136,7 +136,7 @@ class InAppBrowserScreen:
     private func resolveURL(_ url: URL?) -> URL? {
         guard let url = url else { return nil }
         
-        if configuration.featureFlagService.isEnabled(.webviewV2Enabled) {
+        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
             // TODO: static url just for testing, change it before prod
             return URL(string: "https://onramp-mobile-staging.perawallet.app/test")
         }
@@ -172,7 +172,7 @@ class InAppBrowserScreen:
 
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
         
-        if configuration.featureFlagService.isEnabled(.webviewV2Enabled) {
+        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
             WebViewV2Message.allCases.forEach {
                 print("---\($0.rawValue)")
                 controller.add(secureScriptMessageHandler: self, forName: $0.rawValue)
@@ -477,7 +477,7 @@ class InAppBrowserScreen:
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        guard configuration.featureFlagService.isEnabled(.webviewV2Enabled) else {
+        guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
             parseWebViewMessageV1(message)
             return
         }

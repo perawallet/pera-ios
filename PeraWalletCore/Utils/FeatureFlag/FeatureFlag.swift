@@ -24,23 +24,26 @@ public enum FeatureFlag: String, CaseIterable {
     case assetDetailV2Enabled = "enable_asset_detail_v2"
     case assetDetailV2EndpointEnabled = "enable_asset_detail_v2_endpoint"
     case webviewV2Enabled = "enable_webview_v2"
+    case xoSwapEnabled = "enable_xo_swap"
 
     var defaultValue: RemoteConfigValue {
         switch self {
         case .swapFeePadding:
-            return .double(-1)
+                .double(-1)
         case .liquidAuthEnabled:
-            return .bool(false)
+                .bool(false)
         case .liquidConnectEnabled:
-            return .bool(false)
+                .bool(false)
         case .ledgerDeflexFilterEnabled:
-            return .bool(false)
+                .bool(false)
         case .assetDetailV2Enabled:
-            return .bool(false)
+                .bool(false)
         case .assetDetailV2EndpointEnabled:
-            return .bool(false)
+                .bool(false)
         case .webviewV2Enabled:
-            return .bool(false)
+                .bool(false)
+        case .xoSwapEnabled:
+                .bool(false)
         }
     }
     

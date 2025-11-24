@@ -167,7 +167,7 @@ extension RootViewController {
         let fundVC = FundInAppBrowserScreen(configuration: appConfiguration.all())
         let fundTab = FundTabBarItem(NavigationContainer(rootViewController: fundVC))
         
-        guard appConfiguration.featureFlagService.isEnabled(.webviewV2Enabled) else {
+        guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else {
             mainContainer.items = [
                 homeTab,
                 discoverTab,
