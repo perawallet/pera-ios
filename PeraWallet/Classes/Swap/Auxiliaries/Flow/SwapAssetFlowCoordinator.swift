@@ -620,7 +620,7 @@ extension SwapAssetFlowCoordinator {
             transactionSigner: transactionSigner
         )
         
-        var filters: [AssetFilterAlgorithm] = [AssetZeroBalanceFilterAlgorithm()]
+        var filters: [AssetFilterAlgorithm] = [AssetZeroBalanceFilterAlgorithm(), AssetVerifiedAndCategoryFilterAlgorithm()]
 
         if let poolAsset = swapController.poolAsset {
             filters.append(AssetExcludeFilterAlgorithm(excludedList: [poolAsset]))

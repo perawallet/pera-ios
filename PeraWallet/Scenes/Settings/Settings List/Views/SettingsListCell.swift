@@ -34,7 +34,7 @@ struct SettingsListCell: View {
                 .padding(.trailing, 16.0)
             VStack(alignment: .leading, spacing: 8.0) {
                 Text(title)
-                    .font(.dmSans.regular.size(15.0))
+                    .font(.DMSans.regular.size(15.0))
                     .foregroundStyle(Color.Text.main)
             }
             Spacer()

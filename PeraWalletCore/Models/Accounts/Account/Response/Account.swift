@@ -41,6 +41,7 @@ public final class Account: ALGEntityModel {
     public internal(set) var closedRound: UInt64?
     public internal(set) var isDeleted: Bool?
     public internal(set) var hdWalletAddressDetail: HDWalletAddressDetail?
+    public internal(set) var jointAccountParticipants: [String]?
 
     public private(set) var appsLocalState: [ApplicationLocalState]?
     public private(set) var appsTotalExtraPages: Int?
@@ -65,6 +66,10 @@ public final class Account: ALGEntityModel {
             return assets + [algoAsset]
         }
         return [algoAsset]
+    }
+    
+    public var canSignTransaction: Bool {
+        authorization.isStandard || isHDAccount || authorization.isLedger || authorization.isRekeyed
     }
 
     var totalUSDValueOfAssets: Decimal? {
@@ -108,6 +113,7 @@ public final class Account: ALGEntityModel {
         totalCreatedApps = apiModel.totalCreatedApps
         algo = Algo(amount: apiModel.amount)
         isBackedUp = true
+        jointAccountParticipants = nil
     }
 
     public init(
@@ -133,6 +139,7 @@ public final class Account: ALGEntityModel {
         self.totalCreatedApps = 0
         self.algo = Algo(amount: 0)
         self.isBackedUp = true
+        self.jointAccountParticipants = nil
     }
     
     public init(
@@ -153,6 +160,7 @@ public final class Account: ALGEntityModel {
         self.algo = Algo(amount: 0)
         self.isBackedUp = localAccount.isBackedUp
         self.hdWalletAddressDetail = localAccount.hdWalletAddressDetail
+        self.jointAccountParticipants = localAccount.jointAccountParticipants
     }
 
     public func encode() -> APIModel {
@@ -514,6 +522,7 @@ extension Account {
         preferredOrder = localAccount.preferredOrder
         isBackedUp = localAccount.isBackedUp
         hdWalletAddressDetail = localAccount.hdWalletAddressDetail
+        jointAccountParticipants = localAccount.jointAccountParticipants
     }
 
     public func update(with account: Account) {
@@ -542,6 +551,7 @@ extension Account {
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
         isBackedUp = account.isBackedUp
+        jointAccountParticipants = account.jointAccountParticipants
         
         if let updatedHDWalletAddressDetail = account.hdWalletAddressDetail {
             hdWalletAddressDetail = updatedHDWalletAddressDetail
@@ -559,6 +569,7 @@ public enum AccountAuthorization: RawRepresentable {
         case .standard: return "standard"
         case .ledger: return "ledger"
         case .watch: return "watch"
+        case .jointAccount: return "jointAccount"
         case .noAuthInLocal: return "noAuthInLocal"
         case .standardToLedgerRekeyed: return "standardToLedgerRekeyed"
         case .standardToStandardRekeyed: return "standardToStandardRekeyed"
@@ -595,6 +606,7 @@ public enum AccountAuthorization: RawRepresentable {
     case standard
     case ledger
     case watch
+    case jointAccount
     case noAuthInLocal /// <note> Missing private data and not rekeyed
 
     case standardToLedgerRekeyed
@@ -718,6 +730,7 @@ extension AccountAuthorization {
         case .standard: self = .standard
         case .watch: self = .watch
         case .ledger: self = .ledger
+        case .joint: self = .jointAccount
         case .rekeyed: self = .standardToStandardRekeyed
         }
     }

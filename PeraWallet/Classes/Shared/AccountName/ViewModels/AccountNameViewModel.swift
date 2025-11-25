@@ -35,7 +35,7 @@ final class AccountNameViewModel {
         bindName(from: contact, with: hasImage)
     }
 
-    init(nameService: NameService) {
+    init(nameService: NameServiceAPIModel) {
         bindName(from: nameService)
         bindImage(from: nameService)
     }
@@ -101,11 +101,11 @@ extension AccountNameViewModel {
 
 /// <mark> NameService
 extension AccountNameViewModel {
-    private func bindName(from nameService: NameService) {
+    private func bindName(from nameService: NameServiceAPIModel) {
         name = nameService.name
     }
 
-    private func bindImage(from nameService: NameService) {
+    private func bindImage(from nameService: NameServiceAPIModel) {
         image = DefaultURLImageSource(url: URL(string: nameService.service.logo))
         imageBottomRightBadge = nil
     }

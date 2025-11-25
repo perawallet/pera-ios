@@ -20,6 +20,9 @@ import Testing
 
 extension Tag {
     @Tag static var model: Self
+    @Tag static var encoderDecoder: Self
+    @Tag static var dataProvider: Self
+    @Tag static var formatter: Self
 }
 
 // MARK: - Scenes

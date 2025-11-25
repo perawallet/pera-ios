@@ -25,11 +25,11 @@ struct SwapTopPairsListView: View {
         VStack {
             HStack {
                 Text("top5-swaps-title")
-                    .font(.dmSans.medium.size(15))
+                    .font(.DMSans.medium.size(15))
                     .foregroundStyle(Color.Text.main)
                 Spacer()
                 Text("swap-volume-title")
-                    .font(.dmSans.regular.size(15))
+                    .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.gray)
             }
             Spacer().frame(height: 8)
@@ -37,7 +37,7 @@ struct SwapTopPairsListView: View {
             if viewModel.isListEmpty {
                 HStack {
                     Text("no-swap-activity-placeholder-text")
-                        .font(.dmSans.regular.size(13))
+                        .font(.DMSans.regular.size(13))
                         .foregroundStyle(Color.Text.gray)
                     Spacer()
                 }
@@ -48,7 +48,7 @@ struct SwapTopPairsListView: View {
                     ForEach(viewModel.swapTopPairsArray, id: \.0) { index, swapTopPair in
                         HStack(alignment: .center) {
                             Text(viewModel.indexTitleFor(index: index))
-                                .font(.dmSans.regular.size(19))
+                                .font(.DMSans.regular.size(19))
                                 .foregroundStyle(Color.Text.gray)
                                 .frame(width: 26, alignment: .leading)
                             
@@ -56,11 +56,11 @@ struct SwapTopPairsListView: View {
                             
                             Spacer().frame(width: 8)
                             Text(viewModel.rowTitleFor(index: index))
-                                .font(.dmSans.medium.size(15))
+                                .font(.DMSans.medium.size(15))
                                 .foregroundStyle(Color.Text.main)
                             Spacer()
                             Text(swapTopPair.volumeText)
-                                .font(.dmSans.regular.size(15))
+                                .font(.DMSans.regular.size(15))
                                 .foregroundStyle(Color.Text.gray)
                         }
                         .frame(height: 72)

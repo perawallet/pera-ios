@@ -21,6 +21,7 @@ public enum PeraUserDefaults {
     @UserDefault(key: "shouldShowNewAccountAnimation") public static var shouldShowNewAccountAnimation: Bool?
     @UserDefault(key: "shouldUseLocalCurrencyInSwap") public static var shouldUseLocalCurrencyInSwap: Bool?
     @UserDefault(key: "isMediaCleanupCompleted") public static var isMediaCleanupCompleted: Bool?
+    @UserDefault(key: "lastAddressUsedInSwapCompleted") public static var lastAddressUsedInSwapCompleted: String?
     
     // MARK: - Security Settings
     

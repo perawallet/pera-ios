@@ -26,7 +26,7 @@ public struct KeyRegTransactionSendDraft: TransactionSendDraft {
     public var note: String?
     public var lockedNote: String?
     public var toContact: Contact? = nil
-    public var toNameService: NameService? = nil
+    public var toNameService: NameServiceAPIModel? = nil
     public let stateProofKey: String?
     public let voteKey: String?
     public let selectionKey: String?
@@ -44,7 +44,7 @@ public struct KeyRegTransactionSendDraft: TransactionSendDraft {
         note: String? = nil,
         lockedNote: String? = nil,
         toContact: Contact? = nil,
-        toNameService: NameService? = nil,
+        toNameService: NameServiceAPIModel? = nil,
         stateProofKey: String?,
         voteKey: String?,
         selectionKey: String?,

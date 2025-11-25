@@ -56,12 +56,13 @@ class InAppBrowserScreen:
 
     var extraUserScripts: [InAppBrowserScript] { [] }
     var handledMessages: [any InAppBrowserScriptMessage] { [] }
-    var account: AccountHandle? { nil }
+    var account: AccountHandle? = nil
 
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
     private var lastURL: URL? { webView.url ?? sourceURL }
     
+    // MARK: - Initialisers
     enum WebViewV2Message: String, InAppBrowserScriptMessage {
         case pushWebView
         case openSystemBrowser
@@ -465,13 +466,7 @@ class InAppBrowserScreen:
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
-    ) {
-        guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
-            parseWebViewMessageV1(message)
-            return
-        }
-        parseWebViewMessageV2(message)
-    }
+    ) { }
     
     // MARK: - Helpers
     

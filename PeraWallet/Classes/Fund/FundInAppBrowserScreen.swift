@@ -27,6 +27,10 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
         let currentUserAgent = webView.value(forKey: "userAgent") as? String
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
+    
+    override var handledMessages: [any InAppBrowserScriptMessage] {
+        FundInAppBrowserScriptMessage.allCases
+    }
 
     deinit {
         stopObservingNotifications()
@@ -62,6 +66,17 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
 
     override func didPullToRefresh() {
         loadPeraURL()
+    }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = FundInAppBrowserScriptMessage(rawValue: message.name) {
+            handleFund(inAppMessage, message)
+        }
     }
 }
 
@@ -116,4 +131,20 @@ extension FundInAppBrowserScreen {
         let script = "updateCurrency('\(newCurrency)')"
         webView.evaluateJavaScript(script)
     }
+}
+
+enum FundInAppBrowserScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case pushWebView
+    case openSystemBrowser
+    case canOpenURI
+    case openNativeURI
+    case notifyUser
+    case getAddresses
+    case getSettings
+    case getPublicSettings
+    case onBackPressed
+    case logAnalyticsEvent
+    case closeWebView
 }

@@ -33,9 +33,7 @@ final class DiscoverHomeScreen:
     }
     
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
-        let homeMessages = DiscoverHomeScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
-        return baseMessages + homeMessages
+        super.handledMessages + DiscoverHomeScriptMessage.allCases
     }
     
     private lazy var theme = DiscoverHomeScreenTheme()
@@ -80,6 +78,18 @@ final class DiscoverHomeScreen:
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = DiscoverHomeScriptMessage(rawValue: message.name) {
+            handleDiscoverHome(inAppMessage, message)
+        }
+        super.userContentController(userContentController, didReceive: message)
     }
 }
 

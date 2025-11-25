@@ -28,7 +28,7 @@ public struct RekeyTransactionSendDraft: TransactionSendDraft {
     public var lockedNote: String?
 
     public var toContact: Contact?
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     
     public init(account: Account, rekeyedTo: String) {
         self.from = account

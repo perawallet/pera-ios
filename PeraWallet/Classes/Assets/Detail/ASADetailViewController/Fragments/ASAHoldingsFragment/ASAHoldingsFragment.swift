@@ -54,7 +54,6 @@ final class ASAHoldingsFragment: TransactionsViewController {
             account: account,
             asset: asset,
             viewModel: viewModel,
-            chartData: ChartViewData(period: .oneWeek, chartValues: [], isLoading: false),
             shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
             eventHandler: eventHandler
         )
@@ -73,7 +72,6 @@ final class ASAHoldingsFragment: TransactionsViewController {
         account: Account,
         asset: Asset,
         viewModel: ASADetailQuickActionsViewModel,
-        chartData: ChartViewData,
         shouldDisplayQuickActions: Bool,
         eventHandler: @escaping ASADetailViewController.EventHandler
     ) -> ASAHoldingsHeaderContext {
@@ -83,7 +81,6 @@ final class ASAHoldingsFragment: TransactionsViewController {
             currency: configuration.sharedDataController.currency,
             shouldDisplayQuickActions: shouldDisplayQuickActions,
             quickActionsViewModel: viewModel,
-            chartData: chartData,
             eventHandler: eventHandler,
             showNotificationAndFavoriteButtons: configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
         )
@@ -96,7 +93,6 @@ final class ASAHoldingsFragment: TransactionsViewController {
             account: draft.accountHandle.value,
             asset: newAsset ?? asset,
             viewModel: viewModel,
-            chartData: chartData,
             shouldDisplayQuickActions: shouldDisplayQuickActions,
             eventHandler: eventHandler
         )
@@ -108,7 +104,7 @@ final class ASAHoldingsFragment: TransactionsViewController {
         transactionsDataSource.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
     }
     
-    func updateChart(with data: ChartViewData?) {
+    func updateChart(with data: ChartViewData) {
         transactionsDataSource.updateChart(with: data)
     }
 }
@@ -119,7 +115,6 @@ struct ASAHoldingsHeaderContext {
     let currency: CurrencyProvider
     let shouldDisplayQuickActions: Bool
     let quickActionsViewModel: ASADetailQuickActionsViewModel
-    let chartData: ChartViewData
     let eventHandler: ASADetailViewController.EventHandler
     let showNotificationAndFavoriteButtons: Bool
 }

@@ -47,7 +47,7 @@ struct SettingsListModelTests {
     
     // MARK: - Helpers
     
-    private func update(accounts: [PeraAccount]) async throws {
+    private func update(accounts: Set<PeraAccount>) async throws {
         accountsService.accountsPublisher.send(accounts)
         try await Task.sleep(for: .milliseconds(10.0))
     }

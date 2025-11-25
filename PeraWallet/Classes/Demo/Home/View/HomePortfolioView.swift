@@ -123,7 +123,7 @@ final class HomePortfolioView:
         } else {
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
-            tendencyValueView.isHidden = false
+            tendencyValueView.isHidden = viewModel?.differenceText == nil
         }
     }
     

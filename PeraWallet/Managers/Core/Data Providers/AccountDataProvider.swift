@@ -13,6 +13,7 @@
 // limitations under the License.
 
 //   AccountDataProvider.swift
+
 import pera_wallet_core
 
 final class AccountDataProvider {
@@ -20,18 +21,22 @@ final class AccountDataProvider {
     // MARK: - Properties
     
     private let legacySessionManager: Session
+    private let legacyFeatureFlagService: FeatureFlagServicing
     
     // MARK: - Initialisers
     
-    init(legacySessionManager: Session) {
+    init(legacySessionManager: Session, legacyFeatureFlagService: FeatureFlagServicing) {
         self.legacySessionManager = legacySessionManager
+        self.legacyFeatureFlagService = legacyFeatureFlagService
     }
     
     // MARK: - Actions
     
     func accountType(localAccount: AccountInformation) -> PeraAccount.AccountType {
         if localAccount.type == .watch { return .watch }
+        if localAccount.jointAccountParticipants != nil, legacyFeatureFlagService.isEnabled(.jointAccountEnabled) { return .joint }
         if localAccount.hdWalletAddressDetail != nil { return .universalWallet }
+        if localAccount.ledgerDetail != nil { return .ledger }
         return havePrivateData(address: localAccount.address) ? .algo25 : .invalid
     }
     
@@ -39,7 +44,8 @@ final class AccountDataProvider {
         guard let indexerAccount, indexerAccount.isRekeyed, let authAddress = indexerAccount.authAddr else { return nil }
         guard let authAccount = localAccounts.first(where: { $0.address == authAddress }) else { return .invalid }
         if authAccount.ledgerDetail != nil { return .ledger }
-        return havePrivateData(address: authAccount.address) ? .wallet : .invalid
+        if authAccount.hdWalletAddressDetail != nil { return .universalWallet }
+        return havePrivateData(address: authAddress) ? .algo25 : .invalid
     }
     
     // MARK: - Helpers

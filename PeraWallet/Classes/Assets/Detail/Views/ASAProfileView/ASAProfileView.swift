@@ -60,6 +60,7 @@ final class ASAProfileView:
     private lazy var favoritesButton = UIButton()
     
     private var chartData: ChartViewData?
+    private var isAmountHidden = false
     private lazy var chartViewModel = ChartViewModel(dataModel: ChartDataModel())
     private lazy var chartHostingController = UIHostingController(rootView: makeChartView())
     
@@ -88,7 +89,9 @@ final class ASAProfileView:
     // MARK: - Setups
     
     private func setupGestures() {
-        startPublishing(event: .onAmountTap, for: primaryValueButton)
+        if type != .assetPrice {
+            startPublishing(event: .onAmountTap, for: primaryValueButton)
+        }
         startPublishing(event: .onNotificationTap, for: notificationsButton)
         startPublishing(event: .onFavoriteTap, for: favoritesButton)
     }
@@ -120,6 +123,8 @@ final class ASAProfileView:
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
+        isAmountHidden = type == .assetPrice ? false : viewModel?.isAmountHidden ?? false
+        
         if let selectedPointDateValue = viewModel?.selectedPointDateValue {
             selectedPointDateValue.load(in: selectedPointDateValueView)
             tendencyValueView.isHidden = true
@@ -128,7 +133,7 @@ final class ASAProfileView:
                 $0.text = nil
                 $0.attributedText = nil
             }
-            tendencyValueView.isHidden = false
+            tendencyValueView.isHidden = isAmountHidden
             bindIcon(viewModel)
             nameView.bindData(viewModel?.name)
         }
@@ -175,24 +180,20 @@ final class ASAProfileView:
         chartViewModel.refresh(with: data.model)
         chartHostingController.rootView = makeChartView()
         
-        guard
-            let differenceText = tendenciesVM.differenceText,
-            let differenceInPercentageText = tendenciesVM.differenceInPercentageText,
-            let arrowImageView = tendenciesVM.arrowImageView
-        else {
+        guard let differenceText = tendenciesVM.differenceText else {
             tendencyValueView.isHidden = true
             return
         }
         
         tendencyValueView.bind(
             differenceText: differenceText,
-            differenceInPercentageText: differenceInPercentageText,
-            arrowImageView: arrowImageView,
+            differenceInPercentageText: tendenciesVM.differenceInPercentageText,
+            arrowImageView: tendenciesVM.arrowImageView,
             hideDiffLabel: type == .assetPrice,
             baselineView: secondaryValueView
         )
         
-        tendencyValueView.isHidden = false
+        tendencyValueView.isHidden = isAmountHidden
     }
 
     func bindIcon(_ viewModel: ASAProfileViewModel?) {

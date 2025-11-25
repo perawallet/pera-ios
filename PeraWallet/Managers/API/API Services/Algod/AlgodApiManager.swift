@@ -22,7 +22,7 @@ final class AlgodApiManager {
         didSet { updateApiManager(network: network) }
     }
     
-    private lazy var apiManager = CoreApiManager(baseURL: .algod(network: network))
+    private lazy var apiManager = CoreApiManager(baseURL: .algod(network: network), keyDecodingStrategy: .kebabCase, keyEncodingStrategy: .convertToSnakeCase)
     
     // MARK: - Initialisers
     
@@ -37,8 +37,24 @@ final class AlgodApiManager {
     
     // MARK: - Requests
     
-    func waitForNextBlock(afterBlockNumber blockNumber: Int) async throws -> WaitForBlockResponse {
+    func waitForNextBlock(afterBlockNumber blockNumber: Int) async throws(CoreApiManager.ApiError) -> WaitForBlockResponse {
         let request = WaitForBlockRequest(blockNumber: blockNumber)
-        return try await apiManager.perform(request: request)
+        return try await perform(request: request)
+    }
+    
+    // MARK: - Actions
+    
+    private func perform<Request: Requestable>(request: Request) async throws(CoreApiManager.ApiError) -> Request.ResponseType {
+        try await apiManager.perform(request: request, headers: makeHeaders())
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeHeaders() -> [String: String] {
+        [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip;q=1.0, *;q=0.5"
+        ]
     }
 }

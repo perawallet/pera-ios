@@ -31,10 +31,11 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
-    case addAccount(flow: AccountSetupFlow)
+    case addAccount
     case mnemonicTypeSelection(eventHandler: MnemonicTypeSelectionScreen.EventHandler)
     case recoverAccount(flow: AccountSetupFlow)
     case recoverAccountsLoadingScreen
+    case accountRecoverySearch
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)
     case passphraseVerify(flow: AccountSetupFlow, address: String, walletFlowType: WalletFlowType)

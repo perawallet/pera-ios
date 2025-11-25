@@ -38,7 +38,7 @@ struct FormButton: View {
                 action: action,
                 label: {
                     Text(text)
-                        .font(.dmSans.medium.size(15.0))
+                        .font(.DMSans.medium.size(15.0))
                         .tint(style.textColor)
                         .padding()
                 }
