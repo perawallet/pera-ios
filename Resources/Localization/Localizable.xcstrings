@@ -7890,6 +7890,16 @@
         }
       }
     },
+    "title-buy-gift-card" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy Gift Card"
+          }
+        }
+      }
+    },
     "title-buy-gift-cards" : {
       "localizations" : {
         "en" : {

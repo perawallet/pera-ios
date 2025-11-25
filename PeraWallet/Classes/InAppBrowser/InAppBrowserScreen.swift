@@ -125,23 +125,12 @@ class InAppBrowserScreen:
     // MARK: - Setups
     
     func load(url: URL?) {
-        guard let url = resolveURL(url) else { return }
+        guard let url else { return }
         
         var request = URLRequest(url: url)
         request.timeoutInterval = 30
         webView.load(request)
         sourceURL = url
-    }
-    
-    private func resolveURL(_ url: URL?) -> URL? {
-        guard let url = url else { return nil }
-        
-//        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
-//            // TODO: static url just for testing, change it before prod
-//            return URL(string: "https://onramp-mobile-staging.perawallet.app/test")
-//        }
-        
-        return url
     }
 
     func createWebView() -> WKWebView {
