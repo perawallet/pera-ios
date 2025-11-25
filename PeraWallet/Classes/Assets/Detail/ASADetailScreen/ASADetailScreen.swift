@@ -835,8 +835,12 @@ extension ASADetailScreen {
     }
     
     private func navigateToStake() {
-        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-        rootViewController.launch(tab: .stake)
+        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
+            open(.staking, by: .push)
+        } else {
+            guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+            rootViewController.launch(tab: .stake)
+        }
     }
 
     private func navigateToSendTransactionIfPossible() {

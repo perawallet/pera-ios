@@ -137,7 +137,7 @@ struct FundTabBarItem: TabBarItem {
     init(
         _ screen: UIViewController
     ) {
-        self.id = TabBarItemID.stake.rawValue
+        self.id = TabBarItemID.fund.rawValue
         
         let image = UIImage(named: "tabbar-icon-fund")?.withRenderingMode(.alwaysOriginal)
 
@@ -181,6 +181,7 @@ enum TabBarItemID: String {
     case discover
     case swap
     case stake
+    case fund
     case menu
     case collectibles
 }

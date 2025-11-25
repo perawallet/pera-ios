@@ -572,6 +572,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 }
 
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
+                item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
                 item.startObserving(event: .requests) {
@@ -587,6 +588,11 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 item.startObserving(event: .buy) {
                     [unowned self] in
                     self.eventHandler?(.buy)
+                }
+                
+                item.startObserving(event: .fund) {
+                    [unowned self] in
+                    self.eventHandler?(.fund)
                 }
 
                 item.startObserving(event: .more) {
@@ -990,6 +996,7 @@ extension AccountAssetListViewController {
         case requests
         case buy
         case swap
+        case fund
         case send
         case more
         case transactionOption

@@ -220,6 +220,10 @@ extension AccountDetailViewController {
                 self.analytics.track(.recordAccountDetailScreen(type: .tapBuyAlgo))
                 
                 self.openBuySellOptionsIfPossible()
+            case .fund:
+                self.assetListScreen.endEditing()
+
+                self.openFundIfPossible()
             case .send:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .tapSend))
@@ -406,6 +410,11 @@ extension AccountDetailViewController {
 
         analytics.track(.recordAccountDetailScreen(type: .tapSwap))
         rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: aRawAccount))
+    }
+    
+    private func openFundIfPossible() {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+        rootViewController.launch(tab: .fund)
     }
 }
 

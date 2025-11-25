@@ -136,10 +136,10 @@ class InAppBrowserScreen:
     private func resolveURL(_ url: URL?) -> URL? {
         guard let url = url else { return nil }
         
-        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
-            // TODO: static url just for testing, change it before prod
-            return URL(string: "https://onramp-mobile-staging.perawallet.app/test")
-        }
+//        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
+//            // TODO: static url just for testing, change it before prod
+//            return URL(string: "https://onramp-mobile-staging.perawallet.app/test")
+//        }
         
         return url
     }

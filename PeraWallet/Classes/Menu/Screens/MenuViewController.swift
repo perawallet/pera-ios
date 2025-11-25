@@ -81,7 +81,11 @@ final class MenuViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
+        guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
+            menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
+            return
+        }
+        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buy, .receive, .stake, .inviteFriends]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,10 +125,18 @@ extension MenuViewController {
             guard let self else { return }
             switch event {
             case .didUpdate(let updates):
-                self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buyAlgo, .receive, .inviteFriends]
+                guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
+                    self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buyAlgo, .receive, .inviteFriends]
+                    return
+                }
+                self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buy, .receive, .stake, .inviteFriends]
             case .didFinishRunning(hasError: let hasError):
                 if hasError {
-                    self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
+                    guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
+                        self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
+                        return
+                    }
+                    self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buy, .receive, .stake, .inviteFriends]
                 }
             }
             self.menuListView.collectionView.reloadData()
@@ -198,7 +210,7 @@ extension MenuViewController: UICollectionViewDelegateFlowLayout {
             switch option {
             case .cards:
                 return CGSize(width: width, height: theme.cardsCellHeight)
-            case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
+            case .nfts, .transfer, .buyAlgo, .buy, .receive, .stake, .inviteFriends:
                 return CGSize(width: width, height: theme.cellHeight)
             }
         }
@@ -220,9 +232,14 @@ extension MenuViewController: UICollectionViewDelegate {
             case .buyAlgo:
                 openBuySellOptions()
                 analytics.track(.recordMenuScreen(type: .tapBuyAlgo))
+            case .buy:
+                openBuyGiftCardsWithBidali()
+                analytics.track(.recordMenuScreen(type: .tapBuyAlgo))
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
                 analytics.track(.recordMenuScreen(type: .tapReceive))
+            case .stake:
+                break
             case .inviteFriends:
                 openInviteFriends()
                 analytics.track(.recordMenuScreen(type: .tapInviteFriends))
@@ -252,7 +269,7 @@ extension MenuViewController: UICollectionViewDataSource {
                 cell.bindData(option)
                 return cell
 
-            case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
+            case .nfts, .transfer, .buyAlgo, .buy, .receive, .stake, .inviteFriends:
                 let cell = collectionView.dequeue(MenuListViewCell.self, at: indexPath)
                 cell.bindData(option)
                 return cell

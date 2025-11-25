@@ -33,6 +33,7 @@ final class AccountQuickActionsView:
     private let contentBackgroundView = UIView()
     private lazy var swapActionView = makeActionView()
     private lazy var buyActionView =  makeActionView()
+    private lazy var fundActionView =  makeActionView()
     private lazy var requestsActionView = makeActionView()
     private lazy var moreActionView = makeActionView()
 
@@ -41,6 +42,13 @@ final class AccountQuickActionsView:
     var isRequestsBadgeVisible: Bool = false {
         didSet {
             requestsActionView.customizeAppearance(isRequestsBadgeVisible ? theme.requestsBadgeAction : theme.requestsAction)
+        }
+    }
+    
+    var showFundButton: Bool = false {
+        didSet {
+            buyActionView.isHidden = showFundButton
+            fundActionView.isHidden = !showFundButton
         }
     }
     
@@ -133,6 +141,7 @@ extension AccountQuickActionsView {
         }
         
         addSwapAction(theme)
+        addFundAction(theme)
         addBuyAction(theme)
         addRequestsAction(theme)
         addMoreAction(theme)
@@ -167,6 +176,22 @@ extension AccountQuickActionsView {
         startPublishing(
             event: .buy,
             for: buyActionView
+        )
+    }
+    
+    private func addFundAction(_ theme: AccountQuickActionsViewTheme) {
+        fundActionView.customizeAppearance(theme.fundAction)
+        fundActionView.sizeToFit()
+        customizeAction(
+            fundActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(fundActionView)
+
+        startPublishing(
+            event: .fund,
+            for: fundActionView
         )
     }
     
@@ -226,6 +251,7 @@ extension AccountQuickActionsView {
     enum Event {
         case swap
         case buy
+        case fund
         case requests
         case more
     }

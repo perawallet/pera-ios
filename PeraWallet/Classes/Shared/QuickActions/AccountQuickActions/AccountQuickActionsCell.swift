@@ -28,7 +28,12 @@ final class AccountQuickActionsCell:
             contextView.isRequestsBadgeVisible = isRequestsBadgeVisible
         }
     }
-
+    
+    var showFundButton: Bool = false {
+        didSet {
+            contextView.showFundButton = showFundButton
+        }
+    }
 
     override init(
         frame: CGRect
