@@ -69,6 +69,10 @@ final class AccountPortfolioView:
         _ layoutSheet: LayoutSheet
     ) {}
     
+    func prepareForReuse() {
+        setupGestures()
+    }
+    
     func bindData(
         _ viewModel: AccountPortfolioViewModel?
     ) {
@@ -111,7 +115,7 @@ final class AccountPortfolioView:
                 arrowImageView: arrowImageView,
                 hideDiffLabel: false,
                 baselineView: secondaryValueView)
-            tendencyValueView.isHidden = false
+            tendencyValueView.isHidden = viewModel?.isAmountHidden ?? false
         } else {
             tendencyValueView.isHidden = true
         }
@@ -122,13 +126,13 @@ final class AccountPortfolioView:
             }
             selectedPointDateValue.load(in: selectedPointDateValueView)
         } else {
-            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView, tendencyValueView].forEach {
+            [minimumBalanceTitleView, minimumBalanceValueView, minimumBalanceInfoActionView].forEach {
                 $0.isHidden = false
             }
+            tendencyValueView.isHidden = viewModel?.isAmountHidden ?? false
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
         }
-
     }
     
     class func calculatePreferredSize(
@@ -164,10 +168,11 @@ extension AccountPortfolioView {
         
         [valueView, valueButton].forEach(addSubview)
         
-        valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
+
         }
         
         valueButton.snp.makeConstraints {
@@ -197,7 +202,6 @@ extension AccountPortfolioView {
         tendencyValueView.snp.makeConstraints {
             $0.centerY == secondaryValueView.snp.centerY
             $0.leading == secondaryValueView.snp.trailing + 8
-            $0.bottom == 0
         }
     }
 

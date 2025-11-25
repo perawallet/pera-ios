@@ -73,19 +73,19 @@ struct SettingsListView: View {
                     Section(header: ListSectionHeader(text: section.title)) {
                         ForEach(section.rows) { row in
                             SettingsListCell(icon: row.icon, title: row.title)
-                                .settingsViewRowStyle()
+                                .defaultPeraRowStyle()
                                 .contentShape(Rectangle())
                                 .onTapGesture { handleTapOnRow(row: row) }
                         }
                     }
                 }
-                RoundedButton(text: "settings-logout-title") { onLogoutButtonTap?() }
-                    .settingsViewRowStyle()
+                RoundedButton(text: "settings-logout-title", style: .secondary, isEnabled: true) { onLogoutButtonTap?() }
+                    .defaultPeraRowStyle()
                     .padding(.horizontal, 24.0)
                 Text("settings-app-version-\(viewModel.appVersion)")
-                    .settingsViewRowStyle()
+                    .defaultPeraRowStyle()
                     .frame(maxWidth: .infinity)
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
             }
             .listStyle(.grouped)

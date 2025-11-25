@@ -722,7 +722,7 @@
 		5916782D2E460AF9002184C2 /* IndexerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2362D424CF8BF6007ECEBE /* IndexerError.swift */; };
 		5916782E2E460AF9002184C2 /* RekeyTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */; };
 		5916782F2E460AF9002184C2 /* LedgerTroubleshootOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BDB240277A500519981 /* LedgerTroubleshootOption.swift */; };
-		591678302E460AF9002184C2 /* NameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC728B286F27AB006919C3 /* NameService.swift */; };
+		591678302E460AF9002184C2 /* NameServiceAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC728B286F27AB006919C3 /* NameServiceAPIModel.swift */; };
 		591678312E460AF9002184C2 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		591678322E460AF9002184C2 /* AlgorandNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A34DF246DA32A001C8F22 /* AlgorandNode.swift */; };
 		591678332E460AF9002184C2 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
@@ -810,11 +810,6 @@
 		591678BA2E463DC5002184C2 /* UIImage+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591674362E460AA3002184C2 /* UIImage+Size.swift */; };
 		591678BB2E463DC5002184C2 /* WCTransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CBB90A2A8C0D7D003471D6 /* WCTransactionType.swift */; };
 		591678BD2E464A55002184C2 /* BackupMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DFD29A3860500DE6A72 /* BackupMetadata.swift */; };
-		591678C12E464C76002184C2 /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6F2DA8030F00C4E9ED /* AddAccountViewController.swift */; };
-		591678C22E464C76002184C2 /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA732DA8032200C4E9ED /* AddAccountViewController+Theme.swift */; };
-		591678C32E464C76002184C2 /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6B2DA802C100C4E9ED /* AddAccountViewTheme.swift */; };
-		591678C42E464C76002184C2 /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA672DA8023700C4E9ED /* AddAccountView.swift */; };
-		591678C52E464C76002184C2 /* AddAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA632DA801C800C4E9ED /* AddAccountViewModel.swift */; };
 		591678C62E464C76002184C2 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
 		591678C72E464C76002184C2 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
 		591678C82E464C76002184C2 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
@@ -4695,11 +4690,6 @@
 		59E606872E4A712500CCA99B /* WebImportInstructionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177331192965913A006E66F1 /* WebImportInstructionScreen.swift */; };
 		59E606882E4A712500CCA99B /* WebImportInstructionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1773311D29659152006E66F1 /* WebImportInstructionScreenTheme.swift */; };
 		59E606892E4A712500CCA99B /* AccountImportParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* AccountImportParameters.swift */; };
-		59E606B72E4A71D000CCA99B /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6F2DA8030F00C4E9ED /* AddAccountViewController.swift */; };
-		59E606B82E4A71D000CCA99B /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA732DA8032200C4E9ED /* AddAccountViewController+Theme.swift */; };
-		59E606B92E4A71D000CCA99B /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6B2DA802C100C4E9ED /* AddAccountViewTheme.swift */; };
-		59E606BA2E4A71D000CCA99B /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA672DA8023700C4E9ED /* AddAccountView.swift */; };
-		59E606BB2E4A71D000CCA99B /* AddAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA632DA801C800C4E9ED /* AddAccountViewModel.swift */; };
 		59E606BC2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
 		59E606BD2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
 		59E606BE2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
@@ -6818,11 +6808,6 @@
 		59E60EFF2E4A71D000CCA99B /* WebImportInstructionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177331192965913A006E66F1 /* WebImportInstructionScreen.swift */; };
 		59E60F002E4A71D000CCA99B /* WebImportInstructionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1773311D29659152006E66F1 /* WebImportInstructionScreenTheme.swift */; };
 		59E60F012E4A71D000CCA99B /* AccountImportParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* AccountImportParameters.swift */; };
-		59E6FE3F2E4A712500CCA99B /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6F2DA8030F00C4E9ED /* AddAccountViewController.swift */; };
-		59E6FE402E4A712500CCA99B /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA732DA8032200C4E9ED /* AddAccountViewController+Theme.swift */; };
-		59E6FE412E4A712500CCA99B /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA6B2DA802C100C4E9ED /* AddAccountViewTheme.swift */; };
-		59E6FE422E4A712500CCA99B /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA672DA8023700C4E9ED /* AddAccountView.swift */; };
-		59E6FE432E4A712500CCA99B /* AddAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F4FA632DA801C800C4E9ED /* AddAccountViewModel.swift */; };
 		59E6FE442E4A712500CCA99B /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
 		59E6FE452E4A712500CCA99B /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
 		59E6FE462E4A712500CCA99B /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
@@ -7666,7 +7651,7 @@
 		17AC727D286CE399006919C3 /* DeeplinkQR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkQR.swift; sourceTree = "<group>"; };
 		17AC7282286F1B91006919C3 /* NameServiceQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameServiceQuery.swift; sourceTree = "<group>"; };
 		17AC7286286F2142006919C3 /* ALGAPI+NameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+NameService.swift"; sourceTree = "<group>"; };
-		17AC728B286F27AB006919C3 /* NameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameService.swift; sourceTree = "<group>"; };
+		17AC728B286F27AB006919C3 /* NameServiceAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameServiceAPIModel.swift; sourceTree = "<group>"; };
 		17AEC552297044B9002B3B23 /* WebImportErrorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorScreen.swift; sourceTree = "<group>"; };
 		17AEC556297044CB002B3B23 /* WebImportErrorScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorScreenTheme.swift; sourceTree = "<group>"; };
 		17AEC55B2970683F002B3B23 /* WebImportErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorViewModel.swift; sourceTree = "<group>"; };
@@ -10148,11 +10133,6 @@
 		D4F4C8FE29D1B9530069FB94 /* AnyToNoAuthRekeyedAccountInformationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountInformationScreen.swift; sourceTree = "<group>"; };
 		D4F4C90229D1B9710069FB94 /* AnyToNoAuthRekeyedAccountInformationScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountInformationScreenTheme.swift; sourceTree = "<group>"; };
 		D4F4C90729D1B9A10069FB94 /* AnyToNoAuthRekeyedAccountTypeInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountTypeInformationViewModel.swift; sourceTree = "<group>"; };
-		D4F4FA632DA801C800C4E9ED /* AddAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewModel.swift; sourceTree = "<group>"; };
-		D4F4FA672DA8023700C4E9ED /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
-		D4F4FA6B2DA802C100C4E9ED /* AddAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewTheme.swift; sourceTree = "<group>"; };
-		D4F4FA6F2DA8030F00C4E9ED /* AddAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
-		D4F4FA732DA8032200C4E9ED /* AddAccountViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddAccountViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4F681842897DDF1005F9B26 /* AssetAboutSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionView.swift; sourceTree = "<group>"; };
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
@@ -10442,6 +10422,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		54579EB32E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageType.swift,
+			);
+			target = 2B8BE4CD22391C38005D8565 /* pera */;
+		};
+		54579EB42E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageType.swift,
+			);
+			target = 2B0F615A24EC129D00DA22A6 /* pera-beta */;
+		};
+		54579EB52E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageType.swift,
+			);
+			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
+		};
 		545CAA882E28CDDA00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -10456,10 +10457,26 @@
 			);
 			target = 2B95407625A75FB20098805B /* pera-tests */;
 		};
+		5470AA3D2EA0D2E100BCB13B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AccountNameFormatterTests.swift,
+			);
+			target = 2B95407625A75FB20098805B /* pera-tests */;
+		};
+		5474F7662E9E54DC00D6B6BF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				JsonDecoderTests.swift,
+				JsonEncoderTests.swift,
+			);
+			target = 2B95407625A75FB20098805B /* pera-tests */;
+		};
 		54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AccountDataProviderTests.swift,
+				AccountIconProviderTests.swift,
 			);
 			target = 2B95407625A75FB20098805B /* pera-tests */;
 		};
@@ -10470,15 +10487,26 @@
 				"API/API Services/Algod/Requests/Algod/WaitForBlockRequest.swift",
 				"API/API Services/Indexer/IndexerApiManager.swift",
 				"API/API Services/Indexer/Requests/AccountRequest.swift",
+				"API/API Services/Mobile/MobileApiManager.swift",
+				"API/API Services/Mobile/Requests/CreateJointAccountRequest.swift",
+				"API/API Services/Mobile/Requests/CurrencyDataRequest.swift",
+				"API/API Services/Mobile/Requests/NameServiceSearchRequest.swift",
 				API/CoreApiManager.swift,
 				"API/Data Types/APICodingKey.swift",
 				API/Enums/RequestMethod.swift,
+				API/Protocols/BodyRequestable.swift,
+				API/Protocols/QueryRequestable.swift,
 				API/Protocols/Requestable.swift,
 				"Core/Data Providers/AccountDataProvider.swift",
+				Core/Formatters/AccountNameFormatter.swift,
 				Core/PeraCoreManager.swift,
 				Core/Services/AccountsService.swift,
 				Core/Services/BlockchainService.swift,
+				Core/Services/CurrencyService.swift,
+				"Core/Services/Data Types/NonFungibleDomainData.swift",
 				"Core/Services/Data Types/PeraAccount.swift",
+				Core/Services/NFDService.swift,
+				Core/Services/Protocols/NetworkConfigureable.swift,
 				"Tasks Manager/CancellableTask.swift",
 				"Tasks Manager/CancellableTasksManager.swift",
 			);
@@ -10487,14 +10515,29 @@
 		591681342E464C95002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Buttons/AccountRowWithAddButton.swift,
+				Buttons/AccountRowWithEditButton.swift,
 				Buttons/RoundedButton.swift,
+				Buttons/SquareIconButton.swift,
+				"Image Views/RoundedIconView.swift",
+				Labels/FormTitleLabel.swift,
+				Misc/CounterView.swift,
+				Misc/OnboardingTitleView.swift,
+				Misc/SearchFieldWithPasteButton.swift,
+				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
+				Rows/AccountRowWithValues.swift,
+				Rows/CoreAccountRow.swift,
 				Styles/NavigationBarStyle.swift,
+				"Text Fields/LabeledUnderlinedTextField.swift",
+				"Text Fields/PeraTextField.swift",
+				"Text Fields/RoundedTextField.swift",
+				"View Modifiers/BackButtonModifier.swift",
 				WebView.swift,
 			);
 			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
@@ -10526,15 +10569,26 @@
 				"API/API Services/Algod/Requests/Algod/WaitForBlockRequest.swift",
 				"API/API Services/Indexer/IndexerApiManager.swift",
 				"API/API Services/Indexer/Requests/AccountRequest.swift",
+				"API/API Services/Mobile/MobileApiManager.swift",
+				"API/API Services/Mobile/Requests/CreateJointAccountRequest.swift",
+				"API/API Services/Mobile/Requests/CurrencyDataRequest.swift",
+				"API/API Services/Mobile/Requests/NameServiceSearchRequest.swift",
 				API/CoreApiManager.swift,
 				"API/Data Types/APICodingKey.swift",
 				API/Enums/RequestMethod.swift,
+				API/Protocols/BodyRequestable.swift,
+				API/Protocols/QueryRequestable.swift,
 				API/Protocols/Requestable.swift,
 				"Core/Data Providers/AccountDataProvider.swift",
+				Core/Formatters/AccountNameFormatter.swift,
 				Core/PeraCoreManager.swift,
 				Core/Services/AccountsService.swift,
 				Core/Services/BlockchainService.swift,
+				Core/Services/CurrencyService.swift,
+				"Core/Services/Data Types/NonFungibleDomainData.swift",
 				"Core/Services/Data Types/PeraAccount.swift",
+				Core/Services/NFDService.swift,
+				Core/Services/Protocols/NetworkConfigureable.swift,
 				"Tasks Manager/CancellableTask.swift",
 				"Tasks Manager/CancellableTasksManager.swift",
 			);
@@ -10543,14 +10597,29 @@
 		59E606B32E4A712800CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Buttons/AccountRowWithAddButton.swift,
+				Buttons/AccountRowWithEditButton.swift,
 				Buttons/RoundedButton.swift,
+				Buttons/SquareIconButton.swift,
+				"Image Views/RoundedIconView.swift",
+				Labels/FormTitleLabel.swift,
+				Misc/CounterView.swift,
+				Misc/OnboardingTitleView.swift,
+				Misc/SearchFieldWithPasteButton.swift,
+				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
+				Rows/AccountRowWithValues.swift,
+				Rows/CoreAccountRow.swift,
 				Styles/NavigationBarStyle.swift,
+				"Text Fields/LabeledUnderlinedTextField.swift",
+				"Text Fields/PeraTextField.swift",
+				"Text Fields/RoundedTextField.swift",
+				"View Modifiers/BackButtonModifier.swift",
 				WebView.swift,
 			);
 			target = 2B0F615A24EC129D00DA22A6 /* pera-beta */;
@@ -10562,15 +10631,26 @@
 				"API/API Services/Algod/Requests/Algod/WaitForBlockRequest.swift",
 				"API/API Services/Indexer/IndexerApiManager.swift",
 				"API/API Services/Indexer/Requests/AccountRequest.swift",
+				"API/API Services/Mobile/MobileApiManager.swift",
+				"API/API Services/Mobile/Requests/CreateJointAccountRequest.swift",
+				"API/API Services/Mobile/Requests/CurrencyDataRequest.swift",
+				"API/API Services/Mobile/Requests/NameServiceSearchRequest.swift",
 				API/CoreApiManager.swift,
 				"API/Data Types/APICodingKey.swift",
 				API/Enums/RequestMethod.swift,
+				API/Protocols/BodyRequestable.swift,
+				API/Protocols/QueryRequestable.swift,
 				API/Protocols/Requestable.swift,
 				"Core/Data Providers/AccountDataProvider.swift",
+				Core/Formatters/AccountNameFormatter.swift,
 				Core/PeraCoreManager.swift,
 				Core/Services/AccountsService.swift,
 				Core/Services/BlockchainService.swift,
+				Core/Services/CurrencyService.swift,
+				"Core/Services/Data Types/NonFungibleDomainData.swift",
 				"Core/Services/Data Types/PeraAccount.swift",
+				Core/Services/NFDService.swift,
+				Core/Services/Protocols/NetworkConfigureable.swift,
 				"Tasks Manager/CancellableTask.swift",
 				"Tasks Manager/CancellableTasksManager.swift",
 			);
@@ -10579,14 +10659,29 @@
 		59E60F2B2E4A71D300CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Buttons/AccountRowWithAddButton.swift,
+				Buttons/AccountRowWithEditButton.swift,
 				Buttons/RoundedButton.swift,
+				Buttons/SquareIconButton.swift,
+				"Image Views/RoundedIconView.swift",
+				Labels/FormTitleLabel.swift,
+				Misc/CounterView.swift,
+				Misc/OnboardingTitleView.swift,
+				Misc/SearchFieldWithPasteButton.swift,
+				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
 				Passkeys/PasskeyListCell.swift,
 				Passkeys/PasskeyListCellViewModel.swift,
 				Passkeys/PasskeyListModel.swift,
 				Passkeys/PasskeyListView.swift,
+				Rows/AccountRowWithValues.swift,
+				Rows/CoreAccountRow.swift,
 				Styles/NavigationBarStyle.swift,
+				"Text Fields/LabeledUnderlinedTextField.swift",
+				"Text Fields/PeraTextField.swift",
+				"Text Fields/RoundedTextField.swift",
+				"View Modifiers/BackButtonModifier.swift",
 				WebView.swift,
 			);
 			target = 2B8BE4CD22391C38005D8565 /* pera */;
@@ -10595,6 +10690,9 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5449C7C52DDB4AE600E63A8F /* Scenes */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Scenes; sourceTree = "<group>"; };
+		5455EC382E9BF57B006CE415 /* Legacy Handlers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Legacy Handlers"; sourceTree = "<group>"; };
+		54579EA92E965346004DC635 /* Data Providers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Data Providers"; sourceTree = "<group>"; };
+		54579EAE2E965372004DC635 /* Data Types */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54579EB32E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 54579EB42E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 54579EB52E96539A004DC635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Data Types"; sourceTree = "<group>"; };
 		5458D85A2DEDB35700DADA06 /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		5458D8682DEDB35700DADA06 /* Managers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59E60F2A2E4A71D300CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59E606B22E4A712800CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 591681332E464C95002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Managers; sourceTree = "<group>"; };
 		5458D88D2DEDB35E00DADA06 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59E60F2B2E4A71D300CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59E606B32E4A712800CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 591681342E464C95002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
@@ -10602,7 +10700,10 @@
 		545CAA842E28CDAA00D0C9A0 /* Scenes */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA882E28CDDA00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Scenes; sourceTree = "<group>"; };
 		545CAA892E28CE1400D0C9A0 /* Testing Tools */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA8C2E28CEAC00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Testing Tools"; sourceTree = "<group>"; };
 		545CAA932E28F41000D0C9A0 /* Mock */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Mock; sourceTree = "<group>"; };
+		5474F7632E9E54A000D6B6BF /* Encoders and Decoders */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5474F7662E9E54DC00D6B6BF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Encoders and Decoders"; sourceTree = "<group>"; };
+		5493547A2E9FD157009E53CF /* Formatters */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5470AA3D2EA0D2E100BCB13B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Formatters; sourceTree = "<group>"; };
 		54C7260E2E27920B00E08B4C /* Data Providers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Data Providers"; sourceTree = "<group>"; };
+		594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AccountSearchRecovery; sourceTree = "<group>"; };
 		59B1F8B52E4B319500B8F6FB /* PassKeyExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59B1FE5B2E4B588200B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59B1FE582E4B587600B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PassKeyExtension; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -11018,7 +11119,7 @@
 		17AC728A286F2795006919C3 /* NameService */ = {
 			isa = PBXGroup;
 			children = (
-				17AC728B286F27AB006919C3 /* NameService.swift */,
+				17AC728B286F27AB006919C3 /* NameServiceAPIModel.swift */,
 			);
 			path = NameService;
 			sourceTree = "<group>";
@@ -13563,7 +13664,6 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D4F4FA5F2DA8019900C4E9ED /* AddAccount */,
 				D4D87E6D29912163004F7BF2 /* AlgorandSecureBackup */,
 				2BF53177224AA86500A7455F /* Accounts */,
 				8B3300652BFF795000E933D3 /* IncomingASA */,
@@ -13742,6 +13842,8 @@
 		2B95407825A75FB20098805B /* algorand-tests */ = {
 			isa = PBXGroup;
 			children = (
+				5493547A2E9FD157009E53CF /* Formatters */,
+				5474F7632E9E54A000D6B6BF /* Encoders and Decoders */,
 				545CAA892E28CE1400D0C9A0 /* Testing Tools */,
 				545CAA842E28CDAA00D0C9A0 /* Scenes */,
 				54C7260E2E27920B00E08B4C /* Data Providers */,
@@ -16462,6 +16564,7 @@
 		2BF53177224AA86500A7455F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 				2B656E8E224BAF0B0064A49B /* AccountList */,
 				D4CF67D828C759310007A727 /* AccountSelection */,
 				2B80C51C277209C900BB071E /* Detail */,
@@ -17540,6 +17643,9 @@
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
 				5458D8902DEDB36200DADA06 /* Utils */,
 				5458D88D2DEDB35E00DADA06 /* Views */,
+				54579EA92E965346004DC635 /* Data Providers */,
+				5455EC382E9BF57B006CE415 /* Legacy Handlers */,
+				54579EAE2E965372004DC635 /* Data Types */,
 			);
 			path = PeraWallet;
 			sourceTree = "<group>";
@@ -23088,42 +23194,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		D4F4FA5F2DA8019900C4E9ED /* AddAccount */ = {
-			isa = PBXGroup;
-			children = (
-				D4F4FA602DA801A500C4E9ED /* Screens */,
-				D4F4FA612DA801AB00C4E9ED /* Views */,
-				D4F4FA622DA801BC00C4E9ED /* ViewModels */,
-			);
-			path = AddAccount;
-			sourceTree = "<group>";
-		};
-		D4F4FA602DA801A500C4E9ED /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				D4F4FA6F2DA8030F00C4E9ED /* AddAccountViewController.swift */,
-				D4F4FA732DA8032200C4E9ED /* AddAccountViewController+Theme.swift */,
-			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
-		D4F4FA612DA801AB00C4E9ED /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D4F4FA6B2DA802C100C4E9ED /* AddAccountViewTheme.swift */,
-				D4F4FA672DA8023700C4E9ED /* AddAccountView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		D4F4FA622DA801BC00C4E9ED /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				D4F4FA632DA801C800C4E9ED /* AddAccountViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		D4F72B6028E392D300907287 /* InsufficientAlgoBalanceScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -24216,8 +24286,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
+				5455EC382E9BF57B006CE415 /* Legacy Handlers */,
+				54579EA92E965346004DC635 /* Data Providers */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-staging";
 			packageProductDependencies = (
@@ -24244,8 +24317,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
+				5455EC382E9BF57B006CE415 /* Legacy Handlers */,
+				54579EA92E965346004DC635 /* Data Providers */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-beta";
 			packageProductDependencies = (
@@ -24273,8 +24349,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5449C7C52DDB4AE600E63A8F /* Scenes */,
+				5455EC382E9BF57B006CE415 /* Legacy Handlers */,
+				54579EA92E965346004DC635 /* Data Providers */,
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
+				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = pera;
 			packageProductDependencies = (
@@ -24866,11 +24945,6 @@
 			files = (
 				591681602E4A34F4002184C2 /* StatusBarConfigurable.swift in Sources */,
 				5916815F2E4A2D83002184C2 /* ImagePicker.swift in Sources */,
-				591678C12E464C76002184C2 /* AddAccountViewController.swift in Sources */,
-				591678C22E464C76002184C2 /* AddAccountViewController+Theme.swift in Sources */,
-				591678C32E464C76002184C2 /* AddAccountViewTheme.swift in Sources */,
-				591678C42E464C76002184C2 /* AddAccountView.swift in Sources */,
-				591678C52E464C76002184C2 /* AddAccountViewModel.swift in Sources */,
 				591678C62E464C76002184C2 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				591678C72E464C76002184C2 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				591678C82E464C76002184C2 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
@@ -27035,11 +27109,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59E6FE3F2E4A712500CCA99B /* AddAccountViewController.swift in Sources */,
-				59E6FE402E4A712500CCA99B /* AddAccountViewController+Theme.swift in Sources */,
-				59E6FE412E4A712500CCA99B /* AddAccountViewTheme.swift in Sources */,
-				59E6FE422E4A712500CCA99B /* AddAccountView.swift in Sources */,
-				59E6FE432E4A712500CCA99B /* AddAccountViewModel.swift in Sources */,
 				59E6FE442E4A712500CCA99B /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				59E6FE452E4A712500CCA99B /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				59E6FE462E4A712500CCA99B /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
@@ -29206,11 +29275,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59E606B72E4A71D000CCA99B /* AddAccountViewController.swift in Sources */,
-				59E606B82E4A71D000CCA99B /* AddAccountViewController+Theme.swift in Sources */,
-				59E606B92E4A71D000CCA99B /* AddAccountViewTheme.swift in Sources */,
-				59E606BA2E4A71D000CCA99B /* AddAccountView.swift in Sources */,
-				59E606BB2E4A71D000CCA99B /* AddAccountViewModel.swift in Sources */,
 				59E606BC2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				59E606BD2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				59E606BE2E4A71D000CCA99B /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
@@ -31961,7 +32025,7 @@
 				5916782D2E460AF9002184C2 /* IndexerError.swift in Sources */,
 				5916782E2E460AF9002184C2 /* RekeyTransactionSendDraft.swift in Sources */,
 				5916782F2E460AF9002184C2 /* LedgerTroubleshootOption.swift in Sources */,
-				591678302E460AF9002184C2 /* NameService.swift in Sources */,
+				591678302E460AF9002184C2 /* NameServiceAPIModel.swift in Sources */,
 				591678312E460AF9002184C2 /* Node.swift in Sources */,
 				591678322E460AF9002184C2 /* AlgorandNode.swift in Sources */,
 				591678332E460AF9002184C2 /* AlgorandNotification.swift in Sources */,
@@ -32108,7 +32172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -32137,7 +32201,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32166,7 +32230,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32197,7 +32261,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32227,7 +32291,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32257,7 +32321,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32414,7 +32478,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32447,7 +32511,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32683,7 +32747,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32717,7 +32781,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32750,7 +32814,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32785,7 +32849,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32821,7 +32885,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32856,7 +32920,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32947,7 +33011,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.10.1;
+				MARKETING_VERSION = 6.12.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";

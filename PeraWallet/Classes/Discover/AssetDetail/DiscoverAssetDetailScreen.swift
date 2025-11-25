@@ -23,9 +23,7 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
     private let assetParameters: DiscoverAssetParameters
     
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        let baseMessages = super.handledMessages.map { $0 as any InAppBrowserScriptMessage }
-        let homeMessages = DiscoverAssetDetailScriptMessage.allCases.map { $0 as any InAppBrowserScriptMessage }
-        return baseMessages + homeMessages
+        super.handledMessages + DiscoverAssetDetailScriptMessage.allCases
     }
 
     init(
@@ -41,6 +39,18 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen {
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
+    }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name) {
+            handleDiscoverAssetDetail(inAppMessage, message)
+        }
+        super.userContentController(userContentController, didReceive: message)
     }
 }
 

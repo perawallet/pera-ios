@@ -30,14 +30,17 @@ struct AccountPortfolioViewModel:
     private(set) var differenceText: TextProvider?
     private(set) var differenceInPercentageText: TextProvider?
     private(set) var arrowImageView: ImageProvider?
+    private(set) var isAmountHidden: Bool?
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
     init(
         _ portfolioItem: AccountPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel?,
-        tendenciesVM: TendenciesViewModel?
+        tendenciesVM: TendenciesViewModel?,
+        isAmountHidden: Bool?
     ) {
+        self.isAmountHidden = isAmountHidden
         bindTendencies(tendenciesVM)
         guard let selectedPoint else {
             bind(portfolioItem)

@@ -28,9 +28,9 @@ public struct AlgosTransactionSendDraft: TransactionSendDraft {
     public var lockedNote: String?
 
     public var toContact: Contact?
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     
-    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, note: String? = nil, lockedNote: String? = nil, toContact: Contact? = nil, toNameService: NameService? = nil) {
+    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, note: String? = nil, lockedNote: String? = nil, toContact: Contact? = nil, toNameService: NameServiceAPIModel? = nil) {
         self.from = from
         self.toAccount = toAccount
         self.amount = amount

@@ -63,11 +63,11 @@ public struct SendTransactionDraft: TransactionSendDraft {
     public var hasReceiver: Bool {
         toAccount != nil || toContact != nil
     }
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     public var isOptingOut = false
     public var isReceiverOptingInToAsset = false
     
-    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, identifier: String? = nil, transactionMode: TransactionMode, toContact: Contact? = nil, note: String? = nil, lockedNote: String? = nil, toNameService: NameService? = nil, isOptingOut: Bool = false, isReceiverOptingInToAsset: Bool = false) {
+    public init(from: Account, toAccount: Account? = nil, amount: Decimal? = nil, fee: UInt64? = nil, identifier: String? = nil, transactionMode: TransactionMode, toContact: Contact? = nil, note: String? = nil, lockedNote: String? = nil, toNameService: NameServiceAPIModel? = nil, isOptingOut: Bool = false, isReceiverOptingInToAsset: Bool = false) {
         self.from = from
         self.toAccount = toAccount
         self.amount = amount

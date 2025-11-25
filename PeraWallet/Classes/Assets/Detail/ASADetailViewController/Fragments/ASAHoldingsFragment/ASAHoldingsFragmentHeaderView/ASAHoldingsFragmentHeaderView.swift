@@ -18,6 +18,7 @@ import UIKit
 
 final class ASAHoldingsFragmentHeaderView: UICollectionReusableView {
     private lazy var contentViewContainer = ASAHoldingsHeaderContentView()
+    private var lastBoundChartData: ChartViewData?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,13 +32,17 @@ final class ASAHoldingsFragmentHeaderView: UICollectionReusableView {
 
     func bind(context: ASAHoldingsHeaderContext) {
         contentViewContainer.bind(context: context)
+        if let data = lastBoundChartData {
+            contentViewContainer.updateChart(with: data)
+        }
     }
     
     func bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
         contentViewContainer.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
     }
     
-    func updateChart(with data: ChartViewData? = nil) {
+    func updateChart(with data: ChartViewData) {
+        lastBoundChartData = data
         contentViewContainer.updateChart(with: data)
     }
 }

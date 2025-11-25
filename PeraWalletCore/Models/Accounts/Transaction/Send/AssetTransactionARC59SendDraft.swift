@@ -21,7 +21,7 @@ public struct AssetTransactionARC59SendDraft: TransactionSendDraft {
     public var toAccount: Account?
     public var toContact: Contact?
     public var asset: Asset?
-    public var toNameService: NameService?
+    public var toNameService: NameServiceAPIModel?
     public var amount: Decimal?
     public var fee: UInt64?
     public var isMaxTransaction = false
@@ -40,7 +40,7 @@ public struct AssetTransactionARC59SendDraft: TransactionSendDraft {
     public let extraAlgoAmount: UInt64
     public let isOptedInToProtocol: Bool
     
-    public init(from: Account, toAccount: Account? = nil, toContact: Contact? = nil, asset: Asset? = nil, toNameService: NameService? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, assetIndex: Int64?, assetCreator: String = "", assetDecimalFraction: Int = 0, isVerifiedAsset: Bool = false, note: String? = nil, lockedNote: String? = nil, appAddress: String, inboxAccount: String?, minBalance: UInt64, innerTransactionCount: Int, appID: Int64, extraAlgoAmount: UInt64, isOptedInToProtocol: Bool) {
+    public init(from: Account, toAccount: Account? = nil, toContact: Contact? = nil, asset: Asset? = nil, toNameService: NameServiceAPIModel? = nil, amount: Decimal? = nil, fee: UInt64? = nil, isMaxTransaction: Bool = false, identifier: String? = nil, assetIndex: Int64?, assetCreator: String = "", assetDecimalFraction: Int = 0, isVerifiedAsset: Bool = false, note: String? = nil, lockedNote: String? = nil, appAddress: String, inboxAccount: String?, minBalance: UInt64, innerTransactionCount: Int, appID: Int64, extraAlgoAmount: UInt64, isOptedInToProtocol: Bool) {
         self.from = from
         self.toAccount = toAccount
         self.toContact = toContact

@@ -30,18 +30,18 @@ struct ProviderSelectionView: View {
             if viewModel.isAuto {
                 HStack(spacing: 0) {
                     Text(String(localized: "title-provider"))
-                        .font(.dmSans.regular.size(13.0))
+                        .font(.DMSans.regular.size(13.0))
                         .foregroundStyle(Color.Text.gray)
                     Text(String("\u{20}"))
-                        .font(.dmSans.regular.size(13.0))
+                        .font(.DMSans.regular.size(13.0))
                         .foregroundStyle(Color.Text.gray)
                     Text("(" + String(localized: "title-best-price-available") + ")")
-                        .font(.dmSans.regular.size(13.0))
+                        .font(.DMSans.regular.size(13.0))
                         .foregroundStyle(Color.Text.gray)
                 }
             } else {
                 Text(String(localized: "title-provider"))
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.gray)
             }
 
@@ -61,12 +61,12 @@ struct ProviderSelectionView: View {
                         }
                         
                         Text(viewModel.displayName)
-                            .font(.dmSans.regular.size(15))
+                            .font(.DMSans.regular.size(15))
                             .foregroundStyle(Color.Text.main)
                     }
                     Spacer()
                     Text(viewModel.rate)
-                        .font(.dmSans.regular.size(15))
+                        .font(.DMSans.regular.size(15))
                         .foregroundStyle(Color.Text.main)
                     Spacer().frame(width: 3)
                     Image(.iconArrow24)

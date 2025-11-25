@@ -112,4 +112,8 @@ extension HDWalletStorage {
     ) -> String {
         addressPrefix + walletId + "." + address
     }
+    
+    public var allHDWalletKeys: [String] {
+        keychain.allKeys()
+    }
 }

@@ -172,14 +172,7 @@ final class SwapViewController: BaseViewController {
             case .info:
                 open(AlgorandWeb.tinymanSwap.link)
             case .createAccount:
-                open(
-                    .addAccount(flow: .addNewAccount(mode: .none)),
-                    by: .customPresent(
-                        presentationStyle: .fullScreen,
-                        transitionStyle: nil,
-                        transitioningDelegate: nil
-                    )
-                )
+                AppDelegate.shared?.launchOnboarding()
             }
         }
         let noAccountSwapHostingController = UIHostingController(rootView: rootView)
@@ -306,10 +299,16 @@ final class SwapViewController: BaseViewController {
     }
     
     private func resolveDefaultAccount() -> Account? {
-        sharedDataController.accountCollection
-            .filter { !$0.value.isWatchAccount }
-            .min(by: { $0.value.preferredOrder < $1.value.preferredOrder })?
-            .value
+        let validAccounts = sharedDataController.accountCollection
+            .filter { !$0.value.isWatchAccount && $0.value.canSignTransaction }
+        
+        if let lastAddressUsed = PeraUserDefaults.lastAddressUsedInSwapCompleted,
+           let lastUsedAccount = validAccounts.first(where: { $0.value.address == lastAddressUsed })?
+            .value {
+            return lastUsedAccount
+        }
+        
+        return validAccounts.min(by: { $0.value.preferredOrder < $1.value.preferredOrder })?.value
     }
     
     private func resolveInitialState() -> Bool {
@@ -365,12 +364,11 @@ final class SwapViewController: BaseViewController {
                         )
                         return
                     }
-                    if let assetOutID = launchDraft.assetOutID {
-                        selectedAssetIn = assetItem(from: assetLoaded)
-                        selectedAssetOut = assetItem(from: resolveAsset(with: assetOutID, for: selectedAccount))
-                    } else {
-                        selectedAssetOut = assetItem(from: assetLoaded)
+                    selectedAssetOut = assetItem(from: assetLoaded)
+                    if launchDraft.assetInID == 0 {
                         selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+                    } else {
+                        selectedAssetIn = assetItem(from: resolveAsset(with: launchDraft.assetInID, for: selectedAccount))
                     }
                     loadSwapView()
                 }
@@ -458,6 +456,31 @@ final class SwapViewController: BaseViewController {
         return StandardAsset(decoration: assetDecorationElement)
     }
     
+    private func resetViewAfterSwap() {
+        /// force balance update if asset is algo
+        let shouldForceUpdate = (selectedAssetIn?.asset.isAlgo == true) || (selectedAssetOut?.asset.isAlgo == true)
+        
+        if
+            shouldForceUpdate,
+            let address = selectedAccount?.address,
+            let account = sharedDataController.accountCollection.first(where: { $0.value.address == address })?.value
+        {
+            selectedAccount = account
+
+            if selectedAssetIn?.asset.isAlgo == true {
+                selectedAssetIn = resolveDefaultAlgoAsset(for: account)
+            }
+
+            if selectedAssetOut?.asset.isAlgo == true {
+                selectedAssetOut = resolveDefaultAlgoAsset(for: account)
+            }
+        }
+        
+        resetAmounts()
+        loadSwapView()
+        loadSwapHistory()
+    }
+    
     private func update(
         _ viewModel: SwapSharedViewModel,
         with account: Account,
@@ -475,7 +498,7 @@ final class SwapViewController: BaseViewController {
         _ viewModel: SwapSharedViewModel?,
         with quoteList: [SwapQuote]?
     ) {
-        guard let viewModel, let quoteList, let selectedAssetOut else { return }
+        guard let viewModel, let quoteList, let selectedAssetIn, let selectedAssetOut else { return }
         
         var orderedQuoteList: [SwapQuote] {
             let shouldFilterDeflex = configuration.featureFlagService.isEnabled(.ledgerDeflexFilterEnabled)
@@ -492,6 +515,10 @@ final class SwapViewController: BaseViewController {
         let decimalsOut = selectedQuote?.assetOut?.decimals ?? 0
         let valueOut = Decimal(amountOut) / pow(10, decimalsOut)
         
+        let amountIn = selectedQuote?.amountIn ?? 0
+        let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
+        let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
+        
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
@@ -504,7 +531,7 @@ final class SwapViewController: BaseViewController {
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
             viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.payingTextInSecondaryCurrency = viewModel.fiatFormat(with: selectedQuote?.amountInUSDValue?.doubleValue ?? 0)
+            viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetIn.asset, with: valueIn.doubleValue)
         }
         
         viewModel.quoteList = orderedQuoteList
@@ -685,9 +712,8 @@ final class SwapViewController: BaseViewController {
                 return
             }
             bannerController?.presentSuccessBanner(title: successMessage)
-            resetAmounts()
-            loadSwapView()
-            loadSwapHistory()
+            resetViewAfterSwap()
+
         case let .trackAnalytics(event):
             switch event {
             case .swapHistorySeeAll:
@@ -787,6 +813,7 @@ final class SwapViewController: BaseViewController {
                     )
                 )
             }
+            PeraUserDefaults.lastAddressUsedInSwapCompleted = selectedAccount?.address
             swapAssetFlowCoordinator.updateSwapStatus(swapController: swapController, status: .inProgress)
             sharedViewModel?.swapConfirmationState = .success
         case .didFailTransaction(let txnID):

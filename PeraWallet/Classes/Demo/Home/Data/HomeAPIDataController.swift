@@ -330,7 +330,11 @@ extension HomeAPIDataController {
                 isAmountHidden: isAmountHidden
             )
             self.totalPortfolioItem = totalPortfolioItem
-            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem, selectedPoint: chartSelectedPointViewModel, tendenciesVM: tendenciesVM)
+            let totalPortfolioViewModel = HomePortfolioViewModel(
+                totalPortfolioItem,
+                selectedPoint: chartSelectedPointViewModel,
+                tendenciesVM: isAmountHidden ? nil : tendenciesVM
+            )
 
             snapshot.appendItems(
                 [.portfolio(.portfolio(totalPortfolioViewModel))],

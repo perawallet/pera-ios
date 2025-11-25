@@ -39,10 +39,10 @@ struct RecoveredAccountsListCell: View {
             VStack(alignment: .leading, spacing: 0.0) {
                 Text(title)
                     .foregroundStyle(Color(uiColor: Colors.Text.main.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
-                    .font(.dmSans.regular.size(15.0))
+                    .font(.DMSans.regular.size(15.0))
                 Text(subtitle)
                     .foregroundStyle(Color(uiColor: Colors.Text.grayLighter.uiColor)) // FIXME: Replace Color with Color from assets catalogue.
-                    .font(.dmSans.regular.size(13.0))
+                    .font(.DMSans.regular.size(13.0))
             }
             Spacer()
             SwiftUI.Button(action: onInfoButtonAction) {
@@ -56,9 +56,7 @@ struct RecoveredAccountsListCell: View {
         .background(
             Color(uiColor: Colors.Defaults.background.uiColor) // FIXME: Replace Color with Color from assets catalogue.
                 .cornerRadius(12.0)
-                .shadow(color: .black.opacity(0.08), radius: 2.0, x: 0.0, y: 2.0)
-                .shadow(color: .black.opacity(0.04), radius: 2.0, x: 0.0, y: 2.0)
-                .shadow(color: .black.opacity(0.05), radius: 0.0, x: 0.0, y: 0.0)
+                .defaultShadow()
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12.0)

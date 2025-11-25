@@ -53,6 +53,10 @@ extension AccountAuthorizationDeterminer {
         if account.hasLedgerDetail() {
             return .ledger
         }
+        
+        if account.hasJointAccountDetails, CoreAppConfiguration.shared?.featureFlagService.isEnabled(.jointAccountEnabled) == true {
+            return .jointAccount
+        }
 
         let isStandard = session.hasPrivateData(for: account.address)
         if isStandard {

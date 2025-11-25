@@ -73,6 +73,17 @@ class CardsInAppBrowserScreen: InAppBrowserScreen {
     override func didPullToRefresh() {
         loadCardsURL()
     }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = CardsInAppBrowserScriptMessage(rawValue: message.name) {
+            handleCards(inAppMessage, message)
+        }
+    }
 }
 
 private extension CardsInAppBrowserScreen {
@@ -103,9 +114,7 @@ private extension CardsInAppBrowserScreen {
         let generatedUrl = generatePeraURL()
         load(url: generatedUrl)
     }
-}
-
-private extension CardsInAppBrowserScreen {
+    
     func updateTheme(_ style: UIUserInterfaceStyle) {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"

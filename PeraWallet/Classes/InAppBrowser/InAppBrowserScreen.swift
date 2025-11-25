@@ -56,12 +56,13 @@ class InAppBrowserScreen:
 
     var extraUserScripts: [InAppBrowserScript] { [] }
     var handledMessages: [any InAppBrowserScriptMessage] { [] }
-    var account: AccountHandle? { nil }
+    var account: AccountHandle? = nil
 
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
     private var lastURL: URL? { webView.url ?? sourceURL }
     
+    // MARK: - Initialisers
     enum WebViewV2Message: String, InAppBrowserScriptMessage {
         case pushWebView
         case openSystemBrowser
@@ -125,23 +126,12 @@ class InAppBrowserScreen:
     // MARK: - Setups
     
     func load(url: URL?) {
-        guard let url = resolveURL(url) else { return }
+        guard let url = url else { return }
         
         var request = URLRequest(url: url)
         request.timeoutInterval = 30
         webView.load(request)
         sourceURL = url
-    }
-    
-    private func resolveURL(_ url: URL?) -> URL? {
-        guard let url = url else { return nil }
-        
-        if configuration.featureFlagService.isEnabled(.webviewV2Enabled) {
-            // TODO: static url just for testing, change it before prod
-            return URL(string: "https://onramp-mobile-staging.perawallet.app/test")
-        }
-        
-        return url
     }
 
     func createWebView() -> WKWebView {
@@ -171,15 +161,7 @@ class InAppBrowserScreen:
         controller.addUserScript(InAppBrowserScript.selection.userScript)
 
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
-        
-        if configuration.featureFlagService.isEnabled(.webviewV2Enabled) {
-            WebViewV2Message.allCases.forEach {
-                print("---\($0.rawValue)")
-                controller.add(secureScriptMessageHandler: self, forName: $0.rawValue)
-            }
-        } else {
-            handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
-        }
+        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
         
         return controller
     }
@@ -476,13 +458,7 @@ class InAppBrowserScreen:
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
-    ) {
-        guard configuration.featureFlagService.isEnabled(.webviewV2Enabled) else {
-            parseWebViewMessageV1(message)
-            return
-        }
-        parseWebViewMessageV2(message)
-    }
+    ) { }
     
     // MARK: - Helpers
     

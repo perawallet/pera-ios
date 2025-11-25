@@ -71,9 +71,9 @@ extension DeveloperSettingsViewController {
     private func reload() {
         switch api?.network {
         case .mainnet, .none:
-            settings = [.nodeSettings, .createAlgo25Account]
+            settings = [.nodeSettings, .createAlgo25Account, .recoverAccount]
         case .testnet:
-            settings = [.nodeSettings, .dispenser, .createAlgo25Account]
+            settings = [.nodeSettings, .dispenser, .createAlgo25Account, .recoverAccount]
         }
 
         developerSettingsView.collectionView.reloadData()
@@ -162,6 +162,8 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
                 rootViewController.launch(tab: .home)
                 navigationController?.popToRootViewController(animated: true)
             }
+        case .recoverAccount:
+            open(.accountRecoverySearch, by: .push)
         }
     }
     

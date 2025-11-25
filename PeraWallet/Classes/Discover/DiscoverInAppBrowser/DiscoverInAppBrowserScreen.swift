@@ -76,6 +76,17 @@ class DiscoverInAppBrowserScreen: InAppBrowserScreen {
     override func didPullToRefresh() {
         loadPeraURL()
     }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = DiscoverInAppBrowserScriptMessage(rawValue: message.name) {
+            handleDiscoverInApp(inAppMessage, message)
+        }
+    }
 }
 
 extension DiscoverInAppBrowserScreen {

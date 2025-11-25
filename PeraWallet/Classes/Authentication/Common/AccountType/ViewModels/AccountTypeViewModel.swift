@@ -81,7 +81,7 @@ extension AccountTypeViewModel {
             case .passphrase:
                 titleText = String(localized: "account-type-selection-passphrase")
             case .passphraseAlgo25:
-                titleText = String(localized: "account-type-selection-passphrase")
+                titleText = String(localized: "account-type-selection-passphrase-algo25")
             case .importFromSecureBackup:
                 titleText = String(localized: "account-type-selection-import-secure-backup")
             case .ledger:
