@@ -22,7 +22,7 @@ extension Bundle {
         return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
     }
     
-    private var version: String? {
+    public var version: String? {
         return object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     

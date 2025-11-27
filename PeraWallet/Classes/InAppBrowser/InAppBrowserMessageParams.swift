@@ -31,7 +31,7 @@ struct PushWVParams: Decodable {
 
 struct LogEventParams: Decodable {
     let name: String
-    let payload: [String: AnyCodable]?
+    let payload: [String: String]?
 }
 
 struct NotifyParams: Decodable {
@@ -44,30 +44,4 @@ enum NotifyType: String, Decodable {
     case haptic
     case sound
     case message
-}
-
-struct AnyCodable: Decodable {
-    let value: Any
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        
-        if let string = try? container.decode(String.self) {
-            value = string
-        } else if let int = try? container.decode(Int.self) {
-            value = int
-        } else if let double = try? container.decode(Double.self) {
-            value = double
-        } else if let bool = try? container.decode(Bool.self) {
-            value = bool
-        } else if let array = try? container.decode([AnyCodable].self) {
-            value = array.map { $0.value }
-        } else if let dictionary = try? container.decode([String: AnyCodable].self) {
-            value = dictionary.mapValues { $0.value }
-        } else {
-            throw DecodingError.typeMismatch(AnyCodable.self,
-                DecodingError.Context(codingPath: decoder.codingPath,
-                debugDescription: "Unsupported type"))
-        }
-    }
 }

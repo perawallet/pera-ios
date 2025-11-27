@@ -110,7 +110,7 @@ final class HomeViewController:
     private lazy var listBackgroundView = UIView()
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = HomeListDataSource(listView)
+    private lazy var listDataSource = HomeListDataSource(listView, shouldShowFundButton: configuration.featureFlagService.isEnabled(.xoSwapEnabled))
 
     /// <todo>: Refactor
     /// This is needed for ChoosePasswordViewControllerDelegate's method.
@@ -620,22 +620,29 @@ extension HomeViewController {
         cell.startObserving(event: .buy) {
             [weak self] in
             guard let self else { return }
-            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
-            self.openBuySellOptions()
+            analytics.track(.recordHomeScreen(type: .buyAlgo))
+            openBuySellOptions()
         }
         
         cell.startObserving(event: .stake) {
             [weak self] in
             guard let self else { return }
-            self.analytics.track(.recordHomeScreen(type: .stake))
+            analytics.track(.recordHomeScreen(type: .stake))
             open(.staking, by: .push)
+        }
+        
+        cell.startObserving(event: .fund) {
+            [weak self] in
+            guard let self, let rootViewController = UIApplication.shared.rootViewController() else { return }
+            analytics.track(.recordHomeScreen(type: .fund))
+            rootViewController.launch(tab: .fund)
         }
 
         cell.startObserving(event: .send) {
             [weak self] in
             guard let self else { return }
-            self.analytics.track(.recordHomeScreen(type: .send))
-            self.sendTransactionFlowCoordinator.launch()
+            analytics.track(.recordHomeScreen(type: .send))
+            sendTransactionFlowCoordinator.launch()
         }
     }
     

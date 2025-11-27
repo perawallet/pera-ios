@@ -15,6 +15,7 @@
 //   InAppBrowserScripts.swift
 
 import WebKit
+import Foundation
 
 enum InAppBrowserScript {
     case selection
@@ -128,6 +129,8 @@ struct Scripts {
     }
     
     static func message(action: String, payload: String) -> String {
+        // TODO: change payload to payloadData
+        guard let payloadData = payload.data(using: .utf8)?.base64EncodedString() else { return "" }
         return """
         window.postMessage(JSON.stringify({
             action: "\(action)",

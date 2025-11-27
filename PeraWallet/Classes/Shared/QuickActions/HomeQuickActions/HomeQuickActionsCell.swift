@@ -36,6 +36,12 @@ final class HomeQuickActionsCell:
 
         contextView.customize(Self.theme)
     }
+    
+    var showFundButton: Bool = false {
+        didSet {
+            contextView.showFundButton = showFundButton
+        }
+    }
 
     class func calculatePreferredSize(
         for theme: HomeQuickActionsViewTheme,

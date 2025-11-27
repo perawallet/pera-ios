@@ -25,4 +25,11 @@ protocol ALGAnalyticsProvider: AnalyticsProvider {
     func record(
         _ log: ALGAnalyticsLog
     )
+    func canTrack(
+        _ event: String
+    ) -> Bool
+    func track(
+        _ event: String,
+        payload: [String: String]?
+    )
 }

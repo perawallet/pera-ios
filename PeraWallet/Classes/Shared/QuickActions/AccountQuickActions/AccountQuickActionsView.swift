@@ -26,7 +26,8 @@ final class AccountQuickActionsView:
         .swap: TargetActionInteraction(),
         .buy: TargetActionInteraction(),
         .requests: TargetActionInteraction(),
-        .more: TargetActionInteraction()
+        .more: TargetActionInteraction(),
+        .fund: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()

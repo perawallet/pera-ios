@@ -71,7 +71,7 @@ extension InAppBrowserScreen {
         switch inAppMessage {
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
-        case .closeWebView:
+        case .closeWebView, .onBackPressed:
             dismissScreen()
         case .pushWebView:
             guard
@@ -85,19 +85,16 @@ extension InAppBrowserScreen {
         case .openNativeURI:
             handleOpenNativeUri(message)
         case .notifyUser:
-            guard let params = message.decode(NotifyParams.self) else { return }
-            print("---params: \(params)")
+            handleNotifyUser(message)
         case .getAddresses:
-            break
+            handleAddresses(message)
         case .getSettings:
-            break
+            handleSettings(inAppMessage, message)
         case .getPublicSettings:
-            break
-        case .onBackPressed:
-            break
+            handleSettings(inAppMessage, message)
         case .logAnalyticsEvent:
             guard let params = message.decode(LogEventParams.self) else { return }
-            print("---params: \(params)")
+            analytics.track(params.name, payload: params.payload)
         }
     }
     
@@ -134,6 +131,83 @@ extension InAppBrowserScreen {
 
         let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
         launchController.receive(deeplinkWithSource: src)
+    }
+    
+    private func handleNotifyUser(_ message: WKScriptMessage) {
+        guard let params = message.decode(NotifyParams.self) else { return }
+        switch params.type {
+        case .haptic: break
+        case .sound: break
+        case .message:
+            guard let message = params.message else { return }
+            if params.variant == "banner" {
+                configuration.bannerController?.presentSuccessBanner(title: message)
+            } else if params.variant == "toast" {
+                configuration.bannerController?.presentInfoBanner(message)
+            }
+        }
+    }
+    
+    private func handleAddresses(_ message: WKScriptMessage) {
+        var addressesInfo = [[String: String]]()
+        session?.authenticatedUser?.accounts.forEach { accountInformation in
+            let account = Account(localAccount: accountInformation)
+            let name = account.primaryDisplayName
+            let address = account.address
+            let type = account.authType
+            addressesInfo.append(["name": name, "address": address, "type": type])
+        }
+        webView.evaluateJavaScript(
+            Scripts.message(
+                action: FundInAppBrowserScriptMessage.getAddresses.rawValue,
+                payload: addressesInfo.description
+            )
+        )
+    }
+    
+    private func handleSettings(_ inAppMessage: FundInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        guard
+            let theme = traitCollection.userInterfaceStyle == .dark ? "dark" : "light",
+            let network = configuration.api?.network.rawValue,
+            let language = Bundle.main.preferredLocalizations.first,
+            let currency = try? sharedDataController.currency.primaryValue?.unwrap().name ?? ""
+        else { return }
+        var params = ["theme": theme, "network": network, "language": language, "currency": currency]
+        
+        guard inAppMessage == .getSettings else {
+            handlePublicSettings(params: params)
+            return
+        }
+        
+        guard
+            let deviceId = UIDevice.current.identifierForVendor?.uuidString,
+            let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String,
+            let appPackageName = Bundle.main.bundleIdentifier
+        else { return }
+        
+        params["platform"] = "ios"
+        params["appName"] = appName
+        params["appPackageName"] = appPackageName
+        params["appVersion"] = Bundle.main.version
+        params["deviceId"] = deviceId
+        params["deviceVersion"] = UIDevice.current.systemVersion
+        params["deviceModel"] = UIDevice.current.model
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                action: FundInAppBrowserScriptMessage.getSettings.rawValue,
+                payload: params.description
+            )
+        )
+    }
+    
+    private func handlePublicSettings(params: [String: String]) {
+        webView.evaluateJavaScript(
+            Scripts.message(
+                action: FundInAppBrowserScriptMessage.getPublicSettings.rawValue,
+                payload: params.description
+            )
+        )
     }
     
     private func handleCanOpenUri(_ message: WKScriptMessage) {

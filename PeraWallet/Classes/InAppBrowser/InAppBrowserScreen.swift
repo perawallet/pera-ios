@@ -61,21 +61,6 @@ class InAppBrowserScreen:
     private(set) var userAgent: String? = nil
     private var sourceURL: URL?
     private var lastURL: URL? { webView.url ?? sourceURL }
-    
-    // MARK: - Initialisers
-    enum WebViewV2Message: String, InAppBrowserScriptMessage {
-        case pushWebView
-        case openSystemBrowser
-        case canOpenURI
-        case openNativeURI
-        case notifyUser
-        case getAddresses
-        case getSettings
-        case getPublicSettings
-        case onBackPressed
-        case logAnalyticsEvent
-        case closeWebView
-    }
 
     // MARK: - Initialisers
     
@@ -161,15 +146,7 @@ class InAppBrowserScreen:
         controller.addUserScript(InAppBrowserScript.selection.userScript)
 
         extraUserScripts.forEach { controller.addUserScript($0.userScript) }
-        
-        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
-            WebViewV2Message.allCases.forEach {
-                print("---\($0.rawValue)")
-                controller.add(secureScriptMessageHandler: self, forName: $0.rawValue)
-            }
-        } else {
-            handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
-        }
+        handledMessages.forEach { controller.add(secureScriptMessageHandler: self, forName: $0.rawValue) }
         
         return controller
     }

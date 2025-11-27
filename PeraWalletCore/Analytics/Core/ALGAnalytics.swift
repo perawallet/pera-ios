@@ -34,4 +34,16 @@ extension ALGAnalytics {
             }
         }
     }
+    
+    public func track(
+        _ event: String,
+        payload: [String: String]?
+    ) {
+        for provider in providers {
+            if let aProvider = provider as? ALGAnalyticsProvider,
+               aProvider.canTrack(event) {
+                aProvider.track(event, payload: payload)
+            }
+        }
+    }
 }

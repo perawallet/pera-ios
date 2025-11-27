@@ -222,6 +222,7 @@ extension AccountDetailViewController {
                 self.openBuySellOptionsIfPossible()
             case .fund:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .tapFund))
 
                 self.openFundIfPossible()
             case .send:
