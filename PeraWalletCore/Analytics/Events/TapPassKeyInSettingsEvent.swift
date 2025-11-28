@@ -14,7 +14,6 @@
 
 //   TapPassKeyInSettingsEvent.swift
 
-import Foundation
 import MacaroonVendors
 
 public struct TapPassKeyInSettingsEvent: ALGAnalyticsEvent {
