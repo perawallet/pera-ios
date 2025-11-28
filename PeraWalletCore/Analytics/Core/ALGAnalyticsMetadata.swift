@@ -51,6 +51,7 @@ public enum ALGAnalyticsMetadataKey:
     case outputASAName = "output_asa_name"
     case isMax = "is_max"
     case notificationId = "notification_id"
+    case notificationUrl = "notification_url"
     case allowNotifications = "is_receiving_notifications"
     case peraFeeAsAlgo = "pera_fee_inalgo"
     case peraFeeAsUSD = "pera_fee_inusd"

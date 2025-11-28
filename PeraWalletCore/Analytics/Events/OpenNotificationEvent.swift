@@ -19,20 +19,28 @@ import MacaroonVendors
 
 public struct OpenNotificationEvent: ALGAnalyticsEvent {
     public let name: ALGAnalyticsEventName
-    public let metadata: ALGAnalyticsMetadata
+    public var metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        id: Int
+        id: Int?,
+        url: String?
     ) {
         self.name = .openNotification
-        self.metadata = [.notificationId: id]
+        self.metadata = [:]
+        if let id {
+            metadata[.notificationId] = id
+        }
+        if let url {
+            metadata[.notificationUrl] = url
+        }
     }
 }
 
 extension AnalyticsEvent where Self == OpenNotificationEvent {
     public static func openNotification(
-        id: Int
+        id: Int?,
+        url: String?
     ) -> Self {
-        return OpenNotificationEvent(id: id)
+        return OpenNotificationEvent(id: id, url: url)
     }
 }
