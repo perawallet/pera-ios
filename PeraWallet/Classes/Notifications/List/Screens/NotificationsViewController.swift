@@ -74,7 +74,7 @@ final class NotificationsViewController: BaseViewController {
             guard let notification = self.dataController.notifications[safe: indexPath.item] else {
                 return
             }
-
+            analytics.track(.openNotification(id: notification.id))
             let parserResult = self.deeplinkParser.discover(notification: notification)
 
             switch parserResult {
