@@ -41,7 +41,7 @@ public final class Account: ALGEntityModel {
     public internal(set) var closedRound: UInt64?
     public internal(set) var isDeleted: Bool?
     public internal(set) var hdWalletAddressDetail: HDWalletAddressDetail?
-    public let jointAccountParticipants: [String]?
+    public internal(set) var jointAccountParticipants: [String]?
 
     public private(set) var appsLocalState: [ApplicationLocalState]?
     public private(set) var appsTotalExtraPages: Int?
@@ -522,6 +522,7 @@ extension Account {
         preferredOrder = localAccount.preferredOrder
         isBackedUp = localAccount.isBackedUp
         hdWalletAddressDetail = localAccount.hdWalletAddressDetail
+        jointAccountParticipants = localAccount.jointAccountParticipants
     }
 
     public func update(with account: Account) {
@@ -550,6 +551,7 @@ extension Account {
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
         isBackedUp = account.isBackedUp
+        jointAccountParticipants = account.jointAccountParticipants
         
         if let updatedHDWalletAddressDetail = account.hdWalletAddressDetail {
             hdWalletAddressDetail = updatedHDWalletAddressDetail

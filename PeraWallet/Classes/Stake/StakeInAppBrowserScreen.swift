@@ -82,6 +82,17 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
     override func didPullToRefresh() {
         loadStakingURL()
     }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        if let inAppMessage = StakingInAppBrowserScreenMessage(rawValue: message.name) {
+            handleStaking(inAppMessage, message)
+        }
+    }
 }
 
 extension StakingInAppBrowserScreen {

@@ -358,6 +358,16 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Recover a wallet"
+          }
+        }
+      }
+    },
+    "account-type-selection-passphrase-algo25" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Recover an account"
           }
         }
@@ -368,7 +378,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to recover an Algorand account using my 25-word passphrase"
+            "value" : "I want to recover an Algorand wallet"
           }
         }
       }

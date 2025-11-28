@@ -99,15 +99,18 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen {
         updateToolbarActionsForError()
     }
 
-    /// <mark>
-    /// WKScriptMessageHandler
+    // MARK: - WKScriptMessageHandler
+    
     override func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
         updateTitle()
         updateToolbarNavigationActions()
-        super.userContentController(userContentController, didReceive: message)
+        
+        if let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: message.name) {
+            handleDiscoverExternal(inAppMessage, message)
+        }
     }
 
     func updateToolbarActionsForLoading() {
