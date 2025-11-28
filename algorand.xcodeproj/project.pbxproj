@@ -7398,6 +7398,7 @@
 		D4D2B5232DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		D4D2B5242DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
 		D4D2B5252DD48D6C009286EC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4D2B5222DD48D6C009286EC /* Colors.xcassets */; };
+		D4E532C02ED9C34D001796D1 /* TapPassKeyInSettingsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E532BF2ED9C341001796D1 /* TapPassKeyInSettingsEvent.swift */; };
 		D4EBC1D92EBCD44A0046AE9C /* AssetDetailV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */; };
 		D4EBC1DB2EBCD4F50046AE9C /* AssetListV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1DA2EBCD4EC0046AE9C /* AssetListV2Error.swift */; };
 		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
@@ -10088,6 +10089,7 @@
 		D4E34CBF27F71C5E00B0C3F4 /* SelectAssetViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4E34CC527F87BFF00B0C3F4 /* CollectiblesFilterSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesFilterSelectionViewController.swift; sourceTree = "<group>"; };
 		D4E34CC927F87EED00B0C3F4 /* CollectiblesFilterSelectionViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesFilterSelectionViewControllerTheme.swift; sourceTree = "<group>"; };
+		D4E532BF2ED9C341001796D1 /* TapPassKeyInSettingsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPassKeyInSettingsEvent.swift; sourceTree = "<group>"; };
 		D4E5E0512A82C03D009B3194 /* WCSessionConnectionDateSecondaryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionDateSecondaryListItemViewModel.swift; sourceTree = "<group>"; };
 		D4E5E0552A82C056009B3194 /* WCSessionExpirationDateSecondaryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionExpirationDateSecondaryListItemViewModel.swift; sourceTree = "<group>"; };
 		D4E5E0592A82C06B009B3194 /* WCSessionStatusSecondaryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionStatusSecondaryListItemViewModel.swift; sourceTree = "<group>"; };
@@ -14422,6 +14424,7 @@
 				2B57D8F525587FBB006E6FCE /* TapSendInDetailEvent.swift */,
 				2B57D8FC25587FDF006E6FCE /* TapSendTabEvent.swift */,
 				1736FB9628AD1FB5002BB713 /* TapAlgoPriceTabEvent.swift */,
+				D4E532BF2ED9C341001796D1 /* TapPassKeyInSettingsEvent.swift */,
 				2B9F063D24B5E4A7006880F0 /* CompleteTransactionEvent.swift */,
 				2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */,
 				2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */,
@@ -31802,6 +31805,7 @@
 				5916771E2E460AF9002184C2 /* Notification.Name+Additions.swift in Sources */,
 				5916771F2E460AF9002184C2 /* Notification+Keyboard.swift in Sources */,
 				591677202E460AF9002184C2 /* NotificationCenter+Additions.swift in Sources */,
+				D4E532C02ED9C34D001796D1 /* TapPassKeyInSettingsEvent.swift in Sources */,
 				591677212E460AF9002184C2 /* Decimal+Additions.swift in Sources */,
 				59B1068D2E4E0F7300B8F6FB /* AppGroupDataStoreMigration.swift in Sources */,
 				591677222E460AF9002184C2 /* Double.swift in Sources */,

@@ -16,6 +16,7 @@
 
 import Foundation
 import DeveloperToolsSupport
+import pera_wallet_core
 
 // MARK: - View Model
 
@@ -50,6 +51,7 @@ final class SettingsListViewModel: ObservableObject {
 
 protocol SettingsListModelable {
     var viewModel: SettingsListViewModel { get }
+    func registerAnalyticsEvent(_ event: any ALGAnalyticsEvent)
 }
 
 final class SettingsListModel: SettingsListModelable {
@@ -74,6 +76,12 @@ final class SettingsListModel: SettingsListModelable {
             .supportSection
         ]
         viewModel.appVersion = appVersion
+    }
+    
+    // MARK: - Setups
+    
+    func registerAnalyticsEvent(_ event: any ALGAnalyticsEvent) {
+        AppDelegate.shared?.appConfiguration.analytics.track(event)
     }
 }
 
