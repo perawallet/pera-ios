@@ -131,6 +131,7 @@ struct SettingsListView: View {
         case .walletConnect:
             onLegacyNavigationOptionSelected?(.walletConnect)
         case .passkeys:
+            model.registerAnalyticsEvent(TapPassKeyInSettingsEvent.tapPassKeyInSettings())
             moveTo(option: .passkey)
         case .currency:
             onLegacyNavigationOptionSelected?(.currency)
@@ -194,6 +195,7 @@ struct SettingsListView: View {
 final class MockedSettingsListModel: SettingsListModelMockable {
     
     var viewModel: SettingsListViewModel = SettingsListViewModel()
+    func registerAnalyticsEvent(_ event: any ALGAnalyticsEvent) {}
     
     init() {
         update(sections: [
