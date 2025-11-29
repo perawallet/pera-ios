@@ -338,6 +338,7 @@ extension ALGAppLaunchController {
             return nil
         }
         
+        api.analytics.track(.openNotification(id: nil, url: notification.detail?.url))
         let parserResult = deeplinkParser.discover(notification: notification)
 
         switch parserResult {
