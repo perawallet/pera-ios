@@ -29,6 +29,7 @@ struct SettingsListView: View {
         case theme
         case rateApp
         case developer
+        case secretDeveloper
     }
     
     private enum NavigationOption {
@@ -44,6 +45,14 @@ struct SettingsListView: View {
     
     @ObservedObject private var viewModel: SettingsListViewModel
     @State private var navigationPath = NavigationPath()
+    
+    // MARK: - Tap version to show hidden developer menu properties
+    
+    @State private var tapCount = 0
+    @State private var lastTapTime = Date()
+    
+    let requiredTaps = 10
+    let tapTimeWindow: TimeInterval = 3.0
     
     // MARK: - UIKit Compatibility
     
@@ -87,6 +96,7 @@ struct SettingsListView: View {
                     .frame(maxWidth: .infinity)
                     .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
+                    .onTapGesture { handleVersionLabelTap() }
             }
             .listStyle(.grouped)
             .listSectionSeparator(.hidden)
@@ -151,6 +161,18 @@ struct SettingsListView: View {
     
     private func handleBackButtonTap() {
         onLegacyNavigationOptionSelected?(.back)
+    }
+    
+    private func handleVersionLabelTap() {
+        let now = Date()
+        if now.timeIntervalSince(lastTapTime) > tapTimeWindow { tapCount = 0 }
+        tapCount += 1
+        lastTapTime = now
+        
+        if tapCount >= requiredTaps {
+            onLegacyNavigationOptionSelected?(.secretDeveloper)
+            tapCount = 0
+        }
     }
     
     // MARK: - View Builders

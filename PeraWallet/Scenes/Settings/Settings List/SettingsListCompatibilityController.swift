@@ -58,6 +58,8 @@ final class SettingsListCompatibilityController: SwiftUICompatibilityBaseViewCon
             bottomModalTransition.perform(.walletRating, by: .presentWithoutNavigationController)
         case .developer:
             open(.developerSettings, by: .push)
+        case .secretDeveloper:
+            open(.secretDeveloperMenu, by: .push)
         }
     }
     

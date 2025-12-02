@@ -1249,6 +1249,8 @@ final class Router:
             viewController = SecuritySettingsViewController(configuration: configuration)
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
+        case .secretDeveloperMenu:
+            viewController = SecretDeveloperMenuViewController(configuration: configuration)
         case .currencySelection:
             viewController = CurrencySelectionViewController(
                 dataController: CurrencySelectionListAPIDataController(

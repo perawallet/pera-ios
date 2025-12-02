@@ -110,6 +110,7 @@ indirect enum Screen {
     case walletRating
     case securitySettings
     case developerSettings
+    case secretDeveloperMenu
     case currencySelection
     case appearanceSelection
     case watchAccountAddition(
