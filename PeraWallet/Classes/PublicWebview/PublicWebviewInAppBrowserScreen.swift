@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StakingInAppBrowserScreen.swift
+//   PublicWebviewInAppBrowserScreen.swift
 
 import UIKit
 import WebKit
 import pera_wallet_core
 
-class StakingInAppBrowserScreen: InAppBrowserScreen {
+class PublicWebviewInAppBrowserScreen: InAppBrowserScreen {
     
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
@@ -27,23 +27,19 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
     
-    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
-    
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        StakingInAppBrowserScreenMessage.allCases
+        PublicWebviewInAppBrowserScreenMessage.allCases
     }
-
-    var destination: StakingDestination {
-        didSet { loadStakingURL() }
-    }
+    
+    private let url: URL?
     
     var hideBackButtonInWebView: Bool = false
     
     init(
-        destination: StakingDestination,
+        url: URL?,
         configuration: ViewControllerConfiguration
     ) {
-        self.destination = destination
+        self.url = url
         super.init(configuration: configuration)
 
         startObservingNotifications()
@@ -56,7 +52,7 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadStakingURL()
+        loadURL()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +75,11 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
     }
 
     override func didPullToRefresh() {
-        loadStakingURL()
+        loadURL()
+    }
+    
+    private func loadURL() {
+        load(url: url)
     }
     
     // MARK: - WKScriptMessageHandler
@@ -88,13 +88,13 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        if let inAppMessage = StakingInAppBrowserScreenMessage(rawValue: message.name) {
-            handleStaking(inAppMessage, message)
+        if let inAppMessage = PublicWebviewInAppBrowserScreenMessage(rawValue: message.name) {
+            handlePublicWebview(inAppMessage, message)
         }
     }
 }
 
-extension StakingInAppBrowserScreen {
+extension PublicWebviewInAppBrowserScreen {
     private func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
     }
@@ -108,23 +108,7 @@ extension StakingInAppBrowserScreen {
     }
 }
 
-extension StakingInAppBrowserScreen {
-    private func generatePeraURL() -> URL? {
-        StakingURLGenerator.generateURL(
-            destination: destination,
-            theme: traitCollection.userInterfaceStyle,
-            session: session,
-            hideBackButton: hideBackButtonInWebView
-        )
-    }
-
-    private func loadStakingURL() {
-        let generatedUrl = generatePeraURL()
-        load(url: generatedUrl)
-    }
-}
-
-extension StakingInAppBrowserScreen {
+extension PublicWebviewInAppBrowserScreen {
     private func updateTheme(_ style: UIUserInterfaceStyle) {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
@@ -132,12 +116,13 @@ extension StakingInAppBrowserScreen {
     }
 }
 
-enum StakingInAppBrowserScreenMessage:
+enum PublicWebviewInAppBrowserScreenMessage:
     String,
     InAppBrowserScriptMessage {
     case openSystemBrowser
     case closeWebView
-    case peraconnect
-    case requestDeviceID = "getDeviceId"
-    case openDappWebview
+    case pushWebView
+    case getPublicSettings
+    case onBackPressed
+    case logAnalyticsEvent
 }

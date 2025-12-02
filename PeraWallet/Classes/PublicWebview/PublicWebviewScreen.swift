@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StakingScreen.swift
+//   PublicWebviewScreen.swift
 
 import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 import pera_wallet_core
 
-final class StakingScreen:
-    StakingInAppBrowserScreen,
+final class PublicWebviewScreen:
+    PublicWebviewInAppBrowserScreen,
     UIScrollViewDelegate {
     
     private lazy var theme = DiscoverHomeScreenTheme()
     private var isViewLayoutLoaded = false
-
-    init(configuration: ViewControllerConfiguration) {
-        super.init(
-            destination: .list,
-            configuration: configuration
-        )
-    }
     
     override func customizeTabBarAppearence() {
         tabBarHidden = false

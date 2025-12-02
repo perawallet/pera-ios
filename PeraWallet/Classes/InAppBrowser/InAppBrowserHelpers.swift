@@ -52,6 +52,39 @@ extension InAppBrowserScreen {
         }
     }
     
+    func handlePublicWebview(_ inAppMessage: PublicWebviewInAppBrowserScreenMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .openSystemBrowser:
+            handleOpenSystemBrowser(message)
+        case .closeWebView, .onBackPressed:
+            dismissScreen()
+        case .pushWebView:
+            guard
+                let params = message.decode(PushWVParams.self),
+                let url = URL(string: params.url)
+            else { return }
+            open(.publicWebview(url: url), by: .push)
+        case .getPublicSettings:
+            guard
+                let theme = traitCollection.userInterfaceStyle == .dark ? "dark" : "light",
+                let network = configuration.api?.network.rawValue,
+                let language = Bundle.main.preferredLocalizations.first,
+                let currency = try? sharedDataController.currency.primaryValue?.unwrap().name ?? ""
+            else { return }
+            handlePublicSettings(
+                params: [
+                    "theme": theme,
+                    "network": network,
+                    "language": language,
+                    "currency": currency
+                ]
+            )
+        case .logAnalyticsEvent:
+            guard let params = message.decode(LogEventParams.self) else { return }
+            analytics.track(params.name, payload: params.payload)
+        }
+    }
+    
     func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .openSystemBrowser:
@@ -78,8 +111,7 @@ extension InAppBrowserScreen {
                 let params = message.decode(PushWVParams.self),
                 let url = URL(string: params.url)
             else { return }
-            open(url) /// for testing
-            // TODO: create new webview
+            open(.publicWebview(url: url), by: .push)
         case .canOpenURI:
             handleCanOpenUri(message)
         case .openNativeURI:
@@ -88,9 +120,7 @@ extension InAppBrowserScreen {
             handleNotifyUser(message)
         case .getAddresses:
             handleAddresses(message)
-        case .getSettings:
-            handleSettings(inAppMessage, message)
-        case .getPublicSettings:
+        case .getSettings, .getPublicSettings:
             handleSettings(inAppMessage, message)
         case .logAnalyticsEvent:
             guard let params = message.decode(LogEventParams.self) else { return }

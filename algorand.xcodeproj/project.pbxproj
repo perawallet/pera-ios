@@ -7295,6 +7295,12 @@
 		D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
 		D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A74D272ABEFC0081D60B /* dark-rekey.json */; };
+		D4508A842EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A832EDED3E700ED12C3 /* PublicWebviewScreen.swift */; };
+		D4508A852EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A832EDED3E700ED12C3 /* PublicWebviewScreen.swift */; };
+		D4508A862EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A832EDED3E700ED12C3 /* PublicWebviewScreen.swift */; };
+		D4508A882EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A872EDED3FE00ED12C3 /* PublicWebviewInAppBrowserScreen.swift */; };
+		D4508A892EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A872EDED3FE00ED12C3 /* PublicWebviewInAppBrowserScreen.swift */; };
+		D4508A8A2EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4508A872EDED3FE00ED12C3 /* PublicWebviewInAppBrowserScreen.swift */; };
 		D451BEB42EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB52EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
 		D451BEB62EBB6517007524E2 /* TendenciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451BEB32EBB6512007524E2 /* TendenciesViewModel.swift */; };
@@ -9502,6 +9508,8 @@
 		D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewTheme.swift; sourceTree = "<group>"; };
 		D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeViewTheme.swift; sourceTree = "<group>"; };
 		D45089F32A5D6597002D92E6 /* AuthorizedAccountListFilterAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizedAccountListFilterAlgorithm.swift; sourceTree = "<group>"; };
+		D4508A832EDED3E700ED12C3 /* PublicWebviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicWebviewScreen.swift; sourceTree = "<group>"; };
+		D4508A872EDED3FE00ED12C3 /* PublicWebviewInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicWebviewInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		D450DE662701C131008CC094 /* LedgerAccountVerificationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationViewTheme.swift; sourceTree = "<group>"; };
 		D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountVerificationViewController+Theme.swift"; sourceTree = "<group>"; };
 		D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreen.swift; sourceTree = "<group>"; };
@@ -13696,6 +13704,7 @@
 				591681642E4A51D8002184C2 /* Models */,
 				2BF727B72747144E00CCAC30 /* Notifications */,
 				D41F4EF02892D0C500B59559 /* OptOutAsset */,
+				D4508A822EDED3D500ED12C3 /* PublicWebview */,
 				2B4DF409236C5F4F00FF9551 /* Routing */,
 				2BF5317A224AA88600A7455F /* Settings */,
 				2BF727DD2747181600CCAC30 /* Shared */,
@@ -21318,6 +21327,15 @@
 			path = Transaction;
 			sourceTree = "<group>";
 		};
+		D4508A822EDED3D500ED12C3 /* PublicWebview */ = {
+			isa = PBXGroup;
+			children = (
+				D4508A872EDED3FE00ED12C3 /* PublicWebviewInAppBrowserScreen.swift */,
+				D4508A832EDED3E700ED12C3 /* PublicWebviewScreen.swift */,
+			);
+			path = PublicWebview;
+			sourceTree = "<group>";
+		};
 		D451A2EE29C07E3400752543 /* Connection */ = {
 			isa = PBXGroup;
 			children = (
@@ -26189,6 +26207,7 @@
 				59167D6D2E464C76002184C2 /* AssetDetailTitleView.swift in Sources */,
 				59167D6E2E464C76002184C2 /* AssetDetailTitleViewTheme.swift in Sources */,
 				59167D6F2E464C76002184C2 /* Alert.swift in Sources */,
+				D4508A842EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */,
 				59167D702E464C76002184C2 /* AlertAction.swift in Sources */,
 				D4653A122EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */,
 				59167D712E464C76002184C2 /* AlertScreen.swift in Sources */,
@@ -26758,6 +26777,7 @@
 				59167F9B2E464C76002184C2 /* TransactionCustomRangeSelectionViewModel.swift in Sources */,
 				59167F9C2E464C76002184C2 /* RangeSelectionView.swift in Sources */,
 				59167F9D2E464C76002184C2 /* RangeSelectionViewTheme.swift in Sources */,
+				D4508A8A2EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */,
 				59167F9E2E464C76002184C2 /* RangeSelectionViewModel.swift in Sources */,
 				59167F9F2E464C76002184C2 /* TransactionFilterView.swift in Sources */,
 				59167FA02E464C76002184C2 /* TransactionFilterViewTheme.swift in Sources */,
@@ -28357,6 +28377,7 @@
 				59E602EE2E4A712500CCA99B /* Alert.swift in Sources */,
 				59E602EF2E4A712500CCA99B /* AlertAction.swift in Sources */,
 				59E602F02E4A712500CCA99B /* AlertScreen.swift in Sources */,
+				D4508A852EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */,
 				59E602F12E4A712500CCA99B /* AlertScreenTheme.swift in Sources */,
 				D4653A102EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */,
 				59E602F22E4A712500CCA99B /* AlertScreenWithFillingImageTheme.swift in Sources */,
@@ -28926,6 +28947,7 @@
 				59E6051B2E4A712500CCA99B /* RangeSelectionView.swift in Sources */,
 				59E6051C2E4A712500CCA99B /* RangeSelectionViewTheme.swift in Sources */,
 				59E6051D2E4A712500CCA99B /* RangeSelectionViewModel.swift in Sources */,
+				D4508A892EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */,
 				59E6051E2E4A712500CCA99B /* TransactionFilterView.swift in Sources */,
 				59E6051F2E4A712500CCA99B /* TransactionFilterViewTheme.swift in Sources */,
 				59E605202E4A712500CCA99B /* TransactionResultScreen.swift in Sources */,
@@ -30525,6 +30547,7 @@
 				59E60B662E4A71D000CCA99B /* Alert.swift in Sources */,
 				59E60B672E4A71D000CCA99B /* AlertAction.swift in Sources */,
 				59E60B682E4A71D000CCA99B /* AlertScreen.swift in Sources */,
+				D4508A862EDED3F500ED12C3 /* PublicWebviewScreen.swift in Sources */,
 				59E60B692E4A71D000CCA99B /* AlertScreenTheme.swift in Sources */,
 				D4653A112EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */,
 				59E60B6A2E4A71D000CCA99B /* AlertScreenWithFillingImageTheme.swift in Sources */,
@@ -31094,6 +31117,7 @@
 				59E60D942E4A71D000CCA99B /* RangeSelectionViewTheme.swift in Sources */,
 				59E60D952E4A71D000CCA99B /* RangeSelectionViewModel.swift in Sources */,
 				59E60D962E4A71D000CCA99B /* TransactionFilterView.swift in Sources */,
+				D4508A882EDED41600ED12C3 /* PublicWebviewInAppBrowserScreen.swift in Sources */,
 				59E60D972E4A71D000CCA99B /* TransactionFilterViewTheme.swift in Sources */,
 				59E60D982E4A71D000CCA99B /* TransactionResultScreen.swift in Sources */,
 				59E60D992E4A71D000CCA99B /* TransactionResultScreen+Theme.swift in Sources */,

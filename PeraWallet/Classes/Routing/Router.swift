@@ -2435,6 +2435,8 @@ final class Router:
             )
         case .staking:
             viewController = StakingScreen(configuration: configuration)
+        case .publicWebview(url: let url):
+            viewController = PublicWebviewScreen(url: url, configuration: configuration)
         case .passphraseWarning(eventHandler: let eventHandler):
             let screen = PassphraseWarningScreen(configuration: configuration)
             screen.eventHandler = eventHandler
