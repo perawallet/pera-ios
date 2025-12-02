@@ -57,7 +57,7 @@ extension InAppBrowserScreen {
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
         case .closeWebView, .onBackPressed:
-            dismissScreen()
+            popScreen()
         case .pushWebView:
             guard
                 let params = message.decode(PushWVParams.self),
