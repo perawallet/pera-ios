@@ -26,4 +26,8 @@ public enum PeraUserDefaults {
     // MARK: - Security Settings
     
     @UserDefault(key: "isRekeySupported") public static var isRekeySupported: Bool?
+    
+    // MARK: - Inbox
+    
+    @UserDefault(key: "watchedJointAccountInvitations") public static var watchedJointAccountInvitations: [String]?
 }
