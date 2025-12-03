@@ -128,14 +128,18 @@ struct Scripts {
         """
     }
     
-    static func message(action: String, payload: String) -> String {
-        // TODO: change payload to payloadData
-        guard let payloadData = payload.data(using: .utf8)?.base64EncodedString() else { return "" }
+    static func message(id: Int, result: String) -> String {
+        let dict: [String: Any] = [
+            "jsonrpc": "2.0",
+            "result": result,
+            "id": id
+        ]
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
+              let jsonString = String(data: jsonData, encoding: .utf8) else { return .empty }
+        
         return """
-        window.postMessage(JSON.stringify({
-            action: "\(action)",
-            payload: \(payload)
-        }), window.location.origin);
+        window.postMessage(JSON.stringify(\(jsonString)), window.location.origin);
         """
     }
 }

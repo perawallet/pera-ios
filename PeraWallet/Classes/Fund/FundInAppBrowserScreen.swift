@@ -147,4 +147,5 @@ enum FundInAppBrowserScriptMessage:
     case onBackPressed
     case logAnalyticsEvent
     case closeWebView
+    case handleBatch
 }

@@ -14,6 +14,8 @@
 
 //   InAppBrowserMessageParams.swift
 
+struct EmptyParams: Decodable {}
+
 struct URLParams: Decodable {
     let url: String
 }
