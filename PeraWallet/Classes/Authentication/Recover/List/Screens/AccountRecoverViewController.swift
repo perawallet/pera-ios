@@ -282,8 +282,11 @@ extension AccountRecoverViewController {
         error: ImportAccountScreenError,
         from screen: UIViewController
     ) {
-        let errorScreen = Screen.importAccountError(error) { event, errorScreen in
-            screen.dismiss(animated: true)
+        bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: String(localized: "passphrase-verify-invalid-try-again-title"))
+        let errorScreen = Screen.importAccountError(error) { [weak self] event, errorScreen in
+            guard let self else { return }
+            session?.createUser()
+            launchMain()
         }
         screen.open(errorScreen, by: .push)
     }
