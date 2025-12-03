@@ -21,6 +21,9 @@ public protocol ALGAnalytics: Analytics {
     func record(
         _ log: ALGAnalyticsLog
     )
+    func track(
+        _ log: any AnalyticsScreen
+    )
 }
 
 extension ALGAnalytics {
@@ -31,6 +34,16 @@ extension ALGAnalytics {
             if let aProvider = provider as? ALGAnalyticsProvider,
                aProvider.canRecord(log) {
                 aProvider.record(log)
+            }
+        }
+    }
+    public func track(
+        _ log: any AnalyticsScreen
+    ) {
+        for provider in providers {
+            if let aProvider = provider as? ALGAnalyticsProvider,
+               aProvider.canTrack(log) {
+                aProvider.track(log)
             }
         }
     }
