@@ -37,6 +37,7 @@ extension RecordHomeScreenEvent {
         case qrScanConnected
         case buyAlgo
         case send
+        case fund
         case sort
         case stake
         case swap
@@ -63,6 +64,8 @@ extension RecordHomeScreenEvent {
                 return .tapBuyAlgoInHome
             case .send:
                 return .tapSendInHome
+            case .fund:
+                return .tapFundInHome
             case .sort:
                 return .tapSortInHome
             case .stake:

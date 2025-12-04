@@ -52,6 +52,42 @@ extension InAppBrowserScreen {
         }
     }
     
+    func handlePublicWebview(_ inAppMessage: PublicWebviewInAppBrowserScreenMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .openSystemBrowser:
+            handleOpenSystemBrowser(message)
+        case .closeWebView, .onBackPressed:
+            popScreen()
+        case .pushWebView:
+            guard
+                let params = message.decode(PushWVParams.self)?.params,
+                let url = URL(string: params.url)
+            else { return }
+            open(.publicWebview(url: url), by: .push)
+        case .getPublicSettings:
+            guard
+                let response = message.decode(EmptyParams.self),
+                let id = response.id,
+                let theme = traitCollection.userInterfaceStyle == .dark ? "dark" : "light",
+                let network = configuration.api?.network.rawValue,
+                let language = Bundle.main.preferredLocalizations.first,
+                let currency = try? sharedDataController.currency.primaryValue?.unwrap().name ?? ""
+            else { return }
+            handlePublicSettings(
+                id: id,
+                params: [
+                    "theme": theme,
+                    "network": network,
+                    "language": language,
+                    "currency": currency
+                ]
+            )
+        case .logAnalyticsEvent:
+            guard let params = message.decode(LogEventParams.self)?.params else { return }
+            analytics.track(params.name, payload: params.payload)
+        }
+    }
+    
     func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .openSystemBrowser:
@@ -64,6 +100,44 @@ extension InAppBrowserScreen {
             handleDeviceIDRequest(message)
         case .openDappWebview:
             handleDappDetailAction(message)
+        }
+    }
+    
+    func handleFund(_ inAppMessage: FundInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .handleBatch:
+            handleBatch(message)
+        case .openSystemBrowser:
+            handleOpenSystemBrowser(message)
+        case .closeWebView, .onBackPressed:
+            dismissScreen()
+        case .pushWebView:
+            guard
+                let params = message.decode(PushWVParams.self)?.params,
+                let url = URL(string: params.url)
+            else { return }
+            open(.publicWebview(url: url), by: .push)
+        case .canOpenURI:
+            handleCanOpenUri(message)
+        case .openNativeURI:
+            handleOpenNativeUri(message)
+        case .notifyUser:
+            handleNotifyUser(message)
+        case .getAddresses:
+            guard
+                let response = message.decode(EmptyParams.self),
+                let id = response.id
+            else { return }
+            handleAddresses(id: id)
+        case .getSettings, .getPublicSettings:
+            guard
+                let response = message.decode(EmptyParams.self),
+                let id = response.id
+            else { return }
+            handleSettings(inAppMessage, id: id)
+        case .logAnalyticsEvent:
+            guard let params = message.decode(LogEventParams.self)?.params else { return }
+            analytics.track(params.name, payload: params.payload)
         }
     }
     
@@ -102,8 +176,191 @@ extension InAppBrowserScreen {
         launchController.receive(deeplinkWithSource: src)
     }
     
+    private func handleNotifyUser(_ message: WKScriptMessage) {
+        guard let params = message.decode(NotifyParams.self)?.params else { return }
+        handleNotifyUser(params: params)
+    }
+    
+    private func handleNotifyUser(params: NotifyParams) {
+        switch params.type {
+        case .haptic: break
+        case .sound: break
+        case .message:
+            guard let message = params.message else { return }
+            if params.variant == "banner" {
+                configuration.bannerController?.presentSuccessBanner(title: message)
+            } else if params.variant == "toast" {
+                configuration.bannerController?.presentInfoBanner(message)
+            }
+        }
+    }
+    
+    private func handleBatch(_ message: WKScriptMessage) {
+        guard let messagesArray = message.decodeArray() else { return }
+        messagesArray.forEach { message in
+            guard let methodName = message["method"] as? String else { return }
+            if let inAppMessage = FundInAppBrowserScriptMessage(rawValue: methodName) {
+                switch inAppMessage {
+                case .pushWebView:
+                    guard
+                        let params: PushWVParams = decodeMethodParams(from: message),
+                        let url = URL(string: params.url)
+                    else {
+                        return
+                    }
+                    open(.publicWebview(url: url), by: .push)
+                case .openSystemBrowser:
+                    guard let params: DiscoverGenericParameters = decodeMethodParams(from: message) else { return }
+                    openInBrowser(params.url)
+                case .canOpenURI:
+                    guard
+                        let id = message["id"] as? Int,
+                        let params: URIParams = decodeMethodParams(from: message),
+                        let uri = URL(string: params.uri)
+                    else {
+                        return
+                    }
+                    webView.evaluateJavaScript(
+                        Scripts.message(
+                            id: id,
+                            result: UIApplication.shared.canOpenURL(uri).description
+                        )
+                    )
+                case .openNativeURI:
+                    guard
+                        let params: URIParams = decodeMethodParams(from: message),
+                        let uri = URL(string: params.uri)
+                    else {
+                        return
+                    }
+                    UIApplication.shared.open(uri)
+                case .notifyUser:
+                    guard let params: NotifyParams = decodeMethodParams(from: message) else { return }
+                    handleNotifyUser(params: params)
+                case .getAddresses:
+                    guard let id = message["id"] as? Int else { return }
+                    handleAddresses(id: id)
+                    break
+                case .getSettings, .getPublicSettings:
+                    guard let id = message["id"] as? Int else { return }
+                    handleSettings(inAppMessage, id: id)
+                case .logAnalyticsEvent:
+                    guard let params: LogEventParams = decodeMethodParams(from: message) else { return }
+                    analytics.track(params.name, payload: params.payload)
+                case .closeWebView, .onBackPressed:
+                    dismissScreen()
+                default: break
+                }
+            }
+        }
+    }
+    
+    private func handleAddresses(id: Int) {
+        var addressesInfo = [[String: String]]()
+        session?.authenticatedUser?.accounts.forEach { accountInformation in
+            let account = Account(localAccount: accountInformation)
+            let name = account.primaryDisplayName
+            let address = account.address
+            let type = account.authType
+            addressesInfo.append(["name": name, "address": address, "type": type])
+        }
+        
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: addressesInfo),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else {
+            return
+        }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handleSettings(_ inAppMessage: FundInAppBrowserScriptMessage, id: Int) {
+        guard
+            let theme = traitCollection.userInterfaceStyle == .dark ? "dark" : "light",
+            let network = configuration.api?.network.rawValue,
+            let language = Bundle.main.preferredLocalizations.first,
+            let currency = try? sharedDataController.currency.primaryValue?.unwrap().name ?? ""
+        else { return }
+        var params = ["theme": theme, "network": network, "language": language, "currency": currency]
+        
+        guard inAppMessage == .getSettings else {
+            handlePublicSettings(id: id, params: params)
+            return
+        }
+        
+        guard
+            let deviceId = UIDevice.current.identifierForVendor?.uuidString,
+            let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String,
+            let appPackageName = Bundle.main.bundleIdentifier
+        else { return }
+        
+        params["platform"] = "ios"
+        params["appName"] = appName
+        params["appPackageName"] = appPackageName
+        params["appVersion"] = Bundle.main.version
+        params["deviceId"] = deviceId
+        params["deviceVersion"] = UIDevice.current.systemVersion
+        params["deviceModel"] = UIDevice.current.model
+        
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: params),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handlePublicSettings(id: Int, params: [String: String]) {
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: params),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handleCanOpenUri(_ message: WKScriptMessage) {
+        guard
+            let response = message.decode(URIParams.self),
+            let id = response.id,
+            let params = response.params,
+            let uri = URL(string: params.uri)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: UIApplication.shared.canOpenURL(uri).description
+            )
+        )
+    }
+    
+    private func handleOpenNativeUri(_ message: WKScriptMessage) {
+        guard
+            let params = message.decode(URIParams.self)?.params,
+            let uri = URL(string: params.uri)
+        else { return }
+        UIApplication.shared.open(uri)
+    }
+    
     private func handleTokenDetailAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(DiscoverAssetParameters.self) else { return }
+        guard let params = message.decode(DiscoverAssetParameters.self)?.params else { return }
         navigateToAssetDetail(params)
     }
     
@@ -115,7 +372,7 @@ extension InAppBrowserScreen {
     }
     
     private func handleTokenAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(DiscoverSwapParameters.self) else { return }
+        guard let params = message.decode(DiscoverSwapParameters.self)?.params else { return }
 
         switch params.action {
         case .buyAlgo:
@@ -159,7 +416,7 @@ extension InAppBrowserScreen {
     
     private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverGenericParameters.self) else { return }
+        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
         openInBrowser(params.url)
     }
     
@@ -170,7 +427,7 @@ extension InAppBrowserScreen {
     
     private func handleDappDetailAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverDappParamaters.self) else { return }
+        guard let params = message.decode(DiscoverDappParamaters.self)?.params else { return }
         navigateToDappDetail(params)
     }
 
@@ -212,7 +469,7 @@ extension InAppBrowserScreen {
     
     private func handleNewScreenAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverGenericParameters.self) else { return }
+        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
         navigateToDiscoverGeneric(params)
     }
 
@@ -224,7 +481,7 @@ extension InAppBrowserScreen {
     }
     
     private func handlePaymentRequestAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(BidaliPaymentParameters.self),
+        guard let params = message.decode(BidaliPaymentParameters.self)?.params,
               let paymentRequest = params.data else {
             presentGenericErrorBanner()
             return
@@ -310,7 +567,7 @@ extension InAppBrowserScreen {
     }
     
     private func handleOpenURLRequestAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(BidaliOpenURLParameters.self),
+        guard let params = message.decode(BidaliOpenURLParameters.self)?.params,
               let openURLRequest = params.data else {
             presentGenericErrorBanner()
             return
@@ -350,6 +607,15 @@ extension InAppBrowserScreen {
         case .swapFromAsset:
             self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
         }
+    }
+    
+    private func decodeMethodParams<T: Decodable>(from dict: [String: Any]) -> T? {
+        guard let params = dict["params"] as? [String: Any],
+              let data = try? JSONSerialization.data(withJSONObject: params),
+              let decoded = try? JSONDecoder().decode(T.self, from: data)
+        else { return nil }
+        
+        return decoded
     }
 }
 

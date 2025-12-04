@@ -21,7 +21,8 @@ import UIKit
 
 final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionIdentifier, HomeItemIdentifier> {
     init(
-        _ collectionView: UICollectionView
+        _ collectionView: UICollectionView,
+        shouldShowFundButton: Bool = false
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -66,6 +67,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                         HomeQuickActionsCell.self,
                         at: indexPath
                     )
+                    cell.showFundButton = shouldShowFundButton
                     return cell
                 }
             case .announcement(let item):

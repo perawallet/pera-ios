@@ -27,16 +27,25 @@ final class HomeQuickActionsView:
         .swap: TargetActionInteraction(),
         .buy: TargetActionInteraction(),
         .stake: TargetActionInteraction(),
+        .fund: TargetActionInteraction(),
         .send: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
     private lazy var swapActionView = makeActionView()
     private lazy var buyActionView = makeActionView()
+    private lazy var fundActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
 
     private var theme: HomeQuickActionsViewTheme!
+    
+    var showFundButton: Bool = false {
+        didSet {
+            buyActionView.isHidden = showFundButton
+            fundActionView.isHidden = !showFundButton
+        }
+    }
 
     func customize(_ theme: HomeQuickActionsViewTheme) {
         self.theme = theme
@@ -117,6 +126,7 @@ extension HomeQuickActionsView {
 
         addSwapAction(theme)
         addBuyAction(theme)
+        addFundAction(theme)
         addStakeAction(theme)
         addSendAction(theme)
     }
@@ -148,6 +158,21 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .buy,
             for: buyActionView
+        )
+    }
+    
+    private func addFundAction(_ theme: HomeQuickActionsViewTheme) {
+        fundActionView.customizeAppearance(theme.fundAction)
+        customizeAction(
+            fundActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(fundActionView)
+
+        startPublishing(
+            event: .fund,
+            for: fundActionView
         )
     }
 
@@ -205,6 +230,7 @@ extension HomeQuickActionsView {
     enum Event {
         case swap
         case buy
+        case fund
         case stake
         case send
         case transfer

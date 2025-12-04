@@ -73,6 +73,24 @@ final class FirebaseAnalyticsProvider: ALGAnalyticsProvider {
             )
         }
     }
+    
+    func canTrack(
+        _ event: String
+    ) -> Bool {
+        return true
+    }
+    
+    func track(
+        _ event: String,
+        payload: [String: String]?
+    ) {
+        asyncMain {
+            instance.logEvent(
+                event,
+                parameters: payload
+            )
+        }
+    }
 
     func canRecord(
         _ log: ALGAnalyticsLog

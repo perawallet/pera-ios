@@ -240,6 +240,15 @@ public class AppEnvironment {
                 return "https://discover-mobile.perawallet.app/main/markets"
             }
     }()
+    
+    public lazy var fundBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://onramp-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://onramp-mobile.perawallet.app/"
+        }
+    }()
 }
 
 public enum AlgorandWeb: String {

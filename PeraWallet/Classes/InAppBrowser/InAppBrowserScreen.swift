@@ -111,7 +111,7 @@ class InAppBrowserScreen:
     // MARK: - Setups
     
     func load(url: URL?) {
-        guard let url = url else { return }
+        guard let url else { return }
         
         var request = URLRequest(url: url)
         request.timeoutInterval = 30

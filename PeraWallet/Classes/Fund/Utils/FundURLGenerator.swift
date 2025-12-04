@@ -12,32 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StakingURLGenerator.swift
+//   FundURLGenerator.swift
 
 import Foundation
 import UIKit
 import pera_wallet_core
 
-final class StakingURLGenerator {
+final class FundURLGenerator {
     static func generateURL(
-        destination: StakingDestination,
         theme: UIUserInterfaceStyle,
         session: Session?
     ) -> URL? {
-        switch destination {
-        case .list:
-            return generateURLForList(
-                theme: theme,
-                session: session
-            )
-        }
-    }
-
-    private static func generateURLForList(
-        theme: UIUserInterfaceStyle,
-        session: Session?
-    ) -> URL? {
-        var components = URLComponents(string: AppEnvironment.current.stakingBaseUrl)
+        var components = URLComponents(string: AppEnvironment.current.fundBaseUrl)
         components?.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
@@ -50,16 +36,12 @@ final class StakingURLGenerator {
         session: Session?
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
+        queryItems.append(.init(name: "version", value: "1"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
-        queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
         queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
         return queryItems
     }
-}
-
-enum StakingDestination {
-    case list
 }

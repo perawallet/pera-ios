@@ -8520,6 +8520,16 @@
         }
       }
     },
+    "title-buy-gift-card" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy Gift Card"
+          }
+        }
+      }
+    },
     "title-buy-gift-cards" : {
       "localizations" : {
         "en" : {
@@ -8975,6 +8985,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter"
+          }
+        }
+      }
+    },
+    "title-fund" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fund"
           }
         }
       }
