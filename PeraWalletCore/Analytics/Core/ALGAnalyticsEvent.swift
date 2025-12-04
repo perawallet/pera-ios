@@ -74,6 +74,7 @@ public enum ALGAnalyticsEventName:
     case onboardWatchAccountCreateVerified
     case onboardWelcomeScreenAccountCreate
     case onboardWelcomeScreenAccountRecover
+    case openNotification
     case qrConnectedInHome
     case registerAccount
     case rekeyAccount
@@ -259,6 +260,7 @@ extension ALGAnalyticsEventName {
         case .onboardWatchAccountCreateVerified: rawName = "onb_watchacc_create_verified"
         case .onboardWelcomeScreenAccountCreate: rawName = "onb_welcome_account_create"
         case .onboardWelcomeScreenAccountRecover: rawName = "onb_welcome_account_recover"
+        case .openNotification: rawName = "notification_open"
         case .webAuthNPassKeyAdded: rawName = "webauthn_passkey_added"
         case .webAuthNPassKeyUsed: rawName = "webauthn_passkey_used"
         case .webAuthNPassKeyDeleted: rawName = "webauthn_passkey_deleted"
