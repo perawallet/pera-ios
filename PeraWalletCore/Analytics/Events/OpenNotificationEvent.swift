@@ -14,25 +14,26 @@
 
 //   OpenNotificationEvent.swift
 
-import Foundation
 import MacaroonVendors
 
 public struct OpenNotificationEvent: ALGAnalyticsEvent {
     public let name: ALGAnalyticsEventName
-    public var metadata: ALGAnalyticsMetadata
+    public let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
         id: Int?,
         url: String?
     ) {
         self.name = .openNotification
-        self.metadata = [:]
+        
+        var metadata: ALGAnalyticsMetadata = [:]
         if let id {
             metadata[.notificationId] = id
         }
         if let url {
             metadata[.notificationUrl] = url
         }
+        self.metadata = metadata
     }
 }
 
@@ -41,6 +42,6 @@ extension AnalyticsEvent where Self == OpenNotificationEvent {
         id: Int?,
         url: String?
     ) -> Self {
-        return OpenNotificationEvent(id: id, url: url)
+        OpenNotificationEvent(id: id, url: url)
     }
 }
