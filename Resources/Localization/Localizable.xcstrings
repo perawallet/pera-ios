@@ -6527,6 +6527,16 @@
         }
       }
     },
+    "secret-dev-settings-enable-test-cards" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Test Cards"
+          }
+        }
+      }
+    },
     "security-settings-localAuthentication" : {
       "localizations" : {
         "en" : {
@@ -7255,6 +7265,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rate Pera Wallet"
+          }
+        }
+      }
+    },
+    "settings-secret-dev-menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Developer Menu"
           }
         }
       }
