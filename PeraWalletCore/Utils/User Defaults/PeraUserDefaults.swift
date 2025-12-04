@@ -26,4 +26,8 @@ public enum PeraUserDefaults {
     // MARK: - Security Settings
     
     @UserDefault(key: "isRekeySupported") public static var isRekeySupported: Bool?
+    
+    // MARK: - Secret Developer Settings
+    
+    @UserDefault(key: "enableTestCards") public static var enableTestCards: Bool?
 }

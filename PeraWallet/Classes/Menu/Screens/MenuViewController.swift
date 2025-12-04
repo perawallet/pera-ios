@@ -79,19 +79,35 @@ final class MenuViewController: BaseViewController {
         addMenuListView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
-            menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
-            return
-        }
-        menuOptions = [.cards(state: .inactive), .nfts(withThumbnails: []), .buy, .receive, .stake, .inviteFriends]
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        selectMenuOptions()
         configure()
     }
+    
+    private func selectMenuOptions(
+        cardsOption: MenuOption = .cards(state: .inactive),
+        nftsOption: MenuOption = .nfts(withThumbnails: [])
+    ) {
+        
+        let isMainnet = configuration.api?.network.isMainnet ?? false
+        let testCardsEnabled = PeraUserDefaults.enableTestCards ?? false
+        let showCards = isMainnet || testCardsEnabled
+        let isXoSwapEnabled = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+        
+        var baseOptions: [MenuOption] = []
+        
+        if showCards {
+            baseOptions.append(cardsOption)
+        }
+        
+        baseOptions.append(nftsOption)
+        
+        baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .receive, .stake, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
+        
+        menuOptions = baseOptions
+    }
+
 }
 
 extension MenuViewController {
@@ -125,24 +141,17 @@ extension MenuViewController {
             guard let self else { return }
             switch event {
             case .didUpdate(let updates):
-                guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
-                    self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buyAlgo, .receive, .inviteFriends]
-                    return
-                }
-                self.menuOptions = [cardsOption, .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), .buy, .receive, .stake, .inviteFriends]
+                selectMenuOptions(nftsOption: .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)))
             case .didFinishRunning(hasError: let hasError):
                 if hasError {
-                    guard configuration.featureFlagService.isEnabled(.xoSwapEnabled) else {
-                        self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buyAlgo, .receive, .inviteFriends]
-                        return
-                    }
-                    self.menuOptions = [cardsOption, .nfts(withThumbnails: []), .buy, .receive, .stake, .inviteFriends]
+                    selectMenuOptions(cardsOption: cardsOption)
                 }
             }
             self.menuListView.collectionView.reloadData()
         }
         collectibleDataController.load(query: query)
     }
+    
     
     private func parseCollectionData(from itemIdentifiers: [CollectibleListItem]) -> [URL] {
         let imageAssets: [CollectibleAsset] = itemIdentifiers.compactMap { item in

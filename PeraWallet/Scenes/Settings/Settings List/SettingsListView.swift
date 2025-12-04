@@ -36,6 +36,7 @@ struct SettingsListView: View {
         case termsAndServices
         case privacyPolicy
         case passkey
+        case secretDeveloper
     }
     
     // MARK: - Properties
@@ -87,6 +88,7 @@ struct SettingsListView: View {
                     .frame(maxWidth: .infinity)
                     .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
+                    .onTapGesture(count: 10) { moveTo(option: .secretDeveloper) }
             }
             .listStyle(.grouped)
             .listSectionSeparator(.hidden)
@@ -131,6 +133,7 @@ struct SettingsListView: View {
         case .walletConnect:
             onLegacyNavigationOptionSelected?(.walletConnect)
         case .passkeys:
+            model.registerAnalyticsEvent(TapPassKeyInSettingsEvent.tapPassKeyInSettings())
             moveTo(option: .passkey)
         case .currency:
             onLegacyNavigationOptionSelected?(.currency)
@@ -166,6 +169,8 @@ struct SettingsListView: View {
             buildWebView(link: AlgorandWeb.privacyPolicy.link)
         case .passkey:
             buildPasskeyView()
+        case .secretDeveloper:
+            buildSecretDevView()
         }
     }
     
@@ -180,8 +185,12 @@ struct SettingsListView: View {
     
     @ViewBuilder
     private func buildPasskeyView() -> some View {
-        //TODO: Is this the right way to handle back or is there a more idiomatic SwiftUI way?
-        PasskeyListView(onBackButtonTap: { self.navigationPath.removeLast() })
+        PasskeyListView(navigationPath: $navigationPath)
+    }
+    
+    @ViewBuilder
+    private func buildSecretDevView() -> some View {
+        SecretDevListView(navigationPath: $navigationPath)
     }
 }
 
@@ -194,6 +203,7 @@ struct SettingsListView: View {
 final class MockedSettingsListModel: SettingsListModelMockable {
     
     var viewModel: SettingsListViewModel = SettingsListViewModel()
+    func registerAnalyticsEvent(_ event: any ALGAnalyticsEvent) {}
     
     init() {
         update(sections: [

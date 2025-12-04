@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,43 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
-import AuthenticationServices
+//   SecretDevListView.swift
 
-struct PasskeyListView: View {
+import SwiftUI
+import pera_wallet_core
+
+struct SecretDevListView: View {
+
+    // MARK: - Properties
     
-    private let model: PasskeyListModelable
-    @ObservedObject private var viewModel: PasskeyListViewModel
     @Binding private var navigationPath: NavigationPath
+    private var settings: [SecretDeveloperSettings] = [.enableTestCards]
+    @State private var enableTestCards = PeraUserDefaults.enableTestCards ?? false
     
     // MARK: - Initialisers
     
     init(navigationPath: Binding<NavigationPath>) {
-        self.model = PasskeyListModel()
-        self.viewModel = model.viewModel
         _navigationPath = navigationPath
     }
     
     // MARK: - Setups
     var body: some View {
-        VStack {
-            if viewModel.settingNotEnabled {
-                PasskeyDisabledView()
-            }
-            else if viewModel.passkeys.isEmpty {
-                PasskeyEmptyView()
-            }
-            else {
-                List(viewModel.passkeys) { passkey in
-                    PasskeyListCell(viewModel: PasskeyListCellViewModel(passkey: passkey, onDelete: viewModel.passKeyDeleted))
-                        .listRowSeparator(.hidden)
-                }
-                .scrollContentBackground(.hidden)
-                .listStyle(.plain)
+        List {
+            ForEach(settings, id: \.self) { item in
+                SecretDevListToggleCell(item: item, isOn: $enableTestCards)
+                .listRowSeparator(.hidden)
             }
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .onChange(of: enableTestCards) { newValue in
+            PeraUserDefaults.enableTestCards = newValue
+        }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarTitle("settings-passkeys-title")
+        .navigationBarTitle("settings-secret-dev-menu")
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(

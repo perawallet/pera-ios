@@ -113,8 +113,7 @@ extension StakingInAppBrowserScreen {
         StakingURLGenerator.generateURL(
             destination: destination,
             theme: traitCollection.userInterfaceStyle,
-            session: session,
-            hideBackButton: hideBackButtonInWebView
+            session: session
         )
     }
 

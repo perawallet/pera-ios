@@ -182,6 +182,7 @@ public enum ALGAnalyticsEventName:
     case tapInviteFriendsInMenu
     case tapCloseInviteFriendsInMenu
     case tapShareInviteFriendsInMenu
+    case tapPassKeyInSettings
 }
 
 extension ALGAnalyticsEventName {
@@ -338,6 +339,7 @@ extension ALGAnalyticsEventName {
         case .tapInviteFriendsInMenu: rawName = "menuscr_invite_friends_tap"
         case .tapCloseInviteFriendsInMenu: rawName = "menuscr_invite_close_tap"
         case .tapShareInviteFriendsInMenu: rawName = "menuscr_invite_share_tap"
+        case .tapPassKeyInSettings: rawName = "settingsscr_passkeys_tap"
         }
 
         let isTestnet = CoreAppConfiguration.shared?.api.isTestNet ?? false
