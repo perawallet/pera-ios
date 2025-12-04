@@ -5447,6 +5447,16 @@
         }
       }
     },
+    "passphrase-verify-invalid-try-again-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid passphrase. Please try again."
+          }
+        }
+      }
+    },
     "passphrase-verify-select-word" : {
       "localizations" : {
         "en" : {
