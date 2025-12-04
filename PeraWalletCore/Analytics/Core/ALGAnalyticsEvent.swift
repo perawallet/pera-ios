@@ -178,6 +178,7 @@ public enum ALGAnalyticsEventName:
     case tapTransferInMenu
     case tapBuyAlgoInMenu
     case tapReceiveInMenu
+    case tapStakeInMenu
     case tapInviteFriendsInMenu
     case tapCloseInviteFriendsInMenu
     case tapShareInviteFriendsInMenu
@@ -333,6 +334,7 @@ extension ALGAnalyticsEventName {
         case .tapTransferInMenu: rawName = "menuscr_transfer_tap"
         case .tapBuyAlgoInMenu: rawName = "menuscr_buyalgo_tap"
         case .tapReceiveInMenu: rawName = "menuscr_receive_tap"
+        case .tapStakeInMenu: rawName = "menuscr_stake_tap"
         case .tapInviteFriendsInMenu: rawName = "menuscr_invite_friends_tap"
         case .tapCloseInviteFriendsInMenu: rawName = "menuscr_invite_close_tap"
         case .tapShareInviteFriendsInMenu: rawName = "menuscr_invite_share_tap"

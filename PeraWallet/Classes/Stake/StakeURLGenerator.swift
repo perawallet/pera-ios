@@ -55,7 +55,7 @@ final class StakingURLGenerator {
         hideBackButton: Bool
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "1"))
+        queryItems.append(.init(name: "version", value: hideBackButton ? "5" : "4"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))

@@ -239,7 +239,8 @@ extension MenuViewController: UICollectionViewDelegate {
                 receiveTransactionFlowCoordinator.launch()
                 analytics.track(.recordMenuScreen(type: .tapReceive))
             case .stake:
-                break
+                open(.staking, by: .push)
+                analytics.track(.recordMenuScreen(type: .tapStake))
             case .inviteFriends:
                 openInviteFriends()
                 analytics.track(.recordMenuScreen(type: .tapInviteFriends))
