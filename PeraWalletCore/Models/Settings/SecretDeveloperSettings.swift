@@ -21,20 +21,15 @@ public enum SecretDeveloperSettings: Settings {
     
     public var image: UIImage? {
         switch self {
-        case .enableTestCards:
-            return img("icon-menu-cards")
+        case .enableTestCards: img("icon-menu-cards")
         }
     }
     
     public var name: String {
         switch self {
-        case .enableTestCards:
-            return String(localized: "secret-dev-settings-enable-test-cards")
-
+        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
         }
     }
 
-    public var subtitle: String? {
-        return nil
-    }
+    public var subtitle: String? { nil }
 }
