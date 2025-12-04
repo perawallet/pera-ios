@@ -7362,12 +7362,6 @@
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
 		D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
-		D4AF3FD62EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD52EDEF9BD00F25D48 /* SecretDeveloperMenuViewController.swift */; };
-		D4AF3FD72EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD52EDEF9BD00F25D48 /* SecretDeveloperMenuViewController.swift */; };
-		D4AF3FD82EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD52EDEF9BD00F25D48 /* SecretDeveloperMenuViewController.swift */; };
-		D4AF3FDA2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD92EDEF9CE00F25D48 /* SecretDeveloperMenuViewController+Theme.swift */; };
-		D4AF3FDB2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD92EDEF9CE00F25D48 /* SecretDeveloperMenuViewController+Theme.swift */; };
-		D4AF3FDC2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD92EDEF9CE00F25D48 /* SecretDeveloperMenuViewController+Theme.swift */; };
 		D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCD2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCE2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
@@ -9878,8 +9872,6 @@
 		D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerAnimationDisplaying.swift; sourceTree = "<group>"; };
 		D4AEC3BD27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryGridLoadingCell.swift; sourceTree = "<group>"; };
 		D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDeveloperSettings.swift; sourceTree = "<group>"; };
-		D4AF3FD52EDEF9BD00F25D48 /* SecretDeveloperMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDeveloperMenuViewController.swift; sourceTree = "<group>"; };
-		D4AF3FD92EDEF9CE00F25D48 /* SecretDeveloperMenuViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecretDeveloperMenuViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4B0528E28AEB5E100D53B20 /* SwapIntroductionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapIntroductionDraft.swift; sourceTree = "<group>"; };
 		D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountSelectionViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4B33AB727F2229A00523CEA /* AssetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetType.swift; sourceTree = "<group>"; };
@@ -16595,7 +16587,6 @@
 				2BA7138B2748691B00B8A907 /* List */,
 				2B4DF423236C75F800FF9551 /* Node */,
 				2B0E00AE2788184F00D6B2E2 /* Security */,
-				D4AF3FD32EDEF99D00F25D48 /* SecretDeveloperMenu */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -22438,23 +22429,6 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
-		D4AF3FD32EDEF99D00F25D48 /* SecretDeveloperMenu */ = {
-			isa = PBXGroup;
-			children = (
-				D4AF3FD42EDEF9A600F25D48 /* Screens */,
-			);
-			path = SecretDeveloperMenu;
-			sourceTree = "<group>";
-		};
-		D4AF3FD42EDEF9A600F25D48 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				D4AF3FD52EDEF9BD00F25D48 /* SecretDeveloperMenuViewController.swift */,
-				D4AF3FD92EDEF9CE00F25D48 /* SecretDeveloperMenuViewController+Theme.swift */,
-			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
 		D4AF5400276766B600A94200 /* QRScanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -25115,7 +25089,6 @@
 				591679432E464C76002184C2 /* AccountDetailViewController.swift in Sources */,
 				591679442E464C76002184C2 /* RekeyToStandardAccountFlowCoordinator.swift in Sources */,
 				591679452E464C76002184C2 /* RekeyToLedgerAccountFlowCoordinator.swift in Sources */,
-				D4AF3FDB2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */,
 				591679462E464C76002184C2 /* UndoRekeyFlowCoordinator.swift in Sources */,
 				591679472E464C76002184C2 /* AccountInformationFlowCoordinator.swift in Sources */,
 				591679482E464C76002184C2 /* AccountDetailViewController+Theme.swift in Sources */,
@@ -25146,7 +25119,6 @@
 				591679612E464C76002184C2 /* InvalidAccountOptionsViewControllerTheme.swift in Sources */,
 				591679622E464C76002184C2 /* AccountOrderingListItemCell.swift in Sources */,
 				591679632E464C76002184C2 /* SortAccountListDataController.swift in Sources */,
-				D4AF3FD72EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */,
 				591679642E464C76002184C2 /* SortAccountListDataSource.swift in Sources */,
 				591679652E464C76002184C2 /* SortAccountListLayout.swift in Sources */,
 				591679662E464C76002184C2 /* SortAccountListLocalDataController.swift in Sources */,
@@ -27282,7 +27254,6 @@
 				59E6FEC32E4A712500CCA99B /* RekeyToLedgerAccountFlowCoordinator.swift in Sources */,
 				59E6FEC42E4A712500CCA99B /* UndoRekeyFlowCoordinator.swift in Sources */,
 				59E6FEC52E4A712500CCA99B /* AccountInformationFlowCoordinator.swift in Sources */,
-				D4AF3FDC2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */,
 				59E6FEC62E4A712500CCA99B /* AccountDetailViewController+Theme.swift in Sources */,
 				59E6FEC72E4A712500CCA99B /* AccountDetailDataController.swift in Sources */,
 				59E6FEC82E4A712500CCA99B /* AccountDetailAPIDataController.swift in Sources */,
@@ -27313,7 +27284,6 @@
 				59E6FEE12E4A712500CCA99B /* SortAccountListDataController.swift in Sources */,
 				59E6FEE22E4A712500CCA99B /* SortAccountListDataSource.swift in Sources */,
 				59E6FEE32E4A712500CCA99B /* SortAccountListLayout.swift in Sources */,
-				D4AF3FD82EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */,
 				59E6FEE42E4A712500CCA99B /* SortAccountListLocalDataController.swift in Sources */,
 				59E6FEE52E4A712500CCA99B /* SortAccountListOrderTitleViewModel.swift in Sources */,
 				59E6FEE62E4A712500CCA99B /* SortAccountListTitleSupplementaryHeader.swift in Sources */,
@@ -29449,7 +29419,6 @@
 				59E6073B2E4A71D000CCA99B /* RekeyToLedgerAccountFlowCoordinator.swift in Sources */,
 				59E6073C2E4A71D000CCA99B /* UndoRekeyFlowCoordinator.swift in Sources */,
 				59E6073D2E4A71D000CCA99B /* AccountInformationFlowCoordinator.swift in Sources */,
-				D4AF3FDA2EDEF9D600F25D48 /* SecretDeveloperMenuViewController+Theme.swift in Sources */,
 				59E6073E2E4A71D000CCA99B /* AccountDetailViewController+Theme.swift in Sources */,
 				59E6073F2E4A71D000CCA99B /* AccountDetailDataController.swift in Sources */,
 				59E607402E4A71D000CCA99B /* AccountDetailAPIDataController.swift in Sources */,
@@ -29480,7 +29449,6 @@
 				59E607592E4A71D000CCA99B /* SortAccountListDataController.swift in Sources */,
 				59E6075A2E4A71D000CCA99B /* SortAccountListDataSource.swift in Sources */,
 				59E6075B2E4A71D000CCA99B /* SortAccountListLayout.swift in Sources */,
-				D4AF3FD62EDEF9BF00F25D48 /* SecretDeveloperMenuViewController.swift in Sources */,
 				59E6075C2E4A71D000CCA99B /* SortAccountListLocalDataController.swift in Sources */,
 				59E6075D2E4A71D000CCA99B /* SortAccountListOrderTitleViewModel.swift in Sources */,
 				59E6075E2E4A71D000CCA99B /* SortAccountListTitleSupplementaryHeader.swift in Sources */,

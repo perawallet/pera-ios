@@ -29,7 +29,6 @@ struct SettingsListView: View {
         case theme
         case rateApp
         case developer
-        case secretDeveloper
     }
     
     private enum NavigationOption {
@@ -37,6 +36,7 @@ struct SettingsListView: View {
         case termsAndServices
         case privacyPolicy
         case passkey
+        case secretDeveloper
     }
     
     // MARK: - Properties
@@ -170,7 +170,7 @@ struct SettingsListView: View {
         lastTapTime = now
         
         if tapCount >= requiredTaps {
-            onLegacyNavigationOptionSelected?(.secretDeveloper)
+            moveTo(option: .secretDeveloper)
             tapCount = 0
         }
     }
@@ -188,6 +188,8 @@ struct SettingsListView: View {
             buildWebView(link: AlgorandWeb.privacyPolicy.link)
         case .passkey:
             buildPasskeyView()
+        case .secretDeveloper:
+            buildSecretDevView()
         }
     }
     
@@ -202,8 +204,12 @@ struct SettingsListView: View {
     
     @ViewBuilder
     private func buildPasskeyView() -> some View {
-        //TODO: Is this the right way to handle back or is there a more idiomatic SwiftUI way?
-        PasskeyListView(onBackButtonTap: { self.navigationPath.removeLast() })
+        PasskeyListView(navigationPath: $navigationPath)
+    }
+    
+    @ViewBuilder
+    private func buildSecretDevView() -> some View {
+        SecretDevListView(navigationPath: $navigationPath)
     }
 }
 
