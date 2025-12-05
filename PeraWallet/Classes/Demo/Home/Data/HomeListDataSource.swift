@@ -67,7 +67,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                         HomeQuickActionsCell.self,
                         at: indexPath
                     )
-                    cell.showFundButton = shouldShowFundButton
+                    cell.bindData(HomeQuickActionsViewModel(shouldShowFundButton))
                     return cell
                 }
             case .announcement(let item):

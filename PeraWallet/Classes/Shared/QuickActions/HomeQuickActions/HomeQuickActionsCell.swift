@@ -20,6 +20,7 @@ import UIKit
 
 final class HomeQuickActionsCell:
     CollectionCell<HomeQuickActionsView>,
+    ViewModelBindable,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (36, 24, 36, 24)
@@ -35,12 +36,6 @@ final class HomeQuickActionsCell:
         contentView.backgroundColor = Colors.Defaults.background.uiColor
 
         contextView.customize(Self.theme)
-    }
-    
-    var showFundButton: Bool = false {
-        didSet {
-            contextView.showFundButton = showFundButton
-        }
     }
 
     class func calculatePreferredSize(

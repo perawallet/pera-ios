@@ -22,6 +22,7 @@ import UIKit
 final class HomeQuickActionsView:
     View,
     ListReusable,
+    ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .swap: TargetActionInteraction(),
@@ -39,18 +40,16 @@ final class HomeQuickActionsView:
     private lazy var sendActionView =  makeActionView()
 
     private var theme: HomeQuickActionsViewTheme!
-    
-    var showFundButton: Bool = false {
-        didSet {
-            buyActionView.isHidden = showFundButton
-            fundActionView.isHidden = !showFundButton
-        }
-    }
 
     func customize(_ theme: HomeQuickActionsViewTheme) {
         self.theme = theme
 
         addActions(theme)
+    }
+    
+    func bindData(_ viewModel: HomeQuickActionsViewModel?) {
+        buyActionView.isHidden = viewModel?.showFundButton ?? false
+        fundActionView.isHidden = !(viewModel?.showFundButton ?? false)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -169,6 +168,7 @@ extension HomeQuickActionsView {
         )
 
         contentView.addArrangedSubview(fundActionView)
+        fundActionView.isHidden = true
 
         startPublishing(
             event: .fund,

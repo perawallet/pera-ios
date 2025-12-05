@@ -93,7 +93,7 @@ extension InAppBrowserScreen {
         case .openSystemBrowser:
             handleOpenSystemBrowser(message)
         case .closeWebView:
-            dismissScreen()
+            popScreen()
         case .peraconnect:
             handlePeraConnectAction(message)
         case .requestDeviceID:

@@ -7369,6 +7369,9 @@
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
+		D49214612EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */; };
+		D49214622EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */; };
+		D49214632EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */; };
 		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
 		D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
 		D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
@@ -9757,6 +9760,7 @@
 		D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleReceiveSearchInputCell.swift; sourceTree = "<group>"; };
 		D490B42A2D958CBD0051983E /* pera-confetti.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "pera-confetti.json"; sourceTree = "<group>"; };
 		D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWarningOverlayView.swift; sourceTree = "<group>"; };
+		D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAuthorizationDeterminer.swift; sourceTree = "<group>"; };
 		D495D3F529A381DC00929635 /* MeldConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeldConfig.swift; sourceTree = "<group>"; };
 		D495FB612834F61500BD273C /* FullScreenContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenContentViewController.swift; sourceTree = "<group>"; };
@@ -20441,6 +20445,7 @@
 		D418A3B72DE5ADB20009747E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */,
 				2BB68F51261261250070FFE9 /* HomeNoContentViewModel.swift */,
 				F0431F2928778D900004CB7E /* HomePortfolioNavigationViewModel.swift */,
 				F087091927918E1A00BEE5C2 /* HomePortfolioViewModel.swift */,
@@ -25627,6 +25632,7 @@
 				59167B232E464C76002184C2 /* ChartSegmentedControlView.swift in Sources */,
 				59167B242E464C76002184C2 /* AccountChartsCell.swift in Sources */,
 				59167B252E464C76002184C2 /* AccountChartsViewTheme.swift in Sources */,
+				D49214632EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */,
 				59167B262E464C76002184C2 /* HomeChartsCell.swift in Sources */,
 				59167B272E464C76002184C2 /* HomeChartsViewTheme.swift in Sources */,
 				59167B282E464C76002184C2 /* ChartSelectedPointHandler.swift in Sources */,
@@ -27797,6 +27803,7 @@
 				59E600A42E4A712500CCA99B /* HomeChartsCell.swift in Sources */,
 				59E600A52E4A712500CCA99B /* HomeChartsViewTheme.swift in Sources */,
 				59E600A62E4A712500CCA99B /* ChartSelectedPointHandler.swift in Sources */,
+				D49214612EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */,
 				59E600A72E4A712500CCA99B /* Collectible3DCardDisplayable.swift in Sources */,
 				59E600A82E4A712500CCA99B /* Collectible3DImageViewController.swift in Sources */,
 				59E600A92E4A712500CCA99B /* Collectible3DVideoViewController.swift in Sources */,
@@ -29967,6 +29974,7 @@
 				59E6091C2E4A71D000CCA99B /* HomeChartsCell.swift in Sources */,
 				59E6091D2E4A71D000CCA99B /* HomeChartsViewTheme.swift in Sources */,
 				59E6091E2E4A71D000CCA99B /* ChartSelectedPointHandler.swift in Sources */,
+				D49214622EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */,
 				59E6091F2E4A71D000CCA99B /* Collectible3DCardDisplayable.swift in Sources */,
 				59E609202E4A71D000CCA99B /* Collectible3DImageViewController.swift in Sources */,
 				59E609212E4A71D000CCA99B /* Collectible3DVideoViewController.swift in Sources */,
