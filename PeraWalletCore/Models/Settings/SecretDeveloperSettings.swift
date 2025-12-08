@@ -20,6 +20,7 @@ import UIKit
 public enum SecretDeveloperSettings: Settings, Hashable {
     
 public enum SecretDeveloperSettings: Settings, Hashable {
+    
     case enableTestCards
     case overrideRemoteConfig
     
