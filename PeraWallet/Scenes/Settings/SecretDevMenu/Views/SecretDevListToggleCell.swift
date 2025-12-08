@@ -15,22 +15,23 @@
 //   SecretDevListToggleCell.swift
 
 import SwiftUI
-import pera_wallet_core
 
 struct SecretDevListToggleCell: View {
+    
+    // MARK: - Properties
+    
     let item: SecretDeveloperSettings
     @Binding var isOn: Bool
 
+    // MARK: - Body
+    
     var body: some View {
         SwiftUI.Toggle(isOn: $isOn) {
             HStack {
-                if let icon = item.image {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(.trailing, 10)
-                }
-
+                Image(item.image)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 10)
                 Text(item.name)
                     .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.main)

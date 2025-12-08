@@ -160,6 +160,9 @@
 		547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
 		547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
 		547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		54A157012EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
+		54A157022EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
+		54A157032EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
 		54B183172E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183182E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183192E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
@@ -7361,7 +7364,6 @@
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
-		D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
 		D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCD2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCE2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
@@ -25519,6 +25521,7 @@
 				59167AE52E464C76002184C2 /* AnnouncementViewModel.swift in Sources */,
 				59167AE62E464C76002184C2 /* BuySellOptionsScreen.swift in Sources */,
 				59167AE72E464C76002184C2 /* BuySellOptionsScreenTheme.swift in Sources */,
+				54A157032EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59167AE82E464C76002184C2 /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59167AE92E464C76002184C2 /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59167AEA2E464C76002184C2 /* PaymentOption.swift in Sources */,
@@ -27684,6 +27687,7 @@
 				59E600662E4A712500CCA99B /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59E600672E4A712500CCA99B /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59E600682E4A712500CCA99B /* PaymentOption.swift in Sources */,
+				54A157022EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59E600692E4A712500CCA99B /* SecuredByPaymentOptionsView.swift in Sources */,
 				59E6006A2E4A712500CCA99B /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				59E6006B2E4A712500CCA99B /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
@@ -29849,6 +29853,7 @@
 				59E608DE2E4A71D000CCA99B /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59E608DF2E4A71D000CCA99B /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59E608E02E4A71D000CCA99B /* PaymentOption.swift in Sources */,
+				54A157012EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59E608E12E4A71D000CCA99B /* SecuredByPaymentOptionsView.swift in Sources */,
 				59E608E22E4A71D000CCA99B /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				59E608E32E4A71D000CCA99B /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
@@ -31527,7 +31532,6 @@
 				591678762E460E06002184C2 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				591678772E460E06002184C2 /* AccountAscendingTotalPortfolioValueAlgorithm.swift in Sources */,
 				D46AF69C2E8D671800C417EF /* SwapV2SelectAssetEvent.swift in Sources */,
-				D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */,
 				591678782E460E06002184C2 /* AccountCustomReorderingAlgorithm.swift in Sources */,
 				591678792E460E06002184C2 /* AccountDescendingTitleAlgorithm.swift in Sources */,
 				5916787A2E460E06002184C2 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,

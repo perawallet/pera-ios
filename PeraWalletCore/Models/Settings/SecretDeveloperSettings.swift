@@ -16,20 +16,19 @@
 
 import UIKit
 
-public enum SecretDeveloperSettings: Settings {
+enum SecretDeveloperSettings {
+    
     case enableTestCards
     
-    public var image: UIImage? {
+    var image: ImageResource {
         switch self {
-        case .enableTestCards: img("icon-menu-cards")
+        case .enableTestCards: .iconMenuCards
         }
     }
     
-    public var name: String {
+    var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
         }
     }
-
-    public var subtitle: String? { nil }
 }

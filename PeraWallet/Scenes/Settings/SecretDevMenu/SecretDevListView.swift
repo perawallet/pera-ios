@@ -33,11 +33,9 @@ struct SecretDevListView: View {
     
     // MARK: - Setups
     var body: some View {
-        List {
-            ForEach(settings, id: \.self) { item in
-                SecretDevListToggleCell(item: item, isOn: $enableTestCards)
+        List(settings, id: \.self) { item in
+            SecretDevListToggleCell(item: item, isOn: $enableTestCards)
                 .listRowSeparator(.hidden)
-            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
