@@ -24,7 +24,7 @@ final class PasskeyListCellViewModel: ObservableObject {
     let passkey: PassKeyModel
     let onDelete: (PassKeyModel) -> Void
     
-    // MARK: - Initializers
+    // MARK: - Initialisers
     
     init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
         self.passkey = passkey
