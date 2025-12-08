@@ -119,6 +119,10 @@ extension PublicWebviewInAppBrowserScreen {
 enum PublicWebviewInAppBrowserScreenMessage:
     String,
     InAppBrowserScriptMessage {
+    case handleRequest
+}
+
+enum PublicWebviewInAppBrowserScreenMethod: String {
     case openSystemBrowser
     case closeWebView
     case pushWebView

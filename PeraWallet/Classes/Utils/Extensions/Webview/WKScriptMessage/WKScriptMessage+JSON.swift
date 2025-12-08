@@ -26,14 +26,21 @@ extension WKScriptMessage {
         return try? JSONDecoder().decode(JSONRPCRequest<T>.self, from: jsonData)
     }
     
-    func decodeArray() -> [[String: Any]]? {
+    func decodeRequest() -> [[String: Any]]? {
         guard
             let jsonString = body as? String,
-            let jsonData = jsonString.data(using: .utf8),
-            let jsonArray = try? JSONSerialization.jsonObject(with: jsonData) as? [[String: Any]]
+            let jsonData = jsonString.data(using: .utf8)
         else { return nil }
         
-        return jsonArray
+        if let jsonArray = try? JSONSerialization.jsonObject(with: jsonData) as? [[String: Any]] {
+            return jsonArray
+        }
+        
+        if let jsonDict = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
+            return [jsonDict]
+        }
+        
+        return nil
     }
 }
 

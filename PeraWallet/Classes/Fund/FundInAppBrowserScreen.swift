@@ -136,6 +136,10 @@ extension FundInAppBrowserScreen {
 enum FundInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
+    case handleRequest
+}
+
+enum FundInAppBrowserScriptMethod: String {
     case pushWebView
     case openSystemBrowser
     case canOpenURI
@@ -147,5 +151,4 @@ enum FundInAppBrowserScriptMessage:
     case onBackPressed
     case logAnalyticsEvent
     case closeWebView
-    case handleBatch
 }
