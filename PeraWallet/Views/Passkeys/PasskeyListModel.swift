@@ -32,7 +32,7 @@ final class PasskeyListViewModel: ObservableObject {
         return PassKeyService(hdWalletStorage: appConfig.hdWalletStorage, session: appConfig.session)
     }()
     
-    // MARK: - Initializers
+    // MARK: - Initialisers
     
     init() {
         checkForSettingEnabled()

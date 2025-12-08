@@ -12,21 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
+//   FileArchiver.swift
 
-enum SecretDeveloperSettings {
+import ZIPFoundation
+import Foundation
+
+enum FileArchiver {
     
-    case enableTestCards
-    
-    var image: ImageResource {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        }
-    }
-    
-    var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        }
+    static func archive(inputURL: URL, outputURL: URL) throws {
+        try FileManager.default.zipItem(at: inputURL, to: outputURL)
     }
 }

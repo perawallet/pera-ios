@@ -41,7 +41,9 @@ public final class SharedAPIDataController:
         didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
     }
     
-    public private(set) var accountCollection: AccountCollection = []
+    public private(set) var accountCollection: AccountCollection = [] {
+        didSet { Log.log(message: "[Updated Accounts][\(accountCollection.count)] \(accountCollection.map { $0.value.address })") }
+    }
 
     public private(set) var currency: CurrencyProvider
 
@@ -90,7 +92,9 @@ public final class SharedAPIDataController:
         qos: .userInitiated
     )
     
-    private var nextAccountCollection: AccountCollection = []
+    private var nextAccountCollection: AccountCollection = [] {
+        didSet { Log.log(message: "[Accounts Update][\(nextAccountCollection.count)] \(nextAccountCollection.map { $0.value.address })") }
+    }
 
     private var transactionParamsResult: Result<TransactionParams, HIPNetworkError<NoAPIModel>>?
     
