@@ -22,15 +22,7 @@ struct LogsView: View {
     // MARK: - Properties
 
     @ObservedObject var logger: PeraLogger = .shared
-    
-    @Binding private var navigationPath: NavigationPath
     @State private var isShareSheetPresented: Bool = false
-
-    // MARK: - Initialisers
-    
-    init(navigationPath: Binding<NavigationPath>) {
-        _navigationPath = navigationPath
-    }
     
     // MARK: - Body
     
@@ -43,14 +35,8 @@ struct LogsView: View {
             .listStyle(.plain)
             Spacer()
         }
-        .navigationBarBackButtonHidden()
+        .navigationTitle(String(localized: "title-logger"))
         .toolbar {
-            ToolbarItem(placement: .navigation) {
-                SwiftUI.Button(action: { navigationPath.removeLast() }) {
-                    Image(.iconBack)
-                        .foregroundStyle(Color.Text.main)
-                }
-            }
             ToolbarItem(placement: .topBarTrailing) {
                 SwiftUI.Button(action: { isShareSheetPresented = true }) {
                     Image(systemName: "square.and.arrow.down")

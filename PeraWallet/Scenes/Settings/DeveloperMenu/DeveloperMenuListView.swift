@@ -69,6 +69,12 @@ struct DeveloperMenuListView: View {
                     }
                 }
             )
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: LogsView()) {
+                    Image(systemName: "list.bullet.rectangle")
+                        .foregroundStyle(Color.Text.main)
+                }
+            }
         }
     }
 }

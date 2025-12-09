@@ -9369,6 +9369,16 @@
         }
       }
     },
+    "title-logger" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logger"
+          }
+        }
+      }
+    },
     "title-lowest-value-to-highest" : {
       "localizations" : {
         "en" : {
