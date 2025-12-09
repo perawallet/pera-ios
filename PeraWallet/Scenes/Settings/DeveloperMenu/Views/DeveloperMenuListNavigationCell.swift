@@ -18,7 +18,12 @@ import SwiftUI
 import pera_wallet_core
 
 struct DeveloperMenuListNavigationCell: View {
+    
+    // MARK: - Properties
+    
     let item: SecretDeveloperSettings
+    
+    // MARK: - Body
 
     var body: some View {
         HStack {

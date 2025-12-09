@@ -18,10 +18,15 @@ import SwiftUI
 import pera_wallet_core
 
 struct RemoteConfigListCell: View {
+    
+    // MARK: - Properties
+    
     let item: FeatureFlag
     let remoteConfigValue: Bool
     @State private var isOverridden: Bool = false
     @State private var overrideValue: Bool = false
+    
+    // MARK: - Body
 
     var body: some View {
         VStack(spacing: 0) {

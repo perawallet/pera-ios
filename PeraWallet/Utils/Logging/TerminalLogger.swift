@@ -12,29 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
-    
+//   TerminalLogger.swift
+
+import OSLog
 import pera_wallet_core
-import UIKit
 
-public enum SecretDeveloperSettings: Settings, Hashable {
+final class TerminalLogger: Loggable {
     
-    case enableTestCards
-    case overrideRemoteConfig
+    // MARK: - Properties
     
-    public var image: UIImage? {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        case .overrideRemoteConfig: .Settings.Icon.developer
-        }
+    private let subsystem: String
+    
+    // MARK: - Initialisers
+    
+    init(subsystem: String) {
+        self.subsystem = subsystem
     }
     
-    public var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        case .overrideRemoteConfig: String(localized: "override-firebase-title")
-        }
+    // MARK: - Actions - Loggable
+    
+    func log(message: String) {
+        Logger(subsystem: subsystem, category: "general").log(level: .default, "\(message)")
     }
-
-    public var subtitle: String? { nil }
 }

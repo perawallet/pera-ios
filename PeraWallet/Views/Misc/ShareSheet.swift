@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasskeyListCellModel.swift
+//   ShareSheet.swift
 
-import Foundation
-import pera_wallet_core
+import SwiftUI
 
-final class PasskeyListCellViewModel: ObservableObject {
+struct ShareSheet: UIViewControllerRepresentable {
     
     // MARK: - Properties
     
-    let passkey: PassKeyModel
-    let onDelete: (PassKeyModel) -> Void
+    var activityItems: [Any]
     
-    // MARK: - Initialisers
+    // MARK: - UIViewControllerRepresentable
     
-    init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
-        self.passkey = passkey
-        self.onDelete = onDelete
+    func makeUIViewController(context: Context) -> some UIViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
     }
     
-    //MARK: - Methods
-    
-    func deletePasskey() {
-        onDelete(passkey)
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
 }
