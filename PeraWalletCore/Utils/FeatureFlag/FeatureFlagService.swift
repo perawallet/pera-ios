@@ -61,6 +61,9 @@ public final class FeatureFlagService: ObservableObject, FeatureFlagServicing {
     }
     
     public func isEnabled(_ flag: FeatureFlag) -> Bool {
+        if let override = RemoteConfigOverride.value(for: flag.rawValue) {
+            return override
+        }
         let value = remoteConfig.configValue(forKey: flag.rawValue)
         return value.boolValue
     }

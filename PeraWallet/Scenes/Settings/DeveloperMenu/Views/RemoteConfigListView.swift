@@ -12,27 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
+//   RemoteConfigListView.swift
 
-import UIKit
+import SwiftUI
 
-public enum SecretDeveloperSettings: Settings, Hashable {
-    case enableTestCards
-    case overrideRemoteConfig
+struct RemoteConfigListView: View {
+    @ObservedObject var model: DeveloperMenuModel
     
-    public var image: UIImage? {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        case .overrideRemoteConfig: .Settings.Icon.developer
+    var body: some View {
+        List(model.featureFlags, id: \.self) { item in
+            RemoteConfigListCell(item: item, remoteConfigValue: model.remoteValueFor(flag: item.rawValue))
         }
+        .navigationTitle(String(localized: "override-firebase-title"))
+        .listStyle(.plain)
     }
-    
-    public var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        case .overrideRemoteConfig: String(localized: "override-firebase-title")
-        }
-    }
-
-    public var subtitle: String? { nil }
 }

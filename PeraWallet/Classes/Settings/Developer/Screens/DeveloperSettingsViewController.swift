@@ -39,9 +39,8 @@ final class DeveloperSettingsViewController:
         stopObservingNotifications()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         reload()
     }
 
@@ -74,6 +73,10 @@ extension DeveloperSettingsViewController {
             settings = [.nodeSettings, .createAlgo25Account, .recoverAccount]
         case .testnet:
             settings = [.nodeSettings, .dispenser, .createAlgo25Account, .recoverAccount]
+        }
+        
+        if PeraUserDefaults.shouldShowDevMenu ?? false {
+            settings.append(.developerMenu)
         }
 
         developerSettingsView.collectionView.reloadData()
@@ -164,6 +167,8 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
             }
         case .recoverAccount:
             open(.accountRecoverySearch, by: .push)
+        case .developerMenu:
+            open(.developerMenu, by: .push)
         }
     }
     

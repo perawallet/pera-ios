@@ -22,34 +22,27 @@ public enum DeveloperSettings: Settings {
     case dispenser
     case createAlgo25Account
     case recoverAccount
+    case developerMenu
     
     public var image: UIImage? {
         switch self {
-        case .nodeSettings:
-            return img("icon-settings-node")
-        case .dispenser:
-            return img("icon-settings-dispenser")
-        case .createAlgo25Account:
-            return img("icon-settings-create-algo25")
-        case .recoverAccount:
-            return img("icon-recover-passphrase")
+        case .nodeSettings: img("icon-settings-node")
+        case .dispenser: img("icon-settings-dispenser")
+        case .createAlgo25Account: img("icon-settings-create-algo25")
+        case .recoverAccount: img("icon-recover-passphrase")
+        case .developerMenu: img("icon-asset-manage")?.withTintColor(.Text.main)
         }
     }
     
     public var name: String {
         switch self {
-        case .nodeSettings:
-            return String(localized: "node-settings-title")
-        case .dispenser:
-            return String(localized: "settings-developer-dispenser")
-        case .createAlgo25Account:
-            return String(localized: "dev-settings-create-algo25-account")
-        case .recoverAccount:
-            return String(localized: "dev-settings-recover-account")
+        case .nodeSettings: String(localized: "node-settings-title")
+        case .dispenser: String(localized: "settings-developer-dispenser")
+        case .createAlgo25Account: String(localized: "dev-settings-create-algo25-account")
+        case .recoverAccount: String(localized: "dev-settings-recover-account")
+        case .developerMenu: String(localized: "settings-secret-dev-menu")
         }
     }
 
-    public var subtitle: String? {
-        return nil
-    }
+    public var subtitle: String? { nil }
 }

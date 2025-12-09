@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDevListToggleCell.swift
+//   DeveloperMenuListNavigationCell.swift
 
 import SwiftUI
 import pera_wallet_core
 
-struct SecretDevListToggleCell: View {
+struct DeveloperMenuListNavigationCell: View {
     let item: SecretDeveloperSettings
-    @Binding var isOn: Bool
 
     var body: some View {
-        SwiftUI.Toggle(isOn: $isOn) {
-            HStack {
-                if let icon = item.image {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(.trailing, 10)
-                }
-
-                Text(item.name)
-                    .font(.DMSans.regular.size(15))
-                    .foregroundStyle(Color.Text.main)
+        HStack {
+            if let icon = item.image {
+                Image(uiImage: icon)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 10)
             }
-            .padding(.horizontal, 12)
-            .frame(height: 64)
+
+            Text(item.name)
+                .font(.DMSans.regular.size(15))
+                .foregroundStyle(Color.Text.main)
+            Spacer()
         }
-        .listRowSeparator(.hidden)
+        .padding(.horizontal, 12)
+        .frame(height: 50)
     }
 }
