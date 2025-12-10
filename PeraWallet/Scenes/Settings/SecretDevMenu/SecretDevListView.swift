@@ -22,7 +22,7 @@ struct SecretDevListView: View {
     // MARK: - Properties
     
     @Binding private var navigationPath: NavigationPath
-    private var settings: [SecretDeveloperSettings] = [.enableTestCards, .enableTestXOSwapPage]
+    private var settings: [SecretDeveloperSettings] = [.enableTestCards]
     @State private var enableTestCards = PeraUserDefaults.enableTestCards ?? false
     @State private var enableTestXOSwapPage = PeraUserDefaults.enableTestXOSwapPage ?? false
     
@@ -30,6 +30,9 @@ struct SecretDevListView: View {
     
     init(navigationPath: Binding<NavigationPath>) {
         _navigationPath = navigationPath
+        if AppEnvironment.current.isTestNet {
+            settings.append(.enableTestXOSwapPage)
+        }
     }
     
     // MARK: - Setups
