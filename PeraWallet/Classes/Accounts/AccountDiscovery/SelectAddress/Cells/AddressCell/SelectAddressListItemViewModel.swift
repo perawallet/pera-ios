@@ -65,7 +65,11 @@ extension SelectAddressListItemViewModel {
         }
         
         currencyFormatter.formattingContext = .listItem
-        self.mainCurrency = currencyFormatter.format(recoveredAddress.mainCurrency)
+        if currencyFormatter.currency?.isAlgo ?? false {
+            self.mainCurrency = currencyFormatter.format(recoveredAddress.mainCurrency)
+        } else {
+            self.mainCurrency = currencyFormatter.format(recoveredAddress.secondaryCurrency)
+        }
     }
     
     private mutating func bindSecondaryCurrency(
@@ -79,7 +83,11 @@ extension SelectAddressListItemViewModel {
         }
         currencyFormatter.currency = currency
         currencyFormatter.formattingContext = .listItem
-        self.secondaryCurrency = currencyFormatter.format(recoveredAddress.secondaryCurrency)
+        if currencyFormatter.currency?.isAlgo ?? false {
+            self.secondaryCurrency = currencyFormatter.format(recoveredAddress.mainCurrency)
+        } else {
+            self.secondaryCurrency = currencyFormatter.format(recoveredAddress.secondaryCurrency)
+        }
     }
 }
 
