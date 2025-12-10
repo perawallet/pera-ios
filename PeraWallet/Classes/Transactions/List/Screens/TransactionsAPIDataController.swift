@@ -40,6 +40,7 @@ final class TransactionsAPIDataController:
     private var draft: TransactionListing
     private(set) var filterOption: TransactionFilterViewController.FilterOption
     private let sharedDataController: SharedDataController
+    private let featureFlagService: FeatureFlagServicing
 
     private var lastSnapshot: Snapshot?
 
@@ -58,12 +59,14 @@ final class TransactionsAPIDataController:
         _ api: ALGAPI,
         _ draft: TransactionListing,
         _ filterOption: TransactionFilterViewController.FilterOption,
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        _ featureFlagService: FeatureFlagServicing
     ) {
         self.api = api
         self.draft = draft
         self.filterOption = filterOption
         self.sharedDataController = sharedDataController
+        self.featureFlagService = featureFlagService
         
         setupCallbacks()
     }
@@ -198,8 +201,45 @@ extension TransactionsAPIDataController {
             limit: 30,
             transactionType: draft.type.currentTransactionType
         )
-
+        
+        guard featureFlagService.isEnabled(.assetDetailV2Enabled) else {
+            loadTransactions(draft: draft)
+            return
+        }
+        
+        loadTransactionsV2(draft: draft)
+    }
+    
+    private func loadTransactions(draft: TransactionFetchDraft) {
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case .failure:
+                /// <todo> Handle error case
+                break
+            case let .success(transactionResults):
+                self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
+                transactionResults.transactions.forEach {
+                    $0.setAllParentID($0.id)
+                    $0.completeAll()
+                }
+
+                self.fetchAssets(from: transactionResults.transactions) {
+                    self.groupAndSetTransactionsByTypeIfNeeded(
+                        transactionResults.transactions,
+                        isPaginated: false
+                    )
+                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                }
+            }
+        }
+    }
+    
+    private func loadTransactionsV2(draft: TransactionFetchDraft) {
+        fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -311,7 +351,7 @@ extension TransactionsAPIDataController {
             transactionType: draft.type.currentTransactionType
         )
 
-        fetchRequest = api.fetchTransactions(draft) { [weak self] response in
+        fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
             guard let self = self else {
                 return
             }

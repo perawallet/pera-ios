@@ -7357,6 +7357,7 @@
 		D488A5C72EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C82EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C92EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
+		D48C23F02EE98A1D0042C431 /* TransactionListV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48C23EF2EE98A1B0042C431 /* TransactionListV2.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -9711,6 +9712,7 @@
 		D48A5F81284115FE0009E6DB /* AssetPreviewWithActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewWithActionViewModel.swift; sourceTree = "<group>"; };
 		D48A5F852841256F0009E6DB /* AssetPreviewWithRemoveActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewWithRemoveActionViewModel.swift; sourceTree = "<group>"; };
 		D48B033628869532009AF715 /* AddAssetTransactionOptionListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssetTransactionOptionListActionViewModel.swift; sourceTree = "<group>"; };
+		D48C23EF2EE98A1B0042C431 /* TransactionListV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListV2.swift; sourceTree = "<group>"; };
 		D48D11CE27425368000061CE /* NotificationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewTheme.swift; sourceTree = "<group>"; };
 		D48D11D2274279D2000061CE /* NotificationsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewTheme.swift; sourceTree = "<group>"; };
 		D48D11D62742878A000061CE /* TitledToggleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledToggleViewTheme.swift; sourceTree = "<group>"; };
@@ -12482,6 +12484,7 @@
 		2B4DF44C236C7E1A00FF9551 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				D48C23EF2EE98A1B0042C431 /* TransactionListV2.swift */,
 				2B6ED9652261063700787984 /* TransactionList.swift */,
 				2BC7E9DC24B74C4400FED513 /* TransactionFetchDraft.swift */,
 				2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */,
@@ -32079,6 +32082,7 @@
 				591678542E460AF9002184C2 /* WCTransactionRequestedSigner.swift in Sources */,
 				594D54822E8E6D7700D0DA38 /* MigrationFailureLog.swift in Sources */,
 				591678552E460AF9002184C2 /* WCTransactionErrorResponse.swift in Sources */,
+				D48C23F02EE98A1D0042C431 /* TransactionListV2.swift in Sources */,
 				591678562E460AF9002184C2 /* Backup.swift in Sources */,
 				591678572E460AF9002184C2 /* IncomingASAsRequestList.swift in Sources */,
 				591678882E460EE9002184C2 /* RecoveredAddress.swift in Sources */,

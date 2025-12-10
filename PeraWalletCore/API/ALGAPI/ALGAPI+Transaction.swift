@@ -45,6 +45,31 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func fetchTransactionsV2(
+        _ draft: TransactionFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<TransactionListV2>) -> Void
+    ) -> EndpointOperatable {
+        var from: String?
+        var to: String?
+        
+        if let fromDate = draft.dates.from,
+            let toDate = draft.dates.to {
+            from = "\(fromDate.toFormat("yyyy-MM-dd"))T00:00:00.000Z"
+            to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
+        }
+
+        let transactionType = draft.transactionType?.rawValue
+        
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.accountTransaction, args: draft.account.address)
+            .method(.get)
+            .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId, transactionType: transactionType))
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func sendTransaction(

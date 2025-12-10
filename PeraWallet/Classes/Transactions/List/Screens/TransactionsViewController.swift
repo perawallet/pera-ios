@@ -43,7 +43,8 @@ class TransactionsViewController:
         api!,
         draft,
         filterOption,
-        sharedDataController
+        sharedDataController,
+        configuration.featureFlagService
     )
 
     lazy var transactionsDataSource = TransactionsDataSource(listView)
