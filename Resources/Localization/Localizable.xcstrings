@@ -6537,6 +6537,16 @@
         }
       }
     },
+    "secret-dev-settings-enable-test-xoswap" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable XO Swap Test Page"
+          }
+        }
+      }
+    },
     "security-settings-localAuthentication" : {
       "localizations" : {
         "en" : {

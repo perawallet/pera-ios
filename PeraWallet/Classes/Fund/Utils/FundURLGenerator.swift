@@ -28,6 +28,10 @@ final class FundURLGenerator {
             theme: theme,
             session: session
         )
+
+        if let url = components?.url, PeraUserDefaults.enableTestXOSwapPage ?? false {
+            return url.appendingPathComponent("test")
+        }
         return components?.url
     }
 

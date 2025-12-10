@@ -18,16 +18,19 @@ import UIKit
 
 public enum SecretDeveloperSettings: Settings {
     case enableTestCards
+    case enableTestXOSwapPage
     
     public var image: UIImage? {
         switch self {
         case .enableTestCards: img("icon-menu-cards")
+        case .enableTestXOSwapPage: img("tabbar-icon-swap-selected")
         }
     }
     
     public var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
+        case .enableTestXOSwapPage: String(localized: "secret-dev-settings-enable-test-xoswap")
         }
     }
 

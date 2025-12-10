@@ -22,8 +22,9 @@ struct SecretDevListView: View {
     // MARK: - Properties
     
     @Binding private var navigationPath: NavigationPath
-    private var settings: [SecretDeveloperSettings] = [.enableTestCards]
+    private var settings: [SecretDeveloperSettings] = [.enableTestCards, .enableTestXOSwapPage]
     @State private var enableTestCards = PeraUserDefaults.enableTestCards ?? false
+    @State private var enableTestXOSwapPage = PeraUserDefaults.enableTestXOSwapPage ?? false
     
     // MARK: - Initialisers
     
@@ -35,14 +36,23 @@ struct SecretDevListView: View {
     var body: some View {
         List {
             ForEach(settings, id: \.self) { item in
-                SecretDevListToggleCell(item: item, isOn: $enableTestCards)
-                .listRowSeparator(.hidden)
+                switch item {
+                case .enableTestCards:
+                    SecretDevListToggleCell(item: item, isOn: $enableTestCards)
+                    .listRowSeparator(.hidden)
+                case .enableTestXOSwapPage:
+                    SecretDevListToggleCell(item: item, isOn: $enableTestXOSwapPage)
+                    .listRowSeparator(.hidden)
+                }
             }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .onChange(of: enableTestCards) { newValue in
             PeraUserDefaults.enableTestCards = newValue
+        }
+        .onChange(of: enableTestXOSwapPage) { newValue in
+            PeraUserDefaults.enableTestXOSwapPage = newValue
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("settings-secret-dev-menu")
