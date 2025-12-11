@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
+//   ShareSheet.swift
 
-enum SecretDeveloperSettings {
+import SwiftUI
+
+struct ShareSheet: UIViewControllerRepresentable {
     
-    case enableTestCards
+    // MARK: - Properties
     
-    var image: ImageResource {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        }
+    var activityItems: [Any]
+    
+    // MARK: - UIViewControllerRepresentable
+    
+    func makeUIViewController(context: Context) -> some UIViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
     }
     
-    var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
 }

@@ -72,6 +72,14 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        do {
+            try AppConfigurator.configure()
+        } catch {
+            assertionFailure("Failed to configure app: \(error)")
+        }
+        
+        logBasicData()
         setupAppTarget()
         setupAppLibs()
         runMigrations()
@@ -442,6 +450,11 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
+    
+    private func logBasicData() {
+        Log.log(message: "[App] \(Bundle.main.buildInfo)")
+    }
+    
     private func setupAppTarget() {
         ALGAppTarget.setup()
     }
@@ -501,10 +514,12 @@ extension AppDelegate {
         } catch AppGroupDataStoreMigrationError.migrationFailed(let cause), AppGroupDataStoreMigrationError.contentNotDetected(let cause) {
             CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: cause))
             //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
+            Log.log(message: "[Migration] Migration failed: \(cause ?? "No cause")")
             fatalError("AppGroup data migration failed")
         } catch {
             CoreAppConfiguration.shared?.analytics.record(MigrationFailureLog.migrationFailure(message: "Migration failed", cause: error))
             //TODO: ideally this should redirect to a user visible page, but we don't have such a page so for now it's safest to crash
+            Log.log(message: "[Migration] Migration failed: \(error)")
             fatalError("AppGroup data migration failed")
         }
     }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "54108131067780c41f54e636d49f8573f2f8a35daf495882776abc464069f07d",
+  "originHash" : "f86a07b2c7a274fc70db8b9ccb8bd44788f2b39ea93f3a8e624fc37553dd8566",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -473,6 +473,15 @@
       "location" : "https://github.com/perawallet/xHD-Wallet-API-swift",
       "state" : {
         "revision" : "4429e35b7893265121b44d172ed64a1ce9a2ab81"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "version" : "0.9.20"
       }
     }
   ],

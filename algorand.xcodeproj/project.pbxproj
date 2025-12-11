@@ -160,6 +160,12 @@
 		547E6AE42E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
 		547E6AE52E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
 		547E6AE62E5F26DA00D82D13 /* ImportAccountsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */; };
+		5498C23B2EDC7D080006A55D /* AppConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498C23A2EDC7D050006A55D /* AppConfigurator.swift */; };
+		5498C23C2EDC7D080006A55D /* AppConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498C23A2EDC7D050006A55D /* AppConfigurator.swift */; };
+		5498C23D2EDC7D080006A55D /* AppConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498C23A2EDC7D050006A55D /* AppConfigurator.swift */; };
+		54A157012EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
+		54A157022EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
+		54A157032EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
 		54B183172E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183182E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
 		54B183192E55B39600E4FAE5 /* AddressScanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B183162E55B39400E4FAE5 /* AddressScanButton.swift */; };
@@ -169,6 +175,9 @@
 		54B1831F2E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
 		54B183202E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
 		54B183212E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
+		54BE1BB22EDDA6D6001C3676 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 54BE1BB12EDDA6D6001C3676 /* ZIPFoundation */; };
+		54BE1BB42EDDA78A001C3676 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 54BE1BB32EDDA78A001C3676 /* ZIPFoundation */; };
+		54EC48812EE6C03800604A6C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACB7250AA5DE00B8C5C5 /* Settings.swift */; };
 		591635952E44D162002184C2 /* pera_wallet_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 591635942E44D162002184C2 /* pera_wallet_core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; };
 		5916359A2E44D162002184C2 /* pera_wallet_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -732,7 +741,6 @@
 		591678372E460AF9002184C2 /* NotificationFilterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BECB4F025A30A0E0081870A /* NotificationFilterResponse.swift */; };
 		591678382E460AF9002184C2 /* NotificationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17924435288FDF470075F36F /* NotificationStatus.swift */; };
 		591678392E460AF9002184C2 /* LastSeenNotificationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1792443F289015700075F36F /* LastSeenNotificationStatus.swift */; };
-		5916783A2E460AF9002184C2 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACB7250AA5DE00B8C5C5 /* Settings.swift */; };
 		5916783B2E460AF9002184C2 /* DeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */; };
 		5916783C2E460AF9002184C2 /* SecuritySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E00BD27881AB800D6B2E2 /* SecuritySettings.swift */; };
 		5916783D2E460AF9002184C2 /* PeraSwapFee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69AB1328BF9B7100A8D65D /* PeraSwapFee.swift */; };
@@ -7361,7 +7369,6 @@
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42D2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
-		D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF3FD02EDEF8CB00F25D48 /* SecretDeveloperSettings.swift */; };
 		D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCD2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCE2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
@@ -8624,6 +8631,7 @@
 		547E6AE32E5F26D900D82D13 /* ImportAccountsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccountsHandler.swift; sourceTree = "<group>"; };
 		548EF1762D4A5CC900BF8B07 /* ListView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Gestures.swift"; sourceTree = "<group>"; };
 		548EF17A2D4A5D9300BF8B07 /* AssetListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListCollectionView.swift; sourceTree = "<group>"; };
+		5498C23A2EDC7D050006A55D /* AppConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurator.swift; sourceTree = "<group>"; };
 		549C5DDD2E13CA590025B1A4 /* RekeySupportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeySupportHandler.swift; sourceTree = "<group>"; };
 		549C5DE22E13D3500025B1A4 /* SecuritySettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsFooterView.swift; sourceTree = "<group>"; };
 		54B183162E55B39400E4FAE5 /* AddressScanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressScanButton.swift; sourceTree = "<group>"; };
@@ -10474,6 +10482,34 @@
 			);
 			target = 2B95407625A75FB20098805B /* pera-tests */;
 		};
+		54B91DD82ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Logging/PeraLogger.swift,
+			);
+			target = 2B8BE4CD22391C38005D8565 /* pera */;
+		};
+		54B91DD92ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Logging/PeraLogger.swift,
+			);
+			target = 2B0F615A24EC129D00DA22A6 /* pera-beta */;
+		};
+		54B91DDA2ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Logging/PeraLogger.swift,
+			);
+			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
+		};
+		54B91DDB2ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Logging/PeraLogger.swift,
+			);
+			target = 591635912E44D162002184C2 /* pera-wallet-core */;
+		};
 		54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -10526,6 +10562,7 @@
 				Misc/CounterView.swift,
 				Misc/OnboardingTitleView.swift,
 				Misc/SearchFieldWithPasteButton.swift,
+				Misc/ShareSheet.swift,
 				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
@@ -10608,6 +10645,7 @@
 				Misc/CounterView.swift,
 				Misc/OnboardingTitleView.swift,
 				Misc/SearchFieldWithPasteButton.swift,
+				Misc/ShareSheet.swift,
 				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
@@ -10670,6 +10708,7 @@
 				Misc/CounterView.swift,
 				Misc/OnboardingTitleView.swift,
 				Misc/SearchFieldWithPasteButton.swift,
+				Misc/ShareSheet.swift,
 				Misc/TitleSectionHeader.swift,
 				Passkeys/PasskeyDisabledView.swift,
 				Passkeys/PasskeyEmptyView.swift,
@@ -10698,7 +10737,7 @@
 		5458D85A2DEDB35700DADA06 /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		5458D8682DEDB35700DADA06 /* Managers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59E60F2A2E4A71D300CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59E606B22E4A712800CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 591681332E464C95002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Managers; sourceTree = "<group>"; };
 		5458D88D2DEDB35E00DADA06 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59E60F2B2E4A71D300CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59E606B32E4A712800CCA99B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 591681342E464C95002184C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
-		5458D8902DEDB36200DADA06 /* Utils */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utils; sourceTree = "<group>"; };
+		5458D8902DEDB36200DADA06 /* Utils */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54B91DD82ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 54B91DD92ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 54B91DDA2ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 54B91DDB2ED9D7F500C5CD1A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Utils; sourceTree = "<group>"; };
 		545CAA842E28CDAA00D0C9A0 /* Scenes */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA882E28CDDA00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Scenes; sourceTree = "<group>"; };
 		545CAA892E28CE1400D0C9A0 /* Testing Tools */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (545CAA8C2E28CEAC00D0C9A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Testing Tools"; sourceTree = "<group>"; };
 		545CAA932E28F41000D0C9A0 /* Mock */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Mock; sourceTree = "<group>"; };
@@ -10716,6 +10755,7 @@
 			files = (
 				591664702E4602B6002184C2 /* pera_wallet_core.framework in Frameworks */,
 				59B1FE502E4B55BE00B8F6FB /* WebRTC in Frameworks */,
+				54BE1BB22EDDA6D6001C3676 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10733,6 +10773,7 @@
 			files = (
 				591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */,
 				59B1FC712E4B519C00B8F6FB /* WebRTC in Frameworks */,
+				54BE1BB42EDDA78A001C3676 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -17258,6 +17299,7 @@
 		2BF7280427471E8F00CCAC30 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				5498C23A2EDC7D050006A55D /* AppConfigurator.swift */,
 				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 				2B8BE4EB22393547005D8565 /* Core */,
 			);
@@ -24307,6 +24349,7 @@
 			name = "pera-staging";
 			packageProductDependencies = (
 				59B1FE4F2E4B55BE00B8F6FB /* WebRTC */,
+				54BE1BB12EDDA6D6001C3676 /* ZIPFoundation */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -24370,6 +24413,7 @@
 			name = pera;
 			packageProductDependencies = (
 				59B1FC702E4B519C00B8F6FB /* WebRTC */,
+				54BE1BB32EDDA78A001C3676 /* ZIPFoundation */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -24569,6 +24613,7 @@
 				59B1F8892E4B2B3A00B8F6FB /* XCRemoteSwiftPackageReference "Scout" */,
 				59B1F88C2E4B2B5700B8F6FB /* XCRemoteSwiftPackageReference "liquid-auth-ios" */,
 				59B1F8DF2E4B388800B8F6FB /* XCRemoteSwiftPackageReference "WebRTC" */,
+				54BE1BB02EDDA480001C3676 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -25519,6 +25564,7 @@
 				59167AE52E464C76002184C2 /* AnnouncementViewModel.swift in Sources */,
 				59167AE62E464C76002184C2 /* BuySellOptionsScreen.swift in Sources */,
 				59167AE72E464C76002184C2 /* BuySellOptionsScreenTheme.swift in Sources */,
+				54A157032EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59167AE82E464C76002184C2 /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59167AE92E464C76002184C2 /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59167AEA2E464C76002184C2 /* PaymentOption.swift in Sources */,
@@ -26420,6 +26466,7 @@
 				59167E5D2E464C76002184C2 /* MultilineTextInputFieldViewCommonTheme.swift in Sources */,
 				59167E5E2E464C76002184C2 /* SearchInputView.swift in Sources */,
 				59167E5F2E464C76002184C2 /* SearchInputViewTheme.swift in Sources */,
+				5498C23D2EDC7D080006A55D /* AppConfigurator.swift in Sources */,
 				59167E602E464C76002184C2 /* FloatingTextInputFieldView.swift in Sources */,
 				59167E612E464C76002184C2 /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
 				59167E622E464C76002184C2 /* FloatingTextInputFieldViewTheme.swift in Sources */,
@@ -27684,6 +27731,7 @@
 				59E600662E4A712500CCA99B /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59E600672E4A712500CCA99B /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59E600682E4A712500CCA99B /* PaymentOption.swift in Sources */,
+				54A157022EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59E600692E4A712500CCA99B /* SecuredByPaymentOptionsView.swift in Sources */,
 				59E6006A2E4A712500CCA99B /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				59E6006B2E4A712500CCA99B /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
@@ -28585,6 +28633,7 @@
 				59E603DD2E4A712500CCA99B /* SearchInputView.swift in Sources */,
 				59E603DE2E4A712500CCA99B /* SearchInputViewTheme.swift in Sources */,
 				59E603DF2E4A712500CCA99B /* FloatingTextInputFieldView.swift in Sources */,
+				5498C23C2EDC7D080006A55D /* AppConfigurator.swift in Sources */,
 				59E603E02E4A712500CCA99B /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
 				59E603E12E4A712500CCA99B /* FloatingTextInputFieldViewTheme.swift in Sources */,
 				59E603E22E4A712500CCA99B /* FormInputFieldAssistiveView.swift in Sources */,
@@ -29849,6 +29898,7 @@
 				59E608DE2E4A71D000CCA99B /* BuyWithMeldOptionViewModel.swift in Sources */,
 				59E608DF2E4A71D000CCA99B /* BuyGiftCardsWithBidaliOptionViewModel.swift in Sources */,
 				59E608E02E4A71D000CCA99B /* PaymentOption.swift in Sources */,
+				54A157012EE6DDE300C09D6B /* SecretDeveloperSettings.swift in Sources */,
 				59E608E12E4A71D000CCA99B /* SecuredByPaymentOptionsView.swift in Sources */,
 				59E608E22E4A71D000CCA99B /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				59E608E32E4A71D000CCA99B /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
@@ -30750,6 +30800,7 @@
 				59E60C562E4A71D000CCA99B /* SearchInputViewTheme.swift in Sources */,
 				59E60C572E4A71D000CCA99B /* FloatingTextInputFieldView.swift in Sources */,
 				59E60C582E4A71D000CCA99B /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
+				5498C23B2EDC7D080006A55D /* AppConfigurator.swift in Sources */,
 				59E60C592E4A71D000CCA99B /* FloatingTextInputFieldViewTheme.swift in Sources */,
 				59E60C5A2E4A71D000CCA99B /* FormInputFieldAssistiveView.swift in Sources */,
 				59E60C5B2E4A71D000CCA99B /* FormInputFieldAssistiveViewCommonTheme.swift in Sources */,
@@ -31527,7 +31578,6 @@
 				591678762E460E06002184C2 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				591678772E460E06002184C2 /* AccountAscendingTotalPortfolioValueAlgorithm.swift in Sources */,
 				D46AF69C2E8D671800C417EF /* SwapV2SelectAssetEvent.swift in Sources */,
-				D4AF3FD12EDEF8D000F25D48 /* SecretDeveloperSettings.swift in Sources */,
 				591678782E460E06002184C2 /* AccountCustomReorderingAlgorithm.swift in Sources */,
 				591678792E460E06002184C2 /* AccountDescendingTitleAlgorithm.swift in Sources */,
 				5916787A2E460E06002184C2 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,
@@ -31882,6 +31932,7 @@
 				591677802E460AF9002184C2 /* HDWalletSDKError.swift in Sources */,
 				591677812E460AF9002184C2 /* HDWalletSDKImp.swift in Sources */,
 				591677822E460AF9002184C2 /* AlgorandSDK.swift in Sources */,
+				54EC48812EE6C03800604A6C /* Settings.swift in Sources */,
 				591677832E460AF9002184C2 /* Session.swift in Sources */,
 				591677842E460AF9002184C2 /* Session+Announcement.swift in Sources */,
 				D451C0332EBB9B13007524E2 /* AssetToogleStatusDraft.swift in Sources */,
@@ -32048,7 +32099,6 @@
 				591678372E460AF9002184C2 /* NotificationFilterResponse.swift in Sources */,
 				591678382E460AF9002184C2 /* NotificationStatus.swift in Sources */,
 				591678392E460AF9002184C2 /* LastSeenNotificationStatus.swift in Sources */,
-				5916783A2E460AF9002184C2 /* Settings.swift in Sources */,
 				5916783B2E460AF9002184C2 /* DeveloperSettings.swift in Sources */,
 				5916783C2E460AF9002184C2 /* SecuritySettings.swift in Sources */,
 				5916783D2E460AF9002184C2 /* PeraSwapFee.swift in Sources */,
@@ -33200,6 +33250,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		54BE1BB02EDDA480001C3676 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
 		59B1F8862E4B2B1F00B8F6FB /* XCRemoteSwiftPackageReference "deterministic-P256-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/algorandfoundation/deterministic-P256-swift";
@@ -33267,6 +33325,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		54BE1BB12EDDA6D6001C3676 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54BE1BB02EDDA480001C3676 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		54BE1BB32EDDA78A001C3676 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54BE1BB02EDDA480001C3676 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
 		591635BC2E44D1BB002184C2 /* MagpieAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
