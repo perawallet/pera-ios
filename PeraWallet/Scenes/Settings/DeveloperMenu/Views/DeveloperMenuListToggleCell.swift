@@ -15,6 +15,7 @@
 //   DeveloperMenuListToggleCell.swift
 
 import SwiftUI
+import pera_wallet_core
 
 struct DeveloperMenuListToggleCell: View {
     
@@ -34,7 +35,6 @@ struct DeveloperMenuListToggleCell: View {
                         .frame(width: 24, height: 24)
                         .padding(.trailing, 10)
                 }
-
                 Text(item.name)
                     .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.main)
