@@ -23,6 +23,9 @@ public final class AppGroupDataStoreMigration {
     }
 
     public func moveDatabaseToAppGroup() throws {
+        
+        Log.log(message: "[Migration] Start")
+        
         // Open the old database container and see if we have an ApplicationConfiguration there.  If so move everything to the app group location
         // and delete the old stuff
         let persistentContainer = NSPersistentContainer(name: NSPersistentContainer.DEFAULT_CONTAINER_NAME) //this is the old DB location
@@ -36,8 +39,11 @@ public final class AppGroupDataStoreMigration {
             }
         
         guard dbWithContent != nil else {
+            Log.log(message: "[Migration] DB without content found - skipping migration")
             return
         }
+        
+        Log.log(message: "[Migration] DB with content found - performing migration")
         
         let loadedDB = try NSPersistentContainer.makePersistentContainer(group: nil)
         try performMigration(from: loadedDB)
@@ -49,15 +55,19 @@ public final class AppGroupDataStoreMigration {
             let oldStoreCoordinator = from.persistentStoreCoordinator
             let newDBHasContents = try hasContents(storeURL)
             
+            Log.log(message: "[Migration] newDBHasContents: \(newDBHasContents)")
+            
             for store in oldStoreCoordinator.persistentStores {
                 if let url = store.url {
                     let type = NSPersistentStore.StoreType(rawValue: store.type)
                     
                     if !newDBHasContents {
+                        Log.log(message: "[Migration] Moving: \(url) -> \(storeURL)")
                         try oldStoreCoordinator.replacePersistentStore(at: storeURL,
                                                                        withPersistentStoreFrom: url,
                                                                        type: type)
                     }
+                    Log.log(message: "[Migration] Deleting: \(url)")
                     try oldStoreCoordinator.destroyPersistentStore(at: url, type: type)
                     
                     let remainingFiles = try FileManager.default.contentsOfDirectory(
@@ -65,11 +75,14 @@ public final class AppGroupDataStoreMigration {
                         includingPropertiesForKeys: nil
                     )
                     
+                    Log.log(message: "[Migration] Deleting remaining files: \(remainingFiles)")
                     remainingFiles.forEach({ try? FileManager.default.removeItem(at: $0) })
                 }
             }
             
+            Log.log(message: "[Migration] Creating new persistent container")
             CoreAppConfiguration.shared?.persistentContainer = try NSPersistentContainer.makePersistentContainer(group: appGroup)
+            Log.log(message: "[Migration] Success")
         } catch {
             throw AppGroupDataStoreMigrationError.migrationFailed(cause: error)
         }
@@ -102,6 +115,5 @@ public enum AppGroupDataStoreMigrationError: Error {
              .generalError(cause: let cause):
             return cause
         }
-        return nil
     }
 }

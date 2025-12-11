@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasskeyListCellModel.swift
+//   FileArchiver.swift
 
+import ZIPFoundation
 import Foundation
-import pera_wallet_core
 
-final class PasskeyListCellViewModel: ObservableObject {
+enum FileArchiver {
     
-    // MARK: - Properties
-    
-    let passkey: PassKeyModel
-    let onDelete: (PassKeyModel) -> Void
-    
-    // MARK: - Initialisers
-    
-    init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
-        self.passkey = passkey
-        self.onDelete = onDelete
-    }
-    
-    //MARK: - Methods
-    
-    func deletePasskey() {
-        onDelete(passkey)
+    static func archive(inputURL: URL, outputURL: URL) throws {
+        try FileManager.default.zipItem(at: inputURL, to: outputURL)
     }
 }

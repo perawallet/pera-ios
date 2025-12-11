@@ -19,6 +19,10 @@ import pera_wallet_core
 
 struct SecretDevListView: View {
 
+    private enum NavigationOption {
+        case logs
+    }
+    
     // MARK: - Properties
     
     @Binding private var navigationPath: NavigationPath
@@ -35,10 +39,10 @@ struct SecretDevListView: View {
         }
     }
     
-    // MARK: - Setups
+    // MARK: - Body
+    
     var body: some View {
-        List {
-            ForEach(settings, id: \.self) { item in
+        List(settings, id: \.self) { item in
                 switch item {
                 case .enableTestCards:
                     SecretDevListToggleCell(item: item, isOn: $enableTestCards)
@@ -47,7 +51,6 @@ struct SecretDevListView: View {
                     SecretDevListToggleCell(item: item, isOn: $enableTestXOSwapPage)
                     .listRowSeparator(.hidden)
                 }
-            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -60,16 +63,36 @@ struct SecretDevListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("settings-secret-dev-menu")
         .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(
-                placement: .topBarLeading,
-                content: {
-                    SwiftUI.Button(action: { navigationPath.removeLast() }) {
-                        Image(.iconBack)
-                            .foregroundStyle(Color.Text.main)
-                    }
-                }
-            )
+        .navigationDestination(for: NavigationOption.self) {
+            buildView(option: $0)
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                SwiftUI.Button(action: { navigationPath.removeLast() }) {
+                    Image(.iconBack)
+                        .foregroundStyle(Color.Text.main)
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Image(systemName: "list.bullet.rectangle")
+                    .onTapGesture { moveTo(option: .logs) }
+            }
+        }
+    }
+    
+    // MARK: - View Builders
+    
+    @ViewBuilder
+    private func buildView(option: NavigationOption) -> some View {
+        switch option {
+        case .logs:
+            LogsView(navigationPath: $navigationPath)
+        }
+    }
+    
+    // MARK: - Actions
+    
+    private func moveTo(option: NavigationOption) {
+        navigationPath.append(option)
     }
 }

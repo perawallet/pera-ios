@@ -1,4 +1,4 @@
-// Copyright 2025 Pera Wallet, LDA
+// Copyright 2022-2025 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasskeyListCellModel.swift
+//   TerminalLogger.swift
 
-import Foundation
+import OSLog
 import pera_wallet_core
 
-final class PasskeyListCellViewModel: ObservableObject {
+final class TerminalLogger: Loggable {
     
     // MARK: - Properties
     
-    let passkey: PassKeyModel
-    let onDelete: (PassKeyModel) -> Void
+    private let subsystem: String
     
     // MARK: - Initialisers
     
-    init(passkey: PassKeyModel, onDelete: @escaping (PassKeyModel) -> Void) {
-        self.passkey = passkey
-        self.onDelete = onDelete
+    init(subsystem: String) {
+        self.subsystem = subsystem
     }
     
-    //MARK: - Methods
+    // MARK: - Actions - Loggable
     
-    func deletePasskey() {
-        onDelete(passkey)
+    func log(message: String) {
+        Logger(subsystem: subsystem, category: "general").log(level: .default, "\(message)")
     }
 }

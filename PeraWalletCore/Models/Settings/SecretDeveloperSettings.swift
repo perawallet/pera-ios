@@ -20,14 +20,14 @@ public enum SecretDeveloperSettings: Settings {
     case enableTestCards
     case enableTestXOSwapPage
     
-    public var image: UIImage? {
+    var image: ImageResource {
         switch self {
-        case .enableTestCards: img("icon-menu-cards")
+        case .enableTestCards: .iconMenuCards
         case .enableTestXOSwapPage: img("tabbar-icon-swap-selected")
         }
     }
     
-    public var name: String {
+    var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
         case .enableTestXOSwapPage: String(localized: "secret-dev-settings-enable-test-xoswap")

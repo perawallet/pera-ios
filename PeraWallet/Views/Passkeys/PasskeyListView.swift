@@ -17,6 +17,8 @@ import AuthenticationServices
 
 struct PasskeyListView: View {
     
+    // MARK: - Properties
+    
     private let model: PasskeyListModelable
     @ObservedObject private var viewModel: PasskeyListViewModel
     @Binding private var navigationPath: NavigationPath
@@ -29,7 +31,8 @@ struct PasskeyListView: View {
         _navigationPath = navigationPath
     }
     
-    // MARK: - Setups
+    // MARK: - Body
+    
     var body: some View {
         VStack {
             if viewModel.settingNotEnabled {
