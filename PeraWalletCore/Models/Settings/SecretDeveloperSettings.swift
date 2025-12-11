@@ -22,14 +22,14 @@ public enum SecretDeveloperSettings: Settings, Hashable {
     case enableTestCards
     case overrideRemoteConfig
     
-    public var image: UIImage? {
+    var image: ImageResource {
         switch self {
         case .enableTestCards: .iconMenuCards
         case .overrideRemoteConfig: .Settings.Icon.developer
         }
     }
     
-    public var name: String {
+    var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
         case .overrideRemoteConfig: String(localized: "override-firebase-title")

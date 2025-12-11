@@ -59,3 +59,17 @@ struct LogsView: View {
         try? logger.deleteExportedLogsFile()
     }
 }
+
+                ShareSheet(activityItems: [fileURL])
+            } else {
+                EmptyView()
+            }
+        }
+    }
+    
+    // MARK: - Action
+    
+    private func onShareSheetDismissAction() {
+        try? logger.deleteExportedLogsFile()
+    }
+}
