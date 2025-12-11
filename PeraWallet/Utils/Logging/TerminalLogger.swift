@@ -12,21 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
+//   TerminalLogger.swift
 
-enum SecretDeveloperSettings {
+import OSLog
+import pera_wallet_core
+
+final class TerminalLogger: Loggable {
     
-    case enableTestCards
+    // MARK: - Properties
     
-    var image: ImageResource {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        }
+    private let subsystem: String
+    
+    // MARK: - Initialisers
+    
+    init(subsystem: String) {
+        self.subsystem = subsystem
     }
     
-    var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        }
+    // MARK: - Actions - Loggable
+    
+    func log(message: String) {
+        Logger(subsystem: subsystem, category: "general").log(level: .default, "\(message)")
     }
 }
