@@ -31,9 +31,9 @@ public enum FeatureFlag: String, CaseIterable {
         case .swapFeePadding: .double(-1)
         case .liquidAuthEnabled: .bool(false)
         case .liquidConnectEnabled: .bool(false)
-        case .ledgerDeflexFilterEnabled: .bool(true)
-        case .assetDetailV2Enabled: .bool(true)
-        case .assetDetailV2EndpointEnabled: .bool(true)
+        case .ledgerDeflexFilterEnabled: .bool(false)
+        case .assetDetailV2Enabled: .bool(false)
+        case .assetDetailV2EndpointEnabled: .bool(false)
         case .webviewV2Enabled: .bool(false)
         case .jointAccountEnabled: .bool(false)
         }
