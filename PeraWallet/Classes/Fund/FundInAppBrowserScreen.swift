@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StakingInAppBrowserScreen.swift
+//   FundInAppBrowserScreen.swift
 
 import UIKit
 import WebKit
 import pera_wallet_core
 
-class StakingInAppBrowserScreen: InAppBrowserScreen {
+class FundInAppBrowserScreen: InAppBrowserScreen {
     
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
@@ -27,50 +27,31 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
     
-    override var extraUserScripts: [InAppBrowserScript] { [.navigation, .peraConnect] }
-    
     override var handledMessages: [any InAppBrowserScriptMessage] {
-        StakingInAppBrowserScreenMessage.allCases
-    }
-
-    var destination: StakingDestination {
-        didSet { loadStakingURL() }
-    }
-    
-    var hideBackButtonInWebView: Bool = false
-    
-    init(
-        destination: StakingDestination,
-        configuration: ViewControllerConfiguration
-    ) {
-        self.destination = destination
-        super.init(configuration: configuration)
-
-        startObservingNotifications()
-        allowsPullToRefresh = false
+        FundInAppBrowserScriptMessage.allCases
     }
 
     deinit {
         stopObservingNotifications()
     }
+
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+
+        startObservingNotifications()
+    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadStakingURL()
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadPeraURL()
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0) { [weak self] in
             guard let self else { return }
             self.updateTheme(self.traitCollection.userInterfaceStyle)
         }
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
@@ -79,7 +60,7 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
     }
 
     override func didPullToRefresh() {
-        loadStakingURL()
+        loadPeraURL()
     }
     
     // MARK: - WKScriptMessageHandler
@@ -88,15 +69,16 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        if let inAppMessage = StakingInAppBrowserScreenMessage(rawValue: message.name) {
-            handleStaking(inAppMessage, message)
+        if let inAppMessage = FundInAppBrowserScriptMessage(rawValue: message.name) {
+            handleFund(inAppMessage, message)
         }
     }
 }
 
-extension StakingInAppBrowserScreen {
+extension FundInAppBrowserScreen {
     private func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
+        startObservingCurrencyChanges()
     }
 
     private func startObservingAppLifeCycleNotifications() {
@@ -106,37 +88,62 @@ extension StakingInAppBrowserScreen {
             self.updateTheme(self.traitCollection.userInterfaceStyle)
         }
     }
+
+    private func startObservingCurrencyChanges() {
+        observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
+            [weak self] _ in
+            guard let self else { return }
+            self.updateCurrency()
+        }
+    }
 }
 
-extension StakingInAppBrowserScreen {
+extension FundInAppBrowserScreen {
     private func generatePeraURL() -> URL? {
-        StakingURLGenerator.generateURL(
-            destination: destination,
+        FundURLGenerator.generateURL(
             theme: traitCollection.userInterfaceStyle,
             session: session
         )
     }
 
-    private func loadStakingURL() {
+    private func loadPeraURL() {
         let generatedUrl = generatePeraURL()
         load(url: generatedUrl)
     }
 }
 
-extension StakingInAppBrowserScreen {
+extension FundInAppBrowserScreen {
     private func updateTheme(_ style: UIUserInterfaceStyle) {
         let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
     }
+
+    private func updateCurrency() {
+        guard let newCurrency = session?.preferredCurrencyID.localValue else {
+            return
+        }
+        let script = "updateCurrency('\(newCurrency)')"
+        webView.evaluateJavaScript(script)
+    }
 }
 
-enum StakingInAppBrowserScreenMessage:
+enum FundInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
+    case handleRequest
+}
+
+enum FundInAppBrowserScriptMethod: String {
+    case pushWebView
     case openSystemBrowser
+    case canOpenURI
+    case openNativeURI
+    case notifyUser
+    case getAddresses
+    case getSettings
+    case getPublicSettings
+    case onBackPressed
+    case logAnalyticsEvent
     case closeWebView
-    case peraconnect
-    case requestDeviceID = "getDeviceId"
-    case openDappWebview
 }

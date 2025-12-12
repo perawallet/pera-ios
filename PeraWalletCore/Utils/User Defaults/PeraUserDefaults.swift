@@ -30,4 +30,5 @@ public enum PeraUserDefaults {
     // MARK: - Secret Developer Settings
     
     @UserDefault(key: "enableTestCards") public static var enableTestCards: Bool?
+    @UserDefault(key: "enableTestXOSwapPage") public static var enableTestXOSwapPage: Bool?
 }

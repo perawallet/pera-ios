@@ -28,6 +28,7 @@ struct AccountQuickActionsViewTheme:
     var requestsBadgeAction: ButtonStyle
     var swapAction: ButtonStyle
     var buyAction: ButtonStyle
+    var fundAction: ButtonStyle
     var moreAction: ButtonStyle
     let bottomPadding: CGFloat = 32.0
 
@@ -50,6 +51,10 @@ struct AccountQuickActionsViewTheme:
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
+        ]
+        self.fundAction = [
+            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
+            .title(Self.makeActionTitle(title: String(localized: "title-fund")))
         ]
         self.moreAction = [
             .icon(Self.makeActionIcon(icon: "more-icon")),

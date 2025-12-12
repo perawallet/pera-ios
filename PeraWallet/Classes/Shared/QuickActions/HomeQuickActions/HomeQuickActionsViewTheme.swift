@@ -28,6 +28,7 @@ struct HomeQuickActionsViewTheme:
     var swapAction: ButtonStyle
     var sendAction: ButtonStyle
     var buyAction: ButtonStyle
+    var fundAction: ButtonStyle
 
     init(_ family: LayoutFamily) {
         self.spacingBetweenActions = 16
@@ -48,6 +49,10 @@ struct HomeQuickActionsViewTheme:
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
+        ]
+        self.fundAction = [
+            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
+            .title(Self.makeActionTitle(title: String(localized: "title-fund")))
         ]
     }
 }

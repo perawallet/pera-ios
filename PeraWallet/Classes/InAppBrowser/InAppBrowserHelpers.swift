@@ -1,0 +1,546 @@
+// Copyright 2022-2025 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   InAppBrowserHelpers.swift
+
+import WebKit
+import pera_wallet_core
+
+extension InAppBrowserScreen {    
+    func handleDiscoverInApp(_ inAppMessage: DiscoverInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .requestAuthorizedAddresses: handleRequestAuthorizedAddresses(message, isAuthorizedAccountsOnly: false)
+        case .pushNewScreen: handleNewScreenAction(message)
+        case .requestDeviceID: handleDeviceIDRequest(message)
+        case .pushDappViewerScreen: handleDappDetailAction(message)
+        case .openSystemBrowser: handleOpenSystemBrowser(message)
+        case .peraconnect: handlePeraConnectAction(message)
+        }
+    }
+    
+    func handleDiscoverAssetDetail(_ inAppMessage: DiscoverAssetDetailScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage { case .handleTokenDetailActionButtonClick: handleTokenAction(message) }
+    }
+    
+    func handleDiscoverExternal(_ inAppMessage: DiscoverExternalInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage { case .peraconnect: handlePeraConnectAction(message) }
+    }
+    
+    func handleDiscoverHome(_ inAppMessage: DiscoverHomeScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .pushTokenDetailScreen: handleTokenDetailAction(message)
+        case .swap, .handleTokenDetailActionButtonClick: handleTokenAction(message)
+        }
+    }
+    
+    func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .openSystemBrowser: handleOpenSystemBrowser(message)
+        case .closeWebView: popScreen()
+        case .peraconnect: handlePeraConnectAction(message)
+        case .requestDeviceID: handleDeviceIDRequest(message)
+        case .openDappWebview: handleDappDetailAction(message)
+        }
+    }
+    
+    func handleCards(_ inAppMessage: CardsInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .requestAuthorizedAddresses: handleRequestAuthorizedAddresses(message, isAuthorizedAccountsOnly: true)
+        case .openSystemBrowser: handleOpenSystemBrowser(message)
+        case .closePeraCards: dismissScreen()
+        case .peraconnect: handlePeraConnectAction(message)
+        case .requestDeviceID: handleDeviceIDRequest(message)
+        }
+    }
+    
+    func handleBidali(_ inAppMessage: BidaliDappDetailScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .paymentRequest: handlePaymentRequestAction(message)
+        case .openURLRequest: handleOpenURLRequestAction(message)
+        }
+    }
+    
+    func handlePublicWebview(_ inAppMessage: PublicWebviewInAppBrowserScreenMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .handleRequest:
+            guard let messagesArray = message.decodeRequest() else { return }
+            messagesArray.forEach { message in
+                guard let methodName = message["method"] as? String else { return }
+                if let inAppMethod = PublicWebviewInAppBrowserScreenMethod(rawValue: methodName) {
+                    switch inAppMethod {
+                    case .pushWebView:
+                        guard
+                            let params: PushWVParams = decodeMethodParams(from: message),
+                            let url = URL(string: params.url)
+                        else {
+                            return
+                        }
+                        open(.publicWebview(url: url), by: .push)
+                    case .openSystemBrowser:
+                        guard let params: DiscoverGenericParameters = decodeMethodParams(from: message) else { return }
+                        openInBrowser(params.url)
+                    case .getPublicSettings:
+                        guard let id = message["id"] as? Int else { return }
+                        handleSettings(.getPublicSettings, id: id)
+                    case .logAnalyticsEvent:
+                        guard let params: LogEventParams = decodeMethodParams(from: message) else { return }
+                        analytics.track(params.name, payload: params.payload)
+                    case .closeWebView, .onBackPressed:
+                        popScreen()
+                    }
+                }
+            }
+        }
+    }
+    
+    func handleFund(_ inAppMessage: FundInAppBrowserScriptMessage, _ message: WKScriptMessage) {
+        switch inAppMessage {
+        case .handleRequest:
+            guard let messagesArray = message.decodeRequest() else { return }
+            messagesArray.forEach { message in
+                guard let methodName = message["method"] as? String else { return }
+                if let inAppMethod = FundInAppBrowserScriptMethod(rawValue: methodName) {
+                    switch inAppMethod {
+                    case .pushWebView:
+                        guard
+                            let params: PushWVParams = decodeMethodParams(from: message),
+                            let url = URL(string: params.url)
+                        else {
+                            return
+                        }
+                        open(.publicWebview(url: url), by: .push)
+                    case .openSystemBrowser:
+                        guard let params: DiscoverGenericParameters = decodeMethodParams(from: message) else { return }
+                        openInBrowser(params.url)
+                    case .canOpenURI:
+                        guard
+                            let id = message["id"] as? Int,
+                            let params: URIParams = decodeMethodParams(from: message),
+                            let uri = URL(string: params.uri)
+                        else {
+                            return
+                        }
+                        webView.evaluateJavaScript(
+                            Scripts.message(
+                                id: id,
+                                result: UIApplication.shared.canOpenURL(uri).description
+                            )
+                        )
+                    case .openNativeURI:
+                        guard
+                            let params: URIParams = decodeMethodParams(from: message),
+                            let uri = URL(string: params.uri)
+                        else {
+                            return
+                        }
+                        UIApplication.shared.open(uri)
+                    case .notifyUser:
+                        guard let params: NotifyParams = decodeMethodParams(from: message) else { return }
+                        handleNotifyUser(params: params)
+                    case .getAddresses:
+                        guard let id = message["id"] as? Int else { return }
+                        handleAddresses(id: id)
+                    case .getSettings, .getPublicSettings:
+                        guard let id = message["id"] as? Int else { return }
+                        handleSettings(inAppMethod, id: id)
+                    case .logAnalyticsEvent:
+                        guard let params: LogEventParams = decodeMethodParams(from: message) else { return }
+                        analytics.track(params.name, payload: params.payload)
+                    case .closeWebView, .onBackPressed:
+                        dismissScreen()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func handlePeraConnectAction(_ message: WKScriptMessage) {
+        guard
+            let jsonString = message.body as? String,
+            let url = URL(string: jsonString),
+            let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl()
+        else { return }
+
+        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
+        launchController.receive(deeplinkWithSource: src)
+    }
+    
+    private func handleNotifyUser(_ message: WKScriptMessage) {
+        guard let params = message.decode(NotifyParams.self)?.params else { return }
+        handleNotifyUser(params: params)
+    }
+    
+    private func handleNotifyUser(params: NotifyParams) {
+        switch params.type {
+        case .haptic: break
+        case .sound: break
+        case .message:
+            guard let message = params.message else { return }
+            if params.variant == "banner" {
+                configuration.bannerController?.presentSuccessBanner(title: message)
+            } else if params.variant == "toast" {
+                configuration.bannerController?.presentInfoBanner(message)
+            }
+        }
+    }
+    
+    private func handleAddresses(id: Int) {
+        var addressesInfo = [[String: String]]()
+        session?.authenticatedUser?.accounts.forEach { accountInformation in
+            let account = Account(localAccount: accountInformation)
+            let name = account.primaryDisplayName
+            let address = account.address
+            let type = account.authType
+            addressesInfo.append(["name": name, "address": address, "type": type])
+        }
+        
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: addressesInfo),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else {
+            return
+        }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handleSettings(_ inAppMethod: FundInAppBrowserScriptMethod, id: Int) {
+        guard
+            let theme = traitCollection.userInterfaceStyle == .dark ? "dark" : "light",
+            let network = configuration.api?.network.rawValue,
+            let language = Bundle.main.preferredLocalizations.first,
+            let currency = try? sharedDataController.currency.primaryValue?.unwrap().name ?? ""
+        else { return }
+        var params = ["theme": theme, "network": network, "language": language, "currency": currency]
+        
+        guard inAppMethod == .getSettings else {
+            handlePublicSettings(id: id, params: params)
+            return
+        }
+        
+        guard
+            let deviceId = UIDevice.current.identifierForVendor?.uuidString,
+            let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String,
+            let appPackageName = Bundle.main.bundleIdentifier
+        else { return }
+        
+        params["platform"] = "ios"
+        params["appName"] = appName
+        params["appPackageName"] = appPackageName
+        params["appVersion"] = Bundle.main.version
+        params["deviceId"] = deviceId
+        params["deviceVersion"] = UIDevice.current.systemVersion
+        params["deviceModel"] = UIDevice.current.model
+        
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: params),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handlePublicSettings(id: Int, params: [String: String]) {
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: params),
+            let paramsJsonString = String(data: jsonData, encoding: .utf8)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: paramsJsonString
+            )
+        )
+    }
+    
+    private func handleCanOpenUri(_ message: WKScriptMessage) {
+        guard
+            let response = message.decode(URIParams.self),
+            let id = response.id,
+            let params = response.params,
+            let uri = URL(string: params.uri)
+        else { return }
+        
+        webView.evaluateJavaScript(
+            Scripts.message(
+                id: id,
+                result: UIApplication.shared.canOpenURL(uri).description
+            )
+        )
+    }
+    
+    private func handleOpenNativeUri(_ message: WKScriptMessage) {
+        guard
+            let params = message.decode(URIParams.self)?.params,
+            let uri = URL(string: params.uri)
+        else { return }
+        UIApplication.shared.open(uri)
+    }
+    
+    private func handleTokenDetailAction(_ message: WKScriptMessage) {
+        guard let params = message.decode(DiscoverAssetParameters.self)?.params else { return }
+        navigateToAssetDetail(params)
+    }
+    
+    private func navigateToAssetDetail(_ params: DiscoverAssetParameters) {
+        open(.discoverAssetDetail(params), by: .push)
+    }
+    
+    private func handleTokenAction(_ message: WKScriptMessage) {
+        guard let params = message.decode(DiscoverSwapParameters.self)?.params else { return }
+        switch params.action {
+        case .buyAlgo: navigateToBuyAlgo()
+        default: navigateToSwap(with: params)
+        }
+        sendAnalyticsEvent(with: params)
+    }
+    
+    private func navigateToBuyAlgo() {
+        meldFlowCoordinator.launch()
+    }
+    
+    private func navigateToSwap(with parameters: DiscoverSwapParameters) {
+        guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+        let draft = SwapAssetFlowDraft()
+        if let assetInID = parameters.assetIn {
+            draft.assetInID = assetInID
+        }
+        if let assetOutID = parameters.assetOut {
+            draft.assetOutID = assetOutID
+        }
+        rootViewController.launch(tab: .swap, with: draft)
+    }
+    
+    private func handleDeviceIDRequest(_ message: WKScriptMessage) {
+        if !message.isAcceptable { return }
+        guard let deviceIDDetails = makeDeviceIDDetails() else { return }
+        webView.sendMessage(deviceIDDetails)
+    }
+    
+    private func makeDeviceIDDetails() -> String? {
+        guard let api else { return nil }
+        guard let deviceID = session?.authenticatedUser?.getDeviceId(on: api.network) else { return nil }
+        return try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
+    }
+    
+    private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
+        if !message.isAcceptable { return }
+        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
+        openInBrowser(params.url)
+    }
+    
+    private func handleRequestAuthorizedAddresses(_ message: WKScriptMessage, isAuthorizedAccountsOnly: Bool) {
+        let handler = BrowserAuthorizedAddressEventHandler(sharedDataController: sharedDataController)
+        handler.returnAuthorizedAccounts(message, in: webView, isAuthorizedAccountsOnly: isAuthorizedAccountsOnly)
+    }
+    
+    private func handleDappDetailAction(_ message: WKScriptMessage) {
+        if !message.isAcceptable { return }
+        guard let params = message.decode(DiscoverDappParamaters.self)?.params else { return }
+        navigateToDappDetail(params)
+    }
+
+    private func navigateToDappDetail(_ params: DiscoverDappParamaters) {
+        let screen: Screen = .discoverDappDetail(params) {
+            [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .goBack: popScreen()
+            case .addToFavorites(let dappDetails): addToFavorites(dappDetails)
+            case .removeFromFavorites(let dappDetails): removeFromFavorites(dappDetails)
+            }
+        }
+        open(screen, by: .push)
+    }
+
+    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+
+    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+
+    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
+        guard let dappDetailsString = try? dapp.encodedString() else { return }
+        webView.sendMessage(dappDetailsString)
+    }
+    
+    private func handleNewScreenAction(_ message: WKScriptMessage) {
+        if !message.isAcceptable { return }
+        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
+        navigateToDiscoverGeneric(params)
+    }
+
+    private func navigateToDiscoverGeneric(_ params: DiscoverGenericParameters) {
+        open(.discoverGeneric(params), by: .push)
+    }
+    
+    private func handlePaymentRequestAction(_ message: WKScriptMessage) {
+        guard let params = message.decode(BidaliPaymentParameters.self)?.params,
+              let paymentRequest = params.data else {
+            presentGenericErrorBanner()
+            return
+        }
+        openPaymentRequest(paymentRequest)
+    }
+
+    private func openPaymentRequest(_ request: BidaliPaymentRequest) {
+        guard let address = request.address,
+              let amount = request.amount,
+              let extraId = request.extraID,
+              let currencyProtocol = request.currencyProtocol,
+              let account
+        else {
+            presentGenericErrorBanner()
+            return
+        }
+
+        let asset = account.value.asset(for: currencyProtocol, network: api!.network)
+        guard let asset else {
+            presentGenericErrorBanner()
+            return
+        }
+
+        let draft = makeSendTransactionDraft(
+            from: account.value,
+            to: Account(address: address),
+            asset: asset,
+            amount: amount,
+            extraId: extraId
+        )
+        openPaymentRequest(draft)
+    }
+    
+    private func makeSendTransactionDraft(
+        from: Account,
+        to: Account,
+        asset: Asset,
+        amount: String,
+        extraId: String
+    ) -> SendTransactionDraft {
+        let transactionMode: TransactionMode = asset.isAlgo ? .algo : .asset(asset)
+        let draft = SendTransactionDraft(
+            from: from,
+            toAccount: to,
+            amount: NSDecimalNumber(string: amount) as Decimal,
+            transactionMode: transactionMode,
+            lockedNote: extraId
+        )
+        return draft
+    }
+    
+    
+    private func openPaymentRequest(_ draft: SendTransactionDraft) {
+        let controller = open(
+            .sendTransactionPreview(draft: draft),
+            by: .present
+        ) as? SendTransactionPreviewScreen
+        controller?.navigationController?.presentationController?.delegate = self
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .didCompleteTransaction: confirmPayment()
+            case .didPerformDismiss: cancelPayment()
+            default: break
+            }
+        }
+    }
+    
+    func cancelPayment() {
+        webView.sendBidaliEvent("paymentCancelled")
+    }
+
+    private func confirmPayment() {
+        webView.sendBidaliEvent("paymentSent")
+    }
+    
+    private func handleOpenURLRequestAction(_ message: WKScriptMessage) {
+        guard let params = message.decode(BidaliOpenURLParameters.self)?.params,
+              let openURLRequest = params.data else {
+            presentGenericErrorBanner()
+            return
+        }
+        openOpenURLRequest(openURLRequest)
+    }
+
+    private func openOpenURLRequest(_ request: BidaliOpenURLRequest) {
+        guard let url = request.url.toURL() else {
+            presentGenericErrorBanner()
+            return
+        }
+        open(url)
+    }
+    
+    private func presentGenericErrorBanner() {
+        bannerController?.presentErrorBanner(
+            title: String(localized: "title-error"),
+            message: String(localized: "title-generic-error")
+        )
+    }
+    
+    private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {
+        let assetInID = parameters.assetIn
+        let assetOutID = parameters.assetOut
+
+        switch parameters.action {
+        case .buyAlgo:
+            analytics.track(.buyAssetFromDiscover(assetOutID: 0, assetInID: nil))
+        case .swapFromAlgo:
+            analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: 0))
+        case .swapToAsset:
+            guard let assetOutID else { return }
+            analytics.track(.buyAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        case .swapFromAsset:
+            analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        }
+    }
+    
+    private func decodeMethodParams<T: Decodable>(from dict: [String: Any]) -> T? {
+        guard let params = dict["params"] as? [String: Any],
+              let data = try? JSONSerialization.data(withJSONObject: params),
+              let decoded = try? JSONDecoder().decode(T.self, from: data)
+        else { return nil }
+        
+        return decoded
+    }
+}
+
+private extension Account {
+    func asset(
+        for currencyProtocol: BidaliPaymentCurrencyProtocol,
+        network: ALGAPI.Network
+    ) -> Asset? {
+        switch currencyProtocol {
+        case .algo: return algo
+        case .usdc: return usdc(network)
+        case .usdt: return usdt(network)
+        default: return nil
+        }
+    }
+}

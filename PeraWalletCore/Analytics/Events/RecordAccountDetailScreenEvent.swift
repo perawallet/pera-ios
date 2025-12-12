@@ -42,6 +42,7 @@ extension RecordAccountDetailScreenEvent {
         case addAssets
         case manageAssets
         case tapBuyAlgo
+        case tapFund
         case tapSwap
         case tapChart
 
@@ -69,6 +70,8 @@ extension RecordAccountDetailScreenEvent {
                 return .manageAsset
             case .tapBuyAlgo:
                 return .tapBuyAlgoInAccountDetail
+            case .tapFund:
+                return .tapFundInAccountDetail
             case .tapSwap:
                 return .tapSwapInAccountDetail
             case .tapChart:

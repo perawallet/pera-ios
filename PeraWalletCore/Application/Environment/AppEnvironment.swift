@@ -27,7 +27,7 @@ public class AppEnvironment {
     private static let instance = AppEnvironment()
     
     public static var current: AppEnvironment {
-        return instance
+        instance
     }
     
     public let appID = "1459898525"
@@ -35,7 +35,7 @@ public class AppEnvironment {
     public lazy var isTestNet = !ALGAppTarget.current.isProduction
     
     private var target: AppTarget {
-        return ALGAppTarget.current.isProduction ? .prod : .staging
+        ALGAppTarget.current.isProduction ? .prod : .staging
     }
     
     public lazy var schema = "https"
@@ -93,10 +93,8 @@ public class AppEnvironment {
     
     public lazy var serverHost: String = {
         switch target {
-        case .staging:
-            return testNetAlgodHost
-        case .prod:
-            return mainNetAlgodHost
+        case .staging: testNetAlgodHost
+        case .prod: mainNetAlgodHost
         }
     }()
     
@@ -137,64 +135,50 @@ public class AppEnvironment {
 
     public private(set) lazy var testNetMobileAPIV1: String = {
         switch target {
-        case .staging:
-            return "\(testNetStagingMobileAPI)/v1/"
-        case .prod:
-            return "\(testNetProductionMobileAPI)/v1/"
+        case .staging: "\(testNetStagingMobileAPI)/v1/"
+        case .prod: "\(testNetProductionMobileAPI)/v1/"
         }
     }()
 
     public private(set) lazy var mainNetMobileAPIV1: String = {
         switch target {
-        case .staging:
-            return "\(mainNetStagingMobileAPI)/v1/"
-        case .prod:
-            return "\(mainNetProductionMobileAPI)/v1/"
+        case .staging: "\(mainNetStagingMobileAPI)/v1/"
+        case .prod: "\(mainNetProductionMobileAPI)/v1/"
         }
     }()
 
     public private(set) lazy var testNetMobileAPIV2: String = {
         switch target {
-        case .staging:
-            return "\(testNetStagingMobileAPI)/v2/"
-        case .prod:
-            return "\(testNetProductionMobileAPI)/v2/"
+        case .staging: "\(testNetStagingMobileAPI)/v2/"
+        case .prod: "\(testNetProductionMobileAPI)/v2/"
         }
     }()
 
     public private(set) lazy var mainNetMobileAPIV2: String = {
         switch target {
-        case .staging:
-            return "\(mainNetStagingMobileAPI)/v2/"
-        case .prod:
-            return "\(mainNetProductionMobileAPI)/v2/"
+        case .staging: "\(mainNetStagingMobileAPI)/v2/"
+        case .prod: "\(mainNetProductionMobileAPI)/v2/"
         }
     }()
     
     public lazy var cardsMainNetBaseUrl: String = {
         switch target {
-        case .staging:
-            return "https://cards-mobile-staging-mainnet.perawallet.app/"
-        case .prod:
-            return "https://cards-mobile.perawallet.app/"
+        case .staging: "https://cards-mobile-staging-mainnet.perawallet.app/"
+        case .prod: "https://cards-mobile.perawallet.app/"
         }
     }()
 
     public lazy var cardsTestNetBaseUrl: String = {
         switch target {
-        case .staging:
-            return "https://cards-mobile-staging-testnet.perawallet.app/"
-        case .prod:
-            return "https://cards-mobile-staging.perawallet.app/"
+        case .staging: "https://cards-mobile-staging-testnet.perawallet.app/"
+        case .prod: "https://cards-mobile-staging.perawallet.app/"
         }
     }()
     
     public func cardsBaseUrl(network: ALGAPI.Network) -> String {
         switch network {
-        case .testnet:
-            return cardsTestNetBaseUrl
-        case .mainnet:
-            return cardsMainNetBaseUrl
+        case .testnet: cardsTestNetBaseUrl
+        case .mainnet: cardsMainNetBaseUrl
         }
     }
     public func isCardsFeatureEnabled(for network: ALGAPI.Network) -> Bool {
@@ -207,38 +191,37 @@ public class AppEnvironment {
     
     public lazy var stakingBaseUrl: String = {
         switch target {
-        case .staging:
-            return "https://staking-mobile-staging.perawallet.app/"
-        case .prod:
-            return "https://staking-mobile.perawallet.app/"
+        case .staging: "https://staking-mobile-staging.perawallet.app/"
+        case .prod: "https://staking-mobile.perawallet.app/"
         }
     }()
 
     public lazy var discoverBaseUrl: String = {
         switch target {
-        case .staging:
-            return "https://discover-mobile-staging.perawallet.app/"
-        case .prod:
-            return "https://discover-mobile.perawallet.app/"
+        case .staging: "https://discover-mobile-staging.perawallet.app/"
+        case .prod: "https://discover-mobile.perawallet.app/"
         }
     }()
 
     public lazy var discoverBrowserURL: String = {
         switch target {
-        case .staging:
-            return "https://discover-mobile-staging.perawallet.app/main/browser"
-        case .prod:
-            return "https://discover-mobile.perawallet.app/main/browser"
+        case .staging: "https://discover-mobile-staging.perawallet.app/main/browser"
+        case .prod: "https://discover-mobile.perawallet.app/main/browser"
         }
     }()
     
     public lazy var discoverMarketURL: String = {
-            switch target {
-            case .staging:
-                return "https://discover-mobile-staging.perawallet.app/main/markets"
-            case .prod:
-                return "https://discover-mobile.perawallet.app/main/markets"
-            }
+        switch target {
+        case .staging: "https://discover-mobile-staging.perawallet.app/main/markets"
+        case .prod: "https://discover-mobile.perawallet.app/main/markets"
+        }
+    }()
+    
+    public lazy var fundBaseUrl: String = {
+        switch target {
+        case .staging: "https://onramp-mobile-staging.perawallet.app/"
+        case .prod: "https://onramp-mobile.perawallet.app/"
+        }
     }()
 }
 
@@ -269,12 +252,9 @@ public enum AlgorandWeb: String {
 
     public var presentation: String {
         switch self {
-        case .peraWebApp:
-            return "web.perawallet.app"
-        case .support:
-            return "www.perawallet.app/support/"
-        default:
-            return self.rawValue
+        case .peraWebApp: "web.perawallet.app"
+        case .support: "www.perawallet.app/support/"
+        default: self.rawValue
         }
     }
     
@@ -294,15 +274,15 @@ public enum AlgorandWeb: String {
         public var link: URL? {
             switch self {
             case .address(let isMainnet, let param):
-                return isMainnet
+                isMainnet
                     ? URL(string: "https://explorer.perawallet.app/address/\(param)/")
                     : URL(string: "https://testnet.explorer.perawallet.app/address/\(param)/")
             case .asset(let isMainnet, let param):
-                return isMainnet
+                isMainnet
                     ? URL(string: "https://explorer.perawallet.app/asset/\(param)/")
                     : URL(string: "https://testnet.explorer.perawallet.app/asset/\(param)/")
             case .group(let isMainnet, let param):
-                return isMainnet
+                isMainnet
                     ? URL(string: "https://explorer.perawallet.app/tx-group/\(param)")
                     : URL(string: "https://testnet.explorer.perawallet.app/tx-group/\(param)")
             }
@@ -312,6 +292,6 @@ public enum AlgorandWeb: String {
 
 extension AlgorandWeb {
     public var link: URL? {
-        return URL(string: rawValue)
+        URL(string: rawValue)
     }
 }

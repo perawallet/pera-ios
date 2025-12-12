@@ -14,19 +14,23 @@
 
 //   SecretDeveloperSettings.swift
 
-enum SecretDeveloperSettings {
-    
+import UIKit
+
+enum SecretDeveloperSettings: Hashable {
     case enableTestCards
+    case enableTestXOSwapPage
     
     var image: ImageResource {
         switch self {
         case .enableTestCards: .iconMenuCards
+        case .enableTestXOSwapPage: .tabbarIconSwapSelected
         }
     }
     
     var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
+        case .enableTestXOSwapPage: String(localized: "secret-dev-settings-enable-test-xoswap")
         }
     }
 }

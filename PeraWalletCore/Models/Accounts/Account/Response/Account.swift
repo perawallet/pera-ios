@@ -236,6 +236,38 @@ extension Account {
         
         return assets?.contains { $0.amount > 0 } ?? false || allAssets?.contains { $0.amount > 0 } ?? false
     }
+    
+    public var authType: String {
+        if isHDAccount {
+            return "HdKey"
+        }
+        
+        if isWatchAccount {
+            return "NoAuth"
+        }
+        
+        if authorization.isRekeyedToNoAuthInLocal {
+            return "Rekeyed"
+        }
+        
+        if authorization.isRekeyed {
+            return "RekeyedAuth"
+        }
+        
+        if authorization.isLedger {
+            return "LedgerBle"
+        }
+        
+        if authorization.isStandard {
+            return "Algo25"
+        }
+        
+        if authorization.isNoAuth {
+            return "NoAuth"
+        }
+        
+        return ""
+    }
 }
 
 extension Account {
