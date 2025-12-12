@@ -28,22 +28,29 @@ public enum FeatureFlag: String, CaseIterable {
 
     var defaultValue: RemoteConfigValue {
         switch self {
-        case .swapFeePadding:
-                .double(-1)
-        case .liquidAuthEnabled:
-                .bool(false)
-        case .liquidConnectEnabled:
-                .bool(false)
-        case .ledgerDeflexFilterEnabled:
-                .bool(false)
-        case .assetDetailV2Enabled:
-                .bool(false)
-        case .assetDetailV2EndpointEnabled:
-                .bool(false)
-        case .webviewV2Enabled:
-                .bool(false)
-        case .jointAccountEnabled:
-                .bool(false)
+        case .swapFeePadding: .double(-1)
+        case .liquidAuthEnabled: .bool(false)
+        case .liquidConnectEnabled: .bool(false)
+        case .ledgerDeflexFilterEnabled: .bool(false)
+        case .assetDetailV2Enabled: .bool(false)
+        case .assetDetailV2EndpointEnabled: .bool(false)
+        case .webviewV2Enabled: .bool(false)
+        case .jointAccountEnabled: .bool(false)
+        }
+    }
+    
+    
+    /// NOTE: if the feature flag should appear in the override secret developer menu add a title
+    public var title: String {
+        switch self {
+        case .swapFeePadding: .empty
+        case .liquidAuthEnabled: "Enable Liquid Auth"
+        case .liquidConnectEnabled: "Enable Liquid Connect"
+        case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
+        case .assetDetailV2Enabled: "Enable Asset Detail V2"
+        case .assetDetailV2EndpointEnabled: "Enable Asset Detail Endpoint V2"
+        case .webviewV2Enabled: .empty
+        case .jointAccountEnabled: "Enable Joint Account"
         }
     }
     

@@ -1007,6 +1007,8 @@ final class Router:
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
+        case .developerMenu:
+            viewController = DeveloperMenuViewController(configuration: configuration)
         case .settings:
             viewController = SettingsListConstructor.buildScene(legacyAppConfiguration: appConfiguration)
         case let .transactionDetail(account, transaction, assetDetail):

@@ -12,26 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDeveloperSettings.swift
+//   DeveloperMenuListNavigationCell.swift
 
-import UIKit
+import SwiftUI
+import pera_wallet_core
 
-enum SecretDeveloperSettings: Hashable {
-    case enableTestCards
-    case overrideRemoteConfig
+struct DeveloperMenuListNavigationCell: View {
     
-    var image: ImageResource {
-        switch self {
-        case .enableTestCards: .iconMenuCards
-        case .overrideRemoteConfig: .Settings.Icon.developer
-        }
-    }
+    // MARK: - Properties
     
-    var name: String {
-        switch self {
-        case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
-        case .overrideRemoteConfig: String(localized: "override-firebase-title")
+    let item: SecretDeveloperSettings
+    
+    // MARK: - Body
+
+    var body: some View {
+        HStack {
+            Image(item.image)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding(.trailing, 10)
+            Text(item.name)
+                .font(.DMSans.regular.size(15))
+                .foregroundStyle(Color.Text.main)
+            Spacer()
         }
+        .padding(.horizontal, 12)
+        .frame(height: 50)
     }
 }
-
