@@ -449,10 +449,9 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
         switch listSection {
         case .accountNotBackedUpWarning:
             let cell = cell as! AccountDetailAccountNotBackedUpWarningCell
-            cell.startObserving(event: .performAction) {
-                [unowned self] in
+            cell.startObserving(event: .performAction) { [weak self] in
                
-                guard !dataController.account.value.isBackedUp else { return }
+                guard let self, !dataController.account.value.isBackedUp else { return }
 
                 dataController.load(query: query)
 
@@ -466,8 +465,8 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
             switch itemIdentifier {
             case .portfolio:
                 let cell = cell as! AccountPortfolioCell
-                cell.startObserving(event: .showMinimumBalanceInfo) {
-                    [unowned self] in
+                cell.startObserving(event: .showMinimumBalanceInfo) { [weak self] in
+                    guard let self = self else { return }
                     openMinimumBalanceInfo()
                 }
                 cell.startObserving(event: .onAmountTap) {
@@ -575,29 +574,29 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
-                item.startObserving(event: .requests) {
-                    [unowned self] in
-                    self.eventHandler?(.requests)
+                item.startObserving(event: .requests) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.requests)
                 }
 
-                item.startObserving(event: .swap) {
-                    [unowned self] in
-                    self.eventHandler?(.swap)
+                item.startObserving(event: .swap) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.swap)
                 }
 
-                item.startObserving(event: .buy) {
-                    [unowned self] in
-                    self.eventHandler?(.buy)
+                item.startObserving(event: .buy) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.buy)
                 }
                 
-                item.startObserving(event: .fund) {
-                    [unowned self] in
-                    self.eventHandler?(.fund)
+                item.startObserving(event: .fund) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.fund)
                 }
 
-                item.startObserving(event: .more) {
-                    [unowned self] in
-                    self.eventHandler?(.more)
+                item.startObserving(event: .more) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.more)
                 }
             case .watchAccountQuickActions:
                 guard let item = cell as? WatchAccountQuickActionsCell else {
@@ -606,19 +605,19 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
 
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
-                item.startObserving(event: .copyAddress) {
-                    [unowned self] in
-                    self.eventHandler?(.copyAddress)
+                item.startObserving(event: .copyAddress) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.copyAddress)
                 }
 
-                item.startObserving(event: .showAddress) {
-                    [unowned self] in
-                    self.eventHandler?(.showAddress)
+                item.startObserving(event: .showAddress) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.showAddress)
                 }
 
-                item.startObserving(event: .more) {
-                    [unowned self] in
-                    self.eventHandler?(.more)
+                item.startObserving(event: .more) { [weak self] in
+                    guard let self = self else { return }
+                    eventHandler?(.more)
                 }
             default: break
             }
@@ -726,9 +725,9 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
         return UIContextMenuConfiguration(
             identifier: indexPath as NSIndexPath
         ) { _ in
-            let copyActionItem = UIAction(item: .copyAssetID) {
-                [unowned self] _ in
-                self.copyToClipboardController.copyID(asset)
+            let copyActionItem = UIAction(item: .copyAssetID) { [weak self] _ in
+                guard let self = self else { return }
+                copyToClipboardController.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
         }
@@ -811,8 +810,9 @@ extension AccountAssetListViewController {
         let closeAction = UISheetAction(
             title: String(localized: "title-close"),
             style: .cancel
-        ) { [unowned self] in
-            self.dismiss(animated: true)
+        ) { [weak self] in
+            guard let self = self else { return }
+            dismiss(animated: true)
         }
         uiSheet.addAction(closeAction)
 

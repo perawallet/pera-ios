@@ -14,7 +14,6 @@
 
 //   FundURLGenerator.swift
 
-import Foundation
 import UIKit
 import pera_wallet_core
 
@@ -39,13 +38,14 @@ final class FundURLGenerator {
         theme: UIUserInterfaceStyle,
         session: Session?
     ) -> [URLQueryItem] {
-        var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "1"))
-        queryItems.append(.init(name: "theme", value: theme.peraRawValue))
-        queryItems.append(.init(name: "platform", value: "ios"))
-        queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
-        queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
-        queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
+        let queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "version", value: "1"),
+            URLQueryItem(name: "theme", value: theme.peraRawValue),
+            URLQueryItem(name: "platform", value: "ios"),
+            URLQueryItem(name: "currency", value: session?.preferredCurrencyID.localValue),
+            URLQueryItem(name: "language", value: Locale.preferred.language.languageCode?.identifier),
+            URLQueryItem(name: "region", value: Locale.current.region?.identifier)
+        ]
         return queryItems
     }
 }

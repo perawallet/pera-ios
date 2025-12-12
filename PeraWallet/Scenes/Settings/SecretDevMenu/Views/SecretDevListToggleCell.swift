@@ -28,13 +28,10 @@ struct SecretDevListToggleCell: View {
     var body: some View {
         SwiftUI.Toggle(isOn: $isOn) {
             HStack {
-                if let image = item.image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(.trailing, 10)
-                }
-
+                Image(item.image)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 10)
                 Text(item.name)
                     .font(.DMSans.regular.size(15))
                     .foregroundStyle(Color.Text.main)

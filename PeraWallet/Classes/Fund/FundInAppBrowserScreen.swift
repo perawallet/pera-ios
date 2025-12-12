@@ -14,7 +14,6 @@
 
 //   FundInAppBrowserScreen.swift
 
-import Foundation
 import UIKit
 import WebKit
 import pera_wallet_core

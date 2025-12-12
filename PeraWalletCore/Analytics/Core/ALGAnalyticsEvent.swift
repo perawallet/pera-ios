@@ -351,7 +351,7 @@ extension ALGAnalyticsEventName {
 
 extension ALGAnalyticsEventName {
     public static func webViewV2Log(event: String) -> String {
-        return event
+        event
     }
 }
 

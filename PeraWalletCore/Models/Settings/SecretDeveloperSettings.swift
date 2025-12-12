@@ -15,25 +15,22 @@
 //   SecretDeveloperSettings.swift
 
 import UIKit
-import pera_wallet_core
 
-public enum SecretDeveloperSettings: Settings, Hashable {
+enum SecretDeveloperSettings: Hashable {
     case enableTestCards
     case enableTestXOSwapPage
     
-    public var image: UIImage? {
+    var image: ImageResource {
         switch self {
         case .enableTestCards: .iconMenuCards
-        case .enableTestXOSwapPage: img("tabbar-icon-swap-selected")
+        case .enableTestXOSwapPage: .tabbarIconSwapSelected
         }
     }
     
-    public var name: String {
+    var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
         case .enableTestXOSwapPage: String(localized: "secret-dev-settings-enable-test-xoswap")
         }
     }
-
-    public var subtitle: String? { nil }
 }

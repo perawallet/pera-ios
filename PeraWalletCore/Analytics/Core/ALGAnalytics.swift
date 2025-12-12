@@ -30,33 +30,27 @@ extension ALGAnalytics {
     public func record(
         _ log: ALGAnalyticsLog
     ) {
-        for provider in providers {
-            if let aProvider = provider as? ALGAnalyticsProvider,
-               aProvider.canRecord(log) {
-                aProvider.record(log)
-            }
-        }
+        providers
+            .compactMap { $0 as? ALGAnalyticsProvider }
+            .filter { $0.canRecord(log) }
+            .forEach { $0.record(log) }
     }
     public func track(
         _ log: any AnalyticsScreen
     ) {
-        for provider in providers {
-            if let aProvider = provider as? ALGAnalyticsProvider,
-               aProvider.canTrack(log) {
-                aProvider.track(log)
-            }
-        }
+        providers
+            .compactMap { $0 as? ALGAnalyticsProvider }
+            .filter { $0.canTrack(log) }
+            .forEach { $0.track(log) }
     }
     
     public func track(
         _ event: String,
         payload: [String: String]?
     ) {
-        for provider in providers {
-            if let aProvider = provider as? ALGAnalyticsProvider,
-               aProvider.canTrack(event) {
-                aProvider.track(event, payload: payload)
-            }
-        }
+        providers
+            .compactMap { $0 as? ALGAnalyticsProvider }
+            .filter { $0.canTrack(event) }
+            .forEach { $0.track(event, payload: payload) }
     }
 }

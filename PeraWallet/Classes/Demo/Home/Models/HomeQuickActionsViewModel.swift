@@ -18,13 +18,5 @@ import MacaroonUIKit
 import pera_wallet_core
 
 struct HomeQuickActionsViewModel: ViewModel {
-    private(set) var showFundButton: Bool
-
-    private(set) var currencyFormatter: CurrencyFormatter?
-
-    init(
-        _ showFundButton: Bool
-    ) {
-        self.showFundButton = showFundButton
-    }
+    let showFundButton: Bool
 }

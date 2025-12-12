@@ -77,7 +77,7 @@ final class FirebaseAnalyticsProvider: ALGAnalyticsProvider {
     func canTrack(
         _ event: String
     ) -> Bool {
-        return true
+        true
     }
     
     func track(
