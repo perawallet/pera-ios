@@ -35,7 +35,7 @@ struct LogsView: View {
             .listStyle(.plain)
             Spacer()
         }
-        .navigationTitle(String(localized: "title-logger"))
+        .navigationTitle("title-logger")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 SwiftUI.Button(action: { isShareSheetPresented = true }) {

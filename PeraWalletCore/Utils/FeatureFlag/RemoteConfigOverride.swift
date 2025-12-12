@@ -26,7 +26,7 @@ public struct RemoteConfigOverride {
     }
     
     public static func isEnabled(for key: String) -> Bool {
-        return overrideValues[key] != nil
+        overrideValues[key] != nil
     }
 
     public static func value(for key: String) -> Bool? {
