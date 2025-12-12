@@ -30,19 +30,17 @@ final class PassKeyServiceTests: XCTestCase {
         mockSession = MockSession()
         mockLiquidAuthSDK = MockLiquidAuthSDKAPI()
         
-        PassKey.fetchAll(entity: PassKey.entityName) { result in
-            let result = PassKey.fetchAllSyncronous(entity: PassKey.entityName)
-            
-            switch result {
-            case .result(let object):
-                if object is PassKey {
-                    (object as! PassKey).remove(entity: PassKey.entityName)
-                }
-            case .results(let objects):
-                objects.filter({$0 is PassKey}).forEach({ ($0 as! PassKey).remove(entity: PassKey.entityName) })
-            case .error:
-                break
+        let result = PassKey.fetchAllSyncronous(entity: PassKey.entityName)
+        
+        switch result {
+        case .result(let object):
+            if let passKey = object as? PassKey {
+                passKey.remove(entity: PassKey.entityName)
             }
+        case .results(let objects):
+            objects.compactMap { $0 as? PassKey }.forEach { $0.remove(entity: PassKey.entityName) }
+        case .error:
+            break
         }
         
         service = PassKeyService(
@@ -112,7 +110,7 @@ final class PassKeyServiceTests: XCTestCase {
         let request = PassKeyCreationRequest(origin: "test_createAndSavePassKey_fails_whenAccountMissing.com", username: "myuser", userHandle: Data(hexStr: "ffff") ?? Data(), displayName: "test")
 
         do {
-            let response = try await service.createAndSavePassKey(request: request)
+            _ = try await service.createAndSavePassKey(request: request)
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-account-found"))
@@ -177,7 +175,7 @@ final class PassKeyServiceTests: XCTestCase {
         mockSession.authenticatedUser = user
         
         do {
-            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoAccount.com", username: "myuser"))
+            _ = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoAccount.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-passkey-found"))
@@ -199,7 +197,7 @@ final class PassKeyServiceTests: XCTestCase {
         ])
         
         do {
-            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoMatchingPasskey.com", username: "myuser"))
+            _ = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenNoMatchingPasskey.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-no-passkey-found"))
@@ -228,7 +226,7 @@ final class PassKeyServiceTests: XCTestCase {
         ])
         
         do {
-            let response = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com", username: "myuser"))
+            _ = try await service.makeAuthenticationData(request: .init(origin: "test_getAuthenticationData_fails_whenPasskeyDoesNotMatchCredentialId.com", username: "myuser"))
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, String(localized: "liquid-auth-invalid-passkey-found"))
