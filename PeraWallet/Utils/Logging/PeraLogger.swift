@@ -24,7 +24,7 @@ public protocol LogsStorage: Loggable {
     func removeLogsArchive() throws
 }
 
-public final class PeraLogger: ObservableObject {
+public actor PeraLogger: ObservableObject {
 
     public struct Log: Identifiable {
         public let id: UUID
@@ -55,10 +55,8 @@ public final class PeraLogger: ObservableObject {
         
         let formattedMessage = format(message: message)
         
-        Task { @MainActor in
-            let log = Log(id: UUID(), message: formattedMessage)
-            logs.append(log)
-        }
+        let log = Log(id: UUID(), message: formattedMessage)
+        logs.append(log)
         
         loggers.forEach {
             do {
@@ -98,6 +96,8 @@ public final class PeraLogger: ObservableObject {
 public enum Log {
     
     public static func log(message: String) {
-        PeraLogger.shared.log(message: message)
+        Task {
+            await PeraLogger.shared.log(message: message)
+        }
     }
 }
