@@ -39,13 +39,13 @@ enum AppConfigurator {
     
     // MARK: - Actions
     
-    static func configure() throws(ConfigError) {
-        try setupLogging()
+    static func configure() async throws(ConfigError) {
+        try await setupLogging()
     }
     
     // MARK: - Setups
     
-    private static func setupLogging() throws(ConfigError) {
+    private static func setupLogging() async throws(ConfigError) {
         
         let logsDirectoryURL = try logsDirectoryURL
         
@@ -59,7 +59,7 @@ enum AppConfigurator {
         }
         
         do {
-            try PeraLogger.shared.update(loggers: [terminalLogger, fileLogger], logsStore: fileLogger)
+            try await PeraLogger.shared.update(loggers: [terminalLogger, fileLogger], logsStore: fileLogger)
         } catch {
             throw .unableToUpdateLoggersConfiguration(error: error)
         }

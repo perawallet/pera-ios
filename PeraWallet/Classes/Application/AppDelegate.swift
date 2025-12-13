@@ -73,10 +73,12 @@ class AppDelegate:
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        do {
-            try AppConfigurator.configure()
-        } catch {
-            assertionFailure("Failed to configure app: \(error)")
+        Task {
+            do {
+                try await AppConfigurator.configure()
+            } catch {
+                assertionFailure("Failed to configure app: \(error)")
+            }
         }
         
         logBasicData()
