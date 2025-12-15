@@ -22,6 +22,7 @@ public protocol LogsStorage: Loggable {
     func fetchLogs() throws -> [String]
     func createLogsArchive() throws -> URL
     func removeLogsArchive() throws
+    func clearLogs() throws
 }
 
 public actor PeraLogger: ObservableObject {
@@ -88,6 +89,11 @@ public actor PeraLogger: ObservableObject {
             .map { Log(id: UUID(), message: $0) }
     }
     
+    public func clearLogs() throws {
+        logs = []
+        try logsStore?.clearLogs()
+    }
+    
     // MARK: - Helpers
     
     private func format(message: String) -> String { "\(Date()) | \(message)" }
@@ -98,6 +104,12 @@ public enum Log {
     public static func log(message: String) {
         Task {
             await PeraLogger.shared.log(message: message)
+        }
+    }
+    
+    public static func clearLogs() {
+        Task {
+            try await PeraLogger.shared.clearLogs()
         }
     }
 }

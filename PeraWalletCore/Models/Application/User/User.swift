@@ -20,12 +20,7 @@ import UIKit
 public final class User: Codable {
 
     // Stores accounts that represent regular accounts or HD wallet addresses. The ones that represent HD wallet addresses will have the hdWalletAddressDetail
-    public private(set) var accounts: [AccountInformation] = [] {
-        didSet {
-            Log.log(message: "[Local Accounts][\(accounts.count)] \(accounts.map { $0.address })")
-        }
-        
-    }
+    public private(set) var accounts: [AccountInformation] = []
     
     // Default node used to interact with the blockchain
     private(set) var defaultNode: String?

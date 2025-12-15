@@ -82,6 +82,8 @@ final class FileLogger: LogsStorage {
         try fetchLogsFromFiles()
     }
     
+    func clearLogs() throws { }
+    
     // MARK: - Actions - LogsStorage
     
     func createLogsArchive() throws -> URL {
