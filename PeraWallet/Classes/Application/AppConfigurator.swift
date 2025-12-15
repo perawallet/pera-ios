@@ -60,6 +60,7 @@ enum AppConfigurator {
         
         do {
             try await PeraLogger.shared.update(loggers: [terminalLogger, fileLogger], logsStore: fileLogger)
+            Log.truncateLogs()
         } catch {
             throw .unableToUpdateLoggersConfiguration(error: error)
         }

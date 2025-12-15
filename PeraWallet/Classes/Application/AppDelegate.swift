@@ -72,7 +72,6 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        Log.truncateLogs()
         Task {
             do {
                 try await AppConfigurator.configure()
@@ -98,6 +97,8 @@ class AppDelegate:
         launch(with: launchOptions)
         
         walletConnectCoordinator.setup()
+        
+        session.authenticatedUser?.logAccounts()
 
         return true
     }
