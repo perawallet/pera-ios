@@ -23,6 +23,8 @@ public protocol LogsStorage: Loggable {
     func createLogsArchive() throws -> URL
     func removeLogsArchive() throws
     func clearLogs() throws
+    func logsSizeInBytes() throws -> Int
+    func truncateLogsIfNeeded() throws
 }
 
 public actor PeraLogger: ObservableObject {
@@ -94,6 +96,22 @@ public actor PeraLogger: ObservableObject {
         try logsStore?.clearLogs()
     }
     
+    public func clearLogsIfNeeded(maxSize: Int = 1_000_000) throws {
+        guard let logsStore else { return }
+
+        let size = try logsStore.logsSizeInBytes()
+        guard size > maxSize else { return }
+
+        logs = []
+        try logsStore.clearLogs()
+    }
+    
+    public func truncateLogs() throws {
+        logs = []
+        try logsStore?.truncateLogsIfNeeded()
+    }
+    
+    
     // MARK: - Helpers
     
     private func format(message: String) -> String { "\(Date()) | \(message)" }
@@ -110,6 +128,12 @@ public enum Log {
     public static func clearLogs() {
         Task {
             try await PeraLogger.shared.clearLogs()
+        }
+    }
+    
+    public static func truncateLogs() {
+        Task {
+            try await PeraLogger.shared.truncateLogs()
         }
     }
 }

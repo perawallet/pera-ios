@@ -37,6 +37,7 @@ final class FileLogger: LogsStorage {
     private let fileSuffix = "logs.txt"
     private let archiveFilename = "logs.zip"
     private let maxFileAge: TimeInterval = 60 * 60 * 24 * 7
+    private let maxLogsSize: Int = 1_000_000 // 1 MB
     
     // MARK: - Properties
     
@@ -82,7 +83,83 @@ final class FileLogger: LogsStorage {
         try fetchLogsFromFiles()
     }
     
-    func clearLogs() throws { }
+    
+    func clearLogs() throws {
+        do {
+            let files = try FileManager.default.contentsOfDirectory(
+                at: directoryURL,
+                includingPropertiesForKeys: nil,
+                options: .skipsHiddenFiles
+            )
+
+            try files.forEach {
+                try FileManager.default.removeItem(at: $0)
+            }
+        } catch {
+            throw LoggerError.unableToRemoveObsoleteLogs(error: error)
+        }
+    }
+    
+    func logsSizeInBytes() throws -> Int {
+        do {
+            let files = try FileManager.default.contentsOfDirectory(
+                at: directoryURL,
+                includingPropertiesForKeys: [.fileSizeKey],
+                options: .skipsHiddenFiles
+            )
+
+            return try files.reduce(0) { total, url in
+                let values = try url.resourceValues(forKeys: [.fileSizeKey])
+                return total + (values.fileSize ?? 0)
+            }
+        } catch {
+            throw LoggerError.unableToResoreMessagesFromLogsFile(error: error)
+        }
+    }
+    
+    func truncateLogsIfNeeded() throws {
+        guard FileManager.default.fileExists(atPath: directoryURL.path) else { return }
+
+        let files = try FileManager.default.contentsOfDirectory(
+            at: directoryURL,
+            includingPropertiesForKeys: [.fileSizeKey, .creationDateKey],
+            options: .skipsHiddenFiles
+        )
+
+        let sorted = try files.sorted {
+            let d1 = try $0.resourceValues(forKeys: [.creationDateKey]).creationDate ?? .distantPast
+            let d2 = try $1.resourceValues(forKeys: [.creationDateKey]).creationDate ?? .distantPast
+            return d1 > d2
+        }
+
+        var remaining = maxLogsSize
+
+        for url in sorted {
+            let values = try url.resourceValues(forKeys: [.fileSizeKey])
+            let size = values.fileSize ?? 0
+
+            if remaining <= 0 {
+                try FileManager.default.removeItem(at: url)
+                continue
+            }
+
+            if size <= remaining {
+                remaining -= size
+                continue
+            }
+
+            let handle = try FileHandle(forReadingFrom: url)
+            try handle.seek(toOffset: UInt64(size - remaining))
+            let data = handle.readDataToEndOfFile()
+            try handle.close()
+
+            try FileManager.default.removeItem(at: url)
+            FileManager.default.createFile(atPath: url.path, contents: data)
+
+            remaining = 0
+        }
+    }
+    
     
     // MARK: - Actions - LogsStorage
     

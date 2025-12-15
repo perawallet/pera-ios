@@ -72,7 +72,7 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        Log.clearLogs()
+        Log.truncateLogs()
         Task {
             do {
                 try await AppConfigurator.configure()
