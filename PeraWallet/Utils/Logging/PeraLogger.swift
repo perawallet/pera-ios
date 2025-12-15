@@ -25,11 +25,6 @@ public protocol LogsStorage: Loggable {
 }
 
 public actor PeraLogger: ObservableObject {
-
-    public struct Log: Identifiable {
-        public let id: UUID
-        public let message: String
-    }
     
     public enum LoggerError: Error {
         case unableToLog(error: Error)
@@ -39,7 +34,6 @@ public actor PeraLogger: ObservableObject {
 
     public static let shared = PeraLogger()
     
-    @Published public private(set) var logs: [Log] = []
     @Published public private(set) var error: LoggerError?
     
     private var loggers: [Loggable] = []
@@ -55,9 +49,6 @@ public actor PeraLogger: ObservableObject {
         
         let formattedMessage = format(message: message)
         
-        let log = Log(id: UUID(), message: formattedMessage)
-        logs.append(log)
-        
         loggers.forEach {
             do {
                 try $0.log(message: formattedMessage)
@@ -70,23 +61,12 @@ public actor PeraLogger: ObservableObject {
     public func update(loggers: [Loggable], logsStore: LogsStorage?) throws {
         self.loggers = loggers
         self.logsStore = logsStore
-        try fetchLogs()
     }
     
-    public func createLogsFile() throws -> URL? { try logsStore?.createLogsArchive() }
+    public func createLogsFile() throws -> URL? {
+        try logsStore?.createLogsArchive()
+    }
     public func deleteExportedLogsFile() throws { try logsStore?.removeLogsArchive() }
-    
-    private func fetchLogs() throws {
-        
-        guard let logsStore else {
-            logs = []
-            return
-        }
-        
-        logs = try logsStore
-            .fetchLogs()
-            .map { Log(id: UUID(), message: $0) }
-    }
     
     // MARK: - Helpers
     
