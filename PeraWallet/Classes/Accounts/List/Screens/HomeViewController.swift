@@ -98,6 +98,12 @@ final class HomeViewController:
     override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .accountList)
     }
+    
+    private lazy var successAnimationImageView: LottieImageView = {
+        let view = LottieImageView()
+        view.accessibilityIdentifier = ViewIdentifier.homeConfettiAnimation.rawValue
+        return view
+    }()
 
     private lazy var listView =
         UICollectionView(frame: .zero, collectionViewLayout: HomeListLayout.build())
@@ -262,7 +268,11 @@ final class HomeViewController:
         dataController.fetchUSDCDefaultAsset()
         dataController.fetchIncomingASAsRequests()
         lastSeenNotificationController?.checkStatus()
-        showNewAccountAnimationIfNeeded()
+        
+        if PeraUserDefaults.shouldShowNewAccountAnimation ?? false {
+            Task { await playAnimation() }
+            PeraUserDefaults.shouldShowNewAccountAnimation = false
+        }
     }
 
     override func viewWillDisappear(
@@ -293,36 +303,16 @@ final class HomeViewController:
         }
     }
     
-    @MainActor
-    private func showNewAccountAnimationIfNeeded() {
-        guard PeraUserDefaults.shouldShowNewAccountAnimation ?? false else { return }
-        Task { [weak self] in
-            guard let self else { return }
-            PeraUserDefaults.shouldShowNewAccountAnimation = false
-            await playConfettiAnimation()
+    private func playAnimation() async {
+        successAnimationImageView.isHidden = false
+        var configuration = LottieImageView.Configuration()
+        configuration.loopMode = .playOnce
+        
+        let isFinished = await successAnimationImageView.play(with: configuration)
+        
+        if isFinished {
+            successAnimationImageView.isHidden = true
         }
-    }
-    
-    @MainActor
-    private func playConfettiAnimation() async {
-        view.layoutIfNeeded()
-
-        let animationView = LottieImageView()
-        animationView.contentMode = .scaleAspectFill
-        animationView.isUserInteractionEnabled = false
-        animationView.setAnimation("pera-confetti")
-
-        view.addSubview(animationView)
-        animationView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(500)
-        }
-
-        defer { animationView.removeFromSuperview() }
-
-        var config = LottieImageView.Configuration()
-        config.loopMode = .playOnce
-        _ = await animationView.play(with: config)
     }
     
     // MARK: - Setups
@@ -428,6 +418,7 @@ extension HomeViewController {
     private func addUI() {
         addListBackground()
         addList()
+        addSuccessAnimation()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -540,6 +531,22 @@ extension HomeViewController {
         listView.showsHorizontalScrollIndicator = false
         listView.alwaysBounceVertical = true
         listView.delegate = self
+    }
+    
+    private func addSuccessAnimation() {
+        guard let navView = navigationController?.view else { return }
+        successAnimationImageView.isHidden = true
+        successAnimationImageView.contentMode = .top
+        successAnimationImageView.isUserInteractionEnabled = false
+        successAnimationImageView.setAnimation("pera-confetti")
+        
+        navView.addSubview(successAnimationImageView)
+        successAnimationImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(500)
+        }
     }
 }
 
