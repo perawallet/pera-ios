@@ -41,13 +41,13 @@ final class DiscoverHomeScreen:
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = DiscoverNavigationBarView()
 
-    private var navigationBarLargeTitleController: NavigationBarLargeTitleController<DiscoverHomeScreen>?
+    private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
     private var isNavigationTitleHidden = true
     private var isViewLayoutLoaded = false
 
     deinit {
-        navigationBarLargeTitleController?.deactivate()
+        navigationBarLargeTitleController.deactivate()
     }
 
     init(configuration: ViewControllerConfiguration) {
@@ -63,9 +63,8 @@ final class DiscoverHomeScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
-        navigationBarLargeTitleController?.deactivate()
+
+        navigationBarLargeTitleController.deactivate()
 
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
@@ -106,7 +105,7 @@ extension DiscoverHomeScreen {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        navigationBarLargeTitleController?.scrollViewWillEndDragging(
+        navigationBarLargeTitleController.scrollViewWillEndDragging(
             withVelocity: velocity,
             targetContentOffset: targetContentOffset,
             contentOffsetDeltaYBelowLargeTitle: 0
@@ -148,9 +147,9 @@ extension DiscoverHomeScreen {
     }
 
     private func makeSearchBarButtonItem() -> ALGBarButtonItem {
-        return ALGBarButtonItem(kind: .search) { [weak self] in
-            guard let self else { return }
-            navigateToSearch()
+        return ALGBarButtonItem(kind: .search) {
+            [unowned self] in
+            self.navigateToSearch()
         }
     }
 }
