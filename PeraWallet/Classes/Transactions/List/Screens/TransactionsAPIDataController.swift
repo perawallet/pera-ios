@@ -192,20 +192,30 @@ extension TransactionsAPIDataController {
         if let id = draft.asset?.id {
             assetId = String(id)
         }
-
-        let draft = TransactionFetchDraft(
-            account: draft.accountHandle.value,
-            dates: filterOption.getDateRanges(),
-            nextToken: nil,
-            assetId: assetId,
-            limit: 30,
-            transactionType: draft.type.currentTransactionType
-        )
         
         guard featureFlagService.isEnabled(.assetDetailV2Enabled) else {
+            
+            let draft = TransactionFetchDraft(
+                account: draft.accountHandle.value,
+                dates: filterOption.getDateRanges(),
+                nextToken: nil,
+                assetId: assetId,
+                limit: 30,
+                transactionType: draft.type.currentTransactionType
+            )
+            
             loadTransactions(draft: draft)
             return
         }
+        
+        let draft = TransactionV2FetchDraft(
+            account: draft.accountHandle.value,
+            ordering: nil,
+            cursor: nil,
+            limit: 30,
+            assetId: assetId,
+            dates: filterOption.getDateRanges()
+        )
         
         loadTransactionsV2(draft: draft)
     }
@@ -238,7 +248,7 @@ extension TransactionsAPIDataController {
         }
     }
     
-    private func loadTransactionsV2(draft: TransactionFetchDraft) {
+    private func loadTransactionsV2(draft: TransactionV2FetchDraft) {
         fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
             guard let self = self else {
                 return
@@ -250,18 +260,18 @@ extension TransactionsAPIDataController {
                 break
             case let .success(transactionResults):
                 self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
-                transactionResults.transactions.forEach {
-                    $0.setAllParentID($0.id)
-                    $0.completeAll()
-                }
+//                transactionResults.transactions.forEach {
+//                    $0.setAllParentID($0.id)
+//                    $0.completeAll()
+//                }
 
-                self.fetchAssets(from: transactionResults.transactions) {
-                    self.groupAndSetTransactionsByTypeIfNeeded(
-                        transactionResults.transactions,
-                        isPaginated: false
-                    )
-                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-                }
+//                self.fetchAssets(from: transactionResults.transactions) {
+//                    self.groupAndSetTransactionsByTypeIfNeeded(
+//                        transactionResults.transactions,
+//                        isPaginated: false
+//                    )
+//                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+//                }
             }
         }
     }
@@ -337,6 +347,10 @@ extension TransactionsAPIDataController {
     }
 
     func loadNextTransactions() {
+        guard !featureFlagService.isEnabled(.assetDetailV2Enabled) else {
+            loadNextTransactionsV2()
+            return
+        }
         var assetId: String?
         if let id = draft.asset?.id {
             assetId = String(id)
@@ -351,7 +365,7 @@ extension TransactionsAPIDataController {
             transactionType: draft.type.currentTransactionType
         )
 
-        fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
+        fetchRequest = api.fetchTransactions(draft) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -375,6 +389,49 @@ extension TransactionsAPIDataController {
                     )
                     self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                 }
+            }
+        }
+    }
+    
+    private func loadNextTransactionsV2() {
+        var assetId: String?
+        if let id = draft.asset?.id {
+            assetId = String(id)
+        }
+
+        let draft = TransactionV2FetchDraft(
+            account: draft.accountHandle.value,
+            ordering: nil,
+            cursor: nil,
+            limit: 30,
+            assetId: assetId,
+            dates: filterOption.getDateRanges()
+        )
+
+        fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case .failure:
+                /// <todo> Handle error case
+                break
+            case let .success(transactionResults):
+                self.nextToken = transactionResults.nextToken
+//                transactionResults.transactions.forEach {
+//                    $0.setAllParentID($0.id)
+//                    $0.completeAll()
+//                }
+//
+//
+//                self.fetchAssets(from: transactionResults.transactions) {
+//                    self.groupAndSetTransactionsByTypeIfNeeded(
+//                        transactionResults.transactions,
+//                        isPaginated: true
+//                    )
+//                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+//                }
             }
         }
     }

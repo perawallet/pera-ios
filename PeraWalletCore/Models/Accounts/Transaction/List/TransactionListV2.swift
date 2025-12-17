@@ -22,7 +22,7 @@ public final class TransactionListV2: ALGEntityModel {
     public let currentRound: Int?
     public let nextToken: String?
     public let previous: String?
-    public let transactions: [Transaction]
+    public let results: [TransactionV2]
 
     public init(
         _ apiModel: APIModel = APIModel()
@@ -30,7 +30,7 @@ public final class TransactionListV2: ALGEntityModel {
         self.currentRound = apiModel.currentRound
         self.nextToken = apiModel.nextToken
         self.previous = apiModel.previous
-        self.transactions = apiModel.transactions.unwrapMap(Transaction.init)
+        self.results = apiModel.results.unwrapMap(TransactionV2.init)
     }
 
     public func encode() -> APIModel {
@@ -38,7 +38,7 @@ public final class TransactionListV2: ALGEntityModel {
         apiModel.currentRound = currentRound
         apiModel.nextToken = nextToken
         apiModel.previous = previous
-        apiModel.transactions = transactions.map { $0.encode() }
+        apiModel.results = results.map { $0.encode() }
         return apiModel
     }
 }
@@ -48,20 +48,20 @@ extension TransactionListV2 {
         var currentRound: Int?
         var nextToken: String?
         var previous: String?
-        var transactions: [Transaction.APIModel]?
+        var results: [TransactionV2.APIModel]?
 
         public init() {
             self.currentRound = nil
             self.nextToken = nil
             self.previous = nil
-            self.transactions = nil
+            self.results = nil
         }
 
         private enum CodingKeys: String, CodingKey {
             case currentRound = "current-round"
             case nextToken = "next"
             case previous
-            case transactions
+            case results
         }
     }
 }

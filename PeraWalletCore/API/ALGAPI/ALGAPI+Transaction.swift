@@ -48,7 +48,7 @@ extension ALGAPI {
     
     @discardableResult
     public func fetchTransactionsV2(
-        _ draft: TransactionFetchDraft,
+        _ draft: TransactionV2FetchDraft,
         onCompleted handler: @escaping (Response.ModelResult<TransactionListV2>) -> Void
     ) -> EndpointOperatable {
         var from: String?
@@ -59,14 +59,12 @@ extension ALGAPI {
             from = "\(fromDate.toFormat("yyyy-MM-dd"))T00:00:00.000Z"
             to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
         }
-
-        let transactionType = draft.transactionType?.rawValue
         
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.accountTransaction, args: draft.account.address)
             .method(.get)
-            .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId, transactionType: transactionType))
+            .query(TransactionsV2Query(ordering: draft.ordering, cursor: draft.cursor, limit: draft.limit, assetId: draft.assetId, from: from, to: to))
             .completionHandler(handler)
             .execute()
     }
