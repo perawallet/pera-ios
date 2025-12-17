@@ -329,7 +329,6 @@
 		591676332E460AF9002184C2 /* OnboardCreateAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */; };
 		591676342E460AF9002184C2 /* OnboardWatchAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */; };
 		591676352E460AF9002184C2 /* OnboardCreateAccountPassphraseEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */; };
-		591676362E460AF9002184C2 /* OnboardCreateAccountVerifiedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */; };
 		591676372E460AF9002184C2 /* OnboardSetPinCodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */; };
 		591676382E460AF9002184C2 /* RecordHomeScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */; };
 		591676392E460AF9002184C2 /* RecordMenuScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2167B2E16D02C002FA6D0 /* RecordMenuScreenEvent.swift */; };
@@ -7594,7 +7593,6 @@
 		1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountEvent.swift; sourceTree = "<group>"; };
 		1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardWatchAccountEvent.swift; sourceTree = "<group>"; };
 		1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountPassphraseEvent.swift; sourceTree = "<group>"; };
-		1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountVerifiedEvent.swift; sourceTree = "<group>"; };
 		1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSetPinCodeEvent.swift; sourceTree = "<group>"; };
 		1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHomeScreenEvent.swift; sourceTree = "<group>"; };
 		1736FB9228AD1EDB002BB713 /* MoonPayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayEvent.swift; sourceTree = "<group>"; };
@@ -14488,7 +14486,6 @@
 				1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */,
 				1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */,
 				1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */,
-				1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */,
 				1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */,
 				1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */,
 				D4D2167B2E16D02C002FA6D0 /* RecordMenuScreenEvent.swift */,
@@ -31654,7 +31651,6 @@
 				591676332E460AF9002184C2 /* OnboardCreateAccountEvent.swift in Sources */,
 				591676342E460AF9002184C2 /* OnboardWatchAccountEvent.swift in Sources */,
 				591676352E460AF9002184C2 /* OnboardCreateAccountPassphraseEvent.swift in Sources */,
-				591676362E460AF9002184C2 /* OnboardCreateAccountVerifiedEvent.swift in Sources */,
 				59B106912E4E2CCC00B8F6FB /* NSPersistentContainer+Create.swift in Sources */,
 				591676372E460AF9002184C2 /* OnboardSetPinCodeEvent.swift in Sources */,
 				591676382E460AF9002184C2 /* RecordHomeScreenEvent.swift in Sources */,

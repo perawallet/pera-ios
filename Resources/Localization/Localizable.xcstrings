@@ -6089,16 +6089,6 @@
         }
       }
     },
-    "recover-from-seed-verify-pop-up-title-plural" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accounts have been added!"
-          }
-        }
-      }
-    },
     "recover-passphrase-title" : {
       "localizations" : {
         "en" : {
