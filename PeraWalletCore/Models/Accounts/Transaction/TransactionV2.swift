@@ -19,13 +19,14 @@ import MagpieCore
 import MacaroonUtils
 
 public final class TransactionV2:
-    ALGEntityModel {
+    ALGEntityModel,
+    TransactionItem {
     public let id: String?
-    public let txType: String?
+    public let type: TransactionType
     public let sender: String?
     public let receiver: String?
     public let confirmedRound: String?
-    public let roundTime: String?
+    public let date: Date?
     public let swapGroupDetail: SwapGroupDetail?
     public let interpretedMeaning: InterpretedMeaning?
     public let fee: String?
@@ -39,11 +40,11 @@ public final class TransactionV2:
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.id
-        self.txType = apiModel.txType
+        self.type = apiModel.txType.unwrap(TransactionType.init(rawValue:)) ?? .random()
         self.sender = apiModel.sender
         self.receiver = apiModel.receiver
         self.confirmedRound = apiModel.confirmedRound
-        self.roundTime = apiModel.roundTime
+        self.date = apiModel.roundTime.flatMap(Double.init).map(Date.init(timeIntervalSince1970:))
         self.swapGroupDetail = apiModel.swapGroupDetail
         self.interpretedMeaning = apiModel.interpretedMeaning
         self.fee = apiModel.fee
@@ -57,11 +58,11 @@ public final class TransactionV2:
     public func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
-        apiModel.txType = txType
+        apiModel.txType = type.rawValue
         apiModel.sender = sender
         apiModel.receiver = receiver
         apiModel.confirmedRound = confirmedRound
-        apiModel.roundTime = roundTime
+        apiModel.roundTime = String(format: "%.0f", date?.timeIntervalSince1970 ?? 0)
         apiModel.swapGroupDetail = swapGroupDetail
         apiModel.interpretedMeaning = interpretedMeaning
         apiModel.fee = fee
