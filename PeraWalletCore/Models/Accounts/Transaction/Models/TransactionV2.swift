@@ -22,7 +22,7 @@ public final class TransactionV2:
     ALGEntityModel,
     TransactionItem {
     public let id: String?
-    public let type: TransactionType
+    public let type: TransactionType?
     public let sender: String?
     public let receiver: String?
     public let confirmedRound: String?
@@ -35,6 +35,13 @@ public final class TransactionV2:
     public let closeTo: String?
     public let asset: TransactionV2Asset?
     public let applicationId: String?
+    
+    public var contact: Contact?
+    
+    public var isSelfTransaction: Bool {
+        guard let sender, let receiver else { return false }
+        return sender == receiver
+    }
     
     public init(
         _ apiModel: APIModel = APIModel()
@@ -58,7 +65,7 @@ public final class TransactionV2:
     public func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
-        apiModel.txType = type.rawValue
+        apiModel.txType = type?.rawValue
         apiModel.sender = sender
         apiModel.receiver = receiver
         apiModel.confirmedRound = confirmedRound

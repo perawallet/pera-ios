@@ -222,27 +222,26 @@ extension TransactionsAPIDataController {
     
     private func loadTransactions(draft: TransactionFetchDraft) {
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
-            guard let self = self else {
-                return
-            }
+            guard let self else { return }
 
             switch response {
             case .failure:
                 /// <todo> Handle error case
                 break
             case let .success(transactionResults):
-                self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
+                nextToken = nextToken == nil ? transactionResults.nextToken : nextToken
                 transactionResults.transactions.forEach {
                     $0.setAllParentID($0.id)
                     $0.completeAll()
                 }
 
-                self.fetchAssets(from: transactionResults.transactions) {
-                    self.groupAndSetTransactionsByTypeIfNeeded(
+                fetchAssets(from: transactionResults.transactions) { [weak self] in
+                    guard let self else { return }
+                    groupAndSetTransactionsByTypeIfNeeded(
                         transactionResults.transactions,
                         isPaginated: false
                     )
-                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                    deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                 }
             }
         }
@@ -250,28 +249,19 @@ extension TransactionsAPIDataController {
     
     private func loadTransactionsV2(draft: TransactionV2FetchDraft) {
         fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
-            guard let self = self else {
-                return
-            }
+            guard let self else { return }
 
             switch response {
             case .failure:
                 /// <todo> Handle error case
                 break
             case let .success(transactionResults):
-                self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
-//                transactionResults.transactions.forEach {
-//                    $0.setAllParentID($0.id)
-//                    $0.completeAll()
-//                }
-
-//                self.fetchAssets(from: transactionResults.transactions) {
-//                    self.groupAndSetTransactionsByTypeIfNeeded(
-//                        transactionResults.transactions,
-//                        isPaginated: false
-//                    )
-//                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-//                }
+                nextToken = nextToken == nil ? transactionResults.nextToken : nextToken
+                groupAndSetTransactionsByTypeIfNeeded(
+                    transactionResults.results,
+                    isPaginated: false
+                )
+                deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
             }
         }
     }
@@ -366,28 +356,26 @@ extension TransactionsAPIDataController {
         )
 
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
-            guard let self = self else {
-                return
-            }
+            guard let self else { return }
 
             switch response {
             case .failure:
                 /// <todo> Handle error case
                 break
             case let .success(transactionResults):
-                self.nextToken = transactionResults.nextToken
+                nextToken = transactionResults.nextToken
                 transactionResults.transactions.forEach {
                     $0.setAllParentID($0.id)
                     $0.completeAll()
                 }
 
-
-                self.fetchAssets(from: transactionResults.transactions) {
-                    self.groupAndSetTransactionsByTypeIfNeeded(
+                fetchAssets(from: transactionResults.transactions) { [weak self] in
+                    guard let self else { return }
+                    groupAndSetTransactionsByTypeIfNeeded(
                         transactionResults.transactions,
                         isPaginated: true
                     )
-                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
+                    deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
                 }
             }
         }
@@ -409,29 +397,19 @@ extension TransactionsAPIDataController {
         )
 
         fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
-            guard let self = self else {
-                return
-            }
+            guard let self else { return }
 
             switch response {
             case .failure:
                 /// <todo> Handle error case
                 break
             case let .success(transactionResults):
-                self.nextToken = transactionResults.nextToken
-//                transactionResults.transactions.forEach {
-//                    $0.setAllParentID($0.id)
-//                    $0.completeAll()
-//                }
-//
-//
-//                self.fetchAssets(from: transactionResults.transactions) {
-//                    self.groupAndSetTransactionsByTypeIfNeeded(
-//                        transactionResults.transactions,
-//                        isPaginated: true
-//                    )
-//                    self.deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-//                }
+                nextToken = transactionResults.nextToken
+                groupAndSetTransactionsByTypeIfNeeded(
+                    transactionResults.results,
+                    isPaginated: true
+                )
+                deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
             }
         }
     }
@@ -465,7 +443,7 @@ extension TransactionsAPIDataController {
 
 extension TransactionsAPIDataController {
     private func groupAndSetTransactionsByTypeIfNeeded(
-        _ transactions: [Transaction],
+        _ transactions: [TransactionItem],
         isPaginated: Bool
     ) {
         switch draft.type {
@@ -490,14 +468,12 @@ extension TransactionsAPIDataController {
 extension TransactionsAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot { [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+            guard let self else { return Snapshot() }
 
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
 
-            switch self.draft.type {
+            switch draft.type {
             case .all:
                 snapshot.appendItems(
                     [.empty(.transactionHistoryLoading)],
@@ -526,9 +502,7 @@ extension TransactionsAPIDataController {
     private func deliverContentSnapshot(isAmountHidden: Bool) {
         deliverSnapshot {
             [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+            guard let self else { return Snapshot() }
 
             var snapshot = Snapshot()
 
@@ -538,10 +512,10 @@ extension TransactionsAPIDataController {
                 toSection: .transactionHistory
             )
 
-            let transactionItems = self.getTransactionHistoryItemsWithDates(isAmountHidden: isAmountHidden)
-            self.appendPendingTransactions(to: &snapshot)
+            let transactionItems = getTransactionHistoryItemsWithDates(isAmountHidden: isAmountHidden)
+            appendPendingTransactions(to: &snapshot)
 
-            if self.pendingTransactions.isEmpty,
+            if pendingTransactions.isEmpty,
                transactionItems.isEmpty {
                 snapshot.appendSections([.empty])
                 snapshot.appendItems([.empty(.noContent)], toSection: .empty)
@@ -590,12 +564,11 @@ extension TransactionsAPIDataController {
     ) {
         snapshotQueue.async {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             let newSnapshot = snapshot()
-
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdateSnapshot(newSnapshot))
+            lastSnapshot = newSnapshot
+            publish(.didUpdateSnapshot(newSnapshot))
         }
     }
 }
@@ -628,106 +601,104 @@ extension TransactionsAPIDataController {
                     }
                 }
 
-                if let transaction = transaction as? Transaction {
-                    guard let transactionID = transaction.id else {
+                guard let transactionID = transaction.id else {
+                    continue
+                }
+
+                switch transaction.type {
+                case .payment:
+                    let draftComposer = AlgoTransactionItemDraftComposer(
+                        draft: draft,
+                        sharedDataController: sharedDataController,
+                        contacts: contacts
+                    )
+
+                    guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
                         continue
                     }
 
-                    switch transaction.type {
-                    case .payment:
-                        let draftComposer = AlgoTransactionItemDraftComposer(
-                            draft: draft,
-                            sharedDataController: sharedDataController,
-                            contacts: contacts
-                        )
+                    let viewModel = AlgoTransactionItemViewModel(
+                        viewModelDraft,
+                        currency: sharedDataController.currency,
+                        currencyFormatter: CurrencyFormatter(),
+                        isAmountHidden: isAmountHidden
+                    )
 
-                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
-                            continue
-                        }
-
-                        let viewModel = AlgoTransactionItemViewModel(
-                            viewModelDraft,
-                            currency: sharedDataController.currency,
-                            currencyFormatter: CurrencyFormatter(),
-                            isAmountHidden: isAmountHidden
-                        )
-
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.algoTransaction(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .assetTransfer:
-                        let draftComposer = AssetTransactionItemDraftComposer(
-                            draft: draft,
-                            sharedDataController: sharedDataController,
-                            contacts: contacts
-                        )
-
-                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
-                            continue
-                        }
-
-                        let viewModel = AssetTransactionItemViewModel(
-                            viewModelDraft,
-                            currency: sharedDataController.currency,
-                            currencyFormatter: CurrencyFormatter(),
-                            isValueHidden: isAmountHidden
-                        )
-
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.assetTransaction(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .assetConfig:
-                        let draftComposer = AssetConfigTransactionItemDraftComposer(draft: draft)
-
-                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
-                            continue
-                        }
-
-                        let viewModel = AssetConfigTransactionItemViewModel(viewModelDraft)
-
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.assetConfigTransaction(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .applicationCall:
-                        let draftComposer = AppCallTransactionItemDraftComposer(draft: draft)
-
-                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
-                            continue
-                        }
-
-                        let viewModel = AppCallTransactionItemViewModel(viewModelDraft)
-
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.appCallTransaction(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .keyReg:
-                        let draftComposer = KeyRegTransactionItemDraftComposer(draft: draft)
-
-                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
-                            continue
-                        }
-
-                        let viewModel = KeyRegTransactionItemViewModel(viewModelDraft)
-
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.keyRegTransaction(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .heartbeat:
-                        
-                        let viewModel = HeartbeatTransactionItemViewModel(id: transaction.id)
-                        
-                        if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.heartbeat(viewModel))
-                            addedItemIDs[transactionID] = true
-                        }
-                    case .assetFreeze, .unsupported:
-                        break
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.algoTransaction(viewModel))
+                        addedItemIDs[transactionID] = true
                     }
+                case .assetTransfer:
+                    let draftComposer = AssetTransactionItemDraftComposer(
+                        draft: draft,
+                        sharedDataController: sharedDataController,
+                        contacts: contacts
+                    )
+
+                    guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                        continue
+                    }
+
+                    let viewModel = AssetTransactionItemViewModel(
+                        viewModelDraft,
+                        currency: sharedDataController.currency,
+                        currencyFormatter: CurrencyFormatter(),
+                        isValueHidden: isAmountHidden
+                    )
+
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.assetTransaction(viewModel))
+                        addedItemIDs[transactionID] = true
+                    }
+                case .assetConfig:
+                    let draftComposer = AssetConfigTransactionItemDraftComposer(draft: draft)
+
+                    guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                        continue
+                    }
+
+                    let viewModel = AssetConfigTransactionItemViewModel(viewModelDraft)
+
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.assetConfigTransaction(viewModel))
+                        addedItemIDs[transactionID] = true
+                    }
+                case .applicationCall:
+                    let draftComposer = AppCallTransactionItemDraftComposer(draft: draft)
+
+                    guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                        continue
+                    }
+
+                    let viewModel = AppCallTransactionItemViewModel(viewModelDraft)
+
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.appCallTransaction(viewModel))
+                        addedItemIDs[transactionID] = true
+                    }
+                case .keyReg:
+                    let draftComposer = KeyRegTransactionItemDraftComposer(draft: draft)
+
+                    guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                        continue
+                    }
+
+                    let viewModel = KeyRegTransactionItemViewModel(viewModelDraft)
+
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.keyRegTransaction(viewModel))
+                        addedItemIDs[transactionID] = true
+                    }
+                case .heartbeat:
+                    
+                    let viewModel = HeartbeatTransactionItemViewModel(id: transaction.id)
+                    
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.heartbeat(viewModel))
+                        addedItemIDs[transactionID] = true
+                    }
+                case .assetFreeze, .unsupported, .none:
+                    break
                 }
             }
         }
@@ -741,11 +712,8 @@ extension TransactionsAPIDataController {
         _ event: TransactionsDataControllerEvent
     ) {
         asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.eventHandler?(event)
+            guard let self else { return }
+            eventHandler?(event)
         }
     }
 }

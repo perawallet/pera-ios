@@ -7414,6 +7414,7 @@
 		D4E532C02ED9C34D001796D1 /* TapPassKeyInSettingsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E532BF2ED9C341001796D1 /* TapPassKeyInSettingsEvent.swift */; };
 		D4EBC1D92EBCD44A0046AE9C /* AssetDetailV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */; };
 		D4EBC1DB2EBCD4F50046AE9C /* AssetListV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1DA2EBCD4EC0046AE9C /* AssetListV2Error.swift */; };
+		D4F538572EF44EC600371E2D /* TransactionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F538562EF44EC500371E2D /* TransactionItem.swift */; };
 		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
@@ -10151,6 +10152,7 @@
 		D4F4C8FE29D1B9530069FB94 /* AnyToNoAuthRekeyedAccountInformationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountInformationScreen.swift; sourceTree = "<group>"; };
 		D4F4C90229D1B9710069FB94 /* AnyToNoAuthRekeyedAccountInformationScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountInformationScreenTheme.swift; sourceTree = "<group>"; };
 		D4F4C90729D1B9A10069FB94 /* AnyToNoAuthRekeyedAccountTypeInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyToNoAuthRekeyedAccountTypeInformationViewModel.swift; sourceTree = "<group>"; };
+		D4F538562EF44EC500371E2D /* TransactionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionItem.swift; sourceTree = "<group>"; };
 		D4F681842897DDF1005F9B26 /* AssetAboutSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionView.swift; sourceTree = "<group>"; };
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
@@ -12437,16 +12439,12 @@
 		2B4DF441236C7B6000FF9551 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				D4F538552EF44EA900371E2D /* Models */,
 				2B4DF44B236C7DF800FF9551 /* Details */,
 				2B4DF44C236C7E1A00FF9551 /* List */,
 				2B4DF443236C7B8B00FF9551 /* Pending */,
 				2BC182AE23DF126400888476 /* Send */,
 				2B4DF44A236C7DF300FF9551 /* Round */,
-				2BB021DA224E46D60039D78A /* Transaction.swift */,
-				D4D37A4D2EF2A6F100E14254 /* TransactionV2.swift */,
-				F098E29B28B8E06F0032887F /* TransactionType.swift */,
-				2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */,
-				174C69E428F579B8005BF080 /* SDKTransaction.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -23260,6 +23258,19 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		D4F538552EF44EA900371E2D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D4F538562EF44EC500371E2D /* TransactionItem.swift */,
+				2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */,
+				F098E29B28B8E06F0032887F /* TransactionType.swift */,
+				2BB021DA224E46D60039D78A /* Transaction.swift */,
+				D4D37A4D2EF2A6F100E14254 /* TransactionV2.swift */,
+				174C69E428F579B8005BF080 /* SDKTransaction.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D4F72B6028E392D300907287 /* InsufficientAlgoBalanceScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -31957,6 +31968,7 @@
 				5916778E2E460AF9002184C2 /* TransactionData.swift in Sources */,
 				591677972E460AF9002184C2 /* TransactionDataItem.swift in Sources */,
 				591678952E461616002184C2 /* URL+Link.swift in Sources */,
+				D4F538572EF44EC600371E2D /* TransactionItem.swift in Sources */,
 				591677992E460AF9002184C2 /* HDWalletTransactionSignable.swift in Sources */,
 				5916779A2E460AF9002184C2 /* HDWalletTransactionSigner.swift in Sources */,
 				5916779B2E460AF9002184C2 /* LedgerTransactionSigner.swift in Sources */,

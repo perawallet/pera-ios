@@ -19,16 +19,6 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-public protocol TransactionItem {
-    var date: Date? { get }
-}
-
-extension TransactionItem {
-    public var date: Date? {
-        return nil
-    }
-}
-
 public final class Transaction:
     ALGEntityModel,
     TransactionItem {
@@ -44,7 +34,7 @@ public final class Transaction:
     public let receiverRewards: UInt64?
     public let sender: String?
     public let senderRewards: UInt64?
-    public let type: TransactionType
+    public let type: TransactionType?
     public let assetFreeze: AssetFreezeTransaction?
     public let assetConfig: AssetConfigTransaction?
     public let assetTransfer: AssetTransferTransaction?
@@ -102,7 +92,7 @@ public final class Transaction:
         apiModel.receiverRewards = receiverRewards
         apiModel.sender = sender
         apiModel.senderRewards = senderRewards
-        apiModel.txType = type.rawValue
+        apiModel.txType = type?.rawValue
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
         apiModel.applicationCall = applicationCall
@@ -126,6 +116,10 @@ extension Transaction {
 
     public var isSelfTransaction: Bool {
         return sender == getReceiver()
+    }
+    
+    public var receiver: String? {
+        payment?.receiver
     }
     
     ///TODO: Code duplication should be handled

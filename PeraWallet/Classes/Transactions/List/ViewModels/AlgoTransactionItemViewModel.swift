@@ -26,7 +26,7 @@ struct AlgoTransactionItemViewModel:
     var title: EditText?
     var subtitle: EditText?
     var transactionAmountViewModel: TransactionAmountViewModel?
-
+    
     init(
         _ draft: TransactionViewModelDraft,
         currency: CurrencyProvider,
@@ -43,109 +43,86 @@ struct AlgoTransactionItemViewModel:
             currencyFormatter: currencyFormatter
         )
     }
-
+    
     private mutating func bindID(
         _ draft: TransactionViewModelDraft
     ) {
-        if let transaction = draft.transaction as? Transaction {
-            id = transaction.id
-        }
+        id = draft.transaction.id
     }
-
+    
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let payment = transaction.payment else {
-            return
-        }
+        guard let receiver = draft.transaction.receiver else { return }
         
-        if transaction.sender == draft.account.address && transaction.isSelfTransaction {
+        if draft.transaction.sender == draft.account.address, draft.transaction.isSelfTransaction {
             bindTitle(String(localized: "transaction-item-self-transfer"))
             return
         }
-
-        if isReceivingTransaction(draft, for: payment) {
+        
+        if isReceivingTransaction(draft, for: receiver) {
             bindTitle(String(localized: "transaction-detail-receive"))
             return
         }
         
         bindTitle(String(localized: "transaction-detail-send"))
     }
-
+    
     private mutating func bindSubtitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let payment = transaction.payment else {
-                  return
-        }
-
-        if transaction.isSelfTransaction {
+        guard let receiver = draft.transaction.receiver else { return }
+        
+        if draft.transaction.isSelfTransaction {
             subtitle = nil
             return
         }
-
-        if isReceivingTransaction(draft, for: payment) {
-            let subtitle = getSubtitle(
-                from: draft,
-                for: transaction.sender
-            )
-            bindSubtitle(subtitle)
-            return
-        }
-
-        let subtitle = getSubtitle(
-            from: draft,
-            for: payment.receiver
-        )
-        bindSubtitle(subtitle)
+        
+        let address = isReceivingTransaction(draft, for: receiver)
+        ? draft.transaction.sender
+        : receiver
+        
+        bindSubtitle(getSubtitle(from: draft, for: address))
     }
-
+    
     private mutating func bindAmount(
         _ draft: TransactionViewModelDraft,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let payment = transaction.payment else {
-                  return
+        guard let receiver = draft.transaction.receiver else { return }
+        
+        let amount: Decimal? = {
+            if let tx = draft.transaction as? Transaction, let payment = tx.payment { return payment.amountForTransaction(includesCloseAmount: true).toAlgos }
+            if let tx = draft.transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+            
+            return nil
+        }()
+        
+        guard let amount else { return }
+        currencyFormatter.isValueHidden = isAmountHidden
+        
+        let style: TransactionAmountView.Mode
+        if receiver == draft.transaction.sender || isAmountHidden {
+            style = .normal(amount: amount)
+        } else if receiver == draft.account.address {
+            style = .positive(amount: amount)
+        } else {
+            style = .negative(amount: amount)
         }
         
-        currencyFormatter.isValueHidden = isAmountHidden
-
-        if payment.receiver == transaction.sender || isAmountHidden {
-            transactionAmountViewModel = TransactionAmountViewModel(
-                .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                showAbbreviation: true
-            )
-            return
-        }
-
-        if payment.receiver == draft.account.address {
-            transactionAmountViewModel = TransactionAmountViewModel(
-                .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                showAbbreviation: true
-            )
-            return
-        }
-
         transactionAmountViewModel = TransactionAmountViewModel(
-            .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+            style,
             currency: currency,
             currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }
-
+    
     private func isReceivingTransaction(
         _ draft: TransactionViewModelDraft,
-        for payment: Payment
+        for receiver: String
     ) -> Bool {
-        return draft.account.address == payment.receiver
+        return draft.account.address == receiver
     }
 }

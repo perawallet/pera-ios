@@ -24,6 +24,7 @@ public final class PendingTransaction:
     TransactionItem,
     Hashable {
     
+    public let id: String? = .empty
     public let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -45,6 +46,11 @@ public final class PendingTransaction:
     
     public var receiver: String? {
         return assetReceiver ?? algosReceiver
+    }
+    
+    public var isSelfTransaction: Bool {
+        guard let sender, let receiver else { return false}
+        return sender == receiver
     }
     
     public var contact: Contact?

@@ -38,9 +38,7 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindID(
         _ draft: TransactionViewModelDraft
     ) {
-        if let transaction = draft.transaction as? Transaction {
-            id = transaction.id
-        }
+        id = draft.transaction.id
     }
 
     private mutating func bindTitle(
@@ -52,12 +50,14 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindSubtitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let applicationCall = transaction.applicationCall else {
-            return
-        }
 
-        if let appID = applicationCall.appID {
+        let appID: Int64? = {
+            if let tx = draft.transaction as? Transaction, let applicationCall = tx.applicationCall { return applicationCall.appID }
+            if let tx = draft.transaction as? TransactionV2, let appId = tx.applicationId { return Int64(appId) }
+            return nil
+        }()
+
+        if let appID {
             let appId = String(format: String(localized: "transaction-item-app-id-title"), appID)
             bindSubtitle(appId)
         }

@@ -12,13 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionListGrouping.swift
+//   TransactionItem.swift
 
-import Foundation
-import pera_wallet_core
+public protocol TransactionItem {
+    var id: String? { get }
+    var date: Date? { get }
+    var type: TransactionType? { get }
+    var sender: String? { get }
+    var receiver: String? { get }
+    var contact: Contact? { get set }
+    var isSelfTransaction: Bool { get }
+}
 
-protocol TransactionListGrouping {
-    func groupTransactions(
-        _ transactions: [TransactionItem]
-    ) -> [TransactionItem]
+extension TransactionItem {
+    public var date: Date? {
+        return nil
+    }
 }
