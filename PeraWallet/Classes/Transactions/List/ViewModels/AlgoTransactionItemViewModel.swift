@@ -116,6 +116,8 @@ struct AlgoTransactionItemViewModel:
             bindIcon("icon-transaction-list-send")
             return
         }
+        
+        bindIcon("icon-transaction-list-optin")
     }
     
     private mutating func bindAmount(

@@ -31,6 +31,7 @@ struct AppCallTransactionItemViewModel:
         _ draft: TransactionViewModelDraft
     ) {
         bindID(draft)
+        bindIcon(draft)
         bindTitle(draft)
         bindSubtitle(draft)
         bindInnerTransactions(draft)
@@ -40,6 +41,13 @@ struct AppCallTransactionItemViewModel:
         _ draft: TransactionViewModelDraft
     ) {
         id = draft.transaction.id
+    }
+    
+    private mutating func bindIcon(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard draft.transaction is TransactionV2 else { return }
+        bindIcon("icon-transaction-list-optin")
     }
 
     private mutating func bindTitle(
