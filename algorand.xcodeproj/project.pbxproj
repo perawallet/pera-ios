@@ -329,7 +329,6 @@
 		591676332E460AF9002184C2 /* OnboardCreateAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */; };
 		591676342E460AF9002184C2 /* OnboardWatchAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */; };
 		591676352E460AF9002184C2 /* OnboardCreateAccountPassphraseEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */; };
-		591676362E460AF9002184C2 /* OnboardCreateAccountVerifiedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */; };
 		591676372E460AF9002184C2 /* OnboardSetPinCodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */; };
 		591676382E460AF9002184C2 /* RecordHomeScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */; };
 		591676392E460AF9002184C2 /* RecordMenuScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D2167B2E16D02C002FA6D0 /* RecordMenuScreenEvent.swift */; };
@@ -7274,6 +7273,9 @@
 		D405059426F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
 		D405059626F0F0A7001D0D11 /* dark-ledger.json in Resources */ = {isa = PBXBuildFile; fileRef = D405059326F0F0A7001D0D11 /* dark-ledger.json */; };
+		D409438C2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409438B2EE2EC9000991D09 /* DeveloperMenuViewController.swift */; };
+		D409438D2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409438B2EE2EC9000991D09 /* DeveloperMenuViewController.swift */; };
+		D409438E2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409438B2EE2EC9000991D09 /* DeveloperMenuViewController.swift */; };
 		D40B5ECA2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
 		D40B5ECB2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
 		D40B5ECC2ECC8EC40033CF66 /* WKWebView+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B5EC92ECC8EB80033CF66 /* WKWebView+Message.swift */; };
@@ -7365,6 +7367,7 @@
 		D488A5C72EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C82EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C92EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
+		D48FFDC72EE7148E004D0475 /* RemoteConfigOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FFDC62EE71488004D0475 /* RemoteConfigOverride.swift */; };
 		D48C23F02EE98A1D0042C431 /* TransactionListV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48C23EF2EE98A1B0042C431 /* TransactionListV2.swift */; };
 		D490B42B2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
 		D490B42C2D958CBD0051983E /* pera-confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = D490B42A2D958CBD0051983E /* pera-confetti.json */; };
@@ -7595,7 +7598,6 @@
 		1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountEvent.swift; sourceTree = "<group>"; };
 		1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardWatchAccountEvent.swift; sourceTree = "<group>"; };
 		1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountPassphraseEvent.swift; sourceTree = "<group>"; };
-		1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountVerifiedEvent.swift; sourceTree = "<group>"; };
 		1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSetPinCodeEvent.swift; sourceTree = "<group>"; };
 		1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHomeScreenEvent.swift; sourceTree = "<group>"; };
 		1736FB9228AD1EDB002BB713 /* MoonPayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayEvent.swift; sourceTree = "<group>"; };
@@ -9200,6 +9202,7 @@
 		D4092BB4276B56020009722D /* WCSessionShortListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListItemCell.swift; sourceTree = "<group>"; };
 		D4092BB8276B5D810009722D /* WCSessionShortListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListItemViewTheme.swift; sourceTree = "<group>"; };
 		D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListLayout.swift; sourceTree = "<group>"; };
+		D409438B2EE2EC9000991D09 /* DeveloperMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperMenuViewController.swift; sourceTree = "<group>"; };
 		D409C05429E9A8CC00791F57 /* RekeyedAccountSelectionListNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListNavigationBarView.swift; sourceTree = "<group>"; };
 		D409C05829E9A8E000791F57 /* RekeyedAccountSelectionListNavigationBarViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListNavigationBarViewTheme.swift; sourceTree = "<group>"; };
 		D409C05C29E9AB9A00791F57 /* RekeyedAccountSelectionListNavigationBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountSelectionListNavigationBarViewModel.swift; sourceTree = "<group>"; };
@@ -9752,6 +9755,7 @@
 		D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListDataController.swift; sourceTree = "<group>"; };
 		D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListAPIDataController.swift; sourceTree = "<group>"; };
 		D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleReceiveSearchInputCell.swift; sourceTree = "<group>"; };
+		D48FFDC62EE71488004D0475 /* RemoteConfigOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigOverride.swift; sourceTree = "<group>"; };
 		D490B42A2D958CBD0051983E /* pera-confetti.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "pera-confetti.json"; sourceTree = "<group>"; };
 		D490B42E2D96CCA20051983E /* NewAccountWarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWarningOverlayView.swift; sourceTree = "<group>"; };
 		D49490302A54AB1D0055B065 /* AccountAuthorizationDeterminer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAuthorizationDeterminer.swift; sourceTree = "<group>"; };
@@ -14492,7 +14496,6 @@
 				1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */,
 				1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */,
 				1736FB8228ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift */,
-				1736FB8628ACFB66002BB713 /* OnboardCreateAccountVerifiedEvent.swift */,
 				1736FB8A28ACFF37002BB713 /* OnboardSetPinCodeEvent.swift */,
 				1736FB8E28AD017A002BB713 /* RecordHomeScreenEvent.swift */,
 				D4D2167B2E16D02C002FA6D0 /* RecordMenuScreenEvent.swift */,
@@ -16636,7 +16639,7 @@
 		2BF5317A224AA88600A7455F /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				D4AF3FD22EDEF95E00F25D48 /* New Group */,
+				D4AF3FD22EDEF95E00F25D48 /* DeveloperMenu */,
 				2B1336D72576986900371CFB /* Appearance */,
 				2BA713902748699C00B8A907 /* Common */,
 				2BDD43BA2513A7B500C6D3B5 /* Currency */,
@@ -18364,6 +18367,7 @@
 				591674462E460AA3002184C2 /* FeatureFlag.swift */,
 				591674472E460AA3002184C2 /* FeatureFlagService.swift */,
 				591674482E460AA3002184C2 /* RemoteConfigValue.swift */,
+				D48FFDC62EE71488004D0475 /* RemoteConfigOverride.swift */,
 			);
 			path = FeatureFlag;
 			sourceTree = "<group>";
@@ -20065,6 +20069,14 @@
 				D4092BB8276B5D810009722D /* WCSessionShortListItemViewTheme.swift */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		D409438F2EE2ED0D00991D09 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D409438B2EE2EC9000991D09 /* DeveloperMenuViewController.swift */,
+			);
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		D409C05329E9A8BE00791F57 /* NavigationBar */ = {
@@ -22480,11 +22492,12 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		D4AF3FD22EDEF95E00F25D48 /* New Group */ = {
+		D4AF3FD22EDEF95E00F25D48 /* DeveloperMenu */ = {
 			isa = PBXGroup;
 			children = (
+				D409438F2EE2ED0D00991D09 /* Screens */,
 			);
-			path = "New Group";
+			path = DeveloperMenu;
 			sourceTree = "<group>";
 		};
 		D4AF5400276766B600A94200 /* QRScanner */ = {
@@ -25335,6 +25348,7 @@
 				591679EF2E464C76002184C2 /* AssetListViewDataSource.swift in Sources */,
 				591679F02E464C76002184C2 /* AssetListViewLayout.swift in Sources */,
 				591679F12E464C76002184C2 /* AssetListViewAPIDataController.swift in Sources */,
+				D409438D2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */,
 				591679F22E464C76002184C2 /* AssetListViewDataController.swift in Sources */,
 				591679F32E464C76002184C2 /* OptInAssetListDraft.swift in Sources */,
 				591679F42E464C76002184C2 /* OptInAssetListItem.swift in Sources */,
@@ -27502,6 +27516,7 @@
 				59E6FF6F2E4A712500CCA99B /* AssetListViewAPIDataController.swift in Sources */,
 				59E6FF702E4A712500CCA99B /* AssetListViewDataController.swift in Sources */,
 				59E6FF712E4A712500CCA99B /* OptInAssetListDraft.swift in Sources */,
+				D409438E2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */,
 				59E6FF722E4A712500CCA99B /* OptInAssetListItem.swift in Sources */,
 				59E6FF732E4A712500CCA99B /* OptInAssetListQuery.swift in Sources */,
 				59E6FF742E4A712500CCA99B /* OptInAssetListErrorViewModel.swift in Sources */,
@@ -29669,6 +29684,7 @@
 				59E607E72E4A71D000CCA99B /* AssetListViewAPIDataController.swift in Sources */,
 				59E607E82E4A71D000CCA99B /* AssetListViewDataController.swift in Sources */,
 				59E607E92E4A71D000CCA99B /* OptInAssetListDraft.swift in Sources */,
+				D409438C2EE2EC9900991D09 /* DeveloperMenuViewController.swift in Sources */,
 				59E607EA2E4A71D000CCA99B /* OptInAssetListItem.swift in Sources */,
 				59E607EB2E4A71D000CCA99B /* OptInAssetListQuery.swift in Sources */,
 				59E607EC2E4A71D000CCA99B /* OptInAssetListErrorViewModel.swift in Sources */,
@@ -31658,7 +31674,6 @@
 				591676332E460AF9002184C2 /* OnboardCreateAccountEvent.swift in Sources */,
 				591676342E460AF9002184C2 /* OnboardWatchAccountEvent.swift in Sources */,
 				591676352E460AF9002184C2 /* OnboardCreateAccountPassphraseEvent.swift in Sources */,
-				591676362E460AF9002184C2 /* OnboardCreateAccountVerifiedEvent.swift in Sources */,
 				59B106912E4E2CCC00B8F6FB /* NSPersistentContainer+Create.swift in Sources */,
 				591676372E460AF9002184C2 /* OnboardSetPinCodeEvent.swift in Sources */,
 				591676382E460AF9002184C2 /* RecordHomeScreenEvent.swift in Sources */,
@@ -31917,6 +31932,7 @@
 				5916773B2E460AF9002184C2 /* String+Mnemonics.swift in Sources */,
 				5916773C2E460AF9002184C2 /* String+Padding.swift in Sources */,
 				5916773D2E460AF9002184C2 /* UIFont+Additions.swift in Sources */,
+				D48FFDC72EE7148E004D0475 /* RemoteConfigOverride.swift in Sources */,
 				591677502E460AF9002184C2 /* FeatureFlag.swift in Sources */,
 				591677512E460AF9002184C2 /* FeatureFlagService.swift in Sources */,
 				D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */,
@@ -32262,7 +32278,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -32291,7 +32307,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32320,7 +32336,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -32351,7 +32367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32381,7 +32397,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32411,7 +32427,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32568,7 +32584,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32601,7 +32617,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -32837,7 +32853,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32871,7 +32887,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32904,7 +32920,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand.autofill-extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32939,7 +32955,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.12.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -32975,7 +32991,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.12.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -33010,7 +33026,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 6.12.0;
+				MARKETING_VERSION = 6.14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peralda.perawallet.staging.autofill-extension-staging";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -33101,7 +33117,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.13.0;
+				MARKETING_VERSION = 6.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";

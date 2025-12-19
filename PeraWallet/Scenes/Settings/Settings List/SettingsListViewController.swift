@@ -21,6 +21,8 @@ final class SettingsListViewController: UIHostingController<SettingsListView> {
     // MARK: - Properties
     
     var onLegacyNavigationOptionSelected: ((SettingsListView.LegacyNavigationOption) -> Void)?
+    var onClicksMissingToUnlock: ((Int) -> Void)?
+    var onDevMenuUnlocked: (() -> Void)?
     var onLogoutButtonTap: (() -> Void)?
     
     // MARK: - Initialisers
@@ -28,6 +30,8 @@ final class SettingsListViewController: UIHostingController<SettingsListView> {
     init(model: SettingsListModelable) {
         super.init(rootView: SettingsListView(model: model))
         rootView.onLegacyNavigationOptionSelected = { [weak self] in self?.onLegacyNavigationOptionSelected?($0) }
+        rootView.onClicksMissingToUnlock = { [weak self] in self?.onClicksMissingToUnlock?($0) }
+        rootView.onDevMenuUnlocked = { [weak self] in self?.onDevMenuUnlocked?() }
         rootView.onLogoutButtonTap = { [weak self] in self?.onLogoutButtonTap?() }
     }
     

@@ -49,7 +49,6 @@ final class TutorialViewController: BaseScrollViewController {
         switch tutorial {
         case .passphraseVerified,
              .localAuthentication,
-             .accountVerified,
              .biometricAuthenticationEnabled,
              .collectibleTransferConfirmed,
              .ledgerSuccessfullyConnected,
@@ -245,15 +244,6 @@ extension TutorialViewController: TutorialViewDelegate {
                 screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                 screen?.hidesCloseBarButtonItem = true
             }
-            
-
-        case .accountVerified(let flow, let address, _):
-            analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
-           
-            routeBuyAlgo(
-                flow: flow,
-                address: address
-            )
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .failedToImportLedgerAccounts:
@@ -313,18 +303,6 @@ extension TutorialViewController: TutorialViewDelegate {
             analytics.track(.onboardCreateAccountPassphrase(type: .skipCreate))
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapSecondaryActionButton?(self)
-        case .accountVerified(let flow, _, _):
-            if case .initializeAccount(mode: .watch) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else if case .addNewAccount(mode: .watch) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else {
-                analytics.track(.onboardCreateAccountVerified(type: .start))
-            }
-            
-            PeraUserDefaults.shouldShowNewAccountAnimation = true
-
-            launchMain()
         default:
             break
         }
@@ -412,10 +390,7 @@ extension TutorialViewController {
 extension TutorialViewController {
     private func setPopGestureEnabledInLocalAuthenticationTutorial(_ isEnabled: Bool) {
         switch tutorial {
-        case .localAuthentication,
-                .accountVerified,
-                .passphraseVerified:
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        case .localAuthentication, .passphraseVerified: navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
         default:
             break
         }
@@ -492,7 +467,6 @@ enum Tutorial: Equatable {
     case localAuthentication
     case biometricAuthenticationEnabled
     case passphraseVerified(account: AccountInformation, walletFlowType: WalletFlowType)
-    case accountVerified(flow: AccountSetupFlow, address: String? = nil, isMultipleAccounts: Bool = false)
     case recoverWithLedger
     case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case failedToImportLedgerAccounts

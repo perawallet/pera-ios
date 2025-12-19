@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecretDevListToggleCell.swift
+//   DeveloperMenuListToggleCell.swift
 
 import SwiftUI
+import pera_wallet_core
 
-struct SecretDevListToggleCell: View {
+struct DeveloperMenuListToggleCell: View {
     
     // MARK: - Properties
     
@@ -37,8 +38,7 @@ struct SecretDevListToggleCell: View {
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.horizontal, 12)
-            .frame(height: 64)
+            .frame(height: 50)
         }
-        .listRowSeparator(.hidden)
     }
 }

@@ -57,7 +57,7 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected:
+        case .biometricAuthenticationEnabled, .ledgerSuccessfullyConnected:
             image = img("check")
         case .failedToImportLedgerAccounts:
             image = img("icon-error-close")
@@ -95,12 +95,6 @@ extension TutorialViewModel {
             title = String(localized: "local-authentication-enabled-title")
         case .passphraseVerified:
             title = String(localized: "pass-phrase-verify-pop-up-title")
-        case .accountVerified(_, _, let isMultipleAccounts):
-            if isMultipleAccounts {
-                self.title = String(localized: "recover-from-seed-verify-pop-up-title-plural")
-            } else {
-                self.title = String(localized: "recover-from-seed-verify-pop-up-title")
-            }
         case .recoverWithLedger:
             title = String(localized: "ledger-tutorial-title-text")
         case .ledgerSuccessfullyConnected:
@@ -137,8 +131,6 @@ extension TutorialViewModel {
             description = String(localized: "local-authentication-enabled-subtitle")
         case .passphraseVerified:
             description = String(localized: "pass-phrase-verify-pop-up-explanation")
-        case .accountVerified(let flow, _, let isMultipleAccounts):
-            bindAccountSetupFlowDescription(flow, isMultipleAccounts: isMultipleAccounts)
         case .recoverWithLedger:
             description = String(localized: "tutorial-description-ledger")
         case .ledgerSuccessfullyConnected(let flow):
@@ -173,8 +165,6 @@ extension TutorialViewModel {
             primaryActionButtonTitle = String(localized: "title-go-to-accounts")
         case .passphraseVerified:
             primaryActionButtonTitle = String(localized: "title-next")
-        case .accountVerified(let flow, _, _):
-            bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
             primaryActionButtonTitle = String(localized: "ledger-tutorial-title-text")
         case .ledgerSuccessfullyConnected(let flow):
@@ -210,8 +200,6 @@ extension TutorialViewModel {
             guard !flow.isBackUpAccount else { return }
 
             secondaryActionButtonTitle = String(localized: "title-skip-for-now")
-        case .accountVerified(let flow, _, _):
-            bindAccountSetupFlowSecondaryButton(flow)
         case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowSecondaryButton(flow)
         default:
@@ -272,8 +260,6 @@ extension TutorialViewModel {
 
     private func bindButtonsStyle(_ tutorial: Tutorial, theme: TutorialViewTheme) {
         switch tutorial {
-        case .accountVerified(let flow, _, _):
-            bindAccountSetupFlowButtonsTheme(flow, theme: theme)
         case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowButtonsTheme(flow, theme: theme)
         default:

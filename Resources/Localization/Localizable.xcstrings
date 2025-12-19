@@ -3479,6 +3479,46 @@
         }
       }
     },
+    "developer-options-already-enable-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Developer options are already enabled"
+          }
+        }
+      }
+    },
+    "developer-options-clicks-left-unlock" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d clicks to enable developer options"
+          }
+        }
+      }
+    },
+    "developer-options-enabled-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Developer options enabled!"
+          }
+        }
+      }
+    },
+    "disable-dev-options-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable Developer Options"
+          }
+        }
+      }
+    },
     "discover-error-connection-body" : {
       "localizations" : {
         "en" : {
@@ -3605,6 +3645,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extend validity to %@"
+          }
+        }
+      }
+    },
+    "feature-flag-disabled-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disabled: %@"
+          }
+        }
+      }
+    },
+    "feature-flag-enabled-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enabled: %@"
           }
         }
       }
@@ -5337,6 +5397,36 @@
         }
       }
     },
+    "overridden-disabled-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overridden: Disabled"
+          }
+        }
+      }
+    },
+    "overridden-enabled-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overridden: Enabled"
+          }
+        }
+      }
+    },
+    "override-firebase-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Override Feature Flags"
+          }
+        }
+      }
+    },
     "overwrite-undo-rekey-confirmation-body" : {
       "localizations" : {
         "en" : {
@@ -5995,16 +6085,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account has been added!"
-          }
-        }
-      }
-    },
-    "recover-from-seed-verify-pop-up-title-plural" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accounts have been added!"
           }
         }
       }
@@ -7284,7 +7364,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Developer Menu"
+            "value" : "Developer Options"
           }
         }
       }
@@ -9285,6 +9365,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading"
+          }
+        }
+      }
+    },
+    "title-logger" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logger"
           }
         }
       }

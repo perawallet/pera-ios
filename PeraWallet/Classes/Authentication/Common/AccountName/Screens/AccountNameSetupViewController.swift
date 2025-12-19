@@ -214,19 +214,6 @@ extension AccountNameSetupViewController {
         }
     }
 
-    private func openAccountVerifiedTutorial() {
-        open(
-            .tutorial(
-                flow: flow,
-                tutorial: .accountVerified(
-                    flow: flow,
-                    address: accountAddress
-                )
-            ),
-            by: .push
-        )
-    }
-
     private func openPasscode() {
         var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
 
@@ -236,47 +223,39 @@ extension AccountNameSetupViewController {
         ) as? TutorialViewController
 
         controller?.uiHandlers.didTapDontAskAgain = { [weak self] tutorialViewController in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
             passcodeSettingDisplayStore.disableAskingPasscode()
             
             switch self.flow {
             case .initializeAccount:
-                self.openAccountVerifiedTutorial()
-                return
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
             default:
                 break
             }
 
             if self.mode == .watch {
-                self.openAccountVerifiedTutorial()
-                return
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
             }
 
             self.launchMain()
         }
 
         controller?.uiHandlers.didTapSecondaryActionButton = { [weak self] tutorialViewController in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             switch self.flow {
             case .initializeAccount:
-                self.openAccountVerifiedTutorial()
-                return
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
             default:
                 break
             }
             
             if self.mode == .watch {
-                self.openAccountVerifiedTutorial()
-                return
+                PeraUserDefaults.shouldShowNewAccountAnimation = true
             }
 
-            self.launchMain()
+            launchMain()
         }
     }
 }

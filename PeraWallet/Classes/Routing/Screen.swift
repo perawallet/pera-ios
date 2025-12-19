@@ -57,6 +57,7 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
+    case developerMenu
     case settings
     case transactionDetail(
         account: Account,
