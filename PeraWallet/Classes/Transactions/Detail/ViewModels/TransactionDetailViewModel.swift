@@ -20,7 +20,7 @@ import MacaroonUIKit
 import pera_wallet_core
 
 final class TransactionDetailViewModel: ViewModel {
-    private(set) var transactionStatus: Transaction.Status?
+    private(set) var transactionStatus: TransactionStatus?
     private(set) var userViewTitle: String?
     private(set) var userViewDetail: String?
     private(set) var feeViewMode: TransactionAmountView.Mode?
@@ -46,7 +46,7 @@ final class TransactionDetailViewModel: ViewModel {
 
     init(
         transactionType: TransferType,
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         assetDetail: Asset?
     ) {
@@ -60,7 +60,7 @@ final class TransactionDetailViewModel: ViewModel {
 
 extension TransactionDetailViewModel {
     private func bindReceivedTransaction(
-        with transaction: Transaction,
+        with transaction: TransactionItem,
         and assetDetail: Asset?,
         for account: Account
     ) {
@@ -68,7 +68,7 @@ extension TransactionDetailViewModel {
         userViewTitle = String(localized: "title-to")
         opponentViewTitle = String(localized: "transaction-detail-from")
 
-        let receiverAddress = transaction.getReceiver()
+        let receiverAddress = (transaction as? Transaction)?.getReceiver() ?? (transaction as? TransactionV2)?.receiver
         let accountAddress = account.address
 
         if receiverAddress == accountAddress {
@@ -76,8 +76,14 @@ extension TransactionDetailViewModel {
         } else {
             userViewDetail = receiverAddress
         }
+        
+        let fee: UInt64? = {
+            if let tx = transaction as? Transaction { return tx.fee }
+            if let tx = transaction as? TransactionV2, let fee = tx.fee { return UInt64(fee) }
+            return nil
+        }()
 
-        if let fee = transaction.fee {
+        if let fee {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
 
@@ -88,12 +94,18 @@ extension TransactionDetailViewModel {
             bindOpponent(for: transaction, with: sender)
         }
 
-        if let assetTransaction = transaction.assetTransfer,
+        if transaction.type == .assetTransfer,
            let assetDetail = assetDetail {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
-
-            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
+            
+            let amount: Decimal? = {
+                if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
+                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                return nil
+            }()
+            
+            guard let amount else { return }
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
@@ -103,8 +115,15 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             }
             rewardViewIsHidden = true
-        } else if let payment = transaction.payment {
-            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
+        } else if transaction.type == .payment {
+            
+            let amount: Decimal? = {
+                if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
+                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                return nil
+            }()
+            
+            guard let amount else { return }
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
@@ -117,16 +136,16 @@ extension TransactionDetailViewModel {
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
             bindReward(for: transaction)
-        } else if transaction.assetConfig != nil {
+        } else if let tx = transaction as? Transaction, tx.assetConfig != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             bindReward(for: transaction)
-        } else if transaction.applicationCall != nil {
+        } else if let tx = transaction as? Transaction, tx.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             transactionAmountViewMode = nil
             bindReward(for: transaction)
-        } else if transaction.keyRegTransaction != nil {
+        } else if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             transactionAmountViewMode = nil
@@ -134,14 +153,14 @@ extension TransactionDetailViewModel {
         }
 
         bindTransactionIDTitle(transaction)
-        transactionID = transaction.id ?? transaction.parentID
+        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id
         bindNote(for: transaction)
     }
 }
 
 extension TransactionDetailViewModel {
     private func bindSentTransaction(
-        with transaction: Transaction,
+        with transaction: TransactionItem,
         and assetDetail: Asset?,
         for account: Account
     ) {
@@ -160,22 +179,39 @@ extension TransactionDetailViewModel {
         } else {
             userViewDetail = senderAddress
         }
+        
+        let fee: UInt64? = {
+            if let tx = transaction as? Transaction { return tx.fee }
+            if let tx = transaction as? TransactionV2, let fee = tx.fee { return UInt64(fee) }
+            return nil
+        }()
 
-        if let fee = transaction.fee {
+        if let fee {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
 
         bindDate(for: transaction)
         bindRound(for: transaction)
 
-        if let assetTransaction = transaction.assetTransfer {
+        if transaction.type == .assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             opponentViewTitle = String(localized: "title-to")
-            bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
+            let receiverAddress: String? = {
+                if let tx = transaction as? Transaction { return tx.assetTransfer?.receiverAddress }
+                if let tx = transaction as? TransactionV2 { return tx.receiver }
+                return nil
+            }()
+            bindOpponent(for: transaction, with: receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
-                let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
+                let amount: Decimal? = {
+                    if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
+                    if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                    return nil
+                }()
+                
+                guard let amount else { return }
 
                 if transaction.isSelfTransaction {
                     transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
@@ -187,11 +223,22 @@ extension TransactionDetailViewModel {
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
-        }  else if let payment = transaction.payment {
+        } else if transaction.type == .payment {
             opponentViewTitle = String(localized: "title-to")
-            bindOpponent(for: transaction, with: payment.receiver)
-
-            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
+            let receiverAddress: String? = {
+                if let tx = transaction as? Transaction { return tx.payment?.receiver }
+                if let tx = transaction as? TransactionV2 { return tx.receiver }
+                return nil
+            }()
+            bindOpponent(for: transaction, with: receiverAddress ?? "")
+            
+            let amount: Decimal? = {
+                if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
+                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                return nil
+            }()
+            
+            guard let amount else { return }
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
@@ -203,28 +250,28 @@ extension TransactionDetailViewModel {
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
-        } else if transaction.assetConfig != nil {
+        } else if let tx = transaction as? Transaction, tx.assetConfig != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             bindReward(for: transaction)
-        } else if transaction.applicationCall != nil {
+        } else if let tx = transaction as? Transaction, tx.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             bindReward(for: transaction)
-        } else if transaction.keyRegTransaction != nil {
+        } else if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             bindReward(for: transaction)
         }
 
         bindTransactionIDTitle(transaction)
-        transactionID = transaction.id ?? transaction.parentID
+        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id
         bindNote(for: transaction)
     }
 }
 
 extension TransactionDetailViewModel {
-    func bindOpponent(for transaction: Transaction, with address: String) {
+    func bindOpponent(for transaction: TransactionItem, with address: String) {
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             opponentViewContact = contact
@@ -237,7 +284,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func bindDate(for transaction: Transaction) {
+    private func bindDate(for transaction: TransactionItem) {
         if transaction.isPending() {
             date = Date().toFormat("MMMM dd, yyyy - HH:mm")
         } else {
@@ -245,20 +292,26 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func bindRound(for transaction: Transaction) {
+    private func bindRound(for transaction: TransactionItem) {
         if transaction.isPending() {
             roundViewIsHidden = true
         } else {
-            if let round = transaction.confirmedRound {
-                roundViewDetail = "\(round)"
+            let round: String? = {
+                if let tx = transaction as? Transaction, let confirmedRound = tx.confirmedRound { return String(confirmedRound) }
+                if let tx = transaction as? TransactionV2 { return tx.confirmedRound }
+                return nil
+            }()
+            
+            if let round {
+                roundViewDetail = round
             }
         }
     }
 
     private func bindTransactionIDTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if transaction.isInner {
+        if let tx = transaction as? Transaction, tx.isInner {
             transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
@@ -266,32 +319,44 @@ extension TransactionDetailViewModel {
         transactionIDTitle = String(localized: "transaction-detail-id")
     }
 
-    private func bindNote(for transaction: Transaction) {
-        if let note = transaction.noteRepresentation() {
+    private func bindNote(for transaction: TransactionItem) {
+        if let tx = transaction as? Transaction, let note = tx.noteRepresentation() {
             noteViewDetail = note
         } else {
             noteViewIsHidden = true
         }
     }
 
-    private func bindCloseAmount(for transaction: Transaction) {
-        if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
+    private func bindCloseAmount(for transaction: TransactionItem) {
+        let closeAmount: Decimal? = {
+            if let tx = transaction as? Transaction { return tx.payment?.closeAmountForTransaction()?.toAlgos }
+            if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+            return nil
+        }()
+        
+        if let closeAmount {
             closeAmountViewMode = .normal(amount: closeAmount)
         } else {
             closeAmountViewIsHidden = true
         }
     }
 
-    private func bindCloseTo(for transaction: Transaction) {
-        if let closeAddress = transaction.payment?.closeAddress {
+    private func bindCloseTo(for transaction: TransactionItem) {
+        let closeAddress: String? = {
+            if let tx = transaction as? Transaction { return tx.payment?.closeAddress}
+            if let tx = transaction as? TransactionV2 { return tx.closeTo }
+            return nil
+        }()
+        
+        if let closeAddress {
             closeToViewDetail = closeAddress
         } else {
             closeToViewIsHidden = true
         }
     }
 
-    private func bindReward(for transaction: Transaction) {
-        if let rewards = transaction.senderRewards,
+    private func bindReward(for transaction: TransactionItem) {
+        if let tx = transaction as? Transaction, let rewards = tx.senderRewards,
            rewards > 0 {
             rewardViewMode = .normal(amount: rewards.toAlgos)
         } else {

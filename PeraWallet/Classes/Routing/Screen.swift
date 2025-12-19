@@ -60,12 +60,12 @@ indirect enum Screen {
     case settings
     case transactionDetail(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         assetDetail: Asset?
     )
     case appCallTransactionDetail(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         transactionTypeFilter: TransactionTypeFilter,
         assets: [Asset]?
     )

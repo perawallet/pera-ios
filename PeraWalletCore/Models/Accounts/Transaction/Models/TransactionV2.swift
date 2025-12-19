@@ -36,11 +36,50 @@ public final class TransactionV2:
     public let asset: TransactionV2Asset?
     public let applicationId: String?
     
+    public var status: TransactionStatus? {
+        get {
+            guard let statusString = swapGroupDetail?.status else { return .completed }
+            return TransactionStatus(fromString: statusString)
+        }
+        set { }
+    }
     public var contact: Contact?
     
     public var isSelfTransaction: Bool {
         guard let sender, let receiver else { return false }
         return sender == receiver
+    }
+    
+    public var appId: Int64? {
+        guard let applicationId else { return nil }
+        return Int64(applicationId)
+    }
+    
+    public var swapDetail: String? {
+        guard
+            let swapGroupDetail,
+            let amountIn = Double(swapGroupDetail.amountInWithSlippage ?? ""),
+            let amountOut = Double(swapGroupDetail.amountOutWithSlippage ?? ""),
+            let assetInUnitName = swapGroupDetail.assetIn?.unitName,
+            let assetOutUnitName = swapGroupDetail.assetOut?.unitName
+        else { return nil}
+    
+        return String(format: String(localized: "swap-detail-text"), Formatter.numberTextWithSuffix(from: amountIn), assetInUnitName, Formatter.numberTextWithSuffix(from: amountOut), assetOutUnitName)
+    }
+    
+    public func isPending() -> Bool {
+        if let status = status {
+            return status == .pending
+        }
+        return confirmedRound == nil || confirmedRound == "0"
+    }
+    
+    public func isAssetAdditionTransaction(for address: String) -> Bool {
+        guard type == .assetTransfer else {
+            return false
+        }
+        
+        return receiver == address && sender == address && UInt64(amount ?? "") == 0
     }
     
     public init(

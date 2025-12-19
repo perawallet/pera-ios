@@ -81,9 +81,9 @@ final class TransactionsAPIDataController:
         sharedDataController.remove(self)
     }
 
-    subscript (id: String?) -> Transaction? {
+    subscript (id: String?) -> TransactionItem? {
         return id.unwrap {
-            let transactions = transactions.compactMap { $0 as? Transaction }
+            let transactions = transactions.compactMap { $0 }
             return transactions.first(matching: (\.id, $0))
         }
     }

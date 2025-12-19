@@ -25,6 +25,7 @@ struct AssetTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
@@ -37,6 +38,7 @@ struct AssetTransactionItemViewModel:
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
+        bindIcon(draft)
         bindAmount(
             draft,
             currency: currency,
@@ -130,6 +132,28 @@ struct AssetTransactionItemViewModel:
 
         bindSubtitle(getSubtitle(from: draft, for: targetAddress))
     }
+    
+    private mutating func bindIcon(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard let tx = draft.transaction as? TransactionV2 else { return }
+        
+        if tx.closeTo != nil {
+            bindIcon("icon-transaction-list-optin")
+            return
+        }
+
+        if draft.transaction.sender == draft.account.address && draft.transaction.isSelfTransaction {
+            bindIcon("icon-transaction-list-optin")
+            return
+        }
+
+        if draft.account.address == tx.receiver {
+            bindIcon("icon-transaction-list-receive")
+        } else {
+            bindIcon("icon-transaction-list-send")
+        }
+    }
 
     private mutating func bindAmount(
         _ draft: TransactionViewModelDraft,
@@ -171,7 +195,7 @@ struct AssetTransactionItemViewModel:
         if receiver == draft.transaction.sender || isValueHidden {
             style = .normal(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset))
         } else if receiver == draft.account.address {
-            style = .positive(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset))
+            style = .positive(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset), hideSign: draft.transaction is TransactionV2)
         } else {
             style = .negative(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset))
         }

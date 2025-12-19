@@ -24,6 +24,7 @@ struct AssetConfigTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(

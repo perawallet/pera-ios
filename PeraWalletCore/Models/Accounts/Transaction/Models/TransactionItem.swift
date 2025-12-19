@@ -22,10 +22,34 @@ public protocol TransactionItem {
     var receiver: String? { get }
     var contact: Contact? { get set }
     var isSelfTransaction: Bool { get }
+    var appId: Int64? { get }
+    var status: TransactionStatus? { get set }
+    
+    func isPending() -> Bool
+    func isAssetAdditionTransaction(for address: String) -> Bool
 }
 
 extension TransactionItem {
     public var date: Date? {
         return nil
+    }
+    
+}
+
+public enum TransactionStatus: String {
+    case pending = "PENDING"
+    case completed = "COMPLETED"
+    case failed = "FAILED"
+    
+    public init?(fromString string: String) {
+        self.init(rawValue: string.uppercased())
+    }
+    
+    public static func == (lhs: TransactionStatus, rhs: TransactionStatus) -> Bool {
+        lhs.rawValue == rhs.rawValue
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
     }
 }

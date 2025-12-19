@@ -49,7 +49,7 @@ public final class Transaction:
     /// If transaction is inner transaction, its parentID is set to parent transaction ID.
     public var parentID: String?
 
-    public var status: Status?
+    public var status: TransactionStatus?
     public var contact: Contact?
 
     public init(
@@ -120,6 +120,10 @@ extension Transaction {
     
     public var receiver: String? {
         payment?.receiver
+    }
+    
+    public var appId: Int64? {
+        applicationCall?.appID
     }
     
     ///TODO: Code duplication should be handled
@@ -215,22 +219,6 @@ extension Transaction {
         status = .completed
 
         innerTransactions.forEach { $0.completeAll() }
-    }
-}
-
-extension Transaction {
-    public enum Status: String {
-        case pending = "PENDING"
-        case completed = "COMPLETED"
-        case failed = "FAILED"
-        
-        public static func == (lhs: Status, rhs: Status) -> Bool {
-            lhs.rawValue == rhs.rawValue
-        }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(rawValue)
-        }
     }
 }
 

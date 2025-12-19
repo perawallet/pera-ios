@@ -25,6 +25,7 @@ struct AlgoTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
     
     init(
@@ -37,6 +38,7 @@ struct AlgoTransactionItemViewModel:
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
+        bindIcon(draft)
         bindAmount(
             draft,
             currency: currency,
@@ -54,6 +56,11 @@ struct AlgoTransactionItemViewModel:
         _ draft: TransactionViewModelDraft
     ) {
         guard let receiver = draft.transaction.receiver else { return }
+        
+        if let tx = draft.transaction as? TransactionV2, tx.swapGroupDetail != nil {
+            bindTitle(String(localized: "title-swap"))
+            return
+        }
         
         if draft.transaction.sender == draft.account.address, draft.transaction.isSelfTransaction {
             bindTitle(String(localized: "transaction-item-self-transfer"))
@@ -73,6 +80,11 @@ struct AlgoTransactionItemViewModel:
     ) {
         guard let receiver = draft.transaction.receiver else { return }
         
+        if let tx = draft.transaction as? TransactionV2, let swapDetail = tx.swapDetail {
+            bindSubtitle(swapDetail)
+            return
+        }
+        
         if draft.transaction.isSelfTransaction {
             subtitle = nil
             return
@@ -83,6 +95,27 @@ struct AlgoTransactionItemViewModel:
         : receiver
         
         bindSubtitle(getSubtitle(from: draft, for: address))
+    }
+    
+    private mutating func bindIcon(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard let tx = draft.transaction as? TransactionV2 else { return }
+        
+        if tx.swapGroupDetail != nil {
+            bindIcon("icon-transaction-list-swap")
+            return
+        }
+        
+        if let receiver = tx.receiver, isReceivingTransaction(draft, for: receiver) {
+            bindIcon("icon-transaction-list-receive")
+            return
+        }
+        
+        if let sender = tx.sender, isSendingTransaction(draft, for: sender) {
+            bindIcon("icon-transaction-list-send")
+            return
+        }
     }
     
     private mutating func bindAmount(
@@ -106,7 +139,7 @@ struct AlgoTransactionItemViewModel:
         if receiver == draft.transaction.sender || isAmountHidden {
             style = .normal(amount: amount)
         } else if receiver == draft.account.address {
-            style = .positive(amount: amount)
+            style = .positive(amount: amount, hideSign: draft.transaction is TransactionV2)
         } else {
             style = .negative(amount: amount)
         }
@@ -124,5 +157,12 @@ struct AlgoTransactionItemViewModel:
         for receiver: String
     ) -> Bool {
         return draft.account.address == receiver
+    }
+    
+    private func isSendingTransaction(
+        _ draft: TransactionViewModelDraft,
+        for sender: String
+    ) -> Bool {
+        return draft.account.address == sender
     }
 }
