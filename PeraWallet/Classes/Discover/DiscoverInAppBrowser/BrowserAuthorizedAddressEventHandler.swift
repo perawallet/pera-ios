@@ -44,7 +44,7 @@ private extension BrowserAuthorizedAddressEventHandler {
         let sortedAccounts = sharedDataController.sortedAccounts(by: AccountDescendingTotalPortfolioValueAlgorithm(currency: sharedDataController.currency))
         let accounts = sortedAccounts.filter { account in
             if isAuthorizedAccountsOnly {
-                return account.value.authorization.isAuthorized
+                return !account.value.authorization.isLedger && account.value.authorization.isAuthorized
             }
             
             return true
