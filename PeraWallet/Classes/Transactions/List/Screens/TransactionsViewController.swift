@@ -90,16 +90,16 @@ class TransactionsViewController:
 
             switch event {
             case .didUpdateSnapshot(let snapshot):
-                if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
+                if let accountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
                     self.accountHandle = accountHandle
                 }
 
-                self.transactionsDataSource.apply(
+                transactionsDataSource.apply(
                     snapshot,
-                    animatingDifferences: self.isViewAppeared
+                    animatingDifferences: isViewAppeared
                 ) { [weak self] in
                     guard let self = self else { return }
-                    onContentHeightUpdated?(self.listView.contentSize.height)
+                    onContentHeightUpdated?(listView.contentSize.height)
                 }
             }
         }

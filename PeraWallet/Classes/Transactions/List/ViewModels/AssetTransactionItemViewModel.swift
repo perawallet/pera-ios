@@ -176,14 +176,8 @@ struct AssetTransactionItemViewModel:
         guard let receiver, let assetId, let asset = draft.localAssets?[assetId] else { return }
         
         let amount: Decimal? = {
-            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer {
-                return assetTransfer.amount.assetAmount(fromFraction: asset.decimals)
-            }
-            
-            if let tx = draft.transaction as? TransactionV2, let amount = tx.amount {
-                return Decimal(string: amount)
-            }
-            
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.amount.assetAmount(fromFraction: asset.decimals) }
+            if let tx = draft.transaction as? TransactionV2 { return tx.amountValue}
             return nil
         }()
         

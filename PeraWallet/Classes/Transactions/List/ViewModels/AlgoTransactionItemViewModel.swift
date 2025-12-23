@@ -129,8 +129,7 @@ struct AlgoTransactionItemViewModel:
         
         let amount: Decimal? = {
             if let tx = draft.transaction as? Transaction, let payment = tx.payment { return payment.amountForTransaction(includesCloseAmount: true).toAlgos }
-            if let tx = draft.transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
-            
+            if let tx = draft.transaction as? TransactionV2 { return tx.amountValue}
             return nil
         }()
         

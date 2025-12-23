@@ -101,7 +101,7 @@ extension TransactionDetailViewModel {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                if let tx = transaction as? TransactionV2 { return tx.amountValue}
                 return nil
             }()
             
@@ -119,7 +119,7 @@ extension TransactionDetailViewModel {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
-                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                if let tx = transaction as? TransactionV2 { return tx.amountValue}
                 return nil
             }()
             
@@ -207,7 +207,7 @@ extension TransactionDetailViewModel {
             if let assetDetail = assetDetail {
                 let amount: Decimal? = {
                     if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                    if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                    if let tx = transaction as? TransactionV2 { return tx.amountValue}
                     return nil
                 }()
                 
@@ -234,7 +234,7 @@ extension TransactionDetailViewModel {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
-                if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
+                if let tx = transaction as? TransactionV2 { return tx.amountValue}
                 return nil
             }()
             
@@ -330,7 +330,6 @@ extension TransactionDetailViewModel {
     private func bindCloseAmount(for transaction: TransactionItem) {
         let closeAmount: Decimal? = {
             if let tx = transaction as? Transaction { return tx.payment?.closeAmountForTransaction()?.toAlgos }
-            if let tx = transaction as? TransactionV2, let amount = tx.amount { return Decimal(string: amount) }
             return nil
         }()
         

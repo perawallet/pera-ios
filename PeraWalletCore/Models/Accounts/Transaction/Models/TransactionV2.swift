@@ -57,14 +57,26 @@ public final class TransactionV2:
     
     public var swapDetail: String? {
         guard
+            let asset,
             let swapGroupDetail,
-            let amountIn = Double(swapGroupDetail.amountInWithSlippage ?? ""),
-            let amountOut = Double(swapGroupDetail.amountOutWithSlippage ?? ""),
+            let amountInWithSlippage = Double(swapGroupDetail.amountInWithSlippage ?? ""),
+            let amountOutWithSlippage = Double(swapGroupDetail.amountOutWithSlippage ?? ""),
             let assetInUnitName = swapGroupDetail.assetIn?.unitName,
             let assetOutUnitName = swapGroupDetail.assetOut?.unitName
         else { return nil}
+        
+        let fractionDecimals = Double(asset.fractionDecimals ?? 0)
+        let amountIn = fractionDecimals > 0 ? amountInWithSlippage / pow(10, fractionDecimals) : amountInWithSlippage
+        let amountOut = fractionDecimals > 0 ? amountOutWithSlippage / pow(10, fractionDecimals) : amountInWithSlippage
     
         return String(format: String(localized: "swap-detail-text"), Formatter.numberTextWithSuffix(from: amountIn), assetInUnitName, Formatter.numberTextWithSuffix(from: amountOut), assetOutUnitName)
+    }
+    
+    public var amountValue: Decimal? {
+        let fractionDecimals = asset?.fractionDecimals ?? 0
+        let rawAmount = swapGroupDetail?.amountInWithSlippage ?? amount
+        guard let rawAmount, let amount = Decimal(string: rawAmount) else { return nil }
+        return fractionDecimals > 0 ? amount / pow(10, fractionDecimals) : amount
     }
     
     public func isPending() -> Bool {
