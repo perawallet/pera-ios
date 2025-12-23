@@ -18,12 +18,23 @@ import SwiftUI
 import pera_wallet_core
 
 struct DeveloperMenuListView: View {
+    
+    struct LogsMetadata: Identifiable {
+        let id: UUID = UUID()
+        let url: URL
+    }
 
     // MARK: - Properties
     
     var onBackPressed: (() -> Void)?
+    
     @ObservedObject var model: DeveloperMenuModel
     @State private var enableTestCards = PeraUserDefaults.enableTestCards ?? false
+    
+    @State private var logsMetadata: LogsMetadata?
+    
+    private let logger: PeraLogger = .shared
+    
     
     // MARK: - Setups
     var body: some View {
@@ -49,12 +60,15 @@ struct DeveloperMenuListView: View {
             }
             VStack {
                 Spacer()
+                RoundedButton(text: "settings-secret-dev-menu-export-logs", style: .primary, isEnabled: true) {
+                    createLogsFile()
+                }
                 FormButton(text: "disable-dev-options-title", style: .primary) {
                     PeraUserDefaults.shouldShowDevMenu = false
                     onBackPressed?()
                 }
-                .padding(24.0)
             }
+            .padding(24.0)
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("settings-secret-dev-menu")
@@ -69,12 +83,22 @@ struct DeveloperMenuListView: View {
                     }
                 }
             )
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(destination: LogsView()) {
-                    Image(systemName: "list.bullet.rectangle")
-                        .foregroundStyle(Color.Text.main)
-                }
-            }
+        }
+        .sheet(item: $logsMetadata) {
+            ShareSheet(activityItems: [$0.url])
+        }
+    }
+    
+    private func onShareSheetDismissAction() {
+        Task {
+            try? await logger.deleteExportedLogsFile()
+        }
+    }
+    
+    private func createLogsFile() {
+        Task {
+            guard let fileURL = try? await logger.createLogsFile() else { return }
+            logsMetadata = LogsMetadata(url: fileURL)
         }
     }
 }
