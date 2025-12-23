@@ -35,28 +35,37 @@ struct AssetTransactionItemDraftComposer: TransactionListItemDraftComposer {
     func composeTransactionItemPresentationDraft(
         from transaction: TransactionItem
     ) -> TransactionViewModelDraft? {
-        guard let transaction = transaction as? Transaction,
-              let assetTransfer = transaction.assetTransfer else {
+        
+        var transactionItem = transaction
+        
+        let assetId: Int64? = {
+            if let tx = transactionItem as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.assetId }
+            if let tx = transactionItem as? TransactionV2, let assetId = tx.asset?.assetId { return Int64(assetId) }
             return nil
-        }
+        }()
+        
+        let receiverAddress: String? = {
+            if let tx = transactionItem as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.receiverAddress }
+            if let tx = transactionItem as? TransactionV2 { return tx.receiver }
+            return nil
+        }()
 
         var asset: AssetDecoration?
-        if let assetID = transaction.assetTransfer?.assetId,
-           let anAsset = sharedDataController.assetDetailCollection[assetID] {
+        if let assetId, let anAsset = sharedDataController.assetDetailCollection[assetId] {
             asset = anAsset
         }
 
-        let address = assetTransfer.receiverAddress == draft.accountHandle.value.address ? transaction.sender : assetTransfer.receiverAddress
+        let address = receiverAddress == draft.accountHandle.value.address ? transaction.sender : receiverAddress
 
         if let contact = contacts.first(where: { contact in
             contact.address == address
         }) {
-            transaction.contact = contact
+            transactionItem.contact = contact
 
             let draft = TransactionViewModelDraft(
                 account: draft.accountHandle.value,
                 asset: asset,
-                transaction: transaction,
+                transaction: transactionItem,
                 contact: contact,
                 localAccounts: sharedDataController.sortedAccounts().map { $0.value },
                 localAssets: sharedDataController.assetDetailCollection

@@ -43,7 +43,8 @@ class TransactionsViewController:
         api!,
         draft,
         filterOption,
-        sharedDataController
+        sharedDataController,
+        configuration.featureFlagService
     )
 
     lazy var transactionsDataSource = TransactionsDataSource(listView)
@@ -89,16 +90,16 @@ class TransactionsViewController:
 
             switch event {
             case .didUpdateSnapshot(let snapshot):
-                if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
+                if let accountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
                     self.accountHandle = accountHandle
                 }
 
-                self.transactionsDataSource.apply(
+                transactionsDataSource.apply(
                     snapshot,
-                    animatingDifferences: self.isViewAppeared
+                    animatingDifferences: isViewAppeared
                 ) { [weak self] in
                     guard let self = self else { return }
-                    onContentHeightUpdated?(self.listView.contentSize.height)
+                    onContentHeightUpdated?(listView.contentSize.height)
                 }
             }
         }
@@ -382,8 +383,8 @@ extension TransactionsViewController {
 }
 
 extension TransactionsViewController {
-    private func openTransactionDetail(_ transaction: Transaction) {
-        if transaction.applicationCall != nil {
+    private func openTransactionDetail(_ transaction: TransactionItem) {
+        if transaction.appId != nil {
             open(
                 .appCallTransactionDetail(
                     account: accountHandle.value,
@@ -397,11 +398,11 @@ extension TransactionsViewController {
             return
         }
 
-        if transaction.keyRegTransaction != nil {
+        if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
             open(
                 .keyRegTransactionDetail(
                     account: accountHandle.value,
-                    transaction: transaction
+                    transaction: tx
                 ),
                 by: .present
             )
@@ -420,26 +421,28 @@ extension TransactionsViewController {
     }
 
     private func getAssetDetailForTransactionType(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) -> [Asset]? {
         switch draft.type {
         case .all:
-            let assetID =
-            transaction.assetTransfer?.assetId ??
-            transaction.assetFreeze?.assetId
+            
+            let assetId: Int64? = {
+                if let tx = transaction as? Transaction { return tx.assetTransfer?.assetId ?? tx.assetFreeze?.assetId }
+                if let tx = transaction as? TransactionV2, let assetId = tx.asset?.assetId { return Int64(assetId) }
+                return nil
+            }()
 
-            if let assetID = assetID,
-                let decoration = sharedDataController.assetDetailCollection[assetID] {
+            if let assetId, let decoration = sharedDataController.assetDetailCollection[assetId] {
                 let asset: Asset
 
                 if decoration.isCollectible {
                     asset = CollectibleAsset(
-                        asset: ALGAsset(id: assetID),
+                        asset: ALGAsset(id: assetId),
                         decoration: decoration
                     )
                 } else {
                     asset = StandardAsset(
-                        asset: ALGAsset(id: assetID),
+                        asset: ALGAsset(id: assetId),
                         decoration: decoration
                     )
                 }
@@ -447,8 +450,11 @@ extension TransactionsViewController {
                 return [asset]
             }
 
-            if let applicationCall = transaction.applicationCall,
-               let foreignAssets = applicationCall.foreignAssets {
+            if
+                let tx = transaction as? Transaction,
+                let applicationCall = tx.applicationCall,
+                let foreignAssets = applicationCall.foreignAssets
+            {
                 let assets: [Asset] = foreignAssets.compactMap { ID in
                     if let decoration = sharedDataController.assetDetailCollection[ID] {
                         let asset: Asset

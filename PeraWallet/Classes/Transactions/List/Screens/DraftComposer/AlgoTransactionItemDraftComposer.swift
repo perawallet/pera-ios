@@ -35,38 +35,39 @@ struct AlgoTransactionItemDraftComposer: TransactionListItemDraftComposer {
     func composeTransactionItemPresentationDraft(
         from transaction: TransactionItem
     ) -> TransactionViewModelDraft? {
-        guard let transaction = transaction as? Transaction,
-              let payment = transaction.payment else {
+        
+        var transactionItem = transaction
+
+        let address: String? = {
+            if let tx = transactionItem as? Transaction,
+               let payment = tx.payment {
+                return payment.receiver == draft.accountHandle.value.address
+                    ? tx.sender
+                    : payment.receiver
+            }
+
+            if let tx = transactionItem as? TransactionV2 {
+                return tx.receiver == draft.accountHandle.value.address
+                    ? tx.sender
+                    : tx.receiver
+            }
+
             return nil
+        }()
+
+        let contact = address.flatMap { addr in
+            contacts.first { $0.address == addr }
         }
 
-        let address = payment.receiver == draft.accountHandle.value.address ? transaction.sender : transaction.payment?.receiver
+        transactionItem.contact = contact
 
-        if let contact = contacts.first(where: { contact in
-            contact.address == address
-        }) {
-            transaction.contact = contact
-
-            let draft = TransactionViewModelDraft(
-                account: draft.accountHandle.value,
-                asset: nil,
-                transaction: transaction,
-                contact: contact,
-                localAccounts: sharedDataController.sortedAccounts().map { $0.value },
-                localAssets: nil
-            )
-
-            return draft
-        }
-
-        let draft = TransactionViewModelDraft(
+        return TransactionViewModelDraft(
             account: draft.accountHandle.value,
             asset: nil,
-            transaction: transaction,
+            transaction: transactionItem,
+            contact: contact,
             localAccounts: sharedDataController.sortedAccounts().map { $0.value },
             localAssets: nil
         )
-
-        return draft
     }
 }

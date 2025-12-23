@@ -24,12 +24,14 @@ struct AppCallTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
         _ draft: TransactionViewModelDraft
     ) {
         bindID(draft)
+        bindIcon(draft)
         bindTitle(draft)
         bindSubtitle(draft)
         bindInnerTransactions(draft)
@@ -38,9 +40,14 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindID(
         _ draft: TransactionViewModelDraft
     ) {
-        if let transaction = draft.transaction as? Transaction {
-            id = transaction.id
-        }
+        id = draft.transaction.id
+    }
+    
+    private mutating func bindIcon(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard draft.transaction is TransactionV2 else { return }
+        bindIcon("icon-transaction-list-optin")
     }
 
     private mutating func bindTitle(
@@ -52,14 +59,9 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindSubtitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let applicationCall = transaction.applicationCall else {
-            return
-        }
-
-        if let appID = applicationCall.appID {
-            let appId = String(format: String(localized: "transaction-item-app-id-title"), appID)
-            bindSubtitle(appId)
+        if let appId = draft.transaction.appId {
+            let appIdText = String(format: String(localized: "transaction-item-app-id-title"), appId)
+            bindSubtitle(appIdText)
         }
     }
 

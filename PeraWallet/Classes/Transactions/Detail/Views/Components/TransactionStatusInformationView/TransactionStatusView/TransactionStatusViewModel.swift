@@ -20,19 +20,19 @@ import MacaroonUIKit
 import pera_wallet_core
 
 final class TransactionStatusViewModel: ViewModel {
-    private(set) var status: Transaction.Status
+    private(set) var status: TransactionStatus
     private(set) var statusLabelTitle: String?
     private(set) var statusLabelTextColor: Color?
     private(set) var backgroundColor: Color?
 
-    init(_ status: Transaction.Status) {
+    init(_ status: TransactionStatus) {
         self.status = status
         bindStatus(status)
     }
 }
 
 extension TransactionStatusViewModel {
-    func bindStatus(_ status: Transaction.Status) {
+    func bindStatus(_ status: TransactionStatus) {
         switch status {
         case .completed:
             statusLabelTitle = String(localized: "transaction-detail-completed")

@@ -24,6 +24,7 @@ struct KeyRegTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
@@ -37,9 +38,7 @@ struct KeyRegTransactionItemViewModel:
     private mutating func bindID(
         _ draft: TransactionViewModelDraft
     ) {
-        if let transaction = draft.transaction as? Transaction {
-            id = transaction.id
-        }
+        id = draft.transaction.id
     }
 
     private mutating func bindTitle(

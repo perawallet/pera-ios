@@ -35,7 +35,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     private(set) var innerTransactionsViewModel: TransactionAmountInformationViewModel?
 
     init(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         assets: [Asset]?
     ) {
@@ -58,7 +58,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
 
 extension AppCallTransactionDetailViewModel {
     private func bindSender(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account
     ) {
         let senderAddress = transaction.sender
@@ -73,9 +73,9 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindApplicationID(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if let appID = transaction.applicationCall?.appID {
+        if let appID = transaction.appId {
             applicationID  = "#\(appID)"
         }
     }
@@ -92,15 +92,17 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindOnCompletion(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        onCompletion = transaction.applicationCall?.onCompletion?.uiRepresentation
+        if let tx = transaction as? Transaction {
+            onCompletion = tx.applicationCall?.onCompletion?.uiRepresentation
+        }
     }
     
     private func bindRejectVersion(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if let aprv = transaction.applicationCall?.aprv {
+        if let tx = transaction as? Transaction, let aprv = tx.applicationCall?.aprv {
             self.rejectVersion = "\(aprv)"
         } else {
             rejectVersionViewIsHidden = true
@@ -108,9 +110,9 @@ extension AppCallTransactionDetailViewModel {
     }
     
     private func bindAccessList(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if let al = transaction.applicationCall?.al {
+        if let tx = transaction as? Transaction, let al = tx.applicationCall?.al {
             self.accessList = "\(String(localized: "count-number-title")) \(al.count)"
         } else {
             accessViewIsHidden = true
@@ -118,17 +120,23 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindFee(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if let fee = transaction.fee {
+        let fee: UInt64? = {
+            if let tx = transaction as? Transaction { return tx.fee }
+            if let tx = transaction as? TransactionV2, let fee = tx.fee { return UInt64(fee) }
+            return nil
+        }()
+        
+        if let fee {
             self.fee = .normal(amount: fee.toAlgos)
         }
     }
 
     private func bindTransactionIDTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if transaction.isInner {
+        if let tx = transaction as? Transaction, tx.isInner {
             transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
@@ -137,15 +145,21 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindTransactionID(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        transactionID = transaction.id ?? transaction.parentID
+        let transactionId: String? = {
+            if let tx = transaction as? Transaction { return tx.id ?? tx.parentID}
+            if let tx = transaction as? TransactionV2 { return tx.id }
+            return nil
+        }()
+        
+        transactionID = transactionId
     }
 
     private func bindNote(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        if let note = transaction.noteRepresentation() {
+        if let tx = transaction as? Transaction, let note = tx.noteRepresentation() {
             self.note = note
             return
         }
@@ -154,15 +168,18 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindInnerTransactionsViewModel(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        guard let innerTransactions = transaction.innerTransactions,
-              !innerTransactions.isEmpty else {
+        guard
+            let tx = transaction as? Transaction,
+            let innerTransactions = tx.innerTransactions,
+            !innerTransactions.isEmpty
+        else {
             return
         }
         
         let amountViewModel = TransactionAmountViewModel(
-            innerTransactionCount: transaction.allInnerTransactionsCount,
+            innerTransactionCount: tx.allInnerTransactionsCount,
             showInList: false
         )
         

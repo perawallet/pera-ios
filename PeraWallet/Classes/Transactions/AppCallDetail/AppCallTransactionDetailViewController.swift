@@ -27,7 +27,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let account: Account
-    private let transaction: Transaction
+    private let transaction: TransactionItem
     private let transactionTypeFilter: TransactionTypeFilter
     private let assets: [Asset]?
     private let copyToClipboardController: CopyToClipboardController
@@ -44,7 +44,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
 
     init(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         transactionTypeFilter: TransactionTypeFilter,
         assets: [Asset]?,
         copyToClipboardController: CopyToClipboardController,
@@ -177,8 +177,14 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
         _ transactionDetailView: AppCallTransactionDetailView,
         didOpen explorer: AlgoExplorerType
     ) {
+        let transactionId: String? = {
+            if let tx = transaction as? Transaction { return tx.id ?? tx.parentID}
+            if let tx = transaction as? TransactionV2 { return tx.id }
+            return nil
+        }()
+        
         if let api = api,
-           let transactionId = transaction.id ?? transaction.parentID,
+           let transactionId,
            let url = explorer.transactionURL(with: transactionId, in: api.network) {
             open(url)
         }
@@ -189,16 +195,15 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
     ) {
         let eventHandler: InnerTransactionListViewController.EventHandler = {
             [weak self] event in
-            guard let self = self else {
-                return
-
-            }
+            guard let self else { return }
 
             switch event {
             case .performClose:
                 self.dismiss(animated: true)
             }
         }
+        
+        guard let tx = transaction as? Transaction, let innerTransactions = tx.innerTransactions else { return }
 
         open(
             .innerTransactionList(
@@ -207,7 +212,7 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
                         type: transactionTypeFilter,
                         asset: assets?.first,
                         account: account,
-                        innerTransactions: transaction.innerTransactions!
+                        innerTransactions: innerTransactions
                     ),
                     sharedDataController: sharedDataController,
                     currency: sharedDataController.currency

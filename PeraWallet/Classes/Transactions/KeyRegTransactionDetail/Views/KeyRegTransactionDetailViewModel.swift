@@ -19,7 +19,7 @@ import MacaroonUIKit
 import pera_wallet_core
 
 final class KeyRegTransactionDetailViewModel: ViewModel {
-    private(set) var transactionStatus: Transaction.Status?
+    private(set) var transactionStatus: TransactionStatus?
     private(set) var userViewTitle: String?
     private(set) var userViewDetail: String?
     private(set) var feeViewMode: TransactionAmountView.Mode?

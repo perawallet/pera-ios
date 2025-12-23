@@ -67,8 +67,8 @@ extension TransactionAmountViewModel {
                 assetSymbol: assetSymbol
             )
             amountLabelColor = Colors.Text.main.uiColor
-        case let .positive(amount, isAlgos, assetFraction, assetSymbol, _):
-            signLabelText = "+"
+        case let .positive(amount, isAlgos, assetFraction, assetSymbol, _, hideSign):
+            signLabelText = hideSign ? nil : "+"
             signLabelColor = Colors.Helpers.positive.uiColor
             bindAmount(
                 amount,

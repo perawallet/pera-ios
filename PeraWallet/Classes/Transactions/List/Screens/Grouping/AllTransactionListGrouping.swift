@@ -19,8 +19,8 @@ import pera_wallet_core
 
 struct AllTransactionListGrouping: TransactionListGrouping {
     func groupTransactions(
-        _ transactions: [Transaction]
-    ) -> [Transaction] {
+        _ transactions: [TransactionItem]
+    ) -> [TransactionItem] {
         let filteredTransactions = transactions.filter { transaction in
             return isSupportedTransactionType(transaction)
         }
@@ -29,7 +29,7 @@ struct AllTransactionListGrouping: TransactionListGrouping {
     }
 
     private func isSupportedTransactionType(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) -> Bool {
         return
             transaction.type == .assetTransfer ||
