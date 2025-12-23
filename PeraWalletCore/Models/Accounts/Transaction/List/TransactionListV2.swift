@@ -28,7 +28,13 @@ public final class TransactionListV2: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         self.currentRound = apiModel.currentRound
-        self.nextToken = apiModel.nextToken
+        
+        self.nextToken = (apiModel.nextToken
+            .flatMap { URL(string: $0) }
+            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+            .flatMap { $0.queryItems?.first(where: { $0.name == "cursor" })?.value }
+        ) ?? apiModel.nextToken
+        
         self.previous = apiModel.previous
         self.results = apiModel.results.unwrapMap(TransactionV2.init)
     }

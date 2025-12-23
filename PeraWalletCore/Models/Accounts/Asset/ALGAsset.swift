@@ -21,7 +21,8 @@ import MacaroonUtils
 
 public final class ALGAsset:
     ALGAPIModel,
-    Hashable {
+    Hashable,
+    Comparable {
     public let creator: String?
     public let amount: UInt64
     public let isFrozen: Bool?
@@ -63,9 +64,7 @@ public final class ALGAsset:
         self.optedInAtRound = asset.optedInAtRound
         self.category = asset.category
     }
-}
-
-extension ALGAsset {
+    
     public func hash(
         into hasher: inout Hasher
     ) {
@@ -77,9 +76,15 @@ extension ALGAsset {
         lhs: ALGAsset,
         rhs: ALGAsset
     ) -> Bool {
-        return
             lhs.id == rhs.id &&
             lhs.amount == rhs.amount
+    }
+    
+    public static func < (
+        lhs: ALGAsset,
+        rhs: ALGAsset
+    ) -> Bool {
+        lhs.id < rhs.id
     }
 }
 

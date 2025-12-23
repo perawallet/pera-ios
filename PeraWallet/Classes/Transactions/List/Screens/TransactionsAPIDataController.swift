@@ -200,7 +200,7 @@ extension TransactionsAPIDataController {
                 dates: filterOption.getDateRanges(),
                 nextToken: nil,
                 assetId: assetId,
-                limit: 30,
+                limit: 60,
                 transactionType: draft.type.currentTransactionType
             )
             
@@ -390,7 +390,7 @@ extension TransactionsAPIDataController {
         let draft = TransactionV2FetchDraft(
             account: draft.accountHandle.value,
             ordering: nil,
-            cursor: nil,
+            cursor: nextToken,
             limit: 30,
             assetId: assetId,
             dates: filterOption.getDateRanges()
