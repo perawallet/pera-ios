@@ -66,16 +66,7 @@ public final class AssetDecoration: ALGEntityModel {
         self.decimals = decimals
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.total = apiModel.total.unwrap { UInt64($0) }
-
-        if let totalSupply = apiModel.totalSupply {
-            self.totalSupply = totalSupply
-        } else {
-            /// totalSupply = total * 10^-(decimals)
-            self.totalSupply = apiModel.total
-                .unwrap { Decimal(string: $0) }
-                .unwrap { Decimal(sign: .plus, exponent: -decimals, significand: $0) }
-        }
-
+        self.totalSupply = apiModel.totalSupply ?? apiModel.total.flatMap { Decimal(string: $0).map { Decimal(sign: .plus, exponent: -decimals, significand: $0) } }
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.projectURL = apiModel.projectURL.toURL()
         self.explorerURL = apiModel.explorerURL.toURL()

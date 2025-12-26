@@ -20,7 +20,7 @@ import pera_wallet_core
 final class CoreApiManager {
     
     enum ApiError: Error {
-        case invalidBaseUrl(baseURL: String)
+        case invalidBaseUrl(baseURL: String?)
         case cantGenerateUrlFromComponents(components: URLComponents)
         case unableToEncodeBody(error: Error)
         case invalidHTTPStatusCode(code: Int)
@@ -105,8 +105,10 @@ final class CoreApiManager {
     
     private func makeURL(request: any Requestable) throws(ApiError) -> URL {
         
-        guard var components = URLComponents(string: baseURL.rawUrl) else { throw .invalidBaseUrl(baseURL: baseURL.rawUrl) }
-        components.path += request.path
+        guard let baseString = baseURL.rawUrl, var components = URLComponents(string: baseString) else { throw .invalidBaseUrl(baseURL: baseURL.rawUrl) }
+        let basePath = components.path.hasSuffix("/") ? String(components.path.dropLast()) : components.path
+        let requestPath = request.path.hasPrefix("/") ? request.path : "/" + request.path
+        components.path = basePath + requestPath
         
         if request.method == .get || request.method == .delete, let requestWithQueryItems = request as? (any QueryRequestable) {
             components.queryItems = requestWithQueryItems.queryItems
@@ -152,7 +154,7 @@ final class CoreApiManager {
 
 extension CoreApiManager.BaseURL {
     
-    var rawUrl: String {
+    var rawUrl: String? {
         switch self {
         case let .algod(network):
             switch network {

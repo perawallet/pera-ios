@@ -29,7 +29,7 @@ extension NSDiffableDataSourceSnapshot {
         if oldIndex < itemIdentifiers.count {
             let beforeItem = itemIdentifiers[oldIndex]
             insertItems([newItem], beforeItem: beforeItem)
-        } else if oldIndex > 0 {
+        } else if oldIndex > 0, oldIndex - 1 < itemIdentifiers.count {
             let afterItem = itemIdentifiers[oldIndex - 1]
             insertItems([newItem], afterItem: afterItem)
         } else {
