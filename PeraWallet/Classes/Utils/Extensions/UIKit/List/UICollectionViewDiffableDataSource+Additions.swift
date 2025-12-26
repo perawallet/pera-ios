@@ -38,16 +38,15 @@ extension NSDiffableDataSourceSnapshot {
         to section: SectionIdentifierType,
         at index: Int
     ) {
-        if let itemAtIndex = itemIdentifiers(inSection: section)[safe: index] {
-            insertItems(
-                [item],
-                beforeItem: itemAtIndex
-            )
-        } else {
-            appendItems(
-                [item],
-                toSection: section
-            )
+        
+        let sectionItems = itemIdentifiers(inSection: section)
+        
+        guard !itemIdentifiers.contains(item), sectionItems.indices.contains(index) else {
+            appendItems([item], toSection: section)
+            return
         }
+
+        let itemAtIndex = sectionItems[index]
+        insertItems([item], beforeItem: itemAtIndex)
     }
 }
