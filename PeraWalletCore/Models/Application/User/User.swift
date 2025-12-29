@@ -20,12 +20,7 @@ import UIKit
 public final class User: Codable {
 
     // Stores accounts that represent regular accounts or HD wallet addresses. The ones that represent HD wallet addresses will have the hdWalletAddressDetail
-    public private(set) var accounts: [AccountInformation] = [] {
-        didSet {
-            Log.log(message: "[Local Accounts][\(accounts.count)] \(accounts.map { $0.address })")
-        }
-        
-    }
+    public private(set) var accounts: [AccountInformation] = []
     
     // Default node used to interact with the blockchain
     private(set) var defaultNode: String?
@@ -53,7 +48,6 @@ public final class User: Codable {
         accounts: [AccountInformation]
     ) {
         self.accounts = accounts
-        Log.log(message: "[Local Accounts][\(accounts.count)] \(accounts.map { $0.address })")
     }
     
     public init(
@@ -81,8 +75,6 @@ public final class User: Codable {
         } else if network == .testnet {
             self.deviceIDOnTestnet = legacyDeviceID
         }
-        
-        Log.log(message: "[Local Accounts][\(accounts.count)] \(accounts.map { $0.address })")
     }
     
     public func encode(
@@ -202,6 +194,10 @@ extension User {
         }
         
         return accounts[index]
+    }
+    
+    public func logAccounts() {
+        Log.log(message: "[Local Accounts][\(accounts.count)] \(accounts.map { $0.address })")
     }
     
     // Updates the properties of an existing account
