@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionListGrouping.swift
+//   TransactionV2FetchDraft.swift
 
 import Foundation
-import pera_wallet_core
 
-protocol TransactionListGrouping {
-    func groupTransactions(
-        _ transactions: [TransactionItem]
-    ) -> [TransactionItem]
+public struct TransactionV2FetchDraft {
+    public let account: Account
+    public let ordering: String?
+    public let cursor: String?
+    public let limit: Int?
+    public let assetId: String?
+    public let dates: (from: Date?, to: Date?)
+    
+    public init(account: Account, ordering: String?, cursor: String?, limit: Int?, assetId: String?, dates: (from: Date?, to: Date?)) {
+        self.account = account
+        self.ordering = ordering
+        self.cursor = cursor
+        self.limit = limit
+        self.assetId = assetId
+        self.dates = dates
+    }
 }

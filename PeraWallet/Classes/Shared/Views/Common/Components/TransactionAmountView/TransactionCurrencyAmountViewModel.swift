@@ -59,7 +59,7 @@ extension TransactionCurrencyAmountViewModel {
                 assetSymbol: assetSymbol,
                 currencySymbol: currencySymbol
             )
-        case let .positive(amount, isAlgos, assetFraction, assetSymbol, currencySymbol):
+        case let .positive(amount, isAlgos, assetFraction, assetSymbol, currencySymbol, _):
             bindAmount(
                 amount,
                 currency: currency,

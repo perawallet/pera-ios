@@ -17,14 +17,19 @@
 
 import UIKit
 import MacaroonUIKit
+import SnapKit
 
 class TransactionHistoryContextView:
     View,
     ViewModelBindable {
     private(set) lazy var contentView = UIView()
+    private lazy var iconView = UIImageView()
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
     private lazy var transactionAmountView = TransactionAmountView()
+    
+    private var titleLeadingWithIcon: SnapKit.Constraint?
+    private var titleLeadingWithoutIcon: SnapKit.Constraint?
 
     func customize(
         _ theme: TransactionHistoryContextViewTheme
@@ -54,8 +59,19 @@ extension TransactionHistoryContextView {
             $0.bottom == theme.verticalInset
         }
 
+        addIconView(theme)
         addTitleLabel(theme)
         addSubtitleLabel(theme)
+    }
+    
+    private func addIconView(
+        _ theme: TransactionHistoryContextViewTheme
+    ) {
+        contentView.addSubview(iconView)
+        iconView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading == 0
+        }
     }
 
     private func addTitleLabel(
@@ -70,12 +86,12 @@ extension TransactionHistoryContextView {
 
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.centerY
-                .equalToSuperview()
-                .priority(.low)
+            $0.centerY.equalToSuperview().priority(.low)
             $0.top == 0
-            $0.leading == 0
             $0.trailing <= 0
+            titleLeadingWithIcon = $0.leading.equalTo(iconView.snp.trailing).offset(16).constraint
+            titleLeadingWithoutIcon = $0.leading.equalToSuperview().constraint
+            titleLeadingWithIcon?.deactivate()
         }
     }
     
@@ -92,7 +108,7 @@ extension TransactionHistoryContextView {
         contentView.addSubview(subtitleLabel)
         subtitleLabel.snp.makeConstraints {
             $0.top == titleLabel.snp.bottom
-            $0.leading == 0
+            $0.leading == titleLabel.snp.leading
             $0.bottom == 0
             $0.trailing <= 0
         }
@@ -122,6 +138,17 @@ extension TransactionHistoryContextView {
     func bindData(
         _ viewModel: TransactionListItemViewModel?
     ) {
+        if let icon = viewModel?.icon?.uiImage {
+            iconView.image = icon
+            iconView.isHidden = false
+            titleLeadingWithoutIcon?.deactivate()
+            titleLeadingWithIcon?.activate()
+        } else {
+            iconView.isHidden = true
+            titleLeadingWithIcon?.deactivate()
+            titleLeadingWithoutIcon?.activate()
+        }
+        
         titleLabel.editText = viewModel?.title
         subtitleLabel.editText = viewModel?.subtitle
 

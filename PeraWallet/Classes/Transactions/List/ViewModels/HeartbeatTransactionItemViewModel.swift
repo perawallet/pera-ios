@@ -20,6 +20,7 @@ struct HeartbeatTransactionItemViewModel: TransactionListItemViewModel {
     var id: String?
     var title: MacaroonUIKit.EditText? = .string(String(localized: "transaction-detail-heartbeat"))
     var subtitle: MacaroonUIKit.EditText? = nil
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel? = nil
 }
 

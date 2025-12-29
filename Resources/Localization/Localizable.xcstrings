@@ -7862,6 +7862,16 @@
         }
       }
     },
+    "swap-detail-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ %@ for %@ %@"
+          }
+        }
+      }
+    },
     "swap-empty-accounts-title" : {
       "localizations" : {
         "en" : {

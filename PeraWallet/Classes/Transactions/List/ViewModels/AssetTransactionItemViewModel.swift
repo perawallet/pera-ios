@@ -25,6 +25,7 @@ struct AssetTransactionItemViewModel:
     var id: String?
     var title: EditText?
     var subtitle: EditText?
+    var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
@@ -37,6 +38,7 @@ struct AssetTransactionItemViewModel:
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
+        bindIcon(draft)
         bindAmount(
             draft,
             currency: currency,
@@ -47,84 +49,110 @@ struct AssetTransactionItemViewModel:
     private mutating func bindID(
         _ draft: TransactionViewModelDraft
     ) {
-        if let transaction = draft.transaction as? Transaction {
-            id = transaction.id
-        }
+        id = draft.transaction.id
     }
 
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let assetTransfer = transaction.assetTransfer else {
+        
+        let amount: UInt64? = {
+            if let tx = draft.transaction as? Transaction { return tx.getCloseAmount() }
+            if let tx = draft.transaction as? TransactionV2, let amt = tx.amount { return UInt64(amt) }
+            return nil
+        }()
+
+        let closeToAddress: String? = {
+            if let tx = draft.transaction as? Transaction { return tx.getCloseAddress() }
+            if let tx = draft.transaction as? TransactionV2 { return tx.closeTo }
+            return nil
+        }()
+
+        let receiver: String? = {
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.receiverAddress }
+            if let tx = draft.transaction as? TransactionV2 { return tx.receiver }
+            return nil
+        }()
+        
+        
+        if let closeAddress = closeToAddress {
+            let titleKey: String.LocalizationValue = closeAddress == draft.account.address
+                ? "transaction-item-receive-opt-out"
+                : "title-opt-out"
+            bindTitle(String(localized: titleKey))
             return
         }
 
-        if let closeToAddress = transaction.getCloseAddress() {
-            if closeToAddress == draft.account.address {
-                bindTitle(String(localized: "transaction-item-receive-opt-out"))
-                return
-            }
-
-            bindTitle(String(localized: "title-opt-out"))
+        if draft.transaction.sender == draft.account.address && draft.transaction.isSelfTransaction {
+            let titleKey: String.LocalizationValue = (amount ?? 0) != 0
+                ? "transaction-item-self-transfer"
+                : "transaction-item-opt-in"
+            bindTitle(String(localized: titleKey))
             return
         }
 
-        if transaction.sender == draft.account.address &&
-            transaction.isSelfTransaction {
-            if transaction.getAmount() != 0 {
-                bindTitle(String(localized: "transaction-item-self-transfer"))
-                return
-            }
+        let titleKey: String.LocalizationValue = (draft.account.address == receiver)
+            ? "transaction-detail-receive"
+            : "transaction-detail-send"
 
-            bindTitle(String(localized: "transaction-item-opt-in"))
-            return
-        }
-
-        if draft.account.address == assetTransfer.receiverAddress {
-            bindTitle(String(localized: "transaction-detail-receive"))
-            return
-        }
-
-        bindTitle(String(localized: "transaction-detail-send"))
+        bindTitle(String(localized: titleKey))
     }
 
     private mutating func bindSubtitle(
         _ draft: TransactionViewModelDraft
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let assetTransfer = transaction.assetTransfer else {
-                  return
-        }
 
-        if transaction.isSelfTransaction {
+        let closeToAddress: String? = {
+            if let tx = draft.transaction as? Transaction { return tx.getCloseAddress() }
+            if let tx = draft.transaction as? TransactionV2 { return tx.closeTo }
+            return nil
+        }()
+
+        let receiver: String? = {
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.receiverAddress }
+            if let tx = draft.transaction as? TransactionV2 { return tx.receiver }
+            return nil
+        }()
+        
+        guard let receiver else { return }
+
+        if draft.transaction.isSelfTransaction {
             subtitle = nil
             return
         }
 
-        if let closeAddress = transaction.getCloseAddress() {
-            let subtitle = getSubtitle(
-                from: draft,
-                for: closeAddress
-            )
-            bindSubtitle(subtitle)
+        let targetAddress: String
+        if let close = closeToAddress {
+            targetAddress = close
+        } else if isReceivingTransaction(draft, for: receiver), let sender = draft.transaction.sender {
+            targetAddress = sender
+        } else {
+            targetAddress = receiver
+        }
+
+        bindSubtitle(getSubtitle(from: draft, for: targetAddress))
+    }
+    
+    private mutating func bindIcon(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard let tx = draft.transaction as? TransactionV2 else { return }
+        
+        if tx.closeTo != nil {
+            bindIcon("icon-transaction-list-optin")
             return
         }
 
-        if isReceivingTransaction(draft, for: assetTransfer) {
-            let subtitle = getSubtitle(
-                from: draft,
-                for: transaction.sender
-            )
-            bindSubtitle(subtitle)
+        if draft.transaction.sender == draft.account.address && draft.transaction.isSelfTransaction {
+            bindIcon("icon-transaction-list-optin")
             return
         }
 
-        let subtitle = getSubtitle(
-            from: draft,
-            for: assetTransfer.receiverAddress
-        )
-        bindSubtitle(subtitle)
+        if draft.account.address == tx.receiver {
+            bindIcon("icon-transaction-list-receive")
+        } else {
+            bindIcon("icon-transaction-list-send")
+        }
     }
 
     private mutating func bindAmount(
@@ -132,52 +160,42 @@ struct AssetTransactionItemViewModel:
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let transaction = draft.transaction as? Transaction,
-              let assetTransfer = transaction.assetTransfer,
-              let assetID = transaction.assetTransfer?.assetId,
-              let asset = draft.localAssets?[assetID] else {
-                  return
-        }
+        
+        let receiver: String? = {
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.receiverAddress }
+            if let tx = draft.transaction as? TransactionV2 { return tx.receiver }
+            return nil
+        }()
+        
+        let assetId: Int64? = {
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.assetId }
+            if let tx = draft.transaction as? TransactionV2, let asset = tx.asset, let assetIdString = asset.assetId, let assetId = Int64(assetIdString) { return assetId }
+            return nil
+        }()
+        
+        guard let receiver, let assetId, let asset = draft.localAssets?[assetId] else { return }
+        
+        let amount: Decimal? = {
+            if let tx = draft.transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.amount.assetAmount(fromFraction: asset.decimals) }
+            if let tx = draft.transaction as? TransactionV2 { return tx.amountValue}
+            return nil
+        }()
+        
+        guard let amount else { return }
         
         currencyFormatter.isValueHidden = isValueHidden
 
-        if assetTransfer.receiverAddress == transaction.sender || isValueHidden {
-            transactionAmountViewModel = TransactionAmountViewModel(
-                .normal(
-                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
-                    isAlgos: false,
-                    fraction: asset.decimals,
-                    assetSymbol: getAssetSymbol(from: asset)
-                ),
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                showAbbreviation: true
-            )
-            return
-        }
-
-        if assetTransfer.receiverAddress == draft.account.address {
-            transactionAmountViewModel = TransactionAmountViewModel(
-                .positive(
-                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
-                    isAlgos: false,
-                    fraction: asset.decimals,
-                    assetSymbol: getAssetSymbol(from: asset)
-                ),
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                showAbbreviation: true
-            )
-            return
+        let style: TransactionAmountView.Mode
+        if receiver == draft.transaction.sender || isValueHidden {
+            style = .normal(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset))
+        } else if receiver == draft.account.address {
+            style = .positive(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset), hideSign: draft.transaction is TransactionV2)
+        } else {
+            style = .negative(amount: amount, isAlgos: false, fraction: asset.decimals, assetSymbol: getAssetSymbol(from: asset))
         }
 
         transactionAmountViewModel = TransactionAmountViewModel(
-            .negative(
-                amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
-                isAlgos: false,
-                fraction: asset.decimals,
-                assetSymbol: getAssetSymbol(from: asset)
-            ),
+            style,
             currency: currency,
             currencyFormatter: currencyFormatter,
             showAbbreviation: true
@@ -186,8 +204,8 @@ struct AssetTransactionItemViewModel:
 
     private func isReceivingTransaction(
         _ draft: TransactionViewModelDraft,
-        for assetTransfer: AssetTransferTransaction
+        for receiver: String
     ) -> Bool {
-        return draft.account.address == assetTransfer.receiverAddress
+        return draft.account.address == receiver
     }
 }
