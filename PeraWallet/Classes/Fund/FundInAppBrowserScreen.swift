@@ -52,6 +52,12 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
             guard let self else { return }
             self.updateTheme(self.traitCollection.userInterfaceStyle)
         }
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
