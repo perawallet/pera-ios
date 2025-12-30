@@ -22,14 +22,12 @@ public protocol LogsStorage: Loggable {
     func fetchLogs() throws -> [String]
     func createLogsArchive() throws -> URL
     func removeLogsArchive() throws
+    func clearLogs() throws
+    func logsSizeInBytes() throws -> Int
+    func truncateLogsIfNeeded() throws
 }
 
-public final class PeraLogger: ObservableObject {
-
-    public struct Log: Identifiable {
-        public let id: UUID
-        public let message: String
-    }
+public actor PeraLogger: ObservableObject {
     
     public enum LoggerError: Error {
         case unableToLog(error: Error)
@@ -39,7 +37,6 @@ public final class PeraLogger: ObservableObject {
 
     public static let shared = PeraLogger()
     
-    @Published public private(set) var logs: [Log] = []
     @Published public private(set) var error: LoggerError?
     
     private var loggers: [Loggable] = []
@@ -55,11 +52,6 @@ public final class PeraLogger: ObservableObject {
         
         let formattedMessage = format(message: message)
         
-        Task { @MainActor in
-            let log = Log(id: UUID(), message: formattedMessage)
-            logs.append(log)
-        }
-        
         loggers.forEach {
             do {
                 try $0.log(message: formattedMessage)
@@ -72,23 +64,30 @@ public final class PeraLogger: ObservableObject {
     public func update(loggers: [Loggable], logsStore: LogsStorage?) throws {
         self.loggers = loggers
         self.logsStore = logsStore
-        try fetchLogs()
     }
     
-    public func createLogsFile() throws -> URL? { try logsStore?.createLogsArchive() }
+    public func createLogsFile() throws -> URL? {
+        try logsStore?.createLogsArchive()
+    }
     public func deleteExportedLogsFile() throws { try logsStore?.removeLogsArchive() }
     
-    private func fetchLogs() throws {
-        
-        guard let logsStore else {
-            logs = []
-            return
-        }
-        
-        logs = try logsStore
-            .fetchLogs()
-            .map { Log(id: UUID(), message: $0) }
+    public func clearLogs() throws {
+        try logsStore?.clearLogs()
     }
+    
+    public func clearLogsIfExceedingSizeLimit(limitInBytes: Int = 1_000_000) throws {
+        guard let logsStore else { return }
+
+        let size = try logsStore.logsSizeInBytes()
+        guard size > limitInBytes else { return }
+
+        try logsStore.clearLogs()
+    }
+    
+    public func truncateLogs() throws {
+        try logsStore?.truncateLogsIfNeeded()
+    }
+    
     
     // MARK: - Helpers
     
@@ -98,6 +97,20 @@ public final class PeraLogger: ObservableObject {
 public enum Log {
     
     public static func log(message: String) {
-        PeraLogger.shared.log(message: message)
+        Task {
+            await PeraLogger.shared.log(message: message)
+        }
+    }
+    
+    public static func clearLogs() {
+        Task {
+            try await PeraLogger.shared.clearLogs()
+        }
+    }
+    
+    public static func truncateLogs() {
+        Task {
+            try await PeraLogger.shared.truncateLogs()
+        }
     }
 }

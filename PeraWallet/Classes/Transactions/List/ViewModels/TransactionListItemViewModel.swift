@@ -22,6 +22,7 @@ protocol TransactionListItemViewModel: ViewModel {
     var id: String? { get set }
     var title: EditText? { get set }
     var subtitle: EditText? { get set }
+    var icon: Image? { get set }
     var transactionAmountViewModel: TransactionAmountViewModel? { get set }
 }
 
@@ -84,7 +85,7 @@ extension TransactionListItemViewModel {
     mutating func bindTitle(
         _ title: String?
     ) {
-        guard let title = title else {
+        guard let title else {
             self.title = nil
             return
         }
@@ -99,7 +100,7 @@ extension TransactionListItemViewModel {
     mutating func bindSubtitle(
         _ subtitle: String?
     ) {
-        guard let subtitle = subtitle else {
+        guard let subtitle else {
             self.subtitle = nil
             return
         }
@@ -109,5 +110,12 @@ extension TransactionListItemViewModel {
                 lineBreakMode: .byTruncatingTail
             )
         )
+    }
+    
+    mutating func bindIcon(
+        _ icon: Image?
+    ) {
+        self.icon = icon
+
     }
 }

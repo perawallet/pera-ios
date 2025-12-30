@@ -27,7 +27,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
-    private var transaction: Transaction
+    private var transaction: TransactionItem
     private let account: Account
     private var assetDetail: Asset?
     private let transactionType: TransferType
@@ -47,7 +47,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     init(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         transactionType: TransferType,
         assetDetail: Asset?,
         copyToClipboardController: CopyToClipboardController,
@@ -175,12 +175,12 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     private func getUserAddress(
-        transaction: Transaction,
+        transaction: TransactionItem,
         type: TransferType
     ) -> String? {
         switch type {
         case .received:
-            return transaction.getReceiver()
+            return (transaction as? Transaction)?.getReceiver() ?? (transaction as? TransactionV2)?.receiver
         case .sent:
             return transaction.sender
         }
@@ -205,7 +205,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
-                let address = (self.transaction.payment?.closeAddress).someString
+                let address = ((transaction as? Transaction)?.payment?.closeAddress ?? (transaction as? TransactionV2)?.closeTo).someString
                 self.copyToClipboardController.copyAddress(address)
             }
             return UIMenu(children: [ copyActionItem ])
@@ -238,7 +238,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
         if let api = api,
-           let transactionId = transaction.id ?? transaction.parentID,
+           let transactionId = (transaction as? Transaction).flatMap({ $0.id ?? $0.parentID }) ?? (transaction as? TransactionV2)?.id,
            let url = explorer.transactionURL(with: transactionId, in: api.network) {
             open(url)
         }

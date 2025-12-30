@@ -91,9 +91,14 @@ extension CopyToClipboardController {
     }
 
     func copyID(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        let idCopy = (transaction.id ?? transaction.parentID).someString
+        let transactionId: String? = {
+            if let tx = transaction as? Transaction { return tx.id ?? tx.parentID}
+            if let tx = transaction as? TransactionV2 { return tx.id }
+            return nil
+        }()
+        let idCopy = transactionId.someString
         let interaction = CopyToClipboardInteraction(
             title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"
@@ -103,9 +108,10 @@ extension CopyToClipboardController {
     }
 
     func copyNote(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        let noteCopy = transaction.noteRepresentation().someString
+        guard let tx = transaction as? Transaction else { return }
+        let noteCopy = tx.noteRepresentation().someString
         let interaction = CopyToClipboardInteraction(
             title: String(localized: "note-copied-to-clipboard"),
             body: nil
@@ -115,9 +121,9 @@ extension CopyToClipboardController {
     }
 
     func copyApplicationCallAppID(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        let idCopy = String(transaction.applicationCall!.appID ?? .zero)
+        let idCopy = String(transaction.appId ?? .zero)
         let interaction = CopyToClipboardInteraction(
             title: String(localized: "id-copied-to-clipboard"),
             body: "#\(idCopy)"

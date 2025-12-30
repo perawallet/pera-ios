@@ -29,6 +29,8 @@ public enum PeraUserDefaults {
     
     // MARK: - Secret Developer Settings
     
+    @UserDefault(key: "shouldShowDevMenu") public static var shouldShowDevMenu: Bool?
     @UserDefault(key: "enableTestCards") public static var enableTestCards: Bool?
+    @UserDefault(key: "overrideRemoteConfigValues") public static var overrideRemoteConfigValues: [String: Bool]?
     @UserDefault(key: "enableTestXOSwapPage") public static var enableTestXOSwapPage: Bool?
 }

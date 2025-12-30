@@ -66,8 +66,6 @@ public enum ALGAnalyticsEventName:
     case onboardCreateAccountSkipCreatePassphrase
     case onboardCreateAccountSkipWritePassphrase
     case onboardCreateAccountSkipRecoverPassphrase
-    case onboardCreateAccountVerifiedBuyAlgo
-    case onboardCreateAccountVerifiedStart
     case onboardVerifiedSetPinCode
     case onboardVerifiedSetPinCodeCompleted
     case onboardWatchAccountCreateComplete
@@ -254,8 +252,6 @@ extension ALGAnalyticsEventName {
         case .onboardCreateAccountSkipCreatePassphrase: rawName = "onb_create_pass_skip_tap"
         case .onboardCreateAccountSkipWritePassphrase: rawName = "onb_write_pass_skip_tap"
         case .onboardCreateAccountSkipRecoverPassphrase: rawName = "onb_rev_pass_skip_tap"
-        case .onboardCreateAccountVerifiedBuyAlgo: rawName = "onb_createacc_verified_buyalgo"
-        case .onboardCreateAccountVerifiedStart: rawName = "onb_createacc_verified_start"
         case .onboardCreateAccountSkip: rawName = "onb_createacc_skip"
         case .onboardCreateAccountWatch: rawName = "onb_createacc_watch"
         case .onboardCreateAccountWatchComplete: rawName = "onb_welcome_watch_complete"

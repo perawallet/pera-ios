@@ -15,6 +15,7 @@
 //   SettingsListConstructor.swift
 
 import Foundation
+import pera_wallet_core
 
 enum SettingsListConstructor {
     
@@ -31,6 +32,23 @@ enum SettingsListConstructor {
         
         controller.onLogoutButtonTap = { [weak compatibilityController] in
             compatibilityController?.performLogoutAction()
+        }
+        
+        controller.onClicksMissingToUnlock = { [weak compatibilityController] count in
+            guard !(PeraUserDefaults.shouldShowDevMenu ?? false) else {
+                compatibilityController?.bannerController?.presentInfoBanner(String(localized: "developer-options-already-enable-text"))
+                return
+            }
+            compatibilityController?.bannerController?.presentInfoBanner(String(format: String(localized: "developer-options-clicks-left-unlock"), count))
+        }
+        
+        controller.onDevMenuUnlocked = { [weak compatibilityController] in
+            guard !(PeraUserDefaults.shouldShowDevMenu ?? false) else {
+                compatibilityController?.bannerController?.presentInfoBanner(String(localized: "developer-options-already-enable-text"))
+                return
+            }
+            PeraUserDefaults.shouldShowDevMenu = true
+            compatibilityController?.bannerController?.presentSuccessBanner(title: String(localized: "developer-options-enabled-text"))
         }
         
         return compatibilityController

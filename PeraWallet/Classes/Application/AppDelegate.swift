@@ -72,11 +72,12 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
-        do {
-            try AppConfigurator.configure()
-        } catch {
-            assertionFailure("Failed to configure app: \(error)")
+        Task {
+            do {
+                try await AppConfigurator.configure()
+            } catch {
+                assertionFailure("Failed to configure app: \(error)")
+            }
         }
         
         logBasicData()
@@ -96,6 +97,8 @@ class AppDelegate:
         launch(with: launchOptions)
         
         walletConnectCoordinator.setup()
+        
+        session.authenticatedUser?.logAccounts()
 
         return true
     }

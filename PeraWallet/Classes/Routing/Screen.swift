@@ -57,15 +57,16 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
+    case developerMenu
     case settings
     case transactionDetail(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         assetDetail: Asset?
     )
     case appCallTransactionDetail(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         transactionTypeFilter: TransactionTypeFilter,
         assets: [Asset]?
     )

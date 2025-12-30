@@ -27,7 +27,7 @@ final class TendenciesViewModel {
     
     init(
         chartData: [ChartDataPointViewModel]?,
-        currency: CurrencyProvider?,
+        currency: CurrencyProvider?
     ) {
         self.chartData = chartData
         self.currency = currency

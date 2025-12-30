@@ -206,13 +206,12 @@ extension ChoosePasswordViewController {
                 .tutorial(flow: flow, tutorial: .localAuthentication),
                 by: .push
             ) as? TutorialViewController
-            controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
+            controller?.uiHandlers.didTapSecondaryActionButton = { [weak self] tutorialViewController in
+                guard let self = self else { return }
                 switch flow {
                 case .initializeAccount:
-                    tutorialViewController.open(
-                        .tutorial(flow: .none, tutorial: .accountVerified(flow: flow)),
-                        by: .push
-                    )
+                    PeraUserDefaults.shouldShowNewAccountAnimation = true
+                    launchMain()
                     return
                 default:
                     break

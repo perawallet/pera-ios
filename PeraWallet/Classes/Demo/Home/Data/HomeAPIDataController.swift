@@ -248,9 +248,9 @@ extension HomeAPIDataController {
             guard let self else { return }
             switch response {
             case .success(let assetDetailResponse):
-                assetDetailResponse.results.forEach { [weak self] in
-                    guard let self else { return }
-                    sharedDataController.assetDetailCollection[$0.id] = $0
+                let assets = assetDetailResponse.results
+                for asset in assets {
+                    sharedDataController.assetDetailCollection[asset.id] = asset
                 }
             case .failure:
                 break

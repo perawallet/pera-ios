@@ -36,7 +36,6 @@ struct SettingsListView: View {
         case termsAndServices
         case privacyPolicy
         case passkey
-        case secretDeveloper
     }
     
     // MARK: - Properties
@@ -49,6 +48,8 @@ struct SettingsListView: View {
     // MARK: - UIKit Compatibility
     
     var onLegacyNavigationOptionSelected: ((LegacyNavigationOption) -> Void)?
+    var onClicksMissingToUnlock: ((Int) -> Void)?
+    var onDevMenuUnlocked: (() -> Void)?
     var onLogoutButtonTap: (() -> Void)?
     
     // MARK: - Initialisers
@@ -88,7 +89,10 @@ struct SettingsListView: View {
                     .frame(maxWidth: .infinity)
                     .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
-                    .onTapGesture(count: 10) { moveTo(option: .secretDeveloper) }
+                    .onTapGesture(count: 10) { onDevMenuUnlocked?() }
+                    .onTapGesture(count: 9) { onClicksMissingToUnlock?(1) }
+                    .onTapGesture(count: 8) { onClicksMissingToUnlock?(2) }
+                    .onTapGesture(count: 7) { onClicksMissingToUnlock?(3) }
             }
             .listStyle(.grouped)
             .listSectionSeparator(.hidden)
@@ -169,8 +173,6 @@ struct SettingsListView: View {
             buildWebView(link: AlgorandWeb.privacyPolicy.link)
         case .passkey:
             buildPasskeyView()
-        case .secretDeveloper:
-            buildSecretDevView()
         }
     }
     
@@ -186,11 +188,6 @@ struct SettingsListView: View {
     @ViewBuilder
     private func buildPasskeyView() -> some View {
         PasskeyListView(navigationPath: $navigationPath)
-    }
-    
-    @ViewBuilder
-    private func buildSecretDevView() -> some View {
-        SecretDevListView(navigationPath: $navigationPath)
     }
 }
 

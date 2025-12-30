@@ -18,11 +18,13 @@ import UIKit
 
 enum SecretDeveloperSettings: Hashable {
     case enableTestCards
+    case overrideRemoteConfig
     case enableTestXOSwapPage
     
     var image: ImageResource {
         switch self {
         case .enableTestCards: .iconMenuCards
+        case .overrideRemoteConfig: .Settings.Icon.developer
         case .enableTestXOSwapPage: .tabbarIconSwapSelected
         }
     }
@@ -30,7 +32,9 @@ enum SecretDeveloperSettings: Hashable {
     var name: String {
         switch self {
         case .enableTestCards: String(localized: "secret-dev-settings-enable-test-cards")
+        case .overrideRemoteConfig: String(localized: "override-firebase-title")
         case .enableTestXOSwapPage: String(localized: "secret-dev-settings-enable-test-xoswap")
         }
     }
 }
+

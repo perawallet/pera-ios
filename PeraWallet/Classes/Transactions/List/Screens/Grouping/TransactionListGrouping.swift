@@ -19,6 +19,6 @@ import pera_wallet_core
 
 protocol TransactionListGrouping {
     func groupTransactions(
-        _ transactions: [Transaction]
-    ) -> [Transaction]
+        _ transactions: [TransactionItem]
+    ) -> [TransactionItem]
 }
