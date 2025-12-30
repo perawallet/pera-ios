@@ -53,6 +53,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .assetDetailV2EndpointEnabled: "Enable Asset Detail Endpoint V2"
         case .webviewV2Enabled: .empty
         case .jointAccountEnabled: "Enable Joint Account"
+        case .xoSwapEnabled: "Enable XO Swap"
         }
     }
     
