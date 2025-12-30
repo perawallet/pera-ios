@@ -18,7 +18,7 @@ public protocol WCArbitraryDataValidator {
     func validateArbitraryData(
         data: [WCArbitraryData],
         api: ALGAPI,
-        session: Session
+        sharedDataController: SharedDataController
     )
     func rejectArbitraryDataRequest(with error: WCTransactionErrorResponse)
 }
@@ -27,7 +27,7 @@ extension WCArbitraryDataValidator {
     public func validateArbitraryData(
         data: [WCArbitraryData],
         api: ALGAPI,
-        session: Session
+        sharedDataController: SharedDataController
     ) {
         if !hasValidNetwork(for: data, api: api) {
             rejectArbitraryDataRequest(with: .unauthorized(.nodeMismatch))
@@ -44,7 +44,7 @@ extension WCArbitraryDataValidator {
             return
         }
 
-        if !containsSignerInTheWallet(for: data, session: session) {
+        if !containsSignerInTheWallet(for: data, sharedDataController: sharedDataController) {
             rejectArbitraryDataRequest(with: .unauthorized(.dataSignerNotFound))
             return
         }
@@ -66,16 +66,17 @@ extension WCArbitraryDataValidator {
 
     private func containsSignerInTheWallet(
         for data: [WCArbitraryData],
-        session: Session
+        sharedDataController: SharedDataController
     ) -> Bool {
-        for datum in data {
-            let requestedSigner = datum.requestedSigner
-            if !requestedSigner.containsSignerInTheWallet {
-                return false
+        data.allSatisfy { datum in
+            let signer = datum.requestedSigner
+            if signer.containsSignerInTheWallet {
+                return true
             }
+            
+            guard let address = signer.address, let accountHandle = sharedDataController.accountCollection[address] else { return false }
+            return accountHandle.value.authAddress != nil
         }
-
-        return true
     }
 
     private func requiresLedgerSigning(for data: [WCArbitraryData]) -> Bool {
