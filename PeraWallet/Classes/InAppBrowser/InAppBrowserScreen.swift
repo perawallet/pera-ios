@@ -207,7 +207,7 @@ class InAppBrowserScreen:
         webView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
             $0.leading == 0
-            $0.bottom == 0
+            $0.bottom.safeEqualToBottom(of: self)
             $0.trailing == 0
         }
 
