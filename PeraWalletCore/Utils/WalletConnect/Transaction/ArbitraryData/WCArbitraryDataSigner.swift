@@ -65,6 +65,32 @@ public final class WCArbitraryDataSigner {
                 signer: signer,
                 for: data
             )
+        } else if let authAddress = account.authAddress, let signature = api.session.privateData(for: authAddress) {
+            let signer = SDKArbitraryDataSigner()
+            signer.eventHandler = {
+                [weak self] event in
+                guard let self else {
+                    return
+                }
+                
+                switch event {
+                case .didFailedSigning(let error):
+                    delegate?.wcArbitraryDataSigner(
+                        self,
+                        didFailedWith: .api(error: error)
+                    )
+                }
+            }
+            sign(
+                signature,
+                signer: signer,
+                for: data
+            )
+        } else {
+            delegate?.wcArbitraryDataSigner(
+                self,
+                didFailedWith: .missingData
+            )
         }
     }
     
