@@ -59,7 +59,8 @@ final class WCSingleTransactionRequestBottomViewModel {
     ) {
         senderAddress =
             data.requestedSigner.account?.name ??
-            data.requestedSigner.account?.address
+            data.requestedSigner.account?.address.shortAddressDisplay ??
+            data.requestedSigner.address?.shortAddressDisplay
         assetIcon = account?.typeImage
 
         bindNetworkFee(
