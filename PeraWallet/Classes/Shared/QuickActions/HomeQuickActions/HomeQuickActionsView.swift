@@ -22,17 +22,20 @@ import UIKit
 final class HomeQuickActionsView:
     View,
     ListReusable,
+    ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .swap: TargetActionInteraction(),
         .buy: TargetActionInteraction(),
         .stake: TargetActionInteraction(),
+        .fund: TargetActionInteraction(),
         .send: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
     private lazy var swapActionView = makeActionView()
     private lazy var buyActionView = makeActionView()
+    private lazy var fundActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
 
@@ -42,6 +45,11 @@ final class HomeQuickActionsView:
         self.theme = theme
 
         addActions(theme)
+    }
+    
+    func bindData(_ viewModel: HomeQuickActionsViewModel?) {
+        buyActionView.isHidden = viewModel?.showFundButton ?? false
+        fundActionView.isHidden = !(viewModel?.showFundButton ?? false)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -117,6 +125,7 @@ extension HomeQuickActionsView {
 
         addSwapAction(theme)
         addBuyAction(theme)
+        addFundAction(theme)
         addStakeAction(theme)
         addSendAction(theme)
     }
@@ -148,6 +157,22 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .buy,
             for: buyActionView
+        )
+    }
+    
+    private func addFundAction(_ theme: HomeQuickActionsViewTheme) {
+        fundActionView.customizeAppearance(theme.fundAction)
+        customizeAction(
+            fundActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(fundActionView)
+        fundActionView.isHidden = true
+
+        startPublishing(
+            event: .fund,
+            for: fundActionView
         )
     }
 
@@ -205,6 +230,7 @@ extension HomeQuickActionsView {
     enum Event {
         case swap
         case buy
+        case fund
         case stake
         case send
         case transfer

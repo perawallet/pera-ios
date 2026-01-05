@@ -37,6 +37,8 @@ final class ASADetailViewController: PageContainer {
         case .quickActionsSend: navigateToSendTransactionIfPossible()
         case .quickActionsReceive: navigateToReceiveTransaction()
         case .quickActionsSwap: navigateToSwapAssetIfPossible()
+        case .quickActionsStake:
+            navigateToStake()
         case let .profileOnPeriodChange(account, asset, newPeriodSelected):
             dataController.updateChartData(
                 address: account.address,
@@ -428,6 +430,15 @@ extension ASADetailViewController {
         analytics.track(.tapSwapInAlgoDetail())
         rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: account, assetInID: dataController.asset.id))
     }
+    
+    private func navigateToStake() {
+        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
+            open(.staking, by: .push)
+        } else {
+            guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+            rootViewController.launch(tab: .stake)
+        }
+    }
 
     private func navigateToSendTransactionIfPossible() {
         let account = dataController.account
@@ -462,6 +473,7 @@ extension ASADetailViewController {
         case profileOnPeriodChange(account: Account, asset: Asset, newPeriodSelected: ChartDataPeriod)
         case quickActionsBuy
         case quickActionsSwap
+        case quickActionsStake
         case quickActionsSend
         case quickActionsReceive
     }

@@ -62,7 +62,10 @@ final class ASAHoldingsFragment: TransactionsViewController {
     }
     
     private func makeViewModel(for asset: Asset) -> ASADetailQuickActionsViewModel {
-        return ASADetailQuickActionsViewModel(asset: asset)
+        return ASADetailQuickActionsViewModel(
+            asset: asset,
+            shouldShowStakeAction: configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+        )
     }
     
     private func makeContext(

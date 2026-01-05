@@ -12,28 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASADetailQuickActionsViewModel.swift
+//   HomeQuickActionsViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 import pera_wallet_core
 
-struct ASADetailQuickActionsViewModel: ViewModel {
-    private(set) var isBuyActionAvailable = false
-    private(set) var shouldShowStakeAction = false
-
-    init(
-        asset: Asset,
-        shouldShowStakeAction: Bool
-    ) {
-        bindBuyActionAvailable(asset: asset, shouldShowStakeAction: shouldShowStakeAction)
-    }
-}
-
-extension ASADetailQuickActionsViewModel {
-    mutating func bindBuyActionAvailable(asset: Asset, shouldShowStakeAction: Bool) {
-        isBuyActionAvailable = asset.isAlgo
-        self.shouldShowStakeAction = shouldShowStakeAction
-    }
+struct HomeQuickActionsViewModel: ViewModel {
+    let showFundButton: Bool
 }

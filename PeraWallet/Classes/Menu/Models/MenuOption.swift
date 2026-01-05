@@ -21,6 +21,8 @@ enum MenuOption {
     case nfts(withThumbnails: [URL])
     case transfer
     case buyAlgo
+    case buy
+    case stake
     case receive
     case inviteFriends
     
@@ -34,10 +36,14 @@ enum MenuOption {
             return String(localized: "collectible-send-action")
         case .buyAlgo:
             return String(localized: "quick-actions-buy-algo-title")
+        case .buy:
+            return String(localized: "title-buy-gift-card")
         case .receive:
             return String(localized: "quick-actions-receive-title")
         case .inviteFriends:
             return String(localized: "title-invite-friends")
+        case .stake:
+            return String(localized: "title-staking")
         }
     }
     
@@ -65,10 +71,14 @@ enum MenuOption {
             return UIImage(named: "icon-menu-transfer")
         case .buyAlgo:
             return UIImage(named: "icon-menu-buy-algo")
+        case .buy:
+            return UIImage(named: "icon-menu-buy-algo")
         case .receive:
             return UIImage(named: "icon-menu-receive")
         case .inviteFriends:
             return UIImage(named: "icon-menu-invite")
+        case .stake:
+            return UIImage(named: "tabbar-icon-stake-selected")
         }
     }
     

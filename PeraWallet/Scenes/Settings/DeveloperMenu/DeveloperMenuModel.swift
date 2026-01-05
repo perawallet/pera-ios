@@ -20,7 +20,7 @@ import pera_wallet_core
 final class DeveloperMenuModel: ObservableObject {
     private let featureFlagService: FeatureFlagServicing
     
-    var settings: [SecretDeveloperSettings] = [.enableTestCards, .overrideRemoteConfig]
+    var settings: [SecretDeveloperSettings] = [.enableTestCards, .enableTestXOSwapPage, .overrideRemoteConfig]
     var featureFlags = FeatureFlag.allCases.filter { !$0.title.isEmpty }
     @State var enableTestCards = PeraUserDefaults.enableTestCards ?? false
     

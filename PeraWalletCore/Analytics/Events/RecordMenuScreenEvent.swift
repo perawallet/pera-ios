@@ -39,6 +39,7 @@ extension RecordMenuScreenEvent {
         case tapTransfer
         case tapBuyAlgo
         case tapReceive
+        case tapStake
         case tapInviteFriends
         case tapCloseInviteFriends
         case tapShareInviteFriends
@@ -61,6 +62,8 @@ extension RecordMenuScreenEvent {
                 return .tapBuyAlgoInMenu
             case .tapReceive:
                 return .tapReceiveInMenu
+            case .tapStake:
+                return .tapStakeInMenu
             case .tapInviteFriends:
                 return .tapInviteFriendsInMenu
             case .tapCloseInviteFriends:

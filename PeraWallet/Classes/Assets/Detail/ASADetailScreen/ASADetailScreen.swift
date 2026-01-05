@@ -686,7 +686,10 @@ extension ASADetailScreen {
         quickActionsView.customize(theme.quickActions)
 
         let asset = dataController.asset
-        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
+        let viewModel = ASADetailQuickActionsViewModel(
+            asset: asset,
+            shouldShowStakeAction: configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+        )
 
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
@@ -696,6 +699,11 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.navigateToSwapAssetIfPossible()
+        }
+        quickActionsView.startObserving(event: .stake) {
+            [unowned self] in
+
+            self.navigateToStake()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
@@ -824,6 +832,15 @@ extension ASADetailScreen {
 
         analytics.track(.tapSwapInAlgoDetail())
         rootViewController.launch(tab: .swap, with: SwapAssetFlowDraft(account: account, assetInID: dataController.asset.id))
+    }
+    
+    private func navigateToStake() {
+        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
+            open(.staking, by: .push)
+        } else {
+            guard let rootViewController = UIApplication.shared.rootViewController() else { return }
+            rootViewController.launch(tab: .stake)
+        }
     }
 
     private func navigateToSendTransactionIfPossible() {

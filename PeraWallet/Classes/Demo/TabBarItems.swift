@@ -129,6 +129,31 @@ struct StakeTabBarItem: TabBarItem {
     }
 }
 
+struct FundTabBarItem: TabBarItem {
+    let id: String
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
+    let screen: UIViewController?
+
+    init(
+        _ screen: UIViewController
+    ) {
+        self.id = TabBarItemID.fund.rawValue
+        
+        let image = UIImage(named: "tabbar-icon-fund")?.withRenderingMode(.alwaysOriginal)
+
+        self.barButtonItem =
+            TabBarButtonItem(
+                icon: [
+                    .normal(image!.withTintColor(Colors.TabBar.iconActive.uiColor)),
+                    .selected(image!.withTintColor(Colors.Text.main.uiColor)),
+                    .disabled(image!.withTintColor(Colors.TabBar.iconDisabled.uiColor))
+                ],
+                title: String(localized: "title-fund")
+            )
+        self.screen = screen
+    }
+}
+
 struct MenuTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
@@ -156,6 +181,7 @@ enum TabBarItemID: String {
     case discover
     case swap
     case stake
+    case fund
     case menu
     case collectibles
 }

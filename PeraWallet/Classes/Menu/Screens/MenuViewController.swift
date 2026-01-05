@@ -93,6 +93,7 @@ final class MenuViewController: BaseViewController {
         let isMainnet = configuration.api?.network.isMainnet ?? false
         let testCardsEnabled = PeraUserDefaults.enableTestCards ?? false
         let showCards = isMainnet || testCardsEnabled
+        let isXoSwapEnabled = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
         
         var baseOptions: [MenuOption] = []
         
@@ -100,7 +101,9 @@ final class MenuViewController: BaseViewController {
             baseOptions.append(cardsOption)
         }
         
-        baseOptions.append(contentsOf: [nftsOption, .buyAlgo, .receive, .inviteFriends])
+        baseOptions.append(nftsOption)
+        
+        baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .receive, .stake, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
         
         menuOptions = baseOptions
     }
@@ -138,7 +141,7 @@ extension MenuViewController {
             guard let self else { return }
             switch event {
             case .didUpdate(let updates):
-                selectMenuOptions(cardsOption: cardsOption, nftsOption: .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)))
+                selectMenuOptions(nftsOption: .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)))
             case .didFinishRunning(hasError: let hasError):
                 if hasError {
                     selectMenuOptions(cardsOption: cardsOption)
@@ -148,6 +151,7 @@ extension MenuViewController {
         }
         collectibleDataController.load(query: query)
     }
+    
     
     private func parseCollectionData(from itemIdentifiers: [CollectibleListItem]) -> [URL] {
         let imageAssets: [CollectibleAsset] = itemIdentifiers.compactMap { item in
@@ -215,7 +219,7 @@ extension MenuViewController: UICollectionViewDelegateFlowLayout {
             switch option {
             case .cards:
                 return CGSize(width: width, height: theme.cardsCellHeight)
-            case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
+            case .nfts, .transfer, .buyAlgo, .buy, .receive, .stake, .inviteFriends:
                 return CGSize(width: width, height: theme.cellHeight)
             }
         }
@@ -237,9 +241,15 @@ extension MenuViewController: UICollectionViewDelegate {
             case .buyAlgo:
                 openBuySellOptions()
                 analytics.track(.recordMenuScreen(type: .tapBuyAlgo))
+            case .buy:
+                openBuyGiftCardsWithBidali()
+                analytics.track(.recordMenuScreen(type: .tapBuyAlgo))
             case .receive:
                 receiveTransactionFlowCoordinator.launch()
                 analytics.track(.recordMenuScreen(type: .tapReceive))
+            case .stake:
+                open(.staking, by: .push)
+                analytics.track(.recordMenuScreen(type: .tapStake))
             case .inviteFriends:
                 openInviteFriends()
                 analytics.track(.recordMenuScreen(type: .tapInviteFriends))
@@ -269,7 +279,7 @@ extension MenuViewController: UICollectionViewDataSource {
                 cell.bindData(option)
                 return cell
 
-            case .nfts, .transfer, .buyAlgo, .receive, .inviteFriends:
+            case .nfts, .transfer, .buyAlgo, .buy, .receive, .stake, .inviteFriends:
                 let cell = collectionView.dequeue(MenuListViewCell.self, at: indexPath)
                 cell.bindData(option)
                 return cell

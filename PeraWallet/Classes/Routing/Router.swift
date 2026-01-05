@@ -469,7 +469,8 @@ final class Router:
                     launch(tab: .discover)
                 }
             case .staking:
-                launch(tab: .stake)
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                visibleScreen.open(.staking, by: .present)
             case .cards(path: let path):
                 let isCardsFeatureEnabled = AppEnvironment.current.isCardsFeatureEnabled(
                     for: appConfiguration.api.network
@@ -2436,6 +2437,8 @@ final class Router:
             )
         case .staking:
             viewController = StakingScreen(configuration: configuration)
+        case .publicWebview(url: let url):
+            viewController = PublicWebviewScreen(url: url, configuration: configuration)
         case .passphraseWarning(eventHandler: let eventHandler):
             let screen = PassphraseWarningScreen(configuration: configuration)
             screen.eventHandler = eventHandler

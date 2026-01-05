@@ -111,7 +111,7 @@ class InAppBrowserScreen:
     // MARK: - Setups
     
     func load(url: URL?) {
-        guard let url = url else { return }
+        guard let url else { return }
         
         var request = URLRequest(url: url)
         request.timeoutInterval = 30
@@ -207,7 +207,7 @@ class InAppBrowserScreen:
         webView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
             $0.leading == 0
-            $0.bottom == 0
+            $0.bottom.safeEqualToBottom(of: self)
             $0.trailing == 0
         }
 

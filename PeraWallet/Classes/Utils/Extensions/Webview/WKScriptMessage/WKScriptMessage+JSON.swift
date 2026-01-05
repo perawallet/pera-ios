@@ -17,12 +17,36 @@
 import WebKit
 
 extension WKScriptMessage {
-    func decode<T: Decodable>(_ type: T.Type) -> T? {
+    func decode<T: Decodable>(_ type: T.Type) -> JSONRPCRequest<T>? {
         guard
             let jsonString = body as? String,
             let jsonData = jsonString.data(using: .utf8)
         else { return nil }
         
-        return try? JSONDecoder().decode(T.self, from: jsonData)
+        return try? JSONDecoder().decode(JSONRPCRequest<T>.self, from: jsonData)
     }
+    
+    func decodeRequest() -> [[String: Any]]? {
+        guard
+            let jsonString = body as? String,
+            let jsonData = jsonString.data(using: .utf8)
+        else { return nil }
+        
+        if let jsonArray = try? JSONSerialization.jsonObject(with: jsonData) as? [[String: Any]] {
+            return jsonArray
+        }
+        
+        if let jsonDict = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
+            return [jsonDict]
+        }
+        
+        return nil
+    }
+}
+
+struct JSONRPCRequest<T: Decodable>: Decodable {
+    let jsonrpc: String
+    let method: String
+    let params: T?
+    let id: Int?
 }

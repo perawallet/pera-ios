@@ -15,6 +15,7 @@
 //   InAppBrowserScripts.swift
 
 import WebKit
+import Foundation
 
 enum InAppBrowserScript {
     case selection
@@ -124,6 +125,21 @@ struct Scripts {
             }
         };
         true;
+        """
+    }
+    
+    static func message(id: Int, result: String) -> String {
+        let dict: [String: Any] = [
+            "jsonrpc": "2.0",
+            "result": result,
+            "id": id
+        ]
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
+              let jsonString = String(data: jsonData, encoding: .utf8) else { return .empty }
+        
+        return """
+        window.postMessage(JSON.stringify(\(jsonString)), window.location.origin);
         """
     }
 }

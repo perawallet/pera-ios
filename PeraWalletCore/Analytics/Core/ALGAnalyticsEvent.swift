@@ -119,6 +119,7 @@ public enum ALGAnalyticsEventName:
     case tapAlgoPriceMenu
     case tapBrowseDAppsInQuickAction
     case tapBuyAlgoInAccountDetail
+    case tapFundInAccountDetail
     case tapBuyAlgoInBottomsheet
     case tapBuyAlgoInHome
     case tapBuyAlgoInMoonPay
@@ -143,6 +144,7 @@ public enum ALGAnalyticsEventName:
     case tapSendInAccountDetail
     case tapSendInDetail
     case tapSendInHome
+    case tapFundInHome
     case tapSendTab
     case tapSortInHome
     case tapSpotBanner
@@ -175,6 +177,7 @@ public enum ALGAnalyticsEventName:
     case tapTransferInMenu
     case tapBuyAlgoInMenu
     case tapReceiveInMenu
+    case tapStakeInMenu
     case tapInviteFriendsInMenu
     case tapCloseInviteFriendsInMenu
     case tapShareInviteFriendsInMenu
@@ -191,6 +194,7 @@ extension ALGAnalyticsEventName {
         case .tapCollectiblesInAccountDetail: rawName = "accountscr_collectibles_tap"
         case .tapHistoryInAccountDetail: rawName = "accountscr_history_tap"
         case .tapBuyAlgoInAccountDetail: rawName = "acccountscr_buysell_click"
+        case .tapFundInAccountDetail: rawName = "acccountscr_fund_click"
         case .tapSwapInAccountDetail: rawName = "accountscr_swap_click"
         case .tapAssetInboxInAccountDetail: rawName = "accountscr_tapmenu_asset_inbox_tap"
         case .tapSendInAccountDetail: rawName = "accountscr_tapmenu_send_tap"
@@ -222,6 +226,7 @@ extension ALGAnalyticsEventName {
         case .tapSortInHome: rawName = "homescr_sort_tap"
         case .tapStakeInHome: rawName = "homescr_stake_click"
         case .tapSendInHome: rawName = "homescr_send_click"
+        case .tapFundInHome: rawName = "homescr_fund_click"
         case .tapChartInHome: rawName = "homescr_chart_tap"
         case .tapAssetInboxInHome: rawName = "homescr_asset_inbox_tap"
         case .tapQRInHome: rawName = "homescr_qr_scan"
@@ -328,6 +333,7 @@ extension ALGAnalyticsEventName {
         case .tapTransferInMenu: rawName = "menuscr_transfer_tap"
         case .tapBuyAlgoInMenu: rawName = "menuscr_buyalgo_tap"
         case .tapReceiveInMenu: rawName = "menuscr_receive_tap"
+        case .tapStakeInMenu: rawName = "menuscr_stake_tap"
         case .tapInviteFriendsInMenu: rawName = "menuscr_invite_friends_tap"
         case .tapCloseInviteFriendsInMenu: rawName = "menuscr_invite_close_tap"
         case .tapShareInviteFriendsInMenu: rawName = "menuscr_invite_share_tap"
@@ -336,6 +342,12 @@ extension ALGAnalyticsEventName {
 
         let isTestnet = CoreAppConfiguration.shared?.api.isTestNet ?? false
         return isTestnet ? "t_\(rawName)" : rawName
+    }
+}
+
+extension ALGAnalyticsEventName {
+    public static func webViewV2Log(event: String) -> String {
+        event
     }
 }
 

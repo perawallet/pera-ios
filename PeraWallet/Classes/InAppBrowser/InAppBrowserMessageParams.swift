@@ -12,14 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WKScriptMessage+Validation.swift
+//   InAppBrowserMessageParams.swift
 
-import WebKit
+struct EmptyParams: Decodable {}
 
-extension WKScriptMessage {
-    var isAcceptable: Bool {
-        guard frameInfo.isMainFrame else { return false }
-        return frameInfo.request.url.unwrap(where: \.isPeraURL) != nil
-    }
+struct URLParams: Decodable {
+    let url: String
 }
 
+struct URIParams: Decodable {
+    let uri: String
+}
+
+struct PushWVParams: Decodable {
+    let url: String
+    let title: String?
+    let projectId: String?
+    let isFavorite: Bool?
+}
+
+struct LogEventParams: Decodable {
+    let name: String
+    let payload: [String: String]?
+}
+
+struct NotifyParams: Decodable {
+    let type: NotifyType
+    let variant: String
+    let message: String?
+}
+
+enum NotifyType: String, Decodable {
+    case haptic
+    case sound
+    case message
+}

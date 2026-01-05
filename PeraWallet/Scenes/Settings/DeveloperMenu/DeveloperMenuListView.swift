@@ -30,6 +30,7 @@ struct DeveloperMenuListView: View {
     
     @ObservedObject var model: DeveloperMenuModel
     @State private var enableTestCards = PeraUserDefaults.enableTestCards ?? false
+    @State private var enableTestXOSwapPage = PeraUserDefaults.enableTestXOSwapPage ?? false
     
     @State private var logsMetadata: LogsMetadata?
     
@@ -50,6 +51,9 @@ struct DeveloperMenuListView: View {
                             DeveloperMenuListNavigationCell(item: item)
                         }
                         .listRowSeparator(.hidden)
+                    case .enableTestXOSwapPage:
+                        DeveloperMenuListToggleCell(item: item, isOn: $enableTestXOSwapPage)
+                            .listRowSeparator(.hidden)
                     }
                 }
             }
@@ -57,6 +61,9 @@ struct DeveloperMenuListView: View {
             .scrollContentBackground(.hidden)
             .onChange(of: enableTestCards) { newValue in
                 PeraUserDefaults.enableTestCards = newValue
+            }
+            .onChange(of: enableTestXOSwapPage) { newValue in
+                PeraUserDefaults.enableTestXOSwapPage = newValue
             }
             VStack {
                 Spacer()
