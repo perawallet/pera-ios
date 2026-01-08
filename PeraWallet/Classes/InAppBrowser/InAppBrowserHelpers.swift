@@ -235,7 +235,8 @@ extension InAppBrowserScreen {
         }
         
         guard
-            let deviceId = UIDevice.current.identifierForVendor?.uuidString,
+            let api,
+            let deviceId = session?.authenticatedUser?.getDeviceId(on: api.network),
             let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String,
             let appPackageName = Bundle.main.bundleIdentifier
         else { return }
