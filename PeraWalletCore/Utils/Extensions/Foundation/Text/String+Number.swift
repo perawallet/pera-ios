@@ -57,9 +57,17 @@ public extension String {
         let formatter = NumberFormatter()
         formatter.locale = .current
         formatter.numberStyle = .decimal
+        
+        let decimalSeparator = formatter.decimalSeparator ?? "."
+        let groupingSeparator = formatter.groupingSeparator ?? ","
 
-        if let number = formatter.number(from: self.replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)) {
-            return number.stringValue
+        let cleaned = self
+            .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
+            .replacingOccurrences(of: groupingSeparator, with: "")
+            .replacingOccurrences(of: decimalSeparator, with: ".")
+
+        if let number = Double(cleaned) {
+            return String(number)
         }
         return self
     }
