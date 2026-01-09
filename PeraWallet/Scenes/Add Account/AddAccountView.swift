@@ -164,7 +164,7 @@ struct AddAccountView: View {
             moveTo(option: .watchAccount)
         case .createUniversalWallet:
             moveTo(option: .createUniversalWallet)
-        case .createAlgo256Wallet:
+        case .createAlgo25Wallet:
             moveTo(option: .createAlgo25Wallet)
         }
     }
