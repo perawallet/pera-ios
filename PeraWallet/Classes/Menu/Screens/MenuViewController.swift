@@ -90,9 +90,7 @@ final class MenuViewController: BaseViewController {
         nftsOption: MenuOption = .nfts(withThumbnails: [])
     ) {
         
-        let isMainnet = configuration.api?.network.isMainnet ?? false
-        let testCardsEnabled = PeraUserDefaults.enableTestCards ?? false
-        let showCards = isMainnet || testCardsEnabled
+        let showCards = cardsOption == .cards(state: .active)
         let isXoSwapEnabled = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
         
         var baseOptions: [MenuOption] = []
