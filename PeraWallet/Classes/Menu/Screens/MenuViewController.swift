@@ -139,7 +139,7 @@ extension MenuViewController {
             guard let self else { return }
             switch event {
             case .didUpdate(let updates):
-                selectMenuOptions(nftsOption: .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)))
+                selectMenuOptions(cardsOption: cardsOption, nftsOption: .nfts(withThumbnails: self.parseCollectionData(from: updates.snapshot.itemIdentifiers)), )
             case .didFinishRunning(hasError: let hasError):
                 if hasError {
                     selectMenuOptions(cardsOption: cardsOption)
