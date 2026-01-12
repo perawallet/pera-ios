@@ -89,7 +89,7 @@ extension InAppBrowserScreen {
                         open(.publicWebview(url: url), by: .push)
                     case .openSystemBrowser:
                         guard let params: DiscoverGenericParameters = decodeMethodParams(from: message) else { return }
-                        openInBrowser(params.url)
+                        openInSystemBrowser(params.url)
                     case .getPublicSettings:
                         guard let id = message["id"] as? Int else { return }
                         handleSettings(.getPublicSettings, id: id)
@@ -122,7 +122,7 @@ extension InAppBrowserScreen {
                         open(.publicWebview(url: url), by: .push)
                     case .openSystemBrowser:
                         guard let params: DiscoverGenericParameters = decodeMethodParams(from: message) else { return }
-                        openInBrowser(params.url)
+                        openInSystemBrowser(params.url)
                     case .canOpenURI:
                         guard
                             let id = message["id"] as? Int,
@@ -349,7 +349,16 @@ extension InAppBrowserScreen {
     private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
         guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
-        openInBrowser(params.url)
+        openInSystemBrowser(params.url)
+    }
+    
+    private func openInSystemBrowser(_ url: URL) {
+        if url.isMailURL {
+            guard UIApplication.shared.canOpenURL(url) else { return }
+            UIApplication.shared.open(url)
+        } else {
+            openInBrowser(url)
+        }
     }
     
     private func handleRequestAuthorizedAddresses(_ message: WKScriptMessage, isAuthorizedAccountsOnly: Bool) {
