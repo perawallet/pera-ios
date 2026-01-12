@@ -90,18 +90,18 @@ final class MenuViewController: BaseViewController {
         nftsOption: MenuOption = .nfts(withThumbnails: [])
     ) {
         
-        let showCards = cardsOption == .cards(state: .active)
+        let showCards = cardsOption == .cards(state: .inactive)
         let isXoSwapEnabled = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
         
         var baseOptions: [MenuOption] = []
         
-        if showCards {
-            baseOptions.append(cardsOption)
-        }
-        
         baseOptions.append(nftsOption)
         
         baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .receive, .stake, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
+        
+        if showCards {
+            baseOptions.append(cardsOption)
+        }
         
         menuOptions = baseOptions
     }
