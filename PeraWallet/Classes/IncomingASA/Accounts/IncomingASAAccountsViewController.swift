@@ -14,19 +14,29 @@
 
 //   IncomingASAAccountsViewController.swift
 
-import Foundation
 import UIKit
-import MacaroonUIKit
-import MacaroonUtils
+import Combine
+
+enum InboxRowIdentifier {
+    case `import`(uniqueIdentifier: String)
+    case sendRequest(uniqueIdentifier: String)
+    case asset(uniqueIdentifier: String)
+}
+
+protocol InboxRowIdentifiable {
+    var identifier: InboxRowIdentifier? { get set }
+}
 
 final class IncomingASAAccountsViewController: BaseViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
+    
+    private let model: InboxModelable
+    private var viewModel: InboxViewModel { model.viewModel }
 
     private lazy var theme = Theme()
     
-    private lazy var listLayout = IncomingASAAccountsListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = IncomingASAAccountsDataSource(listView)
+    private lazy var listDataSource: InboxDiffableDataSource = InboxDiffableDataSource(collectionView: listView, onJointAccountInviteInboxRowTap: { [weak self] in self?.model.requestAction(identifier: $0) })
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
@@ -44,14 +54,11 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }()
     
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
-    private let dataController: IncomingASAAccountsDataController
-
-    init(
-        dataController: IncomingASAAccountsDataController,
-        configuration: ViewControllerConfiguration
-    ) {
-        self.dataController = dataController
-        super.init(configuration: configuration)
+    private var cancellables = Set<AnyCancellable>()
+        
+    init(model: InboxModelable, legacyConfiguration: ViewControllerConfiguration) {
+        self.model = model
+        super.init(configuration: legacyConfiguration)
     }
 
     override func configureNavigationBarAppearance() {
@@ -61,23 +68,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        dataController.load()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self else { return }
-            
-            switch event {
-            case .didUpdate(let update):
-                switch update.operation {
-                    
-                case .refresh:
-                    break
-                }
-                self.listDataSource.apply(update.snapshot, animatingDifferences: true)
-            }
-        }
+        setupCallbacks()
     }
 
     override func prepareLayout() {
@@ -90,6 +81,84 @@ final class IncomingASAAccountsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+    
+    // MARK: - Setups
+    
+    private func setupCallbacks() {
+        
+        viewModel.$rows
+            .sink { [weak self] in self?.handle(rows: $0) }
+            .store(in: &cancellables)
+        
+        viewModel.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+    }
+    
+    // MARK: - Handlers
+    
+    private func handle(rows: [InboxViewModel.RowType]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, InboxViewModel.RowType>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(rows)
+        listDataSource.apply(snapshot)
+    }
+    
+    private func handle(action: InboxViewModel.Action) {
+        
+        switch action {
+        case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
+            presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
+        case .moveToRequestSendScene:
+            break
+        case let .moveToAssetDetailsScene(address, requestCount):
+            moveToAssetDetailsScene(address: address, requestCount: requestCount)
+        }
+    }
+    
+    // MARK: - Actions
+    
+    private func presentImportJointAccountOverlay(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
+        
+        let onIgnore: () -> Void = { [weak self] in
+            self?.model.ignoreJointAccountInvitation(address: jointAccountAddress)
+        }
+        
+        let onAccept: () -> Void = { [weak self] in
+            self?.model.acceptJointAccountInvitation(address: jointAccountAddress)
+        }
+        
+        let controller = JointAccountInviteConfirmationOverlayConstructor.buildCompatibilityViewController(
+            configuration: configuration,
+            subtitle: subtitle,
+            threshold: threshold,
+            accountModels: accountModels,
+            onIgnore: onIgnore,
+            onAccept: onAccept
+        )
+        
+        present(controller, animated: true)
+    }
+    
+    private func moveToAssetDetailsScene(address: String, requestCount: Int) {
+        
+        let screen = open(.incomingASA(address: address, requestsCount: requestCount), by: .push) as? IncomingASAAccountInboxViewController
+        
+        screen?.eventHandler = { [weak self, weak screen] event in
+            switch event {
+            case .didCompleteTransaction:
+                screen?.closeScreen(by: .pop, animated: false)
+                self?.eventHandler?(.didCompleteTransaction)
+            }
+        }
+    }
+    
+    // MARK: - Deinitializer
+    
+    deinit {
+        model.markMessagesAsRead()
     }
 }
 
@@ -122,7 +191,7 @@ extension IncomingASAAccountsViewController {
     }
     
     private func bindNavigationItemTitle() {
-        title = String(localized: "incoming-asa-account-inbox-screen-title")
+        title = String(localized: "inbox-navigation-bar-title")
     }
 }
 
@@ -153,76 +222,16 @@ extension IncomingASAAccountsViewController {
 
 extension IncomingASAAccountsViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            insetForSectionAt: section
-        )
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            sizeForItemAt: indexPath
-        )
-    }
-}
-
-extension IncomingASAAccountsViewController {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-        guard let vm = getIncomingASAAccountCellViewModel(at: indexPath),
-                let address = vm.address,
-                let requestCount = vm.requestCount else {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? InboxRowIdentifiable, let identifier = cell.identifier else { return }
+        
+        switch identifier {
+        case .import:
             return
+        case .sendRequest, .asset:
+            model.requestAction(identifier: identifier)
         }
-        
-        let screen = open(
-            .incomingASA(
-                address: address,
-                requestsCount: requestCount
-            ),
-            by: .push
-        ) as? IncomingASAAccountInboxViewController
-        
-        screen?.eventHandler = {
-            [weak self, weak screen] event in
-            guard let self,
-                  let screen else {
-                return
-            }
-            
-            switch event {
-            case .didCompleteTransaction:
-                screen.closeScreen(by: .pop, animated: false)
-                self.eventHandler?(.didCompleteTransaction)
-            }
-        }
-    }
-    
-    private func getIncomingASAAccountCellViewModel(
-        at indexPath: IndexPath
-    ) -> IncomingASAAccountCellViewModel? {
-        
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
-            return nil
-        }
-        if case let .account(item) = itemIdentifier {
-            return item
-        }
-        return nil
     }
 }
 

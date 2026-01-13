@@ -40,6 +40,11 @@ enum ContactsManager {
     }
     
     static func updateContact(name: String, address: String) throws(ContactsManagerError) -> Contact {
+        guard let contact = try fetchContact(address: address) else { throw .contactNotFound }
+        return try update(contact: contact, name: name, address: address)
+    }
+    
+    static func fetchContact(address: String) throws(ContactsManagerError) -> Contact? {
         
         let predicate: NSPredicate = NSPredicate(format: "address == %@", address)
         let result = Contact.fetchAllSyncronous(entity: Contact.entityName, with: predicate)
@@ -54,8 +59,7 @@ enum ContactsManager {
             throw .unableToFetch(error: error)
         }
         
-        guard let contact else { throw .contactNotFound }
-        return try update(contact: contact, name: name, address: address)
+        return contact
     }
     
     private static func update(contact: Contact, name: String, address: String) throws(ContactsManagerError) -> Contact {

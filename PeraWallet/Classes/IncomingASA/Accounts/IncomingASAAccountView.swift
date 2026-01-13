@@ -17,12 +17,9 @@
 import MacaroonUIKit
 import UIKit
 
-final class IncomingASAAccountView:
-    View,
-    ViewModelBindable,
-    ListReusable {
+final class IncomingASAAccountView: View, ListReusable {
     
-    private lazy var iconView = ImageView()
+    private let iconView = SwiftUICompatibilityView(view: RoundedIconView(image: .data(data: Data()), size: 40.0, padding: 8.0))
     private lazy var titleView = UILabel()
     private lazy var primaryAccessoryView = Label()
 
@@ -41,48 +38,12 @@ final class IncomingASAAccountView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-
-    func bindData(
-        _ viewModel: IncomingASAAccountCellViewModel?
-    ) {
-        iconView.load(from: viewModel?.icon)
-        
-        if let address = viewModel?.title {
-            address.load(in: titleView)
-        }
-        
-        if let primaryAccessory = viewModel?.primaryAccessory {
-            primaryAccessory.load(in: primaryAccessoryView)
-        }
-        
-    }
-
-    class func calculatePreferredSize(
-        _ viewModel: IncomingASAAccountCellViewModel?,
-        for theme: IncomingASAAccountViewTheme,
-        fittingIn size: CGSize
-    ) -> CGSize {
-        guard let viewModel = viewModel else {
-            return CGSize((size.width, 0))
-        }
-
-        let width = size.width
-        let iconSize = viewModel.icon?.iconSize ?? .zero
-        
-        let titleSize = viewModel.title?.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        ) ?? .zero
-        
-        let primaryAccessorySize = viewModel.primaryAccessory?.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        ) ?? .zero
-
-        let contentHeight = titleSize.height
-        let preferredHeight = max(iconSize.height, max(contentHeight, primaryAccessorySize.height))
-
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    
+    func update(icon: ImageType, title: String, primaryAccessory: String) {
+        let view = RoundedIconView(image: icon, size: 40.0, padding: 8.0)
+        iconView.update(view: view)
+        titleView.text = title
+        primaryAccessoryView.text = primaryAccessory
     }
 }
 
@@ -91,16 +52,17 @@ extension IncomingASAAccountView {
     private func addIcon(
         _ theme: IncomingASAAccountViewTheme
     ) {
-        iconView.customizeAppearance(theme.icon)
-
+        
+        iconView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(iconView)
-        iconView.fitToIntrinsicSize()
-        iconView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.fitToSize(theme.iconSize)
-        }
+        
+        let constraints = [
+            iconView.topAnchor.constraint(equalTo: topAnchor),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            iconView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
 
     
