@@ -16,7 +16,7 @@
 
 import UIKit
 
-enum MenuOption {
+enum MenuOption: Equatable {
     case cards(state: MenuCardState)
     case nfts(withThumbnails: [URL])
     case transfer
@@ -92,7 +92,7 @@ enum MenuOption {
     }
 }
 
-enum MenuCardState {
+enum MenuCardState: Equatable {
     case inactive
     case active
     case addedToWailist
