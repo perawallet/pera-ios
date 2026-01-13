@@ -201,7 +201,8 @@ public final class Account: ALGEntityModel {
 
 extension Account {
     public var primaryDisplayName: String {
-        return name.unwrap(or: address.shortAddressDisplay).trimmed()
+        let displayName = (name == address) ? address.shortAddressDisplay : name.unwrap(or: address.shortAddressDisplay)
+        return displayName.trimmed()
     }
 
     public var secondaryDisplayName: String? {
