@@ -53,26 +53,12 @@ public extension String {
         return nil
     }
     
-    func normalizedNumericString() -> String {
+    func numericValue() -> Double {
         let formatter = NumberFormatter()
-        formatter.locale = .current
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
-        
-        let decimalSeparator = formatter.decimalSeparator ?? "."
-        let groupingSeparator = formatter.groupingSeparator ?? ","
-
-        let cleaned = self
-            .replacingOccurrences(of: "[^0-9,\\.]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: groupingSeparator, with: "")
-            .replacingOccurrences(of: decimalSeparator, with: ".")
-
-        if let number = Double(cleaned) {
-            return String(number)
-        }
-        return self
+        return formatter.number(from: self)?.doubleValue ?? 0
     }
     
-    var isZeroValue: Bool {
-        (Double(self.normalizedNumericString()) ?? 0) == 0
-    }
+    var isZeroValue: Bool { numericValue() == 0 }
 }

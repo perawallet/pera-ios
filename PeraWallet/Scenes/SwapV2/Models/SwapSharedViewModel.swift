@@ -162,8 +162,8 @@ class SwapSharedViewModel: ObservableObject {
         
         let task = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            let normalized = newValue.normalizedNumericString()
-            if let doubleValue = Double(normalized), doubleValue > 0 {
+            let doubleValue = newValue.numericValue()
+            if doubleValue > 0 {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
@@ -197,25 +197,25 @@ class SwapSharedViewModel: ObservableObject {
     }
     
     func filterPayingText(_ input: String) -> String {
-        var filtered = input.filter { "0123456789,.".contains($0) }
-        
-        if let firstSeparatorIndex = filtered.firstIndex(where: { $0 == "." || $0 == "," }) {
-            let before = filtered.prefix(upTo: filtered.index(after: firstSeparatorIndex))
-            let after = filtered.suffix(from: filtered.index(after: firstSeparatorIndex))
-                .filter { $0 != "." && $0 != "," }
-            filtered = String(before + after)
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
+        var hasDecimal = false
+
+        let filtered = input.filter { char in
+            if char.isNumber { return true }
+            if String(char) == decimalSeparator && !hasDecimal {
+                hasDecimal = true
+                return true
+            }
+            return false
         }
-        
-        let normalized = filtered.normalizedNumericString()
-        
-        guard let doubleValue = Double(normalized), doubleValue > 0 else {
-            return normalized
-        }
-        
+
+        let value = filtered.numericValue()
+        guard value > 0 else { return filtered }
+
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            return fiatFormat(with: doubleValue)
+            return fiatFormat(with: value)
         } else {
-            return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: doubleValue) ?? .empty
+            return Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: value) ?? filtered
         }
     }
     
@@ -226,17 +226,16 @@ extension SwapSharedViewModel {
     var shouldShowSwapButton: Bool {
         if isBalanceNotSufficient || isLoadingPayAmount || isLoadingReceiveAmount { return false }
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            let paying = Double(payingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
-            let receiving = Double(receivingTextInSecondaryCurrency.normalizedNumericString()) ?? 0
+            let paying = payingTextInSecondaryCurrency.numericValue()
+            let receiving = receivingTextInSecondaryCurrency.numericValue()
             return paying > 0 && receiving > 0
         } else {
-            let paying = Double(payingText.normalizedNumericString()) ?? 0
-            let receiving = Double(receivingText.normalizedNumericString()) ?? 0
+            let paying = payingText.numericValue()
+            let receiving = receivingText.numericValue()
             return paying > 0 && receiving > 0
         }
-        
     }
-    
+
     var slippageTolerance: String {
         guard
             let slippageTolerance = selectedQuote?.slippage,
