@@ -85,6 +85,7 @@ extension FundInAppBrowserScreen {
     private func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
         startObservingCurrencyChanges()
+        startObservingDeepLinkNotication()
     }
 
     private func startObservingAppLifeCycleNotifications() {
@@ -102,18 +103,33 @@ extension FundInAppBrowserScreen {
             self.updateCurrency()
         }
     }
+    
+    private func startObservingDeepLinkNotication() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleDeepLink(_:)),
+            name: .didReceiveDeepLink,
+            object: nil
+        )
+    }
+    
+    @objc private func handleDeepLink(_ notification: Notification) {
+        let path = notification.object as? String
+        loadPeraURL(with: path)
+    }
 }
 
 extension FundInAppBrowserScreen {
-    private func generatePeraURL() -> URL? {
-        FundURLGenerator.generateURL(
+    private func generatePeraURL(with path: String?) -> URL? {
+        return FundURLGenerator.generateURL(
             theme: traitCollection.userInterfaceStyle,
-            session: session
+            session: session,
+            path: path
         )
     }
 
-    private func loadPeraURL() {
-        let generatedUrl = generatePeraURL()
+    private func loadPeraURL(with path: String? = nil) {
+        let generatedUrl = generatePeraURL(with: path)
         load(url: generatedUrl)
     }
 }
@@ -152,4 +168,8 @@ enum FundInAppBrowserScriptMethod: String {
     case onBackPressed
     case logAnalyticsEvent
     case closeWebView
+}
+
+extension Notification.Name {
+    static let didReceiveDeepLink = Notification.Name("didReceiveDeepLink")
 }

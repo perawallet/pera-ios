@@ -469,8 +469,12 @@ final class Router:
                     launch(tab: .discover)
                 }
             case .staking:
-                let visibleScreen = findVisibleScreen(over: rootViewController)
-                visibleScreen.open(.staking, by: .present)
+                if appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) {
+                    let visibleScreen = findVisibleScreen(over: rootViewController)
+                    visibleScreen.open(.staking, by: .present)
+                } else {
+                    launch(tab: .stake)
+                }
             case .cards(path: let path):
                 let isCardsFeatureEnabled = AppEnvironment.current.isCardsFeatureEnabled(
                     for: appConfiguration.api.network
@@ -495,6 +499,9 @@ final class Router:
                         transitioningDelegate: nil
                     )
                 )
+            case .buy(path: let path):
+                guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
+                rootViewController.mainContainer.launchFund(with: path)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {

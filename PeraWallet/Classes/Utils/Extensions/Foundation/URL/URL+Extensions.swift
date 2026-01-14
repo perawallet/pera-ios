@@ -115,6 +115,8 @@ extension URL {
                 return .staking(path: path)
             case "cards":
                 return .cards(path: path)
+            case "buy":
+                return .buy(path: path)
             default:
                 return nil
             }

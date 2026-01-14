@@ -619,9 +619,13 @@ extension HomeViewController {
         
         cell.startObserving(event: .stake) {
             [weak self] in
-            guard let self else { return }
+            guard let self, let rootViewController = UIApplication.shared.rootViewController() else { return }
             analytics.track(.recordHomeScreen(type: .stake))
-            open(.staking, by: .push)
+            if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
+                open(.staking, by: .push)
+            } else {
+                rootViewController.launch(tab: .stake)
+            }
         }
         
         cell.startObserving(event: .fund) {

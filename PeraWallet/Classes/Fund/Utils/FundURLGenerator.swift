@@ -20,18 +20,27 @@ import pera_wallet_core
 final class FundURLGenerator {
     static func generateURL(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        path: String?
     ) -> URL? {
-        var components = URLComponents(string: AppEnvironment.current.fundBaseUrl)
-        components?.queryItems = makeInHouseQueryItems(
+        guard var components = URLComponents(string: AppEnvironment.current.fundBaseUrl) else { return nil }
+        
+        components.queryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
         )
-
-        if let url = components?.url, PeraUserDefaults.enableTestXOSwapPage ?? false {
-            return url.appendingPathComponent("test")
+        
+        guard let baseURL = components.url else { return nil }
+        
+        if PeraUserDefaults.enableTestXOSwapPage ?? false {
+            return baseURL.appendingPathComponent("test")
         }
-        return components?.url
+        
+        guard let path else {
+            return baseURL
+        }
+        
+        return baseURL.appendingPathComponent(path)
     }
 
     private static func makeInHouseQueryItems(
