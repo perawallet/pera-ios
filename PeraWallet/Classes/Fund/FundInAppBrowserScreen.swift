@@ -114,22 +114,25 @@ extension FundInAppBrowserScreen {
     }
     
     @objc private func handleDeepLink(_ notification: Notification) {
-        let path = notification.object as? String
-        loadPeraURL(with: path)
+        let data = notification.object as? [String?] ?? [nil, nil]
+        let path = data[0]
+        let address = data[1]
+        loadPeraURL(with: path, and: address)
     }
 }
 
 extension FundInAppBrowserScreen {
-    private func generatePeraURL(with path: String?) -> URL? {
+    private func generatePeraURL(with path: String?, and address: String?) -> URL? {
         return FundURLGenerator.generateURL(
             theme: traitCollection.userInterfaceStyle,
             session: session,
-            path: path
+            path: path,
+            address: address
         )
     }
 
-    private func loadPeraURL(with path: String? = nil) {
-        let generatedUrl = generatePeraURL(with: path)
+    private func loadPeraURL(with path: String? = nil, and address: String? = nil) {
+        let generatedUrl = generatePeraURL(with: path, and: address)
         load(url: generatedUrl)
     }
 }

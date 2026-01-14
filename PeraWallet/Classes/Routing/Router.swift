@@ -499,9 +499,9 @@ final class Router:
                         transitioningDelegate: nil
                     )
                 )
-            case .buy(path: let path):
+            case .buy(path: let path, address: let address):
                 guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
-                rootViewController.mainContainer.launchFund(with: path)
+                rootViewController.mainContainer.launchFund(with: path, and: address)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {

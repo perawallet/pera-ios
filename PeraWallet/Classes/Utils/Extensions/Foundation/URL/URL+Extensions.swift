@@ -98,17 +98,22 @@ extension URL {
         let range = NSRange(location: 0, length: absoluteString.utf16.count)
         if let match = regex.firstMatch(in: absoluteString, options: [], range: range) {
             let typeString = (absoluteString as NSString).substring(with: match.range(at: 1))
+            let cleanTypeString = typeString.hasPrefix("app/") ? String(typeString.dropFirst(4)) : typeString
 
             var path: String?
+            var address: String?
             if let paramsString = match.range(at: 2).location != NSNotFound ? (absoluteString as NSString).substring(with: match.range(at: 2)) : nil {
                 if let urlComponents = URLComponents(string: "\(paramsString)") {
                     if let pathValue = urlComponents.queryItems?.first(where: { $0.name == "path" })?.value {
                         path = pathValue
                     }
+                    if let addressValue = urlComponents.queryItems?.first(where: { $0.name == "address" })?.value {
+                        address = addressValue
+                    }
                 }
             }
 
-            switch typeString {
+            switch cleanTypeString.trimmingCharacters(in: CharacterSet(charactersIn: "/")) {
             case "discover":
                 return .discover(path: path)
             case "staking":
@@ -116,7 +121,7 @@ extension URL {
             case "cards":
                 return .cards(path: path)
             case "buy":
-                return .buy(path: path)
+                return .buy(path: path, address: address)
             default:
                 return nil
             }

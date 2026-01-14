@@ -75,5 +75,5 @@ enum ExternalDeepLink {
     case discover(path: String?)
     case staking(path: String?)
     case cards(path: String?)
-    case buy(path: String?)
+    case buy(path: String?, address: String?)
 }
