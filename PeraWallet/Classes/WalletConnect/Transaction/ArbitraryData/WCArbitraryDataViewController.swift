@@ -37,8 +37,14 @@ final class WCArbitraryDataViewController: BaseScrollViewController {
     ) {
         self.data = data
         self.wcSession = wcSession
-
-        if let address = data.signer {
+        
+        
+        if
+            let walletMetaAddress = wcSession.wcV1Session?.walletMeta?.accounts?.first,
+            let walletMetaAccount = configuration.sharedDataController.accountCollection[walletMetaAddress]?.value
+        {
+            self.account = walletMetaAccount
+        } else if let address = data.signer {
             self.account = configuration.sharedDataController.accountCollection[address]?.value
         } else {
             self.account = nil

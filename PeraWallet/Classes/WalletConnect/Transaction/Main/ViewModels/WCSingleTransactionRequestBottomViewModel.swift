@@ -58,6 +58,8 @@ final class WCSingleTransactionRequestBottomViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         senderAddress =
+            account?.name ??
+            account?.address.shortAddressDisplay ??
             data.requestedSigner.account?.name ??
             data.requestedSigner.account?.address.shortAddressDisplay ??
             data.requestedSigner.address?.shortAddressDisplay

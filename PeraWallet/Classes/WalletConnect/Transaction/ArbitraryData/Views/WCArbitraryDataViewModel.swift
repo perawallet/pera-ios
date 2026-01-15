@@ -63,8 +63,7 @@ final class WCArbitraryDataViewModel {
 
         let account: Account
 
-        if let senderAccount = senderAccount,
-           senderAddress == senderAccount.address {
+        if let senderAccount {
             account = senderAccount
         } else {
             account = Account(address: senderAddress)
