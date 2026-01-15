@@ -53,7 +53,7 @@ struct AccountQuickActionsViewTheme:
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
         ]
         self.fundAction = [
-            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
+            .icon(Self.makeActionIcon(icon: "fund-icon-badge")),
             .title(Self.makeActionTitle(title: String(localized: "title-fund")))
         ]
         self.moreAction = [
