@@ -131,7 +131,7 @@ public final class Account: ALGEntityModel {
         self.isWatchAccount = false
         self.pendingRewards = 0
         self.status = .offline
-        self.name = name
+        self.name = name?.trimmed()
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
@@ -150,7 +150,7 @@ public final class Account: ALGEntityModel {
         self.authorization = AccountAuthorization(accountType: localAccount.type)
         self.pendingRewards = 0
         self.status = .offline
-        self.name = localAccount.name
+        self.name = localAccount.name.trimmed()
         self.isWatchAccount = localAccount.isWatchAccount
         self.ledgerDetail = localAccount.ledgerDetail
         self.receivesNotification = localAccount.receivesNotification
@@ -201,28 +201,25 @@ public final class Account: ALGEntityModel {
 
 extension Account {
     public var primaryDisplayName: String {
-        return name.unwrap(or: address.shortAddressDisplay)
+        let displayName = (name == address) ? address.shortAddressDisplay : name.unwrap(or: address.shortAddressDisplay)
+        return displayName.trimmed()
     }
 
     public var secondaryDisplayName: String? {
-        let name = name
-        let address = address
-        let shortAddressDisplay = address.shortAddressDisplay
-
-        if authorization.isStandard,
-           name == shortAddressDisplay {
+        let accountName = name?.trimmed()
+        if authorization.isStandard, accountName == address.shortAddressDisplay {
             return nil
         }
-
-        let subtitle: String?
-
-        if (name != nil && name != shortAddressDisplay) {
-            subtitle = shortAddressDisplay
-        } else {
-            subtitle = typeTitle
+        
+        if authorization.isRekeyed, primaryDisplayName == address.shortAddressDisplay {
+            return String(localized: "common-account-type-name-rekeyed")
+        }
+        
+        if let accountName, accountName != address.shortAddressDisplay {
+            return address.shortAddressDisplay
         }
 
-        return subtitle
+        return typeTitle
     }
     
     public var isHDAccount: Bool {
@@ -545,7 +542,7 @@ extension Account {
 extension Account {
     
     public func update(from localAccount: AccountInformation) {
-        name = localAccount.name
+        name = localAccount.name.trimmed()
         authorization = localAccount.isWatchAccount ? .watch : authorization
         isWatchAccount = localAccount.isWatchAccount
         ledgerDetail = localAccount.ledgerDetail
@@ -590,7 +587,7 @@ extension Account {
         }
 
         if let updatedName = account.name {
-            name = updatedName
+            name = updatedName.trimmed()
         }
     }
 }

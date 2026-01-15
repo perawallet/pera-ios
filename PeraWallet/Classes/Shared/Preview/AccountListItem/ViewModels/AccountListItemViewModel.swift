@@ -69,6 +69,10 @@ extension AccountListItemViewModel {
         if let account = model as? Account {
             address = account.address
             authorization = account.authorization
+            
+            if account.authorization == .unknownToStandardRekeyed, account.authAddress != nil {
+                account.authorization = .standardToStandardRekeyed
+            }
 
             bindIcon(account)
             bindTitle(account)

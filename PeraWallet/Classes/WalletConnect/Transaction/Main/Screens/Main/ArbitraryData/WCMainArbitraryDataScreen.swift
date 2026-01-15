@@ -122,7 +122,7 @@ extension WCMainArbitraryDataScreen {
             validateArbitraryData(
                 data: data,
                 api: api!,
-                session: session!
+                sharedDataController: sharedDataController
             )
 
             stopLoading()
@@ -254,7 +254,9 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
 
     private func getFirstSignableData() -> WCArbitraryData? {
         return data.first { data in
-            data.requestedSigner.account != nil
+            if data.requestedSigner.account != nil { return true }
+            guard let address = data.requestedSigner.address, let accountHandle = sharedDataController.accountCollection[address] else { return false }
+            return accountHandle.value.authAddress != nil
         }
     }
 
@@ -266,6 +268,14 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
 
     private func signData(_ data: WCArbitraryData) {
         if let signerAccount = data.requestedSigner.account {
+            wcDataSigner.signData(
+                data,
+                for: signerAccount
+            )
+        } else if
+            let signerAddress = data.requestedSigner.address,
+            let signerAccount = sharedDataController.accountCollection[signerAddress]?.value
+        {
             wcDataSigner.signData(
                 data,
                 for: signerAccount
