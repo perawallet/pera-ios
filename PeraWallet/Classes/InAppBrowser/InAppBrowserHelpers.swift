@@ -47,7 +47,7 @@ extension InAppBrowserScreen {
     func handleStaking(_ inAppMessage: StakingInAppBrowserScreenMessage, _ message: WKScriptMessage) {
         switch inAppMessage {
         case .openSystemBrowser: handleOpenSystemBrowser(message)
-        case .closeWebView: popScreen()
+        case .closeWebView: if canDismiss() { dismissScreen() } else if canGoBack() { popScreen() }
         case .peraconnect: handlePeraConnectAction(message)
         case .requestDeviceID: handleDeviceIDRequest(message)
         case .openDappWebview: handleDappDetailAction(message)
@@ -97,7 +97,7 @@ extension InAppBrowserScreen {
                         guard let params: LogEventParams = decodeMethodParams(from: message) else { return }
                         analytics.track(params.name, payload: params.payload)
                     case .closeWebView, .onBackPressed:
-                        popScreen()
+                        if canDismiss() { dismissScreen() } else if canGoBack() { popScreen() }
                     }
                 }
             }
@@ -158,7 +158,7 @@ extension InAppBrowserScreen {
                         guard let params: LogEventParams = decodeMethodParams(from: message) else { return }
                         analytics.track(params.name, payload: params.payload)
                     case .closeWebView, .onBackPressed:
-                        dismissScreen()
+                        if canDismiss() { dismissScreen() } else if canGoBack() { popScreen() }
                     }
                 }
             }

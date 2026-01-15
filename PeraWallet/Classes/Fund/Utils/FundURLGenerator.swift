@@ -20,25 +20,37 @@ import pera_wallet_core
 final class FundURLGenerator {
     static func generateURL(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        path: String?,
+        address: String?
     ) -> URL? {
-        var components = URLComponents(string: AppEnvironment.current.fundBaseUrl)
-        components?.queryItems = makeInHouseQueryItems(
+        guard var components = URLComponents(string: AppEnvironment.current.fundBaseUrl) else { return nil }
+        
+        components.queryItems = makeInHouseQueryItems(
             theme: theme,
-            session: session
+            session: session,
+            address: address
         )
-
-        if let url = components?.url, PeraUserDefaults.enableTestXOSwapPage ?? false {
-            return url.appendingPathComponent("test")
+        
+        guard let baseURL = components.url else { return nil }
+        
+        if PeraUserDefaults.enableTestXOSwapPage ?? false {
+            return baseURL.appendingPathComponent("test")
         }
-        return components?.url
+        
+        guard let path else {
+            return baseURL
+        }
+        
+        return baseURL.appendingPathComponent(path)
     }
 
     private static func makeInHouseQueryItems(
         theme: UIUserInterfaceStyle,
-        session: Session?
+        session: Session?,
+        address: String?
     ) -> [URLQueryItem] {
-        let queryItems: [URLQueryItem] = [
+        var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "version", value: "1"),
             URLQueryItem(name: "theme", value: theme.peraRawValue),
             URLQueryItem(name: "platform", value: "ios"),
@@ -46,6 +58,10 @@ final class FundURLGenerator {
             URLQueryItem(name: "language", value: Locale.preferred.language.languageCode?.identifier),
             URLQueryItem(name: "region", value: Locale.current.region?.identifier)
         ]
+        if let address {
+            queryItems.append(URLQueryItem(name: "address", value: address))
+        }
+        
         return queryItems
     }
 }

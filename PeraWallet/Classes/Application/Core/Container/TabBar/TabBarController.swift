@@ -173,5 +173,14 @@ extension TabBarController {
         }
         screen.launchDraft = draft
     }
+    
+    func launchFund(with path: String? = nil, and address: String? = nil) {
+        selectedTab = .fund
+        
+        NotificationCenter.default.post(
+            name: .didReceiveDeepLink,
+            object: [path, address]
+        )
+    }
 }
 
