@@ -29,12 +29,14 @@ final class WCArbitraryDataViewModel {
         wcSession: WCSessionDraft,
         data: WCArbitraryData,
         senderAccount: Account?,
+        walletMetaAccount: Account?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         setFromInformationViewModel(
             from: senderAccount,
-            and: data
+            and: walletMetaAccount,
+            with: data
         )
         setToInformationViewModel(wcSession: wcSession)
         setBalanceInformationViewModel(
@@ -55,7 +57,8 @@ final class WCArbitraryDataViewModel {
 
     private func setFromInformationViewModel(
         from senderAccount: Account?,
-        and data: WCArbitraryData
+        and walletMetaAccount: Account?,
+        with data: WCArbitraryData
     ) {
         guard let senderAddress = data.signer else {
             return
@@ -63,7 +66,9 @@ final class WCArbitraryDataViewModel {
 
         let account: Account
 
-        if let senderAccount {
+        if let walletMetaAccount {
+            account = walletMetaAccount
+        } else if let senderAccount, senderAddress == senderAccount.address {
             account = senderAccount
         } else {
             account = Account(address: senderAddress)
