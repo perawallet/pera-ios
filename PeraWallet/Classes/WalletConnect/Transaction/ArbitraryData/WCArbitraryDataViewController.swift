@@ -37,7 +37,7 @@ final class WCArbitraryDataViewController: BaseScrollViewController {
     ) {
         self.data = data
         self.wcSession = wcSession
-
+        
         if let address = data.signer {
             self.account = configuration.sharedDataController.accountCollection[address]?.value
         } else {
@@ -62,10 +62,17 @@ final class WCArbitraryDataViewController: BaseScrollViewController {
     }
 
     override func bindData() {
+        let walletMetaAccount = wcSession.wcV1Session?
+                .walletMeta?
+                .accounts?
+                .first
+                .flatMap { configuration.sharedDataController.accountCollection[$0]?.value }
+        
         let viewModel = WCArbitraryDataViewModel(
             wcSession: wcSession,
             data: data,
             senderAccount: account,
+            walletMetaAccount: walletMetaAccount,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )

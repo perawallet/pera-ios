@@ -34,7 +34,12 @@ final class WCSingleArbitraryDataRequestScreen: BaseViewController {
 
         let account: Account?
 
-        if let address = data.signer {
+        if
+            let walletMetaAddress = dataSource.wcSession.wcV1Session?.walletMeta?.accounts?.first,
+            let walletMetaAccount = sharedDataController.accountCollection[walletMetaAddress]?.value
+        {
+            account = walletMetaAccount
+        } else if let address = data.signer {
             account = sharedDataController.accountCollection[address]?.value
         } else {
             account = nil

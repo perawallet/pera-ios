@@ -104,7 +104,15 @@ extension WCMainArbitraryDataDataSource: UICollectionViewDataSource {
             fatalError("Unexpected index")
         }
 
-        let account = data.requestedSigner.account
+        var account = data.requestedSigner.account
+        
+        if
+            let walletMetaAddress = wcSession.wcV1Session?.walletMeta?.accounts?.first,
+            let walletMetaAccount = sharedDataController.accountCollection[walletMetaAddress]?.value
+        {
+            account = walletMetaAccount
+        }
+        
         return dequeueSingleSignerCell(
             in: collectionView,
             at: indexPath,
