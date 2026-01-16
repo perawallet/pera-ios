@@ -48,10 +48,10 @@ struct HomeQuickActionsViewTheme:
         ]
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
-            .title(Self.makeActionTitle(title: String(localized: "quick-actions-buy-algo-title")))
+            .title(Self.makeActionTitle(title: String(localized: "title-buy-sell")))
         ]
         self.fundAction = [
-            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
+            .icon(Self.makeActionIcon(icon: "fund-icon-badge")),
             .title(Self.makeActionTitle(title: String(localized: "title-fund")))
         ]
     }

@@ -97,7 +97,7 @@ final class MenuViewController: BaseViewController {
         
         baseOptions.append(nftsOption)
         
-        baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .receive, .stake, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
+        baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .stake, .receive, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
         
         if showCards {
             baseOptions.append(cardsOption)

@@ -72,7 +72,7 @@ enum MenuOption: Equatable {
         case .buyAlgo:
             return UIImage(named: "icon-menu-buy-algo")
         case .buy:
-            return UIImage(named: "icon-menu-buy-algo")
+            return UIImage(named: "icon-menu-buy-gift-card")
         case .receive:
             return UIImage(named: "icon-menu-receive")
         case .inviteFriends:
