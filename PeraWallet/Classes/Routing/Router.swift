@@ -2883,9 +2883,12 @@ extension Router {
             )
         )?.absoluteString
         let discoverBaseUrl = URL(string: AppEnvironment.current.discoverBaseUrl)?.absoluteString
+        let fundBaseUrl = URL(string: AppEnvironment.current.fundBaseUrl)?.absoluteString
+        
         return
             dappURL.trimmingCharacters(in: characterSet) == cardsBaseUrl?.trimmingCharacters(in: characterSet) ||
-            dappURL.trimmingCharacters(in: characterSet) == discoverBaseUrl?.trimmingCharacters(in: characterSet)
+            dappURL.trimmingCharacters(in: characterSet) == discoverBaseUrl?.trimmingCharacters(in: characterSet) ||
+            dappURL.trimmingCharacters(in: characterSet) == fundBaseUrl?.trimmingCharacters(in: characterSet)
     }
     
     private func handleWalletConnectV1ConnectEvent(
