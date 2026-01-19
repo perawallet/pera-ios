@@ -32,6 +32,7 @@ class InAppBrowserScreen:
     // MARK: - Properties
     
     var allowsPullToRefresh: Bool = true
+    var useSafeAreaBottom: Bool { false }
     var notificationObservations: [NSObjectProtocol] = []
     private var isViewLayoutLoaded = false
     
@@ -207,7 +208,11 @@ class InAppBrowserScreen:
         webView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
             $0.leading == 0
-            $0.bottom.safeEqualToBottom(of: self)
+            if useSafeAreaBottom {
+                $0.bottom.safeEqualToBottom(of: self)
+            } else {
+                $0.bottom == 0
+            }
             $0.trailing == 0
         }
 
