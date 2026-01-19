@@ -20,6 +20,8 @@ import pera_wallet_core
 
 class FundInAppBrowserScreen: InAppBrowserScreen {
     
+    override var useSafeAreaBottom: Bool { true }
+    
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
         let versionUserAgent = version.unwrap { "pera_ios_" + $0 }

@@ -177,7 +177,7 @@ extension InAppBrowserScreen {
     }
     
     private func handleNotifyUser(_ message: WKScriptMessage) {
-        guard let params = message.decode(NotifyParams.self)?.params else { return }
+        guard let params = message.decodeJSONRPCRequest(NotifyParams.self)?.params else { return }
         handleNotifyUser(params: params)
     }
     
@@ -276,32 +276,8 @@ extension InAppBrowserScreen {
         )
     }
     
-    private func handleCanOpenUri(_ message: WKScriptMessage) {
-        guard
-            let response = message.decode(URIParams.self),
-            let id = response.id,
-            let params = response.params,
-            let uri = URL(string: params.uri)
-        else { return }
-        
-        webView.evaluateJavaScript(
-            Scripts.message(
-                id: id,
-                result: UIApplication.shared.canOpenURL(uri).description
-            )
-        )
-    }
-    
-    private func handleOpenNativeUri(_ message: WKScriptMessage) {
-        guard
-            let params = message.decode(URIParams.self)?.params,
-            let uri = URL(string: params.uri)
-        else { return }
-        UIApplication.shared.open(uri)
-    }
-    
     private func handleTokenDetailAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(DiscoverAssetParameters.self)?.params else { return }
+        guard let params = message.decode(DiscoverAssetParameters.self) else { return }
         navigateToAssetDetail(params)
     }
     
@@ -310,7 +286,7 @@ extension InAppBrowserScreen {
     }
     
     private func handleTokenAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(DiscoverSwapParameters.self)?.params else { return }
+        guard let params = message.decode(DiscoverSwapParameters.self) else { return }
         switch params.action {
         case .buyAlgo: navigateToBuyAlgo()
         default: navigateToSwap(with: params)
@@ -348,7 +324,7 @@ extension InAppBrowserScreen {
     
     private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
+        guard let params = message.decode(DiscoverGenericParameters.self) else { return }
         openInSystemBrowser(params.url)
     }
     
@@ -368,7 +344,7 @@ extension InAppBrowserScreen {
     
     private func handleDappDetailAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverDappParamaters.self)?.params else { return }
+        guard let params = message.decode(DiscoverDappParamaters.self) else { return }
         navigateToDappDetail(params)
     }
 
@@ -401,7 +377,7 @@ extension InAppBrowserScreen {
     
     private func handleNewScreenAction(_ message: WKScriptMessage) {
         if !message.isAcceptable { return }
-        guard let params = message.decode(DiscoverGenericParameters.self)?.params else { return }
+        guard let params = message.decode(DiscoverGenericParameters.self) else { return }
         navigateToDiscoverGeneric(params)
     }
 
@@ -410,7 +386,7 @@ extension InAppBrowserScreen {
     }
     
     private func handlePaymentRequestAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(BidaliPaymentParameters.self)?.params,
+        guard let params = message.decode(BidaliPaymentParameters.self),
               let paymentRequest = params.data else {
             presentGenericErrorBanner()
             return
@@ -491,7 +467,7 @@ extension InAppBrowserScreen {
     }
     
     private func handleOpenURLRequestAction(_ message: WKScriptMessage) {
-        guard let params = message.decode(BidaliOpenURLParameters.self)?.params,
+        guard let params = message.decode(BidaliOpenURLParameters.self),
               let openURLRequest = params.data else {
             presentGenericErrorBanner()
             return
