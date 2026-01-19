@@ -164,5 +164,7 @@
 			<string>QuickAction.ScanQR</string>
 		</dict>
 	</array>
+    <key>UIDesignRequiresCompatibility</key>
+    <true/>
 </dict>
 </plist>
