@@ -211,7 +211,6 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             }
             openInnerTransactionList(with: updatedInnerTxs, and: eventHandler)
         }
-
     }
     
     private func openInnerTransactionList(with innerTransactions: [TransactionItem]?, and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
