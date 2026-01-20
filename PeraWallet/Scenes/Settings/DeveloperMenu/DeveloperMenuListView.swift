@@ -67,7 +67,7 @@ struct DeveloperMenuListView: View {
             }
             VStack {
                 Spacer()
-                RoundedButton(text: "settings-secret-dev-menu-export-logs", style: .primary, isEnabled: true) {
+                RoundedButton(contentType: .text("settings-secret-dev-menu-export-logs"), style: .primary, isEnabled: true) {
                     createLogsFile()
                 }
                 FormButton(text: "disable-dev-options-title", style: .primary) {

@@ -55,7 +55,7 @@ struct CreateJointAccountOverlay: View {
                             .padding(.top, 12.0)
                     }
                     .padding(.horizontal, 24.0)
-                    RoundedButton(text: "common-continue", style: .primary, isEnabled: true, onTap: onButtonTap)
+                    RoundedButton(contentType: .text("common-continue"), style: .primary, isEnabled: true, onTap: onButtonTap)
                         .padding(.all, 32.0)
                 }
                 .background(Color.Defaults.bg)
