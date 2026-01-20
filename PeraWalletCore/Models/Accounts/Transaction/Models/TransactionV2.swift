@@ -36,6 +36,7 @@ public final class TransactionV2:
     public let asset: TransactionV2Asset?
     public let applicationId: String?
     public let innerTransactionCount: Int?
+    public let innerTransactions: [TransactionV2]?
     
     public var status: TransactionStatus? {
         get {
@@ -45,7 +46,7 @@ public final class TransactionV2:
         set { }
     }
     
-    public var allInnerTransactionsCount: Int { innerTransactionCount ?? 0 }
+    public var allInnerTransactionsCount: Int { innerTransactionCount ?? innerTransactions?.count ?? 0 }
     
     public var contact: Contact?
     
@@ -116,6 +117,7 @@ public final class TransactionV2:
         self.asset = apiModel.asset
         self.applicationId = apiModel.applicationId
         self.innerTransactionCount = apiModel.innerTransactionCount
+        self.innerTransactions = apiModel.innerTransactions.unwrapMap(TransactionV2.init)
     }
 
     public func encode() -> APIModel {
@@ -135,6 +137,7 @@ public final class TransactionV2:
         apiModel.asset = asset
         apiModel.applicationId = applicationId
         apiModel.innerTransactionCount = innerTransactionCount
+        apiModel.innerTransactions = innerTransactions.map { $0.encode() }
         return apiModel
     }
 }
@@ -156,6 +159,7 @@ extension TransactionV2 {
         var asset: TransactionV2Asset?
         var applicationId: String?
         var innerTransactionCount: Int?
+        var innerTransactions: [TransactionV2.APIModel]?
 
         public init() {
             self.id = nil
@@ -173,6 +177,7 @@ extension TransactionV2 {
             self.asset = nil
             self.applicationId = nil
             self.innerTransactionCount = 0
+            self.innerTransactions = []
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -191,6 +196,7 @@ extension TransactionV2 {
             case asset
             case applicationId = "application_id"
             case innerTransactionCount = "inner_transaction_count"
+            case innerTransactions = "inner_txns"
         }
     }
 }

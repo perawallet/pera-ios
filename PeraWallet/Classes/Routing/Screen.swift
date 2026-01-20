@@ -75,7 +75,7 @@ indirect enum Screen {
     )
     case keyRegTransactionDetail(
         account: Account,
-        transaction: Transaction
+        transaction: TransactionItem
     )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetListDataController)

@@ -171,7 +171,7 @@ extension InnerTransactionListViewController {
         }
     }
 
-    private func openAppCallTransactionDetail(_ transaction: Transaction) {
+    private func openAppCallTransactionDetail(_ transaction: TransactionItem) {
         let draft = dataController.draft
         let account = draft.account
 
@@ -187,7 +187,7 @@ extension InnerTransactionListViewController {
     }
 
     private func openKeyRegTransactionDetail(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         open(
             .keyRegTransactionDetail(
@@ -199,7 +199,7 @@ extension InnerTransactionListViewController {
     }
 
     private func openTransactionDetail(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         open(
             .transactionDetail(
@@ -211,14 +211,18 @@ extension InnerTransactionListViewController {
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> [Asset]? {
+    private func getAssetDetailForTransactionType(_ transaction: TransactionItem) -> [Asset]? {
         let draft = dataController.draft
 
         switch draft.type {
         case .all:
-            let assetID =
-            transaction.assetTransfer?.assetId ??
-            transaction.assetFreeze?.assetId
+
+            
+            let assetID: Int64? = {
+                if let tx = transaction as? Transaction { return tx.assetTransfer?.assetId ?? tx.assetFreeze?.assetId }
+                if let tx = transaction as? TransactionV2 { return Int64(tx.asset?.assetId ?? .empty) }
+                return nil
+            }()
 
             if let assetID = assetID,
                 let decoration = sharedDataController.assetDetailCollection[assetID] {
@@ -229,7 +233,8 @@ extension InnerTransactionListViewController {
                 return [standardAsset]
             }
 
-            if let applicationCall = transaction.applicationCall,
+            if let tx = transaction as? Transaction,
+               let applicationCall = tx.applicationCall,
                let foreignAssets = applicationCall.foreignAssets {
                 let assets: [StandardAsset] = foreignAssets.compactMap { ID in
                     if let decoration = sharedDataController.assetDetailCollection[ID] {

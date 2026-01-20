@@ -203,24 +203,39 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             }
         }
         
-        guard let tx = transaction as? Transaction, let innerTransactions = tx.innerTransactions else { return }
-
-        open(
-            .innerTransactionList(
-                dataController: InnerTransactionListLocalDataController(
-                    draft: InnerTransactionListDraft(
-                        type: transactionTypeFilter,
-                        asset: assets?.first,
-                        account: account,
-                        innerTransactions: innerTransactions
+        if let tx = transaction as? Transaction, let innerTransactions = tx.innerTransactions {
+            open(
+                .innerTransactionList(
+                    dataController: InnerTransactionListLocalDataController(
+                        draft: InnerTransactionListDraft(
+                            type: transactionTypeFilter,
+                            asset: assets?.first,
+                            account: account,
+                            innerTransactions: innerTransactions
+                        ),
+                        sharedDataController: sharedDataController,
+                        currency: sharedDataController.currency
                     ),
-                    sharedDataController: sharedDataController,
-                    currency: sharedDataController.currency
+                    eventHandler: eventHandler
                 ),
-                eventHandler: eventHandler
-            ),
-            by: .push
-        )
+                by: .push
+            )
+        }
+        
+//        guard let transactionId = transaction.id else {
+//            return
+//        }
+        
+//        api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { response in
+//            switch response {
+//            case .success(let transaction):
+//                break
+//            case .failure(let apiError, _):
+//                break
+//            }
+//        }
+        
+
     }
 
     func appCallTransactionDetailViewDidTapShowMoreAssets(

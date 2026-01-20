@@ -68,6 +68,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    
+    @discardableResult
+    public func fetchTransactionDetailV2(
+        _ draft: TransactionV2FetchDetailDraft,
+        onCompleted handler: @escaping (Response.ModelResult<TransactionV2>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.accountTransactionDetail, args: draft.account.address, draft.transactionId)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func sendTransaction(

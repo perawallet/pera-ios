@@ -23,13 +23,13 @@ struct KeyRegInnerTransactionPreviewViewModel:
     private(set) var title: EditText?
     private(set) var amountViewModel: TransactionAmountViewModel?
 
-    init(_ transaction: Transaction) {
+    init(_ transaction: TransactionItem) {
         bindTitle(transaction)
     }
 }
 
 extension KeyRegInnerTransactionPreviewViewModel {
-    private mutating func bindTitle(_ transaction: Transaction) {
+    private mutating func bindTitle(_ transaction: TransactionItem) {
         title = Self.getTitle(transaction.sender.shortAddressDisplay)
     }
 }

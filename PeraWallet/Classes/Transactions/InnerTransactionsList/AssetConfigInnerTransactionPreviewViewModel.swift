@@ -24,7 +24,7 @@ struct AssetConfigInnerTransactionPreviewViewModel:
     var amountViewModel: TransactionAmountViewModel?
 
     init(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         bindTitle(transaction)
     }
@@ -32,7 +32,7 @@ struct AssetConfigInnerTransactionPreviewViewModel:
 
 extension AssetConfigInnerTransactionPreviewViewModel {
     private mutating func bindTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         title = Self.getTitle(
             transaction.sender.shortAddressDisplay

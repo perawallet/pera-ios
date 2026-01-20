@@ -24,7 +24,7 @@ struct AssetInnerTransactionPreviewViewModel:
     var amountViewModel: TransactionAmountViewModel?
 
     init(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         asset: Asset?,
         currency: CurrencyProvider,
@@ -43,7 +43,7 @@ struct AssetInnerTransactionPreviewViewModel:
 
 extension AssetInnerTransactionPreviewViewModel {
     private mutating func bindTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         title = Self.getTitle(
             transaction.sender.shortAddressDisplay
@@ -51,23 +51,32 @@ extension AssetInnerTransactionPreviewViewModel {
     }
 
     private mutating func bindAmount(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         asset: Asset?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let assetTransfer = transaction.assetTransfer,
-              let asset = asset else {
-            return
-        }
+        guard let asset = asset else { return }
+        
+        let receiverAddress: String? = {
+            if let tx = transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.receiverAddress }
+            if let tx = transaction as? TransactionV2 { return tx.receiver }
+            return nil
+        }()
+        
+        let amount: Decimal? = {
+            if let tx = transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.amount.assetAmount(fromFraction: asset.decimals) }
+            if let tx = transaction as? TransactionV2 { return tx.amountValue }
+            return nil
+        }()
+        
+        guard let amount else { return }
 
-        if assetTransfer.receiverAddress == transaction.sender {
+        if receiverAddress == transaction.sender {
             amountViewModel = TransactionAmountViewModel(
                 .normal(
-                    amount: assetTransfer.amount.assetAmount(
-                        fromFraction: asset.decimals
-                    ),
+                    amount: amount,
                     isAlgos: false,
                     fraction: asset.decimals,
                     assetSymbol: getAssetSymbol(
@@ -81,12 +90,10 @@ extension AssetInnerTransactionPreviewViewModel {
             return
         }
 
-        if assetTransfer.receiverAddress == account.address {
+        if receiverAddress == account.address {
             amountViewModel = TransactionAmountViewModel(
                 .positive(
-                    amount: assetTransfer.amount.assetAmount(
-                        fromFraction: asset.decimals
-                    ),
+                    amount: amount,
                     isAlgos: false,
                     fraction: asset.decimals,
                     assetSymbol: getAssetSymbol(
@@ -103,9 +110,7 @@ extension AssetInnerTransactionPreviewViewModel {
         if transaction.sender == account.address {
             amountViewModel = TransactionAmountViewModel(
                 .negative(
-                    amount: assetTransfer.amount.assetAmount(
-                        fromFraction: asset.decimals
-                    ),
+                    amount: amount,
                     isAlgos: false,
                     fraction: asset.decimals,
                     assetSymbol: getAssetSymbol(
@@ -120,9 +125,7 @@ extension AssetInnerTransactionPreviewViewModel {
 
         amountViewModel = TransactionAmountViewModel(
             .normal(
-                amount: assetTransfer.amount.assetAmount(
-                    fromFraction: asset.decimals
-                ),
+                amount: amount,
                 isAlgos: false,
                 fraction: asset.decimals,
                 assetSymbol: getAssetSymbol(
