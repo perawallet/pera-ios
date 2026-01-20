@@ -46,10 +46,14 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
     override func customizeTabBarAppearence() {
         tabBarHidden = false
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadPeraURL()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadPeraURL()
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0) { [weak self] in
             guard let self else { return }
             self.updateTheme(self.traitCollection.userInterfaceStyle)
