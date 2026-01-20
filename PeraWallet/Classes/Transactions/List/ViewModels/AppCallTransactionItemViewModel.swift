@@ -26,10 +26,13 @@ struct AppCallTransactionItemViewModel:
     var subtitle: EditText?
     var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
+    let isAssetDetailV2Enabled: Bool
 
     init(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        isAssetDetailV2Enabled: Bool
     ) {
+        self.isAssetDetailV2Enabled = isAssetDetailV2Enabled
         bindID(draft)
         bindIcon(draft)
         bindTitle(draft)
@@ -68,16 +71,8 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindInnerTransactions(
         _ draft: TransactionViewModelDraft
     ) {
-        guard
-            let transaction = draft.transaction as? Transaction,
-            let innerTransactions = transaction.innerTransactions,
-            !innerTransactions.isEmpty
-        else {
-            return
+        if draft.transaction.allInnerTransactionsCount > 0 {
+            transactionAmountViewModel = TransactionAmountViewModel(innerTransactionCount: draft.transaction.allInnerTransactionsCount)
         }
-
-        transactionAmountViewModel = TransactionAmountViewModel(
-            innerTransactionCount: transaction.allInnerTransactionsCount
-        )
     }
 }

@@ -30,6 +30,9 @@ class TransactionHistoryContextView:
     
     private var titleLeadingWithIcon: SnapKit.Constraint?
     private var titleLeadingWithoutIcon: SnapKit.Constraint?
+    
+    private var amountDefaultConstraints: [SnapKit.Constraint] = []
+    private var amountAssetDetailV2Constraints: [SnapKit.Constraint] = []
 
     func customize(
         _ theme: TransactionHistoryContextViewTheme
@@ -118,19 +121,35 @@ extension TransactionHistoryContextView {
         _ theme: TransactionHistoryContextViewTheme
     ) {
         transactionAmountView.customize(theme.amount)
+        transactionAmountView.isUserInteractionEnabled = false
 
         addSubview(transactionAmountView)
         transactionAmountView.fitToHorizontalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
+        
         transactionAmountView.snp.makeConstraints {
-            $0.centerY == 0
-            $0.top == theme.verticalInset
-            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenTitleAndAmount
-            $0.bottom == theme.verticalInset
-            $0.trailing == theme.horizontalInset
+            amountDefaultConstraints = [
+                $0.centerY.equalToSuperview().constraint,
+                $0.top.equalTo(theme.verticalInset).constraint,
+                $0.leading.equalTo(contentView.snp.trailing).offset(theme.minSpacingBetweenTitleAndAmount).constraint,
+                $0.bottom.equalTo(theme.verticalInset).constraint,
+                $0.trailing.equalToSuperview().inset(theme.horizontalInset).constraint
+            ]
         }
+
+        transactionAmountView.snp.makeConstraints {
+            amountAssetDetailV2Constraints = [
+                $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.minSpacingBetweenSubtitleAndAmount).constraint,
+                $0.leading.equalTo(titleLabel.snp.leading).constraint,
+                $0.trailing.lessThanOrEqualToSuperview().constraint,
+                $0.bottom.lessThanOrEqualToSuperview().offset(theme.amountBottomOffset).constraint
+            ]
+        }
+
+        amountDefaultConstraints.forEach { $0.deactivate() }
+        amountAssetDetailV2Constraints.forEach { $0.deactivate() }
     }
 }
 
@@ -154,6 +173,16 @@ extension TransactionHistoryContextView {
 
         if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
             transactionAmountView.bindData(transactionAmountViewModel)
+        }
+        
+        let isAssetDetailV2Enabled = (viewModel as? AppCallTransactionItemViewModel)?.isAssetDetailV2Enabled == true
+
+        if isAssetDetailV2Enabled {
+            amountDefaultConstraints.forEach { $0.deactivate() }
+            amountAssetDetailV2Constraints.forEach { $0.activate() }
+        } else {
+            amountAssetDetailV2Constraints.forEach { $0.deactivate() }
+            amountDefaultConstraints.forEach { $0.activate() }
         }
     }
 

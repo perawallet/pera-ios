@@ -50,6 +50,9 @@ public final class PendingTransaction:
         return assetReceiver ?? algosReceiver
     }
     
+    
+    public var allInnerTransactionsCount: Int { 0 }
+    
     public func isPending() -> Bool { true }
     
     public var isSelfTransaction: Bool {

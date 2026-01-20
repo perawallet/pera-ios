@@ -24,6 +24,7 @@ public protocol TransactionItem {
     var isSelfTransaction: Bool { get }
     var appId: Int64? { get }
     var status: TransactionStatus? { get set }
+    var allInnerTransactionsCount: Int { get }
     
     func isPending() -> Bool
     func isAssetAdditionTransaction(for address: String) -> Bool

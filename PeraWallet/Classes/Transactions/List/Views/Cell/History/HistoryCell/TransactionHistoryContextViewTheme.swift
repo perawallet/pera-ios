@@ -25,9 +25,11 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
     let titleMinWidthRatio: LayoutMetric
     let minSpacingBetweenTitleAndAmount: LayoutMetric
     let subtitleLabel: TextStyle
+    let minSpacingBetweenSubtitleAndAmount: LayoutMetric
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let subtitleTopInset: LayoutMetric
+    let amountBottomOffset: LayoutMetric
     let amount: TransactionAmountViewTheme
 
     init(_ family: LayoutFamily) {
@@ -48,10 +50,12 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
-
+        self.minSpacingBetweenSubtitleAndAmount = 3
+        
         self.horizontalInset = 24
         self.verticalInset = 14
         self.subtitleTopInset = 7
+        self.amountBottomOffset = 4
         self.amount = TransactionAmountViewSmallerTheme()
     }
 }

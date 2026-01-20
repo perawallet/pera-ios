@@ -178,8 +178,7 @@ extension Transaction {
     }
 
     public var allInnerTransactionsCount: Int {
-        guard let innerTransactions = innerTransactions,
-              !innerTransactions.isEmpty else {
+        guard let innerTransactions, !innerTransactions.isEmpty else {
             return .zero
         }
 

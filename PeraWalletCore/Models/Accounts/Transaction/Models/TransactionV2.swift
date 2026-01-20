@@ -35,6 +35,7 @@ public final class TransactionV2:
     public let closeTo: String?
     public let asset: TransactionV2Asset?
     public let applicationId: String?
+    public let innerTransactionCount: Int?
     
     public var status: TransactionStatus? {
         get {
@@ -43,6 +44,9 @@ public final class TransactionV2:
         }
         set { }
     }
+    
+    public var allInnerTransactionsCount: Int { innerTransactionCount ?? 0 }
+    
     public var contact: Contact?
     
     public var isSelfTransaction: Bool {
@@ -111,6 +115,7 @@ public final class TransactionV2:
         self.closeTo = apiModel.closeTo
         self.asset = apiModel.asset
         self.applicationId = apiModel.applicationId
+        self.innerTransactionCount = apiModel.innerTransactionCount
     }
 
     public func encode() -> APIModel {
@@ -129,6 +134,7 @@ public final class TransactionV2:
         apiModel.closeTo = closeTo
         apiModel.asset = asset
         apiModel.applicationId = applicationId
+        apiModel.innerTransactionCount = innerTransactionCount
         return apiModel
     }
 }
@@ -149,6 +155,7 @@ extension TransactionV2 {
         var closeTo: String?
         var asset: TransactionV2Asset?
         var applicationId: String?
+        var innerTransactionCount: Int?
 
         public init() {
             self.id = nil
@@ -165,6 +172,7 @@ extension TransactionV2 {
             self.closeTo = nil
             self.asset = nil
             self.applicationId = nil
+            self.innerTransactionCount = 0
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -182,6 +190,7 @@ extension TransactionV2 {
             case closeTo = "close_to"
             case asset
             case applicationId = "application_id"
+            case innerTransactionCount = "inner_transaction_count"
         }
     }
 }
