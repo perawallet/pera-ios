@@ -7299,6 +7299,12 @@
 		D435F9BD2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D435F9BE2DE88F1B004B7D61 /* share.json in Resources */ = {isa = PBXBuildFile; fileRef = D435F9BB2DE88F1B004B7D61 /* share.json */; };
 		D44082712E857CE400495AA4 /* DecimalInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44082702E857CE100495AA4 /* DecimalInputFormatter.swift */; };
+		D443840F2F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443840E2F20D2C400824E59 /* AppCallTransactionDetailDataController.swift */; };
+		D44384102F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443840E2F20D2C400824E59 /* AppCallTransactionDetailDataController.swift */; };
+		D44384112F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443840E2F20D2C400824E59 /* AppCallTransactionDetailDataController.swift */; };
+		D44384132F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44384122F20D30700824E59 /* AppCallTransactionDetailLocalDataController.swift */; };
+		D44384142F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44384122F20D30700824E59 /* AppCallTransactionDetailLocalDataController.swift */; };
+		D44384152F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44384122F20D30700824E59 /* AppCallTransactionDetailLocalDataController.swift */; };
 		D446A74A272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
 		D446A74B272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
 		D446A74C272ABEF50081D60B /* light-rekey.json in Resources */ = {isa = PBXBuildFile; fileRef = D446A749272ABEF50081D60B /* light-rekey.json */; };
@@ -9483,6 +9489,8 @@
 		D44265C7277481D00094E2CA /* TransactionHistoryContextViewTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextViewTheme.swift; sourceTree = "<group>"; };
 		D44265CB2774C1F10094E2CA /* PendingTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionViewTheme.swift; sourceTree = "<group>"; };
 		D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerOverlayViewTheme.swift; sourceTree = "<group>"; };
+		D443840E2F20D2C400824E59 /* AppCallTransactionDetailDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCallTransactionDetailDataController.swift; sourceTree = "<group>"; };
+		D44384122F20D30700824E59 /* AppCallTransactionDetailLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCallTransactionDetailLocalDataController.swift; sourceTree = "<group>"; };
 		D443A06E27E2398B00D2E52F /* SendCollectibleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewController.swift; sourceTree = "<group>"; };
 		D443A07327E23A8900D2E52F /* SendCollectibleActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleActionView.swift; sourceTree = "<group>"; };
 		D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleActionViewTheme.swift; sourceTree = "<group>"; };
@@ -22478,6 +22486,8 @@
 				D4979455287D6FE9004FBF8E /* AppCallTransactionAssetInformationView.swift */,
 				D497945D287D7123004FBF8E /* AppCallTransactionAssetInformationViewModel.swift */,
 				D4979459287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift */,
+				D443840E2F20D2C400824E59 /* AppCallTransactionDetailDataController.swift */,
+				D44384122F20D30700824E59 /* AppCallTransactionDetailLocalDataController.swift */,
 				D40D5EB0287725DE0051A92B /* AppCallTransactionDetailView.swift */,
 				D40D5EAC287725840051A92B /* AppCallTransactionDetailViewController.swift */,
 				D40D5EB428772DC40051A92B /* AppCallTransactionDetailViewModel.swift */,
@@ -26210,6 +26220,7 @@
 				59167D052E464C76002184C2 /* MenuListItemView.swift in Sources */,
 				59167D062E464C76002184C2 /* MenuListViewCell.swift in Sources */,
 				59167D072E464C76002184C2 /* NotificationFilterDataSource.swift in Sources */,
+				D44384152F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */,
 				59167D082E464C76002184C2 /* NotificationFilterListLayout.swift in Sources */,
 				59167D092E464C76002184C2 /* NotificationFilterViewController.swift in Sources */,
 				59167D0A2E464C76002184C2 /* NotificationFilterViewControllerTheme.swift in Sources */,
@@ -26849,6 +26860,7 @@
 				59167F752E464C76002184C2 /* TransactionCustomRangeSelectionViewController.swift in Sources */,
 				59167F762E464C76002184C2 /* AllTransactionListGrouping.swift in Sources */,
 				59167F772E464C76002184C2 /* TransactionListGrouping.swift in Sources */,
+				D44384102F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */,
 				59167F782E464C76002184C2 /* TransactionsAPIDataController.swift in Sources */,
 				59167F792E464C76002184C2 /* TransactionsDataController.swift in Sources */,
 				59167F7A2E464C76002184C2 /* TransactionsDataSource.swift in Sources */,
@@ -28384,6 +28396,7 @@
 				59E602862E4A712500CCA99B /* NotificationFilterDataSource.swift in Sources */,
 				59E602872E4A712500CCA99B /* NotificationFilterListLayout.swift in Sources */,
 				59E602882E4A712500CCA99B /* NotificationFilterViewController.swift in Sources */,
+				D44384132F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */,
 				59E602892E4A712500CCA99B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				59E6028A2E4A712500CCA99B /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
 				59E6028B2E4A712500CCA99B /* ToggleTitleHeaderView.swift in Sources */,
@@ -29023,6 +29036,7 @@
 				59E604F52E4A712500CCA99B /* AllTransactionListGrouping.swift in Sources */,
 				59E604F62E4A712500CCA99B /* TransactionListGrouping.swift in Sources */,
 				59E604F72E4A712500CCA99B /* TransactionsAPIDataController.swift in Sources */,
+				D44384112F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */,
 				59E604F82E4A712500CCA99B /* TransactionsDataController.swift in Sources */,
 				59E604F92E4A712500CCA99B /* TransactionsDataSource.swift in Sources */,
 				59E604FA2E4A712500CCA99B /* TransactionsListLayout.swift in Sources */,
@@ -30558,6 +30572,7 @@
 				59E60AFE2E4A71D000CCA99B /* NotificationFilterDataSource.swift in Sources */,
 				59E60AFF2E4A71D000CCA99B /* NotificationFilterListLayout.swift in Sources */,
 				59E60B002E4A71D000CCA99B /* NotificationFilterViewController.swift in Sources */,
+				D44384142F20D30F00824E59 /* AppCallTransactionDetailLocalDataController.swift in Sources */,
 				59E60B012E4A71D000CCA99B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				59E60B022E4A71D000CCA99B /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
 				59E60B032E4A71D000CCA99B /* ToggleTitleHeaderView.swift in Sources */,
@@ -31197,6 +31212,7 @@
 				59E60D6E2E4A71D000CCA99B /* TransactionListGrouping.swift in Sources */,
 				59E60D6F2E4A71D000CCA99B /* TransactionsAPIDataController.swift in Sources */,
 				59E60D702E4A71D000CCA99B /* TransactionsDataController.swift in Sources */,
+				D443840F2F20D2D300824E59 /* AppCallTransactionDetailDataController.swift in Sources */,
 				59E60D712E4A71D000CCA99B /* TransactionsDataSource.swift in Sources */,
 				59E60D722E4A71D000CCA99B /* TransactionsListLayout.swift in Sources */,
 				59E60D732E4A71D000CCA99B /* TransactionsListLayout+Theme.swift in Sources */,
