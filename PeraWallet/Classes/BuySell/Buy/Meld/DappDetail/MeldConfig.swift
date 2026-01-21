@@ -21,6 +21,6 @@ struct MeldConfig {
     let url: String
 
     init(address: PublicKey) {
-        self.url = "https://mainnet.staging.api.perawallet.app/v1/onramp-services/meld/redirect-to-fluidmoney/?walletAddress=\(address)"
+        self.url = "\(AppEnvironment.current.meldMainNetBaseUrl)?walletAddress=\(address)"
     }
 }
