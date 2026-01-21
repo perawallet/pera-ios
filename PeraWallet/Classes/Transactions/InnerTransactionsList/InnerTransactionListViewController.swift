@@ -46,6 +46,8 @@ final class InnerTransactionListViewController:
 
     private let dataController: InnerTransactionListDataController
     private let theme: InnerTransactionListViewControllerTheme
+    
+    private(set) lazy var appCallTransactionDetailDataController = AppCallTransactionDetailLocalDataController(api)
 
     init(
         dataController: InnerTransactionListDataController,
@@ -174,16 +176,43 @@ extension InnerTransactionListViewController {
     private func openAppCallTransactionDetail(_ transaction: TransactionItem) {
         let draft = dataController.draft
         let account = draft.account
+        
+        guard let tx = transaction as? TransactionV2, let txId = tx.id else {
+            open(
+                .appCallTransactionDetail(
+                    account: account,
+                    transaction: transaction,
+                    transactionTypeFilter: draft.type,
+                    assets: getAssetDetailForTransactionType(transaction)
+                ),
+                by: .present
+            )
+            return
+        }
 
-        open(
-            .appCallTransactionDetail(
-                account: account,
-                transaction: transaction,
-                transactionTypeFilter: draft.type,
-                assets: getAssetDetailForTransactionType(transaction)
-            ),
-            by: .present
-        )
+        appCallTransactionDetailDataController.eventHandler = { [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didLoad(transaction: let transactionDetail):
+                open(
+                    .appCallTransactionDetail(
+                        account: account,
+                        transaction: transactionDetail,
+                        transactionTypeFilter: draft.type,
+                        assets: getAssetDetailForTransactionType(transactionDetail)
+                    ),
+                    by: .present
+                )
+                return
+            case .didFail:
+                configuration.bannerController?.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: String(localized: "title-generic-error")
+                )
+            }
+        }
+        appCallTransactionDetailDataController.loadTransactionDetail(account: account, transactionId: txId)
+
     }
 
     private func openKeyRegTransactionDetail(

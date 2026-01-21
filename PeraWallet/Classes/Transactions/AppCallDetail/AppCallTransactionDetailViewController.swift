@@ -193,55 +193,35 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
     func appCallTransactionDetailViewDidTapShowInnerTransactions(
         _ transactionDetailView: AppCallTransactionDetailView
     ) {
-        let eventHandler: InnerTransactionListViewController.EventHandler = {
-            [weak self] event in
+        let eventHandler: InnerTransactionListViewController.EventHandler = { [weak self] event in
             guard let self else { return }
-
             switch event {
-            case .performClose:
-                self.dismiss(animated: true)
+            case .performClose: self.dismiss(animated: true)
             }
         }
         
-        if let tx = transaction as? Transaction, let innerTransactions = tx.innerTransactions {
-            print("---TransactionV1")
-            openInnerTransactionList(with: innerTransactions, and: eventHandler)
+        if let tx = transaction as? Transaction {
+            openInnerTransactionList(with: tx.innerTransactions, and: eventHandler)
         }
         
-        if let tx = transaction as? TransactionV2 {
-            print("---TransactionV2")
-            guard let transactionId = transaction.id else {
-                print("---transaction id nil")
-                if let innerTransactions = tx.innerTransactions, innerTransactions.isNonEmpty {
-                    openInnerTransactionList(with: innerTransactions, and: eventHandler)
-                }
-                return
+        if let tx = transaction as? TransactionV2, let innerTransactions = tx.innerTransactions {
+            let updatedInnerTxs = innerTransactions.map { innerTx in
+                innerTx.parentId = tx.id
+                return innerTx
             }
-            
-            api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { [weak self] response in
-                guard let self else { return }
-                print("---fetchTransactionDetailV2")
-                switch response {
-                case .success(let transaction):
-                    if let innerTransactions = transaction.innerTransactions, innerTransactions.isNonEmpty {
-                        openInnerTransactionList(with: innerTransactions, and: eventHandler)
-                    }
-                case .failure(let apiError, _):
-                    break
-                }
-            }
+            openInnerTransactionList(with: updatedInnerTxs, and: eventHandler)
         }
 
     }
     
-    private func openInnerTransactionList(with innerTransactions: [TransactionItem], and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
-        print("---openInnerTransactionList")
+    private func openInnerTransactionList(with innerTransactions: [TransactionItem]?, and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
+        guard let innerTransactions, !innerTransactions.isEmpty else { return }
         open(
             .innerTransactionList(
                 dataController: InnerTransactionListLocalDataController(
                     draft: InnerTransactionListDraft(
                         type: transactionTypeFilter,
-                        asset: assets?.first,
+                        asset:  assets?.first,
                         account: account,
                         innerTransactions: innerTransactions
                     ),

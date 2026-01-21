@@ -46,6 +46,8 @@ class TransactionsViewController:
         sharedDataController,
         configuration.featureFlagService
     )
+    
+    private(set) lazy var appCallTransactionDetailDataController = AppCallTransactionDetailLocalDataController(api)
 
     lazy var transactionsDataSource = TransactionsDataSource(listView)
 
@@ -385,20 +387,43 @@ extension TransactionsViewController {
 extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: TransactionItem) {
         if transaction.appId != nil {
-            open(
-                .appCallTransactionDetail(
-                    account: accountHandle.value,
-                    transaction: transaction,
-                    transactionTypeFilter: draft.type,
-                    assets: getAssetDetailForTransactionType(transaction)
-                ),
-                by: .present
-            )
+            guard let tx = transaction as? TransactionV2 else {
+                open(
+                    .appCallTransactionDetail(
+                        account: accountHandle.value,
+                        transaction: transaction,
+                        transactionTypeFilter: draft.type,
+                        assets: getAssetDetailForTransactionType(transaction)
+                    ),
+                    by: .present
+                )
+                return
+            }
+            
+            appCallTransactionDetailDataController.eventHandler = { [weak self] event in
+                guard let self else { return }
+                switch event {
+                case .didLoad(transaction: let transactionDetail):
+                    open(
+                        .appCallTransactionDetail(
+                            account: accountHandle.value,
+                            transaction: transactionDetail,
+                            transactionTypeFilter: draft.type,
+                            assets: getAssetDetailForTransactionType(transactionDetail)
+                        ),
+                        by: .present
+                    )
+                    return
+                case .didFail:
+                    configuration.bannerController?.presentErrorBanner(
+                        title: String(localized: "title-error"),
+                        message: String(localized: "title-generic-error")
+                    )
+                }
+            }
+            appCallTransactionDetailDataController.loadTransactionDetail(account: accountHandle.value, transactionId: tx.id)
 
-            return
-        }
-
-        if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
+        } else if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
             open(
                 .keyRegTransactionDetail(
                     account: accountHandle.value,
@@ -408,16 +433,16 @@ extension TransactionsViewController {
             )
 
             return
+        } else {
+            open(
+                .transactionDetail(
+                    account: accountHandle.value,
+                    transaction: transaction,
+                    assetDetail: getAssetDetailForTransactionType(transaction)?.first
+                ),
+                by: .present
+            )
         }
-
-        open(
-            .transactionDetail(
-                account: accountHandle.value,
-                transaction: transaction,
-                assetDetail: getAssetDetailForTransactionType(transaction)?.first
-            ),
-            by: .present
-        )
     }
 
     private func getAssetDetailForTransactionType(
@@ -429,6 +454,7 @@ extension TransactionsViewController {
             let assetId: Int64? = {
                 if let tx = transaction as? Transaction { return tx.assetTransfer?.assetId ?? tx.assetFreeze?.assetId }
                 if let tx = transaction as? TransactionV2, let assetId = tx.asset?.assetId { return Int64(assetId) }
+                if let tx = transaction as? TransactionV2, let foreignAssetId = tx.applicationTransactionDetail?.foreignAssets?.first { return Int64(foreignAssetId) }
                 return nil
             }()
 

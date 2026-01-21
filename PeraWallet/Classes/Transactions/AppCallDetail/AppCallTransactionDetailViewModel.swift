@@ -77,6 +77,8 @@ extension AppCallTransactionDetailViewModel {
     ) {
         if let appID = transaction.appId {
             applicationID  = "#\(appID)"
+        } else if let tx = transaction as? TransactionV2, let appID = tx.applicationTransactionDetail?.applicationId {
+            applicationID  = "#\(appID)"
         }
     }
 
@@ -96,6 +98,10 @@ extension AppCallTransactionDetailViewModel {
     ) {
         if let tx = transaction as? Transaction {
             onCompletion = tx.applicationCall?.onCompletion?.uiRepresentation
+        }
+        
+        if let tx = transaction as? TransactionV2, let onCompletion = tx.applicationTransactionDetail?.onCompletion {
+            self.onCompletion = onCompletion
         }
     }
     
@@ -136,12 +142,17 @@ extension AppCallTransactionDetailViewModel {
     private func bindTransactionIDTitle(
         _ transaction: TransactionItem
     ) {
-        if let tx = transaction as? Transaction, tx.isInner {
-            transactionIDTitle = String(localized: "transaction-detail-parent-id")
-            return
-        }
+        let isParentID: Bool = {
+            if let tx = transaction as? Transaction { return tx.isInner }
+            if let tx = transaction as? TransactionV2 { return tx.parentId != nil }
+            return false
+        }()
 
-        transactionIDTitle = String(localized: "transaction-detail-id")
+        transactionIDTitle = String(
+            localized: isParentID
+                ? "transaction-detail-parent-id"
+                : "transaction-detail-id"
+        )
     }
 
     private func bindTransactionID(
@@ -149,7 +160,7 @@ extension AppCallTransactionDetailViewModel {
     ) {
         let transactionId: String? = {
             if let tx = transaction as? Transaction { return tx.id ?? tx.parentID}
-            if let tx = transaction as? TransactionV2 { return tx.id }
+            if let tx = transaction as? TransactionV2 { return tx.parentId ?? tx.id }
             return nil
         }()
         

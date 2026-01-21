@@ -18,7 +18,12 @@ import pera_wallet_core
 import MagpieCore
 
 protocol AppCallTransactionDetailDataController: AnyObject {
-    func loadTransactionDetail(account: Account, transactionId: String)
+    typealias EventHandler = (AppCallTransactionDetailControllerEvent) -> Void
+
+    var eventHandler: EventHandler? { get set }
+    var transaction: TransactionV2? { get }
+    
+    func loadTransactionDetail(account: Account, transactionId: String?)
 }
 
 enum AppCallTransactionDetailControllerEvent {

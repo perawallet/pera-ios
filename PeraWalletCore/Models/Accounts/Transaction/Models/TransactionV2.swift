@@ -37,6 +37,7 @@ public final class TransactionV2:
     public let applicationId: String?
     public let innerTransactionCount: Int?
     public let innerTransactions: [TransactionV2]?
+    public let applicationTransactionDetail: ApplicationTransactionDetail?
     
     public var status: TransactionStatus? {
         get {
@@ -49,6 +50,8 @@ public final class TransactionV2:
     public var allInnerTransactionsCount: Int { innerTransactionCount ?? innerTransactions?.count ?? 0 }
     
     public var contact: Contact?
+    
+    public var parentId: String?
     
     public var isSelfTransaction: Bool {
         guard let sender, let receiver else { return false }
@@ -118,6 +121,7 @@ public final class TransactionV2:
         self.applicationId = apiModel.applicationId
         self.innerTransactionCount = apiModel.innerTransactionCount
         self.innerTransactions = apiModel.innerTransactions.unwrapMap(TransactionV2.init)
+        self.applicationTransactionDetail = apiModel.applicationTransactionDetail
     }
 
     public func encode() -> APIModel {
@@ -138,6 +142,7 @@ public final class TransactionV2:
         apiModel.applicationId = applicationId
         apiModel.innerTransactionCount = innerTransactionCount
         apiModel.innerTransactions = innerTransactions.map { $0.encode() }
+        apiModel.applicationTransactionDetail = applicationTransactionDetail
         return apiModel
     }
 }
@@ -160,6 +165,7 @@ extension TransactionV2 {
         var applicationId: String?
         var innerTransactionCount: Int?
         var innerTransactions: [TransactionV2.APIModel]?
+        var applicationTransactionDetail: ApplicationTransactionDetail?
 
         public init() {
             self.id = nil
@@ -197,6 +203,7 @@ extension TransactionV2 {
             case applicationId = "application_id"
             case innerTransactionCount = "inner_transaction_count"
             case innerTransactions = "inner_txns"
+            case applicationTransactionDetail = "application_transaction"
         }
     }
 }
@@ -281,3 +288,33 @@ public final class InterpretedMeaning: ALGAPIModel {
         case property2
     }
 }
+
+public final class ApplicationTransactionDetail: ALGAPIModel {
+    public let applicationId: String?
+    public let onCompletion: String?
+    public let applicationArgs: [String]?
+    public let accounts: [String]?
+    public let foreignApps: [Int]?
+    public let foreignAssets: [Int]?
+
+    public init() {
+        self.applicationId = nil
+        self.onCompletion = nil
+        self.applicationArgs = nil
+        self.accounts = nil
+        self.foreignApps = nil
+        self.foreignAssets = nil
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case applicationId = "application_id"
+        case onCompletion = "on_completion"
+        case applicationArgs = "application_args"
+        case accounts
+        case foreignApps = "foreign_apps"
+        case foreignAssets = "foreign_assets"
+    }
+}
+
