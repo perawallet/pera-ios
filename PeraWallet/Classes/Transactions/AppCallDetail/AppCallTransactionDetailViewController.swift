@@ -211,34 +211,17 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             }
             openInnerTransactionList(with: updatedInnerTxs, and: eventHandler)
         }
+
     }
     
     private func openInnerTransactionList(with innerTransactions: [TransactionItem]?, and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
         guard let innerTransactions, !innerTransactions.isEmpty else { return }
-            api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { [weak self] response in
-                guard let self else { return }
-                print("---fetchTransactionDetailV2")
-                switch response {
-                case .success(let transaction):
-                    if let innerTransactions = transaction.innerTransactions, innerTransactions.isNonEmpty {
-                        openInnerTransactionList(with: innerTransactions, and: eventHandler)
-                    }
-                case .failure(let apiError, _):
-                    break
-                }
-            }
-        }
-
-    }
-    
-    private func openInnerTransactionList(with innerTransactions: [TransactionItem], and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
-        print("---openInnerTransactionList")
         open(
             .innerTransactionList(
                 dataController: InnerTransactionListLocalDataController(
                     draft: InnerTransactionListDraft(
                         type: transactionTypeFilter,
-                        asset: assets?.first,
+                        asset:  assets?.first,
                         account: account,
                         innerTransactions: innerTransactions
                     ),
