@@ -17,19 +17,18 @@
 import pera_wallet_core
 
 final class AppCallTransactionDetailLocalDataController: AppCallTransactionDetailDataController {
+    typealias EventHandler = (AppCallTransactionDetailControllerEvent) -> Void
     var eventHandler: EventHandler?
     
-    private let api: ALGAPI?
+    private let api: ALGAPI
     var transaction: TransactionV2?
     
-    init(_ api: ALGAPI?) {
+    init(_ api: ALGAPI) {
         self.api = api
     }
     
-    func loadTransactionDetail(account: Account, transactionId: String?) {
-        guard let transactionId else { return }
-        
-        api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { [weak self] response in
+    func loadTransactionDetail(account: Account, transactionId: String) {
+        api.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { [weak self] response in
             guard let self else { return }
             switch response {
             case .success(let transactionDetail):
@@ -42,4 +41,5 @@ final class AppCallTransactionDetailLocalDataController: AppCallTransactionDetai
         }
     }
 }
+
 
