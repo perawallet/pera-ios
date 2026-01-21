@@ -215,38 +215,40 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
     
     private func openInnerTransactionList(with innerTransactions: [TransactionItem]?, and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
         guard let innerTransactions, !innerTransactions.isEmpty else { return }
-            open(
-                .innerTransactionList(
-                    dataController: InnerTransactionListLocalDataController(
-                        draft: InnerTransactionListDraft(
-                            type: transactionTypeFilter,
-                            asset: assets?.first,
-                            account: account,
-                            innerTransactions: innerTransactions
-                        ),
-                        sharedDataController: sharedDataController,
-                        currency: sharedDataController.currency
-                    ),
-                    eventHandler: eventHandler
-                ),
-                by: .push
-            )
+            api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { [weak self] response in
+                guard let self else { return }
+                print("---fetchTransactionDetailV2")
+                switch response {
+                case .success(let transaction):
+                    if let innerTransactions = transaction.innerTransactions, innerTransactions.isNonEmpty {
+                        openInnerTransactionList(with: innerTransactions, and: eventHandler)
+                    }
+                case .failure(let apiError, _):
+                    break
+                }
+            }
         }
-        
-//        guard let transactionId = transaction.id else {
-//            return
-//        }
-        
-//        api?.fetchTransactionDetailV2(TransactionV2FetchDetailDraft(account: account, transactionId: transactionId)) { response in
-//            switch response {
-//            case .success(let transaction):
-//                break
-//            case .failure(let apiError, _):
-//                break
-//            }
-//        }
-        
 
+    }
+    
+    private func openInnerTransactionList(with innerTransactions: [TransactionItem], and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
+        print("---openInnerTransactionList")
+        open(
+            .innerTransactionList(
+                dataController: InnerTransactionListLocalDataController(
+                    draft: InnerTransactionListDraft(
+                        type: transactionTypeFilter,
+                        asset: assets?.first,
+                        account: account,
+                        innerTransactions: innerTransactions
+                    ),
+                    sharedDataController: sharedDataController,
+                    currency: sharedDataController.currency
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .push
+        )
     }
 
     func appCallTransactionDetailViewDidTapShowMoreAssets(
