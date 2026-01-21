@@ -372,3 +372,33 @@ public final class AssetTransferTransactionDetail: ALGAPIModel {
         return fractionDecimals > 0 ? decimalAmount / pow(10, fractionDecimals) : decimalAmount
     }
 }
+
+public final class ApplicationTransactionDetail: ALGAPIModel {
+    public let applicationId: String?
+    public let onCompletion: String?
+    public let applicationArgs: [String]?
+    public let accounts: [String]?
+    public let foreignApps: [Int]?
+    public let foreignAssets: [Int]?
+
+    public init() {
+        self.applicationId = nil
+        self.onCompletion = nil
+        self.applicationArgs = nil
+        self.accounts = nil
+        self.foreignApps = nil
+        self.foreignAssets = nil
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case applicationId = "application_id"
+        case onCompletion = "on_completion"
+        case applicationArgs = "application_args"
+        case accounts
+        case foreignApps = "foreign_apps"
+        case foreignAssets = "foreign_assets"
+    }
+}
+
