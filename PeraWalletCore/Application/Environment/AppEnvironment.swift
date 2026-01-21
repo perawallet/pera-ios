@@ -161,6 +161,8 @@ public class AppEnvironment {
         }
     }()
     
+    public private(set) lazy var meldMainNetBaseUrl: String = { "\(mainNetMobileAPIV1)onramp-services/meld/redirect-to-fluidmoney/" }()
+    
     public lazy var cardsMainNetBaseUrl: String = {
         switch target {
         case .staging: "https://cards-mobile-staging-mainnet.perawallet.app/"
