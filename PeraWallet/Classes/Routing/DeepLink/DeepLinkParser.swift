@@ -44,11 +44,11 @@ extension DeepLinkParser {
 
         switch action {
         case .assetOptIn:
-            return makeAssetTransactionRequestScreen(for: notification)
+            return parseAssetTransactionRequest(from: notification)
         case .assetTransactions:
-            return makeAssetTransactionDetailScreen(for: notification)
+            return parseAssetTransactionDetail(from: notification)
         case .inAppBrowser, .url:
-            return makeExternalBrowserScreen(for: notification)
+            return parseExternalBrowser(from: notification)
         default:
             return nil
         }
@@ -72,13 +72,13 @@ extension DeepLinkParser {
 
         switch action {
         case .assetOptIn:
-            return makeAssetOptInScreen(for: notification)
+            return parseAssetOptIn(from: notification)
         case .assetTransactions:
-            return makeAssetTransactionDetailScreen(for: notification)
+            return parseAssetTransactionDetail(from: notification)
         case .inAppBrowser, .url:
-            return makeExternalBrowserScreen(for: notification)
+            return parseExternalBrowser(from: notification)
         case .assetInbox:
-            return makeIncomingASAScreen(for: notification)
+            return parseIncomingASA(from: notification)
         default:
             guard  let externalDeepLink = notification.url?.externalDeepLink else {
                 return nil
@@ -118,7 +118,7 @@ extension DeepLinkParser {
         return NotificationAction(rawValue: actionName)
     }
 
-    private func makeAssetOptInScreen(for notificationMessage: NotificationMessage) -> Result? {
+    private func parseAssetOptIn(from notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         let params = url?.queryParameters
         let accountAddress = params?["account"]
@@ -176,7 +176,7 @@ extension DeepLinkParser {
         return .success(.asaDiscoveryWithOptInAction(account: rawAccount, assetID: assetID))
     }
     
-    private func makeIncomingASAScreen(for notificationMessage: NotificationMessage) -> Result? {
+    private func parseIncomingASA(from notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         let params = url?.queryParameters
         let accountAddress = params?["account"]
@@ -191,10 +191,11 @@ extension DeepLinkParser {
         ))
     }
     
-    private func makeAssetTransactionDetailScreen(for notificationMessage: NotificationMessage) -> Result? {
+    private func parseAssetTransactionDetail(from notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         let params = url?.queryParameters
         let accountAddress = params?["account"]
+        let transactionId = params?["transactionId"] as String?
         let assetID = params?["asset"].unwrap { AssetID($0) }
 
         guard
@@ -203,134 +204,54 @@ extension DeepLinkParser {
         else {
             return nil
         }
-
-        let isAlgo = assetID == 0
-
-        if isAlgo {
-            return makeTransactionDetailScreen(accountAddress: accountAddress)
+        
+        guard let transactionId else {
+            if assetID == 0 {
+                return makeTransactionASADetailScreen(accountAddress: accountAddress)
+            } else {
+                return makeAssetTransactionASADetailScreen(
+                    accountAddress: accountAddress,
+                    assetID: assetID
+                )
+            }
         }
 
-        return makeAssetTransactionDetailScreen(
-            accountAddress: accountAddress,
-            assetID: assetID
-        )
+        return makeTransactionDetailScreen(accountAddress: accountAddress, assetID: assetID, transactionId: transactionId)
+
     }
 
-    private func makeTransactionDetailScreen(
-        for notification: AlgorandNotification
+    private func parseAssetTransactionDetail(
+        from notification: AlgorandNotification
     ) -> Result? {
         let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
         let accountAddress = params?["account"]
+        let transactionId = params?["transactionId"] as String?
+        let assetID = params?["asset"].unwrap { AssetID($0) }
 
-        guard let accountAddress = accountAddress else {
+        guard
+            let accountAddress = accountAddress,
+            let assetID = assetID
+        else {
             return nil
         }
         
-        return makeTransactionDetailScreen(accountAddress: accountAddress)
-    }
-
-    private func makeTransactionDetailScreen(
-        accountAddress: PublicKey
-    ) -> Result? {
-        guard sharedDataController.isAvailable else {
-            return .failure(.waitingForAccountsToBeAvailable)
+        guard let transactionId else {
+            if assetID == 0 {
+                return makeTransactionASADetailScreen(accountAddress: accountAddress)
+            } else {
+                return makeAssetTransactionASADetailScreen(
+                    accountAddress: accountAddress,
+                    assetID: assetID
+                )
+            }
         }
 
-        let account = sharedDataController.accountCollection[accountAddress]
-
-        guard let account = account else {
-            return .failure(.accountNotFound)
-        }
-
-        guard account.isAvailable else {
-            return .failure(.waitingForAccountsToBeAvailable)
-        }
-
-        let rawAccount = account.value
-        return .success(.asaDetail(account: rawAccount, asset: rawAccount.algo))
+        return makeTransactionDetailScreen(accountAddress: accountAddress, assetID: assetID, transactionId: transactionId)
     }
     
-    private func makeAssetTransactionDetailScreen(
-        for notification: AlgorandNotification
-    ) -> Result? {
-        let url = notification.detail?.url.toURL()
-        let params = url?.queryParameters
-        let accountAddress = params?["account"]
-        let assetID = params?["asset"].unwrap { AssetID($0) }
-
-        guard
-            let accountAddress = accountAddress,
-            let assetID = assetID
-        else {
-            return nil
-        }
-
-        let isAlgo = assetID == 0
-
-        if isAlgo {
-            return makeTransactionDetailScreen(accountAddress: accountAddress)
-        }
-        
-        return makeAssetTransactionDetailScreen(
-            accountAddress: accountAddress,
-            assetID: assetID
-        )
-    }
-
-    private func makeAssetTransactionDetailScreen(
-        accountAddress: PublicKey,
-        assetID: AssetID
-    ) -> Result? {
-        guard sharedDataController.isAvailable else {
-            return .failure(.waitingForAccountsToBeAvailable)
-        }
-
-        let account = sharedDataController.accountCollection[accountAddress]
-
-        guard let account = account else {
-            return .failure(.accountNotFound)
-        }
-
-        guard account.isAvailable else {
-            return .failure(.waitingForAccountsToBeAvailable)
-        }
-
-        let rawAccount = account.value
-
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-
-        let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
-            assetID: assetID,
-            for: rawAccount
-        )
-        if hasPendingOptInRequest {
-            let accountName = rawAccount.primaryDisplayName
-            return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
-        }
-
-        let hasPendingOptOutRequest = monitor.hasPendingOptOutRequest(
-            assetID: assetID,
-            for: rawAccount
-        )
-        if hasPendingOptOutRequest {
-            let accountName = rawAccount.primaryDisplayName
-            return .failure(.tryingToActForAssetWithPendingOptOutRequest(accountName: accountName))
-        }
-
-        if let asset = rawAccount[assetID] as? StandardAsset {
-            return .success(.asaDetail(account: rawAccount, asset: asset))
-        }
-
-        if let collectibleAsset = rawAccount[assetID] as? CollectibleAsset {
-            return .success(.collectibleDetail(account: rawAccount, asset: collectibleAsset))
-        }
-
-        return .failure(.assetNotFound)
-    }
-
-    private func makeAssetTransactionRequestScreen(
-        for notification: AlgorandNotification
+    private func parseAssetTransactionRequest(
+        from notification: AlgorandNotification
     ) -> Result? {
         let url = notification.detail?.url.toURL()
         let params = url?.queryParameters
@@ -398,14 +319,125 @@ extension DeepLinkParser {
         return .success(.assetActionConfirmation(draft: draft))
     }
 
-    private func makeExternalBrowserScreen(for notificationMessage: NotificationMessage) -> Result? {
+    private func parseExternalBrowser(from notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         return makeExternalBrowserScreen(from: url)
     }
 
-    private func makeExternalBrowserScreen(for notification: AlgorandNotification) -> Result? {
+    private func parseExternalBrowser(from notification: AlgorandNotification) -> Result? {
         let url = notification.detail?.url.toURL()
         return makeExternalBrowserScreen(from: url)
+    }
+    
+    private func makeTransactionASADetailScreen(
+        for notification: AlgorandNotification
+    ) -> Result? {
+        let url = notification.detail?.url.toURL()
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+
+        guard let accountAddress = accountAddress else {
+            return nil
+        }
+        
+        return makeTransactionASADetailScreen(accountAddress: accountAddress)
+    }
+
+    private func makeTransactionASADetailScreen(
+        accountAddress: PublicKey
+    ) -> Result? {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let rawAccount = account.value
+        return .success(.asaDetail(account: rawAccount, asset: rawAccount.algo))
+    }
+    
+    private func makeTransactionDetailScreen(
+        accountAddress: PublicKey,
+        assetID: AssetID,
+        transactionId: String
+    ) -> Result? {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let rawAccount = account.value
+        
+        return .success(.transactionDetail(account: rawAccount, assetId: assetID, transactionId: transactionId))
+        
+    }
+
+    private func makeAssetTransactionASADetailScreen(
+        accountAddress: PublicKey,
+        assetID: AssetID
+    ) -> Result? {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let rawAccount = account.value
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+        if hasPendingOptInRequest {
+            let accountName = rawAccount.primaryDisplayName
+            return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
+        }
+
+        let hasPendingOptOutRequest = monitor.hasPendingOptOutRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+        if hasPendingOptOutRequest {
+            let accountName = rawAccount.primaryDisplayName
+            return .failure(.tryingToActForAssetWithPendingOptOutRequest(accountName: accountName))
+        }
+
+        if let asset = rawAccount[assetID] as? StandardAsset {
+            return .success(.asaDetail(account: rawAccount, asset: asset))
+        }
+
+        if let collectibleAsset = rawAccount[assetID] as? CollectibleAsset {
+            return .success(.collectibleDetail(account: rawAccount, asset: collectibleAsset))
+        }
+
+        return .failure(.assetNotFound)
     }
 
     private func makeExternalBrowserScreen(from url: URL?) -> Result? {
@@ -925,6 +957,11 @@ extension DeepLinkParser {
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil
         )
+        case transactionDetail(
+            account: Account,
+            assetId: AssetID,
+            transactionId: String
+        )
         case keyRegTransaction(account: Account, draft: KeyRegTransactionSendDraft)
         case wcMainTransactionScreen(draft: WalletConnectTransactionSignRequestDraft)
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
@@ -962,6 +999,7 @@ extension DeepLinkParser {
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
         case assetNotFound
+        case transactionNotFound
 
         typealias UIRepresentation = (title: String, description: String)
 

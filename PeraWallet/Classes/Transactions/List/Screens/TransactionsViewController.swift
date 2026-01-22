@@ -47,7 +47,9 @@ class TransactionsViewController:
         configuration.featureFlagService
     )
     
-    private(set) lazy var appCallTransactionDetailDataController = AppCallTransactionDetailLocalDataController(api)
+    private(set) lazy var transactionDetailDataController = TransactionDetailLocalDataController(
+        api: api
+    )
 
     lazy var transactionsDataSource = TransactionsDataSource(listView)
 
@@ -400,7 +402,7 @@ extension TransactionsViewController {
                 return
             }
             
-            appCallTransactionDetailDataController.eventHandler = { [weak self] event in
+            transactionDetailDataController.eventHandler = { [weak self] event in
                 guard let self else { return }
                 switch event {
                 case .didLoad(transaction: let transactionDetail):
@@ -421,7 +423,7 @@ extension TransactionsViewController {
                     )
                 }
             }
-            appCallTransactionDetailDataController.loadTransactionDetail(account: accountHandle.value, transactionId: tx.id)
+            transactionDetailDataController.loadTransactionDetail(account: accountHandle.value, transactionId: tx.id)
 
         } else if let tx = transaction as? Transaction, tx.keyRegTransaction != nil {
             open(

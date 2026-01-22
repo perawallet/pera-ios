@@ -94,8 +94,7 @@ extension TransactionDetailViewModel {
             bindOpponent(for: transaction, with: sender)
         }
 
-        if transaction.type == .assetTransfer,
-           let assetDetail = assetDetail {
+        if transaction.type == .assetTransfer, let assetDetail {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             
@@ -115,11 +114,11 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             }
             rewardViewIsHidden = true
-        } else if transaction.type == .payment {
+        } else if transaction.type == .payment || (transaction as? TransactionV2)?.paymentTransactionDetail != nil {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
-                if let tx = transaction as? TransactionV2 { return tx.amountValue}
+                if let tx = transaction as? TransactionV2 { return tx.paymentValue(with: assetDetail?.decimals) ?? tx.amountValue }
                 return nil
             }()
             
@@ -204,7 +203,7 @@ extension TransactionDetailViewModel {
             }()
             bindOpponent(for: transaction, with: receiverAddress ?? "")
 
-            if let assetDetail = assetDetail {
+            if let assetDetail {
                 let amount: Decimal? = {
                     if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
                     if let tx = transaction as? TransactionV2 { return tx.amountValue}
@@ -223,18 +222,18 @@ extension TransactionDetailViewModel {
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
-        } else if transaction.type == .payment {
+        } else if transaction.type == .payment || (transaction as? TransactionV2)?.paymentTransactionDetail != nil {
             opponentViewTitle = String(localized: "title-to")
             let receiverAddress: String? = {
                 if let tx = transaction as? Transaction { return tx.payment?.receiver }
-                if let tx = transaction as? TransactionV2 { return tx.receiver }
+                if let tx = transaction as? TransactionV2 { return tx.paymentTransactionDetail?.receiver ?? tx.receiver}
                 return nil
             }()
             bindOpponent(for: transaction, with: receiverAddress ?? "")
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
-                if let tx = transaction as? TransactionV2 { return tx.amountValue}
+                if let tx = transaction as? TransactionV2 { return tx.paymentValue(with: assetDetail?.decimals) ?? tx.amountValue }
                 return nil
             }()
             

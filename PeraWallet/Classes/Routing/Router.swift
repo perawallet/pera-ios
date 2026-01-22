@@ -273,6 +273,7 @@ final class Router:
                 from: visibleScreen,
                 by: .present
             )
+        case .transactionDetail(account: let account, assetId: let assedId, transactionId: let transactionId): break
         case .collectibleDetail(account: let account, asset: let asset):
             launch(tab: .home)
 
