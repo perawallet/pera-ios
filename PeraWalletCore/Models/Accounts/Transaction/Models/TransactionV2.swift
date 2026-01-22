@@ -38,6 +38,7 @@ public final class TransactionV2:
     public let innerTransactionCount: Int?
     public let innerTransactions: [TransactionV2]?
     public let applicationTransactionDetail: ApplicationTransactionDetail?
+    public let note: Data?
     
     public var status: TransactionStatus? {
         get {
@@ -87,6 +88,16 @@ public final class TransactionV2:
         return fractionDecimals > 0 ? amount / pow(10, fractionDecimals) : amount
     }
     
+    public var noteRepresentation: String? {
+        guard let noteData = note, !noteData.isEmpty else {
+            return nil
+        }
+        
+        let note = String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+        let validNote = note.without("\0")
+        return validNote
+    }
+    
     public func isPending() -> Bool {
         if let status = status {
             return status == .pending
@@ -122,6 +133,7 @@ public final class TransactionV2:
         self.innerTransactionCount = apiModel.innerTransactionCount
         self.innerTransactions = apiModel.innerTransactions.unwrapMap(TransactionV2.init)
         self.applicationTransactionDetail = apiModel.applicationTransactionDetail
+        self.note = apiModel.note
     }
 
     public func encode() -> APIModel {
@@ -143,6 +155,7 @@ public final class TransactionV2:
         apiModel.innerTransactionCount = innerTransactionCount
         apiModel.innerTransactions = innerTransactions.map { $0.encode() }
         apiModel.applicationTransactionDetail = applicationTransactionDetail
+        apiModel.note = note
         return apiModel
     }
 }
@@ -166,6 +179,7 @@ extension TransactionV2 {
         var innerTransactionCount: Int?
         var innerTransactions: [TransactionV2.APIModel]?
         var applicationTransactionDetail: ApplicationTransactionDetail?
+        var note: Data?
 
         public init() {
             self.id = nil

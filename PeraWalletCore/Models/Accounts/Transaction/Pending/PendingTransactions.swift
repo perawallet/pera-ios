@@ -41,6 +41,7 @@ public final class PendingTransaction:
     public let poolError: String?
     public let appId: Int64? = 0
     public var status: TransactionStatus? = .pending
+    public var noteRepresentation: String?
 
     public var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0

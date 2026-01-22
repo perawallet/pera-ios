@@ -25,6 +25,7 @@ public protocol TransactionItem {
     var appId: Int64? { get }
     var status: TransactionStatus? { get set }
     var allInnerTransactionsCount: Int { get }
+    var noteRepresentation: String? { get }
     
     func isPending() -> Bool
     func isAssetAdditionTransaction(for address: String) -> Bool

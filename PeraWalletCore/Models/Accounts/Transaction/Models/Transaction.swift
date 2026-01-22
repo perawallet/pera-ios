@@ -158,7 +158,7 @@ extension Transaction {
         return payment?.closeAddress ?? assetTransfer?.closeToAddress
     }
     
-    public func noteRepresentation() -> String? {
+    public var noteRepresentation: String? {
         guard let noteData = note, !noteData.isEmpty else {
             return nil
         }

@@ -132,10 +132,9 @@ extension KeyRegTransactionDetailViewModel {
 
         transactionIDTitle = String(localized: "transaction-detail-id")
     }
-
+    
     private func bindNote(for transaction: TransactionItem) {
-        if let tx = transaction as? Transaction,
-           let note = tx.noteRepresentation() {
+        if let note = transaction.noteRepresentation {
             noteViewDetail = note
         } else {
             noteViewIsHidden = true

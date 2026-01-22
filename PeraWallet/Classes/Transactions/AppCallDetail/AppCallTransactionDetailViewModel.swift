@@ -170,7 +170,7 @@ extension AppCallTransactionDetailViewModel {
     private func bindNote(
         _ transaction: TransactionItem
     ) {
-        if let tx = transaction as? Transaction, let note = tx.noteRepresentation() {
+        if let note = transaction.noteRepresentation {
             self.note = note
             return
         }
