@@ -178,7 +178,10 @@ extension InnerTransactionListLocalDataController {
 
         switch transaction {
         case let tx as Transaction: assetDecoration = tx.assetTransfer.flatMap { sharedDataController.assetDetailCollection[$0.assetId] }
-        case let tx as TransactionV2: assetDecoration = tx.asset?.assetId.flatMap { Int64($0) }.flatMap { sharedDataController.assetDetailCollection[$0] }
+        case let tx as TransactionV2:
+            let assetId = tx.assetTransferTransactionDetail?.asset?.assetId ?? tx.asset?.assetId
+            assetDecoration = assetId.flatMap { Int64($0) }.flatMap { sharedDataController.assetDetailCollection[$0]
+        }
         default: assetDecoration = nil
         }
         guard let decoration = assetDecoration else { return draft.asset }

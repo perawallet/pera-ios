@@ -67,7 +67,7 @@ extension AssetInnerTransactionPreviewViewModel {
         
         let amount: Decimal? = {
             if let tx = transaction as? Transaction, let assetTransfer = tx.assetTransfer { return assetTransfer.amount.assetAmount(fromFraction: asset.decimals) }
-            if let tx = transaction as? TransactionV2 { return tx.amountValue }
+            if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue }
             return nil
         }()
         

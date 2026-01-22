@@ -38,6 +38,7 @@ public final class TransactionV2:
     public let innerTransactionCount: Int?
     public let innerTransactions: [TransactionV2]?
     public let applicationTransactionDetail: ApplicationTransactionDetail?
+    public let assetTransferTransactionDetail: AssetTransferTransactionDetail?
     public let note: Data?
     
     public var status: TransactionStatus? {
@@ -133,6 +134,7 @@ public final class TransactionV2:
         self.innerTransactionCount = apiModel.innerTransactionCount
         self.innerTransactions = apiModel.innerTransactions.unwrapMap(TransactionV2.init)
         self.applicationTransactionDetail = apiModel.applicationTransactionDetail
+        self.assetTransferTransactionDetail = apiModel.assetTransferTransactionDetail
         self.note = apiModel.note
     }
 
@@ -155,6 +157,7 @@ public final class TransactionV2:
         apiModel.innerTransactionCount = innerTransactionCount
         apiModel.innerTransactions = innerTransactions.map { $0.encode() }
         apiModel.applicationTransactionDetail = applicationTransactionDetail
+        apiModel.assetTransferTransactionDetail = assetTransferTransactionDetail
         apiModel.note = note
         return apiModel
     }
@@ -179,6 +182,7 @@ extension TransactionV2 {
         var innerTransactionCount: Int?
         var innerTransactions: [TransactionV2.APIModel]?
         var applicationTransactionDetail: ApplicationTransactionDetail?
+        var assetTransferTransactionDetail: AssetTransferTransactionDetail?
         var note: Data?
 
         public init() {
@@ -198,6 +202,9 @@ extension TransactionV2 {
             self.applicationId = nil
             self.innerTransactionCount = 0
             self.innerTransactions = []
+            self.applicationTransactionDetail = nil
+            self.assetTransferTransactionDetail = nil
+            self.note = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -218,6 +225,8 @@ extension TransactionV2 {
             case innerTransactionCount = "inner_transaction_count"
             case innerTransactions = "inner_txns"
             case applicationTransactionDetail = "application_transaction"
+            case assetTransferTransactionDetail = "asset_transfer_transaction"
+            case note
         }
     }
 }
@@ -332,3 +341,34 @@ public final class ApplicationTransactionDetail: ALGAPIModel {
     }
 }
 
+public final class AssetTransferTransactionDetail: ALGAPIModel {
+    public let receiver: String?
+    public let amount: String?
+    public let asset: TransactionV2Asset?
+    public let closeTo: String?
+    public let clawbackAddress: String?
+
+    public init() {
+        self.receiver = nil
+        self.amount = nil
+        self.asset = nil
+        self.closeTo = nil
+        self.clawbackAddress = nil
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case receiver
+        case amount
+        case asset
+        case closeTo = "close_to"
+        case clawbackAddress = "clawback_address"
+    }
+    
+    public var amountValue: Decimal? {
+        let fractionDecimals = asset?.fractionDecimals ?? 0
+        guard let amount, let decimalAmount = Decimal(string: amount) else { return nil }
+        return fractionDecimals > 0 ? decimalAmount / pow(10, fractionDecimals) : decimalAmount
+    }
+}
