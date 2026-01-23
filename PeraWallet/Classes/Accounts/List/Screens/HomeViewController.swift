@@ -261,6 +261,7 @@ final class HomeViewController:
         dataController.fetchInitialChartData(period: .oneWeek)
         dataController.fetchUSDCDefaultAsset()
         dataController.fetchIncomingASAsRequests()
+        dataController.fetchAccountsName()
         lastSeenNotificationController?.checkStatus()
         showNewAccountAnimationIfNeeded()
     }

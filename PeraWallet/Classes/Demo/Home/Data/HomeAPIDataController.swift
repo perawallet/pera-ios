@@ -257,6 +257,27 @@ extension HomeAPIDataController {
             }
         }
     }
+    
+    func fetchAccountsName() {
+        guard
+            let accounts = session.authenticatedUser?.accounts,
+            !accounts.isEmpty
+        else { return }
+
+        let accountAddresses = accounts.map(\.address)
+        
+        api.fetchAccountName(
+            AccountNameFetchDraft(accountAddresses: accountAddresses)
+        ) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success(let accountName):
+                print("---response: \(accountName)")
+            case .failure:
+                print("---error!")
+            }
+        }
+    }
 }
 
 extension HomeAPIDataController {
