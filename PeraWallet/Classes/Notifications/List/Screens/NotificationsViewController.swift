@@ -389,11 +389,7 @@ extension NotificationsViewController {
         )
     }
     
-    private func openTransactionDetail(_ account: Account, assetId: AssetID, transaction: TransactionItem) {
-        if let tx = transaction as? TransactionV2 {
-            let x = tx
-        }
-        
+    private func openTransactionDetail(_ account: Account, assetId: AssetID, transaction: TransactionItem) {        
         let asset: StandardAsset? = {
             if let assetDecoration = sharedDataController.assetDetailCollection[assetId] {
                 return StandardAsset(decoration: assetDecoration)
