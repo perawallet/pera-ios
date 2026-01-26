@@ -162,10 +162,7 @@ extension AccountPortfolioViewModel {
     mutating func bindMinimumBalanceValue(
         _ portfolioItem: AccountPortfolioItem
     ) {
-        guard let minimumBalance = portfolioItem.minimumBalance else {
-            assertionFailure("minimumBalance should be set.")
-            return
-        }
+        guard let minimumBalance = portfolioItem.minimumBalance else { return }
 
         let formatter = portfolioItem.currencyFormatter
         formatter.formattingContext = .standalone()

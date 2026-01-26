@@ -139,6 +139,7 @@ extension TransactionAmountViewModel {
 /// <mark> Inner Transaction Binding
 extension TransactionAmountViewModel {
     private mutating func bindInnerTransaction(count: Int, showInList: Bool) {
+        guard count > 0 else { return }
         amountLabelColor = Colors.Helpers.positive.uiColor
 
         if showInList {

@@ -36,7 +36,7 @@ class TransactionTests: XCTestCase {
     }
 
     func testNoteRepresentation() {
-        let note = assetTransaction.noteRepresentation()
+        let note = assetTransaction.noteRepresentation
         XCTAssertEqual(note, "hey")
     }
 }

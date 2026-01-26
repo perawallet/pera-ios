@@ -193,24 +193,35 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
     func appCallTransactionDetailViewDidTapShowInnerTransactions(
         _ transactionDetailView: AppCallTransactionDetailView
     ) {
-        let eventHandler: InnerTransactionListViewController.EventHandler = {
-            [weak self] event in
+        let eventHandler: InnerTransactionListViewController.EventHandler = { [weak self] event in
             guard let self else { return }
-
             switch event {
-            case .performClose:
-                self.dismiss(animated: true)
+            case .performClose: self.dismiss(animated: true)
             }
         }
         
-        guard let tx = transaction as? Transaction, let innerTransactions = tx.innerTransactions else { return }
+        if let tx = transaction as? Transaction {
+            openInnerTransactionList(with: tx.innerTransactions, and: eventHandler)
+        }
+        
+        if let tx = transaction as? TransactionV2, let innerTransactions = tx.innerTransactions {
+            let updatedInnerTxs = innerTransactions.map { innerTx in
+                innerTx.parentId = tx.id
+                return innerTx
+            }
+            openInnerTransactionList(with: updatedInnerTxs, and: eventHandler)
+        }
 
-        open(
-            .innerTransactionList(
-                dataController: InnerTransactionListLocalDataController(
-                    draft: InnerTransactionListDraft(
-                        type: transactionTypeFilter,
-                        asset: assets?.first,
+    }
+    
+    private func openInnerTransactionList(with innerTransactions: [TransactionItem]?, and eventHandler: @escaping InnerTransactionListViewController.EventHandler) {
+        guard let innerTransactions, !innerTransactions.isEmpty else { return }
+            open(
+                .innerTransactionList(
+                    dataController: InnerTransactionListLocalDataController(
+                        draft: InnerTransactionListDraft(
+                            type: transactionTypeFilter,
+                        asset:  assets?.first,
                         account: account,
                         innerTransactions: innerTransactions
                     ),

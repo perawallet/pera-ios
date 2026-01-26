@@ -670,7 +670,7 @@ extension TransactionsAPIDataController {
                         continue
                     }
 
-                    let viewModel = AppCallTransactionItemViewModel(viewModelDraft)
+                    let viewModel = AppCallTransactionItemViewModel(viewModelDraft, isAssetDetailV2Enabled: featureFlagService.isEnabled(.assetDetailV2Enabled))
 
                     if addedItemIDs[transactionID] == nil {
                         transactionItems.append(.appCallTransaction(viewModel))

@@ -24,7 +24,7 @@ struct AppCallInnerTransactionPreviewViewModel:
     var amountViewModel: TransactionAmountViewModel?
 
     init(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         bindTitle(transaction)
         bindAmount(transaction)
@@ -33,7 +33,7 @@ struct AppCallInnerTransactionPreviewViewModel:
 
 extension AppCallInnerTransactionPreviewViewModel {
     private mutating func bindTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         title = Self.getTitle(
             transaction.sender.shortAddressDisplay
@@ -41,15 +41,10 @@ extension AppCallInnerTransactionPreviewViewModel {
     }
 
     private mutating func bindAmount(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
-        guard let innerTransactions = transaction.innerTransactions,
-              !innerTransactions.isEmpty else {
-            return
-        }
-
         amountViewModel = TransactionAmountViewModel(
-            innerTransactionCount: innerTransactions.count
+            innerTransactionCount: transaction.allInnerTransactionsCount
         )
     }
 }

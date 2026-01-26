@@ -24,7 +24,7 @@ struct AlgoInnerTransactionPreviewViewModel:
     var amountViewModel: TransactionAmountViewModel?
     
     init(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
@@ -41,7 +41,7 @@ struct AlgoInnerTransactionPreviewViewModel:
 
 extension AlgoInnerTransactionPreviewViewModel {
     private mutating func bindTitle(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) {
         title = Self.getTitle(
             transaction.sender.shortAddressDisplay
@@ -49,22 +49,21 @@ extension AlgoInnerTransactionPreviewViewModel {
     }
 
     private mutating func bindAmount(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let payment = transaction.payment else {
-            return
-        }
-
-        if payment.receiver == transaction.sender {
+        
+        let amount: Decimal? = {
+            if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: true).toAlgos }
+            if let tx = transaction as? TransactionV2 { return tx.amountValue}
+            return nil
+        }()
+        
+        if transaction.receiver == transaction.sender, let amount {
             amountViewModel = TransactionAmountViewModel(
-                .normal(
-                    amount: payment.amountForTransaction(
-                        includesCloseAmount: true
-                    ).toAlgos
-                ),
+                .normal(amount: amount),
                 currency: currency,
                 currencyFormatter: currencyFormatter,
                 showAbbreviation: true
@@ -72,13 +71,9 @@ extension AlgoInnerTransactionPreviewViewModel {
             return
         }
 
-        if payment.receiver == account.address {
+        if transaction.receiver == account.address, let amount {
             amountViewModel = TransactionAmountViewModel(
-                .positive(
-                    amount: payment.amountForTransaction(
-                        includesCloseAmount: true
-                    ).toAlgos
-                ),
+                .positive(amount: amount),
                 currency: currency,
                 currencyFormatter: currencyFormatter,
                 showAbbreviation: true
@@ -86,13 +81,9 @@ extension AlgoInnerTransactionPreviewViewModel {
             return
         }
 
-        if transaction.sender == account.address {
+        if transaction.sender == account.address, let amount {
             amountViewModel = TransactionAmountViewModel(
-                .negative(
-                    amount: payment.amountForTransaction(
-                        includesCloseAmount: true
-                    ).toAlgos
-                ),
+                .negative(amount: amount),
                 currency: currency,
                 currencyFormatter: currencyFormatter,
                 showAbbreviation: true
@@ -101,11 +92,7 @@ extension AlgoInnerTransactionPreviewViewModel {
         }
 
         amountViewModel = TransactionAmountViewModel(
-            .normal(
-                amount: payment.amountForTransaction(
-                    includesCloseAmount: true
-                ).toAlgos
-            ),
+            .normal(amount: amount ?? 0),
             currency: currency,
             currencyFormatter: currencyFormatter,
             showAbbreviation: true

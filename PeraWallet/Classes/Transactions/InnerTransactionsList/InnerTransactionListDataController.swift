@@ -69,7 +69,7 @@ struct InnerTransactionContainer<T: InnerTransactionPreviewViewModel>:
     Hashable {
     private(set) var id = UUID()
 
-    let transaction: Transaction
+    let transaction: TransactionItem
     let viewModel: T
 
     func hash(

@@ -110,8 +110,7 @@ extension CopyToClipboardController {
     func copyNote(
         _ transaction: TransactionItem
     ) {
-        guard let tx = transaction as? Transaction else { return }
-        let noteCopy = tx.noteRepresentation().someString
+        let noteCopy = transaction.noteRepresentation.someString
         let interaction = CopyToClipboardInteraction(
             title: String(localized: "note-copied-to-clipboard"),
             body: nil

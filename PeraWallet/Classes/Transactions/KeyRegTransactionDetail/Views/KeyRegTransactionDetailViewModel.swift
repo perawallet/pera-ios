@@ -41,7 +41,7 @@ final class KeyRegTransactionDetailViewModel: ViewModel {
     private(set) var participationStatusViewModel: TransactionTextInformationViewModel?
 
     init(
-        transaction: Transaction,
+        transaction: TransactionItem,
         account: Account
     ) {
         bindTransaction(
@@ -53,7 +53,7 @@ final class KeyRegTransactionDetailViewModel: ViewModel {
 
 extension KeyRegTransactionDetailViewModel {
     private func bindTransaction(
-        with transaction: Transaction,
+        with transaction: TransactionItem,
         for account: Account
     ) {
         transactionStatus = transaction.status
@@ -69,15 +69,25 @@ extension KeyRegTransactionDetailViewModel {
         } else {
             userViewDetail = senderAddress
         }
+        
+        let fee: UInt64? = {
+            if let tx = transaction as? Transaction { return tx.fee }
+            if let tx = transaction as? TransactionV2 { return UInt64(tx.fee ?? .empty) }
+            return nil
+        }()
 
-        if let fee = transaction.fee {
+        if let fee {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
 
         bindDate(for: transaction)
         bindRound(for: transaction)
         bindTransactionIDTitle(for: transaction)
-        transactionID = transaction.id ?? transaction.parentID
+        transactionID = {
+            if let tx = transaction as? Transaction { return tx.id ?? tx.parentID }
+            if let tx = transaction as? TransactionV2 { return tx.id }
+            return nil
+        }()
         bindNote(for: transaction)
         bindVoteKeyViewModel(from: transaction)
         bindSelectionKeyViewModel(from: transaction)
@@ -90,7 +100,7 @@ extension KeyRegTransactionDetailViewModel {
 }
 
 extension KeyRegTransactionDetailViewModel {
-    private func bindDate(for transaction: Transaction) {
+    private func bindDate(for transaction: TransactionItem) {
         if transaction.isPending() {
             date = Date().toFormat("MMMM dd, yyyy - HH:mm")
         } else {
@@ -98,35 +108,42 @@ extension KeyRegTransactionDetailViewModel {
         }
     }
 
-    private func bindRound(for transaction: Transaction) {
+    private func bindRound(for transaction: TransactionItem) {
         if transaction.isPending() {
             roundViewIsHidden = true
         } else {
-            if let round = transaction.confirmedRound {
+            let round: UInt64? = {
+                if let tx = transaction as? Transaction { return tx.confirmedRound }
+                if let tx = transaction as? TransactionV2 { return UInt64(tx.confirmedRound ?? .empty) }
+                return nil
+            }()
+            if let round {
                 roundViewDetail = "\(round)"
             }
         }
     }
 
-    private func bindTransactionIDTitle(for transaction: Transaction) {
-        if transaction.isInner {
+    private func bindTransactionIDTitle(for transaction: TransactionItem) {
+        if  let tx = transaction as? Transaction,
+            tx.isInner {
             transactionIDTitle = String(localized: "transaction-detail-parent-id")
             return
         }
 
         transactionIDTitle = String(localized: "transaction-detail-id")
     }
-
-    private func bindNote(for transaction: Transaction) {
-        if let note = transaction.noteRepresentation() {
+    
+    private func bindNote(for transaction: TransactionItem) {
+        if let note = transaction.noteRepresentation {
             noteViewDetail = note
         } else {
             noteViewIsHidden = true
         }
     }
 
-    private func bindReward(for transaction: Transaction) {
-        if let rewards = transaction.senderRewards,
+    private func bindReward(for transaction: TransactionItem) {
+        if let tx = transaction as? Transaction,
+           let rewards = tx.senderRewards,
            rewards > 0 {
             rewardViewMode = .normal(amount: rewards.toAlgos)
         } else {
@@ -134,9 +151,10 @@ extension KeyRegTransactionDetailViewModel {
         }
     }
 
-    private func bindVoteKeyViewModel(from transaction: Transaction) {
+    private func bindVoteKeyViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let voteKey = keyRegTransaction.voteParticipationKey
         else {
@@ -150,9 +168,10 @@ extension KeyRegTransactionDetailViewModel {
         self.voteKeyViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
-    private func bindSelectionKeyViewModel(from transaction: Transaction) {
+    private func bindSelectionKeyViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let selectionKey = keyRegTransaction.selectionParticipationKey
         else {
@@ -166,9 +185,10 @@ extension KeyRegTransactionDetailViewModel {
         self.selectionKeyViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
-    private func bindStateProofKeyViewModel(from transaction: Transaction) {
+    private func bindStateProofKeyViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let stateProofKey = keyRegTransaction.stateProofKey
         else {
@@ -182,9 +202,10 @@ extension KeyRegTransactionDetailViewModel {
         self.stateProofKeyViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
-    private func bindVoteFirstValidRoundViewModel(from transaction: Transaction) {
+    private func bindVoteFirstValidRoundViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let voteFirstValidRound = keyRegTransaction.voteFirstValid
         else {
@@ -200,9 +221,10 @@ extension KeyRegTransactionDetailViewModel {
         voteFirstValidRoundViewModel = .init(titledInformation)
     }
 
-    private func bindVoteLastValidRoundViewModel(from transaction: Transaction) {
+    private func bindVoteLastValidRoundViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let voteLastValidRound = keyRegTransaction.voteLastValid
         else {
@@ -218,9 +240,10 @@ extension KeyRegTransactionDetailViewModel {
         voteLastValidRoundViewModel = .init(titledInformation)
     }
 
-    private func bindVoteKeyDiluationViewModel(from transaction: Transaction) {
+    private func bindVoteKeyDiluationViewModel(from transaction: TransactionItem) {
         guard
-            let keyRegTransaction = transaction.keyRegTransaction,
+            let tx = transaction as? Transaction,
+            let keyRegTransaction = tx.keyRegTransaction,
             keyRegTransaction.isOnlineKeyRegTransaction,
             let voteKeyDilution = keyRegTransaction.voteKeyDilution
         else {
@@ -236,8 +259,10 @@ extension KeyRegTransactionDetailViewModel {
         voteKeyDilutionViewModel = .init(titledInformation)
     }
 
-    private func bindParticipationStatusViewModel(from transaction: Transaction) {
-        guard let transactionDetail = transaction.keyRegTransaction,
+    private func bindParticipationStatusViewModel(from transaction: TransactionItem) {
+        guard
+            let tx = transaction as? Transaction,
+            let transactionDetail = tx.keyRegTransaction,
               !transactionDetail.isOnlineKeyRegTransaction else {
             return
         }

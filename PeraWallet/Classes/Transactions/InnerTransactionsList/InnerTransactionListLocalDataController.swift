@@ -30,7 +30,7 @@ final class InnerTransactionListLocalDataController:
     private(set) var draft: InnerTransactionListDraft
     private(set) lazy var currencyFormatter = CurrencyFormatter()
     
-    private lazy var innerTransactions: [Transaction] = draft.innerTransactions
+    private lazy var innerTransactions: [TransactionItem] = draft.innerTransactions
 
     private let sharedDataController: SharedDataController
     private let currency: CurrencyProvider
@@ -99,7 +99,7 @@ extension InnerTransactionListLocalDataController {
     }
 
     private func makeInnerTransactionListItem(
-        _ transaction: Transaction
+        _ transaction: TransactionItem
     ) -> InnerTransactionListItem? {
         switch transaction.type {
         case .payment:
@@ -173,15 +173,22 @@ extension InnerTransactionListLocalDataController {
         return nil
     }
     
-    private func getAsset(from transaction: Transaction) -> Asset? {
-        guard let transactionAssetID = transaction.assetTransfer?.assetId,
-              let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] else {
-            return draft.asset
+    private func getAsset(from transaction: TransactionItem) -> Asset? {
+        let assetDecoration: AssetDecoration?
+
+        switch transaction {
+        case let tx as Transaction: assetDecoration = tx.assetTransfer.flatMap { sharedDataController.assetDetailCollection[$0.assetId] }
+        case let tx as TransactionV2:
+            let assetId = tx.assetTransferTransactionDetail?.asset?.assetId ?? tx.asset?.assetId
+            assetDecoration = assetId.flatMap { Int64($0) }.flatMap { sharedDataController.assetDetailCollection[$0]
         }
+        default: assetDecoration = nil
+        }
+        guard let decoration = assetDecoration else { return draft.asset }
         
-        return assetDecoration.isCollectible ?
-            CollectibleAsset(decoration: assetDecoration) :
-            StandardAsset(decoration: assetDecoration)
+        return decoration.isCollectible ?
+            CollectibleAsset(decoration: decoration) :
+            StandardAsset(decoration: decoration)
     }
 
     private func deliverSnapshot(
@@ -212,5 +219,5 @@ struct InnerTransactionListDraft {
     let type: TransactionTypeFilter
     let asset: Asset?
     let account: Account
-    let innerTransactions: [Transaction]
+    let innerTransactions: [TransactionItem]
 }

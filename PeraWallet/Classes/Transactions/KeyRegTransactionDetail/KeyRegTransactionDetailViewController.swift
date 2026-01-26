@@ -25,12 +25,12 @@ final class KeyRegTransactionDetailViewController: BaseScrollViewController {
     private lazy var contextView = KeyRegTransactionDetailView()
 
     private let account: Account
-    private let transaction: Transaction
+    private let transaction: TransactionItem
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         account: Account,
-        transaction: Transaction,
+        transaction: TransactionItem,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
@@ -131,8 +131,13 @@ extension KeyRegTransactionDetailViewController: KeyRegTransactionDetailViewDele
         _ transactionDetailView: KeyRegTransactionDetailView,
         didOpen explorer: AlgoExplorerType
     ) {
-        if let transactionId = transaction.id ?? transaction.parentID,
-           let url = explorer.transactionURL(with: transactionId, in: api!.network) {
+        let transactionId: String? = {
+            if let tx = transaction as? Transaction { return tx.id ?? tx.parentID }
+            if let tx = transaction as? TransactionV2 { return tx.id }
+            return nil
+        }()
+        
+        if let transactionId, let url = explorer.transactionURL(with: transactionId, in: api!.network) {
             open(url)
         }
     }

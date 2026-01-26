@@ -158,7 +158,7 @@ extension Transaction {
         return payment?.closeAddress ?? assetTransfer?.closeToAddress
     }
     
-    public func noteRepresentation() -> String? {
+    public var noteRepresentation: String? {
         guard let noteData = note, !noteData.isEmpty else {
             return nil
         }
@@ -178,8 +178,7 @@ extension Transaction {
     }
 
     public var allInnerTransactionsCount: Int {
-        guard let innerTransactions = innerTransactions,
-              !innerTransactions.isEmpty else {
+        guard let innerTransactions, !innerTransactions.isEmpty else {
             return .zero
         }
 
