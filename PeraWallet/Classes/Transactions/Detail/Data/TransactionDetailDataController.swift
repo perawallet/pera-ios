@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AppCallTransactionDetailDataController.swift
+//   TransactionDetailDataController.swift
 
 import pera_wallet_core
 import MagpieCore
 
-protocol AppCallTransactionDetailDataController: AnyObject {
-    typealias EventHandler = (AppCallTransactionDetailControllerEvent) -> Void
+protocol TransactionDetailDataController: AnyObject {
+    typealias EventHandler = (TransactionDetailControllerEvent) -> Void
 
     var eventHandler: EventHandler? { get set }
     var transaction: TransactionV2? { get }
@@ -26,7 +26,7 @@ protocol AppCallTransactionDetailDataController: AnyObject {
     func loadTransactionDetail(account: Account, transactionId: String?)
 }
 
-enum AppCallTransactionDetailControllerEvent {
+enum TransactionDetailControllerEvent {
     case didFail(error: APIError)
     case didLoad(transaction: TransactionV2)
 }

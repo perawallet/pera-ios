@@ -29,6 +29,9 @@ final class NotificationsViewController: BaseViewController {
         api: api!,
         lastSeenNotificationController: lastSeenNotificationController
     )
+    private lazy var transactionDetailDataController = TransactionDetailLocalDataController(
+        api: api
+    )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -115,6 +118,17 @@ final class NotificationsViewController: BaseViewController {
                     }
                 case let .externalDeepLink(deepLink: deepLink):
                     self.open(deepLink: deepLink)
+                case let .transactionDetail(account, assetId, transactionId):
+                    transactionDetailDataController.eventHandler = { [weak self] event in
+                        guard let self else { return }
+                        switch event {
+                        case .didFail(error: let error):
+                            openAccountDetail(AccountHandle(account: account, status: .ready))
+                        case .didLoad(transaction: let transaction):
+                            openTransactionDetail(account, assetId: assetId, transaction: transaction)
+                        }
+                    }
+                    transactionDetailDataController.loadTransactionDetail(account: account, transactionId: transactionId)
                 default:
                     break
                 }
@@ -372,6 +386,25 @@ extension NotificationsViewController {
                 incomingASAsRequestsCount: 0
             ),
             by: .push
+        )
+    }
+    
+    private func openTransactionDetail(_ account: Account, assetId: AssetID, transaction: TransactionItem) {        
+        let asset: Asset? = {
+            guard assetId != 0 else { return account.algo }
+            if let assetDecoration = sharedDataController.assetDetailCollection[assetId] {
+                return StandardAsset(decoration: assetDecoration)
+            }
+            return nil
+        }()
+        
+        open(
+            .transactionDetail(
+                account: account,
+                transaction: transaction,
+                assetDetail: asset
+            ),
+            by: .present
         )
     }
 

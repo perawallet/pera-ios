@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AppCallTransactionDetailLocalDataController.swift
+//   TransactionDetailLocalDataController.swift
 
 import pera_wallet_core
 
-final class AppCallTransactionDetailLocalDataController: AppCallTransactionDetailDataController {
+final class TransactionDetailLocalDataController: TransactionDetailDataController {
     var eventHandler: EventHandler?
     
     private let api: ALGAPI?
     var transaction: TransactionV2?
     
-    init(_ api: ALGAPI?) {
+    init(api: ALGAPI?) {
         self.api = api
     }
     
@@ -42,4 +42,6 @@ final class AppCallTransactionDetailLocalDataController: AppCallTransactionDetai
         }
     }
 }
+
+
 

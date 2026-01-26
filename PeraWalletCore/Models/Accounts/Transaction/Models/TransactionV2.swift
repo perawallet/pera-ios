@@ -39,6 +39,7 @@ public final class TransactionV2:
     public let innerTransactions: [TransactionV2]?
     public let applicationTransactionDetail: ApplicationTransactionDetail?
     public let assetTransferTransactionDetail: AssetTransferTransactionDetail?
+    public let paymentTransactionDetail: PaymentTransactionDetail?
     public let note: Data?
     
     public var status: TransactionStatus? {
@@ -82,13 +83,6 @@ public final class TransactionV2:
         return String(format: String(localized: "swap-detail-text"), Formatter.numberTextWithSuffix(from: amountIn), assetInUnitName, Formatter.numberTextWithSuffix(from: amountOut), assetOutUnitName)
     }
     
-    public var amountValue: Decimal? {
-        let fractionDecimals = asset?.fractionDecimals ?? 0
-        let rawAmount = swapGroupDetail?.amountInWithSlippage ?? amount
-        guard let rawAmount, let amount = Decimal(string: rawAmount) else { return nil }
-        return fractionDecimals > 0 ? amount / pow(10, fractionDecimals) : amount
-    }
-    
     public var noteRepresentation: String? {
         guard let noteData = note, !noteData.isEmpty else {
             return nil
@@ -97,6 +91,20 @@ public final class TransactionV2:
         let note = String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
         let validNote = note.without("\0")
         return validNote
+    }
+    
+    public var amountValue: Decimal? {
+        let fractionDecimals = asset?.fractionDecimals ?? 0
+        let rawAmount = swapGroupDetail?.amountInWithSlippage ?? amount
+        guard let rawAmount, let amount = Decimal(string: rawAmount) else { return nil }
+        return fractionDecimals > 0 ? amount / pow(10, fractionDecimals) : amount
+    }
+    
+    public func paymentValue(with assetFractionDecimals: Int?) -> Decimal? {
+        let fractionDecimals = assetFractionDecimals ?? asset?.fractionDecimals ?? 0
+        let rawAmount = paymentTransactionDetail?.amount ?? amount
+        guard let rawAmount, let amount = Decimal(string: rawAmount) else { return nil }
+        return fractionDecimals > 0 ? amount / pow(10, fractionDecimals) : amount
     }
     
     public func isPending() -> Bool {
@@ -135,6 +143,7 @@ public final class TransactionV2:
         self.innerTransactions = apiModel.innerTransactions.unwrapMap(TransactionV2.init)
         self.applicationTransactionDetail = apiModel.applicationTransactionDetail
         self.assetTransferTransactionDetail = apiModel.assetTransferTransactionDetail
+        self.paymentTransactionDetail = apiModel.paymentTransactionDetail
         self.note = apiModel.note
     }
 
@@ -158,6 +167,7 @@ public final class TransactionV2:
         apiModel.innerTransactions = innerTransactions.map { $0.encode() }
         apiModel.applicationTransactionDetail = applicationTransactionDetail
         apiModel.assetTransferTransactionDetail = assetTransferTransactionDetail
+        apiModel.paymentTransactionDetail = paymentTransactionDetail
         apiModel.note = note
         return apiModel
     }
@@ -183,6 +193,7 @@ extension TransactionV2 {
         var innerTransactions: [TransactionV2.APIModel]?
         var applicationTransactionDetail: ApplicationTransactionDetail?
         var assetTransferTransactionDetail: AssetTransferTransactionDetail?
+        var paymentTransactionDetail: PaymentTransactionDetail?
         var note: Data?
 
         public init() {
@@ -204,6 +215,7 @@ extension TransactionV2 {
             self.innerTransactions = []
             self.applicationTransactionDetail = nil
             self.assetTransferTransactionDetail = nil
+            self.paymentTransactionDetail = nil
             self.note = nil
         }
 
@@ -226,6 +238,7 @@ extension TransactionV2 {
             case innerTransactions = "inner_txns"
             case applicationTransactionDetail = "application_transaction"
             case assetTransferTransactionDetail = "asset_transfer_transaction"
+            case paymentTransactionDetail = "payment_transaction"
             case note
         }
     }
@@ -370,5 +383,25 @@ public final class AssetTransferTransactionDetail: ALGAPIModel {
         let fractionDecimals = asset?.fractionDecimals ?? 0
         guard let amount, let decimalAmount = Decimal(string: amount) else { return nil }
         return fractionDecimals > 0 ? decimalAmount / pow(10, fractionDecimals) : decimalAmount
+    }
+}
+
+public final class PaymentTransactionDetail: ALGAPIModel {
+    public let receiver: String?
+    public let amount: String?
+    public let closeRemainderTo: String?
+
+    public init() {
+        self.receiver = nil
+        self.amount = nil
+        self.closeRemainderTo = nil
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case receiver
+        case amount
+        case closeRemainderTo = "close_remainder_to"
     }
 }

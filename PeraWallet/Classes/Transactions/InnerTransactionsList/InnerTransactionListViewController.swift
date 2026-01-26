@@ -47,7 +47,9 @@ final class InnerTransactionListViewController:
     private let dataController: InnerTransactionListDataController
     private let theme: InnerTransactionListViewControllerTheme
     
-    private(set) lazy var appCallTransactionDetailDataController = AppCallTransactionDetailLocalDataController(api)
+    private(set) lazy var transactionDetailDataController = TransactionDetailLocalDataController(
+        api: api
+    )
 
     init(
         dataController: InnerTransactionListDataController,
@@ -190,7 +192,7 @@ extension InnerTransactionListViewController {
             return
         }
 
-        appCallTransactionDetailDataController.eventHandler = { [weak self] event in
+        transactionDetailDataController.eventHandler = { [weak self] event in
             guard let self else { return }
             switch event {
             case .didLoad(transaction: let transactionDetail):
@@ -211,7 +213,7 @@ extension InnerTransactionListViewController {
                 )
             }
         }
-        appCallTransactionDetailDataController.loadTransactionDetail(account: account, transactionId: txId)
+        transactionDetailDataController.loadTransactionDetail(account: account, transactionId: txId)
 
     }
 
