@@ -390,7 +390,8 @@ extension NotificationsViewController {
     }
     
     private func openTransactionDetail(_ account: Account, assetId: AssetID, transaction: TransactionItem) {        
-        let asset: StandardAsset? = {
+        let asset: Asset? = {
+            guard assetId != 0 else { return account.algo }
             if let assetDecoration = sharedDataController.assetDetailCollection[assetId] {
                 return StandardAsset(decoration: assetDecoration)
             }

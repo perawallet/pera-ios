@@ -100,7 +100,7 @@ extension TransactionDetailViewModel {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                if let tx = transaction as? TransactionV2 { return tx.amountValue}
+                if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue}
                 return nil
             }()
             
@@ -206,7 +206,7 @@ extension TransactionDetailViewModel {
             if let assetDetail {
                 let amount: Decimal? = {
                     if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                    if let tx = transaction as? TransactionV2 { return tx.amountValue}
+                    if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue}
                     return nil
                 }()
                 
