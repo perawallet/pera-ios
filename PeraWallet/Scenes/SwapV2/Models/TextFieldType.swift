@@ -14,6 +14,8 @@
 
 //   TextFieldType.swift
 
+import SwiftUI
+
 enum TextFieldType {
     case percentage, slippage
     

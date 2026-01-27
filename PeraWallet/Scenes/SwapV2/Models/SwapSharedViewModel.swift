@@ -49,7 +49,7 @@ class SwapSharedViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]? = []
     
     // MARK: - Internal State / Private Properties
-    private var debounceWorkItem: DispatchWorkItem?
+    private var debounceTask: Task<Void, Never>?
 
     private var shouldUpdateAccounts = false
     
@@ -181,42 +181,43 @@ class SwapSharedViewModel: ObservableObject {
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
-        debounceWorkItem?.cancel()
+        debounceTask?.cancel()
         
-        let task = DispatchWorkItem { [weak self] in
-            guard let self = self else { return }
+        debounceTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second debounce
+            guard let self else { return }
+            
             let doubleValue = amountFormatter.numericValue(from: newValue)
             if doubleValue > 0 {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
                     isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
                     isLoadingReceiveAmount = true
                     
-                    if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                        onGetQuote(currencyService.algoValue(fromFiat: doubleValue))
-                    } else {
-                        onGetQuote(doubleValue)
-                    }
+                    let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
+                    onGetQuote(valueToUse)
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if useLocalCurrency {
-                        receivingText = currencyService.fiatFormat(with: 0.0)
-                        receivingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
-                        payingText = currencyService.fiatFormat(with: 0.0)
-                        payingTextInSecondaryCurrency = SwapSharedViewModel.defaultAmountValue
-                    } else {
-                        receivingText = .empty
-                        receivingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
-                        payingText = .empty
-                        payingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
-                    }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    resetTextFields()
                 }
             }
         }
-        debounceWorkItem = task
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: task)
+    }
+    
+    private func resetTextFields() {
+        if useLocalCurrency {
+            receivingText = currencyService.fiatFormat(with: 0.0)
+            receivingTextInSecondaryCurrency = Self.defaultAmountValue
+            payingText = currencyService.fiatFormat(with: 0.0)
+            payingTextInSecondaryCurrency = Self.defaultAmountValue
+        } else {
+            receivingText = .empty
+            receivingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
+            payingText = .empty
+            payingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
+        }
     }
     
     func filterPayingText(_ input: String) -> String {
