@@ -271,10 +271,14 @@ extension HomeAPIDataController {
         ) { [weak self] response in
             guard let self else { return }
             switch response {
-            case .success(let accountName):
-                print("---response: \(accountName)")
-            case .failure:
-                print("---error!")
+            case .success(let accountNames):
+                for accountName in accountNames.results {
+                    if let accountInfo = session.authenticatedUser?.account(address: accountName.address) {
+                        accountInfo.nfDomain = accountName.name
+                        session.authenticatedUser?.updateAccount(accountInfo)
+                    }
+                }
+            case .failure: break
             }
         }
     }
