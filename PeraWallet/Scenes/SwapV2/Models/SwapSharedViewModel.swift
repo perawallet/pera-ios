@@ -182,6 +182,7 @@ class SwapSharedViewModel: ObservableObject {
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
         debounceTask?.cancel()
+        debounceTask = nil
         
         debounceTask = Task { [weak self] in
             try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second debounce
@@ -207,17 +208,10 @@ class SwapSharedViewModel: ObservableObject {
     }
     
     private func resetTextFields() {
-        if useLocalCurrency {
-            receivingText = currencyService.fiatFormat(with: 0.0)
-            receivingTextInSecondaryCurrency = Self.defaultAmountValue
-            payingText = currencyService.fiatFormat(with: 0.0)
-            payingTextInSecondaryCurrency = Self.defaultAmountValue
-        } else {
-            receivingText = .empty
-            receivingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
-            payingText = .empty
-            payingTextInSecondaryCurrency = currencyService.fiatFormat(with: 0.0)
-        }
+        receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
+        receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
+        payingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
+        payingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
     }
     
     func filterPayingText(_ input: String) -> String {
