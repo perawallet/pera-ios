@@ -17,9 +17,11 @@
 import MacaroonUIKit
 import UIKit
 
-final class IncomingASAAccountCell:
-    CollectionCell<IncomingASAAccountView>,
-    ViewModelBindable {
+final class IncomingASAAccountCell: CollectionCell<IncomingASAAccountView>, InboxRowIdentifiable {
+        
+    // MARK: - Properties - IndexRowIdentifiable
+        
+    var identifier: InboxRowIdentifier?
     
     // MARK: - Properties
     
@@ -40,5 +42,11 @@ final class IncomingASAAccountCell:
             position: .bottom((80, 24))
         )
         separatorStyle = .single(separator)
+    }
+    
+    // MARK: - Update
+    
+    func update(icon: ImageType, title: String, primaryAccessory: String) {
+        contextView.update(icon: icon, title: title, primaryAccessory: primaryAccessory)
     }
 }

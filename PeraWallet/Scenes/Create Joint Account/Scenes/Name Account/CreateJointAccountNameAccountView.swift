@@ -49,7 +49,12 @@ struct CreateJointAccountNameAccountView: View {
                 .padding(.horizontal, 24.0)
                 .focused($nameTextFieldFocusState)
             Spacer()
-            RoundedButton(text: "create-joint-account-name-account-button-finish", style: .primary, isEnabled: viewModel.isValidName, onTap: onFinishButtonTapAction)
+            RoundedButton(
+                contentType: viewModel.isWaitingForResponse ? .spinner : .text("create-joint-account-name-account-button-finish"),
+                style: .primary,
+                isEnabled: viewModel.isValidName,
+                onTap: onFinishButtonTapAction
+            )
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
         }

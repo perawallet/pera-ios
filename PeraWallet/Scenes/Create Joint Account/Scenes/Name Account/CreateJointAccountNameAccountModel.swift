@@ -30,6 +30,7 @@ final class CreateJointAccountNameAccountViewModel: ObservableObject {
     @Published var name: String = ""
     @Published fileprivate(set) var walletName: String = ""
     @Published fileprivate(set) var isValidName: Bool = false
+    @Published fileprivate(set) var isWaitingForResponse: Bool = false
     @Published fileprivate(set) var action: Action?
     @Published fileprivate(set) var error: ErrorMessage?
 }
@@ -78,11 +79,17 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
     // MARK: - Actions
     
     func createJointAccount() {
+        
+        viewModel.isWaitingForResponse = true
+        
         Task {
             do {
                 try await handleCreateAccountFlow()
             } catch let error as CoreApiManager.ApiError {
                 viewModel.error = .unableToCreateJointAccount(error)
+                Task { @MainActor in
+                    viewModel.isWaitingForResponse = false
+                }
             }
         }
     }
@@ -91,7 +98,7 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
         try await accountService.createJointAccount(participants: participantAddresses, threshold: threshold, name: viewModel.name)
         PeraUserDefaults.shouldShowNewAccountAnimation = true
         Task { @MainActor in
-            self.viewModel.action = .success
+            viewModel.action = .success
         }
     }
 }
