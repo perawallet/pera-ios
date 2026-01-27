@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct MultiSigAccountObject: Encodable, Decodable, Equatable {
+struct MultiSigAccountObject: Codable, Equatable {
     /// The public address of the multisig account.
     let address: String
     /// The list of participant public addresses involved in the multisig account.

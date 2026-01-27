@@ -23,6 +23,12 @@ protocol AccountsServiceable {
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
+    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], transactionSignatureLists: [[String]]?) async throws(AccountsService.ActionError)
+    func signJointAccountTransaction(participantAddress: String, signRequestId: String, response: AccountsService.JointAccountSignResponse) async throws(AccountsService.ActionError)
+    @MainActor func localAccount(address: String) -> AccountInformation?
+    @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
+    @MainActor func account(peraAccount: PeraAccount) -> Account?
+    @MainActor func account(address: String) -> Account?
 }
 
 final class AccountsService: AccountsServiceable, NetworkConfigureable {
@@ -34,6 +40,14 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     
     enum ActionError: Error {
         case unableToCreateLocalAccount(error: Error)
+        case unableToCreateJointAccountTransaction(error: CoreApiManager.ApiError)
+        case unableToSignJointAccountTransaction(error: CoreApiManager.ApiError)
+        case noDeviceID
+    }
+    
+    enum JointAccountSignResponse {
+        case signed(signatures: [[String]])
+        case declined
     }
     
     // MARK: - Properties - AccountsServicable
@@ -95,6 +109,48 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         }
     }
     
+    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], transactionSignatureLists: [[String]]?) async throws(ActionError) {
+        do {
+            let _ = try await mobileApiManager.createJointAccountTransactionSignRequest(
+                jointAccountAddress: jointAccountAddress,
+                proposerAddress: proposerAddress,
+                type: .async,
+                rawTransactionLists: rawTransactionLists,
+                transactionSignatureLists: transactionSignatureLists
+            )
+        } catch {
+            throw .unableToCreateJointAccountTransaction(error: error)
+        }
+    }
+    
+    func signJointAccountTransaction(participantAddress: String, signRequestId: String, response: JointAccountSignResponse) async throws(ActionError) {
+        
+        let transactionResponse: JointAccountSignRequest.Response
+        var transactionSignatures: [[String]]?
+        var deviceID: String?
+        
+        switch response {
+        case let .signed(signatures):
+            transactionResponse = .signed
+            transactionSignatures = signatures
+        case .declined:
+            transactionResponse = .declined
+            deviceID = try fetchDeviceID()
+        }
+        
+        do {
+            let _ = try await mobileApiManager.signJointAccountTransaction(
+                participantAddress: participantAddress,
+                signRequestId: signRequestId,
+                response: transactionResponse,
+                signatures: transactionSignatures,
+                deviceId: deviceID
+            )
+        } catch {
+            throw .unableToSignJointAccountTransaction(error: error)
+        }
+    }
+    
     private func fetchAccounts() {
         
         Task {
@@ -108,7 +164,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
                         do {
                             let response = try await self.indexerApiManager.fetchAccount(publicKey: localAccount.address)
                             return (response, localAccount)
-                        } catch let CoreApiManager.ApiError.invalidHTTPStatusCode(code) where code == 404 {
+                        } catch let CoreApiManager.ApiError.invalidHTTPStatusCode(code, _) where code == 404 {
                             return (nil, localAccount)
                         } catch let error as CoreApiManager.ApiError {
                             self.errorPublisher.send(.failedToFetchAccounts(error: error))
@@ -137,6 +193,30 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         accountsPublisher.value.removeAll()
     }
     
+    // MARK: - Legacy Actions
+    
+    @MainActor
+    func localAccount(address: String) -> AccountInformation? {
+        localAccounts.first { $0.address == address }
+    }
+    
+    @MainActor
+    func localAccount(peraAccount: PeraAccount) -> AccountInformation? {
+        localAccount(address: peraAccount.address)
+    }
+    
+    @MainActor
+    func account(peraAccount: PeraAccount) -> Account? {
+        guard let localAccount = localAccount(peraAccount: peraAccount) else { return nil }
+        return Account(localAccount: localAccount)
+    }
+    
+    @MainActor
+    func account(address: String) -> Account? {
+        guard let localAccount = localAccount(address: address) else { return nil }
+        return Account(localAccount: localAccount)
+    }
+    
     // MARK: - Handlers
     
     private func account(response: AccountResponse?, localAccount: AccountInformation, allLocalAccounts: [AccountInformation]) -> PeraAccount {
@@ -160,5 +240,11 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
             sortingIndex: localAccount.preferredOrder
         )
     }
+    
+    // MARK: - Helpers
+    
+    private func fetchDeviceID() throws(ActionError) -> String {
+        guard let deviceID = legacySessionManager.authenticatedUser?.getDeviceId(on: network.legacyNetwork) else { throw .noDeviceID }
+        return deviceID
+    }
 }
-
