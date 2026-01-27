@@ -71,7 +71,6 @@ struct NoAccountSwapView: View {
                         onAction?(.createAccount)
                     } label: {
                         HStack(alignment: .center, spacing: 12) {
-                            //FIXME: Please replace it with template
                             Image(.iconAssetAdd)
                                 .renderingMode(.template)
                                 .foregroundStyle(Color.ButtonPrimary.text)
