@@ -59,7 +59,7 @@ struct CreateJointAccountEditAccountView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 41.0)
-                RoundedButton(text: "create-joint-account-button-remove", style: .destructive, isEnabled: true, onTap: onRemoveAddressButtonTapAction)
+                RoundedButton(contentType: .text("create-joint-account-button-remove"), style: .destructive, isEnabled: true, onTap: onRemoveAddressButtonTapAction)
                     .padding(.horizontal, 24.0)
                 Spacer()
             }
