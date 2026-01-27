@@ -40,7 +40,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = AccountAssetListLayout.build()
+        let collectionViewLayout = AccountAssetListLayout.build(backgroundColor: .clear)
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
