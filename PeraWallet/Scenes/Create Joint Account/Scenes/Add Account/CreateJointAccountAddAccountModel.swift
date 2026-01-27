@@ -18,12 +18,6 @@ import UIKit
 import Combine
 import pera_wallet_core
 
-private struct CurrencyFormatterSettings: LocalCurrency {
-    let id: CurrencyID
-    let name: String? = nil
-    let symbol: String?
-}
-
 final class CreateJointAccountAddAccountViewModel: ObservableObject {
     
     enum Action {
