@@ -112,8 +112,8 @@ struct JointAccountInviteConfirmationOverlay: View {
         }
         .frame(maxHeight: scrollViewContentSize.height)
         HStack {
-            RoundedButton(text: "joint-account-invite-confirmation-overlay-button-ignore", style: .secondary, isEnabled: true, onTap: onIgnoreAction)
-            RoundedButton(text: "joint-account-invite-confirmation-overlay-button-add", style: .primary, isEnabled: true, onTap: onAcceptAction)
+            RoundedButton(contentType: .text("joint-account-invite-confirmation-overlay-button-ignore"), style: .secondary, isEnabled: true, onTap: onIgnoreAction)
+            RoundedButton(contentType: .text("joint-account-invite-confirmation-overlay-button-add"), style: .primary, isEnabled: true, onTap: onAcceptAction)
         }
         .padding(.horizontal, 16.0)
         .padding(.bottom, 16.0)

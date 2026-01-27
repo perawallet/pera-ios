@@ -101,7 +101,7 @@ struct CreateJointAccountAccountsListView: View {
                     }
                 }
             }
-            RoundedButton(text: "common-continue", style: .primary, isEnabled: viewModel.isValidated, onTap: onContinueButtonAction)
+            RoundedButton(contentType: .text("common-continue"), style: .primary, isEnabled: viewModel.isValidated, onTap: onContinueButtonAction)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
         }
