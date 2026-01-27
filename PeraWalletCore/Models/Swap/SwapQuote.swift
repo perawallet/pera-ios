@@ -134,3 +134,30 @@ extension SwapQuote {
         }
     }
 }
+
+#if DEBUG
+extension SwapQuote {
+    convenience init(
+        price: Decimal? = nil,
+        assetIn: AssetDecoration? = nil,
+        assetOut: AssetDecoration? = nil,
+        amountOutWithSlippage: UInt64? = nil,
+        slippage: Decimal? = nil,
+        priceImpact: Decimal? = nil,
+        peraFee: UInt64? = nil,
+        exchangeFee: UInt64? = nil
+    ) {
+        var apiModel = APIModel()
+        apiModel.price = price.map { String(describing: $0) }
+        apiModel.assetIn = assetIn?.encode()
+        apiModel.assetOut = assetOut?.encode()
+        apiModel.amountOutWithSlippage = amountOutWithSlippage.map { String($0) }
+        apiModel.slippage = slippage.map { String(describing: $0) }
+        apiModel.priceImpact = priceImpact.map { String(describing: $0) }
+        apiModel.peraFee = peraFee.map { String($0) }
+        apiModel.exchangeFee = exchangeFee.map { String($0) }
+
+        self.init(apiModel)
+    }
+}
+#endif

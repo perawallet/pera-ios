@@ -7288,6 +7288,9 @@
 		D40B6BC72ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
 		D40B6BC82ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
 		D40B6BC92ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
+		D41147122F2907B2002AF5C0 /* SwapAmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */; };
+		D41147142F291014002AF5C0 /* SwapCurrencyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */; };
+		D41147192F29116A002AF5C0 /* SwapPricingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */; };
 		D417DAD92EB35A6D001D3C53 /* AssetPriceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DAD82EB35A60001D3C53 /* AssetPriceChartDataDraft.swift */; };
 		D417DADB2EB35AF2001D3C53 /* AssetPriceChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DADA2EB35AE6001D3C53 /* AssetPriceChartDataDTO.swift */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
@@ -9279,6 +9282,9 @@
 		D40E8820294C621300B46054 /* CollectibleDetailAccountInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAccountInformationViewModel.swift; sourceTree = "<group>"; };
 		D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameAccountScreenTheme.swift; sourceTree = "<group>"; };
 		D410A0EF2DF6F4D9003CD87D /* ChartSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSegmentedControlView.swift; sourceTree = "<group>"; };
+		D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAmountFormatterTests.swift; sourceTree = "<group>"; };
+		D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapCurrencyServiceTests.swift; sourceTree = "<group>"; };
+		D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapPricingServiceTests.swift; sourceTree = "<group>"; };
 		D41168862DC21935001F7A57 /* MenuListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListView.swift; sourceTree = "<group>"; };
 		D41168922DC21EF8001F7A57 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		D41168962DC22825001F7A57 /* MenuViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -13950,6 +13956,7 @@
 				174A0F3628EF167700D44019 /* Migration */,
 				2B95408A25A782D10098805B /* Models */,
 				2BD36E152682472F00C57728 /* SDK */,
+				D41147102F290760002AF5C0 /* SwapV2 */,
 				1798D9B4294B18C300A7B2AA /* Utils */,
 				2B95408B25A782D40098805B /* ViewModels */,
 				2BEEBF9929A3B4B600DDD988 /* WalletConnect */,
@@ -20279,6 +20286,16 @@
 				D40E8818294C59A400B46054 /* CollectibleDetailAccountInformationViewTheme.swift */,
 			);
 			path = AccountInformation;
+			sourceTree = "<group>";
+		};
+		D41147102F290760002AF5C0 /* SwapV2 */ = {
+			isa = PBXGroup;
+			children = (
+				D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */,
+				D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */,
+				D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */,
+			);
+			path = SwapV2;
 			sourceTree = "<group>";
 		};
 		D41168832DC218F2001F7A57 /* Screens */ = {
@@ -31650,6 +31667,7 @@
 				2B66C57B2D2C76AD00BC6825 /* HDWalletSDKTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardViewModelTests.swift in Sources */,
 				59B103C22E4DE71700B8F6FB /* PassKeyServiceTests.swift in Sources */,
+				D41147142F291014002AF5C0 /* SwapCurrencyServiceTests.swift in Sources */,
 				59B103C32E4DE71700B8F6FB /* LiquidAuthServiceTests.swift in Sources */,
 				59B103C42E4DE71700B8F6FB /* MockPassKeyService.swift in Sources */,
 				59B103C52E4DE71700B8F6FB /* MockLiquidAuthSDKAPI.swift in Sources */,
@@ -31665,6 +31683,7 @@
 				2B18433929DF800E00264152 /* WalletConnectProtocolResolverTests.swift in Sources */,
 				2B95417425AE62BE0098805B /* TransactionParamsTests.swift in Sources */,
 				2B2EE8E425B6F93D006A53C5 /* RewardDetailViewModelTests.swift in Sources */,
+				D41147192F29116A002AF5C0 /* SwapPricingServiceTests.swift in Sources */,
 				2B2EE88A25B6E936006A53C5 /* AssetViewModelTests.swift in Sources */,
 				2B2EE8CD25B6F671006A53C5 /* AccountNameViewModelTests.swift in Sources */,
 				2B95418025AE62E60098805B /* AccountTests.swift in Sources */,
@@ -31673,6 +31692,7 @@
 				2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */,
 				2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */,
 				D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */,
+				D41147122F2907B2002AF5C0 /* SwapAmountFormatterTests.swift in Sources */,
 				2B6093DE2E85B8590020DB70 /* AppEndpointTests.swift in Sources */,
 				2B6093DF2E85B8590020DB70 /* DeeplinkQRTests.swift in Sources */,
 				2B6093E02E85B8590020DB70 /* AppDeeplinkParserTests.swift in Sources */,
