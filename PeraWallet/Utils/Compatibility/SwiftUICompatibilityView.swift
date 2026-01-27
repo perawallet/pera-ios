@@ -40,6 +40,7 @@ final class SwiftUICompatibilityView<WrappedView: View>: UIView {
     private func setupViews() {
         
         guard let view = hostingController.view else { return }
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
         
