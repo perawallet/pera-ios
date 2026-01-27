@@ -46,17 +46,37 @@ extension AccountName {
 
 public final class AccountNameResult: ALGAPIModel {
     public let address: String
-    public let name: String?
+    public let nameResult: NameResult?
 
     public init() {
         self.address = .empty
-        self.name = nil
+        self.nameResult = nil
     }
     
     private enum CodingKeys:
         String,
         CodingKey {
         case address
+        case nameResult = "name"
+    }
+}
+
+public final class NameResult: ALGAPIModel {
+    public let name: String?
+    public let source: String?
+    public let image: String?
+
+    public init() {
+        self.name = nil
+        self.source = nil
+        self.image = nil
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
         case name
+        case source
+        case image
     }
 }
