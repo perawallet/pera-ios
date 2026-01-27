@@ -14,5 +14,52 @@
 
 //   SignRequestObject.swift
 
-struct SignRequestObject: Decodable, Equatable { // FIXME: Send requset feature will be implemented later
+import Foundation
+
+struct SignRequestObject: Decodable, Equatable {
+    
+    enum SignType: String, Decodable {
+        case sync
+        case async
+    }
+    
+    enum Status: String, Decodable {
+        case pending
+        case ready
+        case submitting
+        case confirmed
+        case failed
+        case expired
+    }
+    
+    let id: String
+    let jointAccount: MultiSigAccountObject
+    let type: SignType
+    let transactionLists: [SignRequestTransactionObject]
+    let transactionSignatureLists: [[String]]?
+    let expectedExpireDatetime: Date
+    let status: Status
+    let creationDatetime: Date
+}
+
+struct SignRequestTransactionObject: Decodable, Equatable {
+    let id: Int
+    let rawTransactions: [String]
+    let firstValidBlock: String
+    let lastValidBlock: String
+    let responses: [SignRequestTransactionResponseObject]
+    let expectedExpireDatetime: Date
+}
+
+struct SignRequestTransactionResponseObject: Decodable, Equatable {
+    
+    enum Response: String, Decodable {
+        case signed
+        case declined
+    }
+    
+    let address: String
+    let response: Response
+    let signatures: [[String]]?
+    let deviceId: String?
 }

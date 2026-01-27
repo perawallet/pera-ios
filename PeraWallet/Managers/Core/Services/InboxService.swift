@@ -207,8 +207,8 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
     private func handle(inboxResponse: InboxCreateResponse) {
         
         if legacyFeatureFlagService.isEnabled(.jointAccountEnabled) {
-            jointAccountImportRequestsPublisher.value = inboxResponse.jointAccountImportRequests
-            jointAccountSignRequestsPublisher.value = inboxResponse.jointAccountSignRequests
+            jointAccountImportRequestsPublisher.value = inboxResponse.jointAccountImportRequests.sorted { $0.creationDatetime > $1.creationDatetime }
+            jointAccountSignRequestsPublisher.value = inboxResponse.jointAccountSignRequests.sorted { $0.creationDatetime > $1.creationDatetime }
         }
         
         algorandStandardAssetInboxesPublisher.value = inboxResponse.asaInboxes
@@ -219,15 +219,5 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
     private func fetchDeviceID() throws(ActionError) -> String {
         guard let deviceID = legacySessionManager.authenticatedUser?.getDeviceId(on: network.legacyNetwork) else { throw .noDeviceID }
         return deviceID
-    }
-}
-
-private extension CoreApiManager.BaseURL.Network {
-    
-    var legacyNetwork: ALGAPI.Network {
-        switch self {
-        case .mainNet: .mainnet
-        case .testNet: .testnet
-        }
     }
 }

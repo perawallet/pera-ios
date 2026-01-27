@@ -30,7 +30,7 @@ struct JointAccountInviteInboxRow: View {
     let timestamp: Date
     let onDetailsButtonTap: (() -> Void)
     
-    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter()
+    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(unitsStyle: .full, isNagativeValuesAllowed: true, additionalTextOption: .default)
     
     // MARK: - Body
     
