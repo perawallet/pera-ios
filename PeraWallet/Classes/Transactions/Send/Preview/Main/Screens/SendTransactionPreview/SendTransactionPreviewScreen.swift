@@ -200,6 +200,18 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       let dataArray = builder.composeData()?.map(\.transaction)
       return dataArray ?? []
    }
+   
+   private func signRequestResponse(signerAccount: Account, transactions: [[Data]]) -> JointAccountSignRequestResponse {
+      
+      let signatures = transactions.map { $0.compactMap { self.transactionController.singature(signerAccount: signerAccount, transactionData: $0)?.base64EncodedString() }}
+      
+      return JointAccountSignRequestResponse(
+         address: signerAccount.address,
+         response: .signed,
+         signatures: signatures,
+         deviceId: nil
+      )
+   }
 
    /// <todo>: Add Unit Test for composing transaction and view model changes
    private func bindTransaction(with params: TransactionParams) {
@@ -396,15 +408,15 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             let transactions = [transactionData(params: transactionParameters)]
             let jointAccount = algosTransactionDraft.from
             let jointAccountParticipants = jointAccount.jointAccountParticipants ?? []
-            let singersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
+            let signersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
             
-            guard let proposerAddress = jointAccountParticipants.first, let signer = singersAccounts.first else {
+            guard let proposerAddress = signersAccounts.first?.address else {
                open(error: InternalError.noSigner)
                return
             }
             
             let rawTransactionLists = transactions.map { $0.map { $0.base64EncodedString() }}
-            let transactionSignatureLists = transactions.map { $0.compactMap { self.transactionController.singature(signerAccount: signer, transactionData: $0)?.base64EncodedString() }}
+            let responses = signersAccounts.map { self.signRequestResponse(signerAccount: $0, transactions: transactions) }
             
             self.openLoading()
             
@@ -414,7 +426,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
                      jointAccountAddress: jointAccount.address,
                      proposerAddress: proposerAddress,
                      rawTransactionLists: rawTransactionLists,
-                     transactionSignatureLists: transactionSignatureLists
+                     responses: responses
                   )
                   self.openSuccess(nil)
                } catch {

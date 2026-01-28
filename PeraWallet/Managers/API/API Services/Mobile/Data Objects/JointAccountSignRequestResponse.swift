@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   JointAccountSignRequest.swift
+//   JointAccountSignRequestResponse.swift
 
-struct JointAccountSignRequest {
-    let signRequestId: String
-    let responses: [JointAccountSignRequestResponse]
-}
-
-extension JointAccountSignRequest: BodyRequestable {
+struct JointAccountSignRequestResponse: Encodable {
     
-    typealias ResponseType = SignRequestObject
+    enum Response: String, Encodable {
+        case signed
+        case declined
+    }
     
-    var path: String { "/joint-accounts/sign-requests/\(signRequestId)/responses/" }
-    var method: RequestMethod { .post }
-    var body: Encodable { responses }
+    let address: String
+    let response: Response
+    let signatures: [[String]]?
+    let deviceId: String?
 }

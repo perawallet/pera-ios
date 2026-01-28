@@ -24,7 +24,7 @@ struct ProposeSignRequest {
     let proposerAddress: String
     let type: ProposedSignType
     let rawTransactionLists: [[String]]
-    let transactionSignatureLists: [[String]]?
+    let responses: [JointAccountSignRequestResponse]
 }
 
 extension ProposeSignRequest: BodyRequestable {

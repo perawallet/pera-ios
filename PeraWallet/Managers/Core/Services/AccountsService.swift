@@ -23,8 +23,8 @@ protocol AccountsServiceable {
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
-    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], transactionSignatureLists: [[String]]?) async throws(AccountsService.ActionError)
-    func signJointAccountTransaction(participantAddress: String, signRequestId: String, response: AccountsService.JointAccountSignResponse) async throws(AccountsService.ActionError)
+    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError)
+    func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError)
     @MainActor func localAccount(address: String) -> AccountInformation?
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
@@ -46,8 +46,8 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     }
     
     enum JointAccountSignResponse {
-        case signed(signatures: [[String]])
-        case declined
+        case signed(address: String, signatures: [[String]])
+        case declined(address: String)
     }
     
     // MARK: - Properties - AccountsServicable
@@ -109,43 +109,28 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         }
     }
     
-    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], transactionSignatureLists: [[String]]?) async throws(ActionError) {
+    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(ActionError) {
         do {
             let _ = try await mobileApiManager.createJointAccountTransactionSignRequest(
                 jointAccountAddress: jointAccountAddress,
                 proposerAddress: proposerAddress,
                 type: .async,
                 rawTransactionLists: rawTransactionLists,
-                transactionSignatureLists: transactionSignatureLists
+                responses: responses
             )
         } catch {
             throw .unableToCreateJointAccountTransaction(error: error)
         }
     }
     
-    func signJointAccountTransaction(participantAddress: String, signRequestId: String, response: JointAccountSignResponse) async throws(ActionError) {
+    func signJointAccountTransaction(signRequestId: String, responses: [JointAccountSignResponse]) async throws(ActionError) {
         
-        let transactionResponse: JointAccountSignRequest.Response
-        var transactionSignatures: [[String]]?
-        var deviceID: String?
-        
-        switch response {
-        case let .signed(signatures):
-            transactionResponse = .signed
-            transactionSignatures = signatures
-        case .declined:
-            transactionResponse = .declined
-            deviceID = try fetchDeviceID()
+        let apiResponses = try responses.map { response throws(ActionError) in
+            try apiSignRequestResponse(responseType: response)
         }
         
         do {
-            let _ = try await mobileApiManager.signJointAccountTransaction(
-                participantAddress: participantAddress,
-                signRequestId: signRequestId,
-                response: transactionResponse,
-                signatures: transactionSignatures,
-                deviceId: deviceID
-            )
+            let _ = try await mobileApiManager.signJointAccountTransaction(signRequestId: signRequestId, responses: apiResponses)
         } catch {
             throw .unableToSignJointAccountTransaction(error: error)
         }
@@ -239,6 +224,27 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
             titles: AccountNameFormatter.accountTitles(localAccount: localAccount, accountType: accountType, authorizedAccountType: authorizedAccountType),
             sortingIndex: localAccount.preferredOrder
         )
+    }
+    
+    private func apiSignRequestResponse(responseType: JointAccountSignResponse) throws(ActionError) -> JointAccountSignRequestResponse {
+        
+        let signerAddress: String
+        let transactionResponse: JointAccountSignRequestResponse.Response
+        var transactionSignatures: [[String]]?
+        var deviceID: String?
+        
+        switch responseType {
+        case let .signed(address, signatures):
+            signerAddress = address
+            transactionResponse = .signed
+            transactionSignatures = signatures
+        case let .declined(address):
+            signerAddress = address
+            transactionResponse = .declined
+            deviceID = try fetchDeviceID()
+        }
+        
+        return JointAccountSignRequestResponse(address: signerAddress, response: transactionResponse, signatures: transactionSignatures, deviceId: deviceID)
     }
     
     // MARK: - Helpers

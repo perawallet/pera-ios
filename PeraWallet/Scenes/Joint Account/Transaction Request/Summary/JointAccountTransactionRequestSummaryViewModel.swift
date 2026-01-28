@@ -157,33 +157,24 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
     
     @MainActor
     private func performSignRequests(isConfirmed: Bool) {
-        participantAccounts()
-            .forEach { performSignRequest(signerAccount: $0, isConfirmed: isConfirmed) }
-    }
-    
-    private func performSignRequest(signerAccount: Account, isConfirmed: Bool) {
         
-        let response: AccountsService.JointAccountSignResponse
+        let responses: [AccountsService.JointAccountSignResponse]
         
         if isConfirmed {
-            
-            let signatures = signRequest.transactionLists
-                .map { $0.rawTransactions.compactMap { Data(base64Encoded: $0) }}
+            responses = participantAccounts()
                 .map {
-                    $0
-                        .compactMap { transactionController.singature(signerAccount: signerAccount, transactionData: $0) }
-                        .map { $0.base64EncodedString() }
+                    let signatures = signatures(signerAccount: $0, transactions: signRequest.transactionLists)
+                    return .signed(address: $0.address, signatures: signatures)
                 }
-            
-            response = .signed(signatures: signatures)
-            
         } else {
-            response = .declined
+            responses = participantAccounts()
+                .map(\.address)
+                .map { .declined(address: $0) }
         }
         
         Task {
             do {
-                try await accountsService.signJointAccountTransaction(participantAddress: signerAccount.address, signRequestId: signRequest.id, response: response)
+                try await accountsService.signJointAccountTransaction(signRequestId: signRequest.id, responses: responses)
                 Task { @MainActor in
                     viewModel.action = .success
                 }
@@ -234,5 +225,15 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
         return accountsService.accounts.value
             .filter { participants.contains($0.address) }
             .compactMap { accountsService.account(address: $0.address) }
+    }
+    
+    private func signatures(signerAccount: Account, transactions: [SignRequestTransactionObject]) -> [[String]] {
+        transactions
+            .map { $0.rawTransactions.compactMap { Data(base64Encoded: $0) }}
+            .map {
+                $0
+                    .compactMap { transactionController.singature(signerAccount: signerAccount, transactionData: $0) }
+                    .map { $0.base64EncodedString() }
+            }
     }
 }
