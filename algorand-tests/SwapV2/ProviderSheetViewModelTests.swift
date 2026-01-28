@@ -21,6 +21,10 @@ import Testing
 @Suite
 struct ProviderSheetViewModelTests {
     
+    private var decimalSeparator: String {
+        Locale.current.decimalSeparator ?? "."
+    }
+    
     @Test
     func sheetHeight_withProviders_calculatesCorrectHeight() {
         // Given
@@ -103,7 +107,7 @@ struct ProviderSheetViewModelTests {
         let result = viewModel.quotePrimaryValue(for: "provider")
 
         // Then
-        #expect(result == "12,3456")
+        #expect(result == "12\(decimalSeparator)3456")
     }
     
     @Test

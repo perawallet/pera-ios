@@ -24,11 +24,15 @@ struct SwapAmountFormatterTests {
 
     let formatter = SwapAmountFormatter()
     
+    private var decimalSeparator: String {
+        Locale.current.decimalSeparator ?? "."
+    }
+    
     // MARK: - string(from:maxFractionDigits:)
     
     @Test
     func string_formatsDecimalWithoutTrailingZeros() {
-        let result = formatter.string(from: Decimal(string: "10.000")!)
+        let result = formatter.string(from: Decimal(string: "10\(decimalSeparator)000")!)
         #expect(result == "10")
     }
     
@@ -38,7 +42,7 @@ struct SwapAmountFormatterTests {
             from: Decimal(string: "1.123456789")!,
             maxFractionDigits: 4
         )
-        #expect(result == "1,1235")
+        #expect(result == "1\(decimalSeparator)1235")
     }
     
     @Test
@@ -55,7 +59,7 @@ struct SwapAmountFormatterTests {
             from: Decimal(string: "0.1234")!,
             fractionDigits: 2
         )
-        #expect(result == "12,34%")
+        #expect(result == "12\(decimalSeparator)34%")
     }
 
     @Test
@@ -68,7 +72,7 @@ struct SwapAmountFormatterTests {
 
     @Test
     func numericValue_parsesValidNumber() {
-        let result = formatter.numericValue(from: "123,45")
+        let result = formatter.numericValue(from: "123\(decimalSeparator)45")
         #expect(result == 123.45)
     }
 
@@ -80,7 +84,7 @@ struct SwapAmountFormatterTests {
 
     @Test
     func numericValue_handlesCommaDecimalSeparator() {
-        let result = formatter.numericValue(from: "1,5")
+        let result = formatter.numericValue(from: "1\(decimalSeparator)5")
         #expect(result == 1.5)
     }
     

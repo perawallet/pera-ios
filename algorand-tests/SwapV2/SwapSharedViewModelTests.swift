@@ -21,6 +21,10 @@ import Testing
 @Suite
 struct SwapSharedViewModelTests {
     
+    private var decimalSeparator: String {
+        Locale.current.decimalSeparator ?? "."
+    }
+    
     @Test
     func test_shouldShowSwapButton_whenAllConditionsMet() {
         // Given
@@ -105,10 +109,10 @@ struct SwapSharedViewModelTests {
         let vm = makeViewModel()
         
         // When
-        let filtered = vm.filterPayingText("12a,3b4")
+        let filtered = vm.filterPayingText("12a\(decimalSeparator)3b4")
         
         // Then
-        #expect(filtered == "12,34")
+        #expect(filtered == "12\(decimalSeparator)34")
     }
     
     @Test
