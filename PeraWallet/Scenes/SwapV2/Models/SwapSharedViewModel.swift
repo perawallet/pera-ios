@@ -18,7 +18,7 @@ import SwiftUI
 import Combine
 import pera_wallet_core
 
-class SwapSharedViewModel: ObservableObject {
+final class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var selectedAccount: Account
@@ -207,7 +207,7 @@ class SwapSharedViewModel: ObservableObject {
         }
     }
     
-    private func resetTextFields() {
+    func resetTextFields() {
         receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
         receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
         payingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty

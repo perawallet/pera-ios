@@ -141,21 +141,26 @@ extension SwapQuote {
         price: Decimal? = nil,
         assetIn: AssetDecoration? = nil,
         assetOut: AssetDecoration? = nil,
+        amountOut: String? = nil,
         amountOutWithSlippage: UInt64? = nil,
+        decimals: Int? = 0,
         slippage: Decimal? = nil,
         priceImpact: Decimal? = nil,
         peraFee: UInt64? = nil,
-        exchangeFee: UInt64? = nil
+        exchangeFee: UInt64? = nil,
+        provider: SwapProvider? = nil
     ) {
         var apiModel = APIModel()
         apiModel.price = price.map { String(describing: $0) }
         apiModel.assetIn = assetIn?.encode()
         apiModel.assetOut = assetOut?.encode()
+        apiModel.amountOut = amountOut.map { String($0) }
         apiModel.amountOutWithSlippage = amountOutWithSlippage.map { String($0) }
         apiModel.slippage = slippage.map { String(describing: $0) }
         apiModel.priceImpact = priceImpact.map { String(describing: $0) }
         apiModel.peraFee = peraFee.map { String($0) }
         apiModel.exchangeFee = exchangeFee.map { String($0) }
+        apiModel.provider = provider
 
         self.init(apiModel)
     }

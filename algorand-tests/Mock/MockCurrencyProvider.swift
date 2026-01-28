@@ -19,22 +19,23 @@
 
 final class MockCurrencyProvider: CurrencyProvider {
     var primaryValue: pera_wallet_core.RemoteCurrencyValue?
-    
     var secondaryValue: pera_wallet_core.RemoteCurrencyValue?
     
-    var isExpired: Bool
+    var isExpired: Bool = false
     
     func refresh(on queue: DispatchQueue) {}
     
     func setAsPrimaryCurrency(_ currencyID: pera_wallet_core.CurrencyID) {}
     
-    func addObserver(using handler: @escaping EventHandler) -> UUID {return UUID.init(uuidString: "1234567890abcdef")!}
+    func addObserver(using handler: @escaping EventHandler) -> UUID { UUID() }
     
     func removeObserver(_ observer: UUID) {}
     
-    init(primaryValue: pera_wallet_core.RemoteCurrencyValue? = nil, secondaryValue: pera_wallet_core.RemoteCurrencyValue? = nil, isExpired: Bool) {
-        self.primaryValue = primaryValue
-        self.secondaryValue = secondaryValue
-        self.isExpired = isExpired
+    init(
+        fiatValue: RemoteCurrencyValue? = nil,
+        algoValue: RemoteCurrencyValue? = nil
+    ) {
+        self.primaryValue = fiatValue
+        self.secondaryValue = algoValue
     }
 }
