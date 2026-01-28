@@ -17,23 +17,24 @@
 import SwiftUI
 import pera_wallet_core
 
-// FIXME: This class mixes ViewModel and Model logic.
-// It should be refactored to follow a proper MVVM structure by
-// moving business and formatting logic into dedicated services.
 final class SwapSettingsViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var percentageText: String = .empty
     @Published var slippageText: String = .empty
     @Published var useLocalCurrency: Bool = PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
     @Published var localPercentageSelected: PercentageValue?
     @Published var localSlippageSelected: SlippageValue?
     
-    var slippageSelected: SlippageValue?
+    // MARK: - Internal State
+    private var slippageSelected: SlippageValue?
     
+    // MARK: - Init
     init(slippageSelected: SlippageValue?) {
         self.slippageSelected = slippageSelected
         setupInitialValues()
     }
     
+    // MARK: - Setup
     private func setupInitialValues() {
         guard let slippageSelected else { return }
         let slippageValue = slippageSelected.value * 100
@@ -51,6 +52,7 @@ final class SwapSettingsViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Helpers
     func updateText(_ newValue: String, for type: TextFieldType) {
         let formatted = DecimalInputFormatter.format(newValue)
         switch type {
@@ -94,23 +96,5 @@ final class SwapSettingsViewModel: ObservableObject {
             localPercentageSelected = .custom(value: percentageValue / 100)
         }
         PeraUserDefaults.shouldUseLocalCurrencyInSwap = useLocalCurrency
-    }
-}
-
-enum TextFieldType {
-    case percentage, slippage
-    
-    var title: LocalizedStringKey {
-        switch self {
-        case .percentage: "swap-amount-percentage-title"
-        case .slippage: "swap-slippage-title"
-        }
-    }
-    
-    var placeholder: LocalizedStringKey {
-        switch self {
-        case .percentage: "swap-amount-percentage-placeholder"
-        case .slippage: "swap-slippage-placeholder"
-        }
     }
 }
