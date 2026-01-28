@@ -69,13 +69,13 @@ final class MobileApiManager {
     }
     
     func createJointAccountTransactionSignRequest(jointAccountAddress: String, proposerAddress: String, type: ProposedSignType,
-                                                  rawTransactionLists: [[String]], transactionSignatureLists: [[String]]?) async throws(CoreApiManager.ApiError) -> ProposeSignResponse {
-        let request = ProposeSignRequest(jointAccountAddress: jointAccountAddress, proposerAddress: proposerAddress, type: type, rawTransactionLists: rawTransactionLists, transactionSignatureLists: transactionSignatureLists)
+                                                  rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> ProposeSignResponse {
+        let request = ProposeSignRequest(jointAccountAddress: jointAccountAddress, proposerAddress: proposerAddress, type: type, rawTransactionLists: rawTransactionLists, responses: responses)
         return try await perform(v1Request: request)
     }
     
-    func signJointAccountTransaction(participantAddress: String, signRequestId: String, response: JointAccountSignRequest.Response, signatures: [[String]]?, deviceId: String?) async throws(CoreApiManager.ApiError) -> SignRequestObject {
-        let request = JointAccountSignRequest(participantAddress: participantAddress, signRequestId: signRequestId, response: response, signatures: signatures, deviceId: deviceId)
+    func signJointAccountTransaction(signRequestId: String, responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> SignRequestObject {
+        let request = JointAccountSignRequest(signRequestId: signRequestId, responses: responses)
         return try await perform(v1Request: request)
     }
     

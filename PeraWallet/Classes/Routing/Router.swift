@@ -2451,7 +2451,7 @@ final class Router:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
         case let .nameAndAddJointAccount(jointAccountAddress, onDismissRequest):
-            viewController = NameAddedHostingConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
+            viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
         }
         return viewController as? T
     }
