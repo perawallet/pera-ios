@@ -13,11 +13,12 @@
 // limitations under the License.
 
 //
-//  transactionController.swift
+//  TransactionController.swift
 
 import MagpieHipo
 import UIKit
 import pera_wallet_core
+import MessagePack
 
 final class TransactionController {
     weak var delegate: TransactionControllerDelegate?
@@ -109,10 +110,73 @@ extension TransactionController {
     private var isTransactionSigned: Bool {
         return transactions.allSatisfy { $0.signedTransaction != nil }
     }
+    
+    // MARK: - Signatures
+    
+    func singature(signerAccount: Account, transactionData: Data) -> Data? {
+        
+        guard signerAccount.canSignTransaction else { return nil }
+        
+        if signerAccount.isHDAccount {
+            return hdWalletSignature(signerAccount: signerAccount, transactionData: transactionData)
+        } else {
+            return algo25WalletSignature(signerAccount: signerAccount, transactionData: transactionData)
+        }
+    }
+    
+    private func algo25WalletSignature(signerAccount: Account, transactionData: Data) -> Data? {
+        
+        let address = signerAccount.address
+        guard let privateData = api.session.privateData(for: address) else { return nil }
+        
+        let signer = SDKTransactionSigner()
+        
+        signer.eventHandler = { [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .didFailedSigning(let error):
+                handleTransactionComposingError(error)
+            }
+        }
+        
+        guard let signedTransaction = signer.sign(transactionData, with: privateData) else { return nil }
+        
+        do {
+            let msgPackSignedTransaction = try unpack(signedTransaction)
+            return msgPackSignedTransaction.value.dictionaryValue?[.string("sig")]?.dataValue
+        } catch {
+            return nil
+        }
+    }
+    
+    private func hdWalletSignature(signerAccount: Account, transactionData: Data) -> Data? {
+        
+        guard let hdWalletAddressDetail = signerAccount.hdWalletAddressDetail else { return nil }
+        guard let seed = try? hdWalletStorage.wallet(id: hdWalletAddressDetail.walletId) else { return nil }
+        
+        let sdk = AlgorandSDK()
+        
+        var error: NSError?
+        guard let rawTransaction = sdk.rawTransactionToSign(transactionData, error: &error) else { return nil }
+        
+        let signer = HDWalletTransactionSigner(wallet: seed)
+        guard let signature = try? signer.signTransaction(rawTransaction, with: hdWalletAddressDetail) else { return nil }
+        
+        guard let _ = sdk.getSignedTransaction(transactionData, from: signature, for: signerAccount.address, error: &error) else {
+            delegate?.transactionController(self, didFailedComposing: .inapp(.sdkError(error: error)))
+            return nil
+        }
+        
+        return signature
+    }
 }
 
 extension TransactionController {
+    
     func canSignTransaction(for account: Account) -> Bool {
+        
+        guard !account.isJointAccount else { return true }
+        
         let validation = transactionSignatureValidator.validateTxnSignature(account)
         
         switch validation {
@@ -396,8 +460,11 @@ extension TransactionController {
             }
             composeTransactionData(from: builder)
         }
-
+        
         let isUnsignedTransactionComposed = transactions.allSatisfy { $0.isUnsignedTransactionComposed }
+        
+        guard isUnsignedTransactionComposed, transactionDraft?.from.isJointAccount == false else { return }
+        
         if isUnsignedTransactionComposed {
             startSigningProcess(
                 for: transactionType,

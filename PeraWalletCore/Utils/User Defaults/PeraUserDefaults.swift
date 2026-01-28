@@ -30,6 +30,7 @@ public enum PeraUserDefaults {
     // MARK: - Inbox
     
     @UserDefault(key: "watchedJointAccountInvitations") public static var watchedJointAccountInvitations: [String]?
+    @UserDefault(key: "watchedSignRequestMessage") public static var watchedSignRequestMessage: [String]?
     
     // MARK: - Secret Developer Settings
     

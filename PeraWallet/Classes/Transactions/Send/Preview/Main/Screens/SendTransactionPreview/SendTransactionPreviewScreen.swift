@@ -15,12 +15,16 @@
 //
 //   SendTransactionPreviewScreen.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import pera_wallet_core
 
 final class SendTransactionPreviewScreen: BaseScrollViewController {
+   
+   enum InternalError: Error {
+      case noSigner
+   }
+   
    typealias EventHandler = (Event) -> Void
 
    override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
@@ -52,6 +56,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var theme = Theme()
 
    private lazy var currencyFormatter = CurrencyFormatter()
+   private let accountsService: AccountsServiceable
 
    private var draft: TransactionSendDraft
    private lazy var transactionController = {
@@ -71,9 +76,11 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    init(
       draft: TransactionSendDraft,
-      configuration: ViewControllerConfiguration
+      configuration: ViewControllerConfiguration,
+      accountsService: AccountsServiceable
    ) {
       self.draft = draft
+      self.accountsService = accountsService
       super.init(configuration: configuration)
    }
    
@@ -164,6 +171,46 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             )
          }
       }
+   }
+   
+   private func transactionData(params: TransactionParams) -> [Data] {
+      
+      let transactionDraft = composeTransaction()
+      let builder: TransactionDataBuildable
+
+      if transactionDraft is AlgosTransactionSendDraft {
+         builder = AlgoTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
+      } else if let draft = transactionDraft as? AssetTransactionSendDraft {
+         if draft.isReceiverOptingInToAsset {
+            builder = OptInAndSendTransactionDataBuilder(
+               sharedDataController: sharedDataController,
+               params: params,
+               draft: transactionDraft
+            )
+         } else {
+            builder = AssetTransactionDataBuilder(
+               params: params,
+               draft: transactionDraft
+            )
+         }
+      } else {
+         return []
+      }
+
+      let dataArray = builder.composeData()?.map(\.transaction)
+      return dataArray ?? []
+   }
+   
+   private func signRequestResponse(signerAccount: Account, transactions: [[Data]]) -> JointAccountSignRequestResponse {
+      
+      let signatures = transactions.map { $0.compactMap { self.transactionController.singature(signerAccount: signerAccount, transactionData: $0)?.base64EncodedString() }}
+      
+      return JointAccountSignRequestResponse(
+         address: signerAccount.address,
+         response: .signed,
+         signatures: signatures,
+         deviceId: nil
+      )
    }
 
    /// <todo>: Add Unit Test for composing transaction and view model changes
@@ -347,6 +394,50 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
       return .algo
    }
+   
+   private func createJoinAccountSignTransactionRequest() {
+      
+      // FIXME: Allow signing of other transaction types
+      guard let algosTransactionDraft = transactionController.algosTransactionDraft else { return }
+      
+      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] in
+         guard let self else { return }
+         switch $0 {
+         case let .success(transactionParameters):
+            
+            let transactions = [transactionData(params: transactionParameters)]
+            let jointAccount = algosTransactionDraft.from
+            let jointAccountParticipants = jointAccount.jointAccountParticipants ?? []
+            let signersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
+            
+            guard let proposerAddress = signersAccounts.first?.address else {
+               open(error: InternalError.noSigner)
+               return
+            }
+            
+            let rawTransactionLists = transactions.map { $0.map { $0.base64EncodedString() }}
+            let responses = signersAccounts.map { self.signRequestResponse(signerAccount: $0, transactions: transactions) }
+            
+            self.openLoading()
+            
+            Task {
+               do {
+                  try await self.accountsService.createJointAccountSignTransactionRequest(
+                     jointAccountAddress: jointAccount.address,
+                     proposerAddress: proposerAddress,
+                     rawTransactionLists: rawTransactionLists,
+                     responses: responses
+                  )
+                  self.openSuccess(nil)
+               } catch {
+                  self.open(error: error)
+               }
+            }
+         case let .failure(error):
+            open(error: error)
+         }
+      }
+   }
 }
 
 extension SendTransactionPreviewScreen {
@@ -393,6 +484,10 @@ extension SendTransactionPreviewScreen {
          if receiverAccount.requiresLedgerConnection() {
             openLedgerConnection()
          }
+      }
+      
+      if draft.from.isJointAccount {
+         createJoinAccountSignTransactionRequest()
       }
    }
 }
@@ -611,6 +706,11 @@ extension SendTransactionPreviewScreen {
             }
          }
       }
+   }
+   
+   private func open(error: Error) {
+      loadingScreen?.popScreen()
+      displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
    }
 
     private func openPeraExplorerForTransaction(

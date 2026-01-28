@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2022-2026 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MultiSigAccountObject.swift
+//   JointAccountSignRequestResponse.swift
 
-import Foundation
-
-struct MultiSigAccountObject: Codable, Equatable {
-    /// The public address of the multisig account.
+struct JointAccountSignRequestResponse: Encodable {
+    
+    enum Response: String, Encodable {
+        case signed
+        case declined
+    }
+    
     let address: String
-    /// The list of participant public addresses involved in the multisig account.
-    let participantAddresses: [String]
-    /// The minimum number of signatures required to authorize a transaction.
-    let threshold: Int
-    /// The version of the multisig scheme being used
-    let version: Int
-    /// Creation date in ISO 8601 format.
-    let creationDatetime: Date
+    let response: Response
+    let signatures: [[String]]?
+    let deviceId: String?
 }

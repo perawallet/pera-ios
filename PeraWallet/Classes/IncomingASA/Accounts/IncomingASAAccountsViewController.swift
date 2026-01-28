@@ -111,8 +111,8 @@ final class IncomingASAAccountsViewController: BaseViewController {
         switch action {
         case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
             presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
-        case .moveToRequestSendScene:
-            break
+        case let .moveToRequestSendScene(request):
+            presentSignJointAccountTransactionScene(request: request)
         case let .moveToAssetDetailsScene(address, requestCount):
             moveToAssetDetailsScene(address: address, requestCount: requestCount)
         }
@@ -139,6 +139,16 @@ final class IncomingASAAccountsViewController: BaseViewController {
             onAccept: onAccept
         )
         
+        present(controller, animated: true)
+    }
+    
+    private func presentSignJointAccountTransactionScene(request: SignRequestObject) {
+        
+        guard let api else { return }
+        
+        let transactionController = TransactionController(api: api, sharedDataController: sharedDataController, bannerController: bannerController, analytics: analytics, hdWalletStorage: hdWalletStorage)
+        let controller = JointAccountTransactionRequestSummaryConstructor.buildScene(legacyConfiguration: configuration, transactionController: transactionController, request: request)
+        controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true)
     }
     
