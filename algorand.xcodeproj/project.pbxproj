@@ -7288,6 +7288,9 @@
 		D40B6BC72ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
 		D40B6BC82ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
 		D40B6BC92ECDF2420033CF66 /* InAppBrowserMessageParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40B6BC62ECDF2390033CF66 /* InAppBrowserMessageParams.swift */; };
+		D41147122F2907B2002AF5C0 /* SwapAmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */; };
+		D41147142F291014002AF5C0 /* SwapCurrencyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */; };
+		D41147192F29116A002AF5C0 /* SwapPricingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */; };
 		D417DAD92EB35A6D001D3C53 /* AssetPriceChartDataDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DAD82EB35A60001D3C53 /* AssetPriceChartDataDraft.swift */; };
 		D417DADB2EB35AF2001D3C53 /* AssetPriceChartDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417DADA2EB35AE6001D3C53 /* AssetPriceChartDataDTO.swift */; };
 		D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41A504F2D4CC86500B4713C /* HDWalletStorageTests.swift */; };
@@ -7391,6 +7394,12 @@
 		D49214622EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */; };
 		D49214632EE2D3C300117807 /* HomeQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49214602EE2D3B900117807 /* HomeQuickActionsViewModel.swift */; };
 		D4A37DB32E8FE3E600969A20 /* PeraSwapV2Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */; };
+		D4A876B52F2A1C7400BD0230 /* ProviderSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876B42F2A1C7200BD0230 /* ProviderSheetViewModelTests.swift */; };
+		D4A876B72F2A216A00BD0230 /* SwapConfirmViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876B62F2A216800BD0230 /* SwapConfirmViewModelTests.swift */; };
+		D4A876B92F2A254200BD0230 /* SwapHistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876B82F2A253F00BD0230 /* SwapHistoryViewModelTests.swift */; };
+		D4A876BB2F2A28C700BD0230 /* SwapSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876BA2F2A28C600BD0230 /* SwapSettingsViewModelTests.swift */; };
+		D4A876BD2F2A2A4400BD0230 /* SwapTopPairViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876BC2F2A2A4200BD0230 /* SwapTopPairViewModelTests.swift */; };
+		D4A876BF2F2A2D5900BD0230 /* SwapSharedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A876BE2F2A2D5700BD0230 /* SwapSharedViewModelTests.swift */; };
 		D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCD2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
 		D4B50BCE2EA7807C00642C1D /* ASADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B50BCB2EA7807A00642C1D /* ASADetailViewController.swift */; };
@@ -9281,6 +9290,9 @@
 		D40E8820294C621300B46054 /* CollectibleDetailAccountInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAccountInformationViewModel.swift; sourceTree = "<group>"; };
 		D40E9DD529257A6F009DEE4F /* RenameAccountScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameAccountScreenTheme.swift; sourceTree = "<group>"; };
 		D410A0EF2DF6F4D9003CD87D /* ChartSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSegmentedControlView.swift; sourceTree = "<group>"; };
+		D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAmountFormatterTests.swift; sourceTree = "<group>"; };
+		D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapCurrencyServiceTests.swift; sourceTree = "<group>"; };
+		D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapPricingServiceTests.swift; sourceTree = "<group>"; };
 		D41168862DC21935001F7A57 /* MenuListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListView.swift; sourceTree = "<group>"; };
 		D41168922DC21EF8001F7A57 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		D41168962DC22825001F7A57 /* MenuViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -9907,6 +9919,12 @@
 		D4A7CEFB2D79BEFB00FD04CB /* HDWalletSetupDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletSetupDataController.swift; sourceTree = "<group>"; };
 		D4A8759A27C9433C00550935 /* ShimmerAnimatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerAnimatable.swift; sourceTree = "<group>"; };
 		D4A875A027C9A24600550935 /* ShimmerAnimationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerAnimationConfiguration.swift; sourceTree = "<group>"; };
+		D4A876B42F2A1C7200BD0230 /* ProviderSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSheetViewModelTests.swift; sourceTree = "<group>"; };
+		D4A876B62F2A216800BD0230 /* SwapConfirmViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapConfirmViewModelTests.swift; sourceTree = "<group>"; };
+		D4A876B82F2A253F00BD0230 /* SwapHistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapHistoryViewModelTests.swift; sourceTree = "<group>"; };
+		D4A876BA2F2A28C600BD0230 /* SwapSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSettingsViewModelTests.swift; sourceTree = "<group>"; };
+		D4A876BC2F2A2A4200BD0230 /* SwapTopPairViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTopPairViewModelTests.swift; sourceTree = "<group>"; };
+		D4A876BE2F2A2D5700BD0230 /* SwapSharedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSharedViewModelTests.swift; sourceTree = "<group>"; };
 		D4A8CCA62D37BB340015E550 /* HDWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletCell.swift; sourceTree = "<group>"; };
 		D4A8CCAA2D37BB8C0015E550 /* HDWalletListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletListItemView.swift; sourceTree = "<group>"; };
 		D4A9954A290C255300E2D105 /* TitledToggleLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledToggleLoadingView.swift; sourceTree = "<group>"; };
@@ -13955,6 +13973,7 @@
 				174A0F3628EF167700D44019 /* Migration */,
 				2B95408A25A782D10098805B /* Models */,
 				2BD36E152682472F00C57728 /* SDK */,
+				D41147102F290760002AF5C0 /* SwapV2 */,
 				1798D9B4294B18C300A7B2AA /* Utils */,
 				2B95408B25A782D40098805B /* ViewModels */,
 				2BEEBF9929A3B4B600DDD988 /* WalletConnect */,
@@ -20285,6 +20304,22 @@
 				D40E8818294C59A400B46054 /* CollectibleDetailAccountInformationViewTheme.swift */,
 			);
 			path = AccountInformation;
+			sourceTree = "<group>";
+		};
+		D41147102F290760002AF5C0 /* SwapV2 */ = {
+			isa = PBXGroup;
+			children = (
+				D4A876BE2F2A2D5700BD0230 /* SwapSharedViewModelTests.swift */,
+				D4A876BC2F2A2A4200BD0230 /* SwapTopPairViewModelTests.swift */,
+				D4A876BA2F2A28C600BD0230 /* SwapSettingsViewModelTests.swift */,
+				D4A876B82F2A253F00BD0230 /* SwapHistoryViewModelTests.swift */,
+				D4A876B62F2A216800BD0230 /* SwapConfirmViewModelTests.swift */,
+				D4A876B42F2A1C7200BD0230 /* ProviderSheetViewModelTests.swift */,
+				D41147182F291168002AF5C0 /* SwapPricingServiceTests.swift */,
+				D41147132F291012002AF5C0 /* SwapCurrencyServiceTests.swift */,
+				D41147112F2907AB002AF5C0 /* SwapAmountFormatterTests.swift */,
+			);
+			path = SwapV2;
 			sourceTree = "<group>";
 		};
 		D41168832DC218F2001F7A57 /* Screens */ = {
@@ -31651,34 +31686,43 @@
 				1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift in Sources */,
 				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
 				2B66C57A2D2C76AD00BC6825 /* HDWalletSDKMock.swift in Sources */,
+				D4A876B92F2A254200BD0230 /* SwapHistoryViewModelTests.swift in Sources */,
 				59B1068F2E4E13D000B8F6FB /* AppGroupDataStoreMigrationTests.swift in Sources */,
 				D41A50502D4CC86E00B4713C /* HDWalletStorageTests.swift in Sources */,
 				2B66C57B2D2C76AD00BC6825 /* HDWalletSDKTests.swift in Sources */,
+				D4A876BB2F2A28C700BD0230 /* SwapSettingsViewModelTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardViewModelTests.swift in Sources */,
 				59B103C22E4DE71700B8F6FB /* PassKeyServiceTests.swift in Sources */,
+				D41147142F291014002AF5C0 /* SwapCurrencyServiceTests.swift in Sources */,
 				59B103C32E4DE71700B8F6FB /* LiquidAuthServiceTests.swift in Sources */,
 				59B103C42E4DE71700B8F6FB /* MockPassKeyService.swift in Sources */,
 				59B103C52E4DE71700B8F6FB /* MockLiquidAuthSDKAPI.swift in Sources */,
 				2B9541F525AFC2E80098805B /* algorand.xcdatamodeld in Sources */,
 				D42585292D4B927700E89BF2 /* StakingDeeplinksTests.swift in Sources */,
 				2BEEBFA429A3D06500DDD988 /* WalletConnectV2SessionValidatorTests.swift in Sources */,
+				D4A876BD2F2A2A4400BD0230 /* SwapTopPairViewModelTests.swift in Sources */,
 				2B6BAF3F2D6A5CFE001F030F /* HDWalletTransactionSignerTests.swift in Sources */,
 				2B95409925A7835A0098805B /* NotificationsViewModelTests.swift in Sources */,
 				2B66C5872D2DD55800BC6825 /* HDWalletServiceTests.swift in Sources */,
 				2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */,
+				D4A876B52F2A1C7400BD0230 /* ProviderSheetViewModelTests.swift in Sources */,
 				2B2EE8BB25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift in Sources */,
 				174A0F3C28EF17FD00D44019 /* PasswordMigrationTests.swift in Sources */,
 				2B18433929DF800E00264152 /* WalletConnectProtocolResolverTests.swift in Sources */,
+				D4A876BF2F2A2D5900BD0230 /* SwapSharedViewModelTests.swift in Sources */,
 				2B95417425AE62BE0098805B /* TransactionParamsTests.swift in Sources */,
 				2B2EE8E425B6F93D006A53C5 /* RewardDetailViewModelTests.swift in Sources */,
+				D41147192F29116A002AF5C0 /* SwapPricingServiceTests.swift in Sources */,
 				2B2EE88A25B6E936006A53C5 /* AssetViewModelTests.swift in Sources */,
 				2B2EE8CD25B6F671006A53C5 /* AccountNameViewModelTests.swift in Sources */,
 				2B95418025AE62E60098805B /* AccountTests.swift in Sources */,
 				D46B5F4E2D5B78C00016EBDF /* SessionCryptoTests.swift in Sources */,
 				2B95418C25AE630A0098805B /* AssetDetailTests.swift in Sources */,
 				2BEEBFA329A3D06000DDD988 /* WalletConnectV1SessionValidatorTests.swift in Sources */,
+				D4A876B72F2A216A00BD0230 /* SwapConfirmViewModelTests.swift in Sources */,
 				2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */,
 				D425852F2D4BA10300E89BF2 /* DiscoverDeeplinksTests.swift in Sources */,
+				D41147122F2907B2002AF5C0 /* SwapAmountFormatterTests.swift in Sources */,
 				2B6093DE2E85B8590020DB70 /* AppEndpointTests.swift in Sources */,
 				2B6093DF2E85B8590020DB70 /* DeeplinkQRTests.swift in Sources */,
 				2B6093E02E85B8590020DB70 /* AppDeeplinkParserTests.swift in Sources */,
