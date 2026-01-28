@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NameAddedHostingController.swift
+//   NameAddedJointAccountHostingController.swift
 
 import SwiftUI
 
-final class NameAddedHostingController: UIHostingController<NameAddedJointAccountView> {
+final class NameAddedJointAccountHostingController: UIHostingController<NameAddedJointAccountView> {
     
     // MARK: - Properties
     

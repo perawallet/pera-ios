@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NameAddedHostingConstructor.swift
+//   NameAddedJointAccountConstructor.swift
 
 import UIKit
 
-enum NameAddedHostingConstructor {
+enum NameAddedJointAccountConstructor {
     
     static func buildViewController(legacyConfiguration: ViewControllerConfiguration, jointAccountAddress: String) -> UIViewController {
         let model = NameAddedJointAccountModel(jointAccountAddress: jointAccountAddress, inboxService: PeraCoreManager.shared.inbox, accountsService: PeraCoreManager.shared.accounts)
         let view = NameAddedJointAccountView(model: model)
-        let hostingController = NameAddedHostingController(rootView: view)
+        let hostingController = NameAddedJointAccountHostingController(rootView: view)
         return SwiftUICompatibilityBaseViewController(configuration: legacyConfiguration, hostingController: hostingController)
     }
 }
