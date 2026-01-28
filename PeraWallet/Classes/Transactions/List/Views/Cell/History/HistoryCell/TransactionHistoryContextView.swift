@@ -30,9 +30,6 @@ class TransactionHistoryContextView:
     
     private var titleLeadingWithIcon: SnapKit.Constraint?
     private var titleLeadingWithoutIcon: SnapKit.Constraint?
-    
-    private var amountDefaultConstraints: [SnapKit.Constraint] = []
-    private var amountAssetDetailV2Constraints: [SnapKit.Constraint] = []
 
     func customize(
         _ theme: TransactionHistoryContextViewTheme
@@ -128,28 +125,13 @@ extension TransactionHistoryContextView {
             hugging: .defaultLow,
             compression: .required
         )
-        
-        transactionAmountView.snp.makeConstraints {
-            amountDefaultConstraints = [
-                $0.centerY.equalToSuperview().constraint,
-                $0.top.equalTo(theme.verticalInset).constraint,
-                $0.leading.equalTo(contentView.snp.trailing).offset(theme.minSpacingBetweenTitleAndAmount).constraint,
-                $0.bottom.equalTo(theme.verticalInset).constraint,
-                $0.trailing.equalToSuperview().inset(theme.horizontalInset).constraint
-            ]
-        }
 
         transactionAmountView.snp.makeConstraints {
-            amountAssetDetailV2Constraints = [
-                $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.minSpacingBetweenSubtitleAndAmount).constraint,
-                $0.leading.equalTo(titleLabel.snp.leading).constraint,
-                $0.trailing.lessThanOrEqualToSuperview().constraint,
-                $0.bottom.lessThanOrEqualToSuperview().offset(theme.amountBottomOffset).constraint
-            ]
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.minSpacingBetweenSubtitleAndAmount)
+            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.trailing.lessThanOrEqualToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().offset(theme.amountBottomOffset)
         }
-
-        amountDefaultConstraints.forEach { $0.deactivate() }
-        amountAssetDetailV2Constraints.forEach { $0.deactivate() }
     }
 }
 
@@ -173,16 +155,6 @@ extension TransactionHistoryContextView {
 
         if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
             transactionAmountView.bindData(transactionAmountViewModel)
-        }
-        
-        let isAssetDetailV2Enabled = (viewModel as? AppCallTransactionItemViewModel)?.isAssetDetailV2Enabled == true
-
-        if isAssetDetailV2Enabled {
-            amountDefaultConstraints.forEach { $0.deactivate() }
-            amountAssetDetailV2Constraints.forEach { $0.activate() }
-        } else {
-            amountAssetDetailV2Constraints.forEach { $0.deactivate() }
-            amountDefaultConstraints.forEach { $0.activate() }
         }
     }
 

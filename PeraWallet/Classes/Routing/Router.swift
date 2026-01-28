@@ -273,7 +273,7 @@ final class Router:
                 from: visibleScreen,
                 by: .present
             )
-        case .transactionDetail(account: let account, assetId: let assedId, transactionId: let transactionId): break
+        case .transactionDetail: break
         case .collectibleDetail(account: let account, asset: let asset):
             launch(tab: .home)
 
@@ -872,23 +872,14 @@ final class Router:
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             
-            if appConfiguration.featureFlagService.isEnabled(.assetDetailV2Enabled) {
-                let aViewController = ASADetailViewController(
-                    swapDataStore: SwapDataLocalStore(),
-                    dataController: dataController,
-                    copyToClipboardController: copyToClipboardController,
-                    configuration: configuration
-                )
-                viewController = aViewController
-            } else {
-                let aViewController = ASADetailScreen(
-                    swapDataStore: SwapDataLocalStore(),
-                    dataController: dataController,
-                    copyToClipboardController: copyToClipboardController,
-                    configuration: configuration
-                )
-                viewController = aViewController
-            }
+            let aViewController = ASADetailViewController(
+                swapDataStore: SwapDataLocalStore(),
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            viewController = aViewController
+
         case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
             let dataController =
                 ASADiscoveryScreenAPIDataController(

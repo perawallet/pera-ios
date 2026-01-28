@@ -20,7 +20,7 @@ import pera_wallet_core
 
 final class ASAHoldingsHeaderContentView: UIView {
 
-    private lazy var profileView = ASAProfileView(showNotificationAndFavoriteButtons: showNotificationAndFavoriteButtons)
+    private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
     private let theme = ASADetailViewControllerTheme()
@@ -29,7 +29,6 @@ final class ASAHoldingsHeaderContentView: UIView {
     private var account: Account?
     private var asset: Asset?
     private var currency: CurrencyProvider?
-    private var showNotificationAndFavoriteButtons = false
     private var shouldDisplayQuickActions = false
     private var quickActionsViewModel: ASADetailQuickActionsViewModel?
     private var eventHandler: ASADetailViewController.EventHandler?
@@ -50,7 +49,6 @@ final class ASAHoldingsHeaderContentView: UIView {
         self.shouldDisplayQuickActions = context.shouldDisplayQuickActions
         self.quickActionsViewModel = context.quickActionsViewModel
         self.eventHandler = context.eventHandler
-        self.showNotificationAndFavoriteButtons = context.showNotificationAndFavoriteButtons
 
         setupLayout()
     }

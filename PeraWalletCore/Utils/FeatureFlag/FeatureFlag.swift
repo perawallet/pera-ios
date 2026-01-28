@@ -21,8 +21,6 @@ public enum FeatureFlag: String, CaseIterable {
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
     case ledgerDeflexFilterEnabled = "enable_ledger_deflex_filter"
-    case assetDetailV2Enabled = "enable_asset_detail_v2"
-    case assetDetailV2EndpointEnabled = "enable_asset_detail_v2_endpoint"
     case webviewV2Enabled = "enable_webview_v2"
     case jointAccountEnabled = "enable_joint_account"
     case xoSwapEnabled = "enable_xo_swap"
@@ -33,8 +31,6 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled: .bool(false)
         case .liquidConnectEnabled: .bool(false)
         case .ledgerDeflexFilterEnabled: .bool(false)
-        case .assetDetailV2Enabled: .bool(false)
-        case .assetDetailV2EndpointEnabled: .bool(false)
         case .webviewV2Enabled: .bool(false)
         case .jointAccountEnabled: .bool(false)
         case .xoSwapEnabled: .bool(false)
@@ -49,8 +45,6 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled: "Enable Liquid Auth"
         case .liquidConnectEnabled: "Enable Liquid Connect"
         case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
-        case .assetDetailV2Enabled: "Enable Asset Detail V2"
-        case .assetDetailV2EndpointEnabled: "Enable Asset Detail Endpoint V2"
         case .webviewV2Enabled: .empty
         case .jointAccountEnabled: "Enable Joint Account"
         case .xoSwapEnabled: "Enable XO Swap"

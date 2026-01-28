@@ -26,13 +26,10 @@ struct AppCallTransactionItemViewModel:
     var subtitle: EditText?
     var icon: Image?
     var transactionAmountViewModel: TransactionAmountViewModel?
-    let isAssetDetailV2Enabled: Bool
 
     init(
-        _ draft: TransactionViewModelDraft,
-        isAssetDetailV2Enabled: Bool
+        _ draft: TransactionViewModelDraft
     ) {
-        self.isAssetDetailV2Enabled = isAssetDetailV2Enabled
         bindID(draft)
         bindIcon(draft)
         bindTitle(draft)
