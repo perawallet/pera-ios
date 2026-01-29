@@ -28,11 +28,14 @@ final class WCSessionConnectionProfileView:
         .didTapLink: TargetActionInteraction(),
     ]
 
+    private lazy var networkTitleView = UIView()
+    private lazy var networkTitleLabel = UILabel()
     private lazy var iconView = URLImageView()
     private lazy var titleView = UILabel()
     private lazy var linkView = MacaroonUIKit.Button(.imageAtLeft(spacing: 12))
 
     func customize(_ theme: WCSessionConnectionProfileViewTheme) {
+        addNetworkTitle(theme)
         addIcon(theme)
         addTitle(theme)
         addLink(theme)
@@ -40,12 +43,20 @@ final class WCSessionConnectionProfileView:
 
     func bindData(_ viewModel: WCSessionConnectionProfileViewModel?) {
         iconView.load(from: viewModel?.icon)
+        iconView.backgroundColor = .yellow
 
         if let title = viewModel?.title {
             title.load(in: titleView)
         } else {
             titleView.text = nil
             titleView.attributedText = nil
+        }
+        
+        if let networkTitle = viewModel?.networkTitle {
+            networkTitle.load(in: networkTitleLabel)
+        } else {
+            networkTitleLabel.text = nil
+            networkTitleLabel.attributedText = nil
         }
 
         if let link = viewModel?.link {
@@ -66,6 +77,7 @@ final class WCSessionConnectionProfileView:
 
         let width = size.width
         let maxContextSize = CGSize((width, .greatestFiniteMagnitude))
+        let networkTitleHeight = theme.networkViewHeight
         let iconSize = theme.iconSize
         let titleSize = viewModel.title?.boundingSize(
             multiline: true,
@@ -78,6 +90,8 @@ final class WCSessionConnectionProfileView:
         let linkIconSize = viewModel.link?.icon?[.normal]?.size ?? .zero
         let linkSize = max(linkTitleSize.height, linkIconSize.height)
         let preferredHeight =
+            networkTitleHeight +
+            theme.spacingBetweenIconAndTitle +
             iconSize.h +
             theme.spacingBetweenIconAndTitle +
             titleSize.height +
@@ -93,29 +107,53 @@ final class WCSessionConnectionProfileView:
     func prepareForReuse() {
         iconView.prepareForReuse()
         titleView.clearText()
+        networkTitleLabel.clearText()
         linkView.resetAppearance()
     }
 }
 
 extension WCSessionConnectionProfileView {
+    private func addNetworkTitle(_ theme: WCSessionConnectionProfileViewTheme) {
+        networkTitleLabel.customizeAppearance(theme.networkTitle)
+        
+        networkTitleView.addSubview(networkTitleLabel)
+        networkTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(theme.networkViewInsets.top)
+            $0.bottom.equalToSuperview().inset(theme.networkViewInsets.bottom)
+            $0.leading.equalToSuperview().offset(theme.networkViewInsets.leading)
+            $0.trailing.equalToSuperview().inset(theme.networkViewInsets.trailing)
+        }
+
+        networkTitleView.customizeAppearance(theme.networkView)
+        networkTitleView.layer.cornerRadius = theme.networkViewCornerRadius
+        
+        addSubview(networkTitleView)
+        networkTitleView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.height.greaterThanOrEqualTo(theme.networkViewHeight)
+        }
+    }
+    
     private func addIcon(_ theme: WCSessionConnectionProfileViewTheme) {
         iconView.build(theme.icon)
 
         addSubview(iconView)
         iconView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
-            $0.top == 0
-            $0.centerX == 0
+            $0.top.equalTo(networkTitleView.snp.bottom).offset(theme.spacingBetweenIconAndTitle)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(theme.iconSize.w)
+            $0.height.equalTo(theme.iconSize.h)
         }
     }
 
     private func addTitle(_ theme: WCSessionConnectionProfileViewTheme) {
         titleView.customizeAppearance(theme.title)
-
+        titleView.numberOfLines = 2
         addSubview(titleView)
-        titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == iconView.snp.bottom + theme.spacingBetweenIconAndTitle
+            $0.height == 50
             $0.leading == 0
             $0.trailing == 0
         }
@@ -123,7 +161,6 @@ extension WCSessionConnectionProfileView {
 
     private func addLink(_ theme: WCSessionConnectionProfileViewTheme) {
         addSubview(linkView)
-        linkView.fitToIntrinsicSize()
         linkView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndLink
             $0.leading == 0

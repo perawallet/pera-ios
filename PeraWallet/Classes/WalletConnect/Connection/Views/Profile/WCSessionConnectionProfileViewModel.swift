@@ -22,11 +22,13 @@ import pera_wallet_core
 struct WCSessionConnectionProfileViewModel: ViewModel {
     private(set) var icon: ImageSource?
     private(set) var title: TextProvider?
+    private(set) var networkTitle: TextProvider?
     private(set) var link: ButtonStyle?
 
     init(_ draft: WCSessionConnectionDraft) {
         bindIcon(draft)
         bindTitle(draft)
+        bindNetworkTitle(draft)
         bindLink(draft)
     }
 }
@@ -64,6 +66,23 @@ extension WCSessionConnectionProfileViewModel {
                 newAttributes: dAppNameAttributes
             )
         title = aTitle
+    }
+    
+    private mutating func bindNetworkTitle(_ draft: WCSessionConnectionDraft) {
+        guard let chains = draft.requestedChains else { return }
+        var chainNames: [String] = []
+
+        if chains.contains(.mainnet) {
+            chainNames.append("MAINNET")
+        }
+
+        if chains.contains(.testnet) {
+            chainNames.append("TESTNET")
+        }
+
+        let separator = "   "
+        networkTitle = chainNames.joined(separator: separator)
+            .captionBold(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindLink(_ draft: WCSessionConnectionDraft) {

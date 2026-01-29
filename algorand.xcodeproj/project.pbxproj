@@ -2788,7 +2788,6 @@
 		591680782E464C76002184C2 /* WCSessionConnectionProfileViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FD9B22A92222300F3ECB0 /* WCSessionConnectionProfileViewTheme.swift */; };
 		591680792E464C76002184C2 /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6FD2A93F3E000FA9409 /* WCSessionEventsRequestedPermissionViewModel.swift */; };
 		5916807A2E464C76002184C2 /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D497E2682AA0A7F800872EAA /* WCSessionMethodsRequestedPermissionViewModel.swift */; };
-		5916807B2E464C76002184C2 /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6F92A93F3CB00FA9409 /* WCSessionNetworkRequestedPermissionViewModel.swift */; };
 		5916807C2E464C76002184C2 /* WCSessionRequestedPermissionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7032A93F68800FA9409 /* WCSessionRequestedPermissionItemCell.swift */; };
 		5916807D2E464C76002184C2 /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7072A93F6F200FA9409 /* WCSessionRequestedPermissionItemCellTheme.swift */; };
 		5916807E2E464C76002184C2 /* WCKeyRegTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6C07E2AE6828D00AD3C22 /* WCKeyRegTransactionViewController.swift */; };
@@ -4553,7 +4552,6 @@
 		59E605F72E4A712500CCA99B /* WCSessionConnectionProfileViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FD9B22A92222300F3ECB0 /* WCSessionConnectionProfileViewTheme.swift */; };
 		59E605F82E4A712500CCA99B /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6FD2A93F3E000FA9409 /* WCSessionEventsRequestedPermissionViewModel.swift */; };
 		59E605F92E4A712500CCA99B /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D497E2682AA0A7F800872EAA /* WCSessionMethodsRequestedPermissionViewModel.swift */; };
-		59E605FA2E4A712500CCA99B /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6F92A93F3CB00FA9409 /* WCSessionNetworkRequestedPermissionViewModel.swift */; };
 		59E605FB2E4A712500CCA99B /* WCSessionRequestedPermissionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7032A93F68800FA9409 /* WCSessionRequestedPermissionItemCell.swift */; };
 		59E605FC2E4A712500CCA99B /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7072A93F6F200FA9409 /* WCSessionRequestedPermissionItemCellTheme.swift */; };
 		59E605FD2E4A712500CCA99B /* WCKeyRegTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6C07E2AE6828D00AD3C22 /* WCKeyRegTransactionViewController.swift */; };
@@ -6671,7 +6669,6 @@
 		59E60E6F2E4A71D000CCA99B /* WCSessionConnectionProfileViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FD9B22A92222300F3ECB0 /* WCSessionConnectionProfileViewTheme.swift */; };
 		59E60E702E4A71D000CCA99B /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6FD2A93F3E000FA9409 /* WCSessionEventsRequestedPermissionViewModel.swift */; };
 		59E60E712E4A71D000CCA99B /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D497E2682AA0A7F800872EAA /* WCSessionMethodsRequestedPermissionViewModel.swift */; };
-		59E60E722E4A71D000CCA99B /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF6F92A93F3CB00FA9409 /* WCSessionNetworkRequestedPermissionViewModel.swift */; };
 		59E60E732E4A71D000CCA99B /* WCSessionRequestedPermissionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7032A93F68800FA9409 /* WCSessionRequestedPermissionItemCell.swift */; };
 		59E60E742E4A71D000CCA99B /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45AF7072A93F6F200FA9409 /* WCSessionRequestedPermissionItemCellTheme.swift */; };
 		59E60E752E4A71D000CCA99B /* WCKeyRegTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6C07E2AE6828D00AD3C22 /* WCKeyRegTransactionViewController.swift */; };
@@ -9606,7 +9603,6 @@
 		D45AF6EC2A93AC8500FA9409 /* WCSessionConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionHeaderView.swift; sourceTree = "<group>"; };
 		D45AF6F02A93AC9300FA9409 /* WCSessionConnectionHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D45AF6F42A93AC9F00FA9409 /* WCSessionConnectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionHeaderViewModel.swift; sourceTree = "<group>"; };
-		D45AF6F92A93F3CB00FA9409 /* WCSessionNetworkRequestedPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionNetworkRequestedPermissionViewModel.swift; sourceTree = "<group>"; };
 		D45AF6FD2A93F3E000FA9409 /* WCSessionEventsRequestedPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionEventsRequestedPermissionViewModel.swift; sourceTree = "<group>"; };
 		D45AF7032A93F68800FA9409 /* WCSessionRequestedPermissionItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionRequestedPermissionItemCell.swift; sourceTree = "<group>"; };
 		D45AF7072A93F6F200FA9409 /* WCSessionRequestedPermissionItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionRequestedPermissionItemCellTheme.swift; sourceTree = "<group>"; };
@@ -21665,7 +21661,6 @@
 			children = (
 				D45AF6FD2A93F3E000FA9409 /* WCSessionEventsRequestedPermissionViewModel.swift */,
 				D497E2682AA0A7F800872EAA /* WCSessionMethodsRequestedPermissionViewModel.swift */,
-				D45AF6F92A93F3CB00FA9409 /* WCSessionNetworkRequestedPermissionViewModel.swift */,
 				D45AF7032A93F68800FA9409 /* WCSessionRequestedPermissionItemCell.swift */,
 				D45AF7072A93F6F200FA9409 /* WCSessionRequestedPermissionItemCellTheme.swift */,
 			);
@@ -27137,7 +27132,6 @@
 				591680782E464C76002184C2 /* WCSessionConnectionProfileViewTheme.swift in Sources */,
 				591680792E464C76002184C2 /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */,
 				5916807A2E464C76002184C2 /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */,
-				5916807B2E464C76002184C2 /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */,
 				5916807C2E464C76002184C2 /* WCSessionRequestedPermissionItemCell.swift in Sources */,
 				5916807D2E464C76002184C2 /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */,
 				5916807E2E464C76002184C2 /* WCKeyRegTransactionViewController.swift in Sources */,
@@ -29314,7 +29308,6 @@
 				59E605F72E4A712500CCA99B /* WCSessionConnectionProfileViewTheme.swift in Sources */,
 				59E605F82E4A712500CCA99B /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */,
 				59E605F92E4A712500CCA99B /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */,
-				59E605FA2E4A712500CCA99B /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */,
 				59E605FB2E4A712500CCA99B /* WCSessionRequestedPermissionItemCell.swift in Sources */,
 				59E605FC2E4A712500CCA99B /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */,
 				59E605FD2E4A712500CCA99B /* WCKeyRegTransactionViewController.swift in Sources */,
@@ -31489,7 +31482,6 @@
 				59E60E6F2E4A71D000CCA99B /* WCSessionConnectionProfileViewTheme.swift in Sources */,
 				59E60E702E4A71D000CCA99B /* WCSessionEventsRequestedPermissionViewModel.swift in Sources */,
 				59E60E712E4A71D000CCA99B /* WCSessionMethodsRequestedPermissionViewModel.swift in Sources */,
-				59E60E722E4A71D000CCA99B /* WCSessionNetworkRequestedPermissionViewModel.swift in Sources */,
 				59E60E732E4A71D000CCA99B /* WCSessionRequestedPermissionItemCell.swift in Sources */,
 				59E60E742E4A71D000CCA99B /* WCSessionRequestedPermissionItemCellTheme.swift in Sources */,
 				59E60E752E4A71D000CCA99B /* WCKeyRegTransactionViewController.swift in Sources */,

@@ -35,7 +35,6 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
         return findViewModel(forSection: sectionForHeader)
     }
 
-    private var sessionNetworkRequestedPermissionViewModel: WCSessionNetworkRequestedPermissionViewModel?
     private var sessionMethodsRequestedPermissionViewModel: WCSessionMethodsRequestedPermissionViewModel?
     private var sessionEventsRequestedPermissionViewModel: WCSessionEventsRequestedPermissionViewModel?
 
@@ -151,11 +150,6 @@ extension WCSessionConnectionLocalDataController {
     private func makeItemsForRequestedPermissions() -> [ItemIdentifier] {
         var permissions: [WCSessionRequestedPermission] = []
 
-        if let requestedChains = draft.requestedChains,
-           requestedChains.isNonEmpty {
-            permissions.append(.network)
-        }
-
         if let supportedEvents = draft.supportedEvents,
            !supportedEvents.isEmpty {
             permissions.append(.events)
@@ -246,7 +240,6 @@ extension WCSessionConnectionLocalDataController {
 extension WCSessionConnectionLocalDataController {
     private func findViewModel(forRequestedPermission permission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
         switch permission {
-        case .network: return sessionNetworkRequestedPermissionViewModel
         case .methods: return sessionMethodsRequestedPermissionViewModel
         case .events: return sessionEventsRequestedPermissionViewModel
         }
@@ -254,9 +247,6 @@ extension WCSessionConnectionLocalDataController {
 
     private func saveToCache(_ permission: WCSessionRequestedPermission) {
         switch permission {
-        case .network:
-            let requestedChains = draft.requestedChains!
-            sessionNetworkRequestedPermissionViewModel = .init(requestedChains)
         case .methods:
             let supportedMethods = draft.supportedMethods!
             sessionMethodsRequestedPermissionViewModel = .init(supportedMethods)

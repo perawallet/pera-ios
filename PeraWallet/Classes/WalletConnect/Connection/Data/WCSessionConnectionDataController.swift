@@ -79,7 +79,6 @@ extension WCSessionConnection {
 }
 
 enum WCSessionRequestedPermission {
-    case network
     case methods
     case events
 }
