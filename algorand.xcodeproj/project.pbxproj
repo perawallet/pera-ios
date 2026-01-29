@@ -182,7 +182,6 @@
 		591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; };
 		5916359A2E44D162002184C2 /* pera_wallet_core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		591635BD2E44D1BB002184C2 /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 591635BC2E44D1BB002184C2 /* MagpieAlamofire */; };
-		591635BE2E44D1BB002184C2 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */; };
 		591635C22E44D1DB002184C2 /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C12E44D1DB002184C2 /* MagpieCore */; };
 		591635C42E44D1DB002184C2 /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C32E44D1DB002184C2 /* MagpieExceptions */; };
 		591635C62E44D1DB002184C2 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 591635C52E44D1DB002184C2 /* MagpieHipo */; };
@@ -7379,6 +7378,7 @@
 		D4772F942E8A762900B4F262 /* SwapAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F932E8A761F00B4F262 /* SwapAsset.swift */; };
 		D4772F962E8A86D000B4F262 /* SwapHistoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */; };
 		D4772F982E8A86EB00B4F262 /* SwapHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4772F972E8A86E300B4F262 /* SwapHistory.swift */; };
+		D4852CF32F2C00B100ADA6ED /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4852CF22F2C00B100ADA6ED /* AlgoSDK.xcframework */; };
 		D488A5C72EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C82EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
 		D488A5C92EB268A600D8A04B /* ASAMarketsFragmentTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */; };
@@ -8334,7 +8334,6 @@
 		2B9A0DA527F45B0D006FC587 /* ManageAssetListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetListLocalDataController.swift; sourceTree = "<group>"; };
 		2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAPIModel.swift; sourceTree = "<group>"; };
 		2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGEntityModel.swift; sourceTree = "<group>"; };
-		2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetCreationTransactionView.swift; sourceTree = "<group>"; };
 		2B9E2F4126F0D332003D824A /* WCAssetCreationTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetCreationTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B9E2F4626F0DDB8003D824A /* WCAssetConfigTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetConfigTransactionItemView.swift; sourceTree = "<group>"; };
@@ -9754,6 +9753,7 @@
 		D48281C327A01AE6004412D5 /* TransactionTutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTutorialViewTheme.swift; sourceTree = "<group>"; };
 		D48281C727A0680A004412D5 /* LedgerPairWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerPairWarningViewTheme.swift; sourceTree = "<group>"; };
 		D48322CD2DCE075D0081F216 /* CardsSupportedCountriesFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSupportedCountriesFlowCoordinator.swift; sourceTree = "<group>"; };
+		D4852CF22F2C00B100ADA6ED /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		D488A5C62EB268A400D8A04B /* ASAMarketsFragmentTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAMarketsFragmentTheme.swift; sourceTree = "<group>"; };
 		D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewModelAdapter.swift; sourceTree = "<group>"; };
 		D48A5F81284115FE0009E6DB /* AssetPreviewWithActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewWithActionViewModel.swift; sourceTree = "<group>"; };
@@ -10873,9 +10873,9 @@
 				591635FE2E44D1DC002184C2 /* WalletConnectSwift in Frameworks */,
 				591636612E44D374002184C2 /* KeychainAccess in Frameworks */,
 				591635EE2E44D1DC002184C2 /* MacaroonToastUIKit in Frameworks */,
+				D4852CF32F2C00B100ADA6ED /* AlgoSDK.xcframework in Frameworks */,
 				591636082E44D1DD002184C2 /* x-hd-wallet-api in Frameworks */,
 				591635FC2E44D1DC002184C2 /* OrderedCollections in Frameworks */,
-				591635BE2E44D1BB002184C2 /* AlgoSDK.xcframework in Frameworks */,
 				591635E22E44D1DC002184C2 /* MacaroonMixpanel in Frameworks */,
 				591635F62E44D1DC002184C2 /* MacaroonVendors in Frameworks */,
 				591635CC2E44D1DB002184C2 /* FirebaseRemoteConfig in Frameworks */,
@@ -11089,7 +11089,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B9DFCE62D8357BC0089AACF /* AlgoSDK.xcframework */,
+				D4852CF22F2C00B100ADA6ED /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
