@@ -18,6 +18,10 @@ import SwiftUI
 
 final class JointAccountInviteConfirmationOverlayController: UIHostingController<JointAccountInviteConfirmationOverlay> {
     
+    // MARK: - Properties
+    
+    private lazy var copyToClipboardViewController: CopyToClipboardController = ALGCopyToClipboardController(toastPresentationController: ToastPresentationController(presentingView: view))
+    
     // MARK: - Initializers
     
     override init(rootView: JointAccountInviteConfirmationOverlay) {
@@ -39,8 +43,13 @@ final class JointAccountInviteConfirmationOverlayController: UIHostingController
     }
     
     private func setupCallbacks() {
+        
         rootView.onDismissAction = { [weak self] in
             self?.dismiss(animated: true)
+        }
+        
+        rootView.onCopyAddressAction = { [weak self] in
+            self?.copyToClipboardViewController.copyAddress($0)
         }
     }
 }
