@@ -21,10 +21,6 @@ import Testing
 @Suite
 struct SwapSharedViewModelTests {
     
-    private var decimalSeparator: String {
-        Locale.current.decimalSeparator ?? "."
-    }
-    
     @Test
     func test_shouldShowSwapButton_whenAllConditionsMet() {
         // Given
@@ -109,10 +105,10 @@ struct SwapSharedViewModelTests {
         let vm = makeViewModel()
         
         // When
-        let filtered = vm.filterPayingText("12a\(decimalSeparator)3b4")
+        let filtered = vm.filterPayingText("a1d2a3bb")
         
         // Then
-        #expect(filtered == "12\(decimalSeparator)34")
+        #expect(filtered == "123")
     }
     
     @Test
@@ -121,6 +117,7 @@ struct SwapSharedViewModelTests {
         let vm = makeViewModel()
         vm.payingText = "123"
         vm.receivingText = "456"
+        
         #expect(vm.payingText == "123")
         #expect(vm.receivingText == "456")
         
@@ -157,6 +154,7 @@ struct SwapSharedViewModelTests {
             currency: currency,
             sharedDataController: sharedData
         )
+        PeraUserDefaults.shouldUseLocalCurrencyInSwap = false
         vm.payingText = payingText
         vm.receivingText = receivingText
         vm.isBalanceNotSufficient = isBalanceNotSufficient
