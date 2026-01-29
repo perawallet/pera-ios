@@ -18,7 +18,7 @@ import SwiftUI
 import Combine
 import pera_wallet_core
 
-final class SwapSharedViewModel: ObservableObject {
+class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var selectedAccount: Account

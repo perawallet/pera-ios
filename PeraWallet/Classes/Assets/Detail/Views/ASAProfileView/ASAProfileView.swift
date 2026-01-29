@@ -66,13 +66,11 @@ final class ASAProfileView:
     
     private var theme = ASAProfileViewTheme()
     private let type: ASAProfileViewType
-    private let showNotificationAndFavoriteButtons: Bool
     
     // MARK: - Initialisers
     
-    @MainActor init(type: ASAProfileViewType = .assetDetail, showNotificationAndFavoriteButtons: Bool = false) {
+    @MainActor init(type: ASAProfileViewType = .assetDetail) {
         self.type = type
-        self.showNotificationAndFavoriteButtons = showNotificationAndFavoriteButtons
         super.init(frame: .zero)
         setupGestures()
         setupViewModelCallback()
@@ -116,10 +114,7 @@ final class ASAProfileView:
         self.theme = theme
 
         addContent(theme)
-        
-        if showNotificationAndFavoriteButtons {
-            addNotificationAndFavoriteButtons(theme)
-        }
+        addNotificationAndFavoriteButtons(theme)
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
@@ -156,17 +151,15 @@ final class ASAProfileView:
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
-        if showNotificationAndFavoriteButtons {
-            if isAssetPriceAlertEnabled {
-                notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
-            } else {
-                notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
-            }
-            if isAssetFavorited {
-                favoritesButton.setImage(UIImage(named: "icon-asset-favorite"), for: .normal)
-            } else {
-                favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
-            }
+        if isAssetPriceAlertEnabled {
+            notificationsButton.setImage(UIImage(named: "icon-asset-notification"), for: .normal)
+        } else {
+            notificationsButton.setImage(UIImage(named: "icon-asset-notification-disabled"), for: .normal)
+        }
+        if isAssetFavorited {
+            favoritesButton.setImage(UIImage(named: "icon-asset-favorite"), for: .normal)
+        } else {
+            favoritesButton.setImage(UIImage(named: "icon-asset-favorite-disabled"), for: .normal)
         }
     }
     

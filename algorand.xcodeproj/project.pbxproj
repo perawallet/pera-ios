@@ -7447,6 +7447,8 @@
 		D4D37A4E2EF2A6F500E14254 /* TransactionV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D37A4D2EF2A6F100E14254 /* TransactionV2.swift */; };
 		D4D37A522EF2AA6200E14254 /* TransactionV2FetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D37A512EF2AA5C00E14254 /* TransactionV2FetchDraft.swift */; };
 		D4D37A542EF2AB8700E14254 /* TransactionsV2Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D37A532EF2AB8300E14254 /* TransactionsV2Query.swift */; };
+		D4DA3EA32F23843100E42F1D /* AccountNameFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA3EA22F23842A00E42F1D /* AccountNameFetchDraft.swift */; };
+		D4DA3EA52F23853800E42F1D /* Account+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA3EA42F23853500E42F1D /* Account+Name.swift */; };
 		D4E52B262ED9A65C001796D1 /* OpenNotificationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E52B252ED9A64A001796D1 /* OpenNotificationEvent.swift */; };
 		D4E532C02ED9C34D001796D1 /* TapPassKeyInSettingsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E532BF2ED9C341001796D1 /* TapPassKeyInSettingsEvent.swift */; };
 		D4EBC1D92EBCD44A0046AE9C /* AssetDetailV2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EBC1D82EBCD4400046AE9C /* AssetDetailV2Error.swift */; };
@@ -10132,6 +10134,8 @@
 		D4D9E669299C13330043AD19 /* BidaliFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliFlowCoordinator.swift; sourceTree = "<group>"; };
 		D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationStatusViewTheme.swift; sourceTree = "<group>"; };
 		D4DA32DB2AEBDE2900F07CA8 /* KeyRegTransactionDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRegTransactionDetailViewTheme.swift; sourceTree = "<group>"; };
+		D4DA3EA22F23842A00E42F1D /* AccountNameFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameFetchDraft.swift; sourceTree = "<group>"; };
+		D4DA3EA42F23853500E42F1D /* Account+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Name.swift"; sourceTree = "<group>"; };
 		D4DADADD29F19AFF002836BE /* RemoveAccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAccountSheet.swift; sourceTree = "<group>"; };
 		D4DB0C342E28EB2800B9B981 /* ASADetailPageContainerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailPageContainerHeader.swift; sourceTree = "<group>"; };
 		D4DB0C392E28EE7100B9B981 /* ASADetailPageContainerHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailPageContainerHeaderTheme.swift; sourceTree = "<group>"; };
@@ -12405,6 +12409,7 @@
 		2B4DF42C236C772300FF9551 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				D4DA3EA22F23842A00E42F1D /* AccountNameFetchDraft.swift */,
 				D473B8432B0264AA00027D96 /* AccountAssetFetchDraft.swift */,
 				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
 				2B4BDA23238D48ED00491149 /* Asset */,
@@ -16536,6 +16541,7 @@
 				17B7D8A52240D8F900A6FF9E /* Account.swift */,
 				D41918AE2D6C74FB00F70094 /* Account+FastLookup.swift */,
 				2BE4D15825967F3E005F5764 /* Account+Helpers.swift */,
+				D4DA3EA42F23853500E42F1D /* Account+Name.swift */,
 				2BE4D16925967F92005F5764 /* Account+Signature.swift */,
 				2BEE062023E8572E004EBD6F /* AccountStatus.swift */,
 				2BE4D16225967F78005F5764 /* AccountResponse.swift */,
@@ -32035,6 +32041,7 @@
 				5916770B2E460AF9002184C2 /* Data+BinaryString.swift in Sources */,
 				5916770C2E460AF9002184C2 /* Data+Hex.swift in Sources */,
 				5916770D2E460AF9002184C2 /* Data+String.swift in Sources */,
+				D4DA3EA52F23853800E42F1D /* Account+Name.swift in Sources */,
 				5916770E2E460AF9002184C2 /* Keychain+Additions.swift in Sources */,
 				5916770F2E460AF9002184C2 /* UserDefaults+Additions.swift in Sources */,
 				591677102E460AF9002184C2 /* Snapkit+SafeArea.swift in Sources */,
@@ -32254,6 +32261,7 @@
 				5916781A2E460AF9002184C2 /* ALGEntityModel.swift in Sources */,
 				5916781C2E460AF9002184C2 /* User.swift in Sources */,
 				5916781D2E460AF9002184C2 /* ApplicationConfiguration.swift in Sources */,
+				D4DA3EA32F23843100E42F1D /* AccountNameFetchDraft.swift in Sources */,
 				5916781E2E460AF9002184C2 /* SpotBannerListItem.swift in Sources */,
 				5916781F2E460AF9002184C2 /* Announcement.swift in Sources */,
 				591678202E460AF9002184C2 /* MoonPaySignedResponse.swift in Sources */,

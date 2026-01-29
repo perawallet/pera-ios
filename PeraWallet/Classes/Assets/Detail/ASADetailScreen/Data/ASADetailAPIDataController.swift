@@ -71,11 +71,6 @@ final class ASADetailScreenAPIDataController:
 extension ASADetailScreenAPIDataController {
     func loadData() {
         setupChartDataClosures()
-        
-        if !featureFlagService.isEnabled(.assetDetailV2EndpointEnabled), asset.isAlgo {
-            didLoadData()
-            return
-        }
 
         eventHandler?(.willLoadData)
 

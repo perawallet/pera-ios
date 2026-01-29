@@ -214,6 +214,7 @@ extension User {
         accounts[index].preferredOrder = account.preferredOrder
         accounts[index].isBackedUp = account.isBackedUp
         accounts[index].hdWalletAddressDetail = account.hdWalletAddressDetail
+        accounts[index].nfDomain = account.nfDomain
         
         syncronize()
     }
@@ -239,6 +240,7 @@ extension User {
         accounts[localAccountIndex].preferredOrder = updatedAccount.preferredOrder
         accounts[localAccountIndex].isBackedUp = updatedAccount.isBackedUp
         accounts[localAccountIndex].hdWalletAddressDetail = updatedAccount.hdWalletAddressDetail
+        accounts[localAccountIndex].nfDomain = updatedAccount.nfDomain
 
         if syncChangesImmediately {
             syncronize()

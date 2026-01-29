@@ -119,4 +119,18 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func fetchAccountName(
+        _ draft: AccountNameFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AccountName>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.accountName)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 }

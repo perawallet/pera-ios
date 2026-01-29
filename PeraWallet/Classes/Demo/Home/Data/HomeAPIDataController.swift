@@ -257,6 +257,35 @@ extension HomeAPIDataController {
             }
         }
     }
+    
+    func fetchAccountsName() {
+        guard
+            let accounts = session.authenticatedUser?.accounts,
+            !accounts.isEmpty
+        else { return }
+
+        let accountAddresses = accounts.map(\.address)
+        
+        api.fetchAccountName(
+            AccountNameFetchDraft(accountAddresses: accountAddresses)
+        ) { [weak self] response in
+            guard let self else { return }
+            
+            switch response {
+            case .success(let accountNames):
+                for accountName in accountNames.results {
+                    if
+                        let accountInfo = session.authenticatedUser?.account(address: accountName.address),
+                        accountName.nameResult?.name != accountInfo.nfDomain
+                    {
+                        accountInfo.nfDomain = accountName.nameResult?.name
+                        session.authenticatedUser?.updateAccount(accountInfo)
+                    }
+                }
+            case .failure: break
+            }
+        }
+    }
 }
 
 extension HomeAPIDataController {

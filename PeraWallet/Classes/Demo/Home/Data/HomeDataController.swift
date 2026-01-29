@@ -39,6 +39,7 @@ protocol HomeDataController: AnyObject {
     func hideAnnouncement()
     func fetchIncomingASAsRequests()
     func fetchUSDCDefaultAsset()
+    func fetchAccountsName()
 }
 
 enum HomeSectionIdentifier:

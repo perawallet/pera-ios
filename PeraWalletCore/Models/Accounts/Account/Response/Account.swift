@@ -55,6 +55,7 @@ public final class Account: ALGEntityModel {
     public var rekeyDetail: RekeyDetail?
     public var preferredOrder: Int
     public var isBackedUp: Bool
+    public var nfDomain: String?
 
     public private(set) var algo: Algo
     public private(set) var standardAssets: [StandardAsset]?
@@ -161,6 +162,7 @@ public final class Account: ALGEntityModel {
         self.isBackedUp = localAccount.isBackedUp
         self.hdWalletAddressDetail = localAccount.hdWalletAddressDetail
         self.jointAccountParticipants = localAccount.jointAccountParticipants
+        self.nfDomain = localAccount.nfDomain
     }
 
     public func encode() -> APIModel {
@@ -206,6 +208,9 @@ extension Account {
     }
 
     public var secondaryDisplayName: String? {
+        guard nfDomain == nil else {
+            return nfDomain
+        }
         let accountName = name?.trimmed()
         if authorization.isStandard, accountName == address.shortAddressDisplay {
             return nil
@@ -552,6 +557,7 @@ extension Account {
         isBackedUp = localAccount.isBackedUp
         hdWalletAddressDetail = localAccount.hdWalletAddressDetail
         jointAccountParticipants = localAccount.jointAccountParticipants
+        nfDomain = localAccount.nfDomain
     }
 
     public func update(with account: Account) {
@@ -581,6 +587,7 @@ extension Account {
         preferredOrder = account.preferredOrder
         isBackedUp = account.isBackedUp
         jointAccountParticipants = account.jointAccountParticipants
+        nfDomain = account.nfDomain
         
         if let updatedHDWalletAddressDetail = account.hdWalletAddressDetail {
             hdWalletAddressDetail = updatedHDWalletAddressDetail

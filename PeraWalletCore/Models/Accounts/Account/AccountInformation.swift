@@ -31,6 +31,7 @@ public final class AccountInformation: Codable {
     public var isBackedUp: Bool
     public var hdWalletAddressDetail: HDWalletAddressDetail?
     public let jointAccountParticipants: [String]?
+    public var nfDomain: String?
 
     static let invalidOrder = -1
 
@@ -89,6 +90,7 @@ public final class AccountInformation: Codable {
         isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
         hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
         jointAccountParticipants = try container.decodeIfPresent([String].self, forKey: .jointAccountParticipants)
+        nfDomain = try container.decodeIfPresent(String.self, forKey: .nfDomain)
     }
 }
 
@@ -146,6 +148,7 @@ extension AccountInformation {
         case isBackedUp = "isBackedUp"
         case hdWalletAddressDetail = "hdWalletAddressDetail"
         case jointAccountParticipants
+        case nfDomain
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             return lhs.rawValue == rhs.rawValue

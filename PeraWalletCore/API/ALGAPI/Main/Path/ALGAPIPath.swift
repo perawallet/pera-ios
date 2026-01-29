@@ -21,6 +21,7 @@ import MagpieCore
 enum ALGAPIPath: String {
     case accountDetail = "/accounts/%@"
     case accounts = "/accounts"
+    case accountName = "/accounts/names/bulk-read/"
     case accountTransaction = "/accounts/%@/transactions"
     case accountTransactionDetail = "/accounts/%@/transactions/%@"
     case fastLookup = "/accounts/fast-lookup/%@/"
