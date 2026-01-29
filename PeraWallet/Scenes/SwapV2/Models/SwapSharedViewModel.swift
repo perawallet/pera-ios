@@ -207,7 +207,7 @@ class SwapSharedViewModel: ObservableObject {
         }
     }
     
-    private func resetTextFields() {
+    func resetTextFields() {
         receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
         receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
         payingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
