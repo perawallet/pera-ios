@@ -12848,16 +12848,6 @@
         }
       }
     },
-    "wc-session-connection-network" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network"
-          }
-        }
-      }
-    },
     "wc-session-connection-requested-permissions" : {
       "localizations" : {
         "en" : {
