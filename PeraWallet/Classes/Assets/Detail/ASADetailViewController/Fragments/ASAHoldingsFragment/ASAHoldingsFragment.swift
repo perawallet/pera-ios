@@ -81,8 +81,7 @@ final class ASAHoldingsFragment: TransactionsViewController {
             currency: configuration.sharedDataController.currency,
             shouldDisplayQuickActions: shouldDisplayQuickActions,
             quickActionsViewModel: viewModel,
-            eventHandler: eventHandler,
-            showNotificationAndFavoriteButtons: configuration.featureFlagService.isEnabled(.assetDetailV2EndpointEnabled)
+            eventHandler: eventHandler
         )
     }
     
@@ -116,5 +115,4 @@ struct ASAHoldingsHeaderContext {
     let shouldDisplayQuickActions: Bool
     let quickActionsViewModel: ASADetailQuickActionsViewModel
     let eventHandler: ASADetailViewController.EventHandler
-    let showNotificationAndFavoriteButtons: Bool
 }
