@@ -23,6 +23,8 @@ struct JointAccountInviteConfirmationOverlayAccountRow: View {
     let image: ImageType
     let title: String
     let subtitle: String?
+    var showDivider: Bool = false
+    
     let onCopyAction: () -> Void
     
     // MARK: - Body
@@ -34,6 +36,14 @@ struct JointAccountInviteConfirmationOverlayAccountRow: View {
                 .frame(width: 24.0, height: 24.0)
                 .foregroundStyle(Color.Text.gray)
                 .onTapGesture(perform: onCopyAction)
+        }
+        .frame(height: 73.0)
+        if showDivider {
+            Divider()
+                .background(Color.Layer.grayLighter)
+                .frame(height: 1.0)
+                .padding(.leading, 80.0)
+                .padding(.trailing, 25.0)
         }
     }
 }
