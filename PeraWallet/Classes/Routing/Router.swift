@@ -2443,15 +2443,6 @@ final class Router:
         case .accountRecoverySearch:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
-        case let .jointAccountConfirmationOverlay(subtitle, threshold, accountModels, onIgnore, onAccept):
-            viewController = JointAccountInviteConfirmationOverlayConstructor.buildCompatibilityViewController(
-                configuration: configuration,
-                subtitle: subtitle,
-                threshold: threshold,
-                accountModels: accountModels,
-                onIgnore: onIgnore,
-                onAccept: onAccept
-            )
         }
         return viewController as? T
     }

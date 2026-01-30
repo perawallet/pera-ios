@@ -32,6 +32,7 @@ struct JointAccountInviteConfirmationOverlay: View {
     // MARK: - Properties - UIKit Compatibility
     
     var onDismissAction: (() -> Void)?
+    var onCopyAddressAction: ((_ address: String) -> Void)?
     
     // MARK: - Initializers
     
@@ -96,9 +97,15 @@ struct JointAccountInviteConfirmationOverlay: View {
         .padding(.top, 32.0)
         .padding(.horizontal, 16.0)
         ScrollView {
-            VStack{
+            VStack {
                 ForEach(viewModel.accountModels) { accountModel in
-                    JointAccountInviteConfirmationOverlayAccountRow(image: accountModel.image, title: accountModel.title, subtitle: accountModel.subtitle, onCopyAction: { model.copy(address: accountModel.id) })
+                    JointAccountInviteConfirmationOverlayAccountRow(
+                        image: accountModel.image,
+                        title: accountModel.title,
+                        subtitle: accountModel.subtitle,
+                        showDivider: viewModel.accountModels.last?.id != accountModel.id,
+                        onCopyAction: { onCopyAction(address: accountModel.id) }
+                    )
                 }
             }
             .background(
@@ -146,5 +153,9 @@ struct JointAccountInviteConfirmationOverlay: View {
     private func onAcceptAction() {
         onDismissAction?()
         onAccept()
+    }
+    
+    private func onCopyAction(address: String) {
+        onCopyAddressAction?(address)
     }
 }

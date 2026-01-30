@@ -447,7 +447,6 @@ indirect enum Screen {
     case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
     case rekeyTransactionOverlay(variant: RekeySupportOverlayView.Variant, onPrimaryAction: (() -> Void)?)
     case publicWebview(url: URL?)
-    case jointAccountConfirmationOverlay(subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel], onIgnore: () -> Void, onAccept: () -> Void)
 }
 
 extension Screen {

@@ -15,11 +15,9 @@
 //   JointAccountInviteConfirmationOverlayModel.swift
 
 import Combine
-import UIKit
 
 protocol JointAccountInviteConfirmationOverlayModelable {
     var viewModel: JointAccountInviteConfirmationOverlayViewModel { get }
-    func copy(address: String)
 }
 
 final class JointAccountInviteConfirmationOverlayViewModel: ObservableObject {
@@ -39,6 +37,10 @@ final class JointAccountInviteConfirmationOverlayViewModel: ObservableObject {
 
 final class JointAccountInviteConfirmationOverlayModel: JointAccountInviteConfirmationOverlayModelable {
     
+    // MARK: - Properties - JointAccountInviteConfirmationOverlayModelable
+    
+    var viewModel: JointAccountInviteConfirmationOverlayViewModel = JointAccountInviteConfirmationOverlayViewModel()
+    
     // MARK: - Initializers
     
     init(subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
@@ -46,15 +48,5 @@ final class JointAccountInviteConfirmationOverlayModel: JointAccountInviteConfir
         viewModel.addressCount = accountModels.count
         viewModel.threshold = threshold
         viewModel.accountModels = accountModels
-    }
-    
-    // MARK: - Properties - JointAccountInviteConfirmationOverlayModelable
-    
-    var viewModel: JointAccountInviteConfirmationOverlayViewModel = JointAccountInviteConfirmationOverlayViewModel()
-    
-    // MARK: - Actions - JointAccountInviteConfirmationOverlayViewModelable
-    
-    func copy(address: String) {
-        UIPasteboard.general.string = address
     }
 }

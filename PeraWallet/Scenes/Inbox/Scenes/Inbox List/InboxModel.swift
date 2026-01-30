@@ -196,11 +196,10 @@ final class InboxModel: InboxModelable {
         }
         
         let account = accountsService.accounts.value.first(where: { $0.address == address })
-        let iconData = AccountIconProvider.iconData(account: account)
         let title = account?.titles.primary ?? address.shortAddressDisplay
         let subtitle = account?.titles.secondary
         
-        return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .icon(data: iconData), title: title, subtitle: subtitle)
+        return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .placeholderIconData, title: title, subtitle: subtitle)
     }
     
     private func handleInboxAction(identifier: String) {
