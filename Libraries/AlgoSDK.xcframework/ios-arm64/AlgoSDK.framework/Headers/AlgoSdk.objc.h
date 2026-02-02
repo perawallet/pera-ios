@@ -474,6 +474,13 @@ This will return nil if the transaction was not signed by a multisig account.
 FOUNDATION_EXPORT AlgoSdkMultisigAccount* _Nullable AlgoSdkExtractMultisigAccountFromSignedTransaction(NSData* _Nullable encodedSignedTx, NSError* _Nullable* _Nullable error);
 
 /**
+ * ExtractSignatureFromSignedTransaction extracts the signature bytes from a msgpack-encoded
+signed transaction. Returns the 64-byte ed25519 signature if present, or an error if the
+transaction is unsigned or has no standard signature (e.g., multisig or logicsig only).
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkExtractSignatureFromSignedTransaction(NSData* _Nullable signedTxnBytes, NSError* _Nullable* _Nullable error);
+
+/**
  * FindAndVerifyTxnGroups takes an array of encoded transactions and finds and verifies consecutive
 transactions which claim to be an atomic group. It returns an array of integers which is the same
 length as the array of input transactions. If two indexes in this array have the same value, then
@@ -908,6 +915,13 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignMultisigTransaction(NSData* _Null
 bytes of a signed txn.
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
+
+/**
+ * SignTransactionReturnSignature accepts a private key and a transaction, signs the transaction,
+and returns only the 64-byte ed25519 signature (not the full signed transaction).
+This is useful for joint account signing where signatures need to be submitted separately.
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignTransactionReturnSignature(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
 
 /**
  * TransactionJsonToMsgpack converts a json-encoded Transaction to a
