@@ -46,6 +46,10 @@ struct RoundedButton: View {
             .foregroundStyle(style.forgroundColor(isEnabled: isEnabled))
             .font(.DMSans.medium.size(15.0))
             .cornerRadius(4.0)
+            .onTapGesture {
+                guard isEnabled, case .text = contentType else { return }
+                onTap()
+            }
     }
     
     @ViewBuilder
@@ -53,10 +57,6 @@ struct RoundedButton: View {
         switch type {
         case .text(let text):
             Text(text)
-                .onTapGesture {
-                    guard isEnabled else { return }
-                    onTap()
-                }
         case .spinner:
             ProgressView()
                 .tint(style.forgroundColor(isEnabled: isEnabled))
