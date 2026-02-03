@@ -32969,7 +32969,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/Passkey/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -33003,7 +33003,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/Passkey/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -33036,7 +33036,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/Passkey/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -33069,7 +33069,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/PasskeyStaging/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -33105,7 +33105,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/PasskeyStaging/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -33140,7 +33140,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Target Support Files/PasskeyStaging/passkey-extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;

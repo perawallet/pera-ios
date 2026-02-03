@@ -2443,6 +2443,8 @@ final class Router:
         case .accountRecoverySearch:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
+        case let .nameAndAddJointAccount(jointAccountAddress):
+            viewController = NameAddedHostingConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress)
         }
         return viewController as? T
     }
