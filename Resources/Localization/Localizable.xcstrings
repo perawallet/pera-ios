@@ -3846,7 +3846,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This feature is as an inbox for your account. Others can send you assets and NFTs, even if you have not explicitly opted in to receive them. From here, you can choose to accept or reject the asset transfer requests."
+            "value" : "This is your unified inbox where you can manage all incoming requests. Here you can accept or reject asset transfer requests for assets or NFTs which you are not opted into already, respond to joint account invitations, and sign pending transactions for your joint accounts."
           }
         }
       }
