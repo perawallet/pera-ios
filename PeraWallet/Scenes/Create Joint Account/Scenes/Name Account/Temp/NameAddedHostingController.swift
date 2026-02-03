@@ -30,11 +30,6 @@ final class NameAddedHostingController: UIHostingController<NameAddedJointAccoun
         setupCallbacks()
     }
     
-    override init(rootView: NameAddedJointAccountView) {
-        super.init(rootView: rootView)
-        setupCallbacks()
-    }
-    
     @MainActor
     @available(*, unavailable)
     @preconcurrency
