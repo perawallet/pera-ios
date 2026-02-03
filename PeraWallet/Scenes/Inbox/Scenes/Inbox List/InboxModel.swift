@@ -57,7 +57,6 @@ final class InboxViewModel {
         case unableToParseImportRequest
         case unableToParseSendRequest
         case unableToIgnoreTransaction
-        case unabletoAcceptTransaction
     }
     
     @Published fileprivate(set) var rows: [RowType] = []
@@ -69,7 +68,6 @@ protocol InboxModelable {
     var viewModel: InboxViewModel { get }
     func requestAction(identifier: InboxRowIdentifier)
     func ignoreJointAccountInvitation(address: String)
-    func acceptJointAccountInvitation(address: String)
     func markMessagesAsRead()
 }
 
@@ -141,16 +139,6 @@ final class InboxModel: InboxModelable {
                 try await inboxService.ignoreAccountImportRequest(jointAccountAddress: address)
             } catch {
                 viewModel.errorMessage = .unableToIgnoreTransaction
-            }
-        }
-    }
-    
-    func acceptJointAccountInvitation(address: String) {
-        Task {
-            do {
-                try await inboxService.acceptAccountImportRequest(jointAccountAddress: address)
-            } catch {
-                viewModel.errorMessage = .unabletoAcceptTransaction
             }
         }
     }

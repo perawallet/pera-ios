@@ -26,7 +26,7 @@ protocol InboxServiceable {
     var error: AnyPublisher<InboxService.ServiceError, Never> { get }
     
     func ignoreAccountImportRequest(jointAccountAddress: String) async throws(InboxService.ActionError)
-    func acceptAccountImportRequest(jointAccountAddress: String) async throws(InboxService.ActionError)
+    func acceptAccountImportRequest(jointAccountAddress: String, name: String) async throws(InboxService.ActionError)
 }
 
 final class InboxService: InboxServiceable, NetworkConfigureable {
@@ -118,13 +118,13 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
         }
     }
     
-    func acceptAccountImportRequest(jointAccountAddress: String) async throws(ActionError) {
+    func acceptAccountImportRequest(jointAccountAddress: String, name: String) async throws(ActionError) {
         
         let deviceID = try fetchDeviceID()
         guard let jointAccountImportData = jointAccountImportRequests.value.first(where: { $0.address == jointAccountAddress }) else { throw .addressNotFound }
         
         do {
-            try await accountService.createJointAccount(participants: jointAccountImportData.participantAddresses, threshold: jointAccountImportData.threshold, name: jointAccountAddress)
+            try await accountService.createJointAccount(participants: jointAccountImportData.participantAddresses, threshold: jointAccountImportData.threshold, name: name)
         } catch {
             throw .failedAcceptAccountImportRequest(createAccountError: error)
         }

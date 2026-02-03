@@ -32,9 +32,16 @@ struct BackButtonModifier: ViewModifier {
                     Image(.Icons.arrow)
                         .rotationEffect(.degrees(180.0))
                         .foregroundStyle(Color.Text.main)
-                        .onTapGesture { navigationPath.removeLast() }
+                        .onTapGesture { backAction() }
                 }
             }
+    }
+    
+    // MARK: - Actions
+    
+    private func backAction() {
+        guard !navigationPath.isEmpty else { return }
+        navigationPath.removeLast()
     }
 }
 

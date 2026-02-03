@@ -127,7 +127,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
         }
         
         let onAccept: () -> Void = { [weak self] in
-            self?.model.acceptJointAccountInvitation(address: jointAccountAddress)
+            self?.moveToNameAccountScene(jointAccountAddress: jointAccountAddress)
         }
         
         let controller = JointAccountInviteConfirmationOverlayConstructor.buildCompatibilityViewController(
@@ -153,6 +153,10 @@ final class IncomingASAAccountsViewController: BaseViewController {
                 self?.eventHandler?(.didCompleteTransaction)
             }
         }
+    }
+    
+    private func moveToNameAccountScene(jointAccountAddress: String) {
+        open(.nameAndAddJointAccount(jointAccountAddress: jointAccountAddress), by: .push)
     }
     
     // MARK: - Deinitializer
