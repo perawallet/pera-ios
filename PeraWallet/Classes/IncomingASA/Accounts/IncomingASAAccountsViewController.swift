@@ -16,6 +16,7 @@
 
 import UIKit
 import Combine
+import pera_wallet_core
 
 enum InboxRowIdentifier {
     case `import`(uniqueIdentifier: String)
@@ -156,7 +157,19 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }
     
     private func moveToNameAccountScene(jointAccountAddress: String) {
-        open(.nameAndAddJointAccount(jointAccountAddress: jointAccountAddress), by: .push)
+        open(
+            .nameAndAddJointAccount(
+                jointAccountAddress: jointAccountAddress,
+                onDismissRequest: { [weak self] screen in
+                    guard let self else { return }
+                    PeraUserDefaults.shouldShowNewAccountAnimation = true
+                    screen.closeScreen(by: .pop, animated: false)
+                    popScreen()
+                    bannerController?.presentSuccessBanner(title: String(localized: "joint-account-invite-accepted-text"))
+                }
+            ),
+            by: .push
+        )
     }
     
     // MARK: - Deinitializer
