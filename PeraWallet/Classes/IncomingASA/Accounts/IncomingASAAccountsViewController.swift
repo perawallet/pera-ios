@@ -122,8 +122,14 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private func presentImportJointAccountOverlay(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
         
-        let onIgnore: () -> Void = { [weak self] in
-            self?.model.ignoreJointAccountInvitation(address: jointAccountAddress)
+        let onIgnore: () -> Void = {
+            Task { [weak self] in
+                guard let self else { return }
+                if await model.ignoreJointAccountInvitation(address: jointAccountAddress) {
+                    popScreen()
+                    bannerController?.presentInfoBanner(String(localized: "joint-account-invite-ignored-text"))
+                }
+            }
         }
         
         let onAccept: () -> Void = { [weak self] in

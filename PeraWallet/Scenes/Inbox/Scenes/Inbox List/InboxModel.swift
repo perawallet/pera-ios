@@ -67,7 +67,7 @@ final class InboxViewModel {
 protocol InboxModelable {
     var viewModel: InboxViewModel { get }
     func requestAction(identifier: InboxRowIdentifier)
-    func ignoreJointAccountInvitation(address: String)
+    func ignoreJointAccountInvitation(address: String) async -> Bool
     func markMessagesAsRead()
 }
 
@@ -133,13 +133,13 @@ final class InboxModel: InboxModelable {
         }
     }
     
-    func ignoreJointAccountInvitation(address: String) {
-        Task {
-            do {
-                try await inboxService.ignoreAccountImportRequest(jointAccountAddress: address)
-            } catch {
-                viewModel.errorMessage = .unableToIgnoreTransaction
-            }
+    func ignoreJointAccountInvitation(address: String) async -> Bool {
+        do {
+            try await inboxService.ignoreAccountImportRequest(jointAccountAddress: address)
+            return true
+        } catch {
+            viewModel.errorMessage = .unableToIgnoreTransaction
+            return false
         }
     }
     

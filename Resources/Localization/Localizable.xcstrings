@@ -4183,6 +4183,17 @@
         }
       }
     },
+    "joint-account-invite-ignored-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joint account invitation ignored"
+          }
+        }
+      }
+    },
     "key-reg-title" : {
       "localizations" : {
         "en" : {
