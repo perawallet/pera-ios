@@ -20,9 +20,15 @@ final class NameAddedHostingController: UIHostingController<NameAddedJointAccoun
     
     // MARK: - Properties
     
-    var onDismissRequest: (() -> Void)?
+    var onDismissRequest: ((NameAddedHostingController) -> Void)?
     
     // MARK: - Initialisers
+    
+    init(rootView: NameAddedJointAccountView, onDismissRequest: ((NameAddedHostingController) -> Void)?) {
+        super.init(rootView: rootView)
+        self.onDismissRequest = onDismissRequest
+        setupCallbacks()
+    }
     
     override init(rootView: NameAddedJointAccountView) {
         super.init(rootView: rootView)
@@ -40,7 +46,8 @@ final class NameAddedHostingController: UIHostingController<NameAddedJointAccoun
     
     private func setupCallbacks() {
         rootView.onDismissRequest = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+            guard let self else { return }
+            onDismissRequest?(self)
         }
     }
 }
