@@ -53,6 +53,12 @@ final class AccountQuickActionsView:
         }
     }
     
+    var isJointAccount: Bool = false {
+        didSet {
+            swapActionView.isHidden = isJointAccount
+        }
+    }
+    
     func customize(_ theme: AccountQuickActionsViewTheme) {
         self.theme = theme
 

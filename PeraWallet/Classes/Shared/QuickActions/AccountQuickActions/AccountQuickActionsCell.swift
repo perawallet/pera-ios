@@ -34,6 +34,12 @@ final class AccountQuickActionsCell:
             contextView.showFundButton = showFundButton
         }
     }
+    
+    var isJointAccount: Bool = false {
+        didSet {
+            contextView.isJointAccount = isJointAccount
+        }
+    }
 
     override init(
         frame: CGRect
