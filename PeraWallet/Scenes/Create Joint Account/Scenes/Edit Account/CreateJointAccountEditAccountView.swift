@@ -63,17 +63,17 @@ struct CreateJointAccountEditAccountView: View {
                     .padding(.horizontal, 24.0)
                 Spacer()
             }
-            .background(Color.Defaults.bg)
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("create-joint-account-edit-account-navigation-title")
             .withPeraBackButton(navigationPath: $navigationPath)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     SwiftUI.Button("common-done") { onDoneButtonTapAction() }
-                        .foregroundStyle(Color.Text.main)
+                        .foregroundStyle(Color.Link.primary)
                 }
             }
         }
+        .background(Color.Defaults.bg)
         .navigationTitle("create-joint-account-edit-account-title")
         .onReceive(viewModel.$updatedModel) { model in
             guard let model else { return }
