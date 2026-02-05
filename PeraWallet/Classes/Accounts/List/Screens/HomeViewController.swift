@@ -432,9 +432,8 @@ extension HomeViewController {
     }
     
     private func updateNavigationBarWhenListDidScroll() {
-        let visibleIndexPaths = listView.indexPathsForVisibleItems
-        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-        navigationView.animateTitleVisible(!headerVisible) {
+        let shouldShowTitle = leftBarButtonItems.isEmpty && !listView.indexPathsForVisibleItems.contains(IndexPath(item: 0, section: 0))
+        navigationView.animateTitleVisible(shouldShowTitle) {
             [weak self] isVisible in
             guard let self else { return }
             
