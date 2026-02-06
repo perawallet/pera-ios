@@ -102,7 +102,8 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(ActionError) {
         do {
-            let response = try await mobileApiManager.createJointAccount(participants: participants, threshold: threshold)
+            let deviceID = try fetchDeviceID()
+            let response = try await mobileApiManager.createJointAccount(participants: participants, threshold: threshold, deviceID: deviceID)
             try LegacyBridgeAccountManager.addLocalAccount(session: legacySessionManager, sharedDataController: legacySharedDataController, address: response.address, name: name, isWatchAccount: false, participants: participants)
         } catch {
             throw .unableToCreateLocalAccount(error: error)

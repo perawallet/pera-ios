@@ -27,4 +27,6 @@ struct MultiSigAccountObject: Codable, Equatable {
     let version: Int
     /// Creation date in ISO 8601 format.
     let creationDatetime: Date
+    /// Device ID for the multisig account creation.
+    let deviceID: String?
 }

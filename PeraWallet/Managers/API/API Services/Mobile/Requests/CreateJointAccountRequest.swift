@@ -15,7 +15,7 @@
 //   CreateJointAccountRequest.swift
 
 struct CreateJointAccountRequest {
-    /// he multisig account object containing the address, participant addresses, threshold, and version details.
+    /// The multisig account object containing the address, participant addresses, threshold, and version details.
     let jointAccountObject: MultiSigAccountObject
 }
 
