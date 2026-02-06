@@ -572,6 +572,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
 
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+                item.isJointAccount = dataController.account.value.authorization == .jointAccount
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
                 item.startObserving(event: .requests) { [weak self] in
