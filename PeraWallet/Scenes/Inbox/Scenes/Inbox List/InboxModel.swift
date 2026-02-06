@@ -34,10 +34,17 @@ final class InboxViewModel {
     
     struct JointAccountSignRequestModel: Hashable, Identifiable {
         let id: String
+        let isUnread: Bool
         let title: AttributedString
-        let timestamp: Date
+        let state: SignRequestState
+        let creationDatetime: Date
         let signedTransactionsText: String
         let deadline: Date
+    }
+    
+    enum SignRequestState {
+        case pending
+        case failed
     }
     
     struct AlgorandStandardAssetInboxModel: Hashable, Identifiable {
@@ -49,7 +56,7 @@ final class InboxViewModel {
     
     enum Action {
         case moveToImportJointAccountScene(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel])
-        case moveToRequestSendScene
+        case moveToRequestSendScene(request: SignRequestObject)
         case moveToAssetDetailsScene(address: String, requestCount: Int)
     }
     
@@ -98,7 +105,8 @@ final class InboxModel: InboxModelable {
     private func setupCallbacks() {
         
         Publishers.CombineLatest3(inboxService.jointAccountImportRequests.publisher.removeDuplicates(), inboxService.jointAccountSignRequests.publisher.removeDuplicates(), inboxService.algorandStandardAssetInboxes.publisher.removeDuplicates())
-            .map {
+            .map { [weak self] in
+                
                 let jointAccountImports = $0
                     .compactMap { [weak self] in self?.jointAccountImportRequestViewModel(model: $0) }
                     .map { InboxViewModel.RowType.jointAccountImport(model: $0) }
@@ -124,9 +132,9 @@ final class InboxModel: InboxModelable {
         
         switch identifier {
         case let .import(uniqueIdentifier):
-            handleInboxAction(identifier: uniqueIdentifier)
-        case .sendRequest:
-            break // FIXME: Send requset feature will be implemented later
+            handleImportJointAccountAction(identifier: uniqueIdentifier)
+        case let .sendRequest(uniqueIdentifier):
+            handleSendRequestAction(identifier: uniqueIdentifier)
         case let .asset(uniqueIdentifier):
             guard let assetData = inboxService.algorandStandardAssetInboxes.value.first(where: { $0.address == uniqueIdentifier }) else { return }
             viewModel.action = .moveToAssetDetailsScene(address: assetData.address, requestCount: assetData.requestCount)
@@ -145,6 +153,7 @@ final class InboxModel: InboxModelable {
     
     func markMessagesAsRead() {
         PeraUserDefaults.watchedJointAccountInvitations = inboxService.jointAccountImportRequests.value.map(\.address)
+        PeraUserDefaults.watchedSignRequestMessage = inboxService.jointAccountSignRequests.value.map(\.id)
     }
     
     // MARK: - Handlers
@@ -167,7 +176,30 @@ final class InboxModel: InboxModelable {
     }
     
     private func jointAccountSignRequestViewModel(model: SignRequestObject) -> InboxViewModel.JointAccountSignRequestModel? {
-        nil // FIXME: Send requset feature will be implemented later
+        
+        let title: AttributedString
+        
+        do {
+            title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(model.jointAccount.address.shortAddressDisplay)")
+        } catch {
+            viewModel.errorMessage = .unableToParseSendRequest
+            return nil
+        }
+        
+        let watchedSignRequestMessage = PeraUserDefaults.watchedSignRequestMessage ?? []
+        let isUnread = !watchedSignRequestMessage.contains(model.id)
+        
+        let signatureCount = model.transactionLists
+            .flatMap(\.responses)
+            .filter { $0.response == .signed }
+            .count
+        
+        let threshold = model.jointAccount.threshold
+        let signedTransactionsText = String(localized: "inbox-joint-account-sign-request-signed-transactions-\(signatureCount)-\(threshold)")
+        let state = state(signRequestStatus: model.status)
+        let creationDatetime = model.creationDatetime
+        
+        return InboxViewModel.JointAccountSignRequestModel(id: model.id, isUnread: isUnread, title: title, state: state, creationDatetime: creationDatetime, signedTransactionsText: signedTransactionsText, deadline: model.expectedExpireDatetime)
     }
     
     private func algorandStandardAssetInboxModel(model: ASAInboxMeta) -> InboxViewModel.AlgorandStandardAssetInboxModel? {
@@ -190,9 +222,25 @@ final class InboxModel: InboxModelable {
         return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .placeholderIconData, title: title, subtitle: subtitle)
     }
     
-    private func handleInboxAction(identifier: String) {
+    private func handleImportJointAccountAction(identifier: String) {
         guard let importRequest = inboxService.jointAccountImportRequests.value.first(where: { $0.address == identifier }) else { return }
         let accountModels = importRequest.participantAddresses.compactMap { [weak self] in self?.accountModel(address: $0) }
         viewModel.action = .moveToImportJointAccountScene(jointAccountAddress: importRequest.address, subtitle: importRequest.address.shortAddressDisplay, threshold: importRequest.threshold, accountModels: accountModels)
+    }
+    
+    private func handleSendRequestAction(identifier: String) {
+        guard let signRequest = inboxService.jointAccountSignRequests.value.first(where: { $0.id == identifier }) else { return }
+        viewModel.action = .moveToRequestSendScene(request: signRequest)
+    }
+    
+    // MARK: - Handlers
+    
+    private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
+        switch signRequestStatus {
+        case .pending, .ready, .submitting, .confirmed, .expired:
+                .pending
+        case .failed:
+                .failed
+        }
     }
 }

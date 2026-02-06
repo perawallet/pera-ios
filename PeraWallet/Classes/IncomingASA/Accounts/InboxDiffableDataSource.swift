@@ -30,7 +30,10 @@ final class InboxDiffableDataSource: UICollectionViewDiffableDataSource<Int, Inb
                 cell.update(isDotVisible: model.isUnread, message: model.title, timestamp: model.timestamp, onDetailsButtonTap: { onJointAccountInviteInboxRowTap?(identifier) })
                 return cell
             case let .jointAccountSend(model):
-                return collectionView.dequeue(UICollectionViewCell.self, at: indexPath) // FIXME: Send requset feature will be implemented later
+                let cell = collectionView.dequeue(JointAccountSendRequestInboxCell.self, at: indexPath)
+                cell.identifier = .sendRequest(uniqueIdentifier: model.id)
+                cell.update(isDotVisible: model.isUnread, message: model.title, stateViewModel: model.state.viewModel, creationDatetime: model.creationDatetime, signedTransactionsText: model.signedTransactionsText, deadline: model.deadline)
+                return cell
             case let .asset(model):
                 let cell = collectionView.dequeue(IncomingASAAccountCell.self, at: indexPath)
                 cell.identifier = .asset(uniqueIdentifier: model.id)
@@ -39,8 +42,19 @@ final class InboxDiffableDataSource: UICollectionViewDiffableDataSource<Int, Inb
             }
         }
         
-        [JointAccountInviteInboxCell.self, IncomingASAAccountCell.self]
+        [JointAccountInviteInboxCell.self, JointAccountSendRequestInboxCell.self, IncomingASAAccountCell.self]
             .forEach(collectionView.register)
     }
 }
 
+private extension InboxViewModel.SignRequestState {
+    
+    var viewModel: JointAccountSendRequestInboxRow.StateViewModel {
+        switch self {
+        case .pending:
+            JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.pending", icon: .Icons.hourglass, tint: .Global.Yellow._600)
+        case .failed:
+            JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.failed", icon: .Icons.error, tint: .Helpers.negative)
+        }
+    }
+}

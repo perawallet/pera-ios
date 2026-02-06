@@ -52,8 +52,8 @@ final class MobileApiManager {
         return try await perform(v1Request: request)
     }
     
-    func createJointAccount(participants: [String], threshold: Int) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
-        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1, creationDatetime: Date(timeIntervalSince1970: 0))
+    func createJointAccount(participants: [String], threshold: Int, deviceID: String?) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
+        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1, creationDatetime: Date(timeIntervalSince1970: 0), deviceID: deviceID)
         let request = CreateJointAccountRequest(jointAccountObject: jointAccountObject)
         return try await perform(v1Request: request)
     }
@@ -65,6 +65,17 @@ final class MobileApiManager {
     
     func cancelJointAccountImportRequest(deviceID: String, jointAccountAddress: String) async throws(CoreApiManager.ApiError) -> EmptyResponse {
         let request = CancelJointAccountAccountImportRequest(deviceId: deviceID, multisigAddress: jointAccountAddress)
+        return try await perform(v1Request: request)
+    }
+    
+    func createJointAccountTransactionSignRequest(jointAccountAddress: String, proposerAddress: String, type: ProposedSignType,
+                                                  rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> ProposeSignResponse {
+        let request = ProposeSignRequest(jointAccountAddress: jointAccountAddress, proposerAddress: proposerAddress, type: type, rawTransactionLists: rawTransactionLists, responses: responses)
+        return try await perform(v1Request: request)
+    }
+    
+    func signJointAccountTransaction(signRequestId: String, responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> SignRequestObject {
+        let request = JointAccountSignRequest(signRequestId: signRequestId, responses: responses)
         return try await perform(v1Request: request)
     }
     

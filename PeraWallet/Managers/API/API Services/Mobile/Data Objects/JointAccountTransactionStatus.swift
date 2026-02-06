@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2022-2026 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CreateJointAccountRequest.swift
+//   JointAccountTransactionStatus.swift
 
-struct CreateJointAccountRequest {
-    /// The multisig account object containing the address, participant addresses, threshold, and version details.
-    let jointAccountObject: MultiSigAccountObject
-}
-
-extension CreateJointAccountRequest: BodyRequestable {
-
-    typealias ResponseType = MultiSigAccountObject
-    
-    var path: String { "/joint-accounts/accounts/" }
-    var method: RequestMethod { .post }
-    var body: any Encodable { jointAccountObject }
+enum JointAccountTransactionStatus: String, Codable {
+    case pending
+    case ready
+    case submitting
+    case confirmed
+    case failed
+    case expired
 }

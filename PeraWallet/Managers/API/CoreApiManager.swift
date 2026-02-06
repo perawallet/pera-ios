@@ -14,7 +14,6 @@
 
 //   CoreApiManager.swift
 
-import Foundation
 import pera_wallet_core
 
 final class CoreApiManager {
@@ -23,7 +22,7 @@ final class CoreApiManager {
         case invalidBaseUrl(baseURL: String?)
         case cantGenerateUrlFromComponents(components: URLComponents)
         case unableToEncodeBody(error: Error)
-        case invalidHTTPStatusCode(code: Int)
+        case invalidHTTPStatusCode(code: Int, description: String?)
         case responseError(error: Error)
         case dataConversionError
         case cancelled
@@ -78,7 +77,7 @@ final class CoreApiManager {
         
         let task = Task {
             let result = try await URLSession.shared.data(for: urlRequest)
-            try handle(response: result.1)
+            try validate(data: result.0, response: result.1)
             let responseData = try handle(responseData: result.0)
             return try jsonDecoder.decode(request.responseType, from: responseData)
         }
@@ -153,9 +152,12 @@ final class CoreApiManager {
     
     // MARK: - Handlers
     
-    private func handle(response: URLResponse) throws(ApiError) {
+    private func validate(data: Data, response: URLResponse) throws(ApiError) {
         guard let httpResponse = response as? HTTPURLResponse else { return }
-        guard 200...299 ~= httpResponse.statusCode else { throw .invalidHTTPStatusCode(code: httpResponse.statusCode) }
+        guard 200...299 ~= httpResponse.statusCode else {
+            let description = String(data: data, encoding: .utf8)
+            throw .invalidHTTPStatusCode(code: httpResponse.statusCode, description: description)
+        }
     }
     
     private func handle(responseData: Data) throws(ApiError) -> Data {
@@ -194,6 +196,16 @@ extension CoreApiManager.BaseURL {
             case (.testNet, .v2):
                 return AppEnvironment.current.testNetMobileAPIV2.removeTrailingSlash()
             }
+        }
+    }
+}
+
+extension CoreApiManager.BaseURL.Network {
+    
+    var legacyNetwork: ALGAPI.Network {
+        switch self {
+        case .mainNet: .mainnet
+        case .testNet: .testnet
         }
     }
 }
