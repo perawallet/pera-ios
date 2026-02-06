@@ -43,6 +43,8 @@ final class AccountListItemView:
         view.backgroundColor = .Defaults.bg
         view.clipsToBounds = true
         view.layer.cornerRadius = 12.0
+        view.layer.borderWidth = 0.2
+        view.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         return view
     }()
     
