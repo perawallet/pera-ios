@@ -17,33 +17,16 @@
 import Combine
 import pera_wallet_core
 
-final class CreateJointAccountNameAccountViewModel: ObservableObject {
-    
-    enum Action {
-        case success
-    }
-    
-    enum ErrorMessage: Error {
-        case unableToCreateJointAccount(CoreApiManager.ApiError)
-    }
-    
-    @Published var name: String = ""
-    @Published fileprivate(set) var walletName: String = ""
-    @Published fileprivate(set) var isValidName: Bool = false
-    @Published fileprivate(set) var action: Action?
-    @Published fileprivate(set) var error: ErrorMessage?
-}
-
 protocol CreateJointAccountNameAccountModelable {
-    var viewModel: CreateJointAccountNameAccountViewModel { get }
-    func createJointAccount()
+    @MainActor var viewModel: CreateJointAccountNameAccountViewModel { get }
+    @MainActor func createJointAccount()
 }
 
 final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountModelable {
     
     // MARK: - Properties - CreateJointAccountNameAccountModelable
     
-    let viewModel: CreateJointAccountNameAccountViewModel = CreateJointAccountNameAccountViewModel()
+    @MainActor let viewModel: CreateJointAccountNameAccountViewModel = CreateJointAccountNameAccountViewModel()
     
     // MARK: - Properties
     
@@ -58,18 +41,24 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
         self.participantAddresses = participantAddresses
         self.threshold = threshold
         self.accountService = accountService
-        setupCallbacks()
-        setupInitialName()
+        
+        Task { @MainActor in
+            setupCallbacks()
+            setupInitialName()
+        }
     }
     
     // MARK: - Setups
     
+    @MainActor
     private func setupCallbacks() {
         viewModel.$name
-            .sink { [weak self] in self?.viewModel.isValidName = !$0.isEmpty }
+            .map { !$0.isEmpty }
+            .sink { [weak self] in self?.viewModel.update(isValidName: $0) }
             .store(in: &cancellables)
     }
     
+    @MainActor
     private func setupInitialName() {
         let nextAccountNumber = accountService.accounts.value.filter { $0.type == .joint }.count + 1
         viewModel.name = String(localized: "create-joint-account-name-account-text-field-initial-name-\(nextAccountNumber)")
@@ -77,21 +66,26 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
     
     // MARK: - Actions
     
+    @MainActor
     func createJointAccount() {
+        
+        viewModel.update(isWaitingForResponse: true)
+        
         Task {
             do {
                 try await handleCreateAccountFlow()
             } catch let error as CoreApiManager.ApiError {
-                viewModel.error = .unableToCreateJointAccount(error)
+                viewModel.update(error: .unableToCreateJointAccount(error))
+                viewModel.update(isWaitingForResponse: false)
             }
         }
     }
     
+    @MainActor
     private func handleCreateAccountFlow() async throws(AccountsService.ActionError) {
         try await accountService.createJointAccount(participants: participantAddresses, threshold: threshold, name: viewModel.name)
         PeraUserDefaults.shouldShowNewAccountAnimation = true
-        Task { @MainActor in
-            self.viewModel.action = .success
-        }
+        viewModel.update(action: .success)
     }
 }
+

@@ -24,9 +24,14 @@ struct RoundedButton: View {
         case destructive
     }
     
+    enum ContentType {
+        case text(_ text: LocalizedStringKey)
+        case spinner
+    }
+    
     // MARK: - Properties
     
-    let text: LocalizedStringKey
+    let contentType: ContentType
     let style: Style
     let isEnabled: Bool
     let onTap: () -> Void
@@ -34,7 +39,7 @@ struct RoundedButton: View {
     // MARK: - Body
     
     var body: some View {
-        Text(text)
+        buildContent(type: contentType)
             .frame(maxWidth: .infinity)
             .frame(height: 52.0)
             .background(style.backroundColor(isEnabled: isEnabled))
@@ -42,9 +47,20 @@ struct RoundedButton: View {
             .font(.DMSans.medium.size(15.0))
             .cornerRadius(4.0)
             .onTapGesture {
-                guard isEnabled else { return }
+                guard isEnabled, case .text = contentType else { return }
                 onTap()
             }
+    }
+    
+    @ViewBuilder
+    private func buildContent(type: ContentType) -> some View {
+        switch type {
+        case .text(let text):
+            Text(text)
+        case .spinner:
+            ProgressView()
+                .tint(style.forgroundColor(isEnabled: isEnabled))
+        }
     }
 }
 

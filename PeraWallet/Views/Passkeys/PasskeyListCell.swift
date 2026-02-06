@@ -70,13 +70,13 @@ struct PasskeyListCell: View {
                             .multilineTextAlignment(.center)
                             .padding(.bottom, 24.0)
                         
-                        RoundedButton(text: "title-remove",
+                        RoundedButton(contentType: .text("title-remove"),
                                       style: .primary,
                                       isEnabled: true,
                                       onTap: {
                             viewModel.deletePasskey()
                         })
-                        RoundedButton(text: "title-keep",
+                        RoundedButton(contentType: .text("title-keep"),
                                       style: .secondary,
                                       isEnabled: true,
                                       onTap: {

@@ -22,8 +22,6 @@ struct CreateJointAccountNameAccountView: View {
     
     private let model: CreateJointAccountNameAccountModelable
     @ObservedObject private var viewModel: CreateJointAccountNameAccountViewModel
-    
-    @Binding private var navigationPath: NavigationPath
     @FocusState private var nameTextFieldFocusState: Bool
     
     // MARK: - UIKit Compatibility
@@ -32,9 +30,8 @@ struct CreateJointAccountNameAccountView: View {
     
     // MARK: - Initialisers
     
-    init(model: CreateJointAccountNameAccountModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) {
+    init(model: CreateJointAccountNameAccountModelable, onDismissRequest: (() -> Void)?) {
         self.model = model
-        _navigationPath = navigationPath
         self.onDismissRequest = onDismissRequest
         viewModel = model.viewModel
     }
@@ -49,12 +46,16 @@ struct CreateJointAccountNameAccountView: View {
                 .padding(.horizontal, 24.0)
                 .focused($nameTextFieldFocusState)
             Spacer()
-            RoundedButton(text: "create-joint-account-name-account-button-finish", style: .primary, isEnabled: viewModel.isValidName, onTap: onFinishButtonTapAction)
+            RoundedButton(
+                contentType: viewModel.isWaitingForResponse ? .spinner : .text("create-joint-account-name-account-button-finish"),
+                style: .primary,
+                isEnabled: viewModel.isValidName,
+                onTap: onFinishButtonTapAction
+            )
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
         }
         .background(Color.Defaults.bg)
-        .withPeraBackButton(navigationPath: $navigationPath)
         .onAppear { nameTextFieldFocusState = true }
         .onReceive(viewModel.$action) { action in
             guard let action else { return }

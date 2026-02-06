@@ -42,7 +42,6 @@ extension NavigationBarConfigurable where Self: UIViewController {
     }
 
     func setNeedsNavigationBarAppearanceUpdate() {
-        navigationItem.hidesBackButton = hidesCloseBarButtonItem
         
         if !hidesCloseBarButtonItem {
             if canDismiss() {
@@ -67,16 +66,22 @@ extension NavigationBarConfigurable where Self: UIViewController {
                 }
             }
         }
-        navigationItem.leftBarButtonItems = leftBarButtonItems.map {
-            UIBarButtonItem(customView: BarButton(barButtonItem: $0))
-        }
-
+        navigationItem.leftBarButtonItems = leftBarButtonItems.compactMap { [weak self] in self?.barButton(item: $0) }
         setNeedsRightBarButtonItemsUpdate()
     }
 
     func setNeedsRightBarButtonItemsUpdate() {
-        navigationItem.rightBarButtonItems = rightBarButtonItems.map {
-            UIBarButtonItem(customView: BarButton(barButtonItem: $0))
+        navigationItem.rightBarButtonItems = rightBarButtonItems.compactMap { [weak self] in self?.barButton(item: $0) }
+    }
+    
+    private func barButton(item: BarButtonItem) -> UIBarButtonItem {
+        switch item.type {
+        case .legacy:
+            return UIBarButtonItem(customView: LegacyBarButton(barButtonItem: item))
+        case let .inbox(label):
+            let view = InboxButton(text: label, onTap: { item.handler?() })
+            let wrapperView = SwiftUICompatibilityView(view: view)
+            return UIBarButtonItem(customView: wrapperView)
         }
     }
     

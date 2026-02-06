@@ -15,7 +15,6 @@
 //
 //  ALGBarButtonItem.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import pera_wallet_core
@@ -26,8 +25,8 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var backgroundColor: UIColor? {
         switch kind {
-        case .asaInbox:
-            return Colors.ASATiers.asaBarButton.uiColor.withAlphaComponent(0.12)
+        case .inbox:
+            return nil
         case .account(let account):
             let authorization = account.authorization
 
@@ -51,9 +50,8 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var corner: Corner? {
         switch kind {
-        case .asaInbox:
-            return Corner(radius: 15)
-            
+        case .inbox:
+            return nil
         case .account(let account):
             let authorization = account.authorization
 
@@ -69,14 +67,7 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var title: TitleContent? {
         switch kind {
-        case .asaInbox(let count):
-            if count > 0 {
-                return BarButtonItemTitleContent(
-                    text: String(format: String(localized: "title-asa"), count),
-                    textColor: Colors.ASATiers.asaBarButton.uiColor,
-                    font: UIFont.font(withWeight: .medium(size: 13))
-                )
-            }
+        case .inbox:
             return nil
         case .save:
             return BarButtonItemTitleContent(
@@ -149,10 +140,7 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var image: ImageContent? {
         switch kind {
-        case .asaInbox:
-            if let icon = img("img-asa-green") {
-                return ImageContent(normal: icon)
-            }
+        case .inbox:
             return nil
         case .back:
             if let icon = img("icon-back") {
@@ -301,21 +289,8 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var size: ALGBarButtonItem.Size {
         switch kind {
-        case .asaInbox(let count):
-            if count > 0 {
-                let spacing: CGFloat = 6
-                let contentInsets = UIEdgeInsets(top: spacing, left: (spacing*2.6), bottom: spacing, right: (spacing*2))
-                let imageInsets = UIEdgeInsets(top: 0, left: -spacing, bottom: 0, right: spacing)
-                
-                return .compressed(
-                    BarButtonCompressedSizeInsets(
-                        contentInsets: contentInsets,
-                        titleInsets: .zero,
-                        imageInsets: imageInsets
-                    )
-                )
-            }
-            return .explicit(CGSize(width: 32, height: 32))
+        case .inbox:
+            return .explicit(.zero)
         case .back:
             return .compressed(
                 BarButtonCompressedSizeInsets(contentInsets: UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0))
@@ -427,6 +402,13 @@ struct ALGBarButtonItem: BarButtonItem {
         }
     }
     
+    var type: BarButtonType {
+        switch kind {
+        case let .inbox(label): .inbox(label: label)
+        default : .legacy
+        }
+    }
+    
     let kind: Kind
     
     init(kind: Kind, handler: EmptyHandler? = nil) {
@@ -451,7 +433,7 @@ struct ALGBarButtonItem: BarButtonItem {
 extension ALGBarButtonItem {
     
     enum Kind: Hashable {
-        case asaInbox(Int)
+        case inbox(label: String)
         case back
         case options
         case circleAdd

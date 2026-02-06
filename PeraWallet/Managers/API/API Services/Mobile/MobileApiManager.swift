@@ -14,6 +14,8 @@
 
 //   MobileApiManager.swift
 
+import Foundation
+
 final class MobileApiManager {
     
     // MARK: - Properties
@@ -51,8 +53,18 @@ final class MobileApiManager {
     }
     
     func createJointAccount(participants: [String], threshold: Int) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
-        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1)
+        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1, creationDatetime: Date(timeIntervalSince1970: 0))
         let request = CreateJointAccountRequest(jointAccountObject: jointAccountObject)
+        return try await perform(v1Request: request)
+    }
+    
+    func fetchInbox(deviceID: String, addresses: [String]) async throws(CoreApiManager.ApiError) -> InboxCreateResponse {
+        let request = InboxCreateRequest(deviceID: deviceID, addresses: addresses)
+        return try await perform(v1Request: request)
+    }
+    
+    func cancelJointAccountImportRequest(deviceID: String, jointAccountAddress: String) async throws(CoreApiManager.ApiError) -> EmptyResponse {
+        let request = CancelJointAccountAccountImportRequest(deviceId: deviceID, multisigAddress: jointAccountAddress)
         return try await perform(v1Request: request)
     }
     

@@ -18,8 +18,9 @@ import SwiftUI
 
 enum CreateJointAccountNameAccountConstructor {
     
-    static func buildScene(participantAddresses: [String], threshold: Int, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) -> CreateJointAccountNameAccountView {
+    static func buildScene(participantAddresses: [String], threshold: Int, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) -> some View {
         let model = CreateJointAccountNameAccountModel(participantAddresses: participantAddresses, threshold: threshold, accountService: PeraCoreManager.shared.accounts)
-        return CreateJointAccountNameAccountView(model: model, navigationPath: navigationPath, onDismissRequest: onDismissRequest)
+        return CreateJointAccountNameAccountView(model: model, onDismissRequest: onDismissRequest)
+            .withPeraBackButton(navigationPath: navigationPath)
     }
 }

@@ -12,20 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingASAAccountsListLayout+Theme.swift
+//   InboxCreateRequest.swift
 
-import Foundation
-import UIKit
-import MacaroonUIKit
+struct InboxCreateRequest {
+    let deviceID: String
+    let addresses: [String]
+}
 
-extension IncomingASAAccountsListLayout {
-    struct Theme: LayoutSheet, StyleSheet {
-        let assetManagementItemSize: LayoutSize
-        let assetLoadingItemSize: LayoutSize
+struct InboxCreateResponse: Decodable {
+    let jointAccountImportRequests: [MultiSigAccountObject]
+    let jointAccountSignRequests: [SignRequestObject]
+    let asaInboxes: [ASAInboxMeta]
+}
 
-        init(_ family: LayoutFamily) {
-            self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 40)
-            self.assetLoadingItemSize = (UIScreen.main.bounds.width - 48, 75)
-        }
-    }
+extension InboxCreateRequest: BodyRequestable {
+    
+    typealias ResponseType = InboxCreateResponse
+    
+    var path: String { "/inbox/\(deviceID)/"}
+    var method: RequestMethod { .post }
+    var body: any Encodable { ["addresses": addresses] }
 }

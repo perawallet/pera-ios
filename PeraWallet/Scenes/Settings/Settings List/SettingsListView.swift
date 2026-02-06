@@ -81,7 +81,7 @@ struct SettingsListView: View {
                         }
                     }
                 }
-                RoundedButton(text: "settings-logout-title", style: .secondary, isEnabled: true) { onLogoutButtonTap?() }
+                RoundedButton(contentType: .text("settings-logout-title"), style: .secondary, isEnabled: true) { onLogoutButtonTap?() }
                     .defaultPeraRowStyle()
                     .padding(.horizontal, 24.0)
                 Text("settings-app-version-\(viewModel.appVersion)")
