@@ -4109,6 +4109,46 @@
         }
       }
     },
+    "joint-account-confirmation-sheet-dismiss-button-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go Back and Edit"
+          }
+        }
+      }
+    },
+    "joint-account-confirmation-sheet-first-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once you create a joint account, you cannot change the participants."
+          }
+        }
+      }
+    },
+    "joint-account-confirmation-sheet-second-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once you create a joint account, rekeying any of the participating accounts may result in losing access."
+          }
+        }
+      }
+    },
+    "joint-account-confirmation-sheet-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Before You Create a Joint Account"
+          }
+        }
+      }
+    },
     "joint-account-invite-accepted-text" : {
       "localizations" : {
         "en" : {

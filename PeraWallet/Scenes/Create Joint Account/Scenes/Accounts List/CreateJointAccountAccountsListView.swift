@@ -33,17 +33,20 @@ struct CreateJointAccountAccountsListView: View {
     private let model: CreateJointAccountAccountsListModelable
     @ObservedObject private var viewModel: CreateJointAccountAccountsListViewModel
     @Binding private var navigationPath: NavigationPath
+    @State private var showCreationSheet: Bool = false
     
     // MARK: - UIKit Compatibility
     
     private var onDismissRequest: (() -> Void)?
+    private var onLearnMoreTap: (() -> Void)?
     
     // MARK: - Initialiser
     
-    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) {
+    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onLearnMoreTap: (() -> Void)?) {
         self.model = model
         _navigationPath = navigationPath
         self.onDismissRequest = onDismissRequest
+        self.onLearnMoreTap = onLearnMoreTap
         viewModel = model.viewModel
     }
     
@@ -109,6 +112,14 @@ struct CreateJointAccountAccountsListView: View {
         .withPeraBackButton(navigationPath: $navigationPath)
         .background(Color.Defaults.bg)
         .onReceive(viewModel.$action) { handle(action: $0) }
+        .sheet(isPresented: $showCreationSheet) {
+            CreationConfirmationSheet() {
+                model.updateShouldShowJointAccountCreationPopup()
+                model.requestData()
+            } onLearnMoreTap: {
+                onLearnMoreTap?()
+            }
+        }
     }
     
     // MARK: - View Builders
@@ -147,7 +158,12 @@ struct CreateJointAccountAccountsListView: View {
     }
     
     private func onContinueButtonAction() {
-        model.requestData()
+        guard model.shouldShowJointAccountCreationPopup else {
+            model.requestData()
+            return
+        }
+        
+        showCreationSheet = true
     }
     
     // MARK: - Actions

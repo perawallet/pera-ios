@@ -37,6 +37,10 @@ enum AddAccountConstructor {
             compatibilityController?.dismiss()
         }
         
+        controller.onLearnMoreTap = { [weak compatibilityController] in
+            compatibilityController?.learnMore()
+        }
+        
         return compatibilityController
     }
 }

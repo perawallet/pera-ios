@@ -22,6 +22,7 @@ final class AddAccountViewController: UIHostingController<AddAccountView> {
     
     var onLegacyNavigationOptionSelected: ((AddAccountView.LegacyNavigationOption) -> Void)?
     var onDismissRequest: (() -> Void)?
+    var onLearnMoreTap: (() -> Void)?
     
     // MARK: - Initialisers
     
@@ -29,6 +30,7 @@ final class AddAccountViewController: UIHostingController<AddAccountView> {
         super.init(rootView: AddAccountView(model: model))
         rootView.onLegacyNavigationOptionSelected = { [weak self] in self?.onLegacyNavigationOptionSelected?($0) }
         rootView.onDismissRequest = { [weak self] in self?.onDismissRequest?() }
+        rootView.onLearnMoreTap = { [weak self] in self?.onLearnMoreTap?() }
     }
     
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
