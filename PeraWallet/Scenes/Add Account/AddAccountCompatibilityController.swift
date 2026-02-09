@@ -56,6 +56,10 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
         UIApplication.shared.open(url)
     }
     
+    func learnMore() {
+        print("---learn more")
+    }
+    
     private func addAccount() {
         open(.hdWalletSetup(flow: legacyFlow, mode: .addBip39Address(newAddress: nil)), by: .push)
     }
