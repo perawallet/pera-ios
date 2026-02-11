@@ -15,6 +15,7 @@
 //   AddAccountCompatibilityController.swift
 
 import pera_wallet_core
+import UIKit
 
 final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewController {
 
@@ -51,7 +52,9 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     }
     
     func learnMore() {
-        print("---learn more")
+        // TODO: replace url for Joint Account Support page when it's available
+        guard let url = AlgorandWeb.support.link else { return }
+        UIApplication.shared.open(url)
     }
     
     private func addAccount() {
