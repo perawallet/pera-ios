@@ -49,6 +49,7 @@ struct AddAccountView: View {
     var onLegacyNavigationOptionSelected: ((LegacyNavigationOption) -> Void)?
     var onDismissRequest: (() -> Void)?
     var onLearnMoreTap: (() -> Void)?
+    var onScanQRTap: (() -> Void)?
     
     // MARK: - Initialisers
     
@@ -121,7 +122,7 @@ struct AddAccountView: View {
                 .navigationDestination(for: NavigationOption.self) {
                     switch $0 {
                     case .addJointAccount:
-                        CreateJointAccountAccountsListConstructor.buildScene(navigationPath: $navigationPath, onDismissRequest: onDismissRequest, onLearnMoreTap: onLearnMoreTap)
+                        CreateJointAccountAccountsListConstructor.buildScene(navigationPath: $navigationPath, onDismissRequest: onDismissRequest, onLearnMoreTap: onLearnMoreTap, onScanQRTap: onScanQRTap)
                     }
                 }
             }

@@ -39,14 +39,16 @@ struct CreateJointAccountAccountsListView: View {
     
     private var onDismissRequest: (() -> Void)?
     private var onLearnMoreTap: (() -> Void)?
+    private var onScanQRTap: (() -> Void)?
     
     // MARK: - Initialiser
     
-    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onLearnMoreTap: (() -> Void)?) {
+    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onLearnMoreTap: (() -> Void)?, onScanQRTap: (() -> Void)?) {
         self.model = model
         _navigationPath = navigationPath
         self.onDismissRequest = onDismissRequest
         self.onLearnMoreTap = onLearnMoreTap
+        self.onScanQRTap = onScanQRTap
         viewModel = model.viewModel
     }
     
@@ -128,7 +130,7 @@ struct CreateJointAccountAccountsListView: View {
     private func scene(navigationOption: NavigationOption) -> some View {
         switch navigationOption {
         case .addAccount:
-            CreateJointAccountAddAccountConstructor.buildScene(navigationPath: $navigationPath, onSelectedAddress: { model.add(account: $0) })
+            CreateJointAccountAddAccountConstructor.buildScene(navigationPath: $navigationPath, onSelectedAddress: { model.add(account: $0) }, onScanQRTap: onScanQRTap)
         case let .editAccount(viewModel):
             CreateJointAccountEditAccountConstructor.buildScene(
                 name: viewModel.title,

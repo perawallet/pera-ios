@@ -23,6 +23,18 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     
     private let legacyFlow: AccountSetupFlow = .addNewAccount(mode: .none)
     
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController,
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: configuration.hdWalletStorage
+    )
+    
     // MARK: - View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +72,10 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
         // TODO: replace url for Joint Account Support page when it's available
         guard let url = AlgorandWeb.support.link else { return }
         UIApplication.shared.open(url)
+    }
+    
+    func scanQR() {
+        scanQRFlowCoordinator.launch()
     }
     
     private func addAccount() {

@@ -18,8 +18,8 @@ import SwiftUI
 
 enum CreateJointAccountAddAccountConstructor {
     
-    static func buildScene(navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void) -> CreateJointAccountAddAccountView {
+    static func buildScene(navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void, onScanQRTap: (() -> Void)?) -> CreateJointAccountAddAccountView {
         let model = CreateJointAccountAddAccountModel(accountsService: PeraCoreManager.shared.accounts, currencyService: PeraCoreManager.shared.currencies, nfdService: PeraCoreManager.shared.nfd)
-        return CreateJointAccountAddAccountView(model: model, navigationPath: navigationPath, onSelectedAddress: onSelectedAddress)
+        return CreateJointAccountAddAccountView(model: model, navigationPath: navigationPath, onSelectedAddress: onSelectedAddress, onScanQRTap: onScanQRTap)
     }
 }

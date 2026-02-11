@@ -41,6 +41,10 @@ enum AddAccountConstructor {
             compatibilityController?.learnMore()
         }
         
+        controller.onScanQRTap = { [weak compatibilityController] in
+            compatibilityController?.scanQR()
+        }
+        
         return compatibilityController
     }
 }

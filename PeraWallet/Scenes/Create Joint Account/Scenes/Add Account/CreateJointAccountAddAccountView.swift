@@ -21,6 +21,7 @@ struct CreateJointAccountAddAccountView: View {
     // MARK: - Properties
 
     var onSelectedAddress: (AddedAccountData) -> Void
+    var onScanQRTap: (() -> Void)?
 
     private let model: CreateJointAccountAddAccountModelable
     @ObservedObject private var viewModel: CreateJointAccountAddAccountViewModel
@@ -28,10 +29,11 @@ struct CreateJointAccountAddAccountView: View {
 
     // MARK: - Initialisers
 
-    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void) {
+    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void, onScanQRTap: (() -> Void)?) {
         self.model = model
         _navigationPath = navigationPath
         self.onSelectedAddress = onSelectedAddress
+        self.onScanQRTap = onScanQRTap
         viewModel = model.viewModel
     }
     
@@ -39,10 +41,17 @@ struct CreateJointAccountAddAccountView: View {
 
     var body: some View {
         VStack {
-            SearchFieldWithPasteButton(
+            SearchFieldWithButtons(
                 placeholder: "create-joint-account-add-account-search-field-placeholder",
                 text: $viewModel.searchText
-            ) { model.pasteFromClipboard() }
+            ) { buttonPressed in
+                switch buttonPressed {
+                case .paste:
+                    model.pasteFromClipboard()
+                case .qrScan:
+                    onScanQRTap?()
+                }
+            }
             .textInputAutocapitalization(.never)
             .padding(.horizontal, 24.0)
             .padding(.top, 20.0)
