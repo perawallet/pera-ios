@@ -69,7 +69,6 @@ public final class WCArbitraryDataSigner {
                 for: data
             )
         } else if let authAddress = account.authAddress {
-                    
             if let signature = api.session.privateData(for: authAddress) {
                 let signer = SDKArbitraryDataSigner()
                 signer.eventHandler = {
@@ -91,7 +90,7 @@ public final class WCArbitraryDataSigner {
                     signer: signer,
                     for: data
                 )
-            } else if let authAccount = sharedDataController.accountCollection[authAddress]?.value {
+            } else if let authAccount = sharedDataController.accountCollection[authAddress]?.value, authAccount.isHDAccount {
                 signArbitraryDataForHDWalletAccount(data, for: authAccount)
             } else {
                 delegate?.wcArbitraryDataSigner(
