@@ -77,4 +77,7 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
             }
         }
     }
+    
+    func isAccountDuplicate() -> Bool { false }
+    
 }

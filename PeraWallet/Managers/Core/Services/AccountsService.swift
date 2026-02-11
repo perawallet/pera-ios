@@ -24,6 +24,7 @@ protocol AccountsServiceable {
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError)
+    func hasJointAccount(with participantAddresses: [String]) -> Bool
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError)
     @MainActor func localAccount(address: String) -> AccountInformation?
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
@@ -108,6 +109,13 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         } catch {
             throw .unableToCreateLocalAccount(error: error)
         }
+    }
+    
+    func hasJointAccount(with participantAddresses: [String]) -> Bool {
+        let jointAccounts = legacySessionManager.authenticatedUser?.accounts.filter({ $0.type == .joint })
+        return jointAccounts?.contains(where: { accountInformation in
+            accountInformation.jointAccountParticipants?.sorted() == participantAddresses.sorted()
+        }) ?? false
     }
     
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(ActionError) {

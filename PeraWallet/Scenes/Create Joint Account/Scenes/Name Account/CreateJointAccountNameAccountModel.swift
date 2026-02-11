@@ -20,6 +20,7 @@ import pera_wallet_core
 protocol CreateJointAccountNameAccountModelable {
     @MainActor var viewModel: CreateJointAccountNameAccountViewModel { get }
     @MainActor func createJointAccount()
+    func isAccountDuplicate() -> Bool
 }
 
 final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountModelable {
@@ -87,5 +88,7 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
         PeraUserDefaults.shouldShowNewAccountAnimation = true
         viewModel.update(action: .success)
     }
+    
+    func isAccountDuplicate() -> Bool { accountService.hasJointAccount(with: participantAddresses) }
 }
 
