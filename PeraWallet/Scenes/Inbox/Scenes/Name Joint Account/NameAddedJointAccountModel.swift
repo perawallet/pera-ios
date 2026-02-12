@@ -25,6 +25,8 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
     private let accountsService: AccountsServiceable
     private var cancellables = Set<AnyCancellable>()
     
+    var isAccountDuplicate: Bool = false
+    
     @MainActor private var writableViewModel: CreateJointAccountNameAccountViewModelWritable { viewModel as CreateJointAccountNameAccountViewModelWritable }
     
     // MARK: - Properties - CreateJointAccountNameAccountModelable
@@ -77,7 +79,5 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
             }
         }
     }
-    
-    func isAccountDuplicate() -> Bool { false }
     
 }

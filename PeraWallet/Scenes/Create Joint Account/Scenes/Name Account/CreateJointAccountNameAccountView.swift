@@ -45,7 +45,7 @@ struct CreateJointAccountNameAccountView: View {
             RoundedTextField(text: $viewModel.name)
                 .padding(.horizontal, 24.0)
                 .focused($nameTextFieldFocusState)
-            if model.isAccountDuplicate() {
+            if model.isAccountDuplicate {
                 HStack {
                     Image(.iconInfoRed)
                         .resizable()
@@ -61,7 +61,7 @@ struct CreateJointAccountNameAccountView: View {
             RoundedButton(
                 contentType: viewModel.isWaitingForResponse ? .spinner : .text("create-joint-account-name-account-button-finish"),
                 style: .primary,
-                isEnabled: viewModel.isValidName && !model.isAccountDuplicate(),
+                isEnabled: viewModel.isValidName && !model.isAccountDuplicate,
                 onTap: onFinishButtonTapAction
             )
                 .padding(.horizontal, 24.0)
