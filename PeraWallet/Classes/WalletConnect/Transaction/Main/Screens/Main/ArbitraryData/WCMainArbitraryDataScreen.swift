@@ -214,7 +214,8 @@ extension WCMainArbitraryDataScreen {
         let signer = WCArbitraryDataSigner(
             api: api!,
             analytics: analytics,
-            hdWalletStorage: hdWalletStorage
+            hdWalletStorage: hdWalletStorage,
+            sharedDataController: sharedDataController
         )
         signer.delegate = self
         return signer
