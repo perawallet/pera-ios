@@ -36,6 +36,7 @@ final class AccountServiceMock: AccountsServiceable {
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError) {}
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) {}
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError) {}
+    func hasJointAccount(with participantAddresses: [String]) -> Bool { false }
     func localAccount(address: String) -> AccountInformation? { nil }
     func localAccount(peraAccount: PeraAccount) -> AccountInformation? { nil }
     func account(peraAccount: PeraAccount) -> Account? { nil }

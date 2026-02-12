@@ -45,11 +45,23 @@ struct CreateJointAccountNameAccountView: View {
             RoundedTextField(text: $viewModel.name)
                 .padding(.horizontal, 24.0)
                 .focused($nameTextFieldFocusState)
+            if model.isAccountDuplicate {
+                HStack {
+                    Image(.iconInfoRed)
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                    Text("recover-from-seed-verify-exist-error")
+                        .font(.DMSans.medium.size(13.0))
+                        .foregroundStyle(Color.Helpers.negative)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24.0)
+            }
             Spacer()
             RoundedButton(
                 contentType: viewModel.isWaitingForResponse ? .spinner : .text("create-joint-account-name-account-button-finish"),
                 style: .primary,
-                isEnabled: viewModel.isValidName,
+                isEnabled: viewModel.isValidName && !model.isAccountDuplicate,
                 onTap: onFinishButtonTapAction
             )
                 .padding(.horizontal, 24.0)

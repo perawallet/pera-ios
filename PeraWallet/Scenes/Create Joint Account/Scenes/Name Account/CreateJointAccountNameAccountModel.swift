@@ -20,6 +20,7 @@ import pera_wallet_core
 protocol CreateJointAccountNameAccountModelable {
     @MainActor var viewModel: CreateJointAccountNameAccountViewModel { get }
     @MainActor func createJointAccount()
+    var isAccountDuplicate: Bool { get }
 }
 
 final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountModelable {
@@ -34,6 +35,8 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
     private let threshold: Int
     private let accountService: AccountsServiceable
     private var cancellables: Set<AnyCancellable> = []
+    
+    var isAccountDuplicate: Bool { accountService.hasJointAccount(with: participantAddresses) }
     
     // MARK: - Initialisers
     
