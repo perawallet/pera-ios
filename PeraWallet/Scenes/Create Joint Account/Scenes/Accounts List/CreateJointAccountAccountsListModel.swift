@@ -41,11 +41,13 @@ final class CreateJointAccountAccountsListViewModel: ObservableObject {
 protocol CreateJointAccountAccountsListModelable {
     
     var viewModel: CreateJointAccountAccountsListViewModel { get }
+    var shouldShowJointAccountCreationPopup: Bool { get }
     
     func add(account: AddedAccountData)
     func remove(identifier: UUID)
     func update(identifier: UUID, account: AddedAccountData)
     func requestData()
+    func updateShouldShowJointAccountCreationPopup()
 }
 
 final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListModelable {
@@ -63,6 +65,8 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     private let accountsService: AccountsServiceable
     private var cancellables: Set<AnyCancellable> = []
+    
+    var shouldShowJointAccountCreationPopup: Bool { !(PeraUserDefaults.hasJointAccountCreationPopupBeenShown ?? false) }
     
     // MARK: - Initialisers
     
@@ -112,6 +116,10 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     func requestData() {
         viewModel.action = .moveNext(participantAddresses: viewModel.accounts.map(\.address))
+    }
+    
+    func updateShouldShowJointAccountCreationPopup() {
+        PeraUserDefaults.hasJointAccountCreationPopupBeenShown = true
     }
 }
 

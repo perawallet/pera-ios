@@ -15,6 +15,7 @@
 //   AddAccountCompatibilityController.swift
 
 import pera_wallet_core
+import UIKit
 
 final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewController {
 
@@ -48,6 +49,11 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     
     func dismiss() {
         dismiss(animated: true)
+    }
+    
+    func learnMore() {
+        guard let url = AlgorandWeb.jointAccount.link else { return }
+        UIApplication.shared.open(url)
     }
     
     private func addAccount() {
