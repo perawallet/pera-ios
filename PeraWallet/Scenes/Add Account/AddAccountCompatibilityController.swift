@@ -52,8 +52,7 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     }
     
     func learnMore() {
-        // TODO: replace url for Joint Account Support page when it's available
-        guard let url = AlgorandWeb.support.link else { return }
+        guard let url = AlgorandWeb.jointAccount.link else { return }
         UIApplication.shared.open(url)
     }
     
