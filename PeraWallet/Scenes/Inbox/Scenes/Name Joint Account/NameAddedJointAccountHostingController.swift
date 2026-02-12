@@ -12,26 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NameAddedHostingController.swift
+//   NameAddedJointAccountHostingController.swift
 
 import SwiftUI
 
-final class NameAddedHostingController: UIHostingController<NameAddedJointAccountView> {
+final class NameAddedJointAccountHostingController: UIHostingController<NameAddedJointAccountView> {
     
     // MARK: - Properties
     
-    var onDismissRequest: ((NameAddedHostingController) -> Void)?
+    var onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?
     
     // MARK: - Initialisers
     
-    init(rootView: NameAddedJointAccountView, onDismissRequest: ((NameAddedHostingController) -> Void)?) {
+    init(rootView: NameAddedJointAccountView, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?) {
         super.init(rootView: rootView)
         self.onDismissRequest = onDismissRequest
-        setupCallbacks()
-    }
-    
-    override init(rootView: NameAddedJointAccountView) {
-        super.init(rootView: rootView)
         setupCallbacks()
     }
     

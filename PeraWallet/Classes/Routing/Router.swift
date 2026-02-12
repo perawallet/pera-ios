@@ -1012,10 +1012,16 @@ final class Router:
         case .settings:
             viewController = SettingsListConstructor.buildScene(legacyAppConfiguration: appConfiguration)
         case let .transactionDetail(account, transaction, assetDetail):
-            let transactionType =
-            transaction.sender == account.address
-            ? TransferType.sent
-            : .received
+            
+            let transactionType: TransferType
+            
+            if let transaction = transaction as? TransactionViewModel {
+                transactionType = transaction.transferType
+            } else {
+                transactionType = transaction.sender == account.address || account.isJointAccount
+                ? TransferType.sent
+                : .received
+            }
 
             viewController = TransactionDetailViewController(
                 account: account,
@@ -1523,7 +1529,8 @@ final class Router:
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case let .wcMainTransactionScreen(draft, delegate):
             let aViewController = WCMainTransactionScreen(
@@ -2444,7 +2451,7 @@ final class Router:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
         case let .nameAndAddJointAccount(jointAccountAddress, onDismissRequest):
-            viewController = NameAddedHostingConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
+            viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
         }
         return viewController as? T
     }

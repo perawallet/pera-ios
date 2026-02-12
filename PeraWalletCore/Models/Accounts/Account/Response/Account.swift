@@ -231,6 +231,8 @@ extension Account {
         return hdWalletAddressDetail != nil
     }
     
+    public var isJointAccount: Bool { jointAccountParticipants?.isEmpty == false }
+    
     public var hasBalance: Bool {
         if algo.amount > 0 {
             return true

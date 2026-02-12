@@ -28,6 +28,12 @@ struct JointAccountSendRequestInboxCapsule: View {
     let icon: ImageResource
     let text: TextType
     
+    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(
+        unitsStyle: .abbreviated,
+        isNagativeValuesAllowed: false,
+        additionalTextOption: .custom(prefix: String(localized: "joint-account-send-request-inbox-capsule.timeout.prefix"), suffix: String(localized: "joint-account-send-request-inbox-capsule.timeout.suffix"))
+    )
+    
     // MARK: - Body
     
     var body: some View {
@@ -52,7 +58,7 @@ struct JointAccountSendRequestInboxCapsule: View {
         case let .raw(text):
             Text(text)
         case let .time(date):
-            Text(date, style: .relative)
+            RelativeDateTextView(formatter: relativeDateFormatter, date: date)
         }
     }
 }
