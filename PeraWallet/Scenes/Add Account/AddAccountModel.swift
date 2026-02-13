@@ -37,12 +37,14 @@ final class AddAccountViewModel: ObservableObject {
     }
     
     @Published var isMenuExpanded: Bool = false
+    @Published var scannedAddress: String = .empty
     @Published fileprivate(set) var menuRows: [MenuOptionModel] = []
     @Published fileprivate(set) var termsAndConditionsText: AttributedString = ""
 }
 
 protocol AddAccountModelable {
     var viewModel: AddAccountViewModel { get }
+    var sharedJointAccountModel: CreateJointAccountAccountsListModelable { get }
 }
 
 final class AddAccountModel: AddAccountModelable {
@@ -55,6 +57,12 @@ final class AddAccountModel: AddAccountModelable {
     // MARK: - Properties - AddAccountModelable
     
     let viewModel: AddAccountViewModel = AddAccountViewModel()
+    
+    // MARK: - Properties - CreateJointAccountAccountsListModel
+    
+    private lazy var jointAccountModel = CreateJointAccountAccountsListModel(accountsService: PeraCoreManager.shared.accounts)
+    
+    var sharedJointAccountModel: CreateJointAccountAccountsListModelable { jointAccountModel }
     
     // MARK: - Initialisers
     

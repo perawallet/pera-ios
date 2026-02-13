@@ -21,17 +21,22 @@ struct CreateJointAccountAddAccountView: View {
     // MARK: - Properties
 
     var onSelectedAddress: (AddedAccountData) -> Void
+    var onScanQRTap: (() -> Void)?
 
     private let model: CreateJointAccountAddAccountModelable
     @ObservedObject private var viewModel: CreateJointAccountAddAccountViewModel
     @Binding private var navigationPath: NavigationPath
+    
+    @Binding private var scannedAddress: String
 
     // MARK: - Initialisers
 
-    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void) {
+    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, scannedAddress: Binding<String>, onSelectedAddress: @escaping (AddedAccountData) -> Void, onScanQRTap: (() -> Void)?) {
         self.model = model
         _navigationPath = navigationPath
+        _scannedAddress = scannedAddress
         self.onSelectedAddress = onSelectedAddress
+        self.onScanQRTap = onScanQRTap
         viewModel = model.viewModel
     }
     
@@ -39,10 +44,17 @@ struct CreateJointAccountAddAccountView: View {
 
     var body: some View {
         VStack {
-            SearchFieldWithPasteButton(
+            SearchFieldWithButtons(
                 placeholder: "create-joint-account-add-account-search-field-placeholder",
                 text: $viewModel.searchText
-            ) { model.pasteFromClipboard() }
+            ) { buttonPressed in
+                switch buttonPressed {
+                case .paste:
+                    model.pasteFromClipboard()
+                case .qrScan:
+                    onScanQRTap?()
+                }
+            }
             .textInputAutocapitalization(.never)
             .padding(.horizontal, 24.0)
             .padding(.top, 20.0)
@@ -74,6 +86,13 @@ struct CreateJointAccountAddAccountView: View {
         .navigationTitle("create-joint-account-add-account-navigation-title")
         .withPeraBackButton(navigationPath: $navigationPath)
         .onReceive(viewModel.$selectedAccount) { handle(selectedAccount: $0) }
+        .onDisappear { model.reset() }
+        .onChange(of: scannedAddress) { newAddress in
+            if !newAddress.isEmpty {
+                viewModel.searchText = newAddress
+                scannedAddress = .empty
+            }
+        }
     }
 
     @ViewBuilder

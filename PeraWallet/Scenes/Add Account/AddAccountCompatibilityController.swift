@@ -23,6 +23,20 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     
     private let legacyFlow: AccountSetupFlow = .addNewAccount(mode: .none)
     
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController,
+        appLaunchController: configuration.launchController,
+        hdWalletStorage: configuration.hdWalletStorage
+    )
+    
+    var onAddressScanned: ((String) -> Void)?
+    
     // MARK: - View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +68,17 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
     func learnMore() {
         guard let url = AlgorandWeb.jointAccount.link else { return }
         UIApplication.shared.open(url)
+    }
+    
+    func scanQR(onAddressScanned: ((String) -> Void)?) {
+        let qrScannerViewController = open(
+            .qrScanner(
+                canReadWCSession: false
+            ),
+            by: .push
+        ) as? QRScannerViewController
+        qrScannerViewController?.delegate = self
+        self.onAddressScanned = onAddressScanned
     }
     
     private func addAccount() {
@@ -103,5 +128,12 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
         guard let session = configuration.session, let api = configuration.api else { return nil }
         let pushNotificationController = PushNotificationController(target: .current, session: session, api: api)
         return LegacyBridgeAccountManager.createAlgo25Account(session: session, pushNotificationController: pushNotificationController)
+    }
+}
+
+extension AddAccountCompatibilityController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
+        guard let addressScanned = qrText.address else { return }
+        onAddressScanned?(addressScanned)
     }
 }
