@@ -688,7 +688,8 @@ extension ASADetailScreen {
         let asset = dataController.asset
         let viewModel = ASADetailQuickActionsViewModel(
             asset: asset,
-            shouldShowStakeAction: configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+            shouldShowStakeAction: configuration.featureFlagService.isEnabled(.xoSwapEnabled),
+            isJointAccount: dataController.account.isJointAccount
         )
 
         quickActionsView.startObserving(event: .buy) {
