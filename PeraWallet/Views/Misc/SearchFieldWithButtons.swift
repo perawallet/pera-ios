@@ -12,17 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SearchFieldWithPasteButton.swift
+//   SearchFieldWithButtons.swift
 
 import SwiftUI
 
-struct SearchFieldWithPasteButton: View {
+enum SearchFieldButton {
+    case qrScan
+    case paste
+}
+
+struct SearchFieldWithButtons: View {
     
     // MARK: - Properties
     
     let placeholder: LocalizedStringKey
     @Binding var text: String
-    var onPasteButtonTap: () -> Void
+    var onButtonTap: (SearchFieldButton) -> Void
     
     @FocusState private var isFocused: Bool
     
@@ -41,8 +46,17 @@ struct SearchFieldWithPasteButton: View {
                 .font(.DMSans.regular.size(13.0))
                 .foregroundStyle(Color.Text.main)
                 .padding(.leading, 8.0)
+
             if !isFocused {
-                SwiftUI.Button(action: onPasteButtonTap) {
+                SwiftUI.Button(action: { onButtonTap(.qrScan) }) {
+                    Image(.iconQrScan)
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundStyle(Color.Text.gray)
+                        .frame(width: 24.0, height: 24.0)
+                        .padding(.trailing, 8.0)
+                }
+                SwiftUI.Button(action: { onButtonTap(.paste) }) {
                     Image(.Icons.paste)
                         .resizable()
                         .foregroundStyle(Color.Text.gray)

@@ -41,6 +41,7 @@ final class CreateJointAccountAccountsListViewModel: ObservableObject {
 protocol CreateJointAccountAccountsListModelable {
     
     var viewModel: CreateJointAccountAccountsListViewModel { get }
+    var sharedAddAccountModel: CreateJointAccountAddAccountModelable { get }
     var shouldShowJointAccountCreationPopup: Bool { get }
     
     func add(account: AddedAccountData)
@@ -48,6 +49,7 @@ protocol CreateJointAccountAccountsListModelable {
     func update(identifier: UUID, account: AddedAccountData)
     func requestData()
     func updateShouldShowJointAccountCreationPopup()
+    func reset()
 }
 
 final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListModelable {
@@ -60,6 +62,16 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     // MARK: - Properties - CreateJointAccountAccountsListModelable
     
     let viewModel = CreateJointAccountAccountsListViewModel()
+    
+    // MARK: - Properties - CreateJointAccountAddAccountModel
+    
+    private lazy var addAccountModel = CreateJointAccountAddAccountModel(
+        accountsService: PeraCoreManager.shared.accounts,
+        currencyService: PeraCoreManager.shared.currencies,
+        nfdService: PeraCoreManager.shared.nfd
+    )
+    
+    var sharedAddAccountModel: CreateJointAccountAddAccountModelable { addAccountModel }
     
     // MARK: - Properties
     
@@ -93,7 +105,6 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     // MARK: - Actions - CreateJointAccountAccountsListModelable
     
     func add(account: AddedAccountData) {
-        
         var title = account.title
         
         if account.isUserAccount {
@@ -120,6 +131,10 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     func updateShouldShowJointAccountCreationPopup() {
         PeraUserDefaults.hasJointAccountCreationPopupBeenShown = true
+    }
+    
+    func reset() {
+        viewModel.accounts = []
     }
 }
 
