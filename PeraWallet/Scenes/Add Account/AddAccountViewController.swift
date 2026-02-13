@@ -35,6 +35,10 @@ final class AddAccountViewController: UIHostingController<AddAccountView> {
         rootView.onScanQRTap = { [weak self] in self?.onScanQRTap?() }
     }
     
+    func onAddressScanned(address: String) {
+        rootView.viewModel.scannedAddress = address
+    }
+    
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

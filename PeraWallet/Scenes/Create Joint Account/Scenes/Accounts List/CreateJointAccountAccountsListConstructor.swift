@@ -18,8 +18,21 @@ import SwiftUI
 
 enum CreateJointAccountAccountsListConstructor {
     
-    static func buildScene(navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onLearnMoreTap: (() -> Void)?, onScanQRTap: (() -> Void)?) -> CreateJointAccountAccountsListView {
-        let model = CreateJointAccountAccountsListModel(accountsService: PeraCoreManager.shared.accounts)
-        return CreateJointAccountAccountsListView(model: model, navigationPath: navigationPath, onDismissRequest: onDismissRequest, onLearnMoreTap: onLearnMoreTap, onScanQRTap: onScanQRTap)
+    static func buildScene(
+        navigationPath: Binding<NavigationPath>,
+        model: CreateJointAccountAccountsListModelable,
+        scannedAddress: Binding<String>,
+        onDismissRequest: (() -> Void)?,
+        onLearnMoreTap: (() -> Void)?,
+        onScanQRTap: (() -> Void)?
+    ) -> CreateJointAccountAccountsListView {
+        return CreateJointAccountAccountsListView(
+            model: model,
+            scannedAddress: scannedAddress,
+            navigationPath: navigationPath,
+            onDismissRequest: onDismissRequest,
+            onLearnMoreTap: onLearnMoreTap,
+            onScanQRTap: onScanQRTap
+        )
     }
 }

@@ -34,6 +34,7 @@ struct CreateJointAccountAccountsListView: View {
     @ObservedObject private var viewModel: CreateJointAccountAccountsListViewModel
     @Binding private var navigationPath: NavigationPath
     @State private var showCreationSheet: Bool = false
+    @Binding private var scannedAddress: String
     
     // MARK: - UIKit Compatibility
     
@@ -43,9 +44,17 @@ struct CreateJointAccountAccountsListView: View {
     
     // MARK: - Initialiser
     
-    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onLearnMoreTap: (() -> Void)?, onScanQRTap: (() -> Void)?) {
+    init(
+        model: CreateJointAccountAccountsListModelable,
+        scannedAddress: Binding<String>,
+        navigationPath: Binding<NavigationPath>,
+        onDismissRequest: (() -> Void)?,
+        onLearnMoreTap: (() -> Void)?,
+        onScanQRTap: (() -> Void)?
+    ) {
         self.model = model
         _navigationPath = navigationPath
+        _scannedAddress = scannedAddress
         self.onDismissRequest = onDismissRequest
         self.onLearnMoreTap = onLearnMoreTap
         self.onScanQRTap = onScanQRTap
@@ -130,7 +139,13 @@ struct CreateJointAccountAccountsListView: View {
     private func scene(navigationOption: NavigationOption) -> some View {
         switch navigationOption {
         case .addAccount:
-            CreateJointAccountAddAccountConstructor.buildScene(navigationPath: $navigationPath, onSelectedAddress: { model.add(account: $0) }, onScanQRTap: onScanQRTap)
+            CreateJointAccountAddAccountConstructor.buildScene(
+                navigationPath: $navigationPath,
+                model: model.sharedAddAccountModel,
+                scannedAddress: $scannedAddress,
+                onSelectedAddress: { model.add(account: $0) },
+                onScanQRTap: onScanQRTap
+            )
         case let .editAccount(viewModel):
             CreateJointAccountEditAccountConstructor.buildScene(
                 name: viewModel.title,

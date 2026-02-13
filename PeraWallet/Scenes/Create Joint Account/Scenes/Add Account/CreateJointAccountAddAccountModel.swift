@@ -77,6 +77,7 @@ protocol CreateJointAccountAddAccountModelable {
     func pasteFromClipboard()
     func select(normalAccount: CreateJointAccountAddAccountViewModel.AccountModel)
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel)
+    func reset()
 }
 
 final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModelable {
@@ -228,6 +229,11 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
                 self.viewModel.error = .unableToFetchContacts(error: error)
             }
         }
+    }
+    
+    func reset() {
+        viewModel.searchText = ""
+        viewModel.selectedAccount = nil
     }
     
     // MARK: - Actions - CreateJointAccountAddAccountModelable

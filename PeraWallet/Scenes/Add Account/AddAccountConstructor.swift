@@ -41,8 +41,11 @@ enum AddAccountConstructor {
             compatibilityController?.learnMore()
         }
         
-        controller.onScanQRTap = { [weak compatibilityController] in
-            compatibilityController?.scanQR()
+        controller.onScanQRTap = { [weak compatibilityController, weak controller] in
+            guard let compatibilityController, let controller else { return }
+            compatibilityController.scanQR { address in
+                controller.onAddressScanned(address: address)
+            }
         }
         
         return compatibilityController

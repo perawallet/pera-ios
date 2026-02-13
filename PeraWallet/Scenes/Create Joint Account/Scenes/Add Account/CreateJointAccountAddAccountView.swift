@@ -26,12 +26,15 @@ struct CreateJointAccountAddAccountView: View {
     private let model: CreateJointAccountAddAccountModelable
     @ObservedObject private var viewModel: CreateJointAccountAddAccountViewModel
     @Binding private var navigationPath: NavigationPath
+    
+    @Binding private var scannedAddress: String
 
     // MARK: - Initialisers
 
-    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, onSelectedAddress: @escaping (AddedAccountData) -> Void, onScanQRTap: (() -> Void)?) {
+    init(model: CreateJointAccountAddAccountModelable, navigationPath: Binding<NavigationPath>, scannedAddress: Binding<String>, onSelectedAddress: @escaping (AddedAccountData) -> Void, onScanQRTap: (() -> Void)?) {
         self.model = model
         _navigationPath = navigationPath
+        _scannedAddress = scannedAddress
         self.onSelectedAddress = onSelectedAddress
         self.onScanQRTap = onScanQRTap
         viewModel = model.viewModel
@@ -83,6 +86,13 @@ struct CreateJointAccountAddAccountView: View {
         .navigationTitle("create-joint-account-add-account-navigation-title")
         .withPeraBackButton(navigationPath: $navigationPath)
         .onReceive(viewModel.$selectedAccount) { handle(selectedAccount: $0) }
+        .onDisappear { model.reset() }
+        .onChange(of: scannedAddress) { newAddress in
+            if !newAddress.isEmpty {
+                viewModel.searchText = newAddress
+                scannedAddress = .empty
+            }
+        }
     }
 
     @ViewBuilder
