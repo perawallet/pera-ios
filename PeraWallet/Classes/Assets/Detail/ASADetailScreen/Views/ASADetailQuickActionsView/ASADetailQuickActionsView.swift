@@ -49,6 +49,12 @@ final class ASADetailQuickActionsView:
     }
 
     func bindData(_ viewModel: ASADetailQuickActionsViewModel?) {
+        guard !(viewModel?.isJointAccount ?? false) else {
+            buyActionView.isHidden = true
+            swapActionView.isHidden = true
+            stakeActionView.isHidden = true
+            return 
+        }
         guard viewModel?.isBuyActionAvailable ?? false else {
             buyActionView.isHidden = true
             stakeActionView.isHidden = true
