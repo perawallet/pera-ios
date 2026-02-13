@@ -70,12 +70,6 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
         UIApplication.shared.open(url)
     }
     
-    func learnMore() {
-        // TODO: replace url for Joint Account Support page when it's available
-        guard let url = AlgorandWeb.support.link else { return }
-        UIApplication.shared.open(url)
-    }
-    
     func scanQR(onAddressScanned: ((String) -> Void)?) {
         let qrScannerViewController = open(
             .qrScanner(
