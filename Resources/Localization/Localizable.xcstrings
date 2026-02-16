@@ -8712,6 +8712,7 @@
       }
     },
     "title-about" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8802,6 +8803,7 @@
       }
     },
     "title-activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
