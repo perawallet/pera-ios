@@ -23,15 +23,18 @@ public final class WCArbitraryDataSigner {
     private let api: ALGAPI
     private let analytics: ALGAnalytics
     private let hdWalletStorage: HDWalletStorable
+    private let sharedDataController: SharedDataController
 
     public init(
         api: ALGAPI,
         analytics: ALGAnalytics,
-        hdWalletStorage: HDWalletStorable
+        hdWalletStorage: HDWalletStorable,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
         self.analytics = analytics
         self.hdWalletStorage = hdWalletStorage
+        self.sharedDataController = sharedDataController
     }
 
     public func signData(
@@ -65,27 +68,36 @@ public final class WCArbitraryDataSigner {
                 signer: signer,
                 for: data
             )
-        } else if let authAddress = account.authAddress, let signature = api.session.privateData(for: authAddress) {
-            let signer = SDKArbitraryDataSigner()
-            signer.eventHandler = {
-                [weak self] event in
-                guard let self else {
-                    return
+        } else if let authAddress = account.authAddress {
+            if let signature = api.session.privateData(for: authAddress) {
+                let signer = SDKArbitraryDataSigner()
+                signer.eventHandler = {
+                    [weak self] event in
+                    guard let self else {
+                        return
+                    }
+                    
+                    switch event {
+                    case .didFailedSigning(let error):
+                        delegate?.wcArbitraryDataSigner(
+                            self,
+                            didFailedWith: .api(error: error)
+                        )
+                    }
                 }
-                
-                switch event {
-                case .didFailedSigning(let error):
-                    delegate?.wcArbitraryDataSigner(
-                        self,
-                        didFailedWith: .api(error: error)
-                    )
-                }
+                sign(
+                    signature,
+                    signer: signer,
+                    for: data
+                )
+            } else if let authAccount = sharedDataController.accountCollection[authAddress]?.value, authAccount.isHDAccount {
+                signArbitraryDataForHDWalletAccount(data, for: authAccount)
+            } else {
+                delegate?.wcArbitraryDataSigner(
+                    self,
+                    didFailedWith: .missingData
+                )
             }
-            sign(
-                signature,
-                signer: signer,
-                for: data
-            )
         } else {
             delegate?.wcArbitraryDataSigner(
                 self,
