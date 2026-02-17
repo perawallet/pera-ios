@@ -337,12 +337,9 @@ extension AccountDetailViewController {
 extension AccountDetailViewController {
     private func openIncomingASAAccountInbox()  {
         let screen = open(
-            .incomingASA(
-                address: accountHandle.value.address,
-                requestsCount: incomingASAsRequestsCount
-            ),
+            .inbox,
             by: .push
-        ) as? IncomingASAAccountInboxViewController
+        ) as? IncomingASAAccountsViewController
         
         screen?.eventHandler = {
             [weak self, weak screen] event in

@@ -105,16 +105,13 @@ final class NotificationsViewController: BaseViewController {
                     )
                 case let .externalInAppBrowser(destination):
                     self.openExternalLink(destination: destination)
-                case let .assetInbox(address, requestsCount):
+                case let .assetInbox(address, _):
                     guard let account = sharedDataController.accountCollection[address] else { return }
                     
                     if account.value.isWatchAccount {
                         self.openAccountDetail(account)
                     } else {
-                        self.openAssetInbox(
-                            address: address,
-                            requestsCount: requestsCount
-                        )
+                        self.openAssetInbox()
                     }
                 case let .externalDeepLink(deepLink: deepLink):
                     self.open(deepLink: deepLink)
@@ -408,16 +405,9 @@ extension NotificationsViewController {
         )
     }
 
-    private func openAssetInbox(
-        address: String,
-        requestsCount: Int
-    ) {
-        let screen = Screen.incomingASA(
-            address: address,
-            requestsCount: requestsCount
-        )
+    private func openAssetInbox() {
         open(
-            screen,
+            .inbox,
             by: .push
         )
     }

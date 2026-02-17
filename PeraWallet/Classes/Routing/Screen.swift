@@ -176,10 +176,6 @@ indirect enum Screen {
     )
     case jsonDisplay(jsonData: Data, title: String)
     case inbox
-    case incomingASA(
-        address: String,
-        requestsCount: Int
-    )
     case incomingASAsDetail(draft: IncomingASAListItem)
     case successResultScreen(
         viewModel: SuccessResultScreenViewModel,
