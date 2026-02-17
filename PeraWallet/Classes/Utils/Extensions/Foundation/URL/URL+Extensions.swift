@@ -122,6 +122,8 @@ extension URL {
                 return .cards(path: path)
             case "buy":
                 return .buy(path: path, address: address)
+            case "asset-inbox":
+                return .assetInbox(path: path, address: address)
             default:
                 return nil
             }
