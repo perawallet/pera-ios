@@ -19,9 +19,21 @@ enum RekeySupportHandler {
     
     // MARK: - Actions
     
-    static func handle(walletConnectTransaction: WCTransaction, presenter: BaseViewController, onConfirm: @escaping () -> Void) {
+    static func handle(
+        walletConnectTransaction: WCTransaction,
+        userAddress: String?,
+        presenter: BaseViewController,
+        onConfirm: @escaping () -> Void
+    ) {
         
         guard walletConnectTransaction.transactionDetail?.isRekeyTransaction == true else {
+            onConfirm()
+            return
+        }
+        
+        let isRekeyForUserAccount = userAddress == nil || walletConnectTransaction.transactionDetail?.sender == userAddress
+        
+        guard isRekeyForUserAccount else {
             onConfirm()
             return
         }

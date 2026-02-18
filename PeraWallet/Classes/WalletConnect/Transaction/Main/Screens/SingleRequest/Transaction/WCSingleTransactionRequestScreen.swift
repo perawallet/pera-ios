@@ -204,7 +204,11 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
 
     func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView) {
         guard let transaction = transactions.first else { return }
-        RekeySupportHandler.handle(walletConnectTransaction: transaction, presenter: self) { [weak self] in
+        RekeySupportHandler.handle(
+            walletConnectTransaction: transaction,
+            userAddress: transaction.requestedSigner.account?.address,
+            presenter: self
+        ) { [weak self] in
             guard let self else { return }
             self.delegate?.wcSingleTransactionRequestScreenDidConfirm(self)
         }

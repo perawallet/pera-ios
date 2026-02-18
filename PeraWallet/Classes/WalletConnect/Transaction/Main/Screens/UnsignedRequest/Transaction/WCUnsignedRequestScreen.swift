@@ -144,7 +144,11 @@ extension WCUnsignedRequestScreen: WCUnsignedRequestViewDelegate {
 
     func wcUnsignedRequestViewDidTapConfirm(_ requestView: WCUnsignedRequestView) {
         guard let transaction = dataSource.transactions(at: 0)?.first else { return }
-        RekeySupportHandler.handle(walletConnectTransaction: transaction, presenter: self) { [weak self] in
+        RekeySupportHandler.handle(
+            walletConnectTransaction: transaction,
+            userAddress: transaction.requestedSigner.account?.address,
+            presenter: self
+        ) { [weak self] in
             guard let self else { return }
             self.delegate?.wcUnsignedRequestScreenDidConfirm(self)
         }
