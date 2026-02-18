@@ -56,6 +56,11 @@ struct AssetTransactionItemViewModel:
         _ draft: TransactionViewModelDraft
     ) {
         
+        if let tx = draft.transaction as? TransactionV2, tx.swapGroupDetail != nil {
+            bindTitle(String(localized: "title-swap"))
+            return
+        }
+        
         let amount: UInt64? = {
             if let tx = draft.transaction as? Transaction { return tx.getCloseAmount() }
             if let tx = draft.transaction as? TransactionV2, let amt = tx.amount { return UInt64(amt) }
@@ -101,6 +106,11 @@ struct AssetTransactionItemViewModel:
     private mutating func bindSubtitle(
         _ draft: TransactionViewModelDraft
     ) {
+        
+        if let tx = draft.transaction as? TransactionV2, let swapDetail = tx.swapDetail {
+            bindSubtitle(swapDetail)
+            return
+        }
 
         let closeToAddress: String? = {
             if let tx = draft.transaction as? Transaction { return tx.getCloseAddress() }
@@ -137,6 +147,11 @@ struct AssetTransactionItemViewModel:
         _ draft: TransactionViewModelDraft
     ) {
         guard let tx = draft.transaction as? TransactionV2 else { return }
+        
+        if tx.swapGroupDetail != nil {
+            bindIcon("icon-transaction-list-swap")
+            return
+        }
         
         if tx.closeTo != nil {
             bindIcon("icon-transaction-list-optin")
