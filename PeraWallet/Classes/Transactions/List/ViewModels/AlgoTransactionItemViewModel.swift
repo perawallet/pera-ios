@@ -142,7 +142,11 @@ struct AlgoTransactionItemViewModel:
         } else if receiver == draft.account.address {
             style = .positive(amount: amount, hideSign: draft.transaction is TransactionV2)
         } else {
-            style = .negative(amount: amount)
+            if let tx = draft.transaction as? TransactionV2, let swapDetail = tx.swapGroupDetail {
+                style = .negative(amount: amount, isAlgos: swapDetail.assetIn?.assetId == "0", fraction: swapDetail.assetIn?.fractionDecimals, assetSymbol: swapDetail.assetIn?.unitName)
+            } else {
+                style = .negative(amount: amount)
+            }
         }
         
         transactionAmountViewModel = TransactionAmountViewModel(

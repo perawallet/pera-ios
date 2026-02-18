@@ -270,7 +270,7 @@ struct SwapView: View {
     private func handlePercentageChange(_ newPercentage: PercentageValue) {
         viewModel.isLoadingPayAmount = true
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
-        viewModel.isBalanceNotSufficient = amount > NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        viewModel.isBalanceNotSufficient = false
         onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
     }
     
