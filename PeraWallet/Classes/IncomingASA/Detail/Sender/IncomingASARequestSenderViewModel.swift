@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaSenderViewModel.swift
+//   IncomingASARequestSenderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import pera_wallet_core
 
-struct IncomingASARequesSenderViewModel: ViewModel {
+struct IncomingASARequestSenderViewModel: ViewModel {
     private(set) var amount: TextProvider?
     private(set) var sender: TextProvider?
 
@@ -37,7 +37,7 @@ struct IncomingASARequesSenderViewModel: ViewModel {
     }
 }
 
-extension IncomingASARequesSenderViewModel {
+extension IncomingASARequestSenderViewModel {
     mutating func bindAmount(
         currencyFormatter: CurrencyFormatter,
         asset: Asset?,

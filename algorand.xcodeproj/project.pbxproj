@@ -1047,25 +1047,14 @@
 		591679AE2E464C76002184C2 /* IncomingASAAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E42C0F168300B41962 /* IncomingASAAccountView.swift */; };
 		591679AF2E464C76002184C2 /* IncomingASAAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E82C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift */; };
 		591679B12E464C76002184C2 /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
-		591679B22E464C76002184C2 /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
-		591679B32E464C76002184C2 /* IncomingASAAccountInboxViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */; };
-		591679B42E464C76002184C2 /* IncomingASAAccountInboxDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B1C2BE27C6C00C3F78E /* IncomingASAAccountInboxDataController.swift */; };
-		591679B52E464C76002184C2 /* IncomingASAAccountInboxListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B242BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift */; };
-		591679B62E464C76002184C2 /* IncomingASAAccountInboxListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B282BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift */; };
-		591679B72E464C76002184C2 /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B2C2BE2A84F00C3F78E /* IncomingASAAccountInboxListLayout+Theme.swift */; };
-		591679B82E464C76002184C2 /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */; };
-		591679B92E464C76002184C2 /* IncomingASAAccountInboxListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679B2BEC029200D47AE8 /* IncomingASAAccountInboxListItemCell.swift */; };
 		591679BA2E464C76002184C2 /* IncomingASAListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567972BEC019100D47AE8 /* IncomingASAListItemView.swift */; };
 		591679BB2E464C76002184C2 /* IncomingASAListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AB2BECA12E00D47AE8 /* IncomingASAListItemViewModel.swift */; };
-		591679BC2E464C76002184C2 /* IncomingAsaListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingAsaListItemViewTheme.swift */; };
+		591679BC2E464C76002184C2 /* IncomingASAListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingASAListItemViewTheme.swift */; };
 		591679BD2E464C76002184C2 /* IncominASAListTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679F2BEC07DD00D47AE8 /* IncominASAListTitleView.swift */; };
 		591679BE2E464C76002184C2 /* IncominASAListTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A32BEC9FC500D47AE8 /* IncominASAListTitleViewModel.swift */; };
 		591679BF2E464C76002184C2 /* IncominASAListTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A72BECA02700D47AE8 /* IncominASAListTitleViewTheme.swift */; };
 		591679C02E464C76002184C2 /* IncomingASASenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */; };
-		591679C12E464C76002184C2 /* IncomingASAListItemTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */; };
 		591679C22E464C76002184C2 /* IncomingASAAssetListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */; };
-		591679C32E464C76002184C2 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
-		591679C42E464C76002184C2 /* IncomingASAAccountInboxAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B202BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift */; };
 		591679C52E464C76002184C2 /* IncomingASAsDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C15D2BFBD68C00CFA0AF /* IncomingASAsDetailScreen.swift */; };
 		591679C62E464C76002184C2 /* IncomingASAsDetailScreen+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C19B2BFCA1CE00CFA0AF /* IncomingASAsDetailScreen+Theme.swift */; };
 		591679C72E464C76002184C2 /* IncomingASAsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C16A2BFBE6CD00CFA0AF /* IncomingASAsDetailView.swift */; };
@@ -1080,8 +1069,8 @@
 		591679D02E464C76002184C2 /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
 		591679D12E464C76002184C2 /* IncomingASARequestIdTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1F4342BF525FC00435EA4 /* IncomingASARequestIdTheme.swift */; };
 		591679D22E464C76002184C2 /* IncomingASARequesSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */; };
-		591679D32E464C76002184C2 /* IncomingASARequesSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequesSenderViewTheme.swift */; };
-		591679D42E464C76002184C2 /* IncomingASARequesSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */; };
+		591679D32E464C76002184C2 /* IncomingASARequestSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequestSenderViewTheme.swift */; };
+		591679D42E464C76002184C2 /* IncomingASARequestSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequestSenderViewModel.swift */; };
 		591679D52E464C76002184C2 /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE1ED232C4AFF6A0006DFC9 /* IncomingASAsDetailLoadingScreenViewModel.swift */; };
 		591679D62E464C76002184C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		591679D72E464C76002184C2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4ED22393577005D8565 /* BaseViewController.swift */; };
@@ -4918,25 +4907,14 @@
 		59E607A42E4A71D000CCA99B /* IncomingASAAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E42C0F168300B41962 /* IncomingASAAccountView.swift */; };
 		59E607A52E4A71D000CCA99B /* IncomingASAAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E82C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift */; };
 		59E607A72E4A71D000CCA99B /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
-		59E607A82E4A71D000CCA99B /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
-		59E607A92E4A71D000CCA99B /* IncomingASAAccountInboxViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */; };
-		59E607AA2E4A71D000CCA99B /* IncomingASAAccountInboxDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B1C2BE27C6C00C3F78E /* IncomingASAAccountInboxDataController.swift */; };
-		59E607AB2E4A71D000CCA99B /* IncomingASAAccountInboxListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B242BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift */; };
-		59E607AC2E4A71D000CCA99B /* IncomingASAAccountInboxListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B282BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift */; };
-		59E607AD2E4A71D000CCA99B /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B2C2BE2A84F00C3F78E /* IncomingASAAccountInboxListLayout+Theme.swift */; };
-		59E607AE2E4A71D000CCA99B /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */; };
-		59E607AF2E4A71D000CCA99B /* IncomingASAAccountInboxListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679B2BEC029200D47AE8 /* IncomingASAAccountInboxListItemCell.swift */; };
 		59E607B02E4A71D000CCA99B /* IncomingASAListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567972BEC019100D47AE8 /* IncomingASAListItemView.swift */; };
 		59E607B12E4A71D000CCA99B /* IncomingASAListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AB2BECA12E00D47AE8 /* IncomingASAListItemViewModel.swift */; };
-		59E607B22E4A71D000CCA99B /* IncomingAsaListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingAsaListItemViewTheme.swift */; };
+		59E607B22E4A71D000CCA99B /* IncomingASAListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingASAListItemViewTheme.swift */; };
 		59E607B32E4A71D000CCA99B /* IncominASAListTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679F2BEC07DD00D47AE8 /* IncominASAListTitleView.swift */; };
 		59E607B42E4A71D000CCA99B /* IncominASAListTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A32BEC9FC500D47AE8 /* IncominASAListTitleViewModel.swift */; };
 		59E607B52E4A71D000CCA99B /* IncominASAListTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A72BECA02700D47AE8 /* IncominASAListTitleViewTheme.swift */; };
 		59E607B62E4A71D000CCA99B /* IncomingASASenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */; };
-		59E607B72E4A71D000CCA99B /* IncomingASAListItemTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */; };
 		59E607B82E4A71D000CCA99B /* IncomingASAAssetListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */; };
-		59E607B92E4A71D000CCA99B /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
-		59E607BA2E4A71D000CCA99B /* IncomingASAAccountInboxAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B202BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift */; };
 		59E607BB2E4A71D000CCA99B /* IncomingASAsDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C15D2BFBD68C00CFA0AF /* IncomingASAsDetailScreen.swift */; };
 		59E607BC2E4A71D000CCA99B /* IncomingASAsDetailScreen+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C19B2BFCA1CE00CFA0AF /* IncomingASAsDetailScreen+Theme.swift */; };
 		59E607BD2E4A71D000CCA99B /* IncomingASAsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C16A2BFBE6CD00CFA0AF /* IncomingASAsDetailView.swift */; };
@@ -4951,8 +4929,8 @@
 		59E607C62E4A71D000CCA99B /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
 		59E607C72E4A71D000CCA99B /* IncomingASARequestIdTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1F4342BF525FC00435EA4 /* IncomingASARequestIdTheme.swift */; };
 		59E607C82E4A71D000CCA99B /* IncomingASARequesSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */; };
-		59E607C92E4A71D000CCA99B /* IncomingASARequesSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequesSenderViewTheme.swift */; };
-		59E607CA2E4A71D000CCA99B /* IncomingASARequesSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */; };
+		59E607C92E4A71D000CCA99B /* IncomingASARequestSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequestSenderViewTheme.swift */; };
+		59E607CA2E4A71D000CCA99B /* IncomingASARequestSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequestSenderViewModel.swift */; };
 		59E607CB2E4A71D000CCA99B /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE1ED232C4AFF6A0006DFC9 /* IncomingASAsDetailLoadingScreenViewModel.swift */; };
 		59E607CC2E4A71D000CCA99B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		59E607CD2E4A71D000CCA99B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4ED22393577005D8565 /* BaseViewController.swift */; };
@@ -7030,25 +7008,14 @@
 		59E6FF2C2E4A712500CCA99B /* IncomingASAAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E42C0F168300B41962 /* IncomingASAAccountView.swift */; };
 		59E6FF2D2E4A712500CCA99B /* IncomingASAAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852E82C0F1CE000B41962 /* IncomingASAAccountViewTheme.swift */; };
 		59E6FF2F2E4A712500CCA99B /* IncomingASAAccountsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7852EC2C0F92D600B41962 /* IncomingASAAccountsNoContentViewModel.swift */; };
-		59E6FF302E4A712500CCA99B /* IncomingASAAccountInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */; };
-		59E6FF312E4A712500CCA99B /* IncomingASAAccountInboxViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */; };
-		59E6FF322E4A712500CCA99B /* IncomingASAAccountInboxDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B1C2BE27C6C00C3F78E /* IncomingASAAccountInboxDataController.swift */; };
-		59E6FF332E4A712500CCA99B /* IncomingASAAccountInboxListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B242BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift */; };
-		59E6FF342E4A712500CCA99B /* IncomingASAAccountInboxListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B282BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift */; };
-		59E6FF352E4A712500CCA99B /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B2C2BE2A84F00C3F78E /* IncomingASAAccountInboxListLayout+Theme.swift */; };
-		59E6FF362E4A712500CCA99B /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */; };
-		59E6FF372E4A712500CCA99B /* IncomingASAAccountInboxListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679B2BEC029200D47AE8 /* IncomingASAAccountInboxListItemCell.swift */; };
 		59E6FF382E4A712500CCA99B /* IncomingASAListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567972BEC019100D47AE8 /* IncomingASAListItemView.swift */; };
 		59E6FF392E4A712500CCA99B /* IncomingASAListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AB2BECA12E00D47AE8 /* IncomingASAListItemViewModel.swift */; };
-		59E6FF3A2E4A712500CCA99B /* IncomingAsaListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingAsaListItemViewTheme.swift */; };
+		59E6FF3A2E4A712500CCA99B /* IncomingASAListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567AF2BECA19900D47AE8 /* IncomingASAListItemViewTheme.swift */; };
 		59E6FF3B2E4A712500CCA99B /* IncominASAListTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD5679F2BEC07DD00D47AE8 /* IncominASAListTitleView.swift */; };
 		59E6FF3C2E4A712500CCA99B /* IncominASAListTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A32BEC9FC500D47AE8 /* IncominASAListTitleViewModel.swift */; };
 		59E6FF3D2E4A712500CCA99B /* IncominASAListTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567A72BECA02700D47AE8 /* IncominASAListTitleViewTheme.swift */; };
 		59E6FF3E2E4A712500CCA99B /* IncomingASASenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */; };
-		59E6FF3F2E4A712500CCA99B /* IncomingASAListItemTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */; };
 		59E6FF402E4A712500CCA99B /* IncomingASAAssetListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */; };
-		59E6FF412E4A712500CCA99B /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */; };
-		59E6FF422E4A712500CCA99B /* IncomingASAAccountInboxAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F2B202BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift */; };
 		59E6FF432E4A712500CCA99B /* IncomingASAsDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C15D2BFBD68C00CFA0AF /* IncomingASAsDetailScreen.swift */; };
 		59E6FF442E4A712500CCA99B /* IncomingASAsDetailScreen+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C19B2BFCA1CE00CFA0AF /* IncomingASAsDetailScreen+Theme.swift */; };
 		59E6FF452E4A712500CCA99B /* IncomingASAsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B98C16A2BFBE6CD00CFA0AF /* IncomingASAsDetailView.swift */; };
@@ -7063,8 +7030,8 @@
 		59E6FF4E2E4A712500CCA99B /* IncomingASARequestHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */; };
 		59E6FF4F2E4A712500CCA99B /* IncomingASARequestIdTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1F4342BF525FC00435EA4 /* IncomingASARequestIdTheme.swift */; };
 		59E6FF502E4A712500CCA99B /* IncomingASARequesSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */; };
-		59E6FF512E4A712500CCA99B /* IncomingASARequesSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequesSenderViewTheme.swift */; };
-		59E6FF522E4A712500CCA99B /* IncomingASARequesSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */; };
+		59E6FF512E4A712500CCA99B /* IncomingASARequestSenderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3128862BF6B506001A2667 /* IncomingASARequestSenderViewTheme.swift */; };
+		59E6FF522E4A712500CCA99B /* IncomingASARequestSenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31288A2BF6B50C001A2667 /* IncomingASARequestSenderViewModel.swift */; };
 		59E6FF532E4A712500CCA99B /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE1ED232C4AFF6A0006DFC9 /* IncomingASAsDetailLoadingScreenViewModel.swift */; };
 		59E6FF542E4A712500CCA99B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		59E6FF552E4A712500CCA99B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4ED22393577005D8565 /* BaseViewController.swift */; };
@@ -7442,6 +7409,9 @@
 		D4F7172E2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F7172F2E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
 		D4F717302E547562008E63A3 /* ShimmerSUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7172D2E547562008E63A3 /* ShimmerSUIView.swift */; };
+		D4F9844A2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F984492F44B33B00B8BDAF /* IncomingASAListItem.swift */; };
+		D4F9844B2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F984492F44B33B00B8BDAF /* IncomingASAListItem.swift */; };
+		D4F9844C2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F984492F44B33B00B8BDAF /* IncomingASAListItem.swift */; };
 		D4FCCB1A2E5706A300CECBFD /* SwapProviderV2List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCCB192E5706A000CECBFD /* SwapProviderV2List.swift */; };
 		D4FCCB1C2E5706DB00CECBFD /* SwapProviderV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCCB1B2E5706D700CECBFD /* SwapProviderV2.swift */; };
 		D4FF6CB02DB6454E0041C7A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D4FF6CAF2DB6454E0041C7A6 /* Localizable.xcstrings */; };
@@ -8971,26 +8941,17 @@
 		8B1F0B3A2C5F959100EEDDE9 /* CardsURLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsURLGenerator.swift; sourceTree = "<group>"; };
 		8B2A18DA2BC04B63001B4AD0 /* ScammerControlResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerControlResult.swift; sourceTree = "<group>"; };
 		8B2A18DE2BC05789001B4AD0 /* ScammerControlQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScammerControlQuery.swift; sourceTree = "<group>"; };
-		8B3128862BF6B506001A2667 /* IncomingASARequesSenderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequesSenderViewTheme.swift; sourceTree = "<group>"; };
-		8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequesSenderViewModel.swift; sourceTree = "<group>"; };
+		8B3128862BF6B506001A2667 /* IncomingASARequestSenderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestSenderViewTheme.swift; sourceTree = "<group>"; };
+		8B31288A2BF6B50C001A2667 /* IncomingASARequestSenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestSenderViewModel.swift; sourceTree = "<group>"; };
 		8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequesSenderView.swift; sourceTree = "<group>"; };
 		8B33005C2BFEAE8D00E933D3 /* IncomingASAsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAsDetailViewModel.swift; sourceTree = "<group>"; };
 		8B34B7D92C1CA28600598611 /* IncomingASATransactionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASATransactionController.swift; sourceTree = "<group>"; };
 		8B3C40042BF33568008DBF57 /* IncomingASARequestHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderTheme.swift; sourceTree = "<group>"; };
 		8B3C40082BF335D6008DBF57 /* IncomingASARequestHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASARequestHeaderViewModel.swift; sourceTree = "<group>"; };
-		8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAsCollectibleListItemViewModel.swift; sourceTree = "<group>"; };
 		8B53B9F92CDC18C200875A62 /* StakingTransactionOptionListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingTransactionOptionListItemButtonViewModel.swift; sourceTree = "<group>"; };
-		8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxViewController.swift; sourceTree = "<group>"; };
 		8B5F1F8D2C47CF420096899C /* IncomingASADetailAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASADetailAccountView.swift; sourceTree = "<group>"; };
 		8B5F1F912C47CF4E0096899C /* IncomingASADetailAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASADetailAccountViewTheme.swift; sourceTree = "<group>"; };
 		8B671FCF2CA34385003F0BE9 /* ViewRootWalletPassphraseListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRootWalletPassphraseListItemButtonViewModel.swift; sourceTree = "<group>"; };
-		8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxHeaderTitleCell.swift; sourceTree = "<group>"; };
-		8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncomingASAAccountInboxViewController+Theme.swift"; sourceTree = "<group>"; };
-		8B6F2B1C2BE27C6C00C3F78E /* IncomingASAAccountInboxDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxDataController.swift; sourceTree = "<group>"; };
-		8B6F2B202BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxAPIDataController.swift; sourceTree = "<group>"; };
-		8B6F2B242BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxListDataSource.swift; sourceTree = "<group>"; };
-		8B6F2B282BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxListLayout.swift; sourceTree = "<group>"; };
-		8B6F2B2C2BE2A84F00C3F78E /* IncomingASAAccountInboxListLayout+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncomingASAAccountInboxListLayout+Theme.swift"; sourceTree = "<group>"; };
 		8B7852BC2C0D920200B41962 /* IncomingASAAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountsViewController.swift; sourceTree = "<group>"; };
 		8B7852C02C0D921500B41962 /* IncomingASAAccountsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncomingASAAccountsViewController+Theme.swift"; sourceTree = "<group>"; };
 		8B7852C42C0DA76C00B41962 /* InboxDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxDiffableDataSource.swift; sourceTree = "<group>"; };
@@ -9018,13 +8979,11 @@
 		8BB138032C81085E001EA9D6 /* CardsTransactionOptionListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsTransactionOptionListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		8BB138072C810E6E001EA9D6 /* CardsFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsFlowCoordinator.swift; sourceTree = "<group>"; };
 		8BD567972BEC019100D47AE8 /* IncomingASAListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAListItemView.swift; sourceTree = "<group>"; };
-		8BD5679B2BEC029200D47AE8 /* IncomingASAAccountInboxListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAccountInboxListItemCell.swift; sourceTree = "<group>"; };
 		8BD5679F2BEC07DD00D47AE8 /* IncominASAListTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncominASAListTitleView.swift; sourceTree = "<group>"; };
 		8BD567A32BEC9FC500D47AE8 /* IncominASAListTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncominASAListTitleViewModel.swift; sourceTree = "<group>"; };
 		8BD567A72BECA02700D47AE8 /* IncominASAListTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncominASAListTitleViewTheme.swift; sourceTree = "<group>"; };
 		8BD567AB2BECA12E00D47AE8 /* IncomingASAListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAListItemViewModel.swift; sourceTree = "<group>"; };
-		8BD567AF2BECA19900D47AE8 /* IncomingAsaListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingAsaListItemViewTheme.swift; sourceTree = "<group>"; };
-		8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAListItemTheme.swift; sourceTree = "<group>"; };
+		8BD567AF2BECA19900D47AE8 /* IncomingASAListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAListItemViewTheme.swift; sourceTree = "<group>"; };
 		8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASASenderViewModel.swift; sourceTree = "<group>"; };
 		8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAAssetListItemViewModel.swift; sourceTree = "<group>"; };
 		8BE1ED162C4AF76D0006DFC9 /* SuccessResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessResultScreen.swift; sourceTree = "<group>"; };
@@ -10211,6 +10170,7 @@
 		D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseDisplayViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4F8F28D273EA74D003DCE1D /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D4F8F291273EA8C3003DCE1D /* PassphraseDisplayViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewTheme.swift; sourceTree = "<group>"; };
+		D4F984492F44B33B00B8BDAF /* IncomingASAListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingASAListItem.swift; sourceTree = "<group>"; };
 		D4FC474E27146E1100FC5E3B /* LedgerAccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailView.swift; sourceTree = "<group>"; };
 		D4FC47522714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailLayoutBuilder.swift; sourceTree = "<group>"; };
 		D4FC47562714940600FC5E3B /* LedgerAccountDetailDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailDataSource.swift; sourceTree = "<group>"; };
@@ -19407,8 +19367,8 @@
 			isa = PBXGroup;
 			children = (
 				8B31288E2BF6BDFD001A2667 /* IncomingASARequesSenderView.swift */,
-				8B3128862BF6B506001A2667 /* IncomingASARequesSenderViewTheme.swift */,
-				8B31288A2BF6B50C001A2667 /* IncomingASARequesSenderViewModel.swift */,
+				8B3128862BF6B506001A2667 /* IncomingASARequestSenderViewTheme.swift */,
+				8B31288A2BF6B50C001A2667 /* IncomingASARequestSenderViewModel.swift */,
 			);
 			path = Sender;
 			sourceTree = "<group>";
@@ -19416,21 +19376,9 @@
 		8B3300642BFF559D00E933D3 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
-				8B542C6A2BE23F14001CA427 /* IncomingASAAccountInboxViewController.swift */,
-				8B6F2B182BE2768400C3F78E /* IncomingASAAccountInboxViewController+Theme.swift */,
-				8B6F2B1C2BE27C6C00C3F78E /* IncomingASAAccountInboxDataController.swift */,
-				8B6F2B242BE2A64200C3F78E /* IncomingASAAccountInboxListDataSource.swift */,
-				8B6F2B282BE2A7BD00C3F78E /* IncomingASAAccountInboxListLayout.swift */,
-				8B6F2B2C2BE2A84F00C3F78E /* IncomingASAAccountInboxListLayout+Theme.swift */,
-				8B6D6DE32BE7DA68007B3F88 /* IncomingASAAccountInboxHeaderTitleCell.swift */,
-				8BD5679B2BEC029200D47AE8 /* IncomingASAAccountInboxListItemCell.swift */,
 				8BE1DDB32C0956C700A360EC /* ListItemView */,
 				8BE1DDB42C09572A00A360EC /* TitleView */,
-				8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */,
-				8BD567B32BECB49A00D47AE8 /* IncomingASAListItemTheme.swift */,
-				8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */,
-				8B5276B42C1875C3001BC800 /* IncomingASAAsCollectibleListItemViewModel.swift */,
-				8B6F2B202BE2933400C3F78E /* IncomingASAAccountInboxAPIDataController.swift */,
+				D4F9844D2F44B3DE00B8BDAF /* Model */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -19605,9 +19553,10 @@
 		8BE1DDB32C0956C700A360EC /* ListItemView */ = {
 			isa = PBXGroup;
 			children = (
+				D4F984492F44B33B00B8BDAF /* IncomingASAListItem.swift */,
 				8BD567972BEC019100D47AE8 /* IncomingASAListItemView.swift */,
 				8BD567AB2BECA12E00D47AE8 /* IncomingASAListItemViewModel.swift */,
-				8BD567AF2BECA19900D47AE8 /* IncomingAsaListItemViewTheme.swift */,
+				8BD567AF2BECA19900D47AE8 /* IncomingASAListItemViewTheme.swift */,
 			);
 			path = ListItemView;
 			sourceTree = "<group>";
@@ -23443,6 +23392,15 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		D4F9844D2F44B3DE00B8BDAF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8BD567BB2BECB54F00D47AE8 /* IncomingASASenderViewModel.swift */,
+				8BD567BF2BECBDCE00D47AE8 /* IncomingASAAssetListItemViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D4FC5F3127F4CAC50017E81F /* UIActions */ = {
 			isa = PBXGroup;
 			children = (
@@ -25407,25 +25365,14 @@
 				591679AE2E464C76002184C2 /* IncomingASAAccountView.swift in Sources */,
 				591679AF2E464C76002184C2 /* IncomingASAAccountViewTheme.swift in Sources */,
 				591679B12E464C76002184C2 /* IncomingASAAccountsNoContentViewModel.swift in Sources */,
-				591679B22E464C76002184C2 /* IncomingASAAccountInboxViewController.swift in Sources */,
-				591679B32E464C76002184C2 /* IncomingASAAccountInboxViewController+Theme.swift in Sources */,
-				591679B42E464C76002184C2 /* IncomingASAAccountInboxDataController.swift in Sources */,
-				591679B52E464C76002184C2 /* IncomingASAAccountInboxListDataSource.swift in Sources */,
-				591679B62E464C76002184C2 /* IncomingASAAccountInboxListLayout.swift in Sources */,
-				591679B72E464C76002184C2 /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */,
-				591679B82E464C76002184C2 /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */,
-				591679B92E464C76002184C2 /* IncomingASAAccountInboxListItemCell.swift in Sources */,
 				591679BA2E464C76002184C2 /* IncomingASAListItemView.swift in Sources */,
 				591679BB2E464C76002184C2 /* IncomingASAListItemViewModel.swift in Sources */,
-				591679BC2E464C76002184C2 /* IncomingAsaListItemViewTheme.swift in Sources */,
+				591679BC2E464C76002184C2 /* IncomingASAListItemViewTheme.swift in Sources */,
 				591679BD2E464C76002184C2 /* IncominASAListTitleView.swift in Sources */,
 				591679BE2E464C76002184C2 /* IncominASAListTitleViewModel.swift in Sources */,
 				591679BF2E464C76002184C2 /* IncominASAListTitleViewTheme.swift in Sources */,
 				591679C02E464C76002184C2 /* IncomingASASenderViewModel.swift in Sources */,
-				591679C12E464C76002184C2 /* IncomingASAListItemTheme.swift in Sources */,
 				591679C22E464C76002184C2 /* IncomingASAAssetListItemViewModel.swift in Sources */,
-				591679C32E464C76002184C2 /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
-				591679C42E464C76002184C2 /* IncomingASAAccountInboxAPIDataController.swift in Sources */,
 				591679C52E464C76002184C2 /* IncomingASAsDetailScreen.swift in Sources */,
 				591679C62E464C76002184C2 /* IncomingASAsDetailScreen+Theme.swift in Sources */,
 				591679C72E464C76002184C2 /* IncomingASAsDetailView.swift in Sources */,
@@ -25440,8 +25387,8 @@
 				591679D02E464C76002184C2 /* IncomingASARequestHeaderViewModel.swift in Sources */,
 				591679D12E464C76002184C2 /* IncomingASARequestIdTheme.swift in Sources */,
 				591679D22E464C76002184C2 /* IncomingASARequesSenderView.swift in Sources */,
-				591679D32E464C76002184C2 /* IncomingASARequesSenderViewTheme.swift in Sources */,
-				591679D42E464C76002184C2 /* IncomingASARequesSenderViewModel.swift in Sources */,
+				591679D32E464C76002184C2 /* IncomingASARequestSenderViewTheme.swift in Sources */,
+				591679D42E464C76002184C2 /* IncomingASARequestSenderViewModel.swift in Sources */,
 				591679D52E464C76002184C2 /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */,
 				591679D62E464C76002184C2 /* AppDelegate.swift in Sources */,
 				591679D72E464C76002184C2 /* BaseViewController.swift in Sources */,
@@ -25711,6 +25658,7 @@
 				D4B50BCD2EA7807C00642C1D /* ASADetailViewController.swift in Sources */,
 				59167ADA2E464C76002184C2 /* CarouselBannerItemCell.swift in Sources */,
 				59167ADB2E464C76002184C2 /* CarouselBannerItemModel.swift in Sources */,
+				D4F9844B2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */,
 				59167ADC2E464C76002184C2 /* CarouselBannerItemView.swift in Sources */,
 				59167ADD2E464C76002184C2 /* CarouselBannerItemViewTheme.swift in Sources */,
 				59167ADE2E464C76002184C2 /* CarouselPageControl.swift in Sources */,
@@ -27575,25 +27523,14 @@
 				59E6FF2C2E4A712500CCA99B /* IncomingASAAccountView.swift in Sources */,
 				59E6FF2D2E4A712500CCA99B /* IncomingASAAccountViewTheme.swift in Sources */,
 				59E6FF2F2E4A712500CCA99B /* IncomingASAAccountsNoContentViewModel.swift in Sources */,
-				59E6FF302E4A712500CCA99B /* IncomingASAAccountInboxViewController.swift in Sources */,
-				59E6FF312E4A712500CCA99B /* IncomingASAAccountInboxViewController+Theme.swift in Sources */,
-				59E6FF322E4A712500CCA99B /* IncomingASAAccountInboxDataController.swift in Sources */,
-				59E6FF332E4A712500CCA99B /* IncomingASAAccountInboxListDataSource.swift in Sources */,
-				59E6FF342E4A712500CCA99B /* IncomingASAAccountInboxListLayout.swift in Sources */,
-				59E6FF352E4A712500CCA99B /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */,
-				59E6FF362E4A712500CCA99B /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */,
-				59E6FF372E4A712500CCA99B /* IncomingASAAccountInboxListItemCell.swift in Sources */,
 				59E6FF382E4A712500CCA99B /* IncomingASAListItemView.swift in Sources */,
 				59E6FF392E4A712500CCA99B /* IncomingASAListItemViewModel.swift in Sources */,
-				59E6FF3A2E4A712500CCA99B /* IncomingAsaListItemViewTheme.swift in Sources */,
+				59E6FF3A2E4A712500CCA99B /* IncomingASAListItemViewTheme.swift in Sources */,
 				59E6FF3B2E4A712500CCA99B /* IncominASAListTitleView.swift in Sources */,
 				59E6FF3C2E4A712500CCA99B /* IncominASAListTitleViewModel.swift in Sources */,
 				59E6FF3D2E4A712500CCA99B /* IncominASAListTitleViewTheme.swift in Sources */,
 				59E6FF3E2E4A712500CCA99B /* IncomingASASenderViewModel.swift in Sources */,
-				59E6FF3F2E4A712500CCA99B /* IncomingASAListItemTheme.swift in Sources */,
 				59E6FF402E4A712500CCA99B /* IncomingASAAssetListItemViewModel.swift in Sources */,
-				59E6FF412E4A712500CCA99B /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
-				59E6FF422E4A712500CCA99B /* IncomingASAAccountInboxAPIDataController.swift in Sources */,
 				59E6FF432E4A712500CCA99B /* IncomingASAsDetailScreen.swift in Sources */,
 				59E6FF442E4A712500CCA99B /* IncomingASAsDetailScreen+Theme.swift in Sources */,
 				59E6FF452E4A712500CCA99B /* IncomingASAsDetailView.swift in Sources */,
@@ -27608,8 +27545,8 @@
 				59E6FF4E2E4A712500CCA99B /* IncomingASARequestHeaderViewModel.swift in Sources */,
 				59E6FF4F2E4A712500CCA99B /* IncomingASARequestIdTheme.swift in Sources */,
 				59E6FF502E4A712500CCA99B /* IncomingASARequesSenderView.swift in Sources */,
-				59E6FF512E4A712500CCA99B /* IncomingASARequesSenderViewTheme.swift in Sources */,
-				59E6FF522E4A712500CCA99B /* IncomingASARequesSenderViewModel.swift in Sources */,
+				59E6FF512E4A712500CCA99B /* IncomingASARequestSenderViewTheme.swift in Sources */,
+				59E6FF522E4A712500CCA99B /* IncomingASARequestSenderViewModel.swift in Sources */,
 				59E6FF532E4A712500CCA99B /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */,
 				59E6FF542E4A712500CCA99B /* AppDelegate.swift in Sources */,
 				59E6FF552E4A712500CCA99B /* BaseViewController.swift in Sources */,
@@ -27881,6 +27818,7 @@
 				D4B50BCC2EA7807C00642C1D /* ASADetailViewController.swift in Sources */,
 				59E6005B2E4A712500CCA99B /* CarouselBannerItemViewTheme.swift in Sources */,
 				59E6005C2E4A712500CCA99B /* CarouselPageControl.swift in Sources */,
+				D4F9844C2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */,
 				59E6005D2E4A712500CCA99B /* CarouselBannerView.swift in Sources */,
 				59E6005E2E4A712500CCA99B /* CarouselBannerCell.swift in Sources */,
 				59E6005F2E4A712500CCA99B /* CarouselBannerViewTheme.swift in Sources */,
@@ -29745,25 +29683,14 @@
 				59E607A42E4A71D000CCA99B /* IncomingASAAccountView.swift in Sources */,
 				59E607A52E4A71D000CCA99B /* IncomingASAAccountViewTheme.swift in Sources */,
 				59E607A72E4A71D000CCA99B /* IncomingASAAccountsNoContentViewModel.swift in Sources */,
-				59E607A82E4A71D000CCA99B /* IncomingASAAccountInboxViewController.swift in Sources */,
-				59E607A92E4A71D000CCA99B /* IncomingASAAccountInboxViewController+Theme.swift in Sources */,
-				59E607AA2E4A71D000CCA99B /* IncomingASAAccountInboxDataController.swift in Sources */,
-				59E607AB2E4A71D000CCA99B /* IncomingASAAccountInboxListDataSource.swift in Sources */,
-				59E607AC2E4A71D000CCA99B /* IncomingASAAccountInboxListLayout.swift in Sources */,
-				59E607AD2E4A71D000CCA99B /* IncomingASAAccountInboxListLayout+Theme.swift in Sources */,
-				59E607AE2E4A71D000CCA99B /* IncomingASAAccountInboxHeaderTitleCell.swift in Sources */,
-				59E607AF2E4A71D000CCA99B /* IncomingASAAccountInboxListItemCell.swift in Sources */,
 				59E607B02E4A71D000CCA99B /* IncomingASAListItemView.swift in Sources */,
 				59E607B12E4A71D000CCA99B /* IncomingASAListItemViewModel.swift in Sources */,
-				59E607B22E4A71D000CCA99B /* IncomingAsaListItemViewTheme.swift in Sources */,
+				59E607B22E4A71D000CCA99B /* IncomingASAListItemViewTheme.swift in Sources */,
 				59E607B32E4A71D000CCA99B /* IncominASAListTitleView.swift in Sources */,
 				59E607B42E4A71D000CCA99B /* IncominASAListTitleViewModel.swift in Sources */,
 				59E607B52E4A71D000CCA99B /* IncominASAListTitleViewTheme.swift in Sources */,
 				59E607B62E4A71D000CCA99B /* IncomingASASenderViewModel.swift in Sources */,
-				59E607B72E4A71D000CCA99B /* IncomingASAListItemTheme.swift in Sources */,
 				59E607B82E4A71D000CCA99B /* IncomingASAAssetListItemViewModel.swift in Sources */,
-				59E607B92E4A71D000CCA99B /* IncomingASAAsCollectibleListItemViewModel.swift in Sources */,
-				59E607BA2E4A71D000CCA99B /* IncomingASAAccountInboxAPIDataController.swift in Sources */,
 				59E607BB2E4A71D000CCA99B /* IncomingASAsDetailScreen.swift in Sources */,
 				59E607BC2E4A71D000CCA99B /* IncomingASAsDetailScreen+Theme.swift in Sources */,
 				59E607BD2E4A71D000CCA99B /* IncomingASAsDetailView.swift in Sources */,
@@ -29778,8 +29705,8 @@
 				59E607C62E4A71D000CCA99B /* IncomingASARequestHeaderViewModel.swift in Sources */,
 				59E607C72E4A71D000CCA99B /* IncomingASARequestIdTheme.swift in Sources */,
 				59E607C82E4A71D000CCA99B /* IncomingASARequesSenderView.swift in Sources */,
-				59E607C92E4A71D000CCA99B /* IncomingASARequesSenderViewTheme.swift in Sources */,
-				59E607CA2E4A71D000CCA99B /* IncomingASARequesSenderViewModel.swift in Sources */,
+				59E607C92E4A71D000CCA99B /* IncomingASARequestSenderViewTheme.swift in Sources */,
+				59E607CA2E4A71D000CCA99B /* IncomingASARequestSenderViewModel.swift in Sources */,
 				59E607CB2E4A71D000CCA99B /* IncomingASAsDetailLoadingScreenViewModel.swift in Sources */,
 				59E607CC2E4A71D000CCA99B /* AppDelegate.swift in Sources */,
 				59E607CD2E4A71D000CCA99B /* BaseViewController.swift in Sources */,
@@ -30051,6 +29978,7 @@
 				D4B50BCE2EA7807C00642C1D /* ASADetailViewController.swift in Sources */,
 				59E608D32E4A71D000CCA99B /* CarouselBannerItemViewTheme.swift in Sources */,
 				59E608D42E4A71D000CCA99B /* CarouselPageControl.swift in Sources */,
+				D4F9844A2F44B33C00B8BDAF /* IncomingASAListItem.swift in Sources */,
 				59E608D52E4A71D000CCA99B /* CarouselBannerView.swift in Sources */,
 				59E608D62E4A71D000CCA99B /* CarouselBannerCell.swift in Sources */,
 				59E608D72E4A71D000CCA99B /* CarouselBannerViewTheme.swift in Sources */,

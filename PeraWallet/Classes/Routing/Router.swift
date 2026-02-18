@@ -433,9 +433,9 @@ final class Router:
                 default: break
                 }
             }
-        case .assetInbox(let address, let requestsCount):
+        case .assetInbox:
             route(
-                to: .incomingASA(address: address, requestsCount: requestsCount),
+                to: .inbox,
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -503,6 +503,9 @@ final class Router:
             case .buy(path: let path, address: let address):
                 guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
                 rootViewController.mainContainer.launchFund(with: path, and: address)
+            case .assetInbox:
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                visibleScreen.open(.inbox, by: .present)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
@@ -1422,21 +1425,6 @@ final class Router:
             )
         case .inbox:
             viewController = InboxConstructor.buildScene(legacyConfiguration: configuration) ?? UIViewController()
-        case let .incomingASA(address, requestsCount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            let dataController = IncomingASAAccountInboxAPIDataController(
-                address: address,
-                requestsCount: requestsCount,
-                sharedDataController: configuration.sharedDataController,
-                api: appConfiguration.api
-            )
-            viewController = IncomingASAAccountInboxViewController(
-                dataController: dataController,
-                copyToClipboardController: copyToClipboardController,
-                configuration: configuration
-            )
         case let .incomingASAsDetail(draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(

@@ -12,30 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaSenderViewTheme.swift
+//   IncomingASAListItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct IncomingASARequesSenderViewTheme:
+protocol IncomingASAListItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    let sender: TextStyle
-    let amount: TextStyle
-    var senderBottomInset: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.sender = [
-            .font(Typography.bodyRegular()),
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.main)
-        ]
-        self.amount = [
-            .font(Typography.bodyMedium()),
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.ASATiers.asaBarButton)
-        ]
-        self.senderBottomInset = 8
-    }
+    var icon: URLImageViewStyleLayoutSheet { get }
+    var iconSize: LayoutSize { get }
+    var loadingIndicator: ImageStyle { get }
+    var loadingIndicatorSize: LayoutSize { get }
+    var contentHorizontalPadding: LayoutMetric { get }
+    var contentMinWidthRatio: LayoutMetric { get }
+    var title: IncominASAListTitleViewTheme { get }
+    var primaryValue: TextStyle { get }
+    var secondaryValue: TextStyle { get }
+    var minSpacingBetweenTitleAndValue: LayoutMetric { get }
 }

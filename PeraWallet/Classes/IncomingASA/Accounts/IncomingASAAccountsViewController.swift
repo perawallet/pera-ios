@@ -161,7 +161,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private func moveToAssetDetailsScene(address: String, requestCount: Int) {
         
-        let screen = open(.incomingASA(address: address, requestsCount: requestCount), by: .push) as? IncomingASAAccountInboxViewController
+        let screen = open(.inbox, by: .push) as? IncomingASAAccountsViewController
         
         screen?.eventHandler = { [weak self, weak screen] event in
             switch event {
