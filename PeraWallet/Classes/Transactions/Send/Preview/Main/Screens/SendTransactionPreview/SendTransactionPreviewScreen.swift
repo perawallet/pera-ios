@@ -719,6 +719,7 @@ extension SendTransactionPreviewScreen {
             successScreen?.dismissScreen { [weak self] in
                guard let self else { return }
                eventHandler?(.didCompleteTransaction)
+               }
             }
          }
       }
@@ -910,6 +911,7 @@ private extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didCompleteJointAccountTransaction(signRequestMetadata: SignRequestMetadata)
       case didPerformDismiss
       case didEditNote(note: String?)
    }
