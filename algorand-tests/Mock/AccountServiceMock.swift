@@ -34,11 +34,30 @@ final class AccountServiceMock: AccountsServiceable {
     // MARK: - Actions - AccountsServiceable
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError) {}
-    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) {}
+    func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) -> ProposeSignResponse { .mock }
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError) {}
+    func searchJointAccountSignTransaction(signRequestID: String) async throws(AccountsService.ActionError) -> JointAccountsSignRequestSearchResponse { .mock }
     func hasJointAccount(with participantAddresses: [String]) -> Bool { false }
     func localAccount(address: String) -> AccountInformation? { nil }
     func localAccount(peraAccount: PeraAccount) -> AccountInformation? { nil }
     func account(peraAccount: PeraAccount) -> Account? { nil }
     func account(address: String) -> Account? { nil }
+}
+
+// MARK: - Mocks
+
+private extension ProposeSignResponse {
+    static var mock: Self { Self(id: "", jointAccount: .mock, type: .async, transactionLists: [], expectedExpireDatetime: Date(), status: .pending) }
+}
+
+private extension MultiSigAccountObject {
+    static var mock: Self { Self(address: "", participantAddresses: [], threshold: 0, version: 0, creationDatetime: Date(), deviceID: nil) }
+}
+
+private extension JointAccountsSignRequestSearchResponse {
+    static var mock: Self { Self(results: [.mock]) }
+}
+
+private extension JointAccountsSignRequestSearchDataObject {
+    static var mock: Self { Self(id: nil, jointAccount: nil, type: .async, transactionLists: nil, expectedExpireDatetime: nil, status: nil, creationDatetime: nil, failReasonDisplay: nil) }
 }

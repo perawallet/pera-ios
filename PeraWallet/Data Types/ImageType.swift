@@ -30,5 +30,6 @@ enum ImageType: Hashable {
 
 
 extension ImageType {
-    static var placeholderIconData: Self { .icon(data: IconData(image: .Icons.user, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon)) }
+    static var placeholderUserIconData: Self { .icon(data: IconData(image: .Icons.user, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon)) }
+    static var placeholderGroupIconData: Self { .icon(data: IconData(image: .Icons.group, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon)) }
 }

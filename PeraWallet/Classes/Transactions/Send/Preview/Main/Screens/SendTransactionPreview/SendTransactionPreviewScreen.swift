@@ -422,13 +422,29 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             
             Task {
                do {
-                  try await self.accountsService.createJointAccountSignTransactionRequest(
+                  let response = try await self.accountsService.createJointAccountSignTransactionRequest(
                      jointAccountAddress: jointAccount.address,
                      proposerAddress: proposerAddress,
                      rawTransactionLists: rawTransactionLists,
                      responses: responses
                   )
-                  self.openSuccess(nil)
+                  
+                  let transactionResponses = response.transactionLists.flatMap(\.responses)
+                  
+                  let signaturesInfo = response.jointAccount.participantAddresses
+                     .map { address in
+                        let status = transactionResponses.first(where: { $0.address == address })?.response
+                        return SignRequestInfo(address: address, status: status)
+                     }
+                  
+                  let signRequestMetadata = SignRequestMetadata(
+                     signRequestID: response.id,
+                     proposerAddress: proposerAddress,
+                     signaturesInfo: signaturesInfo,
+                     threshold: response.jointAccount.threshold,
+                     deadline: response.expectedExpireDatetime
+                  )
+                  self.openSuccess(nil, signRequestMetadata: signRequestMetadata)
                } catch {
                   self.open(error: error)
                }
@@ -680,9 +696,7 @@ extension SendTransactionPreviewScreen {
       ) as? LoadingScreen
    }
 
-   private func openSuccess(
-      _ transactionId: String?
-   ) {
+   private func openSuccess(_ transactionId: String?, signRequestMetadata: SignRequestMetadata? = nil) {
       let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
          title: String(localized: "send-transaction-preview-success-title"),
          detail: String(localized: "send-transaction-preview-success-detail")
@@ -702,7 +716,12 @@ extension SendTransactionPreviewScreen {
          case .didTapDoneAction:
             successScreen?.dismissScreen { [weak self] in
                 guard let self else { return }
-               self.eventHandler?(.didCompleteTransaction)
+               
+               if let signRequestMetadata {
+                  self.eventHandler?(.didCompleteJointAccountTransaction(signRequestMetadata: signRequestMetadata))
+               } else {
+                  self.eventHandler?(.didCompleteTransaction)
+               }
             }
          }
       }
@@ -713,18 +732,18 @@ extension SendTransactionPreviewScreen {
       displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
    }
 
-    private func openPeraExplorerForTransaction(
-        _ transactionID: String?
-    ) {
-        guard let identifierlet = transactionID,
-              let url = AlgoExplorerType.peraExplorer.transactionURL(
-                with: identifierlet,
-                in: api?.network ?? .mainnet
-              ) else {
-            return
-        }
-        open(url)
-    }
+   private func openPeraExplorerForTransaction(
+      _ transactionID: String?
+   ) {
+      guard let identifierlet = transactionID,
+            let url = AlgoExplorerType.peraExplorer.transactionURL(
+               with: identifierlet,
+               in: api?.network ?? .mainnet
+            ) else {
+         return
+      }
+      open(url)
+   }
 }
 
 extension SendTransactionPreviewScreen {
@@ -888,6 +907,7 @@ private extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didCompleteJointAccountTransaction(signRequestMetadata: SignRequestMetadata)
       case didPerformDismiss
       case didEditNote(note: String?)
    }

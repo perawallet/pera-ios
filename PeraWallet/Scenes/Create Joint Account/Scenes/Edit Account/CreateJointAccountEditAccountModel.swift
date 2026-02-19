@@ -83,6 +83,6 @@ final class CreateJointAccountEditAccountModel: CreateJointAccountEditAccountMod
     private func updateModel() {
         let title = !viewModel.name.isEmpty ? viewModel.name : viewModel.address.shortAddressDisplay
         let subtitle = !viewModel.name.isEmpty ? viewModel.address.shortAddressDisplay : nil
-        viewModel.updatedModel = AddedAccountData(address: viewModel.address, image: .placeholderIconData, title: title, subtitle: subtitle, isEditable: true, isUserAccount: false)
+        viewModel.updatedModel = AddedAccountData(address: viewModel.address, image: .placeholderUserIconData, title: title, subtitle: subtitle, isEditable: true, isUserAccount: false)
     }
 }

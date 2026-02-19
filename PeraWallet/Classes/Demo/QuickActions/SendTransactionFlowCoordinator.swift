@@ -18,6 +18,14 @@ import Foundation
 import UIKit
 import pera_wallet_core
 
+struct SignRequestMetadata {
+    let signRequestID: String
+    let proposerAddress: String
+    let signaturesInfo: [SignRequestInfo]
+    let threshold: Int
+    let deadline: Date
+}
+
 /// <todo>
 /// This should be removed after the routing refactor.
 final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
@@ -88,17 +96,16 @@ extension SendTransactionFlowCoordinator {
     ) {
         let assetSelectionScreen: Screen = .assetSelection(account: account)
 
-        if let screen = screen {
-            screen.open(
-                assetSelectionScreen,
-                by: .push
-            )
+        var viewController: SelectAssetViewController?
+        
+        if let screen {
+            viewController = screen.open(assetSelectionScreen, by: .push)
         } else {
-            presentingScreen.open(
-                assetSelectionScreen,
-                by: .present
-            )
+            viewController = presentingScreen.open(assetSelectionScreen, by: .present)
         }
+        
+        guard let viewController else { return }
+        configureSendTransactionScreen(previewHandableScreen: viewController)
     }
 
     private func navigateToSendTransaction(
@@ -115,17 +122,36 @@ extension SendTransactionFlowCoordinator {
 
         let sendTransactionScreen = Screen.sendTransaction(draft: draft)
 
-        if let screen = screen {
-            screen.open(
-                sendTransactionScreen,
-                by: .push
-            )
+        var viewController: SendTransactionScreen?
+        
+        if let screen {
+            viewController = screen.open(sendTransactionScreen, by: .push)
         } else {
-            presentingScreen.open(
-                sendTransactionScreen,
-                by: .present
-            )
+            viewController = presentingScreen.open(sendTransactionScreen, by: .present)
         }
+        
+        guard let viewController else { return }
+        configureSendTransactionScreen(previewHandableScreen: viewController)
+    }
+    
+    private func configureSendTransactionScreen(previewHandableScreen: JointAccountTransactionPreviewHandable) {
+        
+        previewHandableScreen.onShowJointAccountSignTransactionRequest = { [weak self] in
+            self?.showJointAccountPendingTransactionOverlay(signRequestMetadata: $0)
+        }
+    }
+    
+    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+            signRequestID: signRequestMetadata.signRequestID,
+            proposerAddress: signRequestMetadata.proposerAddress,
+            signaturesInfo: signRequestMetadata.signaturesInfo,
+            threshold: signRequestMetadata.threshold,
+            deadline: signRequestMetadata.deadline
+        )
+        
+        presentingScreen.present(viewController, animated: true)
     }
 }
 

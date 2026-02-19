@@ -25,7 +25,9 @@ struct JointAccountInviteConfirmationOverlay: View {
     
     private let model: JointAccountInviteConfirmationOverlayModelable
     @ObservedObject private var viewModel: JointAccountInviteConfirmationOverlayViewModel
+    
     @State private var scrollViewContentSize: CGSize = .zero
+    @State private var isVisible: Bool = false
     
     // MARK: - Properties - UIKit Compatibility
     
@@ -46,6 +48,7 @@ struct JointAccountInviteConfirmationOverlay: View {
     var body: some View {
         OverlayView(
             contentView: { contentView() },
+            isVisible: $isVisible,
             onDismissAction: { onDismissAction?() }
         )
     }
