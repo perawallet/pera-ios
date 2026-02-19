@@ -189,9 +189,13 @@ final class InboxModel: InboxModelable {
         let watchedSignRequestMessage = PeraUserDefaults.watchedSignRequestMessage ?? []
         let isUnread = !watchedSignRequestMessage.contains(model.id)
         
-        let signatureCount = model.transactionLists
+        let signers = model.transactionLists
             .flatMap(\.responses)
             .filter { $0.response == .signed }
+            .map(\.address)
+        
+        let signatureCount = model.jointAccount.participantAddresses
+            .filter { signers.contains($0) }
             .count
         
         let threshold = model.jointAccount.threshold
@@ -219,7 +223,7 @@ final class InboxModel: InboxModelable {
         let title = account?.titles.primary ?? address.shortAddressDisplay
         let subtitle = account?.titles.secondary
         
-        return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .placeholderIconData, title: title, subtitle: subtitle)
+        return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .placeholderUserIconData, title: title, subtitle: subtitle)
     }
     
     private func handleImportJointAccountAction(identifier: String) {
@@ -237,9 +241,9 @@ final class InboxModel: InboxModelable {
     
     private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
         switch signRequestStatus {
-        case .pending, .ready, .submitting, .confirmed, .expired:
+        case .pending, .ready, .submitting, .confirmed:
                 .pending
-        case .failed:
+        case .failed, .declined, .expired:
                 .failed
         }
     }
