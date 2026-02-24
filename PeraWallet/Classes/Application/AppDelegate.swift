@@ -278,6 +278,11 @@ class AppDelegate:
             router.launch(deeplink: .qrScanner)
         }
     }
+    
+    func handle(deeplink: String) {
+        guard let externalDeepLink = URL(string: deeplink)?.externalDeepLink else { return }
+        receive(deeplinkWithSource: .externalDeepLink(externalDeepLink))
+    }
 }
 
 extension AppDelegate {

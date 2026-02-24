@@ -684,6 +684,16 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         rescanRekeyedAccountsCoordinator.rescan(accounts: [accountHandle.value], nextStep: .dismiss)
     }
     
+    func optionsViewControllerDidOpenExportJointAccount(_ optionsViewController: OptionsViewController) {
+        let address = accountHandle.value.address
+        let deepLink = "perawallet://joint-account-import?address=\(address)"
+        let draft = QRCreationDraft(address: "", mode: .exportJointAccount, title: String(localized: "export-share-deeplink-url-section-title"), deepLink: deepLink)
+        open(.qrGenerator(title: String(localized: "export-share-deeplink-title"), draft: draft, isTrackable: true), by: .present)
+    }
+    
+    func optionsViewControllerDidRekeyingToJointAccount(_ optionsViewController: OptionsViewController) {
+        rekeyToStandardAccountFlowCoordinator.launch(accountHandle.value)
+    }
 }
 
 extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {

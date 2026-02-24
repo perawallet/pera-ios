@@ -37,6 +37,11 @@ extension RekeyingValidator {
         from srcAcc: Account,
         to authAcc: Account
     ) -> RekeyingValidation {
+        
+        if srcAcc.isJointAccount, authAcc.isJointAccount {
+            return .success
+        }
+        
         let isSelfRekeying = self.isSelfRekeying(
             from: srcAcc,
             to: authAcc

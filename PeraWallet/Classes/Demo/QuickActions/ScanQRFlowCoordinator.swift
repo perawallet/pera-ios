@@ -160,6 +160,8 @@ extension ScanQRFlowCoordinator {
                 controller,
                 swapWasDetected: qrText
             )
+        case .exportJointAccount:
+            qrScanner(controller, exportJointAccountDetected: qrText)
         case .walletConnect, .assetDetail, .assetInbox, .discoverBrowser, .discoverPath, .cardsPath, .stakingPath, .buy, .sell, .accountDetail, .webImport:
             break
         }
@@ -974,6 +976,11 @@ extension ScanQRFlowCoordinator {
 
         guard let rootViewController = UIApplication.shared.rootViewController() else { return }
         rootViewController.launch(tab: .swap, with: draft)
+    }
+    
+    private func qrScanner(_ qrScannerScreen: QRScannerViewController, exportJointAccountDetected qr: QRText) {
+        guard let deeplink = qr.deepLink else { return }
+        AppDelegate.shared?.handle(deeplink: deeplink)
     }
 
     private func composeAlgosTransactionDraft(

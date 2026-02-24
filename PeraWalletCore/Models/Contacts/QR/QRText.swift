@@ -37,6 +37,7 @@ public final class QRText: Codable {
     public var action: String?
     public var assetInId: Int64?
     public var assetOutId: Int64?
+    public var deepLink: String?
     
     public init(
         mode: QRMode,
@@ -56,7 +57,8 @@ public final class QRText: Codable {
         encryptionKey: String? = nil,
         action: String? = nil,
         assetInId: Int64? = nil,
-        assetOutId: Int64? = nil
+        assetOutId: Int64? = nil,
+        deepLink: String? = nil
     ) {
         self.mode = mode
         self.address = address
@@ -76,6 +78,7 @@ public final class QRText: Codable {
         self.action = action
         self.assetInId = assetInId
         self.assetOutId = assetOutId
+        self.deepLink = deepLink
     }
     
     public required init(from decoder: Decoder) throws {
@@ -99,6 +102,10 @@ public final class QRText: Codable {
         
         if let assetOutIdText = try values.decodeIfPresent(String.self, forKey: .assetOutId) {
             assetOutId = Int64(assetOutIdText)
+        }
+        
+        if let deepLink = try values.decodeIfPresent(String.self, forKey: .deeplink) {
+            self.deepLink = deepLink
         }
 
         note = try values.decodeIfPresent(String.self, forKey: .note)
@@ -266,6 +273,10 @@ public final class QRText: Codable {
             }
             if let assetOutId = assetOutId {
                 try container.encode(assetOutId, forKey: .assetOutId)
+            }
+        case .exportJointAccount:
+            if let deepLink = deepLink {
+                try container.encode(deepLink, forKey: .deeplink)
             }
         }
     }
@@ -607,6 +618,8 @@ extension QRText {
                 query += "&assetOutId=\(assetOutId)"
             }
             return "\(base)swap/\(query)"
+        case .exportJointAccount:
+            return deepLink ?? ""
         }
         return ""
     }
@@ -762,6 +775,8 @@ extension QRText {
                 query += "&assetOutId=\(assetOutId)"
             }
             return "\(base)swap/\(query)"
+        case .exportJointAccount:
+            return deepLink ?? base
         }
         return ""
     }
@@ -979,6 +994,8 @@ extension QRText {
                 query += "&assetOutId=\(assetOutId)"
             }
             return "\(base)swap/\(query)"
+        case .exportJointAccount:
+            return deepLink ?? ""
         }
         return ""
     }
@@ -1011,6 +1028,7 @@ extension QRText {
         case action = "action"
         case assetInId = "assetInId"
         case assetOutId = "assetOutId"
+        case deeplink
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
             lhs.rawValue == rhs.rawValue
@@ -1087,4 +1105,5 @@ public enum QRMode {
     case sell
     case accountDetail
     case webImport
+    case exportJointAccount
 }

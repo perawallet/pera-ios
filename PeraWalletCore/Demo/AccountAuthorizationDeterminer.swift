@@ -44,6 +44,9 @@ extension AccountAuthorizationDeterminer {
         }
 
         if account.hasAuthAccount() {
+            
+            guard !account.isJointAccount else { return .jointAccountRekeyed }
+            
             return determineAccountAuthorizationForRekeyedAccount(
                 account: account,
                 accountCollection: accountCollection
