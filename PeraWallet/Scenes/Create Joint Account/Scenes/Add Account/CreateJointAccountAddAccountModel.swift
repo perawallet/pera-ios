@@ -263,7 +263,7 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel) {
         viewModel.selectedAccount = AddedAccountData(
             address: specialAccount.id,
-            image: .placeholderIconData,
+            image: .placeholderUserIconData,
             title: specialAccount.title,
             subtitle: specialAccount.subtitle,
             isEditable: true,

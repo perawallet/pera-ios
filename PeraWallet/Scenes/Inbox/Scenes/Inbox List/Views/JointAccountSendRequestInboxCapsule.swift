@@ -19,6 +19,7 @@ import SwiftUI
 struct JointAccountSendRequestInboxCapsule: View {
     
     enum TextType {
+        case localized(text: LocalizedStringKey)
         case raw(text: String)
         case time(date: Date)
     }
@@ -27,6 +28,8 @@ struct JointAccountSendRequestInboxCapsule: View {
     
     let icon: ImageResource
     let text: TextType
+    let foregroundColor: Color
+    let backgroundColor: Color
     
     private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(
         unitsStyle: .abbreviated,
@@ -44,17 +47,19 @@ struct JointAccountSendRequestInboxCapsule: View {
             textView()
                 .font(.DMSans.medium.size(13.0))
         }
-        .foregroundStyle(Color.Text.main)
+        .foregroundStyle(foregroundColor)
         .padding(.leading, 8.0)
         .padding(.trailing, 12.0)
         .padding(.vertical, 4.0)
-        .background(Color.Layer.grayLighter)
+        .background(backgroundColor)
         .cornerRadius(16.0)
     }
     
     @ViewBuilder
     private func textView() -> some View {
         switch text {
+        case let .localized(text):
+            Text(text)
         case let .raw(text):
             Text(text)
         case let .time(date):

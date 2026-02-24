@@ -61,8 +61,8 @@ struct JointAccountSendRequestInboxRow: View {
                 Spacer()
             }
             HStack(spacing: 8.0) {
-                JointAccountSendRequestInboxCapsule(icon: .Icons.user, text: .raw(text: signedTransactionsText))
-                JointAccountSendRequestInboxCapsule(icon: .Icons.clock, text: .time(date: deadline))
+                JointAccountSendRequestInboxCapsule(icon: .Icons.user, text: .raw(text: signedTransactionsText), foregroundColor: .Text.main, backgroundColor: .Layer.grayLighter)
+                JointAccountSendRequestInboxCapsule(icon: .Icons.clock, text: .time(date: deadline), foregroundColor: .Text.main, backgroundColor: .Layer.grayLighter)
                 Spacer()
             }
         }
