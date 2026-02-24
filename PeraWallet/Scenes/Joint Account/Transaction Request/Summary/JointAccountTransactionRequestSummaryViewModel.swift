@@ -19,6 +19,7 @@ import pera_wallet_core
 protocol JointAccountTransactionRequestSummaryModelable {
     
     var viewModel: JointAccountTransactionRequestSummaryViewModel { get }
+    var accountsService: AccountsServiceable { get }
     
     @MainActor func confirmTransaction()
     @MainActor func declineTransaction()
@@ -61,7 +62,7 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
     
     // MARK: - Properties
     
-    private let accountsService: AccountsServiceable
+    let accountsService: AccountsServiceable
     private let currencyService: CurrencyServiceable
     private let signRequest: SignRequestObject
     private let transactionController: TransactionController

@@ -22,14 +22,21 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     
     private let hostingController: JointAccountTransactionRequestSummaryHostingViewController
     private var copyToClipboardController: CopyToClipboardController?
+    private let accountsService: AccountsServiceable
+    private var pendingDetailTask: Task<Void, Never>?
     
     // MARK: - Initialisers
     
     init(legacyConfiguration: ViewControllerConfiguration, model: JointAccountTransactionRequestSummaryModelable) {
         hostingController = JointAccountTransactionRequestSummaryHostingViewController(model: model)
+        accountsService = model.accountsService
         super.init(configuration: legacyConfiguration, hostingController: hostingController)
         setupCallbacks()
         setupLegacyControllers()
+    }
+    
+    deinit {
+        pendingDetailTask?.cancel()
     }
     
     // MARK: - Setups
@@ -49,8 +56,95 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     // MARK: - Actions
     
     private func presentTransactionDetails(account: Account, transaction: TransactionItem) {
-        let asset: Asset? = nil
-        open(.transactionDetail(account: account, transaction: transaction, assetDetail: asset), by: .present)
+        guard
+            transaction.status == .pending,
+            let sender = transaction.sender,
+            let senderAccount = sharedDataController.accountCollection[sender]?.value,
+            senderAccount.isJointAccount
+        else {
+            open(.transactionDetail(account: account, transaction: transaction, assetDetail: nil), by: .present)
+            return
+        }
+
+        openTransactionDetail(for: senderAccount, and: transaction)
+    }
+    
+    private func openTransactionDetail(for jointAccount: Account, and transaction: TransactionItem) {
+        guard
+            let proposerAddress = resolveProposerAddress(from: jointAccount),
+            let transactionId = transaction.id
+        else {
+            show(error: SendTransactionPreviewScreen.InternalError.noSigner)
+            return
+        }
+        
+        pendingDetailTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let metadata = try await fetchSignRequestMetadata(
+                    transactionId: transactionId,
+                    proposerAddress: proposerAddress
+                )
+                showJointAccountPendingTransactionOverlay(signRequestMetadata: metadata)
+            } catch {
+                show(error: error)
+            }
+        }
+    }
+    
+    private func resolveProposerAddress(from jointAccount: Account) -> String? {
+        let participants = jointAccount.jointAccountParticipants ?? []
+        return participants
+            .compactMap { self.accountsService.account(address: $0)?.address }
+            .first
+    }
+    
+    private func fetchSignRequestMetadata(
+        transactionId: String,
+        proposerAddress: String
+    ) async throws -> SignRequestMetadata {
+        guard
+            let signTransaction = try await accountsService
+                .searchJointAccountSignTransaction(signRequestID: transactionId)
+                .results.first,
+            let responses = signTransaction.transactionLists?.first?.responses,
+            let threshold = signTransaction.jointAccount?.threshold,
+            let deadline = signTransaction.expectedExpireDatetime
+        else {
+            throw SendTransactionPreviewScreen.InternalError.noSigner
+        }
+        
+        let signaturesInfo = try buildSignaturesInfo(
+            from: signTransaction.jointAccount?.participantAddresses,
+            responses: responses
+        )
+        
+        return SignRequestMetadata(
+            signRequestID: transactionId,
+            proposerAddress: proposerAddress,
+            signaturesInfo: signaturesInfo,
+            threshold: threshold,
+            deadline: deadline
+        )
+    }
+    
+    private func buildSignaturesInfo(
+        from participantAddresses: [String]?,
+        responses: [SignRequestTransactionResponseObject]
+    ) throws -> [SignRequestInfo] {
+        guard let addresses = participantAddresses else {
+            throw SendTransactionPreviewScreen.InternalError.noSigner
+        }
+        
+        return addresses.map { address in
+            let status = responses.first { $0.address == address }?.response
+            return SignRequestInfo(address: address, status: status)
+        }
+    }
+    
+    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        present(viewController, animated: true)
     }
     
     private func copyAddressToPastebin(address: String) {
