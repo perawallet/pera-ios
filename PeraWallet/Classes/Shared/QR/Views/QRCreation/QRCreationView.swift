@@ -26,7 +26,7 @@ final class QRCreationView:
 
     private lazy var theme = QRCreationViewTheme()
     
-    private lazy var qrView = QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic))
+    private lazy var qrView = QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic, deepLink: draft.deepLink))
     private lazy var addressView = QRAddressLabel()
     private lazy var copyButton = Button(.imageAtLeft(spacing: theme.buttonTitleInset))
     private lazy var shareButton = Button(.imageAtLeft(spacing: theme.buttonTitleInset))
@@ -138,10 +138,13 @@ extension QRCreationView {
     }
 
     private func addCopyButton(_ theme: QRCreationViewTheme) {
+        
+        let title = draft.mode == .exportJointAccount ? String(localized: "title-copy-url") : String(localized: "title-copy-address").capitalized
+        
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(
             ButtonCommonViewModel(
-                title: String(localized: "title-copy-address").capitalized,
+                title: title,
                 iconSet: [.normal("icon-qr-copy")])
         )
 
@@ -153,10 +156,13 @@ extension QRCreationView {
     }
 
     private func addShareButton(_ theme: QRCreationViewTheme) {
+        
+        let title = draft.mode == .exportJointAccount ? String(localized: "title-share-qr-url") : String(localized: "title-share-qr-address")
+        
         shareButton.customize(theme.shareButtonTheme)
         shareButton.bindData(
             ButtonCommonViewModel(
-                title: String(localized: "title-share-qr"),
+                title: title,
                 iconSet: [.normal("icon-qr-share")])
         )
 

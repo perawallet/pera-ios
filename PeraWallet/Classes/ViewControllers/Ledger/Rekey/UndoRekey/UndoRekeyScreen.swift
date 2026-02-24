@@ -76,6 +76,7 @@ final class UndoRekeyScreen:
     private let loadingController: LoadingController
     private let analytics: ALGAnalytics
     private let hdWalletStorage: HDWalletStorable
+    private let jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: PeraCoreManager.shared.accounts)
     
     private let sourceAccount: Account
     private let authAccount: Account
@@ -355,37 +356,66 @@ extension UndoRekeyScreen {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
+        
+        if sourceAccount.isJointAccount {
+            performAsyncJointAccountTransaction(draft: rekeyTransactionDraft)
+        }
+    }
+    
+    private func performAsyncJointAccountTransaction(draft: RekeyTransactionSendDraft) {
+        Task {
+            do {
+                try await jointAccountTransactionHandler.handleTransaction(
+                    jointAccount: sourceAccount,
+                    type: .rekey(draft: draft),
+                    sharedDataController: sharedDataController,
+                    transactionController: transactionController
+                )
+                finishWithSuccess()
+            } catch {
+                finish(error: error)
+            }
+        }
+    }
+    
+    private func finishWithSuccess() {
+        loadingController.stopLoading()
+        analytics.track(.rekeyAccount())
+        saveRekeyedAccountDetails()
+        eventHandler?(.didUndoRekey)
+    }
+    
+    private func finish(error: Error) {
+        
+        loadingController.stopLoading()
+        
+        if let error = error as? HIPTransactionError {
+            switch error {
+            case let .inapp(transactionError):
+                displayTransactionError(from: transactionError)
+            default:
+                bannerController.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: error.asAFError?.errorDescription ?? error.localizedDescription
+                )
+            }
+        } else {
+            bannerController.presentErrorBanner(
+                title: String(localized: "title-error"),
+                message: error.localizedDescription
+            )
+        }
     }
 }
 
 extension UndoRekeyScreen {
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {
-        loadingController.stopLoading()
-
-        analytics.track(.rekeyAccount())
-        saveRekeyedAccountDetails()
-
-        eventHandler?(.didUndoRekey)
+    
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        finishWithSuccess()
     }
 
-    func transactionController(
-        _ transactionController: TransactionController,
-        didFailedComposing error: HIPTransactionError
-    ) {
-        loadingController.stopLoading()
-
-        switch error {
-        case let .inapp(transactionError):
-            displayTransactionError(from: transactionError)
-        default:
-            bannerController.presentErrorBanner(
-                title: String(localized: "title-error"),
-                message: error.asAFError?.errorDescription ?? error.localizedDescription
-            )
-        }
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+        finish(error: error)
     }
 
     func transactionController(

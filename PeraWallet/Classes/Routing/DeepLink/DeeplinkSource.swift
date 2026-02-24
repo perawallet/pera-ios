@@ -77,4 +77,5 @@ enum ExternalDeepLink {
     case cards(path: String?)
     case buy(path: String?, address: String?)
     case assetInbox(path: String?, address: String?)
+    case jointAccountImport(address: String)
 }

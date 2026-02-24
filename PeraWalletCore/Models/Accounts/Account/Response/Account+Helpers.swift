@@ -231,7 +231,7 @@ extension Account {
         if authorization.isLedger {
             return "icon-ledger-account"
         }
-        if authorization.isRekeyedToStandard {
+        if authorization.isRekeyedToStandard || authorization.isJointAccountRekeyed {
             return "icon-any-to-standard-rekeyed-account"
         }
         if authorization.isRekeyedToLedger {

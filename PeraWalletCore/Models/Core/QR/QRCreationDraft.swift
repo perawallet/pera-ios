@@ -21,14 +21,16 @@ public struct QRCreationDraft {
     public let address: String
     public let mnemonic: String?
     public let title: String?
+    public let deepLink: String?
     public let mode: QRMode
     public let isSelectable: Bool
     
-    public init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?) {
+    public init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?, deepLink: String? = nil) {
         self.address = address
         self.mode = mode
         self.mnemonic = mnemonic
         self.isSelectable = mode == .address
         self.title = title
+        self.deepLink = deepLink
     }
 }
