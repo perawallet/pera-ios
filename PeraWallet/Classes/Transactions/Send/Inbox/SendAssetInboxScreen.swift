@@ -425,6 +425,7 @@ extension SendAssetInboxScreen {
                     guard let self else { return }
                     eventHandler?(.send)
                 }
+            case .shouldShowPendingTransactionOverlay: break
             }
         }
     }

@@ -42,4 +42,16 @@ enum JointAccountPendingTransactionOverlayConstructor {
         )
         return JointAccountPendingTransactionOverlayViewController(rootView: view)
     }
+    
+    static func buildViewController(signRequestMetadata: SignRequestMetadata) -> JointAccountPendingTransactionOverlayViewController {
+        let view = buildScene(
+            legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
+            signRequestID: signRequestMetadata.signRequestID,
+            proposerAddress: signRequestMetadata.proposerAddress,
+            signaturesInfo: signRequestMetadata.signaturesInfo,
+            threshold: signRequestMetadata.threshold,
+            deadline: signRequestMetadata.deadline
+        )
+        return JointAccountPendingTransactionOverlayViewController(rootView: view)
+    }
 }

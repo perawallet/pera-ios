@@ -711,20 +711,23 @@ extension SendTransactionPreviewScreen {
          [weak self, weak successScreen] event in
          guard let self = self else { return }
          switch event {
+         case .shouldShowPendingTransactionOverlay:
+            openPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, presentingScreen: successScreen)
          case .didTapViewDetailAction:
             self.openPeraExplorerForTransaction(transactionId)
          case .didTapDoneAction:
             successScreen?.dismissScreen { [weak self] in
-                guard let self else { return }
-               
-               if let signRequestMetadata {
-                  self.eventHandler?(.didCompleteJointAccountTransaction(signRequestMetadata: signRequestMetadata))
-               } else {
-                  self.eventHandler?(.didCompleteTransaction)
-               }
+               guard let self else { return }
+               eventHandler?(.didCompleteTransaction)
             }
          }
       }
+   }
+   
+   private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presentingScreen: UIViewController?) {
+      guard let signRequestMetadata else { return }
+      let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+      presentingScreen?.present(viewController, animated: true)
    }
    
    private func open(error: Error) {
@@ -907,7 +910,6 @@ private extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
-      case didCompleteJointAccountTransaction(signRequestMetadata: SignRequestMetadata)
       case didPerformDismiss
       case didEditNote(note: String?)
    }
