@@ -27,9 +27,13 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     
     // MARK: - Initialisers
     
-    init(legacyConfiguration: ViewControllerConfiguration, model: JointAccountTransactionRequestSummaryModelable) {
+    init(
+        legacyConfiguration: ViewControllerConfiguration,
+        accountsService: AccountsServiceable,
+        model: JointAccountTransactionRequestSummaryModelable
+    ) {
         hostingController = JointAccountTransactionRequestSummaryHostingViewController(model: model)
-        accountsService = model.accountsService
+        self.accountsService = accountsService
         super.init(configuration: legacyConfiguration, hostingController: hostingController)
         setupCallbacks()
         setupLegacyControllers()
