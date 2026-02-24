@@ -85,6 +85,8 @@ struct DeeplinkQR {
             case "staking":
                 let path = queryParams?["path"]
                 return QRText(mode: .stakingPath, path: path)
+            case "joint-account-import":
+                return QRText(mode: .exportJointAccount, deepLink: url.absoluteString)
             default:
                 // Regular address-based deeplink
                 return QRText.build(for: host, with: queryParams)

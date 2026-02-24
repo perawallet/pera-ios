@@ -618,6 +618,7 @@ public enum AccountAuthorization: RawRepresentable {
         case .unknownToLedgerRekeyed: return "unknownToLedgerRekeyed"
         case .unknownToStandardRekeyed: return "unknownToStandardRekeyed"
         case .unknownToNoAuthInLocalRekeyed: return "unknownToNoAuthInLocalRekeyed"
+        case .jointAccountRekeyed: return "jointAccountRekeyed"
         case .unknown: return "unknown"
         }
     }
@@ -658,6 +659,7 @@ public enum AccountAuthorization: RawRepresentable {
     case unknownToLedgerRekeyed
     case unknownToStandardRekeyed
     case unknownToNoAuthInLocalRekeyed
+    case jointAccountRekeyed
 
     case unknown /// <note> Undetermined or indeterminable authorization state.
 }
@@ -718,6 +720,10 @@ extension AccountAuthorization {
     public var isUnknownToNoAuthInLocalRekeyed: Bool {
         return self == .unknownToNoAuthInLocalRekeyed
     }
+    
+    public var isJointAccountRekeyed: Bool {
+        self == .jointAccountRekeyed
+    }
 
     /// <note> Missing private data or rekeyed to account that is not in local
     public var isNoAuth: Bool {
@@ -731,13 +737,7 @@ extension AccountAuthorization {
     /// <note> `isRekeyedToNoAuthInLocal` is not included in this check.
     /// Rekeyed account authorization means, we've the auth account or auth ledger detail in the app, If you want to check auth address nullity, check auth address.
     public var isRekeyed: Bool {
-        return
-            isStandardToLedgerRekeyed ||
-            isStandardToStandardRekeyed ||
-            isLedgerToLedgerRekeyed ||
-            isLedgerToStandardRekeyed ||
-            isUnknownToLedgerRekeyed ||
-            isUnknownToStandardRekeyed
+        isStandardToLedgerRekeyed || isStandardToStandardRekeyed || isLedgerToLedgerRekeyed || isLedgerToStandardRekeyed || isUnknownToLedgerRekeyed || isUnknownToStandardRekeyed || isJointAccountRekeyed
     }
 
     public var isRekeyedToLedger: Bool {

@@ -217,6 +217,10 @@ extension OptionsViewController {
                     #selector(rekeyToStandardAccount),
                     to: stackView
                 )
+            case .rekeyToJointAccount:
+                addButton(RekeyToJointAccountListItemButtonViewModel(), #selector(rekeyToJointAccount), to: stackView)
+            case .exportJointAccount:
+                addButton(ExportJointAccountListItemButtonViewModel(), #selector(exportJointAccount), to: stackView)
             case .rescanRekeyedAccount:
                 addButton(RescanAccountsListItemViewModel(), #selector(onRescanRekeyedAccountsAction), to: stackView)
             case .rekeyInformation:
@@ -313,6 +317,21 @@ extension OptionsViewController {
         }
     }
     
+    @objc
+    private func rekeyToJointAccount() {
+        closeScreen(by: .dismiss) { [weak self] in
+            guard let self else { return }
+            delegate?.optionsViewControllerDidRekeyingToJointAccount(self)
+        }
+    }
+    
+    @objc
+    private func exportJointAccount() {
+        closeScreen(by: .dismiss) { [weak self] in
+            guard let self else { return }
+            delegate?.optionsViewControllerDidOpenExportJointAccount(self)
+        }
+    }
     
     @objc private func onRescanRekeyedAccountsAction() {
         closeScreen(by: .dismiss) { [weak self] in
@@ -501,7 +520,11 @@ extension OptionsViewController {
                     secondaryOptions.append(.undoRekey)
                 }
                 
-                secondaryOptions += [.rekeyToLedger, .rekeyToStandardAccount, .rescanRekeyedAccount]
+                if account.isJointAccount {
+                    secondaryOptions += [.rekeyToJointAccount, .exportJointAccount]
+                } else {
+                    secondaryOptions += [.rekeyToLedger, .rekeyToStandardAccount, .rescanRekeyedAccount]
+                }
                 
                 tertiaryOptions = [
                     .renameAccount,
@@ -524,6 +547,8 @@ extension OptionsViewController {
         case undoRekey
         case rekeyToLedger
         case rekeyToStandardAccount
+        case rekeyToJointAccount
+        case exportJointAccount
         case rekeyInformation
         case rescanRekeyedAccount
         case viewPassphrase(isRootPassphrase: Bool)
@@ -562,6 +587,12 @@ protocol OptionsViewControllerDelegate: AnyObject {
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidRemoveAccount(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidOpenExportJointAccount(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidRekeyingToJointAccount(
         _ optionsViewController: OptionsViewController
     )
 }

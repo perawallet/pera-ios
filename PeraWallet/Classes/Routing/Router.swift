@@ -506,6 +506,81 @@ final class Router:
             case .assetInbox:
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 visibleScreen.open(.inbox, by: .present)
+            case let .jointAccountImport(address):
+                
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+                
+                let eventHandler: QRScanOptionsViewController.EventHandler = {
+                    [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .transaction:
+                        launch(tab: .home)
+
+                        var transactionDraft = SendTransactionDraft(
+                            from: Account(),
+                            transactionMode: .algo
+                        )
+
+                        let amount: UInt64 = 0
+                        transactionDraft.amount = amount.toAlgos
+
+                        let accountSelectDraft = SelectAccountDraft(
+                            transactionAction: .send,
+                            requiresAssetSelection: true,
+                            transactionDraft: transactionDraft,
+                            receiver: address
+                        )
+
+                        self.route(
+                            to: .accountSelection(
+                                draft: accountSelectDraft,
+                                delegate: self
+                            ),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+
+                    case .watchAccount:
+                        launch(tab: .home)
+
+                        let session = self.appConfiguration.session
+
+                        if let authenticatedUser = session.authenticatedUser,
+                           authenticatedUser.hasReachedTotalAccountLimit {
+
+                            let bannerController = self.appConfiguration.bannerController
+                            bannerController.presentErrorBanner(
+                                title: String(localized: "user-account-limit-error-title"),
+                                message: String(localized: "user-account-limit-error-message")
+                            )
+                            return
+                        }
+
+                        self.route(
+                            to: .watchAccountAddition(
+                                flow: .addNewAccount(
+                                    mode: .watch
+                                ),
+                                address: address
+                            ),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+                    case .contact:
+                        launch(tab: .home)
+
+                        self.route(
+                            to: .addContact(address: address, name: ""),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+                    }
+                }
+                
+                transition.perform(.qrScanOptions(address: address, eventHandler: eventHandler), by: .present)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {

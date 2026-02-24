@@ -124,6 +124,9 @@ extension URL {
                 return .buy(path: path, address: address)
             case "asset-inbox":
                 return .assetInbox(path: path, address: address)
+            case "joint-account-import":
+                guard let address else { return nil }
+                return .jointAccountImport(address: address)
             default:
                 return nil
             }

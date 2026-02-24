@@ -520,6 +520,8 @@ extension DeepLinkParser {
             return makeWebImportScreen(qrText)
         case .swap:
             return makeSwapScreen(qrText)
+        case .exportJointAccount:
+            return nil
         }
     }
     

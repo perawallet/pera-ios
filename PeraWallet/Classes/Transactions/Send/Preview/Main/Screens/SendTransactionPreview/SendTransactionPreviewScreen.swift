@@ -56,7 +56,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var theme = Theme()
 
    private lazy var currencyFormatter = CurrencyFormatter()
-   private let accountsService: AccountsServiceable
+   private let jointAccountTransactionHandler: JointAccountTransactionHandler
 
    private var draft: TransactionSendDraft
    private lazy var transactionController = {
@@ -80,7 +80,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       accountsService: AccountsServiceable
    ) {
       self.draft = draft
-      self.accountsService = accountsService
+      jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
       super.init(configuration: configuration)
    }
    
@@ -171,46 +171,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             )
          }
       }
-   }
-   
-   private func transactionData(params: TransactionParams) -> [Data] {
-      
-      let transactionDraft = composeTransaction()
-      let builder: TransactionDataBuildable
-
-      if transactionDraft is AlgosTransactionSendDraft {
-         builder = AlgoTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
-      } else if let draft = transactionDraft as? AssetTransactionSendDraft {
-         if draft.isReceiverOptingInToAsset {
-            builder = OptInAndSendTransactionDataBuilder(
-               sharedDataController: sharedDataController,
-               params: params,
-               draft: transactionDraft
-            )
-         } else {
-            builder = AssetTransactionDataBuilder(
-               params: params,
-               draft: transactionDraft
-            )
-         }
-      } else {
-         return []
-      }
-
-      let dataArray = builder.composeData()?.map(\.transaction)
-      return dataArray ?? []
-   }
-   
-   private func signRequestResponse(signerAccount: Account, transactions: [[Data]]) -> JointAccountSignRequestResponse {
-      
-      let signatures = transactions.map { $0.compactMap { self.transactionController.singature(signerAccount: signerAccount, transactionData: $0)?.base64EncodedString() }}
-      
-      return JointAccountSignRequestResponse(
-         address: signerAccount.address,
-         response: .signed,
-         signatures: signatures,
-         deviceId: nil
-      )
    }
 
    /// <todo>: Add Unit Test for composing transaction and view model changes
@@ -395,61 +355,34 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       return .algo
    }
    
-   private func createJoinAccountSignTransactionRequest() {
+   private func createJointAccountSignTransactionRequest() {
       
       // FIXME: Allow signing of other transaction types
-      guard let algosTransactionDraft = transactionController.algosTransactionDraft else { return }
+      guard let draft = transactionController.algosTransactionDraft else { return }
+      openLoading()
       
-      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] in
-         guard let self else { return }
-         switch $0 {
-         case let .success(transactionParameters):
+      Task {
+         do {
+            let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: draft.from, type: .sendAlgos(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
             
-            let transactions = [transactionData(params: transactionParameters)]
-            let jointAccount = algosTransactionDraft.from
-            let jointAccountParticipants = jointAccount.jointAccountParticipants ?? []
-            let signersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
+            let apiResponse = result.apiResponse
+            let transactionResponses = apiResponse.transactionLists.flatMap(\.responses)
             
-            guard let proposerAddress = signersAccounts.first?.address else {
-               open(error: InternalError.noSigner)
-               return
-            }
-            
-            let rawTransactionLists = transactions.map { $0.map { $0.base64EncodedString() }}
-            let responses = signersAccounts.map { self.signRequestResponse(signerAccount: $0, transactions: transactions) }
-            
-            self.openLoading()
-            
-            Task {
-               do {
-                  let response = try await self.accountsService.createJointAccountSignTransactionRequest(
-                     jointAccountAddress: jointAccount.address,
-                     proposerAddress: proposerAddress,
-                     rawTransactionLists: rawTransactionLists,
-                     responses: responses
-                  )
-                  
-                  let transactionResponses = response.transactionLists.flatMap(\.responses)
-                  
-                  let signaturesInfo = response.jointAccount.participantAddresses
-                     .map { address in
-                        let status = transactionResponses.first(where: { $0.address == address })?.response
-                        return SignRequestInfo(address: address, status: status)
-                     }
-                  
-                  let signRequestMetadata = SignRequestMetadata(
-                     signRequestID: response.id,
-                     proposerAddress: proposerAddress,
-                     signaturesInfo: signaturesInfo,
-                     threshold: response.jointAccount.threshold,
-                     deadline: response.expectedExpireDatetime
-                  )
-                  self.openSuccess(nil, signRequestMetadata: signRequestMetadata)
-               } catch {
-                  self.open(error: error)
+            let signaturesInfo = apiResponse.jointAccount.participantAddresses
+               .map { address in
+                  let status = transactionResponses.first(where: { $0.address == address })?.response
+                  return SignRequestInfo(address: address, status: status)
                }
-            }
-         case let .failure(error):
+            
+            let signRequestMetadata = SignRequestMetadata(
+               signRequestID: apiResponse.id,
+               proposerAddress: result.proposerAddress,
+               signaturesInfo: signaturesInfo,
+               threshold: apiResponse.jointAccount.threshold,
+               deadline: apiResponse.expectedExpireDatetime
+            )
+            self.openSuccess(nil, signRequestMetadata: signRequestMetadata)
+         } catch {
             open(error: error)
          }
       }
@@ -503,7 +436,7 @@ extension SendTransactionPreviewScreen {
       }
       
       if draft.from.isJointAccount {
-         createJoinAccountSignTransactionRequest()
+         createJointAccountSignTransactionRequest()
       }
    }
 }

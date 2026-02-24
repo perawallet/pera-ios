@@ -338,11 +338,12 @@ extension QRScannerViewController {
 }
 
 extension QRScannerViewController {
-    private func closeScreen() {
+    private func closeScreen(completion: (() -> Void)? = nil) {
         if canGoBack() {
             popScreen()
+            completion?()
         } else {
-            dismissScreen()
+            dismissScreen(completion: completion)
         }
     }
 }
@@ -413,8 +414,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             delegate?.qrScannerViewController(self, didRead: parameters, completionHandler: nil)
             
         case .text(let qrText):
-            closeScreen()
-            delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+            closeScreen { [weak self] in
+                guard let self else { return }
+                delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+            }
             
         case .externalDestination(let destination):
             closeScreen()
