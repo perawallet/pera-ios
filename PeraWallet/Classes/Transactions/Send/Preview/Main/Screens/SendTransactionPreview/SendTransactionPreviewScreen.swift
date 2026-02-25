@@ -411,7 +411,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             let signersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
             
             guard let proposerAddress = signersAccounts.first?.address else {
-               open(error: InternalError.noSigner)
+               show(error: InternalError.noSigner)
                return
             }
             
@@ -446,11 +446,11 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
                   )
                   self.openSuccess(nil, signRequestMetadata: signRequestMetadata)
                } catch {
-                  self.open(error: error)
+                  self.show(error: error)
                }
             }
          case let .failure(error):
-            open(error: error)
+            show(error: error)
          }
       }
    }
@@ -730,9 +730,9 @@ extension SendTransactionPreviewScreen {
       presentingScreen?.present(viewController, animated: true)
    }
    
-   private func open(error: Error) {
+   private func show(error: Error) {
       loadingScreen?.popScreen()
-      displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
+      displaySimpleAlertWith(title: String(localized: "title-error"), message: error.localizedDescription)
    }
 
    private func openPeraExplorerForTransaction(
