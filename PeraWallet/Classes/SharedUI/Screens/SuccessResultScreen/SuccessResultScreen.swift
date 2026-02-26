@@ -52,7 +52,6 @@ final class SuccessResultScreen: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setPopGestureEnabled(false)
-        eventHandler?(.shouldShowPendingTransactionOverlay)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -200,6 +199,5 @@ extension SuccessResultScreen {
     enum Event {
         case didTapViewDetailAction
         case didTapDoneAction
-        case shouldShowPendingTransactionOverlay
     }
 }
