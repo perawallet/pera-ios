@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import UIKit
+import SnapKit
 
 final class AccountPortfolioView:
     View,
@@ -25,9 +26,12 @@ final class AccountPortfolioView:
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .showMinimumBalanceInfo: TargetActionInteraction(),
-        .onAmountTap: TargetActionInteraction()
+        .onAmountTap: TargetActionInteraction(),
+        .onJointAccountBadgeTap: GestureInteraction()
     ]
 
+    private lazy var jointAccountView = UIView()
+    private lazy var badgeText = UILabel()
     private lazy var valueView = UILabel()
     private lazy var valueButton = MacaroonUIKit.Button()
     private lazy var secondaryValueView = UILabel()
@@ -37,6 +41,9 @@ final class AccountPortfolioView:
     private lazy var minimumBalanceValueView = UILabel()
     private lazy var minimumBalanceInfoActionView = MacaroonUIKit.Button()
     private lazy var selectedPointDateValueView = UILabel()
+    
+    private var jointAccountViewHeightConstraint: SnapKit.Constraint?
+    private var valueViewTopConstraint: SnapKit.Constraint?
     
     // MARK: - Initialisers
     
@@ -54,6 +61,7 @@ final class AccountPortfolioView:
     func customize(
         _ theme: AccountPortfolioViewTheme
     ) {
+        addJointAccountView(theme)
         addValue(theme)
         addSecondaryValue(theme)
         addTendencyValue(theme)
@@ -133,6 +141,12 @@ final class AccountPortfolioView:
             selectedPointDateValueView.text = nil
             selectedPointDateValueView.attributedText = nil
         }
+        
+        let isJointAccount = viewModel?.isJointAccount ?? false
+        jointAccountView.isHidden = !isJointAccount
+        badgeText.text = viewModel?.jointAccountBadgeText
+        jointAccountViewHeightConstraint?.update(offset: isJointAccount ? 28 : 0)
+        valueViewTopConstraint?.update(offset: isJointAccount ? 12 : 0)
     }
     
     class func calculatePreferredSize(
@@ -161,6 +175,60 @@ final class AccountPortfolioView:
 }
 
 extension AccountPortfolioView {
+    private func addJointAccountView(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        makeJointAccountView()
+        
+        addSubview(jointAccountView)
+        jointAccountView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
+            jointAccountViewHeightConstraint = $0.height.equalTo(28).constraint
+        }
+        
+        startPublishing(
+            event: .onJointAccountBadgeTap,
+            for: jointAccountView
+        )
+    }
+    
+    private func makeJointAccountView() {
+        jointAccountView.backgroundColor = Colors.Layer.grayLighter.uiColor
+        jointAccountView.layer.cornerRadius = 8
+        
+        let badgeIcon = UIImageView(image: .Icons.jointAccountBadge)
+        jointAccountView.addSubview(badgeIcon)
+        
+        badgeIcon.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(8)
+        }
+        
+        badgeText.font = Fonts.DMSans.medium.make(12).uiFont
+        badgeText.textColor = Colors.Text.main.uiColor
+        badgeText.text = String(localized: "common-account-type-name-joint")
+        jointAccountView.addSubview(badgeText)
+        
+        badgeText.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(badgeIcon.snp.trailing).offset(4)
+        }
+        
+        let badgeArrow = UIImageView(image: .Icons.arrow)
+        badgeArrow.tintColor = Colors.Text.main.uiColor
+        badgeArrow.contentMode = .scaleAspectFit
+        jointAccountView.addSubview(badgeArrow)
+        
+        badgeArrow.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(6)
+            $0.bottom.equalToSuperview().inset(6)
+            $0.leading.equalTo(badgeText.snp.trailing).offset(2)
+            $0.trailing.equalToSuperview().inset(4)
+        }
+    }
+    
     private func addValue(
         _ theme: AccountPortfolioViewTheme
     ) {
@@ -169,7 +237,7 @@ extension AccountPortfolioView {
         [valueView, valueButton].forEach(addSubview)
         
         valueView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            valueViewTopConstraint = $0.top.equalTo(jointAccountView.snp.bottom).offset(12).constraint
             $0.leading.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview()
 
@@ -290,5 +358,6 @@ extension AccountPortfolioView {
     enum Event {
         case showMinimumBalanceInfo
         case onAmountTap
+        case onJointAccountBadgeTap
     }
 }
