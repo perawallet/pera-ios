@@ -48,6 +48,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     private func setupCallbacks() {
         hostingController.onDismiss = { [weak self] in self?.dismiss(animated: true) }
         hostingController.onShowDetails = { [weak self] in self?.presentTransactionDetails(account: $0, transaction: $1) }
+        hostingController.onShowSigningStatus = { [weak self] in self?.openSigningStatus(for: $0) }
         hostingController.onCopy = { [weak self] in self?.copyAddressToPastebin(address: $0) }
         hostingController.onShowError = { [weak self] in self?.show(error: $0) }
     }
@@ -60,22 +61,15 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     // MARK: - Actions
     
     private func presentTransactionDetails(account: Account, transaction: TransactionItem) {
-        guard
-            transaction.status == .pending,
-            let sender = transaction.sender,
-            let senderAccount = sharedDataController.accountCollection[sender]?.value,
-            senderAccount.isJointAccount
-        else {
-            open(.transactionDetail(account: account, transaction: transaction, assetDetail: nil), by: .present)
-            return
-        }
-
-        openTransactionDetail(for: senderAccount, and: transaction)
+        open(.transactionDetail(account: account, transaction: transaction, assetDetail: nil), by: .present)
     }
     
-    private func openTransactionDetail(for jointAccount: Account, and transaction: TransactionItem) {
+    private func openSigningStatus(for transaction: TransactionItem) {
         guard
-            let proposerAddress = resolveProposerAddress(from: jointAccount),
+            let sender = transaction.sender,
+            let senderAccount = sharedDataController.accountCollection[sender]?.value,
+            senderAccount.isJointAccount,
+            let proposerAddress = resolveProposerAddress(from: senderAccount),
             let transactionId = transaction.id
         else {
             show(error: SendTransactionPreviewScreen.InternalError.noSigner)

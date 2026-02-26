@@ -31,6 +31,7 @@ struct JointAccountTransactionRequestSummaryView: View {
     var onDismiss: (() -> Void)?
     var onCopy: ((_ address: String) -> Void)?
     var onShowDetails: ((_ account: Account, _ transaction: TransactionItem) -> Void)?
+    var onShowSigningStatus: ((_ transaction: TransactionItem) -> Void)?
     var onShowError: ((any Error) -> Void)?
     
     // MARK: - Initialisers
@@ -109,6 +110,12 @@ struct JointAccountTransactionRequestSummaryView: View {
                     Text(viewModel.fiatAmount)
                         .font(.DMSans.regular.size(15.0))
                         .foregroundStyle(Color.Text.main)
+                        .padding(.bottom, 12.0)
+                    SwiftUI.Button(action: onShowSigningStatusAction) {
+                        Text("joint-account-signing-status-button-details")
+                            .font(.DMSans.medium.size(13.0))
+                    }
+                    .foregroundStyle(Color.Link.primary)
                 }
                 Spacer()
                 VStack {
@@ -185,6 +192,10 @@ struct JointAccountTransactionRequestSummaryView: View {
         model.requestTransactionDetails()
     }
     
+    private func onShowSigningStatusAction() {
+        model.requestSigningStatus()
+    }
+    
     private func onConfirmAction() {
         model.confirmTransaction()
     }
@@ -206,6 +217,8 @@ struct JointAccountTransactionRequestSummaryView: View {
         switch action {
         case let .presentTransactionDetails(account, transaction):
             onShowDetails?(account, transaction)
+        case let .presentSigningStatus(account, transaction):
+            onShowSigningStatus?(transaction)
         case let .copyAddress(address):
             onCopy?(address)
         case .success:
