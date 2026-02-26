@@ -721,6 +721,10 @@ extension AccountAuthorization {
         return self == .unknownToNoAuthInLocalRekeyed
     }
     
+    public var isJointAccount: Bool {
+        self == .jointAccount
+    }
+    
     public var isJointAccountRekeyed: Bool {
         self == .jointAccountRekeyed
     }
@@ -786,8 +790,10 @@ extension AccountAuthorization {
 
 extension Account {
     public var supportLink: URL? {
-        if isWatchAccount {
+        if isWatchAccount || (isJointAccount && authorization.isNoAuth) {
             return AlgorandWeb.watchAccountSupport.link
+        } else if isJointAccount {
+            return AlgorandWeb.jointAccount.link
         } else if isHDAccount {
             return AlgorandWeb.hdWallet.link
         } else if rekeyDetail != nil {

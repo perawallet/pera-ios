@@ -56,6 +56,11 @@ extension AccountInformationFlowCoordinator {
             openAccountInformationForStandardAccount(sourceAccount)
             return
         }
+        
+        if authorization.isJointAccount || authorization.isJointAccountRekeyed {
+            openAccountInformationForJointAccount(sourceAccount)
+            return
+        }
 
         if authorization.isWatch {
             openAccountInformationForWatchAccount(sourceAccount)
@@ -157,6 +162,28 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToStandardAccount(sourceAccount)
             case .performUndoRekey:
                 self.openUndoRekey(sourceAccount)
+            case .performRescanRekeyedAccounts:
+                self.openRescanRekeyedAccounts(accounts: [sourceAccount])
+            case .performImportConnectedAccounts:
+                self.openImportConnectedAccounts(account: sourceAccount)
+            }
+        }
+    }
+    
+    private func openAccountInformationForJointAccount(_ sourceAccount: Account) {
+        let screen = transitionToAccountInformation.perform(
+            .jointAccountInformation(account: sourceAccount),
+            by: .presentWithoutNavigationController
+        ) as? JointAccountInformationScreen
+        screen?.eventHandler = {
+            [weak self] event in
+            guard let self else { return}
+
+            switch event {
+            case .performRekeyToLedger:
+                self.openRekeyToLedgerAccount(sourceAccount)
+            case .performRekeyToStandard:
+                self.openRekeyToStandardAccount(sourceAccount)
             case .performRescanRekeyedAccounts:
                 self.openRescanRekeyedAccounts(accounts: [sourceAccount])
             case .performImportConnectedAccounts:

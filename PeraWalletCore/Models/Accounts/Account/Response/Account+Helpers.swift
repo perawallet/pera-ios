@@ -208,8 +208,14 @@ extension Account {
             return "icon-unknown-account".uiImage
         }
 
-        if authorization.isWatch {
+        if authorization.isWatch ||
+           (isJointAccount && authorization.isNoAuth) {
             return "icon-watch-account".uiImage
+        }
+        
+        if authorization.isJointAccount ||
+            authorization.isJointAccountRekeyed {
+            return "icon-joint-account".uiImage
         }
 
         return "icon-no-auth-account".uiImage

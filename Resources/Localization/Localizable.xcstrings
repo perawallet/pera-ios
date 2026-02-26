@@ -9768,6 +9768,16 @@
         }
       }
     },
+    "title-joint-account-capitalized-sentence" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joint account"
+          }
+        }
+      }
+    },
     "title-keep" : {
       "localizations" : {
         "en" : {

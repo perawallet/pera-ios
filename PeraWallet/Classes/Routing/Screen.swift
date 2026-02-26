@@ -391,6 +391,7 @@ indirect enum Screen {
     case standardAccountInformation(account: Account)
     case watchAccountInformation(account: Account)
     case ledgerAccountInformation(account: Account)
+    case jointAccountInformation(account: Account)
     case noAuthAccountInformation(account: Account)
     case rekeyedAccountInformation(sourceAccount: Account, authAccount: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)

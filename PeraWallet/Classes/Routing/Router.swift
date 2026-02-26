@@ -2249,6 +2249,15 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case .jointAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = JointAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case .ledgerAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
