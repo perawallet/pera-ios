@@ -113,7 +113,11 @@ final class IncomingASAAccountsViewController: BaseViewController {
         case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
             presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
         case let .moveToRequestSendScene(request):
-            presentSignJointAccountTransactionScene(request: request)
+            if request.didRequestFailed {
+                presentSigningStatusOverlay(request: request)
+            } else {
+                presentSignJointAccountTransactionScene(request: request)
+            }
         case let .moveToAssetDetailsScene(address, requestCount):
             moveToAssetDetailsScene(address: address, requestCount: requestCount)
         }
@@ -157,6 +161,51 @@ final class IncomingASAAccountsViewController: BaseViewController {
         let controller = JointAccountTransactionRequestSummaryConstructor.buildScene(legacyConfiguration: configuration, transactionController: transactionController, request: request)
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true)
+    }
+    
+    private func presentSigningStatusOverlay(request: SignRequestObject) {
+        guard let responses = request.transactionLists.first?.responses else { return }
+        do {
+            let signaturesInfo = try buildSignaturesInfo(
+                from: request.jointAccount.participantAddresses,
+                responses: responses
+            )
+            let signRequestMetadata = SignRequestMetadata(
+                signRequestID: request.id,
+                proposerAddress: request.jointAccount.address,
+                signaturesInfo: signaturesInfo,
+                threshold: request.jointAccount.threshold,
+                deadline: request.expectedExpireDatetime
+            )
+            showJointAccountPendingTransactionOverlay(signRequestMetadata: signRequestMetadata)
+        } catch {
+            show(error: error)
+        }
+    }
+    
+    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        present(viewController, animated: true)
+    }
+    
+    private func buildSignaturesInfo(
+        from participantAddresses: [String]?,
+        responses: [SignRequestTransactionResponseObject]
+    ) throws -> [SignRequestInfo] {
+        guard let addresses = participantAddresses else {
+            throw SendTransactionPreviewScreen.InternalError.noSigner
+        }
+        
+        return addresses.map { address in
+            let status = responses.first { $0.address == address }?.response
+            return SignRequestInfo(address: address, status: status)
+        }
+    }
+    
+    private func show(error: Error) {
+        let title = String(localized: "title-error")
+        let message = error.localizedDescription
+        bannerController?.presentErrorBanner(title: title, message: message)
     }
     
     private func moveToAssetDetailsScene(address: String, requestCount: Int) {
