@@ -113,7 +113,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
         case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
             presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
         case let .moveToRequestSendScene(request):
-            if request.status == .failed || request.status == .expired || request.status == .declined {
+            if request.didRequestFailed {
                 presentSigningStatusOverlay(request: request)
             } else {
                 presentSignJointAccountTransactionScene(request: request)

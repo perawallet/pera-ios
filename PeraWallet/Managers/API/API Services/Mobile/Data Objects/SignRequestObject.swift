@@ -41,6 +41,8 @@ struct SignRequestObject: Decodable, Equatable {
     let expectedExpireDatetime: Date
     let status: Status
     let creationDatetime: Date
+    
+    var didRequestFailed: Bool { status == .declined || status == .expired || status == .failed }
 }
 
 struct SignRequestTransactionObject: Decodable, Equatable {

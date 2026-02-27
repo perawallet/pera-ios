@@ -411,7 +411,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             let signersAccounts = jointAccountParticipants.compactMap { self.accountsService.account(address: $0) }
             
             guard let proposerAddress = signersAccounts.first?.address else {
-               open(error: InternalError.noSigner)
+               show(error: InternalError.noSigner)
                return
             }
             
@@ -444,13 +444,14 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
                      threshold: response.jointAccount.threshold,
                      deadline: response.expectedExpireDatetime
                   )
-                  self.openSuccess(nil, signRequestMetadata: signRequestMetadata)
+                  self.loadingScreen?.popScreen()
+                  self.openPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, presentingScreen: self)
                } catch {
-                  self.open(error: error)
+                  self.show(error: error)
                }
             }
          case let .failure(error):
-            open(error: error)
+            show(error: error)
          }
       }
    }
@@ -696,7 +697,7 @@ extension SendTransactionPreviewScreen {
       ) as? LoadingScreen
    }
    
-   private func openSuccess(_ transactionId: String?, signRequestMetadata: SignRequestMetadata? = nil) {
+   private func openSuccess(_ transactionId: String?) {
       let successResultScreenViewModel = IncomingASAsDetailSuccessResultScreenViewModel(
          title: String(localized: "send-transaction-preview-success-title"),
          detail: String(localized: "send-transaction-preview-success-detail")
@@ -711,8 +712,6 @@ extension SendTransactionPreviewScreen {
          [weak self, weak successScreen] event in
          guard let self = self else { return }
          switch event {
-         case .shouldShowPendingTransactionOverlay:
-            openPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, presentingScreen: successScreen)
          case .didTapViewDetailAction:
             self.openPeraExplorerForTransaction(transactionId)
          case .didTapDoneAction:
@@ -727,13 +726,16 @@ extension SendTransactionPreviewScreen {
    
    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presentingScreen: UIViewController?) {
       guard let signRequestMetadata else { return }
-      let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+      let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
+         guard let self else { return }
+         dismissScreen()
+      }
       presentingScreen?.present(viewController, animated: true)
    }
    
-   private func open(error: Error) {
+   private func show(error: Error) {
       loadingScreen?.popScreen()
-      displaySimpleAlertWith(title: String(localized: "title-error"), message: String(localized: "title-internet-connection"))
+      displaySimpleAlertWith(title: String(localized: "title-error"), message: error.localizedDescription)
    }
    
    private func openPeraExplorerForTransaction(

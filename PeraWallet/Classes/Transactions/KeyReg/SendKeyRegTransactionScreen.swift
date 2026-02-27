@@ -206,7 +206,6 @@ private extension SendKeyRegTransactionScreen {
                     guard let self else { return }
                     self.eventHandler?(.didCompleteTransaction)
                 }
-            case .shouldShowPendingTransactionOverlay: break
             }
         }
     }
