@@ -238,7 +238,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
         if let api = api,
-           let transactionId = (transaction as? Transaction).flatMap({ $0.id ?? $0.parentID }) ?? (transaction as? TransactionV2)?.id,
+           let transactionId = (transaction as? Transaction).flatMap({ $0.id ?? $0.parentID }) ?? (transaction as? TransactionV2)?.id ?? transaction.id,
            let url = explorer.transactionURL(with: transactionId, in: api.network) {
             open(url)
         }

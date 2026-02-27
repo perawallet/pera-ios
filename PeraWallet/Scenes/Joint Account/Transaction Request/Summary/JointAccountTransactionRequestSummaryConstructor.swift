@@ -20,6 +20,6 @@ enum JointAccountTransactionRequestSummaryConstructor {
     
     static func buildScene(legacyConfiguration: ViewControllerConfiguration, transactionController: TransactionController, request: SignRequestObject) -> UIViewController {
         let model = JointAccountTransactionRequestSummaryModel(transactionController: transactionController, accountsService: PeraCoreManager.shared.accounts, currencyService: PeraCoreManager.shared.currencies, request: request)
-        return JointAccountTransactionRequestSummaryViewController(legacyConfiguration: legacyConfiguration, model: model)
+        return JointAccountTransactionRequestSummaryViewController(legacyConfiguration: legacyConfiguration, accountsService: PeraCoreManager.shared.accounts, model: model)
     }
 }

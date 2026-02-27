@@ -813,6 +813,8 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             switch event {
             case .didCompleteTransaction:
                 eventHandler?(.didCompleteTransaction)
+            case let .didCompleteJointAccountTransaction(signRequestMetadata):
+                onShowJointAccountSignTransactionRequest?(signRequestMetadata)
             case .didEditNote(let note):
                 self.didEditNote(note: note)
             default: break
