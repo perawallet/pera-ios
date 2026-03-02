@@ -94,6 +94,18 @@ final class SwapCurrencyService {
         return currencyFormatter.format(amount) ?? .empty
     }
     
+    func rawFiatFormat(amount: Double) -> String {
+        
+        var text = fiatFormat(with: amount)
+        let suffix = fiatCurrency?.symbol
+        
+        if let suffix, text.hasSuffix(suffix) {
+            text.removeLast(suffix.count)
+            text = text.trimmingCharacters(in: .whitespaces)
+        }
+        
+        return text
+    }
     func fiatValueText(fromUSDC amount: Double) -> String {
         fiatFormat(with: fiatValue(fromUSDC: amount))
     }

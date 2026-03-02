@@ -123,9 +123,10 @@ struct SwapView: View {
     
     private var assetSelectionView: some View {
         ZStack {
-            VStack (spacing: 0) {
+            VStack(spacing: 0) {
                 AssetSelectionView(
                     type: .pay,
+                    currencySymbol: viewModel.payingTextCurrencySymbol,
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
                     amountText: Binding(
@@ -157,6 +158,7 @@ struct SwapView: View {
                 }
                 AssetSelectionView(
                     type: .receive,
+                    currencySymbol: viewModel.payingTextCurrencySymbol,
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,

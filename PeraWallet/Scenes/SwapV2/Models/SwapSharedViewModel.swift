@@ -18,7 +18,7 @@ import SwiftUI
 import Combine
 import pera_wallet_core
 
-class SwapSharedViewModel: ObservableObject {
+final class SwapSharedViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var selectedAccount: Account
@@ -30,7 +30,8 @@ class SwapSharedViewModel: ObservableObject {
     @Published var isLoadingReceiveAmount: Bool = false
     @Published var selectedQuote: SwapQuote?
     
-    @Published var payingText: String = .empty
+    @Published var payingText: String = ""
+    @Published var payingTextCurrencySymbol: String? = nil
     @Published var payingTextInSecondaryCurrency: String = .empty
     @Published var receivingText: String = .empty
     @Published var receivingTextInSecondaryCurrency: String = .empty
@@ -203,6 +204,7 @@ class SwapSharedViewModel: ObservableObject {
             isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
             isLoadingReceiveAmount = true
             let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
+            payingTextCurrencySymbol = useLocalCurrency ? try? currency.fiatValue?.unwrap().symbol : nil
             onGetQuoteAction?(valueToUse)
         } else {
             resetTextFields()
@@ -212,8 +214,9 @@ class SwapSharedViewModel: ObservableObject {
     func resetTextFields() {
         receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
         receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
-        payingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
+        payingText = ""
         payingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
+        payingTextCurrencySymbol = nil
     }
     
     func filterPayingText(_ input: String) -> String {
@@ -233,7 +236,7 @@ class SwapSharedViewModel: ObservableObject {
         guard value > 0 else { return filtered }
 
         if useLocalCurrency {
-            return currencyService.fiatFormat(with: value)
+            return currencyService.rawFiatFormat(amount: value)
         } else {
             return amountFormatter.string(from: Decimal(value)) ?? filtered
         }
