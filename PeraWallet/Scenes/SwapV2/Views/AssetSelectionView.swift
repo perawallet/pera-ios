@@ -59,8 +59,12 @@ enum AssetSelectionType {
 }
 
 struct AssetSelectionView: View {
+    
     // MARK: - Properties
+    
     var type: AssetSelectionType
+    var currencySymbol: String?
+    
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
     @Binding var amountText: String
@@ -93,31 +97,40 @@ struct AssetSelectionView: View {
                             .frame(width: 100, height: 19, alignment: .leading)
                             .cornerRadius(3)
                     } else {
-                        PeraTextField(placeholder: nil, text: Binding(
-                            get: { amountText },
-                            set: {
-                                amountText = $0.isEmpty ? .empty : $0
-                                if type == .pay, amountText.isEmpty {
-                                    isBalanceNotSufficient = false
+                        HStack(spacing: 4.0) {
+                            PeraTextField(placeholder: nil, text: Binding(
+                                get: { amountText },
+                                set: {
+                                    amountText = $0.isEmpty ? .empty : $0
+                                    if type == .pay, amountText.isEmpty {
+                                        isBalanceNotSufficient = false
+                                    }
+                                }
+                            ))
+                            .placeholder(when: amountText.isEmpty) {
+                                Text(SwapSharedViewModel.defaultAmountValue)
+                                    .foregroundColor(Color.Text.grayLighter)
+                            }
+                            .keyboardType(.decimalPad)
+                            .disabled(type.textEditorDisabled)
+                            .multilineTextAlignment(.leading)
+                            .focused($isPayingFocused)
+                            .fixedSize()
+                            .onChange(of: isPayingFocused) { focused in
+                                if focused && amountText.isZeroValue {
+                                    amountText = .empty
                                 }
                             }
-                        ))
-                        .placeholder(when: amountText.isEmpty) {
-                            Text(SwapSharedViewModel.defaultAmountValue)
-                                .foregroundColor(Color.Text.grayLighter)
+                            if let currencySymbol {
+                                Text(currencySymbol)
+                            }
+                            Spacer()
                         }
-                        .keyboardType(.decimalPad)
                         .font(.DMSans.medium.size(19.0))
                         .foregroundStyle(Color.Text.main)
-                        .disabled(type.textEditorDisabled)
                         .frame(maxWidth: 200)
-                        .multilineTextAlignment(.leading)
-                        .focused($isPayingFocused)
-                        .onChange(of: isPayingFocused) { focused in
-                            if focused && amountText.isZeroValue {
-                                amountText = .empty
-                            }
-                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture { isPayingFocused = true }
                     }
 
                     if isLoading || isLoadingQuote ?? false {
