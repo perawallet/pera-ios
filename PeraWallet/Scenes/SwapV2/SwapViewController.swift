@@ -527,10 +527,12 @@ final class SwapViewController: BaseViewController {
             let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
             let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
             viewModel.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn.doubleValue) ?? .empty
+            viewModel.payingTextInSecondaryCurrencyValue = valueIn.doubleValue
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
             viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
             viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetIn.asset, with: valueIn.doubleValue)
+            viewModel.payingTextInSecondaryCurrencyValue = valueIn.doubleValue
         }
         
         viewModel.quoteList = orderedQuoteList

@@ -63,8 +63,6 @@ struct AssetSelectionView: View {
     // MARK: - Properties
     
     var type: AssetSelectionType
-    var currencySymbol: String?
-    
     @Binding var assetItem: AssetItem
     @Binding var network: ALGAPI.Network
     @Binding var amountText: String
@@ -120,9 +118,6 @@ struct AssetSelectionView: View {
                                 if focused && amountText.isZeroValue {
                                     amountText = .empty
                                 }
-                            }
-                            if let currencySymbol {
-                                Text(currencySymbol)
                             }
                             Spacer()
                         }

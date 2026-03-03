@@ -106,6 +106,9 @@ struct SwapView: View {
             }
         }
         .background(Color.Defaults.bg)
+        .onChange(of: viewModel.payingTextValue) {
+            onAction?(.getQuote(for: $0))
+        }
     }
     
     // MARK: - Subviews
@@ -126,21 +129,9 @@ struct SwapView: View {
             VStack(spacing: 0) {
                 AssetSelectionView(
                     type: .pay,
-                    currencySymbol: viewModel.payingTextCurrencySymbol,
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
-                    amountText: Binding(
-                        get: { viewModel.payingText },
-                        set: { newValue in
-                            let filteredValue = viewModel.filterPayingText(newValue)
-                            guard filteredValue != viewModel.payingText else { return }
-                            
-                            viewModel.payingText = filteredValue
-                            viewModel.updatePayingText(filteredValue) {
-                                onAction?(.getQuote(for: $0))
-                            }
-                        }
-                    ),
+                    amountText: $viewModel.payingText,
                     amountTextInSecondaryCurrency: Binding(
                         get: { viewModel.payingTextInSecondaryCurrency.isEmpty ?
                             (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
@@ -152,13 +143,11 @@ struct SwapView: View {
                         get: { viewModel.isLoadingReceiveAmount },
                         set: { viewModel.isLoadingReceiveAmount = $0 ?? false }
                     ),
-                    isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
-                ) {
-                    onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
-                }
+                    isBalanceNotSufficient: $viewModel.isBalanceNotSufficient,
+                    onAssetSelectionTap: { onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue)) }
+                )
                 AssetSelectionView(
                     type: .receive,
-                    currencySymbol: viewModel.payingTextCurrencySymbol,
                     assetItem: $viewModel.selectedAssetOut,
                     network: $viewModel.selectedNetwork,
                     amountText: $viewModel.receivingText,
@@ -170,10 +159,9 @@ struct SwapView: View {
                     ),
                     isLoading: $viewModel.isLoadingReceiveAmount,
                     isLoadingQuote: .constant(nil),
-                    isBalanceNotSufficient: .constant(false)
-                ) {
-                    onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
-                }
+                    isBalanceNotSufficient: .constant(false),
+                    onAssetSelectionTap: { onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue)) }
+                )
             }
             .padding(.horizontal, 8)
             

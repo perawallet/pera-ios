@@ -31,8 +31,9 @@ final class SwapSharedViewModel: ObservableObject {
     @Published var selectedQuote: SwapQuote?
     
     @Published var payingText: String = ""
-    @Published var payingTextCurrencySymbol: String? = nil
-    @Published var payingTextInSecondaryCurrency: String = .empty
+    @Published var payingTextValue: Double = 0
+    @Published var payingTextInSecondaryCurrency: String = ""
+    @Published var payingTextInSecondaryCurrencyValue: Double = 0
     @Published var receivingText: String = .empty
     @Published var receivingTextInSecondaryCurrency: String = .empty
     
@@ -50,22 +51,42 @@ final class SwapSharedViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]? = []
     
     // MARK: - Internal State / Private Properties
-    private var payingTextSubject = PassthroughSubject<String, Never>()
-    private var payingTextCancellable: AnyCancellable?
+    
     private var onGetQuoteAction: ((Double) -> Void)?
+    private var cancellables: Set<AnyCancellable> = []
 
     private var shouldUpdateAccounts = false
     
     static let defaultAmountValue = Formatter.decimalFormatter(minimumFractionDigits: 2, maximumFractionDigits: 2).string(for: Decimal(0))!
 
     // MARK: - Services
+    
     let currency: CurrencyProvider
     let sharedDataController: SharedDataController
     private let amountFormatter = SwapAmountFormatter()
     private let pricingService = SwapPricingService()
     private let currencyService: SwapCurrencyService
     
+    // FIXME: currencyFormatter and decimalFormatter should be integrated into pricingService and currencyService
+    private let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = "$"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter
+    }()
+
+    private let decimalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
+    
     // MARK: - Computed Properties
+    
     private var useLocalCurrency: Bool {
         PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false
     }
@@ -113,19 +134,25 @@ final class SwapSharedViewModel: ObservableObject {
         self.currencyService = SwapCurrencyService(currency: currency, amountFormatter: amountFormatter)
         
         sharedDataController.add(self)
-        setupPayingTextDebounce()
+        setupCallbacks()
     }
 
     deinit {
         sharedDataController.remove(self)
     }
     
-    private func setupPayingTextDebounce() {
-        payingTextCancellable = payingTextSubject
+    private func setupCallbacks() {
+        
+        $payingText
+            .removeDuplicates()
             .debounce(for: .milliseconds(600), scheduler: DispatchQueue.main)
-            .sink { [weak self] newValue in
-                self?.processPayingText(newValue)
-            }
+            .sink { [weak self] in self?.processPaymentText(text: $0) }
+            .store(in: &cancellables)
+        
+        $payingTextInSecondaryCurrencyValue
+            .removeDuplicates()
+            .sink { [weak self] in self?.updateLimitStatus(value: $0) }
+            .store(in: &cancellables)
     }
     
     // MARK: - Swap Actions
@@ -194,52 +221,35 @@ final class SwapSharedViewModel: ObservableObject {
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
         onGetQuoteAction = onGetQuote
-        payingTextSubject.send(newValue)
+        processPaymentText(text: newValue)
     }
     
-    private func processPayingText(_ newValue: String) {
-        let doubleValue = amountFormatter.numericValue(from: newValue)
-
-        if doubleValue > 0 {
-            isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
+    private func processPaymentText(text: String) {
+        
+        let text = text.replacingOccurrences(of: ",", with: ".")
+        
+        let rawValue = decimalFormatter.number(from: text)?.doubleValue
+        let currencyValue = currencyFormatter.number(from: text)?.doubleValue
+        let value = rawValue ?? currencyValue ?? 0
+        
+        if value > 0 {
+            let newValue = useLocalCurrency ? currencyService.algoValue(fromFiat: value) : value
+            guard payingTextValue != newValue else { return }
+            payingTextValue = newValue
             isLoadingReceiveAmount = true
-            let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
-            payingTextCurrencySymbol = useLocalCurrency ? try? currency.fiatValue?.unwrap().symbol : nil
-            onGetQuoteAction?(valueToUse)
         } else {
             resetTextFields()
         }
     }
     
+    private func updateLimitStatus(value: Double) {
+        isBalanceNotSufficient = value > selectedAssetIn.asset.decimalAmount.doubleValue
+    }
+    
     func resetTextFields() {
         receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
         receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
-        payingText = ""
         payingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
-        payingTextCurrencySymbol = nil
-    }
-    
-    func filterPayingText(_ input: String) -> String {
-        let decimalSeparator = Locale.current.decimalSeparator ?? "."
-        var hasDecimal = false
-
-        let filtered = input.filter { char in
-            if char.isNumber { return true }
-            if String(char) == decimalSeparator && !hasDecimal {
-                hasDecimal = true
-                return true
-            }
-            return false
-        }
-
-        let value = amountFormatter.numericValue(from: filtered)
-        guard value > 0 else { return filtered }
-
-        if useLocalCurrency {
-            return currencyService.rawFiatFormat(amount: value)
-        } else {
-            return amountFormatter.string(from: Decimal(value)) ?? filtered
-        }
     }
     
     // MARK: - Formatting Helpers
