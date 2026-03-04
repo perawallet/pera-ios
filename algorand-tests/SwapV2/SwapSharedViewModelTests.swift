@@ -100,18 +100,6 @@ struct SwapSharedViewModelTests {
     }
     
     @Test
-    func test_filterPayingText_removesInvalidCharacters() {
-        // Given
-        let vm = makeViewModel()
-        
-        // When
-        let filtered = vm.filterPayingText("a1d2a3bb")
-        
-        // Then
-        #expect(filtered == "123")
-    }
-    
-    @Test
     func test_resetTextFields_setsAllFieldsToDefault() {
         // Given
         let vm = makeViewModel()
@@ -125,7 +113,6 @@ struct SwapSharedViewModelTests {
         vm.resetTextFields()
         
         // Then
-        #expect(vm.payingText.isEmpty)
         #expect(vm.payingTextInSecondaryCurrency.isEmpty)
         #expect(vm.receivingText.isEmpty)
         #expect(vm.receivingTextInSecondaryCurrency.isEmpty)

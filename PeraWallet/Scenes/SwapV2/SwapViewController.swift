@@ -520,17 +520,34 @@ final class SwapViewController: BaseViewController {
         
         
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-            viewModel.receivingText = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
-            viewModel.receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueOut) ?? .empty
             
-            let amountIn = selectedQuote?.amountIn ?? 0
-            let decimalsIn = selectedQuote?.assetIn?.decimals ?? 0
-            let valueIn = Decimal(amountIn) / pow(10, decimalsIn)
-            viewModel.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn.doubleValue) ?? .empty
+            var payingTextInSecondaryCurrency: String = ""
+            var receivingTextInSecondaryCurrency: String = ""
+            
+            if selectedAssetOut.asset.isAlgo {
+                receivingTextInSecondaryCurrency = sharedViewModel?.algoValueText(fiatAmount: valueIn.doubleValue) ?? .empty
+            } else if let assetFiatValue = selectedAssetOut.asset.usdValue, let fiatExchangeRate = try? selectedAssetOut.currency.fiatValue?.unwrap().usdValue {
+                let assetAmount = valueIn / assetFiatValue / fiatExchangeRate
+                receivingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: assetAmount) ?? .empty
+            }
+            
+            if selectedAssetIn.asset.isAlgo {
+                payingTextInSecondaryCurrency = sharedViewModel?.algoValueText(fiatAmount: valueIn.doubleValue) ?? .empty
+            } else if let assetFiatValue = selectedAssetIn.asset.usdValue, let fiatExchangeRate = try? selectedAssetIn.currency.fiatValue?.unwrap().usdValue {
+                let assetAmount = valueIn / assetFiatValue / fiatExchangeRate
+                payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: assetAmount) ?? .empty
+            }
+            
+            viewModel.payingTextInSecondaryCurrency = payingTextInSecondaryCurrency
+            viewModel.payingTextInSecondaryCurrencyValue = valueIn.doubleValue
+            viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 6).string(for: valueIn) ?? .empty
+            viewModel.receivingTextInSecondaryCurrency = receivingTextInSecondaryCurrency
+            
         } else {
             viewModel.receivingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: valueOut) ?? .empty
             viewModel.receivingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
             viewModel.payingTextInSecondaryCurrency = viewModel.fiatValueText(fromAsset: selectedAssetIn.asset, with: valueIn.doubleValue)
+            viewModel.payingTextInSecondaryCurrencyValue = valueIn.doubleValue
         }
         
         viewModel.quoteList = orderedQuoteList
@@ -652,7 +669,7 @@ final class SwapViewController: BaseViewController {
                 let swapAmount = calculateSwapAmount(for: assetIn, balance: Decimal(amount), peraSwapFee: response, percentage: Decimal(percentage))
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAsset: assetIn, with: swapAmount.doubleValue) ?? .empty
                     sharedViewModel?.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                 } else {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty

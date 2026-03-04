@@ -89,23 +89,18 @@ final class SwapCurrencyService {
     
     func fiatFormat(with amount: Double) -> String {
         guard let currencyFiatValue = fiatCurrency else { return .empty }
-        let currencyFormatter = CurrencyFormatter()
+        let currencyFormatter = CurrencyFormatter(locale: Locale(identifier: "en_US"))
         currencyFormatter.currency = currencyFiatValue
         return currencyFormatter.format(amount) ?? .empty
     }
     
-    func rawFiatFormat(amount: Double) -> String {
-        
-        var text = fiatFormat(with: amount)
-        let suffix = fiatCurrency?.symbol
-        
-        if let suffix, text.hasSuffix(suffix) {
-            text.removeLast(suffix.count)
-            text = text.trimmingCharacters(in: .whitespaces)
-        }
-        
-        return text
+    func value(fiatFormat: String) -> Decimal {
+        guard let currencyFiatValue = fiatCurrency else { return 0 }
+        let currencyFormatter = CurrencyFormatter(locale: Locale(identifier: "en_US"))
+        currencyFormatter.currency = currencyFiatValue
+        return currencyFormatter.number(text: fiatFormat) ?? 0
     }
+    
     func fiatValueText(fromUSDC amount: Double) -> String {
         fiatFormat(with: fiatValue(fromUSDC: amount))
     }
@@ -114,7 +109,7 @@ final class SwapCurrencyService {
         fiatFormat(with: fiatValue(fromAsset: asset, with: amount))
     }
     
-    private func algoValueText(fromFiat amount: Double) -> String {
+    func algoValueText(fromFiat amount: Double) -> String {
         algoFormat(with: algoValue(fromFiat: amount))
     }
     

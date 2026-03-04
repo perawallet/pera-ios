@@ -27,10 +27,12 @@ public final class CurrencyFormatter {
     public var isValueHidden: Bool = false
 
     private let numberFormatter: NumberFormatter
+    private let locale: Locale?
 
-    public init() {
+    public init(locale: Locale? = nil) {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
+        self.locale = locale
         self.numberFormatter = numberFormatter
     }
 }
@@ -99,11 +101,15 @@ extension CurrencyFormatter {
         )
         return finalString(from: decoratedFormattedString)
     }
+    
+    public func number(text: String) -> Decimal? {
+        numberFormatter.number(from: text)?.decimalValue
+    }
 }
 
 extension CurrencyFormatter {
     private func applyCommonRules() {
-        numberFormatter.locale = Locale.current
+        numberFormatter.locale = locale ?? Locale.current
         numberFormatter.nilSymbol = ""
         numberFormatter.notANumberSymbol = CurrencyConstanst.unavailable
     }
