@@ -233,9 +233,8 @@ final class SwapSharedViewModel: ObservableObject {
         let value = rawValue ?? currencyValue ?? 0
         
         if value > 0 {
-            let newValue = useLocalCurrency ? currencyService.algoValue(fromFiat: value) : value
-            guard payingTextValue != newValue else { return }
-            payingTextValue = newValue
+            guard payingTextValue != value else { return }
+            payingTextValue = value
             isLoadingReceiveAmount = true
         } else {
             resetTextFields()
@@ -253,6 +252,7 @@ final class SwapSharedViewModel: ObservableObject {
     }
     
     // MARK: - Formatting Helpers
+    
     func fiatFormat(with amount: Double) -> String {
         currencyService.fiatFormat(with: amount)
     }
@@ -263,6 +263,10 @@ final class SwapSharedViewModel: ObservableObject {
     
     func fiatValueText(fromAlgo amount: Double) -> String {
         currencyService.fiatValueText(fromAlgo: amount)
+    }
+    
+    func algoValueText(fiatAmount: Double) -> String {
+        currencyService.algoValueText(fromFiat: fiatAmount)
     }
 
 }

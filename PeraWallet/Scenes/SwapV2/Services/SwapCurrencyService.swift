@@ -109,7 +109,7 @@ final class SwapCurrencyService {
         fiatFormat(with: fiatValue(fromAsset: asset, with: amount))
     }
     
-    private func algoValueText(fromFiat amount: Double) -> String {
+    func algoValueText(fromFiat amount: Double) -> String {
         algoFormat(with: algoValue(fromFiat: amount))
     }
     
