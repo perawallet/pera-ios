@@ -177,6 +177,12 @@
 		54B183212E55C6DD00E4FAE5 /* CombinedAccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */; };
 		54BE1BB22EDDA6D6001C3676 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 54BE1BB12EDDA6D6001C3676 /* ZIPFoundation */; };
 		54BE1BB42EDDA78A001C3676 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 54BE1BB32EDDA78A001C3676 /* ZIPFoundation */; };
+		54C3CA0F2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA0E2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift */; };
+		54C3CA102F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA0E2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift */; };
+		54C3CA112F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA0E2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift */; };
+		54C3CA132F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA122F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift */; };
+		54C3CA142F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA122F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift */; };
+		54C3CA152F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C3CA122F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift */; };
 		54EC48812EE6C03800604A6C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACB7250AA5DE00B8C5C5 /* Settings.swift */; };
 		591635952E44D162002184C2 /* pera_wallet_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 591635942E44D162002184C2 /* pera_wallet_core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		591635982E44D162002184C2 /* pera_wallet_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591635922E44D162002184C2 /* pera_wallet_core.framework */; };
@@ -8633,6 +8639,8 @@
 		54B1831E2E55C6C800E4FAE5 /* CombinedAccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedAccountListItemView.swift; sourceTree = "<group>"; };
 		54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanAccountsListItemViewModel.swift; sourceTree = "<group>"; };
 		54B9FAC12DA7D77500869DEA /* RescanRekeyedAccountsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescanRekeyedAccountsCoordinator.swift; sourceTree = "<group>"; };
+		54C3CA0E2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToJointAccountListItemButtonViewModel.swift; sourceTree = "<group>"; };
+		54C3CA122F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportJointAccountListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		54C8AE9F2D5F494300741510 /* HeartbeatTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		591635922E44D162002184C2 /* pera_wallet_core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pera_wallet_core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		591635942E44D162002184C2 /* pera_wallet_core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pera_wallet_core.h; sourceTree = "<group>"; };
@@ -23981,6 +23989,8 @@
 		F0772B52275EB17F003A9329 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				54C3CA122F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift */,
+				54C3CA0E2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift */,
 				54B9FAC12DA7D77500869DEA /* RescanRekeyedAccountsCoordinator.swift */,
 				54B9FABD2DA7D6E100869DEA /* RescanAccountsListItemViewModel.swift */,
 				F0DB41AE2794C64600EA437D /* AddAccountListItemButtonViewModel.swift */,
@@ -26185,6 +26195,7 @@
 				59167CD62E464C76002184C2 /* LedgerAccountViewTheme.swift in Sources */,
 				59167CD72E464C76002184C2 /* MultipleSelectionLedgerAccountCell.swift in Sources */,
 				59167CD82E464C76002184C2 /* SingleSelectionLedgerAccountCell.swift in Sources */,
+				54C3CA112F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */,
 				59167CD92E464C76002184C2 /* LedgerAccountDetailView.swift in Sources */,
 				59167CDA2E464C76002184C2 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				59167CDB2E464C76002184C2 /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */,
@@ -26659,6 +26670,7 @@
 				59167EA42E464C76002184C2 /* TransactionUploadAndWaitOperation.swift in Sources */,
 				59167EA52E464C76002184C2 /* ConfirmSwapScreen.swift in Sources */,
 				59167EA62E464C76002184C2 /* ConfirmSwapScreenTheme.swift in Sources */,
+				54C3CA132F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */,
 				59167EA72E464C76002184C2 /* ConfirmSwapScreenViewModel.swift in Sources */,
 				59167EA82E464C76002184C2 /* PriceImpactLimit.swift in Sources */,
 				59167EA92E464C76002184C2 /* ConfirmSwapAPIDataController.swift in Sources */,
@@ -28345,6 +28357,7 @@
 				59E602572E4A712500CCA99B /* LedgerAccountDetailView.swift in Sources */,
 				59E602582E4A712500CCA99B /* LedgerAccountDetailViewTheme.swift in Sources */,
 				59E602592E4A712500CCA99B /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */,
+				54C3CA102F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */,
 				59E6025A2E4A712500CCA99B /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
 				59E6025B2E4A712500CCA99B /* LedgerAccountVerificationView.swift in Sources */,
 				59E6025C2E4A712500CCA99B /* LedgerAccountVerificationViewTheme.swift in Sources */,
@@ -28819,6 +28832,7 @@
 				59E604242E4A712500CCA99B /* ConfirmSwapScreen.swift in Sources */,
 				59E604252E4A712500CCA99B /* ConfirmSwapScreenTheme.swift in Sources */,
 				59E604262E4A712500CCA99B /* ConfirmSwapScreenViewModel.swift in Sources */,
+				54C3CA152F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */,
 				59E604272E4A712500CCA99B /* PriceImpactLimit.swift in Sources */,
 				59E604282E4A712500CCA99B /* ConfirmSwapAPIDataController.swift in Sources */,
 				59E604292E4A712500CCA99B /* ConfirmSwapDataController.swift in Sources */,
@@ -30505,6 +30519,7 @@
 				59E60ACF2E4A71D000CCA99B /* LedgerAccountDetailView.swift in Sources */,
 				59E60AD02E4A71D000CCA99B /* LedgerAccountDetailViewTheme.swift in Sources */,
 				59E60AD12E4A71D000CCA99B /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */,
+				54C3CA0F2F3382670082D3A6 /* RekeyToJointAccountListItemButtonViewModel.swift in Sources */,
 				59E60AD22E4A71D000CCA99B /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
 				59E60AD32E4A71D000CCA99B /* LedgerAccountVerificationView.swift in Sources */,
 				59E60AD42E4A71D000CCA99B /* LedgerAccountVerificationViewTheme.swift in Sources */,
@@ -30979,6 +30994,7 @@
 				59E60C9D2E4A71D000CCA99B /* ConfirmSwapScreenTheme.swift in Sources */,
 				59E60C9E2E4A71D000CCA99B /* ConfirmSwapScreenViewModel.swift in Sources */,
 				59E60C9F2E4A71D000CCA99B /* PriceImpactLimit.swift in Sources */,
+				54C3CA142F3382820082D3A6 /* ExportJointAccountListItemButtonViewModel.swift in Sources */,
 				59E60CA02E4A71D000CCA99B /* ConfirmSwapAPIDataController.swift in Sources */,
 				59E60CA12E4A71D000CCA99B /* ConfirmSwapDataController.swift in Sources */,
 				59E60CA22E4A71D000CCA99B /* SwapConfirmMinimumReceivedInfoViewModel.swift in Sources */,

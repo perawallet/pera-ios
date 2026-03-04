@@ -59,6 +59,10 @@ extension RekeyToStandardAccountInstructionsDraft {
         if authorization.isRekeyed {
             return "rekey-from-rekeyed-account-illustration"
         }
+        
+        if sourceAccount.isJointAccount {
+            return "rekey-from-standard-account-illustration"
+        }
 
         preconditionFailure("Unexpected account type in the flow")
     }
@@ -90,6 +94,10 @@ extension RekeyToStandardAccountInstructionsDraft {
         if authorization.isRekeyed {
             return Self.makeRekeyRekeyedAccountToStandardAccountBody()
         }
+        
+        if sourceAccount.isJointAccount {
+            return Self.makeRekeyJointAccountToJointAccountBody()
+        }
 
         preconditionFailure("Unexpected account type in the flow")
     }
@@ -111,6 +119,12 @@ extension RekeyToStandardAccountInstructionsDraft {
         let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
+    
+    private static func makeRekeyJointAccountToJointAccountBody() -> RekeyInstructionsBodyTextProvider {
+        let text = String(localized: "rekey-joint-account-to-joint-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
+        return Self.makeBody(text: text, highlightedText: highlightedText)
+    }
 }
 
 extension RekeyToStandardAccountInstructionsDraft {
@@ -129,6 +143,10 @@ extension RekeyToStandardAccountInstructionsDraft {
 
         if authorization.isRekeyed {
             return Self.makeRekeyRekeyedAccountToStandardAccountInstructions(sourceAccount)
+        }
+        
+        if sourceAccount.isJointAccount {
+            return Self.makeRekeyJointAccountToJointAccountInstructions()
         }
 
         preconditionFailure("Unexpected account type in the flow")
@@ -164,5 +182,13 @@ extension RekeyToStandardAccountInstructionsDraft {
         }
 
         return instructions
+    }
+    
+    private static func makeRekeyJointAccountToJointAccountInstructions() -> [InstructionItemViewModel] {
+        [
+            RekeyStandardToStandardAccountFutureTransactionsSignInstructionViewModel(order: 1),
+            RekeyAnyAccountToAnyAccountNoLongerAbleToSignInstructionViewModel(order: 2),
+            RekeyAnyAccountToAnyAccountNoConfigurationChangeInstructionViewModel(order: 3)
+        ]
     }
 }
