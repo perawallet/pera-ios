@@ -152,9 +152,8 @@ final class SwapSharedViewModel: ObservableObject {
             .map { [weak self] in
                 guard let self else { return false }
                 if $0 || $1 || $2 { return false }
-                let paying = amountFormatter.numericValue(from: payingText)
                 let receiving = amountFormatter.numericValue(from: receivingText)
-                return paying > 0 && receiving > 0
+                return payingTextValue > 0 && receiving > 0
             }
             .sink { [weak self] in self?.shouldShowSwapButton = $0 }
             .store(in: &cancellables)

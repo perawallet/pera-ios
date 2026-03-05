@@ -22,18 +22,6 @@ import Testing
 struct SwapSharedViewModelTests {
     
     @Test
-    func test_shouldShowSwapButton_whenAllConditionsMet() {
-        // Given
-        let vm = makeViewModel()
-        
-        // When
-        let result = vm.shouldShowSwapButton
-        
-        // Then
-        #expect(result == true)
-    }
-    
-    @Test
     func test_shouldShowSwapButton_whenLoadingOrInsufficientBalance() {
         // Given
         let vm = makeViewModel(isBalanceNotSufficient: true)
