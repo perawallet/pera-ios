@@ -39,6 +39,14 @@ final class SwapAmountFormatter {
     }
     
     func numericValue(from text: String) -> Double {
-        text.numericValue()
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
+        let groupingSeparator = Locale.current.groupingSeparator ?? ","
+        
+        let cleaned = text
+            .replacingOccurrences(of: groupingSeparator, with: "")
+            .filter { String($0) == decimalSeparator || $0.isNumber }
+            .replacingOccurrences(of: decimalSeparator, with: ".")
+        
+        return Double(cleaned) ?? text.numericValue()
     }
 }
