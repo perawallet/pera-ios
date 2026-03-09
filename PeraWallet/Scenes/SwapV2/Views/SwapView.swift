@@ -284,11 +284,11 @@ struct SwapView: View {
     }
     
     private func updateValuesAfterSettingsApplied() {
-        let value = viewModel.payingText.numericValue()
+        let value = viewModel.amountFormatter.numericValue(from: viewModel.payingText)
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.payingText = viewModel.fiatFormat(with: value)
         } else {
-            viewModel.payingText = String(value)
+            viewModel.payingText = viewModel.amountFormatter.string(from: Decimal(value)) ?? String(value)
         }
         viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
     }

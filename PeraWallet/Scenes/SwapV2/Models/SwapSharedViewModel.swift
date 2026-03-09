@@ -60,7 +60,7 @@ class SwapSharedViewModel: ObservableObject {
     // MARK: - Services
     let currency: CurrencyProvider
     let sharedDataController: SharedDataController
-    private let amountFormatter = SwapAmountFormatter()
+    internal let amountFormatter = SwapAmountFormatter()
     private let pricingService = SwapPricingService()
     private let currencyService: SwapCurrencyService
     

@@ -102,11 +102,11 @@ final class SwapViewController: BaseViewController {
             return
         }
         
-        let value = sharedViewModel.payingText.numericValue()
+        let value = sharedViewModel.amountFormatter.numericValue(from: sharedViewModel.payingText)
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             sharedViewModel.payingText = sharedViewModel.fiatFormat(with: value)
         } else {
-            sharedViewModel.payingText = String(value)
+            sharedViewModel.payingText = sharedViewModel.amountFormatter.string(from: Decimal(value)) ?? String(value)
         }
         sharedViewModel.updatePayingText(sharedViewModel.payingText) { [weak self] doubleValue in
             guard let self else { return }
