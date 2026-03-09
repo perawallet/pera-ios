@@ -14,7 +14,6 @@
 
 //   CollectibleDetailTransactionController.swift
 
-import Foundation
 import pera_wallet_core
 
 final class CollectibleDetailTransactionController {
@@ -24,21 +23,19 @@ final class CollectibleDetailTransactionController {
     private let asset: CollectibleAsset
     private let transactionController: TransactionController
     private let sharedDataController: SharedDataController
+    private let jointAccountTransactionHandler: JointAccountTransactionHandler
 
-    init(
-        account: Account,
-        asset: CollectibleAsset,
-        transactionController: TransactionController,
-        sharedDataController: SharedDataController
-    ) {
+    init(account: Account, asset: CollectibleAsset, transactionController: TransactionController, sharedDataController: SharedDataController, accountsService: AccountsServiceable) {
         self.account = account
         self.asset = asset
         self.transactionController = transactionController
         self.sharedDataController = sharedDataController
+        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
     }
 }
 
 extension CollectibleDetailTransactionController {
+    
     func optOutAsset() {
         guard let creator = asset.creator else {
             return
@@ -66,6 +63,10 @@ extension CollectibleDetailTransactionController {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
+        
+        if account.isJointAccount {
+            performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: false)
+        }
     }
 
     func optInToAsset() {
@@ -88,6 +89,26 @@ extension CollectibleDetailTransactionController {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
+        
+        if account.isJointAccount {
+            performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: true)
+        }
+    }
+    
+    // MARK: - Joint Account
+    
+    private func performOptInOrOutAssetTransactionForJointAccount(draft: AssetTransactionSendDraft, isOptIn: Bool) {
+        
+        let transactionType: JointAccountTransactionHandler.TransactionType = isOptIn ? .optIn(draft: draft) : .optOut(draft: draft)
+        
+        Task {
+            do {
+                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: account, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
+                eventHandlers.onJointAccountTransactionStarted?(result.signRequestMetadata)
+            } catch {
+                eventHandlers.onJointAccountTransactionError?(error)
+            }
+        }
     }
 }
 
@@ -95,5 +116,7 @@ extension CollectibleDetailTransactionController {
     struct Event {
         var didStartRemovingAsset: EmptyHandler?
         var didStartOptingInToAsset: EmptyHandler?
+        var onJointAccountTransactionStarted: ((SignRequestMetadata) -> Void)?
+        var onJointAccountTransactionError: ((Error) -> Void)?
     }
 }

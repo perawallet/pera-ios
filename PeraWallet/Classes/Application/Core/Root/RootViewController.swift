@@ -136,22 +136,6 @@ extension RootViewController {
         let swapVC = SwapViewController(configuration: appConfiguration.all())
         let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapVC))
         
-        let collectibleListQuery = CollectibleListQuery(
-            filteringBy: .init(),
-            sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
-        )
-        let collectibleListViewController = CollectiblesViewController(
-            query: collectibleListQuery,
-            dataController: CollectibleListLocalDataController(
-                galleryAccount: .all,
-                sharedDataController: appConfiguration.sharedDataController
-            ),
-            copyToClipboardController: ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            ),
-            configuration: appConfiguration.all()
-        )
-        
         let stakingVC = StakingScreen(configuration: appConfiguration.all())
         stakingVC.hideBackButtonInWebView = true
         let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))

@@ -973,7 +973,8 @@ final class Router:
                 quickAction: quickAction,
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
             aViewController.eventHandler = eventHandler
 
@@ -1169,7 +1170,8 @@ final class Router:
             )
             viewController = AssetAdditionViewController(
                 dataController: dataController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
@@ -1180,7 +1182,8 @@ final class Router:
             viewController = ManageAssetListViewController(
                 query: query,
                 dataController: dataController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
@@ -1650,7 +1653,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case .collectibleList:
             let collectibleListQuery = CollectibleListQuery(
@@ -1678,7 +1682,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
             aViewController.eventHandler = eventHandler
 

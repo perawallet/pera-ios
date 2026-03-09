@@ -57,7 +57,7 @@ final class TransactionController {
     private var params: TransactionParams?
     private var timer: Timer?
     private var transactions = [TransactionData]()
-    private var transactionDraft: TransactionSendDraft?
+    private(set) var transactionDraft: TransactionSendDraft?
 
     private var api: ALGAPI
     private let sharedDataController: SharedDataController

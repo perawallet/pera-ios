@@ -65,7 +65,8 @@ final class CollectibleDetailViewController:
         account: account,
         asset: asset,
         transactionController: transactionController,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        accountsService: accountsService
     )
 
     private var ledgerConnectionScreen: LedgerConnectionScreen?
@@ -120,6 +121,7 @@ final class CollectibleDetailViewController:
 
     private lazy var collectibleDescriptionViewModel = CollectibleDescriptionViewModel(asset: asset, isTruncated: true)
 
+    private let accountsService: AccountsServiceable
     private var asset: CollectibleAsset
     private var account: Account
     private let quickAction: AssetQuickAction?
@@ -135,7 +137,8 @@ final class CollectibleDetailViewController:
         quickAction: AssetQuickAction?,
         thumbnailImage: UIImage?,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        accountsService: AccountsServiceable
     ) {
         self.asset = asset
         self.account = account
@@ -149,6 +152,7 @@ final class CollectibleDetailViewController:
             sharedDataController: configuration.sharedDataController
         )
         self.copyToClipboardController = copyToClipboardController
+        self.accountsService = accountsService
         super.init(configuration: configuration)
     }
 
@@ -292,11 +296,30 @@ final class CollectibleDetailViewController:
                 self.openLedgerConnection()
             }
         }
+        
+        collectibleDetailTransactionController.eventHandlers.onJointAccountTransactionStarted = { [weak self] in
+            self?.openPendingTransactionOverlay(signRequestMetadata: $0)
+        }
+        
+        collectibleDetailTransactionController.eventHandlers.onJointAccountTransactionError = { [weak self] in
+            self?.handle(error: $0)
+        }
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         linkMediaPreviewInteractors()
+    }
+    
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
+            self?.handleSucessfulTransaction()
+        }
+        
+        Task { @MainActor in
+            present(viewController, animated: true)
+        }
     }
 }
 
@@ -823,16 +846,12 @@ extension CollectibleDetailViewController {
     private func cancelOptInAsset() {
         dismiss(animated: true)
     }
-}
-
-extension CollectibleDetailViewController {
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {
+    
+    private func handleSucessfulTransaction() {
+        
         loadingController?.stopLoading()
 
-        if let quickAction = quickAction {
+        if let quickAction {
             switch quickAction {
             case .optIn:
                 removeQuickAction()
@@ -864,6 +883,21 @@ extension CollectibleDetailViewController {
         )
 
         eventHandler?(.didOptOutAssetFromAccount)
+    }
+    
+    private func handle(error: Error) {
+        cancelMonitoringOptInOutUpdates(for: transactionController)
+        loadingController?.stopLoading()
+        bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
+    }
+}
+
+extension CollectibleDetailViewController {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        handleSucessfulTransaction()
     }
 
     func transactionController(
