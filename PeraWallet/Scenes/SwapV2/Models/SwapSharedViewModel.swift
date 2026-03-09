@@ -230,7 +230,7 @@ class SwapSharedViewModel: ObservableObject {
         }
 
         let value = amountFormatter.numericValue(from: filtered)
-        guard value > 0 else { return filtered }
+        guard value > 0 else { return .empty }
 
         if useLocalCurrency {
             return currencyService.fiatFormat(with: value)

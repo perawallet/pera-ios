@@ -94,9 +94,18 @@ struct AssetSelectionView: View {
                             .cornerRadius(3)
                     } else {
                         PeraTextField(placeholder: nil, text: Binding(
-                            get: { amountText },
+                            get: { isPayingFocused ? (amountText.isZeroValue ? .empty : amountText.numericValue().formatted(.number.grouping(.never))) : amountText },
                             set: {
-                                amountText = $0.isEmpty ? .empty : $0
+                                guard !$0.isEmpty else {
+                                    amountText = .empty
+                                    if type == .pay { isBalanceNotSufficient = false }
+                                    return
+                                }
+                                let decimalSeparator = Locale.current.decimalSeparator ?? "."
+                                let groupingSeparator = Locale.current.groupingSeparator ?? ","
+                                amountText = $0
+                                    .replacingOccurrences(of: groupingSeparator, with: "")
+                                    .filter { String($0) == decimalSeparator || $0.isNumber }
                                 if type == .pay, amountText.isEmpty {
                                     isBalanceNotSufficient = false
                                 }
@@ -114,8 +123,8 @@ struct AssetSelectionView: View {
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
-                            if focused && amountText.isZeroValue {
-                                amountText = .empty
+                            if focused {
+                                amountText = amountText.isZeroValue ? .empty : amountText.numericValue().formatted(.number.grouping(.never))
                             }
                         }
                     }
