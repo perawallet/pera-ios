@@ -102,7 +102,7 @@ final class SwapViewController: BaseViewController {
             return
         }
         
-        let value = sharedViewModel.amountFormatter.numericValue(from: sharedViewModel.payingText)
+        let value = sharedViewModel.payingText.numericValue()
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             sharedViewModel.payingText = sharedViewModel.fiatFormat(with: value)
         } else {
