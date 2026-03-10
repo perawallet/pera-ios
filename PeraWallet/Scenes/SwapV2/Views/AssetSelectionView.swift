@@ -71,6 +71,7 @@ struct AssetSelectionView: View {
     @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
+    let onAmountChanged: (String) -> Void
     
     // MARK: - Body
     var body: some View {
@@ -95,21 +96,7 @@ struct AssetSelectionView: View {
                     } else {
                         PeraTextField(placeholder: nil, text: Binding(
                             get: { isPayingFocused ? (amountText.isZeroValue ? .empty : amountText.numericValue().formatted(.number.grouping(.never))) : amountText },
-                            set: {
-                                guard !$0.isEmpty else {
-                                    amountText = .empty
-                                    if type == .pay { isBalanceNotSufficient = false }
-                                    return
-                                }
-                                let decimalSeparator = Locale.current.decimalSeparator ?? "."
-                                let groupingSeparator = Locale.current.groupingSeparator ?? ","
-                                amountText = $0
-                                    .replacingOccurrences(of: groupingSeparator, with: "")
-                                    .filter { String($0) == decimalSeparator || $0.isNumber }
-                                if type == .pay, amountText.isEmpty {
-                                    isBalanceNotSufficient = false
-                                }
-                            }
+                            set: { onAmountChanged($0) }
                         ))
                         .placeholder(when: amountText.isEmpty) {
                             Text(SwapSharedViewModel.defaultAmountValue)

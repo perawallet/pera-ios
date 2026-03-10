@@ -191,6 +191,13 @@ class SwapSharedViewModel: ObservableObject {
         }
     }
     
+    func onPayingAmountChanged(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
+        let filteredValue = filterPayingText(newValue)
+        guard filteredValue != payingText else { return }
+        payingText = filteredValue
+        updatePayingText(filteredValue, onGetQuote: onGetQuote)
+    }
+    
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
         onGetQuoteAction = onGetQuote
         payingTextSubject.send(newValue)
