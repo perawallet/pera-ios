@@ -652,7 +652,11 @@ final class SwapViewController: BaseViewController {
                 let swapAmount = calculateSwapAmount(for: assetIn, balance: Decimal(amount), peraSwapFee: response, percentage: Decimal(percentage))
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    if assetIn.isAlgo {
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    } else {
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAsset: assetIn, with: swapAmount.doubleValue) ?? .empty
+                    }
                     sharedViewModel?.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                 } else {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty

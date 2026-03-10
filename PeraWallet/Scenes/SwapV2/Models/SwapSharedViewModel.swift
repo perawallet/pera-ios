@@ -183,10 +183,10 @@ class SwapSharedViewModel: ObservableObject {
         receivingText = amountFormatter.string(from: valueOut) ?? .empty
         
         if useLocalCurrency {
-            receivingTextInSecondaryCurrency = amountFormatter.string(from: Decimal(valueOut.doubleValue), maxFractionDigits: 6) ?? .empty
-            payingTextInSecondaryCurrency = amountFormatter.string(from: Decimal(valueIn.doubleValue), maxFractionDigits: 6) ?? .empty
+            receivingTextInSecondaryCurrency = amountFormatter.string(from: valueOut, maxFractionDigits: 6) ?? .empty
+            payingTextInSecondaryCurrency = amountFormatter.string(from: valueIn, maxFractionDigits: 6) ?? .empty
         } else {
-            receivingTextInSecondaryCurrency = currencyService.fiatValueText(fromUSDC: valueOut.doubleValue)
+            receivingTextInSecondaryCurrency = currencyService.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
             payingTextInSecondaryCurrency = currencyService.fiatFormat(with: selectedQuote.amountInUSDValue?.doubleValue ?? 0)
         }
     }
@@ -205,15 +205,15 @@ class SwapSharedViewModel: ObservableObject {
     
     private func processPayingText(_ newValue: String) {
         let doubleValue = amountFormatter.numericValue(from: newValue)
+        guard doubleValue > 0 else { resetTextFields(); return }
 
-        if doubleValue > 0 {
-            isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
-            isLoadingReceiveAmount = true
-            let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
-            onGetQuoteAction?(valueToUse)
-        } else {
-            resetTextFields()
-        }
+        let assetAmount = useLocalCurrency
+            ? currencyService.assetValue(fromFiat: doubleValue, asset: selectedAssetIn.asset)
+            : doubleValue
+
+        isBalanceNotSufficient = assetAmount > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
+        isLoadingReceiveAmount = true
+        onGetQuoteAction?(assetAmount)
     }
     
     func resetTextFields() {
