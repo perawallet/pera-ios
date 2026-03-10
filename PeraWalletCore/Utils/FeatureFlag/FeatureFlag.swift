@@ -24,6 +24,7 @@ public enum FeatureFlag: String, CaseIterable {
     case webviewV2Enabled = "enable_webview_v2"
     case jointAccountEnabled = "enable_joint_account"
     case xoSwapEnabled = "enable_xo_swap"
+    case enableImmersve = "enable_immersve"
 
     var defaultValue: RemoteConfigValue {
         switch self {
@@ -34,6 +35,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .webviewV2Enabled: .bool(false)
         case .jointAccountEnabled: .bool(false)
         case .xoSwapEnabled: .bool(false)
+        case .enableImmersve: .bool(true)
         }
     }
     
@@ -41,7 +43,7 @@ public enum FeatureFlag: String, CaseIterable {
     /// NOTE: if the feature flag should appear in the override secret developer menu add a title
     public var title: String {
         switch self {
-        case .swapFeePadding: .empty
+        case .swapFeePadding, .enableImmersve: .empty
         case .liquidAuthEnabled: "Enable Liquid Auth"
         case .liquidConnectEnabled: "Enable Liquid Connect"
         case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
