@@ -43,11 +43,6 @@ final class JointAccountDetailController: UIHostingController<JointAccountDetail
     }
     
     private func setupCallbacks() {
-        
-        rootView.onDismissAction = { [weak self] in
-            self?.dismiss(animated: true)
-        }
-        
         rootView.onCopyAddressAction = { [weak self] in
             self?.copyToClipboardViewController.copyAddress($0)
         }
