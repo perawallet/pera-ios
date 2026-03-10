@@ -15,6 +15,7 @@
 //   ImageType.swift
 
 import SwiftUI
+import pera_wallet_core
 
 enum ImageType: Hashable {
     
@@ -26,10 +27,12 @@ enum ImageType: Hashable {
     
     case data(data: Data)
     case icon(data: IconData)
+    case uiImage(UIImage)
 }
 
 
 extension ImageType {
     static var placeholderUserIconData: Self { .icon(data: IconData(image: .Icons.user, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon)) }
     static var placeholderGroupIconData: Self { .icon(data: IconData(image: .Icons.group, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon)) }
+    static func accountTypeIcon(for account: Account) -> Self { .uiImage(account.typeImage) }
 }

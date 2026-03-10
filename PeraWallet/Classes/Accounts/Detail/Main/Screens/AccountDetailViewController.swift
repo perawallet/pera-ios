@@ -237,6 +237,8 @@ extension AccountDetailViewController {
                 self.presentOptionsScreen()
             case .transactionOption:
                 self.openAccountActionsMenu()
+            case .jointAccountDetail:
+                self.openJointAccountDetail()
             }
         }
     }
@@ -448,6 +450,10 @@ extension AccountDetailViewController {
 
     private func openAccountInformationScreen() {
         let sourceAccount = accountHandle.value
+        if sourceAccount.authorization == .jointAccount {
+            openJointAccountDetail()
+            return
+        }
         accountInformationFlowCoordinator.launch(sourceAccount)
     }
 
@@ -468,6 +474,17 @@ extension AccountDetailViewController {
                 delegate: self
             ),
             by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func openJointAccountDetail() {
+        navigationItem.backButtonDisplayMode = .minimal
+        open(
+            .jointAccountDetail(
+                account: accountHandle.value,
+                accountsService: PeraCoreManager.shared.accounts,
+            ),
+            by: .push
         )
     }
 

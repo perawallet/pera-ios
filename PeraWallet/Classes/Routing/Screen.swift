@@ -444,6 +444,7 @@ indirect enum Screen {
     case rekeyTransactionOverlay(variant: RekeySupportOverlayView.Variant, onPrimaryAction: (() -> Void)?)
     case publicWebview(url: URL?)
     case nameAndAddJointAccount(jointAccountAddress: String, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?)
+    case jointAccountDetail(account: Account, accountsService: AccountsServiceable)
 }
 
 extension Screen {

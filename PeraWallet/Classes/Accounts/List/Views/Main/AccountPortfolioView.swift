@@ -27,10 +27,10 @@ final class AccountPortfolioView:
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .showMinimumBalanceInfo: TargetActionInteraction(),
         .onAmountTap: TargetActionInteraction(),
-        .onJointAccountBadgeTap: GestureInteraction()
+        .onJointAccountBadgeTap: TargetActionInteraction()
     ]
 
-    private lazy var jointAccountView = UIView()
+    private lazy var jointAccountButton = MacaroonUIKit.Button()
     private lazy var badgeText = UILabel()
     private lazy var valueView = UILabel()
     private lazy var valueButton = MacaroonUIKit.Button()
@@ -49,13 +49,13 @@ final class AccountPortfolioView:
     
     init() {
         super.init(frame: .zero)
-        setupGestures()
     }
     
     // MARK: - Setups
     
     private func setupGestures() {
         startPublishing(event: .onAmountTap, for: valueButton)
+        startPublishing(event: .onJointAccountBadgeTap, for: jointAccountButton)
     }
     
     func customize(
@@ -67,6 +67,7 @@ final class AccountPortfolioView:
         addTendencyValue(theme)
         addMinimumBalanceContent(theme)
         addSelectedPointDateValue(theme)
+        setupGestures()
     }
 
     func customizeAppearance(
@@ -77,9 +78,7 @@ final class AccountPortfolioView:
         _ layoutSheet: LayoutSheet
     ) {}
     
-    func prepareForReuse() {
-        setupGestures()
-    }
+    func prepareForReuse() {}
     
     func bindData(
         _ viewModel: AccountPortfolioViewModel?
@@ -143,7 +142,7 @@ final class AccountPortfolioView:
         }
         
         let isJointAccount = viewModel?.isJointAccount ?? false
-        jointAccountView.isHidden = !isJointAccount
+        jointAccountButton.isHidden = !isJointAccount
         badgeText.text = viewModel?.jointAccountBadgeText
         jointAccountViewHeightConstraint?.update(offset: isJointAccount ? 28 : 0)
         valueViewTopConstraint?.update(offset: isJointAccount ? 12 : 0)
@@ -178,29 +177,24 @@ extension AccountPortfolioView {
     private func addJointAccountView(
         _ theme: AccountPortfolioViewTheme
     ) {
-        makeJointAccountView()
+        makeJointAccountButton()
         
-        addSubview(jointAccountView)
-        jointAccountView.snp.makeConstraints {
+        addSubview(jointAccountButton)
+        jointAccountButton.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview()
             jointAccountViewHeightConstraint = $0.height.equalTo(28).constraint
         }
-        
-        startPublishing(
-            event: .onJointAccountBadgeTap,
-            for: jointAccountView
-        )
     }
     
-    private func makeJointAccountView() {
-        jointAccountView.backgroundColor = Colors.Layer.grayLighter.uiColor
-        jointAccountView.layer.cornerRadius = 8
+    private func makeJointAccountButton() {
+        jointAccountButton.backgroundColor = Colors.Layer.grayLighter.uiColor
+        jointAccountButton.layer.cornerRadius = 8
         
         let badgeIcon = UIImageView(image: .Icons.jointAccountBadge)
-        jointAccountView.addSubview(badgeIcon)
-        
+        badgeIcon.isUserInteractionEnabled = false
+        jointAccountButton.addSubview(badgeIcon)
         badgeIcon.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(8)
@@ -209,18 +203,18 @@ extension AccountPortfolioView {
         badgeText.font = Fonts.DMSans.medium.make(12).uiFont
         badgeText.textColor = Colors.Text.main.uiColor
         badgeText.text = String(localized: "common-account-type-name-joint")
-        jointAccountView.addSubview(badgeText)
-        
+        badgeText.isUserInteractionEnabled = false
+        jointAccountButton.addSubview(badgeText)
         badgeText.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(badgeIcon.snp.trailing).offset(4)
         }
         
         let badgeArrow = UIImageView(image: .Icons.arrow)
+        badgeArrow.isUserInteractionEnabled = false
         badgeArrow.tintColor = Colors.Text.main.uiColor
         badgeArrow.contentMode = .scaleAspectFit
-        jointAccountView.addSubview(badgeArrow)
-        
+        jointAccountButton.addSubview(badgeArrow)
         badgeArrow.snp.makeConstraints {
             $0.top.equalToSuperview().offset(6)
             $0.bottom.equalToSuperview().inset(6)
@@ -237,7 +231,7 @@ extension AccountPortfolioView {
         [valueView, valueButton].forEach(addSubview)
         
         valueView.snp.makeConstraints {
-            valueViewTopConstraint = $0.top.equalTo(jointAccountView.snp.bottom).offset(12).constraint
+            valueViewTopConstraint = $0.top.equalTo(jointAccountButton.snp.bottom).offset(12).constraint
             $0.leading.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview()
 
