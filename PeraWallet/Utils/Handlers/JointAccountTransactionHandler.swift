@@ -20,7 +20,10 @@ final class JointAccountTransactionHandler {
     
     enum TransactionType {
         case sendAlgos(draft: AlgosTransactionSendDraft)
+        case sendAsset(draft: AssetTransactionSendDraft)
         case rekey(draft: RekeyTransactionSendDraft)
+        case optIn(draft: AssetTransactionSendDraft)
+        case optOut(draft: AssetTransactionSendDraft)
     }
     
     enum HandlerError: Error {
@@ -104,10 +107,16 @@ final class JointAccountTransactionHandler {
     
     private func builder(transactionType: TransactionType, parameters: TransactionParams) -> TransactionDataBuildable {
         switch transactionType {
-        case let .rekey(draft):
-            RekeyTransactionDataBuilder(params: parameters, draft: draft)
         case let .sendAlgos(draft):
             AlgoTransactionDataBuilder(params: parameters, draft: draft, initialSize: nil)
+        case let .sendAsset(draft):
+            AssetTransactionDataBuilder(params: parameters, draft: draft)
+        case let .rekey(draft):
+            RekeyTransactionDataBuilder(params: parameters, draft: draft)
+        case let .optIn(draft):
+            OptInTransactionDataBuilder(params: parameters, draft: draft)
+        case let .optOut(draft):
+            OptOutTransactionDataBuilder(params: parameters, draft: draft)
         }
     }
     

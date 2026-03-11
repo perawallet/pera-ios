@@ -365,7 +365,7 @@ extension UndoRekeyScreen {
     private func performAsyncJointAccountTransaction(draft: RekeyTransactionSendDraft) {
         Task {
             do {
-                try await jointAccountTransactionHandler.handleTransaction(
+                _ = try await jointAccountTransactionHandler.handleTransaction(
                     jointAccount: sourceAccount,
                     type: .rekey(draft: draft),
                     sharedDataController: sharedDataController,

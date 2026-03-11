@@ -25,8 +25,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       case noSigner
    }
    
-   typealias EventHandler = (Event) -> Void
-   
    override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
       return .automatic
    }
@@ -34,7 +32,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       return .intrinsic
    }
    
-   var eventHandler: EventHandler?
+   var eventHandler: ((Event) -> Void)?
    
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
    private lazy var transitionToLedgerConnection = BottomSheetTransition(
@@ -357,15 +355,21 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    
    private func createJointAccountSignTransactionRequest() {
       
-      // FIXME: Allow signing of other transaction types
-      guard let draft = transactionController.algosTransactionDraft else { return }
+      let transactionType: JointAccountTransactionHandler.TransactionType
+      
+      if let draft = transactionController.algosTransactionDraft {
+         transactionType = .sendAlgos(draft: draft)
+      } else if let draft = transactionController.assetTransactionDraft {
+         transactionType = .sendAsset(draft: draft)
+      } else {
+         return
+      }
+      
       openLoading()
       
       Task {
          do {
-            let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: draft.from, type: .sendAlgos(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
-            let apiResponse = result.apiResponse
-            let transactionResponses = apiResponse.transactionLists.flatMap(\.responses)
+            let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: draft.from, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
             self.openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata, presentingScreen: self)
          } catch {
             show(error: error)
