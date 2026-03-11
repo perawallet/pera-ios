@@ -35,7 +35,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .webviewV2Enabled: .bool(false)
         case .jointAccountEnabled: .bool(false)
         case .xoSwapEnabled: .bool(false)
-        case .enableImmersve: .bool(true)
+        case .enableImmersve: .bool(false)
         }
     }
     
