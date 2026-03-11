@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Pera Wallet, LDA
+// Copyright 2022-2026 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingASAAccountInboxHeaderTitleCell.swift
+//   RekeyToJointAccountListItemButtonViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class IncomingASAAccountInboxHeaderTitleCell:
-    CollectionCell<TitleView>,
-    ViewModelBindable {
-    
-    override static var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
-    }
-    
-    static let theme = TitleViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+struct RekeyToJointAccountListItemButtonViewModel: ListItemButtonViewModel {
+    let icon: Image? = "icon-options-rekey"
+    let title: EditText? = getTitle(String(localized: "title-rekey-to-joint-account"))
+    let subtitle: EditText? = nil
 }

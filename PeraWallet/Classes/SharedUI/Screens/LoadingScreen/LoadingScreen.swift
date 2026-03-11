@@ -44,6 +44,7 @@ final class LoadingScreen: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         hidesCloseBarButtonItem = true
+        navigationItem.hidesBackButton = true
     }
 
     override func viewWillAppear(_ animated: Bool) {

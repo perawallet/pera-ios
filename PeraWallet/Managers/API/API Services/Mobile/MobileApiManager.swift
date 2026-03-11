@@ -79,6 +79,16 @@ final class MobileApiManager {
         return try await perform(v1Request: request)
     }
     
+    func searchJointAccountSignTransaction(deviceID: String, signRequestID: String) async throws(CoreApiManager.ApiError) -> JointAccountsSignRequestSearchResponse {
+        let request = JointAccountsSignRequestSearchRequest(deviceID: deviceID, participantAddresses: nil, jointAccountAddresses: nil, signRequestID: signRequestID, status: nil)
+        return try await perform(v1Request: request)
+    }
+    
+    func fetchJointAccountDetail(address: String) async throws(CoreApiManager.ApiError) -> JointAccountDetailRequestResponse {
+        let request = JointAccountDetailRequest(address: address)
+        return try await perform(v1Request: request)
+    }
+    
     // MARK: - Actions
     
     private func perform<Request: Requestable>(v1Request: Request) async throws(CoreApiManager.ApiError) -> Request.ResponseType {

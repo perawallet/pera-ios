@@ -14,7 +14,6 @@
 
 //   ASADiscoveryScreen.swift
 
-import Foundation
 import MacaroonUIKit
 import MagpieCore
 import MagpieHipo
@@ -90,6 +89,7 @@ final class ASADiscoveryScreen:
     private let quickAction: AssetQuickAction?
     private let dataController: ASADiscoveryScreenDataController
     private let copyToClipboardController: CopyToClipboardController
+    private let jointAccountTransactionHandler: JointAccountTransactionHandler
 
     private let theme = ASADiscoveryScreenTheme()
 
@@ -97,11 +97,13 @@ final class ASADiscoveryScreen:
         quickAction: AssetQuickAction?,
         dataController: ASADiscoveryScreenDataController,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        accountsService: AccountsServiceable
     ) {
         self.quickAction = quickAction
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
+        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
 
         super.init(configuration: configuration)
 
@@ -771,6 +773,33 @@ extension ASADiscoveryScreen {
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
+            
+            if account.isJointAccount {
+                optInAssetForJointAccount(jointAccount: account, draft: assetTransactionDraft)
+            }
+        }
+    }
+    
+    private func optInAssetForJointAccount(jointAccount: Account, draft: AssetTransactionSendDraft) {
+        Task {
+            do {
+                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: .optIn(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
+                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+    
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
+            self?.loadingController?.stopLoading()
+            self?.dismiss(animated: true)
+        }
+        
+        Task { @MainActor in
+            present(viewController, animated: true)
         }
     }
 
@@ -793,6 +822,10 @@ extension ASADiscoveryScreen {
             screen,
             by: .present
         )
+    }
+    
+    private func handle(error: Error) {
+        bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
     }
 }
 

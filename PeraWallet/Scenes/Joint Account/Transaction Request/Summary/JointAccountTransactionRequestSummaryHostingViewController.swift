@@ -23,6 +23,7 @@ final class JointAccountTransactionRequestSummaryHostingViewController: UIHostin
     
     var onDismiss: (() -> Void)?
     var onShowDetails: ((_ account: Account, _ transaction: TransactionItem) -> Void)?
+    var onShowSigningStatus: (( _ transaction: TransactionItem) -> Void)?
     var onCopy: ((_ address: String) -> Void)?
     var onShowError: ((Error) -> Void)?
 
@@ -32,6 +33,7 @@ final class JointAccountTransactionRequestSummaryHostingViewController: UIHostin
         super.init(rootView: JointAccountTransactionRequestSummaryView(model: model))
         rootView.onDismiss = { [weak self] in self?.onDismiss?() }
         rootView.onShowDetails = { [weak self] in self?.onShowDetails?($0, $1) }
+        rootView.onShowSigningStatus = { [weak self] in self?.onShowSigningStatus?($0) }
         rootView.onCopy = { [weak self] in self?.onCopy?($0) }
         rootView.onShowError = { [weak self] in self?.onShowError?($0) }
     }

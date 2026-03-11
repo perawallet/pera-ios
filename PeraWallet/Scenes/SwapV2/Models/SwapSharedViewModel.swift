@@ -49,7 +49,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]? = []
     
     // MARK: - Internal State / Private Properties
-    private var debounceTask: Task<Void, Never>?
+    private var payingTextSubject = PassthroughSubject<String, Never>()
+    private var payingTextCancellable: AnyCancellable?
+    private var onGetQuoteAction: ((Double) -> Void)?
 
     private var shouldUpdateAccounts = false
     
@@ -110,10 +112,19 @@ class SwapSharedViewModel: ObservableObject {
         self.currencyService = SwapCurrencyService(currency: currency, amountFormatter: amountFormatter)
         
         sharedDataController.add(self)
+        setupPayingTextDebounce()
     }
 
     deinit {
         sharedDataController.remove(self)
+    }
+    
+    private func setupPayingTextDebounce() {
+        payingTextCancellable = payingTextSubject
+            .debounce(for: .milliseconds(600), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                self?.processPayingText(newValue)
+            }
     }
     
     // MARK: - Swap Actions
@@ -181,29 +192,20 @@ class SwapSharedViewModel: ObservableObject {
     }
     
     func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
-        debounceTask?.cancel()
-        debounceTask = nil
-        
-        debounceTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second debounce
-            guard let self else { return }
-            
-            let doubleValue = amountFormatter.numericValue(from: newValue)
-            if doubleValue > 0 {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
-                    isLoadingReceiveAmount = true
-                    
-                    let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
-                    onGetQuote(valueToUse)
-                }
-            } else {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    resetTextFields()
-                }
-            }
+        onGetQuoteAction = onGetQuote
+        payingTextSubject.send(newValue)
+    }
+    
+    private func processPayingText(_ newValue: String) {
+        let doubleValue = amountFormatter.numericValue(from: newValue)
+
+        if doubleValue > 0 {
+            isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
+            isLoadingReceiveAmount = true
+            let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
+            onGetQuoteAction?(valueToUse)
+        } else {
+            resetTextFields()
         }
     }
     

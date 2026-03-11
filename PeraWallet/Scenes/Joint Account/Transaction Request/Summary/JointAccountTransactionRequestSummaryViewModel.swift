@@ -23,6 +23,7 @@ protocol JointAccountTransactionRequestSummaryModelable {
     @MainActor func confirmTransaction()
     @MainActor func declineTransaction()
     @MainActor func requestTransactionDetails()
+    @MainActor func requestSigningStatus()
     func requestRawAddress()
 }
 
@@ -30,6 +31,7 @@ final class JointAccountTransactionRequestSummaryViewModel: ObservableObject {
     
     enum Action {
         case presentTransactionDetails(account: Account, transaction: TransactionItem)
+        case presentSigningStatus(account: Account, transaction: TransactionItem)
         case copyAddress(address: String)
         case success
     }
@@ -141,6 +143,38 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
         )
         
         viewModel.action = .presentTransactionDetails(account: account, transaction: transaction)
+    }
+    
+    
+    @MainActor
+    func requestSigningStatus() {
+        
+        let account: Account
+        let sdkTransaction: SDKTransaction
+        
+        do {
+            sdkTransaction = try self.sdkTransaction(signRequest: signRequest)
+            account = try participantAccount()
+        } catch {
+            viewModel.error = error
+            return
+        }
+        
+        let transaction = TransactionViewModel(
+            amount: sdkTransaction.amount.toAlgos,
+            fee: sdkTransaction.fee,
+            transferType: .sent,
+            id: signRequest.id,
+            type: .payment,
+            sender: sdkTransaction.sender,
+            receiver: sdkTransaction.receiver,
+            isSelfTransaction: false,
+            status: .pending,
+            allInnerTransactionsCount: 0,
+            noteRepresentation: nil
+        )
+        
+        viewModel.action = .presentSigningStatus(account: account, transaction: transaction)
     }
     
     func requestRawAddress() {

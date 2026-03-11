@@ -105,7 +105,7 @@ extension DeepLinkParser {
         }
 
         if let host = url.host {
-            let aRawValue = host + url.path
+            let aRawValue = url.path == "/" ? host : host + url.path
             return NotificationAction(rawValue: aRawValue)
         }
         
@@ -179,7 +179,7 @@ extension DeepLinkParser {
     private func parseIncomingASA(from notificationMessage: NotificationMessage) -> Result? {
         let url = notificationMessage.url
         let params = url?.queryParameters
-        let accountAddress = params?["account"]
+        let accountAddress = params?["account"] ?? params?["address"]
         
         guard let accountAddress else {
             return .failure(.accountNotFound)
@@ -520,6 +520,8 @@ extension DeepLinkParser {
             return makeWebImportScreen(qrText)
         case .swap:
             return makeSwapScreen(qrText)
+        case .exportJointAccount:
+            return nil
         }
     }
     

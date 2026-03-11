@@ -40,7 +40,7 @@ final class IncomingASAsDetailView:
     private lazy var infoFooterView = UILabel()
     private lazy var infoFooterIcon = UIImageView()
 
-    private var sendersTheme: IncomingASARequesSenderViewTheme?
+    private var sendersTheme: IncomingASARequestSenderViewTheme?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -269,8 +269,8 @@ extension IncomingASAsDetailView {
     }
 
     private func addSenderItem(
-        _ vm: IncomingASARequesSenderViewModel,
-        _ theme: IncomingASARequesSenderViewTheme?
+        _ vm: IncomingASARequestSenderViewModel,
+        _ theme: IncomingASARequestSenderViewTheme?
     ) {
         let itemView = createSenderItemView(
             vm,
@@ -280,10 +280,10 @@ extension IncomingASAsDetailView {
     }
 
     private func createSenderItemView(
-        _ vm: IncomingASARequesSenderViewModel,
-        _ theme: IncomingASARequesSenderViewTheme?
-    ) -> IncomingASARequesSenderView {
-        let itemView = IncomingASARequesSenderView()
+        _ vm: IncomingASARequestSenderViewModel,
+        _ theme: IncomingASARequestSenderViewTheme?
+    ) -> IncomingASARequestSenderView {
+        let itemView = IncomingASARequestSenderView()
         
         if let theme {
             itemView.customize(theme)

@@ -23,7 +23,7 @@ struct IncomingASAsDetailViewModel: ViewModel {
     private(set) var accountItem: AccountListItemViewModel?
     private(set) var account: Account?
     private(set) var amount: IncomingASARequestHeaderViewModel?
-    private(set) var senders: [IncomingASARequesSenderViewModel]?
+    private(set) var senders: [IncomingASARequestSenderViewModel]?
     private(set) var accountId: TextProvider?
     private(set) var algoGainOnClaim: UInt64?
     private(set) var algoGainOnReject: UInt64?
@@ -67,8 +67,8 @@ extension IncomingASAsDetailViewModel {
         
         guard let results = senders?.results else { return }
         
-        self.senders = results.compactMap { sender -> IncomingASARequesSenderViewModel? in
-            return IncomingASARequesSenderViewModel(
+        self.senders = results.compactMap { sender -> IncomingASARequestSenderViewModel? in
+            return IncomingASARequestSenderViewModel(
                 currencyFormatter: currencyFormatter,
                 asset: draft.asset,
                 amount: sender.amount,

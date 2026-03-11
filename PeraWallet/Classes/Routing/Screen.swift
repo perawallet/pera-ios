@@ -176,10 +176,6 @@ indirect enum Screen {
     )
     case jsonDisplay(jsonData: Data, title: String)
     case inbox
-    case incomingASA(
-        address: String,
-        requestsCount: Int
-    )
     case incomingASAsDetail(draft: IncomingASAListItem)
     case successResultScreen(
         viewModel: SuccessResultScreenViewModel,
@@ -448,6 +444,7 @@ indirect enum Screen {
     case rekeyTransactionOverlay(variant: RekeySupportOverlayView.Variant, onPrimaryAction: (() -> Void)?)
     case publicWebview(url: URL?)
     case nameAndAddJointAccount(jointAccountAddress: String, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?)
+    case jointAccountDetail(account: Account, accountsService: AccountsServiceable)
 }
 
 extension Screen {

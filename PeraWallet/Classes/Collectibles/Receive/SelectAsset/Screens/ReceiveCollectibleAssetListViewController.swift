@@ -73,17 +73,21 @@ final class ReceiveCollectibleAssetListViewController:
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private let dataController: ReceiveCollectibleAssetListDataController
+    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
     init(
         dataController: ReceiveCollectibleAssetListDataController,
         theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        accountsService: AccountsServiceable
     ) {
         self.dataController = dataController
         self.theme = theme
         self.copyToClipboardController = copyToClipboardController
+        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
 
         super.init(configuration: configuration)
     }
@@ -485,11 +489,42 @@ extension ReceiveCollectibleAssetListViewController {
                 transactionController.initializeLedgerTransactionAccount()
                 transactionController.startTimer()
             }
+            
+            if account.isJointAccount {
+                performOptInAssetTransactionForJointAccount(account: account, draft: assetTransactionDraft, transactionController: transactionController)
+            }
+        }
+    }
+    
+    private func performOptInAssetTransactionForJointAccount(account: Account, draft: AssetTransactionSendDraft, transactionController: TransactionController) {
+        Task {
+            do {
+                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: account, type: .optIn(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
+                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
+            } catch {
+                handle(error: error, transactionController: transactionController)
+            }
         }
     }
 
     private func cancelOptInAsset() {
         dismiss(animated: true)
+    }
+    
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        
+        Task { @MainActor in
+            present(viewController, animated: true)
+        }
+    }
+    
+    private func handle(error: Error, transactionController: TransactionController) {
+        cancelMonitoringOptInUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
+        bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
     }
 }
 

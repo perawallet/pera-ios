@@ -30,7 +30,7 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
     let sendersTitle: TextStyle
     let amountTitle: TextStyle
     
-    let senders: IncomingASARequesSenderViewTheme
+    let senders: IncomingASARequestSenderViewTheme
     let sendersContextPadding: LayoutMetric
     let sendersContextTopInset: LayoutMetric
     let infoFooter: TextStyle
@@ -60,7 +60,7 @@ struct IncomingASAsDetailViewTheme: LayoutSheet, StyleSheet {
             .font(Typography.bodyRegular()),
             .textOverflow(SingleLineText())
         ]
-        self.senders = IncomingASARequesSenderViewTheme(family)
+        self.senders = IncomingASARequestSenderViewTheme(family)
         self.sendersContextPadding = 20
         self.sendersContextTopInset = 16
         self.infoFooter = [

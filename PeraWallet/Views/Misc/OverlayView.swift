@@ -26,7 +26,7 @@ struct OverlayView<Content: View>: View {
     
     @ViewBuilder let contentView: () -> Content
     
-    @State private var isVisible: Bool = false
+    @Binding var isVisible: Bool
     @State private var dragOffset: CGFloat = 0
     
     // MARK: - Properties - UIKit Compatibility
@@ -44,7 +44,7 @@ struct OverlayView<Content: View>: View {
             if isVisible {
                 VStack {
                     Spacer()
-                    VStack {
+                    VStack(spacing: 0.0) {
                         Capsule()
                             .foregroundStyle(Color.Layer.grayLight)
                             .frame(width: 36.0, height: 4.0)
@@ -57,6 +57,7 @@ struct OverlayView<Content: View>: View {
                                 .ignoresSafeArea()
                         )
                 }
+                .zIndex(1.0)
                 .offset(y: dragOffset)
                 .gesture(
                     DragGesture()
@@ -71,7 +72,6 @@ struct OverlayView<Content: View>: View {
                             } else {
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     dragOffset = 0
-                                    
                                 }
                             }
                         }
@@ -79,9 +79,7 @@ struct OverlayView<Content: View>: View {
                 .transition(.move(edge: .bottom))
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: isVisible)
-        .onAppear {
-            isVisible = true
-        }
+        .animation(.easeInOut(duration: 0.6), value: isVisible)
+        .onAppear { isVisible = true }
     }
 }

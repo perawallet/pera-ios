@@ -18,7 +18,7 @@ import Foundation
 
 struct SignRequestObject: Decodable, Equatable {
     
-    enum SignType: String, Decodable {
+    enum SignType: String, Codable {
         case sync
         case async
     }
@@ -30,6 +30,7 @@ struct SignRequestObject: Decodable, Equatable {
         case confirmed
         case failed
         case expired
+        case declined
     }
     
     let id: String
@@ -40,6 +41,8 @@ struct SignRequestObject: Decodable, Equatable {
     let expectedExpireDatetime: Date
     let status: Status
     let creationDatetime: Date
+    
+    var didRequestFailed: Bool { status == .declined || status == .expired || status == .failed }
 }
 
 struct SignRequestTransactionObject: Decodable, Equatable {
@@ -52,14 +55,8 @@ struct SignRequestTransactionObject: Decodable, Equatable {
 }
 
 struct SignRequestTransactionResponseObject: Decodable, Equatable {
-    
-    enum Response: String, Decodable {
-        case signed
-        case declined
-    }
-    
     let address: String
-    let response: Response
+    let response: SignRequestStatus
     let signatures: [[String]]?
     let deviceId: String?
 }

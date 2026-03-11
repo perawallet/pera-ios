@@ -68,12 +68,15 @@ final class AssetAdditionViewController:
     }
 
     private let dataController: AssetListViewDataController
+    private let jointAccountTransactionHandler: JointAccountTransactionHandler
     
     init(
         dataController: AssetListViewDataController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        accountsService: AccountsServiceable
     ) {
         self.dataController = dataController
+        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
         super.init(configuration: configuration)
 
         startObservingDataUpdates()
@@ -486,7 +489,35 @@ extension AssetAdditionViewController {
                 transactionController.initializeLedgerTransactionAccount()
                 transactionController.startTimer()
             }
+            
+            if account.isJointAccount {
+                optIntAssetForJointAccount(jointAccount: account, draft: assetTransactionDraft, transactionController: transactionController)
+            }
         }
+    }
+    
+    private func optIntAssetForJointAccount(jointAccount: Account, draft: AssetTransactionSendDraft, transactionController: TransactionController) {
+        Task {
+            do {
+                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: .optIn(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
+                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+    
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        
+        Task { @MainActor in
+            present(viewController, animated: true)
+        }
+    }
+    
+    private func handle(error: Error) {
+        bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
     }
 
     private func cancelOptInAsset() {

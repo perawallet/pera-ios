@@ -14,6 +14,8 @@
 
 //   ProposeSignRequest.swift
 
+import Foundation
+
 enum ProposedSignType: String, Codable {
     case sync
     case async
@@ -41,6 +43,6 @@ struct ProposeSignResponse: Decodable {
     let jointAccount: MultiSigAccountObject
     let type: ProposedSignType
     let transactionLists: [SignRequestTransactionObject]
-    let expectedExpireDatetime: String
+    let expectedExpireDatetime: Date
     let status: JointAccountTransactionStatus
 }

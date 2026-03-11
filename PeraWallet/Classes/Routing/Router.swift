@@ -433,9 +433,9 @@ final class Router:
                 default: break
                 }
             }
-        case .assetInbox(let address, let requestsCount):
+        case .assetInbox:
             route(
-                to: .incomingASA(address: address, requestsCount: requestsCount),
+                to: .inbox,
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -503,6 +503,84 @@ final class Router:
             case .buy(path: let path, address: let address):
                 guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
                 rootViewController.mainContainer.launchFund(with: path, and: address)
+            case .assetInbox:
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                visibleScreen.open(.inbox, by: .present)
+            case let .jointAccountImport(address):
+                
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+                
+                let eventHandler: QRScanOptionsViewController.EventHandler = {
+                    [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .transaction:
+                        launch(tab: .home)
+
+                        var transactionDraft = SendTransactionDraft(
+                            from: Account(),
+                            transactionMode: .algo
+                        )
+
+                        let amount: UInt64 = 0
+                        transactionDraft.amount = amount.toAlgos
+
+                        let accountSelectDraft = SelectAccountDraft(
+                            transactionAction: .send,
+                            requiresAssetSelection: true,
+                            transactionDraft: transactionDraft,
+                            receiver: address
+                        )
+
+                        self.route(
+                            to: .accountSelection(
+                                draft: accountSelectDraft,
+                                delegate: self
+                            ),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+
+                    case .watchAccount:
+                        launch(tab: .home)
+
+                        let session = self.appConfiguration.session
+
+                        if let authenticatedUser = session.authenticatedUser,
+                           authenticatedUser.hasReachedTotalAccountLimit {
+
+                            let bannerController = self.appConfiguration.bannerController
+                            bannerController.presentErrorBanner(
+                                title: String(localized: "user-account-limit-error-title"),
+                                message: String(localized: "user-account-limit-error-message")
+                            )
+                            return
+                        }
+
+                        self.route(
+                            to: .watchAccountAddition(
+                                flow: .addNewAccount(
+                                    mode: .watch
+                                ),
+                                address: address
+                            ),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+                    case .contact:
+                        launch(tab: .home)
+
+                        self.route(
+                            to: .addContact(address: address, name: ""),
+                            from: self.findVisibleScreen(over: self.rootViewController),
+                            by: .present
+                        )
+                    }
+                }
+                
+                transition.perform(.qrScanOptions(address: address, eventHandler: eventHandler), by: .present)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
@@ -895,7 +973,8 @@ final class Router:
                 quickAction: quickAction,
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
             aViewController.eventHandler = eventHandler
 
@@ -1091,7 +1170,8 @@ final class Router:
             )
             viewController = AssetAdditionViewController(
                 dataController: dataController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
@@ -1102,7 +1182,8 @@ final class Router:
             viewController = ManageAssetListViewController(
                 query: query,
                 dataController: dataController,
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
@@ -1422,21 +1503,6 @@ final class Router:
             )
         case .inbox:
             viewController = InboxConstructor.buildScene(legacyConfiguration: configuration) ?? UIViewController()
-        case let .incomingASA(address, requestsCount):
-            let copyToClipboardController = ALGCopyToClipboardController(
-                toastPresentationController: appConfiguration.toastPresentationController
-            )
-            let dataController = IncomingASAAccountInboxAPIDataController(
-                address: address,
-                requestsCount: requestsCount,
-                sharedDataController: configuration.sharedDataController,
-                api: appConfiguration.api
-            )
-            viewController = IncomingASAAccountInboxViewController(
-                dataController: dataController,
-                copyToClipboardController: copyToClipboardController,
-                configuration: configuration
-            )
         case let .incomingASAsDetail(draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(
@@ -1587,7 +1653,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
         case .collectibleList:
             let collectibleListQuery = CollectibleListQuery(
@@ -1615,7 +1682,8 @@ final class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration,
+                accountsService: PeraCoreManager.shared.accounts
             )
             aViewController.eventHandler = eventHandler
 
@@ -2452,6 +2520,12 @@ final class Router:
             viewController = screen
         case let .nameAndAddJointAccount(jointAccountAddress, onDismissRequest):
             viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
+        case let .jointAccountDetail(account, accountsService):
+            viewController = JointAccountDetailConstructor.buildCompatibilityViewController(
+                configuration: configuration,
+                account: account,
+                accountsService: accountsService
+            )
         }
         return viewController as? T
     }

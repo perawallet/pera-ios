@@ -237,6 +237,8 @@ extension AccountDetailViewController {
                 self.presentOptionsScreen()
             case .transactionOption:
                 self.openAccountActionsMenu()
+            case .jointAccountDetail:
+                self.openJointAccountDetail()
             }
         }
     }
@@ -336,13 +338,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     private func openIncomingASAAccountInbox()  {
-        let screen = open(
-            .incomingASA(
-                address: accountHandle.value.address,
-                requestsCount: incomingASAsRequestsCount
-            ),
-            by: .push
-        ) as? IncomingASAAccountInboxViewController
+        let screen = open(.inbox, by: .push) as? IncomingASAAccountsViewController
         
         screen?.eventHandler = {
             [weak self, weak screen] event in
@@ -454,6 +450,10 @@ extension AccountDetailViewController {
 
     private func openAccountInformationScreen() {
         let sourceAccount = accountHandle.value
+        if sourceAccount.authorization == .jointAccount {
+            openJointAccountDetail()
+            return
+        }
         accountInformationFlowCoordinator.launch(sourceAccount)
     }
 
@@ -474,6 +474,17 @@ extension AccountDetailViewController {
                 delegate: self
             ),
             by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func openJointAccountDetail() {
+        navigationItem.backButtonDisplayMode = .minimal
+        open(
+            .jointAccountDetail(
+                account: accountHandle.value,
+                accountsService: PeraCoreManager.shared.accounts,
+            ),
+            by: .push
         )
     }
 
@@ -690,6 +701,16 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         rescanRekeyedAccountsCoordinator.rescan(accounts: [accountHandle.value], nextStep: .dismiss)
     }
     
+    func optionsViewControllerDidOpenExportJointAccount(_ optionsViewController: OptionsViewController) {
+        let address = accountHandle.value.address
+        let deepLink = "perawallet://joint-account-import?address=\(address)"
+        let draft = QRCreationDraft(address: "", mode: .exportJointAccount, title: String(localized: "export-share-deeplink-url-section-title"), deepLink: deepLink)
+        open(.qrGenerator(title: String(localized: "export-share-deeplink-title"), draft: draft, isTrackable: true), by: .present)
+    }
+    
+    func optionsViewControllerDidRekeyingToJointAccount(_ optionsViewController: OptionsViewController) {
+        rekeyToStandardAccountFlowCoordinator.launch(accountHandle.value)
+    }
 }
 
 extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {

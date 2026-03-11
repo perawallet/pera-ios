@@ -19,9 +19,15 @@ import UIKit
 import MacaroonUIKit
 import pera_wallet_core
 
+protocol JointAccountTransactionPreviewHandable: AnyObject {
+    var onShowJointAccountSignTransactionRequest: ((SignRequestMetadata) -> Void)? { get set }
+}
+
 final class SelectAssetViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    JointAccountTransactionPreviewHandable {
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = SelectAssetViewControllerListLayout.build()
         let collectionView =
@@ -47,6 +53,10 @@ final class SelectAssetViewController:
     private let account: Account
     private let receiverAccount: Account?
     private let theme: SelectAssetViewControllerTheme
+    
+    // MARK: - JointAccountTransactionPreviewHandable
+    
+    var onShowJointAccountSignTransactionRequest: ((SignRequestMetadata) -> Void)?
 
     init(
         account: Account,
@@ -209,9 +219,11 @@ extension SelectAssetViewController {
             amount: assetAmount,
             transactionMode: mode
         )
-        open(
-            .sendTransaction(draft: draft),
-            by: .push
-        )
+        
+        guard let viewController = open(.sendTransaction(draft: draft), by: .push) as? SendTransactionScreen else { return }
+        
+        viewController.onShowJointAccountSignTransactionRequest = { [weak self] in
+            self?.onShowJointAccountSignTransactionRequest?($0)
+        }
     }
 }

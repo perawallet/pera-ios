@@ -219,7 +219,7 @@ extension AccountAssetListAPIDataController {
             let point = selectedPoint,
             let date = point.timestamp.toDate(.fullNumericWithTimezone)
         else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: tendenciesVM, isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: nil, tendenciesVM: tendenciesVM, isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled, jointAccountParticipantsCount: account.value.jointAccountParticipants?.count)))
             return
         }
         
@@ -299,7 +299,7 @@ extension AccountAssetListAPIDataController {
         if account.value.authorization.isWatch {
             publish(event: .shouldReloadPortfolio(WatchAccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: isAmountHidden ? nil : tendenciesVM)))
         } else {
-            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM, isAmountHidden: isAmountHidden)))
+            publish(event: .shouldReloadPortfolio(AccountPortfolioViewModel(portfolioItem, selectedPoint: selectedPoint, tendenciesVM: tendenciesVM, isAmountHidden: isAmountHidden, jointAccountParticipantsCount: account.value.jointAccountParticipants?.count)))
         }
     }
 }
@@ -512,7 +512,8 @@ extension AccountAssetListAPIDataController {
             portfolio,
             selectedPoint: nil,
             tendenciesVM: tendenciesVM,
-            isAmountHidden: isAmountHidden
+            isAmountHidden: isAmountHidden,
+            jointAccountParticipantsCount: account.value.jointAccountParticipants?.count
         )
         return [ .portfolio(viewModel) ]
     }
