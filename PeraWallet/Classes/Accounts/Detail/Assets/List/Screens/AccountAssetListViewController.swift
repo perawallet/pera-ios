@@ -472,6 +472,10 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 cell.startObserving(event: .onAmountTap) {
                     ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
                 }
+                cell.startObserving(event: .onJointAccountBadgeTap) { [weak self] in
+                    guard let self else { return }
+                    eventHandler?(.jointAccountDetail)
+                }
             case .watchPortfolio:
                 let cell = cell as? WatchAccountPortfolioCell
                 cell?.startObserving(event: .onAmountTap) {
@@ -1001,5 +1005,6 @@ extension AccountAssetListViewController {
         case send
         case more
         case transactionOption
+        case jointAccountDetail
     }
 }

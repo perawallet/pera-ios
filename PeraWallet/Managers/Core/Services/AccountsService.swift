@@ -27,6 +27,7 @@ protocol AccountsServiceable {
     func hasJointAccount(with participantAddresses: [String]) -> Bool
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError)
     func searchJointAccountSignTransaction(signRequestID: String) async throws(AccountsService.ActionError) -> JointAccountsSignRequestSearchResponse
+    func fetchJointAccountDetail(address: String) async throws(AccountsService.ServiceError) -> JointAccountDetailRequestResponse
     @MainActor func localAccount(address: String) -> AccountInformation?
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
@@ -155,6 +156,14 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
             return try await mobileApiManager.searchJointAccountSignTransaction(deviceID: deviceID, signRequestID: signRequestID)
         } catch {
             throw .unableToSearchJointAccountSignTransaction(error: error)
+        }
+    }
+    
+    func fetchJointAccountDetail(address: String) async throws(ServiceError) -> JointAccountDetailRequestResponse {
+        do {
+            return try await mobileApiManager.fetchJointAccountDetail(address: address)
+        } catch {
+            throw .failedToFetchAccounts(error: error)
         }
     }
     

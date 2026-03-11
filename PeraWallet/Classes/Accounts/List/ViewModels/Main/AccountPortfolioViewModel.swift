@@ -31,6 +31,9 @@ struct AccountPortfolioViewModel:
     private(set) var differenceInPercentageText: TextProvider?
     private(set) var arrowImageView: ImageProvider?
     private(set) var isAmountHidden: Bool?
+    private var jointAccountParticipantsCount: Int?
+    private(set) var isJointAccount: Bool?
+    private(set) var jointAccountBadgeText: String
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
@@ -38,9 +41,14 @@ struct AccountPortfolioViewModel:
         _ portfolioItem: AccountPortfolioItem,
         selectedPoint: ChartSelectedPointViewModel?,
         tendenciesVM: TendenciesViewModel?,
-        isAmountHidden: Bool?
+        isAmountHidden: Bool?,
+        jointAccountParticipantsCount: Int?
     ) {
         self.isAmountHidden = isAmountHidden
+        self.jointAccountParticipantsCount = jointAccountParticipantsCount
+        self.isJointAccount = jointAccountParticipantsCount ?? 0 > 1
+        self.jointAccountBadgeText = String(localized: "common-account-type-name-joint") + " (" + String(jointAccountParticipantsCount ?? 0) + ")"
+        
         bindTendencies(tendenciesVM)
         guard let selectedPoint else {
             bind(portfolioItem)

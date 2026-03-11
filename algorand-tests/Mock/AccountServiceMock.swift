@@ -37,6 +37,7 @@ final class AccountServiceMock: AccountsServiceable {
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) -> ProposeSignResponse { .mock }
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError) {}
     func searchJointAccountSignTransaction(signRequestID: String) async throws(AccountsService.ActionError) -> JointAccountsSignRequestSearchResponse { .mock }
+    func fetchJointAccountDetail(address: String) async throws(AccountsService.ServiceError) -> JointAccountDetailRequestResponse { .mock }
     func hasJointAccount(with participantAddresses: [String]) -> Bool { false }
     func localAccount(address: String) -> AccountInformation? { nil }
     func localAccount(peraAccount: PeraAccount) -> AccountInformation? { nil }
@@ -56,6 +57,10 @@ private extension MultiSigAccountObject {
 
 private extension JointAccountsSignRequestSearchResponse {
     static var mock: Self { Self(results: [.mock]) }
+}
+
+private extension JointAccountDetailRequestResponse {
+    static var mock: Self { Self(customId: "", address: "", participantAddresses: [], threshold: 0) }
 }
 
 private extension JointAccountsSignRequestSearchDataObject {

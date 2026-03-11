@@ -2520,6 +2520,12 @@ final class Router:
             viewController = screen
         case let .nameAndAddJointAccount(jointAccountAddress, onDismissRequest):
             viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
+        case let .jointAccountDetail(account, accountsService):
+            viewController = JointAccountDetailConstructor.buildCompatibilityViewController(
+                configuration: configuration,
+                account: account,
+                accountsService: accountsService
+            )
         }
         return viewController as? T
     }
