@@ -1503,6 +1503,21 @@ final class Router:
             )
         case .inbox:
             viewController = InboxConstructor.buildScene(legacyConfiguration: configuration) ?? UIViewController()
+        case let .incomingASA(address, requestsCount):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let dataController = IncomingASAAccountInboxAPIDataController(
+                address: address,
+                requestsCount: requestsCount,
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api
+            )
+            viewController = IncomingASAAccountInboxViewController(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case let .incomingASAsDetail(draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(
