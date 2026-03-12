@@ -481,7 +481,7 @@ final class Router:
                     for: appConfiguration.api.network
                 )
                 
-                if !isCardsFeatureEnabled {
+                if !isCardsFeatureEnabled || !appConfiguration.featureFlagService.isEnabled(.enableImmersve) {
                     return
                 }
                 
@@ -2488,6 +2488,7 @@ final class Router:
                 configuration: configuration
             )
         case .cards(path: let path):
+            if !appConfiguration.featureFlagService.isEnabled(.enableImmersve) { return nil }
             let cardsScreen = CardsScreen(
                 configuration: configuration,
                 destination: path.isNilOrEmpty ? .welcome : .other(path: path)
