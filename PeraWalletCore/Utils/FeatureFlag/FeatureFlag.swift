@@ -43,14 +43,13 @@ public enum FeatureFlag: String, CaseIterable {
     /// NOTE: if the feature flag should appear in the override secret developer menu add a title
     public var title: String {
         switch self {
-        case .swapFeePadding: .empty
+        case .swapFeePadding, .enableImmersve: .empty
         case .liquidAuthEnabled: "Enable Liquid Auth"
         case .liquidConnectEnabled: "Enable Liquid Connect"
         case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
         case .webviewV2Enabled: .empty
         case .jointAccountEnabled: "Enable Joint Account"
         case .xoSwapEnabled: "Enable XO Swap"
-        case .enableImmersve: "Enable Cards"
         }
     }
     
