@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDgEkBGqnhB0zLbUUsvtxSgh4WjVUoVIEA</string>
+	<string>AIzaSyDs-wEmKQLnAbsNZGc2AoiC3fufapwZJAQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>335421783381</string>
+	<string>537717066676</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.algorandllc.algorand</string>
 	<key>PROJECT_ID</key>
-	<string>pera-wallet-ios</string>
+	<string>pera-wallet-public</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pera-wallet-ios.firebasestorage.app</string>
+	<string>pera-wallet-public.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:335421783381:ios:3259cb32e4b5ea827e43dc</string>
+	<string>1:537717066676:ios:ad60dac55bc809d272c0e1</string>
 </dict>
 </plist>

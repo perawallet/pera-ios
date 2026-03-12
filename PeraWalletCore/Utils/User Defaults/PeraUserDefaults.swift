@@ -26,6 +26,12 @@ public enum PeraUserDefaults {
     // MARK: - Security Settings
     
     @UserDefault(key: "isRekeySupported") public static var isRekeySupported: Bool?
+
+    // MARK: - MultiSig
+    
+    @UserDefault(key: "watchedJointAccountInvitations") public static var watchedJointAccountInvitations: [String]?
+    @UserDefault(key: "watchedSignRequestMessage") public static var watchedSignRequestMessage: [String]?
+    @UserDefault(key: "hasJointAccountCreationPopupBeenShown") public static var hasJointAccountCreationPopupBeenShown: Bool?
     
     // MARK: - Secret Developer Settings
     

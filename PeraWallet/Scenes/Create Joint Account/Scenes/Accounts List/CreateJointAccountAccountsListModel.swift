@@ -41,11 +41,15 @@ final class CreateJointAccountAccountsListViewModel: ObservableObject {
 protocol CreateJointAccountAccountsListModelable {
     
     var viewModel: CreateJointAccountAccountsListViewModel { get }
+    var sharedAddAccountModel: CreateJointAccountAddAccountModelable { get }
+    var shouldShowJointAccountCreationPopup: Bool { get }
     
     func add(account: AddedAccountData)
     func remove(identifier: UUID)
     func update(identifier: UUID, account: AddedAccountData)
     func requestData()
+    func updateShouldShowJointAccountCreationPopup()
+    func reset()
 }
 
 final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListModelable {
@@ -59,10 +63,22 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     let viewModel = CreateJointAccountAccountsListViewModel()
     
+    // MARK: - Properties - CreateJointAccountAddAccountModel
+    
+    private lazy var addAccountModel = CreateJointAccountAddAccountModel(
+        accountsService: PeraCoreManager.shared.accounts,
+        currencyService: PeraCoreManager.shared.currencies,
+        nfdService: PeraCoreManager.shared.nfd
+    )
+    
+    var sharedAddAccountModel: CreateJointAccountAddAccountModelable { addAccountModel }
+    
     // MARK: - Properties
     
     private let accountsService: AccountsServiceable
     private var cancellables: Set<AnyCancellable> = []
+    
+    var shouldShowJointAccountCreationPopup: Bool { !(PeraUserDefaults.hasJointAccountCreationPopupBeenShown ?? false) }
     
     // MARK: - Initialisers
     
@@ -89,7 +105,6 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     // MARK: - Actions - CreateJointAccountAccountsListModelable
     
     func add(account: AddedAccountData) {
-        
         var title = account.title
         
         if account.isUserAccount {
@@ -112,6 +127,14 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     
     func requestData() {
         viewModel.action = .moveNext(participantAddresses: viewModel.accounts.map(\.address))
+    }
+    
+    func updateShouldShowJointAccountCreationPopup() {
+        PeraUserDefaults.hasJointAccountCreationPopupBeenShown = true
+    }
+    
+    func reset() {
+        viewModel.accounts = []
     }
 }
 

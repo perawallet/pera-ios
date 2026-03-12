@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   IncomingAsaSenderView.swift
+//   IncomingASARequestSenderView.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class IncomingASARequesSenderView:
+final class IncomingASARequestSenderView:
     View,
     ViewModelBindable,
     ListReusable {
@@ -26,13 +26,13 @@ final class IncomingASARequesSenderView:
     private lazy var senderView = UILabel()
     private lazy var amountView = UILabel()
     
-    func customize(_ theme: IncomingASARequesSenderViewTheme) {
+    func customize(_ theme: IncomingASARequestSenderViewTheme) {
         addContent(theme)
     }
 
     static func calculatePreferredSize(
-        _ viewModel: IncomingASARequesSenderViewModel?,
-        for theme: IncomingASARequesSenderViewTheme,
+        _ viewModel: IncomingASARequestSenderViewModel?,
+        for theme: IncomingASARequestSenderViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -53,7 +53,7 @@ final class IncomingASARequesSenderView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) { }
 
-    func bindData(_ viewModel: IncomingASARequesSenderViewModel?) {
+    func bindData(_ viewModel: IncomingASARequestSenderViewModel?) {
         if let sender = viewModel?.sender?.string.shortAddressDisplayWith4Characters {
             sender.load(in: senderView)
         } else {
@@ -73,8 +73,8 @@ final class IncomingASARequesSenderView:
     }
 }
 
-extension IncomingASARequesSenderView {
-    func addContent(_ theme: IncomingASARequesSenderViewTheme) {
+extension IncomingASARequestSenderView {
+    func addContent(_ theme: IncomingASARequestSenderViewTheme) {
         
         addSubview(senderView)
         senderView.snp.makeConstraints {

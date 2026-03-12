@@ -60,3 +60,13 @@ extension SwapProviderV2 {
         }
     }
 }
+
+extension SwapProviderV2 {
+    static func mock() -> SwapProviderV2 {
+        var apiModel = APIModel()
+        apiModel.name = "MockProvider"
+        apiModel.displayName = "MockProvider"
+        apiModel.iconUrl = .empty
+        return SwapProviderV2(apiModel)
+    }
+}

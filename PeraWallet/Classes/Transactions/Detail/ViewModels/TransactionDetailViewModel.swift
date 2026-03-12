@@ -80,6 +80,7 @@ extension TransactionDetailViewModel {
         let fee: UInt64? = {
             if let tx = transaction as? Transaction { return tx.fee }
             if let tx = transaction as? TransactionV2, let fee = tx.fee { return UInt64(fee) }
+            if let tx = transaction as? TransactionViewModel { return tx.fee }
             return nil
         }()
 
@@ -100,7 +101,8 @@ extension TransactionDetailViewModel {
             
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue}
+                if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue }
+                if let tx = transaction as? TransactionViewModel { return tx.amount }
                 return nil
             }()
             
@@ -119,6 +121,7 @@ extension TransactionDetailViewModel {
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
                 if let tx = transaction as? TransactionV2 { return tx.paymentValue(with: assetDetail?.decimals) ?? tx.amountValue }
+                if let tx = transaction as? TransactionViewModel { return tx.amount }
                 return nil
             }()
             
@@ -152,7 +155,7 @@ extension TransactionDetailViewModel {
         }
 
         bindTransactionIDTitle(transaction)
-        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id
+        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id ?? (transaction as? TransactionViewModel)?.id
         bindNote(for: transaction)
     }
 }
@@ -182,6 +185,7 @@ extension TransactionDetailViewModel {
         let fee: UInt64? = {
             if let tx = transaction as? Transaction { return tx.fee }
             if let tx = transaction as? TransactionV2, let fee = tx.fee { return UInt64(fee) }
+            if let tx = transaction as? TransactionViewModel { return tx.fee }
             return nil
         }()
 
@@ -199,6 +203,7 @@ extension TransactionDetailViewModel {
             let receiverAddress: String? = {
                 if let tx = transaction as? Transaction { return tx.assetTransfer?.receiverAddress }
                 if let tx = transaction as? TransactionV2 { return tx.receiver }
+                if let tx = transaction as? TransactionViewModel { return tx.receiver }
                 return nil
             }()
             bindOpponent(for: transaction, with: receiverAddress ?? "")
@@ -206,7 +211,8 @@ extension TransactionDetailViewModel {
             if let assetDetail {
                 let amount: Decimal? = {
                     if let tx = transaction as? Transaction { return tx.assetTransfer?.amount.assetAmount(fromFraction: assetDetail.decimals) }
-                    if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue}
+                    if let tx = transaction as? TransactionV2 { return tx.assetTransferTransactionDetail?.amountValue ?? tx.amountValue }
+                    if let tx = transaction as? TransactionViewModel { return tx.amount }
                     return nil
                 }()
                 
@@ -226,7 +232,8 @@ extension TransactionDetailViewModel {
             opponentViewTitle = String(localized: "title-to")
             let receiverAddress: String? = {
                 if let tx = transaction as? Transaction { return tx.payment?.receiver }
-                if let tx = transaction as? TransactionV2 { return tx.paymentTransactionDetail?.receiver ?? tx.receiver}
+                if let tx = transaction as? TransactionV2 { return tx.paymentTransactionDetail?.receiver ?? tx.receiver }
+                if let tx = transaction as? TransactionViewModel { return tx.receiver }
                 return nil
             }()
             bindOpponent(for: transaction, with: receiverAddress ?? "")
@@ -234,6 +241,7 @@ extension TransactionDetailViewModel {
             let amount: Decimal? = {
                 if let tx = transaction as? Transaction { return tx.payment?.amountForTransaction(includesCloseAmount: false).toAlgos }
                 if let tx = transaction as? TransactionV2 { return tx.paymentValue(with: assetDetail?.decimals) ?? tx.amountValue }
+                if let tx = transaction as? TransactionViewModel { return tx.amount }
                 return nil
             }()
             
@@ -264,7 +272,7 @@ extension TransactionDetailViewModel {
         }
 
         bindTransactionIDTitle(transaction)
-        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id
+        transactionID = (transaction as? Transaction).flatMap { $0.id ?? $0.parentID } ?? (transaction as? TransactionV2)?.id ?? (transaction as? TransactionViewModel)?.id
         bindNote(for: transaction)
     }
 }
@@ -341,7 +349,7 @@ extension TransactionDetailViewModel {
 
     private func bindCloseTo(for transaction: TransactionItem) {
         let closeAddress: String? = {
-            if let tx = transaction as? Transaction { return tx.payment?.closeAddress}
+            if let tx = transaction as? Transaction { return tx.payment?.closeAddress }
             if let tx = transaction as? TransactionV2 { return tx.closeTo }
             return nil
         }()

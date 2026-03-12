@@ -59,7 +59,7 @@ final class AccountAssetListViewController:
     )
 
     private lazy var optOutAssetCoordinator: OptOutAssetCoordinator = {
-        let coordinator = OptOutAssetCoordinator()
+        let coordinator = OptOutAssetCoordinator(accountsService: PeraCoreManager.shared.accounts)
         coordinator.presenter = self
         return coordinator
     }()
@@ -472,6 +472,10 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 cell.startObserving(event: .onAmountTap) {
                     ObservableUserDefaults.shared.isPrivacyModeEnabled.toggle()
                 }
+                cell.startObserving(event: .onJointAccountBadgeTap) { [weak self] in
+                    guard let self else { return }
+                    eventHandler?(.jointAccountDetail)
+                }
             case .watchPortfolio:
                 let cell = cell as? WatchAccountPortfolioCell
                 cell?.startObserving(event: .onAmountTap) {
@@ -572,6 +576,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
 
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
+                item.isJointAccount = dataController.account.value.authorization == .jointAccount
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
                 item.startObserving(event: .requests) { [weak self] in
@@ -1000,5 +1005,6 @@ extension AccountAssetListViewController {
         case send
         case more
         case transactionOption
+        case jointAccountDetail
     }
 }

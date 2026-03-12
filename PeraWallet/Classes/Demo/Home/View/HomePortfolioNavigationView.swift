@@ -69,14 +69,14 @@ final class HomePortfolioNavigationView: View {
     }
 
     func animateTitleVisible(
-        _ visible: Bool,
+        _ shouldBeVisible: Bool,
         _ completion: @escaping (Bool) -> ()?
     ) {
-        if visible == isVisible {
+        if shouldBeVisible == isVisible {
             return
         }
 
-        isVisible = visible
+        isVisible = shouldBeVisible
 
         if let runningVisibilityAnimator = runningVisibilityAnimator,
            runningVisibilityAnimator.isRunning {

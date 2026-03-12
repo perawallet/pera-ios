@@ -112,4 +112,18 @@ final class SwapCurrencyService {
         currencyFormatter.currency = currencyAlgoValue
         return currencyFormatter.format(amount) ?? .empty
     }
+    
+    func assetValue(fromFiat amount: Double, asset: Asset) -> Double {
+        if asset.isAlgo { return algoValue(fromFiat: amount) }
+        
+        guard
+            let usdValue = fiatCurrency?.usdValue,
+            let assetUSDPrice = asset.usdValue,
+            usdValue > 0,
+            assetUSDPrice > 0
+        else { return 0 }
+        
+        let amountInUSD = Decimal(amount) / usdValue
+        return (amountInUSD / assetUSDPrice).doubleValue
+    }
 }

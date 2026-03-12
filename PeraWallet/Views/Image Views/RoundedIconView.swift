@@ -50,7 +50,10 @@ struct RoundedIconView: View {
                 .frame(width: size, height: size)
                 .background(data.backgroundColor)
                 .cornerRadius(size / 2.0)
-            
+        case let .uiImage(uiImage):
+            Image(uiImage: uiImage)
+                .resizable()
+                .frame(width: size, height: size)
         }
     }
 }

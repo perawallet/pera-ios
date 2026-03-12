@@ -175,10 +175,7 @@ indirect enum Screen {
         wcSession: WCSessionDraft
     )
     case jsonDisplay(jsonData: Data, title: String)
-    
-    case incomingASAAccounts(
-        result: IncomingASAsRequestList?
-    )
+    case inbox
     case incomingASA(
         address: String,
         requestsCount: Int
@@ -450,6 +447,8 @@ indirect enum Screen {
     case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
     case rekeyTransactionOverlay(variant: RekeySupportOverlayView.Variant, onPrimaryAction: (() -> Void)?)
     case publicWebview(url: URL?)
+    case nameAndAddJointAccount(jointAccountAddress: String, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?)
+    case jointAccountDetail(account: Account, accountsService: AccountsServiceable)
 }
 
 extension Screen {

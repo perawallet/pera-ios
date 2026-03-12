@@ -24,10 +24,14 @@ struct CurrencyData: Equatable {
 }
 
 protocol CurrencyServiceable: AnyObject {
+    
     var selectedCurrencyData: ReadOnlyPublisher<CurrencyData?> { get }
     var error: AnyPublisher<CurrencyService.ServiceError, Never> { get }
     var selectedCurrency: String { get set }
     var isAlgoPrimaryCurrency: CurrentValueSubject<Bool, Never> { get }
+    
+    func fiatAmount(algoAmount: Decimal) -> Decimal
+    func formattedFiatAmount(algoAmount: Decimal) -> String
 }
 
 final class CurrencyService: CurrencyServiceable, NetworkConfigureable {
@@ -80,6 +84,25 @@ final class CurrencyService: CurrencyServiceable, NetworkConfigureable {
     private func update(network: CoreApiManager.BaseURL.Network) {
         mobileApiManager.network = network
         selectedCurrencyDataPublisher.value = nil
+    }
+    
+    // MARK: - Actions - CurrencyServiceable
+
+    func fiatAmount(algoAmount: Decimal) -> Decimal {
+        let currencyData = selectedCurrencyData.value
+        guard let rawExchangeRate = currencyData?.exchangeRate, let exchangeRate = Decimal(string: rawExchangeRate) else { return Decimal() }
+        return algoAmount * exchangeRate
+    }
+    
+    func formattedFiatAmount(algoAmount: Decimal) -> String {
+        
+        let fiatAmount = fiatAmount(algoAmount: algoAmount)
+        let currencyData = selectedCurrencyData.value
+        
+        let currencyFormatter = CurrencyFormatter()
+        currencyFormatter.currency = CurrencyFormatterSettings(id: .fiat(localValue: currencyData?.id), symbol: currencyData?.symbol)
+        
+        return currencyFormatter.format(fiatAmount) ?? ""
     }
     
     // MARK: - Actions

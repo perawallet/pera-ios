@@ -18,12 +18,6 @@ import UIKit
 import Combine
 import pera_wallet_core
 
-private struct CurrencyFormatterSettings: LocalCurrency {
-    let id: CurrencyID
-    let name: String? = nil
-    let symbol: String?
-}
-
 final class CreateJointAccountAddAccountViewModel: ObservableObject {
     
     enum Action {
@@ -83,6 +77,7 @@ protocol CreateJointAccountAddAccountModelable {
     func pasteFromClipboard()
     func select(normalAccount: CreateJointAccountAddAccountViewModel.AccountModel)
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel)
+    func reset()
 }
 
 final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModelable {
@@ -236,6 +231,11 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
         }
     }
     
+    func reset() {
+        viewModel.searchText = ""
+        viewModel.selectedAccount = nil
+    }
+    
     // MARK: - Actions - CreateJointAccountAddAccountModelable
     
     func pasteFromClipboard() {
@@ -263,7 +263,7 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel) {
         viewModel.selectedAccount = AddedAccountData(
             address: specialAccount.id,
-            image: .placeholderIconData,
+            image: .placeholderUserIconData,
             title: specialAccount.title,
             subtitle: specialAccount.subtitle,
             isEditable: true,
@@ -322,19 +322,8 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     }
     
     private func accountModel(contact: Contact) -> CreateJointAccountAddAccountViewModel.AccountModel? {
-        
         guard let address = contact.address else { return nil }
-        
-        let title = contact.name ?? address.shortAddressDisplay
-        let subtitle = contact.name != nil ? address.shortAddressDisplay : nil
-        let image: ImageType
-        
-        if let imageData = contact.image {
-            image = .data(data: imageData)
-        } else {
-            image = .icon(data: ImageType.IconData(image: .Icons.user, tintColor: .Wallet.wallet1, backgroundColor: .Wallet.wallet1Icon))
-        }
-        
-        return CreateJointAccountAddAccountViewModel.AccountModel(address: address, title: title, subtitle: subtitle, primaryValue: "", secondaryValue: "", image: image, isContact: true)
+        guard let contactData = ContactDataProvider.data(contact: contact) else { return nil }
+        return CreateJointAccountAddAccountViewModel.AccountModel(address: address, title: contactData.title, subtitle: contactData.subtitle, primaryValue: "", secondaryValue: "", image: contactData.image, isContact: true)
     }
 }

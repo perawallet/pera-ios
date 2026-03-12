@@ -48,6 +48,8 @@ struct AddAccountView: View {
     
     var onLegacyNavigationOptionSelected: ((LegacyNavigationOption) -> Void)?
     var onDismissRequest: (() -> Void)?
+    var onLearnMoreTap: (() -> Void)?
+    var onScanQRTap: (() -> Void)?
     
     // MARK: - Initialisers
     
@@ -120,9 +122,17 @@ struct AddAccountView: View {
                 .navigationDestination(for: NavigationOption.self) {
                     switch $0 {
                     case .addJointAccount:
-                        CreateJointAccountAccountsListConstructor.buildScene(navigationPath: $navigationPath, onDismissRequest: onDismissRequest)
+                        CreateJointAccountAccountsListConstructor.buildScene(
+                            navigationPath: $navigationPath,
+                            model: model.sharedJointAccountModel,
+                            scannedAddress: $viewModel.scannedAddress,
+                            onDismissRequest: onDismissRequest,
+                            onLearnMoreTap: onLearnMoreTap,
+                            onScanQRTap: onScanQRTap
+                        )
                     }
                 }
+                .onAppear { model.sharedJointAccountModel.reset() }
             }
             
             CreateJointAccountOverlay(isVisible: $isJointAccountOverlayVisible) {
@@ -164,7 +174,7 @@ struct AddAccountView: View {
             moveTo(option: .watchAccount)
         case .createUniversalWallet:
             moveTo(option: .createUniversalWallet)
-        case .createAlgo256Wallet:
+        case .createAlgo25Wallet:
             moveTo(option: .createAlgo25Wallet)
         }
     }

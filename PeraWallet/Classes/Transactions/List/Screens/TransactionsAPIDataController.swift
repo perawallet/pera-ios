@@ -193,21 +193,6 @@ extension TransactionsAPIDataController {
             assetId = String(id)
         }
         
-        guard featureFlagService.isEnabled(.assetDetailV2Enabled) else {
-            
-            let draft = TransactionFetchDraft(
-                account: draft.accountHandle.value,
-                dates: filterOption.getDateRanges(),
-                nextToken: nil,
-                assetId: assetId,
-                limit: 60,
-                transactionType: draft.type.currentTransactionType
-            )
-            
-            loadTransactions(draft: draft)
-            return
-        }
-        
         let draft = TransactionV2FetchDraft(
             account: draft.accountHandle.value,
             ordering: nil,
@@ -217,37 +202,6 @@ extension TransactionsAPIDataController {
             dates: filterOption.getDateRanges()
         )
         
-        loadTransactionsV2(draft: draft)
-    }
-    
-    private func loadTransactions(draft: TransactionFetchDraft) {
-        fetchRequest = api.fetchTransactions(draft) { [weak self] response in
-            guard let self else { return }
-
-            switch response {
-            case .failure:
-                /// <todo> Handle error case
-                break
-            case let .success(transactionResults):
-                nextToken = nextToken == nil ? transactionResults.nextToken : nextToken
-                transactionResults.transactions.forEach {
-                    $0.setAllParentID($0.id)
-                    $0.completeAll()
-                }
-
-                fetchAssets(from: transactionResults.transactions) { [weak self] in
-                    guard let self else { return }
-                    groupAndSetTransactionsByTypeIfNeeded(
-                        transactionResults.transactions,
-                        isPaginated: false
-                    )
-                    deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-                }
-            }
-        }
-    }
-    
-    private func loadTransactionsV2(draft: TransactionV2FetchDraft) {
         fetchRequest = api.fetchTransactionsV2(draft) { [weak self] response in
             guard let self else { return }
 
@@ -335,53 +289,8 @@ extension TransactionsAPIDataController {
 
         return Array(uniqueAssetIDs)
     }
-
-    func loadNextTransactions() {
-        guard !featureFlagService.isEnabled(.assetDetailV2Enabled) else {
-            loadNextTransactionsV2()
-            return
-        }
-        var assetId: String?
-        if let id = draft.asset?.id {
-            assetId = String(id)
-        }
-
-        let draft = TransactionFetchDraft(
-            account: draft.accountHandle.value,
-            dates: filterOption.getDateRanges(),
-            nextToken: nextToken,
-            assetId: assetId,
-            limit: 30,
-            transactionType: draft.type.currentTransactionType
-        )
-
-        fetchRequest = api.fetchTransactions(draft) { [weak self] response in
-            guard let self else { return }
-
-            switch response {
-            case .failure:
-                /// <todo> Handle error case
-                break
-            case let .success(transactionResults):
-                nextToken = transactionResults.nextToken
-                transactionResults.transactions.forEach {
-                    $0.setAllParentID($0.id)
-                    $0.completeAll()
-                }
-
-                fetchAssets(from: transactionResults.transactions) { [weak self] in
-                    guard let self else { return }
-                    groupAndSetTransactionsByTypeIfNeeded(
-                        transactionResults.transactions,
-                        isPaginated: true
-                    )
-                    deliverContentSnapshot(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
-                }
-            }
-        }
-    }
     
-    private func loadNextTransactionsV2() {
+    func loadNextTransactions() {
         var assetId: String?
         if let id = draft.asset?.id {
             assetId = String(id)
@@ -670,7 +579,7 @@ extension TransactionsAPIDataController {
                         continue
                     }
 
-                    let viewModel = AppCallTransactionItemViewModel(viewModelDraft, isAssetDetailV2Enabled: featureFlagService.isEnabled(.assetDetailV2Enabled))
+                    let viewModel = AppCallTransactionItemViewModel(viewModelDraft)
 
                     if addedItemIDs[transactionID] == nil {
                         transactionItems.append(.appCallTransaction(viewModel))

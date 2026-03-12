@@ -87,7 +87,7 @@ struct CreateJointAccountSetThresholdView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24.0)
             Spacer()
-            RoundedButton(text: "common-continue", style: .primary, isEnabled: true, onTap: onContinueButtonAction)
+            RoundedButton(contentType: .text("common-continue"), style: .primary, isEnabled: true, onTap: onContinueButtonAction)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
                 .navigationDestination(for: NavigationOption.self) { scene(navigationOption: $0) }

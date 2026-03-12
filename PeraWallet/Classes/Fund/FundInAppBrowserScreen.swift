@@ -49,7 +49,9 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadPeraURL()
+        if webView.url == nil {
+            loadPeraURL()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

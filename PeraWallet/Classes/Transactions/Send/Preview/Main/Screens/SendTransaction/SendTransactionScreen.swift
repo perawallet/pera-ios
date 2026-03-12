@@ -15,8 +15,6 @@
 //
 //   SendTransactionScreen.swift
 
-
-import Foundation
 import UIKit
 import SnapKit
 import MagpieHipo
@@ -25,7 +23,8 @@ import MacaroonUIKit
 import MacaroonUtils
 import pera_wallet_core
 
-final class SendTransactionScreen: BaseViewController {
+final class SendTransactionScreen: BaseViewController, JointAccountTransactionPreviewHandable {
+    
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -85,6 +84,10 @@ final class SendTransactionScreen: BaseViewController {
     }
 
     private var transactionSendController: TransactionSendController?
+    
+    // MARK: - JointAccountTransactionPreviewHandable
+    
+    var onShowJointAccountSignTransactionRequest: ((SignRequestMetadata) -> Void)?
 
     init(
         draft: SendTransactionDraft,
@@ -809,7 +812,9 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             guard let self = self else { return }
             switch event {
             case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
+                eventHandler?(.didCompleteTransaction)
+            case let .didCompleteJointAccountTransaction(signRequestMetadata):
+                onShowJointAccountSignTransactionRequest?(signRequestMetadata)
             case .didEditNote(let note):
                 self.didEditNote(note: note)
             default: break

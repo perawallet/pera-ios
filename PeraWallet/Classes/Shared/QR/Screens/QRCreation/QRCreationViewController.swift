@@ -67,6 +67,8 @@ final class QRCreationViewController: BaseScrollViewController {
         
         if draft.isSelectable {
             qrCreationView.bindData(QRAddressLabelViewModel(title: draft.title ?? draft.address.shortAddressDisplay, address: draft.address))
+        } else if draft.mode == .exportJointAccount, let title = draft.title, let deepLink = draft.deepLink {
+            qrCreationView.bindData(QRAddressLabelViewModel(title: title, address: deepLink))
         }
     }
 }
@@ -107,9 +109,15 @@ extension QRCreationViewController: QRCreationViewDelegate {
     }
     
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
+        
         let address = draft.address
         analytics.track(.showQRCopy(address: address))
-        copyToClipboardController.copyAddress(address)
+        
+        if draft.mode == .exportJointAccount, let deepLink = draft.deepLink {
+            copyToClipboardController.copyURL(deepLink)
+        } else {
+            copyToClipboardController.copyAddress(address)
+        }
     }
 
     func contextMenuInteractionForAddress(

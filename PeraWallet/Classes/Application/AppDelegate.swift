@@ -278,6 +278,11 @@ class AppDelegate:
             router.launch(deeplink: .qrScanner)
         }
     }
+    
+    func handle(deeplink: String) {
+        guard let externalDeepLink = URL(string: deeplink)?.externalDeepLink else { return }
+        receive(deeplinkWithSource: .externalDeepLink(externalDeepLink))
+    }
 }
 
 extension AppDelegate {
@@ -704,7 +709,7 @@ extension AppDelegate {
     }
 
     private func createAPI() -> ALGAPI {
-        ALGAPI(session: session, analytics: analytics, featureFlagService: featureFlagService)
+        ALGAPI(session: session, analytics: analytics)
     }
 
     private func createSharedDataController() -> SharedDataController {

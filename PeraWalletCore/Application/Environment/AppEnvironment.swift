@@ -251,6 +251,7 @@ public enum AlgorandWeb: String {
     case tinymanSwapPriceImpact = "https://docs.tinyman.org/faq#what-is-a-price-impact"
     case hdWallet = "https://support.perawallet.app/support/hd-wallets/"
     case standard = "https://perawallet.app/support/create-new-account/"
+    case jointAccount = "https://support.perawallet.app/en/article/introduction-to-joint-accounts-1j0dt2g/?bust=1770846667322"
 
     public var presentation: String {
         switch self {

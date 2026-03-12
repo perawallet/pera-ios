@@ -49,7 +49,9 @@ class SwapSharedViewModel: ObservableObject {
     @Published var swapHistoryList: [SwapHistory]? = []
     
     // MARK: - Internal State / Private Properties
-    private var debounceTask: Task<Void, Never>?
+    private var payingTextSubject = PassthroughSubject<String, Never>()
+    private var payingTextCancellable: AnyCancellable?
+    private var onGetQuoteAction: ((Double) -> Void)?
 
     private var shouldUpdateAccounts = false
     
@@ -58,7 +60,7 @@ class SwapSharedViewModel: ObservableObject {
     // MARK: - Services
     let currency: CurrencyProvider
     let sharedDataController: SharedDataController
-    private let amountFormatter = SwapAmountFormatter()
+    let amountFormatter = SwapAmountFormatter()
     private let pricingService = SwapPricingService()
     private let currencyService: SwapCurrencyService
     
@@ -110,10 +112,19 @@ class SwapSharedViewModel: ObservableObject {
         self.currencyService = SwapCurrencyService(currency: currency, amountFormatter: amountFormatter)
         
         sharedDataController.add(self)
+        setupPayingTextDebounce()
     }
 
     deinit {
         sharedDataController.remove(self)
+    }
+    
+    private func setupPayingTextDebounce() {
+        payingTextCancellable = payingTextSubject
+            .debounce(for: .milliseconds(600), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                self?.processPayingText(newValue)
+            }
     }
     
     // MARK: - Swap Actions
@@ -172,42 +183,40 @@ class SwapSharedViewModel: ObservableObject {
         receivingText = amountFormatter.string(from: valueOut) ?? .empty
         
         if useLocalCurrency {
-            receivingTextInSecondaryCurrency = amountFormatter.string(from: Decimal(valueOut.doubleValue), maxFractionDigits: 6) ?? .empty
-            payingTextInSecondaryCurrency = amountFormatter.string(from: Decimal(valueIn.doubleValue), maxFractionDigits: 6) ?? .empty
+            receivingTextInSecondaryCurrency = amountFormatter.string(from: valueOut, maxFractionDigits: 6) ?? .empty
+            payingTextInSecondaryCurrency = amountFormatter.string(from: valueIn, maxFractionDigits: 6) ?? .empty
         } else {
-            receivingTextInSecondaryCurrency = currencyService.fiatValueText(fromUSDC: valueOut.doubleValue)
+            receivingTextInSecondaryCurrency = currencyService.fiatValueText(fromAsset: selectedAssetOut.asset, with: valueOut.doubleValue)
             payingTextInSecondaryCurrency = currencyService.fiatFormat(with: selectedQuote.amountInUSDValue?.doubleValue ?? 0)
         }
     }
     
-    func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
-        debounceTask?.cancel()
-        debounceTask = nil
-        
-        debounceTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second debounce
-            guard let self else { return }
-            
-            let doubleValue = amountFormatter.numericValue(from: newValue)
-            if doubleValue > 0 {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    isBalanceNotSufficient = doubleValue > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
-                    isLoadingReceiveAmount = true
-                    
-                    let valueToUse = useLocalCurrency ? currencyService.algoValue(fromFiat: doubleValue) : doubleValue
-                    onGetQuote(valueToUse)
-                }
-            } else {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    resetTextFields()
-                }
-            }
-        }
+    func onPayingAmountChanged(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
+        let filteredValue = filterPayingText(newValue)
+        guard filteredValue != payingText else { return }
+        payingText = filteredValue
+        updatePayingText(filteredValue, onGetQuote: onGetQuote)
     }
     
-    private func resetTextFields() {
+    func updatePayingText(_ newValue: String, onGetQuote: @escaping (Double) -> Void) {
+        onGetQuoteAction = onGetQuote
+        payingTextSubject.send(newValue)
+    }
+    
+    private func processPayingText(_ newValue: String) {
+        let doubleValue = amountFormatter.numericValue(from: newValue)
+        guard doubleValue > 0 else { resetTextFields(); return }
+
+        let assetAmount = useLocalCurrency
+            ? currencyService.assetValue(fromFiat: doubleValue, asset: selectedAssetIn.asset)
+            : doubleValue
+
+        isBalanceNotSufficient = assetAmount > NSDecimalNumber(decimal: selectedAssetIn.asset.decimalAmount).doubleValue
+        isLoadingReceiveAmount = true
+        onGetQuoteAction?(assetAmount)
+    }
+    
+    func resetTextFields() {
         receivingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
         receivingTextInSecondaryCurrency = useLocalCurrency ? Self.defaultAmountValue : currencyService.fiatFormat(with: 0.0)
         payingText = useLocalCurrency ? currencyService.fiatFormat(with: 0.0) : .empty
@@ -228,7 +237,7 @@ class SwapSharedViewModel: ObservableObject {
         }
 
         let value = amountFormatter.numericValue(from: filtered)
-        guard value > 0 else { return filtered }
+        guard value > 0 else { return .empty }
 
         if useLocalCurrency {
             return currencyService.fiatFormat(with: value)

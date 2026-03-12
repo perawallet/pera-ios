@@ -14,6 +14,8 @@
 
 //   MobileApiManager.swift
 
+import Foundation
+
 final class MobileApiManager {
     
     // MARK: - Properties
@@ -50,9 +52,40 @@ final class MobileApiManager {
         return try await perform(v1Request: request)
     }
     
-    func createJointAccount(participants: [String], threshold: Int) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
-        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1)
+    func createJointAccount(participants: [String], threshold: Int, deviceID: String?) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
+        let jointAccountObject = MultiSigAccountObject(address: "", participantAddresses: participants, threshold: threshold, version: 1, creationDatetime: Date(timeIntervalSince1970: 0), deviceID: deviceID)
         let request = CreateJointAccountRequest(jointAccountObject: jointAccountObject)
+        return try await perform(v1Request: request)
+    }
+    
+    func fetchInbox(deviceID: String, addresses: [String]) async throws(CoreApiManager.ApiError) -> InboxCreateResponse {
+        let request = InboxCreateRequest(deviceID: deviceID, addresses: addresses)
+        return try await perform(v1Request: request)
+    }
+    
+    func cancelJointAccountImportRequest(deviceID: String, jointAccountAddress: String) async throws(CoreApiManager.ApiError) -> EmptyResponse {
+        let request = CancelJointAccountAccountImportRequest(deviceId: deviceID, multisigAddress: jointAccountAddress)
+        return try await perform(v1Request: request)
+    }
+    
+    func createJointAccountTransactionSignRequest(jointAccountAddress: String, proposerAddress: String, type: ProposedSignType,
+                                                  rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> ProposeSignResponse {
+        let request = ProposeSignRequest(jointAccountAddress: jointAccountAddress, proposerAddress: proposerAddress, type: type, rawTransactionLists: rawTransactionLists, responses: responses)
+        return try await perform(v1Request: request)
+    }
+    
+    func signJointAccountTransaction(signRequestId: String, responses: [JointAccountSignRequestResponse]) async throws(CoreApiManager.ApiError) -> SignRequestObject {
+        let request = JointAccountSignRequest(signRequestId: signRequestId, responses: responses)
+        return try await perform(v1Request: request)
+    }
+    
+    func searchJointAccountSignTransaction(deviceID: String, signRequestID: String) async throws(CoreApiManager.ApiError) -> JointAccountsSignRequestSearchResponse {
+        let request = JointAccountsSignRequestSearchRequest(deviceID: deviceID, participantAddresses: nil, jointAccountAddresses: nil, signRequestID: signRequestID, status: nil)
+        return try await perform(v1Request: request)
+    }
+    
+    func fetchJointAccountDetail(address: String) async throws(CoreApiManager.ApiError) -> JointAccountDetailRequestResponse {
+        let request = JointAccountDetailRequest(address: address)
         return try await perform(v1Request: request)
     }
     

@@ -25,7 +25,7 @@ final class AddAccountViewModel: ObservableObject {
         case importWallet
         case watchAccount
         case createUniversalWallet
-        case createAlgo256Wallet
+        case createAlgo25Wallet
     }
     
     struct MenuOptionModel: Identifiable {
@@ -37,12 +37,14 @@ final class AddAccountViewModel: ObservableObject {
     }
     
     @Published var isMenuExpanded: Bool = false
+    @Published var scannedAddress: String = .empty
     @Published fileprivate(set) var menuRows: [MenuOptionModel] = []
     @Published fileprivate(set) var termsAndConditionsText: AttributedString = ""
 }
 
 protocol AddAccountModelable {
     var viewModel: AddAccountViewModel { get }
+    var sharedJointAccountModel: CreateJointAccountAccountsListModelable { get }
 }
 
 final class AddAccountModel: AddAccountModelable {
@@ -55,6 +57,12 @@ final class AddAccountModel: AddAccountModelable {
     // MARK: - Properties - AddAccountModelable
     
     let viewModel: AddAccountViewModel = AddAccountViewModel()
+    
+    // MARK: - Properties - CreateJointAccountAccountsListModel
+    
+    private lazy var jointAccountModel = CreateJointAccountAccountsListModel(accountsService: PeraCoreManager.shared.accounts)
+    
+    var sharedJointAccountModel: CreateJointAccountAccountsListModelable { jointAccountModel }
     
     // MARK: - Initialisers
     
@@ -150,7 +158,7 @@ final class AddAccountModel: AddAccountModelable {
         }
         
         result.append(AddAccountViewModel.MenuOptionModel(
-            id: .createAlgo256Wallet,
+            id: .createAlgo25Wallet,
             icon: .Icons.wallet,
             title: String(localized: "add-account-option-create-algo25-wallet-title"),
             description: String(localized: "add-account-option-create-algo25-wallet-description"),

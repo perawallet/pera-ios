@@ -128,18 +128,7 @@ struct SwapView: View {
                     type: .pay,
                     assetItem: $viewModel.selectedAssetIn,
                     network: $viewModel.selectedNetwork,
-                    amountText: Binding(
-                        get: { viewModel.payingText },
-                        set: { newValue in
-                            let filteredValue = viewModel.filterPayingText(newValue)
-                            guard filteredValue != viewModel.payingText else { return }
-                            
-                            viewModel.payingText = filteredValue
-                            viewModel.updatePayingText(filteredValue) {
-                                onAction?(.getQuote(for: $0))
-                            }
-                        }
-                    ),
+                    amountText: $viewModel.payingText,
                     amountTextInSecondaryCurrency: Binding(
                         get: { viewModel.payingTextInSecondaryCurrency.isEmpty ?
                             (PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false ? SwapSharedViewModel.defaultAmountValue : viewModel.fiatFormat(with: 0.0))
@@ -154,6 +143,10 @@ struct SwapView: View {
                     isBalanceNotSufficient: $viewModel.isBalanceNotSufficient
                 ) {
                     onAction?(.selectAssetIn(for: $viewModel.selectedAccount.wrappedValue))
+                } onAmountChanged: { newValue in
+                    viewModel.onPayingAmountChanged(newValue) {
+                        onAction?(.getQuote(for: $0))
+                    }
                 }
                 AssetSelectionView(
                     type: .receive,
@@ -171,7 +164,7 @@ struct SwapView: View {
                     isBalanceNotSufficient: .constant(false)
                 ) {
                     onAction?(.selectAssetOut(for: $viewModel.selectedAccount.wrappedValue))
-                }
+                } onAmountChanged: { _ in }
             }
             .padding(.horizontal, 8)
             
@@ -270,7 +263,7 @@ struct SwapView: View {
     private func handlePercentageChange(_ newPercentage: PercentageValue) {
         viewModel.isLoadingPayAmount = true
         let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
-        viewModel.isBalanceNotSufficient = amount > NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
+        viewModel.isBalanceNotSufficient = false
         onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
     }
     
@@ -288,7 +281,7 @@ struct SwapView: View {
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             viewModel.payingText = viewModel.fiatFormat(with: value)
         } else {
-            viewModel.payingText = String(value)
+            viewModel.payingText = viewModel.amountFormatter.string(from: Decimal(value)) ?? String(value)
         }
         viewModel.updatePayingText(viewModel.payingText) { onAction?(.getQuote(for: $0)) }
     }

@@ -29,7 +29,7 @@ struct CoreAccountRow<TrailingView: View>: View {
     // MARK: - Body
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0.0) {
             RoundedIconView(image: image, size: 40.0, padding: 8.0)
                 .padding(.vertical, 18.0)
             VStack(alignment: .leading) {
@@ -42,6 +42,7 @@ struct CoreAccountRow<TrailingView: View>: View {
                         .foregroundStyle(Color.Text.grayLighter)
                 }
             }
+            .padding(.leading, 16.0)
             Spacer()
             trailingView()
         }

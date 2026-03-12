@@ -15,7 +15,7 @@
 //   CreateJointAccountRequest.swift
 
 struct CreateJointAccountRequest {
-    /// he multisig account object containing the address, participant addresses, threshold, and version details.
+    /// The multisig account object containing the address, participant addresses, threshold, and version details.
     let jointAccountObject: MultiSigAccountObject
 }
 
@@ -26,15 +26,4 @@ extension CreateJointAccountRequest: BodyRequestable {
     var path: String { "/joint-accounts/accounts/" }
     var method: RequestMethod { .post }
     var body: any Encodable { jointAccountObject }
-}
-
-struct MultiSigAccountObject: Encodable, Decodable {
-    /// The public address of the multisig account.
-    let address: String
-    /// The list of participant public addresses involved in the multisig account.
-    let participantAddresses: [String]
-    /// The minimum number of signatures required to authorize a transaction.
-    let threshold: Int
-    /// The version of the multisig scheme being used
-    let version: Int
 }

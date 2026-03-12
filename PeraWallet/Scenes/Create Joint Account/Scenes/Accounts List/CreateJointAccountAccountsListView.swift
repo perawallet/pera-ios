@@ -33,17 +33,31 @@ struct CreateJointAccountAccountsListView: View {
     private let model: CreateJointAccountAccountsListModelable
     @ObservedObject private var viewModel: CreateJointAccountAccountsListViewModel
     @Binding private var navigationPath: NavigationPath
+    @State private var showCreationSheet: Bool = false
+    @Binding private var scannedAddress: String
     
     // MARK: - UIKit Compatibility
     
     private var onDismissRequest: (() -> Void)?
+    private var onLearnMoreTap: (() -> Void)?
+    private var onScanQRTap: (() -> Void)?
     
     // MARK: - Initialiser
     
-    init(model: CreateJointAccountAccountsListModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) {
+    init(
+        model: CreateJointAccountAccountsListModelable,
+        scannedAddress: Binding<String>,
+        navigationPath: Binding<NavigationPath>,
+        onDismissRequest: (() -> Void)?,
+        onLearnMoreTap: (() -> Void)?,
+        onScanQRTap: (() -> Void)?
+    ) {
         self.model = model
         _navigationPath = navigationPath
+        _scannedAddress = scannedAddress
         self.onDismissRequest = onDismissRequest
+        self.onLearnMoreTap = onLearnMoreTap
+        self.onScanQRTap = onScanQRTap
         viewModel = model.viewModel
     }
     
@@ -101,7 +115,7 @@ struct CreateJointAccountAccountsListView: View {
                     }
                 }
             }
-            RoundedButton(text: "common-continue", style: .primary, isEnabled: viewModel.isValidated, onTap: onContinueButtonAction)
+            RoundedButton(contentType: .text("common-continue"), style: .primary, isEnabled: viewModel.isValidated, onTap: onContinueButtonAction)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 12.0)
         }
@@ -109,6 +123,14 @@ struct CreateJointAccountAccountsListView: View {
         .withPeraBackButton(navigationPath: $navigationPath)
         .background(Color.Defaults.bg)
         .onReceive(viewModel.$action) { handle(action: $0) }
+        .sheet(isPresented: $showCreationSheet) {
+            CreationConfirmationSheet() {
+                model.updateShouldShowJointAccountCreationPopup()
+                model.requestData()
+            } onLearnMoreTap: {
+                onLearnMoreTap?()
+            }
+        }
     }
     
     // MARK: - View Builders
@@ -117,7 +139,13 @@ struct CreateJointAccountAccountsListView: View {
     private func scene(navigationOption: NavigationOption) -> some View {
         switch navigationOption {
         case .addAccount:
-            CreateJointAccountAddAccountConstructor.buildScene(navigationPath: $navigationPath, onSelectedAddress: { model.add(account: $0) })
+            CreateJointAccountAddAccountConstructor.buildScene(
+                navigationPath: $navigationPath,
+                model: model.sharedAddAccountModel,
+                scannedAddress: $scannedAddress,
+                onSelectedAddress: { model.add(account: $0) },
+                onScanQRTap: onScanQRTap
+            )
         case let .editAccount(viewModel):
             CreateJointAccountEditAccountConstructor.buildScene(
                 name: viewModel.title,
@@ -147,7 +175,12 @@ struct CreateJointAccountAccountsListView: View {
     }
     
     private func onContinueButtonAction() {
-        model.requestData()
+        guard model.shouldShowJointAccountCreationPopup else {
+            model.requestData()
+            return
+        }
+        
+        showCreationSheet = true
     }
     
     // MARK: - Actions

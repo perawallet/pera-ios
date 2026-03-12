@@ -59,21 +59,21 @@ struct CreateJointAccountEditAccountView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24.0)
                 .padding(.bottom, 41.0)
-                RoundedButton(text: "create-joint-account-button-remove", style: .destructive, isEnabled: true, onTap: onRemoveAddressButtonTapAction)
+                RoundedButton(contentType: .text("create-joint-account-button-remove"), style: .destructive, isEnabled: true, onTap: onRemoveAddressButtonTapAction)
                     .padding(.horizontal, 24.0)
                 Spacer()
             }
-            .background(Color.Defaults.bg)
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("create-joint-account-edit-account-navigation-title")
             .withPeraBackButton(navigationPath: $navigationPath)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     SwiftUI.Button("common-done") { onDoneButtonTapAction() }
-                        .foregroundStyle(Color.Text.main)
+                        .foregroundStyle(Color.Link.primary)
                 }
             }
         }
+        .background(Color.Defaults.bg)
         .navigationTitle("create-joint-account-edit-account-title")
         .onReceive(viewModel.$updatedModel) { model in
             guard let model else { return }
