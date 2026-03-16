@@ -23,10 +23,6 @@ struct ASAProfileViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: ASAProfileIconViewTheme
-    var expandedIconSize: LayoutSize
-    var compressedIconSize: LayoutSize
-    var expandedSpacingBetweenIconAndTitle: LayoutMetric
-    var compressedSpacingBetweenIconAndTitle: LayoutMetric
     var name: RightAccessorizedLabelStyle
     var nameViewLeading: LayoutMetric
     var titleViewHeight: LayoutMetric
@@ -44,11 +40,6 @@ struct ASAProfileViewTheme:
 
     init(_ family: LayoutFamily) {
         self.icon = ASAProfileIconViewTheme(family)
-        self.expandedIconSize = (40, 40)
-        self.compressedIconSize = (20, 20)
-
-        self.expandedSpacingBetweenIconAndTitle = 20
-        self.compressedSpacingBetweenIconAndTitle = 8
 
         var name = RightAccessorizedLabelStyle()
         name.text = [
@@ -97,12 +88,14 @@ struct ASAProfileIconViewTheme: URLImageViewStyleLayoutSheet {
     var content: ImageStyle
     var placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
     var placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
+    var size: LayoutSize
 
     init(_ family: LayoutFamily) {
         background = []
         content = .aspectFit()
         placeholderStyleSheet = PlaceholderStyleSheet()
         placeholderLayoutSheet = PlaceholderLayoutSheet()
+        size = (40, 40)
     }
 }
 

@@ -8903,16 +8903,6 @@
         }
       }
     },
-    "title-about" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
-    },
     "title-about-with-param" : {
       "localizations" : {
         "en" : {
@@ -8989,16 +8979,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Active"
-          }
-        }
-      }
-    },
-    "title-activity" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity"
           }
         }
       }
@@ -9242,72 +9222,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cards"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-algo" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buy ALGO with Apple Pay, credit cards or bank transfer"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-cards" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cards: Get the world’s first web3 Mastercard"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-discover" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discover: Use browser to interact with dApps"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-receive" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Receive Algo by sharing your account address"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-swap" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Swap: Convert between popular ASA pairs"
-          }
-        }
-      }
-    },
-    "title-carousel-banner-transfer" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transfer: Accept any crypto across all chains"
           }
         }
       }
@@ -10372,17 +10286,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Receive"
-          }
-        }
-      }
-    },
-    "title-recently-used-card" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recently used Pera Card"
           }
         }
       }
