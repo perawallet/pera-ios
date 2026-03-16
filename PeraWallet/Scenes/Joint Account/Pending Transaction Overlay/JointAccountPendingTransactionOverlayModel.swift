@@ -40,6 +40,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         case inProgress
         case success
         case cancelled
+        case failed(errorMessage: String)
     }
     
     enum ModelError: Error {
@@ -202,7 +203,13 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
                 viewModel.transactionState = .inProgress
             case .confirmed:
                 viewModel.transactionState = .success
-            case .failed, .expired, .declined:
+            case .failed:
+                if let reason = result.failReasonDisplay {
+                    viewModel.transactionState = .failed(errorMessage: reason)
+                } else {
+                    viewModel.transactionState = .cancelled
+                }
+            case .expired, .declined:
                 viewModel.transactionState = .cancelled
             }
         }
