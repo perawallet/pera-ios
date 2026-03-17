@@ -89,6 +89,9 @@ struct JointAccountPendingTransactionOverlay: View {
             JointAccountSendRequestInboxCapsule(icon: .Icons.check, text: .localized(text: "joint-account-pending-transaction-overlay-capsule-success"), foregroundColor: .Helpers.positive, backgroundColor: .Helpers.positiveLighter)
         case .cancelled:
             JointAccountSendRequestInboxCapsule(icon: .Icons.error, text: .localized(text: "joint-account-pending-transaction-overlay-capsule-cancelled"), foregroundColor: .Helpers.negative, backgroundColor: .Helpers.negativeLighter)
+        case let .failed(errorMessage):
+            JointAccountSendRequestInboxCapsule(icon: .Icons.error, text: .raw(text: errorMessage), foregroundColor: .Helpers.negative, backgroundColor: .Helpers.negativeLighter)
+                
         }
     }
     
@@ -105,7 +108,7 @@ struct JointAccountPendingTransactionOverlay: View {
                 )
                 RoundedButton(contentType: .text("joint-account-pending-transaction-overlay-button-close"), style: .primary, isEnabled: true, onTap: onCloseAction)
             }
-        case .success, .cancelled:
+        case .success, .cancelled, .failed:
             RoundedButton(contentType: .text("title-close"), style: .secondary, isEnabled: true, onTap: onCloseAction)
         }
     }
