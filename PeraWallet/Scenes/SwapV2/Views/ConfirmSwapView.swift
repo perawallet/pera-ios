@@ -28,6 +28,8 @@ struct ConfirmSwapView: View {
     var onSwapSuccess: (String) -> Void
     var onSwapError: (String) -> Void
     
+    private let showExchangeFee: Bool = false
+    
     var body: some View {
         headerView
         ScrollView(.vertical, showsIndicators: false) {
@@ -216,22 +218,24 @@ struct ConfirmSwapView: View {
                     .foregroundStyle(Color.Text.main)
             }
             .padding(.bottom, 16)
-            HStack {
-                Text("title-exchange-fee")
-                    .font(.DMSans.regular.size(13))
-                    .foregroundStyle(Color.Text.gray)
-                Spacer().frame(width: 6)
-                SwiftUI.Button {
-                    activeSheet = .exchangeFee
-                } label: {
-                    Image(.iconInfo20)
+            if showExchangeFee {
+                HStack {
+                    Text("title-exchange-fee")
+                        .font(.DMSans.regular.size(13))
+                        .foregroundStyle(Color.Text.gray)
+                    Spacer().frame(width: 6)
+                    SwiftUI.Button {
+                        activeSheet = .exchangeFee
+                    } label: {
+                        Image(.iconInfo20)
+                    }
+                    Spacer()
+                    Text(viewModel.exchangeFee)
+                        .font(.DMSans.regular.size(13))
+                        .foregroundStyle(Color.Text.main)
                 }
-                Spacer()
-                Text(viewModel.exchangeFee)
-                    .font(.DMSans.regular.size(13))
-                    .foregroundStyle(Color.Text.main)
+                .padding(.bottom, 16)
             }
-            .padding(.bottom, 16)
             HStack {
                 Text("swap-confirm-pera-fee-title")
                     .font(.DMSans.regular.size(13))

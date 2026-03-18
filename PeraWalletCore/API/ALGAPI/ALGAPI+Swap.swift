@@ -84,7 +84,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
+            .base(.mobileV2(network))
             .path(.swapQuote)
             .method(.post)
             .body(draft)
