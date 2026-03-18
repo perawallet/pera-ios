@@ -50,6 +50,8 @@ final class ASAMarketsFragment:
     private var currency: CurrencyProvider
     private let copyToClipboardController: CopyToClipboardController
     private var eventHandler: ASADetailViewController.EventHandler?
+    private var isAssetFavorited: Bool = false
+    private var isAssetPriceAlertEnabled: Bool = false
 
     private let theme = ASAMarketsFragmentTheme()
 
@@ -66,10 +68,10 @@ final class ASAMarketsFragment:
         self.currency = currency
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
+        self.isAssetFavorited = asset.isFavorited ?? false
+        self.isAssetPriceAlertEnabled = asset.isPriceAlertEnabled ?? false
 
         super.init(configuration: configuration)
-        
-        updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: asset.isPriceAlertEnabled ?? false, isAssetFavorited: asset.isFavorited ?? false)
     }
 
     override func viewDidLoad() {
@@ -87,17 +89,23 @@ extension ASAMarketsFragment {
     func bindData(asset: Asset, account: Account, chartData: ChartViewData?) {
         self.asset = asset
         self.account = account
+        self.isAssetFavorited = asset.isFavorited ?? false
+        self.isAssetPriceAlertEnabled = asset.isPriceAlertEnabled ?? false
         if let chartData {
             self.chartData = chartData
         }
-
         if isViewLoaded {
             bindUIData()
         }
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
-        profileView.updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+        self.isAssetFavorited = isAssetFavorited
+        self.isAssetPriceAlertEnabled = isAssetPriceAlertEnabled
+        profileView.updateFavoriteAndNotificationButtons(
+            isAssetPriceAlertEnabled: isAssetPriceAlertEnabled,
+            isAssetFavorited: isAssetFavorited
+        )
     }
 }
 
@@ -236,6 +244,11 @@ extension ASAMarketsFragment {
 
         bindProfileData(isAmountHidden: ObservableUserDefaults.shared.isPrivacyModeEnabled)
         profileView.updateChart(with: chartData, and: TendenciesViewModel(chartData: chartData?.model.data, currency: currency))
+        
+        profileView.updateFavoriteAndNotificationButtons(
+            isAssetPriceAlertEnabled: isAssetPriceAlertEnabled,
+            isAssetFavorited: isAssetFavorited
+        )
     }
     
     private func bindProfileData(isAmountHidden: Bool, chartPointSelected: ChartSelectedPointViewModel? = nil) {
