@@ -27,6 +27,8 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
     private weak var headerView: ASAHoldingsFragmentHeaderView?
     private var currentHeaderContext: ASAHoldingsHeaderContext?
     private var currentChartData: ChartViewData?
+    private var currentFavoriteStatus: Bool = false
+    private var currentPriceAlertStatus: Bool = false
 
     init(
         _ collectionView: UICollectionView,
@@ -37,6 +39,8 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
         self.showHeader = headerContext != nil
         self.shouldDisplayQuickActions = headerContext?.shouldDisplayQuickActions ?? true
         self.currentHeaderContext = headerContext
+        self.currentFavoriteStatus = headerContext?.asset.isFavorited ?? false
+        self.currentPriceAlertStatus = headerContext?.asset.isPriceAlertEnabled ?? false
         
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -132,7 +136,10 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                     if let data = currentChartData {
                         header.updateChart(with: data)
                     }
-                    header.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: context.asset.isPriceAlertEnabled ?? false, isAssetFavorited: context.asset.isFavorited ?? false)
+                    header.bindFavoriteAndNotificationButtons(
+                        isAssetPriceAlertEnabled: currentPriceAlertStatus,
+                        isAssetFavorited: currentFavoriteStatus
+                    )
                 }
                 return headerView
             }
@@ -146,7 +153,12 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
     }
     
     func updateFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: Bool, isAssetFavorited: Bool) {
-        headerView?.bindFavoriteAndNotificationButtons(isAssetPriceAlertEnabled: isAssetPriceAlertEnabled, isAssetFavorited: isAssetFavorited)
+        currentPriceAlertStatus = isAssetPriceAlertEnabled
+        currentFavoriteStatus = isAssetFavorited
+        headerView?.bindFavoriteAndNotificationButtons(
+            isAssetPriceAlertEnabled: isAssetPriceAlertEnabled,
+            isAssetFavorited: isAssetFavorited
+        )
     }
     
     func updateChart(with data: ChartViewData) {
