@@ -89,18 +89,23 @@ final class SwapPricingService {
     func peraFee(for quote: SwapQuote?) -> String {
         guard
             let peraFee = quote?.peraFee,
-            let decimals = quote?.assetOut?.decimals
+            let decimals = quote?.peraFeeAsset?.decimals ?? quote?.assetOut?.decimals
         else {
             return "-"
         }
         
         let value = Decimal(peraFee) / pow(10, decimals)
+        let peraFeeAsset = quote?.peraFeeAsset
         
-        let currencyFormatter = CurrencyFormatter()
-        currencyFormatter.formattingContext = .listItem
-        currencyFormatter.currency = AlgoLocalCurrency()
+        if let peraFeeAsset, !peraFeeAsset.isAlgo, let unitName = peraFeeAsset.unitName {
+            return "\(value) \(unitName)"
+        }
         
-        return currencyFormatter.format(value) ?? "-"
+        let formatter = CurrencyFormatter()
+        formatter.formattingContext = .listItem
+        formatter.currency = AlgoLocalCurrency()
+        return formatter.format(value) ?? "-"
+
     }
     
     func exchangeFee(for quote: SwapQuote?) -> String {
