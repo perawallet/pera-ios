@@ -42,7 +42,7 @@ struct WCSessionConnectionProfileViewTheme:
         ]
         self.networkViewHeight = 24
         self.networkViewCornerRadius = 12
-        self.networkViewInsets = (4, 12, 4, 12)
+        self.networkViewInsets = (0, 12, 4, 12)
         self.networkTitle = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.white),

@@ -21,7 +21,7 @@ import UIKit
 struct WCSessionRequestedPermissionItemCellTheme:
     StyleSheet,
     LayoutSheet {
-    let context: SecondaryListItemViewTheme
+    let context: WCSessionRequestedPermissionItemViewTheme
     let contextEdgeInsets: LayoutPaddings
     let separator: Separator
 
@@ -32,25 +32,37 @@ struct WCSessionRequestedPermissionItemCellTheme:
     }
 }
 
-struct WCSessionRequestedPermissionItemViewTheme: SecondaryListItemViewTheme {
+struct WCSessionRequestedPermissionItemViewTheme {
+    let contentPaddings: LayoutPaddings
     let contentEdgeInsets: LayoutPaddings
+    let content: ViewStyle
     let title: TextStyle
-    let titleMinWidthRatio: LayoutMetric
-    let titleMaxWidthRatio: LayoutMetric
-    let minimumSpacingBetweenTitleAndAccessory: LayoutMetric
-    let accessory: SecondaryListItemValueViewTheme
+    let spacingBetweenTitleAndRows: LayoutMetric
+    let row: TextStyle
+    let rowIcon: ImageStyle
+    let rowIconSize: LayoutSize
+    let spacingBetweenRowIconAndTitle: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        self.contentEdgeInsets = (0, 0, 0, 0)
+        self.content = [
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
+        self.contentPaddings = (0, 0, 0, 0)
+        self.contentEdgeInsets = (16, 16, 16, 16)
         self.title = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText())
         ]
-        self.titleMinWidthRatio = 0.2
-        self.titleMaxWidthRatio = 0.45
-        self.minimumSpacingBetweenTitleAndAccessory = 12
-        self.accessory = SecondaryListItemValueCommonViewTheme(family)
+        self.spacingBetweenTitleAndRows = 12
+        self.row = [
+            .textColor(Colors.Text.gray)
+        ]
+        self.rowIcon = [
+            .image("icon-check")
+        ]
+        self.rowIconSize = (24, 24)
+        self.spacingBetweenRowIconAndTitle = 9
     }
 }

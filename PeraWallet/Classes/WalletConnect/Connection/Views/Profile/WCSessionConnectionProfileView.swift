@@ -43,7 +43,6 @@ final class WCSessionConnectionProfileView:
 
     func bindData(_ viewModel: WCSessionConnectionProfileViewModel?) {
         iconView.load(from: viewModel?.icon)
-        iconView.backgroundColor = .yellow
 
         if let title = viewModel?.title {
             title.load(in: titleView)
@@ -153,7 +152,6 @@ extension WCSessionConnectionProfileView {
         addSubview(titleView)
         titleView.snp.makeConstraints {
             $0.top == iconView.snp.bottom + theme.spacingBetweenIconAndTitle
-            $0.height == 50
             $0.leading == 0
             $0.trailing == 0
         }

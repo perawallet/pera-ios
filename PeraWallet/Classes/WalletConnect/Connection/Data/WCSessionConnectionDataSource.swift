@@ -104,7 +104,7 @@ extension WCSessionConnectionDataSource {
 }
 
 extension WCSessionConnectionDataSource {
-    typealias WCSessionRequestedPermissionRegistration = UICollectionView.CellRegistration<WCSessionRequestedPermissionItemCell, SecondaryListItemViewModel>
+    typealias WCSessionRequestedPermissionRegistration = UICollectionView.CellRegistration<WCSessionRequestedPermissionItemCell, WCSessionRequestedPermissionViewModel>
 
     private static func makeWCSessionRequestedPermissionCellRegistration() -> WCSessionRequestedPermissionRegistration {
         let handler: WCSessionRequestedPermissionRegistration.Handler = {

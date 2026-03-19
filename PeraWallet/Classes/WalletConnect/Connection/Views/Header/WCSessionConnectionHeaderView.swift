@@ -65,37 +65,13 @@ final class WCSessionConnectionHeaderView:
 
 extension WCSessionConnectionHeaderView {
     private func addContent(_ theme: WCSessionConnectionHeaderViewTheme) {
-        let leadingLineView = UIView()
-        leadingLineView.customizeAppearance(theme.dividerLine)
-
-        addSubview(leadingLineView)
-        leadingLineView.snp.makeConstraints {
-            $0.centerY == 0
-            $0.leading == 0
-            $0.greaterThanWidth(theme.dividerLineMinWidth)
-            $0.fitToHeight(theme.dividerLineHeight)
-        }
-
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.centerX == 0
             $0.top == 0
-            $0.leading == leadingLineView.snp.trailing + theme.spacingBetweenDividerTitleAndLine
+            $0.leading == 0
             $0.bottom == 0
-        }
-
-        let trailingLineView = UIView()
-        trailingLineView.customizeAppearance(theme.dividerLine)
-
-        addSubview(trailingLineView)
-        trailingLineView.snp.makeConstraints {
-            $0.centerY == 0
-            $0.trailing == 0
-            $0.leading == titleView.snp.trailing + theme.spacingBetweenDividerTitleAndLine
-            $0.greaterThanWidth(theme.dividerLineMinWidth)
-            $0.fitToHeight(theme.dividerLineHeight)
         }
     }
 }

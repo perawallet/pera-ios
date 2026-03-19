@@ -22,6 +22,13 @@ public enum WalletConnectMethod:
     case transactionSign = "algo_signTxn"
     case arbitraryDataSign = "algo_signData"
     
+    public var title: String {
+        switch self {
+        case .transactionSign: String(localized: "wc-session-permission-transaction-sign-text")
+        case .arbitraryDataSign: String(localized: "wc-session-permission-arbitrary-sign-text")
+        }
+    }
+    
     public static func == (lhs: WalletConnectMethod, rhs: WalletConnectMethod) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
