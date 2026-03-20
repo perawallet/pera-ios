@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MagpieHipo
 import pera_wallet_core
+import Combine
 
 final class ManageAssetListViewController:
     BaseViewController,
@@ -67,7 +68,8 @@ final class ManageAssetListViewController:
 
     private var query: ManageAssetListQuery
     private let dataController: ManageAssetListDataController
-    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+    private var cancellables: Set<AnyCancellable> = []
 
     init(
         query: ManageAssetListQuery,
@@ -77,29 +79,15 @@ final class ManageAssetListViewController:
     ) {
         self.query = query
         self.dataController = dataController
-        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+        jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
         
         super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         addUI()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didUpdate(let update):
-                self.dataSource.apply(
-                    update.snapshot,
-                    animatingDifferences: self.isViewAppeared
-                )
-            }
-        }
-        
+        setupCallbacks()
         dataController.load(query: query)
     }
 
@@ -128,6 +116,39 @@ final class ManageAssetListViewController:
         addSubtitle()
         addSearchInput()
         addList()
+    }
+    
+    private func setupCallbacks() {
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didUpdate(let update):
+                self.dataSource.apply(
+                    update.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
+            }
+        }
+        
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+        
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case let .connectionWithLedgerNeeded(transactionController):
+            openLedgerConnection(transactionController)
+        case .overlayDismissed:
+            break
+        case let .failure(error, _):
+            handle(error: error)
+        }
     }
 }
 
@@ -626,38 +647,28 @@ extension ManageAssetListViewController {
                 assetCreator: creator.address
             )
             transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection(transactionController)
-                
-                transactionController.initializeLedgerTransactionAccount()
-                transactionController.startTimer()
-            }
             
-            if account.isJointAccount {
-                optOutAssetForJointAccount(jointAccount: account, draft: assetTransactionDraft, transactionController: transactionController)
+            Task { [weak self] in
+                guard let self else { return }
+                await transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection(transactionController)
+                    
+                    transactionController.initializeLedgerTransactionAccount()
+                    transactionController.startTimer()
+                }
+                
+                if account.isJointAccount {
+                    self.jointAccountTransactionCoordinator.handleTransaction(
+                        jointAccount: account,
+                        transactionType: .optOut(draft: assetTransactionDraft),
+                        sharedDataController: self.sharedDataController,
+                        transactionController: transactionController,
+                        presenter: self
+                    )
+                }
             }
-        }
-    }
-    
-    private func optOutAssetForJointAccount(jointAccount: Account, draft: AssetTransactionSendDraft, transactionController: TransactionController) {
-        Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: .optOut(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-    
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
-        
-        Task { @MainActor in
-            present(viewController, animated: true)
         }
     }
     

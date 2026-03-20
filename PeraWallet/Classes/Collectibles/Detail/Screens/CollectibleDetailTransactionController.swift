@@ -15,6 +15,8 @@
 //   CollectibleDetailTransactionController.swift
 
 import pera_wallet_core
+import UIKit
+import Combine
 
 final class CollectibleDetailTransactionController {
     lazy var eventHandlers = Event()
@@ -23,20 +25,42 @@ final class CollectibleDetailTransactionController {
     private let asset: CollectibleAsset
     private let transactionController: TransactionController
     private let sharedDataController: SharedDataController
-    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+    private var cancellables: Set<AnyCancellable> = []
 
     init(account: Account, asset: CollectibleAsset, transactionController: TransactionController, sharedDataController: SharedDataController, accountsService: AccountsServiceable) {
         self.account = account
         self.asset = asset
         self.transactionController = transactionController
         self.sharedDataController = sharedDataController
-        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+        jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
+        setupCallbacks()
+    }
+    
+    private func setupCallbacks() {
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+        
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case .connectionWithLedgerNeeded:
+            eventHandlers.onJointAccountTransactionRequireConnectionWithLedger?()
+        case .overlayDismissed:
+            eventHandlers.onJointAccountPendingTransactionOverlayDismissed?()
+        case let .failure(error, _):
+            eventHandlers.onJointAccountTransactionError?(error)
+        }
     }
 }
 
 extension CollectibleDetailTransactionController {
     
-    func optOutAsset() {
+    @MainActor
+    func optOutAsset(presenter: UIViewController) {
         guard let creator = asset.creator else {
             return
         }
@@ -55,21 +79,24 @@ extension CollectibleDetailTransactionController {
             assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
-
-        eventHandlers.didStartRemovingAsset?()
-
-        if account.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-        
-        if account.isJointAccount {
-            performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: false)
+        Task {
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
+            
+            eventHandlers.didStartRemovingAsset?()
+            
+            if account.requiresLedgerConnection() {
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
+            
+            if account.isJointAccount {
+                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: false, presenter: presenter)
+            }
         }
     }
 
-    func optInToAsset() {
+    @MainActor
+    func optInToAsset(presenter: UIViewController) {
         if !transactionController.canSignTransaction(for: account) { return }
         
         let monitor = self.sharedDataController.blockchainUpdatesMonitor
@@ -81,34 +108,29 @@ extension CollectibleDetailTransactionController {
             assetIndex: asset.id
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
 
-        eventHandlers.didStartOptingInToAsset?()
-
-        if account.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-        
-        if account.isJointAccount {
-            performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: true)
+        Task {
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+            
+            eventHandlers.didStartOptingInToAsset?()
+            
+            if account.requiresLedgerConnection() {
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
+            
+            if account.isJointAccount {
+                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: true, presenter: presenter)
+            }
         }
     }
     
     // MARK: - Joint Account
     
-    private func performOptInOrOutAssetTransactionForJointAccount(draft: AssetTransactionSendDraft, isOptIn: Bool) {
-        
+    @MainActor
+    private func performOptInOrOutAssetTransactionForJointAccount(draft: AssetTransactionSendDraft, isOptIn: Bool, presenter: UIViewController) {
         let transactionType: JointAccountTransactionHandler.TransactionType = isOptIn ? .optIn(draft: draft) : .optOut(draft: draft)
-        
-        Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: account, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
-                eventHandlers.onJointAccountTransactionStarted?(result.signRequestMetadata)
-            } catch {
-                eventHandlers.onJointAccountTransactionError?(error)
-            }
-        }
+        jointAccountTransactionCoordinator.handleTransaction(jointAccount: account, transactionType: transactionType, sharedDataController: sharedDataController, transactionController: transactionController, presenter: presenter)
     }
 }
 
@@ -116,7 +138,8 @@ extension CollectibleDetailTransactionController {
     struct Event {
         var didStartRemovingAsset: EmptyHandler?
         var didStartOptingInToAsset: EmptyHandler?
-        var onJointAccountTransactionStarted: ((SignRequestMetadata) -> Void)?
+        var onJointAccountTransactionRequireConnectionWithLedger: EmptyHandler?
+        var onJointAccountPendingTransactionOverlayDismissed: EmptyHandler?
         var onJointAccountTransactionError: ((Error) -> Void)?
     }
 }
