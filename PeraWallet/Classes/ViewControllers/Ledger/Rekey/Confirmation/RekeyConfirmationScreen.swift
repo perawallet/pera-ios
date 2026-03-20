@@ -17,6 +17,7 @@
 import MacaroonUIKit
 import UIKit
 import pera_wallet_core
+import Combine
 
 final class RekeyConfirmationScreen:
     ScrollScreen,
@@ -75,7 +76,8 @@ final class RekeyConfirmationScreen:
     private let loadingController: LoadingController
     private let analytics: ALGAnalytics
     private let hdWalletStorage: HDWalletStorable
-    private let jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: PeraCoreManager.shared.accounts)
+    private let jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: PeraCoreManager.shared.accounts)
+    private var cancellables: Set<AnyCancellable> = []
 
     private let sourceAccount: Account
     private let authAccount: Account?
@@ -120,8 +122,27 @@ final class RekeyConfirmationScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         addUI()
+        setupCallbacks()
+    }
+    
+    private func setupCallbacks() {
+        
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case .connectionWithLedgerNeeded:
+            openLedgerConnection()
+        case .overlayDismissed:
+            finish(showSuccessMessage: false)
+        case let .failure(error, _):
+            finish(error: error)
+        }
     }
 
     override func linkInteractors() {
@@ -364,42 +385,27 @@ extension RekeyConfirmationScreen {
         )
 
         transactionController.setTransactionDraft(rekeyTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
-
-        if sourceAccount.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
         
-        if rekeyTransactionDraft.from.isJointAccount {
-            performAsyncJointAccountTransaction(draft: rekeyTransactionDraft)
-        }
-    }
-    
-    private func performAsyncJointAccountTransaction(draft: RekeyTransactionSendDraft) {
         Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
+            
+            if sourceAccount.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
+            
+            if rekeyTransactionDraft.from.isJointAccount {
+                jointAccountTransactionCoordinator.handleTransaction(
                     jointAccount: sourceAccount,
-                    type: .rekey(draft: draft),
+                    transactionType: .rekey(draft: rekeyTransactionDraft),
                     sharedDataController: sharedDataController,
-                    transactionController: transactionController
+                    transactionController: transactionController,
+                    presenter: self
                 )
-                showJointAccountPendingView(signRequestMetadata: result.signRequestMetadata)
-            } catch {
-                finish(error: error)
             }
         }
-    }
-    
-    private func showJointAccountPendingView(signRequestMetadata: SignRequestMetadata) {
-        let controller = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
-            self?.finish(showSuccessMessage: false)
-        }
-        
-        present(controller, animated: true)
     }
     
     private func finish(showSuccessMessage: Bool) {

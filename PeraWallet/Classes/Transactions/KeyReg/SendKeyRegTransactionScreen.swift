@@ -161,16 +161,18 @@ private extension SendKeyRegTransactionScreen {
     }
     
     private func completeTransaction() {
-        if !transactionController.canSignTransaction(for: account) { return }
-
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .keyreg)
-
-        if account.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        Task {
+            if !transactionController.canSignTransaction(for: account) { return }
+            
+            transactionController.setTransactionDraft(transactionDraft)
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .keyreg)
+            
+            if account.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
     

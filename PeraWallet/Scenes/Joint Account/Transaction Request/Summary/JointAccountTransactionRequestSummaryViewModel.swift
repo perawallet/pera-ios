@@ -192,21 +192,20 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
     @MainActor
     private func performSignRequests(isConfirmed: Bool) {
         
-        let responses: [AccountsService.JointAccountSignResponse]
-        
-        if isConfirmed {
-            responses = participantAccounts()
-                .map {
-                    let signatures = signatures(signerAccount: $0, transactions: signRequest.transactionLists)
-                    return .signed(address: $0.address, signatures: signatures)
-                }
-        } else {
-            responses = participantAccounts()
-                .map(\.address)
-                .map { .declined(address: $0) }
-        }
-        
         Task {
+            var responses: [AccountsService.JointAccountSignResponse] = []
+            
+            if isConfirmed {
+                for account in participantAccounts() {
+                    let signatures = await signatures(signerAccount: account, transactions: signRequest.transactionLists)
+                    responses.append(.signed(address: account.address, signatures: signatures))
+                }
+            } else {
+                responses = participantAccounts()
+                    .map(\.address)
+                    .map { .declined(address: $0) }
+            }
+            
             do {
                 try await accountsService.signJointAccountTransaction(signRequestId: signRequest.id, responses: responses)
                 Task { @MainActor in
@@ -261,13 +260,23 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
             .compactMap { accountsService.account(address: $0.address) }
     }
     
-    private func signatures(signerAccount: Account, transactions: [SignRequestTransactionObject]) -> [[String]] {
-        transactions
-            .map { $0.rawTransactions.compactMap { Data(base64Encoded: $0) }}
-            .map {
-                $0
-                    .compactMap { transactionController.singature(signerAccount: signerAccount, transactionData: $0) }
-                    .map { $0.base64EncodedString() }
+    private func signatures(signerAccount: Account, transactions: [SignRequestTransactionObject]) async -> [[String]] {
+        
+        var signatures: [[String]] = []
+        
+        for transactionObject in transactions {
+            
+            var singaturesGroup: [String] = []
+            let transactionsData = transactionObject.rawTransactions.compactMap { Data(base64Encoded: $0) }
+            
+            for transactionData in transactionsData {
+                guard let signature = await transactionController.singature(signerAccount: signerAccount, transactionData: transactionData)?.base64EncodedString() else { continue }
+                singaturesGroup.append(signature)
             }
+            
+            signatures.append(singaturesGroup)
+        }
+        
+        return signatures
     }
 }

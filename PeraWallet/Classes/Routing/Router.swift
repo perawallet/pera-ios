@@ -2643,13 +2643,16 @@ extension Router {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-        if account.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        
+        Task {
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+            
+            if account.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
 }
@@ -3649,13 +3652,16 @@ extension Router {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            
+            Task {
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
             }
         }
     }
